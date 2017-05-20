@@ -164,6 +164,7 @@ function toggleWysiwyg(name) {
                         }
                         var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
                         post = $cms.form.modsecurityWorkaroundAjax(post);
+                        /*FIXME: Synchronous XHR*/
                         var request = $cms.doAjaxRequest(url, null, post);
                         if ((!request.responseXML) || (!request.responseXML.documentElement.querySelector('result'))) {
                             textarea.value = '[semihtml]' + wysiwygData + '[/semihtml]';
@@ -660,7 +661,7 @@ function doEmoticon(fieldName, callerEl, isOpener) {
     if (isOpener) {
         element = $cms.getMainCmsWindow().document.getElementById(fieldName);
         if (!element) { // If it is really actually cascading popups
-            element = opener.document.getElementById(fieldName);
+            element = window.opener.document.getElementById(fieldName);
         }
     } else {
         element = document.getElementById(fieldName);
@@ -748,6 +749,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
         } else {
             var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
             if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
+            /*FIXME: Synchronous XHR*/
             var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
             if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
                 var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
@@ -877,6 +879,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         if (window.location.href.indexOf('topics') != -1) {
             url += '&forum_db=1';
         }
+        /*FIXME: Synchronous XHR*/
         var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
         if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
             var resultTags = request.responseXML.documentElement.getElementsByTagName('result');

@@ -39,7 +39,7 @@ function aceComposrLoader(textareaId, programmingLanguage, autoRefresh) {
     }
 }
 
-function editarea_is_loaded(textareaId) {
+function editareaIsLoaded(textareaId) {
     return (typeof window.ace_editors[textareaId] != 'undefined');
 }
 

@@ -31,28 +31,38 @@
     };
 
     $cms.functions.moduleCmsBannersRunStartAdd = function moduleCmsBannersRunStartAdd() {
-        var form = document.getElementById('main_form');
-        form.addEventListener('submit', function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('main_form'),
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
+            submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_banner&name=' + encodeURIComponent(form.elements['name'].value);
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 
     $cms.functions.moduleCmsBannersRunStartAddCategory = function moduleCmsBannersRunStartAddCategory() {
-        var form = document.getElementById('main_form');
-        form.onsubmit = (function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('main_form'),
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
+            submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_banner_type&name=' + encodeURIComponent(form.elements['new_id'].value);
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 }(window.$cms));

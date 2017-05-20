@@ -3736,7 +3736,7 @@
             });
 
             for (i = 0; i < dom.length; i++) {
-                // Cloning script[src] elements inserted to .innherHTML is required for them to actually work
+                // Cloning script[src] elements inserted using innerHTML is required for them to actually work
                 if ((dom[i].localName === 'script') && jsTypeRE.test(dom[i].type) && dom[i].src) {
                     dom[i] = cloneScriptEl(dom[i]);
                 }
@@ -3786,7 +3786,6 @@
                     arg.forEach(function(el) {
                         if (Array.isArray(el)) {
                             nodes = nodes.concat(el);
-                            pushArray(nodes, el);
                         } else if (isNode(el)) {
                             nodes.push(el);
                         } else {
@@ -3873,14 +3872,6 @@
         };
     }
 
-    function _forEachAwait(arr, callback) {
-        // To be implemented
-    }
-
-    function forEachAwait(arr, callback) {
-        // To be implemented
-    }
-
     function cloneScriptEl(scriptEl) {
         scriptEl = elArg(scriptEl);
 
@@ -3936,7 +3927,7 @@
 
     /**
      * @memberof $cms.dom
-     * @method
+     * @method append
      * @param el
      * @param html
      * @returns { Promise }
@@ -3973,6 +3964,23 @@
 
         $cms.dom.empty(el);
         return $cms.dom.append(el, html);
+    };
+
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param text
+     * @returns {string}
+     */
+    $cms.dom.text = function text(el, text) {
+        el = elArg(el);
+
+        if (text === undefined) {
+            return el.textContent;
+        }
+
+        return el.textContent = strVal(text);
     };
 
     /**
@@ -4929,7 +4937,8 @@
             });
         }
 
-        var html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), async, post);
+        /*FIXME: Synchronous XHR*/
+        var html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), null, post);
         return html.responseText;
     }
 
@@ -6746,7 +6755,7 @@
             this.top_window.overlay_zIndex || (this.top_window.overlay_zIndex = 999999); // Has to be higher than plupload, which is 99999
 
             this.boxWrapperEl = this.element('div', { // Black out the background
-                'styles': {
+                'css': {
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.top_window.overlay_zIndex++,
                     'overflow': 'hidden',
@@ -6761,7 +6770,7 @@
             this.boxWrapperEl.appendChild(this.element('div', { // The main overlay
                 'class': 'box overlay ' + this.type,
                 'role': 'dialog',
-                'styles': {
+                'css': {
                     // This will be updated immediately in reset_dimensions
                     'position': $cms.$MOBILE() ? 'static' : 'fixed',
                     'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
@@ -6776,7 +6785,7 @@
 
             var container = this.element('div', {
                 'class': 'box_inner',
-                'styles': {
+                'css': {
                     'width': 'auto',
                     'height': 'auto'
                 }
@@ -6786,7 +6795,7 @@
             if (this.title != '' || this.type == 'iframe') {
                 overlayHeader = this.element('h3', {
                     'html': this.title,
-                    'styles': {
+                    'css': {
                         'display': (this.title == '') ? 'none' : 'block'
                     }
                 });
@@ -6877,7 +6886,7 @@
                         'id': 'overlay_iframe',
                         'allowTransparency': 'true',
                         //'seamless': 'seamless',	Not supported, and therefore testable yet. Would be great for mobile browsing.
-                        'styles': {
+                        'css': {
                             'width': iframeWidth,
                             'height': iframeHeight,
                             'background': 'transparent'
@@ -7009,19 +7018,19 @@
                             that.option('yes');
                         });
 
-                        if (that.boxWrapperEl) {
-                            window.setTimeout(function () {
+                        window.setTimeout(function () {
+                            if (that.boxWrapperEl) {
                                 $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_yes);
-                            }, 1000);
-                        }
+                            }
+                        }, 1000);
 
                         this.button_container.appendChild(button);
                     } else {
-                        if (that.boxWrapperEl) {
-                            window.setTimeout(function () {
+                        window.setTimeout(function () {
+                            if (that.boxWrapperEl) {
                                 $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
-                            }, 1000);
-                        }
+                            }
+                        }, 1000);
                     }
                     break;
 
@@ -7064,18 +7073,21 @@
                         button = this.element('button', {
                             'html': this.yes_button,
                             'class': 'buttons__yes button_screen_item',
-                            'style': 'font-weight: bold;'
+                            'css': {
+                                'font-weight': 'bold'
+                            }
                         });
                         $cms.dom.on(button, 'click', function () {
                             that.option('yes');
                         });
                         this.button_container.appendChild(button);
                     }
-                    if (that.boxWrapperEl) {
-                        window.setTimeout(function () {
+
+                    window.setTimeout(function () {
+                        if (that.boxWrapperEl) {
                             $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
-                        }, 1000);
-                    }
+                        }
+                    }, 1000);
                     break;
             }
 
@@ -7159,41 +7171,27 @@
         },
 
         element: function (tag, options) {
-            var el = this.top_window.document.createElement(tag),
-                attributes = {
-                    'html': 'innerHTML',
-                    'class': 'className',
-                    'for': 'htmlFor',
-                    'text': 'textContent'
-                };
+            var el = this.top_window.document.createElement(tag);
 
             if (isObj(options)) {
                 for (var name in options) {
                     var value = options[name];
-                    if (name === 'styles') {
-                        this.setStyles(el, value);
+                    if ((name === 'styles') || (name === 'css')) {
+                        $cms.dom.css(el, value);
                     } else if (name === 'html') {
                         $cms.dom.html(el, value);
-                    } else if (attributes[name]) {
-                        el[attributes[name]] = value;
+                    } else if (name === 'class') {
+                        el.className = value;
+                    } else if (name === 'text') {
+                        el.textContent = value;
+                    } else if (name === 'for') {
+                        el.htmlFor = value;
                     } else {
-                        el.setAttribute(name, value);
+                        $cms.dom.attr(el, name, value);
                     }
                 }
             }
             return el;
-        },
-
-        setStyles: function (el, obj) {
-            for (var k in obj) {
-                this.setStyle(el, k, obj[k]);
-            }
-        },
-
-        setStyle: function (el, prop, val) {
-            try {
-                el.style[prop] = val;
-            } catch (e) {}
         },
 
         getPageSize: function () {
@@ -7361,18 +7359,21 @@
         function readyStateChangeListener() {
             // Check if any ajax requests are complete
             ajaxInstances.forEach(function (xhr, i) {
-                if (!xhr || (xhr.readyState !== 4)) { // 4 = DONE
+                var ajaxCallback = ajaxCallbacks[i];
+
+                if (!xhr || (xhr.readyState !== XMLHttpRequest.DONE)) {
                     return; // (continue)
                 }
 
                 delete ajaxInstances[i];
+                delete ajaxCallbacks[i];
 
                 var okStatusCodes = [200, 500, 400, 401];
                 // If status is 'OK'
                 if (xhr.status && okStatusCodes.includes(xhr.status)) {
                     // Process the result
                     if ((!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
-                        return callAjaxMethod(ajaxCallbacks[i], xhr);
+                        return callAjaxMethod(ajaxCallback, xhr);
                     }
 
                     // XML result. Handle with a potentially complex call
@@ -7380,14 +7381,14 @@
 
                     if (xml) {
                         xml.validateOnParse = false;
-                        processRequestChange(xml.documentElement || xml, i);
+                        processRequestChange(xml.documentElement || xml, ajaxCallback);
                     } else {
                         // Error parsing
-                        return callAjaxMethod(ajaxCallbacks[i]);
+                        return callAjaxMethod(ajaxCallback);
                     }
                 } else {
                     // HTTP error...
-                    callAjaxMethod(ajaxCallbacks[i]);
+                    callAjaxMethod(ajaxCallback);
 
                     try {
                         if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
@@ -7405,12 +7406,12 @@
             });
         }
 
-        function processRequestChange(ajaxResultFrame, i) {
+        function processRequestChange(ajaxResultFrame, ajaxCallback) {
             var method = null,
                 methodEl = ajaxResultFrame.querySelector('method');
 
-            if (methodEl || ajaxCallbacks[i]) {
-                method = methodEl ? eval('return ' + methodEl.textContent) : ajaxCallbacks[i];
+            if (methodEl || ajaxCallback) {
+                method = methodEl ? eval('return ' + methodEl.textContent) : ajaxCallback;
             }
 
             var messageEl = ajaxResultFrame.querySelector('message');
@@ -7474,6 +7475,35 @@
         }
     }
 
+
+    /**
+     * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)
+     * @memberof $cms.form
+     * @param url
+     * @param post
+     * @returns { Promise }
+     */
+    $cms.form.doAjaxFieldTest = function doAjaxFieldTest(url, post) {
+        url = strVal(url);
+
+        return new Promise(function (resolve) {
+            $cms.doAjaxRequest(url, function (xhr) {
+                if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
+                    if (xhr.responseText !== 'false') {
+                        if (xhr.responseText.length > 1000) {
+                            $cms.log('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
+                            $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
+                        } else {
+                            $cms.ui.alert(xhr.responseText);
+                        }
+                    }
+                    resolve(false);
+                    return;
+                }
+                resolve(true);
+            }, post);
+        });
+    };
 
 }(window.$cms || (window.$cms = {}), (!window.IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {})));
 
@@ -7687,6 +7717,10 @@
         // Implementation for [data-cms-select2]
         select2Plugin: {
             attach: function (context) {
+                if (window.IN_MINIKERNEL_VERSION) {
+                    return;
+                }
+
                 $cms.requireJavascript(['jquery', 'select2']).then(function () {
                     var els = $cms.dom.$$$(context, '[data-cms-select2]');
 
@@ -7724,7 +7758,7 @@
     });
 
     function keepStubWithContext(context) {
-        context || (context = '');
+        context = strVal(context);
 
         var starting = !context || !context.includes('?');
 
@@ -7746,7 +7780,7 @@
 
     /**
      * @memberof $cms.views
-     * @class
+     * @class Global
      * @extends $cms.View
      * */
     $cms.views.Global = function Global() {

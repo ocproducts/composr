@@ -575,6 +575,7 @@
                                                 post += name + '=' + encodeURIComponent(value);
                                             }
                                         }
+                                        /*FIXME: Synchronous XHR*/
                                         $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + $cms.keepStub(), null, post);
                                         deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                                     }

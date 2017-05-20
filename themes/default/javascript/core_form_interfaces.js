@@ -1322,15 +1322,16 @@
     }
 
     function joinForm(params) {
-        var form = document.getElementById('username').form;
+        var form = document.getElementById('username').form,
+            submitBtn = document.getElementById('submit_button');
 
         form.elements['username'].onchange = function () {
             if (form.elements['intro_title'])
                 form.elements['intro_title'].value = '{!cns:INTRO_POST_DEFAULT;^}'.replace(/\{1\}/g, form.elements['username'].value);
         };
 
-        form.onsubmit = function () {
-            if ((form.elements['confirm'] !== undefined) && (form.elements['confirm'].type == 'checkbox') && (!form.elements['confirm'].checked)) {
+        form.addEventListener('submit', function submitCheck(e) {
+            if ((form.elements['confirm'] !== undefined) && (form.elements['confirm'].type === 'checkbox') && (!form.elements['confirm'].checked)) {
                 $cms.ui.alert('{!cns:DESCRIPTION_I_AGREE_RULES;^}');
                 return false;
             }
@@ -1345,41 +1346,38 @@
                 return false;
             }
 
-            document.getElementById('submit_button').disabled = true;
+            var checkPromises = [];
+            e.preventDefault();
+            submitBtn.disabled = true;
 
             var url = params.usernameCheckScript + '?username=' + encodeURIComponent(form.elements['username'].value);
-
-            if (!$cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['password'].value))) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
+            checkPromises.push($cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['password'].value)));
 
             if (params.invitesEnabled) {
                 url = params.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email_address'].value);
-                if (!$cms.form.doAjaxFieldTest(url)) {
-                    document.getElementById('submit_button').disabled = false;
-                    return false;
-                }
+                checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 
             if (params.onePerEmailAddress) {
                 url = params.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email_address'].value);
-                if (!$cms.form.doAjaxFieldTest(url)) {
-                    document.getElementById('submit_button').disabled = false;
-                    return false;
-                }
+                checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 
             if (params.useCaptcha) {
                 url = params.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
-                if (!$cms.form.doAjaxFieldTest(url)) {
-                    document.getElementById('submit_button').disabled = false;
-                    return false;
-                }
+                checkPromises.push($cms.form.doAjaxFieldTest(url));
             }
 
-            document.getElementById('submit_button').disabled = false;
-        };
+            Promise.all(checkPromises).then(function (validities) {
+                if (!validities.includes(false)) {
+                    // All valid!
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
+        });
     }
 
     // Hide a 'tray' of trs in a form

@@ -647,21 +647,22 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
                 element.focus();
             } catch (e) {}
         };
-        var errorFunc = function () {
-            window.top_window.currently_sending_message = false;
-            element.disabled = false;
-
-            // Reschedule the next check (cc_timer was reset already higher up in function)
-            window.top_window.cc_timer = window.top_window.setTimeout(function () {
-                window.top_window.chatCheck(false, window.top_window.last_message_id, window.top_window.last_event_id);
-            }, window.MESSAGE_CHECK_INTERVAL);
-        };
         var fullUrl = $cms.maintainThemeInLink(url + window.top_window.$cms.keepStub(false));
         var postData = 'room_id=' + encodeURIComponent(currentRoomId) + '&message=' + encodeURIComponent(messageText) + '&font=' + encodeURIComponent(fontName) + '&colour=' + encodeURIComponent(fontColour) + '&message_id=' + encodeURIComponent((window.top_window.last_message_id === null) ? -1 : window.top_window.last_message_id) + '&event_id=' + encodeURIComponent(window.top_window.last_event_id);
         $cms.doAjaxRequest(fullUrl, [func, errorFunc], postData);
     }
 
     return false;
+
+    function errorFunc() {
+        window.top_window.currently_sending_message = false;
+        element.disabled = false;
+
+        // Reschedule the next check (cc_timer was reset already higher up in function)
+        window.top_window.cc_timer = window.top_window.setTimeout(function () {
+            window.top_window.chatCheck(false, window.top_window.last_message_id, window.top_window.last_event_id);
+        }, window.MESSAGE_CHECK_INTERVAL);
+    }
 }
 
 // Check for new messages
@@ -749,18 +750,18 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
         skipIncomingSound = false;
     }
 
-    var messages = ajaxResult.childNodes;
-    var messageContainer = document.getElementById('messages_window');
-    var messageContainerGlobal = (messageContainer != null);
-    var clonedMessage;
-    var currentRoomId = window.load_from_room_id;
-    var tabElement;
-    var flashableAlert = false;
-    var username, roomName, roomId, eventType, memberId, tmpElement, rooms, avatarUrl, participants;
-    var id, timestamp;
-    var firstSet = false;
-    var newestIdHere = null, newestTimestampHere = null;
-    var cannotProcessAll = false;
+    var messages = ajaxResult.childNodes,
+        messageContainer = document.getElementById('messages_window'),
+        messageContainerGlobal = (messageContainer != null),
+        clonedMessage,
+        currentRoomId = window.load_from_room_id,
+        tabElement,
+        flashableAlert = false,
+        username, roomName, roomId, eventType, memberId, tmpElement, rooms, avatarUrl, participants,
+        id, timestamp,
+        firstSet = false,
+        newestIdHere = null, newestTimestampHere = null,
+        cannotProcessAll = false;
 
     // Look through our messages
     for (var i = 0; i < messages.length; i++) {

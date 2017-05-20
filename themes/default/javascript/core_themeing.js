@@ -141,7 +141,7 @@
             function insertGuid(file, guid) {
                 var textbox = getFileTextbox(file);
 
-                var hasEditarea = editarea_is_loaded(textbox.name);
+                var hasEditarea = editareaIsLoaded(textbox.name);
 
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
@@ -185,7 +185,7 @@
             askForUrl = false;
         }
 
-        var hasEditarea = editarea_is_loaded('e_' + fileId);
+        var hasEditarea = editareaIsLoaded('e_' + fileId);
         if (hasEditarea) {
             editareaReverseRefresh('e_' + fileId);
         }
@@ -227,7 +227,7 @@
 
         // Set up background compiles
         var textareaId = 'e_' + fileId;
-        if (editarea_is_loaded(textareaId)) {
+        if (editareaIsLoaded(textareaId)) {
             var editor = window.ace_editors[textareaId];
 
             var lastCss = editareaGetValue(textareaId);
@@ -305,9 +305,7 @@
                             receiveCompiledCss(ajaxResultFrame, file, win.frames[i]);
                         }
                     }
-                }
-                catch (ex) {
-                }
+                } catch (ex) {}
             }
         }
 
@@ -337,7 +335,7 @@
 
                 // Add tooltip so we can see what the CSS text is in when hovering the selector
                 css_text = (selectors[i].cssText === undefined) ? selectors[i].style.cssText : selectors[i].cssText;
-                if (css_text.indexOf('{') != -1) {
+                if (css_text.indexOf('{') !== -1) {
                     css_text = css_text.replace(/ \{ /g, ' {<br />\n&nbsp;&nbsp;&nbsp;').replace(/; \}/g, '<br />\n}').replace(/; /g, ';<br />\n&nbsp;&nbsp;&nbsp;');
                 } else  {// IE
                     css_text = css_text.toLowerCase().replace(/; /, ';<br />\n');
@@ -506,16 +504,21 @@
                 codename.value = title.value.replace(/[^{$URL_CONTENT_REGEXP_JS}]/g, '');
             }
         });
-        var form = document.getElementById('main_form');
-        form.addEventListener('submit', function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('main_form'),
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_theme&name=' + encodeURIComponent(form.elements['theme'].value);
 
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            submitBtn.disabled = true;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 
@@ -557,7 +560,7 @@
             value = valueParts[0];
             if (value == '---') return false;
 
-            var hasEditarea = editarea_is_loaded(textbox.name);
+            var hasEditarea = editareaIsLoaded(textbox.name);
 
             if ((value == 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays'))) {
                 var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keepStub();
@@ -1093,7 +1096,7 @@
 
         window.setTimeout(function () {
             var textareaId = 'e_' + fileId;
-            if (editarea_is_loaded(textareaId)) {
+            if (editareaIsLoaded(textareaId)) {
                 var editor = window.ace_editors[textareaId];
                 var editorSession = editor.getSession();
                 editorSession.on('change', function () {

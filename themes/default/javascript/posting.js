@@ -243,6 +243,7 @@ function generateBackgroundPreview(post) {
         }
     }
     formPost = $cms.form.modsecurityWorkaroundAjax(formPost.substr(1));
+    /*FIXME: Synchronous XHR*/
     var previewRet = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', null, formPost);
     eval(previewRet.responseText.replace('<script>', '').replace('</script>', ''));
 }

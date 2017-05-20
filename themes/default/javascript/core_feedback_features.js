@@ -198,18 +198,25 @@
 
         /* Set up a form to have its CAPTCHA checked upon submission using AJAX */
         addCaptchaChecking: function () {
-            var form = this.form;
-            form.addEventListener('submit', function () {
-                form.elements['submit_button'].disabled = true;
+            var form = this.form,
+                submitBtn = form.elements['submit_button'];
+            form.addEventListener('submit', function submitCheck(e) {
+                submitBtn.disabled = true;
                 var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
-                if (!$cms.form.doAjaxFieldTest(url)) {
-                    var image = document.getElementById('captcha_image');
-                    if (!image) image = document.getElementById('captcha_frame');
-                    image.src += '&'; // Force it to reload latest captcha
-                    document.getElementById('submit_button').disabled = false;
-                    return false;
-                }
-                form.elements['submit_button'].disabled = false;
+                e.preventDefault();
+                $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                    if (valid) {
+                        form.removeEventListener('submit', submitCheck);
+                        form.submit();
+                    } else {
+                        var image = document.getElementById('captcha_image');
+                        if (!image) {
+                            image = document.getElementById('captcha_frame');
+                        }
+                        image.src += '&'; // Force it to reload latest captcha
+                        submitBtn.disabled = false;
+                    }
+                });
             });
 
             window.addEventListener('pageshow', function () {

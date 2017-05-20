@@ -222,7 +222,7 @@
      * @memberof $cms.form
      * @param form
      * @param element
-     * @returns {*}
+     * @returns {string}
      */
     $cms.form.cleverFindValue = function cleverFindValue(form, element) {
         if ((element.length !== undefined) && (element.nodeName === undefined)) {
@@ -289,6 +289,7 @@
                         break;
                 }
         }
+
         return value;
     };
 
@@ -320,7 +321,7 @@
                 alerted = checkResult[2] || alerted;
 
                 if (checkResult[0]) {
-                    var autoResetError = function (theElement) {
+                    var autoResetError = function autoResetError(theElement) {
                         return function (event, noRecurse) {
                             var checkResult = checkField(theElement, theForm, forPreview);
                             if ((checkResult != null) && (!checkResult[0])) {
@@ -397,126 +398,149 @@
         }
 
         return !erroneous;
+    };
 
-        function checkField(theElement, theForm) {
-            var i, theClass, required, myValue, erroneous = false, errorMsg = '', regexp, totalFileSize = 0, alerted = false;
 
-            // No checking for hidden elements
-            if (((theElement.type === 'hidden') || (((theElement.style.display == 'none') || (theElement.parentNode.style.display == 'none') || (theElement.parentNode.parentNode.style.display == 'none') || (theElement.parentNode.parentNode.parentNode.style.display == 'none')) && (($cms.form.isWysiwygField === undefined) || (!$cms.form.isWysiwygField(theElement))))) && ((!theElement.className) || (theElement.classList.contains('hidden_but_needed')) == null)) {
-                return null;
-            }
-            if (theElement.disabled) {
-                return null;
-            }
+    function checkField(theElement, theForm) {
+        var i,
+            theClass,
+            required,
+            myValue,
+            erroneous = false,
+            errorMsg = '',
+            regexp,
+            totalFileSize = 0,
+            alerted = false;
 
-            // Test file sizes
-            if ((theElement.type == 'file') && (theElement.files) && (theElement.files.item) && (theElement.files.item(0)) && (theElement.files.item(0).fileSize))
-                totalFileSize += theElement.files.item(0).fileSize;
+        // No checking for hidden elements
+        if (((theElement.type === 'hidden') || (((theElement.style.display === 'none') || (theElement.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.style.display === 'none') || (theElement.parentNode.parentNode.parentNode.style.display === 'none')) && (($cms.form.isWysiwygField === undefined) || (!$cms.form.isWysiwygField(theElement))))) && ((!theElement.className) || (theElement.classList.contains('hidden_but_needed')) == null)) {
+            return null;
+        }
+        if (theElement.disabled) {
+            return null;
+        }
 
-            // Test file types
-            if ((theElement.type == 'file') && (theElement.value) && (theElement.name != 'file_anytype')) {
-                var allowedTypes = '{$VALID_FILE_TYPES;^}'.split(/,/);
-                var typeOk = false;
-                var theFileType = theElement.value.indexOf('.') ? theElement.value.substr(theElement.value.lastIndexOf('.') + 1) : '{!NONE;^}';
-                for (var k = 0; k < allowedTypes.length; k++) {
-                    if (allowedTypes[k].toLowerCase() == theFileType.toLowerCase()) typeOk = true;
-                }
-                if (!typeOk) {
-                    errorMsg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
-                    if (!alerted) $cms.ui.alert(errorMsg);
-                    alerted = true;
-                }
-            }
+        // Test file sizes
+        if ((theElement.type === 'file') && (theElement.files) && (theElement.files.item) && (theElement.files.item(0)) && (theElement.files.item(0).fileSize)) {
+            totalFileSize += theElement.files.item(0).fileSize;
+        }
 
-            // Fix up bad characters
-            if (($cms.browserMatches('ie')) && (theElement.value) && (theElement.localName != 'select')) {
-                var badWordChars = [8216, 8217, 8220, 8221];
-                var fixedWordChars = ['\'', '\'', '"', '"'];
-                for (i = 0; i < badWordChars.length; i++) {
-                    regexp = new RegExp(String.fromCharCode(badWordChars[i]), 'gm');
-                    theElement.value = theElement.value.replace(regexp, fixedWordChars[i]);
+        // Test file types
+        if ((theElement.type === 'file') && (theElement.value) && (theElement.name !== 'file_anytype')) {
+            var allowedTypes = '{$VALID_FILE_TYPES;^}'.split(/,/),
+                typeOk = false,
+                theFileType = theElement.value.indexOf('.') ? theElement.value.substr(theElement.value.lastIndexOf('.') + 1) : '{!NONE;^}';
+
+            for (var k = 0; k < allowedTypes.length; k++) {
+                if (allowedTypes[k].toLowerCase() === theFileType.toLowerCase()) {
+                    typeOk = true;
                 }
             }
-
-            // Class name
-            theClass = theElement.classList[0];
-
-            // Find whether field is required and value of it
-            if (theElement.type == 'radio') {
-                required = (theForm.elements['require__' + theElement.name] !== undefined) && (theForm.elements['require__' + theElement.name].value == '1');
-            } else {
-                required = theElement.className.includes('_required');
-            }
-            myValue = $cms.form.cleverFindValue(theForm, theElement);
-
-            // Prepare for custom error messages, stored as HTML5 data on the error message display element
-            var errormsgElement = (theElement.name === undefined) ? null : getErrormsgElement(theElement.name);
-
-            // Blank?
-            if ((required) && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
-                errorMsg = '{!REQUIRED_NOT_FILLED_IN;^}';
-                if ((errormsgElement) && (errormsgElement.getAttribute('data-errorUnfilled') != null) && (errormsgElement.getAttribute('data-errorUnfilled') != ''))
-                    errorMsg = errormsgElement.getAttribute('data-errorUnfilled');
-            } else {
-                // Standard field-type checks
-                if ((theElement.className.indexOf('date') != -1) && (theElement.name.match(/\_(day|month|year)$/)) && (myValue != '')) {
-                    var day = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
-                    var month = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
-                    var year = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
-                    var sourceDate = new Date(year, month - 1, day);
-                    if (year != sourceDate.getFullYear()) errorMsg = '{!javascript:NOT_A_DATE;^}';
-                    if (month != sourceDate.getMonth() + 1) errorMsg = '{!javascript:NOT_A_DATE;^}';
-                    if (day != sourceDate.getDate()) errorMsg = '{!javascript:NOT_A_DATE;^}';
+            if (!typeOk) {
+                errorMsg = '{!INVALID_FILE_TYPE;^,xx1xx,{$VALID_FILE_TYPES}}'.replace(/xx1xx/g, theFileType).replace(/<[^>]*>/g, '').replace(/&[lr][sd]quo;/g, '\'').replace(/,/g, ', ');
+                if (!alerted) {
+                    $cms.ui.alert(errorMsg);
                 }
-                if (((theClass == 'input_email') || (theClass == 'input_email_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
-                    errorMsg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', myValue);
-                }
-                if (((theClass == 'input_username') || (theClass == 'input_username_required')) && (myValue != '') && (window.$cms.form.doAjaxFieldTest) && (!$cms.form.doAjaxFieldTest('{$FIND_SCRIPT_NOHTTP;,username_exists}?username=' + encodeURIComponent(myValue)))) {
-                    errorMsg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', myValue);
-                }
-                if (((theClass == 'input_codename') || (theClass == 'input_codename_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
-                    errorMsg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', myValue);
-                }
-                if (((theClass == 'input_integer') || (theClass == 'input_integer_required')) && (myValue != '') && (parseInt(myValue, 10) != myValue - 0)) {
-                    errorMsg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', myValue);
-                }
-                if (((theClass == 'input_float') || (theClass == 'input_float_required')) && (myValue != '') && (parseFloat(myValue) != myValue - 0)) {
-                    errorMsg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', myValue);
-                }
-
-                // Shim for HTML5 regexp patterns
-                if (theElement.getAttribute('pattern')) {
-                    if ((myValue != '') && (!myValue.match(new RegExp(theElement.getAttribute('pattern'))))) {
-                        errorMsg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', myValue);
-                    }
-                }
-
-                // Custom error messages
-                if (errorMsg != '' && errormsgElement != null) {
-                    var customMsg = errormsgElement.getAttribute('data-errorRegexp');
-                    if ((customMsg != null) && (customMsg != ''))
-                        errorMsg = customMsg;
-                }
-            }
-
-            // Show error?
-            $cms.form.setFieldError(theElement, errorMsg);
-
-            if ((errorMsg != '') && (!erroneous)) {
-                erroneous = true;
-            }
-
-            return [erroneous, totalFileSize, alerted];
-
-            function getErrormsgElement(id) {
-                var errormsgElement = $cms.dom.$id('error_' + id);
-                if (!errormsgElement) {
-                    errormsgElement = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
-                }
-                return errormsgElement;
+                alerted = true;
             }
         }
-    };
+
+        // Fix up bad characters
+        if (($cms.browserMatches('ie')) && (theElement.value) && (theElement.localName !== 'select')) {
+            var badWordChars = [8216, 8217, 8220, 8221];
+            var fixedWordChars = ['\'', '\'', '"', '"'];
+            for (i = 0; i < badWordChars.length; i++) {
+                regexp = new RegExp(String.fromCharCode(badWordChars[i]), 'gm');
+                theElement.value = theElement.value.replace(regexp, fixedWordChars[i]);
+            }
+        }
+
+        // Class name
+        theClass = theElement.classList[0];
+
+        // Find whether field is required and value of it
+        if (theElement.type === 'radio') {
+            required = (theForm.elements['require__' + theElement.name] !== undefined) && (theForm.elements['require__' + theElement.name].value === '1');
+        } else {
+            required = theElement.className.includes('_required');
+        }
+
+        myValue = $cms.form.cleverFindValue(theForm, theElement);
+
+        // Prepare for custom error messages, stored as HTML5 data on the error message display element
+        var errorMsgElement = (theElement.name === undefined) ? null : getErrorMsgElement(theElement.name);
+
+        // Blank?
+        if ((required) && (myValue.replace(/&nbsp;/g, ' ').replace(/<br\s*\/?>/g, ' ').replace(/\s/g, '') == '')) {
+            errorMsg = '{!REQUIRED_NOT_FILLED_IN;^}';
+            if ((errorMsgElement) && (errorMsgElement.getAttribute('data-errorUnfilled') != null) && (errorMsgElement.getAttribute('data-errorUnfilled') != ''))
+                errorMsg = errorMsgElement.getAttribute('data-errorUnfilled');
+        } else {
+            // Standard field-type checks
+            if ((theElement.className.indexOf('date') !== -1) && (theElement.name.match(/\_(day|month|year)$/)) && (myValue != '')) {
+                var day = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
+                var month = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
+                var year = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
+                var sourceDate = new Date(year, month - 1, day);
+                if (year != sourceDate.getFullYear()) {
+                    errorMsg = '{!javascript:NOT_A_DATE;^}';
+                }
+                if (month != sourceDate.getMonth() + 1) {
+                    errorMsg = '{!javascript:NOT_A_DATE;^}';
+                }
+                if (day != sourceDate.getDate()) {
+                    errorMsg = '{!javascript:NOT_A_DATE;^}';
+                }
+            }
+            if (((theClass === 'input_email') || (theClass === 'input_email_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
+                errorMsg = '{!javascript:NOT_A_EMAIL;^}'.replace('\{1}', myValue);
+            }
+            if (((theClass === 'input_username') || (theClass === 'input_username_required')) && (myValue != '')) {
+                errorMsg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', myValue);
+            }
+            if (((theClass === 'input_codename') || (theClass === 'input_codename_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
+                errorMsg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', myValue);
+            }
+            if (((theClass === 'input_integer') || (theClass === 'input_integer_required')) && (myValue != '') && (parseInt(myValue, 10) != myValue - 0)) {
+                errorMsg = '{!javascript:NOT_INTEGER;^}'.replace('\{1}', myValue);
+            }
+            if (((theClass === 'input_float') || (theClass === 'input_float_required')) && (myValue != '') && (parseFloat(myValue) != myValue - 0)) {
+                errorMsg = '{!javascript:NOT_FLOAT;^}'.replace('\{1}', myValue);
+            }
+
+            // Shim for HTML5 regexp patterns
+            if (theElement.getAttribute('pattern')) {
+                if ((myValue !== '') && (!myValue.match(new RegExp(theElement.getAttribute('pattern'))))) {
+                    errorMsg = '{!javascript:PATTERN_NOT_MATCHED;^}'.replace('\{1}', myValue);
+                }
+            }
+
+            // Custom error messages
+            if ((errorMsg != '') && (errorMsgElement != null)) {
+                var customMsg = errorMsgElement.getAttribute('data-errorRegexp');
+                if ((customMsg != null) && (customMsg != '')) {
+                    errorMsg = customMsg;
+                }
+            }
+        }
+
+        // Show error?
+        $cms.form.setFieldError(theElement, errorMsg);
+
+        if ((errorMsg != '') && (!erroneous)) {
+            erroneous = true;
+        }
+
+        return [erroneous, totalFileSize, alerted];
+
+        function getErrorMsgElement(id) {
+            var errorMsgElement = $cms.dom.$id('error_' + id);
+            if (!errorMsgElement) {
+                errorMsgElement = $cms.dom.$id('error_' + id.replace(/\_day$/, '').replace(/\_month$/, '').replace(/\_year$/, '').replace(/\_hour$/, '').replace(/\_minute$/, ''));
+            }
+            return errorMsgElement;
+        }
+    }
 
     /**
      * @memberof $cms.form
@@ -698,29 +722,6 @@
             blank = blank && (value == '');
         }
         return !blank;
-    };
-
-    /**
-     * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)
-     * @memberof $cms.form
-     * @param url
-     * @param post
-     * @returns {boolean}
-     */
-    $cms.form.doAjaxFieldTest = function doAjaxFieldTest(url, post) {
-        var xhr = $cms.doAjaxRequest(url, null, post);
-        if ((xhr.responseText != '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') != '0'/*some cache layers may change blank to zero*/)) {
-            if (xhr.responseText !== 'false') {
-                if (xhr.responseText.length > 1000) {
-                    $cms.log('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
-                    $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
-                } else {
-                    $cms.ui.alert(xhr.responseText);
-                }
-            }
-            return false;
-        }
-        return true;
     };
 
     /**

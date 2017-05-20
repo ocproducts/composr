@@ -1999,8 +1999,14 @@ function csp_send_header() {
     }
 
     // Defines valid MIME types for plugins invoked via <object> and <embed>. To load an <applet> you must specify application/x-java-applet.
-    $plugin_types = explode(' ', get_option('csp_whitelisted_plugins'));
+    $plugin_types = trim(get_option('csp_whitelisted_plugins'));
+    if ($plugin_types === 'none') {
+        $plugin_types = null;
+    }
+
     if ($plugin_types !== null) {
+        $plugin_types = explode(' ', $plugin_types);
+
         if (count($plugin_types) > 0) {
             $plugin_types_str = implode(' ', $plugin_types);
             $header .= "plugin-types {$plugin_types_str}; ";

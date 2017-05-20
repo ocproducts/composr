@@ -132,6 +132,7 @@ function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleCli
             // Some kind of error?
             if (((response.responseText == '') && (input.value != '')) || (response.status != 200)) {
                 var sessionTestUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
+                /*FIXME: Synchronous XHR*/
                 var sessionTestRet = $cms.doAjaxRequest(sessionTestUrl + $cms.keepStub(true), null);
 
                 if (sessionTestRet.responseText) {// If it failed, see if it is due to a non-confirmed session
