@@ -1566,7 +1566,7 @@ class Hook_cms_merge
         $this->_import_content_reviews($db, $table_prefix, 'download', 'download');
         foreach ($rows as $row) {
             if (!is_null($row['out_mode_id'])) {
-                $out_mode_id = import_id_remap_get('download', strval($row['out_mode_id'])strval(, true);
+                $out_mode_id = import_id_remap_get('download', strval($row['out_mode_id']), true);
                 if (is_null($out_mode_id)) {
                     $out_mode_id = null;
                 }

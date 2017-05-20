@@ -414,7 +414,7 @@ function get_product_det_url($type_code, $post_purchase_access_url = false, $mem
                     list(, , $cma_info) = content_get_details($resource_type, $category_id);
 
                     $page_link = str_replace('_WILD', $category_id, $cma_info['view_page_link_pattern']);
-                    $product_det_url = page_link_to_url($page_link, $email_safe);
+                    $product_det_url = make_string_tempcode(page_link_to_url($page_link, $email_safe));
                 }
             }
         }

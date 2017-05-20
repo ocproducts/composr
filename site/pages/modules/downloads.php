@@ -516,15 +516,17 @@ class Module_downloads
 
         // Pricing
         $price = null;
-        $product_details = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('p_module' => 'downloads', 'p_category' => strval($category_id), 'p_enabled' => 1));
-        if (array_key_exists(0, $product_details)) {
-            if ($product_details[0]['p_price'] !== null) {
-                require_code('currency');
-                $price = currency_convert_wrap($product_details[0]['p_price']);
-            } elseif ($product_details[0]['p_price_points'] !== null) {
-                $price = escape_html(integer_format($product_details[0]['p_price_points'])) . ' ' . do_lang('POINTS');
-            } else {
-                $price = do_lang('UNKNOWN');
+        if (addon_installed('ecommerce')) {
+            $product_details = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('p_module' => 'downloads', 'p_category' => strval($category_id), 'p_enabled' => 1));
+            if (array_key_exists(0, $product_details)) {
+                if ($product_details[0]['p_price'] !== null) {
+                    require_code('currency');
+                    $price = currency_convert_wrap($product_details[0]['p_price']);
+                } elseif ($product_details[0]['p_price_points'] !== null) {
+                    $price = escape_html(integer_format($product_details[0]['p_price_points'])) . ' ' . do_lang('POINTS');
+                } else {
+                    $price = do_lang('UNKNOWN');
+                }
             }
         }
 
