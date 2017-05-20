@@ -564,7 +564,7 @@ function sheet_script()
     header('Content-Type: text/css');
     $sheet = get_param_string('sheet');
     if ($sheet != '') {
-        $path = css_enforce(filter_naughty_harsh($sheet), get_param_string('theme', null));
+        $path = css_enforce(filter_naughty($sheet), get_param_string('theme', null));
         if ($path != '') {
             echo str_replace('../../../', '', file_get_contents($path));
         }
@@ -583,7 +583,7 @@ function script_script()
     header('Content-Type: application/javascript');
     $script = get_param_string('script');
     if ($script != '') {
-        $path = javascript_enforce(filter_naughty_harsh($script), get_param_string('theme', null));
+        $path = javascript_enforce(filter_naughty($script), get_param_string('theme', null));
         if ($path != '') {
             echo str_replace('../../../', '', file_get_contents($path));
         }
