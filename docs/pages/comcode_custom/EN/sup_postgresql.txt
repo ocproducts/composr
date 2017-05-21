@@ -66,8 +66,26 @@ CREATE DATABASE cms;
 
 You can create a user like:
 [code="Bash"]
-CREATE USER cms WITH password 'test';
+CREATE USER cms WITH password 'examplePassword';
 [/code]
+Note that Postgres will not actually use this password for authentication of 'peer' or 'ident' authentication is on, it will authenticate using Unix user account. This was the case for me by default when testing on Fedora Linux, but not MacOS. I had to edit [tt]/var/lib/pgsql/data/pg_hba.conf[/tt]:
+[code="Text"]
+# "local" is for Unix domain socket connections only
+local   all             postgres                                     peer
+local   all             all                                          md5
+# IPv4 local connections:
+host    all             postgres        127.0.0.1/32                 ident
+host    all             all             127.0.0.1/32                 md5
+# IPv6 local connections:
+host    all             postgres        ::1/128                      ident
+host    all             all             ::1/128                      md5
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+#local   replication     postgres                                    peer
+#host    replication     postgres        127.0.0.1/32                ident
+#host    replication     postgres        ::1/128                     ident
+[/code]
+This configuration allows 'md5' (i.e. password-based) authentication for all users except the [tt]postgres[/tt] user.
 
 You can grant access like:
 [code="Bash"]
@@ -79,8 +97,8 @@ ALTER DATABASE cms OWNER TO cms;
 
 [title="2"]Migration to Postgres[/title]
 
-It is fairly easy to migrate via a 4-step process:[list="1"]
-[*] Commandr can export an SQL dump compatible with any database that Composr supports:
+Migrate via this process:[list="1"]
+[*] Commandr can export an SQL dump compatible with any database that Composr supports, assuming you have the PHP extensions needed installed:
 [code="Commandr"]
 sql_dump postgresql
 [/code]
@@ -88,8 +106,15 @@ sql_dump postgresql
 [*] You then setup your database, user, and password, in Postgres.
 [*] You then import via:
 [code="Bash"]
-psql <database> -f <file.sql> -U cms
+psql cms -f <file.sql> -Ucms -W
 [/code]
+[*] Generate SQL for updating sequence counters:
+[code="SQL"]
+SELECT 'SELECT setval(pg_get_serial_sequence(''' || tablename || ''', ''id''), coalesce(max(id),0) + 1, false) FROM ' || tablename || ';'
+FROM pg_tables WHERE NOT schemaname IN ('pg_catalog', 'information_schema')
+ORDER BY schemaname, tablename;
+[/code]
+[*] Run the above generated SQL (ignoring any errors).
 [*] You then edit Composr's [tt]_config.php[/tt] to have the correct database details.
 [/list]
 
@@ -97,7 +122,7 @@ psql <database> -f <file.sql> -U cms
 
 You may need to reassign ownership of the tables you imported if you accidentally did it with he wrong user. This will generate some SQL you can run to do that:
 [code="SQL"]
-SELECT 'ALTER TABLE '|| tablename ||' OWNER TO cms;'
+SELECT 'ALTER TABLE ' || tablename || ' OWNER TO cms;'
 FROM pg_tables WHERE NOT schemaname IN ('pg_catalog', 'information_schema')
 ORDER BY schemaname, tablename;
 [/code]

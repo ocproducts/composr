@@ -89,6 +89,8 @@ Each of these kinds are covered in their own section below.
 
 You may also wish to occasionally replace the staging server database with that of the live server, to improve the accuracy of your testing environment.
 
+You may want to run [tt]git config core.fileMode false[/tt], as you are unlikely to want file permissions to be tracked.
+
 [title="3"]Content[/title]
 
 There are 4 plausible approaches for synching Content:[list="a"]
