@@ -13,13 +13,6 @@ You will have the following machines running your code:
  - Staging server
  - Any number of development machines
 
-[title="2"]Synching files[/title]
-
-There are 2 plausible approaches for synching files:[list="a"]
-[*] [b]Using git[/b]. You are likely already using git for development. Consider also using the same git repository for deployment, as described below. This is what we recommend.
-[*] Zipping up changed files. Our bundled [tt]recentchanges.sh[/tt] script can do this.
-[/list]
-
 [title="2"]Installation options[/title]
 
 You can code the [tt]_config.php[/tt] file to have multiple configurations, serving individual machine settings. This allows you to share a single configuration file between sites.
@@ -35,7 +28,7 @@ switch (gethostname()) {
     case 'example': // live machine, uses the main settings from above
         break;
 
-    case 'sandbox': // sandbox machine
+    case 'staging': // staging machine
         unset($SITE_INFO['base_url']); // Allow dynamic base URL
 
         // Different DB settings
@@ -62,6 +55,13 @@ switch (gethostname()) {
 }
 [/code]
 
+[title="2"]Synching files[/title]
+
+There are 2 plausible approaches for synching files:[list="a"]
+[*] [b]Using git[/b]. You are likely already using git for development. Consider also using the same git repository for deployment, as described below. This is what we recommend.
+[*] Zipping up changed files. Our bundled [tt]recentchanges.sh[/tt] script can do this.
+[/list]
+
 [title="3"]Using git[/title]
 
 Using git works as follows:
@@ -75,6 +75,13 @@ More sophisticated users may:
 
 The level of sophistication you have will typically depend on the size of your development team.
 
+It is easy to accidentally run git as the wrong user, messing up file ownership. This [tt].bashrc[/tt] line will help you avoid that:
+[code="Bash"]
+alias git='echo Stop using git as the wrong user'
+[/code]
+
+You may want to run [tt]git config core.fileMode false[/tt], as you are unlikely to want file permissions to be tracked.
+
 [title="2"]Synching data[/title]
 
 Initially you can push a database live just by doing an SQL dump and import using standard MySQL tools. However, it becomes much more difficult to managing subsequent changes as your live server will have data that you cannot just overwrite with data from a development machine (you would lose live data and inject test data).
@@ -87,16 +94,14 @@ There are 3 broad kinds of data:[list="1"]
 
 Each of these kinds are covered in their own section below.
 
-You may also wish to occasionally replace the staging server database with that of the live server, to improve the accuracy of your testing environment.
-
-You may want to run [tt]git config core.fileMode false[/tt], as you are unlikely to want file permissions to be tracked.
+You may also wish to occasionally replace the staging site database with that of the live server, to improve the accuracy of your testing environment.
 
 [title="3"]Content[/title]
 
 There are 4 plausible approaches for synching Content:[list="a"]
 [*] Make content on the live server, and [b]use the Composr Validation feature[/b] to control it going live to regular users. This is what we recommend.
-[*] Make it on the staging server and copy it live by manual copy and paste of the data into a new live entry.
-[*] Make it on the staging server and copy it live by copying a pseudo-file [page="_SEARCH:tut_repository"]using WebDAV[/page]. This is only recommended for organisations that can invest in tuning and testing Composr's WebDAV implementation to their need; it's easy once a good workflow and understand is in place, but it does have some complexities under-the-hood.
+[*] Make it on the staging site and copy it live by manual copy and paste of the data into a new live entry.
+[*] Make it on the staging site and copy it live by copying a pseudo-file [page="_SEARCH:tut_repository"]using WebDAV[/page]. This is only recommended for organisations that can invest in tuning and testing Composr's WebDAV implementation to their need; it's easy once a good workflow and understand is in place, but it does have some complexities under-the-hood.
 [*] Make it in code using the Composr API and run code to make it live. This is similar to the approach for Configuration, so is covered below.
 [/list]
 
@@ -163,8 +168,42 @@ Here are some assorted tips to help with portability:
 1) Avoid using Composr attachments because it's hard to sync them due to database changes. Instead place files in [tt]uploads/website_specific[/tt] or [tt]uploads/filedump[/tt] and reference them using the [tt]media[/tt] Comcode tag (which has all the same rendering functionality attachments do).
 2) Avoid coding in the site's base URL directly, use [tt]{$BASE_URL}[/tt].
 
+[title="2"]Helping users the correct server[/title]
+
+You can make a Composr [tt]systems/startup[/tt] hook to add a notice only for the staging site.
+
+[code="PHP"]
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+*/
+
+/**
+ * Hook class.
+ */
+class Hook_startup_staging_notice
+{
+    /**
+     * Run startup code.
+     */
+    public function run()
+    {
+        if (strpos(get_base_url(), 'staging.example.com') !== false) {
+            attach_message('This is the staging site, for testing out code changes. Content should be added to the live site and reviewed with Validation off, then on after approval.', 'notice');
+        }
+    }
+}
+[/code]
+
+This code assumes the staging site is at [tt]staging.example.com[/tt].
+
 [concepts
- 1_key="Staging server"       1_value="A server that mirrors the live server, used for final testing."
+ 1_key="Staging server"       1_value="A server that mirrors the live server, used for final testing. Others might also use the following terms: sandbox, testing."
+ 1_key="Staging site"         1_value="The site on the staging server."
+ 1_key="git"                  1_value="A revision control system for files, very popular with programmers. Keeps track of changes made in a code-base."
  2_key="Deploy key"           2_value="A key for SSH that provides read-only access to a git repository."
  3_key="Portability"          3_value="Something is portable if it is easily transferable between sites or systems."
 ]Concepts[/concepts]
