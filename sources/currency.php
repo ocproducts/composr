@@ -294,6 +294,11 @@ function _currency_convert__google($amount, $from_currency, $to_currency)
  */
 function get_currency_symbol($currency)
 {
+    static $cache = array();
+    if (isset($cache[$currency])) {
+        return $cache[$currency];
+    }
+
     $symbols = array(
         'AFN' => '&#1547;',
         'AED' => '&#1583;.&#1573;',
@@ -313,10 +318,10 @@ function get_currency_symbol($currency)
         'BHD' => '.&#1583;.&#1576;',
         'BIF' => 'FBu',
         'BMD' => 'BD$',
-        'BND' => 'B$',
+        'BND' => '$',
         'BOB' => 'Bs.',
         'BRL' => 'R$',
-        'BSD' => 'B$',
+        'BSD' => '$',
         'BTN' => 'Nu.',
         'BWP' => 'P',
         'BYR' => 'Br',
@@ -395,7 +400,7 @@ function get_currency_symbol($currency)
         'MZN' => 'MT',
         'NAD' => 'N$',
         'NGN' => '&#8358;',
-        'NIO' => 'C$',
+        'NIO' => '$',
         'NOK' => 'kr',
         'NPR' => 'N&#588;s',
         'NZD' => 'NZ$',
@@ -472,7 +477,9 @@ function get_currency_symbol($currency)
         }
     }
 
-    return array($ret, $has_primacy);
+    $ret = array($ret, $has_primacy);
+    $cache[$currency] = $ret;
+    return $ret;
 }
 
 /**
