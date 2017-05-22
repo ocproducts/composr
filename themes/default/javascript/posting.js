@@ -210,11 +210,10 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                         }
 
                         // Do insta-preview
-                        if ((comcodeAdded.indexOf('[attachment_safe') != -1) && ($cms.form.isWysiwygField(post))) {
+                        if ((comcodeAdded.indexOf('[attachment_safe') !== -1) && ($cms.form.isWysiwygField(post))) {
                             generateBackgroundPreview(post);
                         }
-                    } else // Cancelled
-                    {
+                    } else { // Cancelled
                         var clearButton = document.getElementById('fsClear_file' + number);
                         if (clearButton) {
                             clearButton.onclick();
@@ -234,17 +233,21 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
 function generateBackgroundPreview(post) {
     var formPost = '';
     var form = post.form;
+
     for (var i = 0; i < form.elements.length; i++) {
         if ((!form.elements[i].disabled) && ( form.elements[i].name !== undefined) && (form.elements[i].name != '')) {
             var name = form.elements[i].name;
             var value = $cms.form.cleverFindValue(form, form.elements[i]);
-            if (name == 'title' && value == '') value = 'x'; // Fudge, title must be filled in on many forms
+            if ((name === 'title') && (value === '')) {  // Fudge, title must be filled in on many forms
+                value = 'x';
+            }
             formPost += '&' + name + '=' + encodeURIComponent(value);
         }
     }
     formPost = $cms.form.modsecurityWorkaroundAjax(formPost.substr(1));
     /*FIXME: Synchronous XHR*/
     var previewRet = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', null, formPost);
+    /*FIXME: eval() call*/
     eval(previewRet.responseText.replace('<script>', '').replace('</script>', ''));
 }
 

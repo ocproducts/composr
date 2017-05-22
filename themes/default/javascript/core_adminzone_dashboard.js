@@ -89,7 +89,7 @@
         events: function () {
             return {
                 'click .js-click-staff-block-flip': 'staffBlockFlip',
-                'click .js-click-form-submit-headless': 'formSubmitHeadless'
+                'click .js-click-form-submit-headless': 'submitHeadless'
             };
         },
         staffBlockFlip: function () {
@@ -101,12 +101,18 @@
             $cms.dom.toggleWithAria(show, isHideDisplayed);
             $cms.dom.toggleWithAria(hide, !isHideDisplayed);
         },
-        formSubmitHeadless: function (e, btn) {
-            var params = this.params;
+        submitHeadless: function (e, btn) {
+            var form = btn.form,
+                blockName = $cms.filter.nl(this.params.blockName),
+                map = $cms.filter.nl(this.params.map);
 
-            if (!ajaxFormSubmitAdminHeadless(btn.form, params.blockName, params.map)) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+
+            ajaxFormSubmitAdminHeadless(form, blockName, map).then((function (submitForm) {
+                if (submitForm) {
+                    form.submit();
+                }
+            }).bind(this));
         }
     });
 
@@ -143,9 +149,13 @@
             var blockName = $cms.filter.nl(this.params.blockName),
                 map = $cms.filter.nl(this.params.map);
 
-            if (!ajaxFormSubmitAdminHeadless(this.formEl, blockName, map)) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+
+            ajaxFormSubmitAdminHeadless(this.formEl, blockName, map).then((function (submitForm) {
+                if (submitForm) {
+                    this.formEl.submit();
+                }
+            }).bind(this));
         }
     });
 
@@ -174,9 +184,13 @@
             var blockName = $cms.filter.nl(this.params.blockName),
                 map = $cms.filter.nl(this.params.map);
 
-            if (!ajaxFormSubmitAdminHeadless(this.formEl, blockName, map)) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+
+            ajaxFormSubmitAdminHeadless(this.formEl, blockName, map).then((function (submitForm) {
+                if (submitForm) {
+                    this.formEl.submit();
+                }
+            }).bind(this));
         },
 
         textareaExpand: function (e, textarea){
@@ -287,44 +301,49 @@
 
     function ajaxFormSubmitAdminHeadless(form, blockName, map) {
         var post = '';
+
         if (blockName !== undefined) {
-            if (map === undefined) {
-                map = '';
-            }
+            blockName = strVal(blockName);
+            map = strVal(map);
+
             var comcode = '[block' + map + ']' + blockName + '[/block]';
             post += 'data=' + encodeURIComponent(comcode);
         }
+
         for (var i = 0; i < form.elements.length; i++) {
             if (!form.elements[i].disabled && form.elements[i].name) {
                 post += '&' + form.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(form, form.elements[i]));
             }
         }
-        /*FIXME: Synchronous XHR*/
-        var request = $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), null, post);
 
-        if (request.responseText && (request.responseText !== 'false')) {
-            var result = request.responseXML.documentElement.querySelector('result');
+        return new Promise(function (resolve) {
+            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), function (request) {
+                if (request.responseText && (request.responseText !== 'false')) {
+                    var result = request.responseXML.documentElement.querySelector('result');
 
-            if (result) {
-                var xhtml = result.textContent;
+                    if (result) {
+                        var xhtml = result.textContent;
 
-                var elementReplace = form;
-                while (elementReplace.className !== 'form_ajax_target') {
-                    elementReplace = elementReplace.parentNode;
-                    if (!elementReplace) {
-                        return true;  // Oh dear, target not found
+                        var elementReplace = form;
+                        while (elementReplace.className !== 'form_ajax_target') {
+                            elementReplace = elementReplace.parentNode;
+                            if (!elementReplace) {
+                                return true;  // Oh dear, target not found
+                            }
+                        }
+
+                        $cms.dom.html(elementReplace, xhtml);
+
+                        $cms.ui.alert('{!SUCCESS;^}');
+
+                        resolve(/*submitForm: */false); // We've handled it internally
+                        return;
                     }
                 }
 
-                $cms.dom.html(elementReplace, xhtml);
-
-                $cms.ui.alert('{!SUCCESS;^}');
-
-                return false; // We've handled it internally
-            }
-        }
-
-        return true;
+                resolve(/*submitForm: */true);
+            }, post);
+        });
     }
 
 }(window.$cms));

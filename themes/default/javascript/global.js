@@ -3773,10 +3773,9 @@
     function createInsertionFunction(funcName) {
         var inside = (funcName === 'prepend') || (funcName === 'append');
 
-        return function insertionFunction(target/*, ...args*/) {
+        return function insertionFunction(target/*, ...args*/) {  // `args` can be nodes, arrays of nodes and HTML strings
             target = elArg(target);
 
-            // `args` can be nodes, arrays of nodes and HTML strings
             var args = toArray(arguments, 1),
                 nodes = [],
                 newParent = inside ? target : target.parentNode;
@@ -4290,14 +4289,14 @@
         var distanceToGo = (destY - scrollY) * dir;
         var dist = Math.round(dir * (distanceToGo / 25));
 
-        if (dir == -1 && dist > -25) {
+        if (dir === -1 && dist > -25) {
             dist = -25;
         }
-        if (dir == 1 && dist < 25) {
+        if (dir === 1 && dist < 25) {
             dist = 25;
         }
 
-        if (((dir == 1) && (scrollY + dist >= destY)) || ((dir == -1) && (scrollY + dist <= destY)) || (distanceToGo > 2000)) {
+        if (((dir === 1) && (scrollY + dist >= destY)) || ((dir === -1) && (scrollY + dist <= destY)) || (distanceToGo > 2000)) {
             try {
                 window.scrollTo(0, destY);
             } catch (e) {
@@ -7315,11 +7314,13 @@
      *
      * @param url
      * @param ajaxCallback
-     * @param post
+     * @param post - Note that 'post' is not an array, it's a string (a=b)
      * @returns {*}
      */
-    function doAjaxRequest(url, ajaxCallback, post) { // Note: 'post' is not an array, it's a string (a=b)
-        var async = !!ajaxCallback, result;
+    function doAjaxRequest(url, ajaxCallback, post) {
+        var async = !!ajaxCallback;
+
+        url = strVal(url);
 
         if (!url.includes('://') && url.startsWith('/')) {
             url = window.location.protocol + '//' + window.location.host + url;
@@ -7351,10 +7352,6 @@
         return ajaxInstance;
 
         function readyStateChangeListener(ajaxInstance, ajaxCallback) {
-            if (!ajaxInstance || (ajaxInstance.readyState !== XMLHttpRequest.DONE)) {
-                return; // (continue)
-            }
-
             var okStatusCodes = [200, 500, 400, 401];
             // If status is 'OK'
             if (ajaxInstance.status && okStatusCodes.includes(ajaxInstance.status)) {
@@ -7460,7 +7457,6 @@
             }
         }
     }
-
 
     /**
      * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)

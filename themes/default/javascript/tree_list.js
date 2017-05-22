@@ -122,7 +122,7 @@
                 xml = this.tree_list_data;
 
                 if (!xml.firstElementChild) {
-                    var error = document.createTextNode((this.name.indexOf('category') == -1 && window.location.href.indexOf('category') == -1) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');
+                    var error = document.createTextNode((this.name.indexOf('category') === -1 && window.location.href.indexOf('category') === -1) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');
                     html.className = 'red_alert';
                     html.appendChild(error);
                     return;
