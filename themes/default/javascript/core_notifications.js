@@ -343,8 +343,9 @@ function _pollForNotifications(rawAjaxResult) {
 function _toggleMessagingBox(event, name, hide) {
     hide = !!hide;
 
-    var e = document.getElementById(name + '_rel');
-    if (!e) {
+    var el = document.getElementById(name + '_rel');
+
+    if (!el) {
         return;
     }
 
@@ -352,15 +353,17 @@ function _toggleMessagingBox(event, name, hide) {
     event.stopPropagation();
 
     var body = document.body;
-    if (e.parentNode !== body) {// Move over, so it is not cut off by overflow:hidden of the header
-        e.parentNode.removeChild(e);
-        body.appendChild(e);
+    if (el.parentNode !== body) {// Move over, so it is not cut off by overflow:hidden of the header
+        el.parentNode.removeChild(el);
+        body.appendChild(el);
 
-        e.addEventListener('click', function (event) {
+        el.addEventListener('click', function (event) {
             event.within_message_box = true;
         });
         body.addEventListener('click', function (event) {
-            if (event.within_message_box !== undefined) return;
+            if (event.within_message_box !== undefined) {
+                return;
+            }
             _toggleMessagingBox(event, 'top_personal_stats', true);
             _toggleMessagingBox(event, 'web_notifications', true);
             _toggleMessagingBox(event, 'pts', true);
@@ -372,33 +375,31 @@ function _toggleMessagingBox(event, name, hide) {
     var setPosition = function () {
         var buttonX = $cms.dom.findPosX(button, true);
         var buttonWidth = button.offsetWidth;
-        var x = (buttonX + buttonWidth - e.offsetWidth);
+        var x = (buttonX + buttonWidth - el.offsetWidth);
         if (x < 0) {
-            var span = e.querySelector('span');
+            var span = el.querySelector('span');
             span.style.marginLeft = (buttonX + buttonWidth / 4) + 'px';
             x = 0;
         }
-        e.style.left = x + 'px';
-        e.style.top = ($cms.dom.findPosY(button, true) + button.offsetHeight) + 'px';
+        el.style.left = x + 'px';
+        el.style.top = ($cms.dom.findPosY(button, true) + button.offsetHeight) + 'px';
         try {
-            e.style.opacity = '1.0';
-        }
-        catch (ex) {
-        }
+            el.style.opacity = '1.0';
+        } catch (ex) {}
     };
     window.setTimeout(setPosition, 0);
 
-    if ((e.style.display == 'none') && (!hide)) {
+    if ((el.style.display == 'none') && (!hide)) {
         var tooltips = document.querySelectorAll('body>.tooltip');
         if (tooltips[0] !== undefined)
             tooltips[0].style.display = 'none'; // Hide tooltip, to stop it being a mess
 
-        e.style.display = 'inline';
+        el.style.display = 'inline';
     } else {
-        e.style.display = 'none';
+        el.style.display = 'none';
     }
     try {
-        e.style.opacity = '0.0'; // Render, but invisibly, until we've positioned it
+        el.style.opacity = '0.0'; // Render, but invisibly, until we've positioned it
     } catch (ex) {}
 
     return false;

@@ -166,7 +166,7 @@ function toggleWysiwyg(name) {
                         post = $cms.form.modsecurityWorkaroundAjax(post);
                         /*FIXME: Synchronous XHR*/
                         var request = $cms.doAjaxRequest(url, null, post);
-                        if ((!request.responseXML) || (!request.responseXML.documentElement.querySelector('result'))) {
+                        if (!request.responseXML || (!request.responseXML.documentElement.querySelector('result'))) {
                             textarea.value = '[semihtml]' + wysiwygData + '[/semihtml]';
                         } else {
                             var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
@@ -858,7 +858,10 @@ function getSelectedHtml(editor) {
 function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
     var from, to;
 
-    if (afterWrapTag == '') {
+    beforeWrapTag = strVal(beforeWrapTag);
+    afterWrapTag = strVal(afterWrapTag);
+
+    if (afterWrapTag === '') {
         afterWrapTag = '[/' + beforeWrapTag + ']';
         beforeWrapTag = '[' + beforeWrapTag + ']';
     }
@@ -921,7 +924,9 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         var sel = document.selection;
         var ourRange = sel.createRange();
         if ((ourRange.moveToElementText) || (ourRange.parentElement() == element)) {
-            if (ourRange.parentElement() != element) ourRange.moveToElementText(element);
+            if (ourRange.parentElement() != element) {
+                ourRange.moveToElementText(element);
+            }
             ourRange.text = beforeWrapTag + ourRange.text + afterWrapTag;
         } else element.value += beforeWrapTag + afterWrapTag;
     } else {
@@ -933,9 +938,9 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
 
 // From http://www.faqts.com/knowledge_base/view.phtml/aid/13562
 function setSelectionRange(input, selectionStart, selectionEnd) {
-    if (input.set_selection_range !== undefined) {/* Mozilla style */
+    if (input.setSelectionRange !== undefined) {/* Mozilla style */
         input.focus();
-        input.set_selection_range(selectionStart, selectionEnd);
+        input.setSelectionRange(selectionStart, selectionEnd);
     } else if (input.createTextRange !== undefined) {/* IE style */
         var range = input.createTextRange();
         range.collapse(true);
@@ -949,6 +954,7 @@ function setSelectionRange(input, selectionStart, selectionEnd) {
 
 function showUploadSyndicationOptions(name, syndicationJson, noQuota) {
     name = strVal(name);
+    syndicationJson = strVal(syndicationJson);
     noQuota = !!noQuota;
 
     var htmlSpot = document.getElementById(name + '_syndication_options'),
@@ -999,7 +1005,7 @@ function showUploadSyndicationOptions(name, syndicationJson, noQuota) {
         fileOb.disabled = true;
     }
 
-    if ((html != '') && !noQuota) {
+    if ((html !== '') && !noQuota) {
         html += '<span><label for="force_remove_locally"><input type="checkbox" id="force_remove_locally" name="force_remove_locally" value="1" />{!upload_syndication:FORCE_REMOVE_LOCALLY;^}</label></span>';
     }
 

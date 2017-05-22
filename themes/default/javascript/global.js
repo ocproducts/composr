@@ -4900,7 +4900,6 @@
         }
     }
 
-
     /**
      * Dynamic inclusion
      * @memberof $cms
@@ -7315,24 +7314,25 @@
     /**
      *
      * @param url
-     * @param callbackMethod
+     * @param ajaxCallback
      * @param post
      * @returns {*}
      */
-    function doAjaxRequest(url, callbackMethod, post) { // Note: 'post' is not an array, it's a string (a=b)
-        var async = !!callbackMethod, index, result;
+    function doAjaxRequest(url, ajaxCallback, post) { // Note: 'post' is not an array, it's a string (a=b)
+        var async = !!ajaxCallback, result;
 
         if (!url.includes('://') && url.startsWith('/')) {
             url = window.location.protocol + '//' + window.location.host + url;
         }
 
-        index = ajaxInstances.length;
-
-        ajaxInstances[index] = new XMLHttpRequest();
-        ajaxCallbacks[index] = callbackMethod;
+        var ajaxInstance = new XMLHttpRequest();
 
         if (async) {
-            ajaxInstances[index].onreadystatechange = readyStateChangeListener;
+            ajaxInstance.onreadystatechange = function () {
+                if ((ajaxInstance.readyState === XMLHttpRequest.DONE) && (typeof ajaxCallback === 'function')) {
+                    readyStateChangeListener(ajaxInstance, ajaxCallback);
+                }
+            };
         }
 
         if (typeof post === 'string') {
@@ -7340,70 +7340,56 @@
                 post += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken());
             }
 
-            ajaxInstances[index].open('POST', url, async);
-            ajaxInstances[index].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            ajaxInstances[index].send(post);
+            ajaxInstance.open('POST', url, async);
+            ajaxInstance.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            ajaxInstance.send(post);
         } else {
-            ajaxInstances[index].open('GET', url, async);
-            ajaxInstances[index].send(null);
+            ajaxInstance.open('GET', url, async);
+            ajaxInstance.send(null);
         }
 
-        result = ajaxInstances[index];
+        return ajaxInstance;
 
-        if (!async) {
-            delete ajaxInstances[index];
-        }
+        function readyStateChangeListener(ajaxInstance, ajaxCallback) {
+            if (!ajaxInstance || (ajaxInstance.readyState !== XMLHttpRequest.DONE)) {
+                return; // (continue)
+            }
 
-        return result;
-
-        function readyStateChangeListener() {
-            // Check if any ajax requests are complete
-            ajaxInstances.forEach(function (xhr, i) {
-                var ajaxCallback = ajaxCallbacks[i];
-
-                if (!xhr || (xhr.readyState !== XMLHttpRequest.DONE)) {
-                    return; // (continue)
+            var okStatusCodes = [200, 500, 400, 401];
+            // If status is 'OK'
+            if (ajaxInstance.status && okStatusCodes.includes(ajaxInstance.status)) {
+                // Process the result
+                if ((!ajaxInstance.responseXML/*Not payload handler and not stack trace*/ || !ajaxInstance.responseXML.firstChild)) {
+                    return callAjaxMethod(ajaxCallback, ajaxInstance);
                 }
 
-                delete ajaxInstances[i];
-                delete ajaxCallbacks[i];
+                // XML result. Handle with a potentially complex call
+                var xml = (ajaxInstance.responseXML && ajaxInstance.responseXML.firstChild) ? ajaxInstance.responseXML : handleErrorsInResult(ajaxInstance);
 
-                var okStatusCodes = [200, 500, 400, 401];
-                // If status is 'OK'
-                if (xhr.status && okStatusCodes.includes(xhr.status)) {
-                    // Process the result
-                    if ((!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
-                        return callAjaxMethod(ajaxCallback, xhr);
-                    }
-
-                    // XML result. Handle with a potentially complex call
-                    var xml = (xhr.responseXML && xhr.responseXML.firstChild) ? xhr.responseXML : handleErrorsInResult(xhr);
-
-                    if (xml) {
-                        xml.validateOnParse = false;
-                        processRequestChange(xml.documentElement || xml, ajaxCallback);
-                    } else {
-                        // Error parsing
-                        return callAjaxMethod(ajaxCallback);
-                    }
+                if (xml) {
+                    xml.validateOnParse = false;
+                    processRequestChange(xml.documentElement || xml, ajaxCallback);
                 } else {
-                    // HTTP error...
-                    callAjaxMethod(ajaxCallback);
-
-                    try {
-                        if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
-                            if (!networkDownAlerted && !window.unloaded) {
-                                $cms.ui.alert('{!NETWORK_DOWN;^}');
-                                networkDownAlerted = true;
-                            }
-                        } else {
-                            $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.', xhr);
-                        }
-                    } catch (e) {
-                        $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
-                    }
+                    // Error parsing
+                    return callAjaxMethod(ajaxCallback);
                 }
-            });
+            } else {
+                // HTTP error...
+                callAjaxMethod(ajaxCallback);
+
+                try {
+                    if ((ajaxInstance.status === 0) || (ajaxInstance.status > 10000)) { // implies site down, or network down
+                        if (!networkDownAlerted && !window.unloaded) {
+                            $cms.ui.alert('{!NETWORK_DOWN;^}');
+                            networkDownAlerted = true;
+                        }
+                    } else {
+                        $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + ajaxInstance.status + ': ' + ajaxInstance.statusText + '.', ajaxInstance);
+                    }
+                } catch (e) {
+                    $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
+                }
+            }
         }
 
         function processRequestChange(ajaxResultFrame, ajaxCallback) {
