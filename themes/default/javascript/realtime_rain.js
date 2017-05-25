@@ -118,8 +118,12 @@ function realtimeRainButtonLoadHandler() {
     if (img.srcset !== undefined) {
         img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/realtime_rain_off}') + ' 2x';
     }
+
     var tmpElement = document.getElementById('realtime_rain_img_loader');
-    if (tmpElement) tmpElement.parentNode.removeChild(tmpElement);
+    if (tmpElement) {
+        tmpElement.parentNode.removeChild(tmpElement);
+    }
+
     img.className = '';
 
     var x = document.createElement('div');

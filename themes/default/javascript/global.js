@@ -3686,6 +3686,7 @@
      */
     $cms.dom.removeAttr = function removeAttr(el, name) {
         el = elArg(el);
+        name = strVal(name);
 
         name.split(' ').forEach(function (attribute) {
             setAttr(el, attribute, null)
@@ -5662,6 +5663,7 @@
             width: '450'
         };
         $cms.openModalWindow(myConfirm);
+        return Promise.resolve();
     };
 
     /**
@@ -5730,6 +5732,7 @@
             myPrompt.input_type = inputType;
         }
         $cms.openModalWindow(myPrompt);
+        return Promise.resolve();
     };
 
     /**
@@ -5811,6 +5814,7 @@
             myFrame.target = target;
         }
         $cms.openModalWindow(myFrame);
+        return Promise.resolve();
     };
 
     /**
@@ -5833,6 +5837,7 @@
         }
 
         $cms.ui.showModalDialog(url, name, options, null, target, cancelText);
+        return Promise.resolve();
     };
 
     var tempDisabledButtons = {};
@@ -7940,7 +7945,7 @@
                 'click [data-click-eval]': 'clickEval',
 
                 'click [data-click-alert]': 'showModalAlert',
-                'click [data-keypress-alert]': 'showModalAlert',
+                'keypress [data-keypress-alert]': 'showModalAlert',
 
                 // Prevent url change for clicks on anchor tags with a placeholder href
                 'click a[href$="#!"]': 'preventDefault',

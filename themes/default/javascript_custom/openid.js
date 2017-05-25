@@ -1,33 +1,3 @@
-(function ($cms) {
-	'use strict';
-
-	$cms.templates.loginScreen = function loginScreen(params, container) {
-        window.$cmsLoad.push(function () {
-            if ((document.activeElement == null) || (document.activeElement !== document.getElementById('password'))){
-                document.getElementById('login_username').focus();
-            }
-        });
-
-        $cms.dom.on(container, 'submit', '.js-submit-check-username-for-blankness', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
-                $cms.ui.disableFormButtons(form);
-            } else {
-                e.preventDefault();
-            }
-        });
-
-        $cms.dom.on(container , 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
-            if (checkbox.checked) {
-                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
-                    if (!answer) {
-                        checkbox.checked = false;
-                    }
-                });
-            }
-        });
-	};
-}(window.$cms));
-
 /*
 OpenID Plugin
 http://code.google.com/p/openid-realselector/
@@ -210,3 +180,46 @@ Martin Conte Mac Donell <Reflejo@gmail.com>
 		return this;
 	};
 }(window.jQuery, window.$cms));
+
+(function ($cms) {
+    'use strict';
+
+    // Implementation for [data-jquery-openid]
+    $cms.defineBehaviors({
+        initializeJqueryOpenid: {
+            attach: function (context) {
+                $cms.dom.$$$(context, '[data-jquery-openid]').forEach(function (openidEl) {
+                    var options = objVal($cms.dom.data(openidEl, 'jqueryOpenid'));
+
+                    window.jQuery(openidEl).openid(options);
+                });
+            }
+        }
+    });
+
+    $cms.templates.loginScreen = function loginScreen(params, container) {
+        window.$cmsLoad.push(function () {
+            if ((document.activeElement == null) || (document.activeElement !== document.getElementById('password'))){
+                document.getElementById('login_username').focus();
+            }
+        });
+
+        $cms.dom.on(container, 'submit', '.js-submit-check-username-for-blankness', function (e, form) {
+            if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
+                $cms.ui.disableFormButtons(form);
+            } else {
+                e.preventDefault();
+            }
+        });
+
+        $cms.dom.on(container , 'click', '.js-click-confirm-remember-me', function (e, checkbox) {
+            if (checkbox.checked) {
+                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
+                    if (!answer) {
+                        checkbox.checked = false;
+                    }
+                });
+            }
+        });
+    };
+}(window.$cms));
