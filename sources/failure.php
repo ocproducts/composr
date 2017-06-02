@@ -1071,6 +1071,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'INSERT command denied to user') === false) &&
         (strpos($text, 'Disk is full writing') === false) &&
         (strpos($text, 'Disk quota exceeded') === false) &&
+        (strpos($text, 'Lock wait timeout exceeded') === false) &&
         (strpos($text, 'No space left on device') === false) &&
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
