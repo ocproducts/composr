@@ -65,7 +65,7 @@ function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, 
     );
     $item_details[] = array($item, $details);
 
-    // Do main call
+    // Do main call ($item_details altered by reference)
     list($shipping_tax_derivation, $shipping_tax, $shipping_tax_tracking) = get_tax_using_tax_codes($item_details, '', $shipping_cost);
 
     // Extract result for our single item
@@ -291,7 +291,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 
                     $taxcloud_item_details[$i][2] = $tax_derivation;
                     $taxcloud_item_details[$i][3] = $tax;
-                    $taxcloud_item_details[$i][4] = $response['CartID'];
+                    $taxcloud_item_details[$i][4] = array('taxcloud' => $response['CartID']);
                     $item_details[$i] = $taxcloud_item_details[$i];
                 } else {
                     // Shipping...
