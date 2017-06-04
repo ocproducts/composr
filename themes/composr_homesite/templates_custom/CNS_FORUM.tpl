@@ -38,18 +38,16 @@
 
 {+START,IF_PASSED,ID}{$,Does not show on PT/virtual-forum view as those are less actiony places}
 	{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
-		<div class="non_accessibility_redundancy">
-			<div class="float_surrounder">
-				<div class="buttons_group cns_buttons_screen">
-					{+START,IF_PASSED,ID}
-						{+START,INCLUDE,NOTIFICATION_BUTTONS}
-							NOTIFICATIONS_TYPE=cns_topic
-							NOTIFICATIONS_ID=forum:{ID}
-							NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_forum:forum%3A{ID}
-						{+END}
+		<div class="float_surrounder">
+			<div class="buttons_group cns_buttons_screen">
+				{+START,IF_PASSED,ID}
+					{+START,INCLUDE,NOTIFICATION_BUTTONS}
+						NOTIFICATIONS_TYPE=cns_topic
+						NOTIFICATIONS_ID=forum:{ID}
+						NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_forum:forum%3A{ID}
 					{+END}
-					{BUTTONS}
-				</div>
+				{+END}
+				{BUTTONS}
 			</div>
 		</div>
 	{+END}
