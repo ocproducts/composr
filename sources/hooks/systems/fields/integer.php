@@ -188,16 +188,16 @@ class Hook_fields_integer
         // Get most recent value, to start with- we will iterate forward on it
         $value = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_integer', 'cv_value', array('cf_id' => $field_id), 'ORDER BY ce_id DESC');
         if (is_null($value)) {
-            $value = strval(intval($default) - 1);
+            $value = intval($default) - 1;
         }
 
         $test = null;
         do {
-            $value = strval(intval($value) + 1);
+            $value++;
 
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_efv_integer', 'ce_id', array('cv_value' => $value, 'cf_id' => $field_id));
         } while (!is_null($test));
 
-        return $value;
+        return strval($value);
     }
 }
