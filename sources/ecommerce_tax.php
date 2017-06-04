@@ -456,7 +456,11 @@ function taxcloud_declare_completed($tracking_id, $txn_id, $member_id, $session_
     $response = json_decode($_response, true);
 
     if ($response['ResponseType'] != 3) {
-        trigger_error(implode('; ', $response['Messages']), E_USER_WARNING);
+        $messages = '';
+        foreach ($response['Messages'] as $message) {
+            $messages .= $message['Message'];
+        }
+        trigger_error(implode('; ', $messages), E_USER_WARNING);
     }
 }
 
