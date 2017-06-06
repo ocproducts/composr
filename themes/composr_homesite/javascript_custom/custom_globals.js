@@ -42,14 +42,6 @@ function script_load_stuff_b()
 		    input.val(input.attr('placeholder'));
 		  }
 		}).blur();
-
-		// Tutorial boxes...
-
-		var tutorials=get_elements_by_class_name(document.body,'tutorial_tooltip');
-		for (var i=0;i<tutorials.length;i++)
-		{
-			apply_tutorial_tooltip(tutorials[i]);
-		}
 	});
 }
 
