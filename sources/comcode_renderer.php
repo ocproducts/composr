@@ -705,10 +705,12 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_embed = '';
             }
             if ($temp_tpl->is_empty()) {
-                if (($in_semihtml) || ($is_all_semihtml)) { // Yuck. We've allowed unfiltered HTML through (as code tags are pass-thru): we need to pass it through proper HTML security.
+                if (($in_semihtml) || ($is_all_semihtml)) { // HACKHACK. Yuck. We've allowed unfiltered HTML through (as code tags have no internal filtering and the whole thing is HTML so no escaping was done): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
-                    $back_to_comcode = semihtml_to_comcode($embed->evaluate()); // Undo what's happened already
-                    $embed = comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, true); // Re-parse (with full security)
+                    $back_to_comcode = semihtml_to_comcode($embed->evaluate(), true); // Undo what's happened already
+                    $back_to_comcode = preg_replace('#^\[(semi)?html\]#', '', $back_to_comcode);
+                    $back_to_comcode = preg_replace('#\[/(semi)?html\]$#', '', $back_to_comcode);
+                    $embed = __comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, true, false, false, false, false, null, null, true); // Re-parse (with full security)
                 }
 
                 $_embed = $embed->evaluate();
@@ -2331,6 +2333,8 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
         if (($in_semihtml) || ($is_all_semihtml)) {
             require_code('comcode_from_html');
             $evaluated = semihtml_to_comcode($evaluated, true);
+            $evaluated = preg_replace('#^\[(semi)?html\]#', '', $evaluated);
+            $evaluated = preg_replace('#\[/(semi)?html\]$#', '', $evaluated);
         }
 
         require_code('geshi');
@@ -2355,7 +2359,9 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
 
                     if (($in_semihtml) || ($is_all_semihtml)) {
                         require_code('comcode_from_html');
-                        $evaluated = semihtml_to_comcode($evaluated);
+                        $evaluated = semihtml_to_comcode($evaluated, true);
+                        $evaluated = preg_replace('#^\[(semi)?html\]#', '', $evaluated);
+                        $evaluated = preg_replace('#\[/(semi)?html\]$#', '', $evaluated);
                     }
 
                     if (strpos($evaluated, '<' . '?php') === false) {
