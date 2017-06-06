@@ -626,8 +626,28 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
     if ($semiparse_mode) { // We have got to this point because we want to provide a special 'button' editing representation for these tags
         $eval = $embed->evaluate();
         if (strpos($eval, '<') !== false) {
-            require_code('xhtml');
-            if (preg_replace('#\s#', '', xhtmlise_html($eval, true)) != preg_replace('#\s#', '', $eval)) {
+            $html_errors = false;
+
+            $xml_tag_stack = array();
+            $matches = array();
+            $num_matches = preg_match_all('#<(/)?([^\s<>]*)(\s[^<>]*)?>#', $eval, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $xml_tag = $matches[2][$i];
+
+                if (substr(trim($matches[3][$i]), -1) == '/') {
+                    continue; // self-closing
+                }
+
+                if ($matches[1][$i] == '/') {
+                    $expected_xml_tag = array_pop($xml_tag_stack);
+                    if ($xml_tag !== $expected_xml_tag) {
+                        $html_errors = true;
+                    }
+                } else {
+                    array_push($xml_tag_stack, $xml_tag);
+                }
+            }
+            if (count($xml_tag_stack) > 0) {
                 $html_errors = true;
             }
         }
