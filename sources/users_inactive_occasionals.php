@@ -47,11 +47,10 @@ function _enforce_sessioned_url($url)
 
     if (strpos($url, '?') === false) {
         $url_scheme = get_option('url_scheme');
-        if (($url_scheme == 'HTM') || ($url_scheme == 'SIMPLE')) {
-            $url .= '?';
-        } else {
-            $url .= '/index.php?';
+        if (($url_scheme == 'PG') && (substr($url, -strlen('/index.php')) != '/index.php')) {
+            $url .= '/index.php';
         }
+        $url .= '?';
     } else {
         $url .= '&';
     }
