@@ -208,12 +208,14 @@ class Hook_addon_registry_core_comcode_pages
                 'TABLE' => placeholder_table(),
                 'SUBMIT_NAME' => lorem_word(),
                 'POST_URL' => placeholder_url(),
+                'HIDDEN' => '',
                 'TEXT' => lorem_paragraph_html(),
                 'LINKS' => array(array(
-                                     'LINK_IMAGE' => placeholder_image_url(),
-                                     'LINK_URL' => placeholder_url(),
-                                     'LINK_TEXT' => lorem_phrase(),
-                                 )),
+                    'LINK_IMAGE' => placeholder_image_url(),
+                    'LINK_URL' => placeholder_url(),
+                    'LINK_TEXT' => lorem_phrase(),
+                )),
+                'FILTER' => '',
             )), null, '', true)
         );
     }
