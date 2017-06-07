@@ -534,12 +534,12 @@ class Module_cms_comcode_pages
             );
             foreach ($rows as $i => $row) {
                 foreach ($search_fields as $field) {
-                    if (strpos($row[$field], $filter) !== false) {
+                    if (stripos($row[$field], $filter) !== false) {
                         continue 2;
                     }
                 }
 
-                if (($row['page_path'] !== null) && (strpos(file_get_contents($row['page_path']), $filter) !== false)) {
+                if (($row['page_path'] !== null) && (stripos(file_get_contents($row['page_path']), $filter) !== false)) {
                     continue;
                 }
 
