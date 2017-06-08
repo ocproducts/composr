@@ -54,6 +54,8 @@ function get_config_func($raw_params)
         $brand_name = 'Composr';
     }
 
+    require_code('database_search');
+
     $_config = array(
         'api_level' => '4',
         'is_open' => strval(1 - intval(get_option('site_closed'))),

@@ -705,7 +705,7 @@ function ce_cms_tempnam($prefix = '')
             $tempnam = tempnam($local_path, $prefix);
         }
     } else {
-        $tempnam = $prefix . strval(mt_rand(0, min(2147483647, mt_getrandmax())));
+        $tempnam = $prefix . strval(mt_rand(0, mt_getrandmax()));
         $myfile = fopen($local_path . '/' . $tempnam, 'wb');
         fclose($myfile);
     }

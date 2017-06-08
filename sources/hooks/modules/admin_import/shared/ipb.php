@@ -744,7 +744,7 @@ class Hook_ipb_base
                 }
                 $post = get_translated_text($post_row[0]['p_post'], $GLOBALS['SITE_DB']);
                 $lang_id = $post_row[0]['p_post'];
-                $member_id = import_id_remap_get('member', $post_row[0]['p_poster']);
+                $member_id = import_id_remap_get('member', strval($post_row[0]['p_poster']));
                 $post_date = $post_row[0]['p_time'];
 
                 if (either_param_string('importer') == 'ipb1') {
@@ -861,7 +861,7 @@ class Hook_ipb_base
             }
 
             foreach ($rows2 as $row2) { // For all votes. We have to match votes to members - but it is arbitrary because no such mapping is stored from IPB
-                $member_id = import_id_remap_get('member', $row2['member_id'], true);
+                $member_id = import_id_remap_get('member', strval($row2['member_id']), true);
                 if (is_null($member_id)) {
                     $member_id = db_get_first_id();
                 }
@@ -934,7 +934,7 @@ class Hook_ipb_base
                 continue;
             }
 
-            $member_id = import_id_remap_get('member', $row['member_id'], true);
+            $member_id = import_id_remap_get('member', strval($row['member_id']), true);
             if (is_null($member_id)) {
                 continue;
             }

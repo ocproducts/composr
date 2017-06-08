@@ -133,7 +133,6 @@ class Hook_addon_registry_user_simple_csv_sync
         return array(
             'sources_custom/hooks/systems/addon_registry/user_simple_csv_sync.php',
             'data_custom/modules/user_export/in.csv',
-            'data_custom/modules/user_export/out.csv',
             'data_custom/user_export.php',
             'data_custom/user_import.php',
             'sources_custom/hooks/systems/cron/user_export.php',

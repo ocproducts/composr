@@ -68,7 +68,7 @@ class Hook_search_cns_members extends FieldsSearchHook
     /**
      * Get a list of extra fields to ask for.
      *
-     * @return array A list of maps specifying extra fields
+     * @return array A list of maps specifying extra fields (null: no tree)
      */
     public function get_fields()
     {
@@ -245,7 +245,7 @@ class Hook_search_cns_members extends FieldsSearchHook
                 }
             }
             if (strpos($storage_type, '_trans') === false) {
-                if (!$index_issue) {// MySQL limit for fulltext index querying
+                if (!$index_issue) { // MySQL limit for fulltext index querying
                     $raw_fields[] = 'field_' . strval($row['id']);
                 }
             } else {

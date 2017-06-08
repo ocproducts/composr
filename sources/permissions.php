@@ -32,9 +32,11 @@ function init__permissions()
 
     clear_permissions_runtime_cache();
 
-    define('COMCODE_EDIT_NONE', 0x0);
-    define('COMCODE_EDIT_OWN', 0x1);
-    define('COMCODE_EDIT_ANY', 0x2);
+    if (!defined('COMCODE_EDIT_NONE')) {
+        define('COMCODE_EDIT_NONE', 0x0);
+        define('COMCODE_EDIT_OWN', 0x1);
+        define('COMCODE_EDIT_ANY', 0x2);
+    }
 }
 
 /**

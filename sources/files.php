@@ -524,6 +524,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'breadcrumbs.xml' => 'data_custom/xml_config',
             'fields.xml' => 'data_custom/xml_config',
             'EN.pwl' => 'data_custom/spelling/personal_dicts',
+            'out.csv' => 'data_custom/modules/user_export',
         );
     }
 

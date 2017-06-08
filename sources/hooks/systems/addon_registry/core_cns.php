@@ -102,6 +102,7 @@ class Hook_addon_registry_core_cns
     public function get_file_list()
     {
         return array(
+            'themes/default/images/cns_default_avatars/default.png',
             'themes/default/images/icons/24x24/tool_buttons/inbox.png',
             'themes/default/images/icons/48x48/tool_buttons/inbox.png',
             'themes/default/images/icons/24x24/tool_buttons/inbox2.png',

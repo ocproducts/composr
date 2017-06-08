@@ -82,7 +82,7 @@ function personalise_paths(table) {
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Make sure the website owner is aware that an upgrade cost doesn't include training for functionality changes
-| Customers need to be aware of costs, if you don't protect yourself you could have a customer expecting you to include days of free training for what you're only invoicing as a few hours of work. Customers also need to be aware that things may change, including features being removed (link them to any announcement about this)
+| Customers need to be aware of costs, if you don't protect yourself you could have a customer expecting you to include days of free training for what you're only invoicing as a few hours of work. Customers also need to be aware that things may change, including features being removed (link them to any announcement about this). Consider also asking for a list of all the design or code changes made on the site so that you can cost it up / plain it; anything non-listed might be charged extra for.
 |-
 ! {$INC,step_num}{$GET,step_num}
 | Download all the website files to your local machine, under [tt]<webroot>/<codename>[/tt]
@@ -195,7 +195,7 @@ sudo chmod -R 777 .
 | If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis or install any new addons (as that will try and use [tt]utf8mb4[/tt] for new tables).
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
-| (Following directly from the above) Change [tt]utf8mb4[/tt] to [tt]utf8[/tt] for just the following tables: [tt]cms_addons[/tt], [tt]cms_f_saved_warnings[/tt], [tt]cms_gsp[/tt], [tt]cms_import_parts_done[/tt], [tt]cms_msp[/tt], [tt]cms_newsletter_subscribe[/tt], [tt]cms_theme_images[/tt], [tt]cms_tickets[/tt], and [tt]cms_wordfilter[/tt]
+| (Following directly from the above) Change [tt]utf8mb4[/tt] to [tt]utf8[/tt] for just the following tables: [tt]cms_addons[/tt], [tt]cms_f_saved_warnings[/tt], [tt]cms_gsp[/tt], [tt]cms_import_parts_done[/tt], [tt]cms_msp[/tt], [tt]cms_newsletter_subscribe[/tt], [tt]cms_theme_images[/tt], and [tt]cms_tickets[/tt]
 | If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis.
 |-
 ! {$INC,step_num}{$GET,step_num}

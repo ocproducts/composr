@@ -70,6 +70,9 @@ class Module_tutorials
             't_edit_date' => 'TIME',
         ));
 
+        $GLOBALS['SITE_DB']->create_index('tutorials_external', '#t_title', array('t_title'));
+        $GLOBALS['SITE_DB']->create_index('tutorials_external', '#t_summary', array('t_summary'));
+
         $GLOBALS['SITE_DB']->create_table('tutorials_external_tags', array(
             't_id' => '*AUTO_LINK',
             't_tag' => '*ID_TEXT',

@@ -1218,7 +1218,7 @@ insert into `cms_addons_files` values('cns_thematic_avatars','themes/default/ima
  ('commandr','sources_custom/hooks/systems/commandr_commands/.htaccess','1022'),
  ('commandr','sources/hooks/systems/commandr_commands/alien_check.php','1023'),
  ('commandr','sources/hooks/systems/commandr_commands/directory_sizes.php','1024'),
- ('commandr','sources/hooks/systems/commandr_commands/mysql_table_sizes.php','1025'),
+ ('commandr','sources/hooks/systems/commandr_commands/db_table_sizes.php','1025'),
  ('commandr','sources/hooks/systems/commandr_commands/db_search.php','1026'),
  ('commandr','sources/hooks/systems/commandr_commands/append.php','1027'),
  ('commandr','sources/hooks/systems/commandr_commands/ban_ip.php','1028'),

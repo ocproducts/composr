@@ -18,6 +18,10 @@
  * @package    core
  */
 
+/*
+Only works with MySQL.
+*/
+
 /**
  * Provide advice for repairing database issues.
  * @package core
@@ -111,7 +115,18 @@ class DatabaseRepair
 
             $is_full_text = (strpos($index['i_name'], '#') !== false);
 
-            if ((multi_lang_content()) && (strpos($index_name, '__combined') !== false) && ($is_full_text) && ($table_name != 'translate')) {
+            $db_types = '';
+            foreach ($fields as $field) {
+                $db_type = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
+                if ($db_type !== null) {
+                    if ($db_types != '') {
+                        $db_types .= ',';
+                    }
+                    $db_types .= $db_type;
+                }
+            }
+
+            if ((multi_lang_content()) && ($is_full_text) && ($table_name != 'translate') && (strpos($db_types, '_TRANS') !== false)) {
                 continue;
             }
 
@@ -219,7 +234,8 @@ class DatabaseRepair
                         $bad_type = ($meta_field_type_raw != $existent_details['type']);
                         $bad_null_ok = ($meta_null_ok != $existent_details['null_ok']);
                         $bad_is_auto_increment = ($meta_is_auto_increment != $existent_details['is_auto_increment']);
-                        if (/*$bad_type || MySQL may report in different ways so cannot compare*/$bad_null_ok || $bad_is_auto_increment) {
+                        $bad_meta_type = (isset($expected_tables[$table_name][$field_name])) && (($field_type != $expected_tables[$table_name][$field_name]));
+                        if (/*$bad_type || MySQL may report in different ways so cannot compare so instead we will compare meta-type and expected-type as a special case and later compare existent type to meta type*/$bad_null_ok || $bad_is_auto_increment || $bad_meta_type) {
                             $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, false);
                             $needs_changes = true;
                         }
@@ -546,7 +562,18 @@ class DatabaseRepair
                     $needs_changes = true;
                 }
             } else {
-                if ((multi_lang_content()) && (((strpos($expected_index_name, '__combined') !== false) && ($expected_is_full_text) && ($index['table'] != 'translate')) || (count($expected_fields) == 1) && (isset($meta_tables[$index['table']][$expected_fields[0]])) && (strpos($meta_tables[$index['table']][$expected_fields[0]], '_TRANS') !== false))) {
+                $db_types = '';
+                foreach ($expected_fields as $field) {
+                    $db_type = $meta_tables[$index['table']][$field];
+                    if ($db_type !== null) {
+                        if ($db_types != '') {
+                            $db_types .= ',';
+                        }
+                        $db_types .= $db_type;
+                    }
+                }
+
+                if ((multi_lang_content()) && ($expected_is_full_text) && ($index['table'] != 'translate')) {
                     // Ignore, as it only existed to index a string column in non-multi-lang content mode
                 } else {
                     $this->create_index_missing_from_db($expected_index_name, $index, true, $meta_tables);
@@ -672,8 +699,10 @@ class DatabaseRepair
             }
         }
 
-        $query = $GLOBALS['SITE_DB']->static_ob->db_create_table_sql(get_table_prefix() . $table_name, $table, $table_name);
-        $this->add_fixup_query($query);
+        $queries = $GLOBALS['SITE_DB']->static_ob->db_create_table(get_table_prefix() . $table_name, $table, $table_name, null);
+        foreach ($queries as $sql) {
+            $this->add_fixup_query($sql);
+        }
     }
 
     /**
@@ -778,7 +807,7 @@ class DatabaseRepair
             $this->add_fixup_query($query);
 
             foreach ($key_fields as $key_field) {
-                $query = 'UPDATE ' . get_table_prefix() . 'db_meta SET m_type=CONCAT(\'*\',m_type) WHERE m_table=\'' . db_escape_string($table_name) . '\' AND m_name=\'' . db_escape_string($key_field) . '\'';
+                $query = 'UPDATE ' . get_table_prefix() . 'db_meta SET m_type=' . db_function('CONCAT', array('\'*\'', 'm_type')) . ' WHERE m_table=\'' . db_escape_string($table_name) . '\' AND m_name=\'' . db_escape_string($key_field) . '\'';
                 $this->add_fixup_query($query);
             }
         }
@@ -873,26 +902,24 @@ class DatabaseRepair
 
         $table_name = $index['table'];
 
-        $_index_name = ($index['is_full_text'] ? '#' : '') . $index_name;
+        $is_full_text = $index['is_full_text'];
+        $_index_name = ($is_full_text ? '#' : '') . $index_name;
 
-        $_fields = '';
+        $fields = array();
         foreach ($index['fields'] as $field_name) {
-            if ($_fields != '') {
-                $_fields .= ',';
-            }
-            $_fields .= $field_name;
-
             $db_type = isset($meta_tables[$table_name][$field_name]) ? $meta_tables[$table_name][$field_name] : null;
-            if ((!$index['is_full_text']) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
-                if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
-                    $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
-                }
-            }
+            $fields[$field_name] = $db_type;
         }
 
-        $query = $GLOBALS['SITE_DB']->static_ob->db_create_index_sql(get_table_prefix() . $table_name, $_index_name, $_fields);
-        if (!is_null($query)) {
-            $this->add_fixup_query($query);
+        $_fields = _helper_generate_index_fields($table_name, $fields, $is_full_text);
+
+        if ($_fields !== null) {
+            $unique_key_fields = implode(',', _helper_get_table_key_fields($table_name));
+
+            $queries = $GLOBALS['SITE_DB']->static_ob->db_create_index(get_table_prefix() . $table_name, $_index_name, $_fields, $GLOBALS['SITE_DB']->connection_write, $table_name, $unique_key_fields);
+            foreach ($queries as $sql) {
+                $this->add_fixup_query($sql);
+            }
         }
     }
 

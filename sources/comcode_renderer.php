@@ -626,8 +626,28 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
     if ($semiparse_mode) { // We have got to this point because we want to provide a special 'button' editing representation for these tags
         $eval = $embed->evaluate();
         if (strpos($eval, '<') !== false) {
-            require_code('xhtml');
-            if (preg_replace('#\s#', '', xhtmlise_html($eval, true)) != preg_replace('#\s#', '', $eval)) {
+            $html_errors = false;
+
+            $xml_tag_stack = array();
+            $matches = array();
+            $num_matches = preg_match_all('#<(/)?([^\s<>]*)(\s[^<>]*)?>#', $eval, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $xml_tag = $matches[2][$i];
+
+                if (substr(trim($matches[3][$i]), -1) == '/') {
+                    continue; // self-closing
+                }
+
+                if ($matches[1][$i] == '/') {
+                    $expected_xml_tag = array_pop($xml_tag_stack);
+                    if ($xml_tag !== $expected_xml_tag) {
+                        $html_errors = true;
+                    }
+                } else {
+                    array_push($xml_tag_stack, $xml_tag);
+                }
+            }
+            if (count($xml_tag_stack) > 0) {
                 $html_errors = true;
             }
         }
@@ -705,10 +725,12 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_embed = '';
             }
             if ($temp_tpl->is_empty()) {
-                if (($in_semihtml) || ($is_all_semihtml)) { // Yuck. We've allowed unfiltered HTML through (as code tags are pass-thru): we need to pass it through proper HTML security.
+                if (($in_semihtml) || ($is_all_semihtml)) { // HACKHACK. Yuck. We've allowed unfiltered HTML through (as code tags have no internal filtering and the whole thing is HTML so no escaping was done): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
-                    $back_to_comcode = semihtml_to_comcode($embed->evaluate()); // Undo what's happened already
-                    $embed = comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, true); // Re-parse (with full security)
+                    $back_to_comcode = semihtml_to_comcode($embed->evaluate(), true); // Undo what's happened already
+                    $back_to_comcode = preg_replace('#^\[(semi)?html\]#', '', $back_to_comcode);
+                    $back_to_comcode = preg_replace('#\[/(semi)?html\]$#', '', $back_to_comcode);
+                    $embed = __comcode_to_tempcode($back_to_comcode, $source_member, $as_admin, 80, $pass_id, $connection, true, false, false, false, false, null, null, true); // Re-parse (with full security)
                 }
 
                 $_embed = $embed->evaluate();
@@ -1680,11 +1702,23 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             if ($attributes['target'] == 'blank') {
                 $attributes['target'] = '_blank';
             }
-            $rel = (($as_admin) || has_privilege($source_member, 'search_engine_links')) ? '' : 'nofollow';
             if (array_key_exists('rel', $attributes)) {
-                $rel = trim($rel . ' ' . $attributes['rel']);
+                $rel = trim($attributes['rel']);
+            } else {
+                $rel = '';
             }
-            $rel = str_replace('nofollow nofollow', 'nofollow', $rel);
+            if ((!$as_admin) && (!has_privilege($source_member, 'search_engine_links'))) {
+                if ($rel != '') {
+                    $rel .= ' ';
+                }
+                $rel .= 'noopener';
+            }
+            if (!$as_admin) {
+                if ($rel != '') {
+                    $rel .= ' ';
+                }
+                $rel .= 'nofollow';
+            }
             if ($attributes['target'] == '_blank') {
                 $title = strip_tags(is_object($caption) ? static_evaluate_tempcode($caption) : $caption) . ' ' . do_lang('LINK_NEW_WINDOW');
             } else {
@@ -2319,6 +2353,8 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
         if (($in_semihtml) || ($is_all_semihtml)) {
             require_code('comcode_from_html');
             $evaluated = semihtml_to_comcode($evaluated, true);
+            $evaluated = preg_replace('#^\[(semi)?html\]#', '', $evaluated);
+            $evaluated = preg_replace('#\[/(semi)?html\]$#', '', $evaluated);
         }
 
         require_code('geshi');
@@ -2343,7 +2379,9 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
 
                     if (($in_semihtml) || ($is_all_semihtml)) {
                         require_code('comcode_from_html');
-                        $evaluated = semihtml_to_comcode($evaluated);
+                        $evaluated = semihtml_to_comcode($evaluated, true);
+                        $evaluated = preg_replace('#^\[(semi)?html\]#', '', $evaluated);
+                        $evaluated = preg_replace('#\[/(semi)?html\]$#', '', $evaluated);
                     }
 
                     if (strpos($evaluated, '<' . '?php') === false) {

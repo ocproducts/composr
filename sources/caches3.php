@@ -28,15 +28,17 @@ function init__caches3()
     global $ERASED_TEMPLATES_ONCE;
     $ERASED_TEMPLATES_ONCE = false;
 
-    // Special ways of decaching templates
-    define('TEMPLATE_DECACHE_BASE', '\{\+START,INCLUDE');
-    // -
-    define('TEMPLATE_DECACHE_WITH_LANG', '\{\!|\{\$CHARSET' . '|' . TEMPLATE_DECACHE_BASE);
-    define('TEMPLATE_DECACHE_WITH_THEME_IMAGE', '\{\$IMG' . '|' . TEMPLATE_DECACHE_BASE);
-    define('TEMPLATE_DECACHE_WITH_CONFIG', '\{\!|\{\$IMG|\{\$SITE_NAME|\{\$CONFIG_OPTION|\{\$SITE_SCOPE|\{\$DOMAIN|\{\$STAFF_ADDRESS|\{\$SHOW_DOCS|\{\$COPYRIGHT|\{\$VALID_FILE_TYPES\{\$BRAND_|\{\$INLINE_STATS|\{\$CURRENCY_SYMBOL' . '|' . TEMPLATE_DECACHE_BASE);
-    define('TEMPLATE_DECACHE_WITH_ADDON', '\{\$ADDON_INSTALLED' . '|' . TEMPLATE_DECACHE_WITH_CONFIG);
-    // -
-    define('TEMPLATE_DECACHE_WITH_ANYTHING_INTERESTING', TEMPLATE_DECACHE_WITH_ADDON); // because TEMPLATE_DECACHE_WITH_ADDON actually does include everything already, via chaining
+    if (!defined('TEMPLATE_DECACHE_BASE')) {
+        // Special ways of decaching templates
+        define('TEMPLATE_DECACHE_BASE', '\{\+START,INCLUDE');
+        // -
+        define('TEMPLATE_DECACHE_WITH_LANG', '\{\!|\{\$CHARSET' . '|' . TEMPLATE_DECACHE_BASE);
+        define('TEMPLATE_DECACHE_WITH_THEME_IMAGE', '\{\$IMG' . '|' . TEMPLATE_DECACHE_BASE);
+        define('TEMPLATE_DECACHE_WITH_CONFIG', '\{\!|\{\$IMG|\{\$SITE_NAME|\{\$CONFIG_OPTION|\{\$SITE_SCOPE|\{\$DOMAIN|\{\$STAFF_ADDRESS|\{\$SHOW_DOCS|\{\$COPYRIGHT|\{\$VALID_FILE_TYPES\{\$BRAND_|\{\$INLINE_STATS|\{\$CURRENCY_SYMBOL' . '|' . TEMPLATE_DECACHE_BASE);
+        define('TEMPLATE_DECACHE_WITH_ADDON', '\{\$ADDON_INSTALLED' . '|' . TEMPLATE_DECACHE_WITH_CONFIG);
+        // -
+        define('TEMPLATE_DECACHE_WITH_ANYTHING_INTERESTING', TEMPLATE_DECACHE_WITH_ADDON); // because TEMPLATE_DECACHE_WITH_ADDON actually does include everything already, via chaining
+    }
 }
 
 /**
@@ -62,9 +64,9 @@ function auto_decache($changed_base_url)
 }
 
 /**
- * Rebuild the specified cleanup tools.
+ * Run the specified cleanup tools.
  *
- * @param  ?array $cleanup_tools The cleanup tools to rebuild (null: all)
+ * @param  ?array $cleanup_tools The cleanup tools to run (null: all)
  * @return Tempcode Any messages returned
  */
 function composr_cleanup($cleanup_tools = null)
@@ -200,7 +202,9 @@ function erase_thumb_cache()
     $dh = @opendir($full);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            @unlink($full . '/' . $file);
+            if (!in_array($file, array('index.html', '.htaccess'))) {
+                @unlink($full . '/' . $file);
+            }
         }
         closedir($dh);
     }

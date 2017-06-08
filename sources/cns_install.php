@@ -224,11 +224,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_profile_views', 'UINTEGER');
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_total_sessions', 'UINTEGER');
 
-        if (strpos(get_db_type(), 'mysql') !== false) {
-            $GLOBALS['FORUM_DB']->add_auto_key('f_poll_votes');
-            $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'AUTO_LINK'), array('m_table' => 'f_poll_votes', 'm_type' => '*AUTO_LINK'));
-            $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_table' => 'f_poll_votes', 'm_type' => '*MEMBER'));
-        }
+        $GLOBALS['FORUM_DB']->add_auto_key('f_poll_votes');
         $GLOBALS['FORUM_DB']->add_table_field('f_poll_votes', 'pv_ip', 'IP');
 
         $GLOBALS['FORUM_DB']->rename_table('f_categories', 'f_forum_groupings');

@@ -25,9 +25,11 @@
  */
 function init__menus()
 {
-    define('INCLUDE_SITEMAP_NO', 0);
-    define('INCLUDE_SITEMAP_OVER', 1);
-    define('INCLUDE_SITEMAP_UNDER', 2);
+    if (!defined('INCLUDE_SITEMAP_NO')) {
+        define('INCLUDE_SITEMAP_NO', 0);
+        define('INCLUDE_SITEMAP_OVER', 1);
+        define('INCLUDE_SITEMAP_UNDER', 2);
+    }
 }
 
 /**

@@ -836,33 +836,33 @@ hr.cns_sig_barrier {
 .buttons__new_post_full {
 	background-image: url('{$IMG,icons/24x24/buttons/new_post_full}') !important;
 }
-{+START,IF,{$ADDON_INSTALLED,cns_forum}}
+/*{+START,IF,{$ADDON_INSTALLED,cns_forum}}*/
 	.buttons__new_topic {
 		background-image: url('{$IMG,icons/24x24/buttons/new_topic}') !important;
 	}
-{+END}
+/*{+END}*/
 .buttons__new_quote {
 	background-image: url('{$IMG,icons/24x24/buttons/new_quote}') !important;
 }
 .buttons__whisper {
 	background-image: url('{$IMG,icons/24x24/buttons/whisper}') !important;
 }
-{+START,IF,{$ADDON_INSTALLED,cns_multi_moderations}}
+/*{+START,IF,{$ADDON_INSTALLED,cns_multi_moderations}}*/
 	.menu__adminzone__structure__forum__multi_moderations {
 		background-image: url('{$IMG,icons/24x24/menu/adminzone/structure/forum/multi_moderations}') !important;
 	}
-{+END}
+/*{+END}*/
 .menu__site_meta__user_actions__lost_password {
 	background-image: url('{$IMG,icons/24x24/menu/site_meta/user_actions/lost_password}') !important;
 }
-{+START,IF,{$ADDON_INSTALLED,cns_warnings}}
+/*{+START,IF,{$ADDON_INSTALLED,cns_warnings}}*/
 	.tabs__member_account__warnings {
 		background-image: url('{$IMG,icons/24x24/tabs/member_account/warnings}') !important;
 	}
 	.buttons__warn {
 		background-image: url('{$IMG,icons/24x24/buttons/warn}') !important;
 	}
-{+END}
+/*{+END}*/
 .buttons__linear {
 	background-image: url('{$IMG,icons/24x24/buttons/linear}') !important;
 }
@@ -892,33 +892,33 @@ hr.cns_sig_barrier {
 	.buttons__new_post_full {
 		background-image: url('{$IMG,icons/48x48/buttons/new_post_full}') !important;
 	}
-	{+START,IF,{$ADDON_INSTALLED,cns_forum}}
+	/*{+START,IF,{$ADDON_INSTALLED,cns_forum}}*/
 		.buttons__new_topic {
 			background-image: url('{$IMG,icons/48x48/buttons/new_topic}') !important;
 		}
-	{+END}
+	/*{+END}*/
 	.buttons__new_quote {
 		background-image: url('{$IMG,icons/48x48/buttons/new_quote}') !important;
 	}
 	.buttons__whisper {
 		background-image: url('{$IMG,icons/48x48/buttons/whisper}') !important;
 	}
-	{+START,IF,{$ADDON_INSTALLED,cns_multi_moderations}}
+	/*{+START,IF,{$ADDON_INSTALLED,cns_multi_moderations}}*/
 		.menu__adminzone__structure__forum__multi_moderations {
 			background-image: url('{$IMG,icons/48x48/menu/adminzone/structure/forum/multi_moderations}') !important;
 		}
-	{+END}
+	/*{+END}*/
 	.menu__site_meta__user_actions__lost_password {
 		background-image: url('{$IMG,icons/48x48/menu/site_meta/user_actions/lost_password}') !important;
 	}
-	{+START,IF,{$ADDON_INSTALLED,cns_warnings}}
+	/*{+START,IF,{$ADDON_INSTALLED,cns_warnings}}*/
 		.tabs__member_account__warnings {
 			background-image: url('{$IMG,icons/48x48/tabs/member_account/warnings}') !important;
 		}
 		.buttons__warn {
 			background-image: url('{$IMG,icons/48x48/buttons/warn}') !important;
 		}
-	{+END}
+	/*{+END}*/
 	.buttons__linear {
 		background-image: url('{$IMG,icons/48x48/buttons/linear}') !important;
 	}

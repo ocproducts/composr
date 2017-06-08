@@ -4,12 +4,6 @@
 {+START,IF_NON_EMPTY,{RECENT_BLOG_POSTS}}
 	{RECENT_BLOG_POSTS}
 
-	{+START,IF_NON_EMPTY,{PAGINATION}}
-		<div class="float_surrounder">
-			{PAGINATION}
-		</div>
-	{+END}
-
 	{+START,INCLUDE,MASS_SELECT_DELETE_FORM}
 	{+END}
 {+END}

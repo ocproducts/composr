@@ -73,8 +73,8 @@ class Hook_paypal
                 $user_details['country'] = ''; // PayPal only allows valid countries
             }
 
-            if (($user_details['country'] != '') && (($user_details['address1'] == '') || ($user_details['city'] == '') || ($user_details['zip'] == ''))) {
-                $user_details['country'] = ''; // Causes error on PayPal due to it crashing when trying to validate the address
+            if (($user_details['address1'] == '') || ($user_details['city'] == '') || ($user_details['zip'] == '') || ($user_details['country'] == '')) {
+                $user_details = array(); // Causes error on PayPal due to it crashing when trying to validate the address
             }
         }
 
@@ -431,7 +431,7 @@ class Hook_paypal
                 $user_details['country'] = ''; // PayPal only allows valid countries
             }
 
-            if (($user_details['address1'] == '') || ($user_details['city'] == '') || ($user_details['zip'] == '')) {
+            if (($user_details['address1'] == '') || ($user_details['city'] == '') || ($user_details['zip'] == '') || ($user_details['country'] == '')) {
                 $user_details = array(); // Causes error on PayPal due to it crashing when trying to validate the address
             }
         }

@@ -343,7 +343,7 @@ class Module_quiz
         $start = get_param_integer('quizzes_start', 0);
         $max = get_param_integer('quizzes_max', 20);
 
-        $sql = 'SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'quizzes q WHERE 1=1';
+        $sql = 'SELECT q.* FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'quizzes q WHERE 1=1';
         if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
             $sql .= ' AND q_validated=1';
         }

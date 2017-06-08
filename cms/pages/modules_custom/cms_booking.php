@@ -835,7 +835,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
             $where = array('member_id' => get_param_integer('id'));
         }
         if (get_option('member_booking_only') == '1') {
-            $_rows = $db->query_select($table . ' r ' . $join, array('DISTINCT member_id'), $where, 'ORDER BY ' . $orderer);
+            $_rows = $db->query_select($table . ' r ' . $join, array('DISTINCT member_id', $orderer), $where, 'ORDER BY ' . $orderer);
         } else {
             $_rows = $db->query_select($table . ' r ' . $join, array('id'), $where, 'ORDER BY ' . $orderer);
         }

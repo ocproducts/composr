@@ -166,13 +166,15 @@ function init__webstandards_js_lex()
     $TOKENS['SINGLE_QUOTE'] = '\''; // Ending it with non-escaped ' is implicit in LEXER_SINGLE_QUOTE_STRING_LITERAL state
 
     // Lexer states
-    define('LEXER_FREE', 1); // (grabs implicitly)
-    define('LEXER_REGEXP', 2); // grabs and converts to token equiv of new RegExp("...")
-    define('LEXER_ML_COMMENT', 4); // grab comment
-    define('LEXER_COMMENT', 5); // grab comment
-    define('LEXER_DOUBLE_QUOTE_STRING_LITERAL', 6); // grab string_literal
-    define('LEXER_SINGLE_QUOTE_STRING_LITERAL', 7); // grab string_literal
-    define('LEXER_NUMERIC_LITERAL', 8); // grab float_literal/integer_literal (supports decimal, octal, hexadecimal)
+    if (!defined('LEXER_FREE')) {
+        define('LEXER_FREE', 1); // (grabs implicitly)
+        define('LEXER_REGEXP', 2); // grabs and converts to token equiv of new RegExp("...")
+        define('LEXER_ML_COMMENT', 4); // grab comment
+        define('LEXER_COMMENT', 5); // grab comment
+        define('LEXER_DOUBLE_QUOTE_STRING_LITERAL', 6); // grab string_literal
+        define('LEXER_SINGLE_QUOTE_STRING_LITERAL', 7); // grab string_literal
+        define('LEXER_NUMERIC_LITERAL', 8); // grab float_literal/integer_literal (supports decimal, octal, hexadecimal)
+    }
 
     // These are characters that can be used to continue an identifier lexer token (any other character starts a new token).
     global $CONTINUATIONS;

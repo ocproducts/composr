@@ -114,6 +114,7 @@ class Hook_addon_registry_composr_homesite_support_credits
                 'stats',
                 'ecommerce',
                 'points',
+                'mysql',
             ),
             'recommends' => array(
                 'composr_homesite',

@@ -331,11 +331,12 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  * @param  boolean $check_only Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
+ * @param  boolean $in_code_tag Whether the parse context is already in a code tag
  * @return Tempcode The Tempcode generated
  *
  * @ignore
  */
-function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits = null, $on_behalf_of_member = null)
+function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits = null, $on_behalf_of_member = null, $in_code_tag = false)
 {
     global $LAX_COMCODE;
     if ($LAX_COMCODE === null && function_exists('get_option')) {
@@ -482,7 +483,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     $in_html = false;
     $in_semihtml = $is_all_semihtml;
     $in_separate_parse_section = false; // Not escaped because it has to be passed to a secondary filter
-    $in_code_tag = false;
     $code_nest_stack = 0;
 
     // Our state
@@ -686,7 +686,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     } else {
                         $continuation .= $next;
                     }
-                } else { // Not in HTML
+                } else { // Not in HTML or in a code tag ($formatting_allowed will be false, so ok)
                     // Text-format possibilities
                     if ((($just_new_line) || ($just_ended)) && ($formatting_allowed)) {
                         if ($continuation != '') {
@@ -1185,7 +1185,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             }
 
                                             $this_member_id = mixed();
-                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY LENGTH(m_username) DESC', 1);
+                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY ' . db_function('LENGTH', array('m_username')) . ' DESC', 1);
                                             if (isset($results[0])) {
                                                 $this_member_id = $results[0]['id'];
                                                 $username = $results[0]['m_username'];
@@ -1493,6 +1493,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 if ((!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
+                                        $ADVERTISING_BANNERS_CACHE = array();
+
                                         require_code('banners');
                                         $banner_sql = banner_select_sql(null, true);
                                         $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', '');
@@ -1514,7 +1516,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 }
                                             }
 
-                                            $ADVERTISING_BANNERS_CACHE = array();
                                             foreach ($rows as $row) {
                                                 $trigger_text = $row['b_title_text'];
                                                 foreach (explode(',', $trigger_text) as $t) {

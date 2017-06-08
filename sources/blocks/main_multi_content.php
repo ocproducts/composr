@@ -307,7 +307,7 @@ class Block_main_multi_content
         }
         if ($lifetime !== null) {
             $block_cache_id = md5(serialize($map));
-            $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . 'feature_lifetime_monitor m ON m.content_id=r.' . $first_id_field . ' AND ' . db_string_equal_to('m.block_cache_id', $block_cache_id);
+            $query .= ' LEFT JOIN ' . $info['connection']->get_table_prefix() . 'feature_lifetime_monitor m ON m.content_id=r.' . db_cast($first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('m.block_cache_id', $block_cache_id);
             $where .= ' AND ';
             $where .= '(m.run_period IS NULL OR m.run_period<' . strval($lifetime * 60 * 60 * 24) . ')';
         }
@@ -387,7 +387,9 @@ class Block_main_multi_content
                     case 'random':
                     case 'fixed_random':
                     case 'fixed_random ASC':
-                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ',(MOD(CAST(r.' . $first_id_field . ' AS SIGNED),' . date('d') . ')) AS fixed_random ' . $query . ' ORDER BY fixed_random', $max, $start, false, true, $lang_fields);
+                        $clause = db_cast('r.' . $first_id_field, 'INT');
+                        $clause = '(' . db_function('MOD', array($clause, date('d'))) . ')';
+                        $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . ',' . $clause . ' AS fixed_random ' . $query . ' ORDER BY fixed_random', $max, $start, false, true, $lang_fields);
                         break;
                     case 'recent_contents':
                     case 'recent_contents ASC':
@@ -402,24 +404,23 @@ class Block_main_multi_content
                             }
                         }
                         if ($sort_combos != array()) {
-                            if (count($sort_combos) != 1) {
-                                $order_by = 'GREATEST(';
-                            }
+                            $_order_by = array();
                             foreach ($sort_combos as $i => $sort_combo) {
-                                if ($i != 0) {
-                                    $order_by .= ',';
-                                }
                                 list($other_table, $other_add_time_field, $other_category_field) = $sort_combo;
                                 if ($sort == 'recent_contents DESC') {
-                                    $order_by .= 'IFNULL((SELECT MAX(';
+                                    $__order_by_a = '(SELECT MAX(';
                                 } else {
-                                    $order_by .= 'IFNULL((SELECT MIN(';
+                                    $__order_by_a = '(SELECT MIN(';
                                 }
-                                $order_by .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $first_id_field . '=x.' . $other_category_field;
-                                $order_by .= '),' . (($sort == 'recent_contents DESC') ? '0' : strval(PHP_INT_MAX)/*so empty galleries go to end of order*/) . ')';
+                                $__order_by_a .= $other_add_time_field . ') FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . $other_table . ' x WHERE r.' . $first_id_field . '=x.' . $other_category_field;
+                                $__order_by_a .= ')';
+                                $__order_by_b = (($sort == 'recent_contents DESC') ? '0' : strval(PHP_INT_MAX)/*so empty galleries go to end of order*/);
+                                $_order_by[] = db_function('COALESCE', array($__order_by_a, $__order_by_b));
                             }
-                            if (count($sort_combos) != 1) {
-                                $order_by .= ')';
+                            if (count($sort_combos) == 1) {
+                                $order_by = $_order_by[0];
+                            } else {
+                                $order_by = db_function('GREATEST', $_order_by);
                             }
 
                             if ($sort == 'recent_contents DESC') {
@@ -452,7 +453,7 @@ class Block_main_multi_content
                                 $sort .= ' DESC';
                             }
 
-                            $select_rating = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . $first_id_field . ') AS average_rating';
+                            $select_rating = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . db_cast($first_id_field, 'CHAR') . ') AS average_rating';
                             $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . 'ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
                             break;
                         }
@@ -465,7 +466,7 @@ class Block_main_multi_content
                                 $sort .= ' DESC';
                             }
 
-                            $select_rating = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . $first_id_field . ') AS compound_rating';
+                            $select_rating = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $info['feedback_type_code']) . ' AND rating_for_id=' . db_cast($first_id_field, 'CHAR') . ') AS compound_rating';
                             $rows = $info['connection']->query('SELECT r.*' . $extra_select_sql . $select_rating . ' ' . $query . 'ORDER BY ' . $sort, $max, $start, false, true, $lang_fields);
                             break;
                         }

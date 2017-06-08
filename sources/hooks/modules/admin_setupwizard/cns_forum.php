@@ -42,7 +42,12 @@ class Hook_sw_cns_forum
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_groups', 'id', array('id' => db_get_first_id() + 7));
             $settings['have_default_rank_set'] = is_null($test) ? '0' : '1';
 
-            $test = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'f_emoticons WHERE e_code<>\':P\' AND e_code<>\';)\' AND e_code<>\':)\' AND e_code<>\':)\' AND e_code<>\':\\\'(\'');
+            $sql = 'SELECT * FROM ' . get_table_prefix() . 'f_emoticons WHERE 1=1';
+            $sql .= ' AND ' . db_string_not_equal_to('e_code', ':P');
+            $sql .= ' AND ' . db_string_not_equal_to('e_code', ';)');
+            $sql .= ' AND ' . db_string_not_equal_to('e_code', ':)');
+            $sql .= ' AND ' . db_string_not_equal_to('e_code', ':\'(');
+            $test = $GLOBALS['SITE_DB']->query($sql);
             $settings['have_default_full_emoticon_set'] = (count($test) != 0) ? '1' : '0';
 
             $have_default_cpf_set = false;

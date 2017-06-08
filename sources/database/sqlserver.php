@@ -66,29 +66,46 @@ class Database_Static_sqlserver
     }
 
     /**
-     * Create a table index.
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
      * @param  array $db The DB connection to make on
-     * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @return array List of SQL queries to run
      */
-    public function db_create_index($table_name, $index_name, $_fields, $db, $unique_key_field = 'id')
+    public function db_create_index($table_name, $index_name, $_fields, $db, $raw_table_name, $unique_key_fields)
     {
-        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
-
         if ($index_name[0] == '#') {
+            $ret = array();
             if (db_has_full_text($db)) {
                 $index_name = substr($index_name, 1);
-                $unique_index_name = 'index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax()));
-                $this->db_query('CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_field . ')', $db);
-                $this->db_query('CREATE FULLTEXT CATALOG ft AS DEFAULT', $db, null, null, true); // Might already exist
-                $this->db_query('CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name, $db, null, null, true);
+
+                $unique_index_name = $index_name . '__' . $table_name;
+
+                $ret[] = 'CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_fields . ')';
+
+                $ret[] = 'CREATE FULLTEXT CATALOG ft AS DEFAULT';
+
+                $ret[] = 'CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
             }
-            return;
+            return $ret;
         }
-        $this->db_query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $db);
+
+        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
+
+        $fields = explode(',', $_fields);
+        foreach ($fields as $field) {
+            if (strpos($GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $raw_table_name, 'm_name' => $field)), 'LONG') !== false) {
+                // We can't support this in SQL Server https://blogs.msdn.microsoft.com/bartd/2011/01/06/living-with-sqls-900-byte-index-key-length-limit/.
+                // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
+                return array();
+            }
+        }
+
+        return array('CREATE INDEX ' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')');
     }
 
     /**
@@ -169,13 +186,16 @@ class Database_Static_sqlserver
     }
 
     /**
-     * Create a new table.
+     * Get SQL for creating a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
      * @param  array $db The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
      */
-    public function db_create_table($table_name, $fields, $db)
+    public function db_create_table($table_name, $fields, $db, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->db_get_type_remap();
 
@@ -208,11 +228,8 @@ class Database_Static_sqlserver
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $query = 'CREATE TABLE ' . $table_name . ' (
-          ' . $_fields . '
-          PRIMARY KEY (' . $keys . ')
-        )';
-        $this->db_query($query, $db, null, null);
+        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
+        return array($query);
     }
 
     /**
@@ -250,14 +267,25 @@ class Database_Static_sqlserver
     }
 
     /**
+     * Find whether table truncation support is present
+     *
+     * @return boolean Whether it is
+     */
+    public function db_supports_truncate_table()
+    {
+        return true;
+    }
+
+    /**
      * Delete a table.
      *
      * @param  ID_TEXT $table The table name
      * @param  array $db The DB connection to delete on
+     * @return array List of SQL queries to run
      */
     public function db_drop_table_if_exists($table, $db)
     {
-        $this->db_query('DROP TABLE ' . $table, $db, null, null, true);
+        return array('DROP TABLE ' . $table);
     }
 
     /**
@@ -302,7 +330,7 @@ class Database_Static_sqlserver
         if ((!function_exists('sqlsrv_connect')) && (!function_exists('mssql_pconnect'))) {
             $error = 'The sqlserver PHP extension not installed (anymore?). You need to contact the system administrator of this server.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -319,7 +347,7 @@ class Database_Static_sqlserver
         if ($db === false) {
             $error = 'Could not connect to database-server (' . @strval($php_errormsg) . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
@@ -328,7 +356,7 @@ class Database_Static_sqlserver
             if (!mssql_select_db($db_name, $db)) {
                 $error = 'Could not connect to database (' . mssql_get_last_message() . ')';
                 if ($fail_ok) {
-                    echo $error;
+                    echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                     return null;
                 }
                 critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_ERROR'));
@@ -337,6 +365,28 @@ class Database_Static_sqlserver
 
         $this->cache_db[$db_name][$db_host] = $db;
         return $db;
+    }
+
+    /**
+     * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
+     *
+     * @param string $table The table name
+     * @param array $where WHERE clauses if it will help get a more reliable number when we're not approximating in map form
+     * @param string $where_clause WHERE clauses if it will help get a more reliable number when we're not approximating in SQL form
+     * @param object $db The DB connection to check against
+     * @return ?integer The count (null: do it normally)
+     */
+    public function get_table_count_approx($table, $where, $where_clause, $db)
+    {
+        $sql = 'SELECT SUM(p.rows) FROM sys.partitions AS p
+            INNER JOIN sys.tables AS t
+            ON p.[object_id] = t.[object_id]
+            INNER JOIN sys.schemas AS s
+            ON s.[schema_id] = t.[schema_id]
+            WHERE t.name = N\'' . $db->get_table_prefix() . $table . '\'
+            AND s.name = N\'dbo\'
+            AND p.index_id IN (0,1)';
+        return $db->query_value_if_there($sql, false, true);
     }
 
     /**
@@ -361,7 +411,7 @@ class Database_Static_sqlserver
      */
     public function db_has_full_text_boolean()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -395,7 +445,7 @@ class Database_Static_sqlserver
                 $max += $start;
             }
 
-            if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
                 $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
             }
         }
@@ -423,7 +473,7 @@ class Database_Static_sqlserver
                 @mssql_data_seek($results, $start);
             }
         }
-        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT '))) && ($results === true)) && (!$fail_ok)) {
+        if ((($results === false) || (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT '))) && ($results === true)) && (!$fail_ok)) {
             if (function_exists('sqlsrv_errors')) {
                 $err = serialize(sqlsrv_errors());
             } else {
@@ -450,7 +500,8 @@ class Database_Static_sqlserver
             }
         }
 
-        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
+        $sub = substr(ltrim($query), 0, 4);
+        if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }
 
@@ -508,6 +559,8 @@ class Database_Static_sqlserver
                         } else {
                             $newrow[$name] = null;
                         }
+                    } elseif (substr($type, 0, 5) == 'FLOAT') {
+                        $newrow[$name] = floatval($v);
                     } else {
                         if ($v == ' ') {
                             $v = '';

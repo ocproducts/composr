@@ -59,20 +59,23 @@
 
 				if ((form.elements['db_site_password']) && (window.do_ajax_field_test))
 				{
-					var url='install.php?type=ajax_db_details&db_type='+window.encodeURIComponent(form.elements['db_type'].value)+'&db_site_host='+window.encodeURIComponent(form.elements['db_site_host'].value)+'&db_site='+window.encodeURIComponent(form.elements['db_site'].value)+'&db_site_user='+window.encodeURIComponent(form.elements['db_site_user'].value)+'&db_site_password='+window.encodeURIComponent(form.elements['db_site_password'].value);
-					if (!do_ajax_field_test(url)) return false;
+					var url='install.php?type=ajax_db_details';
+					var post='db_type='+window.encodeURIComponent(form.elements['db_type'].value)+'&db_site_host='+window.encodeURIComponent(form.elements['db_site_host'].value)+'&db_site='+window.encodeURIComponent(form.elements['db_site'].value)+'&db_site_user='+window.encodeURIComponent(form.elements['db_site_user'].value)+'&db_site_password='+window.encodeURIComponent(form.elements['db_site_password'].value);
+					if (!do_ajax_field_test(url,post)) return false;
 				}
 
 				if ((form.elements['db_forums_password']) && (window.do_ajax_field_test))
 				{
-					var url='install.php?type=ajax_db_details&db_type='+window.encodeURIComponent(form.elements['db_type'].value)+'&db_forums_host='+window.encodeURIComponent(form.elements['db_forums_host'].value)+'&db_forums='+window.encodeURIComponent(form.elements['db_forums'].value)+'&db_forums_user='+window.encodeURIComponent(form.elements['db_forums_user'].value)+'&db_forums_password='+window.encodeURIComponent(form.elements['db_forums_password'].value);
-					if (!do_ajax_field_test(url)) return false;
+					var url='install.php?type=ajax_db_details';
+					var post='db_type='+window.encodeURIComponent(form.elements['db_type'].value)+'&db_forums_host='+window.encodeURIComponent(form.elements['db_forums_host'].value)+'&db_forums='+window.encodeURIComponent(form.elements['db_forums'].value)+'&db_forums_user='+window.encodeURIComponent(form.elements['db_forums_user'].value)+'&db_forums_password='+window.encodeURIComponent(form.elements['db_forums_password'].value);
+					if (!do_ajax_field_test(url,post)) return false;
 				}
 
 				if ((form.elements['ftp_domain']) && (window.do_ajax_field_test))
 				{
-					var url='install.php?type=ajax_ftp_details&ftp_domain='+window.encodeURIComponent(form.elements['ftp_domain'].value)+'&ftp_folder='+window.encodeURIComponent(form.elements['ftp_folder'].value)+'&ftp_username='+window.encodeURIComponent(form.elements['ftp_username'].value)+'&ftp_password='+window.encodeURIComponent(form.elements['ftp_password'].value);
-					if (!do_ajax_field_test(url)) return false;
+					var url='install.php?type=ajax_ftp_details';
+					var post='ftp_domain='+window.encodeURIComponent(form.elements['ftp_domain'].value)+'&ftp_folder='+window.encodeURIComponent(form.elements['ftp_folder'].value)+'&ftp_username='+window.encodeURIComponent(form.elements['ftp_username'].value)+'&ftp_password='+window.encodeURIComponent(form.elements['ftp_password'].value);
+					if (!do_ajax_field_test(url,post)) return false;
 				}
 
 				return true;
