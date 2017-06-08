@@ -83,7 +83,7 @@ class Hook_cron_cns_welcome_emails
             elseif ((is_null($mail['w_newsletter'])) && (is_null($mail['w_usergroup']))) {
                 // Think of it like this, m_join_time (members join time) must between $last_cron_time and $time_now, but offset back by $send_seconds_after_joining
                 $where = ' WHERE m_join_time>' . strval($last_cron_time - $send_seconds_after_joining) . ' AND m_join_time<=' . strval($time_now - $send_seconds_after_joining);
-                if (get_option('allow_email_from_staff_disable') == '1') {
+                if (get_option('staff_email_receipt_configurability') != '0') {
                     $where .= ' AND m_allow_emails=1';
                 }
                 $where .= ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');

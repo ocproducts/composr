@@ -582,7 +582,7 @@ class Module_cms_calendar extends Standard_crud_module
         $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'fd78d3298730d0cb157b20f1b3dd6ae1', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('TIMEZONE'))));
 
         // More date stuff
-        if (get_option('allow_international') == '1') {
+        if (get_option('enable_timezones') != '0') {
             $list = '';
             foreach (get_timezone_list() as $_timezone => $timezone_nice) {
                 $list .= static_evaluate_tempcode(form_input_list_entry($_timezone, $_timezone == $timezone, $timezone_nice));

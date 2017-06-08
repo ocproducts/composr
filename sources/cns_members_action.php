@@ -30,7 +30,7 @@
  */
 function member_field_is_required($member_id, $field_class, $current_value = null, $editing_member = null)
 {
-    if (($field_class == 'dob') && (get_option('dobs') == '0')) {
+    if (($field_class == 'dob') && ((get_option('dobs') == '0') || ((get_option('dobs') == '1') && ($member_id === null)))) {
         return false;
     }
 
@@ -131,14 +131,14 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     if (is_null($timezone)) {
         $timezone = get_site_timezone();
     }
-    $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('cns_contact_member'));
+    $doing_email_option = (get_option('member_email_receipt_configurability') == '2') && (addon_installed('cns_contact_member'));
     if (!$doing_email_option) {
         $allow_emails = 1;
     }
     if (is_null($allow_emails)) {
         $allow_emails = 1;
     }
-    $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
+    $doing_email_from_staff_option = (get_option('staff_email_receipt_configurability') == '2');
     if (!$doing_email_from_staff_option) {
         $allow_emails_from_staff = 1;
     }

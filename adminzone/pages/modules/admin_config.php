@@ -365,7 +365,7 @@ class Module_admin_config
 
         // Add in special ones
         if ($category == 'SITE') {
-            $options['INTERNATIONALISATION']['timezone'] = array('name' => 'timezone', 'human_name' => 'TIMEZONE', 'c_value' => '', 'type' => 'special', 'category' => 'SITE', 'group' => 'INTERNATIONALISATION', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0, 'order_in_category_group' => 1);
+            $options['INTERNATIONALISATION']['timezone'] = array('name' => 'timezone', 'human_name' => 'TIMEZONE', 'c_value' => '', 'type' => 'special', 'category' => 'SITE', 'group' => 'INTERNATIONALISATION', 'explanation' => 'DESCRIPTION_TIMEZONE_SITE', 'shared_hosting_restricted' => 0, 'order_in_category_group' => 6);
         }
         require_code('files');
         $upload_max_filesize = (ini_get('upload_max_filesize') == '0') ? do_lang('NA') : clean_file_size(php_return_bytes(ini_get('upload_max_filesize')));

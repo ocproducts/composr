@@ -146,7 +146,7 @@ class Hook_profiles_tabs_about
             }
         }
         if (addon_installed('cns_contact_member')) {
-            if ((($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_allow_emails') == 1) || (get_option('allow_email_disable') == '0')) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_email_address') != '') && (!is_guest($member_id_of)) && (has_actual_page_access($member_id_viewing, 'contact_member')) && ($member_id_viewing != $member_id_of)) {
+            if ((($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_allow_emails') == 1) || (get_option('member_email_receipt_configurability') == '0')) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_email_address') != '') && (!is_guest($member_id_of)) && (has_actual_page_access($member_id_viewing, 'contact_member')) && ($member_id_viewing != $member_id_of)) {
                 $redirect = get_self_url(true);
                 $modules[] = array('contact', do_lang_tempcode('_EMAIL_MEMBER'), build_url(array('page' => 'contact_member', 'redirect' => $redirect, 'id' => $member_id_of), get_module_zone('contact_member')), 'links/contact_member', 'reply nofollow');
             }

@@ -32,12 +32,12 @@ class Hook_config_dobs
     {
         return array(
             'human_name' => 'DOBS',
-            'type' => 'tick',
+            'type' => 'list',
             'category' => 'USERS',
             'group' => 'JOINING',
             'explanation' => 'CONFIG_OPTION_dobs',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
+            'list_options' => '0|1|2',
             'order_in_category_group' => 3,
 
             'addon' => 'core_cns',
@@ -54,6 +54,6 @@ class Hook_config_dobs
         if (get_forum_type() != 'cns') {
             return null;
         }
-        return '1';
+        return '2';
     }
 }

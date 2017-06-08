@@ -972,6 +972,13 @@ class Module_admin_version
             ));
             $GLOBALS['SITE_DB']->create_index('post_tokens', 'generation_time', array('generation_time'));
         }
+
+        if (($upgrade_from === null) || ($upgrade_from < 18)) {
+            rename_config_option('allow_international', 'enable_timezones');
+            rename_config_option('allow_email_disable', 'member_email_receipt_configurability');
+            rename_config_option('allow_email_from_staff_disable', 'staff_email_receipt_configurability');
+            $GLOBALS['SITE_DB']->query_update('config', array('c_value' => '2'), array('c_value' => '1', 'c_name' => 'dobs'));
+        }
     }
 
     /**

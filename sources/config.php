@@ -110,7 +110,7 @@ function multi_lang()
     }
 
     $MULTI_LANG_CACHE = false;
-    if (get_option('allow_international') != '1') {
+    if (get_option('enable_language_selection') != '1') {
         return false;
     }
 

@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_language_editing
+ * @package    core_cns
  */
 
 /**
  * Hook class.
  */
-class Hook_config_google_translate_api_key
+class Hook_config_enable_timezones
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,16 @@ class Hook_config_google_translate_api_key
     public function get_details()
     {
         return array(
-            'human_name' => 'GOOGLE_TRANSLATE_API_KEY',
-            'type' => 'line',
+            'human_name' => 'ENABLE_TIMEZONES',
+            'type' => 'list',
             'category' => 'SITE',
             'group' => 'INTERNATIONALISATION',
-            'explanation' => 'CONFIG_OPTION_google_translate_api_key',
+            'explanation' => 'CONFIG_OPTION_enable_timezones',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
-            'order_in_category_group' => 10,
+            'list_options' => '0|1|2',
+            'order_in_category_group' => 5,
 
-            'addon' => 'core_language_editing',
+            'addon' => 'core_cns',
         );
     }
 
@@ -51,6 +51,6 @@ class Hook_config_google_translate_api_key
      */
     public function get_default()
     {
-        return '';
+        return (get_forum_type() != 'cns') ? null : '1';
     }
 }

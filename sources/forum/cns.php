@@ -1121,7 +1121,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function get_member_email_allowed($member)
     {
-        if (get_option('allow_email_disable') == '0') {
+        if (get_option('member_email_receipt_configurability') == '0') {
             return true;
         }
         return $this->get_member_row_field($member, 'm_allow_emails');

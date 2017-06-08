@@ -494,11 +494,15 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     }
 
     // Work out what options we need to present
-    $doing_international = (get_option('allow_international') == '1');
+    $doing_timezones = (get_option('enable_timezones') == (($member_id === null) ? '2' : '1'));
     $_langs = find_all_langs();
-    $doing_langs = multi_lang();
-    $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('cns_contact_member'));
-    $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
+    if (multi_lang()) {
+        $doing_langs = (get_option('enable_language_selection') == (($member_id === null) ? '2' : '1'));
+    } else {
+        $doing_langs = false;
+    }
+    $doing_email_option = (get_option('member_email_receipt_configurability') == (($member_id === null) ? '2' : '1')) && (addon_installed('cns_contact_member'));
+    $doing_email_from_staff_option = (get_option('staff_email_receipt_configurability') == (($member_id === null) ? '2' : '1'));
     $unspecced_theme_zone_exists = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'zones WHERE ' . db_string_equal_to('zone_theme', '') . ' OR ' . db_string_equal_to('zone_theme', '-1'));
     $doing_theme_option = ($unspecced_theme_zone_exists != 0) && (!$mini_mode);
     $doing_local_forum_options = (addon_installed('cns_forum')) && (!$mini_mode);
@@ -544,7 +548,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     // DOB
     if (cns_field_editable('dob', $special_type)) {
         $default_time = is_null($dob_month) ? null : usertime_to_utctime(mktime(0, 0, 0, $dob_month, $dob_day, $dob_year));
-        if (get_option('dobs') == '1') {
+        if (get_option('dobs') == (($member_id === null) ? '2' : '1')) {
             $dob_required = member_field_is_required($member_id, 'dob');
             $fields->attach(form_input_date(do_lang_tempcode($dob_required ? 'DATE_OF_BIRTH' : 'ENTER_YOUR_BIRTHDAY'), '', 'dob', $dob_required, false, false, $default_time, -130));
             if (addon_installed('cns_forum')) {
@@ -555,7 +559,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
 
     /*
     if (!$mini_mode) {
-        if (($doing_international) || ($doing_langs) || ($doing_email_option) || ($doing_wide_option) || ($doing_theme_option) || ($doing_local_forum_options)) {
+        if (($doing_timezones) || ($doing_langs) || ($doing_email_option) || ($doing_wide_option) || ($doing_theme_option) || ($doing_local_forum_options)) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3cd79bbea084ec1fe148edddad7d52b4', 'FORCE_OPEN' => is_null($member_id) ? true : null, 'TITLE' => do_lang_tempcode('SETTINGS'))));
         }
     }
@@ -564,7 +568,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
     require_lang('config');
 
     // Timezones, if enabled
-    if ($doing_international) {
+    if ($doing_timezones) {
         $timezone_list = create_selection_list_timezone_list($timezone);
         $fields->attach(form_input_list(do_lang_tempcode('TIMEZONE'), do_lang_tempcode('DESCRIPTION_TIMEZONE_MEMBER'), 'timezone', $timezone_list));
     }
@@ -1010,11 +1014,11 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     if (!is_null($language)) {
         $update['m_language'] = $language;
     }
-    $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('cns_contact_member'));
+    $doing_email_option = (get_option('member_email_receipt_configurability') != '0') && (addon_installed('cns_contact_member'));
     if ((!is_null($allow_emails)) && ($doing_email_option)) {
         $update['m_allow_emails'] = $allow_emails;
     }
-    $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
+    $doing_email_from_staff_option = (get_option('staff_email_receipt_configurability') != '0');
     if ((!is_null($allow_emails_from_staff)) && ($doing_email_from_staff_option)) {
         $update['m_allow_emails_from_staff'] = $allow_emails_from_staff;
     }

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_allow_international
+class Hook_config_enable_language_selection
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,13 @@ class Hook_config_allow_international
     public function get_details()
     {
         return array(
-            'human_name' => 'ALLOW_INTERNATIONAL',
-            'type' => 'tick',
+            'human_name' => 'ENABLE_LANGUAGE_SELECTION',
+            'type' => 'list',
             'category' => 'SITE',
             'group' => 'INTERNATIONALISATION',
-            'explanation' => 'CONFIG_OPTION_allow_international',
+            'explanation' => 'CONFIG_OPTION_enable_language_selection',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
+            'list_options' => '0|1|2',
             'order_in_category_group' => 1,
 
             'addon' => 'core_cns',

@@ -403,10 +403,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ALLOW_AUTO_NOTIFICATIONS
         ALLOW_COMMENTS
         ALLOW_COMMENTS_ONLY
-        ALLOW_EMAIL_DISABLE
-        ALLOW_EMAIL_FROM_STAFF_DISABLE
+        MEMBER_EMAIL_RECEIPT_CONFIGURABILITY
+        STAFF_EMAIL_RECEIPT_CONFIGURABILITY
         ALLOW_EXT_IMAGES
-        ALLOW_INTERNATIONAL
+        ENABLE_TIMEZONES
+        ENABLE_LANGUAGE_SELECTION
         ALLOW_OPTING_OUT_OF_TAX
         ALLOW_OWN_RATE
         ALLOW_RATING
@@ -2422,10 +2423,16 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_allow_alpha_search
         CONFIG_OPTION_allow_audio_videos
         CONFIG_OPTION_allow_auto_notifications
-        CONFIG_OPTION_allow_email_disable
-        CONFIG_OPTION_allow_email_from_staff_disable
+        CONFIG_OPTION_member_email_receipt_configurability
+        CONFIG_OPTION_member_email_receipt_configurability_VALUE_0
+        CONFIG_OPTION_member_email_receipt_configurability_VALUE_1
+        CONFIG_OPTION_member_email_receipt_configurability_VALUE_2
+        CONFIG_OPTION_staff_email_receipt_configurability_VALUE_0
+        CONFIG_OPTION_staff_email_receipt_configurability_VALUE_1
+        CONFIG_OPTION_staff_email_receipt_configurability_VALUE_2
         CONFIG_OPTION_allow_ext_images
-        CONFIG_OPTION_allow_international
+        CONFIG_OPTION_enable_timezones
+        CONFIG_OPTION_enable_language_selection
         CONFIG_OPTION_allow_opting_out_of_tax
         CONFIG_OPTION_allow_own_rate
         CONFIG_OPTION_allow_theme_image_selector
@@ -2537,6 +2544,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_display_php_errors
         CONFIG_OPTION_dload_search_index
         CONFIG_OPTION_dobs
+        CONFIG_OPTION_dobs_VALUE_0
+        CONFIG_OPTION_dobs_VALUE_1
+        CONFIG_OPTION_dobs_VALUE_2
         CONFIG_OPTION_download_entries_per_page
         CONFIG_OPTION_download_gallery_root
         CONFIG_OPTION_download_subcats_per_page

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_allow_email_from_staff_disable
+class Hook_config_member_email_receipt_configurability
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,13 @@ class Hook_config_allow_email_from_staff_disable
     public function get_details()
     {
         return array(
-            'human_name' => 'ALLOW_EMAIL_FROM_STAFF_DISABLE',
-            'type' => 'tick',
+            'human_name' => 'MEMBER_EMAIL_RECEIPT_CONFIGURABILITY',
+            'type' => 'line',
             'category' => 'USERS',
             'group' => 'MEMBERS',
-            'explanation' => 'CONFIG_OPTION_allow_email_from_staff_disable',
+            'explanation' => 'CONFIG_OPTION_member_email_receipt_configurability',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
+            'list_options' => '0|1|2',
 
             'addon' => 'core_cns',
         );
