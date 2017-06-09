@@ -182,6 +182,27 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PGE_D
         PGE_R
         PGE_HASH
+        BLOCK_TRANS_NAME_main_join
+        BLOCK_main_join_DESCRIPTION
+        BLOCK_main_join_USE
+        BLOCK_main_join_PARAM_subject_TITLE
+        BLOCK_main_join_PARAM_dobs_TITLE
+        BLOCK_main_join_PARAM_member_email_receipt_configurability_TITLE
+        BLOCK_main_join_PARAM_staff_email_receipt_configurability_TITLE
+        BLOCK_main_join_PARAM_enable_timezones_TITLE
+        BLOCK_main_join_PARAM_enable_language_selection_TITLE
+        BLOCK_main_join_PARAM_path_TITLE
+        BLOCK_main_join_PARAM_to_TITLE
+        BLOCK_main_join_PARAM_subject
+        BLOCK_main_join_PARAM_dobs
+        BLOCK_main_join_PARAM_member_email_receipt_configurability
+        BLOCK_main_join_PARAM_staff_email_receipt_configurability
+        BLOCK_main_join_PARAM_enable_timezones
+        BLOCK_main_join_PARAM_enable_language_selection
+        BLOCK_main_join_PARAM_path
+        BLOCK_main_join_PARAM_to
+        BLOCK_main_join_PARAM_guid_TITLE
+        BLOCK_main_join_PARAM_guid
         DKIM_PRIVATE_KEY
         CONFIG_OPTION_dkim_private_key
         DKIM_SELECTOR

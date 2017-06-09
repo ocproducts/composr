@@ -20,15 +20,17 @@
 
 /**
  * Give error if Conversr-joining is not possible on this site.
+ * 
+ * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
  */
-function check_joining_allowed()
+function check_joining_allowed($adjusted_config_options = null)
 {
     if (get_forum_type() != 'cns') {
         warn_exit(do_lang_tempcode('NO_CNS'));
     }
 
     // Check RBL's/stopforumspam
-    $spam_check_level = get_option('spam_check_level');
+    $spam_check_level = get_option_with_overrides('spam_check_level', $adjusted_config_options);
     if (($spam_check_level == 'EVERYTHING') || ($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') || ($spam_check_level == 'JOINING')) {
         require_code('antispam');
         check_rbls();
@@ -48,10 +50,10 @@ function check_joining_allowed()
  * @param  boolean $captcha_if_enabled Whether to handle CAPTCHA (if enabled at all)
  * @param  boolean $intro_message_if_enabled Whether to ask for intro messages (if enabled at all)
  * @param  boolean $invites_if_enabled Whether to check for invites (if enabled at all)
- * @param  boolean $one_per_email_address_if_enabled Whether to check email-address restrictions (if enabled at all)
+ * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
  * @return array A tuple: Necessary JavaScript code, the form
  */
-function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabled = true, $invites_if_enabled = true, $one_per_email_address_if_enabled = true)
+function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabled = true, $invites_if_enabled = true, $adjusted_config_options = null)
 {
     cns_require_all_forum_stuff();
 
@@ -76,7 +78,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     }
 
     url_default_parameters__enable();
-    list($fields, $_hidden) = cns_get_member_fields(true, null, $groups);
+    list($fields, $_hidden) = cns_get_member_fields(true, null, $groups, '', 0, null, null, null, null, null, null, 1, 1, null, null, 1, 1, 1, null, '', 0, '', 0, '*', '', null, $adjusted_config_options);
     url_default_parameters__disable();
     $hidden->attach($_hidden);
 
@@ -89,7 +91,9 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         }
     }
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
+    if ($captcha_if_enabled) {
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
+    }
 
     /*PSEUDO-HOOK: cns_join_form special fields*/
 
@@ -145,7 +149,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     ";
     $script = find_script('snippet');
     if ($invites_if_enabled) {
-        if (get_option('is_on_invites') == '1') {
+        if (get_option_with_overrides('is_on_invites', $adjusted_config_options) == '1') {
             $javascript .= "
             url='" . addslashes($script) . "?snippet=invite_missing&name='+window.encodeURIComponent(form.elements['email_address'].value);
             if (!do_ajax_field_test(url))
@@ -156,17 +160,15 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
             ";
         }
     }
-    if ($one_per_email_address_if_enabled) {
-        if (get_option('one_per_email_address') != '0') {
-            $javascript .= "
-            url='" . addslashes($script) . "?snippet=exists_email&name='+window.encodeURIComponent(form.elements['email_address'].value);
-            if (!do_ajax_field_test(url))
-            {
-                document.getElementById('submit_button').disabled=false;
-                return false;
-            }
-            ";
+    if (get_option_with_overrides('one_per_email_address', $adjusted_config_options) != '0') {
+        $javascript .= "
+        url='" . addslashes($script) . "?snippet=exists_email&name='+window.encodeURIComponent(form.elements['email_address'].value);
+        if (!do_ajax_field_test(url))
+        {
+            document.getElementById('submit_button').disabled=false;
+            return false;
         }
+        ";
     }
     if ($captcha_if_enabled) {
         if (addon_installed('captcha')) {
@@ -201,18 +203,15 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
  * @param  boolean $captcha_if_enabled Whether to handle CAPTCHA (if enabled at all)
  * @param  boolean $intro_message_if_enabled Whether to ask for intro messages (if enabled at all)
  * @param  boolean $invites_if_enabled Whether to check for invites (if enabled at all)
- * @param  boolean $one_per_email_address_if_enabled Whether to check email-address restrictions (if enabled at all)
- * @param  boolean $email_validation_if_enabled Whether to require email address validation (if enabled at all)
- * @param  boolean $staff_validation_if_enabled Whether to force staff validation (if enabled at all)
- * @param  boolean $coppa_if_enabled Whether to do COPPA checks (if enabled at all)
  * @param  boolean $instant_login Whether to instantly log the user in
  * @param  ?ID_TEXT $username Username (null: read from environment)
  * @param  ?EMAIL $email_address E-mail address (null: read from environment)
  * @param  ?string $password Password (null: read from environment)
  * @param  ?array $actual_custom_fields Custom fields to save (null: read from environment)
- * @return array A tuple: Messages to show, member ID of new member
+ * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
+ * @return array A tuple: Messages to show, member ID of new member, whether the account is ready
  */
-function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled = true, $invites_if_enabled = true, $one_per_email_address_if_enabled = true, $email_validation_if_enabled = true, $staff_validation_if_enabled = true, $coppa_if_enabled = true, $instant_login = true, $username = null, $email_address = null, $password = null, $actual_custom_fields = null)
+function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled = true, $invites_if_enabled = true, $instant_login = true, $username = null, $email_address = null, $password = null, $actual_custom_fields = null, $adjusted_config_options = null)
 {
     cns_require_all_forum_stuff();
 
@@ -237,7 +236,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     if (is_null($email_address))	{
         $confirm_email_address = post_param_string('email_address_confirm', null);
-        $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address') ? false : ''));
+        $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address', null, null, $adjusted_config_options) ? false : ''));
         if (!is_null($confirm_email_address)) {
             if (trim($confirm_email_address) != $email_address) {
                 warn_exit(make_string_tempcode(escape_html(do_lang('EMAIL_ADDRESS_MISMATCH'))));
@@ -249,8 +248,26 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         }
     }
 
+    // Check e-mail domain, if applicable
+    $email_address = trim(post_param_string('email_address'));
+    if ($email_address != '') {
+        $valid_email_domains = get_option_with_overrides('valid_email_domains', $adjusted_config_options);
+        if ($valid_email_domains != '') {
+            $domains = explode(',', $valid_email_domains);
+            $ok = false;
+            foreach ($domains as $domain) {
+                if (substr($email_address, -strlen('@' . $domain)) == '@' . $domain) {
+                    $ok = true;
+                }
+            }
+            if (!$ok) {
+                warn_exit(do_lang_tempcode('_MUST_BE_EMAIL_DOMAIN', escape_html($valid_email_domains)));
+            }
+        }
+    }
+
     if ($invites_if_enabled) { // code branch also triggers general tracking of referrals
-        if (get_option('is_on_invites') == '1') {
+        if (get_option_with_overrides('is_on_invites', $adjusted_config_options) == '1') {
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_invites', 'i_inviter', array('i_email_address' => $email_address, 'i_taken' => 0));
             if (is_null($test)) {
                 warn_exit(do_lang_tempcode('NO_INVITE'));
@@ -265,7 +282,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     require_code('temporal2');
     list($dob_year, $dob_month, $dob_day) = post_param_date_components('dob');
     if ((is_null($dob_year)) || (is_null($dob_month)) || (is_null($dob_day))) {
-        if (member_field_is_required(null, 'dob', null, null)) {
+        if (member_field_is_required(null, 'dob', null, null, $adjusted_config_options)) {
             warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('dob')));
         }
 
@@ -279,8 +296,16 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     $language = post_param_string('language', get_site_default_lang());
 
-    $allow_emails = post_param_integer('allow_emails', 0);
-    $allow_emails_from_staff = post_param_integer('allow_emails_from_staff', 0);
+    if (get_option_with_overrides('member_email_receipt_configurability', $adjusted_config_options) == '0') {
+        $allow_emails = 1;
+    } else {
+        $allow_emails = post_param_integer('allow_emails', 0);
+    }
+    if (get_option_with_overrides('staff_email_receipt_configurability', $adjusted_config_options) == '0') {
+        $allow_emails_from_staff = 1;
+    } else {
+        $allow_emails_from_staff = post_param_integer('allow_emails_from_staff', 0);
+    }
 
     $groups = cns_get_all_default_groups(true); // $groups will contain the built in default primary group too (it is not $secondary_groups)
     $primary_group = post_param_integer('primary_group', null);
@@ -300,28 +325,26 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $primary_group = get_first_default_group();
     }
 
-    $custom_fields = cns_get_all_custom_fields_match($groups, null, null, null, null, null, null, 0, true);
+    $custom_fields = cns_get_all_custom_fields_match($groups, null, null, null, null, null, null, 0, true, $adjusted_config_options);
     if (is_null($actual_custom_fields)) {
         $actual_custom_fields = cns_read_in_custom_fields($custom_fields);
     }
 
     // Check that the given address isn't already used (if one_per_email_address on)
     $member_id = null;
-    if ($one_per_email_address_if_enabled) {
-        if (get_option('one_per_email_address') != '0') {
-            $test = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_username'), array('m_email_address' => $email_address), '', 1);
-            if (array_key_exists(0, $test)) {
-                if ($test[0]['m_username'] != $username) {
-                    $reset_url = build_url(array('page' => 'lost_password', 'email_address' => $email_address), get_module_zone('lost_password'));
-                    warn_exit(do_lang_tempcode('EMAIL_ADDRESS_IN_USE', escape_html(get_site_name()), escape_html($reset_url->evaluate())));
-                }
-                $member_id = $test[0]['id'];
+    if (get_option_with_overrides('one_per_email_address', $adjusted_config_options) != '0') {
+        $test = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_username'), array('m_email_address' => $email_address), '', 1);
+        if (array_key_exists(0, $test)) {
+            if ($test[0]['m_username'] != $username) {
+                $reset_url = build_url(array('page' => 'lost_password', 'email_address' => $email_address), get_module_zone('lost_password'));
+                warn_exit(do_lang_tempcode('EMAIL_ADDRESS_IN_USE', escape_html(get_site_name()), escape_html($reset_url->evaluate())));
             }
+            $member_id = $test[0]['id'];
         }
     }
 
     // Check RBL's/stopforumspam
-    $spam_check_level = get_option('spam_check_level');
+    $spam_check_level = get_option_with_overrides('spam_check_level', $adjusted_config_options);
     if (($spam_check_level == 'EVERYTHING') || ($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') || ($spam_check_level == 'JOINING')) {
         require_code('antispam');
         check_rbls();
@@ -342,19 +365,10 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     }
 
     // Add member
-    $email_validation = (get_option('email_confirm_join') == '1');
-    if (!$email_validation_if_enabled) {
-        $email_validation = false;
-    }
+    $email_validation = (get_option_with_overrides('email_confirm_join', $adjusted_config_options) == '1');
     $validated_email_confirm_code = $email_validation ? strval(mt_rand(1, mt_getrandmax())) : '';
-    $staff_validation = (get_option('require_new_member_validation') == '1');
-    if (!$staff_validation_if_enabled) {
-        $staff_validation = false;
-    }
-    $coppa = (get_option('is_on_coppa') == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
-    if (!$coppa_if_enabled) {
-        $coppa = false;
-    }
+    $staff_validation = (get_option_with_overrides('require_new_member_validation', $adjusted_config_options) == '1');
+    $coppa = (get_option_with_overrides('is_on_coppa', $adjusted_config_options) == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
     $validated = ($staff_validation || $coppa) ? 0 : 1;
     if (is_null($member_id)) {
         $member_id = cns_make_member($username, $password, $email_address, $groups, $dob_day, $dob_month, $dob_year, $actual_custom_fields, $timezone, $primary_group, $validated, time(), time(), '', null, '', 0, (get_option('default_preview_guests') == '1') ? 1 : 0, $reveal_age, '', '', '', 1, (get_option('allow_auto_notifications') == '0') ? 0 : 1, $language, $allow_emails, $allow_emails_from_staff, get_ip_address(), $validated_email_confirm_code, true, '', '');
@@ -441,6 +455,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     // Alert user to situation
     $message = new Tempcode();
+    $ready = false;
     if ($coppa) {
         if ($email_validation) {
             $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL'));
@@ -462,6 +477,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
             $login_url = $_login_url->evaluate();
             $message->attach(do_lang_tempcode('CNS_LOGIN_INSTANT', escape_html($login_url)));
         }
+        $ready = true;
     } else {
         if ($email_validation) {
             $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL'));
@@ -472,5 +488,5 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     /*PSEUDO-HOOK: cns_join_actual ends*/
 
-    return array($message, $member_id);
+    return array($message, $member_id, $ready);
 }

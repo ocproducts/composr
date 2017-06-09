@@ -203,15 +203,17 @@ class CMSAccountWrite
 
         require_code('cns_join');
         cns_require_all_forum_stuff();
-        list($message, $member_id) = cns_join_actual(/*$captcha_if_enabled=*/
-            false,/*$intro_message_if_enabled=*/
-            false,/*$invites_if_enabled=*/
-            true,/*$one_per_email_address_if_enabled=*/
-            true,/*$confirm_if_enabled=*/
-            $confirm_if_enabled,/*$validate_if_enabled=*/
-            true,/*$coppa_if_enabled=*/
-            false,/*$instant_login=*/
-            false, $username, $email, $password, $custom_fields);
+        list($message, $member_id) = cns_join_actual(
+            /*$captcha_if_enabled=*/false,
+            /*$intro_message_if_enabled=*/false,
+            /*$invites_if_enabled=*/true,
+            /*$instant_login=*/false,
+            $username,
+            $email,
+            $password,
+            $custom_fields,
+            array('email_confirm_join' => $confirm_if_enabled ? '2' : '0', 'is_on_coppa' => '0')
+        );
 
         if (is_null($member_id)) {
             return array(

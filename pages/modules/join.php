@@ -208,24 +208,6 @@ class Module_join
             warn_exit(do_lang_tempcode('DESCRIPTION_I_AGREE_RULES'));
         }
 
-        // Check e-mail domain, if applicable
-        $email_address = trim(post_param_string('email_address'));
-        if ($email_address != '') {
-            $valid_email_domains = get_option('valid_email_domains');
-            if ($valid_email_domains != '') {
-                $domains = explode(',', $valid_email_domains);
-                $ok = false;
-                foreach ($domains as $domain) {
-                    if (substr($email_address, -strlen('@' . $domain)) == '@' . $domain) {
-                        $ok = true;
-                    }
-                }
-                if (!$ok) {
-                    warn_exit(do_lang_tempcode('_MUST_BE_EMAIL_DOMAIN', escape_html($valid_email_domains)));
-                }
-            }
-        }
-
         list($message) = cns_join_actual();
 
         return inform_screen($this->title, $message);

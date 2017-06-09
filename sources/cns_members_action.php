@@ -19,6 +19,21 @@
  */
 
 /**
+ * Get a config option, with override support.
+ *
+ * @param  ID_TEXT $option_name The config option.
+ * @param  ?array $overrides Map of config option codenames and overridden values (null: no overrides).
+ * @return ID_TEXT Config option value.
+ */
+function get_option_with_overrides($option_name, $overrides)
+{
+    if ((isset($overrides[$option_name])) && ($overrides[$option_name] != '')) {
+        return $overrides[$option_name];
+    }
+    return get_option($option_name);
+}
+
+/**
  * Find whether a member's field must be filled in.
  *
  * @param  ?MEMBER $member_id The member being edited (null: new member).
@@ -26,11 +41,12 @@
  * @set email_address dob required_cpfs
  * @param  ?string $current_value The value the field has now (null: lookup from member record; cannot do this for a CPF).
  * @param  ?MEMBER $editing_member The member doing the adding/editing operation (null: current member).
+ * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
  * @return boolean Whether the field must be filled in.
  */
-function member_field_is_required($member_id, $field_class, $current_value = null, $editing_member = null)
+function member_field_is_required($member_id, $field_class, $current_value = null, $editing_member = null, $adjusted_config_options = null)
 {
-    if (($field_class == 'dob') && ((get_option('dobs') == '0') || ((get_option('dobs') == '1') && ($member_id === null)))) {
+    if (($field_class == 'dob') && ((get_option_with_overrides('dobs', $adjusted_config_options) == '0') || ((get_option_with_overrides('dobs', $adjusted_config_options) == '1') && ($member_id === null)))) {
         return false;
     }
 

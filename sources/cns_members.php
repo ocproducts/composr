@@ -127,9 +127,10 @@ function cns_is_httpauth_member($member_id)
  * @param  ?BINARY $show_in_post_previews That are to be shown in post previews (null: don't care).
  * @param  BINARY $special_start That start 'cms_'
  * @param  ?boolean $show_on_join_form That are to go on the join form (null: don't care).
+ * @param  ?array $adjusted_config_options A map of adjusted config options; actually it is field_<id>=0|1 for the purposes of this function, and overrides cf_show_on_join_form (null: none)
  * @return array A list of rows of such fields.
  */
-function cns_get_all_custom_fields_match($groups = null, $public_view = null, $owner_view = null, $owner_set = null, $required = null, $show_in_posts = null, $show_in_post_previews = null, $special_start = 0, $show_on_join_form = null)
+function cns_get_all_custom_fields_match($groups = null, $public_view = null, $owner_view = null, $owner_set = null, $required = null, $show_in_posts = null, $show_in_post_previews = null, $special_start = 0, $show_on_join_form = null, $adjusted_config_options = null)
 {
     global $CUSTOM_FIELD_CACHE;
     $x = serialize(array($public_view, $owner_view, $owner_set, $required, $show_in_posts, $show_in_post_previews, $special_start, $show_on_join_form));
@@ -171,7 +172,22 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
             $where .= ' AND ' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name') . ' LIKE \'' . db_encode_like('cms\_%') . '\'';
         }
         if ($show_on_join_form !== null) {
-            $where .= ' AND cf_show_on_join_form=' . strval($show_on_join_form);
+            $where .= ' AND (cf_show_on_join_form=' . strval($show_on_join_form);
+            foreach ($adjusted_config_options as $config_option => $config_value) {
+                if ($config_value == '1') {
+                    if (preg_match('#^field\_\d+$#', $config_option) != 0) {
+                        $where .= ' OR id=' . substr($config_option, strlen('field_'));
+                    }
+                }
+            }
+            $where .= ')';
+            foreach ($adjusted_config_options as $config_option => $config_value) {
+                if ($config_value == '0') {
+                    if (preg_match('#^field\_\d+$#', $config_option) != 0) {
+                        $where .= ' AND id<>' . substr($config_option, strlen('field_'));
+                    }
+                }
+            }
         }
 
         global $TABLE_LANG_FIELDS_CACHE;

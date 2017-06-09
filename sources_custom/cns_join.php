@@ -18,7 +18,7 @@ function init__cns_join($in = null)
     // More referral fields in form
     $ini_file = parse_ini_file(get_custom_file_base() . '/text_custom/referrals.txt', true);
     if ((!isset($ini_file['visible_referrer_field'])) || ($ini_file['visible_referrer_field'] == '1')) {
-        $extra_code = '$fields->attach(get_referrer_field(true));';
+        $extra_code = 'if ((!isset($adjusted_config_options[\'referrals\'])) || ($adjusted_config_options[\'referrals\'] == \'1\')) $fields->attach(get_referrer_field(true)); else $hidden->attach(get_referrer_field(false));';
     } else {
         $extra_code = '$hidden->attach(get_referrer_field(false));';
     }
