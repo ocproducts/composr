@@ -29,6 +29,8 @@ function check_joining_allowed($adjusted_config_options = null)
         warn_exit(do_lang_tempcode('NO_CNS'));
     }
 
+    require_code('cns_members_action');
+
     // Check RBL's/stopforumspam
     $spam_check_level = get_option_with_overrides('spam_check_level', $adjusted_config_options);
     if (($spam_check_level == 'EVERYTHING') || ($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') || ($spam_check_level == 'JOINING')) {
