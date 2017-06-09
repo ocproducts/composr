@@ -7,7 +7,13 @@
 <section class="box box___block_main_newsletter_signup"><div class="box_inner">
 	<h3>{!NEWSLETTER}{$?,{$NEQ,{NEWSLETTER_TITLE},{!GENERAL}},: {NEWSLETTER_TITLE*}}</h3>
 
-	<form title="{!NEWSLETTER}" onsubmit="if (!check_field_for_blankness(this.elements['address{NID;*}'],event)) return false; if (!this.elements['address{NID*}'].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/)) { window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;=*}'); return false; } disable_button_just_clicked(this); return true;" action="{URL*}" method="post" autocomplete="off">
+	<form title="{!NEWSLETTER}" onsubmit="
+			if (!check_field_for_blankness(this.elements['address{NID;*}'],event)) return false;
+			if (!this.elements['address{NID*}'].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/)) { window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;=*}'); return false; }
+			disable_button_just_clicked(this);
+			if (ret) { ga_track(null,'{!NEWSLETTER_JOIN;}',null,function() { this.submit(); }); return false; }
+			return true;
+		" action="{URL*}" method="post" autocomplete="off" >
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<p class="accessibility_hidden"><label for="baddress">{!EMAIL_ADDRESS}</label></p>

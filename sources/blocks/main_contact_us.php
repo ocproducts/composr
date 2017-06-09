@@ -193,6 +193,7 @@ class Block_main_contact_us
                     'SUBMIT_NAME' => do_lang_tempcode('SEND'),
                     'SUBMIT_ICON' => 'buttons__send',
                     'SKIP_PREVIEW' => true,
+                    'ANALYTIC_EVENT_CATEGORY' => do_lang('CONTACT_US'),
                 ));
 
                 $notifications_enabled = null;

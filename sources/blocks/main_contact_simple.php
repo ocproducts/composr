@@ -158,6 +158,7 @@ class Block_main_contact_simple
             'SUBMIT_NAME' => do_lang_tempcode('SEND'),
             'SUBMIT_ICON' => 'buttons__send',
             'SKIP_PREVIEW' => true,
+            'ANALYTIC_EVENT_CATEGORY' => do_lang('CONTACT_US'),
         ));
 
         $out = do_template('BLOCK_MAIN_CONTACT_SIMPLE', array(

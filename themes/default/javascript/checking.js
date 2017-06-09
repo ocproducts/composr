@@ -199,13 +199,15 @@ function _simplified_form_continue_submit(iframe,form_cat_selector)
 	}
 }
 
-function do_form_submit(form,event)
+function do_form_submit(form,event,analytic_event_category)
 {
 	if (!check_form(form,false)) return false;
 
 	if ((typeof form.old_action!='undefined') && (form.old_action)) form.setAttribute('action',form.old_action);
 	if ((typeof form.old_target!='undefined') && (form.old_target)) form.setAttribute('target',form.old_target);
 	if (!form.getAttribute('target')) form.setAttribute('target','_top');
+
+	if (typeof analytic_event_category=='undefined') analytic_event_category=false;
 
 	/* Remove any stuff that is only in the form for previews if doing a GET request */
 	if (form.method.toLowerCase()=='get')
@@ -229,7 +231,16 @@ function do_form_submit(form,event)
 		var ret=form.onsubmit.call(form,event);
 		if (!ret) return false;
 	}
-	if ((typeof window.just_checking_requirements=='undefined') || (!window.just_checking_requirements)) form.submit();
+	if ((typeof window.just_checking_requirements=='undefined') || (!window.just_checking_requirements))
+	{
+		if (analytic_event_category)
+		{
+			ga_track(null,analytic_event_category,null,function() { form.submit(); });
+		} else
+		{
+			form.submit();
+		}
+	}
 
 	disable_buttons_just_clicked(document.getElementsByTagName('input'));
 	disable_buttons_just_clicked(document.getElementsByTagName('button'));

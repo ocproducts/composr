@@ -3419,27 +3419,49 @@ function apply_rating_highlight_and_ajax_code(likes,initial_rating,content_type,
 }
 
 /* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
-function ga_track(ob,category,action)
+function ga_track(ob,category,action,callback)
 {
-	/*{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}*/
-		if (typeof category=='undefined') category='{!URL;^}';
-		if (typeof action=='undefined') action=ob?ob.href:'{!UNKNOWN;^}';
+	/*{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}*/
+		if (typeof category=='undefined' || category===null) category='{!URL;^}';
+		if (typeof action=='undefined' || action===null) action=ob?ob.href:window.location.href;
 
+		var okay=true;
 		try
 		{ 
-			ga('send','event',category,action); 
-		}
-		catch(err) {}
+			if (typeof window.console!='undefined') console.log('Beacon','send','event',category,action);
 
-		if (ob)
-		{
-			setTimeout(function() {
-				click_link(ob);
-			},100);
-
-			return false;
+			ga(
+				'send',
+				'event',
+				category,
+				action,
+				{
+					transport: 'beacon',
+					hitCallback: callback
+				}
+			);
 		}
-	/*{+END}{+END}*/
+		catch(err) {
+			okay=false;
+		}
+
+		if (okay) {
+			if (ob) // pass as null if you don't want this
+			{
+				setTimeout(function() {
+					click_link(ob);
+				},100);
+			}
+
+			return false; // Cancel event because we'll be submitting by ourselves, either via click_link or callback
+		}
+	/*{+END}*/
+
+	if ((typeof callback!='undefined') && (callback)) {
+		setTimeout(function() {
+			callback();
+		},100);
+	}
 
 	return null;
 }

@@ -231,6 +231,7 @@ class Block_main_contact_catalogues
             'URL' => $url,
             'TEXT' => $text,
             'SECONDARY_FORM' => true,
+            'ANALYTIC_EVENT_CATEGORY' => $subject,
         ));
     }
 }

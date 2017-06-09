@@ -194,7 +194,16 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         };
     ";
 
-    $form = do_template('FORM', array('_GUID' => 'f6dba5638ae50a04562df50b1f217311', 'TEXT' => '', 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
+    $form = do_template('FORM', array(
+        '_GUID' => 'f6dba5638ae50a04562df50b1f217311',
+        'TEXT' => '',
+        'HIDDEN' => $hidden,
+        'FIELDS' => $fields,
+        'SUBMIT_ICON' => 'menu__site_meta__user_actions__join',
+        'SUBMIT_NAME' => $submit_name,
+        'URL' => $url,
+        'ANALYTIC_EVENT_CATEGORY' => do_lang('_JOIN'),
+    ));
 
     return array($javascript, $form);
 }

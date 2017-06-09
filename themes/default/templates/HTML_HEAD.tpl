@@ -127,7 +127,13 @@
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		ga('create','{$TRIM;/,{$CONFIG_OPTION,google_analytics}}',{+START,IF,{$CONFIG_OPTION,long_google_cookies}}'auto'{+END}{+START,IF,{$NOT,{$CONFIG_OPTION,long_google_cookies}}}{cookieExpires:0}{+END});
+		ga('create','{$TRIM;/,{$CONFIG_OPTION,google_analytics}}',{ {+START,IF,{$NOT,{$CONFIG_OPTION,long_google_cookies}}}cookieExpires: 0, {+END}{+START,IF_NON_EMPTY,{$COOKIE_DOMAIN}}cookieDomain: '{$COOKIE_DOMAIN;}'{+END} });
+		{+START,IF,{$NOT,{$IS_GUEST}}}
+			ga('set','userId','{$MEMBER;}');
+		{+END}
+		{+START,IF_NON_EMPTY,{$_GET,_t}}
+			ga('send','event','tracking__{$_GET;,_t}',window.location.href);
+		{+END}
 		ga('send','pageview');
 	</script>
 {+END}{+END}

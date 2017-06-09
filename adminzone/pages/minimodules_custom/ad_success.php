@@ -18,7 +18,7 @@ Simple script to track advertising purchase successes.
 Requires super_logging enabled.
 Probably better to configure tracking codes in Google Analytics TBH.
 
-Assumes 'from' GET parameter used to track what campaign hits came from.
+Assumes '_t' GET parameter used to track what campaign hits came from.
 
 May be very slow to run.
 */
@@ -32,7 +32,7 @@ $success = array();
 $joining = array();
 $failure = array();
 $members_done = array();
-$advertiser_sessions = $GLOBALS['SITE_DB']->query('SELECT member_id,s_get,ip,date_and_time FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * get_param_integer('days', 1)) . ' AND s_get LIKE \'' . db_encode_like('%<param>from=%') . '\'');
+$advertiser_sessions = $GLOBALS['SITE_DB']->query('SELECT member_id,s_get,ip,date_and_time FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * get_param_integer('days', 1)) . ' AND s_get LIKE \'' . db_encode_like('%<param>_t=%') . '\'');
 foreach ($advertiser_sessions as $session) {
     if (array_key_exists($session['member_id'], $members_done)) {
         continue;
@@ -40,20 +40,20 @@ foreach ($advertiser_sessions as $session) {
     $members_done[$session['member_id']] = 1;
 
     $matches = array();
-    if (!preg_match('#<param>from=([' . URL_CONTENT_REGEXP . ']+)</param>#', $session['s_get'], $matches)) {
+    if (!preg_match('#<param>_t=([' . URL_CONTENT_REGEXP . ']+)</param>#', $session['s_get'], $matches)) {
         continue;
     }
-    $from = $matches[1];
+    $_t = $matches[1];
     $member_id = $session['member_id'];
 
-    if (!array_key_exists($from, $success)) {
-        $success[$from] = 0;
-        $failure[$from] = 0;
-        $joining[$from] = 0;
+    if (!array_key_exists($_t, $success)) {
+        $success[$_t] = 0;
+        $failure[$_t] = 0;
+        $joining[$_t] = 0;
     }
 
     if (get_param_integer('track', 0) == 1) {
-        echo '<strong>Tracking information for <em>' . $from . '</em> visitor</strong> (' . $session['ip'] . ')&hellip;<br />';
+        echo '<strong>Tracking information for <em>' . $_t . '</em> visitor</strong> (' . $session['ip'] . ')&hellip;<br />';
         $places = $GLOBALS['SITE_DB']->query('SELECT the_page,date_and_time,referer FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE member_id=' . strval($member_id) . ' AND date_and_time>=' . strval($session['date_and_time']) . ' ORDER BY date_and_time');
         foreach ($places as $place) {
             echo '<p>' . escape_html($place['the_page']) . ' at ' . get_timezoned_date($place['date_and_time'], false, false, false, true) . ' (from ' . escape_html(substr($place['referer'], 0, 200)) . ')</p>';
@@ -63,13 +63,13 @@ foreach ($advertiser_sessions as $session) {
     $ip = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'ip', array('the_page' => 'site/pages/modules/join.php', 'member_id' => $member_id));
     $member_id = is_null($ip) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'member_id', array('ip' => $ip));
     if (!is_null($member_id)) {
-        $joining[$from]++;
+        $joining[$_t]++;
     }
     $test = is_null($member_id) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'id', array('the_page' => 'site/pages/modules_custom/purchase.php', 'member_id' => $member_id));
     if (!is_null($test)) {
-        $success[$from]++;
+        $success[$_t]++;
     } else {
-        $failure[$from]++;
+        $failure[$_t]++;
     }
 }
 

@@ -31,6 +31,7 @@
 	{+START,IF,{$AND,{GET_EMAIL},{$NOT,{EMAIL_OPTIONAL}}}}if (!check_field_for_blankness(this.elements['email'],event,ret)) ret=false;{+END}
 	{+START,IF,{$AND,{GET_TITLE},{$NOT,{TITLE_OPTIONAL}}}}if (!check_field_for_blankness(this.elements['title'],event,ret)) ret=false;{+END}
 	if (!check_field_for_blankness(this.elements['post'],event,ret)) ret=false;
+	{+START,IF_PASSED,ANALYTIC_EVENT_CATEGORY}if (ret) { var _this=this; ga_track(null,'{ANALYTIC_EVENT_CATEGORY;*}',null,function() { _this.submit(); }); return false; }{+END}
 	return ret;
 	" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}

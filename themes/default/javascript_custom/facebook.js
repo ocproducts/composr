@@ -11,6 +11,10 @@ function facebook_init(app_id,channel_url,just_logged_out,serverside_fbuid,home_
 			xfbml: true
 		});
 
+		window.FB.Event.subscribe('edge.create', function(url) {
+			ga_track(null,'social__facebook_like');
+		});
+
 		// Ignore floods of "Unsafe JavaScript attempt to access frame with URL" errors in Chrome they are benign
 
 		{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}

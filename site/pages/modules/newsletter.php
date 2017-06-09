@@ -361,7 +361,18 @@ class Module_newsletter
             };
         ";
 
-        return do_template('FORM_SCREEN', array('_GUID' => '24d7575465152f450c5a8e62650bf6c8', 'JAVASCRIPT' => $javascript, 'HIDDEN' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url, 'TITLE' => $this->title, 'TEXT' => $text));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '24d7575465152f450c5a8e62650bf6c8',
+            'JAVASCRIPT' => $javascript,
+            'HIDDEN' => '',
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+            'TITLE' => $this->title,
+            'TEXT' => $text,
+            'ANALYTIC_EVENT_CATEGORY' => do_lang('NEWSLETTER_JOIN'),
+        ));
     }
 
     /**

@@ -626,6 +626,7 @@ class Module_tickets
                     'FIRST_POST' => '',
                     'COMMENT_URL' => '',
                     'SUBMIT_NAME' => do_lang_tempcode($new ? 'CREATE_SUPPORT_TICKET' : 'MAKE_POST'),
+                    'ANALYTIC_EVENT_CATEGORY' => do_lang('CREATE_SUPPORT_TICKET'),
                 ));
             } else {
                 $comment_form = new Tempcode();
