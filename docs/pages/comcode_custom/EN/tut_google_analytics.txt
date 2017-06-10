@@ -440,6 +440,10 @@ Composr provides a JavaScript function, [tt]ga_track[/tt], to abstract this, whi
 | Standard tracking via [tt]_t[/tt] URL parameter
 | [tt]tracking__<parameterValue>[/tt]
 | [tt]<currentUrl>[/tt]
+|-
+| Get whitepaper from join block
+| [tt]Download whitepaper[/tt]
+| [tt]<currentUrl>[/tt]
 |}
 
 You may easily extend this with whatever custom events you want, then configure [i]Google Analytics[/i] against those events. Just edit it into HTML within pages/templates, adding an [tt]onclick[/tt] to links like follows:

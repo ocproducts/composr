@@ -7148,6 +7148,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ATTACHMENT_SAVED
         LOGIN_TEXT
         FILES
+        DOWNLOAD_WHITEPAPER
+        WHITEPAPER_EMAILED
+        WHITEPAPER_NOT_EMAILED
         MEMBERS_ACTIVE_THIS_MONTH
         MEMBERS_ACTIVE_THIS_WEEK
         MEMBERS_ACTIVE_TODAY

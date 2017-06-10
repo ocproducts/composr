@@ -222,6 +222,12 @@ class Hook_profiles_tabs_edit_settings
                     handle_award_setting('member', strval($member_id_of));
                 }
 
+                $redirect = get_param_string('redirect', null);
+                if ($redirect != null) {
+                    require_code('site2');
+                    assign_refresh($redirect, 0.0);
+                }
+
                 attach_message(do_lang_tempcode('SUCCESS_SAVE'), 'inform');
             }
         } elseif (post_param_integer('validated', 0) == 1) { // Special support for just approving

@@ -1303,6 +1303,7 @@ class Hook_addon_registry_core_cns
             lorem_globalise(do_lorem_template('BLOCK_MAIN_JOIN', array(
                 'FORM' => placeholder_form(),
                 'JAVASCRIPT' => '',
+                'HAS_EMAIL_TO_SEND' => true,
             )), null, '', true)
         );
     }
@@ -1319,7 +1320,10 @@ class Hook_addon_registry_core_cns
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_JOIN_DONE', array(
                 'MESSAGE' => lorem_paragraph_html(),
-                'READY' => true,
+                'LOGGED_IN' => true,
+                'HAS_EMAIL_TO_SEND' => true,
+                'HAS_EMAIL_ADDRESS' => true,
+                'EMAIL_SENT' => true,
             )), null, '', true)
         );
     }

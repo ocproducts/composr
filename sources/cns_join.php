@@ -66,6 +66,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
 
     $hidden = new Tempcode();
     $hidden->attach(build_keep_post_fields());
+    $hidden->attach(form_input_hidden('_joining', '0'));
 
     $groups = cns_get_all_default_groups(true);
     $primary_group = either_param_integer('primary_group', null);
