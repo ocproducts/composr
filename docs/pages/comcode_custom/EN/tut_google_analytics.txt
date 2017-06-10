@@ -385,7 +385,7 @@ Composr provides a JavaScript function, [tt]ga_track[/tt], to abstract this, whi
 | [tt]URL[/tt]
 | [tt]<url>[/tt]
 |-
-| [tt]Download a download
+| Download a download
 | [tt]Download[/tt]
 | [tt]<filename>[/tt]
 |-
