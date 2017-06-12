@@ -564,7 +564,7 @@ class DatabaseRepair
             } else {
                 $db_types = '';
                 foreach ($expected_fields as $field) {
-                    $db_type = $meta_tables[$index['table']][$field];
+                    $db_type = isset($meta_tables[$index['table']][$field]) ? $meta_tables[$index['table']][$field] : null;
                     if ($db_type !== null) {
                         if ($db_types != '') {
                             $db_types .= ',';

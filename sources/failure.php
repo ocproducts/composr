@@ -1083,6 +1083,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL
         (strpos($text, '.MYD') === false) && // MySQL
+        (strpos($text, 'syntax error, unexpected') === false) && // MySQL full-text parsing error
         (strpos($text, 'MySQL server has gone away') === false) &&
         (strpos($text, 'Incorrect key file') === false) &&
         (strpos($text, 'Too many connections') === false) &&

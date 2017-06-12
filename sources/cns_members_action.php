@@ -324,7 +324,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     $value = mixed();
 
     // Store custom fields
-    $row = array('mf_member_id' => $member_id);
+    $row = array();
     $all_fields_types = collapse_2d_complexity('id', 'cf_type', $all_fields);
     foreach ($custom_fields as $field_num => $value) {
         if (!array_key_exists($field_num, $all_fields_types)) {
@@ -362,7 +362,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
             }
         }
     }
-    $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', $row);
+    $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', array('mf_member_id' => $member_id) + $row);
 
     require_code('locations_cpfs');
     autofill_geo_cpfs($member_id);
