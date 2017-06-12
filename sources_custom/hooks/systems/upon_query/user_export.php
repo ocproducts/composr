@@ -98,14 +98,14 @@ class Hook_upon_query_user_export
             return;
         }
 
-        $matches = array();
+        /*$matches = array();   Can cause loop, use the below code
         if (
         (preg_match('#^INSERT INTO ' . $prefix . 'f_members #', $query, $matches) != 0)
         ) {
             require_code('user_export');
             do_user_export__single_ipc($ret);
             return;
-        }
+        }*/
 
         $matches = array();
         if (

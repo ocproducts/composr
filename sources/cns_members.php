@@ -478,7 +478,7 @@ function cns_get_custom_field_mappings($member_id)
                     }
                 }
             }
-            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', $row);
+            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', array('mf_member_id' => $member_id) + $row);
             $query = array($row);
         }
         $MEMBER_CACHE_FIELD_MAPPINGS[$member_id] = $query[0];
