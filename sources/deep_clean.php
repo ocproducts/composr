@@ -129,10 +129,10 @@ function deep_clean($d, $heading = '')
         // Inherits/nones
         do {
             $orig_d = $d;
-            $d = preg_replace('#"\s*[\w-]+: *(inherit|none|0|0px|rgb\(0, 0, 0\))"\s*#', '""', $d); // Only property
-            $d = preg_replace('#"\s*[\w-]+: *(inherit|none|0|0px|rgb\(0, 0, 0\));\s*#', '"', $d); // First property
-            $d = preg_replace('#\s*;\s*[\w-]+: *(inherit|none|0|0px|rgb\(0, 0, 0\));?"#', '"', $d); // Last property
-            $d = preg_replace('#\s*;\s*[\w-]+: *(inherit|none|0|0px|rgb\(0, 0, 0\))\s*;\s*#', '; ', $d); // Middle property
+            $d = preg_replace('#"\s*[\w\-]+: *(inherit|none|0|0px|rgb\(0, 0, 0\))"\s*#', '""', $d); // Only property
+            $d = preg_replace('#"\s*[\w\-]+: *(inherit|none|0|0px|rgb\(0, 0, 0\));\s*#', '"', $d); // First property
+            $d = preg_replace('#\s*;\s*[\w\-]+: *(inherit|none|0|0px|rgb\(0, 0, 0\));?"#', '"', $d); // Last property
+            $d = preg_replace('#\s*;\s*[\w\-]+: *(inherit|none|0|0px|rgb\(0, 0, 0\))\s*;\s*#', '; ', $d); // Middle property
             $changed = ($orig_d != $d);
         } while ($changed);
 

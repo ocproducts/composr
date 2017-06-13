@@ -331,11 +331,12 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  * @param  boolean $check_only Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
  * @param  ?array $highlight_bits A list of words to highlight (null: none)
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
+ * @param  boolean $in_code_tag Whether the parse context is already in a code tag
  * @return Tempcode The Tempcode generated
  *
  * @ignore
  */
-function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits = null, $on_behalf_of_member = null)
+function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $pass_id, $connection, $semiparse_mode, $preparse_mode, $is_all_semihtml, $structure_sweep, $check_only, $highlight_bits = null, $on_behalf_of_member = null, $in_code_tag = false)
 {
     global $LAX_COMCODE;
     if ($LAX_COMCODE === null && function_exists('get_option')) {
@@ -435,7 +436,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
         '</a>',
         '<span>',
         '<span style="color:\s*\#[A-Fa-f0-9]+;?">',
-        '<span style="font-family:\s*[\w-\s,]+;?">',
+        '<span style="font-family:\s*[\w\-\s,]+;?">',
         '<span style="font-size:\s*[\d\.]+(em|px|pt)?;?">',
         '</span>',
     );
@@ -482,7 +483,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
     $in_html = false;
     $in_semihtml = $is_all_semihtml;
     $in_separate_parse_section = false; // Not escaped because it has to be passed to a secondary filter
-    $in_code_tag = false;
     $code_nest_stack = 0;
 
     // Our state
@@ -686,7 +686,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                     } else {
                         $continuation .= $next;
                     }
-                } else { // Not in HTML
+                } else { // Not in HTML or in a code tag ($formatting_allowed will be false, so ok)
                     // Text-format possibilities
                     if ((($just_new_line) || ($just_ended)) && ($formatting_allowed)) {
                         if ($continuation != '') {
@@ -938,8 +938,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                             // Variable lookahead
                             if ((!$in_code_tag) && (($next === '{') && (isset($comcode[$pos])) && (($comcode[$pos] === '$') || ($comcode[$pos] === '+') || ($comcode[$pos] === '!')))) {
-                                if ($comcode_dangerous) {
-                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ((!$html_errors) && ($comcode[$pos] === '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
+                                $is_basic_symbol = (substr($comcode, $pos, 4) == '$IMG') || (substr($comcode, $pos, 9) == '$BASE_URL'); // Anyone may use, and must parse even in semi-parse mode
+                                if ($comcode_dangerous || $is_basic_symbol) {
+                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ($is_basic_symbol) || ((!$html_errors) && ($comcode[$pos] === '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
                                         if ($GLOBALS['XSS_DETECT']) {
                                             ocp_mark_as_escaped($continuation);
                                         }
@@ -1014,7 +1015,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             $pos = $p_len;
                                             if (($ret->parameterless(0)) && ($pos < $len)) { // We want to take the language string ID reference as Comcode if it's a simple language string ID reference with no parameters
                                                 $matches = array();
-                                                if (preg_match('#\{\!([\w\d\_\:]+)(\}|$)#U', $comcode, $matches, 0, $less_pos) != 0) { // Hacky code to extract the language string ID
+                                                if (preg_match('#\{\!([\w\:]+)(\}|$)#U', $comcode, $matches, 0, $less_pos) != 0) { // Hacky code to extract the language string ID
                                                     $temp_lang_string = $matches[1];
                                                     $ret = new Tempcode(); // Put into new Tempcode object to attach to, as what comcode_lang_string returns may be cached yet we may append to $ret
                                                     $ret->attach(static_evaluate_tempcode(comcode_lang_string($temp_lang_string))); // Recreate as a Comcode language string
@@ -1184,7 +1185,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                             }
 
                                             $this_member_id = mixed();
-                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY LENGTH(m_username) DESC', 1);
+                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY ' . db_function('LENGTH', array('m_username')) . ' DESC', 1);
                                             if (isset($results[0])) {
                                                 $this_member_id = $results[0]['id'];
                                                 $username = $results[0]['m_username'];
@@ -1244,18 +1245,29 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 }
                                 foreach ($shortcuts as $code => $replacement) {
                                     if (($next === $code[0]) && (isset($comcode[$pos])) && ($comcode[$pos] === $code[1]) && (substr($comcode, $pos - 1, strlen($code)) === $code)) {
-                                        if ($GLOBALS['XSS_DETECT']) {
-                                            ocp_mark_as_escaped($continuation);
+
+                                        $passes = true;
+
+                                        if (($code == '--') || ($code == '<--') || ($code == '-->')) {
+                                            if ((strpos($comcode, '<!--') !== false)/* || (strpos($comcode, '-->') !== false)*/ || (strpos($comcode, '&lt;!--') !== false)/* || (strpos($comcode, '--&gt;') !== false)*/) {
+                                                $passes = false;
+                                            }
                                         }
-                                        $tag_output->attach($continuation);
-                                        $continuation = '';
-                                        $pos += strlen($code) - 1;
-                                        $differented = true;
-                                        if ($GLOBALS['XSS_DETECT']) {
-                                            ocp_mark_as_escaped($replacement);
+
+                                        if ($passes) {
+                                            if ($GLOBALS['XSS_DETECT']) {
+                                                ocp_mark_as_escaped($continuation);
+                                            }
+                                            $tag_output->attach($continuation);
+                                            $continuation = '';
+                                            $pos += strlen($code) - 1;
+                                            $differented = true;
+                                            if ($GLOBALS['XSS_DETECT']) {
+                                                ocp_mark_as_escaped($replacement);
+                                            }
+                                            $tag_output->attach($replacement);
+                                            break;
                                         }
-                                        $tag_output->attach($replacement);
-                                        break;
                                     }
                                 }
                             }
@@ -1481,6 +1493,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 if ((!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
+                                        $ADVERTISING_BANNERS_CACHE = array();
+
                                         require_code('banners');
                                         $banner_sql = banner_select_sql(null, true);
                                         $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', '');
@@ -1502,7 +1516,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                                 }
                                             }
 
-                                            $ADVERTISING_BANNERS_CACHE = array();
                                             foreach ($rows as $row) {
                                                 $trigger_text = $row['b_title_text'];
                                                 foreach (explode(',', $trigger_text) as $t) {
@@ -1566,7 +1579,29 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
                                 $b = strrpos($until_now, '>');
                                 $in_html_tag = ($a !== false) && (($b === false) || ($a > $b));
                             }
-                            if ((($textual_area) || ($in_semihtml) && ($tag_stack[count($tag_stack) - 1][0] === 'semihtml'/*Only just HTML, so not an unsafe Comcode context*/)) && ((!$in_semihtml) || ((!$in_html_tag))) && (!$in_code_tag) && ($not_white_space) && (!$differented) && ($next === 'h') && ((substr($comcode, $pos - 1, strlen('http://')) === 'http://') || (substr($comcode, $pos - 1, strlen('https://')) === 'https://') || (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://'))) {
+                            if (
+                                (
+                                    ($textual_area) ||
+                                    (
+                                        ($in_semihtml) &&
+                                        ($tag_stack[count($tag_stack) - 1][0] === 'semihtml'/*Only just entered semihtml, we're not inside an unsafe nested Comcode context*/) &&
+                                        (strpos($comcode, '<a') === false/*If links are explicit we don't want to detect links*/)
+                                    )
+                                ) &&
+                                (
+                                    (!$in_semihtml) ||
+                                    (!$in_html_tag)
+                                ) &&
+                                (!$in_code_tag) &&
+                                ($not_white_space) &&
+                                (!$differented) &&
+                                ($next === 'h') &&
+                                (
+                                    (substr($comcode, $pos - 1, strlen('http://')) === 'http://') ||
+                                    (substr($comcode, $pos - 1, strlen('https://')) === 'https://') ||
+                                    (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://')
+                                )
+                            ) {
                                 // Find the full link portion in the upcoming Comcode
                                 $link_end_pos = strlen($comcode);
                                 foreach ($link_terminator_strs as $link_terminator_str) {
@@ -1582,6 +1617,10 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $wrap_pos, $
 
                                 if (substr($auto_link, -3) != '://') { // If it's not just a hanging protocol
                                     if (substr($auto_link, -1) === '.') { // Strip trailing dot (dots may be within, but not at the end)
+                                        $auto_link = substr($auto_link, 0, strlen($auto_link) - 1);
+                                        $link_end_pos--;
+                                    }
+                                    if (substr($auto_link, -1) === ',') { // Strip trailing commas (commas may be within, but not at the end)
                                         $auto_link = substr($auto_link, 0, strlen($auto_link) - 1);
                                         $link_end_pos--;
                                     }

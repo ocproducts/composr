@@ -14,17 +14,17 @@
 		{+END}
 	{+END}
 
-	<video width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" poster="{THUMB_URL*}" controls="controls" preload="none" id="{$GET%,player_id}">
-		<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
-		<object width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
-			<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />
-			<param name="flashvars" value="controls=true&amp;file={URL&*}" />
+	<div class="responsive_video">
+		<video width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" poster="{THUMB_URL*}" controls="controls" preload="auto" id="{$GET%,player_id}">
+			<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
+			<object width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
+				<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />
+				<param name="flashvars" value="controls=true&amp;file={URL&*}" />
 
-			<img src="{THUMB_URL*}" width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" alt="No video playback capabilities" title="No video playback capabilities" />
-		</object>
-	</video>
-
-	<div class="webstandards_checker_off"></div>
+				<img src="{THUMB_URL*}" width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" alt="No video playback capabilities" title="No video playback capabilities" />
+			</object>
+		</video>
+	</div>
 
 	<script>// <![CDATA[
 		add_event_listener_abstract(window,'load',function() {
@@ -45,6 +45,8 @@
 					{+END}
 					if (document.getElementById('next_slide'))
 					{
+						media.preload='auto';
+						media.loop=false;
 						media.addEventListener('canplay',function() { stop_slideshow_timer(); player.play(); });
 						media.addEventListener('ended',function() { player_stopped(); });
 					}

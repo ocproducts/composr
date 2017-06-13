@@ -29,6 +29,7 @@ global $GUID_LANDSCAPE;
 $GUID_LANDSCAPE = array();
 global $FILENAME, $IN;
 
+require_code('files');
 require_code('files2');
 
 $limit_file = isset($_GET['file']) ? $_GET['file'] : '';
@@ -38,6 +39,9 @@ if ($limit_file == '') {
     $files = array($limit_file);
 }
 foreach ($files as $i => $file) {
+    if (preg_match('#^exports/#', $file) != 0) {
+        continue;
+    }
     if (substr($file, -4) != '.php') {
         continue;
     }
@@ -57,17 +61,13 @@ foreach ($files as $i => $file) {
     if ($IN != $out) {
         echo '<span style="color: orange">Re-saved ' . escape_html($file) . '</span><br />';
 
-        $myfile = fopen(get_file_base() . '/' . $file, 'wb');
-        fwrite($myfile, $out);
-        fclose($myfile);
+        cms_file_put_contents_safe(get_file_base() . '/' . $file, $out, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 }
 echo 'Finished! You will want to check that any changed do_template arrays are not now ugly, because there\'s no autoformatter here.';
 
 if ($limit_file == '') {
-    $guid_file = fopen(get_file_base() . '/data/guids.dat', 'wb');
-    fwrite($guid_file, serialize($GUID_LANDSCAPE));
-    fclose($guid_file);
+    cms_file_put_contents_safe(get_file_base() . '/data/guids.dat', serialize($GUID_LANDSCAPE), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 }
 
 function callback($match)

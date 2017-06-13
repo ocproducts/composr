@@ -105,7 +105,7 @@ class Block_main_google_map_users
         }
 
         // Data query
-        $query = 'SELECT m_username,mf_member_id,m_primary_group,field_' . strval($latitude_cpf_id) . ',field_' . strval($longitude_cpf_id) . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m ON m.id=f.mf_member_id WHERE ' . db_string_not_equal_to('field_' . strval($longitude_cpf_id), '') . ' AND ' . db_string_not_equal_to('field_' . strval($latitude_cpf_id), '');
+        $query = 'SELECT m_username,mf_member_id,m_primary_group,field_' . strval($latitude_cpf_id) . ',field_' . strval($longitude_cpf_id) . ' FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields f LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m ON m.id=f.mf_member_id WHERE field_' . strval($longitude_cpf_id) . ' IS NOT NULL AND field_' . strval($latitude_cpf_id) . ' IS NOT NULL';
 
         // Filtering
         if (!array_key_exists('filter_usergroup', $map)) {
@@ -145,10 +145,12 @@ class Block_main_google_map_users
             if ($i != 0) {
                 $member_data_js .= ',';
             }
-            $member_data_js .= "['" . addslashes($GLOBALS['FORUM_DRIVER']->get_displayname($member_data['m_username'])) . "'," .
-                               float_to_raw_string(@floatval($member_data['field_' . strval($latitude_cpf_id)])) . "," .
-                               float_to_raw_string(@floatval($member_data['field_' . strval($longitude_cpf_id)])) . "," .
-                               strval($member_data['m_primary_group']) . "]";
+            $member_data_js .= '[
+                \'' . addslashes($GLOBALS['FORUM_DRIVER']->get_displayname($member_data['m_username'])) . '\',' .
+                float_to_raw_string(@floatval($member_data['field_' . strval($latitude_cpf_id)]), 30) . ',' .
+                float_to_raw_string(@floatval($member_data['field_' . strval($longitude_cpf_id)]), 30) . ',' .
+                strval($member_data['m_primary_group']) . '
+            ]';
         }
         $member_data_js .= "];";
 

@@ -148,7 +148,7 @@ write_to('plain.htaccess', 'Apache', '<IfModule mod_rewrite.c>', '</IfModule>', 
 write_to('recommended.htaccess', 'Apache', '<IfModule mod_rewrite.c>', '</IfModule>', 0, $rewrite_rules);
 
 // Write rules to install.php (quick installer)
-write_to('install.php', 'Apache', '/*REWRITE RULES START*/$clauses[]=<<<END', 'END;/*REWRITE RULES END*/', 0, $rewrite_rules);
+write_to('install.php', 'Apache', '/*REWRITE RULES START*/$clauses[]=<<<END', "END;\n\t/*REWRITE RULES END*/", 0, $rewrite_rules);
 
 // Write rules to web.config (new IIS)
 write_to('web.config', 'IIS', '<rules>', '</rules>', 4, $rewrite_rules);
@@ -193,6 +193,8 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
 
             # WebDAV implementation (requires the non-bundled WebDAV addon)
             RewriteRule ^webdav(/.*|$) data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+            RewriteCond %{HTTP_HOST} ^webdav\..*
+            RewriteRule ^(.*)$ data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 
             ';
             foreach ($rewrite_rules as $x => $rewrite_rule_block) {
@@ -324,9 +326,8 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
     $updated = preg_replace('#' . preg_quote($match_start, '#') . '.*' . preg_quote($match_end, '#') . '#s', 'xxxRULES-GO-HERExxx', $existing);
     $updated = str_replace('xxxRULES-GO-HERExxx', $new, $updated);
 
-    $myfile = fopen($file_path, 'wb');
-    fwrite($myfile, $updated);
-    fclose($myfile);
+    require_code('files');
+    cms_file_put_contents_safe($file_path, $updated, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     echo 'Done ' . $file_path . "\n";
 }

@@ -36,8 +36,8 @@ class Module_wiki
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 9;
-        $info['locked'] = false;
         $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -75,6 +75,8 @@ class Module_wiki
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         require_lang('wiki');
+
+        require_code('lang3');
 
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('wiki_children', array(
@@ -149,10 +151,10 @@ class Module_wiki
 
             $GLOBALS['SITE_DB']->add_table_field('wiki_pages', 'edit_date', '?TIME');
 
-            rename_config_option('is_on_wiki', 'is_on_seedy');
-            rename_config_option('points_wiki', 'points_cedi');
-            rename_config_option('wiki_show_stats_count_pages', 'cedi_show_stats_count_pages');
-            rename_config_option('wiki_show_stats_count_posts', 'cedi_show_stats_count_posts');
+            rename_config_option('is_on_seedy', 'is_on_wiki');
+            rename_config_option('points_cedi', 'points_wiki');
+            rename_config_option('cedi_show_stats_count_pages', 'wiki_show_stats_count_pages');
+            rename_config_option('cedi_show_stats_count_posts', 'wiki_show_stats_count_posts');
 
             rename_privilege('seedy_manage_tree', 'wiki_manage_tree');
             rename_privilege('seedy_edit_pages', 'wiki_edit_pages');
@@ -176,6 +178,8 @@ class Module_wiki
                     $GLOBALS['SITE_DB']->query_update($table, array('c_name' => '_wiki_post'), array('c_name' => '_seedy_post'));
                 }
             }
+            $GLOBALS['SITE_DB']->query_update('catalogue_entry_linkage', array('content_type' => 'wiki_page'), array('content_type' => 'cedi_page'));
+            $GLOBALS['SITE_DB']->query_update('catalogue_entry_linkage', array('content_type' => 'wiki_post'), array('content_type' => 'cedi_post'));
 
             $GLOBALS['SITE_DB']->drop_table_if_exists('seedy_changes');
 
@@ -684,7 +688,7 @@ class Module_wiki
             array('wiki_page', 'wiki_post'),
             array($this, '_render_revision'),
             null,
-            strval($id),
+            ($id === null) ? null : strval($id),
             null,
             'wiki_page'
         );

@@ -35,6 +35,7 @@ class Hook_task_import_member_csv
     {
         require_lang('cns');
         require_code('cns_members_action');
+        require_code('fields');
 
         require_code('hooks/systems/tasks/download_member_csv');
         $download_ob = new Hook_task_download_member_csv();
@@ -51,10 +52,15 @@ class Hook_task_import_member_csv
 
         require_code('cns_members_action2');
         $headings = member_get_csv_headings();
-        $all_cpfs = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_default', 'cf_type', 'cf_name'), null, 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $all_cpfs = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('*'), null, 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         foreach ($all_cpfs as $i => $c) { // CPFs take precedence over normal fields of the same name
             $c['_cf_name'] = get_translated_text($c['cf_name'], $GLOBALS['FORUM_DB']);
+
+            $ob = get_fields_hook($c['cf_type']);
+            list(, $_c['cf_default']) = $ob->get_field_value_row_bits($c, false, $c['cf_default']);
+
             $all_cpfs[$i] = $c;
+
             $headings[$c['_cf_name']] = null;
         }
         $_all_groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, false, true);
@@ -139,10 +145,10 @@ class Hook_task_import_member_csv
                     }
 
                     // Tidy up forename
-                    $_forename = preg_replace('#[^\w]#', '', preg_replace('#[\s\.].*#', '', $forename));
+                    $_forename = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', preg_replace('#[\s\.].*#', '', $forename));
 
                     // Tidy up surname (last bit strips like 'OBE')
-                    $_surname = preg_replace('#[^\w]#', '', trim(preg_replace('#\s*[A-Z\d][A-Z\d]+#', '', $surname)));
+                    $_surname = preg_replace('#[^[' . URL_CONTENT_REGEXP . ']]#', '', trim(preg_replace('#\s*[A-Z\d][A-Z\d]+#', '', $surname)));
 
                     // Put it together
                     $line['Username'] = ucfirst($_forename) . ucfirst($_surname) . $year;
@@ -257,7 +263,7 @@ class Hook_task_import_member_csv
                     $join_time = mktime(0, 0, 0, intval($parts[1]), intval($parts[0]), intval($parts[2])); // dd-mm-yyyy
                 }
                 if ($join_time > time()) {
-                    $join_time = time(); // Fixes MySQL out of range error that could happen
+                    $join_time = time(); // Fixes database out of range error that could happen
                 }
             } else {
                 $join_time = null;
@@ -314,11 +320,8 @@ class Hook_task_import_member_csv
             }
             $custom_fields = array();
             foreach ($all_cpfs as $cpf) {
-                $custom_fields[$cpf['id']] = array_key_exists($cpf['_cf_name'], $line) ? $line[$cpf['_cf_name']] : $cpf['cf_default'];
-                if ((!array_key_exists($cpf['_cf_name'], $line)) && ($cpf['cf_type'] == 'list' || $cpf['cf_type'] == 'list_multi')) {
-                    $custom_fields[$cpf['id']] = preg_replace('#\|.*$#', '', $custom_fields[$cpf['id']]);
-                    $custom_fields[$cpf['id']] = preg_replace('#=.*$#', '', $custom_fields[$cpf['id']]);
-                }
+                $custom_fields[$cpf['id']] = array_key_exists($cpf['_cf_name'], $line) ? $line[$cpf['_cf_name']] : $cpf['_cf_default'];
+
                 if ($cpf['cf_type'] == 'integer') {
                     $custom_fields[$cpf['id']] = intval($custom_fields[$cpf['id']]);
                 } elseif ($cpf['cf_type'] == 'tick') {

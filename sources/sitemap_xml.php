@@ -29,7 +29,9 @@ function init__sitemap_xml()
 
     require_code('sitemap');
 
-    define('URLS_PER_SITEMAP_SET', 250); // Limit is 50,000, but we are allowed up to 50,000 sets, so let's be performant here and have small sets
+    if (!defined('URLS_PER_SITEMAP_SET')) {
+        define('URLS_PER_SITEMAP_SET', 250); // Limit is 50,000, but we are allowed up to 50,000 sets, so let's be performant here and have small sets
+    }
 }
 
 /**
@@ -89,6 +91,10 @@ function rebuild_sitemap_set($set_number, $last_time)
             continue;
         }
 
+        if (substr($attributes['page'], 0, 1) == '_') {
+            continue;
+        }
+
         $add_date = $node['add_date'];
         $edit_date = $node['edit_date'];
         $priority = $node['priority'];
@@ -139,7 +145,8 @@ function rebuild_sitemap_set($set_number, $last_time)
 
     // Gzip
     if (function_exists('gzencode')) {
-        file_put_contents($sitemaps_out_path . '.gz', gzencode(file_get_contents($sitemaps_out_path), -1));
+        require_code('files');
+        cms_file_put_contents_safe($sitemaps_out_path . '.gz', gzencode(file_get_contents($sitemaps_out_path), -1), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 }
 

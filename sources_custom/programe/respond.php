@@ -181,7 +181,7 @@ function reply($userinput,$uniqueid, $bot = 1){
 	$allinputs=normalsentences($userinput);
 
 	// If nothing said then use INACTIVITY special input
-	if (sizeof($allinputs)==0){
+	if (count($allinputs)==0){
 		$allinputs[]="INACTIVITY";
 	}
 
@@ -190,7 +190,7 @@ function reply($userinput,$uniqueid, $bot = 1){
 
 	$finalanswer="";
 	// Build our response to all of the inputs.
-	for ($x=0;$x<sizeof($allinputs);$x++){
+	for ($x=0;$x<count($allinputs);$x++){
 		$finalanswer.=respond($allinputs[$x]);
 	}
 
@@ -333,7 +333,7 @@ function recursechildren($xmlnode,$inputstar,$thatstar,$topicstar){
 
 //		if ($xmlnode['value']==""){
 		if (!isset($xmlnode['value'])){
-			for ($x=0;$x<sizeof($xmlnode);$x++){
+			for ($x=0;$x<count($xmlnode);$x++){
 
 				$response .= handlenode($xmlnode[$x],$inputstar,$thatstar,$topicstar);
 
@@ -533,15 +533,15 @@ function handlenode($xmlnode,$inputstar,$thatstar,$topicstar){
 
 		$children = $xmlnode["children"];
 
-		for ($randomc=0;$randomc<sizeof($children);$randomc++){
+		for ($randomc=0;$randomc<count($children);$randomc++){
 			if (is_array($children[$randomc]) && strtoupper($children[$randomc]["tag"]) == "LI"){
 				$liarray[]=$randomc;
 			}
 		}
 
-		// Pick a random number from 0 to sizeof($liarray)-1
+		// Pick a random number from 0 to count($liarray)-1
 		mt_srand ((int) microtime() * 1000000);
-		$lirandom= mt_rand(0,(sizeof($liarray)-1));
+		$lirandom= mt_rand(0,(count($liarray)-1));
 
 
 		return recursechildren(realchild($children[$liarray[$lirandom]]),$inputstar,$thatstar,$topicstar);
@@ -604,7 +604,7 @@ function handlenode($xmlnode,$inputstar,$thatstar,$topicstar){
 		$value=strtolower($value);
 
 		$words=explode(" ",$value);
-		for ($x=0;$x<sizeof($words);$x++){
+		for ($x=0;$x<count($words);$x++){
 			if ($x!=0){
 				$nvalue.=" ";
 			}
@@ -705,7 +705,7 @@ function handlenode($xmlnode,$inputstar,$thatstar,$topicstar){
 
 		$indexes = explode (",", $indexes);
 
-		if (sizeof($indexes)<2){
+		if (count($indexes)<2){
 			$indexes=array();
 			$indexes[]=1;
 			$indexes[]=1;
@@ -789,7 +789,7 @@ function handlenode($xmlnode,$inputstar,$thatstar,$topicstar){
 
 
 			// After a match break. If no match then execute last if no name or val			
-			for ($randomc=0;$randomc<sizeof($children);$randomc++){
+			for ($randomc=0;$randomc<count($children);$randomc++){
 
 				if (strtoupper($children[$randomc]["tag"]) == "LI"){
 
@@ -824,7 +824,7 @@ function handlenode($xmlnode,$inputstar,$thatstar,$topicstar){
 			$children = $xmlnode["children"];
 
 			// After a match break. If no match then execute last if no name or val
-			for ($randomc=0;$randomc<sizeof($children);$randomc++){
+			for ($randomc=0;$randomc<count($children);$randomc++){
 				if (strtoupper($children[$randomc]["tag"]) == "LI"){
 
 					$mynode=upperkeysarray($children[$randomc]["attributes"]);
@@ -867,7 +867,7 @@ function handlenode($xmlnode,$inputstar,$thatstar,$topicstar){
 
 		exec($command,$execoutput);
 
-		for ($x=0;$x<sizeof($execoutput);$x++){
+		for ($x=0;$x<count($execoutput);$x++){
 			$allout=$allout . $execoutput[$x];
 		}
 

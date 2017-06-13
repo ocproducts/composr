@@ -15,6 +15,9 @@
 
 /*EXTRA FUNCTIONS: tempnam|ftp_.*|posix_getuid*/
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -457,7 +460,7 @@ END;
 
         // Make backup
         if (file_exists($save_path)) {
-            $backup_path = $save_path . '.' . strval(time());
+            $backup_path = $save_path . '.' . strval(time()) . '_' . strval(mt_rand(0, mt_getrandmax()));
             $c_success = @copy($save_path, $backup_path);
             if ($c_success !== false) {
                 ce_sync_file($backup_path);
@@ -485,7 +488,7 @@ if (window.alert!==null)
 END;
                     return;
                 }
-                @flock($myfile, LOCK_EX);
+                flock($myfile, LOCK_EX);
                 ftruncate($myfile, 0);
                 if (fwrite($myfile, $file) === false) {
                     fclose($myfile);
@@ -503,7 +506,7 @@ if (window.alert!==null)
 END;
                     return;
                 }
-                @flock($myfile, LOCK_UN);
+                flock($myfile, LOCK_UN);
                 fclose($myfile);
             } else { // Via FTP
                 $path2 = tempnam((((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ((@strval(ini_get('open_basedir')) != '') && (preg_match('#(^|:|;)/tmp($|:|;|/)#', ini_get('open_basedir')) == 0))) ? get_custom_file_base() . '/safe_mode_temp/' : '/tmp/'), 'cmsce');
@@ -565,7 +568,9 @@ END;
                 if (is_null($conn)) { // Via direct access
                     $myfile = @fopen($save_path . '.editfrom', 'wt');
                     if ($myfile !== false) {
+                        flock($myfile, LOCK_EX);
                         fwrite($myfile, $hash);
+                        flock($myfile, LOCK_UN);
                         fclose($myfile);
                     }
                 } else { // Via FTP
@@ -589,9 +594,9 @@ END;
         ce_sync_file($save_path . '.editfrom');
 
         if (!isset($_POST['delete'])) {
-            $message = "Saved " . code_editor_escape_html($save_path) . " (and if applicable, placed a backup in its directory)!";
+            $message = "Saved " . code_editor_escape_html(str_replace('/', DIRECTORY_SEPARATOR, $save_path)) . " (and if applicable, placed a backup in its directory)!";
         } else {
-            $message = "Deleted " . code_editor_escape_html($save_path) . ". You may edit to recreate the file if you wish however.";
+            $message = "Deleted " . code_editor_escape_html(str_replace('/', DIRECTORY_SEPARATOR, $save_path)) . ". You may edit to recreate the file if you wish however.";
         }
         echo <<<END
 <script>
@@ -700,7 +705,7 @@ function ce_cms_tempnam($prefix = '')
             $tempnam = tempnam($local_path, $prefix);
         }
     } else {
-        $tempnam = $prefix . strval(mt_rand(0, min(2147483647, mt_getrandmax())));
+        $tempnam = $prefix . strval(mt_rand(0, mt_getrandmax()));
         $myfile = fopen($local_path . '/' . $tempnam, 'wb');
         fclose($myfile);
     }

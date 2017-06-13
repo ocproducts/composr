@@ -58,7 +58,8 @@ function commandr_script()
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
-        if (!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) {
+        if (!has_actual_page_access(get_member(), 'admin_commandr')) {
+            require_lang('permissions');
             fatal_exit(do_lang_tempcode('ACCESS_DENIED__PAGE_ACCESS', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))));
         }
     }
@@ -1019,7 +1020,7 @@ class Virtual_shell
             $this->output[STREAM_STDERR] = '';
 
             if (is_null($commandr_output)) {
-                $this->output[STREAM_STDERR] = do_lang('SUCCESS');
+                $this->output[STREAM_STDOUT] = do_lang('SUCCESS');
             } else {
                 $this->output[STREAM_STDHTML] = $this->_array_to_html($commandr_output);
             }

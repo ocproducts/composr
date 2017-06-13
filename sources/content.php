@@ -152,7 +152,7 @@ function convert_composr_type_codes($type_has, $type_id, $type_wanted)
 {
     $real_type_wanted = $type_wanted;
 
-    $type_id = preg_replace('#^catalogues__\w+_#', 'catalogues_', $type_id);
+    $type_id = preg_replace('#^catalogues__[' . URL_CONTENT_REGEXP . ']+_#', 'catalogues_', $type_id);
 
     // Search content-meta-aware hooks
     $found_type_id = '';
@@ -185,7 +185,7 @@ function convert_composr_type_codes($type_has, $type_id, $type_wanted)
  */
 function convert_composr_type_codes_multiple($type_has, $type_id)
 {
-    $type_id = preg_replace('#^catalogues__\w+_#', 'catalogues_', $type_id);
+    $type_id = preg_replace('#^catalogues__[' . URL_CONTENT_REGEXP . ']+_#', 'catalogues_', $type_id);
 
     // Search content-meta-aware hooks
     $found_type_ids = array();
@@ -281,7 +281,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
             $content_title = $title_field_dereference ? get_translated_text($_content_title, $db) : $_content_title;
             if (($content_title == '') && (!$resource_fs_style)) {
                 $content_title = do_lang($cma_info['content_type_label']) . ' (#' . (is_string($content_id) ? $content_id : strval($content_id)) . ')';
-                if ($content_type == 'image' || $content_type == 'video') { // A bit of a fudge, but worth doing
+                if (($content_type == 'image' || $content_type == 'video') && (addon_installed('galleries'))) { // A bit of a fudge, but worth doing
                     require_lang('galleries');
                     $fullname = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'fullname', array('name' => $content_row['cat']));
                     if (!is_null($fullname)) {
@@ -379,7 +379,7 @@ function get_content_where_for_str_id($str_id, $cma_info, $table_alias = null)
 {
     $where = array();
     $id_field = $cma_info['id_field'];
-    $id_parts = explode(':', $str_id);
+    $id_parts = is_array($id_field) ? explode(':', $str_id) : array($str_id);
     $id_parts = array_reverse($id_parts);
     foreach (is_array($id_field) ? $id_field : array($id_field) as $i => $id_field_part) {
         $val = array_key_exists($i, $id_parts) ? $id_parts[$i] : '';

@@ -29,14 +29,14 @@
  * @param  ID_TEXT $filter_key The field to get
  * @param  string $field_val The field value for this
  * @param  array $db_fields Database field data
- * @param  string $table_join_code What MySQL will join the table with
+ * @param  string $table_join_code What the database will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
  * @ignore
  */
 function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select, $filter_key, $field_val, $db_fields, $table_join_code)
 {
     // If it's trivial
-    if (($filter_key == 'id') || (preg_match('#^m\_[\w\_]+$#', $filter_key) != 0)) {
+    if (($filter_key == 'id') || (preg_match('#^m\_\w+$#', $filter_key) != 0)) {
         if (!array_key_exists($filter_key, $db_fields)) {
             return null;
         }
@@ -302,8 +302,10 @@ function cns_may_whisper($target, $member_id = null)
         $member_id = get_member();
     }
 
-    if (get_option('enable_pt_restrict') == '0') {
-        return true;
+    if (addon_installed('cns_forum')) {
+        if (get_option('enable_pt_restrict') == '0') {
+            return true;
+        }
     }
 
     if ($target == $member_id) {

@@ -83,7 +83,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 }
                 $usergroup_subscription_row = $usergroup_subscription_rows[$usergroup_subscription_id];
                 $usergroup_subscription_title = get_translated_text($usergroup_subscription_row['s_title']);
-                $usergroup_subscription_description = get_translated_tempcode('f_usergroup_subs', $usergroup_subscription_row, 's_description');
+                $usergroup_subscription_description = get_translated_tempcode('f_usergroup_subs', $usergroup_subscription_row, 's_description', $GLOBALS['FORUM_DB']);
 
                 $usergroup_id = $usergroup_subscription_row['s_group_id'];
                 $usergroup_rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), array('id' => $usergroup_id), '', 1);
@@ -204,7 +204,7 @@ function prepare_templated_subscription($subscription)
         'USERGROUP_NAME' => $subscription['usergroup_name'],
         'LENGTH' => strval($subscription['length']),
         'LENGTH_UNITS' => $subscription['length_units'],
-        'PER' => do_lang('_LENGTH_UNIT_' . $subscription['length_units'], integer_format($subscription['length'])),
+        'PER' => do_lang_tempcode('_LENGTH_UNIT_' . $subscription['length_units'], integer_format($subscription['length'])),
         'AMOUNT' => $subscription['amount'],
         '_VIA' => $subscription['via'],
         'VIA' => do_lang_tempcode('PAYMENT_GATEWAY_' . $subscription['via']),

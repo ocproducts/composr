@@ -108,7 +108,6 @@ class Hook_addon_registry_cns_member_avatars
             'sources/hooks/systems/profiles_tabs_edit/avatar.php',
             'themes/default/images/cns_default_avatars/index.html',
             'themes/default/images/cns_default_avatars/system.png',
-            'themes/default/images/cns_default_avatars/default.png',
             'sources/hooks/systems/config/random_avatars.php',
         );
     }
@@ -136,6 +135,7 @@ class Hook_addon_registry_cns_member_avatars
     {
         require_lang('cns');
         require_css('cns');
+
         $avatar = do_lorem_template('CNS_TOPIC_POST_AVATAR', array(
             'AVATAR' => placeholder_image_url(),
         ));

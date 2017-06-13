@@ -58,9 +58,9 @@ function init__files2()
     $HTTP_MESSAGE_B = null;
     /** The cookies returned from the last file lookup.
      *
-     * @global ?ID_TEXT $HTTP_NEW_COOKIES
+     * @global array $HTTP_NEW_COOKIES
      */
-    $HTTP_NEW_COOKIES = null;
+    $HTTP_NEW_COOKIES = array();
     /** The filename returned from the last file lookup.
      *
      * @global ?ID_TEXT $HTTP_FILENAME
@@ -71,6 +71,16 @@ function init__files2()
      * @global ?ID_TEXT $HTTP_CHARSET
      */
     $HTTP_CHARSET = null;
+    /** Any HTTP headers collected.
+     *
+     * @global array $HTTP_HEADERS
+     */
+    $HTTP_HEADERS = array();
+
+    global $CURL_HEADERS, $CURL_BODY, $CURL_WRITE_TO_FILE;
+    $CURL_HEADERS = array();
+    $CURL_BODY = '';
+    $CURL_WRITE_TO_FILE = null;
 }
 
 /**
@@ -88,12 +98,8 @@ function cache_and_carry($func, $args, $timeout = null)
     $ret = mixed();
 
     $path = get_custom_file_base() . '/safe_mode_temp/' . md5(serialize($args)) . '.dat';
-    if (!file_exists(dirname($path))) {
-        mkdir(dirname($path), 0777);
-        fix_permissions(dirname($path));
-    }
     if (is_file($path) && (($timeout === null) || (filemtime($path) > time() - $timeout * 60))) {
-        $_ret = file_get_contents($path);
+        $_ret = cms_file_get_contents_safe($path);
         if ($func == 'http_download_file') {
             $ret = @unserialize($_ret);
         } else {
@@ -101,31 +107,39 @@ function cache_and_carry($func, $args, $timeout = null)
         }
     } else {
         $_ret = call_user_func_array($func, $args);
+        require_code('files');
         if ($func == 'http_download_file') {
             $ret = array($_ret, $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME);
-            @file_put_contents($path, serialize($ret), LOCK_EX);
+            cms_file_put_contents_safe($path, serialize($ret), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         } else {
             $ret = is_string($_ret) ? $_ret : serialize($_ret);
-            @file_put_contents($path, $ret, LOCK_EX);
+            cms_file_put_contents_safe($path, $ret, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         }
-        fix_permissions($path);
-        sync_file($path);
     }
     return $ret;
 }
 
 /**
- * Make a missing required directory, or exit with an error if we cannot.
+ * Make a missing required directory, or exit with an error if we cannot (unless error suppression is on).
  *
  * @param PATH $dir Path to create
+ * @return boolean Success status
  */
 function make_missing_directory($dir)
 {
     if (@mkdir($dir, 0777, true) === false) {
-        warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY_REPAIR', escape_html($dir)));
+        if (error_reporting() == 0) {
+            return false;
+        }
+        if (function_exists('do_lang_tempcode')) {
+            warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY_REPAIR', escape_html($dir)));
+        } else {
+            warn_exit('Could not auto-create missing directory ' . htmlentities($dir));
+        }
     }
     fix_permissions($dir);
     sync_file($dir);
+    return true;
 }
 
 /**
@@ -136,6 +150,14 @@ function make_missing_directory($dir)
  */
 function _intelligent_write_error($path)
 {
+    if (error_reporting() == 0) {
+        return;
+    }
+
+    if (!function_exists('do_lang_tempcode')) {
+        warn_exit('Could not write to ' . htmlentities($path));
+    }
+
     if (file_exists($path)) {
         if (filesize($path) == 0) {
             return; // Probably was OR'd where 0 casted to false
@@ -179,8 +201,7 @@ function cms_get_temp_dir()
 {
     $local_path = get_custom_file_base() . '/safe_mode_temp';
     if (!file_exists($local_path)) {
-        mkdir($local_path, 0777);
-        fix_permissions($local_path);
+        make_missing_directory($local_path);
     }
     if (function_exists('sys_get_temp_dir')) {
         $server_path = sys_get_temp_dir();
@@ -343,7 +364,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
 {
     if ($headers) {
         header('Content-Type: text/csv; charset=' . get_charset());
-        header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
+        header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
         if (cms_srv('REQUEST_METHOD') == 'HEAD') {
             return '';
@@ -353,9 +374,16 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
     $outfile = mixed();
     if (!is_null($outfile_path)) {
         $outfile = fopen($outfile_path, 'w+b');
+        flock($outfile, LOCK_EX);
     }
 
     $out = '';
+
+    if (get_charset() == 'utf-8') {
+        $bom = chr(0xEF) . chr(0xBB) . chr(0xBF);
+        //$out .= $bom; Shows as gibberish on Mac unless you explicitly import it with the correct settings
+    }
+
     foreach ($data as $i => $line) {
         if ($i == 0) { // Header
             foreach (array_keys($line) as $j => $val) {
@@ -397,11 +425,18 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
         if (!is_null($outfile)) {
             rewind($outfile);
             fpassthru($outfile);
+            flock($outfile, LOCK_UN);
             fclose($outfile);
             @unlink($outfile_path);
         }
         exit($out);
     }
+
+    if ($outfile !== null) {
+        flock($outfile, LOCK_UN);
+        fclose($outfile);
+    }
+
     return $out;
 }
 
@@ -419,6 +454,7 @@ function delete_csv_column($in_path, $column_name)
 
     // Find which field index this named column is
     $in_file = fopen($in_path, 'rb');
+    flock($in_file, LOCK_SH);
     $header_row = fgetcsv($in_file);
     $column_i = null;
     foreach ($header_row as $i => $h) {
@@ -459,6 +495,7 @@ function delete_csv_column($in_path, $column_name)
     }
 
     // Clean up; put temp file back over main file
+    flock($in_file, LOCK_UN);
     fclose($in_file);
     fclose($tmp_file);
     @unlink($in_path);
@@ -758,7 +795,7 @@ function delete_upload($upload_path, $table, $field, $id_field, $id, $new_url = 
     // Try and delete the file
     if (($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) || (get_option('cleanup_files') == '1')) { // This isn't really a permission - more a failsafe in case there is a security hole. Staff can cleanup leftover files from the Cleanup module anyway. NB: Also repeated in cms_galleries.php.
         $where = is_array($id_field) ? $id_field : array($id_field => $id);
-        $url = $GLOBALS['SITE_DB']->query_select_value_if_there($table, $field, $where);
+        $url = $GLOBALS['SITE_DB']->query_select_value_if_there($table, filter_naughty_harsh($field), $where);
         if (empty($url)) {
             return;
         }
@@ -888,6 +925,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         $HTTP_NEW_COOKIES = array();
     }
     $HTTP_FILENAME = null;
+    $HTTP_HEADERS = array();
 
     static $has_ctype_xdigit = null;
     if ($has_ctype_xdigit === null) {
@@ -944,7 +982,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
             }
             $connect_to = $config_ip_forwarding;
         }
-    } elseif (php_function_allowed('gethostbyname')) {
+    } elseif ((php_function_allowed('gethostbyname')) && ($url_parts['scheme'] == 'http')) {
         $connect_to = @gethostbyname($connect_to); // for DNS caching
     }
     if (!array_key_exists('scheme', $url_parts)) {
@@ -1005,12 +1043,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         }
     }
 
-    $use_curl = (($url_parts['scheme'] != 'http') || ((function_exists('get_value')) && (get_value('prefer_curl') === '1'))) && (function_exists('curl_version'));
+    $use_curl = (($url_parts['scheme'] != 'http') || ((function_exists('get_value')) && (get_value('prefer_curl') === '1'))) && (function_exists('curl_version')) || (!php_function_allowed('fsockopen'));
     if ((function_exists('get_value')) && (get_value('prefer_curl') === '0')) {
         $use_curl = false;
     }
 
-    $raw_payload = '';
+    $raw_payload = ''; // Note that this will contain HTTP headers (it is appended directly after headers with no \r\n between -- so it contains \r\n\r\n itself when the content body is going to start)
+    $raw_payload_curl = '';
+    $sent_http_post_content = false;
     $put = mixed();
     $put_path = mixed();
     $put_no_delete = false;
@@ -1027,27 +1067,25 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $_postdetails_params = $post_params['_'];
             } else {
                 if (count($post_params) > 0) {
-                    $_postdetails_params .= '&' . http_build_query($post_params);
+                    $_postdetails_params .= http_build_query($post_params);
                 }
             }
         }
 
         if (is_null($files)) { // If no files, use simple application/x-www-form-urlencoded
-            if (!$use_curl) {
-                if ($raw_post) {
-                    if (!isset($extra_headers['Content-Type'])) {
-                        $raw_payload .= 'Content-Type: ' . $raw_content_type . "\r\n";
-                    }
-                } else {
-                    $raw_payload .= 'Content-Type: application/x-www-form-urlencoded; charset=' . get_charset() . "\r\n";
+            if ($raw_post) {
+                if (!isset($extra_headers['Content-Type'])) {
+                    $raw_payload .= 'Content-Type: ' . $raw_content_type . "\r\n";
                 }
-                $raw_payload .= 'Content-Length: ' . strval(strlen($_postdetails_params)) . "\r\n";
-                $raw_payload .= "\r\n";
-            } // curl sets the above itself
-            $raw_payload .= $_postdetails_params;
-            if (!$use_curl) {
-                $raw_payload .= "\r\n\r\n";
+            } else {
+                $raw_payload .= 'Content-Type: application/x-www-form-urlencoded; charset=' . get_charset() . "\r\n";
             }
+            $raw_payload .= 'Content-Length: ' . strval(strlen($_postdetails_params)) . "\r\n";
+            $raw_payload .= "\r\n";
+
+            $raw_payload .= $_postdetails_params;
+            $raw_payload_curl = $_postdetails_params; // Other settings will be passed via cURL itself
+            $sent_http_post_content = true;
         } else { // If files, use more complex multipart/form-data
             if (strtolower($http_verb) == 'put') {
                 $put_no_delete = (count($post_params) == 0) && (count($files) == 1); // Can we just use the one referenced file as a direct PUT
@@ -1134,9 +1172,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $raw_payload .= 'Content-Length: ' . strval(strlen($raw_payload2)) . "\r\n";
             }
             $raw_payload .= "\r\n" . $raw_payload2;
-            if ($use_curl) {
-                $raw_payload = $raw_payload2; // Other settings will be passed via cURL itself
-            }
+
+            $raw_payload_curl = $raw_payload2; // Other settings will be passed via cURL itself
         }
     }
 
@@ -1183,10 +1220,13 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                         $curl_version = curl_version();
                                         if (((is_string($curl_version)) && (strpos($curl_version, 'OpenSSL') !== false)) || ((is_array($curl_version)) && (array_key_exists('ssl_version', $curl_version)))) {
                                             $ch = curl_init($do_ip_forwarding ? $_url : $url);
-                                            $curl_headers = array();
+
+                                            // Cookie prep
                                             if ((!is_null($cookies)) && (count($cookies) != 0)) {
                                                 curl_setopt($ch, CURLOPT_COOKIE, $_cookies);
                                             }
+
+                                            // SSL prep
                                             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
                                             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, !((function_exists('get_value')) && (get_value('disable_ssl_for__' . $url_parts['host']) === '1')));
                                             if (ini_get('curl.cainfo') == '') {
@@ -1194,7 +1234,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
                                             }
                                             if (defined('CURL_SSLVERSION_TLSv1')) {
-                                                curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+                                                curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1); // https://jve.linuxwall.info/blog/index.php?post/TLS_Survey
                                             } else {
                                                 if ((!is_array($curl_version)) || (!isset($curl_version['ssl_version'])) || (strpos($curl_version['ssl_version'], 'NSS') === false) || (version_compare($curl_version['version'], '7.36.0') >= 0)) {
                                                     curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
@@ -1206,11 +1246,21 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                                             }
+
+                                            // Misc settings
                                             //if (!$no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // May fail with safe mode, meaning we can't follow Location headers. But we can do better ourselves anyway and protect against file:// exploits.
                                             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($timeout));
                                             curl_setopt($ch, CURLOPT_TIMEOUT, intval($timeout));
-                                            curl_setopt($ch, CURLOPT_USERAGENT, $ua);
-                                            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $http_verb);
+
+                                            // Request type
+                                            if ($http_verb == 'HEAD') {
+                                                curl_setopt($ch, CURLOPT_NOBODY, true); // Branch needed as doing a HEAD via CURLOPT_CUSTOMREQUEST can cause a timeout bug in cURL
+                                            } else {
+                                                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $http_verb);
+                                            }
+
+                                            // Headers
+                                            $curl_headers = array();
                                             if (!is_null($accept)) {
                                                 $curl_headers[] = 'Accept: ' . $accept;
                                             }
@@ -1240,14 +1290,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     curl_setopt($ch, CURLOPT_INFILESIZE, filesize($put_path));
                                                 } else {
                                                     curl_setopt($ch, CURLOPT_POST, true);
-                                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $raw_payload);
+                                                    curl_setopt($ch, CURLOPT_POSTFIELDS, $raw_payload_curl);
                                                     if (!is_null($files)) {
                                                         $curl_headers[] = 'Content-Type: multipart/form-data; boundary="--cms' . $divider . '"; charset=' . get_charset();
                                                     }
                                                 }
                                             }
                                             if ($do_ip_forwarding) {
-                                                $curl_headers[] = 'Host: ' . $url_parts['host'] . "\r\n";
+                                                $curl_headers[] = 'Host: ' . $url_parts['host'];
                                             }
                                             if ((count($curl_headers) != 0) && ((is_null($files)/*Breaks file uploads for some reason*/) || (!is_null($extra_headers)))) {
                                                 if (defined('CURLINFO_HEADER_OUT')) {
@@ -1255,14 +1305,20 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 }
                                                 curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
                                             }
-                                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                                            curl_setopt($ch, CURLOPT_HEADER, true); // include header in output
+
+                                            // cURL options that will create headers also
                                             if (!is_null($auth)) {
                                                 curl_setopt($ch, CURLOPT_USERPWD, implode(':', $auth));
                                             }
                                             if (!is_null($referer)) {
                                                 curl_setopt($ch, CURLOPT_REFERER, $referer);
                                             }
+                                            curl_setopt($ch, CURLOPT_USERAGENT, $ua);
+                                            if ($byte_limit !== null) {
+                                                curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($byte_limit == 0) ? 0 : ($byte_limit - 1)));
+                                            }
+
+                                            // Proxy settings
                                             $proxy = function_exists('get_option') ? get_option('proxy') : '';
                                             if (($proxy != '') && ($url_parts['host'] != 'localhost') && ($url_parts['host'] != '127.0.0.1')) {
                                                 $port = get_option('proxy_port');
@@ -1273,23 +1329,23 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_user . ':' . $proxy_password);
                                                 }
                                             }
-                                            if ($byte_limit !== null) {
-                                                curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($byte_limit == 0) ? 0 : ($byte_limit - 1)));
-                                            }
-                                            $line = curl_exec($ch);
-                                            /*if ((count($curl_headers)!=0) && ((!is_null($files)))) { // Useful for debugging
-                                                var_dump(curl_getinfo($ch,CURLINFO_HEADER_OUT));exit();
-                                            }*/
-                                            if ($line === false) {
+
+                                            // Data collection
+                                            global $CURL_HEADERS, $CURL_BODY, $CURL_WRITE_TO_FILE;
+                                            $CURL_HEADERS = array();
+                                            $CURL_BODY = '';
+                                            $CURL_WRITE_TO_FILE = $write_to_file;
+                                            curl_setopt($ch, CURLOPT_HEADERFUNCTION, '_http_download_file_curl_headers');
+                                            curl_setopt($ch, CURLOPT_WRITEFUNCTION, '_http_download_file_curl_body');
+
+                                            // Response
+                                            $curl_result = curl_exec($ch);
+                                            if (!$curl_result) {
+                                                // Error
                                                 $error = curl_error($ch);
                                                 curl_close($ch);
                                             } else {
-                                                if (substr($line, 0, 25) == "HTTP/1.1 100 Continue\r\n\r\n") {
-                                                    $line = substr($line, 25);
-                                                }
-                                                if (substr($line, 0, 25) == "HTTP/1.0 100 Continue\r\n\r\n") {
-                                                    $line = substr($line, 25);
-                                                }
+                                                // Response metadata that cURL lets us gather easily
                                                 $HTTP_DOWNLOAD_MIME_TYPE = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
                                                 $HTTP_DOWNLOAD_SIZE = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
                                                 $HTTP_DOWNLOAD_URL = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
@@ -1301,33 +1357,19 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                     $HTTP_CHARSET = substr($HTTP_DOWNLOAD_MIME_TYPE, 8 + strpos($HTTP_DOWNLOAD_MIME_TYPE, 'charset='));
                                                     $HTTP_DOWNLOAD_MIME_TYPE = substr($HTTP_DOWNLOAD_MIME_TYPE, 0, strpos($HTTP_DOWNLOAD_MIME_TYPE, ';'));
                                                 }
+
                                                 curl_close($ch);
-                                                if (substr($line, 0, strlen('HTTP/1.0 200 Connection Established')) == 'HTTP/1.0 200 Connection Established') {
-                                                    $line = substr($line, strpos($line, "\r\n\r\n") + 4);
-                                                }
-                                                $pos = strpos($line, "\r\n\r\n");
 
-                                                if (substr($line, 0, strlen('HTTP/1.1 100 ')) == 'HTTP/1.1 100 ' || substr($line, 0, strlen('HTTP/1.0 100 ')) == 'HTTP/1.0 100 ') {
-                                                    $pos = strpos($line, "\r\n\r\n", $pos + 4);
-                                                }
-                                                if ($pos === false) {
-                                                    $pos = strlen($line);
-                                                } else {
-                                                    $pos += 4;
-                                                }
-                                                $lines = explode("\r\n", substr($line, 0, $pos));
-
-                                                foreach ($lines as $lno => $_line) {
-                                                    $_line .= "\r\n";
+                                                // Receive headers
+                                                foreach ($CURL_HEADERS as $header) {
                                                     $matches = array();
-
-                                                    if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $_line, $matches) != 0) {
-                                                        $HTTP_FILENAME = $matches[1];
+                                                    if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $header, $matches) != 0) {
+                                                        _read_in_headers($header);
                                                     }
-                                                    if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $_line, $matches) != 0) {
-                                                        $HTTP_NEW_COOKIES[trim(rawurldecode($matches[1]))] = trim($matches[2]);
+                                                    if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $header, $matches) != 0) {
+                                                        _read_in_headers($header);
                                                     }
-                                                    if (preg_match("#^Location: (.*)\r\n#i", $_line, $matches) != 0) {
+                                                    if (preg_match("#^Location: (.*)\r\n#i", $header, $matches) != 0) {
                                                         if (is_null($HTTP_FILENAME)) {
                                                             $HTTP_FILENAME = urldecode(basename($matches[1]));
                                                         }
@@ -1338,7 +1380,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                         $HTTP_DOWNLOAD_URL = $matches[1];
                                                         if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $HTTP_MESSAGE) != 0)) {
                                                             $bak = $HTTP_FILENAME;
-                                                            $text = $no_redirect ? mixed() : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                                            $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
+                                                            $text = $no_redirect ? mixed() : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
                                                             if (is_null($HTTP_FILENAME)) {
                                                                 $HTTP_FILENAME = $bak;
                                                             }
@@ -1349,17 +1392,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                                     @unlink($put_path);
                                                                 }
                                                             }
-                                                            if (!is_null($text)) {
-                                                                if (!is_null($write_to_file)) {
-                                                                    fwrite($write_to_file, $text);
-                                                                    $text = '';
-                                                                }
-                                                            }
                                                             return _detect_character_encoding($text);
                                                         }
                                                     }
                                                 }
 
+                                                // Cleanup
                                                 $DOWNLOAD_LEVEL--;
                                                 if ($put !== null) {
                                                     fclose($put);
@@ -1367,12 +1405,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                         @unlink($put_path);
                                                     }
                                                 }
-                                                $text = substr($line, $pos);
-                                                if (!is_null($write_to_file)) {
-                                                    fwrite($write_to_file, $text);
-                                                    $text = '';
+
+                                                // Receive body
+                                                if ($HTTP_MESSAGE != '200') {
+                                                    $CURL_BODY = '';
                                                 }
-                                                return _detect_character_encoding($text);
+                                                return _detect_character_encoding($CURL_BODY);
                                             }
                                         }
                                     }
@@ -1396,7 +1434,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
     }
     if (!is_null($extra_headers)) {
         foreach ($extra_headers as $key => $val) {
-            $headers .= $key . ': ' . rawurlencode($val) . "\r\n";
+            $headers .= $key . ': ' . $val . "\r\n";
         }
     }
     if (!is_null($accept)) {
@@ -1451,19 +1489,21 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
         if (($proxy != '') && ($connect_to != 'localhost') && ($connect_to != '127.0.0.1')) {
             $out = '';
-            $out .= $http_verb . ' ' . str_replace("\r", '', str_replace("\n", '', $url)) . " HTTP/1.1\r\n";
+            $out .= $http_verb . ' ' . escape_header($url) . " HTTP/1.1\r\n";
             $proxy_user = get_option('proxy_user');
             if ($proxy_user != '') {
                 $proxy_password = get_option('proxy_password');
                 $out .= 'Proxy-Authorization: Basic ' . base64_encode($proxy_user . ':' . $proxy_password) . "\r\n";
             }
         } else {
-            $out = ((is_null($post_params)) ? (($byte_limit === 0) ? 'HEAD ' : 'GET ') : 'POST ') . str_replace("\r", '', str_replace("\n", '', $url2)) . " HTTP/1.1\r\n";
+            $out = $http_verb . ' ' . escape_header($url2) . " HTTP/1.1\r\n";
         }
         $out .= 'Host: ' . $url_parts['host'] . "\r\n";
         $out .= $headers;
         $out .= $raw_payload;
-        $out .= 'Connection: Close' . "\r\n\r\n";
+        if (!$sent_http_post_content) {
+            $out .= 'Connection: Close' . "\r\n\r\n";
+        }
         @fwrite($mysock, $out);
         if ($put !== null) {
             rewind($put);
@@ -1590,7 +1630,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             $matches[1] = qualify_url($matches[1], $url);
                         }
                         $bak = $HTTP_FILENAME;
-                        $text = $no_redirect ? null : _http_download_file($matches[2], $byte_limit, $trigger_error, false, $ua, null, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                        $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
+                        $text = $no_redirect ? null : _http_download_file($matches[2], $byte_limit, $trigger_error, false, $ua, null, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
                         if ($no_redirect) {
                             $HTTP_DOWNLOAD_URL = $matches[2];
                         }
@@ -1619,7 +1660,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                             $bak = $HTTP_FILENAME;
                             $HTTP_DOWNLOAD_URL = $matches[1];
                             if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $HTTP_MESSAGE) != 0)) {
-                                $text = $no_redirect ? null : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
+                                $text = $no_redirect ? null : _http_download_file($matches[1], $byte_limit, $trigger_error, false, $ua, null, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
                                 if (is_null($HTTP_FILENAME)) {
                                     $HTTP_FILENAME = $bak;
                                 }
@@ -1702,7 +1744,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                 return null;
                             case '405':
                                 if ($byte_limit == 0 && !$no_redirect && empty($post_params)) { // Try again as non-HEAD request if we just did a HEAD request that got "Method not allowed"
-                                    $text = _http_download_file($url, 1, $trigger_error, false, $ua, $post_params, $cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
+                                    $combined_cookies = collapse_2d_complexity('key', 'value', $HTTP_NEW_COOKIES) + (($cookies === null) ? array() : $cookies);
+                                    $text = _http_download_file($url, 1, $trigger_error, false, $ua, $post_params, $combined_cookies, $accept, $accept_charset, $accept_language, $write_to_file, $referer, $auth, $timeout, $raw_post, $files, $extra_headers, $http_verb, $raw_content_type);
                                     $DOWNLOAD_LEVEL--;
                                     if ($put !== null) {
                                         fclose($put);
@@ -1811,18 +1854,26 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $raw_payload .= file_get_contents($put_path);
             }
             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
+            $last_headers = stripos($raw_payload, "\r\n\r\n");
+            if ($last_headers !== false) {
+                $headers .= substr($raw_payload, 0, $last_headers + 2);
+                $raw_payload = substr($raw_payload, $last_headers + 4);
+            }
             $opts = array(
-                'method' => $http_verb,
-                'header' => rtrim(($do_ip_forwarding ? ('Host: ' . $url_parts['host'] . "\r\n") : '') . $headers),
-                'user_agent' => $ua,
-                'content' => $raw_payload,
-                'follow_location' => $no_redirect ? 0 : 1,
+                'http' => array(
+                    'method' => $http_verb,
+                    'header' => rtrim((($url_parts['host'] != $connect_to) ? ('Host: ' . $url_parts['host'] . "\r\n") : '') . $headers),
+                    'user_agent' => $ua,
+                    'content' => $raw_payload,
+                    'follow_location' => $no_redirect ? 0 : 1,
+                    //'ignore_errors' => true, // Useful when debugging
+                ),
                 'ssl' => array(
                     'verify_peer' => !$do_ip_forwarding,
                     'cafile' => $crt_path,
                     'SNI_enabled' => true,
                     'ciphers' => 'TLSv1',
-                )
+                ),
             );
             $proxy = function_exists('get_option') ? get_option('proxy') : '';
             if ($proxy != '') {
@@ -1830,17 +1881,33 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 $proxy_user = get_option('proxy_user');
                 if ($proxy_user != '') {
                     $proxy_password = get_option('proxy_password');
-                    $opts['proxy'] = 'tcp://' . $proxy_user . ':' . $proxy_password . '@' . $proxy . ':' . $port;
+                    $opts['http']['proxy'] = 'tcp://' . $proxy_user . ':' . $proxy_password . '@' . $proxy . ':' . $port;
                 } else {
-                    $opts['proxy'] = 'tcp://' . $proxy . ':' . $port;
+                    $opts['http']['proxy'] = 'tcp://' . $proxy . ':' . $port;
                 }
             }
-            $context = stream_context_create(array('http' => $opts));
+            $context = stream_context_create($opts);
             $php_errormsg = mixed();
             if (($byte_limit === null) && (is_null($write_to_file))) {
-                $read_file = @file_get_contents($_url, false, $context);
+                if ($trigger_error) {
+                    global $SUPPRESS_ERROR_DEATH;
+                    $bak_sed = $SUPPRESS_ERROR_DEATH;
+                    $SUPPRESS_ERROR_DEATH = true; // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.
+                    $read_file = file_get_contents($_url, false, $context);
+                    $SUPPRESS_ERROR_DEATH = $bak_sed;
+                } else {
+                    $read_file = @file_get_contents($_url, false, $context);
+                }
             } else {
-                $_read_file = @fopen($_url, 'rb', false, $context);
+                if ($trigger_error) {
+                    global $SUPPRESS_ERROR_DEATH;
+                    $bak_sed = $SUPPRESS_ERROR_DEATH;
+                    $SUPPRESS_ERROR_DEATH = true; // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.
+                    $_read_file = fopen($_url, 'rb', false, $context);
+                    $SUPPRESS_ERROR_DEATH = $bak_sed;
+                } else {
+                    $_read_file = @fopen($_url, 'rb', false, $context);
+                }
                 if ($_read_file !== false) {
                     $read_file = '';
                     while ((!feof($_read_file)) && (($byte_limit === null) || (strlen($read_file) < $byte_limit))) {
@@ -1900,7 +1967,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 }
 
 /**
- * Read in any HTTP headers from an HTTP line, that we probe for.
+ * Read in any HTTP headers that we probe for, from an HTTP line.
  *
  * @param  string $line The line
  *
@@ -1908,14 +1975,34 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
  */
 function _read_in_headers($line)
 {
-    global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME;
+    global $HTTP_DOWNLOAD_MIME_TYPE, $HTTP_DOWNLOAD_SIZE, $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $HTTP_MESSAGE_B, $HTTP_NEW_COOKIES, $HTTP_FILENAME, $HTTP_CHARSET, $HTTP_DOWNLOAD_MTIME, $HTTP_HEADERS;
 
     $matches = array();
     if (preg_match("#Content-Disposition: [^\r\n]*filename=\"([^;\r\n]*)\"\r\n#i", $line, $matches) != 0) {
         $HTTP_FILENAME = $matches[1];
     }
     if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $line, $matches) != 0) {
-        $HTTP_NEW_COOKIES[trim(rawurldecode($matches[1]))] = trim($matches[2]);
+        $cookie_key = trim(rawurldecode($matches[1]));
+
+        $cookie_value = trim($matches[2]);
+        $_cookie_parts = explode('; ', $cookie_value);
+
+        $cookie_parts = array();
+
+        $cookie_parts['key'] = $cookie_key;
+        $cookie_parts['value'] = trim(rawurldecode(array_shift($_cookie_parts)));
+
+        foreach ($_cookie_parts as $i => $part) {
+            $temp = explode('=', $part, 2);
+            if (array_key_exists(1, $temp)) {
+                $cookie_parts[trim($temp[0])] = trim(rawurldecode($temp[1]));
+            }
+        }
+        if (function_exists('get_cookie_domain')) {
+            $cookie_parts['domain'] = get_cookie_domain();
+        }
+
+        $HTTP_NEW_COOKIES[$cookie_key] = $cookie_parts;
     }
     if (preg_match("#^Content-Length: ([^;\r\n]*)\r\n#i", $line, $matches) != 0) {
         $HTTP_DOWNLOAD_SIZE = intval($matches[1]);
@@ -1935,6 +2022,8 @@ function _read_in_headers($line)
             }
         }
     }
+
+    $HTTP_HEADERS[] = $line;
 }
 
 /**
@@ -2033,6 +2122,9 @@ function get_webpage_meta_details($url)
 
         if ($meta_details['t_image_url'] != '') {
             $meta_details['t_image_url'] = qualify_url($meta_details['t_image_url'], $url);
+            if (strlen($meta_details['t_image_url']) > 255) {
+                $meta_details['t_image_url'] = ''; // We can't deal with really long URLs here
+            }
         }
 
         if (($result[1] == 'application/octet-stream') || ($result[1] == '')) {
@@ -2052,9 +2144,15 @@ function get_webpage_meta_details($url)
             if ((preg_match('#\srel=["\']?alternate["\']?#i', $line) != 0) && (preg_match('#\shref=["\']?([^"\']+)["\']?#i', $line, $matches2) != 0)) {
                 if (preg_match('#\stype=["\']?application/json\+oembed["\']?#i', $line) != 0) {
                     $meta_details['t_json_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES, get_charset());
+                    if (strlen($meta_details['t_json_discovery']) > 255) {
+                        $meta_details['t_json_discovery'] = ''; // We can't deal with really long URLs here
+                    }
                 }
                 if (preg_match('#\stype=["\']?text/xml\+oembed["\']?#i', $line) != 0) {
                     $meta_details['t_xml_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES, get_charset());
+                    if (strlen($meta_details['t_xml_discovery']) > 255) {
+                        $meta_details['t_xml_discovery'] = ''; // We can't deal with really long URLs here
+                    }
                 }
             }
         }
@@ -2066,6 +2164,42 @@ function get_webpage_meta_details($url)
 
     $cache[$url] = $meta_details;
     return $meta_details;
+}
+
+/**
+ * Callback for receiving cURL headers.
+ *
+ * @param  resource $ch cURL resource handle
+ * @param  string $header Header
+ * @return integer Length of header
+ *
+ * @ignore
+ */
+function _http_download_file_curl_headers($ch, $header)
+{
+    global $CURL_HEADERS;
+    $CURL_HEADERS[] = $header;
+    return strlen($header);
+}
+
+/**
+ * Callback for receiving a part of the cURL body.
+ *
+ * @param  resource $ch cURL resource handle
+ * @param  string $str Body part
+ * @return integer Length of body part
+ *
+ * @ignore
+ */
+function _http_download_file_curl_body($ch, $str)
+{
+    global $CURL_BODY, $CURL_WRITE_TO_FILE;
+    if ($CURL_WRITE_TO_FILE !== null) {
+        fwrite($CURL_WRITE_TO_FILE, $str);
+    } else {
+        $CURL_BODY .= $str;
+    }
+    return strlen($str);
 }
 
 /**

@@ -59,6 +59,10 @@ As web standards are evolving and we often need to make use of ones that are not
 
 The developers do not officially get involved in the translation of Composr. Please check the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page] for more information on specific languages and if you would like to get involved with translation (please do!). We provide an [page="_SEARCH:tut_intl"]Internationalisation tutorial[/page], and tools, to translate Composr, and Composr has excellent internationalisation support.
 
+[title="3"]What's with your funky domain name?[/title]
+
+We like that [tt]compo.sr[/tt] is short and catch, and we don't own any of the obvious [tt].com[/tt] variants. If you prefer you can access the site via [tt]composr.org[/tt].
+
 [title="2"]Licensing and costs[/title]
 
 [html]<div></div><a id="oss"></a>[/html][title="3"]How much does Composr cost?[/title]
@@ -139,7 +143,9 @@ Composr is a British (in fact, English) company, so spelling is in British Engli
 
 [title="3"]How can I make a donation?[/title]
 
-As we're a company we don't really accept direct donations, but you can sponsor features on the [url="tracker"]{$BRAND_BASE_URL}/tracker/[/url].
+As we're a company we don't really accept direct donations, but you can:
+1) sponsor features on the [url="tracker"]{$BRAND_BASE_URL}/tracker/[/url]
+2) support the lead developer Chris Graham as an individual on [url="Patreon"]https://www.patreon.com/composr[/url] (or other individual Composr CMS developers for that matter)
 
 [title="3"]How is ocProducts funded / what is your company philosophy?[/title]
 
@@ -355,9 +361,12 @@ The [tt]from[/tt] address (different to the 'reply address' you see when you cli
 
 This can be very difficult to debug, but is unlikely to be the fault of Composr. One possibility is if your server is on a spam blacklist. Another is that the outgoing e-mail server you are using is clogged or broken. Another possibility is that your website name could look like spam, or your server is not on an SPF list for the website e-mail address. If you are using the inbuilt SMTP sending functionality (if you filled it in in the configuration), please be aware that it is best to not use this unless the inbuilt PHP functionality (which is auto-configured by the webhost) is not working.
 
-[title="3"]Why do my sessions timeout too quickly?[/title]
+[title="3"]Why do large uploads fail on IIS?[/title]
 
-If your sessions timeout in less than the time configured in the "Session expiry-time" option then a faulty MySQL installation could be the cause. A workaround is to manually edit the [tt]cms_sessions[/tt] table to have a table type of [tt]MyISAM[/tt]. The default is type [tt]MEMORY[/tt] (for performance reasons), but if MySQL keeps resetting itself this won't hold properly.
+If you are using PHP as FastCGI check out these settings...
+IIS Manage > Host Computer > FastCGI Settings > php-cgi.exe > Edit > Activity Timeout
+IIS Manage > Host Computer > FastCGI Settings > php-cgi.exe > Edit > Request Timeout
+IIS Manage > Host Computer > FastCGI Settings > php-cgi.exe>  Edit > Idle Timeout
 
 [title="2"]Common usage queries[/title]
 
@@ -417,6 +426,16 @@ On the tracker issues it says "These hotfixes are not necessarily reliable or we
 
 So, please don't go installing all of them, it'll hurt you more than it will help you, and it's not expected. Just install a hotfix if you are being affected by a specific issue and keep up with the official patch releases.
 
+[title="3"]Can I get early access to new features?[/title]
+
+Nothing should be considered usable in production until at least beta of the version it is set to arrive in. Before then things are typically developed in feature branches (which have no specific version as they're off-track); compatibility is likely to be broken dozens of times before final release -- e.g. database structure, CSS structure, file names, etc. This is because the various in-development features often overlap, or late unexpected changes happen. Those compatibility breaks wouldn't be supported or documented in any way, so anyone using it early would be on their own unfortunately. There's no way for us to bridge this stuff for a large product like Composr outside of official releases, there are too many permutations of compatibility states.
+
+Programmers can break that rule if they're going to take individual responsibility for the non-final code and manually keep it updated/upgraded with whatever changes will happen until its final release within an official version. That's a legitimate approach but it's expert work, whoever is doing it needs a strong understanding of how the code works.
+
+So, by all means try it out to do an early test run and report any feedback (much appreciated), just please don't expect the test site to turn into a real site when the next major version hits beta, expect it to at some point become terminally incompatible with the mainline releases.
+
+I hope that clears things up. People are eager to be early-adopters, but there's some limitation to that.
+
 [title="2"]Programming philosophy and goals[/title]
 
 [title="3"]Will you implement (some feature)?[/title]
@@ -470,7 +489,7 @@ Instead, you can create a mini-block, and then place that mini-block into a temp
 
 [title="3"]Is there a CSS map?[/title]
 
-No, there is too much CSS to feasibly make a map as is often used for forum software. Instead, we would recommend using the Firefox 'Firebug' extension (or similar for other browsers) to identify what CSS is used where.
+No, there is too much CSS to feasibly make a map as is often used for forum software. Instead, we would recommend using your web browser's developer tools to identify what CSS is used where.
 
 [title="3"]How can I change how times are displayed?[/title]
 

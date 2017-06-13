@@ -4,7 +4,7 @@ This tutorial describes some of the more complex features available for news, in
 
 [contents]decimal,lower-alpha[/contents]
 
-[title="3"]Scheduled news / Manual date selection[/title]
+[title="2"]Scheduled news / Manual date selection[/title]
 
 See the [page="_SEARCH:tut_configuration"]basic configuration[/page] tutorial for information on setting up the CRON bridge scheduler.
 
@@ -12,7 +12,7 @@ You will see an advance scheduling option once the CRON bridge scheduler is enab
 
 Scheduling posts work by having the entry initially non-validated, then it will be auto-validated at the chosen time.
 
-[title="3"]Pinging[/title]
+[title="2"]Pinging[/title]
 
 'Pinging' (in the context of blogging) refers to an automatic alert feature that some software (including Composr) has. When you write a news post the URL to the news post can automatically be given to one or more ping services (defined in Admin Zone > Setup > Configuration > Feature options). These ping services typically are blog search engines, and the ping action automatically tells the search engine to go and index your new article.
 
@@ -105,6 +105,10 @@ The filter is driven by [page="_SEARCH:tut_selectcode"]Selectcode[/page]. This i
 [tt]http://yourbaseurl/backend.php?type=RSS2&mode=news&days=30&max=100&filter=1[/tt]
 
 Note also how there is a [tt]days[/tt] parameter and a [tt]max[/tt] parameter for limiting results. These work in the obvious way.
+
+Birthdays and Calendar are implemented with extra configurability. By default they will show events that have happened (i.e. news-style). However you can pass [tt]method=happening[/tt] to show events happening in the future (within the specified time window) or [tt]method=stream_in[/tt] to show events as they become known to the system (i.e. when calendar events are added or members join).
+
+Be aware that feeds may be filtered or empty depending on access permissions. Particularly, if you use a 3rd party service to process your feed it will be accessing that feed as a guest user, unless you set up HTTP authentication with a valid member's username or password.
 [/surround]
 
 [title="3"]Inbound[/title]
@@ -132,7 +136,7 @@ The nature of these feeds are such that they embed portions of HTML into your ow
 
 [title="3"]Feed merging[/title]
 
-[s]If you want to merge or filter feeds, [url="Yahoo Pipes"]http://pipes.yahoo.com/[/url] is an absolutely fantastic tool. You basically tell it to look at a set of RSS feeds, give it some filters, and you get an RSS feed you can then plug into Composr.[/s]
+[s]If you want to merge or filter feeds, Yahoo Pipes is an absolutely fantastic tool. You basically tell it to look at a set of RSS feeds, give it some filters, and you get an RSS feed you can then plug into Composr.[/s]
 
 Yahoo Pipes no longer exists, but alternatives do:
 http://www.makeuseof.com/tag/12-best-yahoo-pipes-alternatives-look/

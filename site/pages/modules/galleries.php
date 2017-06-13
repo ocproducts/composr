@@ -509,7 +509,8 @@ class Module_galleries
 
         require_code('images');
 
-        $description = get_translated_tempcode('galleries', $myrow, 'description');
+        $just_gallery_row = db_map_restrict($myrow, array('name', 'description'));
+        $description = get_translated_tempcode('galleries', $just_gallery_row, 'description');
         $may_download_gallery = has_privilege(get_member(), 'may_download_gallery', 'galleries', array('galleries', $cat));
 
         // Management links
@@ -614,9 +615,9 @@ class Module_galleries
         $sorting = do_template('PAGINATION_SORT', array('_GUID' => '148c9f69ea1640fb2a6d1f6ca2e201f2', 'SORT' => 'sort', 'URL' => $sort_url, 'SELECTORS' => $selectors));
 
         if ($myrow['flow_mode_interface'] == 1) {
-            return $this->do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $rep_image, $start, $max, $fullname, $sorting);
+            return $this->do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $rep_image, $start, $max, $fullname, $sorting, $myrow);
         } else {
-            return $this->do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $fullname, $sorting);
+            return $this->do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download_gallery, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $this->title, $fullname, $sorting, $myrow);
         }
     }
 
@@ -640,9 +641,10 @@ class Module_galleries
      * @param  integer $max The maximum number of child galleries we can display per page
      * @param  string $fullname The gallery title
      * @param  Tempcode $sorting Sorting UI
+     * @param  array $gallery_row The gallery row
      * @return Tempcode The UI
      */
-    public function do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $rep_image, $start, $max, $fullname, $sorting)
+    public function do_gallery_flow_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $rep_image, $start, $max, $fullname, $sorting, $gallery_row)
     {
         list($sort, $sort_backwards, $sql_suffix_images, $sql_suffix_videos) = $this->get_sort_order();
 
@@ -871,8 +873,8 @@ class Module_galleries
             $where .= ' AND add_date>' . strval(time() - get_param_integer('days') * 60 * 60 * 24);
         }
         $max_entries = intval(get_option('gallery_entries_flow_per_page'));
-        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, null, false, true);
-        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, null, false, true);
+        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
 
         // See if there is a numbering system to sort by
         $all_are = null;
@@ -895,19 +897,19 @@ class Module_galleries
         foreach ($query_rows as $row) {
             $type = array_key_exists('video_length', $row) ? 'video' : 'image';
 
-            if (($type == $probe_type) && ($row['id'] == $probe_id)) {
+            if (($type == $probe_type) && ($row['r_id'] == $probe_id)) {
                 continue;
             }
 
-            $just_row = db_map_restrict($row, array('id', 'description'));
+            $just_row = db_map_restrict($row, array('description')) + array('id' => $row['r_id']);
 
             $entry_title = get_translated_text($row['title']);
             $entry_description = get_translated_tempcode($type . 's', $just_row, 'description');
 
-            $probe_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'flow_mode_interface' => get_param_integer('flow_mode_interface', null), 'probe_type' => $type, 'probe_id' => $row['id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
-            $view_url_2 = build_url(array('page' => '_SELF', 'type' => $type, 'id' => $row['id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
+            $probe_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $cat, 'flow_mode_interface' => get_param_integer('flow_mode_interface', null), 'probe_type' => $type, 'probe_id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
+            $view_url_2 = build_url(array('page' => '_SELF', 'type' => $type, 'id' => $row['r_id'], 'days' => (get_param_string('days', '') == '') ? null : get_param_string('days'), 'sort' => ($sort == 'add_date DESC') ? null : $sort, 'select' => ($image_select == '*') ? null : $image_select, 'video_select' => ($video_select == '*') ? null : $video_select), '_SELF');
             if (array_key_exists('url', $row)) {
-                $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['id']);
+                $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['r_id']);
             } else {
                 $thumb_url = $row['thumb_url'];
                 if ($thumb_url == '') {
@@ -920,17 +922,17 @@ class Module_galleries
 
             $_edit_url = new Tempcode();
             if (has_delete_permission('mid', get_member(), $row['submitter'], 'cms_galleries', array('gallery', $row['cat']))) {
-                $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => ($type == 'image') ? '__edit' : '__edit_other', 'id' => $row['id'], 'redirect' => get_self_url(true)), get_module_zone('cms_galleries'));
+                $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => ($type == 'image') ? '__edit' : '__edit_other', 'id' => $row['r_id'], 'redirect' => get_self_url(true)), get_module_zone('cms_galleries'));
             }
 
-            $class = (($type == $probe_type) && ($row['id'] == $probe_id)) ? 'currentimage' : '';
+            $class = (($type == $probe_type) && ($row['r_id'] == $probe_id)) ? 'currentimage' : '';
             $thumb = do_image_thumb($thumb_url, $entry_title);
             $entries->attach(do_template('GALLERY_FLOW_ENTRY', array(
                 '_GUID' => 'ff75c904ba7fe857484874483ed65f5a',
                 'DESCRIPTION' => $entry_description,
                 '_TITLE' => $entry_title,
                 'TYPE' => $type,
-                'ID' => strval($row['id']),
+                'ID' => strval($row['r_id']),
                 'VIEWS' => strval($row[$type . '_views']),
                 'ADD_DATE_RAW' => strval($row['add_date']),
                 'EDIT_DATE_RAW' => is_null($row['edit_date']) ? '' : strval($row['edit_date']),
@@ -1001,6 +1003,10 @@ class Module_galleries
             'VIDEO_URL' => $submit_video_url,
             'MAY_DOWNLOAD' => $may_download,
             'CAT' => $cat,
+            'ACCEPT_IMAGES' => ($gallery_row['accept_images'] == 1),
+            'ACCEPT_VIDEOS' => ($gallery_row['accept_videos'] == 1),
+            'VIEWS' => strval($gallery_row['gallery_views']),
+            'OWNER' => ($gallery_row['g_owner'] === null) ? null : strval($gallery_row['g_owner']),
         ));
     }
 
@@ -1021,9 +1027,10 @@ class Module_galleries
      * @param  Tempcode $title The title of the page (our of get_screen_title)
      * @param  string $fullname The gallery title
      * @param  Tempcode $sorting Sorting UI
+     * @param  array $gallery_row The gallery row
      * @return Tempcode The UI
      */
-    public function do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $fullname, $sorting)
+    public function do_gallery_regular_mode($rating_details, $comment_details, $cat, $root, $description, $children, $may_download, $edit_url, $add_gallery_url, $submit_image_url, $submit_video_url, $title, $fullname, $sorting, $gallery_row)
     {
         // Entries
         if (get_option('galleries_subcat_narrowin') == '1') {
@@ -1036,7 +1043,7 @@ class Module_galleries
         $video_select = get_param_string('video_select', '*');
         $sort = get_param_string('sort', get_option('galleries_default_sort_order'));
         $filter = either_param_string('active_filter', '');
-        $entries = do_block('main_gallery_embed', array('param' => $cat_select, 'zone' => '_SELF', 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_regular_per_page'), 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module'));
+        $entries = do_block('main_gallery_embed', array('param' => $cat_select, 'zone' => get_zone_name(), 'sort' => $sort, 'days' => $days, 'max' => get_option('gallery_entries_regular_per_page'), 'pagination' => '1', 'select' => $image_select, 'video_select' => $video_select, 'filter' => $filter, 'video_filter' => $filter, 'block_id' => 'module', 'render_if_empty' => '1'));
 
         // Member gallery?
         $member_id = get_member_id_from_gallery_name($cat, null, true);
@@ -1066,6 +1073,10 @@ class Module_galleries
             'VIDEO_URL' => $submit_video_url,
             'MAY_DOWNLOAD' => $may_download,
             'ENTRIES' => $entries,
+            'ACCEPT_IMAGES' => ($gallery_row['accept_images'] == 1),
+            'ACCEPT_VIDEOS' => ($gallery_row['accept_videos'] == 1),
+            'VIEWS' => strval($gallery_row['gallery_views']),
+            'OWNER' => ($gallery_row['g_owner'] === null) ? null : strval($gallery_row['g_owner']),
         ));
     }
 
@@ -1118,8 +1129,9 @@ class Module_galleries
             $myrow['add_date']
         );
 
-        // Comments
-        $description = get_translated_tempcode('galleries', $myrow, 'description');
+        // Description
+        $just_row = db_map_restrict($myrow, array('cat', 'description'));
+        $description = get_translated_tempcode('images', $just_row, 'description');
 
         // Validation
         if (($myrow['validated'] == 0) && (addon_installed('unvalidated'))) {
@@ -1249,8 +1261,9 @@ class Module_galleries
             $warning_details = new Tempcode();
         }
 
-        // Comments
-        $description = get_translated_tempcode('galleries', $myrow, 'description');
+        // Description
+        $just_row = db_map_restrict($myrow, array('cat', 'description'));
+        $description = get_translated_tempcode('videos', $just_row, 'description');
 
         if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_edit_permission('mid', get_member(), $myrow['submitter'], 'cms_galleries', array('galleries', $cat)))) {
             $edit_url = build_url(array('page' => 'cms_galleries', 'type' => '_edit_other', 'id' => $id), get_module_zone('cms_galleries'));
@@ -1530,14 +1543,14 @@ class Module_galleries
         list($_sort, $_dir) = explode(' ', $sort, 2);
         $sort_backwards = $_sort . ' ' . (($_dir == 'ASC') ? 'DESC' : 'ASC');
         if (($sort == 'compound_rating ASC') || ($sort == 'compound_rating DESC')) {
-            $suffix_images = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS compound_rating';
-            $suffix_videos = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS compound_rating';
+            $suffix_images = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
+            $suffix_videos = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
         } elseif (($sort == 'average_rating ASC') || ($sort == 'average_rating DESC')) {
-            $suffix_images = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS average_rating';
-            $suffix_videos = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS average_rating';
+            $suffix_images = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
+            $suffix_videos = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
         } elseif ($sort == 'fixed_random ASC') {
-            $suffix_images = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
-            $suffix_videos = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
+            $suffix_images = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
+            $suffix_videos = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
         } else {
             $suffix_images = '';
             $suffix_videos = '';

@@ -61,65 +61,28 @@ All bundled languages packs are located in the [tt]lang[/tt] directory of Compos
 
 [title="4"]Special strings[/title]
 
-Language string codes that are in lower-case are special strings, that should not be translated directly. These strings contain encoded information relating to the language pack.
+Language string codes that are in lower-case are special strings, that should not be translated directly. These strings contain encoded information relating to the language pack. All these strings have documentation labels to explain what they do.
 
-[html]
-<table class="columned_table results_table wide_table autosized_table">
-	<thead>
-		<tr>
-			<th>String codename</th>
-			<th>Purpose</th>
-		</tr>
-	</thead>
+For dates and times we use the PHP [url]http://php.net/manual/en/function.strftime.php[/url] function, except the following changes are made by Composr...
+ - [tt]%e[/tt] is the day of the month but will not have a leading space (because that's ugly) and will work on Windows servers too
+ - [tt]%l[/tt] is the 12-hour clock hour but will not have a leading space digit (because that's ugly)
+ - [tt]%o[/tt] is an English date ordinal (e.g. [tt]st[/tt] or [tt]th[/tt])
 
-	<tbody>
-		<tr class="zebra_0">
-			<th>charset</th>
-			<td>The character set needed for the language (standard code for an ASCII character set). Most people leave this as 'utf-8' (Unicode, works with any characters), although regional character sets are supported also.</td>
-		</tr>
-		<tr class="zebra_1">
-			<th>locale</th>
-			<td>The locale: there are standard locale codes for unix, based on language codes, but they vary across operating system: use what works on your server.<br />The locale code is used to prepare certain operating system date strings, and number formatting. On Linux and MacOS you can find the list of locales via the <kbd>locale -a</kbd> command. You can separate multiple locales with commas; the first valid one will be used.</td>
-		</tr>
-		<tr class="zebra_0">
-			<th>locale_subst>
-			<td>Set to something like <kbd>Jan=Wan,Feb=Jeb</kbd> to manually remap locale strings to something else. Usually you'll leave this as <kbd>(empty)</kbd>, but it is good for fixing problems with unreliable locale.</td>
-		</tr>
-		<tr class="zebra_1">
-			<th>dir</th>
-			<td>The direction of text (usually <kbd>ltr</kbd>, but sometimes <kbd>rtl</kbd> for languages such as Arabic). An "rtl" language would likely require many few template changes as well as language changes. If someone does this we would consider integrating the changes back into a future version of Composr.</td>
-		</tr>
-		<tr class="zebra_0">
-			<th>en_right</th>
-			<td>Sometimes templates have to apply CSS properties values of <kbd>left</kbd> or <kbd>right</kbd>, according to the text direction. For a rtl language, this becomes <kbd>left</kbd> instead of <kbd>right</kbd>. No other value than <kbd>left</kbd> or <kbd>right</kbd> may be used.</td>
-		</tr>
-		<tr class="zebra_1">
-			<th>en_left</th>
-			<td>As above, but opposite.</td>
-		</tr>
-		<tr class="zebra_0">
-			<th>date_* / time_* / calendar_*</th>
-			<td>Date/time formatting in one of the two PHP time formats ([/html][url="1"]http://php.net/manual/en/function.date.php[/url], [url="2"]http://php.net/manual/en/function.strftime.php[/url][html]). If there are no <kbd>%</kbd> signs it's <kbd>date</kbd>, if there are <kbd>%</kbd> signs it's <kbd>strftime</kbd>.</td>
-		</tr>
-		<tr class="zebra_1">
-			<th>dont_escape_trick</th>
-			<td>Ignore this string, it is purely used by code, and should never have its value be changed.</td>
-		</tr>
-		<tr class="zebra_0">
-			<th>dictionary</th>
-			<td>The name of the pspell/hunspell dictionary to use.</td>
-		</tr>
-		<tr class="zebra_1">
-			<th>dictionary_variant</th>
-			<td>The variant of the pspell/hunspell dictionary. If you're not sure just set it the same as [tt]dictionary[/tt].</td>
-		</tr>
-		<tr class="zebra_0">
-			<th>takes_lots_of_space</th>
-			<td>Set this to 1 if the language tends to stretch out further horizontally; at the time of writing this is used to reduce menu font size so that stuff fits</td>
-		</tr>
-	</tbody>
-</table>
-[/html]
+[title="4"]Locales[/title]
+
+Setting the correct locale may be tricky. Different operating systems may use a number of different values, for example in English:
+ - [tt]en-GB.UTF-8[/tt] -- British English, for systems that use hyphens and support a flag for utf-8 output
+ - [tt]en_GB.UTF-8[/tt] -- British English, for systems that use underscores and support a flag for utf-8 output
+ - [tt]en-US.UTF-8[/tt] -- American English (maybe British is not installed), for systems that use hyphens and support a flag for utf-8 output
+ - [tt]en_US.UTF-8[/tt] -- American English (maybe British is not installed), for systems that use hyphens and support a flag for utf-8 output
+ - [tt]en.UTF-8[/tt] -- English (maybe specific British or American is not installed), for systems that support a flag for utf-8 output
+ - [tt]en-GB[/tt] -- British English, for systems that use hyphens and do not support a flag for utf-8 output
+ - [tt]en_GB[/tt] -- British English, for systems that use underscores and do not support a flag for utf-8 output
+ - [tt]en-US[/tt] -- American English (maybe British is not installed), for systems that use hyphens and do not support a flag for utf-8 output
+ - [tt]en_US[/tt] -- American English (maybe British is not installed), for systems that use hyphens and do not support a flag for utf-8 output
+ - [tt]en[/tt] -- English (maybe specific British or American is not installed), for systems that do not support a flag for utf-8 output
+Microsoft Windows is good at accepting anything that vaguely matches, but it unfortunately cannot produce utf-8. So if you want a non-Latin-based language to work on Windows you'll need to fill in the [tt]locale_subst[/tt] language string with all the long and short month and day names. See what the Tamil language pack does as an example:
+[tt]locale_subst=Monday=திங்கட்கிழமை,Tuesday=செவ்வாய்க்கிழமை,Wednesday=புதன்கிழமை,Thursday=வியாழக்கிழமை,Friday=வெள்ளிக்கிழமை,Saturday=சனிக்கிழமை,Sunday=ஞாயிற்றுக்கிழமை,Mon=தி,Tue=செ,Wed=பு,Thu=வி,Fri=வெ,Sat=ச,Sun=ஞா,January=ஜனவரி,February=பிப்ரவரி,March=மார்ச்,April=ஏப்ரல்,May=மே,June=ஜூன்,July=ஜுலை,August=ஆகஸ்ட்,September=ஸெப்டம்பர்,October=அக்டோபர்,November=நவம்பர்,December=டிஸம்பர்,Jan=ஜன,Feb=பிப்,Mar=மார்,Apr=ஏப்ரல்,May=மே,Jun=ஜூன்,Jul=ஜூலை,Aug=ஆக,Sep=செப்,Oct=அக்,Nov=நவ,Dec=டிச,th=,st=,nd=[/tt]
 
 [title="4"]Common points of confusion[/title]
 
@@ -391,7 +354,7 @@ When ocPortal 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-
   - Make sure to not include multiple rows in each [tt]INSERT[/tt] statement, as MySQL may not be able to reimport it on some servers (see the screenshot to the right for how to set this on phpMyAdmin, although it may vary from one version to another)
  - Do whatever you would normally do to backup your database; that will usually mean keeping a copy of the above file (but ensure it is complete before relying on it, sometimes SQL dumps don't download correctly)
  - Use a text editor to replace all instances of [tt]latin1[/tt] with [tt]utf8mb4[/tt] in the file (note that it is [tt]utf8mb4[/tt] [i]not[/i] [tt]utf-8[/tt] -- MySQL doesn't want hyphens in its codenames, and we have to use the mb4 variant for full unicode support)
- - Specifically for the creation SQL for the following select tables replace [tt]utf8mb4[/tt] to [tt]utf8[/tt]:
+ - Specifically for the creation SQL for the following select tables (if they exist) replace [tt]utf8mb4[/tt] to [tt]utf8[/tt]:
   - [tt]addons[/tt]
   - [tt]f_emoticons[/tt]
   - [tt]f_saved_warnings[/tt]
@@ -402,6 +365,10 @@ When ocPortal 9 or earlier installs, it will use latin1 (equivalent of ISO-8859-
   - [tt]tickets[/tt]
   - [tt]url_id_monikers[/tt]
   - [tt]url_title_cache[/tt]
+ - Unfortunately MySQL has a key limit of 1000 and [tt]utf8mb4[/tt] makes us hit it a lot; so now, either:
+  - replace [tt]MyISAM[/tt] with [tt]InnoDB[/tt]. This will require MySQL 5.6+. Then later in Commandr run this command... [tt]:set_value('innodb','1');[/tt]
+  - change all [tt]utf8mb4[/tt] back to [tt]utf8[/tt] (i.e. reverse course from the above steps and suffer emojis not saving into the database)
+  - edit each individual index on a [tt]VARCHAR(255)[/tt]/[tt]LONGTEXT[/tt] field to have a length limit of 250, via [tt]example[/tt] --> [tt]example(250)[/tt] on each such index (slow and tedious, requires a lot of understanding)
  - Save the edited file
  - Use phpMyAdmin to drop all tables in your database
  - Use phpMyAdmin to import the edited file
@@ -427,6 +394,61 @@ If you wish to directly distribute your translation as an addon, you can export 
 
 For languages that have very high-quality release-ready translations an addon is a good thing to provide users -- but building the addons from Transifex is integrated into the development process anyway.
 [/surround]
+
+[title="2"]Special language-specific challenges[/title]
+
+[title="3"]Gendered-descriptors[/title]
+
+Some languages may require stock phrases to be gendered. One known example is the member usergroup titles in French, which would need to be written as masculine or feminine based on the gender of the member being displayed. For example, the default title of a usergroup (given to members within it) is "Standard member" in English, but needs to be gendered on a french website.
+A solution to this can be implemented via a template edit. We can edit the [tt]CNS_TOPIC_POST.tpl[/tt] template to change:
+[code="Tempcode"]
+	{+START,IF_NON_EMPTY,{POSTER_TITLE}}<div class="cns_topic_poster_title">{POSTER_TITLE*}</div>{+END}
+[/code]
+to:
+[code="Tempcode"]
+	{+START,IF_NON_EMPTY,{POSTER_TITLE}}
+		<div class="cns_topic_poster_title">
+			{+START,CASES,{$CPF_VALUE,Gender}}
+			Mâle=Un mâle
+			Femelle=Une femelle
+			={POSTER_TITLE*}
+			{+END}
+		</div>
+	{+END}
+	{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns_topic_poster_rank_images">{RANK_IMAGES}</div>{+END}
+[/code]
+This assumes we have created a custom profile field titled "Gender" with the options of "Mâle" and "Femelle". If filled in, it will remap their usergroup's title to either "Un mâle" or "Une femelle" accordingly. If not set, it will just use the regular usergroup title.
+Of course this system is hard-coding gender-specific labels into a template, so it is not perfect. However, sites could use more elaborate Tempcode if they need to preserve the feature of having different labels for different usergroups. We'll give such an example in the next section.
+
+Alternatively, you could just remove [tt]{+START,IF_NON_EMPTY,{POSTER_TITLE}}<div class="cns_topic_poster_title">{POSTER_TITLE*}</div>{+END}[/tt] entirely if you don't require the feature at all.
+
+[title="4"]Elaborate example[/title]
+
+Using additional Tempcode, we could do additional deep remapping.
+
+[code="Tempcode"]
+	{+START,IF_NON_EMPTY,{POSTER_TITLE}}
+		<div class="cns_topic_poster_title">
+			{+START,IF,{$EQ,{POSTER_TITLE},Acteur}
+				{+START,CASES,{$CPF_VALUE,Gender}}
+				Mâle=Acteur
+				Femelle=Actrice
+				={POSTER_TITLE*}
+				{+END}
+			{+END}
+			{+START,IF,{$EQ,{POSTER_TITLE},Policier}
+				{+START,CASES,{$CPF_VALUE,Gender}}
+				Mâle=Policier
+				Femelle=Policière
+				={POSTER_TITLE*}
+				{+END}
+			{+END}
+		</div>
+	{+END}
+	{+START,IF_NON_EMPTY,{RANK_IMAGES}}<div class="cns_topic_poster_rank_images">{RANK_IMAGES}</div>{+END}
+[/code]
+
+This will remap the title based on what it already is. For each of the possible values ("Acteur" and "Policier" in our example) it will provide the gendered options for it.
 
 [concepts
  1_key="Language string"       1_value="A piece of text, often a phrase, used by Composr; identified by a short code WRITTEN_LIKE_THIS"

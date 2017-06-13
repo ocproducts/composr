@@ -38,6 +38,7 @@ function get_video_details($file_path, $filename, $delay_errors = false)
     if ($file === false) {
         return false;
     }
+    flock($file, LOCK_SH);
 
     switch ($extension) {
         case 'wmv':
@@ -101,6 +102,7 @@ function get_video_details($file_path, $filename, $delay_errors = false)
             break;
     }
 
+    flock($file, LOCK_UN);
     fclose($file);
 
     if (is_null($info)) {
@@ -719,7 +721,9 @@ function create_video_thumb($src_url, $expected_output_path = null)
                     }
                     require_code('files');
                     $_expected_output_path = fopen($expected_output_path, 'wb');
+                    flock($_expected_output_path, LOCK_EX);
                     http_download_file($ret, null, true, false, 'Composr', null, null, null, null, null, $_expected_output_path);
+                    flock($_expected_output_path, LOCK_UN);
                     fclose($_expected_output_path);
 
                     return $ret;
@@ -743,8 +747,10 @@ function create_video_thumb($src_url, $expected_output_path = null)
             if (!is_null($expected_output_path)) {
                 require_code('files');
                 $_expected_output_path = @fopen($expected_output_path, 'wb');
+                flock($_expected_output_path, LOCK_EX);
                 if ($_expected_output_path !== false) {
                     http_download_file($ret, null, true, false, 'Composr', null, null, null, null, null, $_expected_output_path);
+                    flock($_expected_output_path, LOCK_UN);
                     fclose($_expected_output_path);
                 }
             }
@@ -849,7 +855,9 @@ function create_video_thumb($src_url, $expected_output_path = null)
         if (!is_null($expected_output_path)) {
             require_code('files');
             $_expected_output_path = fopen($expected_output_path, 'wb');
+            flock($_expected_output_path, LOCK_EX);
             http_download_file($ret, null, true, false, 'Composr', null, null, null, null, null, $_expected_output_path);
+            flock($_expected_output_path, LOCK_UN);
             fclose($_expected_output_path);
         }
     }
@@ -1299,6 +1307,16 @@ function constrain_gallery_image_to_max_size($file_path, $filename, $box_width)
     }
 
     if (function_exists('imagepng')) {
+        // TODO: Fix in v11, use new function
+        if ((function_exists('getimagesize')) && (is_image($filename))) {
+            $details = @getimagesize($file_path);
+            if ($details !== false) {
+                if (($details[0] <= $box_width) && ($details[1] <= $box_width)) {
+                    return;
+                }
+            }
+        }
+
         convert_image($file_path, $file_path, -1, -1, $box_width, false, get_file_extension($filename), true, true);
     }
 }
@@ -1337,7 +1355,7 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
     }
 
     require_code('type_sanitisation');
-    if (!is_alphanumeric($name, true)) {
+    if (!is_alphanumeric($name)) {
         warn_exit(do_lang_tempcode('BAD_CODENAME'));
     }
 
@@ -1464,7 +1482,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
 
     if ($old_name != $name) {
         require_code('type_sanitisation');
-        if (!is_alphanumeric($name, true)) {
+        if (!is_alphanumeric($name)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 

@@ -27,10 +27,26 @@ function _diff_simple($old, $new, $unified = false)
     $diff = new Text_Diff($old, $new);
     if ($unified) {
         $renderer = new Text_Diff_Renderer_unified();
+        $diff_text = $rendered_diff = $renderer->render($diff);
+        $diff_html = '';
+        foreach (explode("\n", $diff_text) as $diff_line) {
+            switch (substr($diff_line, 0, 1)) {
+                case '+':
+                    $diff_html .= '<span style="color: green">' . escape_html($diff_line) . '</span>';
+                    break;
+                case '-':
+                    $diff_html .= '<span style="color: red">' . escape_html($diff_line) . '</span>';
+                    break;
+                default:
+                    $diff_html .= escape_html($diff_line);
+                    break;
+            }
+            $diff_html .= '<br />';
+        }
     } else {
         $renderer = new Text_Diff_Renderer_inline();
+        $diff_html = $rendered_diff = $renderer->render($diff);
     }
-    $diff_html = $rendered_diff = $renderer->render($diff);
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($diff_html);
     }
@@ -704,7 +720,7 @@ class Text_Diff3_BlockBuilder
 
     function _append(&$array, $lines)
     {
-        array_splice($array, sizeof($array), 0, $lines);
+        array_splice($array, count($array), 0, $lines);
     }
 }
 
@@ -1144,7 +1160,7 @@ class Text_Diff_Engine_native
                     }
                 }
 
-                while (list($junk, $y) = each($matches)) {
+                while ($y = current($matches)) {
                     if ($y > $this->seq[$k - 1]) {
 //							assert($y < $this->seq[$k]);
                         /* Optimization: this is a common case: next match is
@@ -1157,6 +1173,8 @@ class Text_Diff_Engine_native
 //						assert($k > 0);
                         $ymids[$k] = $ymids[$k - 1];
                     }
+
+                    next($matches);
                 }
             }
         }

@@ -168,7 +168,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
             $where .= ' AND cf_show_in_post_previews=' . strval($show_in_post_previews);
         }
         if ($special_start == 1) {
-            $where .= ' AND ' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name') . ' LIKE \'' . db_encode_like('cms\_%') . '\'';
+            $where .= ' AND ' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name') . ' LIKE \'' . db_encode_like('cms\_%') . '\'';
         }
         if ($show_on_join_form !== null) {
             $where .= ' AND cf_show_on_join_form=' . strval($show_on_join_form);
@@ -234,8 +234,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
     $custom_fields = array();
     $member_mappings = cns_get_custom_field_mappings($member_id);
     $member_value = mixed(); // Initialise type to mixed
-    $all_cpf_permissions = ((get_member() == $member_id) || $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) ?/*no restricts if you are the member or a super-admin*/
-        array() : list_to_map('field_id', $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id)));
+    $all_cpf_permissions = ((get_member() == $member_id) || $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) ?/*no restricts if you are the member or a super-admin*/array() : list_to_map('field_id', $GLOBALS['FORUM_DB']->query_select('f_member_cpf_perms', array('*'), array('member_id' => $member_id)));
 
     require_code('fields');
 
@@ -251,14 +250,14 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
         $member_value = $member_mappings[$key];
         if (!is_string($member_value)) {
             if (is_float($member_value)) {
-                $member_value = float_to_raw_string($member_value);
+                $member_value = float_to_raw_string($member_value, 30);
             } elseif (!is_null($member_value)) {
                 $member_value = strval($member_value);
             }
         }
 
         // Decrypt the value if appropriate
-        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1) && ($member_value != $field_to_show['cf_default']) && (!is_null($member_value))) {
+        if ((isset($field_to_show['cf_encrypted'])) && ($field_to_show['cf_encrypted'] == 1) && ($member_value != '') && ($member_value != $field_to_show['cf_default']) && (!is_null($member_value))) {
             require_code('encryption');
             if ((is_encryption_enabled()) && (post_param_string('decrypt', null) !== null)) {
                 $member_value = decrypt_data($member_value, post_param_string('decrypt'));
@@ -433,6 +432,7 @@ function cns_get_custom_field_mappings($member_id)
         $query = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), $row, '', 1);
         if (!isset($query[0])) { // Repair
             $value = mixed();
+            $row = array();
 
             $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_required', 'cf_default'));
             foreach ($all_fields_regardless as $field) {
@@ -459,7 +459,7 @@ function cns_get_custom_field_mappings($member_id)
                     }
                 }
             }
-            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', $row);
+            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', array('mf_member_id' => $member_id) + $row);
             $query = array($row);
         }
         $MEMBER_CACHE_FIELD_MAPPINGS[$member_id] = $query[0];

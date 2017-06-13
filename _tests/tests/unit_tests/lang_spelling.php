@@ -185,6 +185,9 @@ class lang_spelling_test_set extends cms_test_case
         if (preg_match('#([^\]/A-Za-z"\_<]+)internet#', $string) != 0) {
             $this->assertTrue(false, 'The term \'internet\' was used in ' . $file . '. This should be changed to \'Internet\'.');
         }
+        if (stripos($string, 'e-commerce') !== false) {
+            $this->assertTrue(false, 'The phrase \'e-commerce\' was used in ' . $file . '. This should be changed to \'eCommerce\'.');
+        }
         if (stripos($string, 'CommandrFS') !== false) {
             $this->assertTrue(false, 'The phrase \'CommandrFS\' was used in ' . $file . '. This should be changed to \'Commandr-fs\'.');
         }
@@ -257,6 +260,7 @@ class lang_spelling_test_set extends cms_test_case
             'persistant' => 'persistent',
             'recieve'=> 'receive',
             'eratic' => 'erratic',
+            'psuedo' => 'pseudo',
         );
         foreach ($common_spelling_mistakes as $from => $to) {
             if (stripos($string, $from) !== false) {

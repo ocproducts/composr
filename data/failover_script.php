@@ -18,6 +18,9 @@
  * @package    failover
  */
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -260,12 +263,14 @@ function set_failover_mode($new_mode)
         return;
     }
 
-    file_put_contents($path, $config_contents, LOCK_EX);
+    require_code('files');
+
+    cms_file_put_contents_safe($path, $config_contents, FILE_WRITE_FIX_PERMISSIONS);
 
     $SITE_INFO['failover_mode'] = $new_mode;
 
     if ((!empty($SITE_INFO['failover_apache_rewritemap_file'])) && (is_file($FILE_BASE . '/data_custom/failover_rewritemap.txt'))) {
-        $htaccess_contents = file_get_contents($FILE_BASE . '/.htaccess');
+        $htaccess_contents = cms_file_get_contents_safe($FILE_BASE . '/.htaccess');
 
         $htaccess_contents = preg_replace('#^RewriteMap.*\n+#s', '', $htaccess_contents);
 
@@ -317,6 +322,6 @@ function set_failover_mode($new_mode)
 
         $htaccess_contents = preg_replace('/#FAILOVER STARTS.*#FAILOVER ENDS\n+/s', $new_code, $htaccess_contents);
 
-        file_put_contents($FILE_BASE . '/.htaccess', $htaccess_contents, LOCK_EX);
+        cms_file_put_contents_safe($FILE_BASE . '/.htaccess', $htaccess_contents, FILE_WRITE_FIX_PERMISSIONS);
     }
 }

@@ -2,7 +2,7 @@
 ErrorDocument 401 /adminzone/index.php?page=_modsecurity
 ErrorDocument 402 /adminzone/index.php?page=_modsecurity
 ErrorDocument 403 /adminzone/index.php?page=_modsecurity
-ErrorDocument 404 /adminzone/index.php?page=_modsecurity
+#ErrorDocument 404 /adminzone/index.php?page=_modsecurity
 ErrorDocument 406 /adminzone/index.php?page=_modsecurity
 ErrorDocument 500 /adminzone/index.php?page=_modsecurity
 </FilesMatch>

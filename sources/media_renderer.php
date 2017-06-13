@@ -25,20 +25,22 @@
  */
 function init__media_renderer()
 {
-    define('MEDIA_RECOG_PRECEDENCE_SUPER', 50);
-    define('MEDIA_RECOG_PRECEDENCE_HIGH', 40);
-    define('MEDIA_RECOG_PRECEDENCE_MEDIUM', 30);
-    define('MEDIA_RECOG_PRECEDENCE_LOW', 20);
-    define('MEDIA_RECOG_PRECEDENCE_TRIVIAL', 10);
-    define('MEDIA_RECOG_PRECEDENCE_NONE', 0);
+    if (!defined('MEDIA_RECOG_PRECEDENCE_SUPER')) {
+        define('MEDIA_RECOG_PRECEDENCE_SUPER', 50);
+        define('MEDIA_RECOG_PRECEDENCE_HIGH', 40);
+        define('MEDIA_RECOG_PRECEDENCE_MEDIUM', 30);
+        define('MEDIA_RECOG_PRECEDENCE_LOW', 20);
+        define('MEDIA_RECOG_PRECEDENCE_TRIVIAL', 10);
+        define('MEDIA_RECOG_PRECEDENCE_NONE', 0);
 
-    define('MEDIA_TYPE_IMAGE', 1);
-    define('MEDIA_TYPE_VIDEO', 2);
-    define('MEDIA_TYPE_AUDIO', 4);
-    define('MEDIA_TYPE_OTHER', 8);
-    define('MEDIA_TYPE_ALL', 15);
+        define('MEDIA_TYPE_IMAGE', 1);
+        define('MEDIA_TYPE_VIDEO', 2);
+        define('MEDIA_TYPE_AUDIO', 4);
+        define('MEDIA_TYPE_OTHER', 8);
+        define('MEDIA_TYPE_ALL', 15);
 
-    define('MEDIA_LOWFI', 1);
+        define('MEDIA_LOWFI', 1);
+    }
 
     /** Options for media rendering.
      *
@@ -88,15 +90,22 @@ function peek_media_mode()
  * @param  ?MEMBER $source_member Member to run as (null: current member)
  * @param  integer $acceptable_media Bitmask of media that we will support
  * @param  ?ID_TEXT $limit_to Limit to a media rendering hook (null: no limit)
+ * @param  ?string $original_filename Originally filename to display as a link caption where appropriate (null: use $url_safe)
  * @return ?array The hooks (null: cannot find one)
  */
-function find_media_renderers($url, $attributes, $as_admin, $source_member, $acceptable_media = 15, $limit_to = null)
+function find_media_renderers($url, $attributes, $as_admin, $source_member, $acceptable_media = 15, $limit_to = null, $original_filename = null)
 {
     if (is_null($source_member)) {
         $source_member = get_member();
     }
     if (has_privilege($source_member, 'comcode_dangerous')) {
         $as_admin = true;
+    }
+
+    if ($limit_to !== null) {
+        if ((!is_file(get_file_base() . '/sources/hooks/systems/media_rendering/' . $limit_to . '.php')) && (!is_file(get_file_base() . '/sources_custom/hooks/systems/media_rendering/' . $limit_to . '.php'))) {
+            $limit_to = null;
+        }
     }
 
     $hooks = is_null($limit_to) ? array_keys(find_all_hooks('systems', 'media_rendering')) : array($limit_to);
@@ -159,6 +168,10 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
         $mime_type = $attributes['mime_type'];
     } else {
         $mime_type = $meta_details['t_mime_type'];
+        if (($mime_type == 'application/octet-stream') || ($mime_type == '')) {
+            require_code('mime_types');
+            $mime_type = get_mime_type(get_file_extension(($original_filename === null) ? $url : $original_filename), true);
+        }
     }
     if ($mime_type != '') {
         foreach ($hooks as $hook) {
@@ -189,9 +202,10 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
  * @param  integer $acceptable_media Bitmask of media that we will support
  * @param  ?ID_TEXT $limit_to Limit to a media rendering hook (null: no limit)
  * @param  ?URLPATH $url_to_scan_against The URL to do media detection against (null: use $url)
+ * @param  ?string $original_filename Originally filename to display as a link caption where appropriate (null: use $url_safe)
  * @return ?Tempcode The rendered version (null: cannot render)
  */
-function render_media_url($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $acceptable_media = 15, $limit_to = null, $url_to_scan_against = null)
+function render_media_url($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $acceptable_media = 15, $limit_to = null, $url_to_scan_against = null, $original_filename = null)
 {
     $hooks = find_media_renderers(
         is_null($url_to_scan_against) ? (is_object($url) ? $url->evaluate() : $url) : $url_to_scan_against,
@@ -199,12 +213,17 @@ function render_media_url($url, $url_safe, $attributes, $as_admin = false, $sour
         $as_admin,
         $source_member,
         $acceptable_media,
-        $limit_to
+        $limit_to,
+        $original_filename
     );
     if (is_null($hooks)) {
         return null;
     }
     $hook = reset($hooks);
+
+    if ((empty($attributes['filename'])) && ($original_filename !== null)) {
+        $attributes['filename'] = $original_filename;
+    }
 
     $ob = object_factory('Hook_media_rendering_' . $hook);
     $ret = $ob->render($url, $url_safe, $attributes, $as_admin, $source_member, $url_to_scan_against);
@@ -223,11 +242,12 @@ function render_media_url($url, $url_safe, $attributes, $as_admin = false, $sour
  * @param  array $attributes Attributes (Any combination of: thumb_url, width, height, length, filename, mime_type, description, filesize, framed, wysiwyg_editable, num_downloads, click_url, thumb)
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types
  * @param  ?MEMBER $source_member Member to run as (null: current member)
+ * @param  boolean $prefer_natural_size Let the media size itself rather than detecting a size
  * @return array Template-ready parameters
  *
  * @ignore
  */
-function _create_media_template_parameters($url, $attributes, $as_admin = false, $source_member = null)
+function _create_media_template_parameters($url, $attributes, $as_admin = false, $source_member = null, $prefer_natural_size = false)
 {
     $_url = is_object($url) ? $url->evaluate() : $url;
 
@@ -242,7 +262,7 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
 
     $no_width = (!array_key_exists('width', $attributes)) || (!is_numeric($attributes['width'])) || (floatval($attributes['width']) == 0.0);
     $no_height = (!array_key_exists('height', $attributes)) || (!is_numeric($attributes['height'])) || (floatval($attributes['height']) == 0.0);
-    if ($no_width || $no_height) { // Try and work out the best default width/height, from the thumbnail if possible (image_websafe runs its own code to do the equivalent, as that defaults to thumb_width rather than attachment_default_width&attachment_default_height)
+    if (($no_width || $no_height) && (!$prefer_natural_size)) { // Try and work out the best default width/height, from the thumbnail if possible (image_websafe runs its own code to do the equivalent, as that defaults to thumb_width rather than attachment_default_width&attachment_default_height)
         $_width = get_option('attachment_default_width');
         $_height = get_option('attachment_default_height');
         if ((function_exists('getimagesize')) && (array_key_exists('thumb_url', $attributes)) && (((is_object($attributes['thumb_url'])) && (!$attributes['thumb_url']->is_empty()) || (is_string($attributes['thumb_url'])) && ($attributes['thumb_url'] != '')))) {
@@ -254,7 +274,7 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
                 $_width = get_option('attachment_default_width');
             }
             if (empty($_height)) {
-                $_width = get_option('attachment_default_height');
+                $_height = get_option('attachment_default_height');
             }
         }
 
@@ -290,7 +310,12 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         //  If this was an uploaded file (i.e. new file in the JS security context) with a dangerous mime type, it would have been blocked by now.
         require_code('files2');
         $meta_details = get_webpage_meta_details($_url);
-        $attributes['mime_type'] = $meta_details['t_mime_type'];
+        $mime_type = $meta_details['t_mime_type'];
+        if (($mime_type == 'application/octet-stream') || ($mime_type == '')) {
+            require_code('mime_types');
+            $mime_type = get_mime_type(get_file_extension(isset($attributes['filename']) ? $attributes['filename'] : $url), true);
+        }
+        $attributes['mime_type'] = $mime_type;
     }
 
     if (!array_key_exists('description', $attributes)) {
@@ -337,8 +362,8 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         'MIME_TYPE' => $attributes['mime_type'],
         'CLICK_URL' => array_key_exists('click_url', $attributes) ? $attributes['click_url'] : null,
 
-        'WIDTH' => $attributes['width'],
-        'HEIGHT' => $attributes['height'],
+        'WIDTH' => isset($attributes['width']) ? $attributes['width'] : '',
+        'HEIGHT' => isset($attributes['height']) ? $attributes['height'] : '',
 
         'LENGTH' => $attributes['length'],
 

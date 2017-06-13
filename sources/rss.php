@@ -305,6 +305,29 @@ class CMS_RSS
         switch ($this->type) {
             case 'RSS':
                 switch ($prelast_tag) {
+                    // wordpress namespace
+                    case 'HTTP://WORDPRESS.ORG/EXPORT/1.2/:COMMENT':
+                        $current_item = &$this->gleamed_items[count($this->gleamed_items) - 1];
+
+                        if (!array_key_exists('comments', $current_item)) {
+                            $current_item['comments'] = array(array());
+                        }
+
+                        $current_item['comments'][count($current_item['comments']) - 1][preg_replace('#^HTTP://WORDPRESS.ORG/EXPORT/1.2/:#', '', $last_tag)] = $data;
+                        break;
+
+                    // yahoo namespace
+                    case 'HTTP://SEARCH.YAHOO.COM/MRSS/:GROUP':
+                        $current_item = &$this->gleamed_items[count($this->gleamed_items) - 1];
+                        switch ($last_tag) {
+                            case 'HTTP://SEARCH.YAHOO.COM/MRSS/:THUMBNAIL':
+                                if (array_key_exists('URL', $attributes)) {
+                                    $current_item['rep_image'] = $attributes['URL'];
+                                }
+                                break;
+                        }
+                        break;
+
                     case 'CHANNEL':
                         switch ($last_tag) {
                             // dc namespace
@@ -364,6 +387,7 @@ class CMS_RSS
 
                                 $this->gleamed_feed['cloud'] = $cloud;
                                 break;
+
                             default:
                                 if (!array_key_exists($last_tag, $this->gleamed_feed)) {
                                     $this->gleamed_feed[$last_tag] = array();
@@ -390,6 +414,7 @@ class CMS_RSS
                                     $current_item['clean_add_date'] = $a[1];
                                 }
                                 break;
+
                             case 'HTTP://PURL.ORG/RSS/1.0/MODULES/CONTENT/:ENCODED':
                                 $current_item['news_article'] = $data;
                                 if ((preg_match('#[<>]#', $current_item['news_article']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['news_article'], ENT_QUOTES)) != 0)) {// Double escaped HTML
@@ -402,10 +427,12 @@ class CMS_RSS
                                     $current_item['news_article'] = xhtmlise_html($current_item['news_article']);
                                 }
                                 break;
+
                             // slash namespace
                             case 'HTTP://PURL.ORG/RSS/1.0/modules/slash:SECTION':
                                 $current_item['category'] = $data;
                                 break;
+
                             // wp namespace
                             case 'HTTP://WORDPRESS.ORG/EXPORT/1.2/EXCERPT/:ENCODED':
                                 $current_item['news'] = $data;
@@ -423,6 +450,18 @@ class CMS_RSS
                                 $current_item['comments'][] = array();
                                 break;
 
+                            // yahoo namespace
+                            case 'HTTP://SEARCH.YAHOO.COM/MRSS/:GROUP':
+                                switch ($last_tag) {
+                                    case 'HTTP://SEARCH.YAHOO.COM/MRSS/:THUMBNAIL':
+                                        if (array_key_exists('URL', $attributes)) {
+                                            $current_item['rep_image'] = $attributes['URL'];
+                                        }
+                                        break;
+                                }
+                                break;
+
+                            // standard RSS
                             case 'TITLE':
                                 $current_item['title'] = $data;
                                 if ((preg_match('#[<>]#', $current_item['title']) == 0) && (preg_match('#[<>]#', html_entity_decode($current_item['title'], ENT_QUOTES)) != 0)) {// Double escaped HTML
@@ -493,6 +532,7 @@ class CMS_RSS
                                     $current_item['guid'] = $data;
                                 }
                                 break;
+
                             default:
                                 if (!array_key_exists($last_tag, $current_item)) {
                                     $current_item[$last_tag] = array();
@@ -501,16 +541,6 @@ class CMS_RSS
                                 $current_item['extra'][$last_tag] = $data;
                                 break;
                         }
-                        break;
-
-                    case 'HTTP://WORDPRESS.ORG/EXPORT/1.2/:COMMENT':
-                        $current_item = &$this->gleamed_items[count($this->gleamed_items) - 1];
-
-                        if (!array_key_exists('comments', $current_item)) {
-                            $current_item['comments'] = array(array());
-                        }
-
-                        $current_item['comments'][count($current_item['comments']) - 1][preg_replace('#^HTTP://WORDPRESS.ORG/EXPORT/1.2/:#', '', $last_tag)] = $data;
                         break;
                 }
                 break;
@@ -535,6 +565,18 @@ class CMS_RSS
                 }
                 $last_tag = str_replace('HTTP://WWW.W3.ORG/2005/ATOM:', $prefix, $last_tag);
                 switch ($prelast_tag) {
+                    // yahoo namespace
+                    case 'HTTP://SEARCH.YAHOO.COM/MRSS/:GROUP':
+                        $current_item = &$this->gleamed_items[count($this->gleamed_items) - 1];
+                        switch ($last_tag) {
+                            case 'HTTP://SEARCH.YAHOO.COM/MRSS/:THUMBNAIL':
+                                if (array_key_exists('URL', $attributes)) {
+                                    $current_item['rep_image'] = $attributes['URL'];
+                                }
+                                break;
+                        }
+                        break;
+
                     case $prefix . 'AUTHOR':
                         $preprelast_tag = array_peek($this->tag_stack, 3);
                         switch ($preprelast_tag) {
@@ -567,6 +609,7 @@ class CMS_RSS
                                 break;
                         }
                         break;
+
                     case $prefix . 'FEED':
                         switch ($last_tag) {
                             case $prefix . 'TITLE':
@@ -612,9 +655,17 @@ class CMS_RSS
                                 break;
                         }
                         break;
+
                     case $prefix . 'ENTRY':
                         $current_item = &$this->gleamed_items[count($this->gleamed_items) - 1];
                         switch ($last_tag) {
+                            // yahoo namespace
+                            case 'HTTP://SEARCH.YAHOO.COM/MRSS/:THUMBNAIL':
+                                if (array_key_exists('URL', $attributes)) {
+                                    $current_item['rep_image'] = $attributes['URL'];
+                                }
+                                break;
+
                             case $prefix . 'TITLE':
                                 $current_item['title'] = $data;
                                 break;
@@ -685,11 +736,7 @@ class CMS_RSS
                                     }
                                 }
                                 break;
-                            case 'HTTP://SEARCH.YAHOO.COM/MRSS/:THUMBNAIL':
-                                if (array_key_exists('URL', $attributes)) {
-                                    $current_item['rep_image'] = $attributes['URL'];
-                                }
-                                break;
+
                             default:
                                 if (!array_key_exists($last_tag, $current_item)) {
                                     $current_item[$last_tag] = array();

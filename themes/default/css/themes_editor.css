@@ -11,11 +11,6 @@
 	font-weight: bold;
 }
 
-.theme_wizard_use_colour {
-	font-weight: bold;
-	text-align: center;
-}
-
 .theme_wizard_preview {
 	width: 100%;
 	height: 300px;
@@ -41,6 +36,10 @@
 .theme_manage_table td {
 	padding: 0.5em;
 	vertical-align: middle;
+}
+
+.manage_theme_theme_usage {
+	padding-bottom: 2em !important;
 }
 
 .manage_theme_theme_usage, .theme_manage_footnote {
@@ -75,10 +74,12 @@
 	margin-{!en_right}: 0.5em;
 	margin-top: 1em;
 	max-width: 100%;
+	height: auto;
 }
 
 .theme_image_preview_wide {
 	max-width: 100%;
+	height: auto;
 }
 
 .css_editor_selector_tips {
@@ -132,6 +133,7 @@
 }
 .theme_image__logo_theme_image .radio_list_picture img, .theme_image__background_theme_image .radio_list_picture img {
 	max-width: 100%;
+	height: auto;
 }
 
 .page_running_admin_themewizard .radio_list label {

@@ -58,14 +58,17 @@ class Module_admin_cns_members
         $ret = array(
             'browse' => array('MEMBERS', 'menu/social/members'),
             'step1' => array('ADD_MEMBER', 'menu/adminzone/tools/users/member_add'),
-            'delurk' => array('DELETE_LURKERS', 'menu/adminzone/tools/users/delete_lurkers'),
             'download_csv' => array('DOWNLOAD_MEMBER_CSV', 'menu/_generic_admin/download_csv'),
-            'import_csv' => array('IMPORT_MEMBER_CSV', 'menu/_generic_admin/import_csv'),
         );
+
+        if (has_privilege(get_member(), 'mass_import')) {
+            $ret['delurk'] = array('DELETE_LURKERS', 'menu/adminzone/tools/users/delete_lurkers');
+            $ret['import_csv'] = array('IMPORT_MEMBER_CSV', 'menu/_generic_admin/import_csv');
+        }
 
         if ($support_crosslinks) {
             if (has_privilege(get_member(), 'member_maintenance')) {
-                $ret['_SEARCH:members:browse'] = array('MEMBERS', 'menu/adminzone/tools/users/member_edit');
+                $ret['_SEARCH:members:browse'] = array('MEMBER_DIRECTORY', 'menu/adminzone/tools/users/member_edit');
             }
             $ret['_SEARCH:admin_cns_merge_members:browse'] = array('MERGE_MEMBERS', 'menu/adminzone/tools/users/merge_members');
             if (addon_installed('cns_cpfs')) {
@@ -84,7 +87,7 @@ class Module_admin_cns_members
             if (addon_installed('staff')) {
                 $ret['_SEARCH:admin_staff:browse'] = array('STAFF', 'menu/site_meta/staff');
             }*/
-            if (addon_installed('warnings')) {
+            if (addon_installed('cns_warnings')) {
                 $ret['_SEARCH:warnings:edit'] = array('WARNINGS', 'tabs/member_account/warnings');
             }
         }
@@ -241,13 +244,13 @@ class Module_admin_cns_members
                 array('menu/adminzone/tools/users/member_add', array('admin_cns_members', array('type' => 'step1'), get_module_zone('admin_cns_members')), do_lang_tempcode('ADD_MEMBER'), 'DOC_ADD_MEMBER'),
                 (!has_privilege(get_member(), 'member_maintenance')) ? null : array('menu/adminzone/tools/users/member_edit', array('members', array('type' => 'browse'), get_module_zone('members'), do_lang_tempcode('SWITCH_ZONE_WARNING')), do_lang_tempcode('EDIT_MEMBER'), 'DOC_EDIT_MEMBER'),
                 array('menu/adminzone/tools/users/merge_members', array('admin_cns_merge_members', array('type' => 'browse'), get_module_zone('admin_cns_merge_members')), do_lang_tempcode('MERGE_MEMBERS'), 'DOC_MERGE_MEMBERS'),
-                array('menu/adminzone/tools/users/delete_lurkers', array('admin_cns_members', array('type' => 'delurk'), get_module_zone('admin_cns_members')), do_lang_tempcode('DELETE_LURKERS'), 'DOC_DELETE_LURKERS'),
+                (!has_privilege(get_member(), 'mass_import')) ? null : array('menu/adminzone/tools/users/delete_lurkers', array('admin_cns_members', array('type' => 'delurk'), get_module_zone('admin_cns_members')), do_lang_tempcode('DELETE_LURKERS'), 'DOC_DELETE_LURKERS'),
                 array('menu/_generic_admin/download_csv', array('admin_cns_members', array('type' => 'download_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('DOWNLOAD_MEMBER_CSV'), 'DOC_DOWNLOAD_MEMBER_CSV'),
-                array('/menu/_generic_admin/import_csv', array('admin_cns_members', array('type' => 'import_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('IMPORT_MEMBER_CSV'), 'DOC_IMPORT_MEMBER_CSV'),
+                (!has_privilege(get_member(), 'mass_import')) ? null : array('/menu/_generic_admin/import_csv', array('admin_cns_members', array('type' => 'import_csv'), get_module_zone('admin_cns_members')), do_lang_tempcode('IMPORT_MEMBER_CSV'), 'DOC_IMPORT_MEMBER_CSV'),
                 addon_installed('cns_cpfs') ? array('menu/adminzone/tools/users/custom_profile_fields', array('admin_cns_customprofilefields', array('type' => 'browse'), get_module_zone('admin_cns_customprofilefields')), do_lang_tempcode('CUSTOM_PROFILE_FIELDS'), 'DOC_CUSTOM_PROFILE_FIELDS') : null,
                 addon_installed('welcome_emails') ? array('menu/adminzone/setup/welcome_emails', array('admin_cns_welcome_emails', array('type' => 'browse'), get_module_zone('admin_cns_welcome_emails')), do_lang_tempcode('WELCOME_EMAILS'), 'DOC_WELCOME_EMAILS') : null,
                 addon_installed('securitylogging') ? array('menu/adminzone/tools/users/investigate_user', array('admin_lookup', array(), get_module_zone('admin_lookup')), do_lang_tempcode('INVESTIGATE_USER'), 'DOC_INVESTIGATE_USER') : null,
-                array('tabs/member_account/warnings', array('warnings', array('type' => 'edit'), get_module_zone('warnings')), do_lang_tempcode('WARNINGS')),
+                addon_installed('cns_warnings') ? array('tabs/member_account/warnings', array('warnings', array('type' => 'edit'), get_module_zone('warnings')), do_lang_tempcode('WARNINGS')) : null,
                 array('menu/adminzone/security/usergroups_temp', array('admin_group_member_timeouts', array('type' => 'browse'), get_module_zone('admin_group_member_timeouts')), do_lang_tempcode('GROUP_MEMBER_TIMEOUTS'), 'DOC_GROUP_MEMBER_TIMEOUTS'),
                 addon_installed('ecommerce') ? array('menu/adminzone/audit/ecommerce/ecommerce', array('admin_ecommerce', array('type' => 'browse'), get_module_zone('admin_ecommerce')), do_lang_tempcode('CUSTOM_PRODUCT_USERGROUP'), 'DOC_ECOMMERCE') : null,
                 array('menu/social/groups', array('admin_cns_groups', array('type' => 'browse'), get_module_zone('admin_cns_groups'), do_lang_tempcode('SWITCH_SECTION_WARNING')), do_lang_tempcode('USERGROUPS'), 'DOC_GROUPS'),
@@ -276,7 +279,7 @@ class Module_admin_cns_members
 
         $submit_name = do_lang_tempcode('ADD_MEMBER');
         $url = build_url(array('page' => '_SELF', 'type' => 'step2'), '_SELF');
-        return do_template('FORM_SCREEN', array('_GUID' => '3724dec184e27bb1bfebc5712e8faec2', 'PREVIEW' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
+        return do_template('FORM_SCREEN', array('_GUID' => '3724dec184e27bb1bfebc5712e8faec2', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
     }
 
     /**
@@ -403,6 +406,8 @@ class Module_admin_cns_members
         require_code('form_templates');
 
         require_lang('cns_lurkers');
+
+        check_privilege('mass_import');
 
         $hidden = new Tempcode();
 
@@ -540,6 +545,8 @@ class Module_admin_cns_members
         }
         send_http_output_ping();
 
+        check_privilege('mass_import');
+
         require_lang('cns_lurkers');
 
         $max_posts = post_param_integer('max_posts');
@@ -581,6 +588,10 @@ class Module_admin_cns_members
     public function __delurk()
     {
         require_lang('cns_lurkers');
+
+        check_privilege('mass_import');
+
+        log_it('DELETE_LURKERS');
 
         foreach ($_POST as $key => $val) {
             if (substr($key, 0, 7) == 'lurker_') {
@@ -662,7 +673,7 @@ class Module_admin_cns_members
         foreach ($headings as $field_label => $field_name) {
             $fields_to_order_by->attach(form_input_list_entry($field_label, $field_name == 'id'));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('MEMBER_EXPORT_ORDER'), 'order_by', $fields_to_order_by, null, false, true));
+        $fields->attach(form_input_multi_list(do_lang_tempcode('ORDER'), do_lang_tempcode('MEMBER_EXPORT_ORDER'), 'order_by', $fields_to_order_by, null, 10, true));
 
         // Usergroups
         $groups = cns_create_selection_list_usergroups();
@@ -729,6 +740,8 @@ class Module_admin_cns_members
     {
         require_code('form_templates');
 
+        check_privilege('mass_import');
+
         $hidden = new Tempcode();
 
         $fields = new Tempcode();
@@ -751,6 +764,8 @@ class Module_admin_cns_members
      */
     public function _import_csv()
     {
+        check_privilege('mass_import');
+
         set_mass_import_mode();
 
         $default_password = post_param_string('default_password');
@@ -761,17 +776,14 @@ class Module_admin_cns_members
         if ((is_plupload(true)) || ((array_key_exists('file', $_FILES)) && (is_uploaded_file($_FILES['file']['tmp_name'])))) {
             if (filesize($_FILES['file']['tmp_name']) < 1024 * 1024 * 3) { // Cleanup possible line ending problems, but only if file not too big
                 $fixed_contents = unixify_line_format(file_get_contents($_FILES['file']['tmp_name']));
-                $myfile = @fopen($_FILES['file']['tmp_name'], 'wb');
-                if ($myfile !== false) {
-                    fwrite($myfile, $fixed_contents);
-                    fclose($myfile);
-                }
+                require_code('files');
+                cms_file_put_contents_safe($_FILES['file']['tmp_name'], $fixed_contents, FILE_WRITE_FAILURE_SILENT);
             }
 
             $target_path = get_custom_file_base() . '/safe_mode_temp/' . basename($_FILES['file']['tmp_name']);
+            require_code('files2');
             if (!file_exists(dirname($target_path))) {
-                mkdir(dirname($target_path), 0777);
-                fix_permissions(dirname($target_path));
+                make_missing_directory(dirname($target_path));
             }
             copy($_FILES['file']['tmp_name'], $target_path);
             fix_permissions($target_path);

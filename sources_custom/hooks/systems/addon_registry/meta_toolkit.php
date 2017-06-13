@@ -86,7 +86,7 @@ class Hook_addon_registry_meta_toolkit
      */
     public function get_description()
     {
-        return 'Various tools for meta-management of a Composr site, including generating schemas, and exporting data.';
+        return 'Various developer tools for meta-management of a Composr site, including generating schemas, and low level management of the database, addons, and file changes.';
     }
 
     /**
@@ -132,7 +132,6 @@ class Hook_addon_registry_meta_toolkit
     {
         return array(
             'sources_custom/hooks/systems/addon_registry/meta_toolkit.php',
-            'data_custom/xml_db_import.php',
             'adminzone/pages/minimodules_custom/sql_schema_generate.php',
             'adminzone/pages/minimodules_custom/sql_schema_generate_by_addon.php',
             'adminzone/pages/minimodules_custom/sql_show_tables_by_addon.php',
@@ -142,7 +141,6 @@ class Hook_addon_registry_meta_toolkit
             'sources_custom/string_scan.php',
             'sources_custom/hooks/systems/page_groupings/meta_toolkit.php',
             'sources_custom/database_relations.php',
-            'sources_custom/database_toolkit.php',
             'data_custom/cleanout.php',
             'adminzone/pages/minimodules_custom/admin_generate_adhoc_upgrade.php',
             'delete_alien_files.php',

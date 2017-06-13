@@ -35,12 +35,14 @@ function init__hooks__modules__admin_import__phpbb3()
     $OLD_BASE_URL = null;
 
     // Profile Field Types
-    define('FIELD_INT', 1);
-    define('FIELD_STRING', 2);
-    define('FIELD_TEXT', 3);
-    define('FIELD_BOOL', 4);
-    define('FIELD_DROPDOWN', 5);
-    define('FIELD_DATE', 6);
+    if (!defined('FIELD_INT')) {
+        define('FIELD_INT', 1);
+        define('FIELD_STRING', 2);
+        define('FIELD_TEXT', 3);
+        define('FIELD_BOOL', 4);
+        define('FIELD_DROPDOWN', 5);
+        define('FIELD_DATE', 6);
+    }
 }
 
 /**
@@ -234,6 +236,7 @@ class Hook_phpbb3
                 $id_new = $GLOBALS['FORUM_DB']->query_insert('attachments', $row_copy, true);
 
                 @rename($file_base . '/files/' . $row['physical_filename'], get_custom_file_base() . '/uploads/attachments/' . $row['physical_filename']);
+                sync_file(get_custom_file_base() . '/uploads/attachments/' . $row['physical_filename']);
 
                 import_id_remap_put('attachment', strval($row['attach_id']), $id_new);
             }
@@ -490,7 +493,7 @@ class Hook_phpbb3
                         $filename = $row['user_avatar'];
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($file_base . '/' . $avatar_path . '/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . $filename;
-                            sync_file($avatar_url);
+                            sync_file(get_custom_file_base() . '/' . $avatar_url);
                         } else {
                             if ($STRICT_FILE) {
                                 warn_exit(do_lang_tempcode('MISSING_AVATAR', escape_html($filename)));
@@ -505,7 +508,7 @@ class Hook_phpbb3
                         $filename = $row['user_avatar'];
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($file_base . '/' . $avatar_gallery_path . '/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . substr($filename, strrpos($filename, '/'));
-                            sync_file($avatar_url);
+                            sync_file(get_custom_file_base() . '/' . $avatar_url);
                         } else {
                             // Try as a pack avatar then
                             $striped_filename = str_replace('/', '_', $filename);
@@ -949,7 +952,7 @@ class Hook_phpbb3
                 $from = $matches[1][$i];
                 $attachments = $db->query_select('attachments', array('attach_id'), array('post_msg_id' => $post_id, 'in_message' => $is_pm ? 1 : 0), 'ORDER BY attach_id');
                 $to = array_key_exists(intval($from), $attachments) ? $attachments[intval($from)]['attach_id'] : -1;
-                $to = import_id_remap_get('attachment', $to, true);
+                $to = import_id_remap_get('attachment', strval($to), true);
             } else {
                 $to = null;
             }
@@ -1109,7 +1112,7 @@ class Hook_phpbb3
                 $time = $_postdetails['message_time'];
                 $poster = $from_id;
                 $last_edit_time = $_postdetails['message_edit_time'];
-                $last_edit_by = ($_postdetails['message_edit_user'] == 0) ? null : import_id_remap_get('member', $_postdetails['message_edit_user'], true);
+                $last_edit_by = ($_postdetails['message_edit_user'] == 0) ? null : import_id_remap_get('member', strval($_postdetails['message_edit_user']), true);
 
                 $post_id = cns_make_post($topic_id, $title, $post, 0, $first_post, $validated, 0, $poster_name_if_guest, $ip_address, $time, $poster, null, $last_edit_time, $last_edit_by, false, false, null, false);
 
@@ -1281,8 +1284,8 @@ class Hook_phpbb3
             return;
         }
         foreach ($rows as $row) {
-            $owner = import_id_remap_get('member', $row['user_id'], true);
-            $topic_id = import_id_remap_get('topic', $row['topic_id'], true);
+            $owner = import_id_remap_get('member', strval($row['user_id']), true);
+            $topic_id = import_id_remap_get('topic', strval($row['topic_id']), true);
             if ((is_null($owner)) || (is_null($topic_id))) {
                 continue;
             }
@@ -1378,13 +1381,13 @@ class Hook_phpbb3
     {
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'warnings');
         foreach ($rows as $row) {
-            $member_id = import_id_remap_get('member', $row['user_id'], true);
+            $member_id = import_id_remap_get('member', strval($row['user_id']), true);
             $by = db_get_first_id() + 1;
             if (is_null($member_id)) {
                 continue;
             }
 
-            $post_id = import_id_remap_get('post', $row['post_id'], true);
+            $post_id = import_id_remap_get('post', strval($row['post_id']), true);
 
             $explanation = is_null($post_id) ? '' : do_lang('IMPORT_WARNING_CONVERT', strval($post_id));
 
@@ -1393,7 +1396,7 @@ class Hook_phpbb3
 
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'banlist WHERE ban_end>' . strval(time()));
         foreach ($rows as $row) {
-            $member_id = import_id_remap_get('member', $row['ban_userid'], true);
+            $member_id = import_id_remap_get('member', strval($row['ban_userid']), true);
             if (is_null($member_id)) {
                 continue;
             }
@@ -1413,8 +1416,8 @@ class Hook_phpbb3
     {
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'zebra');
         foreach ($rows as $row) {
-            $likes = import_id_remap_get('member', $row['user_id'], true);
-            $liked = import_id_remap_get('member', $row['zebra_id'], true);
+            $likes = import_id_remap_get('member', strval($row['user_id']), true);
+            $liked = import_id_remap_get('member', strval($row['zebra_id']), true);
             if (is_null($likes)) {
                 continue;
             }

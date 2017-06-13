@@ -157,7 +157,7 @@ class Block_main_image_fader
 
             $titles[] = get_translated_text($row['title']);
             $just_media_row = db_map_restrict($row, array('id', 'description'));
-            $html[] = get_translated_tempcode($row['content_type'], $just_media_row, 'description');
+            $html[] = get_translated_tempcode($row['content_type'] . 's', $just_media_row, 'description');
         }
 
         if (count($images) == 0) {
@@ -176,7 +176,7 @@ class Block_main_image_fader
         }
 
         $nice_cat = str_replace('*', '', $cat);
-        if (preg_match('#^[\w\_]+$#', $nice_cat) == 0) {
+        if (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $nice_cat) == 0) {
             $nice_cat = 'root';
         }
         $gallery_url = build_url(array('page' => 'galleries', 'type' => 'browse', 'id' => $nice_cat), $zone);

@@ -21,6 +21,7 @@
 #helper_panel_toggle {
 	outline: 0;
 	float: {!en_right};
+	text-align: {!en_right};
 	margin: 12px 6px;
 }
 
@@ -56,11 +57,3 @@
 
 .global_helper_panel_text_over {
 }
-
-.global_helper_panel_html {
-	position: absolute;
-	/*bottom: -270px;*/
-	z-index: 2;
-	width: {$?,{$MOBILE},315,390}px;
-}
-

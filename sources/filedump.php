@@ -93,7 +93,8 @@ function update_filedump_links($from, $to)
             if (is_array($ref)) {
                 lang_remap_comcode($ref[1], $ref[0][$ref[1]], $new_comcode);
             } else {
-                file_put_contents($path, $new_comcode);
+                require_code('files');
+                cms_file_put_contents_safe($path, $new_comcode, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             }
         }
     }
@@ -198,6 +199,10 @@ function extract_filedump_links($comcode, $identifier, $focus, &$paths_used)
         $num_matches = preg_match_all($pattern, $comcode, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $decoded = urldecode(html_entity_decode($matches[1][$i], ENT_QUOTES, get_charset())); // This is imperfect (raw naming that coincidentally matches entity encoding will break), but good enough
+
+            if (strpos($decoded, '*') !== false) { // False positive, some kind of exemplar test
+                continue;
+            }
 
             $path = get_custom_file_base() . '/uploads/filedump' . $decoded;
 

@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+
+shell_exec('sh decache.sh');
+
+exit(0);
+

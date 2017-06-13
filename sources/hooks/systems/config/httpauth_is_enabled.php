@@ -50,6 +50,9 @@ class Hook_config_httpauth_is_enabled
      */
     public function get_default()
     {
+        if (get_forum_type() != 'cns') {
+            return null;
+        }
         return '0';
     }
 }

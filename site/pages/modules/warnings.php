@@ -93,7 +93,9 @@ class Module_warnings extends Standard_crud_module
             cns_require_all_forum_stuff();
         }
         require_lang('cns_warnings');
-        require_lang('submitban');
+        if (addon_installed('securitylogging')) {
+            require_lang('submitban');
+        }
 
         if ($type == 'history') {
             $this->title = get_screen_title('PUNITIVE_HISTORY');
@@ -516,7 +518,7 @@ class Module_warnings extends Standard_crud_module
             if (!is_null($post_id)) {
                 $_postdetails_text = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_post', array('id' => $post_id));
                 if (!is_null($_postdetails_text)) {
-                    $message = '[quote="' . $username . '"]' . "\n" . get_translated_text($_postdetails_text) . "\n" . '[/quote]';
+                    $message = '[quote="' . $username . '"]' . "\n" . get_translated_text($_postdetails_text, $GLOBALS['FORUM_DB']) . "\n" . '[/quote]';
                 }
             }
             $fields->attach(form_input_text_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_PP_MESSAGE'), 'message', $message, false));
@@ -663,7 +665,7 @@ class Module_warnings extends Standard_crud_module
             $_title = do_lang('NEW_WARNING_TO_YOU');
 
             $pt_topic_id = cns_make_topic(null, '', '', 1, 1, 0, 0, 0, get_member(), $member_id);
-            $post_id = cns_make_post($pt_topic_id, $_title, $message, 0, true, 1, 1, null, null, null, null, null, null, null, false);
+            $post_id = cns_make_post($pt_topic_id, $_title, $message, 0, true, 1, 1/*emphasised*/, null, null, null, null, null, null, null, false);
 
             send_pt_notification($post_id, $_title, $pt_topic_id, $member_id);
         }

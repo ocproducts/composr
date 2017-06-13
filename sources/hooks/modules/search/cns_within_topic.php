@@ -75,7 +75,7 @@ class Hook_search_cns_within_topic extends FieldsSearchHook
     /**
      * Get a list of extra fields to ask for.
      *
-     * @return array A list of maps specifying extra fields
+     * @return array A list of maps specifying extra fields (null: no tree)
      */
     public function get_fields()
     {
@@ -153,7 +153,7 @@ class Hook_search_cns_within_topic extends FieldsSearchHook
         $where_clause .= ' AND ';
         $where_clause .= 't_forum_id=p_cache_forum_id AND t_forum_id IS NOT NULL AND p_intended_solely_for IS NULL';
 
-        $table = 'f_posts r JOIN ' . get_table_prefix() . 'f_topics s ON r.p_topic_id=s.id';
+        $table = 'f_posts r JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics s ON r.p_topic_id=s.id';
         $trans_fields = array('!' => '!', 'r.p_post' => 'LONG_TRANS__COMCODE');
         $nontrans_fields = array('r.p_title');
         $this->_get_search_parameterisation_advanced_for_content_type('_topic', $table, $where_clause, $trans_fields, $nontrans_fields);

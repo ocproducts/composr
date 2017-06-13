@@ -65,11 +65,12 @@ function upgrade_script()
             $show_more_link = true;
 
             switch ($type) {
+                case 'misc': // LEGACY
                 case 'browse':
                     clear_caches_1();
 
                     $l_choices = do_lang('FU_CHOICES');
-                    $oc = (get_option('site_closed') == '0') ? do_lang('SITE_OPEN') : do_lang('SITE_CLOSED');
+                    $oc = (get_option('site_closed') == '0') ? do_lang('OPEN') : do_lang('CLOSED');
                     $a = float_to_raw_string(cms_version_number(), 10, true);
                     $b = get_value('version');
                     if ($b === null) {
@@ -97,16 +98,20 @@ function upgrade_script()
                     $l_release_notes = do_lang('FU_RELEASE_NOTES');
                     $l_refer_release_notes = do_lang('FU_REFER_RELEASE_NOTES');
                     $news_id = post_param_integer('news_id', null);
+                    $from_version = post_param_string('from_version', strval(cms_version()) . '.' . cms_version_minor());
                     $tar_url = '';
                     if (!is_null($news_id)) {
                         require_code('files');
-                        $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?news_id=' . strval($news_id) . '&from_version=' . urlencode(strval(cms_version()) . '.' . cms_version_minor());
+                        $fetch_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/fetch_release_details.php?news_id=' . strval($news_id) . '&from_version=' . urlencode($from_version);
                         $news = http_download_file($fetch_url, null, true, false, 'Composr', null, null, null, null, null, null, null, null, 30.0);
 
                         secure_serialized_data($news);
                         $details = unserialize($news);
                         if ($details[0] != '') {
-                            $l_refer_release_notes = $details[0] . '<div style="overflow: auto; height: 150px">' . $details[2] . '</div>';
+                            $l_refer_release_notes = $details[0];
+                            if ($details[2] != '') {
+                                $l_refer_release_notes .= '<div style="overflow: auto; height: 150px">' . $details[2] . '</div>';
+                            }
                         }
                         $tar_url = $details[1];
                     }
@@ -217,11 +222,21 @@ function upgrade_script()
                 case 'file_upgrade':
                     appengine_live_guard();
 
+                    require_code('version2');
+                    $personal_upgrader_url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php?from=' . urlencode(get_version_dotted());
+                    $hooks = find_all_hooks('systems', 'addon_registry');
+                    foreach (array_keys($hooks) as $hook) {
+                        if (is_file(get_file_base() . '/sources/hooks/systems/addon_registry/' . $hook . '.php')) {
+                            $personal_upgrader_url .= '&addon_' . $hook . '=1';
+                        }
+                    }
+
                     if (get_param_string('tar_url', '') == '') {
                         echo do_lang('FU_FILE_UPGRADE_INFO');
                     }
+                    echo do_lang('FU_FILE_UPGRADE_INFO_MANUAL', escape_html($personal_upgrader_url));
                     echo '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
-                    echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" value="' . escape_html(base64_decode(get_param_string('tar_url', ''))) . '" /></p>';
+                    echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" size="80" value="' . escape_html(base64_decode(get_param_string('tar_url', ''))) . '" /></p>';
                     echo '<p><label for="dry_run"><input type="checkbox" id="dry_run" name="dry_run" value="1" /> ' . do_lang('FU_DRY_RUN') . '</label></p>';
                     if ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
                         echo '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
@@ -235,15 +250,20 @@ function upgrade_script()
                 case '_file_upgrade':
                     appengine_live_guard();
 
+                    // Dry run?
                     $dry_run = (post_param_integer('dry_run', 0) == 1);
                     if ($dry_run) {
                         echo '<p>' . do_lang('FU_DOING_DRY_RUN') . '</p>';
                     }
 
-                    require_code('tar');
+                    // Turn off limits, this may be exhaustive
+                    disable_php_memory_limit();
                     if (php_function_allowed('set_time_limit')) {
                         @set_time_limit(0);
                     }
+
+                    // Download file
+                    require_code('tar');
                     if ((post_param_string('url', '') == '') && ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
                         $temp_path = $_FILES['upload']['tmp_name'];
                     } else {
@@ -252,10 +272,18 @@ function upgrade_script()
                         }
 
                         $temp_path = cms_tempnam();
-                        $myfile = fopen($temp_path, 'wb');
-                        http_download_file(post_param_string('url'), null, true, false, 'Composr', null, null, null, null, null, $myfile);
-                        fclose($myfile);
+                        $url = post_param_string('url');
+                        if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
+                            unlink($temp_path);
+                            copy(get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/'))), $temp_path);
+                        } else {
+                            $myfile = fopen($temp_path, 'wb');
+                            http_download_file($url, null, true, false, 'Composr', null, null, null, null, null, $myfile);
+                            fclose($myfile);
+                        }
                     }
+
+                    // We do support using a .zip (e.g. manual installer package), but we need to convert it
                     if (substr(strtolower($temp_path), -4) == '.zip') {
                         require_code('tar2');
                         $temp_path_new = convert_zip_to_tar($temp_path);
@@ -263,17 +291,22 @@ function upgrade_script()
                         rename($temp_path_new, $temp_path);
                         fix_permissions($temp_path);
                     }
+
+                    // Open up TAR
                     $upgrade_resource = tar_open($temp_path, 'rb');
                     //tar_extract_to_folder($upgrade_resource, '', true);
-                    disable_php_memory_limit();
                     $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB
-                    $data = array('todo' => array());
+
+                    // Hopefully $popup_simple_extract will be true (i.e. suEXEC mode), as it is safer
                     $popup_simple_extract = (_ftp_info() === false);
-                    if (!$popup_simple_extract) {
+                    if ($popup_simple_extract) {
+                        $data = array('todo' => array()); // Data to pass through
+                    } else {
                         echo '<p>' . do_lang('EXTRACTING_MESSAGE') . '</p>';
                     }
-                    $addon_contents = array();
+
                     // Find addons
+                    $addon_contents = array();
                     foreach ($directory as $upgrade_file2) {
                         // See if we can find an addon registry file in our upgrade file
                         if ((strpos($upgrade_file2['path'], '/addon_registry/') !== false) && (substr($upgrade_file2['path'], -4) == '.php')) {
@@ -281,9 +314,11 @@ function upgrade_script()
                             $addon_contents[basename($upgrade_file2['path'], '.php')] = $file_data['data'];
                         }
                     }
+                    $files_for_tar_updating = array();
+
                     // Process files
                     foreach ($directory as $offset => $upgrade_file) {
-                        // skip over these, from manually installer package (which may be used for an upgrade)
+                        // Skip over these, from manual installer package (which may be used for an upgrade)
                         if ($upgrade_file['path'] == '_config.php') {
                             continue;
                         }
@@ -294,6 +329,7 @@ function upgrade_script()
                             continue;
                         }
 
+                        // Optimisation
                         if (!$popup_simple_extract) {
                             // See if we can skip the file, if the on-disk version is identical?
                             if ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) && (filesize(get_file_base() . '/' . $upgrade_file['path']) == $upgrade_file['size'])) {
@@ -305,8 +341,10 @@ function upgrade_script()
                             }
                         }
 
-                        // Addon registry file, for installed addon
+                        // What kind of file did we find?
                         if ((strpos($upgrade_file['path'], '/addon_registry/') !== false) && (file_exists(get_file_base() . '/' . $upgrade_file['path']))) {
+                            // Addon registry file, for installed addon...
+
                             if (substr($upgrade_file['path'], -1) != '/') {
                                 if ($popup_simple_extract) {
                                     $data['todo'][] = array($upgrade_file['path'], $upgrade_file['mtime'], $offset + 512, $upgrade_file['size'], ($upgrade_file['mode'] & 0002) != 0);
@@ -319,7 +357,8 @@ function upgrade_script()
                                 }
                             }
                         } else {
-                            // Some other file
+                            // Some other file...
+
                             $found = null;
                             if (substr($upgrade_file['path'], -1) != '/') {
                                 foreach ($addon_contents as $addon_name => $addon_data) {
@@ -357,42 +396,66 @@ function upgrade_script()
                                 }
                             }
 
+                            // Record to copy it into our archived addon so that addon is kept up-to-date
                             if (substr($upgrade_file['path'], -1) != '/') {
-                                // If true: We need to copy it into our archived addon so that addon is kept up-to-date
                                 if ((!is_null($found)) && (file_exists(get_file_base() . '/imports/addons/' . $found . '.tar'))) {
-                                    $old_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.tar', 'rb');
-                                    $new_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.new.tar', 'wb');
-                                    $directory2 = tar_get_directory($old_addon_file, true);
-                                    if (!is_null($directory2)) {
-                                        foreach ($directory2 as $d) {
-                                            if ($d['path'] == $upgrade_file['path']) {
-                                                continue;
-                                            }
-                                            $file_data = tar_get_file($old_addon_file, $d['path']);
-                                            if ($d['path'] == 'addon.inf') {
-                                                $file_data['data'] = preg_replace('#^version=.*#m', 'version=(version-synched)', $file_data['data']);
-                                            }
-                                            tar_add_file($new_addon_file, $d['path'], $file_data['data'], $d['mode'], $d['mtime']);
-                                        }
-                                        $file_data = tar_get_file($upgrade_resource, $upgrade_file['path']);
-                                        tar_add_file($new_addon_file, $upgrade_file['path'], $file_data['data'], $upgrade_file['mode'], $upgrade_file['mtime']);
-                                        tar_close($new_addon_file);
-                                        tar_close($old_addon_file);
-                                        if (!$dry_run) {
-                                            unlink(get_file_base() . '/imports/addons/' . $found . '.tar');
-                                            rename(get_file_base() . '/imports/addons/' . $found . '.new.tar', get_file_base() . '/imports/addons/' . $found . '.tar');
-                                        } else {
-                                            unlink(get_file_base() . '/imports/addons/' . $found . '.new.tar');
-                                        }
-                                        sync_file('imports/addons/' . $found . '.tar');
-
-                                        echo do_lang('U_PACKING_MESSAGE', escape_html($upgrade_file['path'])) . '<br />';
-                                    }
+                                    $files_for_tar_updating[$found][$upgrade_file['path']] = array($upgrade_file['mode'], $upgrade_file['mtime']);
                                 }
                             }
                         }
                     }
+
+                    // Copy it into our archived addon so that addon is kept up-to-date
+                    foreach ($files_for_tar_updating as $found => $files) {
+                        $old_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.tar', 'rb');
+                        $directory2 = tar_get_directory($old_addon_file, true);
+                        if ($directory2 !== null) {
+                            // New version of TAR file
+                            $new_addon_file = tar_open(get_file_base() . '/imports/addons/' . $found . '.new.tar', 'wb');
+
+                            // Add files from old TAR file, except ones we are replacing
+                            foreach ($directory2 as $d) {
+                                if (array_key_exists($d['path'], $files)) {
+                                    continue;
+                                }
+
+                                if ($d['path'] == 'addon.inf') {
+                                    continue; // Should not even be in the TAR, but maybe installer is being used to install addons (weird, but would work)
+                                }
+
+                                $file_data = tar_get_file($old_addon_file, $d['path']);
+
+                                $file_data['data'] = preg_replace('#^version=.*#m', 'version=(version-synched)', $file_data['data']);
+
+                                tar_add_file($new_addon_file, $d['path'], $file_data['data'], $d['mode'], $d['mtime']);
+                            }
+                            tar_close($old_addon_file);
+
+                            foreach ($files as $file_to_update => $_file_to_update) {
+                                list($file_to_update_mode, $file_to_update_mtime) = $_file_to_update;
+
+                                $file_data = tar_get_file($upgrade_resource, $file_to_update);
+
+                                tar_add_file($new_addon_file, $file_to_update, $file_data['data'], $upgrade_file['mode'], $upgrade_file['mtime']);
+                            }
+
+                            tar_close($new_addon_file);
+
+                            if (!$dry_run) {
+                                unlink(get_file_base() . '/imports/addons/' . $found . '.tar');
+                                rename(get_file_base() . '/imports/addons/' . $found . '.new.tar', get_file_base() . '/imports/addons/' . $found . '.tar');
+                            } else {
+                                unlink(get_file_base() . '/imports/addons/' . $found . '.new.tar');
+                            }
+                            sync_file(get_file_base() . '/imports/addons/' . $found . '.tar');
+
+                            echo do_lang('U_PACKING_MESSAGE', escape_html($file_to_update)) . '<br />';
+                        }
+                    }
+
                     tar_close($upgrade_resource);
+
+                    // Do extraction within iframe, if possible
                     if ($popup_simple_extract) {
                         @unlink(get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
                         @unlink(get_custom_file_base() . '/data_custom/upgrader.tmp');
@@ -402,10 +465,9 @@ function upgrade_script()
                         }
                         @unlink($temp_path);
                         $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
+                        require_code('files');
                         $tmp_data_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
-                        $tmp_data_file = fopen($tmp_data_path, 'wb');
-                        fwrite($tmp_data_file, serialize($data));
-                        fclose($tmp_data_file);
+                        cms_file_put_contents_safe($tmp_data_path, serialize($data));
                         global $SITE_INFO;
                         if (isset($GLOBALS['SITE_INFO']['admin_password'])) { // LEGACY
                             $GLOBALS['SITE_INFO']['master_password'] = $GLOBALS['SITE_INFO']['admin_password'];
@@ -429,6 +491,7 @@ function upgrade_script()
                     }
 
                     unset($_POST['news_id']);
+                    unset($_POST['from_version']);
 
                     break;
 
@@ -561,7 +624,7 @@ function post_fields_relay()
  */
 function fu_link($url, $text, $disabled = false, $js = '')
 {
-    $hidden = (strpos($url, 'http://compo.sr') !== false) ? '' : post_fields_relay();
+    $hidden = (strpos($url, 'http://compo.sr') !== false || strpos($url, '/index.php') !== false) ? '' : post_fields_relay();
     if (get_param_integer('keep_safe_mode', 0) == 1) {
         $url .= '&keep_safe_mode=1';
     }
@@ -572,7 +635,12 @@ function fu_link($url, $text, $disabled = false, $js = '')
     if ($text == do_lang('MORE_OPTIONS')) {
         $class = 'buttons__back';
     }
-    return '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">' . $hidden . '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="' . $class . ' button_screen_item" type="submit" value="' . escape_html($text) . '" /></form>';
+
+    $ret = '<form title="' . escape_html($text) . '" style="display: inline" action="' . escape_html($url) . '" method="post">';
+    $ret .= $hidden;
+    $ret .= '<input ' . (empty($js) ? '' : 'onclick="return window.confirm(\'' . addslashes($js) . '\');" ') . 'accesskey="c" ' . ($disabled ? 'disabled="disabled"' : '') . ' class="' . $class . ' button_screen_item" type="submit" value="' . escape_html($text) . '" />';
+    $ret .= '</form>';
+    return $ret;
 }
 
 /**
@@ -639,7 +707,8 @@ function up_do_login($message = null)
     if (!is_null($message)) {
         echo '<p><strong>' . $message . '</strong></p>';
     }
-    $news_id = get_param_integer('news_id', null);
+    $news_id = either_param_integer('news_id', null); // Comes in via GET, but carries through via POST
+    $from_version = either_param_string('from_version', null);
     $url = "upgrader.php?type=" . escape_html($type);
     if (get_param_integer('keep_safe_mode', 0) == 1) {
         $url .= '&keep_safe_mode=1';
@@ -651,6 +720,7 @@ function up_do_login($message = null)
     <p>{$l_login_info}</p>
     <form title=\"{$l_login}\" action=\"" . escape_html($url) . "\" method=\"post\">
     " . (is_null($news_id) ? '' : ('<input type="hidden" name="news_id" value="' . strval($news_id) . '" />')) . "
+    " . (is_null($from_version) ? '' : ('<input type="hidden" name="from_version" value="' . escape_html($from_version) . '" />')) . "
     <p>
         {$l_password}: <input type=\"password\" name=\"given_password\" value=\"" . escape_html(post_param_string('password', '')) . "\" />
     </p>
@@ -1031,6 +1101,7 @@ function check_excess_perms($array, $rel = '')
 function run_integrity_check($basic = false, $allow_merging = true, $unix_help = false)
 {
     $ret_str = '';
+    $found_something = false;
 
     require_code('files');
 
@@ -1078,6 +1149,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         list($moved, $not_missing) = move_modules();
         if ($moved != '') {
             $ret_str .= do_lang('WARNING_MOVED_MODULES', $moved);
+            $found_something = true;
         }
     }
 
@@ -1105,6 +1177,10 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     unset($hook_files);
     sort($files_to_check);
     foreach ($files_to_check as $file) {
+        if (($basic) && (time() - $_SERVER['REQUEST_TIME'] > 5)) {
+            return ''; // Taking too long
+        }
+
         if (should_ignore_file($file, IGNORE_BUNDLED_VOLATILE | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_NONBUNDLED_SCATTERED)) {
             continue;
         }
@@ -1160,6 +1236,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_OUTDATED', $outdated__possibly_outdated_override);
         }
+        $found_something = true;
     }
     if ($outdated__outdated_original_and_override != '') {
         if ($basic) {
@@ -1167,6 +1244,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_OUTDATED_ORIGINAL_AND_OVERRIDE', $outdated__outdated_original_and_override);
         }
+        $found_something = true;
     }
     if ($outdated__missing_original_but_has_override != '') {
         if ($basic) {
@@ -1174,6 +1252,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_MISSING_ORIGINAL_BUT_HAS_OVERRIDE', $outdated__missing_original_but_has_override);
         }
+        $found_something = true;
     }
     if (($outdated__uninstalled_addon_but_has_override != '') && (!$basic)) {
         $ret_str .= do_lang('WARNING_FILE_FROM_UNINSTALLED_ADDON', $outdated__uninstalled_addon_but_has_override);
@@ -1184,6 +1263,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_MISSING_FILE_ENTIRELY', $outdated__missing_file_entirely);
         }
+        $found_something = true;
     }
     if ($outdated__outdated_original != '') {
         if ($basic) {
@@ -1191,6 +1271,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_OUTDATED_ORIGINAL', $outdated__outdated_original);
         }
+        $found_something = true;
     }
     if ($outdated__future_files != '') {
         if ($basic) {
@@ -1198,6 +1279,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         } else {
             $ret_str .= do_lang('WARNING_FILE_FUTURE_FILES', $outdated__future_files);
         }
+        $found_something = true;
     }
 
     // And some special help for unix geeks
@@ -1209,7 +1291,7 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             if ($dirname == '.') {
                 $dirname = '';
             }
-            $directories_to_make[$dirname] = 1;
+            $directories_to_make[$dirname] = true;
         }
         foreach (array_keys($directories_to_make) as $directory) {
             $unix_out .= 'mkdir -p ' . escapeshellcmd($directory) . ';' . "\n";
@@ -1223,13 +1305,14 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
         }
         require_lang('upgrade');
         $ret_str .= do_lang('SH_COMMAND', nl2br(escape_html($unix_out)));
+        $found_something = true;
     }
 
     // Alien files
     if (!$basic) {
         $master_data = array();
         foreach ($files_to_check as $file) {
-            $master_data[$file] = 1;
+            $master_data[$file] = true;
         }
 
         $addon_files = collapse_2d_complexity('filename', 'addon_name', $GLOBALS['SITE_DB']->query_select('addons_files', array('filename', 'addon_name')));
@@ -1245,8 +1328,14 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
             $ret_str .= '<p class="associated_details"><a href="#" onclick="var checkmarks=this.parentNode.parentNode.getElementsByTagName(\'input\'); for (var i=0;i&lt;checkmarks.length;i++) { checkmarks[i].checked=true; } return false;">' . do_lang('FU_CHECK_ALL') . '</a></p>';
             $ret_str .= '<input class="buttons__proceed button_screen" accesskey="c" type="submit" value="' . do_lang('FU_AUTO_HANDLE') . '" />';
             $ret_str .= '</div>';
+
+            $found_something = true;
         }
         $ret_str .= '</form>';
+    }
+
+    if (!$found_something) {
+        $ret_str = do_lang('NO_ISSUES_FOUND');
     }
 
     return $ret_str;
@@ -1321,16 +1410,10 @@ function check_outdated__handle_overrides($dir, $rela, &$master_data, &$hook_fil
                             if ((!is_null($true_hash)) && ($hash_on_disk != $true_hash)) {
                                 if ((function_exists('diff_compute_new')) && (substr($file, -4) == '.css') && ($true_hash !== 2) && (file_exists($dir . $file . '.editfrom')) && (is_writable_wrap($dir . $file))) {
                                     $new = diff_compute_new($equiv_file, $dir . $file . '.editfrom', $dir . $file);
-                                    $myfile = fopen($dir . $file . '.' . strval(time()), 'wb');
-                                    fwrite($myfile, file_get_contents($dir . $file));
-                                    fclose($myfile);
-                                    $myfile = fopen($dir . $file, 'wb');
-                                    fwrite($myfile, $new);
-                                    fclose($myfile);
+                                    cms_file_put_contents_safe($dir . $file . '.' . strval(time()), file_get_contents($dir . $file), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                                    cms_file_put_contents_safe($dir . $file, $new, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                                     $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd> ' . do_lang('AUTO_MERGED') . '</li>';
-                                    $myfile = fopen($dir . $file . '.editfrom', 'wb');
-                                    fwrite($myfile, file_get_contents($equiv_file));
-                                    fclose($myfile);
+                                    cms_file_put_contents_safe($dir . $file . '.editfrom', file_get_contents($equiv_file), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                                 } else {
                                     $outdated__possibly_outdated_override .= '<li><kbd>' . escape_html($rela . $file) . '</kbd></li>';
                                 }
@@ -1386,10 +1469,10 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
     if ($dh !== false) {
         if ($rela == '') {
             $old_addons_now_gone = array(
-                'sources/hooks/systems/addon_registry/core_installation_uninstallation.php',
+                'sources/hooks/systems/addon_registry/core_installation_uninstallation.php', // LEGACY
             );
             $modules_moved_intentionally = array(
-                'collaboration/pages/modules/filedump.php',
+                'collaboration/pages/modules/filedump.php', // LEGACY
             );
             foreach (array_merge($old_addons_now_gone, $modules_moved_intentionally) as $x) {
                 if (file_exists(get_file_base() . '/' . $x)) {
@@ -1407,7 +1490,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
         sort($dir_files);
         foreach ($dir_files as $file) {
-            if (should_ignore_file($rela . $file, IGNORE_ACCESS_CONTROLLERS | IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE)) {
+            if (should_ignore_file($rela . $file, IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE)) {
                 continue;
             }
 
@@ -1498,16 +1581,42 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
  */
 function _integrity_scan()
 {
+    require_code('input_filter_2');
+    rescue_shortened_post_request();
+
     foreach (array_keys($_POST) as $key) {
         $val = post_param_string($key);
         if (strpos($val, ':') !== false) {
             $bits = explode(':', $val);
+
             if ($bits[0] == 'delete') {
                 afm_delete_file($bits[1]);
             } elseif ($bits[0] == 'move') {
                 afm_delete_file($bits[2]);
                 afm_move($bits[1], $bits[2]);
             }
+
+            // Now delete empty directories
+            $_subdirs = explode('/', dirname($bits[1]));
+            $subdirs = array();
+            $buildup = '';
+            foreach ($_subdirs as $subdir) {
+                if ($buildup != '') {
+                    $buildup .= '/';
+                }
+                $buildup .= $subdir;
+
+                $subdirs[] = $buildup;
+            }
+            foreach (array_reverse($subdirs) as $subdir) {
+                $files = @scandir(get_file_base() . '/' . $subdir);
+                if (($files !== false) && (count(array_diff($files, array('..', '.', '.DS_Store'))) == 0)) {
+                    @unlink(get_file_base() . '/' . $subdir . '/.DS_Store');
+                    @rmdir(get_file_base() . '/' . $subdir);
+                }
+            }
+
+            unset($_POST[$key]); // We don't want it propagating with buttons, annoying and confusing
         }
     }
 }
@@ -1533,6 +1642,7 @@ function version_specific()
                 while (($f = readdir($dh)) !== false) {
                     if (substr($f, -4) == '.tar') {
                         @rename(get_custom_file_base() . '/imports/mods/' . $f, get_file_base() . '/imports/addons/' . $f);
+                        sync_file_move(get_custom_file_base() . '/imports/mods/' . $f, get_file_base() . '/imports/addons/' . $f);
                     }
                 }
             }
@@ -1544,9 +1654,19 @@ function version_specific()
             $GLOBALS['SITE_DB']->rename_table('adminlogs', 'actionlogs');
 
             @rename(get_custom_file_base() . '/data_custom/breadcrumbs.xml', get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
+            sync_file_move(get_custom_file_base() . '/data_custom/breadcrumbs.xml', get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
             @rename(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
+            sync_file_move(get_custom_file_base() . '/data_custom/fields.xml', get_custom_file_base() . '/data_custom/xml_config/fields.xml');
 
-            $modules_renamed = array(
+            $remap = array(
+                'ocf_post' => 'cns_post',
+                'ocf_signature' => 'cns_signature',
+            );
+            foreach ($remap as $from => $to) {
+                $GLOBALS['SITE_DB']->query_update('attachment_refs', array('r_referer_type' => $to), array('r_referer_type' => $from));
+            }
+
+            $remap = array(
                 'cedi' => 'wiki',
                 'contactmember' => 'contact_member',
                 'admin_occle' => 'admin_commandr',
@@ -1568,18 +1688,56 @@ function version_specific()
                 'cms_cedi' => 'cms_wiki',
                 'cms_ocf_groups' => 'cms_cns_groups',
             );
-            foreach ($modules_renamed as $from => $to) {
+            foreach ($remap as $from => $to) {
+                $GLOBALS['SITE_DB']->query_delete('modules', array('module_the_name' => $to));
                 $GLOBALS['SITE_DB']->query_update('modules', array('module_the_name' => $to), array('module_the_name' => $from), '', 1);
                 $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'menu_items SET i_url=REPLACE(i_url,\'' . $from . '\',\'' . $to . '\')');
             }
+            $deleted_modules = array(
+            );
+            foreach ($deleted_modules as $module_name) {
+                $GLOBALS['SITE_DB']->query_delete('modules', array('module_the_name' => $module_name));
+            }
             persistent_cache_delete('MODULES');
+
+            $remap = array(
+                'side_ocf_personal_topics' => 'side_cns_private_topics',
+                'side_stored_menu' => 'menu',
+                'side_root_galleries' => 'side_galleries',
+            );
+            foreach ($remap as $from => $to) {
+                $GLOBALS['SITE_DB']->query_delete('blocks', array('block_name' => $to));
+                $GLOBALS['SITE_DB']->query_update('blocks', array('block_name' => $to), array('block_name' => $from), '', 1);
+            }
+            $deleted_blocks = array(
+                'main_feedback',
+                'main_sitemap',
+                'main_as_zone_access',
+                'main_recent_galleries',
+                'main_top_galleries',
+                'main_recent_cc_entries',
+                'main_recent_downloads',
+                'main_top_downloads',
+                'main_download_tease',
+                'main_gallery_tease',
+            );
+            foreach ($deleted_blocks as $block_name) {
+                $GLOBALS['SITE_DB']->query_delete('blocks', array('block_name' => $block_name));
+            }
+
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'menu_items SET i_url=REPLACE(i_url,\'ocf_\',\'cns_\')');
+
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('%cns_%') . '\'');
+            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_name=REPLACE(the_name,\'ocf_\',\'cns_\')');
 
             $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_resource_type' => 'browse'), array('m_resource_type' => 'misc'), '', 1);
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=\'ocp_street_address\' WHERE text_original=\'ocp_building_name_or_number\'');
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=REPLACE(text_original,\'ocp_\',\'cms_\') WHERE text_original LIKE \'ocp\_%\'');
             $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', '*ID_TEXT', 'privilege');
             $GLOBALS['SITE_DB']->alter_table_field('gsp', 'specific_permission', '*ID_TEXT', 'privilege');
-            $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
+            if (addon_installed('pointstore')) {
+                $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
+            }
             $GLOBALS['SITE_DB']->rename_table('msp', 'member_privileges');
             $GLOBALS['SITE_DB']->rename_table('gsp', 'group_privileges');
             $GLOBALS['SITE_DB']->rename_table('sp_list', 'privilege_list');
@@ -1617,8 +1775,12 @@ function version_specific()
             $GLOBALS['SITE_DB']->query_update('zones', array('zone_theme' => 'admin'), array('zone_name' => 'cms'), '', 1);
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => 'SHORT_TEXT'), array('m_type' => 'MD5'));
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '*SHORT_TEXT'), array('m_type' => '*MD5'));
+            rename_config_option('ocf_show_profile_link', 'cns_show_profile_link');
+            if ((strpos(get_db_type(), 'mysql') !== false) && (get_charset() == 'utf-8')) {
+                $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'import_parts_done CONVERT TO CHARACTER SET utf8mb4');
+                $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'wordfilter CONVERT TO CHARACTER SET utf8mb4');
+            }
 
-            set_value('version', float_to_raw_string($version_files, 10, true));
             delete_value('last_implicit_sync');
             delete_value('last_newsletter_drip_send');
             delete_value('last_confirm_reminder_time');
@@ -1639,12 +1801,12 @@ function version_specific()
 
             // This seems to be a legacy problem on some sites, but would crash on v10 if no-multi-lang was enabled. Generally things would corrupt.
             require_code('cns_members');
-            $fields = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_custom_fields WHERE cf_type IN (\'long_trans\',\'short_trans\')');
+            $fields = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . get_table_prefix() . 'f_custom_fields WHERE cf_type IN (\'long_trans\',\'short_trans\')');
             $member_mappings = cns_get_custom_field_mappings(get_member());
             foreach ($fields as $field) {
                 $db_field = 'field_' . strval($field['id']);
                 if (is_string($member_mappings[$db_field])) {
-                    $GLOBALS['FORUM_DB']->promote_text_field_to_comcode('f_member_custom_fields', $db_field, 'mf_member_id');
+                    $GLOBALS['SITE_DB']->promote_text_field_to_comcode('f_member_custom_fields', $db_field, 'mf_member_id');
                 }
             }
 
@@ -1653,6 +1815,12 @@ function version_specific()
                 $GLOBALS['SITE_DB']->alter_table_field('bank', 'divident', 'INTEGER', 'dividend');
                 rename_config_option('bank_divident', 'bank_dividend');
             }
+
+            // Delete old files
+            @unlink(get_file_base() . '/pages/html_custom/EN/cedi_tree_made.htm');
+            @unlink(get_file_base() . '/site/pages/html_custom/EN/cedi_tree_made.htm');
+            @unlink(get_file_base() . '/pages/html_custom/EN/download_tree_made.htm');
+            @unlink(get_file_base() . '/site/pages/html_custom/EN/download_tree_made.htm');
 
             // File replacements
             $reps = array(
@@ -1675,15 +1843,65 @@ function version_specific()
                 '# type=&quot;curved&quot;#' => '',
                 '#side_root_galleries#' => 'side_galleries',
                 '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
-                '#\[attachment[^\[\]]*\]url__([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media]$1[/media]',
+                '#\[attachment([^\[\]]*)\]url_([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media$1]$2[/media]',
+                '#\{\$OCF#' => '{$CNS',
+                ':misc' => ':browse',
+                'type=misc' => 'type=browse',
+                ':product=' => ':type_code=',
+                '&product=' => '&type_code=',
+                '&amp;product=' => '&amp;type_code=',
+                'solidborder' => 'results_table',
             );
             perform_search_replace($reps);
         }
+
+        set_value('version', float_to_raw_string($version_files, 10, true));
 
         return true;
     }
 
     return false;
+}
+
+/**
+ * Zone index.php files could go stale, rebuild them.
+ */
+function rebuild_zone_files()
+{
+    $zones = find_all_zones();
+    foreach ($zones as $zone) {
+        if (!in_array($zone, array('', 'cms', 'adminzone', 'site', 'forum', 'collaboration'/*LEGACY*/))) {
+            if (strpos(file_get_contents(get_custom_file_base() . '/' . $zone . '/index.php'), 'core') !== false) {
+                @file_put_contents(get_custom_file_base() . '/' . $zone . '/index.php', file_get_contents(get_custom_file_base() . '/site/index.php'));
+                fix_permissions(get_custom_file_base() . '/' . $zone . '/index.php');
+                sync_file(get_custom_file_base() . '/' . $zone . '/index.php');
+            }
+        }
+    }
+}
+
+/**
+ * Move files from one folder to another.
+ * Doesn't move .htaccess and index.html.
+ * Deletes the folder afterward.
+ *
+ * @param  PATH $from Source path
+ * @param  PATH $to Destination path
+ */
+function move_folder_contents($from, $to)
+{
+    $dh = @opendir(get_custom_file_base() . '/' . $from);
+    if ($dh !== false) {
+        while (($f = readdir($dh)) !== false) {
+            if (($f == 'index.html') || ($f == '.htaccess')) {
+                continue;
+            }
+
+            @rename(get_custom_file_base() . '/' . $from . '/' . $f, $to . '/' . $f);
+        }
+        closedir($dh);
+        @rmdir(get_custom_file_base() . '/' . $from);
+    }
 }
 
 /**
@@ -1734,8 +1952,8 @@ function perform_search_replace($reps)
                     $contents_orig = $contents;
                     $contents = preg_replace(array_keys($reps), array_values($reps), $contents);
                     if ($contents != $contents_orig) {
-                        file_put_contents($path, $contents);
-                        sync_file($path);
+                        require_code('files');
+                        cms_file_put_contents_safe($path, $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
                 closedir($dh);
@@ -1902,7 +2120,7 @@ function fix_mysql_database_charset()
 {
     global $SITE_INFO;
     if (empty($SITE_INFO['database_charset'])) {
-        $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8' : 'latin1';
+        $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8' : 'latin1'; // LEGACY: Too many assumptions, maybe we should just remove fix_mysql_database_charset and change_mysql_database_charset
     }
     change_mysql_database_charset($SITE_INFO['database_charset'], $GLOBALS['SITE_DB']);
 }
@@ -2257,9 +2475,8 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
 
                 // Save
                 if ($orig_css_file_contents != $css_file_contents) {
-                    $outfile = @fopen($css_dir . $css_file, 'wb') or intelligent_write_error($css_dir . $css_file);
-                    fwrite($outfile, $css_file_contents);
-                    fclose($outfile);
+                    require_code('files');
+                    cms_file_put_contents_safe($css_dir . $css_file, $css_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                 }
 
                 $successes[] = do_lang_tempcode('CSS_FILE_UPGRADED', escape_html($css_file));
@@ -2367,9 +2584,8 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                         $successes[] = do_lang_tempcode('TEMPLATE_ALTERED', escape_html($templates_file));
 
                         // Save
-                        $outfile = @fopen($templates_dir . $templates_file, 'wb') or intelligent_write_error($templates_dir . $templates_file);
-                        fwrite($outfile, $templates_file_contents);
-                        fclose($outfile);
+                        require_code('files');
+                        cms_file_put_contents_safe($templates_dir . $templates_file_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                     }
                 }
 
@@ -2447,6 +2663,7 @@ function automate_upgrade__safe()
     clear_caches_2();
     version_specific();
     upgrade_modules();
+    rebuild_zone_files();
 
     // Conversr
     cns_upgrade();

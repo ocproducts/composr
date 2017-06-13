@@ -360,7 +360,7 @@ function _do_next_section($list, $title, $entry_content_type = null, $category_c
         $url = (is_null($page)) ? build_url(array_merge($url_map[1], array('page' => '')), $zone) : build_url(array_merge(array('page' => $page), $url_map[1]), $zone);
         $doc = array_key_exists(3, $_option) ? $_option[3] : '';
         if ((is_string($doc)) && ($doc != '')) {
-            if (preg_match('#^[:\w\d]+$#', $doc) == 0) {
+            if (preg_match('#^[:\w]+$#', $doc) == 0) {
                 $doc = comcode_to_tempcode($doc, null, true);
             } else {
                 $doc = comcode_lang_string($doc);

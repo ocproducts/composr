@@ -70,13 +70,21 @@ class Block_main_image_slider
         require_javascript('skitter');
 
         require_code('galleries');
+        require_lang('galleries');
 
         $cat = empty($map['param']) ? 'root' : $map['param'];
         $mill = array_key_exists('time', $map) ? intval($map['time']) : 8000; // milliseconds between animations
-        $width = empty($map['width']) ? 750 : intval($map['width']);
-        $height = empty($map['height']) ? 300 : intval($map['height']);
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('galleries');
         $order = array_key_exists('order', $map) ? $map['order'] : '';
+
+        $width = empty($map['width']) ? '750px' : $map['width'];
+        if (is_numeric($width)) {
+            $width .= 'px';
+        }
+        $height = empty($map['height']) ? '300px' : $map['height'];
+        if (is_numeric($height)) {
+            $height .= 'px';
+        }
 
         $_transitions = array_key_exists('transitions', $map) ? $map['transitions'] : 'cube|cubeRandom|block|cubeStop|cubeHide|cubeSize|horizontal|showBars|showBarsRandom|tube|fade|fadeFour|paralell|blind|blindHeight|blindWidth|directionTop|directionBottom|directionRight|directionLeft|cubeStopRandom|cubeSpread|cubeJelly|glassCube|glassBlock|circles|circlesInside|circlesRotate|cubeShow|upBars|downBars|hideBars|swapBars|swapBarsBack|swapBlocks|cut|random|randomSmart';
         $transitions = ($_transitions == '') ? array() : explode('|', $_transitions);
@@ -111,8 +119,8 @@ class Block_main_image_slider
             $extra_where_video .= sql_region_filter('video', 'r.id');
         }
 
-        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,url,title,description,\'image\' AS content_type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
-        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,thumb_url AS url,title,description,\'video\' AS content_type FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $cat_select . $extra_where_video . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
+        $image_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,url,title,description,\'image\' AS content_type FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $cat_select . $extra_where_image . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $video_rows = $GLOBALS['SITE_DB']->query('SELECT r.id,thumb_url,thumb_url AS url,title,description,\'video\' AS content_type FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $cat_select . $extra_where_video . ' AND validated=1 ORDER BY add_date ASC', 100/*reasonable amount*/, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
         $all_rows = array();
         if ($order != '') {
             foreach (explode(',', $order) as $o) {
@@ -190,7 +198,7 @@ class Block_main_image_slider
         }
 
         $nice_cat = str_replace('*', '', $cat);
-        if (preg_match('#^[\w\_]+$#', $nice_cat) == 0) {
+        if (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $nice_cat) == 0) {
             $nice_cat = 'root';
         }
         $gallery_url = build_url(array('page' => 'galleries', 'type' => 'browse', 'id' => $nice_cat), $zone);
@@ -200,8 +208,8 @@ class Block_main_image_slider
             'GALLERY_URL' => $gallery_url,
             'IMAGES' => $images,
             'MILL' => strval($mill),
-            'WIDTH' => strval($width),
-            'HEIGHT' => strval($height),
+            'WIDTH' => $width,
+            'HEIGHT' => $height,
         ));
     }
 }

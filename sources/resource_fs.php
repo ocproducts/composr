@@ -49,9 +49,11 @@ function init__resource_fs()
     require_code('json');
     require_code('content');
 
-    define('RESOURCE_FS_DEFAULT_EXTENSION', 'cms');
+    if (!defined('RESOURCE_FS_DEFAULT_EXTENSION')) {
+        define('RESOURCE_FS_DEFAULT_EXTENSION', 'cms');
 
-    define('RESOURCE_FS_SPECIAL_DIRECTORY_FILE', '_folder.' . RESOURCE_FS_DEFAULT_EXTENSION);
+        define('RESOURCE_FS_SPECIAL_DIRECTORY_FILE', '_folder.' . RESOURCE_FS_DEFAULT_EXTENSION);
+    }
 
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
@@ -62,13 +64,15 @@ function init__resource_fs()
     global $RESOURCE_FS_ADD_ONLY;
     $RESOURCE_FS_ADD_ONLY = false;
 
-    define('TABLE_REPLACE_MODE_NONE', 0);
-    define('TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA', 1);
-    define('TABLE_REPLACE_MODE_SEVERE', 2);
+    if (!defined('TABLE_REPLACE_MODE_NONE')) {
+        define('TABLE_REPLACE_MODE_NONE', 0);
+        define('TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA', 1);
+        define('TABLE_REPLACE_MODE_SEVERE', 2);
+    }
 }
 
 /**
- * Disengage logging.
+ * Engage logging.
  *
  * @param  string $level The minimum logging level
  * @set inform notice warn
@@ -80,6 +84,8 @@ function resource_fs_logging__start($level = 'notice')
         fclose($RESOURCE_FS_LOGGER);
     }
     $RESOURCE_FS_LOGGER = fopen(get_custom_file_base() . '/data_custom/resource_fs.log', 'at');
+    flock($RESOURCE_FS_LOGGER, LOCK_EX);
+    fseek($RESOURCE_FS_LOGGER, 0, SEEK_END);
     $RESOURCE_FS_LOGGER_LEVEL = $level;
 }
 
@@ -119,6 +125,7 @@ function resource_fs_logging__end()
 {
     global $RESOURCE_FS_LOGGER;
     if ($RESOURCE_FS_LOGGER !== null) {
+        flock($RESOURCE_FS_LOGGER, LOCK_UN);
         fclose($RESOURCE_FS_LOGGER);
     }
     $RESOURCE_FS_LOGGER = null;
@@ -898,9 +905,8 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
         }
     }
 
-    file_put_contents($place, $binary);
-    fix_permissions($place);
-    sync_file($place);
+    require_code('files');
+    cms_file_put_contents_safe($place, $binary, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     return $urlpath;
 }

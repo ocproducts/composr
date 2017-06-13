@@ -64,7 +64,7 @@ function webdav_script()
     }
     $webdav_root = get_value('webdav_root');
     if (is_null($webdav_root)) {
-        $webdav_root = 'webdav';
+        $webdav_root = (preg_match('#^' . preg_quote($parsed['path'], '#') . 'webdav#', $_SERVER['REQUEST_URI']) != 0) ? 'webdav' : '';
     }
     $server->setBaseUri($parsed['path'] . $webdav_root);
 

@@ -165,7 +165,7 @@ We support almost everything in Tapatalk, but there are just a few exceptions:
  - Soft deletion of posts and topics (we achieve these via multi-moderations/post-history in Composr, but those are not supported) -- manually move to Trash instead
  - Ignoring users within topics (it\'s probably a bad idea because topics would get very confusing)
  - "Active members" (we felt it would end up a bit arbitrary and unnecessary -- there\'s no clear understood definition of what an active member is)
- - Password protected forums (we have an acceptance message with a corresponding question in Composr – but there\'s no way to display the message, so we cannot map it directly as a password feature – and pure password protection is better replaced with proper use of forum permissions anyway)
+ - Password protected forums (we have an acceptance message with a corresponding question in Composr -- but there\'s no way to display the message, so we cannot map it directly as a password feature -- and pure password protection is better replaced with proper use of forum permissions anyway)
  - You cannot view a private topic that you\'ve already left
  - You cannot leave a private topic that you are an original participant in
 
@@ -223,6 +223,10 @@ At the time of writing Tapatalk cannot produce web-links to Composr posts/topics
 Notifications are sent out to Tapatalk users based on various actions within Composr. Quotes, mentions, new private topics, and private topic replies, result in notifications to the members involved. New topics result in Tapatalk notifications for any members who have set any kind of Composr notification on the associated forum. Topic replies are the same, but recognise when Composr notifications were set on the associated topic too.
 
 Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows which Composr member IDs are associated with which device IDs. We only relay out notifications for members who have signed into Tapatalk at least once.
+
+
+
+For a demo, see this video tutorial: https://www.youtube.com/watch?v=SAGuj2mgkRo
 ';
     }
 
@@ -246,7 +250,10 @@ Tapatalk notifications relay through Tapatalk\'s own servers. Tapatalk knows whi
     public function get_dependencies()
     {
         return array(
-            'requires' => array('Conversr'),
+            'requires' => array(
+                'Conversr',
+                'cns_forum',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );

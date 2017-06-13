@@ -85,7 +85,7 @@ function make_installers($skip_file_grab = false)
     $manual_zip = $builds_path . '/builds/' . $version_dotted . '/composr_manualextraction_installer-' . $version_dotted . '.zip';
     $mszip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '-webpi.zip'; // Aka msappgallery, related to webmatrix
     $aps_zip = $builds_path . '/builds/' . $version_dotted . '/composr-' . $version_dotted . '.app.zip'; // APS package
-    $uni_upgrader = $builds_path . '/builds/' . $version_dotted . '/composr_upgrader-' . $version_dotted . '.cms';
+    $omni_upgrader = $builds_path . '/builds/' . $version_dotted . '/composr_upgrader-' . $version_dotted . '.cms';
 
     // Flags
     $make_quick = (get_param_integer('skip_quick', 0) == 0);
@@ -93,7 +93,7 @@ function make_installers($skip_file_grab = false)
     $make_bundled = (get_param_integer('skip_bundled', 0) == 0);
     $make_mszip = (get_param_integer('skip_mszip', 0) == 0);
     $make_aps = (get_param_integer('skip_aps', 0) == 0);
-    $make_uni_upgrader = (post_param_integer('make_uni_upgrader', 0) == 1);
+    $make_omni_upgrader = (post_param_integer('make_omni_upgrader', 0) == 1);
 
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(0);
@@ -133,7 +133,6 @@ function make_installers($skip_file_grab = false)
 
         // Build install.php, which has to have all our data.cms file offsets put into it (data.cms is an uncompressed zip, but the quick installer cheats - it can't truly read arbitrary zips)
         $code = file_get_contents(get_file_base() . '/install.php');
-        $auto_installer = fopen($builds_path . '/builds/' . $version_dotted . '/install.php', 'wb');
         $installer_start = "<" . "?php
             /* QUICK INSTALLER CODE starts */
 
@@ -183,15 +182,15 @@ function make_installers($skip_file_grab = false)
                 return {$file_count};
             }";
         $installer_start = preg_replace('#^\t{3}#m', '', $installer_start); // Format it correctly
-        fwrite($auto_installer, $installer_start);
+        $auto_installer_code = '';
+        $auto_installer_code .= $installer_start;
         global $MAKE_INSTALLERS__DIR_ARRAY;
         foreach ($MAKE_INSTALLERS__DIR_ARRAY as $dir) {
-            fwrite($auto_installer, '$DIR_ARRAY[]=\'' . $dir . '\';' . "\n");
+            $auto_installer_code .= '$DIR_ARRAY[]=\'' . $dir . '\';' . "\n";
         }
-        fwrite($auto_installer, '/* QUICK INSTALLER CODE ends */ ?' . '>');
-        fwrite($auto_installer, $code);
-        fclose($auto_installer);
-        fix_permissions($builds_path . '/builds/' . $version_dotted . '/install.php');
+        $auto_installer_code .= '/* QUICK INSTALLER CODE ends */ ?' . '>';
+        $auto_installer_code .= $code;
+        cms_file_put_contents_safe($builds_path . '/builds/' . $version_dotted . '/install.php', $auto_installer_code, FILE_WRITE_FIX_PERMISSIONS);
 
         @unlink($quick_zip);
 
@@ -434,19 +433,19 @@ function make_installers($skip_file_grab = false)
         chdir(get_file_base());
     }
 
-    // Build uni-upgrader
-    if ($make_uni_upgrader) {
-        @unlink($uni_upgrader);
+    // Build omni-upgrader
+    if ($make_omni_upgrader) {
+        @unlink($omni_upgrader);
 
         // Do the main work
         chdir($builds_path . '/builds/build/' . $version_branch);
-        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($uni_upgrader) . ' *';
+        $cmd = 'tar --exclude=_config.php --exclude=install.php -cvf ' . escapeshellarg($omni_upgrader) . ' *';
         $cmd_result = shell_exec($cmd . ' 2>&1');
         if (!is_string($cmd_result)) {
             fatal_exit('Failed to run: ' . $cmd);
         }
         $output2 = $cmd . ':' . "\n" . $cmd_result;
-        $out .= do_build_archive_output($uni_upgrader, $output2);
+        $out .= do_build_archive_output($omni_upgrader, $output2);
 
         chdir(get_file_base());
     }
@@ -470,8 +469,8 @@ function make_installers($skip_file_grab = false)
     if ($make_aps) {
         $details .= '<li>' . $aps_zip . ' file size: ' . clean_file_size(filesize($aps_zip)) . '</li>';
     }
-    if ($make_uni_upgrader) {
-        $details .= '<li>' . $uni_upgrader . ' file size: ' . clean_file_size(filesize($uni_upgrader)) . '</li>';
+    if ($make_omni_upgrader) {
+        $details .= '<li>' . $omni_upgrader . ' file size: ' . clean_file_size(filesize($omni_upgrader)) . '</li>';
     }
 
     $out .= '
@@ -626,7 +625,7 @@ function populate_build_files_list($dir = '', $pretend_dir = '')
     while (($file = readdir($dh)) !== false) {
         $is_dir = is_dir(get_file_base() . '/' . $dir . $file);
 
-        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE, 0)) {
+        if (should_ignore_file($pretend_dir . $file, IGNORE_NONBUNDLED_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS | IGNORE_CUSTOM_ZONES | IGNORE_CUSTOM_THEMES | IGNORE_NON_EN_SCATTERED_LANGS | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES, 0)) {
             continue;
         }
 
@@ -662,10 +661,7 @@ function populate_build_files_list($dir = '', $pretend_dir = '')
             }
 
             // Write the file out
-            $tmp = fopen($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, 'wb');
-            fwrite($tmp, $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file]);
-            fclose($tmp);
-            fix_permissions($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file);
+            cms_file_put_contents_safe($builds_path . '/builds/build/' . $version_branch . '/' . $pretend_dir . $file, $MAKE_INSTALLERS__FILE_ARRAY[$pretend_dir . $file], FILE_WRITE_FIX_PERMISSIONS);
         }
     }
 
@@ -698,12 +694,11 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
         $files[$file] = array(sprintf('%u', crc32(preg_replace('#[\r\n\t ]#', '', $contents))));
     }
 
+    require_code('files');
+
     $file_manifest = serialize($files);
 
-    $myfile = fopen(get_file_base() . '/data/files.dat', 'wb');
-    fwrite($myfile, $file_manifest);
-    fclose($myfile);
-    fix_permissions(get_file_base() . '/data/files.dat');
+    cms_file_put_contents_safe(get_file_base() . '/data/files.dat', $file_manifest, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     $MAKE_INSTALLERS__FILE_ARRAY['data/files.dat'] = $file_manifest;
 
@@ -711,10 +706,7 @@ function make_files_manifest() // Builds files.dat, the Composr file manifest (u
     require_code('version2');
     $version_branch = get_version_branch();
     $builds_path = get_builds_path();
-    $tmp = fopen($builds_path . '/builds/build/' . $version_branch . '/data/files.dat', 'wb');
-    fwrite($tmp, $file_manifest);
-    fclose($tmp);
-    fix_permissions($builds_path . '/builds/build/' . $version_branch . '/data/files.dat');
+    cms_file_put_contents_safe($builds_path . '/builds/build/' . $version_branch . '/data/files.dat', $file_manifest, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 }
 
 function make_database_manifest() // Builds db_meta.dat, which is used for database integrity checks
@@ -878,12 +870,9 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
     );
 
     // Save
+    require_code('files');
     $path = get_file_base() . '/data/db_meta.dat';
-    $myfile = fopen($path, GOOGLE_APPENGINE ? 'wb' : 'wt');
-    fwrite($myfile, serialize($data));
-    fclose($myfile);
-    fix_permissions($path);
-    sync_file($path);
+    cms_file_put_contents_safe($path, serialize($data), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
 }
@@ -893,7 +882,7 @@ function make_install_sql()
     global $SITE_INFO;
 
     // Where to build database to
-    $database = 'cms_make_release_tmp';
+    $database = 'test';
     $username = 'root';
     $password = isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '';
     $table_prefix = 'cms_';
@@ -902,7 +891,7 @@ function make_install_sql()
     require_code('install_headless');
     $test = do_install_to($database, $username, $password, $table_prefix, true, 'cns', null, null, null, null, null, null, false);
     if (!$test) {
-        warn_exit('Failed to execute installer, while building install.sql');
+        warn_exit(protect_from_escaping('Failed to execute installer, while building <kbd>install.sql</kbd>. It\'s likely that recursive write file permissions need setting.'));
     }
 
     // Get database connection
@@ -911,27 +900,29 @@ function make_install_sql()
     // Remove caching
     require_code('database_relations');
     $table_purposes = get_table_purpose_flags();
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
     foreach ($table_purposes as $table => $purpose) {
         if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) && ($conn->table_exists($table))) {
             $conn->query_delete($table);
         }
     }
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
 
     // Build SQL dump
-    require_code('database_toolkit');
-    $st = get_sql_dump(true, false, null, null, null, false, $conn);
-    $myfile = fopen(get_file_base() . '/install.sql', 'wb');
-    foreach ($st as $s) {
-        fwrite($myfile, $s);
-        fwrite($myfile, "\n\n");
-    }
-    fclose($myfile);
-    fix_permissions(get_file_base() . '/install.sql');
-    sync_file(get_file_base() . '/install.sql');
+    global $HAS_MULTI_LANG_CONTENT;
+    $bak = $HAS_MULTI_LANG_CONTENT;
+    $HAS_MULTI_LANG_CONTENT = false;
+    $out_path = get_file_base() . '/install.sql';
+    $out_file = fopen($out_path, 'wb');
+    get_sql_dump($out_file, true, false, null, null, $conn);
+    fclose($out_file);
+    fix_permissions($out_path);
+    sync_file($out_path);
+    $HAS_MULTI_LANG_CONTENT = $bak;
 
     // Run some checks to make sure our process is not buggy...
 
-    $contents = file_get_contents(get_file_base() . '/install.sql');
+    $contents = cms_file_get_contents_safe(get_file_base() . '/install.sql');
 
     // Not with forced charsets or other contextual noise
     if (strpos($contents, "\n" . 'SET') !== false) {
@@ -971,7 +962,7 @@ function make_install_sql()
     $v = float_to_raw_string(cms_version_number());
     $version_marker = '\'version\', \'' . $v . '\'';
     if (strpos($contents, $version_marker) === false) {
-        warn_exit('install.sql: Contains wrong version');
+        warn_exit('install.sql: Contains wrong version (you need to rebuild it for each non-patch update)');
     }
 
     // Do split...
@@ -984,7 +975,7 @@ function make_install_sql()
     );
 
     // Check we can find split points
-    $contents = file_get_contents(get_file_base() . '/install.sql');
+    $contents = cms_file_get_contents_safe(get_file_base() . '/install.sql');
     foreach ($split_points as $p) {
         if ($p != '') {
             if (strpos($contents, $p) === false) {
@@ -1010,9 +1001,8 @@ function make_install_sql()
         } else {
             $segment = substr($contents, $from);
         }
-        file_put_contents(get_file_base() . '/install' . strval($i + 1) . '.sql', $segment);
-        fix_permissions(get_file_base() . '/install' . strval($i + 1) . '.sql');
-        sync_file(get_file_base() . '/install' . strval($i + 1) . '.sql');
+        require_code('files');
+        cms_file_put_contents_safe(get_file_base() . '/install' . strval($i + 1) . '.sql', $segment, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
 }
 

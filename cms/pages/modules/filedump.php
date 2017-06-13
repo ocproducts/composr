@@ -52,6 +52,8 @@ class Module_filedump
         delete_privilege('upload_filedump');
         delete_privilege('upload_anything_filedump');
 
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'filedump'));
+
         //require_code('files');
         //deldir_contents(get_custom_file_base() . '/uploads/filedump', true);
     }
@@ -221,6 +223,7 @@ class Module_filedump
         require_lang('filedump');
         require_css('filedump');
         require_code('filedump');
+        require_code('files');
         require_code('files2');
 
         $type = get_param_string('type', 'browse');
@@ -286,12 +289,7 @@ class Module_filedump
         $full_path = get_custom_file_base() . '/uploads/filedump' . $place;
         if (!file_exists(get_custom_file_base() . '/uploads/filedump' . $place)) {
             if (has_privilege(get_member(), 'upload_filedump')) {
-                @mkdir($full_path, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($full_path), escape_html(dirname($full_path))));
-                fix_permissions($full_path);
-                sync_file($full_path);
-                file_put_contents($full_path . '/index.html', '');
-                fix_permissions($full_path . '/index.html');
-                sync_file($full_path . '/index.html');
+                cms_file_put_contents_safe($full_path . '/index.html', '', FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             }
         }
 
@@ -382,7 +380,7 @@ class Module_filedump
             $header_row = columned_table_header_row(array(
                 do_lang_tempcode('FILENAME'),
                 do_lang_tempcode('DESCRIPTION'),
-                do_lang_tempcode('LINK'),
+                do_lang_tempcode('menus:LINK'),
                 do_lang_tempcode('SUBMITTER'),
                 do_lang_tempcode('DATE_TIME'),
                 do_lang_tempcode('ACTIONS'),
@@ -870,7 +868,7 @@ class Module_filedump
         $fields->attach(form_input_integer(do_lang_tempcode('HEIGHT'), do_lang_tempcode('COMCODE_TAG_attachment_PARAM_height'), 'height', post_param_integer('height', null), false));
 
         /*
-        $_description = do_lang('COMCODE_TAG_attachment_PARAM_align');
+        $_description = do_lang ('COMCODE_TAG_attachment_PARAM_align');
         if (substr($_description, 0, strlen($adv) + 1) == $adv) {
             $_description = substr($_description, 0, strlen($adv) + 1);
         }
@@ -879,7 +877,7 @@ class Module_filedump
             list($option_val, $option_label) = explode('=', $option, 2);
             $list->attach(form_input_list_entry($option_val, ($option_val == post_param_string('align', '')), $option_label));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('COMCODE_TAG_attachment_PARAM_align_TITLE'), '', 'align', $list, null, false, false));
+        $fields->attach(form_input_list(do_lang_tempcode ('COMCODE_TAG_attachment_PARAM_align_TITLE'), '', 'align', $list, null, false, false));
         */
 
         $_description = do_lang('COMCODE_TAG_attachment_PARAM_float');
@@ -988,6 +986,7 @@ class Module_filedump
                 break;
 
             case 'edit':
+            case 'delete':
                 break;
 
             default:
@@ -1055,6 +1054,7 @@ class Module_filedump
                                 warn_exit(do_lang_tempcode('OVERWRITE_ERROR'));
                             }
                             rename($old_filepath, $new_filepath);
+                            sync_file_move($old_filepath, $new_filepath);
                             $GLOBALS['SITE_DB']->query_update('filedump', array('name' => cms_mb_substr($new_filename, 0, 80)), array('name' => cms_mb_substr($old_filename, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
 
                             foreach ($files as $i => $_file) {
@@ -1105,7 +1105,9 @@ class Module_filedump
         foreach ($files as $_file) {
             list($file, $place) = $_file;
 
-            $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_member', array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+            $where = array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80));
+
+            $owner = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'the_member', $where);
             if (((!is_null($owner)) && ($owner == get_member())) || (has_privilege(get_member(), 'delete_anything_filedump'))) {
                 $is_directory = is_dir(get_custom_file_base() . '/uploads/filedump' . $place . $file);
                 $path = get_custom_file_base() . '/uploads/filedump' . $place . $file;
@@ -1132,10 +1134,10 @@ class Module_filedump
 
                     case 'edit':
                         $description = $descriptions[$place . $file];
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', $where);
                         if (!is_null($test)) {
                             $map = lang_remap('description', $test, $description);
-                            $GLOBALS['SITE_DB']->query_update('filedump', $map);
+                            $GLOBALS['SITE_DB']->query_update('filedump', $map, $where);
                         } else {
                             $map = array(
                                 'name' => cms_mb_substr($file, 0, 80),
@@ -1148,7 +1150,7 @@ class Module_filedump
                         break;
 
                     case 'delete':
-                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80)));
+                        $test = $GLOBALS['SITE_DB']->query_select_value_if_there('filedump', 'description', $where);
                         if (!is_null($test)) {
                             delete_lang($test);
                         }
@@ -1163,16 +1165,16 @@ class Module_filedump
 
                             log_it('FILEDUMP_DELETE_FILE', $file, $place);
                         }
-                        sync_file('uploads/filedump' . $place . $file);
+                        sync_file($path);
 
                         break;
 
                     case 'move':
                         $path_target = get_custom_file_base() . '/uploads/filedump/' . $target . $file;
                         rename($path, $path_target) or intelligent_write_error($path);
-                        sync_file('uploads/filedump' . $path_target);
+                        sync_file_move($path, $path_target);
 
-                        $test = $GLOBALS['SITE_DB']->query_update('filedump', array('path' => cms_mb_substr($target, 0, 80)), array('name' => cms_mb_substr($file, 0, 80), 'path' => cms_mb_substr($place, 0, 80)), '', 1);
+                        $test = $GLOBALS['SITE_DB']->query_update('filedump', array('path' => cms_mb_substr($target, 0, 80)), $where, '', 1);
 
                         update_filedump_links($place . $file, $target . $file);
 
@@ -1187,7 +1189,7 @@ class Module_filedump
 
         if ($action == 'zip') {
             header('Content-Type: application/octet-stream' . '; authoritative=true;');
-            header('Content-Disposition: filename="filedump-selection.zip"');
+            header('Content-Disposition: attachment; filename="filedump-selection.zip"');
 
             create_zip_file($file_array, true);
             exit();
@@ -1217,12 +1219,7 @@ class Module_filedump
         }
 
         $full_path = get_custom_file_base() . '/uploads/filedump' . $place . $name;
-        @mkdir($full_path, 0777) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($place), escape_html(dirname($place))));
-        fix_permissions($full_path);
-        sync_file($full_path);
-        file_put_contents($full_path . '/index.html', '');
-        fix_permissions($full_path . '/index.html');
-        sync_file($full_path . '/index.html');
+        cms_file_put_contents_safe($full_path . '/index.html', '', FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         $redirect_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'place' => $place), '_SELF');
 

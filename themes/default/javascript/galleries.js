@@ -14,7 +14,7 @@ function initialise_slideshow()
 
 	add_event_listener_abstract(window,'keypress',toggle_slideshow_timer);
 
-	add_event_listener_abstract(document.getElementById('gallery_entry_screen'),'click',function(event) {
+	add_event_listener_abstract(document.getElementById('gallery_nav'),'click',function(event) {
 		if (typeof event=='undefined') event=window.event;
 
 		if (event.altKey || event.metaKey)
@@ -176,7 +176,7 @@ function slideshow_show_slide(slide)
 				fade_element_old.style.position='absolute';
 			} // else probably a video
 
-			var cleaned_slide_html=window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i,'').replace(/<script[^>]*>(.|\n)*?<\/script>/gi,'');
+			var cleaned_slide_html=window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i,'');
 			set_inner_html(document.getElementById('gallery_entry_screen'),cleaned_slide_html);
 
 			var fade_elements=get_elements_by_class_name(document.body,'scale_down');

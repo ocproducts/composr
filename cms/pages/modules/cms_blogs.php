@@ -186,7 +186,7 @@ class Module_cms_blogs extends Standard_crud_module
         $fh[] = do_lang_tempcode('ADDED');
         $fh[] = do_lang_tempcode('COUNT_VIEWS');
         if (addon_installed('unvalidated')) {
-            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
+            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '204d1050402b48e5c2c9539763a3fe50', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $fh[] = do_lang_tempcode('ACTIONS');
         $header_row = results_field_title($fh, $sortables, 'sort', $sortable . ' ' . $sort_order);
@@ -352,12 +352,12 @@ class Module_cms_blogs extends Standard_crud_module
     /**
      * Standard crud_module cat getter.
      *
-     * @param  AUTO_LINK $id The entry for which the cat is sought
+     * @param  ID_TEXT $id The entry for which the cat is sought
      * @return string The cat
      */
     public function get_cat($id)
     {
-        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'news_category', array('id' => $id));
+        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'news_category', array('id' => intval($id)));
         if (is_null($temp)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news'));
         }

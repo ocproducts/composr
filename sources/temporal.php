@@ -246,8 +246,8 @@ function usertime_to_utctime($timestamp = null, $member = null)
 
 /**
  * Format a local time/date according to locale settings. Combines best features of 'strftime' and 'date'.
- * %i is 'g' in date
- * %k is 'S' in date
+ * %l is 'g' in date
+ * %o is 'S' in date
  *
  * @param  string $format The formatting string.
  * @param  ?TIME $timestamp The timestamp (null: now). Assumed to already be timezone-shifted as required
@@ -265,17 +265,17 @@ function cms_strftime($format, $timestamp = null)
     }
     if ($is_windows) {
         $format = str_replace('%e', '%#d', $format);
-        $format = str_replace('%i', '%#I', $format);
+        $format = str_replace('%l', '%#I', $format);
     } else {
         $format = str_replace('%e', '%-d', $format);
-        $format = str_replace('%i', '%-I', $format);
+        $format = str_replace('%l', '%-I', $format);
     }
-    $format = str_replace('%k', date('S'/*English ordinal suffix for the day of the month, 2 characters*/, $timestamp), $format);
+    $format = str_replace('%o', date('S'/*English ordinal suffix for the day of the month, 2 characters*/, $timestamp), $format);
     $ret = strftime($format, $timestamp);
     if ($ret === false) {
         $ret = '';
     }
-    return trim($ret); // Needed as %e comes with a leading space
+    return trim(locale_filter($ret)); // Needed as %e comes with a leading space
 }
 
 /**
@@ -364,7 +364,7 @@ function get_timezoned_date($timestamp, $include_time = true, $verbose = false, 
         }
     }
 
-    return locale_filter($ret);
+    return $ret;
 }
 
 /**
@@ -407,11 +407,9 @@ function get_timezoned_time($timestamp, $avoid_contextual_dates = false, $member
         $avoid_contextual_dates = true;
     }
 
-    $date_string = do_lang('date_withinday');
+    $date_string = do_lang('date_regular_time');
     $usered_timestamp = $utc_time ? $timestamp : utctime_to_usertime($timestamp, $member);
-    $ret = cms_strftime($date_string, $usered_timestamp);
-
-    return locale_filter($ret);
+    return cms_strftime($date_string, $usered_timestamp);
 }
 
 /**

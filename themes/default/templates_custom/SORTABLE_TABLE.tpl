@@ -1,5 +1,5 @@
 <div class="wide_table_wrap">
-	<table id="sortable_table_{ID*}" summary="{!COLUMNED_TABLE}" class="results_table wide_table columned_table autosized_table sortable_table table-autosort:{DEFAULT_SORT_COLUMN*} table-autofilter table-autopage:{MAX*}">
+	<table id="sortable_table_{ID*}" class="results_table wide_table columned_table autosized_table sortable_table table-autosort:{DEFAULT_SORT_COLUMN*} table-autofilter table-autopage:{MAX*} responsive_table">
 		<thead>
 			<tr>
 				{+START,LOOP,HEADERS}
@@ -35,9 +35,7 @@
 	{+START,IF,{$GT,{NUM_ROWS},{MAX}}}
 		<div class="pagination force_margin">
 			<nav class="float_surrounder">
-				<!--<a href="#" class="table-page:1 results_continue">{!FIRST}</a>--><a href="#" class="table-page:previous results_continue">&laquo; {!PREVIOUS}</a><a href="#" class="table-page:next results_continue">{!NEXT} &raquo;</a>
-
-				<span class="table-page-number results_page_num">1</span><span>of</span><span class="table-page-count results_page_num">1</span>
+				<!--<a href="#" class="table-page:1 results_continue">{!FIRST}</a>--><a href="#" class="table-page:previous results_continue">&laquo; {!PREVIOUS}</a><a href="#" class="table-page:next results_continue">{!NEXT} &raquo;</a><span class="table-page-number results_page_num">1</span><span>of</span><span class="table-page-count results_page_num">1</span>
 			</nav>
 		</div>
 	{+END}

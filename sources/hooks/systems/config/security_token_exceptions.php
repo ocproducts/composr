@@ -52,7 +52,9 @@ class Hook_config_security_token_exceptions
     public function get_default()
     {
         return 'purchase
+shopping
 subscriptions
-invoices';
+invoices
+forums';
     }
 }

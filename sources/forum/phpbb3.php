@@ -1279,7 +1279,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_moderator_groups()
     {
-        $moderator_group = $this->connection->query_value_if_there('SELECT group_id FROM ' . $this->connection->get_table_prefix() . 'groups WHERE group_name=\'GLOBAL_MODERATORS\'');
+        $moderator_group = $this->connection->query_value_if_there('SELECT group_id FROM ' . $this->connection->get_table_prefix() . 'groups WHERE ' . db_string_equal_to('group_name', 'GLOBAL_MODERATORS'));
         if (is_null($moderator_group)) {
             return array();
         }
@@ -1368,36 +1368,37 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         $hash = substr(get_rand_password(), 0, 17);
         $this->connection->query_insert('sessions_keys', array('key_id' => md5($hash), 'user_id' => $id, 'last_ip' => ip2long(get_ip_address()), 'last_login' => time()));
 
-        require_code('crypt');
-        $session_id = get_rand_password();
-        $this->connection->query_insert('sessions', array(
-            'session_id' => $session_id,
-            'session_user_id' => $id,
-            'session_forum_id' => 0,
-            'session_last_visit' => time(),
-            'session_start' => time(),
-            'session_time' => time(),
-            'session_ip' => get_ip_address(),
-            'session_browser' => get_browser_string(),
-            'session_forwarded_for' => '',
-            'session_page' => '',
-            'session_viewonline' => 1,
-            'session_autologin' => 1,
-            'session_admin' => $this->_is_super_admin($id),
-        ));
+        if (substr($member_cookie_name, 0, 5) != 'cms__') {
+            $session_id = get_rand_password();
+            $this->connection->query_insert('sessions', array(
+                'session_id' => $session_id,
+                'session_user_id' => $id,
+                'session_forum_id' => 0,
+                'session_last_visit' => time(),
+                'session_start' => time(),
+                'session_time' => time(),
+                'session_ip' => get_ip_address(),
+                'session_browser' => get_browser_string(),
+                'session_forwarded_for' => '',
+                'session_page' => '',
+                'session_viewonline' => 1,
+                'session_autologin' => 1,
+                'session_admin' => $this->_is_super_admin($id),
+            ));
+        } else {
+            $session_id = null;
+        }
 
         $cookie = serialize(array($real_member_cookie => strval($id), $real_pass_cookie => $hash, $real_session_cookie => $session_id));
 
         if ($colon_pos !== false) {
             cms_setcookie($base, $cookie);
-            $_COOKIE[$base] = $cookie;
         } else {
             cms_setcookie($real_member_cookie, strval($id));
             cms_setcookie($real_pass_cookie, $hash);
-            cms_setcookie($real_session_cookie, $session_id);
-            $_COOKIE[$real_member_cookie] = strval($id);
-            $_COOKIE[$real_pass_cookie] = $hash;
-            $_COOKIE[$real_session_cookie] = $session_id;
+            if ($session_id !== null) {
+                cms_setcookie($real_session_cookie, $session_id);
+            }
         }
     }
 

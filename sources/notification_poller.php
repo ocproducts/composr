@@ -25,9 +25,11 @@
  */
 function init__notification_poller()
 {
-    define('NOTIFICATION_POLL_FREQUENCY', intval(get_option('notification_poll_frequency')));
+    if (!defined('NOTIFICATION_POLL_FREQUENCY')) {
+        define('NOTIFICATION_POLL_FREQUENCY', intval(get_option('notification_poll_frequency')));
 
-    define('NOTIFICATION_POLL_SAFETY_LAG_SECS', 8); // Assume a request could have taken this long to happen, so we look back a little further even than NOTIFICATION_POLL_FREQUENCY
+        define('NOTIFICATION_POLL_SAFETY_LAG_SECS', 8); // Assume a request could have taken this long to happen, so we look back a little further even than NOTIFICATION_POLL_FREQUENCY
+    }
 }
 
 /**
@@ -322,6 +324,10 @@ function get_pts($max = null, $start = 0)
         return array(new Tempcode(), 0);
     }
 
+    if (!addon_installed('cns_forum')) {
+        return array(new Tempcode(), 0);
+    }
+
     if ($start == 0) {
         $test = get_cache_entry('_get_pts', serialize(array($max)), CACHE_AGAINST_MEMBER, 10000);
         if ($test !== null) {
@@ -410,7 +416,7 @@ function pt_to_xml($row)
     $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
 
     $just_post_row = db_map_restrict($row, array('id', 'p_post'));
-    $_message = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['SITE_DB']);
+    $_message = get_translated_tempcode('f_posts', $just_post_row, 'p_post', $GLOBALS['FORUM_DB']);
 
     $rendered = do_template('NOTIFICATION_PT_DESKTOP', array(
         '_GUID' => '624df70cf0cbb796c5d5ce1d18ae39f7',

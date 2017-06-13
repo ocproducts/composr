@@ -375,7 +375,7 @@ class Module_cms_calendar extends Standard_crud_module
             do_lang_tempcode('TITLE'),
             do_lang_tempcode('DATE_TIME'),
             do_lang_tempcode('TYPE'),
-            protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT')))),
+            protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => 'fb1dd2bde0067a726dfc9443c873a5f1', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT')))),
             do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
 
@@ -395,9 +395,8 @@ class Module_cms_calendar extends Standard_crud_module
                 $types[$row['e_type']] = $type;
             }
 
-            $start_day_of_month = find_concrete_day_of_month($row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type'], is_null($row['e_start_hour']) ? find_timezone_start_hour_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_hour'], is_null($row['e_start_minute']) ? find_timezone_start_minute_in_utc($row['e_timezone'], $row['e_start_year'], $row['e_start_month'], $row['e_start_day'], $row['e_start_monthly_spec_type']) : $row['e_start_minute'], $row['e_timezone'], $row['e_do_timezone_conv'] == 1);
-            $time_raw = mktime($row['e_start_hour'], $row['e_start_minute'], 0, $row['e_start_month'], $start_day_of_month, $row['e_start_year']);
-            $date = get_timezoned_date($time_raw, !is_null($row['e_start_hour']));
+            list(, $time_raw) = find_event_start_timestamp($row);
+            $date = get_timezoned_date($time_raw, !is_null($row['e_start_hour']), false, false, true);
 
             $fields->attach(results_entry(array(protect_from_escaping(hyperlink(build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar')), get_translated_text($row['e_title']), false, true)), $date, $type, ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }
@@ -542,13 +541,6 @@ class Module_cms_calendar extends Standard_crud_module
         $type_list = create_selection_list_event_types($type);
         $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_EVENT_TYPE'), 'type', $type_list));
 
-        // Member calendar
-        $member_calendar = get_param_integer('member_id', $member_calendar);
-        if (has_privilege(get_member(), 'calendar_add_to_others') || $member_calendar == get_member()) {
-            $_member_calendar = is_null($member_calendar) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
-            $fields->attach(form_input_username(do_lang_tempcode('MEMBER_CALENDAR'), do_lang_tempcode('DESCRIPTION_MEMBER_CALENDAR'), 'member_calendar', $_member_calendar, !has_privilege(get_member(), 'add_public_events')));
-        }
-
         // Priority
         $priority_list = new Tempcode();
         $priority_list->attach(form_input_list_entry('1', $priority == 1, do_lang_tempcode('PRIORITY_1')));
@@ -569,6 +561,23 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         $fields2 = new Tempcode();
+
+        // Member calendar
+        if ($member_calendar === null) {
+            if ((has_privilege(get_member(), 'add_public_events'))/*Doesn't need it prepopulated*/ || (is_guest())) {
+                $_member_calendar = '';
+            } else {
+                $_member_calendar = $GLOBALS['FORUM_DRIVER']->get_username(get_member()); // Has to be filled, so prepopulate
+            }
+        } else {
+            $_member_calendar = $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
+        }
+        if (has_privilege(get_member(), 'calendar_add_to_others') || $member_calendar == get_member()) {
+            $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c40661dec7b2e3a59114d1dd846890ff', 'SECTION_HIDDEN' => $member_calendar === null, 'TITLE' => do_lang_tempcode('ADVANCED'))));
+
+            $_member_calendar = is_null($member_calendar) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
+            $fields2->attach(form_input_username(do_lang_tempcode('MEMBER_CALENDAR'), do_lang_tempcode('DESCRIPTION_MEMBER_CALENDAR'), 'member_calendar', $_member_calendar, !has_privilege(get_member(), 'add_public_events')));
+        }
 
         $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'fd78d3298730d0cb157b20f1b3dd6ae1', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('TIMEZONE'))));
 
@@ -591,7 +600,7 @@ class Module_cms_calendar extends Standard_crud_module
         }
 
         // Recurrence
-        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '313be8d71088bf12c9c5e5f67f28174a', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('RECURRENCE'))));
+        $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '313be8d71088bf12c9c5e5f67f28174a', 'SECTION_HIDDEN' => ($recurrence == 'none'), 'TITLE' => do_lang_tempcode('RECURRENCE'))));
         if (strpos($recurrence, ' ') === false) {
             $recurrence_main = $recurrence;
             $recurrence_pattern = '';
@@ -682,7 +691,7 @@ class Module_cms_calendar extends Standard_crud_module
     public function get_event_parameters()
     {
         $type = post_param_integer('type', fractional_edit() ? INTEGER_MAGIC_NULL : false);
-        if ((!has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) && ($type == db_get_first_id())) {
+        if ((!has_actual_page_access(get_member(), 'admin_commandr')) && ($type == db_get_first_id())) {
             access_denied('I_ERROR');
         }
 
@@ -824,12 +833,12 @@ class Module_cms_calendar extends Standard_crud_module
     /**
      * Standard crud_module cat getter.
      *
-     * @param  AUTO_LINK $id The entry for which the cat is sought
+     * @param  ID_TEXT $id The entry for which the cat is sought
      * @return mixed The cat
      */
     public function get_cat($id)
     {
-        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_events', 'e_type', array('id' => $id));
+        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('calendar_events', 'e_type', array('id' => intval($id)));
         if (is_null($temp)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'event'));
         }
@@ -936,7 +945,7 @@ class Module_cms_calendar extends Standard_crud_module
                     $members[] = get_member();
                 }
                 if (count($members) != 0) { // Now add their reminders
-                    $secs_before = floatval(post_param_string('hours_before', '1.0')) * 3600.0;
+                    $secs_before = float_unformat(post_param_string('hours_before', '1.0')) * 3600.0;
 
                     $filled1 = array();
                     $filled2 = array();
@@ -987,7 +996,7 @@ class Module_cms_calendar extends Standard_crud_module
                     }
 
                     if ($privacy_ok) {
-                        $secs_before = floatval(post_param_string('hours_before', '1.0')) * 3600.0;
+                        $secs_before = float_unformat(post_param_string('hours_before', '1.0')) * 3600.0;
                         $GLOBALS['SITE_DB']->query_insert('calendar_reminders', array(
                             'e_id' => $id,
                             'n_member_id' => $member,
@@ -1472,8 +1481,6 @@ class Module_cms_calendar_cat extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        require_code('themes2');
-
         $metadata = actual_metadata_get_fields('calendar_type', null);
 
         require_code('themes2');
@@ -1499,8 +1506,6 @@ class Module_cms_calendar_cat extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        require_code('themes2');
-
         $metadata = actual_metadata_get_fields('calendar_type', $id);
 
         if (fractional_edit()) {
@@ -1580,7 +1585,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
                 /* TYPED-ORDERED LIST OF 'LINKS'    */
                 array('_SELF', array('type' => 'add'), '_SELF', do_lang_tempcode('ADD_CALENDAR_EVENT')), // Add one
                 null, // Edit this
-                has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit') + $extra, '_SELF', do_lang_tempcode('EDIT_CALENDAR_EVENT')) : null, // Edit one
+                has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit'), '_SELF', do_lang_tempcode('EDIT_CALENDAR_EVENT')) : null, // Edit one
                 null, // View this
                 array('calendar', $archive_map + $extra, get_module_zone('calendar'), do_lang('CALENDAR')), // View archive
                 null, // Add to category
@@ -1605,14 +1610,14 @@ class Module_cms_calendar_cat extends Standard_crud_module
             null,
             /* TYPED-ORDERED LIST OF 'LINKS'  */
             array('_SELF', array('type' => 'add', 'e_type' => $type) + $extra, '_SELF', do_lang_tempcode('ADD_CALENDAR_EVENT')), // Add one
-            (is_null($id) || (!has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar', array('calendar', 'type') + $extra))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id) + $extra, '_SELF', do_lang_tempcode('EDIT_THIS_CALENDAR_EVENT')), // Edit this
+            (is_null($id) || (!has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar', array('calendar', 'type')))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id) + $extra, '_SELF', do_lang_tempcode('EDIT_THIS_CALENDAR_EVENT')), // Edit this
             has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit') + $extra, '_SELF', do_lang_tempcode('EDIT_CALENDAR_EVENT')) : null, // Edit one
             is_null($id) ? null : array('calendar', array('type' => 'view', 'id' => $id) + $extra, get_module_zone('calendar')), // View this
             array('calendar', $archive_map + $extra, get_module_zone('calendar'), do_lang('CALENDAR')), // View archive
             null, // Add to category
             has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'add_category') + $extra, '_SELF', do_lang_tempcode('ADD_EVENT_TYPE')) : null, // Add one category
             has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit_category') + $extra, '_SELF', do_lang_tempcode('EDIT_EVENT_TYPE')) : null, // Edit one category
-            has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar', array('calendar', 'type') + $extra) ? array('_SELF', array('type' => '_edit_category', 'id' => $type) + $extra, '_SELF', do_lang_tempcode('EDIT_THIS_EVENT_TYPE')) : null, // Edit this category
+            has_privilege(get_member(), 'edit_own_cat_highrange_content', 'cms_calendar', array('calendar', 'type')) ? array('_SELF', array('type' => '_edit_category', 'id' => $type) + $extra, '_SELF', do_lang_tempcode('EDIT_THIS_EVENT_TYPE')) : null, // Edit this category
             null, // View this category
             null,
             null,

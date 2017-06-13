@@ -100,7 +100,7 @@ function execute_task_background($task_row)
             if (is_null($mime_type)) {
                 $subject = do_lang('TASK_FAILED_SUBJECT', $task_row['t_title']);
                 $_content_result = is_object($content_result) ? ('[semihtml]' . $content_result->evaluate() . '[/semihtml]') : $content_result;
-                $message = do_notification_lang('TASK_FAILED_SIMPLE', $_content_result);
+                $message = do_notification_lang('TASK_FAILED_BODY', $_content_result);
             } else {
                 $subject = do_lang('TASK_COMPLETED_SUBJECT', $task_row['t_title']);
 
@@ -176,7 +176,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
     require_lang('tasks');
 
     if ($force_immediate) {
-        if ($run_at_end_of_script) {
+        if (($run_at_end_of_script) && (get_value('avoid_register_shutdown_function') !== '1')) {
             @ignore_user_abort(true); // Must keep going till completion
 
             register_shutdown_function('call_user_func_array__long_task', $plain_title, $title, $hook, $args, false, $force_immediate, $send_notification);

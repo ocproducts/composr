@@ -265,8 +265,7 @@ function store_transcoding_success($transcoder_id, $new_url = null)
         $new_file_path = str_replace('/uploads/galleries/', '/uploads/galleries/pre_transcoding/', $old_file_path);
         if (file_exists(get_custom_file_base() . '/uploads/galleries/pre_transcoding')) { // Move the old media file to the archive directory
             @rename($old_file_path, $new_file_path);
-            sync_file($old_file_path);
-            sync_file($new_file_path);
+            sync_file_move($old_file_path, $new_file_path);
         } else { // Delete old media
             @unlink($old_file_path);
             sync_file($old_file_path);

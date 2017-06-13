@@ -62,7 +62,7 @@ class Forum_driver_cns extends Forum_driver_base
         $CNS_DRIVER = mixed();
         $GLOBALS['CNS_DRIVER'] = &$this; // Done like this to workaround that PHP can't put a reference in a global'd variable
 
-        if ((function_exists('ldap_connect')) && (get_option('ldap_is_enabled', true) == '1')) {
+        if ((addon_installed('ldap')) && (function_exists('ldap_connect')) && (get_option('ldap_is_enabled', true) == '1')) {
             require_code('cns_members');
             require_code('cns_groups');
             require_code('cns_ldap');
@@ -145,7 +145,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     protected function _install_delete_custom_field($name)
     {
-        $id = $this->connection->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $name));
+        $id = $this->connection->query_select_value_if_there('f_custom_fields', 'id', array($this->connection->translate_field_ref('cf_name') => 'cms_' . $name));
         if (!is_null($id)) {
             require_code('cns_members_action2');
             cns_delete_custom_field($id);
@@ -419,10 +419,10 @@ class Forum_driver_cns extends Forum_driver_base
         require_code('cns_members_action');
         require_code('cns_members_action2');
 
-        $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $field));
+        $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($this->connection->translate_field_ref('cf_name') => 'cms_' . $field));
         if (!array_key_exists(0, $field_bits)) { // Should never happen, but sometimes on upgrades/corruption...
             $this->install_create_custom_field($field, 10);
-            $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => 'cms_' . $field));
+            $field_bits = $this->connection->query_select('f_custom_fields', array('id', 'cf_type'), array($this->connection->translate_field_ref('cf_name') => 'cms_' . $field));
             if (!array_key_exists(0, $field_bits)) {
                 return; // Possible on an MSN, and there's an inconsistency (e.g. no points addon)
             }
@@ -904,7 +904,12 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function get_previous_member($member)
     {
-        $tempid = $this->connection->query_value_if_there('SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id<' . strval($member) . ' AND id>0 ORDER BY id DESC');
+        $sql = 'SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id<' . strval($member) . ' AND id>0 AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+        if (addon_installed('unvalidated')) {
+            $sql .= ' AND m_validated=1';
+        }
+        $sql .= ' ORDER BY id DESC';
+        $tempid = $this->connection->query_value_if_there($sql);
         if ($tempid == $this->get_guest_id()) {
             return null;
         }
@@ -920,7 +925,12 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function get_next_member($member)
     {
-        $tempid = $this->connection->query_value_if_there('SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id>' . strval($member) . ' ORDER BY id');
+        $sql = 'SELECT id FROM ' . $this->connection->get_table_prefix() . 'f_members WHERE id>' . strval($member) . ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+        if (addon_installed('unvalidated')) {
+            $sql .= ' AND m_validated=1';
+        }
+        $sql .= ' ORDER BY id';
+        $tempid = $this->connection->query_value_if_there($sql);
         return $tempid;
     }
 
@@ -978,19 +988,23 @@ class Forum_driver_cns extends Forum_driver_base
                 $username = $generator;
 
                 $matches = array();
-                $num_matches = preg_match_all('#\{(\d+)\}#', $generator, $matches);
+                $num_matches = preg_match_all('#\{(\!?)(\d+)\}#', $generator, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
-                    $field_key = 'field_' . $matches[1][$i];
+                    $field_key = 'field_' . $matches[2][$i];
                     if (isset($fields[$field_key])) {
                         $cpf_value = $fields[$field_key];
                         if (!is_string($cpf_value)) {
-                            $cpf_value = strval($cpf_value);
+                            if ($matches[1][$i] == '!') {
+                                $cpf_value = get_translated_text($cpf_value, $GLOBALS['FORUM_DB']);
+                            } else {
+                                $cpf_value = strval($cpf_value);
+                            }
                         }
                         $username = str_replace($matches[0][$i], $cpf_value, $username);
                     }
                 }
 
-                $username = preg_replace('# +#', ' ', trim($username)); // Strip and double (or triple, etc) blanks, and leading/trailing blanks
+                $username = preg_replace('# +#', ' ', trim($username)); // Strip any double (or triple, etc) blanks, and leading/trailing blanks
 
                 if ($username == '') {
                     $username = $username_bak;
@@ -1244,15 +1258,11 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_member_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_members\'');
-            } else {
-                $where = array('m_validated_email_confirm_code' => '');
-                if (addon_installed('unvalidated')) {
-                    $where['m_validated'] = 1;
-                }
-                $value = $this->connection->query_select_value('f_members', 'COUNT(*)', $where) - 1;
+            $where = array('m_validated_email_confirm_code' => '');
+            if (addon_installed('unvalidated')) {
+                $where['m_validated'] = 1;
             }
+            $value = max(0, get_table_count_approx('f_members', $where, null, $this->connection) - 1);
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_member_count', strval($value));
             }
@@ -1271,15 +1281,11 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_topic_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_topics\'');
-            } else {
-                $where = array();
-                if (addon_installed('unvalidated')) {
-                    $where['t_validated'] = 1;
-                }
-                $value = $this->connection->query_select_value('f_topics', 'COUNT(*)', $where);
+            $where = array();
+            if (addon_installed('unvalidated')) {
+                $where['t_validated'] = 1;
             }
+            $value = get_table_count_approx('f_topics', $where, null, $this->connection);
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_topic_count', strval($value));
             }
@@ -1298,15 +1304,12 @@ class Forum_driver_cns extends Forum_driver_base
         $value = intval(get_value_newer_than('cns_post_count', time() - 60 * 60 * 3));
 
         if ($value == 0) {
-            if (get_value('slow_counts') === '1') {
-                $value = $this->connection->query_value_if_there('SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema = DATABASE() AND TABLE_NAME=\'' . $this->connection->get_table_prefix() . 'f_posts\'');
-            } else {
-                $where = '';
-                if (addon_installed('unvalidated')) {
-                    $where = ' AND p_validated=1';
-                }
-                $value = $this->connection->query_value_if_there('SELECT COUNT(*) FROM ' . $this->connection->get_table_prefix() . 'f_posts WHERE p_cache_forum_id IS NOT NULL' . $where);
+            $where = '';
+            if (addon_installed('unvalidated')) {
+                $where = ' AND p_validated=1';
             }
+            $where = 'p_cache_forum_id IS NOT NULL' . $where;
+            $value = get_table_count_approx('f_posts', null, $where, $this->connection);
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('cns_post_count', strval($value));
             }
@@ -1363,7 +1366,7 @@ class Forum_driver_cns extends Forum_driver_base
                 return $id;
             }
         }
-        $row = $this->connection->query_select('f_members', array('*'), array('m_email_address' => $email_address), '', 1);
+        $row = $this->connection->query_select('f_members', array('*'), array('m_email_address' => $email_address), 'ORDER BY m_is_perm_banned,m_join_time DESC', 1);
         if (!array_key_exists(0, $row)) {
             return null;
         }
@@ -1538,7 +1541,6 @@ class Forum_driver_cns extends Forum_driver_base
     {
         // User
         cms_setcookie(get_member_cookie(), strval($id));
-        $_COOKIE[get_member_cookie()] = strval($id);
 
         // Password
         $password_hashed_salted = $this->get_member_row_field($id, 'm_pass_hash_salted');
@@ -1547,7 +1549,6 @@ class Forum_driver_cns extends Forum_driver_base
             $password_hashed_salted = md5($password_hashed_salted); // can't do direct representation for this, would be a plain text cookie; so in forum_authorise_login we expect it to be md5'd and compare thusly (as per non-cookie call to that function)
         }
         cms_setcookie(get_pass_cookie(), $password_hashed_salted);
-        $_COOKIE[get_pass_cookie()] = $password_hashed_salted;
     }
 
     /**
@@ -1652,11 +1653,13 @@ class Forum_driver_cns extends Forum_driver_base
                 if ((!running_script('index')) && (!running_script('iframe'))) {
                     return; // Not when probably running some AJAX script
                 }
-                $captcha = post_param_string('captcha', '');
-                if ($captcha != '') { // Don't consider a CAPTCHA submitting, it'll drive people nuts to get flood control right after a CAPTCHA
-                    require_code('captcha');
-                    if (check_captcha($captcha, false)) {
-                        return;
+                if (addon_installed('captcha')) {
+                    $captcha = post_param_string('captcha', '');
+                    if ($captcha != '') { // Don't consider a CAPTCHA submitting, it'll drive people nuts to get flood control right after a CAPTCHA
+                        require_code('captcha');
+                        if (check_captcha($captcha, false)) {
+                            return;
+                        }
                     }
                 }
 

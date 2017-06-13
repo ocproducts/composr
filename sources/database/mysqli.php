@@ -49,7 +49,7 @@ class Database_Static_mysqli extends Database_super_mysql
         if (!function_exists('mysqli_connect')) {
             $error = 'MySQLi not on server (anymore?). Try using the \'mysql\' database driver. To use it, edit the _config.php config file.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -65,12 +65,17 @@ class Database_Static_mysqli extends Database_super_mysql
 
             return array($this->cache_db[$x], $db_name);
         }
-        $db = @mysqli_connect(($persistent ? 'p:' : '') . $db_host, $db_user, $db_password);
+        $db_port = 3306;
+        if (strpos($db_host, ':') !== false) {
+            list($db_host, $_db_port) = explode(':', $db_host);
+            $db_port = intval($_db_port);
+        }
+        $db = @mysqli_connect(($persistent ? 'p:' : '') . $db_host, $db_user, $db_password, '', $db_port);
 
         if ($db === false) {
             $error = 'Could not connect to database-server (when authenticating) (' . mysqli_connect_error() . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
@@ -98,12 +103,13 @@ class Database_Static_mysqli extends Database_super_mysql
             $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         if (function_exists('mysqli_set_charset')) {
-            mysqli_set_charset($db, $SITE_INFO['database_charset']);
+            @mysqli_set_charset($db, $SITE_INFO['database_charset']);
         } else {
             @mysqli_query($db, 'SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"');
         }
-        @mysqli_query($db, 'SET WAIT_TIMEOUT=28800');
-        @mysqli_query($db, 'SET SQL_BIG_SELECTS=1');
+        @mysqli_query($db, 'SET wait_timeout=28800');
+        @mysqli_query($db, 'SET sql_big_selects=1');
+        @mysqli_query($db, 'SET max_allowed_packet=104857600');
         if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
             @mysqli_query($db, 'SET sql_mode=STRICT_ALL_TABLES');
         } else {
@@ -122,10 +128,6 @@ class Database_Static_mysqli extends Database_super_mysql
      */
     public function db_has_full_text($db)
     {
-        if ($this->using_innodb()) {
-            return false;
-        }
-
         return true;
     }
 
@@ -208,7 +210,7 @@ class Database_Static_mysqli extends Database_super_mysql
                 return null;
             }
             if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
-                /*@mysql_query('SET session max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
+                /*@mysql_query('SET max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
 
                 if ($get_insert_id) {
                     fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
@@ -248,7 +250,7 @@ class Database_Static_mysqli extends Database_super_mysql
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
             }
-            if ((!running_script('upgrader')) && (!get_mass_import_mode()) && (strpos($err, 'Duplicate entry') === false)) {
+            if ((!running_script('upgrader')) && ((!get_mass_import_mode()) || (get_param_integer('keep_fatalistic', 0) == 1)) && (strpos($err, 'Duplicate entry') === false)) {
                 $matches = array();
                 if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) !== 0) {
                     $this->db_query('REPAIR TABLE ' . $matches[1], $db_parts);
@@ -264,8 +266,7 @@ class Database_Static_mysqli extends Database_super_mysql
             }
         }
 
-        $sub = substr(ltrim($query), 0, 7);
-        $sub = substr($query, 0, 4);
+        $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }

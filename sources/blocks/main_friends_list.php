@@ -55,6 +55,9 @@ class Block_main_friends_list
     {
         $block_id = get_block_id($map);
 
+        require_lang('chat');
+        require_lang('cns');
+
         $member_id = array_key_exists('member_id', $map) ? intval($map['member_id']) : get_member();
         $max = get_param_integer($block_id . '_max', array_key_exists('max', $map) ? intval($map['max']) : 12);
         $start = get_param_integer($block_id . '_start', array_key_exists('start', $map) ? intval($map['start']) : 0);
@@ -76,16 +79,22 @@ class Block_main_friends_list
         if (!$mutual) {
             if (($friends_search != '') && (!$msn)) {
                 $where .= ' AND (m1.m_username LIKE \'' . db_encode_like('%' . $friends_search . '%') . '\' OR m2.m_username LIKE \'' . db_encode_like('%' . $friends_search . '%') . '\')';
+                $join = ' LEFT JOIN ' . get_table_prefix() . 'f_members m1 ON m1.id=a.member_likes LEFT JOIN ' . get_table_prefix() . 'f_members m2 ON m2.id=a.member_liked';
+            } else {
+                $join = '';
             }
 
-            $query = get_table_prefix() . 'chat_friends a LEFT JOIN ' . get_table_prefix() . 'f_members m1 ON m1.id=a.member_likes LEFT JOIN ' . get_table_prefix() . 'f_members m2 ON m2.id=a.member_liked LEFT JOIN ' . get_table_prefix() . 'chat_friends b ON a.member_liked=b.member_likes AND a.member_liked=' . strval($member_id) . ' WHERE (a.member_likes=' . strval(intval($member_id)) . ' OR a.member_liked=' . strval(intval($member_id)) . ') AND b.member_liked IS NULL' . $where;
+            $query = get_table_prefix() . 'chat_friends a' . $join . ' LEFT JOIN ' . get_table_prefix() . 'chat_friends b ON a.member_liked=b.member_likes AND a.member_liked=' . strval($member_id) . ' WHERE (a.member_likes=' . strval(intval($member_id)) . ' OR a.member_liked=' . strval(intval($member_id)) . ') AND b.member_liked IS NULL' . $where;
             $rows = $GLOBALS['SITE_DB']->query('SELECT a.* FROM ' . $query . ' ORDER BY date_and_time', $max, $start);
         } else {
             if (($friends_search != '') && (!$msn)) {
                 $where .= ' AND m.m_username LIKE \'' . db_encode_like('%' . $friends_search . '%') . '\'';
+                $join = ' LEFT JOIN ' . get_table_prefix() . 'f_members m ON m.id=member_likes';
+            } else {
+                $join = '';
             }
 
-            $query = $GLOBALS['SITE_DB']->get_table_prefix() . 'chat_friends LEFT JOIN ' . get_table_prefix() . 'f_members m ON m.id=member_likes WHERE member_likes=' . strval(intval($member_id)) . $where;
+            $query = $GLOBALS['SITE_DB']->get_table_prefix() . 'chat_friends' . $join . ' WHERE member_likes=' . strval(intval($member_id)) . $where;
             $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $query . ' ORDER BY date_and_time', $max, $start);
         }
         $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $query);

@@ -231,7 +231,7 @@ function script_load_stuff()
 
 	// If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
 	window.has_js_state=false;
-	window.onpopstate = function(event) {
+	window.onpopstate=function(event) {
 		window.setTimeout(function() {
 			if (window.location.hash=='' && window.has_js_state) {
 				window.location.reload();
@@ -584,7 +584,7 @@ function check_field_for_blankness(field,event)
 
 	var ee=document.getElementById('error_'+field.id);
 
-	if ((value.replace(/\s/g,'')=='') || (value=='****') || (value=='{!POST_WARNING;^}') || (value=='{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}'))
+	if ((value.replace(/\s/g,'')=='') || (value=='****') || (value==field.alt) || (value=='{!POST_WARNING;^}') || (value=='{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}'))
 	{
 		if (event)
 		{
@@ -629,7 +629,13 @@ function disable_button_just_clicked(input,permanent)
 	input.style.cursor='wait';
 	if (!permanent)
 	{
+		var timeout=null;
 		var goback=function() {
+			if (timeout!=null)
+			{
+				window.clearTimeout(timeout);
+				timeout=null;
+			}
 			if (input.under_timer)
 			{
 				input.disabled=false;
@@ -637,7 +643,21 @@ function disable_button_just_clicked(input,permanent)
 				input.style.cursor='default';
 			}
 		};
-		window.setTimeout(goback,5000);
+		timeout=window.setTimeout(goback,5000);
+
+		if (input.form.target=='preview_iframe')
+		{
+			var interval=window.setInterval(function() {
+				if (frames['preview_iframe'].document && frames['preview_iframe'].document.body) {
+					if (interval!=null)
+					{
+						window.clearInterval(interval);
+						interval=null;
+					}
+					goback();
+				}
+			},500);
+		}
 	} else input.under_timer=false;
 
 	add_event_listener_abstract(window,'pagehide',goback);
@@ -1577,6 +1597,8 @@ function animate_frame_load(pf,frame,leave_gap_top,leave_height)
 }
 function illustrate_frame_load(pf,frame)
 {
+	pf.style.height='80px';
+
 	/*{+START,IF,{$CONFIG_OPTION,enable_animations}}*/
 		var head='<style>',cssText='';
 		if (!browser_matches('ie8'))
@@ -1611,12 +1633,20 @@ function illustrate_frame_load(pf,frame)
 		}
 		head+=cssText+'<\/style>';
 
-		if (!window.frames[frame]) return;
-		if (!window.frames[frame].document) return;
-		var doc=window.frames[frame].document;
-		if (!doc) return;
-		var de=doc.documentElement;
-		if (!de) return;
+		try
+		{
+			if (!window.frames[frame]) return;
+			if (!window.frames[frame].document) return;
+			var doc=window.frames[frame].document;
+			if (!doc) return;
+			var de=doc.documentElement;
+			if (!de) return;
+		}
+		catch (e) // May be connection interference somehow
+		{
+			pf.scrolling='auto';
+			return;
+		}
 		var body=de.getElementsByTagName('body');
 		if (body.length==0)
 		{
@@ -1847,6 +1877,8 @@ function get_window_scroll_y(win)
 }
 function find_pos_x(obj,not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
 {
+	if (!obj) return 0;
+
 	if (typeof not_relative=='undefined') not_relative=false;
 	var ret=obj.getBoundingClientRect().left+get_window_scroll_x();
 	if (!not_relative)
@@ -1855,7 +1887,7 @@ function find_pos_x(obj,not_relative) /* if not_relative is true it gets the pos
 		while (obj!=null)
 		{
 			position=abstract_get_computed_style(obj,'position');
-			if (position=='absolute' || position=='relative')
+			if (position=='fixed' || position=='absolute' || position=='relative')
 			{
 				ret-=find_pos_x(obj,true);
 				break;
@@ -1867,6 +1899,8 @@ function find_pos_x(obj,not_relative) /* if not_relative is true it gets the pos
 }
 function find_pos_y(obj,not_relative) /* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
 {
+	if (!obj) return 0;
+
 	if (typeof not_relative=='undefined') not_relative=false;
 	var ret=obj.getBoundingClientRect().top+get_window_scroll_y();
 	if (!not_relative)
@@ -1875,7 +1909,7 @@ function find_pos_y(obj,not_relative) /* if not_relative is true it gets the pos
 		while (obj!=null)
 		{
 			position=abstract_get_computed_style(obj,'position');
-			if (position=='absolute' || position=='relative')
+			if (position=='fixed' || position=='absolute' || position=='relative')
 			{
 				ret-=find_pos_y(obj,true);
 				break;
@@ -1968,15 +2002,26 @@ function key_pressed(event,key,no_error_if_bad)
 	}
 
 	/* Special cases, we remap what we accept if we detect an alternative was pressed */
-	if ((key=='-') && (event.keyCode==173)) key=173; /* Firefox '-' */
-	if ((key=='-') && (event.keyCode==189)) key=189; /* Safari '-' */
-	if (key=='-') key=109; /* Other browsers '-' */
-	if (key=='/') key=191; /* Normal '/' */
-	if ((key=='.') && (event.keyCode==190)) key=190; /* Normal '.' */
-	if ((key=='.') && (event.keyCode==110)) key=110; /* Keypad '.' */
-	if ((key=='_') && (event.keyCode==173) && (event.shiftKey)) key=173; /* Firefox '_' */
-	if ((key=='_') && (event.keyCode==189) && (event.shiftKey)) key=189; /* Safari '_' */
-	if (key=='_') key=0; /* Other browsers '_'; This one is a real shame as the key code 0 is shared by lots of symbols */
+	if ((key==='-') && (event.keyCode==173)) key=173; /* Firefox '-' */
+	if ((key==='-') && (event.keyCode==189)) key=189; /* Safari '-' */
+	if (key==='-') key=109; /* Other browsers '-' */
+	if (key==='/') key=191; /* Normal '/' */
+	if ((key==='.') && (event.keyCode==190)) key=190; /* Normal '.' */
+	if ((key==='.') && (event.keyCode==110)) key=110; /* Keypad '.' */
+	if ((key==='_') && (event.keyCode==173) && (event.shiftKey)) key=173; /* Firefox '_' */
+	if ((key==='_') && (event.keyCode==189) && (event.shiftKey)) key=189; /* Safari '_' */
+	if (key==='_') key=0; /* Other browsers '_'; This one is a real shame as the key code 0 is shared by lots of symbols */
+
+	// Special case of allowing a unicode range
+	if ((key.constructor==String) && (key.match(/^\d+-\d+$/)))
+	{
+		var unicode=event.charCode;
+		if (unicode==0) unicode=event.keyCode;
+		if ((unicode>=key.replace(/-\d+$/,'')) && (unicode<=key.replace(/^\d+-/,'')))
+		{
+			return true;
+		}
+	}
 
 	// Where we have an ASCII correspondance or can automap to one
 	if (key.constructor==String) // NB we are not case sensitive on letters. And we cannot otherwise pass in characters that need shift pressed.
@@ -2147,18 +2192,20 @@ function _modsecurity_workaround(data)
 		'\'': '/',
 		'"': '\\',
 		'%': '&',
-		'&': '%'
+		'&': '%',
+		'@': ':',
+		':': '@',
 	};
 	var out='';
-	var len=data.length,char;
+	var len=data.length,character;
 	for (var i=0;i<len;i++) {
-		char=data[i];
-		if (typeof remapper[char]!='undefined')
+		character=data[i];
+		if (typeof remapper[character]!='undefined')
 		{
-			out+=remapper[char];
+			out+=remapper[character];
 		} else
 		{
-			out+=char;
+			out+=character;
 		}
 	}
 	return out;
@@ -2167,7 +2214,7 @@ function _modsecurity_workaround(data)
 function convert_tooltip(element)
 {
 	var title=element.title;
-	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
+	if ((title!='') && (element.className.indexOf('leave_native_tooltip')==-1) && (element.parentNode.className.indexOf('leave_native_tooltip')==-1) && (document.body.className.indexOf(' touch_enabled') == -1))
 	{
 		// Remove old tooltip
 		if (element.nodeName=='img' && element.alt=='') element.alt=element.title;
@@ -2186,6 +2233,7 @@ function convert_tooltip(element)
 			// Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
 			if (!element.onmouseout) element.onmouseout=function() {};
 			if (!element.onmousemove) element.onmouseover=function() {};
+			if (!element.onmousemove) element.onmouseleave=function() {};
 
 			// And now define nice listeners for it all...
 			var win=get_main_cms_window(true);
@@ -2234,7 +2282,7 @@ function clear_out_tooltips(tooltip_being_opened)
 
 function preactivate_rich_semantic_tooltip(ob,event,have_links)
 {
-	if (typeof ob.ttitle=='undefined') ob.ttitle=ob.title;
+	if (typeof ob.ttitle=='undefined') ob.ttitle=((typeof ob.attributes['data-title']!='undefined')?ob.getAttribute('data-title'):ob.title);
 	ob.title='';
 	ob.onmouseover=null;
 	ob.onclick=function() { activate_rich_semantic_tooltip(ob,event,have_links); };
@@ -2261,6 +2309,10 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 {
 	if (window.is_doing_a_drag) return; // Don't want tooltips appearing when doing a drag and drop operation
 
+	if (!ac) return;
+
+	//console.log('activate_tooltip');
+
 	if (!have_links)
 	{
 		if (document.body.className.indexOf(' touch_enabled') != -1) return; // Too erratic
@@ -2276,8 +2328,10 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	if (typeof win=='undefined') win=window;
 	if (typeof have_links=='undefined') have_links=false;
 
-	if (!page_loaded) return;
+	if (!window.page_loaded) return;
 	if ((typeof tooltip!='function') && (tooltip=='')) return;
+
+	if ((typeof ac.deactivated_at!='undefined') && (ac.deactivated_at!=null) && (Date.now()-ac.deactivated_at<200)) return;
 
 	register_mouse_listener(event);
 
@@ -2286,7 +2340,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	// Add in move/leave events if needed
 	if (!have_links)
 	{
-		if (!ac.onmouseout) ac.onmouseout=function(event) { win.deactivate_tooltip(ac); };
+		if (!ac.onmouseout && !ac.onmouseleave) ac.onmouseout=function(event) { win.deactivate_tooltip(ac); };
 		if (!ac.onmousemove) ac.onmousemove=function(event) { if (!event) var event=window.event; win.reposition_tooltip(ac,event,false,false,null,false,win); };
 	} else
 	{
@@ -2298,6 +2352,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 	if (tooltip=='') return;
 
 	ac.is_over=true;
+	ac.deactivated_at=null;
 	ac.tooltip_on=false;
 	ac.initial_width=width;
 	ac.have_links=have_links;
@@ -2392,7 +2447,7 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 
 		ac.tooltip_on=true;
 		tooltip_element.style.display='block';
-		if (tooltip_element.style.width=='auto')
+		if ((tooltip_element.style.width=='auto') && ((tooltip_element.childNodes.length!=1) || (tooltip_element.childNodes[0].nodeName.toLowerCase()!='img')))
 			tooltip_element.style.width=(find_width(tooltip_element,true)+1/*for rounding issues from em*/)+'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
 		if (!no_delay)
@@ -2407,6 +2462,10 @@ function activate_tooltip(ac,event,tooltip,width,pic,height,bottom,no_delay,ligh
 }
 function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width,win)
 {
+	if (!ac.is_over) return;
+
+	//console.log('reposition_tooltip');
+
 	if (!starting) // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
 	{
 		if (ac.getAttribute('title')) ac.setAttribute('title','');
@@ -2414,7 +2473,7 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 			ac.parentNode.setAttribute('title',''); // Do not want second tooltips that are not useful
 	}
 
-	if (!page_loaded) return;
+	if (!window.page_loaded) return;
 	if (!ac.tooltip_id) { if ((typeof ac.onmouseover!='undefined') && (ac.onmouseover)) ac.onmouseover(event); return; }  // Should not happen but written as a fail-safe
 
 	if ((typeof tooltip_element=='undefined') || (!tooltip_element)) var tooltip_element=document.getElementById(ac.tooltip_id);
@@ -2485,7 +2544,10 @@ function reposition_tooltip(ac,event,bottom,starting,tooltip_element,force_width
 }
 function deactivate_tooltip(ac,tooltip_element)
 {
+	if (ac.is_over) ac.deactivated_at=Date.now();
 	ac.is_over=false;
+
+	//console.log('deactivate_tooltip');
 
 	if (typeof ac.tooltip_id=='undefined') return;
 
@@ -2640,7 +2702,7 @@ function add_event_listener_abstract(element,the_event,func,capture)
 {
 	if (element)
 	{
-		if ((element==window) && ((the_event=='load') && ((page_fully_loaded) || (document.readyState=='interactive') || (document.readyState=='complete'))) || ((the_event=='real_load') && (document.readyState=='complete')))
+		if ((element==window) && ((the_event=='load') && ((window.page_fully_loaded) || (document.readyState=='interactive') || (document.readyState=='complete'))) || ((the_event=='real_load') && (document.readyState=='complete')))
 		{
 			window.setTimeout(func,0);
 			return true;
@@ -2950,7 +3012,8 @@ function inner_html_load(xml_string) {
 	{
 		try
 		{
-			xml=(new DOMParser()).parseFromString(xml_string,"application/xml");
+			xml=(new DOMParser()).parseFromString(xml_string,'application/xml');
+			if ((xml) && (xml.documentElement.nodeName=='parsererror')) xml=null;
 		}
 		catch (e) { xml=null; }
 
@@ -3010,19 +3073,34 @@ function inner_html_copy(dom_node,xml_doc,level,script_tag_dependencies) {
 				var a_name=xml_doc.attributes[a].name,a_value=xml_doc.attributes[a].value,evt=(a_name.substr(0,2)=='on');
 				if (!evt) {
 					switch (a_name) {
-						case 'class': this_node.className=a_value; break;
-						case 'for': this_node.htmlFor=a_value; break;
-						default: this_node.setAttribute(a_name,a_value);
+						case 'class':
+							this_node.className=a_value;
+							break;
+						case 'for':
+							this_node.htmlFor=a_value;
+							break;
+						default:
+							try {
+								this_node.setAttribute(a_name,a_value);
+							}
+							catch (e) {};
+							break;
 					}
 				} else
 				{
-					this_node[a_name]=eval('var x=function(event) { '+a_value+' }; x;');
+					try {
+						this_node[a_name]=eval('var x=function(event) { '+a_value+' }; x;');
+					}
+					catch (e) {};
 				}
 			}
 
 			// append node
 			if ((node_upper=='SCRIPT') || (node_upper=='LINK')/* || (node_upper=='STYLE') Causes weird IE bug*/)
 			{
+				if ((node_upper=='SCRIPT') && (document.querySelector('script[src="'+this_node.src+'"]'))) return;
+				if ((node_upper=='LINK') && (document.querySelector('link[href="'+this_node.href+'"]'))) return;
+
 				if (node_upper=='SCRIPT')
 				{
 					script_tag_dependencies['to_load'].push(this_node);
@@ -3342,7 +3420,7 @@ function apply_rating_highlight_and_ajax_code(likes,initial_rating,content_type,
 /* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
 function ga_track(ob,category,action)
 {
-	/*{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}*/
+	/*{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}*/
 		if (typeof category=='undefined') category='{!URL;^}';
 		if (typeof action=='undefined') action=ob?ob.href:'{!UNKNOWN;^}';
 
@@ -3360,7 +3438,7 @@ function ga_track(ob,category,action)
 
 			return false;
 		}
-	/*{+END}{+END}*/
+	/*{+END}*/
 
 	return null;
 }
@@ -3399,7 +3477,7 @@ function click_link(link)
 	if ((!cancelled) && (link.href))
 	{
 		if (link.getAttribute('target')) window.open(link.href,link.getAttribute('target'));
-		window.location=link.href;
+		else window.location=link.href;
 	}
 }
 
@@ -3694,7 +3772,7 @@ function setup_word_counter(post,count_element)
 		{
 			try
 			{
-				var text_value=window.CKEDITOR.instances[post.name].getData();
+				var text_value=window.CKEDITOR.instances[post.id].getData();
 				var matches=text_value.replace(/<[^<|>]+?>|&nbsp;/gi,' ').match(/\b/g);
 				var count=0;
 				if(matches) count=matches.length/2;
@@ -3839,67 +3917,66 @@ function has_iframe_ownership(iframe)
 // LEGACY: IE8
 // Production steps of ECMA-262, Edition 5, 15.4.4.14
 // Reference: http://es5.github.io/#x15.4.4.14
-if (!Array.prototype.indexOf) {
-  Array.prototype.indexOf = function(searchElement, fromIndex) {
+if (typeof Array.prototype.indexOf=='undefined') {
+	Array.prototype.indexOf = function(searchElement, fromIndex) {
+		var k;
 
-	var k;
+		// 1. Let O be the result of calling ToObject passing
+		//	the this value as the argument.
+		if (this == null) {
+			throw new TypeError('"this" is null or not defined');
+		}
 
-	// 1. Let O be the result of calling ToObject passing
-	//	the this value as the argument.
-	if (this == null) {
-	  throw new TypeError('"this" is null or not defined');
-	}
+		var O = Object(this);
 
-	var O = Object(this);
+		// 2. Let lenValue be the result of calling the Get
+		//	internal method of O with the argument "length".
+		// 3. Let len be ToUint32(lenValue).
+		var len = O.length >>> 0;
 
-	// 2. Let lenValue be the result of calling the Get
-	//	internal method of O with the argument "length".
-	// 3. Let len be ToUint32(lenValue).
-	var len = O.length >>> 0;
+		// 4. If len is 0, return -1.
+		if (len === 0) {
+			return -1;
+		}
 
-	// 4. If len is 0, return -1.
-	if (len === 0) {
-	  return -1;
-	}
+		// 5. If argument fromIndex was passed let n be
+		//	ToInteger(fromIndex); else let n be 0.
+		var n = (typeof fromIndex == 'undefined') ? 0 : fromIndex;
 
-	// 5. If argument fromIndex was passed let n be
-	//	ToInteger(fromIndex); else let n be 0.
-	var n = +fromIndex || 0;
+		if (Math.abs(n) === Infinity) {
+			n = 0;
+		}
 
-	if (Math.abs(n) === Infinity) {
-	  n = 0;
-	}
+		// 6. If n >= len, return -1.
+		if (n >= len) {
+			return -1;
+		}
 
-	// 6. If n >= len, return -1.
-	if (n >= len) {
-	  return -1;
-	}
+		// 7. If n >= 0, then Let k be n.
+		// 8. Else, n<0, Let k be len - abs(n).
+		//	If k is less than 0, then let k be 0.
+		k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
 
-	// 7. If n >= 0, then Let k be n.
-	// 8. Else, n<0, Let k be len - abs(n).
-	//	If k is less than 0, then let k be 0.
-	k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
-
-	// 9. Repeat, while k < len
-	while (k < len) {
-	  var kValue;
-	  // a. Let Pk be ToString(k).
-	  //   This is implicit for LHS operands of the in operator
-	  // b. Let kPresent be the result of calling the
-	  //	HasProperty internal method of O with argument Pk.
-	  //   This step can be combined with c
-	  // c. If kPresent is true, then
-	  //	i.  Let elementK be the result of calling the Get
-	  //		internal method of O with the argument ToString(k).
-	  //   ii.  Let same be the result of applying the
-	  //		Strict Equality Comparison Algorithm to
-	  //		searchElement and elementK.
-	  //  iii.  If same is true, return k.
-	  if (k in O && O[k] === searchElement) {
-		return k;
-	  }
-	  k++;
-	}
-	return -1;
-  };
+		// 9. Repeat, while k < len
+		while (k < len) {
+			var kValue;
+			// a. Let Pk be ToString(k).
+			//   This is implicit for LHS operands of the in operator
+			// b. Let kPresent be the result of calling the
+			//	HasProperty internal method of O with argument Pk.
+			//   This step can be combined with c
+			// c. If kPresent is true, then
+			//	i.  Let elementK be the result of calling the Get
+			//		internal method of O with the argument ToString(k).
+			//   ii.  Let same be the result of applying the
+			//		Strict Equality Comparison Algorithm to
+			//		searchElement and elementK.
+			//  iii.  If same is true, return k.
+			if (k in O && O[k] === searchElement) {
+				return k;
+			}
+			k++;
+		}
+		return -1;
+	};
 }

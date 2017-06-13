@@ -163,7 +163,7 @@ function cleanup_theme_images($old_url)
             $encoded_path = substr($path, 0, strrpos($path, '/') + 1) . rawurlencode(substr($path, strrpos($path, '/') + 1));
             if ((!in_array($path, $files_referenced)) && (!in_array($encoded_path, $files_referenced)) && (($old_url == $path) || ($old_url == $encoded_path))) {
                 @unlink(get_custom_file_base() . '/' . $path);
-                sync_file($path);
+                sync_file(get_custom_file_base() . '/' . $path);
             }
         }
     }
@@ -181,7 +181,7 @@ function actual_rename_theme($theme, $to)
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    if ((file_exists(get_custom_file_base() . '/themes/' . $to)) || ($to == 'default')) {
+    if ((file_exists(get_custom_file_base() . '/themes/' . $to)) || ($to == 'default' || $to == 'admin')) {
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($to)));
     }
 
@@ -219,7 +219,7 @@ function actual_copy_theme($theme, $to)
         fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
 
-    if ((file_exists(get_custom_file_base() . '/themes/' . $to)) || ($to == 'default')) {
+    if ((file_exists(get_custom_file_base() . '/themes/' . $to)) || ($to == 'default' || $to == 'admin')) {
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($to)));
     }
 

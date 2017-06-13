@@ -70,7 +70,7 @@ class Hook_search_quiz extends FieldsSearchHook
     /**
      * Get a list of extra fields to ask for.
      *
-     * @return array A list of maps specifying extra fields
+     * @return array A list of maps specifying extra fields (null: no tree)
      */
     public function get_fields()
     {
@@ -130,7 +130,7 @@ class Hook_search_quiz extends FieldsSearchHook
         }
 
         $table = 'quizzes r';
-        $trans_fields = array('' => '', 'r.q_start_text' => 'LONG_TRANS__COMCODE', 'r.q_name' => 'SHORT_TRANS__COMCODE');
+        $trans_fields = array('' => '', 'r.q_start_text' => 'LONG_TRANS__COMCODE', 'r.q_name' => 'SHORT_TRANS');
         $nontrans_fields = array();
         $this->_get_search_parameterisation_advanced_for_content_type('_quiz', $table, $where_clause, $trans_fields, $nontrans_fields);
 

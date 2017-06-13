@@ -43,6 +43,8 @@ function modsecurity_workaround_enable()
             '\\' => '"',
             '&' => '%',
             '%' => '&',
+            '@' => ':',
+            ':' => '@',
         );
         $len = strlen($data);
         for ($i = 0; $i < $len; $i++) {
@@ -69,7 +71,7 @@ function rescue_shortened_post_request()
     foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
         if ((is_numeric(ini_get($setting))) && (intval(ini_get($setting)) > 10)) {
             $this_setting_value = intval(ini_get($setting));
-            if ($this_setting_value < $setting_value) {
+            if (($setting_value === null) || ($this_setting_value < $setting_value)) {
                 $setting_value = $this_setting_value;
                 $setting_name = $setting;
             }
@@ -78,7 +80,7 @@ function rescue_shortened_post_request()
 
     if (($setting_value !== null) && ($setting_value > 1/*sanity check*/)) {
         if ((count($_POST) >= $setting_value - 5) || (array_count_recursive($_POST) >= $setting_value - 5)) {
-            if (has_zone_access(get_member(), 'adminzone')) {
+            if ((has_zone_access(get_member(), 'adminzone')) || (running_script('upgrader'))) {
                 $post = parse_raw_http_request();
                 if ($post !== null) {
                     $_POST = $post;

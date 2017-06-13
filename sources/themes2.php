@@ -157,10 +157,8 @@ function actual_edit_theme_image($old_id, $theme, $lang, $id, $path, $quick = fa
     if (!$quick) {
         Self_learning_cache::erase_smart_cache();
 
-        if (addon_installed('!ssl')) {
-            require_code('caches3');
-            erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
-        }
+        require_code('caches3');
+        erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
 
         log_it('EDIT_THEME_IMAGE', $id, $theme);
     }
@@ -190,7 +188,7 @@ function actual_add_theme($name)
 {
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
-    if ((file_exists(get_custom_file_base() . '/themes/' . $name)) || ($name == 'default')) {
+    if ((file_exists(get_custom_file_base() . '/themes/' . $name)) || ($name == 'default' || $name == 'admin')) {
         warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($name)));
     }
 
@@ -277,7 +275,7 @@ function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
 
     Self_learning_cache::erase_smart_cache();
 
-    if (addon_installed('!ssl')) {
+    if (addon_installed('ssl')) {
         require_code('caches3');
         erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
     }
@@ -317,7 +315,7 @@ function post_param_theme_img_code($type, $required = false, $field_file = 'file
         $urls = get_url('', $field_file, $upload_to, 0, CMS_UPLOAD_IMAGE, false);
 
         $theme_img_code = $type . '/' . basename($urls[2], '.' . get_file_extension($urls[2]));
-        if (find_theme_image($theme_img_code, true) != '') {
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('theme_images', 'id', array('id' => $theme_img_code)) !== null) {
             $theme_img_code = $type . '/' . uniqid('', true);
         }
 
@@ -488,7 +486,7 @@ function resize_rep_image($rep_image)
  */
 function find_images_do_dir($theme, $subdir, $langs)
 {
-    $full = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($subdir);
+    $full = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/' . filter_naughty($subdir);
     $out = array();
 
     $_dir = @opendir($full);
@@ -524,7 +522,7 @@ function find_images_do_dir($theme, $subdir, $langs)
  * @param  ID_TEXT $type The type of image (e.g. 'cns_emoticons')
  * @param  boolean $recurse Whether to search recursively; i.e. in subdirectories of the type subdirectory
  * @param  ?object $db The database connection to work over (null: site db)
- * @param  ?ID_TEXT $theme The theme to search in, in addition to the default theme (null: current theme)
+ * @param  ?ID_TEXT $theme The theme to search in, in addition to the default theme (null: no other)
  * @param  boolean $dirs_only Whether to only return directories (advanced option, rarely used)
  * @param  boolean $db_only Whether to only return from the database (advanced option, rarely used)
  * @param  ?array $skip The list of files/directories to skip (null: none)
@@ -550,7 +548,7 @@ function get_all_image_ids_type($type, $recurse = false, $db = null, $theme = nu
     global $THEME_IMAGES_CACHE;
 
     if (is_null($theme)) {
-        $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
+        $theme = 'default';
     }
     if (is_null($skip)) {
         $skip = array();
@@ -670,7 +668,7 @@ function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip
                 }
             } else {
                 if (!$dirs_only) {
-                    if ((preg_match('#^[\w\-]+\.(png|jpg|gif)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
+                    if ((preg_match('#^[' . URL_CONTENT_REGEXP . ']+\.(png|jpg|gif)$#', $file) != 0/*optimisation*/) || (!should_ignore_file($file, IGNORE_ACCESS_CONTROLLERS))) {
                         $type_path = $type . (($type != '') ? '/' : '');
 
                         $dot_pos = strrpos($file, '.');
@@ -932,10 +930,25 @@ function find_all_themes($full_details = false)
         $themes['default'] = $full_details ? $details : $details['title'];
     }
 
+    // Sort
     if ($full_details) {
         sort_maps_by($themes, 'title');
     } else {
         natsort($themes);
+    }
+
+    // Default theme should go first
+    if (isset($themes['default'])) {
+        $temp = $themes['default'];
+        $temp_2 = $themes;
+        $themes = array('default' => $temp) + $temp_2;
+    }
+
+    // Admin theme should go last
+    if (isset($themes['admin'])) {
+        $temp = $themes['admin'];
+        unset($themes['admin']);
+        $themes['admin'] = $temp;
     }
 
     return $themes;
@@ -968,7 +981,7 @@ function tidy_theme_img_code($new, $old, $table, $field, $db = null)
         $count = $db->query_select_value($table, 'COUNT(*)', array($field => $old));
         if ($count == 0) {
             @unlink(get_custom_file_base() . '/' . $path);
-            sync_file($path);
+            sync_file(get_custom_file_base() . '/' . $path);
             $GLOBALS['SITE_DB']->query_delete('theme_images', array('id' => $old));
         }
     }

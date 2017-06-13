@@ -63,7 +63,7 @@ class _installer_forum_drivers_test_set extends cms_test_case
     private function doHeadlessInstall($safe_mode = false, $forum_driver = 'cns', $username = null, $password = null, $board_path = null, $board_prefix = null, $database_forums = null, $username_forums = null, $password_forums = null, $extra_settings = null)
     {
         $database = 'test';
-        $table_prefix = 'cms_unit_test_';
+        $table_prefix = 'cms_forumdriver_test_';
 
         // Assumes we're using a blank root password, which is typically the case on development) - or you have it in $SITE_INFO['mysql_root_password']
         require_code('install_headless');

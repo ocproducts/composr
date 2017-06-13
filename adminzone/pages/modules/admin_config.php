@@ -36,8 +36,7 @@ class Module_admin_config
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 15;
-        $info['locked'] = true;
-        $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -377,14 +376,14 @@ class Module_admin_config
         foreach (array_keys($options) as $group) {
             $_group = do_lang($group);
 
-            $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', $_group)));
+            $_group = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', strip_tags($_group))));
             if ((isset($all_known_groups[$_group])) && ($all_known_groups[$_group] != $group)) {
                 $_group = 'std_' . $group; // If cat names translate to same things or are in non-latin characters like Cyrillic
             }
 
             $all_known_groups[$_group] = $group;
         }
-        $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\d\s]#U', '', do_lang('ADVANCED'))));
+        $advanced_key = strtolower(trim(preg_replace('#(&.*;)|[^\w\s]#U', '', do_lang('ADVANCED'))));
         ksort($all_known_groups);
         if (isset($all_known_groups[$advanced_key])) { // Advanced goes last
             $temp = $all_known_groups[$advanced_key];
@@ -433,6 +432,7 @@ class Module_admin_config
                 } else {
                     $explanation = do_lang_tempcode($option['explanation']);
                 }
+                $default = get_default_option($name);
 
                 if (isset($option['required'])) {
                     $required = $option['required'];
@@ -469,16 +469,19 @@ class Module_admin_config
                         break;
 
                     case 'integer':
-                        $out .= static_evaluate_tempcode(form_input_integer($human_name, $explanation, $name, intval(get_option($name)), $required));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, ($default == '') ? do_lang_tempcode('BLANK_EM') : make_string_tempcode(escape_html($default)));
+                        $out .= static_evaluate_tempcode(form_input_integer($human_name, $explanation_with_default, $name, intval(get_option($name)), $required));
                         break;
 
                     case 'float':
-                        $out .= static_evaluate_tempcode(form_input_float($human_name, $explanation, $name, floatval(get_option($name)), $required));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, escape_html(($default == '') ? do_lang_tempcode('BLANK_EM') : make_string_tempcode(float_format(floatval($default)))));
+                        $out .= static_evaluate_tempcode(form_input_float($human_name, $explanation_with_default, $name, floatval(get_option($name)), $required));
                         break;
 
                     case 'line':
                     case 'transline':
-                        $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, ($default == '') ? do_lang_tempcode('BLANK_EM') : make_string_tempcode(escape_html($default)));
+                        $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation_with_default, $name, get_option($name), $required, null, 100000));
                         break;
 
                     case 'text':
@@ -487,7 +490,8 @@ class Module_admin_config
                         break;
 
                     case 'comcodeline':
-                        $out .= static_evaluate_tempcode(form_input_line_comcode($human_name, $explanation, $name, get_option($name), $required));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, ($default == '') ? do_lang_tempcode('BLANK_EM') : make_string_tempcode(escape_html($default)));
+                        $out .= static_evaluate_tempcode(form_input_line_comcode($human_name, $explanation_with_default, $name, get_option($name), $required));
                         break;
 
                     case 'comcodetext':
@@ -495,6 +499,7 @@ class Module_admin_config
                         break;
 
                     case 'list':
+                        $_default = make_string_tempcode(escape_html($default));
                         $list = '';
                         if (!$required) {
                             $list .= static_evaluate_tempcode(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
@@ -506,16 +511,21 @@ class Module_admin_config
                             $_option_text = do_lang('CONFIG_OPTION_' . $name . '_VALUE_' . $__value, null, null, null, null, false);
                             if ($_option_text !== null) {
                                 $option_text = do_lang_tempcode('CONFIG_OPTION_' . $name . '_VALUE_' . $__value);
+                                if ($value == $default) {
+                                    $_default = $option_text;
+                                }
                             } else {
                                 $option_text = make_string_tempcode($value);
                             }
                             $list .= static_evaluate_tempcode(form_input_list_entry($value, $_value == $value, $option_text));
                         }
-                        $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, make_string_tempcode($list), null, false, false));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, ($default == '') ? do_lang_tempcode('BLANK_EM') : $_default);
+                        $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation_with_default, $name, make_string_tempcode($list), null, false, false));
                         break;
 
                     case 'tick':
-                        $out .= static_evaluate_tempcode(form_input_tick($human_name, $explanation, $name, get_option($name) == '1'));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, escape_html(($default == '1') ? do_lang('YES') : do_lang('NO')));
+                        $out .= static_evaluate_tempcode(form_input_tick($human_name, $explanation_with_default, $name, get_option($name) == '1'));
                         break;
 
                     case 'username':
@@ -644,8 +654,8 @@ class Module_admin_config
             (post_param_string('url_scheme', 'RAW') != 'RAW') &&
             (substr(cms_srv('SERVER_SOFTWARE'), 0, 6) == 'Apache') &&
             (
-                (!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) ||
-                (stripos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) ||
+                (!file_exists(get_file_base() . '/.htaccess')) ||
+                (stripos(file_get_contents(get_file_base() . '/.htaccess'), 'RewriteEngine on') === false) ||
                 ((function_exists('apache_get_modules')) && (!in_array('mod_rewrite', apache_get_modules()))) ||
                 (http_download_file(get_base_url() . '/pg/keymap', null, false, true) != '') && ($GLOBALS['HTTP_MESSAGE'] == '404')
             )
@@ -717,7 +727,10 @@ class Module_admin_config
         // Go through all options on the page, saving
         foreach ($options as $name => $option) {
             // Save
-            if ($option['type'] == 'tick') {
+            if ($option['type'] == 'float') {
+                $_value = post_param_string($name, '');
+                $value = ($_value == '') ? '' : float_unformat($_value);
+            } elseif ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif ($option['type'] == 'date') {
                 $date_value = post_param_date($name);
@@ -839,7 +852,7 @@ class Module_admin_config
             '_GUID' => 'cc21f921ecbdbdf83e1e28d2b3f75a3a',
             'TITLE' => $this->title,
             'POST_URL' => $post_url,
-            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/fields.xml') ? file_get_contents(get_custom_file_base() . '/data_custom/xml_config/fields.xml') : file_get_contents(get_file_base() . '/data/xml_config/fields.xml'),
+            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/fields.xml') ? cms_file_get_contents_safe(get_custom_file_base() . '/data_custom/xml_config/fields.xml') : cms_file_get_contents_safe(get_file_base() . '/data/xml_config/fields.xml'),
         ));
     }
 
@@ -850,27 +863,10 @@ class Module_admin_config
      */
     public function _xml_fields()
     {
-        if (!file_exists(get_custom_file_base() . '/data_custom')) {
-            require_code('files2');
-            make_missing_directory(get_custom_file_base() . '/data_custom');
-        }
-
-        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/fields.xml', GOOGLE_APPENGINE ? 'wb' : 'at');
-        if ($myfile === false) {
-            intelligent_write_error(get_custom_file_base() . '/data_custom/xml_config/fields.xml');
-        }
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
+        require_code('files');
+        $full_path = get_custom_file_base() . '/data_custom/xml_config/fields.xml';
         $xml = post_param_string('xml');
-        if (fwrite($myfile, $xml) < strlen($xml)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        fix_permissions(get_custom_file_base() . '/data_custom/xml_config/fields.xml');
-        sync_file(get_custom_file_base() . '/data_custom/xml_config/fields.xml');
+        cms_file_put_contents_safe($full_path, $xml, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         log_it('FIELD_FILTERS');
 
@@ -890,7 +886,7 @@ class Module_admin_config
             '_GUID' => '456f56149832d459bce72ca63a1578b9',
             'TITLE' => $this->title,
             'POST_URL' => $post_url,
-            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml') ? file_get_contents(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml') : file_get_contents(get_file_base() . '/data/xml_config/breadcrumbs.xml'),
+            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml') ? cms_file_get_contents_safe(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml') : cms_file_get_contents_safe(get_file_base() . '/data/xml_config/breadcrumbs.xml'),
         ));
     }
 
@@ -901,27 +897,10 @@ class Module_admin_config
      */
     public function _xml_breadcrumbs()
     {
-        if (!file_exists(get_custom_file_base() . '/data_custom')) {
-            require_code('files2');
-            make_missing_directory(get_custom_file_base() . '/data_custom');
-        }
-
-        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml', GOOGLE_APPENGINE ? 'wb' : 'at');
-        if ($myfile === false) {
-            intelligent_write_error(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
-        }
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
+        require_code('files');
+        $full_path = get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml';
         $xml = post_param_string('xml');
-        if (fwrite($myfile, $xml) < strlen($xml)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
-        fix_permissions(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
-        sync_file(get_custom_file_base() . '/data_custom/xml_config/breadcrumbs.xml');
+        cms_file_put_contents_safe($full_path, $xml, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         log_it('BREADCRUMB_OVERRIDES');
 

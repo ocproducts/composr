@@ -195,7 +195,7 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
             $key = strval($key);
         }
 
-        if (((!is_null($exclude)) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/)) {
+        if (((!is_null($exclude)) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/) || ($key == 'csrf_token')) {
             continue;
         }
 
@@ -472,6 +472,10 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
                     }
                 }
 
+                foreach ($attributes as &$attribute) {
+                    $attribute = cms_url_decode_post_process(urldecode($attribute));
+                }
+
                 break 2;
             }
         }
@@ -487,7 +491,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
             $_bit = explode('=', $bit, 2);
 
             if (count($_bit) == 2) {
-                $attributes[$_bit[0]] = $_bit[1];
+                $attributes[$_bit[0]] = cms_url_decode_post_process($_bit[1]);
                 if (strpos($attributes[$_bit[0]], ':') !== false) {
                     if ($perfect_only) {
                         return ''; // Could not convert this URL to a page-link, because it contains a colon
@@ -513,7 +517,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         $page_link .= ':';
     }
     if (array_key_exists('id', $attributes)) {
-        $page_link .= ':' . urldecode($attributes['id']);
+        $page_link .= ':' . $attributes['id'];
     }
     foreach ($attributes as $key => $val) {
         if (!is_string($val)) {
@@ -521,7 +525,7 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
         }
 
         if (($key != 'page') && ($key != 'type') && ($key != 'id')) {
-            $page_link .= ':' . $key . '=' . urldecode($val);
+            $page_link .= ':' . $key . '=' . cms_url_encode($val);
         }
     }
 
@@ -551,12 +555,8 @@ function _page_path_to_page_link($page)
         $page2 = $matches[1] . ':' . $matches[4];
         if (($matches[2] == 'comcode') || ($matches[2] == 'comcode_custom')) {
             if (file_exists(get_custom_file_base() . '/' . $page)) {
-                $file = file_get_contents(get_custom_file_base() . '/' . $page);
-                if (preg_match('#\[title\](.*)\[/title\]#U', $file, $matches) != 0) {
-                    $page2 .= ' (' . $matches[1] . ')';
-                } elseif (preg_match('#\[title=[\'"]?1[\'"]?\](.*)\[/title\]#U', $file, $matches) != 0) {
-                    $page2 .= ' (' . $matches[1] . ')';
-                }
+                require_code('zones2');
+                $page2 .= ' (' . get_comcode_page_title_from_disk(get_custom_file_base() . '/' . $page) . ')';
                 $page2 = preg_replace('#\[[^\[\]]*\]#', '', $page2);
             }
         }
@@ -595,7 +595,10 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
     if (isset($where['the_zone'])) {
         $where['the_zone'] = $zone;
     }
-    $_moniker_src = $db->query_select($ob_info['table'], $select, $where); // NB: For Comcode pages visited, this won't return anything -- it will become more performant when the page actually loads, so the moniker won't need redoing each time
+    $_moniker_src = $db->query_select($ob_info['table'], $select, $where, '', null, null, true); // NB: For Comcode pages visited, this won't return anything -- it will become more performant when the page actually loads, so the moniker won't need redoing each time
+    if ($_moniker_src === null) {
+        return null; // table missing?
+    }
     $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
     if (!array_key_exists(0, $_moniker_src)) {
         return null; // been deleted?
@@ -789,22 +792,42 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
  */
 function _generate_moniker($moniker_src)
 {
-    $moniker_src = strip_comcode($moniker_src);
+    $moniker = strip_comcode($moniker_src);
 
     $max_moniker_length = intval(get_option('max_moniker_length'));
 
-    $moniker = str_replace(array('ä', 'ö', 'ü', 'ß'), array('ae', 'oe', 'ue', 'ss'), $moniker_src);
+    // Transliteration first
+    if ((get_charset() == 'utf-8') && (get_option('moniker_transliteration') == '1')) {
+        if (function_exists('transliterator_transliterate')) {
+            $_moniker = @transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $moniker);
+            if (!empty($_moniker)) {
+                $moniker = $_moniker;
+            }
+        } elseif ((function_exists('iconv')) && (get_value('disable_iconv') !== '1')) {
+            $_moniker = @iconv('utf-8', 'ASCII//TRANSLIT//IGNORE', $moniker);
+            if (!empty($_moniker)) {
+                $moniker = $_moniker;
+            }
+        } else {
+            // German has inbuilt transliteration
+            $moniker = str_replace(array('ä', 'ö', 'ü', 'ß'), array('ae', 'oe', 'ue', 'ss'), $moniker);
+        }
+    }
+
+    // Then strip down / substitute to force it to be URL-ready
     $moniker = str_replace("'", '', $moniker);
-    $moniker = strtolower(preg_replace('#[^A-Za-z\d\-]#', '-', $moniker));
-    if (strlen($moniker) > $max_moniker_length) {
-        $pos = strrpos(substr($moniker, 0, $max_moniker_length), '-');
+    $moniker = cms_mb_strtolower(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '-', $moniker));
+    if (cms_mb_strlen($moniker) > $max_moniker_length) {
+        $pos = strrpos(cms_mb_substr($moniker, 0, $max_moniker_length), '-');
         if (($pos === false) || ($pos < 12)) {
             $pos = $max_moniker_length;
         }
-        $moniker = substr($moniker, 0, $pos);
+        $moniker = cms_mb_substr($moniker, 0, $pos);
     }
     $moniker = preg_replace('#\-+#', '-', $moniker);
     $moniker = rtrim($moniker, '-');
+
+    // A bit lame, but maybe we'll have to
     if ($moniker == '') {
         $moniker = 'untitled';
     }
@@ -865,7 +888,10 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
         if (isset($where['the_zone'])) {
             $where['the_zone'] = $zone;
         }
-        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, $where);
+        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, $where, '', null, null, true);
+        if ($_moniker_src === null) {
+            return $moniker; // table missing?
+        }
         $GLOBALS['NO_DB_SCOPE_CHECK'] = $bak;
         if (!array_key_exists(0, $_moniker_src)) {
             return $moniker; // been deleted?

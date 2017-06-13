@@ -30,11 +30,13 @@ function init__themes()
     $RECORD_THEME_IMAGES_CACHE = false;
     $RECORDED_THEME_IMAGES = array();
 
-    define('THEME_IMAGE_PLACE_SITE', 0);
-    define('THEME_IMAGE_PLACE_FORUM', 1);
-    define('THEME_IMAGES_LOAD_INTENSITY__NONE', 0);
-    define('THEME_IMAGES_LOAD_INTENSITY__SMART_CACHE', 1);
-    define('THEME_IMAGES_LOAD_INTENSITY__ALL', 2);
+    if (!defined('THEME_IMAGE_PLACE_SITE')) {
+        define('THEME_IMAGE_PLACE_SITE', 0);
+        define('THEME_IMAGE_PLACE_FORUM', 1);
+        define('THEME_IMAGES_LOAD_INTENSITY__NONE', 0);
+        define('THEME_IMAGES_LOAD_INTENSITY__SMART_CACHE', 1);
+        define('THEME_IMAGES_LOAD_INTENSITY__ALL', 2);
+    }
     $THEME_IMAGES_LOAD_INTENSITY = array(
         THEME_IMAGE_PLACE_SITE => THEME_IMAGES_LOAD_INTENSITY__NONE,
         THEME_IMAGE_PLACE_FORUM => THEME_IMAGES_LOAD_INTENSITY__NONE
@@ -67,7 +69,7 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
 
     // Special case: theme wizard...
 
-    if ((isset($_GET['keep_theme_seed'])) && (get_param_string('keep_theme_seed', null) !== null) && (function_exists('has_privilege')) && (has_privilege(get_member(), 'view_profiling_modes'))) {
+    if ((isset($_GET['keep_theme_seed'])) && (get_param_string('keep_theme_seed', null) !== null) && (addon_installed('themewizard')) && (function_exists('has_privilege')) && (has_privilege(get_member(), 'view_profiling_modes'))) {
         require_code('themewizard');
         $test = find_theme_image_themewizard_preview($id, $silent_fail);
         if ($test !== null) {
@@ -141,6 +143,16 @@ function find_theme_image($id, $silent_fail = false, $leave_local = false, $them
                         }
                         if ($missing) {
                             $url_path = '';
+
+                            // Dynamic fixup possible?
+                            if ($theme != 'default') {
+                                $url_path = $db->query_select_value_if_there('theme_images', 'path', array('id' => $id, 'theme' => 'default', 'lang' => $lang));
+                                if ($url_path !== null) {
+                                    $db->query_update('theme_images', array('path' => $url_path), array('id' => $id, 'theme' => $theme, 'lang' => $lang), '', 1);
+                                } else {
+                                    $db->query_delete('theme_images', array('id' => $id, 'theme' => $theme, 'lang' => $lang), '', 1);
+                                }
+                            }
 
                             $force_recache = true;
                         }

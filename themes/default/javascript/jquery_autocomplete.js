@@ -350,9 +350,9 @@ $(function() {
 		} else {
 			// Complex code to move CKEditor caret to end
 
-			CKEDITOR.instances[this.element.name].focus();
+			CKEDITOR.instances[this.element.id].focus();
 
-			var s = CKEDITOR.instances[this.element.name].getSelection(); // getting selection
+			var s = CKEDITOR.instances[this.element.id].getSelection(); // getting selection
 			var selected_ranges = s.getRanges(); // getting ranges
 			if (typeof selected_ranges[0] != 'undefined') {
 				var node = selected_ranges[0].startContainer; // selecting the starting node
@@ -427,7 +427,7 @@ $(function() {
 		} else {
 			// Complex hack to find cursor position in CKEditor
 
-			var dummyElement = CKEDITOR.instances[this.element.name].document.createElement( 'img',
+			var dummyElement = CKEDITOR.instances[this.element.id].document.createElement( 'img',
 				{
 					attributes :
 					{
@@ -437,11 +437,11 @@ $(function() {
 					}
 				});
 
-			CKEDITOR.instances[this.element.name].insertElement( dummyElement );
+			CKEDITOR.instances[this.element.id].insertElement( dummyElement );
 
 			var _this=this;
 			window.setTimeout(function() {
-				var cke = CKEDITOR.instances[_this.element.name];
+				var cke = CKEDITOR.instances[_this.element.id];
 				var iframe = cke.container.$.getElementsByTagName('iframe')[0];
 
 				var sel = cke.getSelection(); // text selection
@@ -500,7 +500,7 @@ $(function() {
 
 	Plugin.prototype.getText = function () {
 		if (!this.$element) {
-			return CKEDITOR.instances[this.element.name].getData();
+			return CKEDITOR.instances[this.element.id].getData();
 		}
 
 		return(this.$element.val() || this.$element.text());
@@ -508,8 +508,8 @@ $(function() {
 
 	Plugin.prototype.setText = function (text) {
 		if (!this.$element) {
-			//CKEDITOR.instances[this.element.name].setData(text);	Wipes events out
-			CKEDITOR.instances[this.element.name].document.getBody().setHtml(text);
+			//CKEDITOR.instances[this.element.id].setData(text);	Wipes events out
+			CKEDITOR.instances[this.element.id].document.getBody().setHtml(text);
 			return;
 		}
 
@@ -525,7 +525,7 @@ $(function() {
 			var startPos = this.$element.getCursorPosition();
 			var val = this.getText().substring(0, startPos);
 		} else {
-			var range = CKEDITOR.instances[this.element.name].getSelection().getRanges()[0];
+			var range = CKEDITOR.instances[this.element.id].getSelection().getRanges()[0];
 			if (typeof range == 'undefined') return; // Out of focus :S
 			var allText = this.getText();
 			allText = allText.replace(/\u200B/,'');
@@ -617,7 +617,7 @@ $(function() {
 			if (this.$element) {
 				this.$element.focus();
 			} else {
-				CKEDITOR.instances[this.element.name].focus();
+				CKEDITOR.instances[this.element.id].focus();
 			}
 		}
 		catch (ex) {}

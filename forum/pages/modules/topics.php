@@ -1582,6 +1582,10 @@ class Module_topics
 
         // Where it goes to
         if ($private_topic) {
+            if ($GLOBALS['FORUM_DRIVER']->is_banned($member_id)) {
+                warn_exit(do_lang_tempcode('mail:NO_ACCEPT_EMAILS'));
+            }
+
             if ($member_id == get_member()) {
                 $specialisation->attach(form_input_username_multi(do_lang_tempcode('TO'), '', 'to_member_id_', array(), 1, true, 1));
                 cns_check_make_private_topic();
@@ -3270,7 +3274,14 @@ END;
         require_code('content2');
         $metadata = actual_metadata_get_fields('post', strval($post_id));
 
-        $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0), $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $metadata['edit_time'], $metadata['add_time'], $metadata['submitter'], true);
+        $poster_name_if_guest = null;
+        if (isset($metadata['submitter'])) {
+            if (($metadata['submitter'] != $post_details[0]['p_poster']) && ($post_details[0]['p_poster_name_if_guest'] == $GLOBALS['FORUM_DRIVER']->get_username($post_details[0]['p_poster'], true))) {
+                $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($metadata['submitter'], true);
+            }
+        }
+
+        $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0), $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $metadata['edit_time'], $metadata['add_time'], $metadata['submitter'], true, true, $poster_name_if_guest);
 
         require_code('fields');
         if (has_tied_catalogue('post')) {
@@ -3365,7 +3376,7 @@ END;
         $private_topic = is_null($forum_id);
 
         if (($topic_info[0]['t_validated'] == 1) && ($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'p_validated', array('id' => $topic_info[0]['t_cache_first_post_id'])) == 0)) {
-            attach_message(do_lang_tempcode('FIRST_POST_IS_UNVALIDATED'), 'inform');
+            attach_message(do_lang_tempcode('FIRST_POST_IS_UNVALIDATED'), 'notice');
         }
 
         $this->handle_topic_breadcrumbs($forum_id, $topic_id, $topic_info[0]['t_cache_first_title'], do_lang_tempcode('EDIT_TOPIC'));

@@ -51,7 +51,7 @@ function toggle_wysiwyg(name)
 					buttons__yes: '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
 				},
 				'{!comcode:DISABLE_WYSIWYG;^}',
-				'{!comcode:DISCARD_WYSIWYG_CHANGES;^}',
+				'{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
 				function(saving_cookies)
 				{
 					if (!saving_cookies) return;
@@ -120,19 +120,19 @@ function _toggle_wysiwyg(name)
 		} else
 		{
 			generate_question_ui(
-				'{!comcode:DISCARD_WYSIWYG_CHANGES_NICE;^}',
-				{buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',buttons__convert: '{!comcode:DISCARD_WYSIWYG_CHANGES_LINE_CONVERT;^}',buttons__no: '{!comcode:DISCARD_WYSIWYG_CHANGES_LINE;^}'},
+				'{!javascript:DISCARD_WYSIWYG_CHANGES_NICE;^}',
+				{buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',buttons__convert: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE_CONVERT;^}',buttons__no: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'},
 				'{!comcode:DISABLE_WYSIWYG;^}',
-				'{!comcode:DISCARD_WYSIWYG_CHANGES;^}',
+				'{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
 				function(prompt)
 				{
 					if ((!prompt) || (prompt.toLowerCase()=='{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()))
 					{
-						if (saving_cookies)
+						if (read_cookie('use_wysiwyg')=='0')
 							set_cookie('use_wysiwyg','1',3000);
 						return false;
 					}
-					var discard=(prompt.toLowerCase()=='{!comcode:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
+					var discard=(prompt.toLowerCase()=='{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
 
 					disable_wysiwyg(forms,so,so2,discard);
 				}
@@ -438,12 +438,18 @@ function wysiwyg_editor_init_for(element,id)
 	window.lang_NO_IMAGE_PASTE_SAFARI='{!javascript:NO_IMAGE_PASTE_SAFARI;^}';
 
 	// Mainly used by autosaving, but also sometimes CKEditor seems to not refresh the textarea (e.g. for one user's site when pressing delete key on an image)
-	editor.on('change',function (event) {
+	var sync=function (event) {
 		if (typeof element.externalOnKeyPress!='undefined')
 		{
 			element.value=editor.getData();
 			element.externalOnKeyPress(event,element);
 		}
+	};
+	editor.on('change',sync);
+	editor.on('mode',function() {
+		var ta=editor.container.$.getElementsByTagName('textarea');
+		if (typeof ta[0]!='undefined')
+			ta[0].onchange=sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
 	});
 
 	editor.on('instanceReady', function (event) {
@@ -513,7 +519,7 @@ function find_tags_in_editor(editor,element)
 					if (event.pageY) eventCopy.pageY=3000;
 					if (event.clientY) eventCopy.clientY=3000;
 
-					if (typeof window.activate_tooltip!='undefined')
+					if (typeof window.activate_tooltip!='undefined' && typeof this.orig_title!='undefined')
 					{
 						reposition_tooltip(this,eventCopy);
 						this.title=this.orig_title;
@@ -764,7 +770,7 @@ function insert_textbox(element,text,sel,plain_insert,html)
 			} else
 			{
 				//editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
-				var element_for_inserting=CKEDITOR.dom.element.createFromHtml(insert);
+				var element_for_inserting=window.CKEDITOR.dom.element.createFromHtml(insert);
 				editor.insertElement(element_for_inserting);
 			}
 
@@ -889,7 +895,7 @@ function insert_textbox_wrapping(element,before_wrap_tag,after_wrap_tag)
 			new_html=merge_text_nodes(result.childNodes).replace(/\s*$/,''); /* result is an XML-escaped string of HTML, so we get via looking at the node text */
 		} else
 		{
-			new_html = selected_html;
+			new_html=selected_html;
 		}
 
 		if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName()=='kbd')) // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.

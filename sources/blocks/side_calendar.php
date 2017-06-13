@@ -116,7 +116,7 @@ class Block_side_calendar
                 }
                 $icon = $event['t_logo'];
                 $title = is_integer($event['e_title']) ? get_translated_text($event['e_title']) : $event['e_title'];
-                $date = locale_filter(date(do_lang('calendar_date'), $real_from));
+                $date = cms_strftime(do_lang('calendar_date'), $real_from);
                 $_day = intval(date('d', $from));
                 if (!array_key_exists($_day, $entries)) {
                     $entries[$_day] = array('ID' => strval($event['e_id']), 'T_TITLE' => array_key_exists('t_title', $event) ? (is_string($event['t_title']) ? $event['t_title'] : get_translated_text($event['t_title'])) : 'RSS', 'PRIORITY' => strval($event['e_priority']), 'ICON' => $icon, 'TIME' => $date, 'TITLE' => $title, 'URL' => $url);
@@ -156,7 +156,7 @@ class Block_side_calendar
             }
             for ($j = 1; $j <= $_days + 1; $j++) {
                 $date = strval($year) . '-' . str_pad(strval($month), 2, '0', STR_PAD_LEFT) . '-' . str_pad(strval($j), 2, '0', STR_PAD_LEFT);
-                $date_formatted = locale_filter(date(do_lang('calendar_date'), mktime(0, 0, 0, $month, $j, $year)));
+                $date_formatted = cms_strftime(do_lang('calendar_date'), mktime(0, 0, 0, $month, $j, $year));
                 $map2 = $filter + array('page' => 'calendar', 'type' => 'browse', 'view' => 'day', 'id' => $date);
                 $day_url = build_url($map2, $zone);
 
@@ -204,7 +204,7 @@ class Block_side_calendar
                 $_entries->attach(do_template('CALENDAR_YEAR_MONTH_DAY_ROW', array('_GUID' => '262279cb164be0fa908ec57c27dd727b', 'ENTRIES' => $__entries)));
             }
 
-            return do_template('BLOCK_SIDE_CALENDAR', array('_GUID' => '1324e98b4debf7ebd6d398fae65fe29f', 'CALENDAR_URL' => $calendar_url, 'ENTRIES' => $_entries, '_MONTH' => strval($_period_start), 'MONTH' => locale_filter(cms_strftime(do_lang('calendar_month_in_year'), $_period_start))));
+            return do_template('BLOCK_SIDE_CALENDAR', array('_GUID' => '1324e98b4debf7ebd6d398fae65fe29f', 'CALENDAR_URL' => $calendar_url, 'ENTRIES' => $_entries, '_MONTH' => strval($_period_start), 'MONTH' => cms_strftime(do_lang('calendar_month_in_year'), $_period_start)));
         }
 
         // Listing mode

@@ -102,6 +102,7 @@ class Module_newsletter
             ));
 
             $map = array();
+            require_code('lang3');
             $map += lang_code_to_default_content('title', 'GENERAL');
             $map += lang_code_to_default_content('description', 'NEWSLETTER_GENERAL');
             $GLOBALS['SITE_DB']->query_insert('newsletters', $map);
@@ -553,7 +554,10 @@ class Module_newsletter
     {
         $code_confirm = get_param_integer('confirm');
         $email = trim(get_param_string('email'));
-        $correct_confirm = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'code_confirm', array('email' => $email));
+        $correct_confirm = $GLOBALS['SITE_DB']->query_select_value_if_there('newsletter_subscribers', 'code_confirm', array('email' => $email));
+        if ($correct_confirm === null) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
         if ($correct_confirm == $code_confirm) {
             $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('code_confirm' => 0), array('email' => $email), '', 1);
             return inform_screen($this->title, do_lang_tempcode('NEWSLETTER_CONFIRMED'));

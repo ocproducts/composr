@@ -47,11 +47,10 @@ function _enforce_sessioned_url($url)
 
     if (strpos($url, '?') === false) {
         $url_scheme = get_option('url_scheme');
-        if (($url_scheme == 'HTM') || ($url_scheme == 'SIMPLE')) {
-            $url .= '?';
-        } else {
-            $url .= '/index.php?';
+        if (($url_scheme == 'PG') && (substr($url, -strlen('/index.php')) != '/index.php')) {
+            $url .= '/index.php';
         }
+        $url .= '?';
     } else {
         $url .= '&';
     }
@@ -229,7 +228,7 @@ function set_session_id($id, $guest_session = false)  // NB: Guests sessions can
 function force_httpauth()
 {
     if (empty($_SERVER['PHP_AUTH_USER'])) {
-        header('WWW-Authenticate: Basic realm="' . addslashes(get_site_name()) . '"');
+        header('WWW-Authenticate: Basic realm="' . escape_header(get_site_name(), true) . '"');
         require_code('global3');
         set_http_status_code('401');
         exit();

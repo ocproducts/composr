@@ -24,7 +24,10 @@ This allows static cache to run even when Composr is itself not booting at all.
 */
 
 if (!isset($GLOBALS['FILE_BASE'])) {
-    // Find Composr base directory, and chdir into it
+    // Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
+// Find Composr base directory, and chdir into it
     global $FILE_BASE;
     $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
     $FILE_BASE = dirname(dirname($FILE_BASE));
@@ -49,13 +52,14 @@ if (!isset($GLOBALS['FILE_BASE'])) {
  */
 function static_cache__get_self_url_easy()
 {
+    // May not be called from Composr, so can't rely on Composr's normal fixup_bad_php_env_vars function having being called
     $self_url = '';
     if (!empty($_SERVER['REQUEST_URI'])) {
         $self_url .= $_SERVER['REQUEST_URI'];
     } elseif (!empty($_SERVER['PHP_SELF'])) {
         $self_url .= $_SERVER['PHP_SELF'];
-        if (!empty($_SERVER['QUERY_STRING'])) {
-            $self_url .= '?' . $_SERVER['QUERY_STRING'];
+        if (count($_GET) != 0) {
+            $self_url .= '?' . http_build_query($_GET);
         }
     }
     return $self_url;
@@ -236,8 +240,8 @@ function static_cache($mode)
         if (($mtime > time() - $expires) || (($mode & STATIC_CACHE__FAILOVER_MODE) != 0)) {
             // Only bots can do HTTP caching, as they won't try to login and end up reaching a previously cached page
             if ((($mode & STATIC_CACHE__FAST_SPIDER) != 0) && (($mode & STATIC_CACHE__FAILOVER_MODE) == 0) && (function_exists('cms_srv'))) {
-                header("Pragma: public");
-                header("Cache-Control: max-age=" . strval($expires));
+                header('Pragma: public');
+                header('Cache-Control: max-age=' . strval($expires));
                 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
                 header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $mtime) . ' GMT');
 
@@ -261,6 +265,7 @@ function static_cache($mode)
             }
             if (($mode & STATIC_CACHE__FAILOVER_MODE) != 0) {
                 $contents .= "\n\n" . '<!-- Served ' . htmlentities($fast_cache_path) . ' -->';
+                $contents .= '<failover />';
             }
             exit($contents);
         } else {

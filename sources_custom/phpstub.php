@@ -2733,7 +2733,7 @@ function rawurldecode($str)
 }
 
 /**
- * Encode URL-encoded strings.
+ * Encode URL-encoded strings. Used for everything *except* GET-parameter encoding.
  *
  * @param  string $str The string to encode.
  * @return string Encoded string.
@@ -3424,7 +3424,7 @@ function urldecode($str)
 }
 
 /**
- * URL-encodes string.
+ * URL-encodes string. Used for GET-parameter encoding ONLY.
  *
  * @param  string $str The pure string to URL encode.
  * @return string URL encoded string.
@@ -5815,13 +5815,15 @@ GZIP functions - we TRY to be conditional with them, but they are in our minimum
 
 // ---
 
-NB:
- Almost always avoid PHP_SELF and SCRIPT_FILENAME and PATH_TRANSLATED. They do not work consistently across platforms and with rewrite rules and are mostly redundant.
- Instead, use __FILE__ (filesystem path), SCRIPT_NAME (URL path) or REQUEST_URI (URL path and parameters)
- REQUEST_URI may be wrong, but Composr will correct it if it is.
- Obviously do not rely on REQUEST_URI if you're not sure it is a web-request; use get_base_url()
+NB about paths:
+ Obviously do not rely on PHP_SELF/SCRIPT_NAME/REQUEST_URI if you're not sure it is a web-request; use get_self_url_easy()
+ PATH_INFO is very specific and should not be relied on; Composr may do something with it if it is there
+ PATH_TRANSLATED may be wrong or missing, never use it
+ DOCUMENT_ROOT is never really knowable, don't rely on it
+ PHP_SELF is always set but you almost always want SCRIPT_NAME instead (or REQUEST_URI for URLs)
+ Chris's notes in the PHP manual (http://php.net/manual/en/reserved.variables.server.php) explain how everything works; we emulate stuff as discussed in the notes
 
-NB:
+NB about $_SERVER:
  We should always check both $_SERVER and $_ENV for stuff (usually via cms_srv) apart from for...
   argv
   PHP_AUTH_USER

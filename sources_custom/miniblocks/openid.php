@@ -37,7 +37,11 @@ echo '
     } );
     //]]></script>
 
-    <form title="OpenID (manually)" method="post" action="' . escape_html($url->evaluate()) . '" id="openid" autocomplete="on"><span></span></form>
+    <form title="OpenID (manually)" method="post" action="' . escape_html($url->evaluate()) . '" id="openid" autocomplete="on">
+        <span></span>
+        ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
+    </form>
+
     <form title="OpenID (other)" method="post" action="' . escape_html($url->evaluate()) . '" id="openid_manual" autocomplete="on">
         ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
 

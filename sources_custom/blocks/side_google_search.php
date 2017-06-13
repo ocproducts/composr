@@ -32,7 +32,7 @@ class Block_side_google_search
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['parameters'] = array('page_name');
+        $info['parameters'] = array('param', 'page_name');
         return $info;
     }
 
@@ -44,7 +44,7 @@ class Block_side_google_search
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'page_name\',$map)?$map[\'page_name\']:\'google_search\')';
+        $info['cache_on'] = 'array(array_key_exists(\'page_name\',$map)?$map[\'page_name\']:\'google_search\',array_key_exists(\'param\',$map)?$map[\'param\']:\'\')';
         $info['ttl'] = (get_value('no_block_timeout') === '1') ? 60 * 60 * 24 * 365 * 5/*5 year timeout*/ : 60 * 5;
         return $info;
     }
@@ -63,6 +63,11 @@ class Block_side_google_search
 
         $page_name = !empty($map['page_name']) ? $map['page_name'] : '_google_search';
 
-        return do_template('BLOCK_SIDE_GOOGLE_SEARCH', array('_GUID' => 'e42a949234538f8c2f9a8e96bc43056d', 'TITLE' => do_lang_tempcode('BLOCK_GOOGLE_TITLE'), 'PAGE_NAME' => $page_name));
+        if (empty($map['param'])) {
+            return do_lang_tempcode('NO_PARAMETER_SENT', 'param');
+        }
+        $id = $map['param'];
+
+        return do_template('BLOCK_SIDE_GOOGLE_SEARCH', array('_GUID' => 'e42a949234538f8c2f9a8e96bc43056d', 'TITLE' => do_lang_tempcode('BLOCK_GOOGLE_TITLE'), 'PAGE_NAME' => $page_name, 'ID' => $id));
     }
 }

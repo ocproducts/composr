@@ -76,6 +76,7 @@ class Module_banners
         if (is_null($upgrade_from)) {
             require_lang('banners');
             require_code('banners');
+            require_code('lang3');
 
             $GLOBALS['SITE_DB']->create_table('banners', array(
                 'name' => '*ID_TEXT',
@@ -368,7 +369,7 @@ class Module_banners
             do_lang_tempcode('ADDED'),
         );
         if (addon_installed('unvalidated')) {
-            $hr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
+            $hr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '77d1bbbfc8e6847ecdce12489913a96a', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $hr[] = do_lang_tempcode('ACTIONS');
         $header_row = results_field_title($hr, $sortables, 'sort', $sortable . ' ' . $sort_order);
@@ -543,7 +544,7 @@ class Module_banners
                 if ($sortable == 'day') {
                     $period = get_timezoned_date($row['c_date_and_time'], false);
                 } else {
-                    $period = locale_filter(cms_strftime('%B %Y', $row['c_date_and_time']));
+                    $period = cms_strftime('%B %Y', $row['c_date_and_time']);
                 }
 
                 if (!isset($tally_sets[$period])) {

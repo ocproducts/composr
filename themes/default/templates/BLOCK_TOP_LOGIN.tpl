@@ -5,7 +5,7 @@
 		{+START,IF,{$NOT,{$MOBILE}}}
 			<div class="inline">
 				<div class="accessibility_hidden"><label for="s_login_username">{$LOGIN_LABEL}</label></div>
-				<input maxlength="80" size="10" accesskey="l" class="field_input_non_filled" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" value="{!USERNAME}" id="s_login_username" name="login_username" />
+				<input maxlength="80" size="10" accesskey="l" class="field_input_non_filled" type="text" onfocus="placeholder_focus(this);" onblur="placeholder_blur(this);" alt="{!USERNAME}" value="{!USERNAME}" id="s_login_username" name="login_username" />
 				<div class="accessibility_hidden"><label for="s_password">{!PASSWORD}</label></div>
 				<input maxlength="255" size="10" type="password" placeholder="{!PASSWORD}" value="" name="password" id="s_password" />
 

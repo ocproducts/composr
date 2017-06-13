@@ -38,7 +38,32 @@ function init__database_search()
 }
 
 /**
+ * Get minimum search length.
+ * This is broadly MySQL-specific. For other databases we will usually return 4, although there may truly not be a limit on it.
+ *
+ * @return integer    Search length
+ */
+function get_minimum_search_length()
+{
+    static $min_word_length = null;
+    if (is_null($min_word_length)) {
+        $min_word_length = 4;
+        if (get_db_type() == 'postgresql') {
+            $min_word_length = 1; // PostgreSQL uses a dictionary based limiter, so even a 1-character word in the dictionary would work.
+        }
+        if (substr(get_db_type(), 0, 5) == 'mysql') {
+            $_min_word_length = $GLOBALS['SITE_DB']->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', null, null, true);
+            if (isset($_min_word_length[0])) {
+                $min_word_length = intval($_min_word_length[0]['Value']);
+            }
+        }
+    }
+    return $min_word_length;
+}
+
+/**
  * Get a list of MySQL stopwords.
+ * May be overridden for other databases, if you want to tune your stopword list.
  *
  * @return array List of stopwords (actually a map of stopword to true)
  */
@@ -988,6 +1013,10 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
     $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
 
+    if (strpos(get_db_type(), 'mysql') !== false) {
+        $db->query('SET SESSION MAX_EXECUTION_TIME=30000', null, null, true); // Only works in MySQL 5.7+
+    }
+
     // This is so for example catalogue_entries.php can use brackets in it's table specifier while avoiding the table prefix after the first bracket. A bit weird, but that's our convention and it does save a small amount of typing
     $table_clause = $db->get_table_prefix() . (($table[0] == '(') ? (substr($table, 1)) : $table);
     if ($table[0] == '(') {
@@ -1000,12 +1029,12 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
     // Rating ordering, via special encoding
     if (strpos($order, 'compound_rating:') !== false) {
         list(, $rating_type, $meta_rating_id_field) = explode(':', $order);
-        $select .= ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . $meta_rating_id_field . ') AS compound_rating';
+        $select .= ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . db_cast($meta_rating_id_field, 'CHAR') . ') AS compound_rating';
         $order = 'compound_rating';
     }
     if (strpos($order, 'average_rating:') !== false) {
         list(, $rating_type, $meta_rating_id_field) = explode(':', $order);
-        $select .= ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . $meta_rating_id_field . ') AS average_rating';
+        $select .= ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . db_cast($meta_rating_id_field, 'CHAR') . ') AS average_rating';
         $order = 'average_rating';
     }
 
@@ -1013,6 +1042,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
     if ((get_param_integer('keep_just_show_query', 0) == 0) && (!is_null($meta_type)) && ($content != '')) {
         if (strpos($content, '"') !== false || strpos($content, '+') !== false || strpos($content, '-') !== false || strpos($content, ' ') !== false) {
             list($meta_content_where) = build_content_where($content, $boolean_search, $boolean_operator, true);
+            $meta_content_where = '(' . $meta_content_where . ' OR ' . db_string_equal_to('?', $content) . ')';
         } else {
             $meta_content_where = db_string_equal_to('?', $content);
         }
@@ -1024,9 +1054,9 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
         if ($keywords_where != '') {
             if ($meta_id_field == 'the_zone:the_page') { // Special case
-                $meta_join = 'm.meta_for_id=CONCAT(r.the_zone,\':\',r.the_page)';
+                $meta_join = 'm.meta_for_id=' . db_function('CONCAT', array('r.the_zone', '\':\'', 'r.the_page'));
             } else {
-                $meta_join = 'm.meta_for_id=r.' . $meta_id_field;
+                $meta_join = 'm.meta_for_id=' . db_cast('r.' . $meta_id_field, 'CHAR');
             }
             $extra_join = '';
             if (multi_lang_content()) {
@@ -1212,7 +1242,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             $query .= ')';
             // Work out COUNT(*) query using one of a few possible methods. It's not efficient and stops us doing proper merge-sorting between content types (and possible not accurate - if we use an efficient but non-deduping COUNT strategy) if we have to use this, so we only do it if there are too many rows to fetch in one go.
             $_query = '';
-            if (strpos(get_db_type(), 'mysql') === false) {
+            if (!db_has_subqueries($db->connection_read)) {
                 foreach ($where_alternative_matches as $parts) {
                     list($where_clause_2, $where_clause_3, , $_table_clause, $tid) = $parts;
 

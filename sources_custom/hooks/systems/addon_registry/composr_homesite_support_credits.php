@@ -111,6 +111,10 @@ class Hook_addon_registry_composr_homesite_support_credits
         return array(
             'requires' => array(
                 'tickets',
+                'stats',
+                'ecommerce',
+                'points',
+                'mysql',
             ),
             'recommends' => array(
                 'composr_homesite',

@@ -66,6 +66,8 @@ class Hook_implicit_usergroups_under18s
     public function is_member_within($member_id, $group_id)
     {
         if ($member_id == get_member()) {
+            // IDEA: Support timezones, decide age based on user's own timezone
+
             $eago = intval(date('Y')) - 18;
             $row = $GLOBALS['FORUM_DRIVER']->get_member_row($member_id);
             $dob_year = $row['m_dob_year'];

@@ -13,7 +13,10 @@
  * @package    collaboration_zone
  */
 
-// This is the standard zone bootstrap file. Zone: collaboration.
+// This is the standard zone bootstrap file.
+
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;

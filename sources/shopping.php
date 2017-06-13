@@ -439,7 +439,7 @@ function purchase_done_staff_mail($order_id)
  */
 function stock_maintain_warn_mail($product_name, $product_id)
 {
-    $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_id), get_module_zone('catalogues'));
+    $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_id), get_module_zone('catalogues'), null, false, false, true);
 
     require_code('notifications');
 

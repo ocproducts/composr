@@ -169,8 +169,9 @@ function cns_member_handle_promotion($member_id = null)
  * @param  boolean $is_pt Whether this is for a Private Topic.
  * @param  ?ID_TEXT $no_notify_for__notification_code DO NOT send notifications to: The notification code (null: no restriction)
  * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
+ * @param  ?SHORT_TEXT $poster_name The name of the poster (null: default for $sender_member_id)
  */
-function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_id, $is_starter, $post, $topic_title, $_limit_to = null, $is_pt = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null)
+function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_id, $is_starter, $post, $topic_title, $_limit_to = null, $is_pt = false, $no_notify_for__notification_code = null, $no_notify_for__code_category = null, $poster_name = null)
 {
     if ((is_null($forum_id)) && ($is_starter)) {
         return;
@@ -192,7 +193,7 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
     require_code('notifications');
 
     $subject = do_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL_SUBJECT' : 'POST_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $topic_title, array($sender_displayname, $sender_username));
-    $mail = do_notification_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, strval($sender_member_id), comcode_escape($sender_username)));
+    $mail = do_notification_lang($is_starter ? 'TOPIC_NOTIFICATION_MAIL' : 'POST_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($url), array(comcode_escape($sender_displayname), $post, $topic_title, ((is_guest($sender_member_id)) && ($poster_name !== null)) ? $poster_name : strval($sender_member_id), comcode_escape($sender_username), strval($sender_member_id)));
 
     $limit_to = is_null($_limit_to) ? array() : array($_limit_to);
 

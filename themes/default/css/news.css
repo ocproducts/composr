@@ -24,11 +24,12 @@
 }
 
 .box___block_side_news_archive .box_inner>.compact_list>li ul {
-	margin-{!en_left}: 2em;
+	margin-{!en_left}: 0.5em;
 }
 
 .compacted_subbox_stream .box.box___news_brief {
 	border-top: 0 !important;
+	margin: 0;
 }
 
 .global_middle .boxless_space .box .box.box___news_brief + .box.box___news_brief:before {

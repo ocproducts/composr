@@ -20,6 +20,9 @@
 
 /* Standalone script to extract a TAR file */
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -98,6 +101,7 @@ if (!is_file($tmp_path)) {
     exit('Could not find data_custom/upgrader.cms.tmp');
 }
 $myfile = fopen($tmp_path, 'rb');
+flock($myfile, LOCK_SH);
 
 $file_offset = intval($_GET['file_offset']);
 
@@ -141,15 +145,18 @@ foreach ($todo as $i => $_target_file) {
         header('Content-type: text/plain');
         exit('Filesystem permission error when trying to extract ' . $target_file . '. Maybe you needed to give FTP details when logging in?');
     }
+    flock($myfile2, LOCK_EX);
     while ($length > 0) {
         $amount_to_read = min(1024, $length);
         $data_read = fread($myfile, $amount_to_read);
         fwrite($myfile2, $data_read);
         $length -= $amount_to_read;
     }
+    flock($myfile2, LOCK_UN);
     fclose($myfile2);
     @chmod($FILE_BASE . '/' . $target_file, 0644);
 }
+flock($myfile, LOCK_UN);
 fclose($myfile);
 
 // Show HTML

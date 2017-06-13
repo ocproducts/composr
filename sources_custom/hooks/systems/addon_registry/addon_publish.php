@@ -107,7 +107,10 @@ class Hook_addon_registry_addon_publish
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'downloads',
+                'galleries',
+            ),
             'recommends' => array(),
             'conflicts_with' => array()
         );

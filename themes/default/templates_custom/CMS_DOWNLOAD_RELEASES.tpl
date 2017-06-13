@@ -11,7 +11,7 @@
 
 			<div class="sept"></div>
 
-			<p><a class="alLft niceLink" href="{QUICK_URL*}">Download &dtrif;</a> <a class="alRht" href="{MANUAL_URL*}">{QUICK_VERSION*} | {QUICK_FILESIZE*}</a></p>
+			<p><a class="alLft niceLink" href="{QUICK_URL*}">Download &dtrif;</a> <a class="alRht" href="{MANUAL_URL*}">v{QUICK_VERSION*} | {QUICK_FILESIZE*}</a></p>
 		</div>
 	</div>
 {+END}{+END}{+END}
@@ -23,7 +23,7 @@
 		</div>
 
 		<div class="dlBody">
-			<p>This is a ZIP containing all Composr files (several thousand). It is much slower, and only recommended if you cannot use the quick installer. Some chmodding is required.</p>
+			<p>This is a ZIP containing all Composr files (several thousand). It is much slower, and only recommended if you cannot use the quick installer. Some <a target="_blank" title="Advanced installation tutorial ({!LINK_NEW_WINDOW})" href="{$TUTORIAL_URL*,tut_adv_install}">chmodding</a> is required.</p>
 
 			<p><strong>Do not use this for upgrading.</strong></p>
 

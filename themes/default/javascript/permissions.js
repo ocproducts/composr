@@ -366,13 +366,14 @@ function update_permission_box(setting)
 						group=rows[k].id.substring(7,rows[k].id.indexOf('_privilege_container'));
 
 						element=document.getElementById('access_'+group+'_privilege_'+privilege);
-						if (!element) // We haven't added it yet for one of the resources we're doing permissions for
+						if ((!element) && (!document.getElementById('privilege_cell_'+group+'_'+privilege))) // We haven't added it yet for one of the resources we're doing permissions for
 						{
-							if (!done_header)
+							if ((!done_header) && (!document.getElementById('privilege_header_'+privilege)))
 							{
 								row=rows[0];
 								new_cell=row.insertBefore(document.createElement('th'),row.cells[row.cells.length]);
 								new_cell.className='privilege_header';
+								new_cell.id='privilege_header_'+privilege;
 								set_inner_html(new_cell,'<img class="gd_text" src="'+'{$BASE_URL*;,0}'.replace(/^https?:/,window.location.protocol)+'/data/gd_text.php?color='+window.column_color+'&amp;text='+window.encodeURIComponent(privilege_title)+escape_html(keep_stub())+'" title="'+escape_html(privilege_title)+'" alt="'+escape_html(privilege_title)+'" />');
 
 								rows[rows.length-1].appendChild(document.createElement('td')).className='form_table_field_input privilege_footer'; // Footer cell
@@ -386,6 +387,7 @@ function update_permission_box(setting)
 							row=document.getElementById('access_'+group+'_privilege_container');
 							new_cell=row.insertBefore(document.createElement('td'),row.cells[row.cells.length-1]);
 							new_cell.className='form_table_field_input privilege_cell';
+							new_cell.id='privilege_cell_'+group+'_'+privilege;
 							if (document.getElementById('access_'+group).name!='_ignore')
 							{
 								set_inner_html(new_cell,'<div class="accessibility_hidden"><label for="access_'+group+'_privilege_'+privilege+'">{!permissions:OVERRIDE;^}</label></div><select title="'+escape_html(privilege_title)+'" onmouseover="if (this.options[this.selectedIndex].value==\'-1\') show_permission_setting(this,event);" id="access_'+group+'_privilege_'+privilege+'" name="access_'+group+'_privilege_'+privilege+'"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');

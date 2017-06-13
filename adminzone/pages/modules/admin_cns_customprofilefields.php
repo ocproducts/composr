@@ -272,6 +272,10 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
+        $num_cpfs = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'COUNT(*)');
+
+        $standard_ordering = (($current_ordering == 'cf_order ASC') && ($num_cpfs < 200));
+
         $fh = array(
             do_lang_tempcode('NAME'),
             do_lang_tempcode('OWNER_VIEW'),
@@ -298,87 +302,89 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
             $to_keep += $_hook->to_enable();
         }
 
-        // Load rows, according to pagination
-        $record_start = get_param_integer('start', 0);
-        $record_max = get_param_integer('max', 20);
-        $record_counter = $record_start;
-        $fields = new Tempcode();
-        list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, null);
-        $changed = false;
-
-        // Save sorting changes
-        if (strtoupper($sort_order) != 'DESC') {
-            for ($record_counter = $record_start; $record_counter < $record_start + $record_max; $record_counter++) {
-                $new_order_value = post_param_integer('order_' . strval($record_counter), null);
-                if ($new_order_value !== $record_counter && !is_null($new_order_value)) {
-                    $this->change_order($new_order_value, $record_counter, $current_ordering);
-                    $changed = true;
-                }
-            }
-        } else {
-            $record_start = $max_rows - $record_start;
-            $record_max = $record_start - $record_max;
-            for ($record_counter = $record_max; $record_counter <= $record_start; $record_counter++) {
-                $new_order_value = post_param_integer('order_' . strval($record_counter), null);
-                if ($new_order_value !== $record_counter && !is_null($new_order_value)) {
-                    $this->change_order($new_order_value, $record_counter, $current_ordering);
-                    $changed = true;
-                }
+        // Normalise ordering
+        if ($standard_ordering) {
+            $rows = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id'), null, 'ORDER BY cf_order ASC');
+            foreach ($rows as $i => $row) {
+                $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $i), array('id' => $row['id']), '', 1);
             }
         }
-        // Reload after sorting changes
-        if ($changed) {
-            list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
+
+        // Load rows, according to pagination
+        list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, null);
+
+        // Save sorting changes
+        if ($standard_ordering) {
+            $changed = false;
+
+            foreach ($rows as $row) {
+                $new_order = post_param_integer('order_' . strval($row['id']), null);
+                if ($new_order !== null) {
+                    if ($new_order !== $row['cf_order']) {
+                        $this->change_order($row['id'], $row['cf_order'], $new_order);
+                        $changed = true;
+                    }
+                }
+            }
+
+            // Reload after sorting changes
+            if ($changed) {
+                list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
+            }
         }
 
         // Render selection table
+        $fields = new Tempcode();
         require_code('form_templates');
         foreach ($rows as $row) {
-            $trans = get_translated_text($row['cf_name'], $GLOBALS['FORUM_DB']);
+            $name = get_translated_text($row['cf_name'], $GLOBALS['FORUM_DB']);
 
             $used = true;
-            if ((substr($trans, 0, 4) == 'cms_') && (get_param_integer('keep_all_cpfs', 0) != 1)) {
+            if ((substr($name, 0, 4) == 'cms_') && (get_param_integer('keep_all_cpfs', 0) != 1)) {
                 // See if it gets filtered
-                if ((!array_key_exists(substr($trans, 4), $to_keep)) && (get_param_integer('edit_unused', 0) != 1)) {
+                if ((!array_key_exists(substr($name, 4), $to_keep)) && (get_param_integer('edit_unused', 0) != 1)) {
                     $used = false;
                 }
 
-                $test = do_lang('SPECIAL_CPF__' . $trans, null, null, null, null, false);
+                $test = do_lang('SPECIAL_CPF__' . $name, null, null, null, null, false);
                 if (!is_null($test)) {
-                    $trans = $test;
+                    $name = $test;
                 }
             }
 
             $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            $order_list = '';
-            $num_cpfs = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'COUNT(*)');
-            $selected_one = false;
             $order = $row['cf_order'];
-            for ($i = 0; $i < max($num_cpfs, $order, 200); $i++) {
-                $selected = ($i === $order);
-                if ($selected) {
-                    $selected_one = true;
+            if ($standard_ordering) {
+                $order_list = '';
+                $selected_one = false;
+                for ($i = 0; $i < $num_cpfs; $i++) {
+                    $selected = ($i === $order);
+                    if ($selected) {
+                        $selected_one = true;
+                    }
+                    $order_list .= '<option value="' . strval($i) . '"' . ($selected ? ' selected="selected"' : '') . '>' . strval($i + 1) . '</option>'; // XHTMLXHTML
                 }
-                $order_list .= '<option value="' . strval($i) . '"' . ($selected ? ' selected="selected"' : '') . '>' . strval($i + 1) . '</option>'; // XHTMLXHTML
+                if (!$selected_one) {
+                    $order_list .= '<option value="' . strval($i) . '" selected="selected">' . (($order == ORDER_AUTOMATED_CRITERIA) ? do_lang('NA') : strval($order + 1)) . '</option>'; // XHTMLXHTML
+                }
+                $orderer = do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '0c35279246e34d94fd4a41c432cdffed', 'LABEL' => do_lang_tempcode('SORT'), 'NAME' => 'order_' . strval($row['id']), 'LIST' => $order_list));
+            } else {
+                $orderer = make_string_tempcode('#' . escape_html($order + 1));
             }
-            if (!$selected_one) {
-                $order_list .= '<option value="' . strval($i) . '" selected="selected">' . (($order == ORDER_AUTOMATED_CRITERIA) ? do_lang('NA') : strval($order + 1)) . '</option>'; // XHTMLXHTML
-            }
-            $orderer = do_template('COLUMNED_TABLE_ROW_CELL_SELECT', array('_GUID' => '0c35279246e34d94fd4a41c432cdffed', 'LABEL' => do_lang_tempcode('SORT'), 'NAME' => 'order_' . strval($row['cf_order']), 'LIST' => $order_list));
 
             $fr = array();
-            $fr[] = $trans;
+            $fr[] = $name;
             $fr[] = ($row['cf_owner_view'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = ($row['cf_owner_set'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = ($row['cf_public_view'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = ($row['cf_required'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = ($row['cf_show_on_join_form'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
-            //$fr[]=($row['cf_show_in_posts']==1)?do_lang_tempcode('YES'):do_lang_tempcode('NO');
-            //$fr[]=($row['cf_show_in_post_previews']==1)?do_lang_tempcode('YES'):do_lang_tempcode('NO');
+            //$fr[]=($row['cf_show_in_posts']==1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
+            //$fr[]=($row['cf_show_in_post_previews']==1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO');
             $fr[] = protect_from_escaping($orderer);
             if ($used) {
-                $edit_link = hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' #' . strval($row['id']));
+                $edit_link = hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, do_lang('EDIT') . ' ' . escape_html($name));
             } else {
                 $edit_link = do_lang_tempcode('UNUSED_CPF');
             }
@@ -402,36 +408,31 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
     }
 
     /**
-     * Change the order of custom profile fields.
+     * Change the order of a Custom Profile Field.
      *
-     * @param  integer $start_order Record start count.
-     * @param  integer $end_order Record end count.
+     * @param  AUTO_LINK $id The ID.
+     * @param  integer $old_order Old order.
+     * @param  integer $new_order New order.
      */
-    public function change_order($start_order = 0, $end_order = 0)
+    public function change_order($id, $old_order, $new_order)
     {
-        $rows = null;
-        $row_cf_order = 0;
-        $table = get_table_prefix() . 'f_custom_fields';
-        if ($start_order > $end_order) {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($end_order) . ' AND ' . strval($start_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'), null, null, false, false, array('cf_name' => 'SHORT_TRANS'));
-            foreach ($rows as $row) {
-                $row_cf_order = $row['cf_order'];
-                if ($row_cf_order == $end_order) {
-                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $start_order), array('id' => $row['id']), '', 1);
-                } else {
-                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $row_cf_order - 1), array('id' => $row['id']), '', 1);
+        $sql = 'SELECT r.id AS r_id,r.cf_order FROM ' . get_table_prefix() . 'f_custom_fields r WHERE cf_order BETWEEN ';
+        $sql .= strval(min($old_order, $new_order)) . ' AND ' . strval(max($old_order, $new_order));
+        $sql .= ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name');
+        $rows = $GLOBALS['FORUM_DB']->query($sql, null, null, false, false, array('cf_name' => 'SHORT_TRANS'));
+
+        foreach ($rows as $row) {
+            if ($id == $row['r_id']) {
+                $_new_order = $new_order;
+            } else {
+                if ($old_order < $new_order) { // Moving order of $id up
+                    $_new_order = $row['cf_order'] - 1;
+                } else { // Moving order of $id down
+                    $_new_order = $row['cf_order'] + 1;
                 }
             }
-        } else {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $table . ' WHERE cf_order BETWEEN ' . strval($start_order) . ' AND ' . strval($end_order) . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'), null, null, false, false, array('cf_name' => 'SHORT_TRANS'));
-            foreach ($rows as $row) {
-                $row_cf_order = $row['cf_order'];
-                if ($row_cf_order == $end_order) {
-                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $start_order), array('id' => $row['id']), '', 1);
-                } else {
-                    $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $row_cf_order + 1), array('id' => $row['id']), '', 1);
-                }
-            }
+
+            $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_order' => $_new_order), array('id' => $row['r_id']), '', 1);
         }
     }
 

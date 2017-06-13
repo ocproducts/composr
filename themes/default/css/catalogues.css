@@ -5,6 +5,10 @@
 
 /* Field map display */
 
+.catalogue_fieldmap_entry_wrap {
+	margin: 1em 0;
+}
+
 .catalogue_fieldmap_field_name_column {
 	width: 13em;
 }
@@ -69,6 +73,16 @@
 .catalogue_entry_screen .ratings .rating_box {
 	float: left;
 	margin-right: 1em;
+}
+
+/* Particular fields types */
+
+.field_multilist>p:first-child {
+	margin-top: 0;
+}
+
+.field_multilist>p:last-child {
+	margin-bottom: 0;
 }
 
 /* eCommerce cart link template */

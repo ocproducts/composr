@@ -109,6 +109,7 @@ class Hook_addon_registry_core
     public function get_file_list()
     {
         return array(
+            'adminzone/pages/comcode/EN/_modsecurity.txt',
             'themes/default/images/icons/24x24/menu/_generic_admin/merge.png',
             'themes/default/images/icons/48x48/menu/_generic_admin/merge.png',
             'themes/default/images/icons/24x24/menu/rich_content.png',
@@ -533,10 +534,6 @@ class Hook_addon_registry_core
             'themes/default/templates/GROUP_MEMBER_TIMEOUT_MANAGE_SCREEN.tpl',
             'sources/inst_special.php',
             'sources/actionlog.php',
-            'sources/hooks/systems/config/fixed_width.php',
-            'sources/hooks/systems/config/collapse_user_zones.php',
-            'sources/hooks/systems/config/url_monikers_enabled.php',
-            'sources/hooks/systems/cron/ip_address_sharing.php',
             'themes/admin/javascript/.htaccess',
             'themes/admin/javascript/index.html',
             'themes/admin/text/.htaccess',
@@ -652,6 +649,7 @@ class Hook_addon_registry_core
             'sources/selectcode.php',
             'sources/filtercode.php',
             'lang/EN/filtercode.ini',
+            'sources/mail_dkim.php',
             'sources/blocks/main_content_filtering.php',
             'sources/lang_stemmer_EN.php',
             'sources/lang_filter_EN.php',
@@ -773,7 +771,11 @@ class Hook_addon_registry_core
             'themes/default/javascript/global.js',
             'themes/default/javascript/ajax.js',
             'themes/default/templates/JAVASCRIPT_NEED.tpl',
+            'themes/default/templates/JAVASCRIPT_NEED_FULL.tpl',
             'themes/default/templates/JAVASCRIPT_NEED_INLINE.tpl',
+            'themes/default/templates/CSS_NEED.tpl',
+            'themes/default/templates/CSS_NEED_FULL.tpl',
+            'themes/default/templates/CSS_NEED_INLINE.tpl',
             'themes/default/javascript/staff.js',
             'themes/default/javascript/transitions.js',
             'themes/default/javascript/tree_list.js',
@@ -791,8 +793,6 @@ class Hook_addon_registry_core
             'themes/default/templates/REDIRECT_POST_METHOD_SCREEN.tpl',
             'themes/default/templates/LOGIN_SCREEN.tpl',
             'themes/default/css/login.css',
-            'themes/default/templates/CSS_NEED.tpl',
-            'themes/default/templates/CSS_NEED_INLINE.tpl',
             'themes/default/templates/BROKEN_LANG_STRINGS.tpl',
             'themes/default/templates/BROKEN_URLS.tpl',
             'themes/default/templates/FORUMS_EMBED.tpl',
@@ -999,6 +999,7 @@ class Hook_addon_registry_core
             'data/page_link_redirect.php',
             'data/quash_referer.php',
             'data/sheet.php',
+            'data/script.php',
             'data/sitemap.php',
             'data/snippet.php',
             'data/soundmanager/soundmanager2.swf',
@@ -1331,6 +1332,12 @@ class Hook_addon_registry_core
             'sources/incoming_uploads.php',
             'themes/default/images/uploader/cancelbutton.gif',
             'themes/default/images/uploader/index.html',
+            'themes/default/images/icons/24x24/links/facebook.png',
+            'themes/default/images/icons/24x24/links/twitter.png',
+            'themes/default/images/icons/48x48/links/facebook.png',
+            'themes/default/images/icons/48x48/links/twitter.png',
+            'uploads/repimages/index.html',
+            'uploads/repimages/.htaccess',
             'uploads/incoming/index.html',
             'uploads/incoming/.htaccess',
             'uploads/.htaccess',
@@ -1361,7 +1368,6 @@ class Hook_addon_registry_core
             'data/tasks.php',
             'sources/tasks.php',
             'lang/EN/tasks.ini',
-            'sources/hooks/systems/config/tasks_background.php',
             'sources/hooks/systems/cron/tasks.php',
             'sources/hooks/systems/tasks/index.html',
             'sources_custom/hooks/systems/tasks/index.html',
@@ -1375,6 +1381,7 @@ class Hook_addon_registry_core
             'sources/deep_clean.php',
             'sources/hooks/systems/symbols/DEEP_CLEAN.php',
             'themes/default/templates/PASSWORD_CHECK_JS.tpl',
+            'themes/default/templates/SPONSORS_SCREEN.tpl',
 
             // External endpoints (API) - no actual endpoints defined in core (or even bundled at time of writing), but may be added by other addons
             'data/endpoint.php',
@@ -1443,10 +1450,12 @@ class Hook_addon_registry_core
             'templates/REDIRECT_POST_METHOD_SCREEN.tpl' => 'redirect_post_method_screen',
             'templates/FORUMS_EMBED.tpl' => 'forums_embed',
             'templates/JS_BLOCK.tpl' => 'js_block',
-            'templates/JAVASCRIPT_NEED_INLINE.tpl' => 'javascript_need_inline',
-            'templates/CSS_NEED_INLINE.tpl' => 'css_need_inline',
             'templates/JAVASCRIPT_NEED.tpl' => 'javascript_need',
+            'templates/JAVASCRIPT_NEED_FULL.tpl' => 'javascript_need_full',
+            'templates/JAVASCRIPT_NEED_INLINE.tpl' => 'javascript_need_inline',
             'templates/CSS_NEED.tpl' => 'css_need',
+            'templates/CSS_NEED_FULL.tpl' => 'css_need_full',
+            'templates/CSS_NEED_INLINE.tpl' => 'css_need_inline',
             'templates/FATAL_SCREEN.tpl' => 'administrative__fatal_screen',
             'templates/STACK_TRACE.tpl' => 'administrative__stack_trace',
             'templates/INLINE_WIP_MESSAGE.tpl' => 'inline_wip_message',
@@ -1482,6 +1491,7 @@ class Hook_addon_registry_core
             'templates/MASS_SELECT_DELETE_FORM.tpl' => 'mass_select_delete_form',
             'templates/UPLOAD_SYNDICATION_SETUP_SCREEN.tpl' => 'upload_syndication_setup_screen',
             'templates/GROUP_MEMBER_TIMEOUT_MANAGE_SCREEN.tpl' => 'group_member_timeout_manage_screen',
+            'templates/SPONSORS_SCREEN.tpl' => 'sponsors_screen',
         );
     }
 
@@ -1548,8 +1558,6 @@ class Hook_addon_registry_core
      */
     public function tpl_preview__email_log_screen()
     {
-        require_lang('email_log');
-
         return array(
             lorem_globalise(do_lorem_template('EMAIL_LOG_SCREEN', array(
                 'TITLE' => lorem_title(),
@@ -1680,11 +1688,75 @@ class Hook_addon_registry_core
      *
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
+    public function tpl_preview__javascript_need()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('JAVASCRIPT_NEED', array(
+                'CODE' => placeholder_javascript_code(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__javascript_need_full()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('JAVASCRIPT_NEED_FULL', array(
+                'URL' => placeholder_url(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
     public function tpl_preview__javascript_need_inline()
     {
         return array(
             lorem_globalise(do_lorem_template('JAVASCRIPT_NEED_INLINE', array(
                 'CODE' => placeholder_javascript_code(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__css_need()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('CSS_NEED', array(
+                'CODE' => lorem_phrase(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__css_need_full()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('CSS_NEED_FULL', array(
+                'URL' => placeholder_url(),
             )), null, '', true)
         );
     }
@@ -1810,38 +1882,6 @@ class Hook_addon_registry_core
                     'A' => 'a',
                     'B' => 'b',
                 )
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__javascript_need()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('JAVASCRIPT_NEED', array(
-                'CODE' => placeholder_javascript_code(),
-            )), null, '', true)
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__css_need()
-    {
-        return array(
-            lorem_globalise(do_lorem_template('CSS_NEED', array(
-                'CODE' => lorem_phrase(),
             )), null, '', true)
         );
     }
@@ -2115,6 +2155,7 @@ class Hook_addon_registry_core
     public function tpl_preview__administrative__broken_urls()
     {
         require_lang('cleanup');
+
         $found_404 = array();
         foreach (placeholder_array() as $value) {
             $found_404[] = array(
@@ -2151,6 +2192,7 @@ class Hook_addon_registry_core
     public function tpl_preview__administrative__broken_lang_strings()
     {
         require_lang('cleanup');
+
         return array(
             lorem_globalise(do_lorem_template('BROKEN_LANG_STRINGS', array(
                 'MISSING_LANG_STRINGS' => placeholder_array(),
@@ -2382,6 +2424,29 @@ class Hook_addon_registry_core
                 'DATE_INPUT' => lorem_phrase(),
                 'URL' => placeholder_url(),
                 'PAGINATION' => placeholder_pagination(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__sponsors_screen()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('SPONSORS_SCREEN', array(
+                'TITLE' => lorem_title(),
+                'PATREONS' => array(
+                    array(
+                        'USERNAME' => lorem_word(),
+                        'NAME' => lorem_word(),
+                        'MONTHLY' => placeholder_number(),
+                    ),
+                ),
             )), null, '', true)
         );
     }

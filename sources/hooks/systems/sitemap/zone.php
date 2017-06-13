@@ -182,7 +182,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
         );
 
         if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
-            $struct['title'] = make_string_tempcode(do_lang('ZONE') . ': ' . $title);
+            $struct['title'] = make_string_tempcode(do_lang('zones:ZONE') . ': ' . $title);
         }
 
         $comcode_page_sitemap_ob = $this->_get_sitemap_object('comcode_page');
@@ -291,7 +291,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
             foreach ($links as $link) {
                 list($page_grouping) = $link;
 
-                if ((is_array($link)) && (is_string($link[2][2]))) {
+                if ((is_array($link[2])) && (is_string($link[2][2]))) {
                     if (($page_grouping == '') || (in_array($page_grouping, $applicable_page_groupings))) {
                         $pages_found[$link[2][2] . ':' . $link[2][0]] = true;
                     }
@@ -307,7 +307,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
 
             // Any left-behind pages?
             // NB: Code largely repeated in page_grouping.php
-            $orphaned_pages = array();
+            $orphaned_pages = array(); // Will be merged into pages/tools/cms groups if they exist, otherwise will go into this level
             foreach ((($zone == 'site') && (($options & SITEMAP_GEN_COLLAPSE_ZONES) != 0)) ? array('site', '') : array($zone) as $_zone) {
                 $pages = $no_self_pages ? array() : find_all_pages_wrap($_zone, false, /*$consider_redirects=*/true, /*$show_method = */0, /*$page_type = */($zone != $_zone) ? 'comcode' : null);
                 foreach ($pages as $page => $page_type) {
@@ -340,10 +340,6 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                 $page_grouping_sitemap_xml_ob = $this->_get_sitemap_object('page_grouping');
 
                 foreach ($page_groupings as $page_grouping => $page_grouping_pages) {
-                    if (count($page_grouping_pages) == 0) {
-                        continue;
-                    }
-
                     if ($zone == 'cms') {
                         $child_page_link = 'cms:cms:' . $page_grouping;
                     } else {
@@ -353,6 +349,10 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                     if ($page_grouping == 'pages' || $page_grouping == 'tools' || $page_grouping == 'cms') {
                         $row = $orphaned_pages;
                         $orphaned_pages = array();
+                    }
+
+                    if ((count($page_grouping_pages) == 0) && (count($row) == 0)) {
+                        continue;
                     }
 
                     if (($valid_node_types !== null) && (!in_array('page_grouping', $valid_node_types))) {
@@ -407,7 +407,7 @@ class Hook_sitemap_zone extends Hook_sitemap_base
                                 if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
                                     list(, $redir_zone, $redir_page) = explode(':', $page_type);
                                     require_code('xml');
-                                    $struct['title'] = make_string_tempcode(strip_html(str_replace(array('<kbd>', '</kbd>'), array('"', '"'), do_lang('REDIRECT_PAGE_TO', xmlentities($redir_zone), xmlentities($redir_page)))) . ': ' . (is_string($page) ? $page : strval($page)));
+                                    $struct['title'] = make_string_tempcode(strip_html(str_replace(array('<kbd>', '</kbd>'), array('"', '"'), do_lang('zones:REDIRECT_PAGE_TO', xmlentities($redir_zone), xmlentities($redir_page)))) . ': ' . (is_string($page) ? $page : strval($page)));
                                 }
                             }
 

@@ -80,8 +80,6 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
     url_default_parameters__disable();
     $hidden->attach($_hidden);
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
-
     if ($intro_message_if_enabled) {
         $forum_id = get_option('intro_forum_id');
         if ($forum_id != '') {
@@ -90,6 +88,12 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
             $fields->attach(form_input_text_comcode(do_lang_tempcode('POST_COMMENT'), do_lang_tempcode('DESCRIPTION_INTRO_POST'), 'intro_post', '', false));
         }
     }
+
+    if ($captcha_if_enabled) {
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
+    }
+
+    /*PSEUDO-HOOK: cns_join_form special fields*/
 
     $text = do_lang_tempcode('ENTER_PROFILE_DETAILS');
 
@@ -254,6 +258,8 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
                 warn_exit(do_lang_tempcode('NO_INVITE'));
             }
         }
+
+        /*PSEUDO-HOOK: cns_join_actual referrals*/
 
         $GLOBALS['FORUM_DB']->query_update('f_invites', array('i_taken' => 1), array('i_email_address' => $email_address, 'i_taken' => 0), '', 1);
     }
@@ -453,7 +459,8 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
             handle_active_login($username); // The auto-login simulates a real login, i.e. actually checks the password from the form against the real account. So no security hole when "re-registering" a real user
             $message->attach(do_lang_tempcode('CNS_LOGIN_AUTO'));
         } else { // Invite them to explicitly instant log in
-            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_param_string('redirect', null)), get_module_zone('login'));
+            $redirect = get_param_string('redirect', (get_page_name() == 'join') ? null : get_self_url(true));
+            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => $redirect), get_module_zone('login'));
             $login_url = $_login_url->evaluate();
             $message->attach(do_lang_tempcode('CNS_LOGIN_INSTANT', escape_html($login_url)));
         }
@@ -464,6 +471,8 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         $message->attach(do_lang_tempcode('CNS_WAITING_CONFIRM_MAIL_INSTANT'));
     }
     $message = protect_from_escaping($message);
+
+    /*PSEUDO-HOOK: cns_join_actual ends*/
 
     return array($message, $member_id);
 }

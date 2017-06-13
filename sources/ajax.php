@@ -30,14 +30,14 @@ function cor_prepare()
     require_code('input_filter');
     $allowed_partners = get_allowed_partner_sites();
     if (in_array(preg_replace('#^.*://([^:/]*).*$#', '${1}', $_SERVER['HTTP_ORIGIN']), $allowed_partners)) {
-        header('Access-Control-Allow-Origin: ' . str_replace("\n", '', str_replace("\r", '', $_SERVER['HTTP_ORIGIN'])));
+        header('Access-Control-Allow-Origin: ' . /*escape_header  function not needed and may not be loaded yet*/($_SERVER['HTTP_ORIGIN']));
 
         if ((isset($_SERVER['REQUEST_METHOD'])) && ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')) {
             header('Access-Control-Allow-Credentials: true');
 
             // Send pre-flight response
             if (isset($_SERVER['ACCESS_CONTROL_REQUEST_HEADERS'])) {
-                header('Access-Control-Allow-Headers: ' . str_replace("\n", '', str_replace("\r", '', $_SERVER['ACCESS_CONTROL_REQUEST_HEADERS'])));
+                header('Access-Control-Allow-Headers: ' . /*escape_header  function not needed and may not be loaded yet*/($_SERVER['ACCESS_CONTROL_REQUEST_HEADERS']));
             }
             $methods = 'GET,POST,PUT,HEAD,OPTIONS';
             if (isset($_SERVER['ACCESS_CONTROL_REQUEST_HEADERS'])) {
@@ -179,8 +179,12 @@ function namelike_script()
             echo '<option value="' . escape_html($name) . '" displayname="" />';
         }
     } elseif ($special == 'search') {
-        require_code('search');
-        $names = find_search_suggestions($id, get_param_string('search_type', ''));
+        if (addon_installed('search')) {
+            require_code('search');
+            $names = find_search_suggestions($id, get_param_string('search_type', ''));
+        } else {
+            $names = array();
+        }
 
         foreach ($names as $name) {
             echo '<option value="' . escape_html($name) . '" displayname="" />';
@@ -465,7 +469,7 @@ function ajax_tree_script()
     require_code('xml');
     header('Content-Type: text/xml');
     $hook = filter_naughty_harsh(get_param_string('hook'));
-    require_code('hooks/systems/ajax_tree/' . $hook);
+    require_code('hooks/systems/ajax_tree/' . $hook, true);
     $object = object_factory('Hook_' . $hook, true);
     if ($object === null) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
@@ -522,7 +526,7 @@ function load_template_script()
 {
     prepare_for_known_ajax_response();
 
-    if (!has_actual_page_access(get_member(), 'admin_themes', 'adminzone')) {
+    if (!has_actual_page_access(get_member(), 'admin_themes')) {
         exit();
     }
 
@@ -560,7 +564,29 @@ function sheet_script()
     header('Content-Type: text/css');
     $sheet = get_param_string('sheet');
     if ($sheet != '') {
-        echo str_replace('../../../', '', file_get_contents(css_enforce(filter_naughty_harsh($sheet))));
+        $path = css_enforce(filter_naughty($sheet), get_param_string('theme', null));
+        if ($path != '') {
+            echo str_replace('../../../', '', file_get_contents($path));
+        }
+    }
+}
+
+/**
+ * AJAX script for dynamic inclusion of JavaScript.
+ *
+ * @ignore
+ */
+function script_script()
+{
+    prepare_for_known_ajax_response();
+
+    header('Content-Type: application/javascript');
+    $script = get_param_string('script');
+    if ($script != '') {
+        $path = javascript_enforce(filter_naughty($script), get_param_string('theme', null));
+        if ($path != '') {
+            echo str_replace('../../../', '', file_get_contents($path));
+        }
     }
 }
 

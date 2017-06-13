@@ -56,7 +56,14 @@ function cns_get_forums_stats()
         $out['newest_member_username'] = null;
     }
     if (is_null($out['newest_member_username'])) {
-        $newest_member = $GLOBALS['FORUM_DB']->query('SELECT m_username,id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE m_validated=1 AND id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' ORDER BY m_join_time DESC', 1); // Only ordered by m_join_time and not double ordered with ID to make much faster in MySQL
+        $sql = 'SELECT m_username,id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ';
+        $sql .= db_string_equal_to('m_validated_email_confirm_code', '') . ' AND id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
+        if (addon_installed('unvalidated')) {
+            $sql .= ' AND m_validated=1';
+        }
+        $sql .= ' ORDER BY m_join_time DESC';
+        $newest_member = $GLOBALS['FORUM_DB']->query($sql, 1); // Only ordered by m_join_time and not double ordered with ID to make much faster in MySQL
+
         if (array_key_exists(0, $newest_member)) {
             $out['newest_member_id'] = $newest_member[0]['id'];
             $out['newest_member_username'] = $newest_member[0]['m_username'];

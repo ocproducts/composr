@@ -84,9 +84,7 @@ function read_multi_code($param)
 function check_suhosin_request_quantity($inc = 1, $name_length = 0)
 {
     static $count = 0;
-    static $name_length_count = 0;
     $count += $inc;
-    $name_length_count += $name_length;
 
     static $failed_already = false;
     if ($failed_already) {
@@ -115,14 +113,14 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
     static $max_length_values = null;
     if ($max_length_values === null) {
         $max_length_values = array();
-        foreach (array('suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
+        foreach (array('suhosin.post.max_name_length', 'suhosin.request.max_name_length', 'suhosin.post.max_totalname_length', 'suhosin.request.max_totalname_length') as $setting) {
             if (is_numeric(ini_get($setting))) {
                 $max_length_values[$setting] = intval(ini_get($setting));
             }
         }
     }
     foreach ($max_length_values as $setting => $max_length_value) {
-        if ($max_length_value < $name_length_count) {
+        if ($max_length_value < $name_length) {
             attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn');
             $failed_already = true;
         }
@@ -200,7 +198,6 @@ function attach_wysiwyg()
         attach_to_javascript(do_template('WYSIWYG_LOAD'));
     }
     $WYSIWYG_ATTACHED = true;
-    @header('Content-type: text/html; charset=' . get_charset());
 }
 
 /**
@@ -1519,7 +1516,7 @@ function form_input_upload($pretty_name, $description, $name, $required, $defaul
         $is_image = is_image($default);
         $existing_url = $default;
         if (url_is_local($existing_url)) {
-            $htaccess_path = get_custom_file_base() . '/' . dirname(rawurldecode($existing_url)) . DIRECTORY_SEPARATOR . '.htaccess';
+            $htaccess_path = get_custom_file_base() . '/' . dirname(rawurldecode($existing_url)) . '/.htaccess';
             if ((is_file($htaccess_path)) && (strpos(file_get_contents($htaccess_path), 'deny from all') !== false)) {
                 $existing_url = '';
             } else {
@@ -1997,7 +1994,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 if ($url == '') {
                     $url = find_theme_image($id, false, false, 'default', $lang, $db);
                 }
-                $pretty = $direct_titles ? make_string_tempcode($id) : make_string_tempcode(ucfirst((strrpos($id, '/') === false) ? $id : substr($id, strrpos($id, '/') + 1)));
+                $pretty = $direct_titles ? make_string_tempcode($id) : make_string_tempcode(titleify((strrpos($id, '/') === false) ? $id : substr($id, strrpos($id, '/') + 1)));
             }
             if ($url == '') {
                 continue;
@@ -2282,7 +2279,7 @@ function form_input_float($pretty_name, $description, $name, $default, $required
     $required = filter_form_field_required($name, $required);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_FLOAT', array('_GUID' => '6db802ae840bfe7e87881f95c79133c4', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : float_to_raw_string($default, 10, true)));
+    $input = do_template('FORM_SCREEN_INPUT_FLOAT', array('_GUID' => '6db802ae840bfe7e87881f95c79133c4', 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => is_null($default) ? '' : float_format($default, 10, true)));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex);
 }
 

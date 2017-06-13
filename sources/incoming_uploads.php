@@ -47,7 +47,8 @@ function incoming_uploads_script()
                 error_log('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])), 0);
             }
 
-            exit('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])));
+            header('Content-type: text/plain; charset=' . get_charset());
+            exit(do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])));
         }
 
         $name = $_FILES['file']['name'];
@@ -57,7 +58,7 @@ function incoming_uploads_script()
         if ($is_uploaded) { // && (file_exists($_FILES['file']['tmp_name']))) // file_exists check after is_uploaded_file to avoid race conditions. >>> Actually, open_basedir might block it
             @move_uploaded_file($_FILES['file']['tmp_name'], get_custom_file_base() . '/' . $savename) or intelligent_write_error(get_custom_file_base() . '/' . $savename);
         }
-    } elseif (post_param_string('name', '') != '') { // Less nice raw post, which most HTML5 browsers have to do
+    } elseif (post_param_string('name', '') != '') { // Less nice raw post, which most HTML5 browsers have to do. OR *post_max_size* exceeded (which blocks $_FILES population, even with error messages)
         prepare_for_known_ajax_response();
 
         $name = post_param_string('name');
@@ -96,14 +97,10 @@ function incoming_uploads_script()
         require_code('files');
 
         if (get_param_integer('base64', 0) == 1) {
+            require_code('files');
             $new = base64_decode(file_get_contents(get_custom_file_base() . '/' . $savename));
-            $myfile = @fopen(get_custom_file_base() . '/' . $savename, 'wb') or intelligent_write_error(get_custom_file_base() . '/' . $savename);
-            fwrite($myfile, $new);
-            fclose($myfile);
+            cms_file_put_contents_safe(get_custom_file_base() . '/' . $savename, $new, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
-
-        fix_permissions(get_custom_file_base() . '/' . $savename);
-        sync_file(get_custom_file_base() . '/' . $savename);
 
         $member_id = get_member();
 
@@ -174,7 +171,6 @@ function clear_old_uploads()
                 if (file_exists($upload['i_save_url'])) {
                     // Delete file if it exists
                     @unlink($upload['i_save_url']);
-                    sync_file($upload['i_save_url']);
                 }
 
                 // Note: it is possible some db records to be left without corresponding files. So we need to clean them too.

@@ -36,8 +36,8 @@ class Module_admin_import
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 7;
-        $info['locked'] = false;
         $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -49,6 +49,8 @@ class Module_admin_import
         $GLOBALS['SITE_DB']->drop_table_if_exists('import_id_remap');
         $GLOBALS['SITE_DB']->drop_table_if_exists('import_session');
         $GLOBALS['SITE_DB']->drop_table_if_exists('import_parts_done');
+
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'admin_import'));
     }
 
     /**
@@ -359,9 +361,9 @@ class Module_admin_import
         $fields = new Tempcode();
         require_code('form_templates');
         if (!method_exists($object, 'probe_db_access')) {
-            $fields->attach(form_input_line(do_lang_tempcode('DATABASE_NAME'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_name', $db_name, true));
-            $fields->attach(form_input_line(do_lang_tempcode('DATABASE_USERNAME'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_user', $db_user, true));
-            $fields->attach(form_input_password(do_lang_tempcode('DATABASE_PASSWORD'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_password', false)); // Not required as there may be a blank password
+            $fields->attach(form_input_line(do_lang_tempcode('installer:DATABASE_NAME'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_name', $db_name, true));
+            $fields->attach(form_input_line(do_lang_tempcode('installer:DATABASE_USERNAME'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_user', $db_user, true));
+            $fields->attach(form_input_password(do_lang_tempcode('installer:DATABASE_PASSWORD'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_password', false)); // Not required as there may be a blank password
             $fields->attach(form_input_line(do_lang_tempcode('TABLE_PREFIX'), do_lang_tempcode('_FROM_IMPORTING_SYSTEM'), 'db_table_prefix', $db_table_prefix, true));
         }
         $fields->attach(form_input_line(do_lang_tempcode('FILE_BASE'), do_lang_tempcode('FROM_IMPORTING_SYSTEM'), 'old_base_dir', $old_base_dir, true));
@@ -539,7 +541,7 @@ class Module_admin_import
             safe_ini_set('display_errors', '0'); // So that the timeout message does not show, which made the user not think the refresh was going to happen automatically, and could thus result in double-requests
         }
         send_http_output_ping();
-        header('Content-type: text/html; charset=' . get_charset());
+
         safe_ini_set('log_errors', '0');
         global $I_REFRESH_URL;
         $I_REFRESH_URL = $refresh_url;
@@ -654,8 +656,10 @@ class Module_admin_import
         }
         if (!$all_skipped) {
             $lang_code = 'SUCCESS';
-            if (count($GLOBALS['ATTACHED_MESSAGES_RAW']) != 0) {
-                $lang_code = 'SOME_ERRORS_OCCURRED';
+            foreach ($GLOBALS['ATTACHED_MESSAGES_RAW'] as $message) {
+                if ($message[1] == 'warn') {
+                    $lang_code = 'SOME_ERRORS_OCCURRED';
+                }
             }
             $out->attach(do_template('IMPORT_MESSAGE', array('_GUID' => '4c4860d021814ffd1df6e21e712c7b44', 'MESSAGE' => do_lang_tempcode($lang_code))));
         }
@@ -721,9 +725,10 @@ class Module_admin_import
 
         // _config.php
         global $FILE_BASE;
+        require_code('files');
         $config_file = '_config.php';
-        $config_file_handle = @fopen($FILE_BASE . '/' . $config_file, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($FILE_BASE . '/' . $config_file);
-        fwrite($config_file_handle, "<" . "?php\n");
+        $config_contents = '';
+        $config_contents .= "<" . "?php\n";
         global $SITE_INFO;
         $SITE_INFO['forum_type'] = 'cns';
         $SITE_INFO['cns_table_prefix'] = $SITE_INFO['table_prefix'];
@@ -734,12 +739,9 @@ class Module_admin_import
         $SITE_INFO['board_prefix'] = get_base_url();
         foreach ($SITE_INFO as $key => $val) {
             $_val = str_replace('\\', '\\\\', $val);
-            fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\']=\'' . $_val . "';\n");
+            $config_contents .= '$SITE_INFO[\'' . $key . '\']=\'' . $_val . "';\n";
         }
-        fwrite($config_file_handle, "?" . ">\n");
-        fclose($config_file_handle);
-        fix_permissions($FILE_BASE . '/' . $config_file);
-        sync_file($FILE_BASE . '/' . $config_file);
+        cms_file_put_contents_safe($FILE_BASE . '/' . $config_file, $config_contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         $out->attach(paragraph(do_lang_tempcode('CNS_CONVERTED_INFO')));
 
         // Add zone formally

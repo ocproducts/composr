@@ -7,7 +7,9 @@ E-mail can be a complex thing. There are a number of e-mail protocols with stand
 
 [title="2"]E-mails in Composr[/title]
 
-Composr constructs its e-mails using language strings: each different e-mail is built from a different language string. These strings are written in Comcode. Composr sends out e-mails in dual format -- both [abbr="HyperText Markup Language"]HTML[/abbr] and plain text, so that people can disable HTML in their e-mail software if they wish to. Plain text versions are made by automatic tidying-up of the Comcode (i.e. making it a little more human-readable), and HTML versions are made by parsing the Comcode to HTML and then putting that HTML inside the [tt]MAIL.tpl[/tt] template. Composr goes to great lengths to reduce the chance of e-mails being marked as spam, and embeds all CSS and images inside the e-mail instead of linking (so that the user does not need images enabled to see them -- most users do not as it can aid spammer tracking).
+Composr constructs its e-mails using language strings: each different e-mail is built from a different language string (or sometimes a text template). These strings/templates are written in Comcode. Composr sends out e-mails in dual format -- both [abbr="HyperText Markup Language"]HTML[/abbr] and plain text, so that people can disable HTML in their e-mail software if they wish to. Plain text versions are made by automatic tidying-up of the Comcode (i.e. making it a little more human-readable), and HTML versions are made by parsing the Comcode to HTML and then putting that HTML inside the [tt]MAIL.tpl[/tt] template.
+
+Composr goes to great lengths to reduce the chance of e-mails being marked as spam, and (by default) embeds all CSS and images inside the e-mail instead of linking (so that the user does not need images enabled to see them -- most users do not as it can aid spammer tracking).
 
 Just taking one example, the 'MAIL_NEW_PASSWORD' language string from the [tt]cns[/tt] language file, which is:
 [code="Comcode"]
@@ -23,9 +25,9 @@ You can see it is fed with various parameters, and is written in [page="_SEARCH:
 
 [title="2"]Configuration options[/title]
 
-Pertinent configuration options are:
+Configuration options warranting particular discussion are:
  - "Link to images in e-mails rather than embed" -- by default this option is disabled, and when disabled makes Composr embed all images directly within e-mails rather than remotely linking to them. This means that users will see images immediately without having to grant permission for their e-mail client to download them.
- - "Use true 'from' address" -- by default this option is disabled, because Composr sends e-mails from a separate address to the reply-to address, to reduce chance of e-mails being considered fradulent.
+ - "E-mail 'from' address method" -- by default this option is set to separate From and Reply-To addresses, to reduce chance of e-mails being considered fradulent.
 
 [title="2"]Mail server overview[/title]
 
@@ -34,7 +36,9 @@ First, I will start with a brief overview of how e-mail works. This section may 
 
 Consider that an e-mail address is composed of two parts: an account name, and a domain name (with an '@' symbol to separate them).
 
-This is a simple thing to understand but let's look at some more detail. The first question is 'where does it get delivered to?', and the answer is 'the server identified by the MX record of the domain name that it is being sent to'. To deliver an e-mail to [tt]someone@example.com[/tt] we would look up the MX record (a type of DNS record) for the [tt]example.com[/tt] domain, and thus find the IP address of the destination server. This actual delivery process is performed by the 'SMTP' server, otherwise known as an 'outgoing e-mail server'. When you send an e-mail from a mail client (be that a desktop client, a webmail client, or a webapp like Composr), it is sent to the outgoing SMTP server to be dispatched. That server will put the message in a queue, and then it will (in the SMTP server's own time) send it on to SMTP server on the IP address of the MX record for the domain name ('destination e-mail server'). If it cannot be delivered it is kept in the queue while a few re-tries are attempted over a few days. The destination server will then then deliver the e-mail to the account specified in the e-mail address, and give a bounce e-mail if no such account exists (assuming it hasn't been set up to forward the e-mail to another account or address).
+This is a simple thing to understand but let's look at some more detail. The first question is 'where does it get delivered to?', and the answer is 'the server identified by the MX record of the domain name that it is being sent to'. To deliver an e-mail to [tt]someone@example.com[/tt] we would look up the MX record (a type of DNS record) for the [tt]example.com[/tt] domain, and thus find the IP address of the destination server.
+
+This actual delivery process is performed by the 'SMTP' server, otherwise known as an 'outgoing e-mail server'. When you send an e-mail from a mail client (be that a desktop client, a webmail client, or a webapp like Composr), it is sent to the outgoing SMTP server to be dispatched. That server will put the message in a queue, and then it will (in the SMTP server's own time) send it on to SMTP server on the IP address of the MX record for the domain name ('destination e-mail server'). If it cannot be delivered it is kept in the queue while a few re-tries are attempted over a few days. The destination server will then then deliver the e-mail to the account specified in the e-mail address, and give a bounce e-mail if no such account exists (assuming it hasn't been set up to forward the e-mail to another account or address, or just silently drop it).
 
 [box="Relaying (advanced)"]
 The procedure we described above is called 'relaying' because it is a two-step process: there are both outgoing and destination e-mail servers involved. Usually relaying is only permitted for e-mail senders who are trusted by the outgoing e-mail server, so that the outgoing e-mail server can't be used for purposes of sending spam e-mails. A user can only send through an e-mail server that they are allowed to relay through (and a common work-around to this is setting up one's own SMTP server, which can run on your own computer, or by writing special software that sends directly to the destination SMTP server without requiring relaying).
@@ -53,12 +57,13 @@ It is important to understand that IMAP/POP3/webmail are entirely separate from 
 [title="2"]SMTP configuration in Composr[/title]
 
 There are two separate issues for us to consider when it comes to Composr:
-1) Whether we will want (i) Composr's SMTP-connection code to run, or (ii) PHP's SMTP-connection code.
-2) Which SMTP server PHP or Composr is connecting to. Neither Composr nor PHP include an actual SMTP server, so you're always going to be configuring one of them to connect to an actual SMTP server. The issue is whether that is your server's own SMTP server (assuming you have one) or whether it is another one (usually your hosting provider's). If you're on a Linux/UNIX server you have no choice but to use your server's own SMTP server.
+1) Whether we will want (i) Composr's SMTP-connection code to run, or (ii) PHP's SMTP-connection/local-agent code.
+2) Which SMTP server PHP or Composr is connecting to. Neither Composr nor PHP include an actual SMTP server, so you're always going to be configuring one of them to connect to an actual SMTP server. The issue is whether that is your server's own SMTP server (assuming you have one) or whether it is another one (usually your hosting provider's). If you're on a Linux/UNIX server you have no choice but to use your server's own SMTP server if using PHP's SMTP-connection code because the local-agent is used rather than a configured SMTP server.
 
-It is usually best to rely on PHP's SMTP-connection code, so it can be managed on a server level. However there are two situations where this is not workable:
-1) PHP doesn't support SMTP authentication, so if the only e-mail server available requires this, you'll need to use Composr's SMTP-connection code (which does).
-2) If the PHP mail configuration is misconfigured or faulty and you can't repair it (see below).
+It is usually best to rely on PHP's SMTP-connection code, so it can be managed on a server level. However there are a few situations where this is not workable:
+1) PHP doesn't support SMTP authentication, so if the only e-mail server available requires this, and you're on Windows (which uses SMTP not a local-agent to connect to the SMTP server), you'll need to use Composr's SMTP-connection code (which does support authentication).
+2) If you're on Linux and the server doesn't have an SMTP server on it.
+3) If the PHP mail configuration is misconfigured or faulty and you can't repair it (see below).
 
 Composr's SMTP-connection code is configured from the Configuration module (Admin Zone > Setup > Configuration > Site options). If the SMTP server hostname is left blank (the default), Composr relies on PHP's SMTP-connection code.
 
@@ -66,22 +71,96 @@ Composr's SMTP-connection code is configured from the Configuration module (Admi
 
 When a website sends out e-mail there is always a risk that it could get blocked by spam filters. Whether this happens largely depends on the configuration of spam filters at ISPs and on user's own computers, but there also some general causes.
 
-Specific issues can be:
- - If your server is on a spamlist. A good tool to check for this is: http://www.mxtoolbox.com/blacklists.aspx. Also check to see if any bounce messages come back that talk about your server being blocked as a spammer.
- - If your "Website e-mail address" is for an e-mail address hosted on another server and an SPF record exists for the domain does not grant your web server permission to use the address for sending out mail. Common e-mail services like gmail often have this problem. If this might be the case, you either need to get the SPF record amended to cover your server (impossible for a common service), or use a different "Website e-mail address". Note that Composr uses the "Website e-mail address" as the "From" address in all outgoing e-mails, but the reply addresses depend on context (often they are the "Staff address", but they could also be the address of the member who caused the e-mail to be sent.
- - Ensure you have reverse DNS available on your server's IP address. This is the address outbound SMTP connections are made from.
- - Ensure your server is giving a valid [tt]HELO[/tt] DNS address when it makes outbound SMTP connections, not something generic like [tt]localhost[/tt]. Preferably it will use your actual domain name, or a subdomain there-of, but this is not mandatory.
- - Ensure the PHP [tt]mail.add_x_header[/tt] option is set to off (it flags up on SpamAssassin).
- - If your messages look like spam, which sometimes can happen inadvertently. Very carefully check your spam folder. Spam filters typically run a complex set of calculations to detect if something is 'spam'. It could well by a domain SPF setting is wrong, and combined with Composr e-mails being more complex than some other software, that knocking it over a spam threshold. That is just one of many possibilities that should be looked into if it is indeed a spam-filtering issue. A good tool to check spam filtering scores is: http://www.softexsw.com/en/tools/online-spam-score-check/
- - It's unlikely, but it could be some host/software-specific bug. You can open a bug report if you're willing to give the developers access to run tests on your server, after you've checked it's not a spam folder, and only if you're not on a low-quality free webhost.
- - If you've customised the [tt]MAIL.tpl[/tt] template ensure you've also customised the [tt]MAIL.txt[/tt] template to have the same text (it flags up on SpamAssassin if the words are inconsistent).
- - Make sure the Return-Path in e-mails is correct and a valid account, so that bounce/receipt emails don't themselves bounce. You may need to enable the "Pass website e-mail address to 'sendmail'" option.
+Specific issues can be:[list="1"]
+[*] Your server is [b][url="on a spamlist"]https://mxtoolbox.com/blacklists.aspx[/url][/b]. Also check to see if any bounce messages come back that talk about your server being blocked as a spammer.
+Possible reasons for getting onto a spamlist:[list="a"]
+[*] If you are on a shared server it is possible [b]other sites on the server may have gotten the server banned[/b]. There are [url="tools"]https://www.tcpiputils.com/domain-neighbors[/url] to see what other sites share your server's IP address.
+[*] You have a stale newsletter producing [b]too many bounces[/b]. You should clean out addresses that are bouncing so that network infrastructure doesn't flag you for spammy bulk delivery. If you have some way of tracking which e-mails are read you can delete newsletter subscribers that are not reading your e-mails (Composr does not currently support a mechanism for this directly).
+[*] You have [b]bought mailing lists[/b]. Rarely if ever buy mailing lists, users will mark you as a spammer.
+[*] You have [b]annoyed your legitimate readers[/b]. If you send low-quality e-mails, such as ones that have low quality content, use too much data, use dodgy looking link redirects, or are hard to unsubscribe from, you have a higher chance of being reported as a spammer.
+[/list]
+[*] [b]Your message content appears spammy[/b], which sometimes can happen inadvertently. Very carefully check your spam folder. Spam filters typically run a complex set of calculations to detect if something is 'spam'. It could well by a domain SPF setting is wrong, and combined with Composr e-mails being more complex than some other software, that knocking it over a spam threshold. That is just one of many possibilities that should be looked into if it is indeed a spam-filtering issue.
+Here are some scanner tools you can use:[list="a"]
+[*] [url="GlockApps"]https://glockapps.com/spam-testing/[/url]
+[*] [url="mailtester"]https://www.mail-tester.com/[/url]
+[*] [url="ISnotSPAM"]http://isnotspam.com/[/url] (fairly primitive compared to the above solutions)
+[/list]
+These tools will scan for various other issues beyond content problems, they're very useful.
+To send a test e-mail to a few services at once using Commandr:
+[code="Commandr"]
+:$emails = array('scanner_a@example.com', 'scanner_b@example.com', 'scanner_c@example.com', 'you@example.com'); require_code('mail'); mail_wrap('Verifying delivery', 'This is a message being sent to verify that e-mails are being correctly delivered. Thank you.', $emails, null, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
+[/code]
+Some specific things to look out for when writing your content:[list="a"]
+[*] Don't have an [b]unreasonable image to text ratio[/b].
+[*] Don't use a [b]broken reply-to address[/tt] that nobody can reply on such as a [tt]noreply[/tt].
+[/list]
+[*] Something subtle is triggering spam analysers:[list="a"]
+[*] The PHP [b][tt]mail.add_x_header[/tt] option is on[/b] (it flags up on SpamAssassin, a common spam analysers that companies use). You can check this from Admin Zone > Tools > PHP info.
+[*] [b]Inconsistent text and HTML versions[/b]. If you've customised the [tt]MAIL.tpl[/tt] template but you've not also customised the [tt]MAIL.txt[/tt] template to have the same text (it flags up on SpamAssassin if the words are inconsistent).
+[/list]
+[*] [b]Your "Website e-mail address" is for an e-mail address hosted on another server[/b] and an SPF record exists for the domain does not grant your web server permission to use the address for sending out mail. Common e-mail services like gmail often have this problem. If this might be the case, you either need to get the SPF record amended to cover your server (impossible for a common service), or use a different "Website e-mail address". Note that Composr uses the "Website e-mail address" as the "From" address in all outgoing e-mails, but by default the reply addresses depend on context (often they are the "Staff address", but they could also be the address of the member who caused the e-mail to be sent.
+[*] You have a subtle SMTP configuration problem:[list="a"]
+[*] You [b][url="don't have reverse DNS available"]https://www.debouncer.com/reverse-dns-check[/url][/b] on your server's IP address. This is the address outbound SMTP connections are made from. Checker tools may complain if the reverse DNS points to a domain name not a hostname (e.g. [tt]domain.com[/tt] not [tt]mail.domain.com[/tt]) -- but you can ignore this in practice as it won't cause any problems.
+[*] [b]Your server is giving an invalid [tt]HELO[/tt][/b] DNS address when it makes outbound SMTP connections, e.g. something generic like [tt]localhost[/tt]. Preferably it will use your actual domain name, or a subdomain there-of, but this is not mandatory. You can check this using Telnet, [tt]telnet 192.252.146.10 25[/tt] on Linux or Mac, or using online tools.
+[*] [b]The hostname in the above two checks does not match[/b]
+[*] The [b]Return-Path in e-mails is pointing to an incorrect or invalid e-mail account[/b], so that bounce/receipt e-mails themselves bounce. You may need to enable the "Pass website e-mail address to 'sendmail'" option. You can check your e-mail by manually viewing the headers of an e-mail sent to you.
+[/list]
+[*] You have your own server and using it for SMTP but [b]your SMTP port is blocked[/b] by the webhost or ISP. Some companies do this to reduce the chance of their network being blocked for spamming. If this is the case no e-mails will be sent at all and you need to discuss the correct configuration with your webhost/ISP.
+[*] You are [b]missing an unsubscribe link[/b] on your newsletter template. It's there by default, and it is a good idea to leave it.
+[*] It's [i]unlikely[/i], but [i]it could be some host/software-specific bug[/i]. You can open a bug report if you're willing to give the developers access to run tests on your server, after you've checked it's not a spam folder, and only if you're not on a low-quality free webhost.
+[/list]
 
-Positive advice:
- - Generally it is advisable to set up SPF, as it provides a positive signal that your server is not a spammer. Set both [tt]SPF[/tt] and [tt]TXT[/tt] record types for maximum compatibility (set them to the same values).
- - One very effective way to stop your messages being marked as spam is to persuade your visitors to add your staff address to their contacts list. Spam checkers usually will not block mail sent from someone on their contacts list. If their e-mail provider has a "Safe senders" list, that's even better -- Microsoft's e-mail services have this. Microsoft's e-mail services do over-block unknown e-mail servers or if users aren't reading your e-mails for long. If you're blocked, your message may not even go into the user's spam folder.
- - Get DKIM configured on your server.
- - If you're really stuck with your e-mail server being blocked, you could use a service like [url="Mandrill"]https://www.mandrill.com/[/url]. Mandrill may require the "Enable Blind CC (BCC)" option to be turned off, as we have had a report of it not working on Mandrill, but that they provide an account setting to make CC behave like BCC.
+Positive advice:[list="1"]
+[*] Generally it is advisable to [b][url="set up SPF"]http://www.spfwizard.net/[/url][/b], as it provides a positive signal that your server is not a spammer. Set both [tt]SPF[/tt] and [tt]TXT[/tt] record types for maximum compatibility (set them to the same values).
+[*] [b]Ask your visitors to add your website e-mail address to their contacts list[/b]. Spam checkers usually will not block mail sent from someone on their contacts list. If their e-mail provider has a "Safe senders" list, that's even better -- Microsoft's e-mail services have this. Microsoft's e-mail services do over-block unknown e-mail servers or if users aren't reading your e-mails for long. If you're blocked, your message may not even go into the user's spam folder.
+[*] [b]Ask users to mark e-mails non-spam[/b] if they go into their spam boxes, or move them from their spam/promotion folders to their inbox, or even sometimes reply to them. That should have an effect on learning algorithms.
+[*] [b]Configure DKIM[/b] for your server and domain name (see next section).
+[*] [b]Configure DMARC[/b] for your domain name. Here are some good tool choices to help you:[list="a"]
+[*] [url="DMARC Generator"]https://elasticemail.com/dmarc/[/url]
+[*] [url="DMARC Wizard"]https://dmarcian.com/dmarc-inspector/[/url] and [url="DMARC Inspector"]https://dmarcian.com/dmarc-inspector/[/url]
+[/list]
+[*] [b]Include a physical mailing address[/b] in your newsletter footer. To be compliant with the US CAN-SPAM act you need to do this for commercial mailings (read as "advertising e-mail"). ISPs can't know if you are sending a commercial e-mail so are not likely to penalise you much if you don't, but you never know.
+[*] [b]Enable a [tt]List-Unsubscribe[/tt] header[/b]. You can do this with a Commandr command like [tt]:set_value('list_unsubscribe_target', 'mailto:you@example.com?subject=Unsubscribe&body=Please%20unsubscribe%20me');[/tt].
+[/list]
+
+More extreme advice:[list="1"]
+[*] If you're really stuck with your e-mail server being blocked, you could [b]use a third-party e-mailing service[/b] like [url="Mandrill"]https://www.mandrill.com/[/url]. Mandrill may require the "Enable Blind CC (BCC)" option to be turned off, as we have had a report of it not working on Mandrill, but that they provide an account setting to make CC behave like BCC.
+[*] You can [b]send out newsletters using a totally different e-mail address and third-party newsletter tool[/b] such as MailChimp. This is extreme unless you want to benefit from the features of such a tool, but it will mean that if your newsletter activities get marked as spammy it won't affect your important day-to-day website e-mailing functionality.
+[*] If you have a lot of cash then you can [b]get your server onto a [url="whitelist"]https://returnpath.com/[/url][/b].
+[/list]
+
+[title="3"]Implementing DKIM (advanced)[/title]
+
+DKIM is an e-mail digital signature system which reduces the chance of people faking e-mails from you, and therefore your e-mails being flagged as spam.
+
+There are 2 ways you can implement DKIM:
+1) At the server-level. This is recommended, but may not be available on some shared webhosts. It is recommended because this way all e-mails from your domain may be signed, not just ones sent from Composr.
+2) Within Composr (there's a config option to enter the DKIM private key). [version 10.0.5+][staff_note]LEGACY[/staff_note]
+
+There are a few caveats with Composr's implementation:
+a) The PHP [tt]openssl[/tt] extension is required.
+b) It only works with the PHP mailer, not the SMTP mailer (for overhead control the SMTP mailer will send e-mails going to multiple users within a single packet, which prevents use of DKIM).
+c) It is not recommended on Windows due to severe performance problems with openssl on Windows.
+d) Composr will only apply DKIM on your mail e-mail domain (as defined in your [tt]_config.php[/tt] file). It is incompatible with the "Use true 'from' address" option (which is off by default).
+
+Your DKIM public key is to be stored in DNS as per standard DKIM set up.
+
+You can use an online tool to generate your keys, including the specific DNS records you need to add.
+ - [url="DKIM Wizard"]https://www.unlocktheinbox.com/dkimwizard/[/url]
+ - [url="DKIM Generator"]https://luxsci.com/extranet/dkim.html[/url]
+
+Tools for testing DKIM:
+ - [url="Check a TXT record (1)"]http://dkimcore.org/tools/[/url]
+ - [url="Check a TXT record (2)"]https://protodave.com/tools/dkim-key-checker/[/url]
+ - [url="E-mail scanner and tips"]http://www.appmaildev.com/en/dkim/[/url]
+ - [url="E-mail scanner"]https://www.port25.com/authentication-checker/[/url]
+
+Technical references for debugging:
+ - [url="Using opendkim to test"]https://isc.sans.edu/forums/diary/How+to+Debug+DKIM/17528/[/url]
+ - [url="Common problems"]https://blogs.cisco.com/security/common_errors_causing_dkim_verification_failures[/url]
+ - [url="Domainkeys technical summary"]https://www.unlocktheinbox.com/resources/domainkeys/[/url]
+ - [url="DKIM technical summary"]https://www.unlocktheinbox.com/resources/dkim/[/url]
+ - [url="Full specification"]http://www.dkim.org/specs/rfc4871-dkimbase.html[/url]
 
 [title="2"]Queues and debugging[/title]
 
@@ -92,16 +171,32 @@ Composr has config options for:
 The queue can be viewed from:
 Admin Zone > Audit > E-mail queue/log
 
-All (&dagger;) e-mails are logged for 14 days in the same system, regardless of whether the queue is on or not. This is very useful for analysing what your site has been sending out.
+All (&dagger;) e-mails are logged for 14 days (by default) in the same system, regardless of whether the queue is on or not. This is very useful for analysing what your site has been sending out.
 
 &dagger; Except support ticket e-mails if IMAP integration is enabled, newsletter e-mails, password reset e-mails, and some other very high security or high volume e-mails.
 
+[title="2"]Testing a server's mail support[/title]
+
+If you want to test a server can directly send e-mail using PHP use this simple test script:
+[code="PHP"]
+<?php
+
+mail('you@example.com','Test','Test');
+[/code]
+(of course substitute in your own e-mail address)
+
 [concepts
- 1_key="SMTP"   1_value="The e-mail protocol for sending e-mail and delivery between servers"
- 2_key="IMAP"   2_value="A protocol for accessing e-mail stored on a server"
- 3_key="POP3"   3_value="A protocol for downloading e-mail from a server"
- 4_key="SPF"    4_value="A special domain name record that indicates which servers are authorised to send e-mail for the domain name the record is for"
- 5_key="MX"     5_value="A type of DNS record for identifying mail servers for a domain name"
+ 1_key="SPF"           1_value="Sender Policy framework. A DNS-based scheme to identify which servers are allowed to send e-mails."
+ 2_key="Sender ID"     2_value="A Microsoft extension of SPF (using the same syntax) that also competes with DKIM."
+ 3_key="DKIM"          3_value="Domain Keys Identified Mail. A way of attaching a digital signature to an e-mail to confirm its legitimacy. Keys are stored in DNS."
+ 4_key="DMARC"         4_value="A DMARC policy allows a sender to indicate that their messages are protected by SPF and/or DKIM, and tells a receiver what to do if neither of those authentication methods passes."
+ 5_key="SMTP"          5_value="A protocol used for the dispatch and transport of e-mail."
+ 6_key="SMTP server"   6_value="E-mail servers involved with the dispatch and transport of e-mail. Also known as an MTA."
+ 7_key="IMAP"          7_value="A protocol for accessing e-mails, whereby the e-mails are permanently stored and organised into folders on the e-mail server."
+ 8_key="POP3"          8_value="A protocol for accessing e-mails, whereby typically the e-mails are erased from the e-mail server upon access."
+ 9_key="Webmail"       9_value="A system for accessing e-mails via a web browser accessing a webapp (typically) running on the e-mail aserver, side-stepping the need for any particular e-mail protocols."
+ 10_key="MX record"    10_value="The DNS record used to determine which server receives e-mail for a domain name."
+ 11_key="Local-agent"  11_value="On Linux PHP sends e-mail via a local-agent, i.e. running a program, rather than connecting using the SMTP-protocol. This is not a standard term, we are using it in this tutorial for clarity."
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]

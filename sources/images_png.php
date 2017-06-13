@@ -30,7 +30,10 @@ function png_compress($path, $lossy = false)
         return;
     }
 
-    $img = imagecreatefrompng($path);
+    $img = @imagecreatefrompng($path);
+    if ($img === false) {
+        return; // Error, e.g. "is not a valid PNG file"
+    }
     if (!imageistruecolor($img)) {
         if (function_exists('imagepalettetotruecolor')) {
             imagepalettetotruecolor($img);
@@ -87,8 +90,6 @@ function png_compress($path, $lossy = false)
                     } else {
                         unlink($path . '.jpeg_tmp');
                     }
-                    fix_permissions($path . '.jpeg_tmp');
-                    sync_file($path . '.jpeg_tmp');
                 }
 
                 // Return
@@ -128,8 +129,6 @@ function png_compress($path, $lossy = false)
         } else {
             unlink($path . '.jpeg_tmp');
         }
-        fix_permissions($path . '.jpeg_tmp');
-        sync_file($path . '.jpeg_tmp');
     }
 
     fix_permissions($path);

@@ -13,7 +13,7 @@
  * @package    meta_toolkit
  */
 
-function string_scan($lang, $do_guessing = false)
+function string_scan($lang, $do_guessing = false, $only_exists = true)
 {
     require_code('lorem');
     require_code('lang_compile');
@@ -113,14 +113,31 @@ function string_scan($lang, $do_guessing = false)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        MONIKER_TRANSLITERATION
+        CONFIG_OPTION_moniker_transliteration
+        BLOCKS_AT_TOP
+        BLOCK_TOP_LOGIN
+        BLOCK_TOP_NOTIFICATIONS
+        BLOCK_TOP_PERSONAL_STATS
+        BLOCK_TOP_SEARCH
+        CONFIG_GROUP_DESCRIP_BLOCKS_AT_TOP
+        CONFIG_OPTION_block_top_login
+        CONFIG_OPTION_block_top_notifications
+        CONFIG_OPTION_block_top_personal_stats
+        CONFIG_OPTION_block_top_search
         NEWS_SUMMARY_REQUIRED
         BACKUP_RESTORE_SUCCESS
         CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
+        LOST_DISK_CONTENT
+        DESCRIPTION_LOST_DISK_CONTENT
         TICKETS_STAFF
         NO_CNS
         DOCS
+        EXPLANATION_WITH_DEFAULT
+        PROJECT_SPONSORS
+        PROJECT_SPONSORS_LABEL
         CONFIG_OPTION_complex_lists
         COMPLEX_LISTS
         HERE_SURVEY_RESULTS
@@ -129,6 +146,7 @@ function string_scan($lang, $do_guessing = false)
         ABOUT_DELETE_MENU
         ABOUT_REVISIONS
         ABRUPTED_DIRECTIVE_OR_BRACE
+        INVOICE_REQUIRED_AMOUNT
         ABSORB_PERMISSIONS
         WHAT_NEXT
         WHERE_NEXT
@@ -164,11 +182,20 @@ function string_scan($lang, $do_guessing = false)
         PGE_D
         PGE_R
         PGE_HASH
+        DKIM_PRIVATE_KEY
+        CONFIG_OPTION_dkim_private_key
+        DKIM_SELECTOR
+        CONFIG_OPTION_dkim_selector
+        _EMAIL
+        PHP_UPLOAD_SETTING_VERY_LOW
+        ADDING_THEME_IMAGE
+        DESCRIPTION_ADDING_THEME_IMAGE
         NO_SSL_SETUP
         ADD_NOTE_TITLE
         CONFIG_OPTION_points_RECOMMEND_SITE
         SUBSCRIPTION_CANCELLED_BODY
         SUBSCRIPTION_CANCELLED_SUBJECT
+        NO_ISSUES_FOUND
         ADBLOCKER
         VIEW_THUMBNAILS
         USER_ONLINE_TRACKING
@@ -181,6 +208,8 @@ function string_scan($lang, $do_guessing = false)
         WHETHER_CONVERT_COMCODE
         MERGE_POSTS
         VIEW_ALERT
+        ANTISPAM_RESPONSE_SKIP
+        CORRUPT_ATTACHMENT
         ATTACHMENT_REFERENCES
         MERGE_SUPPORT_TICKETS
         NO_PARAMETER_SENT
@@ -249,7 +278,6 @@ function string_scan($lang, $do_guessing = false)
         ACTIVITY_VALIDATE_VIDEO
         ADDING_CONTENT_IN_LANGUAGE
         ADDING_CONTENT_IN_LANGUAGE_STAFF
-        ADDING_THEME_IMAGE
         ADDITIONAL_ACCESS
         TICKET_ACTIVITY_BODY
         GUEST_TICKET_REPLY_LINK
@@ -538,7 +566,6 @@ function string_scan($lang, $do_guessing = false)
         BLOCK
         BLOCKING_REDIRECT_IN_PLACE
         BLOCKS
-        BLOCKS_EM
         BLOCKS_TYPE_ADDON
         BLOCKS_TYPE_bottom
         BLOCKS_TYPE_main
@@ -1134,6 +1161,8 @@ function string_scan($lang, $do_guessing = false)
         BLOCK_main_multi_content_PARAM_zone_TITLE
         BLOCK_main_multi_content_USE
         BLOCK_main_news_DESCRIPTION
+        CONFIG_OPTION_autogrow
+        AUTOGROW
         BLOCK_main_news_PARAM_as_guest
         BLOCK_main_news_PARAM_as_guest_TITLE
         BLOCK_main_news_PARAM_attach_to_url_filter
@@ -1626,7 +1655,6 @@ function string_scan($lang, $do_guessing = false)
         CHAT_TRANSITORY_ALERT_TIME
         CHAT_UNBAN
         CHECKLIST_INITIAL_TASK_CONTENT
-        CHECKLIST_INITIAL_TASK_DMOZ
         CHECKLIST_INITIAL_TASK_FAVICON
         CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS
         CHECKLIST_INITIAL_TASK_MAIL
@@ -1661,7 +1689,6 @@ function string_scan($lang, $do_guessing = false)
         CHOOSE_LANG_DESCRIP
         CHOOSE_LANG_DESCRIP_ADD_TO_MAIN_LANG_FIRST
         CHOOSE_MASTER_PASSWORD
-        CHOOSE_MEMBER
         CHOOSE_OPEN_NEW_WINDOW
         CHOOSE_POLL
         CHOOSE_SAVED_WARNING
@@ -1807,8 +1834,13 @@ function string_scan($lang, $do_guessing = false)
         CMD_MV_HELP
         CMD_MV_HELP_PARAM_0
         CMD_MV_HELP_PARAM_1
-        CMD_MYSQL_TABLE_SIZES_HELP
-        CMD_MYSQL_TABLE_SIZES_HELP_PARAM_0
+        CMD_DB_TABLE_SIZES_HELP
+        CMD_DB_TABLE_SIZES_HELP_PARAM_0
+        NOT_SUPPORTED_ON_DB
+        CMD_SQL_DUMP_HELP
+        CMD_SQL_DUMP_HELP_PARAM_0
+        CMD_SQL_DUMP_HELP_PARAM_1
+        SQL_DUMP_SAVED_TO
         CMD_PASSWD_HELP
         CMD_PASSWD_HELP_PARAM_0
         CMD_PASSWD_HELP_U
@@ -2948,6 +2980,11 @@ function string_scan($lang, $do_guessing = false)
         CONFIG_OPTION_use_lastondate
         CONFIG_OPTION_use_local_payment
         CONFIG_OPTION_use_true_from
+        CONFIG_OPTION_use_true_from_VALUE_0
+        CONFIG_OPTION_use_true_from_VALUE_1
+        CONFIG_OPTION_use_true_from_VALUE_2
+        EMAIL_LOG_DAYS
+        CONFIG_OPTION_email_log_days
         CONFIG_OPTION_user_postsize_errors
         CONFIG_OPTION_username_click_im
         CONFIG_OPTION_username_profile_links
@@ -3371,7 +3408,6 @@ function string_scan($lang, $do_guessing = false)
         DESCRIPTION_COPY_THEME
         DESCRIPTION_COPY_TO_SERVER
         DESCRIPTION_CORRECT_MYSQL_SCHEMA_ISSUES
-        DESCRIPTION_CPF_DEFAULT
         DESCRIPTION_CUSTOM_EXPIRY_DATE
         DESCRIPTION_CUTOFF_DATE
         DESCRIPTION_DANGEROUS_TAG
@@ -4245,7 +4281,6 @@ function string_scan($lang, $do_guessing = false)
         EXPORT_ADDON
         EXPORT_ADDON_TITLE
         EXPORT_CATALOGUE_ENTRIES
-        EXPORT_COMCODE_PAGE
         EXPORT_CSV_BANNERS
         EXPORT_FILES
         EXPORT_ICAL
@@ -4359,8 +4394,6 @@ function string_scan($lang, $do_guessing = false)
         FILES_TRANSFERRED
         FILETYPE_ICONS
         FILE_BASE
-        FILE_BASE_EXAMPLE
-        FILE_BASE_TEXT
         FILE_IN_ARCHIVE_TWICE
         FILE_MOVED
         FILE_MOVE_ERROR
@@ -4455,7 +4488,6 @@ function string_scan($lang, $do_guessing = false)
         FORUM_PATH
         FORUM_PATH_TEXT
         FORUM_POSTS_PER_PAGE
-        FORUM_SETTINGS
         FORUM_SOFTWARE
         FORUM_STAFF
         FORUM_TOPICS_PER_PAGE
@@ -4511,6 +4543,7 @@ function string_scan($lang, $do_guessing = false)
         FU_ESTIMATED_TIME
         FU_EXTRACTING_WINDOW
         FU_FILE_UPGRADE_INFO
+        FU_FILE_UPGRADE_INFO_MANUAL
         FU_FIX_PERMISSIONS
         FU_FTP_INFO
         FU_FTP_NEEDED
@@ -4662,10 +4695,8 @@ function string_scan($lang, $do_guessing = false)
         HONEYPOT_PHRASE
         HONEYPOT_URL
         HOST
-        HOSTING
         HOT_TOPIC_DEFINITION
         HOURLY_BREAKDOWNS
-        HOURS_MUST_BE_LESS_5_YEARS
         HOVER_FOR_CONTENTS
         HOW_MUCH_THIS_COSTS
         HTACCESS_SEO_PROBLEM
@@ -5041,7 +5072,6 @@ function string_scan($lang, $do_guessing = false)
         MASQUERADE_AS_MEMBER
         MASS_DELETE
         MASTER_PASSWORD
-        MASTER_PASSWORD_INSECURE
         MATCH_KEY
         MATCH_KEYS
         MATCH_KEY_MESSAGES
@@ -5270,10 +5300,8 @@ function string_scan($lang, $do_guessing = false)
         MSN_FORUM_DB_NOT_CNS_ALREADY
         MULTILANG_OFF
         MULTILANG_OFF_CONTENT
-        MULTI_LANG
         MULTI_LANG_CONTENT
         MULTI_LANG_CONTENT_TEXT
-        MULTI_LANG_TEXT
         MULTI_MODERATION
         MULTI_MODERATION_WILL
         MULTI_MODERATION_WILL_CLOSE
@@ -6103,7 +6131,6 @@ function string_scan($lang, $do_guessing = false)
         SCREEN_PREVIEWS
         SCREEN_TITLE
         SCREEN_TITLE_DESC
-        SCRIPT_TAG_HACK
         SCRIPT_UPLOAD_HACK
         SCRIPT_URL_HACK
         SCRIPT_URL_HACK_2
@@ -6216,10 +6243,8 @@ function string_scan($lang, $do_guessing = false)
         SITEMAP_LINK
         SITEMAP_TOOLS
         SITEWIDE_IM
-        SITE_CLOSED
         SITE_DB
         SITE_NAME
-        SITE_OPEN
         SITE_SCOPE
         SITE_SPECIAL_ACCESS
         SITE_SPECIAL_ACCESS_SU
@@ -6337,7 +6362,6 @@ function string_scan($lang, $do_guessing = false)
         SUPER_MODERATOR
         SUPPORTS_WIDE
         SUPPORT_OPERATOR
-        SURE
         SU_2
         SU_CHATTING_AS
         SVG_EXPLANATION
@@ -7109,6 +7133,7 @@ function string_scan($lang, $do_guessing = false)
         COUNT_TOPICSCOUNT
         CONTENTS
         FILE
+        NEWSLETTER_SUBSCRIBER_DEFAULT_NAME
         ABOUT
         ABOUT_BLOCKING
         ABOUT_POP3
@@ -7382,6 +7407,9 @@ function string_scan($lang, $do_guessing = false)
         CHARGES
         CHARGE_INFO
         CHAT
+        DIGEST_ITEM_OMITTED
+        INSTEAD_OF_SMS
+        USERGROUP_SEARCH_COMBO
         CHATCODE_HELP
         CHATROOM
         CHATROOMS_LOBBY_TITLE
@@ -7558,6 +7586,7 @@ function string_scan($lang, $do_guessing = false)
         COUNT_VIEWS
         COUNT_VISITS
         COUNT_VOTINGS
+        AUDIO_CAPTCHA_HELP
         CREATE_BIRTHDAY_TOPIC
         CREATE_HERE
         CREATE_PRIVATE_CHATROOM
@@ -8153,7 +8182,6 @@ function string_scan($lang, $do_guessing = false)
         INPUT_COMCODE_quote
         INPUT_COMCODE_thumb
         INPUT_COMCODE_url
-        INSERT
         INSTALL
         INSTANT_MESSAGING
         INSTANT_MESSAGING_CONVO
@@ -8254,7 +8282,6 @@ function string_scan($lang, $do_guessing = false)
         LOGIN
         LOGIN_CONCEDED
         LOGIN_FREQUENCY
-        LOGIN_TEXT_NO_JOIN
         LOGOUT
         LONGITUDE
         LOST_PASSWORD
@@ -8459,7 +8486,6 @@ function string_scan($lang, $do_guessing = false)
         NAMED_TOPIC
         NAME_HIGHLIGHTING
         NAME_HIGHLIGHTING_DESCRIPTION
-        NAVIGATION
         NA_EM
         NC_art
         NC_business
@@ -8471,7 +8497,6 @@ function string_scan($lang, $do_guessing = false)
         NETWORK
         NETWORK_DOWN
         NEW
-        NEWER
         NEWEST_FIRST
         NEWEST_MEMBER
         NEWEST_MEMBER_WELCOME
@@ -8794,10 +8819,8 @@ function string_scan($lang, $do_guessing = false)
         PLEASE_SELECT_SOUND
         PLEASE_WAIT
         PLEASE_WAIT_WHILE_UPLOADING
-        PLUPLOAD_CANCELLED
         PLUPLOAD_COMPLETE
         PLUPLOAD_FAILED
-        PLUPLOAD_STOPPED
         PLUPLOAD_UPLOADING
         POINTS
         POINTSTORE
@@ -8904,7 +8927,6 @@ function string_scan($lang, $do_guessing = false)
         PROCEED_SHORT
         PROCEED_TEXT
         PRODUCT
-        PRODUCT_CODE
         PRODUCT_NO_SUCH
         PRODUCT_PURCHASE_CANCEL
         PRODUCT_QUANTITY_CHANGED
@@ -8994,7 +9016,6 @@ function string_scan($lang, $do_guessing = false)
         REASON
         RECENT
         RECENTLY_READ
-        RECENT_BLOG_POSTS
         RECOMMENDATION_MADE
         RECOMMENDING_TO_LINE
         RECOMMEND_AUTO_TEXT
@@ -9370,7 +9391,6 @@ function string_scan($lang, $do_guessing = false)
         TOPIC_POLL_IS_PRIVATE
         TOPIC_STARTED_DATE_TIME
         TOPIC_TITLE_WILL_BE
-        TOP_SITES
         TOTAL_EVENTS_AND_HIGHEST_PRIORITY
         TOTAL_PRICE
         TO_DOWNLOAD_VIDEO
@@ -9573,13 +9593,11 @@ function string_scan($lang, $do_guessing = false)
         _ASCENDING
         _ASSIGNED_TO
         _ATTACHMENT
-        _ATTACHMENT_SAVED
         _AUTHOR
         _AWARD
         _BACK_TO_TOP
         _BLOCK_HELPER
         _BLOCK_MEMBER
-        _CALENDAR
         _CALENDAR_EVENT_VCAL
         _CALENDAR_SPECIFIC
         _CALENDAR_SPECIFIC_WEEK
@@ -9669,7 +9687,6 @@ function string_scan($lang, $do_guessing = false)
         _UNKNOWN
         _UNSET
         VIDEO_LENGTH
-        _VIDEO_LENGTH
         _VIEW_AS_LINEAR
         _VIEW_AS_THREADED
         _VIEW_IMAGE
@@ -9694,6 +9711,7 @@ function string_scan($lang, $do_guessing = false)
         calendar_month_in_year
         calendar_month_in_year_verbose
         charset
+        date_concise_near_date
         date_no_year
         date_regular_date
         date_regular_joiner
@@ -9701,7 +9719,6 @@ function string_scan($lang, $do_guessing = false)
         date_verbose_date
         date_verbose_joiner
         date_verbose_time
-        date_withinday
         date_withinweek_date
         date_withinweek_joiner
         dictionary
@@ -9717,7 +9734,6 @@ function string_scan($lang, $do_guessing = false)
         links__CATALOGUE_ENTRY
         links__CATALOGUE_INDEX
         locale
-        time_hour_and_mins
     ')));
 
     // Start with what we know
@@ -9801,10 +9817,17 @@ function string_scan($lang, $do_guessing = false)
     }
     closedir($dh);
 
-    // De-duplicate, and return only stuff that actually still exists
-    $lang_strings_admin = array_intersect($all_strings, array_unique($lang_strings_admin));
-    $lang_strings_non_admin = array_intersect($all_strings, array_unique($lang_strings_non_admin));
-    $lang_strings_unknown = array_intersect($all_strings, array_unique($lang_strings_unknown));
+    // De-duplicate
+    $lang_strings_admin = array_unique($lang_strings_admin);
+    $lang_strings_non_admin = array_unique($lang_strings_non_admin);
+    $lang_strings_unknown = array_unique($lang_strings_unknown);
+
+    // Return only stuff that actually still exists
+    if ($only_exists) {
+        $lang_strings_admin = array_intersect($all_strings, $lang_strings_admin);
+        $lang_strings_non_admin = array_intersect($all_strings, $lang_strings_non_admin);
+        $lang_strings_unknown = array_intersect($all_strings, $lang_strings_unknown);
+    }
 
     // Sort
     sort($lang_strings_admin);
@@ -9816,7 +9839,7 @@ function string_scan($lang, $do_guessing = false)
     $just_lang_strings_non_admin = array_diff($lang_strings_non_admin, $lang_strings_admin);
     $lang_strings_shared = array_intersect($lang_strings_non_admin, $lang_strings_admin);
 
-    return array($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang);
+    return array($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang, $strings_files);
 }
 
 function find_files_in_dir($dir)

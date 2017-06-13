@@ -322,7 +322,7 @@ function _dedirectiveise($matches)
     $attributes_arr = array();
     $attributes_xml = isset($matches[1]) ? $matches[1] : '';
     $matches_attributes = array();
-    $num_matches_attributes = preg_match_all('#\s+([\w\_\-]+)\s*=\s*"([^"]*)"#', $attributes_xml, $matches_attributes);
+    $num_matches_attributes = preg_match_all('#\s+([\w\-]+)\s*=\s*"([^"]*)"#', $attributes_xml, $matches_attributes);
     for ($i = 0; $i < $num_matches_attributes; $i++) {
         $attributes_arr[$matches_attributes[1][$i]] = $matches_attributes[2][$i];
     }
@@ -463,12 +463,15 @@ function wysiwygify_media_set($semihtml)
  */
 function semihtml_to_comcode($semihtml, $force = false, $quick = false)
 {
+    // Links should be kept from being base-URL-specific
+    $semihtml = str_replace(escape_html(get_base_url() . '/'), '{$BASE_URL*}/', $semihtml);
+
     // Optimisations
     $matches = array();
     if (preg_match('#^\[semihtml\]([^\[\]<>]*)\[\/semihtml\]$#', $semihtml, $matches) != 0) {
         return $matches[1];
     }
-    if (preg_match('#^([^\[\]<>]*)$#', $semihtml) != 0) {
+    if (preg_match('#^([^\[\]<>\{\}]*)$#', $semihtml) != 0) {
         return $semihtml;
     }
 
@@ -480,7 +483,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     }
 
     $decoded = html_entity_decode($semihtml, ENT_QUOTES, get_charset());
-    if (strpos($semihtml, '<') === false && strpos($semihtml, '[') === false && strpos($decoded, '&') === false) {
+    if (strpos($semihtml, '<') === false && strpos($semihtml, '[') === false && strpos($semihtml, '{') === false && strpos($decoded, '&') === false) {
         return $decoded;
     }
 
@@ -500,7 +503,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $semihtml = preg_replace('#<span id="cke_bm_[^"]+" style="display: none;\s*">&nbsp;</span>#', '', $semihtml);
 
     // CKEditor may leave white-space on the end, we have to assume it was not intentional
-    $semihtml = preg_replace('#(\[[\w\_]+)&nbsp;#', '${1} ', $semihtml);
+    $semihtml = preg_replace('#(\[\w+)&nbsp;#', '${1} ', $semihtml);
 
     $semihtml = wysiwygify_media_set($semihtml);
 
@@ -515,6 +518,11 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         // Preserve header formatting by moving it to a span
         $semihtml = preg_replace('#<h1[^>]* style="([^"<>]*)"[^>]*>\s*<span class="inner">(.*)</span>\s*</h1>#Us', '<h1><span class="inner"><span style="display: inline-block; ${1}">${2}</span></span></h1>', $semihtml);
         $semihtml = preg_replace('#<h1[^>]* style="([^"<>]*)"[^>]*>(.*)</h1>#Us', '<h1><span class="inner"><span style="display: block; ${1}">${2}</span></span></h1>', $semihtml);
+
+        // We really need anything inside <kbd> to go back to [tt] so it doesn't get parsed within semihtml
+        $array_html_preg_replace = array();
+        $array_html_preg_replace[] = array('#^<kbd>(.*)</kbd>$#siU', "[tt]\${1}[/tt]");
+        $semihtml = array_html_preg_replace('kbd', $array_html_preg_replace, $semihtml);
 
         if (strpos($semihtml, '[contents') !== false) { // Contents tag needs proper Comcode titles
             $semihtml = convert_html_headers_to_titles($semihtml);
@@ -637,7 +645,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $semihtml = str_replace(' type="1"', '', $semihtml);
     $semihtml = str_replace(' start="1"', '', $semihtml);
     $semihtml = preg_replace('#mso-\w+-font-family:\s*"[^"]*"#', '', $semihtml);
-    $semihtml = preg_replace('#mso-[\w-]+:[^;"\']*#', '', $semihtml);
+    $semihtml = preg_replace('#mso-[\w\-]+:[^;"\']*#', '', $semihtml);
     $semihtml = str_replace('text-autospace:none', '', $semihtml);
     $semihtml = preg_replace('#(<[^>]* align="right"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*right[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
     $semihtml = preg_replace('#(<[^>]* align="center"[^>]*) style="(margin-right:\s*[\d\.]+pt;\s*)?text-align:\s*center[;\s]*"#is', '${1}', $semihtml); // trim off redundancy
@@ -897,7 +905,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
             }
         }
         $semihtml = preg_replace('#(&nbsp;|</CDATA\_\_space>|\s)*<br\s*/>#i', '<br />', $semihtml); // Spaces on end of line -> (Remove)
-    } while ($semihtml != $old_semihtml);
+    } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
 
     // Undone center tagging
     $semihtml = comcode_preg_replace('left', '#^\[left\]\[center\](.*)\[/center\]\[/left\]$#si', '[left]${1}[/left]', $semihtml);
@@ -992,7 +1000,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         }
         if (strpos($semihtml2, '[code') === false) {
             $array_html_preg_replace = array();
-            $array_html_preg_replace[] = array('#^<pre>(.*)</pre>$#siU', "[code]\${1}[/code]");
+            $array_html_preg_replace[] = array('#^<pre[^>]*>(.*)</pre>$#siU', "[code]\${1}[/code]");
             $semihtml2 = array_html_preg_replace('pre', $array_html_preg_replace, $semihtml2);
         }
         if (stripos($semihtml, '<table') !== false) {
@@ -1151,7 +1159,7 @@ function comcode_preg_replace($element, $pattern, $replacement, $semihtml)
                 }
             }
         }
-    } while ($semihtml != $old_semihtml);
+    } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
 
     return $semihtml;
 }
@@ -1274,7 +1282,7 @@ function array_html_preg_replace($element, $array, $semihtml)
             }
             unset($array[$index]); // If we are going to recurse, we don't want extra work -- let's record that this one completed
         }
-    } while ($semihtml != $old_semihtml);
+    } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
 
     return $semihtml;
 }

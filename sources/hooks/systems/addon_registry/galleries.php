@@ -183,7 +183,6 @@ class Hook_addon_registry_galleries
             'themes/default/templates/GALLERY_IMPORT_SCREEN.tpl',
             'uploads/galleries/index.html',
             'uploads/galleries_thumbs/index.html',
-            'uploads/repimages/index.html',
             'uploads/watermarks/index.html',
             'themes/default/css/galleries.css',
             'cms/pages/modules/cms_galleries.php',
@@ -224,7 +223,6 @@ class Hook_addon_registry_galleries
             'themes/default/templates/BLOCK_MAIN_PERSONAL_GALLERIES_LIST.tpl',
             'uploads/galleries/.htaccess',
             'uploads/galleries_thumbs/.htaccess',
-            'uploads/repimages/.htaccess',
             'uploads/watermarks/.htaccess',
             'themes/default/images/audio_thumb.png',
             'themes/default/images/video_thumb.png',
@@ -426,9 +424,9 @@ class Hook_addon_registry_galleries
     {
         require_css('forms');
 
-        //Need to create the form fields (instead of using placeholder_form()) because javascript is
-        //using a field called 'files' (list type).
         require_lang('dearchive');
+
+        // Need to create the form fields (instead of using placeholder_form()) because javascript is using a field called 'files' (list type).
         $fields = new Tempcode();
         $orphaned_content = new Tempcode();
         $orphaned_content->attach(do_lorem_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('SELECTED' => false, 'DISABLED' => false, 'CLASS' => '', 'NAME' => 'test', 'TEXT' => 'test')));
@@ -681,7 +679,7 @@ class Hook_addon_registry_galleries
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
@@ -796,7 +794,7 @@ class Hook_addon_registry_galleries
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
@@ -846,6 +844,10 @@ class Hook_addon_registry_galleries
                         'CAT' => placeholder_id(),
                         'FIRST_ENTRY_ID' => placeholder_id(),
                         'SORTING' => lorem_phrase(),
+                        'ACCEPT_IMAGES' => true,
+                        'ACCEPT_VIDEOS' => true,
+                        'VIEWS' => placeholder_number(),
+                        'OWNER' => null,
                     )
                 ), null, '', true),
         );
@@ -936,7 +938,7 @@ class Hook_addon_registry_galleries
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
@@ -971,6 +973,10 @@ class Hook_addon_registry_galleries
                         'MAY_DOWNLOAD' => lorem_phrase(),
                         'ENTRIES' => $entries,
                         'SORTING' => lorem_phrase(),
+                        'ACCEPT_IMAGES' => true,
+                        'ACCEPT_VIDEOS' => true,
+                        'VIEWS' => placeholder_number(),
+                        'OWNER' => null,
                     )
                 ), null, '', true),
         );
@@ -990,7 +996,7 @@ class Hook_addon_registry_galleries
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,

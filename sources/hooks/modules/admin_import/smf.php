@@ -441,7 +441,7 @@ class Hook_smf
 
                 $avatar_url = '';
                 if (!isset($row['avatar']) || (strlen($row['avatar']) == 0)) {
-                    $query_attachments = 'SELECT ID_MEMBER,filename,width,height,size,attachmentType FROM ' . $table_prefix . 'attachments WHERE attachmentType=\'0\' AND ID_MEMBER=\'' . strval($row['ID_MEMBER']) . '\'';
+                    $query_attachments = 'SELECT ID_MEMBER,filename,width,height,size,attachmentType FROM ' . $table_prefix . 'attachments WHERE ' . db_string_equal_to('attachmentType', '0') . ' AND ' . db_string_equal_to('ID_MEMBER', strval($row['ID_MEMBER']));
 
                     $attachment_data = $db->query($query_attachments, 1, 0);
                     if (isset($attachment_data[0]['filename']) && (strlen($attachment_data[0]['filename']) > 0)) {
@@ -449,7 +449,7 @@ class Hook_smf
                         $filename = $attachment_data[0]['filename'];
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($avatar_path . '/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . $filename;
-                            sync_file($avatar_url);
+                            sync_file(get_custom_file_base() . '/' . $avatar_url);
                         } else {
                             if ($STRICT_FILE) {
                                 warn_exit(do_lang_tempcode('MISSING_AVATAR', escape_html($filename)));
@@ -468,7 +468,7 @@ class Hook_smf
 
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($avatar_gallery_path . '/' . $filename_with_subdir, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . substr($filename, strrpos($filename, '/'));
-                            sync_file($avatar_url);
+                            sync_file(get_custom_file_base() . '/' . $avatar_url);
                         } else {
                             // Try as a pack avatar then
                             $striped_filename = str_replace('/', '_', $filename);
@@ -827,14 +827,12 @@ class Hook_smf
         require($file_base . '/Settings.php');
         $homeurl = $boardurl;
 
-        $forum_dir = preg_replace('#\\\\#', '/', $boarddir); //full path to the forum folder
+        $forum_dir = preg_replace('#\\\\#', '/', $boarddir); // Full path to the forum folder
 
-        $attachments_dir = $forum_dir . '/attachments/'; //forum attachments directory
+        $attachments_dir = $forum_dir . '/attachments/'; // Forum attachments directory
 
-        //start preparing the attachment file path by adding it's md5-ied filename and attachment id
-        $file_stripped = strtr($filename, 'äéöûü¿¡¬√ƒ≈«»… ÀÃÕŒœ—“”‘’÷ÿŸ⁄€‹›‡·‚„‰ÂÁËÈÍÎÏÌÓÔÒÚÛÙıˆ¯˘˙˚¸˝ˇ', 'SZszYAAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy');
-        $file_stripped = strtr($file_stripped, array('ﬁ' => 'TH', '˛' => 'th', '–' => 'DH', '' => 'dh', 'ﬂ' => 'ss', 'å' => 'OE', 'ú' => 'oe', '∆' => 'AE', 'Ê' => 'ae', 'µ' => 'u'));
-        $file_stripped = preg_replace(array('/\s/', '/[^\w_\.\-]/'), array('_', ''), $file_stripped);
+        // Start preparing the attachment file path by adding it's md5-ied filename and attachment id
+        $file_stripped = preg_replace(array('/\s/', '/[^\w\.\-]/'), array('_', ''), $filename);
         $filename_fixed = ((strlen($attachment_id) > 0) ? ($attachment_id . '_' . str_replace('.', '_', $file_stripped) . md5($file_stripped)) : (str_replace('.', '_', $file_stripped) . md5($file_stripped)));
         $file_path = $attachments_dir . $filename_fixed;
 
@@ -844,11 +842,8 @@ class Hook_smf
         $filename = find_derivative_filename('uploads/' . $sections, $filename);
         $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename;
 
-        $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename)));
-        fwrite($myfile, $data);
-        fclose($myfile);
-        fix_permissions($path);
-        sync_file($path);
+        require_code('files');
+        cms_file_put_contents_safe($path, $data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         $url = 'uploads/' . $sections . '/' . $filename;
 

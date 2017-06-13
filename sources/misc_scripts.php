@@ -125,7 +125,7 @@ function gd_text_script()
             require_code('themewizard');
             $fg_color = find_theme_seed($theme);
         } else {
-            $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+            $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
             if (is_file($ini_path)) {
                 require_code('files');
                 $map = better_parse_ini_file($ini_path);
@@ -207,10 +207,10 @@ function simple_tracker_script()
         'c_date_and_time' => time(),
         'c_member_id' => get_member(),
         'c_ip_address' => get_ip_address(),
-        'c_url' => $url,
+        'c_url' => cms_mb_substr($url, 0, 255),
     ));
 
-    header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+    header('Location: ' . escape_header($url));
 }
 
 /**
@@ -299,9 +299,12 @@ function cron_bridge_script($caller)
         }
 
         // Run, with basic locking support
-        if ($GLOBALS['DEV_MODE'] || get_value_newer_than('cron_currently_running__' . $hook, time() - 60 * 5, true) !== '1' || get_param_integer('force', 0) == 1) {
+        if ($GLOBALS['DEV_MODE'] || get_value_newer_than('cron_currently_running__' . $hook, time() - 60 * 60 * 5, true) !== '1' || get_param_integer('force', 0) == 1) {
             if (!is_null($log_file)) {
+                flock($log_file, LOCK_EX);
+                fseek($log_file, 0, SEEK_END);
                 fwrite($log_file, date('Y-m-d H:i:s') . '  STARTING ' . $hook . "\n");
+                flock($log_file, LOCK_UN);
             }
 
             set_value('cron_currently_running__' . $hook, '1', true);
@@ -311,11 +314,17 @@ function cron_bridge_script($caller)
             set_value('cron_currently_running__' . $hook, '0', true);
 
             if (!is_null($log_file)) {
+                flock($log_file, LOCK_EX);
+                fseek($log_file, 0, SEEK_END);
                 fwrite($log_file, date('Y-m-d H:i:s') . '  FINISHED ' . $hook . "\n");
+                flock($log_file, LOCK_UN);
             }
         } else {
             if (!is_null($log_file)) {
+                flock($log_file, LOCK_EX);
+                fseek($log_file, 0, SEEK_END);
                 fwrite($log_file, date('Y-m-d H:i:s') . '  WAS LOCKED ' . $hook . "\n");
+                flock($log_file, LOCK_UN);
             }
         }
     }
@@ -410,7 +419,7 @@ function page_link_redirect_script()
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
 
-    header('Location: ' . $x);
+    header('Location: ' . escape_header($x));
 }
 
 /**
@@ -540,7 +549,7 @@ function thumb_script()
     if ((strpos($url_thumb, "\n") !== false) || (strpos($url_thumb, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
-    header('Location: ' . $url_thumb);
+    header('Location: ' . escape_header($url_thumb));
 }
 
 /**

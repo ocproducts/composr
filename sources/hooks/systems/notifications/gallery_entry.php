@@ -51,7 +51,7 @@ class Hook_notification_gallery_entry extends Hook_Notification
             return parent::create_category_tree($notification_code, $id); // Too many, so just allow removing UI
         }
 
-        $page_links = get_gallery_tree($id, '', null, false, null, false, false, true, false, 5);
+        $page_links = get_gallery_tree($id, '', null, false, null, false, false, true, false, ($id === null) ? 0 : 1);
         $filtered = array();
         foreach ($page_links as $p) {
             $filtered[] = $p;
@@ -81,7 +81,7 @@ class Hook_notification_gallery_entry extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $list['gallery_entry'] = array(do_lang('menus:CONTENT'), do_lang('galleries:NOTIFICATION_TYPE_gallery_entry'));
+        $list['gallery_entry'] = array(do_lang('CONTENT'), do_lang('galleries:NOTIFICATION_TYPE_gallery_entry'));
         return $list;
     }
 

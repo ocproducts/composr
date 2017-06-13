@@ -257,7 +257,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     if (is_null($main_news_category)) {
         $main_news_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('news_categories', 'id', array('nc_owner' => $submitter));
         if (is_null($main_news_category_id)) {
-            if (!has_privilege(get_member(), 'have_personal_category', 'cms_news')) {
+            if ((!has_privilege(get_member(), 'have_personal_category', 'cms_news')) && (!running_script('stress_test_loader'))) {
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
             }
 
@@ -403,9 +403,18 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
     }
 
     if ((!get_mass_import_mode()) && ($validated == 1) && (get_option('site_closed') == '0') && (!$GLOBALS['DEV_MODE']) && (has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category_id)))) {
-        register_shutdown_function('send_rss_ping');
+        if (get_value('avoid_register_shutdown_function') === '1') {
+            send_rss_ping();
+        } else {
+            register_shutdown_function('send_rss_ping');
+        }
+
         require_code('news_sitemap');
-        register_shutdown_function('build_news_sitemap');
+        if (get_value('avoid_register_shutdown_function') === '1') {
+            build_news_sitemap();
+        } else {
+            register_shutdown_function('build_news_sitemap');
+        }
     }
 
     require_code('member_mentions');
@@ -579,7 +588,11 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
     decache('side_news_categories');
 
     if (($validated == 1) && (has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'news', strval($main_news_category)))) {
-        register_shutdown_function('send_rss_ping');
+        if (get_value('avoid_register_shutdown_function') === '1') {
+            send_rss_ping();
+        } else {
+            register_shutdown_function('send_rss_ping');
+        }
     }
 
     require_code('feedback');
@@ -766,7 +779,7 @@ function _get_wordpress_db_data()
         $data[$user_id] = $user;
 
         // Fetch user posts/pages
-        $posts = $db->query('SELECT * FROM ' . $db_table_prefix . '_posts WHERE post_author=' . strval($user_id) . ' AND (post_type=\'post\' OR post_type=\'page\') AND post_status<>\'auto-draft\'');
+        $posts = $db->query('SELECT * FROM ' . $db_table_prefix . '_posts WHERE post_author=' . strval($user_id) . ' AND (' . db_string_equal_to('post_type', 'post') . ' OR ' . db_string_equal_to('post_type', 'page') . ') AND ' . db_string_not_equal_to('post_status', 'auto-draft'));
         foreach ($posts as $post) {
             $post_id = $post['ID'];
             $post['post_id'] = $post_id; // Consistency with XML feed
@@ -911,7 +924,9 @@ function _news_import_grab_image(&$data, $url)
     }
 
     $target_handle = fopen($target_path, 'wb') or intelligent_write_error($target_path);
+    flock($target_handle, LOCK_EX);
     $result = http_download_file($url, null, false, false, 'Composr', null, null, null, null, null, $target_handle);
+    flock($target_handle, LOCK_UN);
     fclose($target_handle);
     sync_file($target_path);
     fix_permissions($target_path);

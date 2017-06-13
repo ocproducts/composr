@@ -25,6 +25,9 @@
 *
 */
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -115,8 +118,10 @@ function resizeImage($image, $width, $height, $scale)
             break;
     }
 
-    // TODO: Upgrade to imagepalettetotruecolor in v11
     $transparent = imagecolortransparent($image);
+    if ($transparent >= imagecolorstotal($image)) { // Workaround for corrupt images
+        $transparent = -1;
+    }
     if ($transparent != -1) {
         imagealphablending($newImage, false);
         $_transparent = imagecolorsforindex($image, $transparent);
@@ -156,8 +161,10 @@ function resizeThumbnailImage($thumb_image_name, $image, $width, $height, $start
 
     $newImage = imagecreatetruecolor($newImageWidth, $newImageHeight);
 
-    // TODO: Upgrade to imagepalettetotruecolor in v11
     $transparent = imagecolortransparent($image);
+    if ($transparent >= imagecolorstotal($image)) { // Workaround for corrupt images
+        $transparent = -1;
+    }
     if ($transparent != -1) {
         imagealphablending($newImage, false);
         $_transparent = imagecolorsforindex($image, $transparent);

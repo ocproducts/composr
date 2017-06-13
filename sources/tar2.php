@@ -33,6 +33,7 @@ function convert_zip_to_tar($in_path, $out_path = null)
 
     require_code('tar');
     require_code('files');
+    require_lang('dearchive');
 
     if ((!function_exists('zip_open')) && (get_option('unzip_cmd') == '')) {
         warn_exit(do_lang_tempcode('ZIP_NOT_ENABLED'));
@@ -67,7 +68,7 @@ function convert_zip_to_tar($in_path, $out_path = null)
         do {
             $more = zip_entry_read($entry);
             if (fwrite($temp_file, $more) < strlen($more)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html($out_path)));
             }
         } while (($more !== false) && ($more != ''));
         fclose($temp_file);

@@ -224,7 +224,7 @@ class Hook_ecommerce_catalogue_items
 
         $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array('c_name' => $catalogue_name), '', 1);
         if (!array_key_exists(0, $catalogues)) {
-            warn_exit(do_lang_tempcode('CATALOGUE_NOT_FOUND', $catalogue_name));
+            warn_exit(do_lang_tempcode('_MISSING_RESOURCE', escape_html($catalogue_name)));
         }
 
         $catalogue = $catalogues[0];
@@ -622,7 +622,7 @@ class Hook_ecommerce_catalogue_items
             $stock_level_warn_threshold = intval($field_rows[4]['effective_value_pure']);
         }
 
-        $product_name = get_translated_text($row['cc_id']);
+        $product_name = $field_rows[0]['effective_value_pure'];
 
         if ($available_quantity < $quantity && !$stock_maintained) {
             require_code('site');
@@ -712,11 +712,11 @@ class Hook_ecommerce_catalogue_items
 /**
  * Update order status,transaction ID after transaction.
  *
- * @param  AUTO_LINK $entry_id Purchase/Order ID.
+ * @param  ID_TEXT $entry_id Purchase/Order ID.
  * @param  array $details Details of product.
  */
 function handle_catalogue_items($entry_id, $details)
 {
     $object = object_factory('Hook_ecommerce_catalogue_items');
-    $object->update_stock($entry_id, 1);
+    $object->update_stock(intval($entry_id), 1);
 }

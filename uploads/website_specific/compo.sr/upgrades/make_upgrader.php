@@ -15,54 +15,75 @@
  */
 
 /* Returns triple: PATH or null if critical error, null or error string if error */
-function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
+function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons_in_upgrader = null)
 {
     $err = null;
 
     require_code('version2');
+    require_code('composr_homesite');
+    require_code('tar');
+    require_code('m_zip');
+    require_code('files');
+    require_code('files2');
+    require_code('addons');
+    require_code('addons2');
 
-    $from_version_pretty = get_version_pretty__from_dotted($from_version_dotted);
+    require_lang('addons');
+
+    $from_version_pretty = ($from_version_dotted === null) ? null : get_version_pretty__from_dotted($from_version_dotted);
     $to_version_pretty = get_version_pretty__from_dotted($to_version_dotted);
 
-    if (str_replace('.', '', $from_version_dotted) == '') {
-        $err = 'Source version not entered correctly.';
-        return array(null, $err);
+    if ($from_version_dotted !== null) {
+        if (str_replace('.', '', $from_version_dotted) == '') {
+            $err = 'Source version not entered correctly.';
+            return array(null, $err);
+        }
     }
 
-    if ($from_version_dotted == '..') {
-        warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'from version'));
+    if ($from_version_dotted !== null) {
+        if ($from_version_dotted == '..') {
+            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'from version'));
+        }
     }
     if ($to_version_dotted == '..') {
         warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', 'to version'));
     }
 
-    if ($from_version_dotted == $to_version_dotted) {
-        $err = 'Put in the version number you are upgrading <strong>from</strong>, not to. Then a specialised upgrade file will be generated for you.';
-        return array(null, $err);
+    if ($from_version_dotted !== null) {
+        if ($from_version_dotted == $to_version_dotted) {
+            $err = 'Put in the version number you are upgrading <strong>from</strong>, not to. Then a specialised upgrade file will be generated for you.';
+            return array(null, $err);
+        }
     }
 
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(0);
     }
-    require_code('tar');
-    require_code('m_zip');
 
     // Find out path/filenames for the upgrade file we're making
-    $filename = $from_version_dotted . '-' . $to_version_dotted . '.cms';
-    $tar_path = dirname(__FILE__) . '/tars/' . $filename;
-    $wip_path = dirname(__FILE__) . '/tar_build/' . $filename;
+    if ($from_version_dotted !== null) {
+        $filename = $from_version_dotted . '-' . $to_version_dotted . '.cms';
+    } else {
+        $filename = 'omni-' . $to_version_dotted . '.cms';
+    }
+    if ($addons_in_upgrader !== null) {
+        $filename = md5(serialize($addons_in_upgrader)) . '-' . $filename;
+    }
+    $tar_path = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tars/' . $filename;
+    $_wip_path = 'uploads/website_specific/compo.sr/upgrades/tar_build/' . $filename;
+    $wip_path = get_file_base() . '/' . $_wip_path;
 
     // Find out paths for the directories holding untarred full manual installers
-    $old_base_path = dirname(__FILE__) . '/full/' . $from_version_dotted;
-    $new_base_path = dirname(__FILE__) . '/full/' . $to_version_dotted;
+    if ($from_version_dotted !== null) {
+        $old_base_path = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/full/' . $from_version_dotted;
+    } else {
+        $old_base_path = null;
+    }
+    $new_base_path = get_file_base() . '/uploads/website_specific/compo.sr/upgrades/full/' . $to_version_dotted;
 
     // Find corresponding download rows
-    $old_download_row = ($from_version_dotted == '') ? null : find_download($from_version_pretty);
-    if (is_null($old_download_row)) {
-        $err = escape_html('Version ' . $from_version_pretty . ' is not recognised');
-        return array(null, $err);
-    }
-    $new_download_row = find_download($to_version_pretty);
+    $old_download_row = ($from_version_dotted === null) ? null : find_version_download($from_version_pretty);
+    $new_download_row = find_version_download($to_version_pretty);
     if (is_null($new_download_row)) {
         return array(null, escape_html('Could not find version ' . $to_version_pretty . ' in the download database'));
     }
@@ -75,19 +96,34 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
         $mtime = $mtime_disk;
     }
 
+    $force = (get_param_integer('force', 0) == 1) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()));
+
     // Exists already
     if (file_exists($tar_path)) {
-        if (filemtime($tar_path) > $mtime) {
+        if ((filemtime($tar_path) > $mtime) && (!$force)) {
             return array($tar_path, $err);
         } else { // Outdated
             unlink($tar_path);
+
+            @deldir_contents($new_base_path);
+            @rmdir($new_base_path);
+            if (($old_base_path) !== null) {
+                @deldir_contents($old_base_path);
+                @rmdir($old_base_path);
+            }
         }
     }
 
     // Stop a race-condition
-    if ((file_exists($old_base_path)) || (file_exists($new_base_path)) || (file_exists($wip_path))) {
-        return array(null, 'An upgrade is currently being generated by another user. Please try again in a minute.');
+    if (((file_exists($wip_path))) || ($force)) {
+        if (!$force) {
+            return array(null, 'An upgrade is currently being generated by another user. Please try again in a minute.');
+        }
+
+        @deldir_contents($wip_path);
+        @rmdir($wip_path);
     }
+    @mkdir($wip_path, 0777);
 
     // Unzip old
     if (!is_null($old_download_row)) {
@@ -105,100 +141,62 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted)
     }
     recursive_unzip(get_file_base() . '/' . rawurldecode($new_download_row['url']), $new_base_path);
 
+    // Find out about addon structure
+    _find_helper($new_base_path);
+
+    // Work out files for upgrader
+    make_upgrader_do_dir($wip_path, $new_base_path, $old_base_path, $addons_in_upgrader);
+    if ($addons_in_upgrader !== null) {
+        @mkdir($wip_path . '/exports', 0777);
+        @mkdir($wip_path . '/exports/addons', 0777);
+
+        // Build all addon TARs
+        global $CACHE_FROM_ADDONS;
+        foreach ($CACHE_FROM_ADDONS as $addon => $addon_files) {
+            $addon_info = read_addon_info($addon, true, null, null, $new_base_path . '/sources/hooks/systems/addon_registry/' . $addon . '.php');
+            create_addon(
+                $addon . '.tar',
+                $addon_files,
+                $addon_info['name'],
+                implode(',', $addon_info['incompatibilities']),
+                implode(',', $addon_info['dependencies']),
+                $addon_info['author'],
+                $addon_info['organisation'],
+                $addon_info['version'],
+                $addon_info['category'],
+                implode("\n", $addon_info['copyright_attribution']),
+                $addon_info['licence'],
+                $addon_info['description'],
+                $_wip_path . '/exports/addons',
+                null,
+                $new_base_path
+            );
+        }
+    }
+
     // Make actual upgrader
-    require_code('files2');
-    @mkdir($wip_path, 0777);
-    make_upgrader_do_dir($wip_path, $new_base_path, $old_base_path);
-    @copy($old_base_path . '/data/files.dat', $wip_path . '/data/files_previous.dat');
-    $log_file = fopen(dirname(__FILE__) . '/tarring.log', GOOGLE_APPENGINE ? 'wb' : 'wt');
+    if ($old_base_path !== null) {
+        @copy($old_base_path . '/data/files.dat', $wip_path . '/data/files_previous.dat');
+        fix_permissions($wip_path . '/data/files_previous.dat');
+    }
+    $log_file = fopen(get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tarring.log', GOOGLE_APPENGINE ? 'wb' : 'wt');
+    flock($log_file, LOCK_EX);
     $tar_handle = tar_open($tar_path . '.new', 'wb');
     tar_add_folder($tar_handle, $log_file, $wip_path, null, '', null, null, false, true);
     tar_close($tar_handle);
+    flock($log_file, LOCK_UN);
     fclose($log_file);
     @rename($tar_path . '.new', $tar_path);
+    sync_file($tar_path);
 
     // Clean up
-    require_code('files');
-    @deldir_contents($new_base_path);
-    @deldir_contents($old_base_path);
     @deldir_contents($wip_path);
-    @rmdir($new_base_path);
-    @rmdir($old_base_path);
     @rmdir($wip_path);
 
     return array($tar_path, $err);
 }
 
-function find_download($version_pretty)
-{
-    global $DOWNLOAD_ROWS;
-    load_download_rows();
-
-    $download_row = null;
-    foreach ($DOWNLOAD_ROWS as $_download_row) {
-        // When debugging, check downloads are validated
-        if (($_download_row['nice_title'] == 'Composr Version ' . $version_pretty . ' (manual)') || ($_download_row['nice_title'] == 'Composr Version ' . $version_pretty . ' (bleeding-edge, manual)')) {
-            $download_row = $_download_row;
-            break;
-        }
-    }
-
-    if ((is_null($download_row)) && (substr_count($version_pretty, '.') < 2)) {
-        return find_download($version_pretty . '.0');
-    }
-
-    return $download_row;
-}
-
-function load_download_rows()
-{
-    global $DOWNLOAD_ROWS;
-    if (!isset($DOWNLOAD_ROWS)) {
-        if (get_param_integer('test_mode', 0) == 1) { // Test data
-            $DOWNLOAD_ROWS = array(
-                array('id' => 20, 'nice_title' => 'Composr Version 3.0', 'add_date' => time() - 60 * 60 * 8, 'edit_date' => null, 'url' => 'uploads/downloads/test.zip', 'nice_description' => '[Test message] This is 3. Yo peeps. 3.1 is the biz.'),
-                array('id' => 30, 'nice_title' => 'Composr Version 3.1', 'add_date' => time() - 60 * 60 * 5, 'edit_date' => null, 'url' => 'uploads/downloads/test.zip', 'nice_description' => '[Test message] This is 3.1.1. 3.1.1 is out dudes.'),
-                array('id' => 35, 'nice_title' => 'Composr Version 3.1.1', 'add_date' => time() - 60 * 60 * 5, 'edit_date' => null, 'url' => 'uploads/downloads/test.zip', 'nice_description' => '[Test message] This is 3.1.1. 3.2 is out dudes.'),
-                array('id' => 40, 'nice_title' => 'Composr Version 3.2 beta1', 'add_date' => time() - 60 * 60 * 4, 'edit_date' => null, 'url' => 'uploads/downloads/test.zip', 'nice_description' => '[Test message] This is 3.2 beta1. 3.2 beta2 is out.'),
-                array('id' => 50, 'nice_title' => 'Composr Version 3.2', 'add_date' => time() - 60 * 60 * 3, 'edit_date' => null, 'url' => 'uploads/downloads/test.zip', 'nice_description' => '[Test message] This is 3.2. 4 is out.'),
-                array('id' => 60, 'nice_title' => 'Composr Version 4.0', 'add_date' => time() - 60 * 60 * 1, 'edit_date' => null, 'url' => 'uploads/downloads/test.zip', 'nice_description' => '[Test message] This is the 4 and you can find bug reports somewhere.'),
-            );
-        } else {
-            $DOWNLOAD_ROWS = $GLOBALS['SITE_DB']->query_select('download_downloads', array('*'), array('validated' => 1), 'ORDER BY add_date');
-            foreach ($DOWNLOAD_ROWS as $i => $row) {
-                $DOWNLOAD_ROWS[$i]['nice_title'] = get_translated_text($row['name']);
-                $DOWNLOAD_ROWS[$i]['nice_description'] = get_translated_text($row['description']);
-            }
-        }
-    }
-}
-
-function recursive_unzip($zip_path, $unzip_path)
-{
-    $zip_handle = zip_open($zip_path);
-    while (($entry = (zip_read($zip_handle))) !== false) {
-        $entry_name = zip_entry_name($entry);
-        if (substr($entry_name, -1) != '/') {
-            $_entry = zip_entry_open($zip_handle, $entry);
-            if ($_entry !== false) {
-                @mkdir(dirname($unzip_path . '/' . $entry_name), 0777, true);
-                $out_file = fopen($unzip_path . '/' . $entry_name, 'wb');
-                while (true) {
-                    $it = zip_entry_read($entry, 1024);
-                    if (($it === false) || ($it == '')) {
-                        break;
-                    }
-                    fwrite($out_file, $it);
-                }
-                zip_entry_close($entry);
-                fclose($out_file);
-            }
-        }
-    }
-    zip_close($zip_handle);
-}
-
-function make_upgrader_do_dir($build_path, $new_base_path, $old_base_path, $dir = '', $pretend_dir = '')
+function make_upgrader_do_dir($build_path, $new_base_path, $old_base_path, $addons_in_upgrader, $dir = '', $pretend_dir = '')
 {
     require_code('files');
 
@@ -212,16 +210,66 @@ function make_upgrader_do_dir($build_path, $new_base_path, $old_base_path, $dir 
 
         if ($is_dir) {
             @mkdir($build_path . '/' . $pretend_dir . $file, 0777);
-            make_upgrader_do_dir($build_path, $new_base_path, $old_base_path, $dir . $file . '/', $pretend_dir . $file . '/');
+            make_upgrader_do_dir($build_path, $new_base_path, $old_base_path, $addons_in_upgrader, $dir . $file . '/', $pretend_dir . $file . '/');
 
             // If it's empty still, delete it
             @rmdir($build_path . '/' . $pretend_dir . $file);
         } else {
-            $contents = file_get_contents($new_base_path . '/' . $dir . $file);
-            if ((strpos($dir, '/addon_registry') !== false) || (!file_exists($old_base_path . '/' . $pretend_dir . '/' . $file)) || (unixify_line_format($contents) != unixify_line_format(file_get_contents($old_base_path . '/' . $pretend_dir . '/' . $file)))) {
+            $contents = cms_file_get_contents_safe($new_base_path . '/' . $dir . $file);
+            if (($old_base_path === null) || (strpos($dir, '/addon_registry') !== false) || (!file_exists($old_base_path . '/' . $pretend_dir . '/' . $file)) || (unixify_line_format($contents) != unixify_line_format(cms_file_get_contents_safe($old_base_path . '/' . $pretend_dir . '/' . $file)))) {
+                if ($addons_in_upgrader !== null) {
+                    $addon = find_file_addon($new_base_path, $dir . $file);
+                    if ((!isset($addons_in_upgrader[$addon])) && (substr($addon, 0, 5) != 'core_')) {
+                        continue;
+                    }
+                }
+
                 copy($new_base_path . '/' . $dir . $file, $build_path . '/' . $pretend_dir . $file);
+                fix_permissions($build_path . '/' . $pretend_dir . $file);
                 touch($build_path . '/' . $pretend_dir . $file, filemtime($new_base_path . '/' . $dir . $file));
             }
         }
     }
+    closedir($dh);
+}
+
+function find_file_addon($new_base_path, $file)
+{
+    global $CACHE_FROM_PATHS;
+    return isset($CACHE_FROM_PATHS[$file]) ? $CACHE_FROM_PATHS[$file] : null;
+}
+
+function find_addon_files($new_base_path, $addon)
+{
+    global $CACHE_FROM_ADDONS;
+    return isset($CACHE_FROM_ADDONS[$addon]) ? $CACHE_FROM_ADDONS[$addon] : array();
+}
+
+function _find_helper($new_base_path)
+{
+    global $CACHE_FROM_PATHS, $CACHE_FROM_ADDONS;
+    $CACHE_FROM_PATHS = array();
+    $CACHE_FROM_ADDONS = array();
+
+    $path = $new_base_path . '/sources/hooks/systems/addon_registry';
+    $dh = opendir($path);
+    while (($file = readdir($dh)) !== false) {
+        if (substr($file, -4) == '.php') {
+            $hook = basename($file, '.php');
+
+            $_hook_bits = extract_module_functions($path . '/' . $file, array('get_file_list'));
+            if ($_hook_bits[0] !== null) {
+                $file_list = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
+            } else {
+                $file_list = array();
+            }
+
+            $CACHE_FROM_ADDONS[$hook] = $file_list;
+
+            foreach ($file_list as $_file) {
+                $CACHE_FROM_PATHS[$_file] = $hook;
+            }
+        }
+    }
+    closedir($dh);
 }

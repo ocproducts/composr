@@ -33,8 +33,8 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
     require_code('submit');
     send_content_validated_notification('post', strval($post_id));
 
+    $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $post_id), '', 1);
     if (is_null($topic_id)) {
-        $post_info = $GLOBALS['FORUM_DB']->query_select('f_posts', array('*'), array('id' => $post_id), '', 1);
         $topic_id = $post_info[0]['p_topic_id'];
         $forum_id = $post_info[0]['p_cache_forum_id'];
         $poster = $post_info[0]['p_poster'];
@@ -57,7 +57,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
     $is_starter = ($topic_info[0]['t_cache_first_post_id'] == $post_id);
 
     $GLOBALS['FORUM_DB']->query_update('f_topics', array( // Validating a post will also validate a topic
-                                                          't_validated' => 1,
+        't_validated' => 1,
     ), array('id' => $topic_id), '', 1);
 
     $_url = build_url(array('page' => 'topicview', 'id' => $topic_id), 'forum', null, false, false, true, 'post_' . strval($post_id));
@@ -72,7 +72,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
         }
     }
 
-    cns_send_topic_notification($url, $topic_id, $forum_id, $poster, $is_starter, $post, $topic_info[0]['t_cache_first_title'], null, !is_null($topic_info[0]['t_pt_from']));
+    cns_send_topic_notification($url, $topic_id, $forum_id, $poster, $is_starter, $post, $topic_info[0]['t_cache_first_title'], null, !is_null($topic_info[0]['t_pt_from']), null, null, $post_info[0]['p_poster_name_if_guest']);
 
     if (!is_null($forum_id)) {
         cns_force_update_forum_caching($forum_id, 0, 1);
@@ -102,9 +102,10 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
  * @param  ?MEMBER $submitter Submitter (null: do not change)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $run_checks Whether to run checks
+ * @param  ?string $poster_name_if_guest The name of the person making the post (null: no change).
  * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
  */
-function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_emphasised, $intended_solely_for, $show_as_edited, $mark_as_unread, $reason, $check_perms = true, $edit_time = null, $add_time = null, $submitter = null, $null_is_literal = false, $run_checks = true)
+function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_emphasised, $intended_solely_for, $show_as_edited, $mark_as_unread, $reason, $check_perms = true, $edit_time = null, $add_time = null, $submitter = null, $null_is_literal = false, $run_checks = true, $poster_name_if_guest = null)
 {
     if (is_null($edit_time)) {
         $edit_time = $null_is_literal ? null : time();
@@ -184,6 +185,9 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
         'p_skip_sig' => $skip_sig,
     );
     $update_map += update_lang_comcode_attachments('p_post', $_post, $post, 'cns_post', strval($post_id), $GLOBALS['FORUM_DB'], $post_owner);
+    if ($poster_name_if_guest !== null) {
+        $update_map['p_poster_name_if_guest'] = $poster_name_if_guest;
+    }
 
     if ($show_as_edited) {
         $update_map['p_last_edit_time'] = $edit_time;

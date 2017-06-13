@@ -263,7 +263,7 @@ function cns_get_forum_tree($member_id = null, $base_forum = null, $breadcrumbs 
                 $cat_bit = array_key_exists($forum['f_forum_grouping_id'], $FORUM_GROUPINGS_TITLES_CACHE) ? $FORUM_GROUPINGS_TITLES_CACHE[$forum['f_forum_grouping_id']] : do_lang('NA');
             }
 
-            $below = cns_get_forum_tree($member_id, $forum['id'], $child_breadcrumbs, $skip, $forum, $use_compound_list, $levels, $do_stats, $updated_since);
+            $below = cns_get_forum_tree($member_id, $forum['id'], $child_breadcrumbs, $skip, $forum, $use_compound_list, ($levels === null) ? null : ($levels - 1), $do_stats, $updated_since);
             if ($use_compound_list) {
                 list($below, $_compound_list) = $below;
                 $compound_list .= strval($forum['id']) . ',' . $_compound_list;

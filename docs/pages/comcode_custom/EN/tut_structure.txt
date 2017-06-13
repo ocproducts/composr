@@ -112,6 +112,14 @@ Panel pages won't show if:
 3) they are left/right and [tt]&keep_wide=1[/tt]/[tt]&wide=1[/tt] is attached to the URL (i.e. these URL parameters disable panels)
 4) [tt]&keep_wide_high=1[/tt]/[tt]&wide_high=1[/tt] is attached to the URL (in this case the header and footer won't show either)
 
+Site owners often want panels disabled on certain pages only. This can be done by surrounding the panel contents with Tempcode like...
+[code="Tempcode"]
+{+START,IF,{$NEQ,{$PAGE},example_page_1,example_page_2,example_page_3}}
+...
+{+END}
+[/code]
+In this case the panel won't show for any of those 3 example pages.
+
 [title="4"]The default theme's panel support[/title]
 
 The special names identifying the panels supported by the default theme are:
@@ -246,7 +254,7 @@ The Sitemap generally reflects the actual structure of your website, and works r
 
 Zones are the first level and operate as different top-level security contexts, and potentially have different panels, a different theme, and different navigations.
 
-Page groups are hard-coded with what we consider a sensible way to organisation for the different pages on the site. We do expect advanced users will not use the Sitemap directly in menus, so the hard-coding should not be a problem, just a tidy structure to start from. When you want to take full control of menus you can choose to copy the defaults into a new stored menu, and start manipulating it.
+Page groups are hard-coded with what we consider a sensible way to organisation for the different pages on the site. We do expect advanced users will not use the Sitemap directly in menus, so the hard-coding should not be a problem, just a tidy structure to start from. When you want to take full control of menus you can choose to copy the defaults into a new editable menu, and start manipulating it.
 
 Composr supports 'redirects' which let you have pages within multiple zones. This will reflect on the Sitemap.
 
@@ -294,6 +302,9 @@ If you add a new gallery named [tt]example_distorted_gallery[/tt], there will be
 What the XML means:
  - The [tt]match_key[/tt] attribute represents the page-link to match against. This is where we're targeting our new set of parent links to, replacing the old set of parent links.
  - The [tt]label[/tt] attribute in the "substitution" tag represents the label to give the matched page in the breadcrumbs ([tt]substitution[/tt] tag) or the inserted link ([tt]link[/tt] tag).
+ - The [tt]skip_if_single_public_zone[/tt] attribute in the "substitution" tag makes the rule only apply if the single public zone option is off, if set to "true". Defaults to "false".
+ - The [tt]include_self[/tt] attribute in the "substitution" tag makes the rule include the node being substituted, if set to "true". Defaults to "true".
+ - The [tt]final[/tt] attribute in the "substitution" tag makes the rule the last rule that will apply, if set to "true". Defaults to "false".
  - The [tt]link[/tt] tag is used to specify all the different links which will show above the matched page (the parent links). The webmaster can give as many links as they need but we've just given one here.
 
 After saving customising the breadcrumbs, the updated breadcrumbs will be applied. See the screenshots for the before/after.

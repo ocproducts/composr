@@ -102,7 +102,7 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
                 }
                 $css_file = file_get_contents($css_path);
                 $matches = array();
-                $num_matches = preg_match_all('#\{\$IMG[;\#]?,([\w\_\-\d]+)\}#', $css_file, $matches);
+                $num_matches = preg_match_all('#\{\$IMG[;\#]?,([\w\-]+)\}#', $css_file, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     if ((preg_match('#' . preg_quote($matches[0][$i]) . '[\'"]?\)[^\n]*no-repeat#', $css_file) == 0) || (preg_match('#' . preg_quote($matches[0][$i]) . '[\'"]?\)[^\n]*width:\s*\d\d\d+px#', $css_file) != 0) || (preg_match('#width:\s*\d\d\d+px;[^\n]*' . preg_quote($matches[0][$i]) . '[\'"]?\)#', $css_file) != 0)) {
                         $map['theme_wizard_images'] .= ',' . $matches[1][$i];
@@ -113,7 +113,10 @@ function load_themewizard_params_from_theme($theme, $guess_images_if_needed = fa
 
         if ($theme != 'default') {
             $myfile = fopen(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', 'at');
+            flock($myfile, LOCK_EX);
+            fseek($myfile, 0, SEEK_END);
             fwrite($myfile, 'theme_wizard_images=' . $map['theme_wizard_images'] . "\n");
+            flock($myfile, LOCK_UN);
             fclose($myfile);
         }
     }
@@ -162,7 +165,7 @@ function find_theme_seed($theme, $no_easy_anchor = false)
         return $THEME_SEED_CACHE[$theme];
     }
 
-    $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+    $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
     if (is_file($ini_path)) {
         require_code('files');
         $map = better_parse_ini_file($ini_path);
@@ -329,6 +332,9 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
 
         imagealphablending($canvas, false);
         $transparent = imagecolortransparent($imgs['background']);
+        if ($transparent >= imagecolorstotal($imgs['background'])) { // Workaround for corrupt images
+            $transparent = -1;
+        }
         if ($transparent != -1) {
             $_transparent = imagecolorsforindex($imgs['background'], $transparent);
             imagecolortransparent($canvas, imagecolorallocate($canvas, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
@@ -566,13 +572,8 @@ function make_theme($theme_name, $source_theme, $algorithm, $seed, $use, $dark =
                         $changed_from_default_theme = true;
                     }
                     if ($changed_from_default_theme) {
-                        $fp = @fopen($saveat, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error(get_custom_file_base() . '/themes/' . filter_naughty($theme_name) . '/css_custom/' . $sheet);
-                        if (fwrite($fp, $output) < strlen($output)) {
-                            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-                        }
-                        fclose($fp);
-                        fix_permissions($saveat);
-                        sync_file($saveat);
+                        require_code('files');
+                        cms_file_put_contents_safe(get_custom_file_base() . '/themes/' . filter_naughty($theme_name) . '/css_custom/' . $sheet, $output, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
                         if (!$inherit_css) {
                             $c_success = @copy(get_file_base() . '/themes/' . filter_naughty($source_theme) . '/css/' . $sheet, $saveat . '.editfrom');
                             if ($c_success !== false) {
@@ -641,7 +642,7 @@ function themewizard_script()
     if ($type == 'image') {
         $image = calculate_theme($seed, $source_theme, $algorithm, $show, $dark);
         if (is_null($image)) {
-            header('Location: ' . find_theme_image($show));
+            header('Location: ' . escape_header(find_theme_image($show)));
             exit();
         }
 
@@ -1438,6 +1439,9 @@ function re_hue_image($path, $seed, $source_theme, $also_s_and_v = false, $inver
                 imagealphablending($image, false);
 
                 $transparent = imagecolortransparent($_image);
+                if ($transparent >= imagecolorstotal($_image)) { // Workaround for corrupt images
+                    $transparent = -1;
+                }
                 if ($transparent != -1) {
                     $_transparent = imagecolorsforindex($_image, $transparent);
                     imagecolortransparent($image, imagecolorallocate($image, $_transparent['red'], $_transparent['green'], $_transparent['blue']));
@@ -1619,6 +1623,9 @@ function generate_recoloured_image($path, $colour_a_orig, $colour_a_new, $colour
                 imagesavealpha($image, true);
 
                 $transparent = imagecolortransparent($_image);
+                if ($transparent >= imagecolorstotal($_image)) { // Workaround for corrupt images
+                    $transparent = -1;
+                }
                 if ($transparent != -1) {
                     $_transparent = imagecolorsforindex($_image, $transparent);
                     imagecolortransparent($image, imagecolorallocate($image, $_transparent['red'], $_transparent['green'], $_transparent['blue']));

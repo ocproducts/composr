@@ -25,8 +25,10 @@
  */
 function init__crypt()
 {
-    define('SALT_MD5PASSWORD', 0);
-    define('PASSWORD_SALT', 1);
+    if (!defined('SALT_MD5PASSWORD')) {
+        define('SALT_MD5PASSWORD', 0);
+        define('PASSWORD_SALT', 1);
+    }
 
     /**
      * A Compatibility library with PHP 5.5's simplified password hashing API.
@@ -308,7 +310,8 @@ function get_rand_password()
  */
 function get_secure_random_number()
 {
-    // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.0/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
+    // TODO: #3046 in tracker
+    // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.6/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
     if ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
         $code = intval(2147483647 * (hexdec(bin2hex(openssl_random_pseudo_bytes(4))) / 0xffffffff));
         if ($code < 0) {

@@ -403,9 +403,12 @@ function handle_transaction_script()
 {
     if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');
+        flock($myfile, LOCK_EX);
+        fseek($myfile, 0, SEEK_END);
         fwrite($myfile, serialize($_POST) . "\n");
         fwrite($myfile, serialize($_GET) . "\n");
         fwrite($myfile, "\n\n");
+        flock($myfile, LOCK_UN);
         fclose($myfile);
     }
 
@@ -446,7 +449,7 @@ function handle_transaction_script()
  * @param  SHORT_TEXT $parent_txn_id The ID of the parent transaction
  * @param  string $period The subscription period (blank: N/A / unknown: trust is correct on the gateway)
  * @param  ID_TEXT $via The payment gateway
- * @return ID_TEXT The product purchased
+ * @return ?ID_TEXT The product purchased (null: error)
  */
 function handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $via)
 {
@@ -526,7 +529,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
             if ($found[2] != '') {
                 call_user_func_array($found[2], array($purchase_id, $found, $type_code, true)); // Run cancel code
             }
-        } elseif ($item_name == do_lang('shopping:CART_ORDER', $purchase_id)) { // Cart orders have special support for tracking the order status
+        } elseif ((addon_installed('shopping')) && ($item_name == do_lang('shopping:CART_ORDER', $purchase_id))) { // Cart orders have special support for tracking the order status
             $found['ORDER_STATUS'] = 'ORDER_STATUS_awaiting_payment';
 
             if ($found[2] != '') {
@@ -535,6 +538,9 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
         }
 
         // Pending transactions stop here
+        if ((get_page_name() == 'purchase') || (get_page_name() == 'shopping')) {
+            return null;
+        }
         fatal_ipn_exit(do_lang('TRANSACTION_NOT_COMPLETE', $type_code . ':' . strval($purchase_id), $payment_status), true);
     }
 
@@ -661,7 +667,7 @@ function make_cart_payment_button($order_id, $currency)
 
     if (!method_exists($object, 'make_cart_transaction_button')) {
         $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
-        return $object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), strval($order_id), $amount, $currency);
+        return $object->make_transaction_button('cart_orders', do_lang('shopping:CART_ORDER', strval($order_id)), strval($order_id), $amount, $currency);
     }
 
     return $object->make_cart_transaction_button($items, $currency, $order_id);

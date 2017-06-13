@@ -189,9 +189,6 @@ class Module_vforums
         // NB: "t_cache_num_posts<5" above is an optimisation, to do accurate detection of "only poster" only if there are a handful of posts (scanning huge topics can be slow considering this is just to make a subquery pass). We assume that a topic is not consisting of a single user posting more than 5 times (and if so we can consider them a spammer so rule it out)
 
         $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top';
-        if (strpos(get_db_type(), 'mysql') !== false) {
-            $initial_table .= ' FORCE INDEX (unread_forums)';
-        }
 
         return $this->_vforum($title, $condition, 'last_post', true, null, $initial_table);
     }
@@ -210,8 +207,8 @@ class Module_vforums
         $title = do_lang_tempcode('INVOLVED_TOPICS');
 
         $_condition = 'pos.p_poster=' . strval(get_member());
-        if ($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 1000) { // Too many posts, so make time-sensitive
-            $_condition .= ' AND pos.p_time>' . strval(time() - 60 * 60 * 24 * 90);
+        if (($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 5000) && (get_value('innodb') !== '1')) { // Too many posts, so make time-sensitive
+            $_condition .= ' AND pos.p_time>' . strval(time() - 60 * 60 * 24 * 365);
         }
         $condition = array($_condition);
 
@@ -221,7 +218,15 @@ class Module_vforums
         }
         $initial_table .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id';
 
-        return $this->_vforum($title, $condition, 'post_time_grouped', true, null, $initial_table, ',MAX(pos.p_time) AS p_time');
+        if (can_arbitrary_groupby()) {
+            $extra_select = ',MAX(pos.p_time) AS p_time';
+            $order = 'post_time_grouped';
+        } else {
+            $extra_select = '';
+            $order = 'post_time';
+        }
+
+        return $this->_vforum($title, $condition, $order, true, null, $initial_table, $extra_select);
     }
 
     /**
@@ -303,12 +308,15 @@ class Module_vforums
             if (!is_guest()) {
                 $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (top.id=l.l_topic_id AND l.l_member_id=' . strval(get_member()) . ')';
             }
+            $query_cnt = $query;
+            $_query_cnt = $query;
             if (!multi_lang_content()) {
                 $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=top.t_cache_first_post_id';
             }
-            $query .= ' WHERE ((' . $_condition . ')' . $extra . ') AND t_forum_id IS NOT NULL';
-            $query_cnt = $query;
-            $_query_cnt = $query;
+            $where = ' WHERE ((' . $_condition . ')' . $extra . ') AND t_forum_id IS NOT NULL';
+            $query .= $where;
+            $query_cnt .= $where;
+            $_query_cnt .= $where;
             $query .= $sql_sup;
             if ((can_arbitrary_groupby()) && (!is_null($initial_table))) {
                 $query .= ' GROUP BY top.id';

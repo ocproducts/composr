@@ -266,7 +266,7 @@ function extract_html_body($html)
 function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellipses = false, $grammar_completeness_tolerance = 0.0)
 {
     $html = preg_replace('#<\!--.*($|-->)#Us', '', $html); // Strip comments
-    $html = preg_replace('#\s+#', ' ', $html); // Remove double spaces
+    $html = preg_replace('#[ \t]+#', ' ', $html); // Remove double spaces
 
     // Sort out the negative offset possibility
     if ($from < 0) {

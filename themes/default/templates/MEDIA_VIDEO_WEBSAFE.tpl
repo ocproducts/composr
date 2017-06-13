@@ -30,11 +30,13 @@
 			jwplayer('{$GET%,player_id}').setup({
 				{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
 				{+START,IF_NON_EMPTY,{WIDTH}}
-					width: {$MIN%,950,{WIDTH}},
+					//width: {$MIN%,950,{WIDTH}},
 				{+END}
 				{+START,IF_NON_EMPTY,{HEIGHT}}
-					height: {$MIN%,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}},
+					//height: {$MIN%,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}},
 				{+END}
+				width: '100%',
+				aspectratio: '{WIDTH%}:{HEIGHT%}',
 
 				autostart: false,
 				{+START,IF_NON_EMPTY,{LENGTH}}

@@ -349,7 +349,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         foreach ($rows as $r) {
             $edit_link = build_url($url_map + array('id' => $r['id']), '_SELF');
 
-            $fields->attach(results_entry(array(get_translated_text($r['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']), $r['s_cost'], do_lang('_LENGTH_UNIT_' . $r['s_length_units'], integer_format($r['s_length'])), cns_get_group_name($r['s_group_id']), ($r['s_enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, '#' . strval($r['id'])))), true));
+            $fields->attach(results_entry(array(get_translated_text($r['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']), $r['s_cost'], do_lang_tempcode('_LENGTH_UNIT_' . $r['s_length_units'], integer_format($r['s_length'])), cns_get_group_name($r['s_group_id']), ($r['s_enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_link, do_lang_tempcode('EDIT'), false, false, '#' . strval($r['id'])))), true));
         }
 
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
@@ -470,7 +470,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             $config_url = $_config_url->evaluate();
             $config_url .= '#group_ECOMMERCE';
 
-            $text = do_lang_tempcode('ECOM_ADDED_SUBSCRIP', escape_html($config_url));
+            $text = paragraph(do_lang_tempcode('ECOM_ADDED_SUBSCRIP', escape_html($config_url)));
         } else {
             $text = null;
         }

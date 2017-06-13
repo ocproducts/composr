@@ -82,8 +82,8 @@ class Hook_fields_content_link
      * Get some info bits relating to our field type, that helps us look it up / set defaults.
      *
      * @param  ?array $field The field details (null: new field)
-     * @param  ?boolean $required Whether a default value cannot be blank (null: don't "lock in" a new default value)
-     * @param  ?string $default The given default value as a string (null: don't "lock in" a new default value)
+     * @param  ?boolean $required Whether a default value cannot be blank (null: don't "lock in" a new default value) (may be passed as false also if we want to avoid "lock in" of a new default value, but in this case possible cleanup of $default may still happen where appropriate)
+     * @param  ?string $default The given default value as a string (null: don't "lock in" a new default value) (blank: only "lock in" a new default value if $required is true)
      * @return array Tuple of details (row-type,default-value-to-use,db row-type)
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
@@ -112,6 +112,9 @@ class Hook_fields_content_link
 
         require_code('content');
         list($title, , $info) = content_get_details($type, $ev);
+        if ($info === null) {
+            return new Tempcode();
+        }
 
         $page_link = str_replace('_WILD', $ev, $info['view_page_link_pattern']);
         $url = page_link_to_tempcode_url($page_link);
@@ -152,6 +155,9 @@ class Hook_fields_content_link
         require_code('content');
         $ob = get_content_object($type);
         $info = $ob->info();
+        if ($info === null) {
+            return new Tempcode();
+        }
         $db = $GLOBALS[(substr($info['table'], 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB'];
         $select = array();
         append_content_select_for_id($select, $info);

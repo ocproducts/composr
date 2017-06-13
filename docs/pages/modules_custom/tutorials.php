@@ -70,6 +70,9 @@ class Module_tutorials
             't_edit_date' => 'TIME',
         ));
 
+        $GLOBALS['SITE_DB']->create_index('tutorials_external', '#t_title', array('t_title'));
+        $GLOBALS['SITE_DB']->create_index('tutorials_external', '#t_summary', array('t_summary'));
+
         $GLOBALS['SITE_DB']->create_table('tutorials_external_tags', array(
             't_id' => '*AUTO_LINK',
             't_tag' => '*ID_TEXT',
@@ -260,7 +263,7 @@ class Module_tutorials
                 'url' => 'http://www.amazon.co.uk/gp/product/B000QEOWF4/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B000QEOWF4&linkCode=as2&tag=ocportal-21&linkId=H47YY5C6UVK3OT2X',
                 'author' => 'John Grant',
                 'difficulty_level' => 'novice',
-                'summary' => 'The days of the image brands are over, and ‘new marketing\' has gone mainstream. The world\'s biggest companies are pursuing a post–advertising strategy, moving away from advertising and investing in leading edge alternatives.',
+                'summary' => 'The days of the image brands are over, and \'new marketing\' has gone mainstream. The world\'s biggest companies are pursuing a post-advertising strategy, moving away from advertising and investing in leading edge alternatives.',
                 'icon' => 'tutorial_icons/book',
                 'media_type' => 'book',
                 'tags' => array('Advice & Guidance'),
@@ -280,7 +283,7 @@ class Module_tutorials
                 'url' => 'http://www.amazon.co.uk/gp/product/B0045U9W4G/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=B0045U9W4G&linkCode=as2&tag=ocportal-21&linkId=SM33YMGY2AUHREH2',
                 'author' => 'Dan M. Brown',
                 'difficulty_level' => 'expert',
-                'summary' => 'Successful web design teams depend on clear communication between developers and their clients—and among members of the development team. Wireframes, site maps, flow charts, and other design diagrams establish a common language so designers and project teams can capture ideas, track progress, and keep their stakeholders informed.',
+                'summary' => 'Successful web design teams depend on clear communication between developers and their clients -- and among members of the development team. Wireframes, site maps, flow charts, and other design diagrams establish a common language so designers and project teams can capture ideas, track progress, and keep their stakeholders informed.',
                 'icon' => 'tutorial_icons/book',
                 'media_type' => 'book',
                 'tags' => array('Design & Themeing'),
@@ -300,7 +303,7 @@ class Module_tutorials
                 'url' => 'http://www.amazon.co.uk/gp/product/1491918055/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1491918055&linkCode=as2&tag=ocportal-21',
                 'author' => 'David Sawyer McFarland',
                 'difficulty_level' => 'regular',
-                'summary' => 'CSS3 lets you create professional-looking websites, but learning its finer points can be tricky—even for seasoned web developers. This Missing Manual shows you how to take your HTML and CSS skills to the next level, with valuable tips, tricks, and step-by-step instructions.',
+                'summary' => 'CSS3 lets you create professional-looking websites, but learning its finer points can be tricky -- even for seasoned web developers. This Missing Manual shows you how to take your HTML and CSS skills to the next level, with valuable tips, tricks, and step-by-step instructions.',
                 'icon' => 'tutorial_icons/book',
                 'media_type' => 'book',
                 'tags' => array('CSS', 'Design & Themeing', 'Web standards & Accessibility'),
@@ -340,7 +343,7 @@ class Module_tutorials
                 'url' => 'http://www.amazon.co.uk/gp/product/0470223391/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=0470223391&linkCode=as2&tag=ocportal-21&linkId=SS2PC3POAQLNO6O7',
                 'author' => 'Jack Trout',
                 'difficulty_level' => 'novice',
-                'summary' => 'Differentiate or Die shows you how to differentiate your products, services, and business in order to dominate the competition. Veteran marketing guru Jack Trout uses real–world examples and his own unique insight to show you how to bind customers to your products for long–term success and loyalty.',
+                'summary' => 'Differentiate or Die shows you how to differentiate your products, services, and business in order to dominate the competition. Veteran marketing guru Jack Trout uses real-world examples and his own unique insight to show you how to bind customers to your products for long-term success and loyalty.',
                 'icon' => 'tutorial_icons/book',
                 'media_type' => 'book',
                 'tags' => array('Advice & Guidance'),
@@ -390,7 +393,7 @@ class Module_tutorials
                 'url' => 'http://www.amazon.co.uk/gp/product/1118008189/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1118008189&linkCode=as2&tag=ocportal-21&linkId=7LKAKZALMFMFERIM',
                 'author' => 'Jon Duckett',
                 'difficulty_level' => 'regular',
-                'summary' => 'A full–color introduction to the basics of HTML and CSS.',
+                'summary' => 'A full-color introduction to the basics of HTML and CSS.',
                 'icon' => 'tutorial_icons/book',
                 'media_type' => 'book',
                 'tags' => array('CSS', 'Design & Themeing', 'Web standards & Accessibility'),
@@ -400,7 +403,7 @@ class Module_tutorials
                 'url' => 'http://www.amazon.co.uk/gp/product/1449363261/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1449363261&linkCode=as2&tag=ocportal-21&linkId=VOOKS2AQ2C72NCJT',
                 'author' => 'Matthew MacDonald',
                 'difficulty_level' => 'regular',
-                'summary' => 'HTML5 is more than a markup language—it\'s a collection of several independent web standards. Fortunately, this expanded guide covers everything you need in one convenient place.',
+                'summary' => 'HTML5 is more than a markup language -- it\'s a collection of several independent web standards. Fortunately, this expanded guide covers everything you need in one convenient place.',
                 'icon' => 'tutorial_icons/book',
                 'media_type' => 'book',
                 'tags' => array('Design & Themeing', 'Web standards & Accessibility'),
@@ -460,7 +463,7 @@ class Module_tutorials
                 'url' => 'http://www.amazon.co.uk/gp/product/1449325572/ref=as_li_tl?ie=UTF8&camp=1634&creative=6738&creativeASIN=1449325572&linkCode=as2&tag=ocportal-21&linkId=NWIM4TFQSEDUYYUV',
                 'author' => 'Brett McLaughlin',
                 'difficulty_level' => 'expert',
-                'summary' => 'If you can build websites with CSS and JavaScript, this book takes you to the next level—creating dynamic, database-driven websites with PHP and MySQL.',
+                'summary' => 'If you can build websites with CSS and JavaScript, this book takes you to the next level -- creating dynamic, database-driven websites with PHP and MySQL.',
                 'icon' => 'tutorial_icons/book',
                 'media_type' => 'book',
                 'tags' => array('PHP', 'Development'),

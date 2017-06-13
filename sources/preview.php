@@ -163,7 +163,9 @@ function build_preview($multi_return = false)
                 'f_colour',
                 'f_size',
                 'http_referer',
+                'session_id',
                 'csrf_token',
+                'y' . md5(get_site_name() . ': antispam'),
             )) ||
             (strpos($key, 'hour') !== false) ||
             (strpos($key, 'access_') !== false) ||
@@ -187,6 +189,87 @@ function build_preview($multi_return = false)
             } else {
                 $key = substr($key, 14);
             }
+        }
+
+        // TODO: Do a better job with this using proper hooks, #2994
+        $fields_filter = null;
+        switch ('_WILD:' . get_page_name() . ':' . get_param_string('type', 'browse')) {
+            case '_WILD:warnings:add':
+            case '_WILD:warnings:_edit':
+                $fields_filter = array('explanation', 'message');
+                break;
+
+            case '_WILD:cms_galleries:add_category':
+            case '_WILD:cms_galleries:_edit_category':
+                $fields_filter = array('fullname', 'name', 'description');
+                break;
+
+            case '_WILD:cms_downloads:add_category':
+            case '_WILD:cms_downloads:_edit_category':
+                $fields_filter = array('category', 'description');
+                break;
+
+            case '_WILD:cms_catalogues:add_catalogue':
+            case '_WILD:cms_catalogues:_edit_catalogue':
+                $fields_filter = array('title', 'description');
+                break;
+
+            case '_WILD:cms_catalogues:add_category':
+            case '_WILD:cms_catalogues:_edit_category':
+                $fields_filter = array('title', 'description');
+                break;
+
+            case '_WILD:cms_calendar:add':
+            case '_WILD:cms_calendar:_edit':
+                $fields_filter = array('title', 'post');
+                break;
+
+            case '_WILD:admin_ecommerce:add':
+            case '_WILD:admin_ecommerce:_edit':
+                $fields_filter = array('title', 'description', 'mail_start', 'mail_end', 'mail_uhoh');
+                if (post_param_string('subject_0', '') != '') {
+                    $fields_filter = array_merge($fields_filter, array('subject_0', 'body_0'));
+                }
+                if (post_param_string('subject_1', '') != '') {
+                    $fields_filter = array_merge($fields_filter, array('subject_1', 'body_1'));
+                }
+                if (post_param_string('subject_2', '') != '') {
+                    $fields_filter = array_merge($fields_filter, array('subject_2', 'body_2'));
+                }
+                break;
+
+            case '_WILD:admin_cns_post_templates:add':
+            case '_WILD:admin_cns_post_templates:_edit':
+                $fields_filter = array('title', 'text');
+                break;
+
+            case '_WILD:admin_cns_multi_moderations:add':
+            case '_WILD:admin_cns_multi_moderations:_edit':
+                $fields_filter = array('name', 'post_text');
+                break;
+
+            case '_WILD:admin_cns_customprofilefields:add':
+            case '_WILD:admin_cns_customprofilefields:_edit':
+                $fields_filter = array('name', 'description');
+                break;
+
+            case '_WILD:admin_chat:add':
+            case '_WILD:admin_chat:_edit':
+                $fields_filter = array('room_name', 'c_welcome');
+                break;
+
+            case '_WILD:admin_awards:add':
+            case '_WILD:admin_awards:_edit':
+                $fields_filter = array('title', 'description');
+                break;
+        }
+        switch ('_WILD:' . get_page_name()) {
+            case '_WILD:recommend':
+                $fields_filter = array('subject', 'message');
+                break;
+        }
+        if (($fields_filter !== null) && (!in_array($key, $fields_filter))) {
+            $is_hidden = true;
         }
 
         if (substr($key, -4) == '_day') {

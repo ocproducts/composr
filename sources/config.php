@@ -76,19 +76,6 @@ function init__config()
 
     global $MULTI_LANG_CACHE;
     $MULTI_LANG_CACHE = null;
-
-    // Enforce XML db synching
-    global $SITE_INFO;
-    if ((get_db_type() == 'xml') && (running_script('index')) && (isset($SITE_INFO['db_chain_type'])) && (is_file(get_file_base() . '/data_custom/xml_db_import.php')) && (is_dir(get_file_base() . '/.git'))) {
-        $last_xml_import = get_value('last_xml_import');
-        $mod_time = filemtime(get_file_base() . '/.git');
-        if ((is_null($last_xml_import)) || (intval($last_xml_import) < $mod_time)) {
-            set_value('last_xml_import', strval(time()));
-
-            header('Location: ' . get_base_url() . '/data_custom/xml_db_import.php');
-            exit();
-        }
-    }
 }
 
 /**
@@ -204,7 +191,7 @@ function get_option($name, $missing_ok = false)
         }
 
         if ((running_script('upgrader')) || (running_script('execute_temp'))) {
-            return ''; // Upgrade scenario, probably can't do this robustly
+            $missing_ok = true; // Upgrade scenario, probably can't do this robustly
         }
 
         global $GET_OPTION_LOOP;
@@ -263,7 +250,7 @@ function get_option($name, $missing_ok = false)
     }
 
     // Translated...
-    $value = is_string($option['c_value_trans']) ? /*LEGACY*/$option['c_value_trans'] : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
+    $value = is_string($option['c_value_trans']) ? /*LEGACY*/get_translated_text(multi_lang_content() ? intval($option['c_value_trans']) : $option['c_value_trans']) : (is_null($option['c_value_trans']) ? '' : get_translated_text($option['c_value_trans']));
     $option['_cached_string_value'] = $value; // Allows slightly better code path next time (see "The master of redundant quick exit points")
 
     if ($CONFIG_OPTIONS_FULLY_LOADED) {
@@ -289,6 +276,9 @@ function get_value($name, $default = null, $elective_or_lengthy = false, $env_al
     if ($elective_or_lengthy) {
         static $cache = array();
         if (!array_key_exists($name, $cache)) {
+            if (!isset($GLOBALS['SITE_DB'])) {
+                return null;
+            }
             $cache[$name] = $GLOBALS['SITE_DB']->query_select_value_if_there('values_elective', 'the_value', array('the_name' => $name), '', running_script('install') || running_script('upgrader'));
         }
         return $cache[$name];
@@ -401,9 +391,15 @@ function set_value($name, $value, $elective_or_lengthy = false)
  * Delete a situational value.
  *
  * @param  ID_TEXT $name The name of the value
+ * @param  boolean $elective_or_lengthy Whether this value is an elective/lengthy one. Use this for getting & setting if you don't want it to be loaded up in advance for every page view (in bulk alongside other values), or if the value may be more than 255 characters. Performance tradeoff: frequently used values should not be elective, infrequently used values should be elective.
  */
-function delete_value($name)
+function delete_value($name, $elective_or_lengthy = false)
 {
+    if ($elective_or_lengthy) {
+        $GLOBALS['SITE_DB']->query_delete('values_elective', array('the_name' => $name), '', 1);
+        return;
+    }
+
     $GLOBALS['SITE_DB']->query_delete('values', array('the_name' => $name), '', 1);
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('VALUES');

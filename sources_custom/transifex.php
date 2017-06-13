@@ -36,6 +36,7 @@ function init__transifex()
     require_code('addons');
     require_code('lang_compile');
     require_code('lang2');
+    require_code('files');
     require_code('files2');
 
     global $OVERRIDE_PRIORITY_LANGUAGE_FILES;
@@ -488,7 +489,7 @@ function transifex_pull_script()
         } else {
             $filename = 'language-' . escape_header($lang) . '-' . get_version_branch(floatval(cms_version_number())) . '.tar';
         }
-        header('Content-Disposition: attachment; filename="' . addslashes($filename) . '"');
+        header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
         safe_ini_set('ocproducts.xss_detect', '0');
 
         require_code('tar');
@@ -601,13 +602,13 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
                 $files_str .= "\n            '" . $file . "',";
             }
 
-            $description = 'Translation into {$language_name}.
+            $description = "Translation into {$language_name}.
 
 Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings).
 
 This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases.
 
-Translations may also be downloaded directly from Transifex.';
+Translations may also be downloaded directly from Transifex.";
 
             $open = '<' . '?php';
 
@@ -754,9 +755,7 @@ END;
             $c = trim($c) . "\n\n";
 
             if ($tar_file === null) {
-                file_put_contents($full_path, $c);
-                fix_permissions($full_path);
-                sync_file($full_path);
+                cms_file_put_contents_safe($full_path, $c, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             } else {
                 tar_add_file($tar_file, $path, $c);
 
@@ -816,11 +815,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
         }
 
         if ($tar_file === null) {
-            @mkdir(dirname($trans_full_path), 0777, true);
-            fix_permissions(dirname($trans_full_path));
-            file_put_contents($trans_full_path, $c);
-            fix_permissions($trans_full_path);
-            sync_file($trans_full_path);
+            cms_file_put_contents_safe($trans_full_path, $c, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         } else {
             tar_add_file($tar_file, $trans_path, $c);
         }
@@ -858,14 +853,18 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
         }
 
         $write_out = preg_replace('#^\# .*\n#m', '', $data_a['content'] . "\n" . $data_b['content']);
+
+        // Fix some common mistakes people make
+        if ($_f == 'global') {
+            $write_out = preg_replace('#^en_left=((?!left$)(?!right$).)*$#m', 'en_left=left', $write_out);
+            $write_out = preg_replace('#^en_right=((?!right$)(?!left$).)*$#m', 'en_right=right', $write_out);
+            $write_out = preg_replace('#^dir=((?!ltr$)(?!rtl$).)*$#m', 'dir=ltr', $write_out);
+        }
+
         $c = "[strings]\n" . trim($write_out) . "\n";
 
         if ($tar_file === null) {
-            @mkdir(dirname($trans_full_path), 0777, true);
-            fix_permissions(dirname($trans_full_path));
-            file_put_contents($trans_full_path, $c);
-            fix_permissions($trans_full_path);
-            sync_file($trans_full_path);
+            cms_file_put_contents_safe($trans_full_path, $c, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         } else {
             tar_add_file($tar_file, $trans_path, $c);
         }

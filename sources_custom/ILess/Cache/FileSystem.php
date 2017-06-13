@@ -223,7 +223,7 @@ class ILess_Cache_FileSystem extends ILess_Cache
         }
 
         $data = array();
-        @flock($fp, LOCK_SH);
+        flock($fp, LOCK_SH);
         $data[self::READ_TIMEOUT] = intval(@stream_get_contents($fp, 12, 0));
         if ($type != self::READ_TIMEOUT && time() < $data[self::READ_TIMEOUT]) {
             if ($type & self::READ_LAST_MODIFIED) {
@@ -239,7 +239,7 @@ class ILess_Cache_FileSystem extends ILess_Cache
             $data[self::READ_LAST_MODIFIED] = null;
             $data[self::READ_DATA] = null;
         }
-        @flock($fp, LOCK_UN);
+        flock($fp, LOCK_UN);
         @fclose($fp);
 
         return $data;

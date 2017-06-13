@@ -52,6 +52,11 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>This is the standard for the composition of e-mails.</td>
 			<td>You don't need to know anything about MIME specifically, but a basic awareness that e-mails can have dual text and HTML versions, and contain both attachments and inline images, is useful.</td>
 		</tr>
+		<tr>
+			<td>[abbr="DomainKeys Identified Mail"][url="https://tools.ietf.org/html/rfc6376"]DKIM[/url][/abbr]</td>
+			<td>This is the standard for signing e-mails.</td>
+			<td>You don't need to know about this, unless you are configuring it to run on Composr generated e-mails.</td>
+		</tr>
 
 		<tr>
 			<th colspan="3"><em>Web</em></th>
@@ -120,7 +125,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<th colspan="3"><em>Data &amp; Feeds</em></th>
 		</tr>
 		<tr>
-			<td>[abbr="eXtensible Markup Language"][url="http://www.w3.org/TR/2008/REC-xml-20081126/"]XML[/url][/abbr] (including [abbr="Really Simple Syndication"][url="http://cyber.law.harvard.edu/rss/rss.html"]RSS[/url][/abbr], [url="http://tools.ietf.org/html/rfc4287"]Atom[/url], [abbr="Outline Processor Markup Language"][url="http://www.opml.org/spec1"]OPML[/url][/abbr], [abbr="Extensible Stylesheet Language Transformations"][url="http://www.w3.org/TR/xslt20/"]XSLT[/url][/abbr], [url="http://www.sitemaps.org/"]XML Sitemaps[/url] and [url="https://support.google.com/news/publisher/answer/74288?hl=en"]Google News Sitemaps[/url], and use in [abbr="Asynchronous JavaScript and XML"]AJAX[/abbr])</td>
+			<td>[abbr="eXtensible Markup Language"][url="http://www.w3.org/TR/2008/REC-xml-20081126/"]XML[/url][/abbr] (including [abbr="Really Simple Syndication"][url="http://cyber.law.harvard.edu/rss/rss.html"]RSS[/url][/abbr], [url="http://tools.ietf.org/html/rfc4287"]Atom[/url], [abbr="Outline Processor Markup Language"][url="http://www.opml.org/spec1.html"]OPML[/url][/abbr], [abbr="Extensible Stylesheet Language Transformations"][url="http://www.w3.org/TR/xslt20/"]XSLT[/url][/abbr], [url="http://www.sitemaps.org/"]XML Sitemaps[/url] and [url="https://support.google.com/news/publisher/answer/74288?hl=en"]Google News Sitemaps[/url], and use in [abbr="Asynchronous JavaScript and XML"]AJAX[/abbr])</td>
 			<td>XML is a standard for structuring data, used for many web formats that Composr supports, as well as a few configurable parts of Composr. RSS, Atom and OPML are feed technology, to export Composr news. XSLT is a technology we use to make RSS, Atom and OPML display in a web browser.</td>
 			<td>You won't need much awareness of XML unless doing particular advanced configuration.</td>
 		</tr>
@@ -238,11 +243,11 @@ Composr itself provides the following protocols and languages...
 		</tr>
 		<tr>
 			<td>[page="_SELF:tut_filtercode"]Filtercode[/page]</td>
-			<td>For filtering results, simpler than SQL.</td>
+			<td>For filtering results via property querying, simpler than SQL.</td>
 		</tr>
 		<tr>
 			<td>[page="_SELF:tut_selectcode"]Selectcode[/page]</td>
-			<td>For selecting particular results based on ID/category/tree-position.</td>
+			<td>For selecting particular results via ID, ID range, category, or tree-position.</td>
 		</tr>
 		<tr>
 			<td>Language packs</td>
@@ -1215,7 +1220,7 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  - http://www.html.net/
  - http://www.tizag.com/
  - http://www.davesite.com/webstation/html/
- - http://www.w3schools.com/xhtml/default.asp
+ - http://www.w3schools.com/html/default.asp
  - http://jarmin.com/accessibility/index.html
  - http://en.wikiversity.org/wiki/Web_design
 
@@ -1241,11 +1246,8 @@ It should also be stressed as a last point that [b]JavaScript is not secure[/b];
  - http://www.tizag.com/
  - http://javascriptkit.com/
  - https://developer.mozilla.org/en-US/docs/Web/JavaScript
- - http://www.devguru.com/technologies/javascript/home.asp
+ - http://www.devguru.com/content/technologies/javascript/home.html
  - http://www.w3schools.com/js/default.asp
- - http://www.w3schools.com/htmldom/default.asp
- - http://www.w3schools.com/dhtml/default.asp
- - http://www.w3schools.com/dom/default.asp
  - https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
  - https://jquery.com/
 

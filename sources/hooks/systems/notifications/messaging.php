@@ -44,7 +44,7 @@ class Hook_notification_messaging extends Hook_notification__Staff
     public function list_handled_codes()
     {
         $list = array();
-        $list['messaging'] = array(do_lang('notifications:MESSAGES'), do_lang('messaging:NOTIFICATION_TYPE_messaging'));
+        $list['messaging'] = array(do_lang('MESSAGES'), do_lang('messaging:NOTIFICATION_TYPE_messaging'));
         return $list;
     }
 }

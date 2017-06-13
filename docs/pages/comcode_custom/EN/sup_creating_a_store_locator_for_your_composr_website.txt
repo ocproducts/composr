@@ -6,7 +6,7 @@ Composr has a huge number of possibilities available via its impressive choice o
 
 [title="2"]Setting up the catalogue of stores[/title]
 
-The first part of this is to set up a catalogue within your install which will include all of the information relating to your stores and the positioning data for each store. To be able to fill in the data you will need to know both the longitude and latitude coordinates of each store. To find this you can use this free website. [url="http://itouchmap.com/latlong.html"]http://itouchmap.com/latlong.html[/url].
+The first part of this is to set up a catalogue within your install which will include all of the information relating to your stores and the positioning data for each store. To be able to fill in the data you will need to know both the longitude and latitude coordinates of each store. To find this you can use this free website. [url="https://itouchmap.com/latlong.html"]https://itouchmap.com/latlong.html[/url].
 
 I will go through the minimum for creating a new catalogue for your store locator. You can add as many fields to the information as you like but there are too many field option types to cover in this tutorial!
 

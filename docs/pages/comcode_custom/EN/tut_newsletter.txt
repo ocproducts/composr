@@ -14,7 +14,7 @@ Think carefully about how you wish to mix news, forum announcements or forum new
 
 Newsletter subscription is distinct from membership, in that a subscription is solely tied to an e-mail address, and there is no formal tie between a subscription and a member account, and vice versa. This said, the newsletter subscription has special support for sending out newsletters to usergroup members regardless of whether they have specifically subscribed to a newsletter (it only shows usergroups that have at least one member in them with a configured e-mail address).
 
-If you only ever e-mail members, it is better to ask them to join target usergroups rather than target newsletters.
+If you only ever e-mail members, it is better to ask them to join target usergroups rather than target newsletters. i.e. You may be best off never asking users to join a newsletter directly.
 
 [title="3"]Multiple newsletters and Interest levels[/title]
 
@@ -194,9 +194,9 @@ Note how the example includes the [tt]html[/tt] tag, etc -- it is not a snippet,
 
 You have the following template variables available to you (beyond all the default capabilities of Comcode):
  - [b]title[/b], The subject line of the e-mail (and also the equivalent of [tt]{TITLE}[/tt] in the [tt]MAIL.tpl[/tt] template)
- - [b]forename[/b], The forename of the subscriber (may be blank if it is not known)
- - [b]surname[/b], The surname of the subscriber (may be blank if it is not known)
- - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER[/tt] language string -- depending on what data is available on the reader)
+ - [b]forename[/b], The forename (first name) of the subscriber (may be blank if it is not known)
+ - [b]surname[/b], The surname (last name) of the subscriber (may be blank if it is not known)
+ - [b]name[/b], The full name of the subscriber (either a combination of forename and surname, the members username, or the [tt]NEWSLETTER_SUBSCRIBER_DEFAULT_NAME[/tt] language string -- depending on what data is available on the reader)
  - [b]member_id[/b], The member ID of the subscriber, or blank if there is no discerned member ID
  - [b]email_address[/b], The e-mail address of the subscriber
  - [b]sendid[/b], A special code identifying the subscriber (starts with [tt]m[/tt] if it is a member, or [tt]n[/tt] if it is a newsletter subscriber)

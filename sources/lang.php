@@ -132,7 +132,7 @@ function lang_load_runtime_processing()
 
         $path = get_custom_file_base() . '/caches/lang/_runtime_processing.lcd';
         if (is_file($path)) {
-            $LANG_RUNTIME_PROCESSING = @unserialize(file_get_contents($path));
+            $LANG_RUNTIME_PROCESSING = @unserialize(cms_file_get_contents_safe($path));
             if ($LANG_RUNTIME_PROCESSING !== false) {
                 $needs_compiling = false;
             }
@@ -140,9 +140,9 @@ function lang_load_runtime_processing()
 
         if ($needs_compiling) {
             require_code('lang_compile');
+            require_code('files');
             $LANG_RUNTIME_PROCESSING = get_lang_file_section(user_lang(), null, 'runtime_processing');
-            @file_put_contents($path, serialize($LANG_RUNTIME_PROCESSING));
-            fix_permissions($path);
+            cms_file_put_contents_safe($path, serialize($LANG_RUNTIME_PROCESSING), FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
         }
     }
 }
@@ -486,7 +486,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
     }
 
     if ($PAGE_CACHE_LAZY_LOAD) {
-        $support_smart_decaching = support_smart_decaching();
+        $support_smart_decaching = support_smart_decaching(true);
         if ($support_smart_decaching) {
             $cache_path = $cfb . '/caches/lang/' . $lang . '/' . $codename . '.lcd';
             $lang_file_default = $fb . '/lang/' . $lang . '/' . $codename . '.ini';
@@ -567,7 +567,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
         }
 
         if ((is_file($cache_path)) && ((!is_file($lang_file)) || ((@/*race conditions*/filemtime($cache_path) > filemtime($lang_file)) && (@/*race conditions*/filemtime($cache_path) > filemtime($lang_file_default))))) {
-            $tmp = @file_get_contents($cache_path);
+            $tmp = @cms_file_get_contents_safe($cache_path);
             if ($tmp != '') {
                 $unserialized = @unserialize($tmp);
                 if ($unserialized !== false) {
@@ -611,7 +611,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
  */
 function require_all_lang($lang = null, $only_if_for_lang = false)
 {
-    $support_smart_decaching = support_smart_decaching();
+    $support_smart_decaching = support_smart_decaching(true);
 
     if (is_null($lang)) {
         $lang = user_lang();
@@ -639,31 +639,6 @@ function require_all_lang($lang = null, $only_if_for_lang = false)
     if ($support_smart_decaching && has_caching_for('block')) {
         disable_smart_decaching_temporarily(); // Too many file checks doing this
     }
-}
-
-/**
- * Convert the specified language string ID to the default content, and return the language key.
- *
- * @param  ID_TEXT $field_name The field name
- * @param  ID_TEXT $code The language string ID
- * @param  boolean $comcode Whether the given codes value is to be parsed as Comcode
- * @param  integer $level The level of importance this language string holds
- * @return array The language string ID save fields
- */
-function lang_code_to_default_content($field_name, $code, $comcode = false, $level = 2)
-{
-    $insert_map = insert_lang($field_name, do_lang($code), $level, null, $comcode);
-    if (multi_lang_content()) {
-        $langs = find_all_langs();
-        foreach ($langs as $lang => $lang_type) {
-            if ($lang != user_lang()) {
-                if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) {// Make sure it's a reasonable looking pack, not just a stub (Google Translate addon can be made to go nuts otherwise)
-                    insert_lang($field_name, do_lang($code, '', '', '', $lang), $level, null, true, $insert_map[$field_name], $lang);
-                }
-            }
-        }
-    }
-    return $insert_map;
 }
 
 /**
@@ -1354,6 +1329,43 @@ function get_ordinal_suffix($index)
         $abbreviation = $ends[$index % 10];
     }
     return $abbreviation;
+}
+
+/**
+ * Start locking and get faux auto-increment ID for inserting into a table.
+ *
+ * @param  object $connection Database connection to use
+ * @param  ?integer $id ID number (returned by reference) (null: just do normal auto-increment)
+ * @param  boolean $lock Whether locking has happened (returned by reference)
+ * @param  string $table Translate table
+ * @param  string $id_field ID field
+ */
+function table_id_locking_start($connection, &$id, &$lock, $table = 'translate', $id_field = 'id')
+{
+    if (($id === null) && (multi_lang()) && (strpos(get_db_type(), 'mysql') !== false)) { // Needed as MySQL auto-increment works separately for each combo of other key values (i.e. language in this case). We can't let a language string ID get assigned to something entirely different in another language. This MySQL behaviour is not well documented, it may work differently on different versions.
+        $connection->query('LOCK TABLES ' . $connection->get_table_prefix() . $table, null, null, true);
+        $lock = true;
+        $id = $connection->query_select_value($table, 'MAX(' . $id_field . ')');
+        $id = ($id === null) ? null : ($id + 1);
+    } else {
+        $lock = false;
+    }
+}
+
+/**
+ * End locking for inserting into a table.
+ *
+ * @param  object $connection Database connection to use
+ * @param  ?integer $id ID number (null: just do normal auto-increment)
+ * @param  boolean $lock Whether locking has happened
+ * @param  string $table Translate table
+ * @param  string $id_field ID field
+ */
+function table_id_locking_end($connection, $id, $lock, $table = 'translate', $id_field = 'id')
+{
+    if ($lock) {
+        $connection->query('UNLOCK TABLES', null, null, true);
+    }
 }
 
 /**

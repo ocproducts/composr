@@ -15,6 +15,9 @@
 
 /*EXTRA FUNCTIONS: mysqli\_.+*/
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -134,7 +137,7 @@ END;
     $results = '';
 
     // Check database
-    $prefix = preg_replace('#[^\w\_]#', '', $settings['db_prefix']);
+    $prefix = preg_replace('#[^\w]#', '', $settings['db_prefix']);
     if (file_exists($FILE_BASE . '/sources/hooks/systems/addon_registry/calendar_events.php')) {
         $multi_lang_content = isset($SITE_INFO['multi_lang_content']) ? ($SITE_INFO['multi_lang_content'] == '1') : true;
         if ($multi_lang_content) {

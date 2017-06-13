@@ -32,6 +32,10 @@ function get_news_category_image_url($nc_img)
         $image = '';
     } elseif (is_image($nc_img)) {
         $image = $nc_img;
+
+        if (url_is_local($image)) {
+            $image = get_custom_base_url() . '/' . $image;
+        }
     } else {
         $image = find_theme_image($nc_img, true);
         if (is_null($image)) {
@@ -251,7 +255,7 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
         }
         $where .= ' AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'news n LEFT JOIN ' . get_table_prefix() . 'news_category_entries ON news_entry=id' . $extra_join . ' WHERE validated=1 AND date_and_time>' . strval($updated_since) . $extra_where . ')';
     }
-    $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories c ' . $where . ' ORDER BY id');
+    $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories c ' . $where);
     if ($count > 500) { // Uh oh, loads, need to limit things more
         $where .= ' AND (nc_owner IS NULL OR nc_owner=' . strval(get_member()) . ')';
     }

@@ -56,18 +56,21 @@ class _installer_test_set extends cms_test_case
 
     public function testFullInstallSafeMode()
     {
-        $this->doHeadlessInstall(true);
-    }
+        $result = $this->doHeadlessInstall(true);
+        if (!$result) {
+            return;
+        }
 
-    public function testFullInstallNotSafeMode()
-    {
-        $this->doHeadlessInstall(false);
+        $result = $this->doHeadlessInstall(false);
+        if (!$result) {
+            return;
+        }
     }
 
     private function doHeadlessInstall($safe_mode)
     {
         $database = 'test';
-        $table_prefix = 'cms_unit_test_';
+        $table_prefix = 'cms_installer_test_';
 
         // Cleanup old install
         $tables = $GLOBALS['SITE_DB']->query('SHOW TABLES FROM ' . $database, null, null, true);
@@ -84,12 +87,19 @@ class _installer_test_set extends cms_test_case
         global $SITE_INFO;
         require_code('install_headless');
         for ($i = 0; $i < 2; $i++) { // 1st trial is clean DB, 2nd trial is dirty DB
-            $success = do_install_to($database, 'root', isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '', $table_prefix, $safe_mode);
-            $this->assertTrue($success);
+            $success = do_install_to($database, (strpos(get_db_site(), 'mysql') === false) ? get_db_site_user() : 'root', isset($SITE_INFO['mysql_root_password']) ? $SITE_INFO['mysql_root_password'] : '', $table_prefix, $safe_mode);
+            $fail_message = 'Failed on trial #' . strval($i + 1);
+            $fail_message .= ($safe_mode ? '(safe mode)' : '(no safe mode)');
+            if (!isset($_GET['debug'])) {
+                $fail_message .= ' -- append &debug=1 to the URL to get debug output';
+            }
+            $this->assertTrue($success, $fail_message);
 
             if (!$success) {
-                break; // Don't do further trials if there's an error
+                return false; // Don't do further trials if there's an error
             }
         }
+
+        return true;
     }
 }

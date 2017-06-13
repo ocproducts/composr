@@ -29,6 +29,12 @@
 		</div></div>
 	{+END}
 
+	{+START,IF_EMPTY,{ENTRIES}{CHILDREN}}
+		<p class="nothing_here">
+			{!NO_ENTRIES}
+		</p>
+	{+END}
+
 	{$REVIEW_STATUS,gallery,{CAT}}
 
 	{+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}

@@ -23,15 +23,17 @@
  */
 function chat_poller()
 {
-    define('CHAT_ACTIVITY_PRUNE', 25); // A little naughty to define this here, as already defined in chat.php
+    if (!defined('CHAT_ACTIVITY_PRUNE')) {
+        define('CHAT_ACTIVITY_PRUNE', 25); // A little naughty to define this here, as already defined in chat.php
+    }
 
     $message_id = get_param_integer('message_id', -1);
     $event_id = get_param_integer('event_id', -1);
 
     if (
         ((file_exists(get_custom_file_base() . '/data_custom/modules/chat/chat_last_full_check.dat')) && (filemtime(get_custom_file_base() . '/data_custom/modules/chat/chat_last_full_check.dat') >= time() - intval(floatval(CHAT_ACTIVITY_PRUNE) / 2.0))) && // If we've done a check within CHAT_ACTIVITY_PRUNE/2 seconds don't try again unless something is new (we do need to allow pruning to happen sometimes)
-        (($message_id != -1) && (file_exists(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat')) && (intval(file_get_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat')) <= $message_id)) &&
-        (($event_id != -1) && (file_exists(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat')) && (intval(file_get_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat')) <= $event_id))
+        (($message_id != -1) && (file_exists(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat')) && (intval(/*cms_file_get_contents_safe not available yet*/file_get_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_msg.dat')) <= $message_id)) &&
+        (($event_id != -1) && (file_exists(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat')) && (intval(/*cms_file_get_contents_safe not available yet*/file_get_contents(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat')) <= $event_id))
     ) {
         /*
         We do let the main code to run this at CHAT_ACTIVITY_PRUNE intervals, so no need to run the commented code below

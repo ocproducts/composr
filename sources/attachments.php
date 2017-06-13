@@ -55,7 +55,7 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
     $attributes['wysiwyg_editable'] = ($tag == 'attachment_safe') ? '1' : '0';
     $attributes['filename'] = $attachment_row['a_original_filename'];
     if ((!array_key_exists('mime_type', $attributes)) || ($attributes['mime_type'] == '')) {
-        $attributes['mime_type'] = get_mime_type(get_file_extension($attachment_row['a_original_filename']), $as_admin || has_privilege($source_member, 'comcode_dangerous'));
+        $attributes['mime_type'] = get_mime_type(get_file_extension($attachment_row['a_original_filename']), true);
     }
 
     // Work out description
@@ -80,6 +80,11 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         } else {
             $attributes['num_downloads'] = symbol_tempcode('ATTACHMENT_DOWNLOADS', array(strval($attachment_row['id']), '0'));
         }
+
+        if ($is_dat) {
+            $url_safe = $url->evaluate(); // We can't show file-path to a .dat, can't be downloaded and looks ugly
+        }
+
         $keep = symbol_tempcode('KEEP');
         $url->attach($keep);
         if (get_option('anti_leech') == '1') {
@@ -109,7 +114,8 @@ function render_attachment($tag, $attributes, $attachment_row, $pass_id, $source
         $source_member,
         MEDIA_TYPE_ALL,
         ((array_key_exists('type', $attributes)) && ($attributes['type'] != '')) ? $attributes['type'] : null,
-        $attachment_row['a_url']
+        $attachment_row['a_url'],
+        $attachment_row['a_original_filename']
     );
     if (is_null($ret)) {
         $ret = do_template('WARNING_BOX', array('_GUID' => '1e8a6c605fb61b9b5067a9d627506654', 'WARNING' => do_lang_tempcode('comcode:INVALID_ATTACHMENT')));
@@ -229,14 +235,14 @@ function attachments_script()
     if ((strpos($original_filename, "\n") !== false) || (strpos($original_filename, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
-    header('Content-Disposition: inline; filename="' . escape_header($original_filename) . '"');
+    header('Content-Disposition: inline; filename="' . escape_header($original_filename, true) . '"');
 
     // Is it non-local? If so, redirect
     if (!url_is_local($full)) {
         if ((strpos($full, "\n") !== false) || (strpos($full, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        header('Location: ' . str_replace("\r", '', str_replace("\n", '', $full)));
+        header('Location: ' . escape_header($full));
         return;
     }
 
@@ -296,7 +302,7 @@ function attachments_script()
     error_reporting(0);
 
     if ($from == 0) {
-        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=(the_value+' . strval($size) . ') WHERE the_name=\'download_bandwidth\'', 1);
+        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=' . db_cast('(' . db_cast('the_value', 'INT') . '+' . strval($size) . ')', 'CHAR') . ' WHERE the_name=\'download_bandwidth\'', 1);
     }
 
     safe_ini_set('ocproducts.xss_detect', '0');

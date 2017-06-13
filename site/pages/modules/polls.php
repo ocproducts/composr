@@ -263,7 +263,7 @@ class Module_polls
      */
     public function view_polls()
     {
-        $content = do_block('main_multi_content', array('param' => 'poll', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'recent', 'max' => '20', 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'block_id' => 'module', 'guid' => 'module'));
+        $content = do_block('main_multi_content', array('param' => 'poll', 'efficient' => '0', 'zone' => get_zone_name(), 'sort' => 'recent', 'max' => '20', 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'block_id' => 'module', 'guid' => 'module'));
 
         return do_template('PAGINATION_SCREEN', array('_GUID' => 'bed3e31c98b35fea52a991e381e6cfaa', 'TITLE' => $this->title, 'CONTENT' => $content));
     }
@@ -276,7 +276,6 @@ class Module_polls
     public function view()
     {
         $id = $this->id;
-        $_GET['poll_id'] = strval($id);
         $myrow = $this->myrow;
         $_title = $this->_title;
 
@@ -319,7 +318,7 @@ class Module_polls
         }
 
         // Load poll
-        $poll_details = do_block('main_poll');
+        $poll_details = do_block('main_poll', array('param' => strval($id)));
 
         // Render
         return do_template('POLL_SCREEN', array(

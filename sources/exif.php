@@ -142,6 +142,7 @@ function get_exif_image_caption($path, $filename)
     }
 
     $file_pointer = fopen($path, 'rb');
+    flock($file_pointer, LOCK_SH);
 
     if (($comments == '') && ($file_pointer !== false)) { // Attempt XMP
         $file_cap100 = fread($file_pointer, 102400); // Read first 100k
@@ -172,7 +173,9 @@ function get_exif_image_caption($path, $filename)
                 }
             }
         }
-
+    }
+    if ($file_pointer !== false) {
+        flock($file_pointer, LOCK_UN);
         fclose($file_pointer);
     }
     if ($comments == '') { // If XMP fails, attempt EXIF
@@ -249,6 +252,10 @@ function get_exif_image_caption($path, $filename)
 function store_exif($content_type, $content_id, $exif, $map = null)
 {
     require_code('fields');
+
+    if (!addon_installed('catalogues')) {
+        return;
+    }
 
     if (!has_tied_catalogue($content_type)) {
         return;

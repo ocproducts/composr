@@ -29,7 +29,7 @@ Limiting factors could be:
 
 Speed can be approximately doubled if an "[b]opcode cache[/b]" is installed as a PHP extension. These caches cache compiled PHP code so that PHP does not need to re-compile scripts on every page view. The main solutions for this are:
  - Zend OpCache (this is bundled by default in PHP 5.6 and higher, recommended)
- - APC (free)
+ - APC (free)  (or APCU compiled with APC compatibility)
  - wincache (free, Windows only)
  - xcache (free)
  - eAccelerator (free)
@@ -76,7 +76,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Avoid making very long Comcode pages if they are just going to be static for all users. Ideally for usability pages should not be very long, but there are cases where you may choose for them to be (e.g. large glossaries). You can put [tt]{$,page hint: no_smart_conversion}[/tt] into a Comcode page to prevent the WYSIWYG editor converting it to Comcode and otherwise use the Comcode [tt]html[/tt] tag to include pure HTML content.
  - If you get a lot of 404 errors, it is best to make a [b]static 404 page[/b] instead of using Composr's which can be relatively intensive. You activate a custom 404 page by putting a reference to it in the [tt].htaccess[/tt] file (our [tt]recommended.htaccess[/tt] file does this for Composr's).
  - If you are optimising your server infrastructure to be able to handle large numbers of users don't forget to change the value of the "Maximum users" config option to something much higher!
- - Even though Composr supports various database vendors it is optimised for MySQL.
+ - Even though Composr supports various database vendors it is optimised for MySQL. You should also run the latest stable version so that you benefit from all their performance optimisations.
  - Even though Composr supports various third party forums it is optimised for Conversr.
  - Servers may have incorrectly firewalled DNS resolution, in which case the Composr "Spammer checking level" setting must be set to "Never" to avoid a 28 second timeout happening on each anti-spammer check.
  - If your website doesn't need to be able to run without a wider Internet connection (i.e. isn't an Intranet), then you could blank out any of the unmodified JavaScript libraries Composr includes (e.g. jQuery) and instead include references to a JavaScript CDN via direct includes in the [tt]HTML_HEAD.tpl[/tt] template.
@@ -88,9 +88,12 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - Enable the "Gzipped output" option. Unless you're using Cloudflare's optimisation features, in which case disable it so Cloudflare can do that instead.
  - Sometimes you may be flooded with random traffic. For example, the chinese "great firewall" has been observed to randomly reroute traffic to avoid it reaching certain sites. If this happens, you may want to use a [tt].htaccess[/tt] file to spot undesired request patterns and terminate those requests.
  - Don't allow thousands of posts in forum topics, as navigating within becomes very inefficient for the database.
- - Make sure PHP was not compiled with [tt]--disable-ctype[/tt]
- - You can add [tt]{$,Quick Cache}[/tt] into Comcode pages to enable the equivalent of quick block caching for that page
- - You can edit the [tt]sessions[/tt] table to be of type [tt]HEAP[/tt], which will have it stored in memory rather than disk (it has no need to be saved to disk permanently)
+ - Make sure PHP was not compiled with [tt]--disable-ctype[/tt].
+ - You can add [tt]{$,Quick Cache}[/tt] into Comcode pages to enable the equivalent of quick block caching for that page.
+ - You can edit the [tt]sessions[/tt] table to be of type [tt]HEAP[/tt], which will have it stored in memory rather than disk (it has no need to be saved to disk permanently).
+ - Avoid very long forum topics -- split them up if they get too long. This is because jumping to the latest post has to search back through all posts in the topic to work out pagination positioning. Additionally just going deep into the topic uses a lot of resources for the same kind of reason.
+ - If you have large numbers of topics then consider deleting topics that have little value.
+ - MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
 
 [title="2"]Persistent cache[/title]
 
@@ -182,6 +185,37 @@ CloudLinux also tracks average CPU, but this is less of an issue because the ave
 Webhosts may automatically produce warnings based on the CloudLinux maximums getting hit, or even automatic suspensions. At best, sites will automatically have their CPU kept to the configured maximum.
 
 cPanel users will find a resource usage graph is made available. Note that the 100% line on this graph represents 100% of the configured limit, not 100% of a CPU core or of combined CPU. The average and maximum lines are scaled proportional to this configured limit also. This will confuse you if you aren't aware of it, because everywhere else lve is configured and monitored in terms of percentage of total capacity.
+
+[title="2"]Database backups[/title]
+
+You may have some kind of script that does database backups. Follows is some advice for that script...
+
+[list="1"]
+[*] Call [tt]mysqldump[/tt] with the [tt]--skip-lock-tables --quick --lock-tables=false[/tt] parameters. In MySQL 5.7+ there is a [tt]mysqlpump[/tt] command, which is an alternative to [tt]mysqldump[/tt]. It is more efficient and doesn't need tuning as much.
+
+[*] Do not backup the contents of certain volatile/large/non-important tables. For [tt]mysqldump[/tt] use multiple [tt]--ignore-table=database.table[/tt] parameters (you cannot ommit the database name in this syntax). For [tt]mysqlpump[/tt] use a single [tt]--exclude-tables=table1,table2,table3[/tt] style parameter.
+The tables:
+ - [tt]cache[/tt]
+ - [tt]cached_comcode_pages[/tt]
+ - [tt]captchas[/tt]
+ - [tt]cron_caching_requests[/tt]
+ - [tt]post_tokens[/tt]
+ - [tt]messages_to_render[/tt]
+ - [tt]ip_country[/tt]
+ - [tt]sessions[/tt]
+ - [tt]stats[/tt]
+ - [tt]temp_block_permissions[/tt]
+ - [tt]url_title_cache[/tt]
+ - [tt]urls_checked[/tt]
+ - [tt]digestives_tin[/tt]
+(put the table prefix in front of these names of course)
+
+[*] Run the backup at a time when nobody is accessing the site.
+
+[*] Avoid backing up test databases, there's no need to stress your machine load to back up what does not need to be backed up.
+
+[*] Consider a professional backup solution. If you have a large site, any amount of load peaking and row locking could cause major issues, so consider investing in a MySQL/disk backup solution that is smarter.
+[/list]
 
 [title="2"]PHP time limit[/title]
 
@@ -400,6 +434,25 @@ It is advised to not set replication for the Composr [tt]sessions[/tt] table, as
 
 Round-Robin DNS could be used to choose a frontend server from the farm randomly, or some other form of load balancing such as one based on a reverse proxy server.
 
+[title="3"]Reverse proxying notes[/title]
+
+If you are using a reverse proxy then it's important PHP sees the correct IP addresses of end-users, not your proxy server.
+A solution is to set PHP's [tt]auto_prepend_file[/tt] option to a script like the following:
+[code="PHP"]
+<?php
+
+if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	$_SERVER['HTTP_X_FORWARDED_FOR'] = '';
+}
+[/code]
+This assumes that the server is only accessible from your reverse proxy. If not, you need to white-list the [tt]$_SERVER['REMOTE_ADDR'][/tt] values that may trust the [tt]$_SERVER['HTTP_X_FORWARDED_FOR'][/tt] setting.
+
+Some web server configurations don't appear to support [tt]auto_prepend_file[/tt], in which case you can include by referencing it in [tt]_config.php[/tt]:
+[code="PHP"]
+require(__DIR__ . '/_reverse_proxy_fix.php');
+[/code]
+
 [title="3"]Geographic distribution of servers[/title]
 
 Some people with very ambitious goals want to have multiple servers dotted around the world. This requires some custom programming but the developers have studied the scenario and can role out solutions to clients if required. Our solution would involve priority-based geo-DNS resolution coupled with a reverse proxy server to also cover fail-over scenarios. The custom programming to implement this is in setting up the complex network infrastructure as well as implementing ID randomisation instead of key auto-incrementing to avoid conflicts (across distances replication can not be set to be instant).
@@ -514,6 +567,11 @@ Web browsers are starting to support link preloading. If you have a situation wh
 A developer can run a profiler to work out bottlenecks in code, and decide optimisations.
 For hard-core programming, xdebug would be used. However, you can also run profiling on a live site using Composr's built-in profiler. This is enabled via a hidden option (described in the Code Book, and comments in [tt]sources/profiler.php[/tt]).
 
+If you have the stats addon you can also see what percentage of clock time each page is running for using this query:
+[code="SQL"]
+SELECT the_page,SUM(milliseconds),SUM(milliseconds)/((SELECT config_value FROM ocp_config WHERE the_name='stats_store_time')*24*60*60*1000)*100 FROM ocp_stats GROUP BY the_page ORDER BY SUM(milliseconds);
+[/code]
+
 [title="2"]Calculating hosting requirements[/title]
 
 This section contains a simple methodology with made up figures...
@@ -547,5 +605,6 @@ Find the hooks that run by looking in [tt]sources/hooks/systems/cron[/tt].
  - [page="_SEARCH:tut_google_appengine"]Installing on Google App Engine[/page]
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
  - https://www.woorank.com
+ - https://compo.sr/tracker/tag_view_page.php?tag_id=16
 
 {$SET,tutorial_tags,Performance,textbased_persistent_caching,cloudinary,failover,hphp_buildkit,Maintenance,Development,Power tools,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr is very heavily optimised for high performance out-of-the-box, but here are some advanced performance tips.}[block]main_tutorial_rating[/block]

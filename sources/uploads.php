@@ -522,15 +522,18 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
                 } else {
                     $ext = '';
                 }
-                $thumb_filename = preg_replace('#[^\w\.]#', 'x', basename($url[0]));
+                $thumb_filename = preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', basename($url[0]));
                 $place = $thumb_folder_full . '/' . $thumb_filename . $ext;
                 $i = 2;
                 while (file_exists($place)) {
-                    $thumb_filename = strval($i) . preg_replace('#[^\w\.]#', 'x', basename($url[0]));
+                    $thumb_filename = strval($i) . preg_replace('#[^' . URL_CONTENT_REGEXP . '\.]#', 'x', basename($url[0]));
                     $place = $thumb_folder_full . '/' . $thumb_filename . $ext;
                     $i++;
                 }
-                file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
+                if (@file_put_contents($place, '') === false) { // Lock it in ASAP, to stop race conditions
+                    intelligent_write_error($place);
+                }
+                sync_file($place);
                 $url_full = url_is_local($url[0]) ? get_custom_base_url() . '/' . $url[0] : $url[0];
 
                 convert_image($url_full, $place, -1, -1, intval(get_option('thumb_width')), true, null, false, $only_make_smaller);
@@ -609,6 +612,16 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
     if (($url[0] != '') && (url_is_local($url[0]))) {
         $missing_ok = false;
 
+        // Check the file exists
+        if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($url[0]))) && (!$missing_ok)) {
+            if ($accept_errors) {
+                attach_message(do_lang_tempcode('MISSING_FILE'), 'warn');
+                return array('', '');
+            } else {
+                warn_exit(do_lang_tempcode('MISSING_FILE'));
+            }
+        }
+
         // Its not in the upload folder, so maybe we aren't allowed to download it
         if (
             (
@@ -635,16 +648,6 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
                 if (@strcmp(substr($shouldbe, 0, 8000), substr($actuallyis, 0, 8000)) != 0) {
                     log_hack_attack_and_exit('TRY_TO_DOWNLOAD_SCRIPT');
                 }
-            }
-        }
-
-        // Check the file exists
-        if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($url[0]))) && (!$missing_ok)) {
-            if ($accept_errors) {
-                attach_message(do_lang_tempcode('MISSING_FILE'), 'warn');
-                return array('', '');
-            } else {
-                warn_exit(do_lang_tempcode('MISSING_FILE'));
             }
         }
     }
@@ -822,7 +825,10 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
                 $place = $upload_folder_full . '/' . $filename;
                 $i++;
             }
-            file_put_contents($place, ''); // Lock it in ASAP, to stop race conditions
+            if (@file_put_contents($place, '') === false) { // Lock it in ASAP, to stop race conditions
+                intelligent_write_error($place);
+            }
+            sync_file($place);
         } else { // A result of some randomness
             $ext = get_file_extension($file);
             $ext = (($obfuscate == 2) && (!is_image($file))) ? 'dat' : get_file_extension($file);

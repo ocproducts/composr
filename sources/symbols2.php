@@ -1419,6 +1419,10 @@ function ecv2_FIND_GUID_VIA_ID($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
+    if (!addon_installed('commandr')) {
+        return $value;
+    }
+
     if (isset($param[1])) {
         require_code('resource_fs');
         $value = find_guid_via_id($param[0], $param[1]);
@@ -1448,6 +1452,10 @@ function ecv2_FIND_ID_VIA_GUID($lang, $escaped, $param)
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
+    }
+
+    if (!addon_installed('commandr')) {
+        return $value;
     }
 
     if (isset($param[0])) {
@@ -1481,6 +1489,10 @@ function ecv2_FIND_ID_VIA_LABEL($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
+    if (!addon_installed('commandr')) {
+        return $value;
+    }
+
     if (isset($param[1])) {
         require_code('resource_fs');
         $value = find_id_via_label($param[0], $param[1], array_key_exists(2, $param) ? $param[2] : null);
@@ -1510,6 +1522,10 @@ function ecv2_FIND_ID_VIA_COMMANDR_FS_FILENAME($lang, $escaped, $param)
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
+    }
+
+    if (!addon_installed('commandr')) {
+        return $value;
     }
 
     if (isset($param[1])) {
@@ -1571,6 +1587,10 @@ function ecv2_FIND_LABEL_VIA_ID($lang, $escaped, $param)
         ocp_mark_as_escaped($value);
     }
 
+    if (!addon_installed('commandr')) {
+        return $value;
+    }
+
     if (isset($param[1])) {
         require_code('resource_fs');
         $value = find_label_via_id($param[0], $param[1]);
@@ -1600,6 +1620,10 @@ function ecv2_FIND_COMMANDR_FS_FILENAME_VIA_ID($lang, $escaped, $param)
     $value = '';
     if ($GLOBALS['XSS_DETECT']) {
         ocp_mark_as_escaped($value);
+    }
+
+    if (!addon_installed('commandr')) {
+        return $value;
     }
 
     if (isset($param[1])) {
@@ -2694,7 +2718,9 @@ function ecv2_REM($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[1])) {
-        $value = strval(intval($param[0]) % intval($param[1]));
+        if (intval($param[1]) != 0) {
+            $value = strval(intval($param[0]) % intval($param[1]));
+        }
     }
 
     if ($GLOBALS['XSS_DETECT']) {
@@ -3335,8 +3361,7 @@ function ecv2_VIEWS($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[2])) {
-        $id_field = /*isset($param[4])?$param[4]:*/
-            'id'; // Not allowed on fields other than 'id', for security reasons
+        $id_field = /*isset($param[4]) ? $param[4] : */'id'; // Not allowed on fields other than 'id', for security reasons
         if (preg_match('#^\w*views\w*$#', $param[1]) != 0) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there($param[0], $param[1], array($id_field => $param[2]));
             if ($test !== null) {
@@ -3560,7 +3585,7 @@ function ecv2_DISPLAY_CONCEPT($lang, $escaped, $param)
     if (array_key_exists(0, $param)) {
         $key = $param[0];
         require_code('comcode_renderer');
-        $_key = 'concept__' . preg_replace('#[^\w_]#', '_', $key);
+        $_key = 'concept__' . preg_replace('#[^\w]#', '_', $key);
         $page_link = get_tutorial_link($_key);
         if (is_null($page_link)) {
             $temp_tpl = make_string_tempcode($key);
@@ -3931,6 +3956,29 @@ function ecv2_AUTHOR_MEMBER($lang, $escaped, $param)
             $value = strval($member_id);
         }
     }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv2_DECIMAL_POINT($lang, $escaped, $param)
+{
+    $value = '';
+
+    $locale = localeconv();
+    $value = $locale['decimal_point'];
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

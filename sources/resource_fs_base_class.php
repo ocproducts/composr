@@ -102,7 +102,7 @@ abstract class Resource_fs_base
         if (!is_null($this->folder_resource_type)) {
             $ret = array_merge($ret, is_array($this->folder_resource_type) ? $this->folder_resource_type : array($this->folder_resource_type));
         }
-        if (!is_null($this->folder_resource_type)) {
+        if (!is_null($this->file_resource_type)) {
             $ret = array_merge($ret, is_array($this->file_resource_type) ? $this->file_resource_type : array($this->file_resource_type));
         }
         return $ret;
@@ -679,7 +679,7 @@ abstract class Resource_fs_base
     protected function _create_name_from_label($label)
     {
         $name = strtolower($label);
-        $name = preg_replace('#[^\w\d\.\-]#', '_', $name);
+        $name = preg_replace('#[^\w\.\-]#', '_', $name);
         $name = preg_replace('#\_+\$#', '', $name);
         if ($name == '') {
             $name = 'unnamed';
@@ -1381,7 +1381,7 @@ abstract class Resource_fs_base
 
         $page = $cma_info['cms_page'];
         require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+        $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
         if (is_null($_overridables[0])) {
             $overridables = array();
         } else {
@@ -1510,7 +1510,7 @@ abstract class Resource_fs_base
 
         $page = $cma_info['cms_page'];
         require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+        $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
         if (is_null($_overridables[0])) {
             $overridables = array();
         } else {
@@ -1845,7 +1845,7 @@ abstract class Resource_fs_base
         // URL monikers
         if ($cma_info['support_url_monikers']) {
             $page_bits = explode(':', $cma_info['view_page_link_pattern']);
-            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_page' => $page_bits[1], 'm_resource_type' => $page_bits[2], 'm_resource_id' => $resource_id), $connection);
+            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_page' => $page_bits[1], 'm_resource_type' => isset($page_bits[2]) ? $page_bits[2] : '', 'm_resource_id' => $resource_id), $connection);
         }
 
         // Attachments
@@ -2197,6 +2197,10 @@ abstract class Resource_fs_base
      */
     protected function _custom_fields_load($type, $id)
     {
+        if (!addon_installed('catalogues')) {
+            return array();
+        }
+
         require_code('fields');
         if (!has_tied_catalogue($type)) {
             return array();
@@ -2243,6 +2247,10 @@ abstract class Resource_fs_base
      */
     protected function _custom_fields_save($type, $id, $filename, $label, $properties)
     {
+        if (!addon_installed('catalogues')) {
+            return;
+        }
+
         require_code('fields');
         if (!has_tied_catalogue($type)) {
             return;

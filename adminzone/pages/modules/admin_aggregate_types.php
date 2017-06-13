@@ -31,6 +31,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
     public $orderer = 'aggregate_label';
     public $title_is_multi_lang = false;
     public $table = 'aggregate_type_instances';
+    public $do_preview = null;
 
     public $add_one_label = null;
     public $edit_this_label = null;
@@ -388,7 +389,7 @@ class Module_admin_aggregate_types extends Standard_crud_module
             '_GUID' => '2303459e94b959d2edf8444188bbeea9',
             'TITLE' => $this->title,
             'POST_URL' => $post_url,
-            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml') ? file_get_contents(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml') : file_get_contents(get_custom_file_base() . '/data/xml_config/aggregate_types.xml'),
+            'XML' => file_exists(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml') ? cms_file_get_contents_safe(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml') : cms_file_get_contents_safe(get_file_base() . '/data/xml_config/aggregate_types.xml'),
         ));
     }
 
@@ -399,22 +400,10 @@ class Module_admin_aggregate_types extends Standard_crud_module
      */
     public function _xml()
     {
-        if (!file_exists(get_custom_file_base() . '/data_custom')) {
-            require_code('files2');
-            make_missing_directory(get_custom_file_base() . '/data_custom');
-        }
-
-        $myfile = @fopen(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml', GOOGLE_APPENGINE ? 'wb' : 'wt');
-        if ($myfile === false) {
-            intelligent_write_error(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml');
-        }
+        require_code('files');
+        $path = get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml';
         $xml = post_param_string('xml');
-        if (fwrite($myfile, $xml) < strlen($xml)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        fclose($myfile);
-        fix_permissions(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml');
-        sync_file(get_custom_file_base() . '/data_custom/xml_config/aggregate_types.xml');
+        cms_file_put_contents_safe($path, $xml, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         log_it('EDIT_AGGREGATE_TYPES');
 
@@ -467,6 +456,10 @@ class Module_admin_aggregate_types extends Standard_crud_module
      */
     public function _sync()
     {
+        if (!isset($_POST['aggregate_type'])) {
+            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('aggregate_type')));
+        }
+
         $types = $_POST['aggregate_type'];
         foreach ($types as $type) {
             resync_all_aggregate_type_instances($type);

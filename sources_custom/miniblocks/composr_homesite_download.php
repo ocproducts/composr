@@ -61,7 +61,7 @@ if (!function_exists('do_release')) {
         $url = find_script('dload', false, 1) . '?id=' . strval($id) . $keep->evaluate();
 
         require_code('version2');
-        $t = get_translated_text($myrow['name']);
+        $t = $GLOBALS['DEV_MODE'] ? $myrow['name'] : get_translated_text($myrow['name']);
         $t = preg_replace('# \(.*#', '', $t);
         $version = get_version_pretty__from_dotted(get_version_dotted__from_anything($t));
 

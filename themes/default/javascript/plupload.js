@@ -12076,9 +12076,14 @@ plupload.Uploader = function(options) {
 			} else {
 				file.loaded = offset; // reset all progress
 
+				var contentType = xhr.getResponseHeader('content-type');
+				if ((typeof contentType != 'undefined') && (contentType != null)) {
+					contentType = contentType.replace(/;.*$/, '').replace(/^.*:\s*/, '');
+				}
+
 				up.trigger('Error', {
 					code : plupload.HTTP_ERROR,
-					message : plupload.translate('HTTP Error.'),
+					message : (contentType == 'text/plain') ? xhr.responseText : plupload.translate('HTTP Error.'),
 					file : file,
 					response : xhr.responseText,
 					status : xhr.status,
@@ -13096,14 +13101,14 @@ function begin_form_uploading(e,ob,recurse)
 		{
 			if ((btn_submit.form.onsubmit) && (false===btn_submit.form.onsubmit())) return false;
 			if (!ret) return false;
-			if (!recurse) btn_submit.form.submit();
+			if (!recurse) submit_form_with_the_upload(btn_submit);
 			return true;
 		}
 
 		var ret2=ob.original_click_handler(e,ob,btn_submit.form,true);
 		if (ret2 && !ret)
 			window.fauxmodal_alert('{!IMPROPERLY_FILLED_IN^;^}');
-		if (!recurse && ret && ret2) btn_submit.form.submit();
+		if (!recurse && ret && ret2) submit_form_with_the_upload(btn_submit);
 		return ret && ret2;
 	}
 
@@ -13140,18 +13145,25 @@ function begin_form_uploading(e,ob,recurse)
 		if (typeof ob.original_click_handler=='undefined')
 		{
 			if ((btn_submit.form.onsubmit) && (false===btn_submit.form.onsubmit())) return false;
-			if (!recurse) btn_submit.form.submit();
+			if (!recurse) submit_form_with_the_upload(btn_submit);
 			return true;
 		}
 
 		if (ob.original_click_handler(e,ob,btn_submit.form,true))
 		{
-			if (!recurse) btn_submit.form.submit();
+			if (!recurse) submit_form_with_the_upload(btn_submit);
 			return true;
 		}
 	}
 
 	return false;
+}
+
+function submit_form_with_the_upload(btn_submit)
+{
+	if (btn_submit.form.target=='preview_iframe')
+		illustrate_frame_load(document.getElementById('preview_iframe'),'preview_iframe',50);
+	btn_submit.form.submit();
 }
 
 function dispatch_for_page_type(page_type,name,file_name,posting_field_name,num_files)
@@ -13340,13 +13352,13 @@ function upload_finished(ob,file,data)
 		{
 			if (ob.original_click_handler(null,ob,btn_submit.form,true))
 			{
-				btn_submit.form.submit();
+				submit_form_with_the_upload(btn_submit);
 				return true;
 			}
 		} else
 		{
 			if ((btn_submit.form.onsubmit) && (false===btn_submit.form.onsubmit())) return;
-			btn_submit.form.submit();
+			submit_form_with_the_upload(btn_submit);
 		}
 	}
 }
@@ -13721,6 +13733,9 @@ function FileProgress(file,targetID)
 		this.fileProgressElement.completed=false;
 	} else {
 		this.fileProgressElement=this.fileProgressWrapper.firstChild;
+
+		this.appear();
+
 		if (file && typeof file.name!='undefined')
 			set_inner_html(this.fileProgressElement.childNodes[1],file.name);
 	}
@@ -13752,7 +13767,7 @@ FileProgress.prototype.setError=function () {
 	this.fileProgressElement.setAttribute('aria-valuenow', '0');
 
 	var oSelf=this;
-	setTimeout(function () {
+	this.fileProgressElement.fader = setTimeout(function () {
 		oSelf.disappear();
 	},5000);
 };
@@ -13764,7 +13779,7 @@ FileProgress.prototype.setCancelled=function () {
 	this.fileProgressElement.setAttribute('aria-valuenow', '0');
 
 	var oSelf=this;
-	setTimeout(function () {
+	this.fileProgressElement.fader = setTimeout(function () {
 		oSelf.disappear();
 	},2000);
 };
@@ -13776,6 +13791,10 @@ FileProgress.prototype.setStatus=function (status) {
 FileProgress.prototype.appear=function () {
 	this.fileProgressWrapper.style.opacity=1;
 
+	if ((typeof this.fileProgressElement.fader != 'undefined') && (this.fileProgressElement.fader)) {
+		window.clearTimeout(this.fileProgressElement.fader);
+		this.fileProgressElement.fader = null;
+	}
 	this.fileProgressWrapper.style.height='';
 	this.height=this.fileProgressWrapper.offsetHeight;
 	this.opacity=100;
@@ -13809,7 +13828,7 @@ FileProgress.prototype.disappear=function () {
 
 	if (this.height>0 || this.opacity>0) {
 		var oSelf=this;
-		setTimeout(function () {
+		this.fileProgressElement.fader = setTimeout(function () {
 			oSelf.disappear();
 		},rate);
 	} else {

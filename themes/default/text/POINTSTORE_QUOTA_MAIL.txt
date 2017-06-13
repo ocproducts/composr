@@ -2,7 +2,7 @@
 
 {!EMAIL_ADDRESS@}: {EMAIL@}
 
-{!QUOTA_INCREASE@}: {QUOTA@} kilobytes
+{!QUOTA_INCREASE@}: {QUOTA@} megabytes
 
 {!CHANGE_HERE,[url="{!HERE#}"]{QUOTA_URL@}[/url]}
 

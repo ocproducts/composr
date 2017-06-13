@@ -110,7 +110,7 @@ class Module_admin
                 $this->title = get_screen_title('SETUP');
                 break;
             case 'tools':
-                $this->title = get_screen_title('menus:TOOLS');
+                $this->title = get_screen_title('TOOLS');
                 break;
             case 'security':
                 $this->title = get_screen_title('SECURITY');
@@ -154,7 +154,7 @@ class Module_admin
             case 'setup':
                 return do_next_manager_hooked('SETUP', 'menus:DOC_SETUP', 'setup');
             case 'tools':
-                return do_next_manager_hooked('menus:TOOLS', 'menus:DOC_TOOLS', 'tools');
+                return do_next_manager_hooked('TOOLS', 'menus:DOC_TOOLS', 'tools');
             case 'security':
                 return do_next_manager_hooked('SECURITY', 'menus:DOC_SECURITY', 'security');
         }
@@ -442,6 +442,29 @@ class Module_admin
                         $sup = do_lang_tempcode('LOCATED_IN', $breadcrumbs);
                         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'ec53a1d45fe6a80308bf509b896d2763', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => $sup)));
                     }
+                }
+            }
+        }
+        cms_profile_end_for('admin search: ' . $current_results_type);
+
+        // Cleanup tools
+        $current_results_type = do_lang('CLEANUP_TOOLS');
+        cms_profile_start_for('admin search: ' . $current_results_type);
+        if (($this->_section_match($section_limitations, $current_results_type)) && (has_actual_page_access(get_member(), 'admin_cleanup'))) {
+            $content[$current_results_type] = new Tempcode();
+            $hooks = find_all_hooks('systems', 'cleanup');
+            foreach (array_keys($hooks) as $hook) {
+                require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
+                $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
+                if (is_null($object)) {
+                    continue;
+                }
+                $info = $object->info(true);
+                $n = $info['title'];
+                if ($this->_keyword_match(is_object($n) ? $n->evaluate() : $n)) {
+                    $_url = build_url(array('page' => 'admin_cleanup', 'tick' => $hook), get_module_zone('admin_cleanup'));
+                    $breadcrumbs = new Tempcode();
+                    $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'fc53a1d45fe6a80308bf509b896d2763', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => '')));
                 }
             }
         }
@@ -1146,6 +1169,17 @@ class Module_admin
             return $this->search();
         }
 
-        return do_template('INDEX_SCREEN_FANCIER_SCREEN', array('_GUID' => 'b34d4765744c359a25a0b71449eafed1', 'TITLE' => $this->title, 'EMPTY' => $found_some ? null : true, 'ARRAY' => true, 'CONTENT' => $found_some ? $content : array(), 'PRE' => $pre, 'POST' => $post));
+        $javascript = 'document.getElementById(\'search_content\').value=\'' . addslashes($raw_search_string) . '\';';
+
+        return do_template('INDEX_SCREEN_FANCIER_SCREEN', array(
+            '_GUID' => 'b34d4765744c359a25a0b71449eafed1',
+            'TITLE' => $this->title,
+            'EMPTY' => $found_some ? null : true,
+            'ARRAY' => true,
+            'CONTENT' => $found_some ? $content : array(),
+            'PRE' => $pre,
+            'POST' => $post,
+            'JAVASCRIPT' => $javascript,
+        ));
     }
 }

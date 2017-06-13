@@ -87,7 +87,7 @@ class Persistent_caching_filecache
                 return null;
             }
         }
-        @flock($myfile, LOCK_SH);
+        flock($myfile, LOCK_SH);
         $contents = '';
         while (!feof($myfile)) {
             $contents .= fread($myfile, 32768);
@@ -95,7 +95,7 @@ class Persistent_caching_filecache
 
         $ret = @unserialize($contents);
 
-        @flock($myfile, LOCK_UN);
+        flock($myfile, LOCK_UN);
         fclose($myfile);
 
         $PC_FC_CACHE[$key] = $ret;
@@ -125,29 +125,10 @@ class Persistent_caching_filecache
             }
         }
 
-        $to_write = serialize($data);
-
+        require_code('files');
         $path = get_custom_file_base() . '/caches/persistent/' . md5($key) . '.gcd';
-        $myfile = @fopen($path, GOOGLE_APPENGINE ? 'wb' : 'ab');
-        if ($myfile === false) {
-            return; // Failure
-        }
-
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        if (fwrite($myfile, $to_write) !== false) {
-            // Success
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
-            fix_permissions($path);
-        } else {
-            // Failure
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
-            unlink($path);
-        }
+        $to_write = serialize($data);
+        cms_file_put_contents_safe($path, $to_write, FILE_WRITE_FIX_PERMISSIONS);
     }
 
     /**

@@ -27,20 +27,7 @@
  */
 function init__global2()
 {
-    // Fixup some inconsistencies in parameterisation on different PHP platforms. See phpstub.php for info on what environmental data we can rely on.
-    if ((!isset($_SERVER['SCRIPT_NAME'])) && (!isset($_ENV['SCRIPT_NAME']))) { // May be missing on GAE
-        if (strpos($_SERVER['PHP_SELF'], '.php') !== false) {
-            $_SERVER['SCRIPT_NAME'] = preg_replace('#\.php/.*#', '.php', $_SERVER['PHP_SELF']); // Same as PHP_SELF except without path info on the end
-        } else {
-            $_SERVER['SCRIPT_NAME'] = '/' . $_SERVER['SCRIPT_FILENAME']; // In GAE SCRIPT_FILENAME is actually relative to the app root
-        }
-    }
-    if ((!isset($_SERVER['REQUEST_URI'])) && (!isset($_ENV['REQUEST_URI']))) { // May be missing on IIS
-        $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
-        if (count($_GET) > 0) {
-            $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
-        }
-    }
+    fixup_bad_php_env_vars();
 
     safe_ini_set('log_errors', '1');
     if ((GOOGLE_APPENGINE) && (!appengine_is_live())) {
@@ -49,7 +36,7 @@ function init__global2()
     $error_log_path = get_custom_file_base() . '/data_custom/errorlog.php';
     safe_ini_set('error_log', $error_log_path);
     if (is_file($error_log_path) && filesize($error_log_path) < 17) {
-        @file_put_contents($error_log_path, "<" . "?php return; ?" . ">\n");
+        @file_put_contents($error_log_path, "<" . "?php return; ?" . ">\n", LOCK_EX);
     }
 
     global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $BROWSER_DECACHEING_CACHE, $CHARSET_CACHE, $TEMP_CHARSET_CACHE, $RELATIVE_PATH, $CURRENTLY_HTTPS_CACHE, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $BASE_URL_HTTP_CACHE, $BASE_URL_HTTPS_CACHE, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $FIND_SCRIPT_CACHE, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $JAVASCRIPT_BOTTOM, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED, $IN_SELF_ROUTING_SCRIPT;
@@ -61,10 +48,13 @@ function init__global2()
     @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
     @header('Cache-Control: no-cache, max-age=0');
     @header('Pragma: no-cache'); // for proxies, and also IE
+    if (php_function_allowed('session_cache_limiter')) {
+        @session_cache_limiter('');
+    }
 
     // Closed site message
     if ((is_file('closed.html')) && (get_param_integer('keep_force_open', 0) == 0)) {
-        if ((strpos($_SERVER['PHP_SELF'], 'upgrader.php') === false) && (strpos($_SERVER['PHP_SELF'], 'execute_temp.php') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
+        if ((strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php') === false) && (strpos($_SERVER['SCRIPT_NAME'], 'execute_temp.php') === false) && ((!isset($SITE_INFO['no_extra_closed_file'])) || ($SITE_INFO['no_extra_closed_file'] == '0'))) {
             if ((@strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
                 header('HTTP/1.0 503 Service Temporarily Unavailable');
             }
@@ -242,8 +232,8 @@ function init__global2()
     define('STATIC_CACHE__FAILOVER_MODE', 4);
 
     // Most critical things
-    require_code('web_resources');
     require_code('global3'); // A lot of support code is present in this
+    require_code('web_resources');
     if (!running_script('webdav')) {
         $http_method = cms_srv('REQUEST_METHOD');
         if ($http_method != 'GET' && $http_method != 'POST' && $http_method != 'HEAD' && $http_method != '') {
@@ -356,6 +346,9 @@ function init__global2()
     // Register Internationalisation settings
     @header('Content-type: text/html; charset=' . get_charset());
     setlocale(LC_ALL, explode(',', do_lang('locale')));
+    if (substr(strftime('%M'), 0, 2) == '??') { // Windows may do this because it can't output a utf-8 character set, so gets mangled to question marks by PHP
+        setlocale(LC_ALL, explode(',', 'en-GB.UTF-8,en_GB.UTF-8,en-US.UTF-8,en_US.UTF-8,en.UTF-8,en-GB,en_GB,en-US,en_US,en')); // The user will have to define locale_subst correctly
+    } 
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');
@@ -504,6 +497,83 @@ function init__global2()
 }
 
 /**
+ * PHP's environment can be a real mess across servers. Cleanup the best we can.
+ * See phpstub.php for info on what environmental data we can rely on.
+ * See Chris's own comments on http://php.net/manual/en/reserved.variables.server.php also
+ */
+function fixup_bad_php_env_vars()
+{
+    // We can trust these to be there
+    $script_filename = empty($_SERVER['SCRIPT_FILENAME']) ? $_ENV['SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME']; // If was not here, was added by our front-end controller script
+
+    // Now derive missing ones...
+
+    $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? (empty($_ENV['DOCUMENT_ROOT']) ? '' : $_ENV['DOCUMENT_ROOT']) : $_SERVER['DOCUMENT_ROOT'];
+    if (empty($document_root)) {
+        $document_root = '';
+
+        global $SITE_INFO;
+        if (isset($SITE_INFO['base_url'])) {
+            // Algorithm: backwards from URL-path in base URL
+            $base_url_path = str_replace('/', DIRECTORY_SEPARATOR, parse_url($SITE_INFO['base_url'], PHP_URL_PATH));
+            if (substr(get_file_base(), -strlen($base_url_path)) == $base_url_path) {
+                $document_root = substr(get_file_base(), 0, strlen(get_file_base()) - strlen($base_url_path));
+            }
+        }
+        if ($document_root == '') {
+            // Algorithm: up until a known document-root directory
+            $path_components = explode(DIRECTORY_SEPARATOR, get_file_base());
+            foreach ($path_components as $i => $path_component) {
+                $document_root .= $path_component . DIRECTORY_SEPARATOR;
+                if (in_array($path_component, array('public_html', 'www', 'webroot', 'httpdocs', 'httpsdocs', 'wwwroot', 'Documents'))) {
+                    break;
+                }
+            }
+            $document_root = substr($document_root, 0, strlen($document_root) - strlen(DIRECTORY_SEPARATOR));
+        }
+
+        $_SERVER['DOCUMENT_ROOT'] = $document_root;
+    }
+
+    $php_self = empty($_SERVER['PHP_SELF']) ? (empty($_ENV['PHP_SELF']) ? '' : $_ENV['PHP_SELF']) : $_SERVER['PHP_SELF'];
+    if ((empty($php_self)) || (/*or corrupt*/strpos($php_self, '.php') === false)) {
+        // We're really desparate if we have to derive this, but here we go
+        $_SERVER['PHP_SELF'] = '/' . preg_replace('#^' . preg_quote($document_root, '#') . '/#', '', $script_filename);
+        $path_info = empty($_SERVER['PATH_INFO']) ? (empty($_ENV['PATH_INFO']) ? '' : $_ENV['PATH_INFO']) : $_SERVER['PATH_INFO'];
+        if (!empty($path_info)) { // Add in path-info if we have it
+            $_SERVER['PHP_SELF'] .= $path_info;
+        }
+        $php_self = $_SERVER['PHP_SELF'];
+    }
+
+    if ((empty($_SERVER['SCRIPT_NAME'])) && (empty($_ENV['SCRIPT_NAME']))) {
+        $_SERVER['SCRIPT_NAME'] = preg_replace('#\.php/.*#', '.php', $php_self); // Same as PHP_SELF except without path-info on the end
+    }
+
+    if ((empty($_SERVER['REQUEST_URI'])) && (empty($_ENV['REQUEST_URI']))) {
+        if (isset($_SERVER['REDIRECT_URL'])) {
+            $_SERVER['REQUEST_URI'] = $_SERVER['REDIRECT_URL'];
+            if (strpos($_SERVER['REQUEST_URI'], '?') === false) {
+                if (count($_GET) != 0) {
+                    $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET); // Messy as rewrite URL-embedded parameters will be doubled, but if you've got a broken server don't push it to do rewrites
+                }
+            }
+        } else {
+            $_SERVER['REQUEST_URI'] = $php_self; // Same as PHP_SELF, but...
+            if (count($_GET) != 0) { // add in query string data if we have it
+                $_SERVER['REQUEST_URI'] .= '?' . http_build_query($_GET);
+            }
+
+            // ^ NB: May be slight deviation. Default directory index files not considered, i.e. index.php may have been omitted in URL
+        }
+    }
+
+    if ((empty($_SERVER['QUERY_STRING'])) && (empty($_ENV['QUERY_STRING']))) {
+        $_SERVER['QUERY_STRING'] = http_build_query($_GET);
+    }
+}
+
+/**
  * Use with register_shutdown_function to log slow URLs.
  */
 function monitor_slow_urls()
@@ -569,7 +639,9 @@ function disable_php_memory_limit()
 {
     $shl = @ini_get('suhosin.memory_limit');
     if (($shl === false) || ($shl == '') || ($shl == '0')) {
+        // Progressively relax more and more (some PHP installs may block at some point)
         safe_ini_set('memory_limit', '128M');
+        safe_ini_set('memory_limit', '256M');
         safe_ini_set('memory_limit', '-1');
     } else {
         if (is_numeric($shl)) {
@@ -804,13 +876,11 @@ function is_browser_decaching()
     }
 
     if (defined('DO_PLANNED_DECACHE')) { // Used by decache.sh
-        $config_file_orig = file_get_contents(get_file_base() . '/_config.php');
+        $config_file_orig = cms_file_get_contents_safe(get_file_base() . '/_config.php');
         $config_file = $config_file_orig;
         $config_file = rtrim(str_replace('define(\'DO_PLANNED_DECACHE\', true);', '', $config_file)) . "\n\n";
-        if (file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '_config.php', $config_file, LOCK_EX) < strlen($config_file)) {
-            file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '_config.php', $config_file_orig, LOCK_EX);
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
+        require_code('files');
+        cms_file_put_contents_safe(get_file_base() . '/_config.php', $config_file, FILE_WRITE_FIX_PERMISSIONS);
         return true;
     }
 
@@ -1095,23 +1165,76 @@ function get_site_name()
 function in_safe_mode()
 {
     global $SITE_INFO;
-    if (isset($SITE_INFO['safe_mode'])) {
+    if (!empty($SITE_INFO['safe_mode'])) {
         if (!isset($_GET['keep_safe_mode'])) {
             return ($SITE_INFO['safe_mode'] == '1'); // Useful for testing HPHP support, and generally more robust and fast
         }
     }
 
+    $backdoor_ip = ((!empty($SITE_INFO['backdoor_ip'])) && (cms_srv('REMOTE_ADDR') == $SITE_INFO['backdoor_ip']) && (cms_srv('HTTP_X_FORWARDED_FOR') == ''));
+
     global $CHECKING_SAFEMODE, $REQUIRED_CODE;
-    if (!isset($REQUIRED_CODE['lang']) || !$REQUIRED_CODE['lang']) {
-        return false; // Too early. We can get in horrible problems when doing get_member() below if lang hasn't loaded yet
-    }
-    if ($CHECKING_SAFEMODE) {
-        return false; // Stops infinite loops (e.g. Check safe mode > Check access > Check usergroups > Check implicit usergroup hooks > Check whether to look at custom implicit usergroup hooks [i.e. if not in safe mode])
+    if (!$backdoor_ip) {
+        if (!isset($REQUIRED_CODE['lang']) || !$REQUIRED_CODE['lang']) {
+            return false; // Too early. We can get in horrible problems when doing get_member() below if lang hasn't loaded yet
+        }
+        if ($CHECKING_SAFEMODE) {
+            return false; // Stops infinite loops (e.g. Check safe mode > Check access > Check usergroups > Check implicit usergroup hooks > Check whether to look at custom implicit usergroup hooks [i.e. if not in safe mode])
+        }
     }
     $CHECKING_SAFEMODE = true;
-    $ret = ((get_param_integer('keep_safe_mode', 0) == 1) && ((isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) || (!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null) || (!function_exists('get_member')) || (empty($GLOBALS['MEMBER_CACHED'])) || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))));
+    $ret = ((get_param_integer('keep_safe_mode', 0) == 1) && ($backdoor_ip || (isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) || (!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null) || (!function_exists('get_member')) || (empty($GLOBALS['MEMBER_CACHED'])) || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))));
     $CHECKING_SAFEMODE = false;
     return $ret;
+}
+
+/**
+ * Get server environment variables.
+ *
+ * @param  string $key The variable name
+ * @return string The variable value ('' means unknown)
+ */
+function cms_srv($key)
+{
+    if (isset($_SERVER[$key])) {
+        return /*stripslashes*/
+            ($_SERVER[$key]);
+    }
+    if ((isset($_ENV)) && (isset($_ENV[$key]))) {
+        return /*stripslashes*/
+            ($_ENV[$key]);
+    }
+
+    if ($key == 'HTTP_HOST') {
+        if (!empty($_SERVER['HTTP_HOST'])) {
+            return $_SERVER['HTTP_HOST'];
+        }
+        if (!empty($_ENV['HTTP_HOST'])) {
+            return $_ENV['HTTP_HOST'];
+        }
+        if (function_exists('gethostname')) {
+            return gethostname();
+        }
+        if (!empty($_SERVER['SERVER_ADDR'])) {
+            return $_SERVER['SERVER_ADDR'];
+        }
+        if (!empty($_ENV['SERVER_ADDR'])) {
+            return $_ENV['SERVER_ADDR'];
+        }
+        if (!empty($_SERVER['LOCAL_ADDR'])) {
+            return $_SERVER['LOCAL_ADDR'];
+        }
+        if (!empty($_ENV['LOCAL_ADDR'])) {
+            return $_ENV['LOCAL_ADDR'];
+        }
+        return 'localhost';
+    }
+
+    if ($key == 'SERVER_ADDR') { // IIS issue
+        return cms_srv('LOCAL_ADDR');
+    }
+
+    return '';
 }
 
 /**
@@ -1213,17 +1336,16 @@ function get_base_url($https = null, $zone_for = null)
     global $SITE_INFO;
     if ((!isset($SITE_INFO)) || (empty($SITE_INFO['base_url']))) { // Try and autodetect the base URL if it's not configured
         $domain = get_domain();
-        $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
-        $php_self = dirname(cms_srv('PHP_SELF'));
-        if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($php_self, $GLOBALS['RELATIVE_PATH']) !== false)) {
-            $php_self = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $php_self);
+        $script_name_path = dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : ''));
+        if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($script_name_path, $GLOBALS['RELATIVE_PATH']) !== false)) {
+            $script_name_path = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $script_name_path);
         } else {
             $cnt = substr_count($GLOBALS['RELATIVE_PATH'], '/');
             for ($i = 0; $i <= $cnt; $i++) {
-                $php_self = dirname($php_self);
+                $script_name_path = dirname($script_name_path);
             }
         }
-        $SITE_INFO['base_url'] = (tacit_https() ? 'https://' : 'http://') . $domain . str_replace('%2F', '/', rawurlencode($php_self));
+        $SITE_INFO['base_url'] = (tacit_https() ? 'https://' : 'http://') . $domain . str_replace('%2F', '/', rawurlencode($script_name_path));
     }
 
     // Lookup
@@ -1487,7 +1609,7 @@ function __param($array, $name, $default, $integer = false, $posted = false)
 
     $val = $array[$name];
     if (is_array($val)) {
-        $val = implode(',', $val);
+        $val = trim(implode(',', $val), ' ,');
     }
 
     static $mq = null;
@@ -1538,7 +1660,7 @@ function either_param_integer($name, $default = false)
         $ret = _param_invalid($name, $ret, true);
     }
     $reti = intval($ret);
-    if (($reti > 2147483647) || ($reti < -2147483648)) {
+    if (($reti > 2147483647) || ($reti < -2147483648)) { // TODO: #3046 in tracker
         require_code('failure');
         _param_invalid($name, null, true);
     }
@@ -1580,7 +1702,7 @@ function post_param_integer($name, $default = false)
     }
     $reti = intval($ret);
     $retf = floatval($reti);
-    if (($retf > 2147483647.0) || ($retf < -2147483648.0)) {
+    if (($retf > 2147483647.0) || ($retf < -2147483648.0)) { // TODO: #3046 in tracker
         require_code('failure');
         _param_invalid($name, null, true);
     }
@@ -1627,7 +1749,7 @@ function get_param_integer($name, $default = false, $not_string_ok = false)
     }
     $reti = intval($ret);
     $retf = floatval($reti);
-    if (($retf > 2147483647.0) || ($retf < -2147483648.0)) {
+    if (($retf > 2147483647.0) || ($retf < -2147483648.0)) { // TODO: #3046 in tracker
         require_code('failure');
         _param_invalid($name, null, false);
     }
@@ -1651,6 +1773,14 @@ function unixify_line_format($in, $desired_charset = null, $html = false, $from_
 
     if ($desired_charset === null) {
         $desired_charset = get_charset();
+    }
+
+    static $bom = null;
+    if ($bom === null) {
+        $bom = chr(0xEF) . chr(0xBB) . chr(0xBF);
+    }
+    if (substr($in, 0, 3) == $bom) {
+        $in = substr($in, 3);
     }
 
     static $from = null;

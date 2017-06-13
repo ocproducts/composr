@@ -420,10 +420,8 @@ class Module_admin_version
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 13)) {
-            if (substr(get_db_type(), 0, 5) == 'mysql') {
-                $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));
-                $GLOBALS['SITE_DB']->create_index('translate', 'decache', array('text_parsed(2)'));
-            }
+            $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));
+            $GLOBALS['SITE_DB']->create_index('translate', 'decache', array('text_parsed(2)'));
         }
 
         if ((!is_null($upgrade_from)) && ($upgrade_from >= 10) && ($upgrade_from < 14)) {
@@ -666,7 +664,7 @@ class Module_admin_version
             }
             foreach ($comcode_lang_fields as $table => $fields) {
                 foreach ($fields as $field) {
-                    $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta SET m_type=CONCAT(m_type,\'__COMCODE\') WHERE ' . db_string_equal_to('m_table', $table) . ' AND ' . db_string_equal_to('m_name', $field));
+                    $GLOBALS['SITE_DB']->query('UPDATE ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'db_meta SET m_type=' . db_function('CONCAT', array('m_type', '\'__COMCODE\'')) . ' WHERE ' . db_string_equal_to('m_table', $table) . ' AND ' . db_string_equal_to('m_name', $field));
                 }
             }
 
@@ -721,7 +719,19 @@ class Module_admin_version
 
             $GLOBALS['SITE_DB']->add_table_field('url_id_monikers', 'm_manually_chosen', 'BINARY');
             $GLOBALS['SITE_DB']->add_table_field('url_id_monikers', 'm_moniker_reversed', 'SHORT_TEXT');
-            $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'url_id_monikers SET m_moniker_reversed=REVERSE(m_moniker)');
+            if (strpos(get_db_type(), 'mysql') !== false) {
+                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'url_id_monikers SET m_moniker_reversed=REVERSE(m_moniker)');
+            } else {
+                $start = 0;
+                $max = 500;
+                do {
+                    $url_id_monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('DISTINCT m_moniker'), null, '', $max, $start);
+                    foreach ($url_id_monikers as $url_id_moniker) {
+                        $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_moniker_reversed' => strrev($url_id_moniker['m_moniker'])), array('m_moniker' => $url_id_moniker['m_moniker']));
+                    }
+                    $start += $max;
+                } while (count($url_id_monikers) == $max);
+            }
             $GLOBALS['SITE_DB']->create_index('url_id_monikers', 'uim_monrev', array('m_moniker_reversed'));
 
             $GLOBALS['SITE_DB']->alter_table_field('captchas', 'si_session_id', '*ID_TEXT');
@@ -974,6 +984,22 @@ class Module_admin_version
         }
     }
 
+    /**
+     * Find entry-points available within this module.
+     *
+     * @param  boolean $check_perms Whether to check permissions.
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     */
+    public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
+    {
+        return array(
+            'browse' => array('PROJECT_SPONSORS', 'menu/_generic_spare/6'),
+        );
+    }
+
     public $title;
 
     /**
@@ -983,6 +1009,9 @@ class Module_admin_version
      */
     public function pre_run()
     {
+        require_lang('version');
+        $this->title = get_screen_title('PROJECT_SPONSORS');
+
         return null;
     }
 
@@ -993,7 +1022,20 @@ class Module_admin_version
      */
     public function run()
     {
-        // This used to be a real module, before Composr was free
-        return new Tempcode();
+        $level = get_param_integer('level', 50);
+
+        require_code('json');
+        $patreons = json_decode(http_download_file('http://compo.sr/data_custom/patreons.php?level=' . strval($level)));
+
+        $_patreons = array();
+        foreach ($patreons as $patron) {
+            $_patreons[] = array(
+                'NAME' => $patron['name'],
+                'USERNAME' => $patron['username'],
+                'MONTHLY' => strval($patron['monthly']),
+            );
+        }
+
+        return do_template('SPONSORS_SCREEN', array('_GUID' => '504a3975e168ac7d32ed78f3fadf2cbe', 'TITLE' => $this->title, 'PATREONS' => $_patreons));
     }
 }

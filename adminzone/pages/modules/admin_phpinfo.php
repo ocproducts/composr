@@ -177,6 +177,24 @@ class Module_admin_phpinfo
         require_code('global4');
         $out .= '<p><strong>Normative performance</strong>: ' . float_format(find_normative_performance(), 0) . '%</p>';
 
+        if (function_exists('mysqli_get_server_version') && get_db_type() == 'mysqli') {
+            $__mysql_version = @mysqli_get_server_version($GLOBALS['SITE_DB']->connection_read[0]);
+            if ($__mysql_version !== false) {
+                $_mysql_version = strval($__mysql_version);
+                $mysql_version = strval(intval(substr($_mysql_version, 0, strlen($_mysql_version) - 4))) . '.' . strval(intval(substr($_mysql_version, -4, 2))) . '.' . strval(intval(substr($_mysql_version, -2, 2)));
+                $out .= '<p><strong>MySQL version</strong>: ' . $mysql_version . '</p>';
+            }
+        }
+
+        if (function_exists('pg_version') && get_db_type() == 'postgresql') {
+            $postgresql_version = @pg_version($GLOBALS['SITE_DB']->connection_read);
+            if ($postgresql_version !== false) {
+                $out .= '<p><strong>PostgreSQL server version</strong>: ' . escape_html($postgresql_version['server']) . '</p>';
+                $out .= '<p><strong>PostgreSQL client version</strong>: ' . escape_html($postgresql_version['client']) . '</p>';
+                $out .= '<p><strong>PostgreSQL protocol version</strong>: ' . escape_html($postgresql_version['protocol']) . '</p>';
+            }
+        }
+
         if (php_function_allowed('shell_exec')) {
             $commands = array(
                 'uptime',

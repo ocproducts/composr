@@ -45,7 +45,7 @@ class Mx_join extends Module_join
     {
         $redirect_url = get_value('external_join_url', null, true);
         if (!empty($redirect_url)) {
-            header('Location: ' . $redirect_url);
+            header('Location: ' . escape_header($redirect_url));
             exit();
         }
 

@@ -86,14 +86,20 @@ class Hook_addon_registry_data_mappr
      */
     public function get_description()
     {
-        return 'Shows different catalogue entries locations longitude/latitude values (the names of the fields to take longitude/latitude from are configured inside block parameters).
+        return 'Shows different catalogue entries\' longitude/latitude values as pins on a Google Map. Clicking on the pin shows the catalogue entry in a little box (as a link to the entry).
 
-The different catalogue entries are shown as pins on a Google map. Clicking on the pin shows the catalogue entry in a little box (as a link to the entry).
+You should configure the "Google Map key" option in the configuration (Admin Zone > Setup > Configuration > Feature options > Google map).
+
+The names of the fields to take longitude/latitude from are configured inside block parameters.
 
 Example:
-[code="Comcode"][block title="store locater" description="This is a Store Locater" latfield="lat" longfield="long" catalogue="stores" width="100%" height="300px" zoom="6" latitude="24.2135" longitude="-1.4654"]main_google_map[/block][/code]
+[code="Comcode"][block title="store locater" description="This is a Store Locater" latfield="Latitude" longfield="Longitude" catalogue="stores" width="100%" height="300px" zoom="6" latitude="24.2135" longitude="-1.4654"]main_google_map[/block][/code]
 
-You will need to create a catalogue with at least 1 entry which has the latitude and longitude fields filled in. You can call the fields in the catalogue latitude and longitude field anything you like and you can find the coordinates by using the option in Google Maps Labs or via http://itouchmap.com/latlong.html.
+If you use the field names of exactly "Latitude" and "Longitude" then you\'ll get a visual location selector when adding entries. Otherwise you\'ll need to manually enter the coordinates. A tool like https://itouchmap.com/latlong.html can help you.
+
+It is advisable to set the field options as [tt]decimal_points=6[/tt] for your latitude and longitude fields, otherwise there will not be enough precision.
+
+Add at least 1 entry to your catalogue with the latitude and longitude fields filled in to see the block work.
 
 When you add the block you see various block parameters to be filled in including:
  - title -- The Name of the block which will appear on screen (for example, Store Locater)
@@ -157,6 +163,7 @@ When you add the block you see various block parameters to be filled in includin
             'sources_custom/blocks/main_google_map.php',
             'themes/default/templates_custom/BLOCK_MAIN_GOOGLE_MAP.tpl',
             'sources_custom/hooks/systems/fields/float.php',
+            'sources_custom/hooks/systems/config/google_map_key.php',
             'themes/default/templates_custom/FORM_SCREEN_INPUT_MAP_POSITION.tpl',
             'themes/default/images_custom/star_highlight.png',
             'sources_custom/catalogues2.php',

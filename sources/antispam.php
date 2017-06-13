@@ -25,12 +25,14 @@
  */
 function init__antispam()
 {
-    define('ANTISPAM_RESPONSE_SKIP', -2);
-    define('ANTISPAM_RESPONSE_ERROR', -1);
-    define('ANTISPAM_RESPONSE_UNLISTED', 0);
-    define('ANTISPAM_RESPONSE_STALE', 1);
-    define('ANTISPAM_RESPONSE_ACTIVE', 2);
-    define('ANTISPAM_RESPONSE_ACTIVE_UNKNOWN_STALE', 3);
+    if (!defined('ANTISPAM_RESPONSE_SKIP')) {
+        define('ANTISPAM_RESPONSE_SKIP', -2);
+        define('ANTISPAM_RESPONSE_ERROR', -1);
+        define('ANTISPAM_RESPONSE_UNLISTED', 0);
+        define('ANTISPAM_RESPONSE_STALE', 1);
+        define('ANTISPAM_RESPONSE_ACTIVE', 2);
+        define('ANTISPAM_RESPONSE_ACTIVE_UNKNOWN_STALE', 3);
+    }
 }
 
 /**

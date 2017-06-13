@@ -76,7 +76,9 @@ class Hook_addon_registry_syndication
     public function get_dependencies()
     {
         return array(
-            'requires' => array('syndication_blocks'),
+            'requires' => array(
+                'syndication_blocks',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
             'previously_in_addon' => array('core_syndication'),
@@ -277,6 +279,7 @@ class Hook_addon_registry_syndication
     public function tpl_preview__opml_xslt()
     {
         require_lang('rss');
+
         return array(
             do_lorem_template('OPML_XSLT', array(
                 'JAVASCRIPT_XSL_MOPUP' => '',
@@ -295,6 +298,7 @@ class Hook_addon_registry_syndication
     public function tpl_preview__opml_wrapper()
     {
         require_lang('rss');
+
         return array(
             do_lorem_template('OPML_WRAPPER', array(
                 'FEEDS' => placeholder_array(),

@@ -418,7 +418,7 @@ class Hook_ipb_base
                         $filename = rawurldecode($row2['photo_location']);
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_photos/' . $filename)) || (@rename($file_base . '/uploads/' . $filename, get_custom_file_base() . '/uploads/cns_photos/' . $filename))) {
                             $photo_url = 'uploads/cns_photos/' . $filename;
-                            sync_file($photo_url);
+                            sync_file(get_custom_file_base() . '/' . $photo_url);
                         } else {
                             if ($STRICT_FILE) {
                                 warn_exit(do_lang_tempcode('MISSING_PHOTO', $filename));
@@ -459,7 +459,7 @@ class Hook_ipb_base
                             $filename = substr($row['avatar'], 7);
                             if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($file_base . '/uploads/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                                 $avatar_url = 'uploads/cns_avatars/' . $filename;
-                                sync_file($avatar_url);
+                                sync_file(get_custom_file_base() . '/' . $avatar_url);
                             } else {
                                 if ($STRICT_FILE) {
                                     warn_exit(do_lang_tempcode('MISSING_AVATAR', $filename));
@@ -470,14 +470,14 @@ class Hook_ipb_base
                             $filename = rawurldecode($row['avatar']);
                             if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($file_base . '/uploads/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                                 $avatar_url = 'uploads/cns_avatars/' . substr($filename, strrpos($filename, '/'));
-                                sync_file($avatar_url);
+                                sync_file(get_custom_file_base() . '/' . $avatar_url);
                             } else {
                                 // Try as a pack avatar then
                                 $filename = rawurldecode($row['avatar']);
                                 $striped_filename = str_replace('/', '_', $filename);
                                 if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $striped_filename)) || (@rename($file_base . '/style_avatars/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $striped_filename))) {
                                     $avatar_url = 'uploads/cns_avatars/' . substr($filename, strrpos($filename, '/'));
-                                    sync_file($avatar_url);
+                                    sync_file(get_custom_file_base() . '/' . $avatar_url);
                                 } else {
                                     if ($STRICT_FILE) {
                                         warn_exit(do_lang_tempcode('MISSING_AVATAR', $filename));
@@ -744,7 +744,7 @@ class Hook_ipb_base
                 }
                 $post = get_translated_text($post_row[0]['p_post'], $GLOBALS['SITE_DB']);
                 $lang_id = $post_row[0]['p_post'];
-                $member_id = import_id_remap_get('member', $post_row[0]['p_poster']);
+                $member_id = import_id_remap_get('member', strval($post_row[0]['p_poster']));
                 $post_date = $post_row[0]['p_time'];
 
                 if (either_param_string('importer') == 'ipb1') {
@@ -753,7 +753,7 @@ class Hook_ipb_base
                         $target_path = get_custom_file_base() . '/uploads/attachments/' . $row['attach_id'];
                         if ((file_exists(get_custom_file_base() . '/uploads/attachments/' . $row['attach_id'])) || (@rename($file_base . '/uploads/' . $row['attach_id'], $target_path))) {
                             $url = 'uploads/attachments/' . $row['attach_id'];
-                            sync_file($url);
+                            sync_file(get_custom_file_base() . '/' . $url);
                             $thumb_url = '';
                             $_a_id = $GLOBALS['SITE_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => @filesize($target_path), 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $row['attach_file'], 'a_num_downloads' => $row['attach_hits'], 'a_last_downloaded_time' => null, 'a_add_time' => $row['post_date'], 'a_description' => ''), true);
                             $has_attachment = true;
@@ -775,7 +775,7 @@ class Hook_ipb_base
                         $target_path = get_custom_file_base() . '/uploads/attachments/' . $attachment['attach_location'];
                         if ((file_exists(get_custom_file_base() . '/uploads/attachments/' . $attachment['attach_location'])) || (@rename($file_base . '/uploads/' . $attachment['attach_location'], $target_path))) {
                             $url = 'uploads/attachments/' . $attachment['attach_location'];
-                            sync_file($url);
+                            sync_file(get_custom_file_base() . '/' . $url);
                             $thumb_url = '';
                             $a_id[$i] = $GLOBALS['SITE_DB']->query_insert('attachments', array('a_member_id' => $member_id, 'a_file_size' => $attachment['attach_filesize'], 'a_url' => $url, 'a_thumb_url' => $thumb_url, 'a_original_filename' => $attachment['attach_file'], 'a_num_downloads' => $attachment['attach_hits'], 'a_last_downloaded_time' => null, 'a_add_time' => $post_date, 'a_description' => ''), true);
                             $has_attachment = true;
@@ -861,7 +861,7 @@ class Hook_ipb_base
             }
 
             foreach ($rows2 as $row2) { // For all votes. We have to match votes to members - but it is arbitrary because no such mapping is stored from IPB
-                $member_id = import_id_remap_get('member', $row2['member_id'], true);
+                $member_id = import_id_remap_get('member', strval($row2['member_id']), true);
                 if (is_null($member_id)) {
                     $member_id = db_get_first_id();
                 }
@@ -934,7 +934,7 @@ class Hook_ipb_base
                 continue;
             }
 
-            $member_id = import_id_remap_get('member', $row['member_id'], true);
+            $member_id = import_id_remap_get('member', strval($row['member_id']), true);
             if (is_null($member_id)) {
                 continue;
             }

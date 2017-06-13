@@ -67,10 +67,11 @@ class Block_side_rss
         }
 
         require_lang('news');
+        require_lang('rss');
         require_css('news');
         require_code('obfuscate');
 
-        $url = array_key_exists('param', $map) ? $map['param'] : (get_brand_base_url() . '/backend.php?type=rss&mode=news&select=16,17,18,19,20'); // http://channel9.msdn.com/Feeds/RSS/
+        $url = empty($map['param']) ? (get_brand_base_url() . '/backend.php?type=rss&mode=news') : $map['param'];
 
         if (strpos($url, '{') !== false) {
             require_code('tempcode_compiler');
@@ -160,7 +161,7 @@ class Block_side_rss
 
             $_title = $item['title'];
             $_title = array_key_exists('title', $item) ? $item['title'] : '';
-            $date = array_key_exists('clean_add_date', $item) ? get_timezoned_date_tempcode($item['clean_add_date']) : (array_key_exists('add_date', $item) ? make_string_tempcode($item['add_date']) : new Tempcode());
+            $date = array_key_exists('clean_add_date', $item) ? get_timezoned_date_tempcode($item['clean_add_date'], false) : (array_key_exists('add_date', $item) ? make_string_tempcode($item['add_date']) : new Tempcode());
 
             $content->attach(do_template('BLOCK_SIDE_RSS_SUMMARY', array(
                 '_GUID' => '18f6d1ccfe980cc01bbdd2ee178c2410',

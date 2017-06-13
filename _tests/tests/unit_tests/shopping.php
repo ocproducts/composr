@@ -32,6 +32,7 @@ class shopping_test_set extends cms_test_case
         require_lang('catalogues');
         require_lang('shopping');
         require_lang('ecommerce');
+        require_code('lang3');
 
         // Cleanup if needed...
 
@@ -118,10 +119,7 @@ class shopping_test_set extends cms_test_case
 
         $map = $cms_module->get_set_field_map($catalogue_name, get_member());
         $this->product_id = actual_add_catalogue_entry($category_id, 0, 'test note', 1, 1, 1, $map);
-    }
 
-    public function testAddtoCart()
-    {
         require_code('site/pages/modules/shopping.php');
         $shopping_module = new Module_shopping();
 
@@ -133,11 +131,13 @@ class shopping_test_set extends cms_test_case
 
         $_GET['page'] = 'shopping'; // Static setting to identify the module in payment form
         render_cart_payment_form();
-    }
 
-    public function testHandleTransaction()
-    {
-        $purchase_id = strval($GLOBALS['SITE_DB']->query_select_value('shopping_order', 'max(id)', array()));
+        $_purchase_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)', array());
+        if ($_purchase_id === null) {
+            $this->assertTrue(false, 'Order did not save');
+            return;
+        }
+        $purchase_id = strval($_purchase_id);
         $item_name = lorem_phrase();
         $payment_status = 'Completed';
         $reason_code = '';

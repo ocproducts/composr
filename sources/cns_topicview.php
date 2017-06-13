@@ -187,7 +187,7 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         $post['poster_highlighted_name'] = $GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_highlighted_name');
 
         // Signature
-        if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option') == '0')) && ($_postdetails['p_skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
+        if ((($GLOBALS['CNS_DRIVER']->get_member_row_field(get_member(), 'm_views_signatures') == 1) || (get_option('enable_views_sigs_option', true) === '0')) && ($_postdetails['p_skip_sig'] == 0) && (addon_installed('cns_signatures'))) {
             global $SIGNATURES_CACHE;
             if (array_key_exists($_postdetails['p_poster'], $SIGNATURES_CACHE)) {
                 $sig = $SIGNATURES_CACHE[$_postdetails['p_poster']];
@@ -332,6 +332,8 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         }
 
         // Some general info
+        require_code('seo2');
+        list(, $meta_description) = _seo_meta_find_data(array(), get_translated_text($topic_info['p_post'], $GLOBALS['FORUM_DB']));
         $out = array(
             'num_views' => $topic_info['t_num_views'],
             'num_posts' => $topic_info['t_cache_num_posts'],
@@ -353,6 +355,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
             'metadata' => array(
                 'identifier' => '_SEARCH:topicview:browse:' . strval($topic_id),
                 'numcomments' => strval($topic_info['t_cache_num_posts']),
+                'description' => $meta_description, // There's no meta description, so we'll take this as a description, which will feed through
             ),
             'row' => $topic_info,
         );
@@ -402,6 +405,10 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         // Post query
         $where = 'p_intended_solely_for=' . strval(get_member());
         $query = 'SELECT p.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p WHERE ' . $where . ' ORDER BY p_time,p.id';
+
+        $topic_info = array(
+            't_is_open' => 1,
+        );
     }
 
     // Posts
@@ -414,7 +421,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         if (($start == 0) && (count($_postdetailss) < $max)) {
             $out['max_rows'] = $max; // We know that they're all on this screen
         } else {
-            $out['max_rows'] = (is_null($topic_id) || $topic_info['t_cache_num_posts'] < 500)? $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $where) : $topic_info['t_cache_num_posts']/*for performance reasons*/;
+            $out['max_rows'] = (is_null($topic_id) || $topic_info['t_cache_num_posts'] < 500) ? $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $where) : $topic_info['t_cache_num_posts']/*for performance reasons*/;
         }
         $posts = array();
         // Precache member/group details in one fell swoop

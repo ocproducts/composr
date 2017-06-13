@@ -44,6 +44,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
     }
 
     require_code('type_sanitisation');
+    require_lang('submitban');
 
     if (is_numeric($member)) {
         // From member ID
@@ -163,7 +164,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
         if (multi_lang_content()) {
             $page_converted = str_replace('/', ': ', $page_converted);
         } else {
-            $page_converted = str_replace('/', ':', preg_replace('#((.*)/)?pages/.*/\w+/(.*)#', '$2/$3', $page_converted));
+            $page_converted = str_replace('/', ':', preg_replace('#((.*)/)?pages/.*/[' . URL_CONTENT_REGEXP . ']+/(.*)#', '$2/$3', $page_converted));
         }
 
         if (!is_null($myrow['s_get'])) {
@@ -194,6 +195,8 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
  */
 function find_security_alerts($where)
 {
+    require_lang('security');
+
     // Alerts
     $start = get_param_integer('alert_start', 0);
     $max = get_param_integer('alert_max', 50);

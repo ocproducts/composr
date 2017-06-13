@@ -19,29 +19,25 @@ Integration is done via configuring an app on Facebook; no actual app code needs
 [list="1"]
 [*] Go to [url="set up your app on Facebook"]https://developers.facebook.com/apps/[/url]
 [*] Click on right upper corner "Add a New App" button
-[*] Select "Website"
 [*] Type your site name
-[*] Click "Create New Facebook App ID"
-[*] Choose a Category
-[*] Click the button
-[*] Enter the "Site URL". It's crucial that you give Facebook the correct base URL to your site. It absolutely will not allow things to integrate if it does not match exactly. Make sure you have the same case (i.e. all lower case) and the same use or non-use of 'www.' in the domain name.
-[*] Scroll back up and click "Skip quickstart"
-[*] Note down your App ID and your App Secret
-[*] You will now also need to enter the following:
- - Settings
-  - your app domain name
-  - a contact email
- - App Details
-  - a short description
-  - a publisher name
-  - a category
-  - a privacy policy URL
-  - a 16x16 app icon
-  - a 1024x1024 app icon
-  - a user support email
+[*] Go into the setup of the new app
+[*] Go to the "Settings" section
+[*] Enter your domain name into the "Main App Domain" field
+[*] Enter your privacy page URL into the "Privacy policy URL" field (link to your website's privacy page)
+[*] Change the "Contact Email" field if no e-mail address is currently there, or if it is wrong
+[*] Click "Add Platform"
+[*] Choose "Website"
+[*] Enter your base URL into the "Site URL" field. It's crucial that you give Facebook the correct base URL to your site. It absolutely will not allow things to integrate if it does not match exactly. Make sure you have the same case (i.e. all lower case) and the same use or non-use of 'www.' in the domain name and same use of 'https' or 'http'.
+[*] Click "Save Changes"
+[*] Click "Add Product" in the left pane
+[*] Select "Facebook Login" (click "Get Started" next to it)
+[*] Enter your base URL into the "Valid OAuth redirect URIs" field. As with "Site URL" it is crucial that you get this right.
+[*] Click "Save Changes"
+[*] Go to the Dashboard section
+[*] Note down your "App ID" and your "App Secret"
 [/list]
 
-If you want to allow admin publishing to a Facebook page, go to App Review and enable (with explanations of why):
+If you want to allow admin publishing to a Facebook page, go to App Review and enable via "Add Items" (with explanations of why):
  - [tt]publish_pages[/tt]
  - [tt]manage_pages[/tt]
 Facebook will likely make you record a screencast of how exactly the system works, which is likely to take you around half a day of work once everything's said and done. Unfortunately it's not easy anymore.
@@ -202,6 +198,8 @@ The Composr code hints what image to use for Open Graph. There are 3 possibiliti
 
 For catalogues you'll need to delete [tt]uploads/catalogues/.htaccess[/tt] for the image sharing to work. Deleting this file is safe so long as you don't have any files in there protected by catalogue permissions that you do not want to be directly accessible.
 
+You may want to just simplify everything and make your own theme image for Open Graph and reference that. This will probably also end up looking nicer because Facebook recommends a 1.91:1 aspect ratio on your image (to avoid cropping) which is unlikely to be close to true for automatically chosen images.
+
 [title="4"]Special case: If you use huge thumbnails[/title]
 
 Note that Facebook does have minimum/maximum sizes and file-sizes for images. If you use enormous thumbnails on your site, your [tt]HTML_HEAD.tpl[/tt] template could need customising to re-thumbnail the files.
@@ -294,6 +292,13 @@ When testing log in, make sure you're not starting a login from a URL with any o
 
 Be aware that logging in with Facebook is putting a dependency on Facebook's systems always working. Every once in a while, perhaps an hour per month, Facebook does have some problems on their end that block things working correctly.
 
+[title="3"]Debugging[/title]
+
+[media width="150" description="Where to find Response Headers in Google Chrome" float="right"]data_custom/images/docs/tut_facebook/facebook_headers.png[/media]
+It is hard to debug Facebook login. Every few months Facebook change something, often invalidating the steps in this tutorial or changing API compatibility. For someone to debug it properly they need to be granted access to the Facebook app and write access to the website, then likely spend half a day stepping through it all, so you likely won't be able to get a lot of free support tracking an issue down. If it's not some easily identifiable basic error you'd probably need to pay a developer to step through it all properly as it's not really possible for the addon developer to tell upfront what is user-error, what is a very specific Facebook bug, or when there is a need to update the addon.
+
+If it's a basic error (clicking the Facebook log in button doesn't appear to do anything) then Facebook is probably returning an error message which we relay in the network request's response headers, giving you a little insight into what is happening under-the-hood. Look for the [tt]Facebook-Error[/tt] header.
+
 [title="3"]Logging out[/title]
 
 [surround]
@@ -305,6 +310,8 @@ A user who wishes to de-link Facebook to your site has two choices:
 1) Log out of Facebook entirely (probably undesirable)
 2) Remove your website from the allowed apps, via Facebook's privacy settings (see images).
 [/surround]
+
+If you find the log out buttons are not doing anything, and you see an error in the browser error console about "X-Frame-Options", then it may mean the "App Domain" option is blank. To set that you need to add a "Website" platform, with your base URL as the Site URL.
 
 [title="3"]Account binding (advanced)[/title]
 

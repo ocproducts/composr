@@ -345,12 +345,12 @@ function comcode_helper_script_replace()
         switch ($action) {
             case 'add':
                 $url = find_script('comcode_helper') . '?type=step1&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
-                header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+                header('Location: ' . escape_header($url));
                 exit();
 
             case 'edit':
                 $url = str_replace('&type=replace', '&type=step2', get_self_url_easy());
-                header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+                header('Location: ' . escape_header($url));
                 exit();
 
             case 'delete':
@@ -1021,7 +1021,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
         }
 
         $hidden->attach(form_input_hidden('tag_contents', $default_embed));
-        $tag_description = do_lang_tempcode('COMCODE_TAG_attachment_simplified');
+        $tag_description = do_lang_tempcode('COMCODE_TAG_attachment_simplified_DESCRIPTION');
         $has_full_tag_description = true;
 
         if (substr($default_embed, 0, 4) == 'new_') {

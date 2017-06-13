@@ -36,7 +36,7 @@ class Module_admin_menus
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 2;
-        $info['locked'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -216,7 +216,7 @@ class Module_admin_menus
         }
 
         require_code('type_sanitisation');
-        if (!is_alphanumeric($id, true)) {
+        if (!is_alphanumeric($id)) {
             warn_exit(do_lang_tempcode('BAD_CODENAME'));
         }
 
@@ -311,7 +311,7 @@ class Module_admin_menus
         $list = new Tempcode();
         $list->attach(form_input_list_entry('', false, do_lang_tempcode('NONE_EM')));
         require_code('themes2');
-        $list->attach(create_selection_list_theme_images(null, null, false, true, 'icons/'));
+        $list->attach(create_selection_list_theme_images(null, null, false, true));
         $fields_template->attach(form_input_list(do_lang_tempcode('THEME_IMAGE'), do_lang_tempcode('DESCRIPTION_THEME_IMAGE_FOR_MENU_ITEM'), 'theme_img_code', $list, null, false, false, get_all_image_ids_type('icons', true)));
         $fields_template->attach(form_input_line(do_lang_tempcode('RESTRICT_PAGE_VISIBILITY'), do_lang_tempcode('MENU_ENTRY_MATCH_KEYS'), 'page_only', '', false));
         $list = new Tempcode();
@@ -514,7 +514,7 @@ class Module_admin_menus
         $url = post_param_string('url_' . strval($id), '');
 
         // See if we can tidy it back to a page-link
-        if (preg_match('#^\w+$#', $url) != 0) {
+        if (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $url) != 0) {
             $url = ':' . $url; // So users do not have to think about zones
         }
         $page_link = url_to_page_link($url, true);

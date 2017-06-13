@@ -194,7 +194,7 @@ function assign_refresh($url, $multiplier = 0.0)
 
     // HTTP redirect
     if ((running_script('index')) && (!$FORCE_META_REFRESH)) {
-        header('Location: ' . $url);
+        header('Location: ' . escape_header($url));
         if (strpos($url, '#') === false) {
             $GLOBALS['QUICK_REDIRECT'] = true;
         }
@@ -346,17 +346,13 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
     $GLOBALS['NO_QUERY_LIMIT'] = true;
 
     // Not cached :(
-    $tmp = fopen($file_base . '/' . $string, 'rb');
-    @flock($tmp, LOCK_SH);
-    $comcode = file_get_contents($file_base . '/' . $string);
+    $comcode = cms_file_get_contents_safe($file_base . '/' . $string);
     if (strpos($string, '_custom/') === false) {
         global $LANG_FILTER_OB;
         $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);
     }
     apply_comcode_page_substitutions($comcode);
     $comcode = fix_bad_unicode($comcode);
-    @flock($tmp, LOCK_UN);
-    fclose($tmp);
 
     if (is_null($new_comcode_page_row['p_submitter'])) {
         $as_admin = true;
@@ -405,7 +401,18 @@ function _load_comcode_page_not_cached($string, $zone, $codename, $file_base, $c
         );
         $map += insert_lang('cc_page_title', clean_html_title($COMCODE_PARSE_TITLE), 1, null, false, null, null, false, null, null, null, true, true);
         if (multi_lang_content()) {
-            $map['string_index'] = $GLOBALS['SITE_DB']->query_insert('translate', array('source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $comcode, 'text_parsed' => $text_parsed, 'language' => $lang), true, false, true);
+            $map['string_index'] = null;
+            $lock = false;
+            table_id_locking_start($GLOBALS['SITE_DB'], $map['string_index'], $lock);
+
+            $trans_map = array('source_user' => $page_submitter, 'broken' => 0, 'importance_level' => 1, 'text_original' => $comcode, 'text_parsed' => $text_parsed, 'language' => $lang);
+            if ($map['string_index'] === null) {
+                $map['string_index'] = $GLOBALS['SITE_DB']->query_insert('translate', $trans_map, true, false, true);
+            } else {
+                $GLOBALS['SITE_DB']->query_insert('translate', array('id' => $map['string_index']) + $trans_map, true, false, true);
+            }
+
+            table_id_locking_end($GLOBALS['SITE_DB'], $map['string_index'], $lock);
         } else {
             $map['string_index'] = $comcode;
             $map['string_index__source_user'] = $page_submitter;
@@ -513,7 +520,7 @@ function _load_comcode_page_cache_off($string, $zone, $codename, $file_base, $ne
 
     $_comcode_page_row = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('*'), array('the_zone' => $zone, 'the_page' => $codename), '', 1);
 
-    $comcode = file_get_contents($file_base . '/' . $string);
+    $comcode = cms_file_get_contents_safe($file_base . '/' . $string);
     if (strpos($string, '_custom/') === false) {
         global $LANG_FILTER_OB;
         $comcode = $LANG_FILTER_OB->compile_time(null, $comcode);

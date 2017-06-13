@@ -10,7 +10,7 @@
 
 	{$REQUIRE_JAVASCRIPT,ajax}
 
-	<div class="trinav_wrap">
+	<div class="trinav_wrap" id="gallery_nav">
 		<div class="trinav_left" onclick="/*Access-note: code has other activation*/ cancel_bubbling(event);">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
@@ -26,7 +26,7 @@
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 				{+START,IF,{$NOT,{$MOBILE}}}
 					{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{SLIDESHOW}}}
-						<a class="button_screen buttons__slideshow" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+						<a class="button_screen buttons__slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					{+END}{+END}
 				{+END}
 			{+END}
@@ -76,7 +76,7 @@
 			{+START,IF,{$JS_ON}}{+START,IF,{$NOT,{SLIDESHOW}}}
 				<div class="float_surrounder">
 					<div class="right">
-						<a class="button_screen buttons__slideshow" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+						<a class="button_screen buttons__slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					</div>
 				</div>
 			{+END}{+END}

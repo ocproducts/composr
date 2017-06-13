@@ -28,16 +28,18 @@ function init__caches()
     global $BLOCK_CACHE_ON_CACHE;
     $BLOCK_CACHE_ON_CACHE = null;
 
-    // These are ways we might enhance block caching with standardised (queryable) additional caching restraints
-    define('CACHE_AGAINST_NOTHING_SPECIAL', 0);
-    // -
-    define('CACHE_AGAINST_STAFF_STATUS', 1);
-    define('CACHE_AGAINST_MEMBER', 2);
-    define('CACHE_AGAINST_PERMISSIVE_GROUPS', 4);
-    define('CACHE_AGAINST_BOT_STATUS', 8);
-    define('CACHE_AGAINST_TIMEZONE', 16);
-    // -
-    define('CACHE_AGAINST_DEFAULT', CACHE_AGAINST_BOT_STATUS | CACHE_AGAINST_TIMEZONE);
+    if (!defined('CACHE_AGAINST_NOTHING_SPECIAL')) {
+        // These are ways we might enhance block caching with standardised (queryable) additional caching restraints
+        define('CACHE_AGAINST_NOTHING_SPECIAL', 0);
+        // -
+        define('CACHE_AGAINST_STAFF_STATUS', 1);
+        define('CACHE_AGAINST_MEMBER', 2);
+        define('CACHE_AGAINST_PERMISSIVE_GROUPS', 4);
+        define('CACHE_AGAINST_BOT_STATUS', 8);
+        define('CACHE_AGAINST_TIMEZONE', 16);
+        // -
+        define('CACHE_AGAINST_DEFAULT', CACHE_AGAINST_BOT_STATUS | CACHE_AGAINST_TIMEZONE);
+    }
 
     global $PERSISTENT_CACHE, $SITE_INFO;
     /** The persistent cache access object (null if there is no persistent cache).
@@ -189,14 +191,7 @@ class Self_learning_cache
         if ($data !== null) {
             $this->data = $data;
         } elseif (is_file($this->path)) {
-            $_data = '';
-            $myfile = @fopen($this->path, 'rb');
-            if ($myfile !== false) {
-                @flock($myfile, LOCK_SH);
-                while (!feof($myfile)) {
-                    $_data .= fread($myfile, 32768);
-                }
-            }
+            $_data = cms_file_get_contents_safe($this->path);
             if ($_data !== false) {
                 $this->data = @unserialize($_data);
                 if ($this->data === false) {
@@ -327,12 +322,8 @@ class Self_learning_cache
         if (!is_null($this->path)) {
             $contents = serialize($this->data);
 
-            if (file_put_contents($this->path, $contents, LOCK_EX) < strlen($contents)) {
-                @unlink($this->path);
-                fix_permissions($this->path);
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            fix_permissions($this->path);
+            require_code('files');
+            cms_file_put_contents_safe($this->path, $contents, FILE_WRITE_FIX_PERMISSIONS);
         } else {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
@@ -515,10 +506,10 @@ function erase_persistent_cache()
         }
     }
     closedir($d);
-    @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', LOCK_EX);
-    @file_put_contents(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt', '', LOCK_EX);
-    fix_permissions(get_custom_file_base() . '/data_custom/failover_rewritemap.txt');
-    fix_permissions(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt');
+
+    require_code('files');
+    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap.txt', '', FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
+    cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/failover_rewritemap__mobile.txt', '', FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
 
     global $PERSISTENT_CACHE;
     if ($PERSISTENT_CACHE === null) {
@@ -782,7 +773,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
             $langs_required = explode(':', $bits[0]); // Sometimes lang has got intertwinded with non cacheable stuff (and thus was itself not cached), so we need the lang files
             foreach ($langs_required as $lang) {
                 if ($lang != '') {
-                    require_lang($lang, null, null, true);
+                    require_lang($lang);
                 }
             }
             if (isset($bits[1])) {

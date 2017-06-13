@@ -68,6 +68,7 @@ if (!function_exists('mu_result')) {
         }
 
         $base_url = get_base_url();
+        $base_url = preg_replace('#^https://#', 'http://', $base_url); // Some PHP installs have problem with HTTPS
         $url = $base_url . '/' . rawurldecode(substr($path, strlen(get_file_base()) + 1));
 
         require_code('files');
@@ -76,16 +77,19 @@ if (!function_exists('mu_result')) {
     }
 }
 
-$to_version = $map['param'];
+$to_version_dotted = $map['param'];
+
+require_code('version2');
+$to_version_pretty = get_version_pretty__from_dotted($to_version_dotted);
 
 echo <<<END
     <div class="box">
         <div class="box_inner">
-            <h4>Your upgrade to version {$to_version}</h4>
+            <h4>Your upgrade to version {$to_version_pretty}</h4>
 END;
 
-$from_version = get_param_string('from_version', null);
-if (is_null($from_version)) {
+$from_long_dotted_number_with_qualifier = get_param_string('from_version', null); // Dotted format
+if (is_null($from_long_dotted_number_with_qualifier)) {
     $a = post_param_string('from_version_a', null);
     $b = post_param_string('from_version_b', null);
     $c = post_param_string('from_version_c', null);
@@ -99,27 +103,29 @@ END;
         return;
     }
 
+    // Trim spaces and leading zeros
     $a = rtrim(preg_replace('#^(0\s)#', '', $a));
     $b = rtrim(preg_replace('#^(0\s)#', '', $b));
     $c = rtrim(preg_replace('#^(0\s)#', '', $c));
     $d = rtrim(preg_replace('#^(0\s)#', '', $d));
 
-    $from_version = $a;
+    $from_long_dotted_number_with_qualifier = $a;
     if ($b != '') {
-        $from_version .= '.' . $b;
+        $from_long_dotted_number_with_qualifier .= '.' . $b;
     }
     if ($c != '') {
-        $from_version .= '.' . $c;
+        $from_long_dotted_number_with_qualifier .= '.' . $c;
     }
     if ($d != '') {
-        $from_version .= '.' . $d;
+        $from_long_dotted_number_with_qualifier .= '.' . $d;
     }
 }
 require_code('version2');
-$from_version = get_version_dotted__from_anything($from_version); // Canonicalise
+$from_version_dotted = get_version_dotted__from_anything($from_long_dotted_number_with_qualifier); // Canonicalise
 
+require_code('composr_homesite');
 require_code('uploads/website_specific/compo.sr/upgrades/make_upgrader.php');
-$ret = make_upgrade_get_path($from_version, $to_version);
+$ret = make_upgrade_get_path($from_version_dotted, $to_version_dotted);
 
 if (!is_null($ret[1])) {
 

@@ -125,14 +125,14 @@ class TapatalkPush extends TapatalkBasePush
             $this->do_push_post($post_row, $is_new_topic);
 
             // Send mentions
-            comcode_to_tempcode(get_translated_text($post_row['p_post'])); // Just so that the mentions are found
+            comcode_to_tempcode(get_translated_text($post_row['p_post'], $GLOBALS['FORUM_DB'])); // Just so that the mentions are found
             global $MEMBER_MENTIONS_IN_COMCODE;
             if (isset($MEMBER_MENTIONS_IN_COMCODE)) {
                 $this->do_push_mention($post_row, array_unique($MEMBER_MENTIONS_IN_COMCODE));
             }
 
             // Send quotes
-            $comcode = get_translated_text($post_row['p_post']);
+            $comcode = get_translated_text($post_row['p_post'], $GLOBALS['FORUM_DB']);
             $matches = array();
             $num_matches = preg_match_all('#\[quote( param)?="([^"]+)"\]#', $comcode, $matches);
             $quoted_members = array();
@@ -333,9 +333,12 @@ class TapatalkPush extends TapatalkBasePush
         if ((is_file(TAPATALK_LOG)) && (is_writable_wrap(TAPATALK_LOG))) {
             // Request
             $log_file = fopen(TAPATALK_LOG, 'at');
+            flock($log_file, LOCK_EX);
+            fseek($log_file, 0, SEEK_END);
             fwrite($log_file, TAPATALK_REQUEST_ID . ' -- ' . date('Y-m-d H:i:s') . " *PUSH*:\n");
             fwrite($log_file, var_export($arr, true));
             fwrite($log_file, "\n\n");
+            flock($log_file, LOCK_UN);
             fclose($log_file);
         }
 

@@ -254,14 +254,14 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                         }
                     }
 
-                    $edit_url = has_actual_page_access(get_member(), 'admin_cns_forums') ? build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $subforum['id']), 'adminzone') : new Tempcode();
+                    $edit_url = has_actual_page_access(get_member(), 'admin_cns_forums') ? build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $subforum['id']), get_module_zone('admin_cns_forums')) : new Tempcode();
 
                     $forum_rules_url = '';
                     $intro_question_url = '';
                     if (!$subforum['intro_question']->is_empty()) {
                         if ($subforum['intro_answer'] == '') {
                             $keep = keep_symbol(array());
-                            $intro_rules_url = find_script('rules') . '?id=' . rawurlencode(strval($subforum['id'])) . $keep;
+                            $forum_rules_url = find_script('rules') . '?id=' . rawurlencode(strval($subforum['id'])) . $keep;
                         } else {
                             $keep = keep_symbol(array());
                             $intro_question_url = find_script('rules') . '?id=' . rawurlencode(strval($subforum['id'])) . $keep;
@@ -336,7 +336,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         $moderator_actions .= '<option value="open_topics">' . do_lang('OPEN_TOPIC') . '</option>';
         $moderator_actions .= '<option value="close_topics">' . do_lang('CLOSE_TOPIC') . '</option>';
     }
-    if ((!is_null($id)) && (cns_may_perform_multi_moderation($id))) {
+    if ((!is_null($id)) && (addon_installed('cns_multi_moderations')) && (cns_may_perform_multi_moderation($id))) {
         $multi_moderations = cns_list_multi_moderations($id);
         if (count($multi_moderations) != 0) {
             require_lang('cns_multi_moderations');
@@ -602,7 +602,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
  */
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {
-    if ((array_key_exists('last_post_id', $topic)) && (!is_null($topic['last_post_id']))) {
+    if ((array_key_exists('last_post_id', $topic)) && (!is_null($topic['last_post_id'])) && (get_bot_type() === null)) {
         $last_post_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['last_post_id']), get_module_zone('topicview'));
         $last_post_url->attach('#post_' . strval($topic['last_post_id']));
         if (!is_null($topic['last_member_id'])) {

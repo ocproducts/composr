@@ -100,6 +100,7 @@ class Module_downloads
                 'add_date' => time(),
                 'notes' => '',
             );
+            require_code('lang3');
             $map += insert_lang_comcode('description', '', 3);
             $map += lang_code_to_default_content('category', 'DOWNLOADS_HOME');
             $id = $GLOBALS['SITE_DB']->query_insert('download_categories', $map, true);
@@ -486,7 +487,7 @@ class Module_downloads
 
         // Get category contents
         //  Subcategories:
-        $subcategories = do_block('main_multi_content', array('param' => 'download_category', 'select' => strval($category_id) . '>', 'efficient' => '0', 'zone' => '_SELF', 'sort' => 'title', 'max' => get_option('download_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'render_if_empty' => '0', 'guid' => 'module'));
+        $subcategories = do_block('main_multi_content', array('param' => 'download_category', 'select' => strval($category_id) . '>', 'efficient' => '0', 'zone' => get_zone_name(), 'sort' => 'title', 'max' => get_option('download_subcats_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'render_if_empty' => '0', 'guid' => 'module'));
         //  Downloads:
         if (get_option('downloads_subcat_narrowin') == '1') {
             $select = strval($category_id) . '*';
@@ -494,7 +495,7 @@ class Module_downloads
             $select = strval($category_id) . '#';
         }
         $filter = either_param_string('active_filter', '');
-        $downloads = do_block('main_multi_content', array('param' => 'download', 'select' => $select, 'efficient' => '0', 'zone' => '_SELF', 'sort' => $sort, 'max' => get_option('download_entries_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'filter' => $filter, 'block_id' => 'module', 'guid' => 'module'));
+        $downloads = do_block('main_multi_content', array('param' => 'download', 'select' => $select, 'efficient' => '0', 'zone' => get_zone_name(), 'sort' => $sort, 'max' => get_option('download_entries_per_page'), 'no_links' => '1', 'pagination' => '1', 'give_context' => '0', 'include_breadcrumbs' => '0', 'attach_to_url_filter' => '1', 'filter' => $filter, 'block_id' => 'module', 'guid' => 'module'));
 
         // Management links
         if (has_actual_page_access(null, 'cms_downloads', null, array('downloads', strval($category_id)), 'submit_midrange_content')) {

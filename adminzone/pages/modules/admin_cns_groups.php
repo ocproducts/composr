@@ -419,7 +419,7 @@ class Module_admin_cns_groups extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_link = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            if (($row['id'] == db_get_first_id() + 8) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_presented_at_install' => '1')) == 0)) {
+            if (($row['id'] == db_get_first_id() + 8) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_presented_at_install' => 1)) == 0)) {
                 $row['g_is_presented_at_install'] = 1;
             }
 
@@ -427,8 +427,8 @@ class Module_admin_cns_groups extends Standard_crud_module
                 protect_from_escaping(cns_get_group_link($row['id'])),
                 ($row['g_is_presented_at_install'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
                 ($row['g_is_default'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
-                //($row['g_is_private_club']==1)?do_lang_tempcode('YES'):do_lang_tempcode('NO'),
-                //is_null($row['g_group_leader'])?do_lang_tempcode('NA_EM'):make_string_tempcode($GLOBALS['FORUM_DRIVER']->get_username($row['g_group_leader'])),
+                //($row['g_is_private_club']==1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
+                //is_null($row['g_group_leader']) ? do_lang_tempcode('NA_EM') : make_string_tempcode($GLOBALS['FORUM_DRIVER']->get_username($row['g_group_leader'])),
                 ($row['g_open_membership'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'),
             );
             if (addon_installed('points')) {

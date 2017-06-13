@@ -18,7 +18,10 @@
 		<div aria-labeledby="t_thumbnails" role="tabpanel" id="g_thumbnails" style="display: block">
 			<a id="tab__thumbnails"></a>
 
-			{+START,INCLUDE,FILEDUMP_SEARCH}I=1{+END}
+			{+START,INCLUDE,FILEDUMP_SEARCH}
+				I=1
+				TAB=thumbnails
+			{+END}
 
 			{+START,IF_NON_EMPTY,{$_GET,filename}}
 				<script>// <![CDATA[
@@ -76,7 +79,10 @@
 		<div aria-labeledby="t_listing" role="tabpanel" id="g_listing" style="display: {$?,{$JS_ON},none,block}">
 			<a id="tab__listing"></a>
 
-			{+START,INCLUDE,FILEDUMP_SEARCH}I=2{+END}
+			{+START,INCLUDE,FILEDUMP_SEARCH}
+				I=2
+				TAB=listing
+			{+END}
 
 			<form title="{!ACTION}" action="{POST_URL*}" method="post" onsubmit="return check_filedump_selections(this);" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}

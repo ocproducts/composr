@@ -27,12 +27,14 @@
  */
 function init__tempcode_compiler()
 {
-    define('PARSE_NO_MANS_LAND', 0);
-    define('PARSE_DIRECTIVE', 1);
-    define('PARSE_SYMBOL', 2);
-    define('PARSE_LANGUAGE_REFERENCE', 3);
-    define('PARSE_PARAMETER', 4);
-    define('PARSE_DIRECTIVE_INNER', 5);
+    if (!defined('PARSE_NO_MANS_LAND')) {
+        define('PARSE_NO_MANS_LAND', 0);
+        define('PARSE_DIRECTIVE', 1);
+        define('PARSE_SYMBOL', 2);
+        define('PARSE_LANGUAGE_REFERENCE', 3);
+        define('PARSE_PARAMETER', 4);
+        define('PARSE_DIRECTIVE_INNER', 5);
+    }
 
     global $DIRECTIVES_NEEDING_VARS;
     $DIRECTIVES_NEEDING_VARS = array('IF_PASSED_AND_TRUE' => true, 'IF_NON_PASSED_OR_FALSE' => true, 'PARAM_INFO' => true, 'IF_NOT_IN_ARRAY' => true, 'IF_IN_ARRAY' => true, 'IMPLODE' => true, 'COUNT' => true, 'IF_ARRAY_EMPTY' => true, 'IF_ARRAY_NON_EMPTY' => true, 'OF' => true, 'INCLUDE' => true, 'LOOP' => true);
@@ -458,7 +460,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
 
                     case PARSE_PARAMETER:
                         $parameter = str_replace('"', '', str_replace("'", '', $first_param));
-                        $parameter = preg_replace('#[^\w\_\d]#', '', $parameter); // security to stop PHP injection
+                        $parameter = preg_replace('#[^\w]#', '', $parameter); // security to stop PHP injection
                         if ($escaped === array(PURE_STRING)) {
                             $current_level_data[] = '$bound_' . php_addslashes($parameter);
                         } else {
@@ -479,7 +481,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $s_escaped .= strval($esc);
                                 }
                                 if (($s_escaped === strval(ENTITY_ESCAPED)) && (!$GLOBALS['XSS_DETECT'])) {
-                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?htmlspecialchars(' . $temp . ',ENT_QUOTES | ENT_SUBSTITUTE,get_charset()):' . $temp . ')';
+                                    $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?@htmlspecialchars(' . $temp . ',ENT_QUOTES | ENT_SUBSTITUTE,get_charset()):' . $temp . ')';
                                 } else {
                                     if ($s_escaped === strval(ENTITY_ESCAPED)) {
                                         $current_level_data[] = '(empty($bound_' . $parameter . '->pure_lang)?apply_tempcode_escaping_inline(array(' . $s_escaped . '),' . $temp . '):' . $temp . ')';
@@ -641,7 +643,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '(isset($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ')?(' . implode('.', $past_level_data) . '):\'\')';
+                                $current_level_data[] = '(isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ')?(' . implode('.', $past_level_data) . '):\'\')';
                                 break;
 
                             case 'IF_NON_PASSED':
@@ -650,7 +652,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '(!isset($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ')?(' . implode('.', $past_level_data) . '):\'\')';
+                                $current_level_data[] = '(!isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ')?(' . implode('.', $past_level_data) . '):\'\')';
                                 break;
 
                             case 'IF_PASSED_AND_TRUE':
@@ -659,7 +661,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '((isset($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ') && (otp($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ')=="1"))?(' . implode('.', $past_level_data) . '):\'\')';
+                                $current_level_data[] = '((isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ') && (otp($bound_' . preg_replace('#[^\w]#', '', $eval) . ')=="1"))?(' . implode('.', $past_level_data) . '):\'\')';
                                 break;
 
                             case 'IF_NON_PASSED_OR_FALSE':
@@ -668,7 +670,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                $current_level_data[] = '((!isset($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ') || (otp($bound_' . preg_replace('#[^\w\d\_]#', '', $eval) . ')=="0"))?(' . implode('.', $past_level_data) . '):\'\')';
+                                $current_level_data[] = '((!isset($bound_' . preg_replace('#[^\w]#', '', $eval) . ') || (otp($bound_' . preg_replace('#[^\w]#', '', $eval) . ')=="0"))?(' . implode('.', $past_level_data) . '):\'\')';
                                 break;
 
                             case 'WHILE':
@@ -699,11 +701,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                             $full_path = get_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
                                         }
                                         if (is_file($full_path)) {
-                                            $tmp = fopen($full_path, 'rb');
-                                            @flock($tmp, LOCK_SH);
-                                            $filecontents = file_get_contents($full_path);
-                                            @flock($tmp, LOCK_UN);
-                                            fclose($tmp);
+                                            $filecontents = cms_file_get_contents_safe($full_path);
                                         } else {
                                             $filecontents = '';
                                         }
@@ -840,11 +838,7 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
         $template_contents = unixify_line_format(file_array_get('themes/' . $theme . $path . $codename . $suffix));
     } else {
         $_path = $base_dir . filter_naughty($theme . $path . $codename) . $suffix;
-        $tmp = fopen($_path, 'rb');
-        @flock($tmp, LOCK_SH);
-        $template_contents = unixify_line_format(file_get_contents($_path));
-        @flock($tmp, LOCK_UN);
-        fclose($tmp);
+        $template_contents = unixify_line_format(cms_file_get_contents_safe($_path));
     }
 
     // LESS support
@@ -856,12 +850,15 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
         disable_php_memory_limit();
 
         // Stop parallel compilation of the same file by a little hack; without this it could knock out a server
-        /*$final_css_path = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang . '/' . $codename . '.css'; Actually this is architectually messy, just let it happen - it's not as slow as it was
+        /*
+        $final_css_path = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . $lang . '/' . $codename . '.css'; Actually this is architectually messy, just let it happen - it's not as slow as it was
         if ((is_file($final_css_path)) && (file_get_contents($final_css_path) == 'GENERATING')) {
             header('Content-type: text/plain; charset=' . get_charset());
             exit('We are doing a code update. Please refresh in around 2 minutes.');
         }
-        file_put_contents($final_css_path, 'GENERATING');*/
+        require_code('files');
+        cms_file_put_contents_safe($final_css_path, 'GENERATING', FILE_WRITE_FIX_PERMISSIONS);
+        */
 
         if (!empty($SITE_INFO['nodejs_binary_path'])) {
             $less_path = get_custom_file_base() . '/node_modules/less/bin/lessc';
@@ -936,50 +933,10 @@ function _do_template($theme, $path, $codename, $_codename, $lang, $suffix, $the
     if (($CACHE_TEMPLATES) && (!$IS_TEMPLATE_PREVIEW_OP_CACHE)) {
         $path2 = get_custom_file_base() . '/themes/' . $theme_orig . '/templates_cached/' . filter_naughty($lang);
         $_path2 = $path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp';
-        $myfile = @fopen($_path2, GOOGLE_APPENGINE ? 'wb' : 'ab');
-        if ($myfile === false) {
-            static $looping = false;
-            if ($looping) {
-                critical_error('PASSON', do_lang('WRITE_ERROR', escape_html($path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp'))); // Bail out hard if would cause a loop
-            }
-            $looping = true;
 
-            if (!file_exists($path2)) {
-                require_code('files2');
-                if (!file_exists(dirname($path2))) {
-                    make_missing_directory(dirname($path2));
-                }
-                make_missing_directory($path2);
-            }
-
-            $looping = false;
-
-            $myfile = @fopen($_path2, GOOGLE_APPENGINE ? 'wb' : 'ab');
-            if ($myfile === false) {
-                critical_error('PASSON', do_lang('WRITE_ERROR', escape_html($path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp'))); // Bail out hard if would cause a loop
-            }
-        }
-
-        @flock($myfile, LOCK_EX);
-        if (!GOOGLE_APPENGINE) {
-            ftruncate($myfile, 0);
-        }
-        $data_to_write = '<' . '?php' . "\n" . $result->to_assembly($lang) . "\n" . '?' . '>';
-        if (fwrite($myfile, $data_to_write) >= strlen($data_to_write)) {
-            // Success
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
-            require_code('files');
-            fix_permissions($path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp');
-            /*if (!is_null($final_css_path)) {
-                @unlink($final_css_path); // So we know to regenerate the final file (so far we just did the .tcp)
-            }*/
-        } else {
-            // Failure
-            @flock($myfile, LOCK_UN);
-            fclose($myfile);
-            @unlink($path2 . '/' . filter_naughty($_codename) . $suffix . '.tcp'); // Can't leave this around, would cause problems
-        }
+        require_code('files');
+        $data_to_write = '<' . '?php' . "\n" . $result->to_assembly($lang) . "\n";
+        cms_file_put_contents_safe($_path2, $data_to_write, FILE_WRITE_FAILURE_SILENT | FILE_WRITE_FIX_PERMISSIONS);
     }
 
     return $result;

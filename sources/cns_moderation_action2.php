@@ -33,6 +33,10 @@
  */
 function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state, $sink_state, $open_state, $forum_multi_code, $title_suffix)
 {
+    if (!addon_installed('cns_multi_moderations')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     $_name = $GLOBALS['FORUM_DB']->query_select_value('f_multi_moderations', 'mm_name', array('id' => $id));
 
     $map = array(
@@ -62,6 +66,10 @@ function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state,
  */
 function cns_delete_multi_moderation($id)
 {
+    if (!addon_installed('cns_multi_moderations')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     $_name = $GLOBALS['FORUM_DB']->query_select_value('f_multi_moderations', 'mm_name', array('id' => $id));
     $name = get_translated_text($_name, $GLOBALS['FORUM_DB']);
     $GLOBALS['FORUM_DB']->query_delete('f_multi_moderations', array('id' => $id), '', 1);
@@ -87,6 +95,10 @@ function cns_delete_multi_moderation($id)
  */
 function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', $is_emphasised = 1, $skip_sig = 0)
 {
+    if (!addon_installed('cns_multi_moderations')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     $topic_details = $GLOBALS['FORUM_DB']->query_select('f_topics', array('t_forum_id', 't_cache_first_title', 't_cache_first_post_id'), array('id' => $topic_id), '', 1);
     if (!array_key_exists(0, $topic_details)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'multi_moderation'));
@@ -160,6 +172,10 @@ function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', 
  */
 function warnings_script()
 {
+    if (!addon_installed('cns_warnings')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     if (get_forum_type() != 'cns') {
         warn_exit(do_lang_tempcode('NO_CNS'));
     } else {
@@ -228,6 +244,10 @@ function warnings_script()
  */
 function cns_make_warning($member_id, $explanation, $by = null, $time = null, $is_warning = 1, $silence_from_topic = null, $silence_from_forum = null, $probation = 0, $banned_ip = '', $charged_points = 0, $banned_member = 0, $changed_usergroup_from = null)
 {
+    if (!addon_installed('cns_warnings')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     if ((is_null($time)) && (!cns_may_warn_members())) {
         access_denied('PRIVILEGE', 'warn_members');
     }
@@ -269,6 +289,10 @@ function cns_make_warning($member_id, $explanation, $by = null, $time = null, $i
  */
 function cns_edit_warning($warning_id, $explanation, $is_warning = 1)
 {
+    if (!addon_installed('cns_warnings')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     if (!cns_may_warn_members()) {
         access_denied('PRIVILEGE', 'warn_members');
     }
@@ -296,6 +320,10 @@ function cns_edit_warning($warning_id, $explanation, $is_warning = 1)
  */
 function cns_delete_warning($warning_id)
 {
+    if (!addon_installed('cns_warnings')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     if (!cns_may_warn_members()) {
         access_denied('PRIVILEGE', 'warn_members');
     }

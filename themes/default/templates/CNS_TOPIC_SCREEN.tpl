@@ -5,20 +5,22 @@
 {$SET,topic_title,{_TITLE}}
 
 <div class="cns_topic_{THREADED*}">
-	{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
+	{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
 		<div class="non_accessibility_redundancy">
 			<div class="float_surrounder">
 				<div class="buttons_group cns_buttons_screen">
-					{+START,INCLUDE,NOTIFICATION_BUTTONS}
-						NOTIFICATIONS_TYPE=cns_topic
-						NOTIFICATIONS_ID={ID}
-						NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+					{+START,IF,{$NOT,{TICKET_FORUM}}}
+						{+START,INCLUDE,NOTIFICATION_BUTTONS}
+							NOTIFICATIONS_TYPE=cns_topic
+							NOTIFICATIONS_ID={ID}
+							NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+						{+END}
 					{+END}
 					{BUTTON_SCREENS}
 				</div>
 			</div>
 		</div>
-	{+END}
+	{+END}{+END}
 
 	{POLL}
 
@@ -146,14 +148,18 @@
 
 	{+START,IF_NON_EMPTY,{POSTS}}
 		<div class="float_surrounder">
-			<div class="buttons_group cns_buttons_screen">
-				{+START,INCLUDE,NOTIFICATION_BUTTONS}
-					NOTIFICATIONS_TYPE=cns_topic
-					NOTIFICATIONS_ID={ID}
-					NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
-				{+END}
-				{BUTTON_SCREENS}
-			</div>
+			{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
+				<div class="buttons_group cns_buttons_screen">
+					{+START,IF,{$NOT,{TICKET_FORUM}}}
+						{+START,INCLUDE,NOTIFICATION_BUTTONS}
+							NOTIFICATIONS_TYPE=cns_topic
+							NOTIFICATIONS_ID={ID}
+							NOTIFICATIONS_PAGE_LINK=forum:topics:toggle_notifications_topic:{ID}
+						{+END}
+					{+END}
+					{BUTTON_SCREENS}
+				</div>
+			{+END}
 
 			{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
 				<div class="non_accessibility_redundancy left"><nav class="breadcrumbs" itemprop="breadcrumb">
@@ -166,18 +172,25 @@
 		</div>
 	{+END}
 
-	<div class="cns_quick_reply">
-		{QUICK_REPLY}
-
+	{+START,SET,double_post_message}
 		{+START,IF_EMPTY,{QUICK_REPLY}}{+START,IF,{$EQ,{LAST_POSTER},{$MEMBER}}}{+START,IF,{$NOT,{$IS_GUEST}}}{+START,IF,{$NOT,{MAY_DOUBLE_POST}}}
-			<div class="box box__members_viewing"><div class="box_inner">
+			<div class="box box___members_viewing"><div class="box_inner">
 				{!NO_DOUBLE_POST}
 			</div></div>
 		{+END}{+END}{+END}{+END}
-	</div>
+	{+END}
+	{+START,IF,{$OR,{$IS_NON_EMPTY,{QUICK_REPLY}},{$IS_NON_EMPTY,{$TRIM,{$GET,double_post_message}}}}}
+		<div class="cns_quick_reply">
+			{QUICK_REPLY}
+
+			{$GET,double_post_message}
+		</div>
+	{+END}
 
 	{$REVIEW_STATUS,topic,{ID}}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
+	{+START,IF_NON_EMPTY,{FORUM_ID}}
+		{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
+	{+END}
 </div>
 

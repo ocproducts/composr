@@ -44,7 +44,7 @@ function password_censor($auto = false, $display = true, $days_ago = 30)
     header('Content-type: text/plain; charset=' . get_charset());
 
     foreach ($rows as $row) {
-        $text_start = get_translated_text($row['p_post']);
+        $text_start = get_translated_text($row['p_post'], $GLOBALS['FORUM_DB']);
         $text_after = _password_censor($text_start, PASSWORD_CENSOR__TIMEOUT_SCAN);
         if ($text_after != $text_start) {
             if (multi_lang_content()) {
@@ -141,7 +141,7 @@ function _password_censor($text, $scan_type = 1, $explicit_only = false)
                 if ((is_numeric($m)) && (strlen($m) > 6)) {
                     $c++;
                 }
-                if (preg_match('#(password|pass|pword|pw)\s*:?=?\s+' . preg_quote($m, '#') . '#i', $text) != 0) {
+                if (preg_match('#(password|pass|pword|pw|p/w)\s*:?=?\s+' . preg_quote($m, '#') . '#i', $text) != 0) {
                     $c += 2;
                 }
                 if ($c >= 3) {

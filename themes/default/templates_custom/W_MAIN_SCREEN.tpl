@@ -3,7 +3,7 @@
 <section class="box"><div class="box_inner">
 	<h3>{!NAVIGATION}</h3>
 
-	<section class="box box__realm_main"><div class="box_inner">
+	<section class="box box___realm_main"><div class="box_inner">
 		<h3>&ldquo;{REALM_NAME*}&rdquo;, &lsquo;{ROOM_NAME*}&rsquo;, <kbd>{REALM*}:{X*}:{Y*}</kbd></h3>
 
 		<div class="buildr_navigation">
@@ -124,7 +124,7 @@
 
 <br />
 
-<section class="box box__room_info"><div class="box_inner">
+<section class="box box___room_info"><div class="box_inner">
 	<h3>{!W_ROOM_INFORMATION}</h3>
 
 	<div class="float_surrounder">
@@ -741,7 +741,7 @@
 
 	<div class="box box___w_main_screen">
 		<h2 class="toggleable_tray_title">
-			<a class="toggleable_tray_button" href="#" onclick="toggleable_tray(this.parentNode.parentNode); set_cookie('hideMod',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;">{!W_ENVIRONMENT_MODIFICATIONS}</a>
+			<a class="toggleable_tray_button" href="#" onclick="toggleable_tray(this.parentNode.parentNode); return false;">{!W_ENVIRONMENT_MODIFICATIONS}</a>
 			{+START,IF,{$JS_ON}}
 				<a class="toggleable_tray_button" href="#" onclick="toggleable_tray(this.parentNode.parentNode); set_cookie('hideMod',(this.getElementsByTagName('img')[0].getAttribute('src')=='{$IMG;*,1x/trays/contract}')?'0':'1'); return false;"><img alt="{!EXPAND}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand2}" srcset="{$IMG*,2x/trays/expand2} 2x" /></a>
 			{+END}

@@ -224,11 +224,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_profile_views', 'UINTEGER');
         $GLOBALS['FORUM_DB']->add_table_field('f_members', 'm_total_sessions', 'UINTEGER');
 
-        if (strpos(get_db_type(), 'mysql') !== false) {
-            $GLOBALS['FORUM_DB']->add_auto_key('f_poll_votes');
-            $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'AUTO_LINK'), array('m_table' => 'f_poll_votes', 'm_type' => '*AUTO_LINK'));
-            $GLOBALS['FORUM_DB']->query_update('db_meta', array('m_type' => 'MEMBER'), array('m_table' => 'f_poll_votes', 'm_type' => '*MEMBER'));
-        }
+        $GLOBALS['FORUM_DB']->add_auto_key('f_poll_votes');
         $GLOBALS['FORUM_DB']->add_table_field('f_poll_votes', 'pv_ip', 'IP');
 
         $GLOBALS['FORUM_DB']->rename_table('f_categories', 'f_forum_groupings');
@@ -265,6 +261,8 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_options', 'SHORT_TEXT');
 
+        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
+        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'codename', 'cf_default' => 'RANDOM'), array('cf_type' => 'random'));
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=vertical_checkboxes,custom_values=yes'), array('cf_type' => 'combo_multi'));
         $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi'), array('cf_type' => 'multilist'));
@@ -281,7 +279,18 @@ function install_cns($upgrade_from = null)
 
         rename_config_option('post_history_days', 'post_read_history_days');
 
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_avatar_url=REPLACE(m_avatar_url,\'ocf_\',\'cns_\') WHERE m_avatar_url LIKE \'%ocf\_%\'');
+        // Directory moving
+        require_code('upgrade');
+        $fields = array(
+            'm_photo_url' => 'uploads/ocf_photos',
+            'm_photo_thumb_url' => 'uploads/ocf_photos_thumbs',
+            'm_avatar_url' => 'uploads/ocf_avatars',
+        );
+        foreach ($fields as $field => $dir) {
+            $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET ' . $field . '=REPLACE(' . $field . ',\'ocf_\',\'cns_\') WHERE ' . $field . ' LIKE \'%ocf\_%\'');
+            move_folder_contents($dir, str_replace('ocf_', 'cns_', $dir));
+        }
+        move_folder_contents('uploads/ocf_cpf_upload', 'uploads/cns_cpf_upload');
 
         $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_emoticons SET e_theme_img_code=REPLACE(e_theme_img_code,\'ocf_\',\'cns_\') WHERE e_theme_img_code LIKE \'%ocf\_%\'');
 
@@ -763,10 +772,12 @@ function install_cns($upgrade_from = null)
             't_forum_multi_code' => 'SHORT_TEXT',
             't_use_default_forums' => 'BINARY'
         ));
-        require_lang('cns_post_templates');
-        cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_bug_title'), do_lang('DEFAULT_POST_TEMPLATE_bug_text'), '', 0);
-        cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_task_title'), do_lang('DEFAULT_POST_TEMPLATE_task_text'), '', 0);
-        cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_fault_title'), do_lang('DEFAULT_POST_TEMPLATE_fault_text'), '', 0);
+        if (addon_installed('cns_post_templates')) {
+            require_lang('cns_post_templates');
+            cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_bug_title'), do_lang('DEFAULT_POST_TEMPLATE_bug_text'), '', 0);
+            cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_task_title'), do_lang('DEFAULT_POST_TEMPLATE_task_text'), '', 0);
+            cns_make_post_template(do_lang('DEFAULT_POST_TEMPLATE_fault_title'), do_lang('DEFAULT_POST_TEMPLATE_fault_text'), '', 0);
+        }
 
         $GLOBALS['FORUM_DB']->create_index('f_posts', '#p_title', array('p_title'));
 

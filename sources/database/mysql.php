@@ -98,12 +98,13 @@ class Database_Static_mysql extends Database_super_mysql
             $SITE_INFO['database_charset'] = (get_charset() == 'utf-8') ? 'utf8mb4' : 'latin1';
         }
         if (function_exists('mysql_set_charset')) {
-            mysql_set_charset($SITE_INFO['database_charset'], $db);
+            @mysql_set_charset($SITE_INFO['database_charset'], $db);
         } else {
             @mysql_query('SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"', $db);
         }
-        @mysql_query('SET WAIT_TIMEOUT=28800', $db);
-        @mysql_query('SET SQL_BIG_SELECTS=1', $db);
+        @mysql_query('SET wait_timeout=28800', $db);
+        @mysql_query('SET sql_big_selects=1', $db);
+        @mysql_query('SET max_allowed_packet=104857600', $db);
         if ((get_forum_type() == 'cns') && (!$GLOBALS['IN_MINIKERNEL_VERSION'])) {
             @mysql_query('SET sql_mode=\'STRICT_ALL_TABLES\'', $db);
         } else {
@@ -122,10 +123,6 @@ class Database_Static_mysql extends Database_super_mysql
      */
     public function db_has_full_text($db)
     {
-        if ($this->using_innodb()) {
-            return false;
-        }
-
         return true;
     }
 
@@ -212,7 +209,7 @@ class Database_Static_mysql extends Database_super_mysql
                 return null;
             }
             if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
-                /*@mysql_query('SET session max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
+                /*@mysql_query('SET max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
 
                 if ($get_insert_id) {
                     fatal_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
@@ -256,7 +253,7 @@ class Database_Static_mysql extends Database_super_mysql
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
             }
-            if ((!running_script('upgrader')) && (!get_mass_import_mode()) && (strpos($err, 'Duplicate entry') === false)) {
+            if ((!running_script('upgrader')) && ((!get_mass_import_mode()) || (get_param_integer('keep_fatalistic', 0) == 1)) && (strpos($err, 'Duplicate entry') === false)) {
                 $matches = array();
                 if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) !== 0) {
                     $this->db_query('REPAIR TABLE ' . $matches[1], $db_parts);
@@ -272,8 +269,7 @@ class Database_Static_mysql extends Database_super_mysql
             }
         }
 
-        $query = ltrim($query);
-        $sub = substr($query, 0, 4);
+        $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->db_get_query_rows($results);
         }

@@ -13,6 +13,9 @@
  * @package    free_article_import
  */
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -300,8 +303,9 @@ function http_download_file_cached($url, $referer = '', $cookies = null)
     } else {
         sleep(3);
 
+        require_code('files');
         $data = http_download_file($url, null, true, false, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.146 Safari/537.36', null, $cookies, 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', null, 'en-US,en;q=0.8', null, $referer);
-        file_put_contents($cache_file, $data);
+        cms_file_put_contents_safe($cache_file, $data, FILE_WRITE_FIX_PERMISSIONS);
     }
     return $data;
 }

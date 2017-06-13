@@ -36,7 +36,7 @@ function login_mod_func($raw_params)
     $result = $acl_object->authenticate_credentials_and_set_auth($username, $password);
 
     if ($result <= 0) {
-        warn_exit(do_lang_tempcode('USER_BAD_PASSWORD'));
+        warn_exit(do_lang_tempcode('MEMBER_BAD_PASSWORD'));
     }
 
     return mobiquo_response_true();
@@ -71,7 +71,7 @@ function m_stick_topic_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean')
         ), 'struct');
     }
@@ -107,7 +107,7 @@ function m_close_topic_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -140,7 +140,7 @@ function m_delete_topic_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -173,7 +173,7 @@ function m_delete_post_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -232,7 +232,7 @@ function m_move_topic_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -265,7 +265,7 @@ function m_rename_topic_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -309,7 +309,7 @@ function m_move_post_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -342,7 +342,7 @@ function m_merge_topic_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -376,7 +376,7 @@ function m_merge_post_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -469,7 +469,7 @@ function m_approve_topic_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -502,7 +502,7 @@ function m_approve_post_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -537,7 +537,7 @@ function m_ban_user_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -569,7 +569,7 @@ function m_unban_user_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
@@ -640,7 +640,7 @@ function m_mark_as_spam_func($raw_params)
     } else {
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
-            'result_text' => mobiquo_val(do_lang('ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
+            'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
             'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }

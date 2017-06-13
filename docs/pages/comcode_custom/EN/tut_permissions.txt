@@ -28,7 +28,7 @@ You cannot set:
 
 [surround]
 [media width="150" description="Making mass changes in the Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/permissions_mass_checkbox_change.gif[/media]
-[media width="150" description="The Permissions Tree Editor" float="right"]data_custom/images/docs/tut_permissions/permissions_tree_editor.png[/media]
+[media width="150" description="The Permissions Tree Editor (with \"Single public zone\" off)" float="right"]data_custom/images/docs/tut_permissions/permissions_tree_editor.png[/media]
 To edit permissions in Composr you can either use:
  - The Permissions Tree Editor
  - Disparate configuration (described in sections below)
@@ -39,6 +39,10 @@ Access the Permissions Tree Editor from:
 Admin Zone > Security > Permissions Tree Editor
 
 Another feature of the Permissions Tree Editor is the ability to make batch selections and apply permissions to everything selected. You can do this in the conventional way using the Ctrl/Shift keys (Option/Shift keys on a mac).
+
+Note that the Sitemap shown in the Permission Tree Editor depends on the "Single public zone" configuration option.
+If this option is on then the default content pages will be under the Welcome zone, and no Site zone will be shown. The Sitemap will start from Root.
+If this option is off then the default content pages will be under the Site zone. Because the Welcome zone is almost empty the Sitemap will start from the Welcome zone. 
 
 The remainder details the separate permission setting interfaces in different parts of Composr. The concepts from below are relevant to using the Permissions Tree Editor, as they detail what controls are embedded at different points within the tree. We do recommend using the Permissions Tree Editor directly though, unless you happen to be working directly with the zone/category/page at the time of setting permissions for it.
 [/surround]
@@ -165,11 +169,11 @@ Please note that when using 'SU':
 
 [media width="150" description="FirePHP in action" float="right"]data_custom/images/docs/tut_permissions/firephp.png[/media]
 Composr has a special feature to help you diagnose problems with your permission settings.
-1) To use this feature you need to be using [url="Firefox"]http://www.mozilla.com/en-US/[/url] and have the [url="Firebug"]https://addons.mozilla.org/en-US/firefox/addon/1843[/url] and [url="FirePHP"]https://addons.mozilla.org/en-US/firefox/addon/6149[/url] addons installed
-2) Once the addons are both installed, make sure that all the debugging panes (Console, HTML, CSS, Script, DOM, Net) for Firebug are enabled for your website (to bring up Firebug access: Tools > Web Developer > Firebug > Open Firebug, from the Firefox menus)
-3) Using an admin login, bring up your website and add [tt]&keep_firephp=1&keep_su=test[/tt] to the end of the URL (change [tt]test[/tt] to the username you want to test with)
+1) To use this feature you are best using Google Chrome and have the [url="FirePHP4Chrome"]https://chrome.google.com/webstore/detail/firephp4chrome/gpgbmonepdpnacijbbdijfbecmgoojma[/url] addon installed
+2) Using an admin login, bring up your website and add [tt]&keep_firephp=1&keep_su=test[/tt] to the end of the URL (change [tt]test[/tt] to the username you want to test with)
+3) You should find messages added to Chrome's Console  (find it @ View --> Developer --> JavaScript Console)
 
-You will then find that details of all the permission checks used to generate the Composr screen are logged to the Firebug/FirePHP Console. By looking to see what permission checks pass or fail you can work out what settings you might want to change.
+By looking to see what permission checks pass or fail you can work out what settings you might want to change.
 
 There are FirePHP equivalents in other browsers, but for simplicity we have focused the above instructions on the official/original Firefox addon.
 

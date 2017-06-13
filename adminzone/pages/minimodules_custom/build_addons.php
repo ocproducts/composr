@@ -30,6 +30,8 @@ echo '<hr />';
 require_code('addons2');
 require_code('version');
 require_code('version2');
+require_code('tar');
+require_code('addon_publish');
 
 if (php_function_allowed('set_time_limit')) {
     @set_time_limit(0);
@@ -38,6 +40,8 @@ if (php_function_allowed('set_time_limit')) {
 $only = get_param_string('only', null);
 
 $done_addon = false;
+
+$done_message = false;
 
 $addons = find_all_hooks('systems', 'addon_registry');
 foreach ($addons as $name => $place) {
@@ -54,16 +58,46 @@ foreach ($addons as $name => $place) {
 
     $addon_info = read_addon_info($name);
 
-    // Archive it off to exports/addons
     $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '-' . get_version_branch(floatval($addon_info['version'])) . '.tar';
+    $full_path = get_custom_file_base() . '/exports/addons/' . $file;
 
+    // Copy through times from previous build IF the files didn't change (as git munges mtimes)
+    if (is_file($full_path)) {
+        $tar_file = tar_open($full_path, 'rb');
+        $directory = list_to_map('path', tar_get_directory($tar_file));
+    } else {
+        $tar_file = null;
+        $directory = array();
+
+        if (!$done_message) {
+            attach_message(comcode_to_tempcode('At least one addon file isn\'t on disk already. If this build is updating addons already released for this major/minor version you should put the addons in [tt]exports/addons[/tt] so that mtimes can be set properly, then refresh.'), 'warn');
+            $done_message = true;
+        }
+    }
+
+    // Build up file list
     $new_addon_files = array();
+    $mtimes = array();
     foreach ($addon_info['files'] as $_file) {
-        if (substr($_file, -9) != '.editfrom') {// This would have been added back in automatically
+        if (substr($_file, -9) != '.editfrom') { // This would have been added back in automatically
+            if (isset($directory[$_file])) {
+                $file_info = tar_get_file($tar_file, $_file);
+                if ($file_info['data'] == file_get_contents(get_file_base() . '/' . $_file)) {
+                    $mtimes[$_file] = $directory[$_file]['mtime'];
+                }
+            }
+
             $new_addon_files[] = $_file;
         }
     }
 
+    if ($tar_file !== null) {
+        tar_close($tar_file);
+    }
+
+    $old_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
+
+    // Archive it off to exports/addons
     create_addon(
         $file,
         $new_addon_files,
@@ -77,15 +111,26 @@ foreach ($addons as $name => $place) {
         implode("\n", $addon_info['copyright_attribution']),
         $addon_info['licence'],
         $addon_info['description'],
-        'exports/addons'
+        'exports/addons',
+        $mtimes
     );
 
     $done_addon = true;
 
-    echo nl2br(escape_html(update_addon_descriptions($file, $name, $addon_info['description'])));
+    clearstatcache();
+    $new_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
+
+    if ($old_time !== $new_time) {
+        if ($old_time === false) {
+            echo '<p>New addon with description:</p><div class="whitespace_visible">' . escape_html(generate_addon_description($addon_info)) . '</div>';
+            
+        } else {
+            echo nl2br(escape_html(update_addon_descriptions($file, $name, generate_addon_description($addon_info))));
+        }
+    }
 }
 if ($done_addon) {
-    echo "<p>Addons have been exported to <kbd>export/addons/</kbd></p>\n";
+    echo "<hr /><p>Addons have been exported to <kbd>export/addons/</kbd></p>\n";
 }
 
 if (get_param_integer('export_themes', 0) == 1) {
@@ -100,7 +145,7 @@ if (get_param_integer('export_themes', 0) == 1) {
             continue;
         }
 
-        if ($theme == 'default') {
+        if ($theme == 'default' || $theme == 'admin') {
             continue;
         }
 
@@ -113,7 +158,7 @@ if (get_param_integer('export_themes', 0) == 1) {
         $copyright_attribution = '';
         $licence = '(Unstated)';
         $description = '';
-        $ini_file = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
+        $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
         if (file_exists($ini_file)) {
             $details = better_parse_ini_file($ini_file);
 
@@ -154,7 +199,7 @@ if (get_param_integer('export_themes', 0) == 1) {
         }
         foreach ($page_files as $file2) {
             $matches = array();
-            $regexp = '#^((\w+)/)?pages/comcode_custom/[^/]*/' . preg_quote($theme, '#') . '\_\_([\w\_]+)\.txt$#';
+            $regexp = '#^((\w+)/)?pages/comcode_custom/[^/]*/' . preg_quote($theme, '#') . '\_\_(\w+)\.txt$#';
             if ((preg_match($regexp, $file2, $matches) != 0) && ($matches[1] != 'docs')) {
                 $files2[] = dirname($file2) . '/' . substr(basename($file2), strlen($theme) + 2);
             }
@@ -162,6 +207,8 @@ if (get_param_integer('export_themes', 0) == 1) {
 
         $_GET['keep_theme_test'] = '1';
         $_GET['theme'] = $theme;
+
+        $old_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
 
         create_addon(
             $file,
@@ -179,15 +226,20 @@ if (get_param_integer('export_themes', 0) == 1) {
             'exports/addons'
         );
 
-        echo nl2br(escape_html(update_addon_descriptions($file, $name, $description)));
+        clearstatcache();
+        $new_time = @filemtime(get_custom_file_base() . '/exports/addons/' . $file);
+
+        if ($old_time !== $new_time) {
+            echo nl2br(escape_html(update_addon_descriptions($file, $name, $description)));
+        }
     }
 
     if ($only !== null) {
-        echo "<p>All themes have been exported to <kbd>export/addons/</kbd></p>\n";
+        echo "<hr /><p>All themes have been exported to <kbd>export/addons/</kbd></p>\n";
     }
 }
 
-echo "<hr /><p><strong>Done</strong></p>\n";
+echo "<hr /><p><strong>Done. To deploy live upload changed files from <kbd>export/addons/</kbd> to <kbd>uploads/downloads/</kbd> on live (and add download entries for any new addons using the descriptions given and other correct details &mdash; or use the <kbd>publish_addons_as_downloads</kbd> page).</strong></p>\n";
 
 function update_addon_descriptions($file, $name, $description)
 {

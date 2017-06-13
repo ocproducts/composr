@@ -122,35 +122,45 @@ function init__global3()
     global $MASS_IMPORT_HAPPENING;
     $MASS_IMPORT_HAPPENING = false;
 
-    // Notifications (defined here, as notification_poller may need them - yet we don't want to include all the notification dispatch code)
-    define('A_NA', 0x0); // Not applicable          (0 in decimal)
-    //
-    define('A_INSTANT_EMAIL', 0x2);         // (2 in decimal)
-    define('A_DAILY_EMAIL_DIGEST', 0x4);    // (4 in decimal)
-    define('A_WEEKLY_EMAIL_DIGEST', 0x8);   // (8 in decimal)
-    define('A_MONTHLY_EMAIL_DIGEST', 0x10); // (16 in decimal)
-    define('A_INSTANT_SMS', 0x20);          // (32 in decimal)
-    define('A_INSTANT_PT', 0x40);           // (64 in decimal)  Private topic
-    define('A_WEB_NOTIFICATION', 0x80);     // (128 in decimal) Desktop notification if site is open, and always shows on notification dropdown
-    // And...
-    define('A__ALL', 0xFFFFFF);
-    // And...
-    define('A__STATISTICAL', -0x1); // This is magic, it will choose whatever the user probably wants, based on their existing settings
-    define('A__CHOICE', -0x2); // Never stored in DB, used as a flag inside admin_notifications module
+    if (!defined('A_NA')) {
+        // Notifications (defined here, as notification_poller may need them - yet we don't want to include all the notification dispatch code)
+        define('A_NA', 0x0); // Not applicable          (0 in decimal)
+        //
+        define('A_INSTANT_EMAIL', 0x2);         // (2 in decimal)
+        define('A_DAILY_EMAIL_DIGEST', 0x4);    // (4 in decimal)
+        define('A_WEEKLY_EMAIL_DIGEST', 0x8);   // (8 in decimal)
+        define('A_MONTHLY_EMAIL_DIGEST', 0x10); // (16 in decimal)
+        define('A_INSTANT_SMS', 0x20);          // (32 in decimal)
+        define('A_INSTANT_PT', 0x40);           // (64 in decimal)  Private topic
+        define('A_WEB_NOTIFICATION', 0x80);     // (128 in decimal) Desktop notification if site is open, and always shows on notification dropdown
+        // And...
+        define('A__ALL', 0xFFFFFF);
+        // And...
+        define('A__STATISTICAL', -0x1); // This is magic, it will choose whatever the user probably wants, based on their existing settings
+        define('A__CHOICE', -0x2); // Never stored in DB, used as a flag inside admin_notifications module
+    }
 
     global $ESCAPE_HTML_OUTPUT, $KNOWN_TRUE_HTML; // Used to track what is already escaped in kid-gloves modes
     $ESCAPE_HTML_OUTPUT = array();
     $KNOWN_TRUE_HTML = array();
 
-    // Would normally put these in sources/comcode.php, but some of our templating references these constants
-    define('WYSIWYG_COMCODE__BUTTON', 1);
-    define('WYSIWYG_COMCODE__XML_BLOCK', 2);
-    define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 4);
-    define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 8);
-    define('WYSIWYG_COMCODE__XML_INLINE', 16);
-    define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
-    define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
-    define('WYSIWYG_COMCODE__HTML', 128);
+    if (!defined('WYSIWYG_COMCODE__BUTTON')) {
+        // Would normally put these in sources/comcode.php, but some of our templating references these constants
+        define('WYSIWYG_COMCODE__BUTTON', 1);
+        define('WYSIWYG_COMCODE__XML_BLOCK', 2);
+        define('WYSIWYG_COMCODE__XML_BLOCK_ESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 4);
+        define('WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED', WYSIWYG_COMCODE__XML_BLOCK + 8);
+        define('WYSIWYG_COMCODE__XML_INLINE', 16);
+        define('WYSIWYG_COMCODE__STANDOUT_BLOCK', WYSIWYG_COMCODE__XML_BLOCK + 32);
+        define('WYSIWYG_COMCODE__STANDOUT_INLINE', WYSIWYG_COMCODE__XML_INLINE + 64);
+        define('WYSIWYG_COMCODE__HTML', 128);
+    }
+
+    global $DOING_OUTPUT_PINGS;
+    $DOING_OUTPUT_PINGS = false;
+
+    global $DISABLE_SMART_DECACHING_TEMPORARILY;
+    $DISABLE_SMART_DECACHING_TEMPORARILY = false;
 }
 
 /**
@@ -224,6 +234,22 @@ function fix_permissions($path, $perms = null)
             }
         }
     }
+}
+
+/**
+ * Get the contents of a file, with locking support.
+ *
+ * @param  PATH $path File path.
+ * @return string File contents.
+ */
+function cms_file_get_contents_safe($path)
+{
+    $tmp = fopen($path, 'rb');
+    flock($tmp, LOCK_SH);
+    $contents = file_get_contents($path);
+    flock($tmp, LOCK_UN);
+    fclose($tmp);
+    return $contents;
 }
 
 /**
@@ -484,7 +510,8 @@ function globalise($middle, $message = null, $type = '', $include_header_and_foo
         $global->singular_bind('MIDDLE', $middle);
         // NB: We also considered the idea of using document.write() as a way to reset the output stream, but JavaScript execution will not happen before the parser (even if you force a flush and delay)
     } else {
-        if (headers_sent()) {
+        global $DOING_OUTPUT_PINGS;
+        if (headers_sent() && !$DOING_OUTPUT_PINGS) {
             $global = do_template('STANDALONE_HTML_WRAP', array(
                 '_GUID' => 'd579b62182a0f815e0ead1daa5904793',
                 'TITLE' => ($GLOBALS['DISPLAYED_TITLE'] === null) ? do_lang_tempcode('NA') : $GLOBALS['DISPLAYED_TITLE'],
@@ -757,7 +784,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
     }
 
     $prefix_default = get_file_base() . '/themes/';
-    $prefix = ($theme == 'default') ? $prefix_default : (get_custom_file_base() . '/themes/');
+    $prefix = ($theme == 'default' || $theme == 'admin') ? $prefix_default : (get_custom_file_base() . '/themes/');
 
     if (!isset($FILE_ARRAY)) {
         if ((is_file($prefix . $theme . '/' . $directory . '_custom/' . $codename . $suffix)) && (!in_safe_mode()) && (!$non_custom_only)) {
@@ -837,7 +864,7 @@ function is_wide()
 
     // Need to check it is allowed
     $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
-    $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
+    $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
     if (is_file($ini_path)) {
         require_code('files');
         $details = better_parse_ini_file($ini_path);
@@ -1137,7 +1164,7 @@ function addon_installed($addon, $non_bundled_too = false)
 }
 
 /**
- * Convert a float to a "technical string representation of a float".
+ * Convert a float to a "technical string representation of a float". Inverted with floatval.
  *
  * @param  float $num The number
  * @param  integer $decs_wanted The number of decimals to keep
@@ -1159,14 +1186,14 @@ function float_to_raw_string($num, $decs_wanted = 2, $only_needed_decs = false)
             $str = rtrim($str, '.');
         }
     }
-    if ($only_needed_decs) {
+    if ($only_needed_decs && $decs_wanted != 0) {
         $str = rtrim(rtrim($str, '0'), '.');
     }
     return $str;
 }
 
 /**
- * Format the given float number as a nicely formatted string.
+ * Format the given float number as a nicely formatted string (using the locale). Inverted with float_unformat.
  *
  * @param  float $val The value to format
  * @param  integer $decs_wanted The number of fractional digits
@@ -1193,13 +1220,50 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
         }
     }
     if ($only_needed_decs && $decs_wanted != 0) {
-        $str = preg_replace('#\.$#', '', preg_replace('#0+$#', '', $str));
+        $str = rtrim(rtrim($str, '0'), '.');
     }
     return $str;
 }
 
 /**
- * Format the given integer number as a nicely formatted string.
+ * Take the given formatted float number and convert it to a native float. The inverse of float_format.
+ *
+ * @param  string $str The formatted float number using the locale.
+ * @param  boolean $no_thousands_sep Whether we do *not* expect a thousands separator, which means we can be a bit smarter.
+ * @return float Native float
+ */
+function float_unformat($str, $no_thousands_sep = false)
+{
+    $locale = localeconv();
+
+    // Simplest case?
+    if (preg_match('#^\d+$#', $str) != 0) { // E.g. "123"
+        return floatval($str);
+    }
+
+    if ($no_thousands_sep) {
+        // We can assume a "." is a decimal point then?
+        if (preg_match('#^\d+\.\d+$#', $str) != 0) { // E.g. "123.456"
+            return floatval($str);
+        }
+    }
+
+    // Looks like English-format? It couldn't be anything else because thousands_sep always comes before decimal_point
+    if (preg_match('#^[\d,]+\.\d+$#', $str) != 0) { // E.g. "123,456.789"
+        return floatval($str);
+    }
+
+    // Now it must e E.g. "123.456,789" or "123.456", or something from another language which uses other separators...
+
+    if ($locale['thousands_sep'] != '') {
+        $str = str_replace($locale['thousands_sep'], '', $str);
+    }
+    $str = str_replace($locale['decimal_point'], '.', $str);
+    return floatval($str);
+}
+
+/**
+ * Format the given integer number as a nicely formatted string (using the locale).
  *
  * @param  integer $val The value to format
  * @return string Nicely formatted string
@@ -1393,7 +1457,6 @@ function _multi_sort($a, $b)
             $av = $a[$key];
             $bv = $b[$key];
 
-            // If calling, must put an "@" around the uasort call because of a PHP bug
             if (is_object($av)) {
                 $av = $av->evaluate();
             }
@@ -1403,9 +1466,17 @@ function _multi_sort($a, $b)
 
             if ($backwards) { // Flip around
                 $key = substr($key, 1);
-                $ret = -strnatcasecmp($av, $bv);
+                if ((is_numeric($av)) && (is_numeric($bv))) {
+                    $ret = -strnatcasecmp($av, $bv);
+                } else {
+                    $ret = -strcasecmp($av, $bv);
+                }
             } else {
-                $ret = strnatcasecmp($av, $bv);
+                if ((is_numeric($av)) && (is_numeric($bv))) {
+                    $ret = strnatcasecmp($av, $bv);
+                } else {
+                    $ret = strcasecmp($av, $bv);
+                }
             }
         } while ((count($keys) !== 0) && ($ret === 0));
         return $ret;
@@ -1649,12 +1720,9 @@ function get_page_name()
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     if (($page == '') && ($ZONE !== null)) {
-        $page = cms_srv('QUERY_STRING');
-        if ((strpos($page, '=') !== false) || ($page == '')) {
-            $page = $ZONE['zone_default_page'];
-            if ($page === null) {
-                $page = '';
-            }
+        $page = $ZONE['zone_default_page'];
+        if ($page === null) {
+            $page = '';
         }
     }
     if (strpos($page, '..') !== false) {
@@ -1664,6 +1732,9 @@ function get_page_name()
         $PAGE_NAME_CACHE = str_replace('-', '_', $page); // Temporary, good enough for site.php to finish loading
     }
     $page = fix_page_name_dashing(get_zone_name(), $page);
+    if (!$GETTING_PAGE_NAME) { // It's been changed by process_url_monikers, which was called indirectly by fix_page_name_dashing
+        return $PAGE_NAME_CACHE;
+    }
     if ($ZONE !== null) {
         $PAGE_NAME_CACHE = $page;
     }
@@ -1680,6 +1751,10 @@ function get_page_name()
  */
 function fix_page_name_dashing($zone, $page)
 {
+    if (strpos($page, '/') !== false) {
+        return $page; // It's a moniker that hasn't been processed yet
+    }
+
     // Fix page-name dashes if needed
     if (strpos($page, '-') !== false) {
         require_code('site');
@@ -1762,55 +1837,6 @@ function collapse_1d_complexity($key, $list)
     }
 
     return $new_array;
-}
-
-/**
- * Get server environment variables.
- *
- * @param  string $key The variable name
- * @return string The variable value ('' means unknown)
- */
-function cms_srv($key)
-{
-    if (isset($_SERVER[$key])) {
-        return /*stripslashes*/
-            ($_SERVER[$key]);
-    }
-    if ((isset($_ENV)) && (isset($_ENV[$key]))) {
-        return /*stripslashes*/
-            ($_ENV[$key]);
-    }
-
-    if ($key == 'HTTP_HOST') {
-        if (!empty($_SERVER['HTTP_HOST'])) {
-            return $_SERVER['HTTP_HOST'];
-        }
-        if (!empty($_ENV['HTTP_HOST'])) {
-            return $_ENV['HTTP_HOST'];
-        }
-        if (function_exists('gethostname')) {
-            return gethostname();
-        }
-        if (!empty($_SERVER['SERVER_ADDR'])) {
-            return $_SERVER['SERVER_ADDR'];
-        }
-        if (!empty($_ENV['SERVER_ADDR'])) {
-            return $_ENV['SERVER_ADDR'];
-        }
-        if (!empty($_SERVER['LOCAL_ADDR'])) {
-            return $_SERVER['LOCAL_ADDR'];
-        }
-        if (!empty($_ENV['LOCAL_ADDR'])) {
-            return $_ENV['LOCAL_ADDR'];
-        }
-        return 'localhost';
-    }
-
-    if ($key == 'SERVER_ADDR') { // IIS issue
-        return cms_srv('LOCAL_ADDR');
-    }
-
-    return '';
 }
 
 /**
@@ -2111,9 +2137,9 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
     }
 
     global $SITE_INFO;
-    if ((!$force_db) && (((isset($SITE_INFO['known_suexec'])) && ($SITE_INFO['known_suexec'] == '1')) || (is_writable_wrap(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')))) {
+    if ((!$force_db) && (((isset($SITE_INFO['known_suexec'])) && ($SITE_INFO['known_suexec'] == '1')) || (is_writable_wrap(get_file_base() . '/.htaccess')))) {
         $bans = array();
-        $ban_count = preg_match_all('#\ndeny from (.*)#', file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), $bans);
+        $ban_count = preg_match_all('#\ndeny from (.*)#', cms_file_get_contents_safe(get_file_base() . '/.htaccess'), $bans);
         $ip_bans = array();
         for ($i = 0; $i < $ban_count; $i++) {
             $ip_bans[] = array('ip' => $bans[1][$i]);
@@ -2383,7 +2409,7 @@ function escape_html($string)
 
     global $XSS_DETECT, $ESCAPE_HTML_OUTPUT, $DECLARATIONS_STATE;
 
-    $ret = htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
+    $ret = @htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
 
     if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
         $ESCAPE_HTML_OUTPUT[$ret] = true;
@@ -2526,7 +2552,7 @@ function is_mobile($user_agent = null, $truth = false)
 
     global $SITE_INFO;
     if (((!isset($SITE_INFO['assume_full_mobile_support'])) || ($SITE_INFO['assume_full_mobile_support'] != '1')) && (isset($GLOBALS['FORUM_DRIVER'])) && (!$truth) && (running_script('index')) && (($theme = $GLOBALS['FORUM_DRIVER']->get_theme()) != 'default')) {
-        $ini_path = (($theme == 'default') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
+        $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (is_file($ini_path)) {
             require_code('files');
             $details = better_parse_ini_file($ini_path);
@@ -2659,6 +2685,11 @@ function get_bot_type()
                 'sqworm' => 'Aol.com',
                 'baidu' => 'Baidu',
                 'facebookexternalhit' => 'Facebook',
+                'yandex'=> 'Yandex',
+                'daum' => 'Daum',
+                'ahrefsbot' => 'Ahrefs',
+                'mj12bot' => 'Majestic-12',
+                'blexbot' => 'webmeup',
             );
         }
     }
@@ -2897,8 +2928,8 @@ function get_loaded_tags($limit_to = null, $the_tags = null)
 
             $tags[] = array(
                 'TAG' => $tag,
-                'LINK_LIMITEDSCOPE' => build_url(array('page' => 'search', 'type' => 'results', 'content' => $tag, 'only_search_meta' => '1') + $search_limiter_yes, get_module_zone('search')),
-                'LINK_FULLSCOPE' => build_url(array('page' => 'search', 'type' => 'results', 'content' => $tag, 'only_search_meta' => '1') + $search_limiter_no, get_module_zone('search')),
+                'LINK_LIMITEDSCOPE' => build_url(array('page' => 'search', 'type' => 'results', 'content' => '"' . $tag . '"', 'only_search_meta' => '1') + $search_limiter_yes, get_module_zone('search')),
+                'LINK_FULLSCOPE' => build_url(array('page' => 'search', 'type' => 'results', 'content' => '"' . $tag . '"', 'only_search_meta' => '1') + $search_limiter_no, get_module_zone('search')),
             );
         }
     }
@@ -2968,7 +2999,7 @@ function titleify($boring)
         $ret = preg_replace('#([/\\\\])#', '${1} ', $ret);
     }
 
-    $ret = ucwords(str_replace('_', ' ', $boring));
+    $ret = ucwords(trim(str_replace('_', ' ', $boring)));
 
     $acronyms = array(
         'CMS',
@@ -2983,6 +3014,9 @@ function titleify($boring)
         'SSL',
         'XML',
         'HPHP',
+        'CSS',
+        'SEO',
+        'JavaScript',
     );
     foreach ($acronyms as $acronym) {
         if (stripos($ret, $acronym) !== false) {
@@ -2999,6 +3033,7 @@ function titleify($boring)
     if (strpos($ret, 'Captcha') !== false) {
         $ret = str_replace('Captcha', addon_installed('captcha') ? do_lang('captcha:CAPTCHA') : 'CAPTCHA', $ret);
     }
+    $ret = str_replace('Adminzone', do_lang('ADMIN_ZONE'), $ret);
     $ret = str_replace('Emails', do_lang('EMAILS'), $ret);
     $ret = str_replace('Phpinfo', 'PHP-Info', $ret);
     $ret = str_replace('CNS', 'Conversr', $ret);
@@ -3186,6 +3221,10 @@ function is_cns_satellite_site()
  */
 function convert_guids_to_ids($text)
 {
+    if (!addon_installed('commandr')) {
+        return $text;
+    }
+
     $matches = array();
     $num_matches = preg_match_all('#^{?([0-9a-fA-F]){8}(-([0-9a-fA-F]){4}){3}-([0-9a-fA-F]){12}}?$#', $text, $matches);
     if ($num_matches != 0) {
@@ -3366,7 +3405,12 @@ function cms_profile_end_for($identifier, $specifics = null)
  */
 function send_http_output_ping()
 {
-    echo ' ';
+    global $DOING_OUTPUT_PINGS;
+    $DOING_OUTPUT_PINGS = true;
+
+    if (running_script('index')) {
+        echo ' ';
+    }
 }
 
 /**
@@ -3437,10 +3481,18 @@ function disable_browser_xss_detection()
 /**
  * Whether smart decaching is enabled. It is slightly inefficient but makes site development easier for people.
  *
+ * @param  boolean $support_temporary_disable Support it being temporarily disabled
  * @return boolean If smart decaching is enabled
  */
-function support_smart_decaching()
+function support_smart_decaching($support_temporary_disable = false)
 {
+    if ($support_temporary_disable) {
+        global $DISABLE_SMART_DECACHING_TEMPORARILY;
+        if ($DISABLE_SMART_DECACHING_TEMPORARILY) {
+            return false;
+        }
+    }
+
     static $has_in_url = null;
     if ($has_in_url === null) {
         $has_in_url = (get_param_integer('keep_smart_decaching', 0) == 1);
@@ -3474,12 +3526,12 @@ function support_smart_decaching()
 }
 
 /**
- * For performance reasons disable smart decaching (it does a lot of file system checks).
+ * For performance reasons disable smart decaching for cases that allow it to be disabled temporarily (it does a lot of file system checks).
  */
 function disable_smart_decaching_temporarily()
 {
-    global $SITE_INFO;
-    $SITE_INFO['disable_smart_decaching'] = '1';
+    global $DISABLE_SMART_DECACHING_TEMPORARILY;
+    $DISABLE_SMART_DECACHING_TEMPORARILY = true;
 }
 
 /**
@@ -3510,9 +3562,13 @@ function has_interesting_post_fields()
  * Apply escaping for an HTTP header.
  *
  * @param string $str Text to insert into header
+ * @param boolean $within_quotes Text is between quotes
  * @return string Escaped text
  */
-function escape_header($str)
+function escape_header($str, $within_quotes = false)
 {
-    return str_replace("\r", '', str_replace("\n", '', addslashes($str)));
+    if ($within_quotes) {
+        $str = addslashes($str);
+    }
+    return str_replace(array("\r", "\n"), array('', ''), $str);
 }

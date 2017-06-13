@@ -54,7 +54,7 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
             }
             $array .= "        '" . $name . "' => '" . $type . "'";
         }
-        fwrite($install_php_file, preg_replace('#^#m', '//', "    \$GLOBALS['SITE_DB']->create_table('$table', array(\n$array), true, true);\n"));
+        fwrite($install_php_file, preg_replace('#^#m', '//', "    \$GLOBALS['SITE_DB']->create_table('$table', array(\n$array), false, false, null);\n"));
 
         require_code('database_relations');
         if (table_has_purpose_flag($table, TABLE_PURPOSE__NO_BACKUPS)) {
@@ -109,7 +109,7 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
     $indices = $GLOBALS['SITE_DB']->query_select($db_meta_indices, array('*'));
     foreach ($indices as $index) {
         if (fwrite($install_php_file, preg_replace('#^#m', '//', '    $GLOBALS[\'SITE_DB\']->create_index(\'' . $index['i_table'] . '\', \'' . $index['i_name'] . '\', array(\'' . str_replace(',', '\', \'', $index['i_fields']) . '\'));' . "\n")) == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')));
         }
     }
 
@@ -142,6 +142,7 @@ function make_backup($file, $b_type = 'full', $max_size = 100) // This is called
 
     $log_file_path = get_custom_file_base() . '/exports/backups/' . $file . '.txt';
     $log_file = @fopen($log_file_path, GOOGLE_APPENGINE ? 'wb' : 'wt') or intelligent_write_error($log_file_path); // .txt file because IIS doesn't allow .log download
+    flock($log_file, LOCK_EX);
     safe_ini_set('log_errors', '1');
     safe_ini_set('error_log', $log_file_path);
     fwrite($log_file, 'This is a log file for a Composr backup. The backup is not complete unless this log terminates with a completion message.' . "\n\n");
@@ -175,13 +176,13 @@ function make_backup($file, $b_type = 'full', $max_size = 100) // This is called
     $install_php_file = fopen($install_php_file_tmp_path, 'wb');
 
     if (fwrite($install_php_file, substr($_install_php_file, 0, $place)) == 0) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')));
     }
 
     // (nothing currently goes between the marker)
 
     if (fwrite($install_php_file, substr($_install_php_file, $place + strlen($look_for))) == 0) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')));
     }
 
     fclose($install_php_file);
@@ -262,13 +263,12 @@ function make_backup($file, $b_type = 'full', $max_size = 100) // This is called
     rename($backup_file_tmp_path, $backup_file_path);
 
     fix_permissions($backup_file_path);
-    sync_file($backup_file_path);
 
     // Compress...
 
     if (function_exists('gzopen')) {
         if (fwrite($log_file, "\n" . do_lang('COMPRESSING') . "\n") == 0) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')));
         }
 
         $compressed_file_tmp_path = get_custom_file_base() . '/exports/backups/' . $file . '.tar.gz.tmp';
@@ -288,19 +288,18 @@ function make_backup($file, $b_type = 'full', $max_size = 100) // This is called
         rename($compressed_file_tmp_path, $compressed_file_path);
 
         fix_permissions($compressed_file_path);
-        sync_file($compressed_file_path);
     }
 
     // Finish logging...
 
     if (fwrite($log_file, "\n" . do_lang('SUCCESS') . "\n") == 0) {
-        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
+        warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')));
     }
 
+    flock($log_file, LOCK_UN);
     fclose($log_file);
 
     fix_permissions($log_file_path);
-    sync_file($log_file_path);
 
     // Remote backup...
 

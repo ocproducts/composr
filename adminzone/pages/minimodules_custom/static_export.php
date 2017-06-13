@@ -62,7 +62,7 @@ if (get_option('enable_previews') == '1') {
 $filename = 'static-' . get_site_name() . '.' . date('Y-m-d') . '.tar';
 
 if ((get_param_integer('do__headers', 1) == 1) && (get_param_integer('dir', 0) == 0)) {
-    header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
+    header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 }
 
 global $STATIC_EXPORT_TAR, $STATIC_EXPORT_WARNINGS;
@@ -292,8 +292,7 @@ if (trim($post)!="")
     if (get_param_integer('save__mailer', 1) == 1) {
         require_code('crypt');
         $mailer_path = get_custom_file_base() . '/pages/html_custom/' . $lang . '/mailer_temp.htm';
-        @mkdir(dirname($mailer_path), 0777);
-        file_put_contents($mailer_path, $mailer_script);
+        cms_file_put_contents_safe($mailer_path, $mailer_script, FILE_WRITE_FIX_PERMISSIONS);
         $session_cookie_id = get_session_cookie();
         $data = http_download_file(static_evaluate_tempcode(build_url(array('page' => 'mailer_temp', 'keep_lang' => (count($langs) != 1) ? $lang : null), '', null, false, false, true)), null, false, false, 'Composr', null, array($session_cookie_id => get_rand_password()));
         unlink($mailer_path);

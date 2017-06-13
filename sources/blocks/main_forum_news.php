@@ -76,8 +76,6 @@ class Block_main_forum_news
 
         $optimise = (array_key_exists('optimise', $map)) && ($map['optimise'] == '1');
 
-        $num_topics = intval($num_topics);
-
         $date_key = array_key_exists('date_key', $map) ? $map['date_key'] : 'firsttime';
 
         $rows = array();

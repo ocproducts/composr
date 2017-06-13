@@ -64,13 +64,13 @@ function check_input_field_string($name, &$val, $posted = false)
 
         // Don't allow external redirections
         if (!$posted && !running_script('external_url_proxy')) {
-            $_val = str_replace('https://', 'http://', $val);
-            if (looks_like_url($_val)) {
+            if (looks_like_url($val)) {
                 $bus = array(
                     get_base_url(false) . '/',
                     get_base_url(true) . '/',
                     get_forum_base_url() . '/',
                     'http://compo.sr/',
+                    'https://compo.sr/',
                 );
                 $allowed_partners = get_allowed_partner_sites();
                 foreach ($allowed_partners as $allowed) {
@@ -79,7 +79,7 @@ function check_input_field_string($name, &$val, $posted = false)
                 }
                 $ok = false;
                 foreach ($bus as $bu) {
-                    if (substr($_val, 0, strlen($bu)) === $bu) {
+                    if (substr($val, 0, strlen($bu)) === $bu) {
                         $ok = true;
                         break;
                     }
@@ -127,11 +127,6 @@ function check_posted_field($name, $val)
 
     $is_true_referer = (substr($referer, 0, 7) === 'http://') || (substr($referer, 0, 8) === 'https://');
 
-    if ($is_true_referer) {
-        require_code('users_active_actions');
-        cms_setcookie('has_referers', '1'); // So we know for later requests that "blank" means a malicious external request (from third-party HTTPS URL, or a local file being executed)
-    }
-
     if ((cms_srv('REQUEST_METHOD') === 'POST') && (!is_guest())) {
         if ($is_true_referer) {
             $canonical_referer_domain = strip_url_to_representative_domain($referer);
@@ -153,8 +148,6 @@ function check_posted_field($name, $val)
                     }
                 }
             }
-        } elseif (cms_admirecookie('has_referers') === '1' && !addon_installed('ssl')/*https->http removes referer*/) {
-            $evil = true;
         }
     }
 
@@ -184,6 +177,11 @@ function get_allowed_partner_sites()
 {
     if (function_exists('get_option')) {
         $allowed_partners = (trim(get_option('allowed_post_submitters')) === '') ? array() : explode("\n", trim(get_option('allowed_post_submitters')));
+        foreach ($allowed_partners as $allowed_partner) {
+            if (substr($allowed_partner, 0, 4) != 'www.') {
+                $allowed_partners[] = 'www.' . $allowed_partner;
+            }
+        }
     } else {
         $allowed_partners = array();
     }
@@ -193,11 +191,13 @@ function get_allowed_partner_sites()
             $allowed_partners[] = $_val[0];
         }
     }
-    if (function_exists('get_option')) { // If bootstrapping has gone far enough
-        $allowed_partners[] = parse_url(get_base_url(), PHP_URL_HOST);
-        if (get_custom_base_url() != get_base_url()) {
-            $allowed_partners[] = parse_url(get_custom_base_url(), PHP_URL_HOST);
-        }
+    $allowed_partners[] = parse_url(get_base_url(false), PHP_URL_HOST);
+    if (get_custom_base_url(false) != get_base_url(false)) {
+        $allowed_partners[] = parse_url(get_custom_base_url(false), PHP_URL_HOST);
+    }
+    $allowed_partners[] = parse_url(get_base_url(true), PHP_URL_HOST);
+    if (get_custom_base_url(true) != get_base_url(true)) {
+        $allowed_partners[] = parse_url(get_custom_base_url(true), PHP_URL_HOST);
     }
     return $allowed_partners;
 }
@@ -304,7 +304,7 @@ function hard_filter_input_data__html(&$val, $lite = false)
     } while ($old_val != $val);
 
     // Tag vectors
-    $bad_tags = 'noscript|script|link|style|meta|iframe|frame|object|embed|applet|html|xml|body|head|form|base|layer|v:vmlframe';
+    $bad_tags = 'noscript|script|link|style|meta|iframe|frame|object|embed|applet|html|xml|body|head|form|base|layer|v:vmlframe|svg';
     $val = preg_replace('#\<(' . $bad_tags . ')#i', '<span', $val); // Intentionally does not strip so as to avoid attacks like <<scriptscript --> <script
     $val = preg_replace('#\</(' . $bad_tags . ')#i', '</span', $val);
 
@@ -595,7 +595,7 @@ class Field_restriction_loader
         xml_set_character_data_handler($xml_parser, 'startText');
 
         // Run the parser
-        $data = file_get_contents(is_file(get_custom_file_base() . '/data_custom/xml_config/fields.xml') ? (get_custom_file_base() . '/data_custom/xml_config/fields.xml') : (get_file_base() . '/data/xml_config/fields.xml'));
+        $data = cms_file_get_contents_safe(is_file(get_custom_file_base() . '/data_custom/xml_config/fields.xml') ? (get_custom_file_base() . '/data_custom/xml_config/fields.xml') : (get_file_base() . '/data/xml_config/fields.xml'));
         if (trim($data) == '') {
             return;
         }

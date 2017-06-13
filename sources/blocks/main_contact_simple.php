@@ -88,7 +88,7 @@ class Block_main_contact_simple
             mail_wrap($subject_prefix . $title . $subject_suffix, $body_prefix . $post . $body_suffix, array($to), null, $email_from, $GLOBALS['FORUM_DRIVER']->get_username(get_member()), 3, null, false, get_member());
 
             if ($email_from != '' && get_option('message_received_emails') == '1') {
-                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', post_param_string('title')), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), null, '', '', 3, null, false, get_member());
+                mail_wrap(do_lang('YOUR_MESSAGE_WAS_SENT_SUBJECT', $title), do_lang('YOUR_MESSAGE_WAS_SENT_BODY', $post), array($email_from), null, '', '', 3, null, false, get_member());
             }
 
             attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');
@@ -143,6 +143,7 @@ class Block_main_contact_simple
             'EM' => $em,
             'DISPLAY' => 'block',
             'TITLE' => $box_title,
+            'SUBMIT_NAME' => do_lang_tempcode('SEND'),
             'COMMENT_URL' => $comment_url,
             'HIDDEN' => $hidden,
         ));

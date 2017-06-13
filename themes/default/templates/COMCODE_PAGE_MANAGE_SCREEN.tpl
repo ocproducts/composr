@@ -2,16 +2,18 @@
 
 {$PARAGRAPH,{TEXT}}
 
-<form title="{!PRIMARY_PAGE_FORM}"{+START,IF_NON_PASSED_OR_FALSE,GET} method="post"{+END}{+START,IF_PASSED_AND_TRUE,GET} method="get"{+END} action="{POST_URL*}" autocomplete="off">
+{TABLE}
+
+<form title="{!PRIMARY_PAGE_FORM}" action="{POST_URL*}" method="post" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
-	{TABLE}
+	{HIDDEN}
 
-	{+START,IF_PASSED,HIDDEN}
-		<div>
-			{HIDDEN}
-		</div>
-	{+END}
+	<p>
+		<label for="filter">{!FILTER}:</label>
+		<input type="text" id="filter" name="filter" value="{FILTER*}" onkeypress="if (enter_pressed(event)) { this.form.submit(); return false; }" />
+		<input class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
+	</p>
 </form>
 
 {+START,IF_PASSED,EXTRA}

@@ -48,6 +48,11 @@ function init__failure()
 
     global $RUNNING_TASK;
     $RUNNING_TASK = false;
+
+    global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+    if (!isset($BLOCK_OCPRODUCTS_ERROR_EMAILS)) {
+        $BLOCK_OCPRODUCTS_ERROR_EMAILS = false;
+    }
 }
 
 /**
@@ -568,13 +573,13 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         $username = function_exists('do_lang') ? do_lang('UNKNOWN') : 'Unknown';
     }
 
-    $url = cms_srv('SCRIPT_NAME') . '?' . cms_srv('QUERY_STRING');
+    $url = cms_srv('REQUEST_URI');
     $post = '';
     foreach ($_POST as $key => $val) {
         if (!is_string($val)) {
             continue;
         }
-        $post .= $key . '=>' . $val . "\n\n";
+        $post .= $key . ' => ' . $val . "\n\n";
     }
 
     $count = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', array('ip' => $ip));
@@ -768,22 +773,15 @@ function add_ip_ban($ip, $descrip = '', $ban_until = null, $ban_positive = true)
     $GLOBALS['SITE_DB']->query_delete('banned_ip', array('ip' => $ip), '', 1);
     $GLOBALS['SITE_DB']->query_insert('banned_ip', array('ip' => $ip, 'i_descrip' => $descrip, 'i_ban_until' => $ban_until, 'i_ban_positive' => $ban_positive ? 1 : 0), false, true); // To stop weird race-like conditions
     persistent_cache_delete('IP_BANS');
-    if ((is_writable_wrap(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) && (is_null($ban_until))) {
-        $myfile = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'rb' : 'rt');
-        @flock($myfile, LOCK_SH);
-        $original_contents = file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
-        @flock($myfile, LOCK_UN);
-        fclose($myfile);
+    if ((is_writable_wrap(get_file_base() . '/.htaccess')) && (is_null($ban_until))) {
+        $original_contents = cms_file_get_contents_safe(get_file_base() . '/.htaccess');
         $ip_cleaned = str_replace('*', '', $ip);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         if (strpos($original_contents, "\n" . 'deny from ' . $ip_cleaned) === false) {
+            require_code('files');
             $contents = str_replace('# deny from xxx.xx.x.x (leave this comment here!)', '# deny from xxx.xx.x.x (leave this comment here!)' . "\n" . 'deny from ' . $ip_cleaned, $original_contents);
-            if (file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', $contents, LOCK_EX) < strlen($contents)) {
-                file_put_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', $original_contents, LOCK_EX);
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            sync_file(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
+            cms_file_put_contents_safe(get_file_base() . '/.htaccess', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
     }
 
@@ -803,20 +801,16 @@ function remove_ip_ban($ip)
 
     $GLOBALS['SITE_DB']->query_delete('banned_ip', array('ip' => $ip), '', 1);
     persistent_cache_delete('IP_BANS');
-    if (is_writable_wrap(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) {
-        $contents = file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess');
+    if (is_writable_wrap(get_file_base() . '/.htaccess')) {
+        $contents = cms_file_get_contents_safe(get_file_base() . '/.htaccess');
         $ip_cleaned = str_replace('*', '', $ip);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         $ip_cleaned = str_replace('..', '.', $ip_cleaned);
         if (trim($ip_cleaned) != '') {
+            require_code('files');
             $contents = str_replace("\n" . 'deny from ' . $ip_cleaned . "\n", "\n", $contents);
             $contents = str_replace("\r" . 'deny from ' . $ip_cleaned . "\r", "\r", $contents); // Just in case
-            $myfile = fopen(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess', GOOGLE_APPENGINE ? 'wb' : 'wt');
-            if (fwrite($myfile, $contents) < strlen($contents)) {
-                warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-            }
-            fclose($myfile);
-            sync_file('.htaccess');
+            cms_file_put_contents_safe(get_file_base() . '/.htaccess', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
         }
     }
     $GLOBALS['SITE_DB']->query_delete('hackattack', array('ip' => $ip));
@@ -1029,7 +1023,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         if ($num == 51) {
             return; // We've sent too many error mails today
         }
-        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
+        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
         persistent_cache_delete('VALUES');
         set_value('num_error_mails_' . date('Y-m-d'), strval($num), true);
     }
@@ -1043,6 +1037,8 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 
     $error_url = get_self_url_easy(true);
 
+    global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+
     require_code('notifications');
     require_code('comcode');
     $mail = do_notification_lang('ERROR_MAIL', comcode_escape($error_url), $text, $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
@@ -1050,6 +1046,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     if (
         ($ocproducts) &&
         (get_option('send_error_emails_ocproducts') == '1') &&
+        (!$BLOCK_OCPRODUCTS_ERROR_EMAILS) &&
         (!running_script('cron_bridge')) &&
         (strpos($text, '_custom/') === false) &&
         (strpos($text, '_custom\\') === false) &&
@@ -1074,6 +1071,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'INSERT command denied to user') === false) &&
         (strpos($text, 'Disk is full writing') === false) &&
         (strpos($text, 'Disk quota exceeded') === false) &&
+        (strpos($text, 'Lock wait timeout exceeded') === false) &&
         (strpos($text, 'No space left on device') === false) &&
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
@@ -1085,6 +1083,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL
         (strpos($text, '.MYD') === false) && // MySQL
+        (strpos($text, 'syntax error, unexpected') === false) && // MySQL full-text parsing error
         (strpos($text, 'MySQL server has gone away') === false) &&
         (strpos($text, 'Incorrect key file') === false) &&
         (strpos($text, 'Too many connections') === false) &&
@@ -1340,7 +1339,7 @@ function _look_for_match_key_message($natural_text, $only_if_zone = false, $only
                     require_code('site2');
                     assign_refresh($url, 0.0);
                     $message = do_lang_tempcode('_REDIRECTING');
-                } elseif (preg_match('#^\w*:\w*#', $message_raw) != 0) { // Looks like a page-link
+                } elseif (preg_match('#^[' . URL_CONTENT_REGEXP . ']*:[' . URL_CONTENT_REGEXP . ']*#', $message_raw) != 0) { // Looks like a page-link
                     list($zone, $map, $hash) = page_link_decode($message_raw);
                     if ((isset($map['error_message'])) && ($map['error_message'] == '')) {
                         $map['error_message'] = $natural_text;
@@ -1371,7 +1370,7 @@ function _access_denied($class, $param, $force_login)
     require_code('global3');
     set_http_status_code('401'); // Stop spiders ever storing the URL that caused this
 
-    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat erroring. We do this as a session may have expired while the background message checker is running (e.g. after a computer unsuspend) and we don't want to leave it doing relatively intensive access-denied pages responses
+    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new') && (addon_installed('chat'))) { // Architecturally hackerish chat erroring. We do this as a session may have expired while the background message checker is running (e.g. after a computer unsuspend) and we don't want to leave it doing relatively intensive access-denied pages responses
         require_code('chat_poller');
         chat_null_exit();
     }

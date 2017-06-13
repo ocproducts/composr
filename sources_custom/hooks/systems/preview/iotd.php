@@ -40,8 +40,14 @@ class Hook_preview_iotd
         require_code('uploads');
         require_code('images');
 
-        $urls = get_url('', 'file', 'uploads/iotds_addon', 0, CMS_UPLOAD_IMAGE, true, '', 'file2');
-        if ($urls[0] == '') {
+        require_lang('iotds');
+
+        $filename = '';
+        $thumb_url = '';
+        require_code('themes2');
+        $url = post_param_image('image', 'uploads/iotds_addon', null, true, false, $filename, $thumb_url);
+
+        if ($url == '') {
             if (!is_null(post_param_integer('id', null))) {
                 $rows = $GLOBALS['SITE_DB']->query_select('iotds', array('url', 'thumb_url'), array('id' => post_param_integer('id')), '', 1);
                 $urls = $rows[0];
@@ -51,9 +57,6 @@ class Hook_preview_iotd
             } else {
                 warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN_UPLOAD'));
             }
-        } else {
-            $url = $urls[0];
-            $thumb_url = $urls[1];
         }
 
         $thumb_url = url_is_local($thumb_url) ? (get_custom_base_url() . '/' . $thumb_url) : $thumb_url;
@@ -79,7 +82,7 @@ class Hook_preview_iotd
             'THUMB' => $thumb,
             'DATE' => $date,
             'DATE_RAW' => strval(time()),
-            'IS_CURRENT' => 0,
+            'IS_CURRENT' => '0',
             'THUMB_URL' => $thumb_url,
             'VIEW_URL' => $view_url,
             'ID' => '',

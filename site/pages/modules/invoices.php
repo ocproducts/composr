@@ -188,7 +188,7 @@ class Module_invoices
                 'TRANSACTION_BUTTON' => $transaction_button,
                 'INVOICE_TITLE' => $invoice_title,
                 'INVOICE_ID' => strval($row['id']),
-                'AMOUNT' => $row['i_amount'],
+                'AMOUNT' => float_format($row['i_amount']),
                 'TIME' => $time,
                 'STATE' => $state,
                 'DELIVERABLE' => $deliverable,

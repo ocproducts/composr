@@ -1302,7 +1302,7 @@ function _parse_literal()
         case 'IDENTIFIER':
             $_literal = pparse__parser_next(true);
             if (strtolower($_literal[1]) == $_literal[1]) {
-                _warning('Lower case constant, breaks convention. Likely a variable with a missing $');
+                parser_warning('Lower case constant, breaks convention. Likely a variable with a missing $');
             }
             $literal = array('CONSTANT', $_literal[1], $GLOBALS['I']);
             break;
@@ -1349,7 +1349,7 @@ function _parse_create_array()
                 unset($expression[2]);
             }
             if (isset($seen[serialize($expression)])) {
-                parser_warning('Duplicated key in array creation');
+                parser_warning('Duplicated key in array creation,' . serialize($expression));
             }
             $seen[serialize($expression)] = 1;
             $next = pparse__parser_peek();

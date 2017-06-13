@@ -72,6 +72,8 @@ class Module_admin_awards extends Standard_crud_module
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
+        require_code('lang3');
+
         if (is_null($upgrade_from)) {
             $GLOBALS['SITE_DB']->create_table('award_archive', array(
                 'a_type_id' => '*AUTO_LINK',
@@ -355,7 +357,7 @@ class Module_admin_awards extends Standard_crud_module
     {
         $id = add_award_type(post_param_string('title'), post_param_string('description'), post_param_integer('points', 0), post_param_string('content_type'), post_param_integer('hide_awardee', 0), post_param_integer('update_time_hours'));
 
-        $this->set_permissions($id);
+        $this->set_permissions(strval($id));
 
         return strval($id);
     }

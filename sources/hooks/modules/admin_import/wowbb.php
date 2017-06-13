@@ -264,7 +264,7 @@ class Hook_wowbb
                     }
                 }
 
-                $primary_group = import_id_remap_get('group', $row['user_group_id']);
+                $primary_group = import_id_remap_get('group', strval($row['user_group_id']));
                 $secondary_groups = array();
 
                 $custom_fields = array(
@@ -589,13 +589,8 @@ class Hook_wowbb
     {
         $filename = find_derivative_filename('uploads/' . $sections, $filename);
         $path = get_custom_file_base() . '/uploads/' . $sections . '/' . $filename . '.dat';
-        $myfile = @fopen($path, 'wb') or warn_exit(do_lang_tempcode('WRITE_ERROR', escape_html('uploads/' . $sections . '/' . $filename . '.dat')));
-        if (fwrite($myfile, $data) < strlen($data)) {
-            warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE'));
-        }
-        fclose($myfile);
-        fix_permissions($path);
-        sync_file($path);
+        require_code('files');
+        cms_file_put_contents_safe($path, $data, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
         $url = 'uploads/' . $sections . '/' . $filename . '.dat';
 
@@ -628,7 +623,7 @@ class Hook_wowbb
 
                 $post_row = array();
                 if (!is_null($post_id)) {
-                    $post_id = import_id_remap_get('post', $post_id);
+                    $post_id = import_id_remap_get('post', strval($post_id));
                     $post_row = $GLOBALS['FORUM_DB']->query_select('f_posts', array('p_time', 'p_poster', 'p_post'), array('id' => $post_id), '', 1);
                 }
                 if (!array_key_exists(0, $post_row)) {

@@ -118,6 +118,9 @@ This addon does not contain the compo.sr install code and the overall site and t
         return array(
             'requires' => array(
                 'downloads',
+                'ecommerce',
+                'news',
+                'mysql',
             ),
             'recommends' => array(
                 'composr_homesite_support_credits',
@@ -155,6 +158,7 @@ This addon does not contain the compo.sr install code and the overall site and t
             'lang_custom/EN/composr_homesite.ini',
             'pages/minimodules_custom/licence.php',
             'site/pages/modules_custom/sites.php',
+            'uploads/website_specific/compo.sr/scripts/build_personal_upgrader.php',
             'sources_custom/composr_homesite.php',
             'sources_custom/hooks/systems/cron/site_cleanup.php',
             'uploads/website_specific/compo.sr/demonstratr/template.sql',
@@ -163,6 +167,11 @@ This addon does not contain the compo.sr install code and the overall site and t
             'data_custom/demonstratr_upgrade.php',
             'sources_custom/cns_forumview.php',
             'sources_custom/errorservice.php',
+            'data_custom/patreons.csv',
+            'data_custom/patreons.php',
+            'sources_custom/patreons.php',
+            'sources_custom/miniblocks/main_patreon_sponsors.php',
+            'themes/default/templates_custom/BLOCK_MAIN_PATREON_SPONSORS.tpl',
             'uploads/website_specific/compo.sr/errorservice.csv',
             'sources_custom/miniblocks/composr_homesite_featuretray.php',
             'sources_custom/miniblocks/composr_homesite_download.php',
@@ -173,6 +182,7 @@ This addon does not contain the compo.sr install code and the overall site and t
             'themes/default/templates_custom/CMS_HOSTING_COPY_SUCCESS_SCREEN.tpl',
             'themes/default/templates_custom/CMS_SITE.tpl',
             'themes/default/templates_custom/CMS_SITES_SCREEN.tpl',
+            'site/pages/minimodules_custom/themeing_changes.php',
             'uploads/website_specific/compo.sr/.htaccess',
             'uploads/website_specific/compo.sr/logos/a.png',
             'uploads/website_specific/compo.sr/logos/b.png',

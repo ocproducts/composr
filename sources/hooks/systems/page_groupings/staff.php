@@ -37,8 +37,8 @@ class Hook_page_groupings_staff
         }
 
         return array(
-            array('security', 'menu/site_meta/staff', array('admin_staff', array('type' => 'browse'), get_module_zone('admin_staff')), do_lang_tempcode('staff:STAFF'), 'staff:DOC_STAFF'),
-            array('site_meta', 'menu/site_meta/staff', array('staff', array(), get_module_zone('staff')), do_lang_tempcode('staff:STAFF')),
+            array('security', 'menu/site_meta/staff', array('admin_staff', array('type' => 'browse'), get_module_zone('admin_staff')), do_lang_tempcode('STAFF'), 'staff:DOC_STAFF'),
+            array('site_meta', 'menu/site_meta/staff', array('staff', array(), get_module_zone('staff')), do_lang_tempcode('STAFF')),
         );
     }
 }

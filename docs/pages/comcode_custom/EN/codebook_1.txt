@@ -1031,9 +1031,9 @@ Composr has a multi-faceted testing strategy as there is no perfect solution for
 As mentioned above, the developers maintain an internally developed code quality checker tool (a lint, static code analysis) to scan code for violations of many coding standards, and find bugs. We also may use other tools internally, and our custom version of PHP designed to be very strict.
 
 These tools may now be downloaded:
- - [url="Code Quality Checker"]{$BRAND_BASE_URL}/docs/codechecker.zip[/url] which requires a recent Java, and the command-line PHP interpreter -- [i]this is primarily maintained inside the Composr github repository[/i])
  - [url="ocProducts PHP"]{$BRAND_BASE_URL}/docs/php-5.2.4-ocproducts.zip[/url] (The source code tree for our special version of PHP -- confirmed to work on Mac and Linux; optional, but useful for auto-detecting some common development mistakes)
  - [url="ocProducts PHP, Windows build"]{$BRAND_BASE_URL}/docs/php-windows-ocproducts.zip[/url] (The Windows build of our special version of PHP -- to transplant into a vanilla PHP 5.2.4 install)
+ - (The Code Quality Checker is maintained inside the Composr github repository)
 
 [title="3"]Software for editing code[/title]
 
@@ -1208,6 +1208,7 @@ There are a number of notorious ways PHP scripts such as Composr can be attacked
  - Header poisoning
  - Code uploading
  - File accessing
+ - Backup stealing
  - Code inclusion
  - Jumping-in
  - Cross-Site-Request-Forgery
@@ -1248,6 +1249,8 @@ Code uploading is when malicious programs are placed on the server using Composr
 Also, never allow file paths to be given for editing or viewing in a URL without sanitising them. For example, the download system doesn't allow you to specify the local URL of a file that is not publicly downloadable.
 
 If any kind of file path component comes in from a taintable source (e.g. user input) it creates a potential for a file accessing vulnerability. Make sure anything untrustable that goes into a file path is filtered via the [tt]filter_naughty[/tt] or [tt]filter_naughty_harsh[/tt] functions.
+
+Pay attention to any kind of backups, make sure the paths are cryptographically secure so that third parties cannot download them.
 
 Code inclusion is usually performed as part of a register_globals hack. Whenever you include code from a path given in a variable, you run the risk that that variable is poisoned. Remember that the code included by a poisoned variable might not even be on your own server!
 

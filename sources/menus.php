@@ -25,23 +25,25 @@
  */
 function init__menus()
 {
-    define('INCLUDE_SITEMAP_NO', 0);
-    define('INCLUDE_SITEMAP_OVER', 1);
-    define('INCLUDE_SITEMAP_UNDER', 2);
+    if (!defined('INCLUDE_SITEMAP_NO')) {
+        define('INCLUDE_SITEMAP_NO', 0);
+        define('INCLUDE_SITEMAP_OVER', 1);
+        define('INCLUDE_SITEMAP_UNDER', 2);
+    }
 }
 
 /**
  * Take a menu identifier, and return a menu created from it.
  *
  * @param  ID_TEXT $type The type of the menu (determines which templates to use)
- * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a stored menu, or syntax to load from the Sitemap)
+ * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a editable menu, or syntax to load from the Sitemap)
  * @param  boolean $silent_failure Whether to silently return blank if the menu does not exist
  * @param  boolean $apply_highlighting Whether to apply current-screen highlighting
  * @return array A pair: The generated Tempcode of the menu, the menu nodes
  */
 function build_menu($type, $menu, $silent_failure = false, $apply_highlighting = true)
 {
-    $is_sitemap_menu = (preg_match('#^[\w\_]+$#', $menu) == 0);
+    $is_sitemap_menu = (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $menu) == 0);
 
     if ($is_sitemap_menu) {
         $root = _build_sitemap_menu($menu);
@@ -68,7 +70,7 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
 
     $content->handle_symbol_preprocessing(); // Optimisation: we are likely to have lots of page-links in here, so we want to spawn them to be detected for mass moniker loading
 
-    if (strpos(serialize($root), 'keep_') === false) {
+    if (strpos(serialize($root), 'keep_') === false) {/*Will only work if there are no keep_ parameters within the menu itself, as the quick caching will get confused by that*/
         $content = apply_quick_caching($content);
     }
 
@@ -103,9 +105,9 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
 }
 
 /**
- * Take a menu identifier, and return the stored menu.
+ * Take a menu identifier, and return the editable menu.
  *
- * @param  SHORT_TEXT $menu The menu identifier to use (the name of a stored menu)
+ * @param  SHORT_TEXT $menu The menu identifier to use (the name of a editable menu)
  * @return array The menu branch structure
  *
  * @ignore
@@ -399,7 +401,10 @@ function _find_child_page_links($branches, &$page_links)
 {
     foreach ($branches as $branch) {
         $page_links[$branch['page_link']] = true;
-        _find_child_page_links($branch['children'], $page_links);
+
+        if ($branch['children'] !== null) {
+            _find_child_page_links($branch['children'], $page_links);
+        }
     }
 }
 
@@ -576,7 +581,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
             $somewhere_definite = false;
             $_parts = array();
             foreach ($all_branches as $_branch) {
-                if (($_branch['page_link'] !== null) && (preg_match('#([\w-]*):([\w-]+|[^/]|$)((:(.*))*)#', $_branch['page_link'], $_parts) != 0)) {
+                if (($_branch['page_link'] !== null) && (preg_match('#([' . URL_CONTENT_REGEXP . ']*):([' . URL_CONTENT_REGEXP . ']+|[^/]|$)((:(.*))*)#', $_branch['page_link'], $_parts) != 0)) {
                     if ($_parts[1] == $users_current_zone) {
                         $somewhere_definite = true;
                     }

@@ -16,6 +16,9 @@
  * @package    composr_homesite
  */
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = realpath(__FILE__);
@@ -59,4 +62,4 @@ if (is_null($news_id)) {
 }
 
 $news_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $news_id), get_module_zone('news'));
-header('Location: ' . $news_url->evaluate());
+header('Location: ' . escape_header($news_url->evaluate()));

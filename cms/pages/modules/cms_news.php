@@ -226,7 +226,7 @@ class Module_cms_news extends Standard_crud_module
         $fh[] = do_lang_tempcode('ADDED');
         $fh[] = do_lang_tempcode('COUNT_VIEWS');
         if (addon_installed('unvalidated')) {
-            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
+            $fh[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '5e5269c25a2eb44fd92b554a50f6007f', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $fh[] = do_lang_tempcode('metadata:OWNER');
         $fh[] = do_lang_tempcode('ACTIONS');
@@ -316,7 +316,7 @@ class Module_cms_news extends Standard_crud_module
                 }
 
                 if (!is_null($this->permissions_require)) {
-                    check_edit_permission($this->permissions_require, $submitter, array($this->permissions_cat_require, is_null($this->permissions_cat_name) ? null : $this->get_cat($id), $this->permissions_cat_require_b, is_null($this->permissions_cat_name_b) ? null : $this->get_cat_b($id)), $this->privilege_page_name);
+                    check_edit_permission($this->permissions_require, $submitter, array($this->permissions_cat_require, is_null($this->permissions_cat_name) ? null : $this->get_cat(strval($id)), $this->permissions_cat_require_b, is_null($this->permissions_cat_name_b) ? null : $this->get_cat_b(strval($id))), $this->privilege_page_name);
                 }
 
                 $ret = $this->fill_in_edit_form($id);
@@ -456,12 +456,12 @@ class Module_cms_news extends Standard_crud_module
     /**
      * Standard crud_module cat getter.
      *
-     * @param  AUTO_LINK $id The entry for which the cat is sought
+     * @param  ID_TEXT $id The entry for which the cat is sought
      * @return string The cat
      */
     public function get_cat($id)
     {
-        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'news_category', array('id' => $id));
+        $temp = $GLOBALS['SITE_DB']->query_select_value_if_there('news', 'news_category', array('id' => intval($id)));
         if (is_null($temp)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'news'));
         }
@@ -855,6 +855,7 @@ class Module_cms_news_cat extends Standard_crud_module
     public $orderer = 'nc_title';
     public $title_is_multi_lang = true;
     public $is_chained_with_parent_browse = true;
+    public $do_preview = null;
 
     /**
      * Standard crud_module table function.
@@ -979,8 +980,6 @@ class Module_cms_news_cat extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        require_code('themes2');
-
         $title = post_param_string('title');
 
         require_code('themes2');
@@ -994,7 +993,7 @@ class Module_cms_news_cat extends Standard_crud_module
 
         set_url_moniker('news_category', strval($id));
 
-        $this->set_permissions($id);
+        $this->set_permissions(strval($id));
 
         if (addon_installed('content_reviews')) {
             content_review_set('news_category', strval($id));
@@ -1010,8 +1009,6 @@ class Module_cms_news_cat extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        require_code('themes2');
-
         $title = post_param_string('title');
 
         if (!fractional_edit()) {

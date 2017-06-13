@@ -36,8 +36,8 @@ class Module_purchase
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 6;
-        $info['locked'] = false;
         $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -189,8 +189,10 @@ class Module_purchase
         if (!is_null($new_username)) {
             require_code('cns_join');
             list($messages) = cns_join_actual(true, false, false, true, false, false, false, true);
-            if (!$messages->is_empty()) {
-                return inform_screen($this->title, $messages);
+            if (is_guest()) {
+                if (!$messages->is_empty()) {
+                    return inform_screen($this->title, $messages);
+                }
             }
         }
 
@@ -643,6 +645,8 @@ class Module_purchase
                 }
 
                 require_code('cns_join');
+
+                check_joining_allowed();
 
                 $url = get_self_url();
 
