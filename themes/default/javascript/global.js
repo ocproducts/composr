@@ -3420,7 +3420,7 @@ function apply_rating_highlight_and_ajax_code(likes,initial_rating,content_type,
 /* Google Analytics tracking for links; particularly useful if you have no server-side stat collection */
 function ga_track(ob,category,action)
 {
-	/*{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}{+START,IF,{$NOR,{$IS_STAFF},{$IS_ADMIN}}}*/
+	/*{+START,IF_NON_EMPTY,{$CONFIG_OPTION,google_analytics}}*/
 		if (typeof category=='undefined') category='{!URL;^}';
 		if (typeof action=='undefined') action=ob?ob.href:'{!UNKNOWN;^}';
 
@@ -3438,7 +3438,7 @@ function ga_track(ob,category,action)
 
 			return false;
 		}
-	/*{+END}{+END}*/
+	/*{+END}*/
 
 	return null;
 }

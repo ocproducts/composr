@@ -165,6 +165,12 @@
 	<?php echo sprintf(lang_get('bug_report_guidance'), $cms_sc_report_guidance_url);?>
 </p>
 
+<?php if ( current_user_is_anonymous() ) { ?>
+	<p>
+		<?php echo lang_get( 'not_logged_in_bad' ); ?>
+	</p>
+<?php } ?>
+
 <div align="center">
 <form name="report_bug_form" method="post" <?php if ( $tpl_show_attachments ) { echo 'enctype="multipart/form-data"'; } ?> action="bug_report.php">
 <?php echo form_security_field( 'bug_report' ) ?>

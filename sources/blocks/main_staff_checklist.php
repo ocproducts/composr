@@ -118,8 +118,9 @@ class Block_main_staff_checklist
     public function run($map)
     {
         require_javascript('ajax');
-
         require_lang('dates');
+        require_lang('staff_checklist');
+        require_css('adminzone_dashboard');
 
         // Handle custom tasks
         $new_task = post_param_string('new_task', null);
@@ -158,9 +159,6 @@ class Block_main_staff_checklist
                 'ADD_TIME' => do_lang_tempcode('DAYS_AGO', escape_html(integer_format(intval(round(floatval(time() - $r['add_date']) / 60.0 / 60.0 / 24.0))))),
             )));
         }
-
-        require_lang('staff_checklist');
-        require_css('adminzone_dashboard');
 
         // Handle built in items
 

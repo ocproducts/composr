@@ -103,7 +103,7 @@ class Block_main_newsletter_signup
             require_code('mail');
             if (file_exists(get_custom_file_base() . '/' . $map['path'])) {
                 $url = (url_is_local($map['path']) ? (get_custom_base_url() . '/') : '') . $map['path'];
-                $subject = array_key_exists('subject', $map) ? $map['subject'] : do_lang('WELCOME');
+                $subject = array_key_exists('subject', $map) ? $map['subject'] : do_lang('_WELCOME');
                 $body = convert_to_internal_encoding(http_download_file($url));
                 $body = str_replace('{password}', $password, $body);
                 $body = str_replace('{email}', $address, $body);

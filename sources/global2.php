@@ -1660,7 +1660,7 @@ function either_param_integer($name, $default = false)
         $ret = _param_invalid($name, $ret, true);
     }
     $reti = intval($ret);
-    if (($reti > 2147483647) || ($reti < -2147483648)) {
+    if (($reti > 2147483647) || ($reti < -2147483648)) { // TODO: #3046 in tracker
         require_code('failure');
         _param_invalid($name, null, true);
     }
@@ -1702,7 +1702,7 @@ function post_param_integer($name, $default = false)
     }
     $reti = intval($ret);
     $retf = floatval($reti);
-    if (($retf > 2147483647.0) || ($retf < -2147483648.0)) {
+    if (($retf > 2147483647.0) || ($retf < -2147483648.0)) { // TODO: #3046 in tracker
         require_code('failure');
         _param_invalid($name, null, true);
     }
@@ -1749,7 +1749,7 @@ function get_param_integer($name, $default = false, $not_string_ok = false)
     }
     $reti = intval($ret);
     $retf = floatval($reti);
-    if (($retf > 2147483647.0) || ($retf < -2147483648.0)) {
+    if (($retf > 2147483647.0) || ($retf < -2147483648.0)) { // TODO: #3046 in tracker
         require_code('failure');
         _param_invalid($name, null, false);
     }

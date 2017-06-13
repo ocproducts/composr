@@ -30,6 +30,81 @@ function init__zones2()
 }
 
 /**
+ * Get the title for a Comcode page via an efficient disk scan, or fall-back to a reasonable approximation if there is none.
+ * It's all an approximation, but a pretty good one. We don't support single quotes, or missing quotes for the subtitle, or tags that look like HTML tags but are not, or HTML tags opening and closing before the title tag.
+ *
+ * @param  PATH $path Path to Comcode page
+ * @param  boolean $include_subtitle Whether to include the subtitle in brackets after if it exists
+ * @param  boolean $in_tempcode Whether to get in Tempcode format (which will be HTML)
+ * @return mixed Comcode page title
+ */
+function get_comcode_page_title_from_disk($path, $include_subtitle = false, $in_tempcode = false)
+{
+    $page_contents = trim(file_get_contents($path));
+
+    $fallback_title = titleify(basename($path, '.txt'));
+
+    $matches = array();
+    if (preg_match('#\[title([^\]]*)?[^\]]*\]#', $page_contents, $matches) == 0) {
+        // No title
+        return $fallback_title;
+    }
+
+    $tag_attribute_stuff = empty($matches[1]) ? '' : $matches[1];
+
+    if (preg_match('#^(.*\sparam)?=?"[2-9]"?#', $tag_attribute_stuff) != 0) {
+        // Wrong title level
+        return $fallback_title;
+    }
+
+    $start = strpos($page_contents, $matches[0]) + strlen($matches[0]);
+    $end = strpos($page_contents, '[/title]', $start);
+    $raw_title = trim(substr($page_contents, $start, $end - $start));
+
+    if ($raw_title == '') {
+        // Blank title
+        return $fallback_title;
+    }
+
+    if ($include_subtitle) {
+        $matches2 = array();
+        if (preg_match('#\ssub="([^"]*)"#', $tag_attribute_stuff, $matches2) != 0) {
+            $subtitle = empty($matches2[1]) ? '' : $matches2[1];
+            if (!empty($subtitle)) {
+                if (stripos($subtitle, $raw_title) !== false) {
+                    $raw_title = ucfirst($subtitle);
+                } else {
+                    $raw_title .= ' (' . $subtitle . ')';
+                }
+            }
+        }
+    }
+
+    $semihtml_context = (substr($page_contents, 0, 9) == '[semihtml');
+    $purehtml_context = (substr($page_contents, 0, 5) == '[html');
+    $html_context = $semihtml_context || $purehtml_context;
+
+    if ($in_tempcode) {
+        if ($purehtml_context) {
+            $tempcode_title = make_string_tempcode(escape_html(strip_html($raw_title)));
+        } else {
+            require_code('comcode');
+            $tempcode_title = comcode_to_tempcode($raw_title, null, true, null, null, null, false, false, $html_context);
+        }
+        return $tempcode_title;
+    }
+
+    $cleaned_title = $raw_title;
+    if ($html_context) {
+        $cleaned_title = trim(strip_html($cleaned_title));
+    }
+    if (!$purehtml_context) {
+        $cleaned_title = trim(strip_comcode($cleaned_title));
+    }
+    return $cleaned_title;
+}
+
+/**
  * Render a Comcode page box.
  *
  * @param  array $row Row to render
