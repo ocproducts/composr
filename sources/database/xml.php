@@ -528,7 +528,7 @@ class Database_Static_xml
                 return $this->_do_query_create($tokens, $query, $db, $fail_ok);
 
             case 'INSERT':
-                $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
+                $random_key = mt_rand(0, mt_getrandmax());
                 return $this->_do_query_insert($tokens, $query, $db, $fail_ok, $get_insert_id, $random_key, $save_as_volatile);
 
             case 'UPDATE':
@@ -537,6 +537,7 @@ class Database_Static_xml
             case 'DELETE':
                 return $this->_do_query_delete($tokens, $query, $db, $max, $start, $fail_ok);
 
+            case '(':
             case 'SELECT':
                 $at = 0;
                 $results = $this->_do_query_select($tokens, $query, $db, $max, $start, $fail_ok, $at);
@@ -1793,7 +1794,7 @@ class Database_Static_xml
                                 $TABLE_BASES[$table_name] = $record[$key] + 1;
                             } else {
                                 if ($record_num != 0) {
-                                    $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
+                                    $random_key = mt_rand(0, mt_getrandmax());
                                 }
                                 $record[$key] = $random_key; // We don't use auto-increment, we use randomisation. As otherwise when people sync over revision control there'd be conflicts
                             }
@@ -2645,6 +2646,16 @@ class Database_Static_xml
 
         $as = null;
 
+        if ($tokens[$at] == '(') {
+            if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
+                return null;
+            }
+
+            $is_bracketed = true;
+        } else {
+            $is_bracketed = false;
+        }
+
         if (!$this->_parsing_expects($at, $tokens, 'SELECT', $query)) {
             return null;
         }
@@ -2862,6 +2873,12 @@ class Database_Static_xml
                 }
             } else {
                 $at--;
+            }
+        }
+
+        if ($is_bracketed) {
+            if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                return null;
             }
         }
 
@@ -3772,7 +3789,7 @@ class Database_Static_xml
             }
         }
 
-        $fuzz = strtoupper(md5(uniqid(strval(mt_rand(0, min(2147483647, mt_getrandmax()))), true)));
+        $fuzz = strtoupper(md5(uniqid(strval(mt_rand(0, mt_getrandmax())), true)));
 
         return '{'
                . substr($fuzz, 0, 8) . '-'

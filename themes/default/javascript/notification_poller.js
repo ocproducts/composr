@@ -10,7 +10,7 @@ if (typeof window.notifications_time_barrier=='undefined')
 
 	window.NOTIFICATION_POLL_FREQUENCY={$CONFIG_OPTION%,notification_poll_frequency};
 
-	window.notifications_time_barrier=null;
+	window.notifications_time_barrier=0;
 }
 
 function notification_poller_init(time_barrier)

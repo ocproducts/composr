@@ -1071,6 +1071,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'INSERT command denied to user') === false) &&
         (strpos($text, 'Disk is full writing') === false) &&
         (strpos($text, 'Disk quota exceeded') === false) &&
+        (strpos($text, 'Lock wait timeout exceeded') === false) &&
         (strpos($text, 'No space left on device') === false) &&
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
@@ -1082,6 +1083,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL
         (strpos($text, '.MYD') === false) && // MySQL
+        (strpos($text, 'syntax error, unexpected') === false) && // MySQL full-text parsing error
         (strpos($text, 'MySQL server has gone away') === false) &&
         (strpos($text, 'Incorrect key file') === false) &&
         (strpos($text, 'Too many connections') === false) &&

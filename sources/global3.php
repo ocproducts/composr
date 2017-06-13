@@ -2989,7 +2989,7 @@ function titleify($boring)
         $ret = preg_replace('#([/\\\\])#', '${1} ', $ret);
     }
 
-    $ret = ucwords(str_replace('_', ' ', $boring));
+    $ret = ucwords(trim(str_replace('_', ' ', $boring)));
 
     $acronyms = array(
         'CMS',

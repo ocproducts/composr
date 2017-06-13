@@ -382,46 +382,59 @@ abstract class BaseFacebook
   }
 
   /**
-   * Extend an access token, while removing the short-lived token that might
-   * have been generated via client-side flow. Thanks to http://bit.ly/b0Pt0H
-   * for the workaround.
-   */
-  public function setExtendedAccessToken() {
-    try {
-      // need to circumvent json_decode by calling _oauthRequest
-      // directly, since response isn't JSON format.
-      $access_token_response = $this->_oauthRequest(
-        $this->getUrl('graph', '/oauth/access_token'),
-        $params = array(
-          'client_id' => $this->getAppId(),
-          'client_secret' => $this->getAppSecret(),
-          'grant_type' => 'fb_exchange_token',
-          'fb_exchange_token' => $this->getAccessToken(),
-        )
-      );
-    }
-    catch (FacebookApiException $e) {
-      // most likely that user very recently revoked authorization.
-      // In any event, we don't have an access token, so say so.
-      return false;
-    }
+    * Extend an access token, while removing the short-lived token that might
+    * have been generated via client-side flow. Thanks to http://bit.ly/ b0Pt0H
+    * for the workaround.
+    */
+   public function setExtendedAccessToken() {
+     try {
+       // need to circumvent json_decode by calling _oauthRequest
+       // directly, since response isn't JSON format.
+       $access_token_response = $this->_oauthRequest(
+         $this->getUrl('graph', '/oauth/access_token'),
+         $params = array(
+           'client_id' => $this->getAppId(),
+           'client_secret' => $this->getAppSecret(),
+           'grant_type' => 'fb_exchange_token',
+           'fb_exchange_token' => $this->getAccessToken(),
+         )
+       );
+     }
+     catch (FacebookApiException $e) {
+       // most likely that user very recently revoked authorization.
+       // In any event, we don't have an access token, so say so.
+       return false;
+     }
 
-    if (empty($access_token_response)) {
-      return false;
-    }
+     if (empty($access_token_response)) {
+       return false;
+     }
 
-    $response_params = array();
-    parse_str($access_token_response, $response_params);
+     //Version 2.2 and down (Deprecated).  For more info, see http://stackoverflow.com/a/43016312/114558
+     // $response_params = array();
+     // parse_str($access_token_response, $response_params);
+     //
+     // if (!isset($response_params['access_token'])) {
+     //   return false;
+     // }
+     //
+     // $this->destroySession();
+     //
+     // $this->setPersistentData(
+     //   'access_token', $response_params['access_token']
+     // );
 
-    if (!isset($response_params['access_token'])) {
-      return false;
-    }
+     //Version 2.3 and up.
+     $response = json_decode($access_token_response);
+     if (!isset($response->access_token)) {
+       return false;
+     }
 
-    $this->destroySession();
+     $this->destroySession();
 
-    $this->setPersistentData(
-      'access_token', $response_params['access_token']
-    );
+     $this->setPersistentData(
+       'access_token', $response->access_token
+     );
   }
 
   /**
@@ -805,13 +818,11 @@ abstract class BaseFacebook
       return false;
     }
 
-    $response_params = array();
-    parse_str($access_token_response, $response_params);
-    if (!isset($response_params['access_token'])) {
+    $response = json_decode($access_token_response);
+    if (!isset($response->access_token)) {
       return false;
     }
-
-    return $response_params['access_token'];
+    return $response->access_token;
   }
 
   /**

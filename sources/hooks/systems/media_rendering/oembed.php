@@ -173,6 +173,9 @@ class Hook_media_rendering_oembed extends Media_renderer_with_fallback
                     if (is_null($val)) {
                         continue;
                     }
+                    if ((is_array($val)) || (is_object($val))) {
+                        continue;
+                    }
                     $data[$key] = is_string($val) ? convert_to_internal_encoding($val, 'utf-8') : strval($val);
                 }
                 break;

@@ -272,55 +272,69 @@ class Module_search
             $extra_sort_fields = array_key_exists('extra_sort_fields', $info) ? $info['extra_sort_fields'] : array();
 
             $under = null;
+            $got_tree_selector = false;
+
             if (method_exists($ob, 'ajax_tree')) {
-                $ajax = true;
                 $under = get_param_string('search_under', '', true);
                 $ajax_tree = $ob->ajax_tree();
-                if (is_object($ajax_tree)) {
-                    return $ajax_tree;
-                }
-                list($ajax_hook, $ajax_options) = $ajax_tree;
 
-                require_code('hooks/systems/ajax_tree/' . $ajax_hook);
-                $tree_hook_ob = object_factory('Hook_' . $ajax_hook);
-                $simple_content = $tree_hook_ob->simple(null, $ajax_options, preg_replace('#,.*$#', '', $under));
+                if ($ajax_tree !== null) {
+                    $got_tree_selector = true;
 
-                $nice_label = $under;
-                if (!is_null($under)) {
-                    $simple_content_evaluated = $simple_content->evaluate();
-                    $matches = array();
-                    if (preg_match('#<option [^>]*value="' . preg_quote($under, '#') . '(' . ((strpos($under, ',') === false) ? ',' : '') . '[^"]*)?"[^>]*>([^>]* &gt; )?([^>]*)</option>#', $simple_content_evaluated, $matches) != 0) {
-                        if (strpos($under, ',') === false) {
-                            $under = $under . $matches[1];
-                        }
-                        $nice_label = trim($matches[3]);
+                    if (is_object($ajax_tree)) {
+                        return $ajax_tree;
                     }
-                }
+                    list($ajax_hook, $ajax_options) = $ajax_tree;
 
-                require_code('form_templates');
-                $tree = do_template('FORM_SCREEN_INPUT_TREE_LIST', array(
-                    '_GUID' => '25368e562be3b4b9c6163aa008b47c91',
-                    'MULTI_SELECT' => false,
-                    'TABINDEX' => strval(get_form_field_tabindex()),
-                    'NICE_LABEL' => (is_null($nice_label) || $nice_label == '-1') ? '' : $nice_label,
-                    'END_OF_FORM' => true,
-                    'REQUIRED' => '',
-                    '_REQUIRED' => false,
-                    'USE_SERVER_ID' => false,
-                    'NAME' => 'search_under',
-                    'DEFAULT' => $under,
-                    'HOOK' => $ajax_hook,
-                    'ROOT_ID' => '',
-                    'OPTIONS' => serialize($ajax_options),
-                    'DESCRIPTION' => '',
-                    'CONTENT_TYPE' => $content_type,
-                ));
-            } else {
+                    require_code('hooks/systems/ajax_tree/' . $ajax_hook);
+                    $tree_hook_ob = object_factory('Hook_' . $ajax_hook);
+                    $simple_content = $tree_hook_ob->simple(null, $ajax_options, preg_replace('#,.*$#', '', $under));
+
+                    $ajax = true;
+
+                    $nice_label = $under;
+                    if (!is_null($under)) {
+                        $simple_content_evaluated = $simple_content->evaluate();
+                        $matches = array();
+                        if (preg_match('#<option [^>]*value="' . preg_quote($under, '#') . '(' . ((strpos($under, ',') === false) ? ',' : '') . '[^"]*)?"[^>]*>([^>]* &gt; )?([^>]*)</option>#', $simple_content_evaluated, $matches) != 0) {
+                            if (strpos($under, ',') === false) {
+                                $under = $under . $matches[1];
+                            }
+                            $nice_label = trim($matches[3]);
+                        }
+                    }
+
+                    require_code('form_templates');
+                    $tree = do_template('FORM_SCREEN_INPUT_TREE_LIST', array(
+                        '_GUID' => '25368e562be3b4b9c6163aa008b47c91',
+                        'MULTI_SELECT' => false,
+                        'TABINDEX' => strval(get_form_field_tabindex()),
+                        'NICE_LABEL' => (is_null($nice_label) || $nice_label == '-1') ? '' : $nice_label,
+                        'END_OF_FORM' => true,
+                        'REQUIRED' => '',
+                        '_REQUIRED' => false,
+                        'USE_SERVER_ID' => false,
+                        'NAME' => 'search_under',
+                        'DEFAULT' => $under,
+                        'HOOK' => $ajax_hook,
+                        'ROOT_ID' => '',
+                        'OPTIONS' => serialize($ajax_options),
+                        'DESCRIPTION' => '',
+                        'CONTENT_TYPE' => $content_type,
+                    ));
+                }
+            }
+            
+            if (!$got_tree_selector) {
                 $ajax = false;
                 $tree = form_input_list_entry('!', false, do_lang_tempcode('NA_EM'));
                 if (method_exists($ob, 'get_tree')) {
                     $under = get_param_string('search_under', '!', true);
-                    $tree->attach($ob->get_tree($under));
+                    if ($under !== null) {
+                        $got_tree_selector = true;
+
+                        $tree->attach($ob->get_tree($under));
+                    }
                 }
             }
 

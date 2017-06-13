@@ -3347,8 +3347,7 @@ function ecv2_VIEWS($lang, $escaped, $param)
     $value = '';
 
     if (isset($param[2])) {
-        $id_field = /*isset($param[4]) ? $param[4] : */
-            'id'; // Not allowed on fields other than 'id', for security reasons
+        $id_field = /*isset($param[4]) ? $param[4] : */'id'; // Not allowed on fields other than 'id', for security reasons
         if (preg_match('#^\w*views\w*$#', $param[1]) != 0) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there($param[0], $param[1], array($id_field => $param[2]));
             if ($test !== null) {

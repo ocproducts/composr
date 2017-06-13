@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    galleries
+ * @package    composr_tutorials
  */
 
 /**
  * Hook class.
  */
-class Hook_search_videos extends FieldsSearchHook
+class Hook_search_tutorials_external extends FieldsSearchHook
 {
     /**
      * Find details for this search hook.
@@ -31,62 +31,16 @@ class Hook_search_videos extends FieldsSearchHook
      */
     public function info($check_permissions = true)
     {
-        if (!module_installed('galleries')) {
-            return null;
-        }
-
-        if ($check_permissions) {
-            if (!has_actual_page_access(get_member(), 'galleries')) {
-                return null;
-            }
-        }
-
-        if ($GLOBALS['SITE_DB']->query_select_value('videos', 'COUNT(*)') == 0) {
-            return null;
-        }
-
-        require_lang('galleries');
+        require_lang('tutorials');
 
         $info = array();
-        $info['lang'] = do_lang_tempcode('VIDEOS');
+        $info['lang'] = do_lang_tempcode('TUTORIALS_EXTERNAL');
         $info['default'] = true;
-        $info['category'] = 'cat';
-        $info['integer_category'] = false;
-        $info['extra_sort_fields'] = array('video_length' => do_lang_tempcode('VIDEO_LENGTH')) + $this->_get_extra_sort_fields('_video');
+        $info['integer_category'] = true;
 
-        $info['permissions'] = array(
-            array(
-                'type' => 'zone',
-                'zone_name' => get_module_zone('galleries'),
-            ),
-            array(
-                'type' => 'page',
-                'zone_name' => get_module_zone('galleries'),
-                'page_name' => 'galleries',
-            ),
-        );
+        $info['permissions'] = array();
 
         return $info;
-    }
-
-    /**
-     * Get details for an ajax-tree-list of entries for the content covered by this search hook.
-     *
-     * @return array A pair: the hook, and the options
-     */
-    public function ajax_tree()
-    {
-        return array('choose_gallery', array('compound_list' => true));
-    }
-
-    /**
-     * Get a list of extra fields to ask for.
-     *
-     * @return array A list of maps specifying extra fields (null: no tree)
-     */
-    public function get_fields()
-    {
-        return $this->_get_fields('_video');
     }
 
     /**
@@ -114,61 +68,33 @@ class Hook_search_videos extends FieldsSearchHook
      */
     public function run($content, $only_search_meta, $direction, $max, $start, $only_titles, $content_where, $author, $author_id, $cutoff, $sort, $limit_to, $boolean_operator, $where_clause, $search_under, $boolean_search)
     {
+        require_code('tutorials');
+
         $remapped_orderer = '';
         switch ($sort) {
-            case 'average_rating':
-            case 'compound_rating':
-                $remapped_orderer = $sort . ':videos:id';
-                break;
-
             case 'title':
-                $remapped_orderer = 'title';
+                $remapped_orderer = 't_title';
                 break;
 
             case 'add_date':
-                $remapped_orderer = 'add_date';
-                break;
-
-            case 'video_length':
-                $remapped_orderer = $sort;
+                $remapped_orderer = 't_add_date';
                 break;
         }
 
-        require_lang('galleries');
-
-        // Calculate our where clause (search)
-        $sq = build_search_submitter_clauses('submitter', $author_id, $author);
+        $sq = build_search_submitter_clauses('t_submitter', $author_id, $author, 't_author');
         if (is_null($sq)) {
             return array();
         } else {
             $where_clause .= $sq;
         }
-        $this->_handle_date_check($cutoff, 'add_date', $where_clause);
 
-        if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
-            $where_clause .= ' AND ';
-            $where_clause .= 'validated=1';
-        }
-
-        $privacy_join = '';
-        if (addon_installed('content_privacy')) {
-            require_code('content_privacy');
-            list($privacy_join, $privacy_where) = get_privacy_where_clause('video', 'r');
-            $where_clause .= $privacy_where;
-        }
-
-        if (get_option('filter_regions') == '1') {
-            require_code('locations');
-            $where_clause .= sql_region_filter('video', 'r.id');
-        }
-
-        $table = 'videos r';
-        $trans_fields = array('' => '', 'r.description' => 'LONG_TRANS__COMCODE', 'r.title' => 'SHORT_TRANS');
-        $nontrans_fields = array();
-        $this->_get_search_parameterisation_advanced_for_content_type('_video', $table, $where_clause, $trans_fields, $nontrans_fields);
+        $table = 'tutorials_external r';
+        $trans_fields = array();
+        $nontrans_fields = array('r.t_title', 'r.t_summary');
+        $this->_get_search_parameterisation_advanced_for_content_type('_comcode_page', $table, $where_clause, $trans_fields, $nontrans_fields);
 
         // Calculate and perform query
-        $rows = get_search_rows('video', 'id', $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table . $privacy_join, $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.*', $nontrans_fields, 'galleries', 'cat', true);
+        $rows = get_search_rows(null, null, $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, $table, $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.*,' . tutorial_sql_rating(db_cast('r.id', 'CHAR')) . ',' . tutorial_sql_rating_recent(db_cast('r.id', 'CHAR')) . ',' . tutorial_sql_likes(db_cast('r.id', 'CHAR')) . ',' . tutorial_sql_likes_recent(db_cast('r.id', 'CHAR')), $nontrans_fields);
 
         $out = array();
         foreach ($rows as $i => $row) {
@@ -192,7 +118,8 @@ class Hook_search_videos extends FieldsSearchHook
      */
     public function render($row)
     {
-        require_code('galleries');
-        return render_video_box($row);
+        $tags = collapse_1d_complexity('t_tag', $GLOBALS['SITE_DB']->query_select('tutorials_external_tags', array('t_tag'), array('t_id' => $row['id'])));
+        $metadata = get_tutorial_metadata(strval($row['id']), $row, $tags);
+        return do_template('TUTORIAL_BOX', templatify_tutorial($metadata));
     }
 }

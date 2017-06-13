@@ -64,7 +64,7 @@ class Hook_fields_guid
      */
     public function get_field_value_row_bits($field, $required = null, $default = null)
     {
-        if (((is_null($default)) || ($default == '')) && (!is_null($field)) && (!is_null($field['id']))) { // We need to calculate a default even if not required, because the defaults are programmatic
+        if ((is_null($default)) || ($default == '')) { // We need to calculate a default even if not required, because the defaults are programmatic
             $default = $this->get_field_guid();
         }
         return array('short_unescaped', $default, 'short');

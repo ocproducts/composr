@@ -432,6 +432,7 @@ function cns_get_custom_field_mappings($member_id)
         $query = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('*'), $row, '', 1);
         if (!isset($query[0])) { // Repair
             $value = mixed();
+            $row = array();
 
             $all_fields_regardless = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_type', 'cf_required', 'cf_default'));
             foreach ($all_fields_regardless as $field) {
@@ -458,7 +459,7 @@ function cns_get_custom_field_mappings($member_id)
                     }
                 }
             }
-            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', $row);
+            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', array('mf_member_id' => $member_id) + $row);
             $query = array($row);
         }
         $MEMBER_CACHE_FIELD_MAPPINGS[$member_id] = $query[0];

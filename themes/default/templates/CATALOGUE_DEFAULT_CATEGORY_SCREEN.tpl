@@ -41,16 +41,16 @@
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 {+START,INCLUDE,STAFF_ACTIONS}
 	1_URL={ADD_ENTRY_URL*}
-	1_TITLE={!CATALOGUE_GENERIC_ADD,{_TITLE*}}
+	1_TITLE={!CATALOGUE_GENERIC_ADD,{CATALOGUE_TITLE*}}
 	1_REL=add
 	1_ICON=menu/_generic_admin/add_one
 	2_URL={ADD_CAT_URL*}
-	2_TITLE={!CATALOGUE_GENERIC_ADD_CATEGORY,{_TITLE*}}
+	2_TITLE={!CATALOGUE_GENERIC_ADD_CATEGORY,{CATALOGUE_TITLE*}}
 	2_REL=add
 	2_ICON=menu/_generic_admin/add_one_category
 	3_ACCESSKEY=q
 	3_URL={EDIT_CAT_URL*}
-	3_TITLE={!CATALOGUE_GENERIC_EDIT_CATEGORY,{_TITLE*}}
+	3_TITLE={!do_next:NEXT_ITEM_edit_this_category}
 	3_REL=edit
 	3_ICON=menu/_generic_admin/edit_this_category
 	4_URL={EDIT_CATALOGUE_URL*}

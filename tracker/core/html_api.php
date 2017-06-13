@@ -530,7 +530,11 @@ function html_login_info() {
 	}
 
 	if( $t_show_project_selector ) {
-		echo '<form method="post" name="form_set_project" action="' . helper_mantis_url( 'set_project.php' ) . '">';
+		$current_projects = join( ';', helper_get_current_project_trace() );
+		$t_project_ids = current_user_get_accessible_projects();
+		$in_main_project = ($t_project_ids[0] == $current_projects);
+
+		echo '<form method="post" name="form_set_project" action="' . helper_mantis_url( 'set_project.php' ) . '"' . ($in_main_project ? '' : ' style="font-weight: bold; color: red"' ) . '>';
 		# CSRF protection not required here - form does not result in modifications
 
 		echo lang_get( 'email_project' ), ': ';
@@ -542,7 +546,8 @@ function html_login_info() {
 			} else {
 				echo '<select name="project_id" class="small">';
 			}
-			print_project_option_list( join( ';', helper_get_current_project_trace() ), true, null, true );
+
+			print_project_option_list( $current_projects, true, null, true );
 			echo '</select> ';
 		}
 		echo '<input type="submit" class="button-small" value="' . lang_get( 'switch' ) . '" />';

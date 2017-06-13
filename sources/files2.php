@@ -795,7 +795,7 @@ function delete_upload($upload_path, $table, $field, $id_field, $id, $new_url = 
     // Try and delete the file
     if (($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) || (get_option('cleanup_files') == '1')) { // This isn't really a permission - more a failsafe in case there is a security hole. Staff can cleanup leftover files from the Cleanup module anyway. NB: Also repeated in cms_galleries.php.
         $where = is_array($id_field) ? $id_field : array($id_field => $id);
-        $url = $GLOBALS['SITE_DB']->query_select_value_if_there($table, $field, $where);
+        $url = $GLOBALS['SITE_DB']->query_select_value_if_there($table, filter_naughty_harsh($field), $where);
         if (empty($url)) {
             return;
         }

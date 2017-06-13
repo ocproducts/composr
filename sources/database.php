@@ -404,6 +404,10 @@ function db_function($function, $args = null)
         $args = array(); // TODO: Fix in v11, make like this as default parameter
     }
 
+    if (method_exists($GLOBALS['DB_STATIC_OBJECT'], 'db_function')) {
+        return $GLOBALS['DB_STATIC_OBJECT']->db_function($function, $args);
+    }
+
     switch ($function) {
         case 'CONCAT':
             switch (get_db_type()) {

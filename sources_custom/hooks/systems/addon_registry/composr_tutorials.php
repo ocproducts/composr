@@ -160,6 +160,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'sources_custom/hooks/systems/snippets/tutorial_box.php',
             'adminzone/pages/minimodules_custom/doc_index_build.php',
             'cms/pages/modules_custom/cms_tutorials.php',
+            'sources_custom/hooks/modules/search/tutorials_external.php',
             'docs/pages/modules_custom/tutorials.php',
             'docs/index.php',
             'docs/pages/.htaccess',
