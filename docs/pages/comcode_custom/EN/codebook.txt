@@ -190,19 +190,23 @@ Of course, with all things, a sense of balance is important. An instinct/habit f
 
 [title="2"]Troubleshooting[/title]
 
-&raquo; See [page="_SEARCH:codebook_3"]Final document[/page].
+&raquo; See [page="_SEARCH:codebook_3"]Miscellany[/page].
+
+[title="2"]Coding standards[/title]
+
+&raquo; See [page="_SEARCH:codebook_standards"]Coding standards[/page].
 
 [title="2"]Tips[/title]
 
-&raquo; See [page="_SEARCH:codebook_3"]Final document[/page].
+&raquo; See [page="_SEARCH:codebook_3"]Miscellany[/page].
 
 [title="2"]Advanced deployment and customisation[/title]
 
-&raquo; See [page="_SEARCH:codebook_3"]Final document[/page].
+&raquo; See [page="_SEARCH:codebook_3"]Miscellany[/page].
 
 [title="2"]Conclusion[/title]
 
-&raquo; See [page="_SEARCH:codebook_3"]Final document[/page].
+&raquo; See [page="_SEARCH:codebook_3"]Miscellany[/page].
 
 [media float="right" thumb="0" framed="0" width="200"]data_custom/images/docs/codebook/octocat.jpg[/media]
 [title="2"]Resources[/title]

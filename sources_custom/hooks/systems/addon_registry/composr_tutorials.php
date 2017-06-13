@@ -1151,6 +1151,7 @@ The documentation is primarily maintained on our website, and this archive is on
             'docs/pages/comcode_custom/EN/codebook_1b.txt',
             'docs/pages/comcode_custom/EN/codebook_2.txt',
             'docs/pages/comcode_custom/EN/codebook_3.txt',
+            'docs/pages/comcode_custom/EN/codebook_standards.txt',
             'docs/pages/comcode_custom/EN/faq.txt',
             'docs/pages/comcode_custom/EN/panel_top.txt',
             'docs/pages/comcode_custom/EN/sup_a_detailed_look_at_the_composr_calendar_system.txt',
@@ -1482,11 +1483,13 @@ The documentation is primarily maintained on our website, and this archive is on
             'themes/default/images_custom/tutorial_icons/wiki.png',
             'themes/default/images_custom/tutorial_icons/internet_technology.png',
             'themes/default/images_custom/tutorial_icons/mobile.png',
+
             'docs/codebook_data_dictionary.docx',
             'docs/erd_rendered__by_addon.zip',
             'docs/erd_sql__by_addon.zip',
             'docs/making_a_theme.pdf',
-            'docs/standards-checklist.xls',
+
+            'themes/default/css_custom/tutorials.css',
         );
     }
 }
