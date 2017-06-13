@@ -1,4 +1,5 @@
-<div data-tpl="questionUiButtons">
+{$REQUIRE_JAVASCRIPT,core_abstract_interfaces}
+<div data-require-javascript="core_abstract_interfaces" data-tpl="questionUiButtons">
 	<h2>{TITLE*}</h2>
 
 	{MESSAGE}

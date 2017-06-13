@@ -16,7 +16,7 @@ if (!(    document.getElementById && document.getElementsByName))
     throw complaining("Your browser is too old to render this page properly."
         + "  Consider going to getfirefox.com to upgrade.");
 
-function check_decoding() {
+function checkDecoding() {
     var d = document.getElementById('cometestme');
     if (!d) {
         throw complaining("Can't find an id='cometestme' element?");
@@ -55,24 +55,24 @@ function check_decoding() {
 }
 
 
-function go_decoding() {
-    check_decoding();
+function goDecoding() {
+    checkDecoding();
 
     if (is_decoding) {
         if (DEBUG) alert("No work needs doing -- already decoded!");
         return;
     }
 
-    var to_decode = document.getElementsByName('decodeable');
-    if (!( to_decode && to_decode.length )) {
+    var toDecode = document.getElementsByName('decodeable');
+    if (!( toDecode && toDecode.length )) {
         if (DEBUG) alert("No work needs doing -- no elements to decode!");
         return;
     }
 
 
     var s;
-    for (var i = to_decode.length - 1; i >= 0; i--) {
-        s = to_decode[i].textContent;
+    for (var i = toDecode.length - 1; i >= 0; i--) {
+        s = toDecode[i].textContent;
 
         if (
             s == undefined ||
@@ -80,7 +80,7 @@ function go_decoding() {
         ) {
             // the null or markupless element needs no reworking
         } else {
-            $cms.dom.html(to_decode[i], s);  // that's the magic
+            $cms.dom.html(toDecode[i], s);  // that's the magic
         }
     }
 

@@ -33,7 +33,7 @@ $cms.requireJavascript('jquery').then(function () {
 
 			toHtml: function (text) {
 				return text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>')
-					.split(' ').join('<span style="white-space:prev-wrap">&nbsp;</span>');
+					.split(' ').join('<span style="white-space: pre-wrap">&nbsp;</span>');
 			},
 			// calculate position
 			getCaretPosition: function () {
@@ -652,7 +652,7 @@ $cms.requireJavascript('jquery').then(function () {
  */
 function autoCompleteElementFactory(element,e) {
 	var customItemTemplate='<div><span />&nbsp;<small /></div>';
-	var template=$(customItemTemplate).find('span')
+	var template=window.jQuery(customItemTemplate).find('span')
 		.text('@'+e.val).end()
 		.find('small')
 		.text((e.meta=='')?'':'('+e.meta+')').end();
@@ -661,13 +661,13 @@ function autoCompleteElementFactory(element,e) {
 
 /* Composr binder code */
 
-function set_up_comcode_autocomplete(name, wysiwyg) {
-	if (wysiwyg && window.wysiwyg_on && wysiwyg_on() && ((window.CKEDITOR == null) ||  (window.CKEDITOR.instances[name] == null))) {
+function setUpComcodeAutocomplete(name, wysiwyg) {
+	if (wysiwyg && window.wysiwygOn && wysiwygOn() && ((window.CKEDITOR == null) ||  (window.CKEDITOR.instances[name] == null))) {
 		return;
 	}
 
 	if (!window.jQuery || !window.jQuery.fn.sew) {
-		$cms.error('set_up_comcode_autocomplete(): jQuery.fn.sew plugin is not loaded');
+		$cms.error('setUpComcodeAutocomplete(): jQuery.fn.sew plugin is not loaded');
 	}
 
     window.jQuery('#' + name).sew({
@@ -677,15 +677,15 @@ function set_up_comcode_autocomplete(name, wysiwyg) {
         onFilterChanged: function (sew, token, expression) {
 			$cms.doAjaxRequest(
                 '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keepStub(),
-                function (result, list_contents) {
-                    var new_values = [];
-                    for (var i = 0; i < list_contents.childNodes.length; i++) {
-                        new_values.push({
-                            val: list_contents.childNodes[i].getAttribute('value'),
-                            meta: list_contents.childNodes[i].getAttribute('displayname')
+                function (result, listContents) {
+                    var newValues = [];
+                    for (var i = 0; i < listContents.childNodes.length; i++) {
+                        newValues.push({
+                            val: listContents.childNodes[i].getAttribute('value'),
+                            meta: listContents.childNodes[i].getAttribute('displayname')
                         });
                     }
-                    sew.setValues(new_values);
+                    sew.setValues(newValues);
                 }
             );
         }

@@ -35,7 +35,7 @@ function init__database()
     $QUERY_COUNT = 0;
     $QUERY_LIMITING = array(array(true, 0));
     if (!defined('DEV_MODE_QUERY_LIMIT')) {
-        define('DEV_MODE_QUERY_LIMIT', 250);
+        define('DEV_MODE_QUERY_LIMIT', 4000);
     }
     $DB_SCOPE_CHECK = array(true);
     if (((!isset($SITE_INFO['no_extra_logs'])) || ($SITE_INFO['no_extra_logs'] != '1')) && (is_file(get_custom_file_base() . '/data_custom/queries.log'))) {

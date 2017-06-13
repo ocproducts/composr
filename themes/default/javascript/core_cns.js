@@ -26,7 +26,7 @@
                         window.scrollTo(0, 0);
                     }
 
-                    $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + this.memberId + window.location.search.replace('?', '&'), null, function (result) {
+                    $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + this.memberId + window.location.search.replace('?', '&'), null, true).then(function (result) {
                         $cms.dom.html('#g_' + tabCode, result.responseText);
                         $cms.dom.findUrlTab();
                     });
@@ -42,7 +42,7 @@
         }
     }
 
-    $cms.inherits(CnsMemberProfileScreen, $cms.View, /**@lends $cms.views.CnsMemberProfileScreen#*/ {
+    $cms.inherits(CnsMemberProfileScreen, $cms.View, /**@lends CnsMemberProfileScreen#*/ {
         events: function () {
             return {
                 'click .js-click-select-tab-g': 'onClickSelectTab'
@@ -78,7 +78,7 @@
 
     $cms.templates.cnsMemberProfileAbout = function cnsMemberProfileAbout(params, container) {
         $cms.dom.on(container, 'click', '.js-click-member-profile-about-decrypt-data', function () {
-            decrypt_data();
+            decryptData();
         });
     };
 
@@ -123,28 +123,38 @@
     };
 
     $cms.functions.moduleAdminCnsGroupsRunStart = function moduleAdminCnsGroupsRunStart() {
-        var form = document.getElementById('main_form');
-        form.onsubmit = (function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('main_form'),
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
+            submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_usergroup&name=' + encodeURIComponent(form.elements['name'].value);
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 
     $cms.functions.moduleAdminCnsEmoticons = function moduleAdminCnsEmoticons() {
-        var form = document.getElementById('main_form');
-        form.onsubmit = (function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('main_form'),
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
+            submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_emoticon&name=' + encodeURIComponent(form.elements['code'].value);
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 
@@ -157,7 +167,7 @@
 
         function crf() {
             var preset = $cms.form.radioValue(form.elements['preset']);
-            if (preset == '') {
+            if (preset === '') {
                 form.elements['fields_to_use'].disabled = false;
                 form.elements['order_by'].disabled = false;
                 form.elements['usergroups'].disabled = false;
@@ -175,47 +185,46 @@
         var suffix = $cms.filter.id('{!DELETE_MEMBER;^}').toLowerCase();
 
         window['load_tab__edit__' + suffix] = function() {
-            var submit_button = document.getElementById('submit_button'),
-                delete_checkbox = document.getElementById('delete'),
+            var submitButton = document.getElementById('submit_button'),
+                deleteCheckbox = document.getElementById('delete'),
                 tab = document.getElementById('t_edit__' + suffix);
 
-            submit_button.disabled = !delete_checkbox.checked;
+            submitButton.disabled = !deleteCheckbox.checked;
 
             window.setInterval(function () {
-                submit_button.disabled = !delete_checkbox.checked && tab.classList.contains('tab_active');
+                submitButton.disabled = !deleteCheckbox.checked && tab.classList.contains('tab_active');
             }, 100);
         };
     };
 
     $cms.functions.hookProfilesTabsEditSettingsRenderTab = function hookProfilesTabsEditSettingsRenderTab() {
-        var form = document.getElementById('email_address').form;
-        form.prior_profile_edit_submit = form.onsubmit;
-        form.onsubmit = (function () {
+        var form = document.getElementById('email_address').form,
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
             if (form.elements['edit_password'] !== undefined) {
-                if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value != form.elements['edit_password'].value)) {
-                    document.getElementById('submit_button').disabled = false;
+                if ((form.elements['password_confirm']) && (form.elements['password_confirm'].value !== form.elements['edit_password'].value)) {
+                    submitBtn.disabled = false;
                     $cms.ui.alert('{!PASSWORD_MISMATCH;^}');
                     return false;
                 }
 
-                if (form.elements['edit_password'].value != '') {
+                if (form.elements['edit_password'].value !== '') {
+                    e.preventDefault();
                     var url = '{$FIND_SCRIPT_NOHTTP;^,username_check}?';
-                    if (!$cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['edit_password'].value))) {
-                        document.getElementById('submit_button').disabled = false;
-                        return false;
-                    }
+                    $cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['edit_password'].value)).then(function (valid) {
+                        if (valid) {
+                            form.removeEventListener('submit', submitCheck);
+                            form.submit();
+                        } else {
+                            submitBtn.disabled = false;
+                        }
+                    });
                 }
             }
-            if (form.prior_profile_edit_submit) {
-                return form.prior_profile_edit_submit();
-            }
-            return true;
         });
     };
 
-    $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen() {
-        var container = this;
-
+    $cms.templates.cnsJoinStep1Screen = function cnsJoinStep1Screen(params, container) {
         $cms.dom.on(container, 'click', '.js-chb-click-toggle-proceed-btn', function (e, checkbox) {
             document.getElementById('proceed_button').disabled = !checkbox.checked;
         });
@@ -228,7 +237,7 @@
 
     $cms.templates.cnsViewGroupScreen = function cnsViewGroupScreen(params, container) {
         $cms.dom.on(container, 'submit', '.js-form-submit-add-member-to-group', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements.username, e)) {
+            if ($cms.form.checkFieldForBlankness(form.elements.username)) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -244,7 +253,7 @@
         $cms.dom.on(container, 'click', '.js-click-do-emoticon', function (e, target) {
             var fieldName = target.dataset.tpFieldName;
             if (fieldName) {
-                do_emoticon(fieldName, target, true)
+                doEmoticon(fieldName, target, true)
             }
         });
     };

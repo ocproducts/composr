@@ -32,7 +32,7 @@
 		var button = document.getElementById('proceed_button');
 		button.countdown = 6;
 		var timer;
-		var continue_func = function () {
+		var continueFunc = function () {
 			button.value = "{!PROCEED} ({!AUTO_IN} " + button.countdown + ")";
 			if (button.countdown == 0) {
 				if (timer) {
@@ -44,8 +44,8 @@
 				button.countdown--;
 			}
 		};
-		continue_func();
-		timer = window.setInterval(continue_func, 1000);
+		continueFunc();
+		timer = window.setInterval(continueFunc, 1000);
 		button.addEventListener('mouseover', function () {
 			if (timer) {
 				window.clearInterval(timer);
@@ -59,7 +59,7 @@
 			timer = null;
 		});
 		button.addEventListener('mouseout', function () {
-			timer = window.setInterval(continue_func, 1000);
+			timer = window.setInterval(continueFunc, 1000);
 		});
 	}
 //]]></script>

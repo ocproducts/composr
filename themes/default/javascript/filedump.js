@@ -24,7 +24,7 @@
         $cms.dom.findUrlTab();
 
         $cms.dom.on(container, 'click', '.js-submit-check-filedump-selections', function (e, form) {
-            if (check_filedump_selections(form) === false) {
+            if (checkFiledumpSelections(form) === false) {
                 e.preventDefault();
             }
         });
@@ -37,7 +37,7 @@
             }
         });
 
-        function check_filedump_selections(form) {
+        function checkFiledumpSelections(form) {
             var action = form.elements['action'].value;
 
             if (!action) {

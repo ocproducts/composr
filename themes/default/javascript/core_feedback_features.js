@@ -2,7 +2,11 @@
     'use strict';
 
     $cms.views.CommentsPostingForm = CommentsPostingForm;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function CommentsPostingForm(params) {
         CommentsPostingForm.base(this, 'constructor', arguments);
 
@@ -10,7 +14,7 @@
         this.btnSubmit = this.$('.js-btn-submit-comments');
 
         $cms.requireJavascript('jquery_autocomplete').then(function () {
-            set_up_comcode_autocomplete('post', !!params.wysiwyg);
+            setUpComcodeAutocomplete('post', !!params.wysiwyg);
         });
 
         if ($cms.$CONFIG_OPTION('enable_previews') && $cms.$FORCE_PREVIEWS()) {
@@ -31,7 +35,7 @@
         }
     }
 
-    $cms.inherits(CommentsPostingForm, $cms.View, {
+    $cms.inherits(CommentsPostingForm, $cms.View, /**@lends CommentsPostingForm#*/{
         events: function () {
             return {
                 'click .js-btn-full-editor': 'moveToFullEditor',
@@ -194,18 +198,25 @@
 
         /* Set up a form to have its CAPTCHA checked upon submission using AJAX */
         addCaptchaChecking: function () {
-            var form = this.form;
-            form.addEventListener('submit', function () {
-                form.elements['submit_button'].disabled = true;
+            var form = this.form,
+                submitBtn = form.elements['submit_button'];
+            form.addEventListener('submit', function submitCheck(e) {
+                submitBtn.disabled = true;
                 var url = '{$FIND_SCRIPT;,snippet}?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
-                if (!$cms.form.doAjaxFieldTest(url)) {
-                    var image = document.getElementById('captcha_image');
-                    if (!image) image = document.getElementById('captcha_frame');
-                    image.src += '&'; // Force it to reload latest captcha
-                    document.getElementById('submit_button').disabled = false;
-                    return false;
-                }
-                form.elements['submit_button'].disabled = false;
+                e.preventDefault();
+                $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                    if (valid) {
+                        form.removeEventListener('submit', submitCheck);
+                        form.submit();
+                    } else {
+                        var image = document.getElementById('captcha_image');
+                        if (!image) {
+                            image = document.getElementById('captcha_frame');
+                        }
+                        image.src += '&'; // Force it to reload latest captcha
+                        submitBtn.disabled = false;
+                    }
+                });
             });
 
             window.addEventListener('pageshow', function () {
@@ -225,7 +236,7 @@
             for (var i = 0, len = params.allRatingCriteria; i < len; i++) {
                 rating = objVal(params.allRatingCriteria[i]);
 
-                apply_rating_highlight_and_ajax_code((rating.likes === 1), rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
+                applyRatingHighlightAndAjaxCode((rating.likes === 1), rating.rating, rating.contentType, rating.id, rating.type, rating.rating, rating.contentUrl, rating.contentTitle, true);
             }
         },
 
@@ -244,47 +255,47 @@
             var urlStem = params.urlStem,
                 wrapper = $cms.dom.$id('comments_wrapper');
 
-            replace_comments_form_with_ajax(params.options, params.hash, 'comments_form', 'comments_wrapper');
+            replaceCommentsFormWithAjax(params.options, params.hash, 'comments_form', 'comments_wrapper');
 
             if (wrapper) {
-                internalise_ajax_block_wrapper_links(urlStem, wrapper, ['start_comments', 'max_comments'], {});
+                internaliseAjaxBlockWrapperLinks(urlStem, wrapper, ['start_comments', 'max_comments'], {});
             }
 
             // Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results
             if (params.infiniteScroll) {
-                var infinite_scrolling_comments_wrapper = function (event) {
-                    internalise_infinite_scrolling(urlStem, wrapper);
+                var infiniteScrollingCommentsWrapper = function (event) {
+                    internaliseInfiniteScrolling(urlStem, wrapper);
                 };
 
-                $cms.dom.on(window, 'scroll', infinite_scrolling_comments_wrapper);
-                $cms.dom.on(window, 'keydown', infinite_scrolling_block);
-                $cms.dom.on(window, 'mousedown', infinite_scrolling_block_hold);
+                $cms.dom.on(window, 'scroll', infiniteScrollingCommentsWrapper);
+                $cms.dom.on(window, 'keydown', infiniteScrollingBlock);
+                $cms.dom.on(window, 'mousedown', infiniteScrollingBlockHold);
                 $cms.dom.on(window, 'mousemove', function () {
-                    infinite_scrolling_block_unhold(infinite_scrolling_comments_wrapper);
+                    infiniteScrollingBlockUnhold(infiniteScrollingCommentsWrapper);
                 });
 
                 // ^ mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                infinite_scrolling_comments_wrapper();
+                infiniteScrollingCommentsWrapper();
             }
         }
     });
 
-    function force_reload_on_back() {
+    function forceReloadOnBack() {
         $cms.dom.on(window, 'pageshow', function () {
             window.location.reload();
         });
     }
 
     /* Update a normal comments topic with AJAX replying */
-    function replace_comments_form_with_ajax(options, hash, comments_form_id, comments_wrapper_id) {
-        var comments_form = $cms.dom.$id(comments_form_id);
-        if (comments_form) {
-            comments_form.old_onsubmit = comments_form.onsubmit;
+    function replaceCommentsFormWithAjax(options, hash, commentsFormId, commentsWrapperId) {
+        var commentsForm = $cms.dom.$id(commentsFormId);
+        if (commentsForm) {
+            commentsForm.old_onsubmit = commentsForm.onsubmit;
 
-            comments_form.onsubmit = function (event, is_preview) {
-                is_preview = !!is_preview;
+            commentsForm.onsubmit = function (event, isPreview) {
+                isPreview = !!isPreview;
 
-                if (is_preview) {
+                if (isPreview) {
                     return true;
                 }
 
@@ -293,59 +304,59 @@
                     event.preventDefault();
                 }
 
-                if (!comments_form.old_onsubmit(event)) {
+                if (!commentsForm.old_onsubmit(event)) {
                     return false;
                 }
 
-                var comments_wrapper = $cms.dom.$id(comments_wrapper_id);
-                if (!comments_wrapper) {// No AJAX, as stuff missing from template
-                    comments_form.submit();
+                var commentsWrapper = $cms.dom.$id(commentsWrapperId);
+                if (!commentsWrapper) {// No AJAX, as stuff missing from template
+                    commentsForm.submit();
                     return true;
                 }
 
-                var submit_button = $cms.dom.$id('submit_button');
-                if (submit_button) {
-                    $cms.ui.disableButton(submit_button);
+                var submitButton = $cms.dom.$id('submit_button');
+                if (submitButton) {
+                    $cms.ui.disableButton(submitButton);
                 }
 
                 // Note what posts are shown now
-                var known_posts = comments_wrapper.querySelectorAll('.post');
-                var known_times = [];
-                for (var i = 0; i < known_posts.length; i++) {
-                    known_times.push(known_posts[i].className.replace(/^post /, ''));
+                var knownPosts = commentsWrapper.querySelectorAll('.post');
+                var knownTimes = [];
+                for (var i = 0; i < knownPosts.length; i++) {
+                    knownTimes.push(knownPosts[i].className.replace(/^post /, ''));
                 }
 
                 // Fire off AJAX request
                 var post = 'options=' + encodeURIComponent(options) + '&hash=' + encodeURIComponent(hash);
-                var post_element = comments_form.elements['post'];
-                var post_value = post_element.value;
-                if (post_element.default_substring_to_strip !== undefined) // Strip off prefix if unchanged
+                var postElement = commentsForm.elements['post'];
+                var postValue = postElement.value;
+                if (postElement.default_substring_to_strip !== undefined) // Strip off prefix if unchanged
                 {
-                    if (post_value.substring(0, post_element.default_substring_to_strip.length) == post_element.default_substring_to_strip)
-                        post_value = post_value.substring(post_element.default_substring_to_strip.length, post_value.length);
+                    if (postValue.substring(0, postElement.default_substring_to_strip.length) == postElement.default_substring_to_strip)
+                        postValue = postValue.substring(postElement.default_substring_to_strip.length, postValue.length);
                 }
-                for (var i = 0; i < comments_form.elements.length; i++) {
-                    if ((comments_form.elements[i].name) && (comments_form.elements[i].name != 'post')) {
-                        post += '&' + comments_form.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(comments_form, comments_form.elements[i]));
+                for (var i = 0; i < commentsForm.elements.length; i++) {
+                    if ((commentsForm.elements[i].name) && (commentsForm.elements[i].name != 'post')) {
+                        post += '&' + commentsForm.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(commentsForm, commentsForm.elements[i]));
                     }
                 }
-                post += '&post=' + encodeURIComponent(post_value);
-                $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), function (ajax_result) {
-                    if ((ajax_result.responseText != '') && (ajax_result.status != 500)) {
+                post += '&post=' + encodeURIComponent(postValue);
+                $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), function (ajaxResult) {
+                    if ((ajaxResult.responseText != '') && (ajaxResult.status != 500)) {
                         // Display
-                        var old_action = comments_form.action;
-                        $cms.dom.outerHtml(comments_wrapper, ajax_result.responseText);
-                        comments_form = $cms.dom.$id(comments_form_id);
-                        old_action = comments_form.action = old_action; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
+                        var oldAction = commentsForm.action;
+                        $cms.dom.outerHtml(commentsWrapper, ajaxResult.responseText);
+                        commentsForm = $cms.dom.$id(commentsFormId);
+                        oldAction = commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
 
                         // Scroll back to comment
                         window.setTimeout(function () {
-                            var comments_wrapper = $cms.dom.$id(comments_wrapper_id); // outerhtml set will have broken the reference
-                            $cms.dom.smoothScroll($cms.dom.findPosY(comments_wrapper, true));
+                            var commentsWrapper = $cms.dom.$id(commentsWrapperId); // outerhtml set will have broken the reference
+                            $cms.dom.smoothScroll($cms.dom.findPosY(commentsWrapper, true));
                         }, 0);
 
                         // Force reload on back button, as otherwise comment would be missing
-                        force_reload_on_back();
+                        forceReloadOnBack();
 
                         // Collapse, so user can see what happening
                         var outer = $cms.dom.$id('comments_posting_form_outer');
@@ -354,18 +365,18 @@
                         }
 
                         // Set fade for posts not shown before
-                        var known_posts = comments_wrapper.querySelectorAll('.post');
-                        for (var i = 0; i < known_posts.length; i++) {
-                            if (!known_times.includes(known_posts[i].className.replace(/^post /, ''))) {
-                                $cms.dom.clearTransitionAndSetOpacity(known_posts[i], 0.0);
-                                $cms.dom.fadeTransition(known_posts[i], 100, 20, 5);
+                        var knownPosts = commentsWrapper.querySelectorAll('.post');
+                        for (var i = 0; i < knownPosts.length; i++) {
+                            if (!knownTimes.includes(knownPosts[i].className.replace(/^post /, ''))) {
+                                $cms.dom.clearTransitionAndSetOpacity(knownPosts[i], 0.0);
+                                $cms.dom.fadeTransition(knownPosts[i], 100, 20, 5);
                             }
                         }
 
                         // And re-attach this code (got killed by $cms.dom.outerHtml)
-                        replace_comments_form_with_ajax(options, hash);
+                        replaceCommentsFormWithAjax(options, hash);
                     } else { // Error: do a normal post so error can be seen
-                        comments_form.submit();
+                        commentsForm.submit();
                     }
                 }, post);
 
@@ -374,29 +385,29 @@
         }
     }
 
-    function apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, rating, content_url, content_title, initialisation_phase, visual_only) {
+    function applyRatingHighlightAndAjaxCode(likes, initialRating, contentType, id, type, rating, contentUrl, contentTitle, initialisationPhase, visualOnly) {
         rating = +rating || 0;
-        visual_only = !!visual_only;
+        visualOnly = !!visualOnly;
 
         [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function (number) {
-            var bit = $cms.dom.$id('rating_bar_' + number + '__' + content_type + '__' + type + '__' + id);
+            var bit = $cms.dom.$id('rating_bar_' + number + '__' + contentType + '__' + type + '__' + id);
             if (!bit) {
                 return;
             }
             bit.className = (likes ? (rating === number) : (rating >= number)) ? 'rating_star_highlight' : 'rating_star';
 
-            if (!initialisation_phase) {
+            if (!initialisationPhase) {
                 return;
             }
 
             bit.addEventListener('mouseover', function () {
-                apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, number, content_url, content_title, false);
+                applyRatingHighlightAndAjaxCode(likes, initialRating, contentType, id, type, number, contentUrl, contentTitle, false);
             });
             bit.addEventListener('mouseout', function () {
-                apply_rating_highlight_and_ajax_code(likes, initial_rating, content_type, id, type, initial_rating, content_url, content_title, false);
+                applyRatingHighlightAndAjaxCode(likes, initialRating, contentType, id, type, initialRating, contentUrl, contentTitle, false);
             });
 
-            if (visual_only) {
+            if (visualOnly) {
                 return;
             }
 
@@ -405,41 +416,41 @@
 
                 // Find where the rating replacement will go
                 var template = '';
-                var replace_spot = bit;
-                while (replace_spot !== null) {
-                    replace_spot = replace_spot.parentNode;
+                var replaceSpot = bit;
+                while (replaceSpot !== null) {
+                    replaceSpot = replaceSpot.parentNode;
 
-                    if (replace_spot && replace_spot.className) {
-                        if (replace_spot.classList.contains('RATING_BOX')) {
+                    if (replaceSpot && replaceSpot.className) {
+                        if (replaceSpot.classList.contains('RATING_BOX')) {
                             template = 'RATING_BOX';
                             break;
                         }
-                        if (replace_spot.classList.contains('RATING_INLINE_STATIC')) {
+                        if (replaceSpot.classList.contains('RATING_INLINE_STATIC')) {
                             template = 'RATING_INLINE_STATIC';
                             break;
                         }
-                        if (replace_spot.classList.contains('RATING_INLINE_DYNAMIC')) {
+                        if (replaceSpot.classList.contains('RATING_INLINE_DYNAMIC')) {
                             template = 'RATING_INLINE_DYNAMIC';
                             break;
                         }
                     }
                 }
-                var _replace_spot = (template === '') ? bit.parentNode.parentNode.parentNode.parentNode : replace_spot;
+                var _replaceSpot = (template === '') ? bit.parentNode.parentNode.parentNode.parentNode : replaceSpot;
 
                 // Show loading animation
-                $cms.dom.html(_replace_spot, '');
-                var loading_image = document.createElement('img');
-                loading_image.className = 'ajax_loading';
-                loading_image.src = $cms.img('{$IMG;,loading}');
-                loading_image.style.height = '12px';
-                _replace_spot.appendChild(loading_image);
+                $cms.dom.html(_replaceSpot, '');
+                var loadingImage = document.createElement('img');
+                loadingImage.className = 'ajax_loading';
+                loadingImage.src = $cms.img('{$IMG;,loading}');
+                loadingImage.style.height = '12px';
+                _replaceSpot.appendChild(loadingImage);
 
                 // AJAX call
-                var snippet_request = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(content_type) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent(content_url) + '&content_title=' + encodeURIComponent(content_title);
+                var snippetRequest = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(contentType) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent(contentUrl) + '&content_title=' + encodeURIComponent(contentTitle);
 
-                $cms.loadSnippet(snippet_request, 'rating=' + encodeURIComponent(number), function (ajax_result) {
-                    var message = ajax_result.responseText;
-                    $cms.dom.outerHtml(_replace_spot, (template === '') ? ('<strong>' + message + '</strong>') : message);
+                $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number), true).then(function (ajaxResult) {
+                    var message = ajaxResult.responseText;
+                    $cms.dom.outerHtml(_replaceSpot, (template === '') ? ('<strong>' + message + '</strong>') : message);
                 });
 
                 return false;

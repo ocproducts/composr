@@ -22,6 +22,7 @@ class Hook_startup_facebook
     {
         if (running_script('index')) {
             require_javascript('facebook_support');
+            require_lang('facebook');
             require_code('site');
 
             $tpl = do_template('FACEBOOK_FOOTER', null, null, true, null, '.tpl', 'templates', 'default');

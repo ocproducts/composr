@@ -16,42 +16,53 @@
 
     $cms.functions.moduleCmsBannersRunStart = function moduleCmsBannersRunStart() {
         document.getElementById("importancemodulus").onkeyup = function () {
-            var _im_here = document.getElementById("im_here");
-            if (_im_here) {
-                var _im_total = document.getElementById("im_total");
-                var im_here = window.parseInt(document.getElementById("importancemodulus").value);
-                var im_total = window.parseInt(_im_total.className.replace("im_", "")) + im_here;
-                $cms.dom.html(_im_here, im_here);
-                $cms.dom.html(document.getElementById("im_here_2"), im_here);
-                $cms.dom.html(_im_total, im_total);
-                $cms.dom.html(document.getElementById("im_total_2"), im_total);
+            var _imHere = document.getElementById("im_here");
+            if (_imHere) {
+                var _imTotal = document.getElementById("im_total"),
+                    imHere = window.parseInt(document.getElementById("importancemodulus").value),
+                    imTotal = window.parseInt(_imTotal.className.replace("im_", "")) + imHere;
+
+                $cms.dom.html(_imHere, imHere);
+                $cms.dom.html(document.getElementById("im_here_2"), imHere);
+                $cms.dom.html(_imTotal, imTotal);
+                $cms.dom.html(document.getElementById("im_total_2"), imTotal);
             }
         }
     };
 
     $cms.functions.moduleCmsBannersRunStartAdd = function moduleCmsBannersRunStartAdd() {
-        var form = document.getElementById('main_form');
-        form.addEventListener('submit', function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('main_form'),
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
+            submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_banner&name=' + encodeURIComponent(form.elements['name'].value);
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 
     $cms.functions.moduleCmsBannersRunStartAddCategory = function moduleCmsBannersRunStartAddCategory() {
-        var form = document.getElementById('main_form');
-        form.onsubmit = (function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('main_form'),
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
+            submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=exists_banner_type&name=' + encodeURIComponent(form.elements['new_id'].value);
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 }(window.$cms));

@@ -1218,11 +1218,11 @@ class Module_admin_themes
     public function tempcode_tester()
     {
         if (get_option('editarea') == '1') {
-            attach_to_screen_header(make_string_tempcode('
+            attach_to_screen_header(make_string_tempcode(/**@lang HTML*/'
                 <script src="' . get_base_url() . '/data/ace/ace.js"></script>
                 <script src="' . get_base_url() . '/data/ace/ace_composr.js"></script>
                 <script>// <![CDATA[
-                    ace_composr_loader(\'tempcode\',\'text\');
+                    aceComposrLoader(\'tempcode\',\'text\');
                 //]]></script>
             ')); // XHTMLXHTML
         }

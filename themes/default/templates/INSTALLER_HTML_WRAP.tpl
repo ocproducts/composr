@@ -14,11 +14,11 @@
 		<title>{!INSTALLER,Composr}</title>
 
 		<meta name="robots" content="noindex, nofollow" />
-
+		<script src="{$BASE_URL}/data/polyfills/log-loaded-scripts.js"></script>
 		<script>
 			window.IN_MINIKERNEL_VERSION = true;
 
-			function install_stage_load() {
+			function installStageLoad() {
 				//set_cookie('js_on',1,120);
 
 				var none = document.getElementById('{DEFAULT_FORUM;/}');
@@ -33,9 +33,8 @@
 				if (typeof forms[0] != 'undefined') forms[0].title = '';
 
 				var cns = document.getElementById('cns');
-				if (cns)
-				{
-					var use_multi_db_locker = function() {
+				if (cns) {
+					var useMultiDbLocker = function() {
 						forms[0].elements['use_multi_db'][0].disabled = cns.checked;
 						forms[0].elements['use_multi_db'][1].disabled = cns.checked;
 						if (cns.checked) {
@@ -43,47 +42,10 @@
 						}
 					};
 					for (var i=0; i < forms[0].elements['forum'].length; i++) {
-						forms[0].elements['forum'][i].onclick = use_multi_db_locker;
+						forms[0].elements['forum'][i].onclick = useMultiDbLocker;
 					}
-					use_multi_db_locker();
+					useMultiDbLocker();
 				}
-			}
-
-			function submit_settings(form) {
-				if ((form.elements['forum_base_url']) && (form.elements['forum_base_url'].type != 'hidden') && (form.elements['forum_base_url'].value == form.elements['base_url'].value)) {
-					window.alert('{!FORUM_BASE_URL_INVALID;/}');
-					return false;
-				}
-				if ((form.elements['forum_base_url']) && (form.elements['forum_base_url'].type != 'hidden') && (form.elements['forum_base_url'].value.substr(-7) == '/forums') && (!form.elements['forum_base_url'].changed)) {
-					if (!window.confirm('{!FORUM_BASE_URL_UNCHANGED;/}')) return false;
-				}
-
-				var i;
-				for (i = 0; i < form.elements.length; i++) {
-					if ((form.elements[i].className.indexOf('required1') != -1) && (form.elements[i].value == '')) {
-						window.alert('{!IMPROPERLY_FILLED_IN;/}');
-						return false;
-					}
-				}
-
-				if (!check_passwords(form)) return false;
-
-				if ((form.elements['db_site_password']) && (window.$cms.form.doAjaxFieldTest)) {
-					var url = 'install.php?type=ajax_db_details&db_type=' + encodeURIComponent(form.elements['db_type'].value) + '&db_site_host=' + encodeURIComponent(form.elements['db_site_host'].value) + '&db_site=' + encodeURIComponent(form.elements['db_site'].value) + '&db_site_user=' + encodeURIComponent(form.elements['db_site_user'].value) + '&db_site_password=' + encodeURIComponent(form.elements['db_site_password'].value);
-					if (!$cms.form.doAjaxFieldTest(url)) return false;
-				}
-
-				if ((form.elements['db_forums_password']) && (window.$cms.form.doAjaxFieldTest)) {
-					var url = 'install.php?type=ajax_db_details&db_type=' + encodeURIComponent(form.elements['db_type'].value) + '&db_forums_host=' + encodeURIComponent(form.elements['db_forums_host'].value) + '&db_forums=' + encodeURIComponent(form.elements['db_forums'].value) + '&db_forums_user=' + encodeURIComponent(form.elements['db_forums_user'].value) + '&db_forums_password=' + encodeURIComponent(form.elements['db_forums_password'].value);
-					if (!$cms.form.doAjaxFieldTest(url)) return false;
-				}
-
-				if ((form.elements['ftp_domain']) && (window.$cms.form.doAjaxFieldTest)) {
-					var url = 'install.php?type=ajax_ftp_details&ftp_domain=' + encodeURIComponent(form.elements['ftp_domain'].value) + '&ftp_folder=' + encodeURIComponent(form.elements['ftp_folder'].value) + '&ftp_username=' + encodeURIComponent(form.elements['ftp_username'].value) + '&ftp_password=' + encodeURIComponent(form.elements['ftp_password'].value);
-					if (!$cms.form.doAjaxFieldTest(url)) return false;
-				}
-
-				return true;
 			}
 
 			function set_cookie(cookieName, cookieValue, expiryDays) {
@@ -101,23 +63,26 @@
 				$cms.dom.html(document.getElementById('versions'), versions);
 
 				var type = 'none';
-				if ((object.id != 'none') && (object.id != 'cns')) {
+				if ((object.id !== 'none') && (object.id !== 'cns')) {
 					type = 'block';
 					var label = document.getElementById('sep_forum');
-					if (label) $cms.dom.html(label, object.nextSibling.nodeValue);
+					if (label) {
+					    $cms.dom.html(label, object.nextSibling.nodeValue);
+                    }
 				}
 
 				document.getElementById('forum_database_info').style.display = type;
-				if (document.getElementById('forum_path'))
-					document.getElementById('forum_path').style.display = type;
+				if (document.getElementById('forum_path')) {
+                    document.getElementById('forum_path').style.display = type;
+                }
 			}
 
 			function toggle_section(id) {
 				// Try and grab our item
-				var itm = document.getElementById(id);
-				var img = document.getElementById('img_' + id);
+				var itm = document.getElementById(id),
+                    img = document.getElementById('img_' + id);
 
-				if (itm.style.display == 'none') {
+				if (itm.style.display === 'none') {
 					itm.style.display = 'block';
 					if (img) {
 						img.src = '{$BASE_URL;/}/install.php?type=contract';
@@ -138,7 +103,7 @@
 		{+START,INCLUDE,PASSWORD_CHECK_JS}INSTALLER=1{+END}
 	</head>
 
-	<body id="installer_body" class="website_body" onload="install_stage_load();">
+	<body id="installer_body" class="website_body" onload="installStageLoad();">
 		<div class="installer_main">
 			<img alt="Composr" src="{LOGO_URL*}" width="550" height="115" />
 		</div>
@@ -165,6 +130,69 @@
 				<a target="_blank" title="compo.sr {!LINK_NEW_WINDOW}" href="{$BRAND_BASE_URL*}">{$BRAND_BASE_URL*}</a>
 			</p>
 		</div>
+
+        <script>
+            (function (){
+                'use strict';
+
+                var step4Form = document.getElementById('form-installer-step-4');
+
+                if (step4Form) {
+                    step4Form.addEventListener('submit', validateSettings);
+                }
+
+                function validateSettings(e) {
+                    if ((step4Form.elements['forum_base_url']) && (step4Form.elements['forum_base_url'].type !== 'hidden') && (step4Form.elements['forum_base_url'].value === step4Form.elements['base_url'].value)) {
+                        window.alert('{!FORUM_BASE_URL_INVALID;/}');
+                        return false;
+                    }
+
+                    if ((step4Form.elements['forum_base_url']) && (step4Form.elements['forum_base_url'].type !== 'hidden') && (step4Form.elements['forum_base_url'].value.substr(-7) === '/forums') && (!step4Form.elements['forum_base_url'].changed)) {
+                        if (!window.confirm('{!FORUM_BASE_URL_UNCHANGED;/}')) {
+                            return false;
+                        }
+                    }
+
+                    for (var i = 0; i < step4Form.elements.length; i++) {
+                        if ((step4Form.elements[i].className.indexOf('required1') !== -1) && (step4Form.elements[i].value === '')) {
+                            window.alert('{!IMPROPERLY_FILLED_IN;/}');
+                            return false;
+                        }
+                    }
+
+                    if (!checkPasswords(step4Form)) {
+                        return false;
+                    }
+
+                    e.preventDefault();
+
+                    var checkPromises = [];
+
+                    if ((step4Form.elements['db_site_password'])) {
+                        var sitePwdCheckUrl = 'install.php?type=ajax_db_details&db_type=' + encodeURIComponent(step4Form.elements['db_type'].value) + '&db_site_host=' + encodeURIComponent(step4Form.elements['db_site_host'].value) + '&db_site=' + encodeURIComponent(step4Form.elements['db_site'].value) + '&db_site_user=' + encodeURIComponent(step4Form.elements['db_site_user'].value) + '&db_site_password=' + encodeURIComponent(step4Form.elements['db_site_password'].value);
+                        checkPromises.push($cms.form.doAjaxFieldTest(sitePwdCheckUrl));
+                    }
+
+                    if (step4Form.elements['db_forums_password']) {
+                        var forumsPwdCheckUrl = 'install.php?type=ajax_db_details&db_type=' + encodeURIComponent(step4Form.elements['db_type'].value) + '&db_forums_host=' + encodeURIComponent(step4Form.elements['db_forums_host'].value) + '&db_forums=' + encodeURIComponent(step4Form.elements['db_forums'].value) + '&db_forums_user=' + encodeURIComponent(step4Form.elements['db_forums_user'].value) + '&db_forums_password=' + encodeURIComponent(step4Form.elements['db_forums_password'].value);
+                        checkPromises.push($cms.form.doAjaxFieldTest(forumsPwdCheckUrl));
+                    }
+
+                    if (step4Form.elements['ftp_domain']) {
+                        var ftpDomainCheckUrl = 'install.php?type=ajax_ftp_details&ftp_domain=' + encodeURIComponent(step4Form.elements['ftp_domain'].value) + '&ftp_folder=' + encodeURIComponent(step4Form.elements['ftp_folder'].value) + '&ftp_username=' + encodeURIComponent(step4Form.elements['ftp_username'].value) + '&ftp_password=' + encodeURIComponent(step4Form.elements['ftp_password'].value);
+                        checkPromises.push($cms.form.doAjaxFieldTest(ftpDomainCheckUrl));
+                    }
+
+                    Promise.all(checkPromises).then(function (validities) {
+                        if (!validities.includes(false)) {
+                            // All valid!
+                            step4Form.removeEventListener('submit', validateSettings);
+                            step4Form.submit();
+                        }
+                    });
+                }
+            }());
+        </script>
 	</body>
 </html>
 

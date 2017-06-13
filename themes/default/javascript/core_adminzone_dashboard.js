@@ -9,6 +9,11 @@
 
     var $SCRIPT_comcode_convert = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}';
 
+    /**
+     * @memberof $cms.views
+     * @class BlockMainStaffChecklistCustomTask
+     * @extends $cms.View
+     */
     function BlockMainStaffChecklistCustomTask() {
         BlockMainStaffChecklistCustomTask.base(this, 'constructor', arguments);
 
@@ -16,7 +21,7 @@
         this.imgChecklistStatus = this.$('.js-img-checklist-status');
     }
 
-    $cms.inherits(BlockMainStaffChecklistCustomTask, $cms.View, {
+    $cms.inherits(BlockMainStaffChecklistCustomTask, $cms.View, /**@lends BlockMainStaffChecklistCustomTask#*/{
         events: function () {
             return {
                 'mouseover': 'mouseover',
@@ -46,11 +51,11 @@
             }
 
             if (data.vwTaskDone === 'not_completed') {
-                $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id);
+                $cms.loadSnippet('checklist_task_manage', 'type=mark_done&id=' + id, true);
                 this.imgChecklistStatus.src = $IMG_checklist_checklist1;
                 data.vwTaskDone = 'checklist1';
             } else {
-                $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id);
+                $cms.loadSnippet('checklist_task_manage', 'type=mark_undone&id=' + id, true);
                 this.imgChecklistStatus.src = $IMG_checklist_not_completed;
                 data.vwTaskDone = 'not_completed';
             }
@@ -64,22 +69,27 @@
 
             $cms.ui.confirm(message, function (result) {
                 if (result) {
-                    $cms.loadSnippet('checklist_task_manage', 'type=delete&id=' + id);
-                    viewEl.style.display = 'none';
+                    $cms.loadSnippet('checklist_task_manage', 'type=delete&id=' + id, true);
+                    $cms.dom.hide(viewEl);
                 }
             });
         }
     });
 
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainStaffLinks() {
         BlockMainStaffLinks.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(BlockMainStaffLinks, $cms.View, {
+    $cms.inherits(BlockMainStaffLinks, $cms.View, /**@lends BlockMainStaffLinks#*/{
         events: function () {
             return {
                 'click .js-click-staff-block-flip': 'staffBlockFlip',
-                'click .js-click-form-submit-headless': 'formSubmitHeadless'
+                'click .js-click-form-submit-headless': 'submitHeadless'
             };
         },
         staffBlockFlip: function () {
@@ -91,15 +101,26 @@
             $cms.dom.toggleWithAria(show, isHideDisplayed);
             $cms.dom.toggleWithAria(hide, !isHideDisplayed);
         },
-        formSubmitHeadless: function (e, btn) {
-            var params = this.params;
+        submitHeadless: function (e, btn) {
+            var form = btn.form,
+                blockName = $cms.filter.nl(this.params.blockName),
+                map = $cms.filter.nl(this.params.map);
 
-            if (!ajax_form_submit__admin__headless(btn.form, params.blockName, params.map)) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+
+            ajaxFormSubmitAdminHeadless(form, blockName, map).then((function (submitForm) {
+                if (submitForm) {
+                    form.submit();
+                }
+            }).bind(this));
         }
     });
 
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainStaffWebsiteMonitoring() {
         BlockMainStaffWebsiteMonitoring.base(this, 'constructor', arguments);
 
@@ -109,7 +130,7 @@
         this.formEl = this.$('.js-form-site-watchlist');
     }
 
-    $cms.inherits(BlockMainStaffWebsiteMonitoring, $cms.View, {
+    $cms.inherits(BlockMainStaffWebsiteMonitoring, $cms.View, /**@lends BlockMainStaffWebsiteMonitoring#*/{
         events: function () {
             return {
                 'click .js-click-staff-block-flip': 'staffBlockFlip',
@@ -128,18 +149,27 @@
             var blockName = $cms.filter.nl(this.params.blockName),
                 map = $cms.filter.nl(this.params.map);
 
-            if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+
+            ajaxFormSubmitAdminHeadless(this.formEl, blockName, map).then((function (submitForm) {
+                if (submitForm) {
+                    this.formEl.submit();
+                }
+            }).bind(this));
         }
     });
 
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainNotes() {
         BlockMainNotes.base(this, 'constructor', arguments);
         this.formEl = this.$('.js-form-block-main-notes');
     }
 
-    $cms.inherits(BlockMainNotes, $cms.View, {
+    $cms.inherits(BlockMainNotes, $cms.View, /**@lends BlockMainNotes#*/{
         events: function () {
             return {
                 'click .js-click-headless-submit': 'headlessSubmit',
@@ -154,9 +184,13 @@
             var blockName = $cms.filter.nl(this.params.blockName),
                 map = $cms.filter.nl(this.params.map);
 
-            if (!ajax_form_submit__admin__headless(this.formEl, blockName, map)) {
-                e.preventDefault();
-            }
+            e.preventDefault();
+
+            ajaxFormSubmitAdminHeadless(this.formEl, blockName, map).then((function (submitForm) {
+                if (submitForm) {
+                    this.formEl.submit();
+                }
+            }).bind(this));
         },
 
         textareaExpand: function (e, textarea){
@@ -183,72 +217,72 @@
         var showAllLink = document.getElementById('checklist_show_all_link'),
             hideDoneLink = document.getElementById('checklist_hide_done_link');
 
-        set_task_hiding(true);
+        setTaskHiding(true);
 
         $cms.dom.on(container, 'click', '.js-click-enable-task-hiding', function () {
-            set_task_hiding(true);
+            setTaskHiding(true);
         });
 
         $cms.dom.on(container, 'click', '.js-click-disable-task-hiding', function () {
-            set_task_hiding(false);
+            setTaskHiding(false);
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-custom-task', function (e, form) {
-            submit_custom_task(form);
+            submitCustomTask(form);
         });
 
-        function set_task_hiding(hide_enable) {
-            hide_enable = !!hide_enable;
+        function setTaskHiding(hideEnable) {
+            hideEnable = !!hideEnable;
 
             new Image().src = $IMG_checklist_cross2;
             new Image().src = $IMG_checklist_toggleicon2;
 
-            var i, checklist_rows = document.querySelectorAll('.checklist_row'), row_imgs, src;
+            var i, checklistRows = document.querySelectorAll('.checklist_row'), rowImgs, src;
 
-            for (i = 0; i < checklist_rows.length; i++) {
-                row_imgs = checklist_rows[i].getElementsByTagName('img');
-                if (hide_enable) {
-                    src = row_imgs[row_imgs.length - 1].getAttribute('src');
-                    if (row_imgs[row_imgs.length - 1].origsrc) {
-                        src = row_imgs[row_imgs.length - 1].origsrc;
+            for (i = 0; i < checklistRows.length; i++) {
+                rowImgs = checklistRows[i].getElementsByTagName('img');
+                if (hideEnable) {
+                    src = rowImgs[rowImgs.length - 1].getAttribute('src');
+                    if (rowImgs[rowImgs.length - 1].origsrc) {
+                        src = rowImgs[rowImgs.length - 1].origsrc;
                     }
                     if (src && src.includes('checklist1')) {
-                        $cms.dom.hide(checklist_rows[i]);
-                        checklist_rows[i].classList.add('task_hidden');
+                        $cms.dom.hide(checklistRows[i]);
+                        checklistRows[i].classList.add('task_hidden');
                     } else {
-                        checklist_rows[i].classList.remove('task_hidden');
+                        checklistRows[i].classList.remove('task_hidden');
                     }
                 } else {
-                    if (!$cms.dom.isDisplayed(checklist_rows[i])) {
-                        $cms.dom.clearTransitionAndSetOpacity(checklist_rows[i], 0.0);
-                        $cms.dom.fadeTransition(checklist_rows[i], 100, 30, 4);
+                    if (!$cms.dom.isDisplayed(checklistRows[i])) {
+                        $cms.dom.clearTransitionAndSetOpacity(checklistRows[i], 0.0);
+                        $cms.dom.fadeTransition(checklistRows[i], 100, 30, 4);
                     }
-                    $cms.dom.show(checklist_rows[i]);
-                    checklist_rows[i].classList.remove('task_hidden');
+                    $cms.dom.show(checklistRows[i]);
+                    checklistRows[i].classList.remove('task_hidden');
                 }
             }
 
-            $cms.dom.toggle(showAllLink, hide_enable);
-            $cms.dom.toggle(hideDoneLink, !hide_enable);
+            $cms.dom.toggle(showAllLink, hideEnable);
+            $cms.dom.toggle(hideDoneLink, !hideEnable);
         }
 
-        function submit_custom_task(form) {
-            var new_task = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['new_task'].value));
+        function submitCustomTask(form) {
+            var newTask = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value));
 
             form.elements.recur_every.value = '';
             form.elements.recur_interval.value = '';
             form.elements.new_task.value = '';
 
-            $cms.dom.append(document.getElementById('custom_tasks_go_here'), new_task);
+            $cms.dom.append(document.getElementById('custom_tasks_go_here'), newTask);
         }
     };
 
     $cms.templates.blockMainStaffActions = function (params) {
-        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
+        internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['.*'], {}, false, true);
     };
 
     $cms.templates.blockMainStaffTips = function (params) {
-        internalise_ajax_block_wrapper_links(params.blockCallUrl, document.getElementById(params.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
+        internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), ['staff_tips_dismiss', 'rand'/*cache breaker*/], {}, false, true, false);
     };
 
     $cms.templates.blockMainStaffChecklistItem = function blockMainStaffChecklistItem(params, container) {
@@ -265,45 +299,51 @@
         });
     };
 
-    function ajax_form_submit__admin__headless(form, block_name, map) {
+    function ajaxFormSubmitAdminHeadless(form, blockName, map) {
         var post = '';
-        if (block_name !== undefined) {
-            if (map === undefined) {
-                map = '';
-            }
-            var comcode = '[block' + map + ']' + block_name + '[/block]';
+
+        if (blockName !== undefined) {
+            blockName = strVal(blockName);
+            map = strVal(map);
+
+            var comcode = '[block' + map + ']' + blockName + '[/block]';
             post += 'data=' + encodeURIComponent(comcode);
         }
+
         for (var i = 0; i < form.elements.length; i++) {
             if (!form.elements[i].disabled && form.elements[i].name) {
                 post += '&' + form.elements[i].name + '=' + encodeURIComponent($cms.form.cleverFindValue(form, form.elements[i]));
             }
         }
-        var request = $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), null, post);
 
-        if (request.responseText && (request.responseText !== 'false')) {
-            var result = request.responseXML.documentElement.querySelector('result');
+        return new Promise(function (resolve) {
+            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), function (request) {
+                if (request.responseText && (request.responseText !== 'false')) {
+                    var result = request.responseXML.documentElement.querySelector('result');
 
-            if (result) {
-                var xhtml = result.textContent;
+                    if (result) {
+                        var xhtml = result.textContent;
 
-                var element_replace = form;
-                while (element_replace.className !== 'form_ajax_target') {
-                    element_replace = element_replace.parentNode;
-                    if (!element_replace) {
-                        return true;  // Oh dear, target not found
+                        var elementReplace = form;
+                        while (elementReplace.className !== 'form_ajax_target') {
+                            elementReplace = elementReplace.parentNode;
+                            if (!elementReplace) {
+                                return true;  // Oh dear, target not found
+                            }
+                        }
+
+                        $cms.dom.html(elementReplace, xhtml);
+
+                        $cms.ui.alert('{!SUCCESS;^}');
+
+                        resolve(/*submitForm: */false); // We've handled it internally
+                        return;
                     }
                 }
 
-                $cms.dom.html(element_replace, xhtml);
-
-                $cms.ui.alert('{!SUCCESS;^}');
-
-                return false; // We've handled it internally
-            }
-        }
-
-        return true;
+                resolve(/*submitForm: */true);
+            }, post);
+        });
     }
 
 }(window.$cms));

@@ -42,24 +42,24 @@
     $cms.templates.facebookFooter = function facebookFooter(params) {
         var facebookAppid = strVal(params.facebookAppid);
         if (facebookAppid !== '') {
-            facebook_init(facebookAppid, $cms.baseUrl('facebook_connect.php'), (params.fbConnectFinishingProfile || params.fbConnectLoggedOut), (params.fbConnectUid === '' ? null : params.fbConnectUid), '{$PAGE_LINK;,:}', '{$PAGE_LINK;,:login:logout}');
+            facebookInit(facebookAppid, $cms.baseUrl('facebook_connect.php'), (params.fbConnectFinishingProfile || params.fbConnectLoggedOut), (params.fbConnectUid === '' ? null : params.fbConnectUid), '{$PAGE_LINK;,:}', '{$PAGE_LINK;,:login:logout}');
         }
     };
 
     $cms.functions.hookSyndicationFacebook_syndicationJavascript = function () {
-        var fb_button = document.getElementById('syndicate_start__facebook');
-        if (fb_button) {
-            var fb_input;
-            if (typeof fb_button.form.elements['facebook_syndicate_to_page'] == 'undefined') {
-                fb_input = document.createElement('input');
-                fb_input.type = 'hidden';
-                fb_input.name = 'facebook_syndicate_to_page';
-                fb_input.value = '0';
-                fb_button.form.appendChild(fb_input);
+        var fbButton = document.getElementById('syndicate_start__facebook');
+        if (fbButton) {
+            var fbInput;
+            if (typeof fbButton.form.elements['facebook_syndicate_to_page'] == 'undefined') {
+                fbInput = document.createElement('input');
+                fbInput.type = 'hidden';
+                fbInput.name = 'facebook_syndicate_to_page';
+                fbInput.value = '0';
+                fbButton.form.appendChild(fbInput);
             } else {
-                fb_input = fb_button.form.elements['facebook_syndicate_to_page'];
+                fbInput = fbButton.form.elements['facebook_syndicate_to_page'];
             }
-            fb_button.addEventListener('click', function listener() {
+            fbButton.addEventListener('click', function listener() {
                 $cms.ui.generateQuestionUi(
                     '{!HOW_TO_SYNDICATE_DESCRIPTION;^}',
                     ['{!INPUTSYSTEM_CANCEL;^}', '{!FACEBOOK_PAGE;^}', '{!FACEBOOK_WALL;^}'],
@@ -67,9 +67,9 @@
                     $cms.format('{!SYNDICATE_TO_OWN_WALL;^}', $cms.$SITE_NAME()),
                     function (val) {
                         if (val != '{!INPUTSYSTEM_CANCEL;^}') {
-                            fb_input.value = (val == '{!FACEBOOK_PAGE;^}') ? '1' : '0';
-                            fb_button.removeEventListener('click', listener);
-                            fb_button.click();
+                            fbInput.value = (val == '{!FACEBOOK_PAGE;^}') ? '1' : '0';
+                            fbButton.removeEventListener('click', listener);
+                            fbButton.click();
                         }
                     }
                 );
@@ -79,11 +79,11 @@
         }
     };
 
-    function facebook_init(app_id, channel_url, just_logged_out, serverside_fbuid, home_page_url, logout_page_url) {
+    function facebookInit(appId, channelUrl, justLoggedOut, serversideFbuid, homePageUrl, logoutPageUrl) {
         window.fbAsyncInit = function fbAsyncInit() {
             window.FB.init({
-                appId: app_id,
-                channelUrl: channel_url,
+                appId: appId,
+                channelUrl: channelUrl,
                 status: true,
                 cookie: true,
                 xfbml: true
@@ -98,7 +98,7 @@
                 if ((response.status == 'connected') && (response.authResponse)) {
                     // If Composr is currently logging out, tell FB connect to disentangle
                     // Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have authed due to FB_CONNECT_LOGGED_OUT being set
-                    if (just_logged_out) {
+                    if (justLoggedOut) {
                         window.FB.logout(function (response) {
                             $cms.log('Facebook: Logged out.');
                         });
@@ -106,19 +106,19 @@
 
                     // Facebook has automatically rebuilt its expired fbsr cookie, auth.login not triggered as already technically logged in
                     else {
-                        if (serverside_fbuid === null)  {// Definitive mismatch between server-side and client-side, so we must refresh
-                            facebook_trigger_refresh(home_page_url);
+                        if (serversideFbuid === null)  {// Definitive mismatch between server-side and client-side, so we must refresh
+                            facebookTriggerRefresh(homePageUrl);
                         }
                     }
 
                     // Leech extra code to the Facebook logout action to logout links
                     var forms = document.getElementsByTagName('form');
                     for (var i = 0; i < forms.length; i++) {
-                        if (forms[i].action.includes(logout_page_url)) {
-                            forms[i].addEventListener('submit', (function (logout_link) {
+                        if (forms[i].action.includes(logoutPageUrl)) {
+                            forms[i].addEventListener('submit', (function (logoutLink) {
                                 window.FB.logout(function (response) {
                                     $cms.log('Facebook: Logged out.');
-                                    window.location = logout_link;
+                                    window.location = logoutLink;
                                 });
                                 // We cancel the form submit, as we need to wait for the AJAX request to happen
                                 return false;
@@ -128,12 +128,12 @@
                 }
             });
 
-            if (serverside_fbuid === null) {// If not already in a Composr Facebook login session we may need to listen for explicit new logins
+            if (serversideFbuid === null) {// If not already in a Composr Facebook login session we may need to listen for explicit new logins
                 window.FB.Event.subscribe('auth.login', function (response) { // New login status arrived - so a Composr Facebook login session should be established, or ignore as we are calling a logout within this request (above)
-                    if (!just_logged_out) { // Check it is not that logout
+                    if (!justLoggedOut) { // Check it is not that logout
                         // ... and therefore refresh to let Composr server-side re-sync, as this was a new login initiated just now on the client side
                         if ((response.status == 'connected') && (response.authResponse)) { // Check we really are logged in, in case this event calls without us being
-                            facebook_trigger_refresh(home_page_url);
+                            facebookTriggerRefresh(homePageUrl);
                         }
                     }
                 });
@@ -152,21 +152,21 @@
         }(document, 'script', 'facebook-jssdk'));
     }
 
-    function facebook_trigger_refresh(home_page_url) {
+    function facebookTriggerRefresh(homePageUrl) {
         window.setTimeout(function () { // Firefox needs us to wait a bit
             if (document.querySelector('failover')) {
                 return;
             }
 
             if ((window.location.href.indexOf('login') != -1) && (window == window.top)) {
-                window.location = home_page_url; // If currently on login screen, should go to home page not refresh
+                window.location = homePageUrl; // If currently on login screen, should go to home page not refresh
             } else {
-                var current_url = window.top.location.href;
-                if (current_url.indexOf('refreshed_once=1') == -1) {
-                    current_url += ((current_url.indexOf('?') == -1) ? '?' : '&') + 'refreshed_once=1';
-                    window.top.location = current_url;
+                var currentUrl = window.top.location.href;
+                if (currentUrl.indexOf('refreshed_once=1') == -1) {
+                    currentUrl += ((currentUrl.indexOf('?') == -1) ? '?' : '&') + 'refreshed_once=1';
+                    window.top.location = currentUrl;
                 }
-                else if (current_url.indexOf('keep_refreshed_once=1') == -1) {
+                else if (currentUrl.indexOf('keep_refreshed_once=1') == -1) {
                     //window.alert('Could not login, probably due to restrictive cookie settings.');
                     window.top.location = window.top.location.toString() + '&keep_refreshed_once=1';
                 }

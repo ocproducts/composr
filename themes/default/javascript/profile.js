@@ -1,6 +1,6 @@
 "use strict";
 
-function decrypt_data() {
+function decryptData() {
     if (document.getElementById('decryption_overlay')) {
         return;
     }
@@ -51,9 +51,9 @@ function decrypt_data() {
     input.id = 'decrypt';
     form.appendChild(input);
 
-    var proceed_div = document.createElement('div');
-    proceed_div.className = 'proceed_button';
-    proceed_div.style.marginTop = '1em';
+    var proceedDiv = document.createElement('div');
+    proceedDiv.className = 'proceed_button';
+    proceedDiv.style.marginTop = '1em';
 
     // Cancel button
     var button = document.createElement('input');
@@ -65,7 +65,7 @@ function decrypt_data() {
         document.body.removeChild(container);
         return false;
     });
-    proceed_div.appendChild(button);
+    proceedDiv.appendChild(button);
 
     // Submit button
     button = document.createElement('input');
@@ -76,9 +76,9 @@ function decrypt_data() {
     button.addEventListener('click', function () {
         container.style.display = 'none';
     });
-    proceed_div.appendChild(button);
+    proceedDiv.appendChild(button);
 
-    form.appendChild(proceed_div);
+    form.appendChild(proceedDiv);
 
     document.body.appendChild(container);
 

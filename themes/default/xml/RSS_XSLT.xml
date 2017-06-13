@@ -14,7 +14,7 @@
 				{$CSS_TEMPCODE}
 				<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 			</head>
-			<body class="website_body" onload="go_decoding();">
+			<body class="website_body" onload="goDecoding();">
 				<div id="cometestme" style="display: none">
 					<xsl:text disable-output-escaping="yes">&amp;amp;</xsl:text>
 				</div>

@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.functions.adminBackupInterfaceCalendar = function adminBackupInterfaceCalendar() {
-        var d_ob = [
+        var dOb = [
             $cms.dom.$('#schedule_day'),
             $cms.dom.$('#schedule_month'),
             $cms.dom.$('#schedule_year'),
@@ -10,41 +10,41 @@
             $cms.dom.$('#schedule_minute')
         ];
 
-        var hide_func;
-        if (d_ob[0] != null) {
-            hide_func = function () {
-                $cms.dom.$('#recurrance_days').disabled = ((d_ob[0].selectedIndex + d_ob[1].selectedIndex + d_ob[2].selectedIndex + d_ob[3].selectedIndex + d_ob[4].selectedIndex) > 0);
+        var hideFunc;
+        if (dOb[0] != null) {
+            hideFunc = function () {
+                $cms.dom.$('#recurrance_days').disabled = ((dOb[0].selectedIndex + dOb[1].selectedIndex + dOb[2].selectedIndex + dOb[3].selectedIndex + dOb[4].selectedIndex) > 0);
             };
 
-            d_ob[0].addEventListener('change', hide_func);
-            d_ob[1].addEventListener('change', hide_func);
-            d_ob[2].addEventListener('change', hide_func);
-            d_ob[3].addEventListener('change', hide_func);
-            d_ob[4].addEventListener('change', hide_func);
+            dOb[0].addEventListener('change', hideFunc);
+            dOb[1].addEventListener('change', hideFunc);
+            dOb[2].addEventListener('change', hideFunc);
+            dOb[3].addEventListener('change', hideFunc);
+            dOb[4].addEventListener('change', hideFunc);
         } else {
-            d_ob = [
+            dOb = [
                 $cms.dom.$('#schedule'),
                 $cms.dom.$('#schedule_time')
             ];
-            hide_func = function () {
-                $cms.dom.$('#recurrance_days').disabled = ((d_ob[0].value != '') || (d_ob[1].value != ''));
+            hideFunc = function () {
+                $cms.dom.$('#recurrance_days').disabled = ((dOb[0].value != '') || (dOb[1].value != ''));
             };
-            d_ob[0].addEventListener('change', hide_func);
-            d_ob[1].addEventListener('change', hide_func);
+            dOb[0].addEventListener('change', hideFunc);
+            dOb[1].addEventListener('change', hideFunc);
         }
-        hide_func();
+        hideFunc();
     };
 
     $cms.templates.backupLaunchScreen = function backupLaunchScreen() {
-        var submit_button = $cms.dom.$('#submit_button'),
-            max_size_field = $cms.dom.$('#max_size');
+        var submitButton = $cms.dom.$('#submit_button'),
+            maxSizeField = $cms.dom.$('#max_size');
 
-        if (!submit_button || !max_size_field) {
+        if (!submitButton || !maxSizeField) {
             return;
         }
 
-        submit_button.addEventListener('click', function (event) {
-            submit_button.disabled = true;
+        submitButton.addEventListener('click', function (event) {
+            submitButton.disabled = true;
         });
 
         var button = document.createElement('input');
@@ -58,12 +58,12 @@
             progressTicker.style.marginLeft = '20px';
             button.parentNode.appendChild(progressTicker);
 
-            $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(max_size_field.value), null, function (size) {
+            $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(maxSizeField.value), null, true).then(function (size) {
                 $cms.ui.alert($cms.format('{!CALCULATED_SIZE;^}', size));
                 button.parentNode.removeChild(progressTicker);
             });
         });
 
-        max_size_field.parentNode.appendChild(button, max_size_field);
+        maxSizeField.parentNode.appendChild(button);
     };
 }(window.$cms));

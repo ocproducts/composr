@@ -2,11 +2,16 @@
     'use strict';
 
     $cms.views.ZoneEditorScreen = ZoneEditorScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function ZoneEditorScreen(params) {
         ZoneEditorScreen.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(ZoneEditorScreen, $cms.View, {
+    $cms.inherits(ZoneEditorScreen, $cms.View, /**@lends ZoneEditorScreen#*/{
         events: function () {
             return {
                 'submit .js-form-ze-save': 'submit',
@@ -22,14 +27,14 @@
         fetchAndSubmit: function (e, btn) {
             var params = this.params;
 
-            set_edited_panel('panel_left');
-            set_edited_panel('panel_right');
-            set_edited_panel('panel_top');
-            set_edited_panel('panel_bottom');
-            set_edited_panel(params.defaultZonePageName);
+            setEditedPanel('panel_left');
+            setEditedPanel('panel_right');
+            setEditedPanel('panel_top');
+            setEditedPanel('panel_bottom');
+            setEditedPanel(params.defaultZonePageName);
 
             var form = $cms.dom.$id('middle_fields');
-            var edit_field_store = $cms.dom.$id('edit_field_store');
+            var editFieldStore = $cms.dom.$id('edit_field_store');
             var i, store;
             for (i = 0; i < form.elements.length; i++) {
                 store = document.createElement('input');
@@ -40,7 +45,7 @@
                 } else {
                     store.value = form.elements[i].value;
                 }
-                edit_field_store.appendChild(store);
+                editFieldStore.appendChild(store);
             }
 
             btn.form.submit();
@@ -48,6 +53,11 @@
     });
 
     $cms.views.ZoneEditorPanel = ZoneEditorPanel;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function ZoneEditorPanel(params) {
         ZoneEditorPanel.base(this, 'constructor', arguments);
 
@@ -58,13 +68,13 @@
         }
 
         if (params.comcode && params.class.includes('wysiwyg')) {
-            if ((window.wysiwyg_on) && (wysiwyg_on())) {
+            if ((window.wysiwygOn) && (wysiwygOn())) {
                 $cms.dom.$('#edit_' + params.id + '_textarea').readOnly = true;
             }
         }
     }
 
-    $cms.inherits(ZoneEditorPanel, $cms.View, {
+    $cms.inherits(ZoneEditorPanel, $cms.View, /**@lends ZoneEditorPanel#*/{
         events: function () {
             return {
                 'click .js-click-select-tab': 'selectTab',
@@ -78,13 +88,13 @@
             var id = this.params.id,
                 tab = target.dataset.jsTab;
 
-            select_ze_tab(id, tab);
+            selectZeTab(id, tab);
 
             if (tab === 'view') {
-                reload_preview(id);
+                reloadPreview(id);
             }
 
-            function select_ze_tab(id, tab) {
+            function selectZeTab(id, tab) {
                 var tabs = ['view', 'edit', 'info', 'settings'];
                 var i, j, element, elementh, selects;
 
@@ -114,32 +124,32 @@
                 }
             }
 
-            function reload_preview(id) {
+            function reloadPreview(id) {
                 var element = $cms.dom.$id('view_' + id);
 
-                var edit_element = $cms.dom.$id('edit_' + id + '_textarea');
-                if (!edit_element) {
+                var editElement = $cms.dom.$id('edit_' + id + '_textarea');
+                if (!editElement) {
                     return; // Nothing interatively edited
                 }
 
                 $cms.dom.html(element, '<div aria-busy="true" class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG;,loading}') + '" /> <span>{!LOADING;^}</span></div>');
 
-                var loading_preview_of = id;
+                var loadingPreviewOf = id;
 
                 var data = '';
-                data += get_textbox(edit_element);
-                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(edit_element) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + $cms.keepStub();
-                var post = ($cms.form.isWysiwygField(edit_element) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
+                data += getTextbox(editElement);
+                var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(editElement) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + $cms.keepStub();
+                var post = ($cms.form.isWysiwygField(editElement) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
                 post = $cms.form.modsecurityWorkaroundAjax(post);
-                $cms.doAjaxRequest(url, reloaded_preview, post);
+                $cms.doAjaxRequest(url, reloadedPreview, post);
 
-                function reloaded_preview(ajax_result_frame, ajax_result) {
-                    if (!loading_preview_of) {
+                function reloadedPreview(ajaxResultFrame, ajaxResult) {
+                    if (!loadingPreviewOf) {
                         return;
                     }
 
-                    var element = $cms.dom.$id('view_' + loading_preview_of);
-                    $cms.dom.html(element, ajax_result.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
+                    var element = $cms.dom.$id('view_' + loadingPreviewOf);
+                    $cms.dom.html(element, ajaxResult.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
 
                     $cms.form.disablePreviewScripts(element);
                 }
@@ -152,14 +162,14 @@
         },
 
         toggleWysiwyg: function () {
-            toggle_wysiwyg('edit_' + this.params.id + '_textarea');
+            toggleWysiwyg('edit_' + this.params.id + '_textarea');
         },
 
         setEditedPanel: function (e, field) {
             var params = this.params,
                 editor = $cms.dom.$id('edit_tab_' + params.id);
 
-            set_edited_panel(params.id);
+            setEditedPanel(params.id);
 
             if (editor) {
                 if (field.localName === 'select') {
@@ -187,19 +197,24 @@
     };
 
     $cms.functions.moduleAdminZonesAddZone = function moduleAdminZonesAddZone() {
-        var form = document.getElementById('main_form');
-        form.addEventListener('submit', function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('main_form'),
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
+            submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_zone&name=' + encodeURIComponent(form.elements['zone'].value);
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 
-    function set_edited_panel(id) {
+    function setEditedPanel(id) {
         var el, store;
 
         /* The editing box */
@@ -213,7 +228,7 @@
                 store.id = 'store_' + id;
                 $cms.dom.$('#edit_field_store').appendChild(store);
             }
-            store.value = get_textbox(el);
+            store.value = getTextbox(el);
         }
 
         /* The WYSIWYG setting (not the actual HTML text value of the editor, the setting of whether WYSIWYG was used or not) */

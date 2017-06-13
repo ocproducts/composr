@@ -2,13 +2,17 @@
     'use strict';
 
     $cms.views.GlobalHelperPanel = GlobalHelperPanel;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function GlobalHelperPanel(params) {
         GlobalHelperPanel.base(this, 'constructor', arguments);
         this.contentsEl = this.$('.js-helper-panel-contents');
     }
 
-    $cms.inherits(GlobalHelperPanel, $cms.View, {
+    $cms.inherits(GlobalHelperPanel, $cms.View, /**@lends GlobalHelperPanel#*/{
         events: function () {
             return {
                 'click .js-click-toggle-helper-panel': 'toggleHelperPanel'
@@ -16,48 +20,48 @@
         },
         toggleHelperPanel: function () {
             var show = $cms.dom.notDisplayed(this.contentsEl),
-                panel_right = $cms.dom.$('#panel_right'),
-                helper_panel_contents = $cms.dom.$('#helper_panel_contents'),
-                helper_panel_toggle = $cms.dom.$('#helper_panel_toggle');
+                panelRight = $cms.dom.$('#panel_right'),
+                helperPanelContents = $cms.dom.$('#helper_panel_contents'),
+                helperPanelToggle = $cms.dom.$('#helper_panel_toggle');
 
             if (show) {
-                panel_right.classList.remove('helper_panel_hidden');
-                helper_panel_contents.setAttribute('aria-expanded', 'true');
-                helper_panel_contents.style.display = 'block';
-                $cms.dom.clearTransitionAndSetOpacity(helper_panel_contents, 0.0);
-                $cms.dom.fadeTransition(helper_panel_contents, 100, 30, 4);
+                panelRight.classList.remove('helper_panel_hidden');
+                helperPanelContents.setAttribute('aria-expanded', 'true');
+                helperPanelContents.style.display = 'block';
+                $cms.dom.clearTransitionAndSetOpacity(helperPanelContents, 0.0);
+                $cms.dom.fadeTransition(helperPanelContents, 100, 30, 4);
 
                 if ($cms.readCookie('hide_helper_panel') === '1') {
                     $cms.setCookie('hide_helper_panel', '0', 100);
                 }
 
-                helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_hide}');
+                helperPanelToggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_hide}');
 
-                if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
-                    helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide} 2x');
+                if (helperPanelToggle.firstElementChild.srcset !== undefined) {
+                    helperPanelToggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide} 2x');
                 }
             } else {
-                if ($cms.readCookie('hide_helper_panel') == '') {
+                if ($cms.readCookie('hide_helper_panel') === '') {
                     $cms.ui.confirm('{!CLOSING_HELP_PANEL_CONFIRM;^}', function (answer) {
                         if (answer) {
-                            _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
+                            _hideHelperPanel(panelRight, helperPanelContents, helperPanelToggle);
                         }
                     });
                 } else {
-                    _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle);
+                    _hideHelperPanel(panelRight, helperPanelContents, helperPanelToggle);
 
                 }
             }
 
-            function _hide_helper_panel(panel_right, helper_panel_contents, helper_panel_toggle) {
-                panel_right.classList.add('helper_panel_hidden');
-                helper_panel_contents.setAttribute('aria-expanded', 'false');
-                helper_panel_contents.style.display = 'none';
+            function _hideHelperPanel(panelRight, helperPanelContents, helperPanelToggle) {
+                panelRight.classList.add('helper_panel_hidden');
+                helperPanelContents.setAttribute('aria-expanded', 'false');
+                helperPanelContents.style.display = 'none';
                 $cms.setCookie('hide_helper_panel', '1', 100);
-                helper_panel_toggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_show}');
+                helperPanelToggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_show}');
 
-                if (helper_panel_toggle.firstElementChild.srcset !== undefined) {
-                    helper_panel_toggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_show} 2x');
+                if (helperPanelToggle.firstElementChild.srcset !== undefined) {
+                    helperPanelToggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_show} 2x');
                 }
             }
         }

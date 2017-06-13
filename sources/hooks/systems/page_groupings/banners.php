@@ -32,6 +32,8 @@ class Hook_page_groupings_banners
      */
     public function run($member_id = null, $extensive_docs = false)
     {
+        require_lang('banners');
+
         if (!addon_installed('banners')) {
             return array();
         }

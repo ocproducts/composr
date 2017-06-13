@@ -20,27 +20,12 @@ require_javascript('jquery');
 require_javascript('openid');
 
 $url = build_url(array('page' => ''), '');
-echo '
-    <script>// <![CDATA[
-    window.addEventListener("load", function() {
-      $("#openid").openid({
-        img_path: "{{ MEDIA_URL }}img/openid/",
-        txt: {
-          label: "Enter your {username} for <b>{provider}<\/b>",
-          username: "username",
-          title: "Select where you\'d like to log in from.",
-          sign: "log in"
-        }
-      });
-    });
-    //]]></script>
+?>
+<form data-jquery-openid="{ img_path: '{{ MEDIA_URL }}img/openid/', txt: { label: 'Enter your {username} for &lt;b&gt;{provider}&lt;/b&gt;', username: 'username', title: 'Select where you\'d like to log in from.', sign: 'log in' }}" title="OpenID (manually)" method="post" action="<?= escape_html($url->evaluate()) ?>" id="openid" autocomplete="on"><span></span></form>
 
-    <form title="OpenID (manually)" method="post" action="' . escape_html($url->evaluate()) . '" id="openid" autocomplete="on"><span></span></form>
-    <form title="OpenID (other)" method="post" action="' . escape_html($url->evaluate()) . '" id="openid_manual" autocomplete="on">
-        ' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '
-
-        <label for="openid_identifier">Other service</label>:
-        <input id="openid_identifier" name="openid_identifier" type="text" size="30" value="" />
-        <input type="submit" value="Go" />
-    </form>
-';
+<form title="OpenID (other)" method="post" action="<?= escape_html($url->evaluate()) ?>" id="openid_manual" autocomplete="on">
+    <?= static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) ?>
+    <label for="openid_identifier">Other service</label>:
+    <input id="openid_identifier" name="openid_identifier" type="text" size="30" value="" />
+    <input type="submit" value="Go" />
+</form>

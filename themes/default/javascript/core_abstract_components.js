@@ -29,10 +29,14 @@
 
         if (!explicitEditingLinks) {
             $cms.dom.on(el, 'click', function (e) {
-                fractional_edit(e, el, url, editText, editParamName, null, null, editType);
+                fractionalEdit(e, el, url, editText, editParamName, null, null, editType);
             });
 
-            $cms.dom.on(el, 'mouseover mouseout', function (e) {
+            $cms.dom.on(el, 'mouseover mouseout', function (e, target) {
+                if (target.contains(e.relatedTarget)) {
+                    return;
+                }
+
                 if (e.type === 'mouseover') {
                     window.old_status = window.status;
                     window.status = '{!SPECIAL_CLICK_TO_EDIT;}';
@@ -46,7 +50,7 @@
             });
         } else {
             $cms.dom.on(el, 'click', function (e) {
-                fractional_edit(e, el.previousElementSibling.previousElementSibling, url, editText, editParamName);
+                fractionalEdit(e, el.previousElementSibling.previousElementSibling, url, editText, editParamName);
             });
         }
     };
@@ -57,7 +61,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
             /* Load more from a threaded topic */
-            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.comments_serialized_options) + '&hash=' + encodeURIComponent(window.comments_hash), null, function (ajax_result) {
+            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.comments_serialized_options) + '&hash=' + encodeURIComponent(window.comments_hash), null, true).then(function (ajaxResult) {
                 var wrapper;
                 if (id !== '') {
                     wrapper = $cms.dom.$('#post_children_' + id);
@@ -66,7 +70,7 @@
                 }
                 container.parentNode.removeChild(container);
 
-                $cms.dom.append(wrapper, ajax_result.responseText);
+                $cms.dom.append(wrapper, ajaxResult.responseText);
 
                 window.setTimeout(function () {
                     var _ids = ids.split(',');

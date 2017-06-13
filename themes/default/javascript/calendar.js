@@ -4,35 +4,35 @@
     $cms.functions.cmsCalendarRunStart = function cmsCalendarRunStart() {
         var form = document.getElementById('recurrence_pattern').form,
             start = document.getElementById('start'),
-            start_day = document.getElementById('start_day'),
-            start_month = document.getElementById('start_month'),
-            start_year = document.getElementById('start_year'),
-            start_time = document.getElementById('start_time'),
-            start_hour = document.getElementById('start_hour'),
-            start_minute = document.getElementById('start_minute'),
-            end_time = document.getElementById('end_time'),
-            end_hour = document.getElementById('end_hour'),
-            end_minute = document.getElementById('end_minute'),
-            do_timezone_conv = document.getElementById('do_timezone_conv'),
-            all_day_event = document.getElementById('all_day_event');
+            startDay = document.getElementById('start_day'),
+            startMonth = document.getElementById('start_month'),
+            startYear = document.getElementById('start_year'),
+            startTime = document.getElementById('start_time'),
+            startHour = document.getElementById('start_hour'),
+            startMinute = document.getElementById('start_minute'),
+            endTime = document.getElementById('end_time'),
+            endHour = document.getElementById('end_hour'),
+            endMinute = document.getElementById('end_minute'),
+            doTimezoneConv = document.getElementById('do_timezone_conv'),
+            allDayEvent = document.getElementById('all_day_event');
 
         crf();
         for (var i = 0; i < form.elements['recurrence'].length; i++) {
             form.elements['recurrence'][i].addEventListener('click', crf);
         }
 
-        if (start_day) {
-            start_day.addEventListener('change', crf);
-            start_month.addEventListener('change', crf);
-            start_year.addEventListener('change', crf);
+        if (startDay) {
+            startDay.addEventListener('change', crf);
+            startMonth.addEventListener('change', crf);
+            startYear.addEventListener('change', crf);
         } else {
             start.addEventListener('change', crf);
         }
-        if (start_hour) {
-            start_hour.addEventListener('change', crf);
-            start_minute.addEventListener('change', crf);
+        if (startHour) {
+            startHour.addEventListener('change', crf);
+            startMinute.addEventListener('change', crf);
         } else {
-            start_time.addEventListener('change', crf);
+            startTime.addEventListener('change', crf);
         }
 
         crf2();
@@ -40,17 +40,17 @@
 
         form.addEventListener('submit', function () {
             if (typeof form.elements['end_day'] != 'undefined' && form.elements['end_day'].selectedIndex != 0 || typeof form.elements['end'] != 'undefined' && form.elements['end'].value != '') {
-                var start_date, end_date;
-                if (start_day) {
-                    start_date = new Date(window.parseInt(form.elements['start_year'].value), window.parseInt(form.elements['start_month'].value) - 1, window.parseInt(form.elements['start_day'].value), window.parseInt(form.elements['start_hour'].value), window.parseInt(form.elements['start_minute'].value));
-                    end_date = new Date(window.parseInt(form.elements['end_year'].value), window.parseInt(form.elements['end_month'].value) - 1, window.parseInt(form.elements['end_day'].value), window.parseInt(form.elements['end_hour'].value), window.parseInt(form.elements['end_minute'].value));
+                var startDate, endDate;
+                if (startDay) {
+                    startDate = new Date(window.parseInt(form.elements['startYear'].value), window.parseInt(form.elements['startMonth'].value) - 1, window.parseInt(form.elements['startDay'].value), window.parseInt(form.elements['startHour'].value), window.parseInt(form.elements['startMinute'].value));
+                    endDate = new Date(window.parseInt(form.elements['end_year'].value), window.parseInt(form.elements['end_month'].value) - 1, window.parseInt(form.elements['end_day'].value), window.parseInt(form.elements['endHour'].value), window.parseInt(form.elements['endMinute'].value));
                 } else {
-                    start_date = start.value;
-                    end_date = end.value;
+                    startDate = start.value;
+                    endDate = end.value;
                 }
 
-                if (start_date > end_date) {
-                    $cms.ui.alert('{!EVENT_CANNOT_AROUND;}');
+                if (startDate > endDate) {
+                    $cms.ui.alert('{!calendar:EVENT_CANNOT_AROUND;}');
                     return false;
                 }
             }
@@ -62,57 +62,57 @@
             if (form.elements['recurrences']) form.elements['recurrences'].disabled = s;
             if (form.elements['seg_recurrences']) form.elements['seg_recurrences'].disabled = s;
 
-            var has_date_set = false;
-            if (start_day) {
-                has_date_set = (start_day.selectedIndex != 0) && (start_month.selectedIndex != 0) && (start_year.selectedIndex != 0);
+            var hasDateSet = false;
+            if (startDay) {
+                hasDateSet = (startDay.selectedIndex != 0) && (startMonth.selectedIndex != 0) && (startYear.selectedIndex != 0);
             } else {
-                has_date_set = (start.value != '');
+                hasDateSet = (start.value != '');
             }
 
-            if ((typeof event != 'undefined') && (has_date_set)) { // Something changed
+            if ((typeof event !== 'undefined') && (hasDateSet)) { // Something changed
                 var url = 'calendar_recurrence_suggest';
                 url += '&monthly_spec_type=' + encodeURIComponent($cms.form.radioValue(form.elements['monthly_spec_type']));
-                if (start_day) {
-                    url += '&date_day=' + encodeURIComponent(start_day.options[start_day.selectedIndex].value);
-                    url += '&date_month=' + encodeURIComponent(start_month.options[start_month.selectedIndex].value);
-                    url += '&date_year=' + encodeURIComponent(start_year.options[start_year.selectedIndex].value);
+                if (startDay) {
+                    url += '&date_day=' + encodeURIComponent(startDay.options[startDay.selectedIndex].value);
+                    url += '&date_month=' + encodeURIComponent(startMonth.options[startMonth.selectedIndex].value);
+                    url += '&date_year=' + encodeURIComponent(startYear.options[startYear.selectedIndex].value);
                 } else {
                     url += '&date=' + encodeURIComponent(start.value);
                 }
-                if (start_hour) {
-                    url += '&date_time_hour=' + encodeURIComponent(start_hour.options[start_hour.selectedIndex].value);
-                    url += '&date_time_minute=' + encodeURIComponent(start_minute.options[start_minute.selectedIndex].value);
+                if (startHour) {
+                    url += '&date_time_hour=' + encodeURIComponent(startHour.options[startHour.selectedIndex].value);
+                    url += '&date_time_minute=' + encodeURIComponent(startMinute.options[startMinute.selectedIndex].value);
                 } else {
-                    url += '&date_time=' + encodeURIComponent(start_time.value);
+                    url += '&date_time=' + encodeURIComponent(startTime.value);
                 }
-                url += '&do_timezone_conv=' + (do_timezone_conv.checked ? '1' : '0');
-                url += '&all_day_event=' + (all_day_event.checked ? '1' : '0');
-                var new_data = $cms.loadSnippet(url);
+                url += '&do_timezone_conv=' + (doTimezoneConv.checked ? '1' : '0');
+                url += '&all_day_event=' + (allDayEvent.checked ? '1' : '0');
+                var newData = $cms.loadSnippet(url);
                 var tr = form.elements['monthly_spec_type'][0];
-                while (tr.nodeName.toLowerCase() != 'tr') {
+                while (tr.nodeName.toLowerCase() !== 'tr') {
                     tr = tr.parentNode;
                 }
-                $cms.dom.html(tr, new_data.replace(/<tr [^>]*>/, '').replace(/<\/tr>/, ''));
+                $cms.dom.html(tr, newData.replace(/<tr [^>]*>/, '').replace(/<\/tr>/, ''));
             }
-            var monthly_recurrence = form.elements['recurrence'][3].checked;
+            var monthlyRecurrence = form.elements['recurrence'][3].checked;
             for (var i = 0; i < form.elements['monthly_spec_type'].length; i++) {
-                form.elements['monthly_spec_type'][i].disabled = !monthly_recurrence;
+                form.elements['monthly_spec_type'][i].disabled = !monthlyRecurrence;
             }
         }
 
         function crf2() {
             var s = document.getElementById('all_day_event').checked;
-            if (start_hour) {
-                start_hour.disabled = s;
-                start_minute.disabled = s;
+            if (startHour) {
+                startHour.disabled = s;
+                startMinute.disabled = s;
             } else {
-                start_time.disabled = s;
+                startTime.disabled = s;
             }
-            if (end_hour) {
-                end_hour.disabled = s;
-                end_minute.disabled = s;
+            if (endHour) {
+                endHour.disabled = s;
+                endMinute.disabled = s;
             } else {
-                end_time.disabled = s;
+                endTime.disabled = s;
             }
         }
     };

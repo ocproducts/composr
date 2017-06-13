@@ -1146,9 +1146,15 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
         }
     }
 
+
+    // Special case: HTML template file
+    if (!$GLOBALS['IN_MINIKERNEL_VERSION'] && ($GLOBALS['SEMI_DEV_MODE']) && ($suffix === '.tpl') && (preg_match('/<script[^>]*>\S+<\/script>/i', $template_contents) > 0)) {
+        attach_message(do_lang_tempcode('DO_NOT_USE_INLINE_SCRIPT_TAGS', escape_html($codename)), 'warn', false, true);
+    }
+
     // Special case: JavaScript file
     if (($GLOBALS['SEMI_DEV_MODE']) && ($suffix === '.js') && (strpos($template_contents, '.innerHTML') !== false) && (!running_script('install')) && (strpos($template_contents, 'Parser hint: .innerHTML okay') === false)) {
-        attach_message($codename . ': Do not use the .innerHTML property in your JavaScript because it will not work in true XHTML (when the browsers real XML parser is in action). Use Composr\'s global Composr.dom.html() function.', 'warn', false, true);
+        attach_message($codename . ': Do not use the .innerHTML property in your JavaScript because it will not initialize Composr\'s JavaScript components. Use Composr\'s global $cms.dom.html() function.', 'warn', false, true);
     }
 
     // Strip off trailing final lines from single lines templates. Editors often put these in, and it causes annoying "visible space" issues

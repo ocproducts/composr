@@ -12,33 +12,33 @@
     };
 
     $cms.templates.newsletterPreview = function (params) {
-        var frame_id = 'preview_frame',
+        var frameId = 'preview_frame',
             html = strVal(params.htmlPreview);
 
         window.setTimeout(function () {
-            var adjusted_preview = html.replace(/<!DOCTYPE[^>]*>/i, '').replace(/<html[^>]*>/i, '').replace(/<\/html>/i, '');
-            var de = window.frames[frame_id].document.documentElement;
+            var adjustedPreview = html.replace(/<!DOCTYPE[^>]*>/i, '').replace(/<html[^>]*>/i, '').replace(/<\/html>/i, '');
+            var de = window.frames[frameId].document.documentElement;
             var body = de.querySelector('body');
             if (!body) {
-                $cms.dom.html(de, adjusted_preview);
+                $cms.dom.html(de, adjustedPreview);
             } else {
-                var head_element = de.querySelector('head');
-                if (!head_element) {
-                    head_element = document.createElement('head');
-                    de.appendChild(head_element);
+                var headElement = de.querySelector('head');
+                if (!headElement) {
+                    headElement = document.createElement('head');
+                    de.appendChild(headElement);
                 }
-                if (!de.querySelector('style') && adjusted_preview.indexOf('<head') != -1) {/*{$,The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice}*/
-                    $cms.dom.html(head_element, adjusted_preview.replace(/^(.|\n)*<head[^>]*>((.|\n)*)<\/head>(.|\n)*$/i, '$2'));
+                if (!de.querySelector('style') && adjustedPreview.indexOf('<head') != -1) {/*{$,The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice}*/
+                    $cms.dom.html(headElement, adjustedPreview.replace(/^(.|\n)*<head[^>]*>((.|\n)*)<\/head>(.|\n)*$/i, '$2'));
                 }
 
-                $cms.dom.html(body, adjusted_preview.replace(/^(.|\n)*<body[^>]*>((.|\n)*)<\/body>(.|\n)*$/i, '$2'));
+                $cms.dom.html(body, adjustedPreview.replace(/^(.|\n)*<body[^>]*>((.|\n)*)<\/body>(.|\n)*$/i, '$2'));
             }
 
-            $cms.dom.resizeFrame(frame_id, 300);
+            $cms.dom.resizeFrame(frameId, 300);
         }, 500);
 
         window.setInterval(function () {
-            $cms.dom.resizeFrame(frame_id, 300);
+            $cms.dom.resizeFrame(frameId, 300);
         }, 1000);
     };
 

@@ -2,6 +2,11 @@
     'use strict';
 
     $cms.views.CatalogueAddingScreen = CatalogueAddingScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function CatalogueAddingScreen(params) {
         CatalogueAddingScreen.base(this, 'constructor', arguments);
 
@@ -9,12 +14,10 @@
             $cms.executeJsFunctionCalls(params.jsFunctionCalls);
         }
 
-        catalogue_field_change_watching();
+        catalogueFieldChangeWatching();
     }
 
-
-
-    $cms.inherits(CatalogueAddingScreen, $cms.View, {
+    $cms.inherits(CatalogueAddingScreen, $cms.View, /**@lends CatalogueAddingScreen#*/{
         events: function () {
             return {
                 'submit .js-form-catalogue-add': 'submit'
@@ -28,13 +31,18 @@
     });
 
     $cms.views.CatalogueEditingScreen = CatalogueEditingScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function CatalogueEditingScreen() {
         CatalogueEditingScreen.base(this, 'constructor', arguments);
 
-        catalogue_field_change_watching();
+        catalogueFieldChangeWatching();
     }
 
-    $cms.inherits(CatalogueEditingScreen, $cms.View, {
+    $cms.inherits(CatalogueEditingScreen, $cms.View, /**@lends CatalogueEditingScreen#*/{
         events: function () {
             return {
                 'submit .js-form-catalogue-edit': 'submit'
@@ -48,38 +56,43 @@
     });
 
     $cms.functions.cmsCataloguesImportCatalogue = function cmsCataloguesImportCatalogue() {
-        var key_field = document.getElementById('key_field'),
-            form = key_field.form;
+        var keyField = document.getElementById('key_field'),
+            form = keyField.form;
 
-        key_field.onchange = update_key_settings;
-        update_key_settings();
+        keyField.onchange = updateKeySettings;
+        updateKeySettings();
 
-        function update_key_settings() {
-            var has_key = (key_field.value != '');
+        function updateKeySettings() {
+            var hasKey = (keyField.value != '');
 
-            form.elements.new_handling[0].disabled = !has_key;
-            form.elements.new_handling[1].disabled = !has_key;
+            form.elements.new_handling[0].disabled = !hasKey;
+            form.elements.new_handling[1].disabled = !hasKey;
 
-            form.elements.delete_handling[0].disabled = !has_key;
-            form.elements.delete_handling[1].disabled = !has_key;
+            form.elements.delete_handling[0].disabled = !hasKey;
+            form.elements.delete_handling[1].disabled = !hasKey;
 
-            form.elements.update_handling[0].disabled = !has_key;
-            form.elements.update_handling[1].disabled = !has_key;
-            form.elements.update_handling[2].disabled = !has_key;
-            form.elements.update_handling[3].disabled = !has_key;
+            form.elements.update_handling[0].disabled = !hasKey;
+            form.elements.update_handling[1].disabled = !hasKey;
+            form.elements.update_handling[2].disabled = !hasKey;
+            form.elements.update_handling[3].disabled = !hasKey;
         }
     };
 
     $cms.functions.moduleCmsCataloguesRunStartAddCatalogue = function moduleCmsCataloguesRunStartAddCatalogue() {
-        var form = document.getElementById('new_field_0_name').form;
-        form.onsubmit = (function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('new_field_0_name').form,
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck(e) {
+            submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_catalogue&name=' + encodeURIComponent(form.elements['name'].value);
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 
@@ -107,43 +120,45 @@
         }
     };
 
-    function catalogue_field_change_watching() {
+    function catalogueFieldChangeWatching() {
         // Find all our ordering fields
         var s = document.getElementsByTagName('select');
-        var all_orderers = [];
+        var allOrderers = [];
         for (var i = 0; i < s.length; i++) {
-            if (s[i].name.indexOf('order') != -1) {
-                all_orderers.push(s[i]);
+            if (s[i].name.indexOf('order') !== -1) {
+                allOrderers.push(s[i]);
             }
         }
         // Assign generated change function to all ordering fields (generated so as to avoid JS late binding problem)
-        for (var i = 0; i < all_orderers.length; i++) {
-            all_orderers[i].onchange = catalogue_field_reindex_around(all_orderers, all_orderers[i]);
+        for (var i = 0; i < allOrderers.length; i++) {
+            allOrderers[i].onchange = catalogueFieldReindexAround(allOrderers, allOrderers[i]);
         }
     }
 
-    function catalogue_field_reindex_around(all_orderers, ob) {
+    function catalogueFieldReindexAround(allOrderers, ob) {
         return function () {
-            var next_index = 0;
+            var nextIndex = 0;
 
             // Sort our all_orderers array by selectedIndex
-            for (var i = 0; i < all_orderers.length; i++) {
-                for (var j = i + 1; j < all_orderers.length; j++) {
-                    if (all_orderers[j].selectedIndex < all_orderers[i].selectedIndex) {
-                        var temp = all_orderers[i];
-                        all_orderers[i] = all_orderers[j];
-                        all_orderers[j] = temp;
+            for (var i = 0; i < allOrderers.length; i++) {
+                for (var j = i + 1; j < allOrderers.length; j++) {
+                    if (allOrderers[j].selectedIndex < allOrderers[i].selectedIndex) {
+                        var temp = allOrderers[i];
+                        allOrderers[i] = allOrderers[j];
+                        allOrderers[j] = temp;
                     }
                 }
             }
 
             // Go through all fields, assigning them the order (into selectedIndex). We are reordering *around* the field that has just had it's order set.
-            for (var i = 0; i < all_orderers.length; i++) {
-                if (next_index == ob.selectedIndex) next_index++;
+            for (var i = 0; i < allOrderers.length; i++) {
+                if (nextIndex == ob.selectedIndex) {
+                    nextIndex++;
+                }
 
-                if (all_orderers[i] != ob) {
-                    all_orderers[i].selectedIndex = next_index;
-                    next_index++;
+                if (allOrderers[i] != ob) {
+                    allOrderers[i].selectedIndex = nextIndex;
+                    nextIndex++;
                 }
             }
         }

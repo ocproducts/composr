@@ -115,7 +115,7 @@ class Module_admin_cleanup
 
         require_code('form_templates');
 
-        $js = '';
+        $checkbox_ids = [];
         $_fields_cache = array();
         $_fields_optimise = array();
         $fields_cache_expand = true;
@@ -128,7 +128,7 @@ class Module_admin_cleanup
                 $tick = form_input_tick($output['title'], $output['description'], 'cleanup_' . $hook, $is_ticked);
                 if ($output['type'] == 'cache') {
                     $_fields_cache[$output['title']->evaluate()] = $tick;
-                    $js .= 'var ob=document.getElementById(\'cleanup_' . $hook . '\'); ob.checked=!ob.checked;';
+                    $checkbox_ids[] = '#cleanup_' . $hook;
                     if ($is_ticked) {
                         $fields_cache_expand = true;
                     }
@@ -156,7 +156,7 @@ class Module_admin_cleanup
 
         $fields = new Tempcode();
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'SECTION_HIDDEN' =>  !$fields_cache_expand, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_CACHES', escape_html($js)))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'SECTION_HIDDEN' =>  !$fields_cache_expand, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_CACHES', escape_html(join(', ', $checkbox_ids))))));
         $fields->attach($fields_cache);
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4a9d6e722f246887160c444a062a9d00', 'SECTION_HIDDEN' =>  !$fields_optimise_expand, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_OPTIMISERS'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_OPTIMISERS'))));

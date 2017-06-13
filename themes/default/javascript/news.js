@@ -11,9 +11,9 @@
         }
 
         // Variables we will need
-        var fp_animation = $cms.dom.$('#image_fader_news_' + rand),
-            fp_animation_url = $cms.dom.$('#image_fader_news_url_' + rand),
-            fp_animation_html = $cms.dom.$('#image_fader_news_html_' + rand);
+        var fpAnimation = $cms.dom.$('#image_fader_news_' + rand),
+            fpAnimationUrl = $cms.dom.$('#image_fader_news_url_' + rand),
+            fpAnimationHtml = $cms.dom.$('#image_fader_news_html_' + rand);
 
         // For pause function
         var pause = 'main_image_fader_news_pause_' + rand;
@@ -24,13 +24,13 @@
             cycle = 'main_image_fader_news_cycle_' + rand;
 
         // Create fader
-        var fp_animation_news = document.createElement('img');
+        var fpAnimationNews = document.createElement('img');
 
-        fp_animation_news.style.position = 'absolute';
-        fp_animation_news.src = $cms.img('{$IMG;,blank}');
-        fp_animation.parentElement.insertBefore(fp_animation_news, fp_animation);
-        fp_animation.parentElement.style.position = 'relative';
-        fp_animation.parentElement.style.display = 'block';
+        fpAnimationNews.style.position = 'absolute';
+        fpAnimationNews.src = $cms.img('{$IMG;,blank}');
+        fpAnimation.parentElement.insertBefore(fpAnimationNews, fpAnimation);
+        fpAnimation.parentElement.style.position = 'relative';
+        fpAnimation.parentElement.style.display = 'block';
 
         var data = [], i;
 
@@ -75,19 +75,19 @@
             window[cycleCount] = j;
 
             // Simple data copy}
-            $cms.dom.html(fp_animation_html, data[j].html);
-            fp_animation_url.href = data[j].url;
+            $cms.dom.html(fpAnimationHtml, data[j].html);
+            fpAnimationUrl.href = data[j].url;
 
             // Set up fade}
-            fp_animation_news.src = fp_animation.src;
-            $cms.dom.clearTransitionAndSetOpacity(fp_animation_news, 1.0);
-            $cms.dom.fadeTransition(fp_animation_news, 0, 30, -4);
-            $cms.dom.clearTransitionAndSetOpacity(fp_animation, 0.0);
-            $cms.dom.fadeTransition(fp_animation, 100, 30, 4);
-            fp_animation.src = data[j].image_url;
+            fpAnimationNews.src = fpAnimation.src;
+            $cms.dom.clearTransitionAndSetOpacity(fpAnimationNews, 1.0);
+            $cms.dom.fadeTransition(fpAnimationNews, 0, 30, -4);
+            $cms.dom.clearTransitionAndSetOpacity(fpAnimation, 0.0);
+            $cms.dom.fadeTransition(fpAnimation, 100, 30, 4);
+            fpAnimation.src = data[j].image_url;
             window.setTimeout(function () { // Will know dimensions by the time the timeout happens}
-                fp_animation_news.style.left = ((fp_animation_news.parentNode.offsetHeight - fp_animation_news.offsetWidth) / 2) + 'px';
-                fp_animation_news.style.top = ((fp_animation_news.parentNode.offsetHeight - fp_animation_news.offsetHeight) / 2) + 'px';
+                fpAnimationNews.style.left = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetWidth) / 2) + 'px';
+                fpAnimationNews.style.top = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetHeight) / 2) + 'px';
             }, 0);
 
             // Set up timer for next time}

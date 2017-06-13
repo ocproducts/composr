@@ -20,7 +20,7 @@
 
     // Too useful to not have globally!
     window.intVal   = intVal;
-    window.floatVal = floatVal;
+    //window.numVal = numVal;
     window.strVal   = strVal;
     window.arrVal   = arrVal;
     window.objVal   = objVal;
@@ -235,7 +235,7 @@
          * @method
          * @returns {string}
          */
-        $BASE_URL_PRL: constant(toProtocolRelative(symbols.BASE_URL)), // Protocol relative
+        $BASE_URL_PRL: constant(toSchemeRelative(symbols.BASE_URL)), // Scheme relative
         /**
          * @method
          * @returns {string}
@@ -295,7 +295,8 @@
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
          * @method
-         * @returns {string|boolean|number}
+         * @param {configOptions} optionName
+         * @returns {boolean|string|number}
          */
         $CONFIG_OPTION: function $CONFIG_OPTION(optionName) {
             if (window.IN_MINIKERNEL_VERSION) {
@@ -303,7 +304,11 @@
                 return '';
             }
 
-            var options =  {
+            /**
+             * @enum configOptions
+             * @readonly
+             */
+            var configOptions =  {
                 /**@member {boolean}*/
                 js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
                 /**@member {boolean}*/
@@ -358,8 +363,8 @@
                 cookie_notice: strVal(symbols.CONFIG_OPTION.cookie_notice)
             };
 
-            if (hasOwn(options, optionName)) {
-                return options[optionName];
+            if (hasOwn(configOptions, optionName)) {
+                return configOptions[optionName];
             }
 
             $cms.error('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
@@ -479,6 +484,10 @@
         /**@method*/
         uid: uid,
         /**@method*/
+        returnTrue: returnTrue,
+        /**@method*/
+        returnFalse: returnFalse,
+        /**@method*/
         isObj: isObj,
         /**@method*/
         hasEnumerable: hasEnumerable,
@@ -548,8 +557,71 @@
         error: error,
         /**@method*/
         exception: exception,
-        /**@method*/
-        waitForResources: waitForResources,
+        /**
+         * @method
+         * @param resourceEls
+         */
+        waitForResources: function waitForResources(resourceEls) {
+            if (resourceEls == null) {
+                return;
+            }
+
+            if (isEl(resourceEls)) {
+                resourceEls = [resourceEls];
+            }
+
+            if (!Array.isArray(resourceEls)) {
+                $cms.error('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+            }
+
+            if (resourceEls.length < 1) {
+                return Promise.resolve();
+            }
+
+            $cms.verbose('$cms.waitForResources(): Waiting for resources', resourceEls);
+
+            var scriptsToLoad = [];
+            resourceEls.forEach(function (el) {
+                if (!isEl(el)) {
+                    $cms.error('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                    return;
+                }
+
+                if (el.localName === 'script') {
+                    if (el.src && !$cms.dom.hasScriptLoaded(el) && jsTypeRE.test(el.type) && !scriptsToLoad.includes(el)) {
+                        scriptsToLoad.push(el);
+                    }
+                }
+            });
+
+            if (scriptsToLoad.length < 1) {
+                return Promise.resolve();
+            }
+
+            return new Promise(function (resolve) {
+                $cms.scriptsLoadedListeners.push(function scriptResourceListener(event) {
+                    var loadedEl = event.target;
+
+                    if (!scriptsToLoad.includes(loadedEl)) {
+                        return;
+                    }
+
+                    if (event.type === 'load') {
+                        $cms.verbose('$cms.waitForResources(): Resource loaded successfully', loadedEl);
+                    } else {
+                        $cms.error('$cms.waitForResources(): Resource failed to load', loadedEl);
+                    }
+
+                    scriptsToLoad = scriptsToLoad.filter(function (el) {
+                        return el !== loadedEl;
+                    });
+
+                    if (scriptsToLoad.length < 1) {
+                        resolve(event);
+                    }
+                });
+            });
+        },
         /**@method*/
         requireCss: requireCss,
         /**@method*/
@@ -600,6 +672,8 @@
         openModalWindow: openModalWindow,
         /**@method*/
         executeJsFunctionCalls: executeJsFunctionCalls,
+        /**@method*/
+        doAjaxRequest: doAjaxRequest,
         /**
          * Addons will add template related methods under this object
          * @namespace $cms.templates
@@ -1362,8 +1436,8 @@
      * @param val
      * @returns { Number }
      */
-    function floatVal(val) {
-        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    function numVal(val) {
+        return ((val != null) && (val = Number(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     function numberFormat(num) {
@@ -1373,10 +1447,11 @@
 
     /**
      * @param val
-     * @returns { Array|null } array or array-like object
+     * @param clone
+     * @returns { Array } array or array-like object
      */
     function arrVal(val, clone) {
-        var isArr;
+        var isArr = false;
 
         clone = !!clone;
 
@@ -1384,8 +1459,8 @@
             return [];
         }
 
-        if ((typeof val === 'object') && ((isArr = Array.isArray(val))/* || isArrayLike(val)*/)) {
-            return clone ? toArray(val) : val;
+        if ((typeof val === 'object') && ((isArr = Array.isArray(val)) || isArrayLike(val))) {
+            return (!isArr || clone) ? toArray(val) : val;
         }
 
         return [val];
@@ -1563,16 +1638,9 @@
     };
 
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
-        rgxHttp = /^https?:(?=\/\/)/i;
-
-    /**
-     *
-     * @param absoluteUrl
-     * @returns {string}
-     */
-    function toProtocolRelative(absoluteUrl) {
-        return strVal(absoluteUrl).replace(rgxProtocol, '');
-    }
+        rgxHttp = /^https?:(?=\/\/)/i,
+        rgxRel = /^\/\//i,
+        rgxHttpRel = /^(?:https?:)?(?=\/\/)/i;
 
     /**
      *
@@ -1586,17 +1654,44 @@
             return $cms.$BASE_URL_S();
         }
 
-        if (rgxHttp.test(relativeUrl)) {
+        if (isAbsolute(relativeUrl)) {
             // Already an absolute url, just ensure matching protocol as the current page.
             return relativeUrl.replace(rgxHttp, window.location.protocol);
+        } else if (isSchemeRelative(relativeUrl)) {
+            // Scheme-relative URL, add current protocol
+            return window.location.protocol + relativeUrl;
         }
 
         return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : $cms.$BASE_URL_S()) + relativeUrl;
     }
 
-    function isAbsoluteHttp(url) {
+    function isAbsolute(url) {
         url = strVal(url);
         return rgxHttp.test(url);
+    }
+
+    function isRelative(url) {
+        url = strVal(url);
+        return !isAbsoluteOrSchemeRelative(url);
+    }
+
+    function isSchemeRelative(url) {
+        url = strVal(url);
+        return rgxRel.test(url);
+    }
+
+    function isAbsoluteOrSchemeRelative(url) {
+        url = strVal(url);
+        return rgxHttpRel.test(url);
+    }
+
+    /**
+     *
+     * @param absoluteUrl
+     * @returns {string}
+     */
+    function toSchemeRelative(absoluteUrl) {
+        return strVal(absoluteUrl).replace(rgxProtocol, '');
     }
 
     /**
@@ -1704,126 +1799,79 @@
         }
     }
 
+    var validIdRE = /^[a-zA-Z][\w:.-]*$/;
+
     /**
-     *
-     * @param resourceEls
+     * @private
+     * @param sheetName
      */
-    function waitForResources(resourceEls) {
-        var promises = [];
+    function _requireCss(sheetName) {
+        var linkEl;
 
-        if (resourceEls == null) {
-            return;
+        linkEl = $cms.dom.$('link[id^="css-' + sheetName + '"]');
+
+        if (linkEl && !(new RegExp('^css-' + sheetName + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(linkEl.id)) {
+            linkEl = null;
         }
 
-        if (isEl(resourceEls)) {
-            resourceEls = [resourceEls];
+        if (!linkEl) {
+            linkEl = document.createElement('link');
+            linkEl.id = 'css-' + sheetName;
+            linkEl.rel = 'stylesheet';
+            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
+            document.head.appendChild(linkEl);
         }
 
-        if (!Array.isArray(resourceEls)) {
-            $cms.error('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
-        }
-
-        resourceEls.forEach(function (el) {
-            if (!isEl(el)) {
-                $cms.error('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
-                return;
-            }
-
-            if (el.localName === 'script') {
-                if (el.src && !$cms.dom.hasScriptLoaded(el) && (!el.type || (el.type === 'application/javascript') || (el.type === 'text/javascript'))) {
-                    promises.push(new Promise(function (resolve) {
-                        el.addEventListener('load', function (e) {
-                            $cms.verbose('$cms.waitForResources(): Resource loaded successfully', el);
-                            resolve(e)
-                        });
-                        el.addEventListener('error', function (e) {
-                            $cms.error('$cms.waitForResources(): Resource failed to load', el);
-                            resolve(e); // Because reject(e) will make Promise.all halt
-                        });
-                    }));
-                }
-            } else if (el.localName === 'img') {
-                if (el.src && !el.complete) {
-                    promises.push(new Promise(function (resolve) {
-                        el.addEventListener('load', function (e) {
-                            $cms.verbose('$cms.waitForResources(): Resource loaded successfully', el);
-                            resolve(e)
-                        });
-                        el.addEventListener('error', function (e) {
-                            $cms.error('$cms.waitForResources(): Resource failed to load', el);
-                            resolve(e); // Because reject(e) will make Promise.all halt
-                        });
-                    }));
-                }
-            }
-        });
-
-        return Promise.all(promises);
+        return Promise.resolve();
     }
 
     /**
-     *
-     * @param sheet
+     * @param sheetNames
+     * @returns { Promise }
      */
-    function requireCss(sheet) {
-        if ($cms.dom.$('link#css-' + sheet)) {
-            return;
-        }
-        var link = document.createElement('link');
-        link.id = 'css-' + sheet;
-        link.rel = 'stylesheet';
-        link.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheet + $cms.keepStub();
-        document.head.appendChild(link);
+    function requireCss(sheetNames) {
+        sheetNames = arrVal(sheetNames);
+
+        return Promise.all(sheetNames.map(_requireCss));
     }
 
     var requireJavascriptPromises = Object.create(null);
+
+    /**
+     * @private
+     * @param script
+     * @returns { Promise }
+     */
     function _requireJavascript(script) {
+        var scriptEl;
+
         script = strVal(script);
 
-        if (requireJavascriptPromises[script] == null) {
-            var scriptEl = $cms.dom.$('script#javascript-' + script) || $cms.dom.$('script#javascript-' + script + '_non_minified') || $cms.dom.$('script[src='+ script + ']');
+        if (requireJavascriptPromises[script] != null) {
+            return requireJavascriptPromises[script];
+        }
 
-            if (scriptEl) {
-                if ($cms.dom.hasScriptLoaded(scriptEl)) {
-                    requireJavascriptPromises[script] = Promise.resolve({ target: scriptEl });
-                } else {
-                    requireJavascriptPromises[script] = new Promise(function (resolve, reject) {
-                        scriptEl.addEventListener('load', function (e) {
-                            resolve(e)
-                        });
-                        scriptEl.addEventListener('error', function (e) {
-                            $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
-                            resolve(e); // Because reject(e) will make Promise.all halt
-                        });
-                    });
-                }
-
-            } else {
-                requireJavascriptPromises[script] = new Promise(function (resolve, reject) {
-                    var sEl = document.createElement('script');
-                    sEl.defer = true;
-                    sEl.addEventListener('load', function (e) {
-                        resolve(e)
-                    });
-                    sEl.addEventListener('error', function (e) {
-                        $cms.error('$cms.requireJavascript(): Error loading script "' + script + '"', e);
-                        resolve(e); // Because reject(e) will make Promise.all halt
-                    });
-
-                    if (isAbsoluteHttp(script)) {
-                      sEl.src = script;
-                    } else {
-                        sEl.id = 'javascript-' + script;
-                        sEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
-                    }
-
-                    if (document.body) {
-                        document.body.appendChild(sEl);
-                    } else {
-                        document.head.appendChild(sEl);
-                    }
-                });
+        if (isAbsoluteOrSchemeRelative(script) && $cms.dom.hasScriptLoaded(script)) {
+            return (requireJavascriptPromises[script] = Promise.resolve());
+        } else if (validIdRE.test(script)) {
+            scriptEl = $cms.dom.$('script[id^="javascript-' + script + '"]');
+            if (scriptEl && !(new RegExp('^javascript-' + script + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(scriptEl.id)) {
+                scriptEl = null;
             }
+        }
+
+        if (!scriptEl) {
+            scriptEl = document.createElement('script');
+            scriptEl.defer = true;
+            if (isAbsoluteOrSchemeRelative(script)) {
+                scriptEl.src = script;
+            } else {
+                scriptEl.id = 'javascript-' + script;
+                scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
+            }
+
+            document.body.appendChild(scriptEl);
+            requireJavascriptPromises[script] = $cms.waitForResources(scriptEl);
         }
 
         return requireJavascriptPromises[script];
@@ -1835,9 +1883,34 @@
      * @returns { Promise }
      */
     function requireJavascript(scripts) {
+        var calls = [];
+
         scripts = arrVal(scripts);
 
-        return Promise.all(scripts.map(_requireJavascript));
+        scripts.forEach(function (script) {
+            calls.push(_requireJavascript.bind(undefined, script));
+        });
+
+        return sequentialPromises(calls);
+    }
+
+    function sequentialPromises(funcs) {
+        funcs = arrVal(funcs, true);
+
+        if (funcs.length < 1) {
+            return Promise.resolve();
+        }
+
+        var func = funcs.shift(),
+            promise = func();
+        if (!isPromise(promise)) {
+            promise = Promise.resolve(promise);
+        }
+        return promise.then(function(val){
+            return (funcs.length > 0) ? sequentialPromises(funcs) : val;
+        }, function () {
+            return (funcs.length > 0) ? sequentialPromises(funcs) : val;
+        });
     }
 
     /**
@@ -2052,7 +2125,7 @@
      *
      * @param cookieName
      * @param defaultValue
-     * @returns {*}
+     * @returns {string}
      */
     function readCookie(cookieName, defaultValue) {
         cookieName = strVal(cookieName);
@@ -2213,194 +2286,191 @@
         return (property !== undefined) ? cs.getPropertyValue(property) : cs;
     }
 
-    /**
-     * Returns a single matching child element, defaults to 'document' as parent
-     * @memberof $cms.dom
-     * @param context
-     * @param id
-     * @returns {*}
-     */
-    $cms.dom.$id = function $id(context, id) {
-        if (id === undefined) {
-            id = context;
-            context = document;
-        } else {
-            context = nodeArg(context);
-        }
-        id = strVal(id);
 
-        return ('getElementById' in context) ? context.getElementById(id) : context.querySelector('#' + id);
-    };
+    var rgxIdSelector = /^\#[\w\-]+$/,
+        rgxSimpleSelector = /^[\#\.]?[\w\-]+$/,
+        // Special attributes that should be set via method calls
+        methodAttributes = { val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1 },
+        rgxNotWhite = /\S+/g;
 
-    var rgxIdSelector = /^\#[\w\-]+$/;
-    /**
-     * Returns a single matching child element, `context` defaults to 'document'
-     * @memberof $cms.dom
-     * @param context
-     * @param selector
-     * @returns {*}
-     */
-    $cms.dom.$ = function $(context, selector) {
-        if (selector === undefined) {
-            selector = context;
-            context = document;
-        } else {
-            context = nodeArg(context);
-        }
-        selector = strVal(selector);
-
-        return (rgxIdSelector.test(selector) && ('getElementById' in context)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
-    };
-
-    var rgxSimpleSelector = /^[\#\.]?[\w\-]+$/;
-    /**
-     * `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.
-     * @memberof $cms.dom
-     * @param context
-     * @param selector
-     * @returns {*}
-     */
-    $cms.dom.$$ = function $$(context, selector) {
-        var found;
-
-        if (selector === undefined) {
-            selector = context;
-            context = document;
-        } else {
-            context = nodeArg(context);
-        }
-        selector = strVal(selector);
-
-        // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
-        if (rgxSimpleSelector.test(selector) && isDocOrEl(context)) {
-            switch (selector[0]) {
-                case '#': // selector is an ID
-                    return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
-                    break;
-
-                case '.': // selector is a class name
-                    return toArray(context.getElementsByClassName(selector.substr(1)));
-                    break;
-
-                default: // selector is a tag name
-                    return toArray(context.getElementsByTagName(selector));
-                    break;
+    /** @namespace $cms */
+    $cms.dom = extendDeep($cms.dom, /**@lends $cms.dom*/{
+        /**
+         * Returns a single matching child element, defaults to 'document' as parent
+         * @method
+         * @param context
+         * @param id
+         * @returns {*}
+         */
+        $id: function $id(context, id) {
+            if (id === undefined) {
+                id = context;
+                context = document;
+            } else {
+                context = nodeArg(context);
             }
-        }
+            id = strVal(id);
 
-        return toArray(context.querySelectorAll(selector));
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param context
-     * @param selector
-     * @returns { Element }
-     */
-    $cms.dom.$last = function last(context, selector) {
-        return $cms.dom.$$(context, selector).pop();
-    };
-
-    /**
-     * This one (3 dollars) also includes the context element (at offset 0) if it matches the selector
-     * @memberof $cms.dom
-     * @param context
-     * @param selector
-     * @returns {*}
-     */
-    $cms.dom.$$$ = function $$$(context, selector) {
-        if (selector === undefined) {
-            selector = context;
-            context = document;
-        } else {
-            context = nodeArg(context);
-        }
-        selector = strVal(selector);
-
-        var els = $cms.dom.$$(context, selector);
-
-        if (isEl(context) && $cms.dom.matches(context, selector)) {
-            els.unshift(context);
-        }
-
-        return els;
-    };
-
-    // Special attributes that should be set via method calls
-    var methodAttributes = { val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1 };
-
-    /**
-     * @memberof $cms.dom
-     * @param tag
-     * @param attributes
-     * @param properties
-     * @returns { Element }
-     */
-    $cms.dom.create = function create(tag, attributes, properties) {
-        var el = document.createElement(strVal(tag));
-
-        if (isObj(attributes)) {
-            each(attributes, function (key, value) {
-                if (key in methodAttributes) {
-                    $cms.dom[key](el, value);
-                } else {
-                    $cms.dom.attr(el, key, value)
-                }
-            });
-        }
-
-        if (isObj(properties)) {
-            extendDeep(el, properties);
-        }
-
-        return el;
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param el
-     * @param value
-     * @returns {*}
-     */
-    $cms.dom.val = function val(el, value) {
-        el = elArg(el);
-
-        if (value === undefined) {
-            if ((el.localName !== 'select') || !el.multiple) {
-                return el.value;
+            return ('getElementById' in context) ? context.getElementById(id) : context.querySelector('#' + id);
+        },
+        /**
+         * Returns a single matching child element, `context` defaults to 'document'
+         * @memberof $cms.dom
+         * @param context
+         * @param selector
+         * @returns {*}
+         */
+        $: function $(context, selector) {
+            if (selector === undefined) {
+                selector = context;
+                context = document;
+            } else {
+                context = nodeArg(context);
             }
+            selector = strVal(selector);
 
-            // Special case: <select [multiple]>
-            var values = [], i;
-            for (i = 0; i < el.options.length; i++) {
-                if (el.options[i].selected) {
-                    values.push(el.options[i].value);
+            return (rgxIdSelector.test(selector) && ('getElementById' in context)) ? context.getElementById(selector.substr(1)) : context.querySelector(selector);
+        },
+        /**
+         * `$cms.dom.$$` is a CSS selector implementation which uses `document.querySelectorAll` and optimizes for some special cases, like `#id`, `.someclass` and `div`.
+         * @memberof $cms.dom
+         * @param context
+         * @param selector
+         * @returns {*}
+         */
+        $$: function $$(context, selector) {
+            var found;
+
+            if (selector === undefined) {
+                selector = context;
+                context = document;
+            } else {
+                context = nodeArg(context);
+            }
+            selector = strVal(selector);
+
+            // DocumentFragment is missing getElementById and getElementsBy(Tag|Class)Name in some implementations
+            if (rgxSimpleSelector.test(selector) && isDocOrEl(context)) {
+                switch (selector[0]) {
+                    case '#': // selector is an ID
+                        return (found = (('getElementById' in context) ? context.getElementById(selector.substr(1)) : context.querySelector(selector))) ? [found] : [];
+                        break;
+
+                    case '.': // selector is a class name
+                        return toArray(context.getElementsByClassName(selector.substr(1)));
+                        break;
+
+                    default: // selector is a tag name
+                        return toArray(context.getElementsByTagName(selector));
+                        break;
                 }
             }
 
-            return values;
+            return toArray(context.querySelectorAll(selector));
+        },
+        /**
+         * @memberof $cms.dom
+         * @param context
+         * @param selector
+         * @returns { Element }
+         */
+        $last: function last(context, selector) {
+            return $cms.dom.$$(context, selector).pop();
+        },
+        /**
+         * This one (3 dollars) also includes the context element (at offset 0) if it matches the selector
+         * @memberof $cms.dom
+         * @param context
+         * @param selector
+         * @returns {*}
+         */
+        $$$: function $$$(context, selector) {
+            if (selector === undefined) {
+                selector = context;
+                context = document;
+            } else {
+                context = nodeArg(context);
+            }
+            selector = strVal(selector);
+
+            var els = $cms.dom.$$(context, selector);
+
+            if (isEl(context) && $cms.dom.matches(context, selector)) {
+                els.unshift(context);
+            }
+
+            return els;
+        },
+        /**
+         * @memberof $cms.dom
+         * @param tag
+         * @param attributes
+         * @param properties
+         * @returns { Element }
+         */
+        create: function create(tag, attributes, properties) {
+            var el = document.createElement(strVal(tag));
+
+            if (isObj(attributes)) {
+                each(attributes, function (key, value) {
+                    if (key in methodAttributes) {
+                        $cms.dom[key](el, value);
+                    } else {
+                        $cms.dom.attr(el, key, value)
+                    }
+                });
+            }
+
+            if (isObj(properties)) {
+                extendDeep(el, properties);
+            }
+
+            return el;
+        },
+        /**
+         * @memberof $cms.dom
+         * @param el
+         * @param value
+         * @returns {*}
+         */
+        val: function val(el, value) {
+            el = elArg(el);
+
+            if (value === undefined) {
+                if ((el.localName !== 'select') || !el.multiple) {
+                    return el.value;
+                }
+
+                // Special case: <select [multiple]>
+                var values = [], i;
+                for (i = 0; i < el.options.length; i++) {
+                    if (el.options[i].selected) {
+                        values.push(el.options[i].value);
+                    }
+                }
+
+                return values;
+            }
+
+            el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
+        },
+        /**
+         * @memberof $cms.dom
+         * @param node
+         * @param newText
+         * @returns {string|*}
+         */
+        text: function text(node, newText) {
+            node = nodeArg(node);
+
+            if (newText === undefined) {
+                return node.textContent;
+            }
+
+            node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
         }
+    });
 
-        el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param node
-     * @param newText
-     * @returns {string|*}
-     */
-    $cms.dom.text = function text(node, newText) {
-        node = nodeArg(node);
-
-        if (newText === undefined) {
-            return node.textContent;
-        }
-
-        node.textContent = strVal((typeof newText === 'function') ? newText.call(node, node.textContent, node) : newText);
-    };
-
-    var rgxNotWhite = /\S+/g;
     /** @class */
     function Data() {
         this.expando = $cms.id + '-data-' + Data.uid++;
@@ -2702,17 +2772,55 @@
         return parent;
     };
 
-    $cms.dom.hasScriptLoaded = function hasScriptLoaded(elOrSrc) {
-        if (isNode(elOrSrc)) {
-            return $cms.loadedScripts.includes(elOrSrc);
+    $cms.dom.hasStyleSheetLoaded = function (elOrHref) {
+        if (isNode(elOrHref)) {
+            return $cms.styleSheetsLoaded.includes(elOrHref);
         }
 
+        // It's a href value
+        var href = strVal(elOrHref),
+            linkEl;
+
+        if (href === '') {
+            return false;
+        }
+
+        if (isSchemeRelative(href)) {
+            href = window.location.protocol + href;
+        } else if (isRelative(href)) {
+            href = $cms.baseUrl(href);
+        }
+
+        for (var i = 0; i < $cms.styleSheetsLoaded.length; i++) {
+            linkEl = $cms.styleSheetsLoaded[i];
+            if (linkEl.href === href) {
+                return true;
+            }
+        }
+    };
+
+    $cms.dom.hasScriptLoaded = function hasScriptLoaded(elOrSrc) {
+        if (isNode(elOrSrc)) {
+            return $cms.scriptsLoaded.includes(elOrSrc);
+        }
+
+        // It's an src value
+        // NB: Inaccurate when a script with the same src is supposed to be loaded/executed multiple times.
         var src = strVal(elOrSrc),
             scriptEl;
 
-        // NB: Inaccurate when a script with the same src is supposed to be loaded/executed multiple times.
-        for (var i = 0; i < $cms.loadedScripts.length; i++) {
-            scriptEl = $cms.loadedScripts[i];
+        if (src === '') {
+            return false;
+        }
+
+        if (isSchemeRelative(src)) {
+            src = window.location.protocol + src;
+        } else if (isRelative(src)) {
+            src = $cms.baseUrl(src);
+        }
+
+        for (var i = 0; i < $cms.scriptsLoaded.length; i++) {
+            scriptEl = $cms.scriptsLoaded[i];
             if (scriptEl.src === src) {
                 return true;
             }
@@ -2780,12 +2888,11 @@
     $cms.dom.parents = function parents(el, selector) {
         el = elArg(el);
 
-        var parents = [],
-            parent;
+        var parents = [];
 
-        while (parent = el.parentElement) {
-            if ((selector === undefined) || $cms.dom.matches(parent, selector)) {
-                parents.push(parent);
+        while (el = el.parentElement) {
+            if ((selector === undefined) || $cms.dom.matches(el, selector)) {
+                parents.push(el);
             }
         }
 
@@ -2801,11 +2908,9 @@
     $cms.dom.parent = function parent(el, selector) {
         el = elArg(el);
 
-        var parent;
-
-        while (parent = el.parentElement) {
-            if ((selector === undefined) || $cms.dom.matches(parent, selector)) {
-                return parent;
+        while (el = el.parentElement) {
+            if ((selector === undefined) || $cms.dom.matches(el, selector)) {
+                return el;
             }
         }
 
@@ -2957,7 +3062,7 @@
      * @memberof $cms.dom
      * @param el { Window|Document|Element|string }
      * @param event {string|object}
-     * @param selector {string|function}
+     * @param [selector] {string|function}
      * @param [data] {object|function}
      * @param [callback] {function}
      * @param [one] {number}
@@ -3278,7 +3383,7 @@
     };
 
     /**
-     *
+     * @memberof $cms.dom
      * @param el
      */
     $cms.dom.hide = function hide(el) {
@@ -3427,6 +3532,46 @@
 
     /**
      * @memberof $cms.dom
+     * @param el
+     * @param duration
+     * @param callback
+     */
+    $cms.dom.fadeToggle = function fadeToggle(el, duration, callback) {
+        // To be implemented
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param duration
+     * @param callback
+     */
+    $cms.dom.slideDown = function slideDown(el, duration, callback) {
+        // To be implemented
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param duration
+     * @param callback
+     */
+    $cms.dom.slideUp = function slideUp(el, duration, callback) {
+        // To be implemented
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param duration
+     * @param callback
+     */
+    $cms.dom.slideToggle = function slideToggle(el, duration, callback) {
+        // To be implemented
+    };
+
+    /**
+     * @memberof $cms.dom
      * @param keyboardEvent
      * @param checkKey
      * @returns {*}
@@ -3541,6 +3686,7 @@
      */
     $cms.dom.removeAttr = function removeAttr(el, name) {
         el = elArg(el);
+        name = strVal(name);
 
         name.split(' ').forEach(function (attribute) {
             setAttr(el, attribute, null)
@@ -3550,7 +3696,7 @@
     var fragmentRE = /^\s*<(\w+|!)[^>]*>/,
         singleTagRE = /^<(\w+)\s*\/?>(?:<\/\1>|)$/,
         tagExpanderRE = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig,
-        jsTypeRE = /^(?:|application\/javascript|type\/javascript)$/i,
+        jsTypeRE = /^(?:|application\/javascript|text\/javascript)$/i,
         table = document.createElement('table'),
         tableRow = document.createElement('tr'),
         containers = {
@@ -3566,7 +3712,7 @@
     // This function can be overridden in plugins for example to make
     // it compatible with browsers that don't support the DOM fully.
     $cms.dom.fragment = function(html, name, properties) {
-        var dom, container;
+        var container, dom, i;
 
         html = strVal(html);
 
@@ -3589,6 +3735,13 @@
             forEach(container.childNodes, function(child){
                 container.removeChild(child)
             });
+
+            for (i = 0; i < dom.length; i++) {
+                // Cloning script[src] elements inserted using innerHTML is required for them to actually work
+                if ((dom[i].localName === 'script') && jsTypeRE.test(dom[i].type) && dom[i].src) {
+                    dom[i] = cloneScriptEl(dom[i]);
+                }
+            }
         }
 
         if (isPlainObj(properties)) {
@@ -3621,20 +3774,18 @@
     function createInsertionFunction(funcName) {
         var inside = (funcName === 'prepend') || (funcName === 'append');
 
-        return function insertionFunction(target/*, ...args*/) {
+        return function insertionFunction(target/*, ...args*/) {  // `args` can be nodes, arrays of nodes and HTML strings
             target = elArg(target);
 
-            // `args` can be nodes, arrays of nodes and HTML strings
             var args = toArray(arguments, 1),
                 nodes = [],
-                parent = inside ? target : target.parentNode;
+                newParent = inside ? target : target.parentNode;
 
             args.forEach(function(arg) {
                 if (Array.isArray(arg)) {
                     arg.forEach(function(el) {
                         if (Array.isArray(el)) {
                             nodes = nodes.concat(el);
-                            pushArray(nodes, el);
                         } else if (isNode(el)) {
                             nodes.push(el);
                         } else {
@@ -3662,63 +3813,63 @@
                     funcName === 'before' ? target :
                         null;
 
-            var parentInDocument = $cms.dom.contains(document.documentElement, parent),
-                promises = [];
+            var parentInDocument = $cms.dom.contains(document.documentElement, newParent),
+                scriptEls = [];
 
             nodes.forEach(function (node) {
                 if (!isNode(node)) {
                     return;
                 }
 
-                if (!parent) {
+                if (!newParent) {
                     node.remove();
                     return;
                 }
                 // Insert the node
-                parent.insertBefore(node, target);
+                newParent.insertBefore(node, target);
 
                 if (!isEl(node)) {
                     return;
                 }
 
-                var scriptEls = parentInDocument ? $cms.dom.$$$(node, 'script') : [];
-
-                // Patch silly DOM behavior when dynamically inserting script elements
-                if (scriptEls.length > 0) {
-                    promises.push(new Promise(function (resolve) {
-                        scriptEls.forEach(function (el) {
-                            if (el.src && jsTypeRE.test(el.type) && !$cms.dom.hasScriptLoaded(el)) {
-                                el.parentNode.replaceChild(cloneScriptEl(el), el);
-                            }
-                        });
-
-                        $cms.waitForResources($cms.dom.$$$(node, 'script[src]')).then(function () {
-                            $cms.dom.$$$(node, 'script').forEach(function (el) {
-                                if (!el.src && jsTypeRE.test(el.type)) {
-                                    var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
-                                    win['eval'].call(win, el.innerHTML); // eval() call
-                                }
-                            });
-
-                            $cms.attachBehaviors(node);
-                            resolve();
-                        });
-                    }));
-                } else {
-                    $cms.attachBehaviors(node);
+                if (parentInDocument) {
+                    var tmp = $cms.dom.$$$(node, 'script');
+                    if (tmp.length > 0) {
+                        scriptEls = scriptEls.concat(tmp);
+                    }
                 }
             });
 
-            return Promise.all(promises);
+            if (scriptEls.length > 0) {
+                return new Promise(function (resolve) {
+                    $cms.waitForResources(scriptEls).then(function () {
+                        // Patch stupid DOM behavior when dynamically inserting inline script elements
+                        scriptEls.forEach(function (el) {
+                            if (!el.src && jsTypeRE.test(el.type)) {
+                                var win = el.ownerDocument ? el.ownerDocument.defaultView : window;
+                                win['eval'].call(win, el.innerHTML); // eval() call
+                            }
+                        });
+
+                        nodes.forEach(function (node) {
+                            if (isEl(node)) {
+                                $cms.attachBehaviors(node);
+                            }
+                        });
+
+                        resolve();
+                    });
+                });
+            } else {
+                nodes.forEach(function (node) {
+                    if (isEl(node)) {
+                        $cms.attachBehaviors(node);
+                    }
+                });
+
+                return Promise.resolve();
+            }
         };
-    }
-
-    function _forEachPromise(arr, callback) {
-        // To be implemented
-    }
-
-    function forEachPromise(arr, callback) {
-        // To be implemented
     }
 
     function cloneScriptEl(scriptEl) {
@@ -3742,21 +3893,45 @@
 
         clone.defer = !!scriptEl.defer;
         clone.async = !!scriptEl.async;
-        clone.src = scriptEl.src;
+        clone.src = strVal(scriptEl.src);
 
         return clone;
     }
 
     /**
      * @memberof $cms.dom
+     * @method
+     * @param el
+     * @param html
      * @returns { Promise }
      */
     $cms.dom.after = createInsertionFunction('after');
 
+    /**
+     * @memberof $cms.dom
+     * @method
+     * @param el
+     * @param html
+     * @returns { Promise }
+     */
     $cms.dom.prepend = createInsertionFunction('prepend');
 
+    /**
+     * @memberof $cms.dom
+     * @method
+     * @param el
+     * @param html
+     * @returns { Promise }
+     */
     $cms.dom.before = createInsertionFunction('before');
 
+    /**
+     * @memberof $cms.dom
+     * @method append
+     * @param el
+     * @param html
+     * @returns { Promise }
+     */
     $cms.dom.append = createInsertionFunction('append');
 
     /**
@@ -3789,6 +3964,23 @@
 
         $cms.dom.empty(el);
         return $cms.dom.append(el, html);
+    };
+
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param text
+     * @returns {string}
+     */
+    $cms.dom.text = function text(el, text) {
+        el = elArg(el);
+
+        if (text === undefined) {
+            return el.textContent;
+        }
+
+        return el.textContent = strVal(text);
     };
 
     /**
@@ -3954,18 +4146,18 @@
      * @memberof $cms.dom
      * @param pf
      * @param frame
-     * @param leave_gap_top
-     * @param leave_height
+     * @param leaveGapTop
+     * @param leaveHeight
      */
-    $cms.dom.animateFrameLoad = function animateFrameLoad(pf, frame, leave_gap_top, leave_height) {
+    $cms.dom.animateFrameLoad = function animateFrameLoad(pf, frame, leaveGapTop, leaveHeight) {
         if (!pf) {
             return;
         }
 
-        leave_gap_top = +leave_gap_top || 0;
-        leave_height = !!leave_height;
+        leaveGapTop = +leaveGapTop || 0;
+        leaveHeight = !!leaveHeight;
 
-        if (!leave_height) {
+        if (!leaveHeight) {
             // Enough to stop jumping around
             pf.style.height = window.top.$cms.dom.getWindowHeight() + 'px';
         }
@@ -3979,7 +4171,7 @@
         }
 
         if (window === window.top) {
-            window.top.$cms.dom.smoothScroll($cms.dom.findPosY(pf) + extra - leave_gap_top);
+            window.top.$cms.dom.smoothScroll($cms.dom.findPosY(pf) + extra - leaveGapTop);
         }
     };
 
@@ -3999,8 +4191,7 @@
         try {
             doc = iframe.contentDocument;
             de = doc.documentElement;
-        }
-        catch (e) {
+        } catch (e) {
             // May be connection interference somehow
             iframe.scrolling = 'auto';
             return;
@@ -4053,15 +4244,15 @@
                 return;
             }
 
-            var i_new = doc.createElement('img');
-            i_new.src = doc.getElementById('loading_image').src;
+            var iNew = doc.createElement('img');
+            iNew.src = doc.getElementById('loading_image').src;
 
-            var i_default = doc.getElementById('loading_image');
-            if (i_default) {
-                i_new.className = i_default.className;
-                i_new.alt = i_default.alt;
-                i_new.id = i_default.id;
-                i_default.parentNode.replaceChild(i_new, i_default);
+            var iDefault = doc.getElementById('loading_image');
+            if (iDefault) {
+                iNew.className = iDefault.className;
+                iNew.alt = iDefault.alt;
+                iNew.id = iDefault.id;
+                iDefault.parentNode.replaceChild(iNew, iDefault);
             }
         }, 0);
     };
@@ -4069,50 +4260,50 @@
     /**
      * Smoothly scroll to another position on the page
      * @memberof $cms.dom
-     * @param dest_y
-     * @param expected_scroll_y
+     * @param destY
+     * @param expectedScrollY
      * @param dir
-     * @param event_after
+     * @param eventAfter
      */
-    $cms.dom.smoothScroll = function smoothScroll(dest_y, expected_scroll_y, dir, event_after) {
+    $cms.dom.smoothScroll = function smoothScroll(destY, expectedScrollY, dir, eventAfter) {
         if (!$cms.$CONFIG_OPTION('enable_animations')) {
             try {
-                window.scrollTo(0, dest_y);
+                window.scrollTo(0, destY);
             } catch (ignore) {}
             return;
         }
 
-        var scroll_y = window.pageYOffset;
-        if (typeof dest_y === 'string') {
-            dest_y = $cms.dom.findPosY($cms.dom.$id(dest_y), true);
+        var scrollY = window.pageYOffset;
+        if (typeof destY === 'string') {
+            destY = $cms.dom.findPosY($cms.dom.$id(destY), true);
         }
-        if (dest_y < 0) {
-            dest_y = 0;
+        if (destY < 0) {
+            destY = 0;
         }
-        if ((expected_scroll_y != null) && (expected_scroll_y != scroll_y)) {
+        if ((expectedScrollY != null) && (expectedScrollY != scrollY)) {
             // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
             return;
         }
 
-        dir = (dest_y > scroll_y) ? 1 : -1;
+        dir = (destY > scrollY) ? 1 : -1;
 
-        var distance_to_go = (dest_y - scroll_y) * dir;
-        var dist = Math.round(dir * (distance_to_go / 25));
+        var distanceToGo = (destY - scrollY) * dir;
+        var dist = Math.round(dir * (distanceToGo / 25));
 
-        if (dir == -1 && dist > -25) {
+        if (dir === -1 && dist > -25) {
             dist = -25;
         }
-        if (dir == 1 && dist < 25) {
+        if (dir === 1 && dist < 25) {
             dist = 25;
         }
 
-        if (((dir == 1) && (scroll_y + dist >= dest_y)) || ((dir == -1) && (scroll_y + dist <= dest_y)) || (distance_to_go > 2000)) {
+        if (((dir === 1) && (scrollY + dist >= destY)) || ((dir === -1) && (scrollY + dist <= destY)) || (distanceToGo > 2000)) {
             try {
-                window.scrollTo(0, dest_y);
+                window.scrollTo(0, destY);
             } catch (e) {
             }
-            if (event_after) {
-                event_after();
+            if (eventAfter) {
+                eventAfter();
             }
             return;
         }
@@ -4124,7 +4315,7 @@
         }
 
         window.setTimeout(function () {
-            $cms.dom.smoothScroll(dest_y, scroll_y + dist, dir, event_after);
+            $cms.dom.smoothScroll(destY, scrollY + dist, dir, eventAfter);
         }, 30);
     };
 
@@ -4137,16 +4328,16 @@
         $cms.dom.registerMouseListener = noop; // ensure this function is only executed once
 
         if (e) {
-            window.mouse_x = get_mouse_x(e);
-            window.mouse_y = get_mouse_y(e);
+            window.mouse_x = getMouseX(e);
+            window.mouse_y = getMouseY(e);
         }
 
         document.documentElement.addEventListener('mousemove', function (event) {
-            window.mouse_x = get_mouse_x(event);
-            window.mouse_y = get_mouse_y(event);
+            window.mouse_x = getMouseX(event);
+            window.mouse_y = getMouseY(event);
         });
 
-        function get_mouse_x(event) {
+        function getMouseX(event) {
             try {
                 if (event.pageX) {
                     return event.pageX;
@@ -4158,7 +4349,7 @@
             return 0;
         }
 
-        function get_mouse_y(event) {
+        function getMouseY(event) {
             try {
                 if (event.pageY) {
                     return event.pageY;
@@ -4197,10 +4388,10 @@
     $cms.dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
         win || (win = window);
 
-        var rect_a = win.document.body.parentElement.getBoundingClientRect(),
-            rect_b = win.document.body.getBoundingClientRect(),
-            a = (rect_a.bottom - rect_a.top),
-            b = (rect_b.bottom - rect_b.top);
+        var rectA = win.document.body.parentElement.getBoundingClientRect(),
+            rectB = win.document.body.getBoundingClientRect(),
+            a = (rectA.bottom - rectA.top),
+            b = (rectB.bottom - rectB.top);
 
         return (a > b) ? a : b;
     };
@@ -4209,15 +4400,15 @@
      * @memberof $cms.dom
      * @deprecated
      * @param el
-     * @param not_relative
+     * @param notRelative
      * @returns {number}
      */
-    $cms.dom.findPosX = function findPosX(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
-        not_relative = !!not_relative;
+    $cms.dom.findPosX = function findPosX(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+        notRelative = !!notRelative;
 
         var left = el.getBoundingClientRect().left + window.pageXOffset;
 
-        if (!not_relative) {
+        if (!notRelative) {
             var position;
             while (el) {
                 if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
@@ -4235,16 +4426,16 @@
      * @memberof $cms.dom
      * @deprecated
      * @param el
-     * @param not_relative
+     * @param notRelative
      * @returns {number}
      */
-    $cms.dom.findPosY = function findPosY(el, not_relative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+    $cms.dom.findPosY = function findPosY(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
         el = elArg(el);
-        not_relative = !!not_relative;
+        notRelative = !!notRelative;
 
         var top = el.getBoundingClientRect().top + window.pageYOffset;
 
-        if (!not_relative) {
+        if (!notRelative) {
             var position;
             while (el) {
                 if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
@@ -4262,52 +4453,52 @@
      * @memberof $cms.dom
      * @deprecated
      * @param name
-     * @param min_height
+     * @param minHeight
      */
-    $cms.dom.resizeFrame = function resizeFrame(name, min_height) {
-        min_height = +min_height || 0;
+    $cms.dom.resizeFrame = function resizeFrame(name, minHeight) {
+        minHeight = +minHeight || 0;
 
-        var frame_element = $cms.dom.$id(name),
-            frame_window;
+        var frameElement = $cms.dom.$id(name),
+            frameWindow;
 
         if (window.frames[name] !== undefined) {
-            frame_window = window.frames[name];
+            frameWindow = window.frames[name];
         } else if (window.parent && window.parent.frames[name]) {
-            frame_window = window.parent.frames[name];
+            frameWindow = window.parent.frames[name];
         } else {
             return;
         }
 
-        if ((frame_element) && (frame_window) && (frame_window.document) && (frame_window.document.body)) {
-            var h = $cms.dom.getWindowScrollHeight(frame_window);
+        if ((frameElement) && (frameWindow) && (frameWindow.document) && (frameWindow.document.body)) {
+            var h = $cms.dom.getWindowScrollHeight(frameWindow);
 
-            if ((h === 0) && (frame_element.parentElement.style.display === 'none')) {
-                h = min_height ? min_height : 100;
+            if ((h === 0) && (frameElement.parentElement.style.display === 'none')) {
+                h = minHeight ? minHeight : 100;
 
-                if (frame_window.parent) {
+                if (frameWindow.parent) {
                     window.setTimeout(function () {
-                        if (frame_window.parent) {
-                            frame_window.parent.$cms.dom.triggerResize();
+                        if (frameWindow.parent) {
+                            frameWindow.parent.$cms.dom.triggerResize();
                         }
                     }, 0);
                 }
             }
 
-            if (h + 'px' != frame_element.style.height) {
-                if ((frame_element.scrolling !== 'auto' && frame_element.scrolling !== 'yes') || (frame_element.style.height == '0px')) {
-                    frame_element.style.height = ((h >= min_height) ? h : min_height) + 'px';
-                    if (frame_window.parent) {
+            if (h + 'px' != frameElement.style.height) {
+                if ((frameElement.scrolling !== 'auto' && frameElement.scrolling !== 'yes') || (frameElement.style.height == '0px')) {
+                    frameElement.style.height = ((h >= minHeight) ? h : minHeight) + 'px';
+                    if (frameWindow.parent) {
                         window.setTimeout(function () {
-                            if (frame_window.parent) frame_window.parent.$cms.dom.triggerResize();
+                            if (frameWindow.parent) frameWindow.parent.$cms.dom.triggerResize();
                         });
                     }
-                    frame_element.scrolling = 'no';
-                    frame_window.onscroll = function (event) {
+                    frameElement.scrolling = 'no';
+                    frameWindow.onscroll = function (event) {
                         if (event == null) {
                             return false;
                         }
                         try {
-                            frame_window.scrollTo(0, 0);
+                            frameWindow.scrollTo(0, 0);
                         } catch (ignore) {}
 
                         return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
@@ -4316,16 +4507,16 @@
             }
         }
 
-        frame_element.style.transform = 'scale(1)'; // Workaround Chrome painting bug
+        frameElement.style.transform = 'scale(1)'; // Workaround Chrome painting bug
     };
 
     /**
      * @memberof $cms.dom
      * @deprecated
-     * @param and_subframes
+     * @param andSubframes
      */
-    $cms.dom.triggerResize = function triggerResize(and_subframes) {
-        and_subframes = !!and_subframes;
+    $cms.dom.triggerResize = function triggerResize(andSubframes) {
+        andSubframes = !!andSubframes;
 
         if (!window.parent || !window.parent.document) {
             return;
@@ -4341,7 +4532,7 @@
             }
         }
 
-        if (and_subframes) {
+        if (andSubframes) {
             iframes = document.querySelectorAll('iframe');
             for (i = 0; i < iframes.length; i++) {
                 if ((iframes[i].name != '') && ((iframes[i].classList.contains('expandable_iframe')) || (iframes[i].classList.contains('dynamic_iframe')))) {
@@ -4513,7 +4704,7 @@
 
         settings || (settings = $cms.settings);
 
-        $cms.waitForResources($cms.dom.$$$(context, 'script[src]')).then(function () { // Wait for <script> dependencies to load
+        //$cms.waitForResources($cms.dom.$$$(context, 'script[src]')).then(function () { // Wait for <script> dependencies to load
             // Execute all of them.
             var names = behaviorNamesByPriority();
 
@@ -4543,7 +4734,7 @@
                     _attach(i);
                 }
             }
-        });
+        //});
 
         return Promise.all([]);
     }
@@ -4583,110 +4774,108 @@
     /**
      * This function will load a block, with options for parameter changes, and render the results in specified way - with optional callback support
      * @param url
-     * @param new_block_params
-     * @param target_div
+     * @param newBlockParams
+     * @param targetDiv
      * @param append
-     * @param callback
-     * @param scroll_to_top_of_wrapper
-     * @param post_params
+     * @param scrollToTopOfWrapper
+     * @param postParams
      * @param inner
-     * @param show_loading_animation
-     * @returns {boolean}
+     * @param showLoadingAnimation
+     * @returns { Promise }
      */
-    function callBlock(url, new_block_params, target_div, append, callback, scroll_to_top_of_wrapper, post_params, inner, show_loading_animation) {
-        scroll_to_top_of_wrapper = !!scroll_to_top_of_wrapper;
-        post_params = (post_params !== undefined) ? post_params : null;
+    function callBlock(url, newBlockParams, targetDiv, append, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
+        scrollToTopOfWrapper = !!scrollToTopOfWrapper;
+        postParams = (postParams !== undefined) ? postParams : null;
         inner = !!inner;
-        show_loading_animation = (show_loading_animation !== undefined) ? !!show_loading_animation : true;
-        if ((_blockDataCache[url] === undefined) && (new_block_params != '')) {
+        showLoadingAnimation = (showLoadingAnimation !== undefined) ? !!showLoadingAnimation : true;
+        if ((_blockDataCache[url] === undefined) && (newBlockParams != '')) {
             // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
-            _blockDataCache[url] = $cms.dom.html(target_div);
+            _blockDataCache[url] = $cms.dom.html(targetDiv);
         }
 
-        var ajax_url = url;
-        if (new_block_params != '') {
-            ajax_url += '&block_map_sup=' + encodeURIComponent(new_block_params);
+        var ajaxUrl = url;
+        if (newBlockParams != '') {
+            ajaxUrl += '&block_map_sup=' + encodeURIComponent(newBlockParams);
         }
 
-        ajax_url += '&utheme=' + $cms.$THEME();
-        if ((_blockDataCache[ajax_url] !== undefined) && post_params == null) {
+        ajaxUrl += '&utheme=' + $cms.$THEME();
+        if ((_blockDataCache[ajaxUrl] !== undefined) && postParams == null) {
             // Show results from cache
-            show_block_html(_blockDataCache[ajax_url], target_div, append, inner);
-            if (callback) {
-                callback();
-            }
-            return false;
+            showBlockHtml(_blockDataCache[ajaxUrl], targetDiv, append, inner);
+            return Promise.resolve();
         }
 
         // Show loading animation
-        var loading_wrapper = target_div;
-        if ((loading_wrapper.id.indexOf('carousel_') === -1) && ($cms.dom.html(loading_wrapper).indexOf('ajax_loading_block') === -1) && (show_loading_animation)) {
-            var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
+        var loadingWrapper = targetDiv;
+        if ((loadingWrapper.id.indexOf('carousel_') === -1) && ($cms.dom.html(loadingWrapper).indexOf('ajax_loading_block') === -1) && (showLoadingAnimation)) {
+            var rawAjaxGrowSpot = targetDiv.querySelectorAll('.raw_ajax_grow_spot');
 
-            if (raw_ajax_grow_spot[0] !== undefined && append) {
+            if (rawAjaxGrowSpot[0] !== undefined && append) {
                 // If we actually are embedding new results a bit deeper
-                loading_wrapper = raw_ajax_grow_spot[0];
+                loadingWrapper = rawAjaxGrowSpot[0];
             }
 
-            var loading_wrapper_inner = document.createElement('div');
-            if (!$cms.dom.isCss(loading_wrapper, 'position', ['relative', 'absolute'])) {
+            var loadingWrapperInner = document.createElement('div');
+            if (!$cms.dom.isCss(loadingWrapper, 'position', ['relative', 'absolute'])) {
                 if (append) {
-                    loading_wrapper_inner.style.position = 'relative';
+                    loadingWrapperInner.style.position = 'relative';
                 } else {
-                    loading_wrapper.style.position = 'relative';
-                    loading_wrapper.style.overflow = 'hidden'; // Stops margin collapsing weirdness
+                    loadingWrapper.style.position = 'relative';
+                    loadingWrapper.style.overflow = 'hidden'; // Stops margin collapsing weirdness
                 }
             }
 
-            var loading_image = $cms.dom.create('img', {
+            var loadingImage = $cms.dom.create('img', {
                 class: 'ajax_loading_block',
                 src: $cms.img('{$IMG;,loading}'),
                 css: {
                     position: 'absolute',
                     zIndex: 1000,
-                    left: (target_div.offsetWidth / 2 - 10) + 'px'
+                    left: (targetDiv.offsetWidth / 2 - 10) + 'px'
                 }
             });
             if (!append) {
-                loading_image.style.top = (target_div.offsetHeight / 2 - 20) + 'px';
+                loadingImage.style.top = (targetDiv.offsetHeight / 2 - 20) + 'px';
             } else {
-                loading_image.style.top = 0;
-                loading_wrapper_inner.style.height = '30px';
+                loadingImage.style.top = 0;
+                loadingWrapperInner.style.height = '30px';
             }
-            loading_wrapper_inner.appendChild(loading_image);
-            loading_wrapper.appendChild(loading_wrapper_inner);
+            loadingWrapperInner.appendChild(loadingImage);
+            loadingWrapper.appendChild(loadingWrapperInner);
             window.document.body.style.cursor = 'wait';
         }
 
-        // Make AJAX call
-        $cms.doAjaxRequest(
-            ajax_url + $cms.keepStub(),
-            function (raw_ajax_result) { // Show results when available
-                _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner);
-            },
-            post_params
-        );
+        return new Promise(function (resolve) {
+            // Make AJAX call
+            $cms.doAjaxRequest(
+                ajaxUrl + $cms.keepStub(),
+                function (rawAjaxResult) { // Show results when available
+                    _callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, function () {
+                        resolve();
+                    }, scrollToTopOfWrapper, inner);
+                },
+                postParams
+            );
+        });
 
-        return false;
-
-        function _callBlockRender(raw_ajax_result, ajax_url, target_div, append, callback, scroll_to_top_of_wrapper, inner) {
-            var new_html = raw_ajax_result.responseText;
-            _blockDataCache[ajax_url] = new_html;
+        function _callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, callback, scrollToTopOfWrapper, inner) {
+            var newHtml = rawAjaxResult.responseText;
+            _blockDataCache[ajaxUrl] = newHtml;
 
             // Remove loading animation if there is one
-            var ajax_loading = target_div.querySelector('.ajax_loading_block');
-            if (ajax_loading) {
-                ajax_loading.parentNode.parentNode.removeChild(ajax_loading.parentNode);
+            var ajaxLoading = targetDiv.querySelector('.ajax_loading_block');
+            if (ajaxLoading) {
+                ajaxLoading.parentNode.parentNode.removeChild(ajaxLoading.parentNode);
             }
             window.document.body.style.cursor = '';
 
             // Put in HTML
-            show_block_html(new_html, target_div, append, inner);
+            showBlockHtml(newHtml, targetDiv, append, inner);
 
             // Scroll up if required
-            if (scroll_to_top_of_wrapper) {
+            if (scrollToTopOfWrapper) {
                 try {
-                    window.scrollTo(0, $cms.dom.findPosY(target_div));
+                    window.scrollTo(0, $cms.dom.findPosY(targetDiv));
                 } catch (e) {}
             }
 
@@ -4696,37 +4885,38 @@
             }
         }
 
-        function show_block_html(new_html, target_div, append, inner) {
-            var raw_ajax_grow_spot = target_div.querySelectorAll('.raw_ajax_grow_spot');
-            if (raw_ajax_grow_spot[0] !== undefined && append) target_div = raw_ajax_grow_spot[0]; // If we actually are embedding new results a bit deeper
+        function showBlockHtml(newHtml, targetDiv, append, inner) {
+            var rawAjaxGrowSpot = targetDiv.querySelectorAll('.raw_ajax_grow_spot');
+            if (rawAjaxGrowSpot[0] !== undefined && append) targetDiv = rawAjaxGrowSpot[0]; // If we actually are embedding new results a bit deeper
             if (append) {
-                $cms.dom.append(target_div, new_html);
+                $cms.dom.append(targetDiv, newHtml);
             } else {
                 if (inner) {
-                    $cms.dom.html(target_div, new_html);
+                    $cms.dom.html(targetDiv, newHtml);
                 } else {
-                    $cms.dom.outerHtml(target_div, new_html);
+                    $cms.dom.outerHtml(targetDiv, newHtml);
                 }
             }
         }
     }
 
-
     /**
      * Dynamic inclusion
      * @memberof $cms
-     * @param snippet_hook
-     * @param post
-     * @param callback
+     * @param snippetHook
+     * @param [post]
+     * @param {boolean} [async]
+     * @returns { Promise|string }
      */
-    function loadSnippet(snippet_hook, post, callback) {
+    function loadSnippet(snippetHook, post, async) {
+        snippetHook = strVal(snippetHook);
+
         if (!window.location) { // In middle of page navigation away
             return null;
         }
 
         var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
-            metas = document.getElementsByTagName('link'), i,
-            url = window.location.href;
+            metas = document.getElementsByTagName('link'), i, url;
 
         for (i = 0; i < metas.length; i++) {
             if (metas[i].getAttribute('rel') === 'canonical') {
@@ -4736,13 +4926,18 @@
         if (!url) {
             url = window.location.href;
         }
-        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippet_hook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub(),
-            html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), callback, post);
+        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
 
-        if (callback) {
-            return Promise.resolve();
+        if (async) {
+            return new Promise(function (resolve) {
+                $cms.doAjaxRequest($cms.maintainThemeInLink(url2), function (ajaxResult) {
+                    resolve(ajaxResult);
+                }, post);
+            });
         }
 
+        /*FIXME: Synchronous XHR*/
+        var html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), null, post);
         return html.responseText;
     }
 
@@ -4771,6 +4966,8 @@
      * @returns {string}
      */
     function keepStub(starting) {// `starting` set to true means "Put a '?' for the first parameter"
+        starting = !!starting;
+
         var keep = $cms.uspKeepSession.toString();
 
         if (!keep) {
@@ -4824,9 +5021,9 @@
                 url: $cms.baseUrl('data'),
                 debugMode: false,
                 onready: function () {
-                    var sound_object = window.soundManager.createSound({url: ob.href});
-                    if (sound_object) {
-                        sound_object.play();
+                    var soundObject = window.soundManager.createSound({url: ob.href});
+                    if (soundObject) {
+                        soundObject.play();
                     }
                 }
             });
@@ -4913,17 +5110,17 @@
 
     /**
      * Find the main Composr window
-     * @param any_large_ok
+     * @param anyLargeOk
      * @returns {*}
      */
-    function getMainCmsWindow(any_large_ok) {
-        any_large_ok = !!any_large_ok;
+    function getMainCmsWindow(anyLargeOk) {
+        anyLargeOk = !!anyLargeOk;
 
         if ($cms.dom.$('#main_website')) {
             return window;
         }
 
-        if (any_large_ok && ($cms.dom.getWindowWidth() > 300)) {
+        if (anyLargeOk && ($cms.dom.getWindowWidth() > 300)) {
             return window;
         }
 
@@ -5003,18 +5200,18 @@
         var browser = navigator.userAgent.toLowerCase(),
             os = navigator.platform.toLowerCase() + ' ' + browser;
 
-        var is_safari = browser.includes('applewebkit'),
-            is_chrome = browser.includes('chrome/'),
-            is_gecko = browser.includes('gecko') && !is_safari,
-            _is_ie = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/'),
-            is_ie_8 = browser.includes('msie 8') && (_is_ie),
-            is_ie_8_plus = is_ie_8,
-            is_ie_9 = browser.includes('msie 9') && (_is_ie),
-            is_ie_9_plus = is_ie_9 && !is_ie_8;
+        var isSafari = browser.includes('applewebkit'),
+            isChrome = browser.includes('chrome/'),
+            isGecko = browser.includes('gecko') && !isSafari,
+            _isIe = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/'),
+            isIe8 = browser.includes('msie 8') && (_isIe),
+            isIe8Plus = isIe8,
+            isIe9 = browser.includes('msie 9') && (_isIe),
+            isIe9Plus = isIe9 && !isIe8;
 
         switch (code) {
             case 'simplified_attachments_ui':
-                return !is_ie_8 && !is_ie_9 && $cms.$CONFIG_OPTION('simplified_attachments_ui') && $cms.$CONFIG_OPTION('complex_uploader');
+                return !isIe8 && !isIe9 && $cms.$CONFIG_OPTION('simplified_attachments_ui') && $cms.$CONFIG_OPTION('complex_uploader');
             case 'non_concurrent':
                 return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
             case 'ios':
@@ -5030,21 +5227,21 @@
             case 'linux':
                 return os.includes('linux');
             case 'ie':
-                return _is_ie;
+                return _isIe;
             case 'ie8':
-                return is_ie_8;
+                return isIe8;
             case 'ie8+':
-                return is_ie_8_plus;
+                return isIe8Plus;
             case 'ie9':
-                return is_ie_9;
+                return isIe9;
             case 'ie9+':
-                return is_ie_9_plus;
+                return isIe9Plus;
             case 'chrome':
-                return is_chrome;
+                return isChrome;
             case 'gecko':
-                return is_gecko;
+                return isGecko;
             case 'safari':
-                return is_safari;
+                return isSafari;
         }
 
         // Should never get here
@@ -5203,11 +5400,10 @@
          * @method
          */
         delegate: function (eventName, selector, listener) {
-            //$cms.log('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
+            //$cms.verbose('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
             $cms.dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },
-
 
         /**
          * Clears all callbacks previously bound to the view by `delegateEvents`.
@@ -5363,7 +5559,6 @@
             if (char in filterIdReplace) {
                 out += filterIdReplace[char];
             } else {
-                // @TODO (Salman): Need to make sure I ported this block accurately from PHP.
                 ascii = char.charCodeAt(0);
 
                 if (
@@ -5452,7 +5647,7 @@
             return;
         }
 
-        var my_confirm = {
+        var myConfirm = {
             type: 'confirm',
             text: unescaped ? question : $cms.filter.html(question).replace(/\n/g, '<br />'),
             yes_button: '{!YES;^}',
@@ -5467,7 +5662,8 @@
             },
             width: '450'
         };
-        $cms.openModalWindow(my_confirm);
+        $cms.openModalWindow(myConfirm);
+        return Promise.resolve();
     };
 
     /**
@@ -5509,9 +5705,9 @@
      * @param defaultValue
      * @param callback
      * @param title
-     * @param input_type
+     * @param inputType
      */
-    $cms.ui.prompt = function prompt(question, defaultValue, callback, title, input_type) {
+    $cms.ui.prompt = function prompt(question, defaultValue, callback, title, inputType) {
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
             callback(window.prompt(question, defaultValue));
             return;
@@ -5532,10 +5728,11 @@
             },
             width: '450'
         };
-        if (input_type) {
-            myPrompt.input_type = input_type;
+        if (inputType) {
+            myPrompt.input_type = inputType;
         }
         $cms.openModalWindow(myPrompt);
+        return Promise.resolve();
     };
 
     /**
@@ -5545,9 +5742,9 @@
      * @param options
      * @param callback
      * @param target
-     * @param cancel_text
+     * @param cancelText
      */
-    $cms.ui.showModalDialog = function showModalDialog(url, name, options, callback, target, cancel_text) {
+    $cms.ui.showModalDialog = function showModalDialog(url, name, options, callback, target, cancelText) {
         callback = callback || noop;
 
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
@@ -5559,8 +5756,8 @@
             } catch (ignore) {
                 // IE gives "Access is denied" if popup was blocked, due to var result assignment to non-real window
             }
-            var timer_now = new Date().getTime();
-            if (timer_now - 100 > timer) {// Not popup blocked
+            var timerNow = new Date().getTime();
+            if (timerNow - 100 > timer) {// Not popup blocked
                 if ((result === undefined) || (result === null)) {
                     callback(null);
                 } else {
@@ -5572,8 +5769,8 @@
 
         var width = null, height = null, scrollbars = null, unadorned = null;
 
-        if (cancel_text === undefined) {
-            cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
+        if (cancelText === undefined) {
+            cancelText = '{!INPUTSYSTEM_CANCEL;^}';
         }
 
         if (options) {
@@ -5601,7 +5798,7 @@
             url += (!url.includes('?') ? '?' : '&') + 'overlay=1';
         }
 
-        var my_frame = {
+        var myFrame = {
             type: 'iframe',
             finished: function (value) {
                 callback(value);
@@ -5612,11 +5809,12 @@
             scrollbars: scrollbars,
             href: url.replace(/^https?:/, window.location.protocol)
         };
-        my_frame.cancel_button = (unadorned !== true) ? cancel_text : null;
+        myFrame.cancel_button = (unadorned !== true) ? cancelText : null;
         if (target) {
-            my_frame.target = target;
+            myFrame.target = target;
         }
-        $cms.openModalWindow(my_frame);
+        $cms.openModalWindow(myFrame);
+        return Promise.resolve();
     };
 
     /**
@@ -5625,11 +5823,11 @@
      * @param name
      * @param options
      * @param target
-     * @param [cancel_text]
+     * @param [cancelText]
      */
-    $cms.ui.open = function open(url, name, options, target, cancel_text) {
-        if (cancel_text === undefined) {
-            cancel_text = '{!INPUTSYSTEM_CANCEL;^}';
+    $cms.ui.open = function open(url, name, options, target, cancelText) {
+        if (cancelText === undefined) {
+            cancelText = '{!INPUTSYSTEM_CANCEL;^}';
         }
 
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
@@ -5638,7 +5836,8 @@
             return;
         }
 
-        $cms.ui.showModalDialog(url, name, options, null, target, cancel_text);
+        $cms.ui.showModalDialog(url, name, options, null, target, cancelText);
+        return Promise.resolve();
     };
 
     var tempDisabledButtons = {};
@@ -5712,60 +5911,60 @@
     /**
      * Originally _open_image_into_lightbox
      * @memberof $cms.ui
-     * @param initial_img_url
+     * @param initialImgUrl
      * @param description
      * @param x
      * @param n
-     * @param has_full_button
-     * @param is_video
+     * @param hasFullButton
+     * @param isVideo
      * @returns { $cms.views.ModalWindow }
      */
-    $cms.ui.openImageIntoLightbox = function openImageIntoLightbox(initial_img_url, description, x, n, has_full_button, is_video) {
-        has_full_button = !!has_full_button;
-        is_video = !!is_video;
+    $cms.ui.openImageIntoLightbox = function openImageIntoLightbox(initialImgUrl, description, x, n, hasFullButton, isVideo) {
+        hasFullButton = !!hasFullButton;
+        isVideo = !!isVideo;
 
         // Set up overlay for Lightbox
-        var lightbox_code = /** @lang HTML */' \
+        var lightboxCode = /** @lang HTML */' \
         <div style="text-align: center"> \
             <p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p> \
             <p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
                 <span id="lightbox_description">' + description + '</span> \
                 ' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
-                ' + (is_video ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initial_img_url) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
+                ' + (isVideo ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initialImgUrl) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
             </p> \
         </div> \
     ';
 
         // Show overlay
-        var my_lightbox = {
+        var myLightbox = {
                 type: 'lightbox',
-                text: lightbox_code,
+                text: lightboxCode,
                 cancel_button: '{!INPUTSYSTEM_CLOSE;^}',
                 width: '450', // This will be updated with the real image width, when it has loaded
                 height: '300' // "
             },
-            modal = $cms.openModalWindow(my_lightbox);
+            modal = $cms.openModalWindow(myLightbox);
 
         // Load proper image
         window.setTimeout(function () { // Defer execution until the HTML was parsed
-            if (is_video) {
+            if (isVideo) {
                 var video = document.createElement('video');
                 video.id = 'lightbox_image';
                 video.className = 'lightbox_image';
                 video.controls = 'controls';
                 video.autoplay = 'autoplay';
-                $cms.dom.html(video, initial_img_url);
+                $cms.dom.html(video, initialImgUrl);
                 video.addEventListener('loadedmetadata', function () {
-                    $cms.ui.resizeLightboxDimensionsImg(modal, video, has_full_button, true);
+                    $cms.ui.resizeLightboxDimensionsImg(modal, video, hasFullButton, true);
                 });
             } else {
                 var img = modal.top_window.document.createElement('img');
                 img.className = 'lightbox_image';
                 img.id = 'lightbox_image';
                 img.onload = function () {
-                    $cms.ui.resizeLightboxDimensionsImg(modal, img, has_full_button, false);
+                    $cms.ui.resizeLightboxDimensionsImg(modal, img, hasFullButton, false);
                 };
-                img.src = initial_img_url;
+                img.src = initialImgUrl;
             }
         }, 0);
 
@@ -5776,27 +5975,27 @@
      * @memberof $cms.ui
      * @param modal
      * @param img
-     * @param has_full_button
-     * @param is_video
+     * @param hasFullButton
+     * @param isVideo
      */
-    $cms.ui.resizeLightboxDimensionsImg = function resizeLightboxDimensionsImg(modal, img, has_full_button, is_video) {
+    $cms.ui.resizeLightboxDimensionsImg = function resizeLightboxDimensionsImg(modal, img, hasFullButton, isVideo) {
         if (!modal.boxWrapperEl) {
             /* Overlay closed already */
             return;
         }
 
-        var real_width = is_video ? img.videoWidth : img.width,
-            width = real_width,
-            real_height = is_video ? img.videoHeight : img.height,
-            height = real_height,
-            lightbox_image = modal.top_window.$cms.dom.$id('lightbox_image'),
-            lightbox_meta = modal.top_window.$cms.dom.$id('lightbox_meta'),
-            lightbox_description = modal.top_window.$cms.dom.$id('lightbox_description'),
-            lightbox_position_in_set = modal.top_window.$cms.dom.$id('lightbox_position_in_set'),
-            lightbox_full_link = modal.top_window.$cms.dom.$id('lightbox_full_link');
+        var realWidth = isVideo ? img.videoWidth : img.width,
+            width = realWidth,
+            realHeight = isVideo ? img.videoHeight : img.height,
+            height = realHeight,
+            lightboxImage = modal.top_window.$cms.dom.$id('lightbox_image'),
+            lightboxMeta = modal.top_window.$cms.dom.$id('lightbox_meta'),
+            lightboxDescription = modal.top_window.$cms.dom.$id('lightbox_description'),
+            lightboxPositionInSet = modal.top_window.$cms.dom.$id('lightbox_position_in_set'),
+            lightboxFullLink = modal.top_window.$cms.dom.$id('lightbox_full_link');
 
-        var sup = lightbox_image.parentNode;
-        sup.removeChild(lightbox_image);
+        var sup = lightboxImage.parentNode;
+        sup.removeChild(lightboxImage);
         if (sup.firstChild) {
             sup.insertBefore(img, sup.firstChild);
         } else {
@@ -5806,31 +6005,31 @@
         sup.style.textAlign = 'center';
         sup.style.overflow = 'hidden';
 
-        dims_func();
-        $cms.dom.on(window, 'resize', dims_func);
+        dimsFunc();
+        $cms.dom.on(window, 'resize', dimsFunc);
 
-        function dims_func() {
-            lightbox_description.style.display = (lightbox_description.firstChild) ? 'inline' : 'none';
-            if (lightbox_full_link) {
-                var showLightboxFullLink = !!(!is_video && has_full_button && ((real_width > max_width) || (real_height > max_height)));
-                $cms.dom.toggle(lightbox_full_link, showLightboxFullLink);
+        function dimsFunc() {
+            lightboxDescription.style.display = (lightboxDescription.firstChild) ? 'inline' : 'none';
+            if (lightboxFullLink) {
+                var showLightboxFullLink = !!(!isVideo && hasFullButton && ((realWidth > maxWidth) || (realHeight > maxHeight)));
+                $cms.dom.toggle(lightboxFullLink, showLightboxFullLink);
             }
-            var showLightboxMeta = !!((lightbox_description.style.display === 'inline') || (lightbox_position_in_set !== null) || (lightbox_full_link && lightbox_full_link.style.display === 'inline'));
-            $cms.dom.toggle(lightbox_meta, showLightboxMeta);
+            var showLightboxMeta = !!((lightboxDescription.style.display === 'inline') || (lightboxPositionInSet !== null) || (lightboxFullLink && lightboxFullLink.style.display === 'inline'));
+            $cms.dom.toggle(lightboxMeta, showLightboxMeta);
 
             // Might need to rescale using some maths, if natural size is too big
-            var max_dims = _get_max_lightbox_img_dims(modal, has_full_button),
-                max_width = max_dims[0],
-                max_height = max_dims[1];
+            var maxDims = _getMaxLightboxImgDims(modal, hasFullButton),
+                maxWidth = maxDims[0],
+                maxHeight = maxDims[1];
 
-            if (width > max_width) {
-                width = max_width;
-                height = window.parseInt(max_width * real_height / real_width - 1);
+            if (width > maxWidth) {
+                width = maxWidth;
+                height = window.parseInt(maxWidth * realHeight / realWidth - 1);
             }
 
-            if (height > max_height) {
-                width = window.parseInt(max_height * real_width / real_height - 1);
-                height = max_height;
+            if (height > maxHeight) {
+                width = window.parseInt(maxHeight * realWidth / realHeight - 1);
+                height = maxHeight;
             }
 
             img.width = width;
@@ -5846,13 +6045,15 @@
                 img.parentElement.parentElement.parentElement.style.height = 'auto';
             }
 
-            function _get_max_lightbox_img_dims(modal, has_full_button) {
-                var max_width = modal.top_window.$cms.dom.getWindowWidth() - 20;
-                var max_height = modal.top_window.$cms.dom.getWindowHeight() - 60;
-                if (has_full_button) {
-                    max_height -= 120;
+            function _getMaxLightboxImgDims(modal, hasFullButton) {
+                var maxWidth = modal.top_window.$cms.dom.getWindowWidth() - 20,
+                    maxHeight = modal.top_window.$cms.dom.getWindowHeight() - 60;
+
+                if (hasFullButton) {
+                    maxHeight -= 120;
                 }
-                return [max_width, max_height];
+
+                return [maxWidth, maxHeight];
             }
         }
     };
@@ -5918,22 +6119,22 @@
      * @memberof $cms.ui
      * @param id
      * @param tab
-     * @param from_url
+     * @param fromUrl
      * @param automated
      * @returns {boolean}
      */
-    $cms.ui.selectTab = function selectTab(id, tab, from_url, automated) {
-        from_url = !!from_url;
+    $cms.ui.selectTab = function selectTab(id, tab, fromUrl, automated) {
+        fromUrl = !!fromUrl;
         automated = !!automated;
 
-        if (!from_url) {
-            var tab_marker = $cms.dom.$id('tab__' + tab.toLowerCase());
-            if (tab_marker) {
+        if (!fromUrl) {
+            var tabMarker = $cms.dom.$id('tab__' + tab.toLowerCase());
+            if (tabMarker) {
                 // For URL purposes, we will change URL to point to tab
                 // HOWEVER, we do not want to cause a scroll so we will be careful
-                tab_marker.id = '';
+                tabMarker.id = '';
                 window.location.hash = '#tab__' + tab.toLowerCase();
-                tab_marker.id = 'tab__' + tab.toLowerCase();
+                tabMarker.id = 'tab__' + tab.toLowerCase();
             }
         }
 
@@ -5983,23 +6184,23 @@
      * @param pic - the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
      * @param height - the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
      * @param bottom - set to true if the tooltip should definitely appear upwards; rarely use this parameter
-     * @param no_delay - set to true if the tooltip should appear instantly
-     * @param lights_off - set to true if the image is to be dimmed
-     * @param force_width - set to true if you want width to not be a max width
+     * @param noDelay - set to true if the tooltip should appear instantly
+     * @param lightsOff - set to true if the image is to be dimmed
+     * @param forceWidth - set to true if you want width to not be a max width
      * @param win - window to open in
-     * @param have_links - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
+     * @param haveLinks - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
      */
-    $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links) {
+    $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks) {
         event || (event = {});
         width || (width = 'auto');
         pic || (pic = '');
         height || (height = 'auto');
         bottom = !!bottom;
-        no_delay = !!no_delay;
-        lights_off = !!lights_off;
-        force_width = !!force_width;
+        noDelay = !!noDelay;
+        lightsOff = !!lightsOff;
+        forceWidth = !!forceWidth;
         win || (win = window);
-        have_links = !!have_links;
+        haveLinks = !!haveLinks;
 
         if (!window.page_loaded || !tooltip) {
             return;
@@ -6010,14 +6211,14 @@
             return;
         }
 
-        if (!have_links && $cms.isTouchEnabled()) {
+        if (!haveLinks && $cms.isTouchEnabled()) {
             return; // Too erratic
         }
 
         $cms.ui.clearOutTooltips(el.tooltip_id);
 
         // Add in move/leave events if needed
-        if (!have_links) {
+        if (!haveLinks) {
             $cms.dom.on(el, 'mouseout.cmsTooltip', function () {
                 $cms.ui.deactivateTooltip(el);
             });
@@ -6044,7 +6245,7 @@
         el.is_over = true;
         el.tooltip_on = false;
         el.initial_width = width;
-        el.have_links = have_links;
+        el.have_links = haveLinks;
 
         var children = el.querySelectorAll('img');
         for (var i = 0; i < children.length; i++) {
@@ -6057,14 +6258,14 @@
             tooltipEl.style.display = 'none';
             $cms.dom.html(tooltipEl, '');
             window.setTimeout(function () {
-                $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, force_width);
+                $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
             }, 0);
         } else {
             tooltipEl = document.createElement('div');
             tooltipEl.role = 'tooltip';
             tooltipEl.style.display = 'none';
-            var rt_pos = tooltip.indexOf('results_table');
-            tooltipEl.className = 'tooltip ' + ((rt_pos == -1 || rt_pos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (have_links ? ' have_links' : '');
+            var rtPos = tooltip.indexOf('results_table');
+            tooltipEl.className = 'tooltip ' + ((rtPos == -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (haveLinks ? ' have_links' : '');
             if (el.className.substr(0, 3) === 'tt_') {
                 tooltipEl.className += ' ' + el.className;
             }
@@ -6072,13 +6273,13 @@
                 tooltipEl.style.wordWrap = 'normal';
             }
 
-            if (force_width) {
+            if (forceWidth) {
                 tooltipEl.style.width = width;
             } else {
                 if (width === 'auto') {
-                    var new_auto_width = $cms.dom.getWindowWidth(win) - 30 - window.mouse_x;
-                    if (new_auto_width < 150) new_auto_width = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
-                    tooltipEl.style.maxWidth = new_auto_width + 'px';
+                    var newAutoWidth = $cms.dom.getWindowWidth(win) - 30 - window.mouse_x;
+                    if (newAutoWidth < 150) newAutoWidth = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
+                    tooltipEl.style.maxWidth = newAutoWidth + 'px';
                 } else {
                     tooltipEl.style.maxWidth = width;
                 }
@@ -6091,7 +6292,7 @@
             tooltipEl.style.position = 'absolute';
             tooltipEl.id = 't_' + $cms.random();
             el.tooltip_id = tooltipEl.id;
-            $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, force_width);
+            $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
             document.body.appendChild(tooltipEl);
         }
         tooltipEl.ac = el;
@@ -6100,7 +6301,7 @@
             var img = win.document.createElement('img');
             img.src = pic;
             img.className = 'tooltip_img';
-            if (lights_off) {
+            if (lightsOff) {
                 img.classList.add('faded_tooltip_img');
             }
             tooltipEl.appendChild(img);
@@ -6137,14 +6338,14 @@
             if (tooltipEl.style.width == 'auto')
                 tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
 
-            if (!no_delay) {
+            if (!noDelay) {
                 // If delayed we will sub in what the currently known global mouse coordinate is
                 eventCopy.pageX = win.mouse_x;
                 eventCopy.pageY = win.mouse_y;
             }
 
-            $cms.ui.repositionTooltip(el, eventCopy, bottom, true, tooltipEl, force_width, win);
-        }, no_delay ? 0 : 666);
+            $cms.ui.repositionTooltip(el, eventCopy, bottom, true, tooltipEl, forceWidth, win);
+        }, noDelay ? 0 : 666);
     };
 
     /**
@@ -6153,11 +6354,11 @@
      * @param event
      * @param bottom
      * @param starting
-     * @param tooltip_element
-     * @param force_width
+     * @param tooltipElement
+     * @param forceWidth
      * @param win
      */
-    $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltip_element, force_width, win) {
+    $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltipElement, forceWidth, win) {
         bottom = !!bottom;
         win || (win = window);
 
@@ -6183,21 +6384,21 @@
             return;
         }  // Should not happen but written as a fail-safe
 
-        tooltip_element || (tooltip_element = $cms.dom.$id(el.tooltip_id));
+        tooltipElement || (tooltipElement = $cms.dom.$id(el.tooltip_id));
 
-        if (!tooltip_element) {
+        if (!tooltipElement) {
             return;
         }
 
-        var style__offset_x = 9,
-            style__offset_y = (el.have_links) ? 18 : 9,
+        var styleOffsetX = 9,
+            styleOffsetY = (el.have_links) ? 18 : 9,
             x, y;
 
         // Find mouse position
         x = window.mouse_x;
         y = window.mouse_y;
-        x += style__offset_x;
-        y += style__offset_y;
+        x += styleOffsetX;
+        y += styleOffsetY;
         try {
             if (event.type) {
                 if (event.type != 'focus') {
@@ -6208,83 +6409,83 @@
                     return;
                 }
 
-                x = (event.type === 'focus') ? (win.pageXOffset + $cms.dom.getWindowWidth(win) / 2) : (window.mouse_x + style__offset_x);
-                y = (event.type === 'focus') ? (win.pageYOffset + $cms.dom.getWindowHeight(win) / 2 - 40) : (window.mouse_y + style__offset_y);
+                x = (event.type === 'focus') ? (win.pageXOffset + $cms.dom.getWindowWidth(win) / 2) : (window.mouse_x + styleOffsetX);
+                y = (event.type === 'focus') ? (win.pageYOffset + $cms.dom.getWindowHeight(win) / 2 - 40) : (window.mouse_y + styleOffsetY);
             }
         } catch (ignore) {
         }
         // Maybe mouse position actually needs to be in parent document?
         try {
             if (event.target && (event.target.ownerDocument !== win.document)) {
-                x = win.mouse_x + style__offset_x;
-                y = win.mouse_y + style__offset_y;
+                x = win.mouse_x + styleOffsetX;
+                y = win.mouse_y + styleOffsetY;
             }
         } catch (ignore) {
         }
 
         // Work out which direction to render in
-        var width = $cms.dom.contentWidth(tooltip_element);
-        if (tooltip_element.style.width === 'auto') {
+        var width = $cms.dom.contentWidth(tooltipElement);
+        if (tooltipElement.style.width === 'auto') {
             if (width < 200) {
                 // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
                 width = 200;
             }
         }
-        var height = tooltip_element.offsetHeight;
-        var x_excess = x - $cms.dom.getWindowWidth(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
-        if (x_excess > 0) {// Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
-            var x_before = x;
-            x -= x_excess + 20 + style__offset_x;
+        var height = tooltipElement.offsetHeight;
+        var xExcess = x - $cms.dom.getWindowWidth(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
+        if (xExcess > 0) {// Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
+            var xBefore = x;
+            x -= xExcess + 20 + styleOffsetX;
             if (x < 100) { // Do not make it impossible to de-focus the tooltip
-                x = (x_before < 100) ? x_before : 100;
+                x = (xBefore < 100) ? xBefore : 100;
             }
         }
         if (x < 0) {
             x = 0;
         }
         if (bottom) {
-            tooltip_element.style.top = (y - height) + 'px';
+            tooltipElement.style.top = (y - height) + 'px';
         } else {
-            var y_excess = y - $cms.dom.getWindowHeight(win) - win.pageYOffset + height + style__offset_y;
-            if (y_excess > 0) y -= y_excess;
-            var scroll_y = win.pageYOffset;
-            if (y < scroll_y) y = scroll_y;
-            tooltip_element.style.top = y + 'px';
+            var yExcess = y - $cms.dom.getWindowHeight(win) - win.pageYOffset + height + styleOffsetY;
+            if (yExcess > 0) y -= yExcess;
+            var scrollY = win.pageYOffset;
+            if (y < scrollY) y = scrollY;
+            tooltipElement.style.top = y + 'px';
         }
-        tooltip_element.style.left = x + 'px';
+        tooltipElement.style.left = x + 'px';
     };
 
     /**
      *
      * @param el
-     * @param tooltip_element
+     * @param tooltipElement
      */
-    $cms.ui.deactivateTooltip = function deactivateTooltip(el, tooltip_element) {
+    $cms.ui.deactivateTooltip = function deactivateTooltip(el, tooltipElement) {
         el.is_over = false;
 
         if (el.tooltip_id == null) {
             return;
         }
 
-        tooltip_element || (tooltip_element = $cms.dom.$('#' + el.tooltip_id));
+        tooltipElement || (tooltipElement = $cms.dom.$('#' + el.tooltip_id));
 
-        if (tooltip_element) {
-            $cms.dom.off(tooltip_element, 'mouseout.cmsTooltip');
-            $cms.dom.off(tooltip_element, 'mousemove.cmsTooltip');
-            $cms.dom.off(tooltip_element, 'click.cmsTooltip');
-            $cms.dom.hide(tooltip_element);
+        if (tooltipElement) {
+            $cms.dom.off(tooltipElement, 'mouseout.cmsTooltip');
+            $cms.dom.off(tooltipElement, 'mousemove.cmsTooltip');
+            $cms.dom.off(tooltipElement, 'click.cmsTooltip');
+            $cms.dom.hide(tooltipElement);
         }
     };
 
     /**
      *
-     * @param tooltip_being_opened
+     * @param tooltipBeingOpened
      */
-    $cms.ui.clearOutTooltips = function clearOutTooltips(tooltip_being_opened) {
+    $cms.ui.clearOutTooltips = function clearOutTooltips(tooltipBeingOpened) {
         // Delete other tooltips, which due to browser bugs can get stuck
         var selector = '.tooltip';
-        if (tooltip_being_opened) {
-            selector += ':not(#' + tooltip_being_opened + ')';
+        if (tooltipBeingOpened) {
+            selector += ':not(#' + tooltipBeingOpened + ')';
         }
         $cms.dom.$$(selector).forEach(function (el) {
             $cms.ui.deactivateTooltip(el.ac, el);
@@ -6406,8 +6607,8 @@
             }
         },
 
-        reset_dimensions: function (width, height, init, force_height) {
-            force_height = !!force_height;
+        reset_dimensions: function (width, height, init, forceHeight) {
+            forceHeight = !!forceHeight;
 
             if (!this.boxWrapperEl) {
                 return;
@@ -6415,12 +6616,12 @@
 
             var dim = this.getPageSize();
 
-            var bottom_gap = this.WINDOW_TOP_GAP;
+            var bottomGap = this.WINDOW_TOP_GAP;
             if (this.button_container.firstChild) {
-                bottom_gap += this.button_container.offsetHeight;
+                bottomGap += this.button_container.offsetHeight;
             }
 
-            if (!force_height) {
+            if (!forceHeight) {
                 height = 'auto'; // Actually we always want auto heights, no reason to not for overlays
             }
 
@@ -6452,34 +6653,34 @@
             }
             match = height.match(/^([\d\.]+)%$/);
             if (match !== null) {
-                height = '' + (window.parseFloat(match[1]) * (dim.page_height - this.WINDOW_TOP_GAP - bottom_gap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
+                height = '' + (window.parseFloat(match[1]) * (dim.page_height - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
             }
 
             // Work out box dimensions
-            var box_width, box_height;
+            var boxWidth, boxHeight;
             if (width.match(/^\d+$/) !== null) {
-                box_width = width + 'px';
+                boxWidth = width + 'px';
             } else {
-                box_width = width;
+                boxWidth = width;
             }
             if (height.match(/^\d+$/) !== null) {
-                box_height = height + 'px';
+                boxHeight = height + 'px';
             } else {
-                box_height = height;
+                boxHeight = height;
             }
 
             // Save into HTML
-            var detected_box_height;
-            this.boxWrapperEl.firstElementChild.style.width = box_width;
-            this.boxWrapperEl.firstElementChild.style.height = box_height;
+            var detectedBoxHeight;
+            this.boxWrapperEl.firstElementChild.style.width = boxWidth;
+            this.boxWrapperEl.firstElementChild.style.height = boxHeight;
             var iframe = this.boxWrapperEl.querySelector('iframe');
 
             if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body)) {// Balance iframe height
                 iframe.style.width = '100%';
                 if (height == 'auto') {
                     if (!init) {
-                        detected_box_height = $cms.dom.getWindowScrollHeight(iframe.contentWindow);
-                        iframe.style.height = detected_box_height + 'px';
+                        detectedBoxHeight = $cms.dom.getWindowScrollHeight(iframe.contentWindow);
+                        iframe.style.height = detectedBoxHeight + 'px';
                     }
                 } else {
                     iframe.style.height = '100%';
@@ -6487,53 +6688,53 @@
             }
 
             // Work out box position
-            if (!detected_box_height) {
-                detected_box_height = this.boxWrapperEl.firstElementChild.offsetHeight;
+            if (!detectedBoxHeight) {
+                detectedBoxHeight = this.boxWrapperEl.firstElementChild.offsetHeight;
             }
-            var _box_pos_top, _box_pos_left, box_pos_top, box_pos_left;
-            if (box_height === 'auto') {
+            var _boxPosTop, _boxPosLeft, boxPosTop, boxPosLeft;
+            if (boxHeight === 'auto') {
                 if (init) {
-                    _box_pos_top = (dim.window_height / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (this.LOADING_SCREEN_HEIGHT / 2) + this.WINDOW_TOP_GAP; // This is just temporary
+                    _boxPosTop = (dim.window_height / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (this.LOADING_SCREEN_HEIGHT / 2) + this.WINDOW_TOP_GAP; // This is just temporary
                 } else {
-                    _box_pos_top = (dim.window_height / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (detected_box_height / 2) + this.WINDOW_TOP_GAP;
+                    _boxPosTop = (dim.window_height / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (detectedBoxHeight / 2) + this.WINDOW_TOP_GAP;
                 }
 
                 if (iframe) { // Actually, for frames we'll put at top so things don't bounce about during loading and if the frame size changes
-                    _box_pos_top = this.WINDOW_TOP_GAP;
+                    _boxPosTop = this.WINDOW_TOP_GAP;
                 }
             } else {
-                _box_pos_top = (dim.window_height / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (parseInt(box_height) / 2) + this.WINDOW_TOP_GAP;
+                _boxPosTop = (dim.window_height / (2 + (this.VCENTRE_FRACTION_SHIFT * 2))) - (parseInt(boxHeight) / 2) + this.WINDOW_TOP_GAP;
             }
-            if (_box_pos_top < this.WINDOW_TOP_GAP) {
-                _box_pos_top = this.WINDOW_TOP_GAP;
+            if (_boxPosTop < this.WINDOW_TOP_GAP) {
+                _boxPosTop = this.WINDOW_TOP_GAP;
             }
-            _box_pos_left = ((dim.window_width / 2) - (parseInt(box_width) / 2));
-            box_pos_top = _box_pos_top + 'px';
-            box_pos_left = _box_pos_left + 'px';
+            _boxPosLeft = ((dim.window_width / 2) - (parseInt(boxWidth) / 2));
+            boxPosTop = _boxPosTop + 'px';
+            boxPosLeft = _boxPosLeft + 'px';
 
             // Save into HTML
-            this.boxWrapperEl.firstElementChild.style.top = box_pos_top;
-            this.boxWrapperEl.firstElementChild.style.left = box_pos_left;
+            this.boxWrapperEl.firstElementChild.style.top = boxPosTop;
+            this.boxWrapperEl.firstElementChild.style.left = boxPosLeft;
 
-            var do_scroll = false;
+            var doScroll = false;
 
             // Absolute positioning instead of fixed positioning
-            if ($cms.$MOBILE() || (detected_box_height > dim.window_height) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
-                var was_fixed = (this.boxWrapperEl.style.position == 'fixed');
+            if ($cms.$MOBILE() || (detectedBoxHeight > dim.window_height) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
+                var wasFixed = (this.boxWrapperEl.style.position == 'fixed');
 
                 this.boxWrapperEl.style.position = 'absolute';
-                this.boxWrapperEl.style.height = ((dim.page_height > (detected_box_height + bottom_gap + _box_pos_left)) ? dim.page_height : (detected_box_height + bottom_gap + _box_pos_left)) + 'px';
+                this.boxWrapperEl.style.height = ((dim.page_height > (detectedBoxHeight + bottomGap + _boxPosLeft)) ? dim.page_height : (detectedBoxHeight + bottomGap + _boxPosLeft)) + 'px';
                 this.top_window.document.body.style.overflow = '';
 
                 if (!$cms.$MOBILE()) {
                     this.boxWrapperEl.firstElementChild.style.position = 'absolute';
-                    box_pos_top = this.WINDOW_TOP_GAP + 'px';
-                    this.boxWrapperEl.firstElementChild.style.top = box_pos_top;
+                    boxPosTop = this.WINDOW_TOP_GAP + 'px';
+                    this.boxWrapperEl.firstElementChild.style.top = boxPosTop;
                 }
 
-                if ((init) || (was_fixed)) do_scroll = true;
+                if ((init) || (wasFixed)) doScroll = true;
                 if (/*maybe a navigation has happened and we need to scroll back up*/iframe && ($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.scrolled_up_for === undefined)) {
-                    do_scroll = true;
+                    doScroll = true;
                 }
             } else {// Fixed positioning, with scrolling turned off until the overlay is closed
                 this.boxWrapperEl.style.position = 'fixed';
@@ -6541,7 +6742,7 @@
                 this.top_window.document.body.style.overflow = 'hidden';
             }
 
-            if (do_scroll) {
+            if (doScroll) {
                 try {// Scroll to top to see
                     this.top_window.scrollTo(0, 0);
                     if (iframe && ($cms.dom.hasIframeAccess(iframe))) {
@@ -6557,7 +6758,7 @@
             this.top_window.overlay_zIndex || (this.top_window.overlay_zIndex = 999999); // Has to be higher than plupload, which is 99999
 
             this.boxWrapperEl = this.element('div', { // Black out the background
-                'styles': {
+                'css': {
                     'background': 'rgba(0,0,0,0.7)',
                     'zIndex': this.top_window.overlay_zIndex++,
                     'overflow': 'hidden',
@@ -6572,7 +6773,7 @@
             this.boxWrapperEl.appendChild(this.element('div', { // The main overlay
                 'class': 'box overlay ' + this.type,
                 'role': 'dialog',
-                'styles': {
+                'css': {
                     // This will be updated immediately in reset_dimensions
                     'position': $cms.$MOBILE() ? 'static' : 'fixed',
                     'margin': '0 auto' // Centering for iOS/Android which is statically positioned (so the container height as auto can work)
@@ -6587,21 +6788,21 @@
 
             var container = this.element('div', {
                 'class': 'box_inner',
-                'styles': {
+                'css': {
                     'width': 'auto',
                     'height': 'auto'
                 }
             });
 
-            var overlay_header = null;
+            var overlayHeader = null;
             if (this.title != '' || this.type == 'iframe') {
-                overlay_header = this.element('h3', {
+                overlayHeader = this.element('h3', {
                     'html': this.title,
-                    'styles': {
+                    'css': {
                         'display': (this.title == '') ? 'none' : 'block'
                     }
                 });
-                container.appendChild(overlay_header);
+                container.appendChild(overlayHeader);
             }
 
             if (this.text != '') {
@@ -6636,20 +6837,20 @@
             };
 
             this.keyup = function (e) {
-                var key_code = (e) ? (e.which || e.keyCode) : null;
+                var keyCode = (e) ? (e.which || e.keyCode) : null;
 
-                if (key_code == 37) // Left arrow
+                if (keyCode == 37) // Left arrow
                 {
                     that.option('left');
-                } else if (key_code == 39) // Right arrow
+                } else if (keyCode == 39) // Right arrow
                 {
                     that.option('right');
-                } else if ((key_code == 13/*enter*/) && (that.yes)) {
+                } else if ((keyCode == 13/*enter*/) && (that.yes)) {
                     that.option('yes');
                 }
-                if ((key_code == 13/*enter*/) && (that.finished)) {
+                if ((keyCode == 13/*enter*/) && (that.finished)) {
                     that.option('finished');
-                } else if ((key_code == 27/*esc*/) && (that.cancel_button) && ((that.type == 'prompt') || (that.type == 'confirm') || (that.type == 'lightbox') || (that.type == 'alert'))) {
+                } else if ((keyCode == 27/*esc*/) && (that.cancel_button) && ((that.type == 'prompt') || (that.type == 'confirm') || (that.type == 'lightbox') || (that.type == 'alert'))) {
                     that.option('cancel');
                 }
             };
@@ -6677,8 +6878,8 @@
 
             switch (this.type) {
                 case 'iframe':
-                    var iframe_width = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width;
-                    var iframe_height = (this.height.match(/^[\d\.]+$/) !== null) ? (this.height + 'px') : ((this.height == 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
+                    var iframeWidth = (this.width.match(/^[\d\.]+$/) !== null) ? ((this.width - 14) + 'px') : this.width;
+                    var iframeHeight = (this.height.match(/^[\d\.]+$/) !== null) ? (this.height + 'px') : ((this.height == 'auto') ? (this.LOADING_SCREEN_HEIGHT + 'px') : this.height);
 
                     var iframe = this.element('iframe', {
                         'frameBorder': '0',
@@ -6688,9 +6889,9 @@
                         'id': 'overlay_iframe',
                         'allowTransparency': 'true',
                         //'seamless': 'seamless',	Not supported, and therefore testable yet. Would be great for mobile browsing.
-                        'styles': {
-                            'width': iframe_width,
-                            'height': iframe_height,
+                        'css': {
+                            'width': iframeWidth,
+                            'height': iframeHeight,
                             'background': 'transparent'
                         }
                     });
@@ -6699,24 +6900,24 @@
 
                     $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
 
-                    if (that.boxWrapperEl) {
-                        window.setTimeout(function () {
+                    window.setTimeout(function () {
+                        if (isEl(that.boxWrapperEl)) {
                             $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_finished);
-                        }, 1000);
-                    }
+                        }
+                    }, 1000);
 
                     $cms.dom.on(iframe, 'load', function () {
                         if (($cms.dom.hasIframeAccess(iframe)) && (!iframe.contentWindow.document.querySelector('h1')) && (!iframe.contentWindow.document.querySelector('h2'))) {
                             if (iframe.contentWindow.document.title) {
-                                $cms.dom.html(overlay_header, $cms.filter.html(iframe.contentWindow.document.title));
-                                overlay_header.style.display = 'block';
+                                $cms.dom.html(overlayHeader, $cms.filter.html(iframe.contentWindow.document.title));
+                                overlayHeader.style.display = 'block';
                             }
                         }
                     });
 
                     // Fiddle it, to behave like a popup would
                     var name = this.name;
-                    var make_frame_like_popup = function make_frame_like_popup() {
+                    var makeFrameLikePopup = function makeFrameLikePopup() {
                         if (iframe.parentNode.parentNode.parentNode.parentNode == null && that.iframe_restyle_timer != null) {
                             clearInterval(that.iframe_restyle_timer);
                             that.iframe_restyle_timer = null;
@@ -6734,32 +6935,32 @@
                             //iframe.scrolling=(_this.scrollbars===false)?'no':'auto';	Actually, not wanting this now
 
                             // Remove fixed width
-                            var main_website_inner = iframe.contentWindow.$cms.dom.$id('main_website_inner');
-                            if (main_website_inner) main_website_inner.id = '';
+                            var mainWebsiteInner = iframe.contentWindow.$cms.dom.$id('main_website_inner');
+                            if (mainWebsiteInner) mainWebsiteInner.id = '';
 
                             // Remove main_website marker
-                            var main_website = iframe.contentWindow.$cms.dom.$id('main_website');
-                            if (main_website) main_website.id = '';
+                            var mainWebsite = iframe.contentWindow.$cms.dom.$id('main_website');
+                            if (mainWebsite) mainWebsite.id = '';
 
                             // Remove popup spacing
-                            var popup_spacer = iframe.contentWindow.$cms.dom.$id('popup_spacer');
-                            if (popup_spacer) popup_spacer.id = '';
+                            var popupSpacer = iframe.contentWindow.$cms.dom.$id('popup_spacer');
+                            if (popupSpacer) popupSpacer.id = '';
 
                             // Set linking scheme
                             var bases = iframe.contentWindow.document.getElementsByTagName('base');
-                            var base_element;
+                            var baseElement;
                             if (!bases[0]) {
-                                base_element = iframe.contentWindow.document.createElement('base');
+                                baseElement = iframe.contentWindow.document.createElement('base');
                                 if (iframe.contentWindow.document) {
                                     var heads = iframe.contentWindow.document.getElementsByTagName('head');
                                     if (heads[0]) {
-                                        heads[0].appendChild(base_element);
+                                        heads[0].appendChild(baseElement);
                                     }
                                 }
                             } else {
-                                base_element = bases[0];
+                                baseElement = bases[0];
                             }
-                            base_element.target = that.target;
+                            baseElement.target = that.target;
                             // Firefox 3.6 does not respect <base> element put in via DOM manipulation :(
                             var forms = iframe.contentWindow.document.getElementsByTagName('form');
                             for (var i = 0; i < forms.length; i++) {
@@ -6788,7 +6989,7 @@
                             }
                         } else
                         {
-                            if (has_iframe_loaded(iframe) && !has_iframe_ownership(iframe)) {
+                            if (hasIframeLoaded(iframe) && !hasIframeOwnership(iframe)) {
                                 iframe.scrolling='yes';
                                 iframe.style.height='500px';
                             }
@@ -6802,10 +7003,10 @@
                     window.setTimeout(function () {
                         $cms.dom.illustrateFrameLoad('overlay_iframe');
                         iframe.src = that.href;
-                        make_frame_like_popup();
+                        makeFrameLikePopup();
 
                         if (that.iframe_restyle_timer == null)
-                            that.iframe_restyle_timer = window.setInterval(make_frame_like_popup, 300); // In case internal nav changes
+                            that.iframe_restyle_timer = window.setInterval(makeFrameLikePopup, 300); // In case internal nav changes
                     }, 0);
                     break;
 
@@ -6820,19 +7021,19 @@
                             that.option('yes');
                         });
 
-                        if (that.boxWrapperEl) {
-                            window.setTimeout(function () {
+                        window.setTimeout(function () {
+                            if (that.boxWrapperEl) {
                                 $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_yes);
-                            }, 1000);
-                        }
+                            }
+                        }, 1000);
 
                         this.button_container.appendChild(button);
                     } else {
-                        if (that.boxWrapperEl) {
-                            window.setTimeout(function () {
+                        window.setTimeout(function () {
+                            if (that.boxWrapperEl) {
                                 $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
-                            }, 1000);
-                        }
+                            }
+                        }, 1000);
                     }
                     break;
 
@@ -6865,28 +7066,31 @@
                         'class': 'wide_field',
                         'value': (this.defaultValue === null) ? '' : this.defaultValue
                     });
-                    var input_wrap = this.element('div', {
+                    var inputWrap = this.element('div', {
                         'class': 'constrain_field'
                     });
-                    input_wrap.appendChild(this.input);
-                    container.appendChild(input_wrap);
+                    inputWrap.appendChild(this.input);
+                    container.appendChild(inputWrap);
 
                     if (this.yes) {
                         button = this.element('button', {
                             'html': this.yes_button,
                             'class': 'buttons__yes button_screen_item',
-                            'style': 'font-weight: bold;'
+                            'css': {
+                                'font-weight': 'bold'
+                            }
                         });
                         $cms.dom.on(button, 'click', function () {
                             that.option('yes');
                         });
                         this.button_container.appendChild(button);
                     }
-                    if (that.boxWrapperEl) {
-                        window.setTimeout(function () {
+
+                    window.setTimeout(function () {
+                        if (that.boxWrapperEl) {
                             $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
-                        }, 1000);
-                    }
+                        }
+                    }, 1000);
                     break;
             }
 
@@ -6913,7 +7117,7 @@
 
             // Put together
             if (this.button_container.firstChild) {
-                if (this.type == 'iframe') {
+                if (this.type === 'iframe') {
                     container.appendChild(this.element('hr', {'class': 'spaced_rule'}));
                 }
                 container.appendChild(this.button_container);
@@ -6941,20 +7145,20 @@
             }, 100);
 
 
-            function has_iframe_loaded(iframe) {
-                var has_loaded = false;
+            function hasIframeLoaded(iframe) {
+                var hasLoaded = false;
                 try {
-                    has_loaded = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host != '');
+                    hasLoaded = (iframe != null) && (iframe.contentWindow.location.host != '');
                 } catch (ignore) {}
-                return has_loaded;
+                return hasLoaded;
             }
 
-            function has_iframe_ownership(iframe) {
-                var has_ownership = false;
+            function hasIframeOwnership(iframe) {
+                var hasOwnership = false;
                 try {
-                    has_ownership = (typeof iframe != 'undefined') && (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
+                    hasOwnership = (iframe != null) && (iframe.contentWindow.location.host == window.location.host) && (iframe.contentWindow.document != null);
                 } catch (ignore) {}
-                return has_ownership;
+                return hasOwnership;
             }
         },
 
@@ -6970,41 +7174,27 @@
         },
 
         element: function (tag, options) {
-            var el = this.top_window.document.createElement(tag),
-                attributes = {
-                    'html': 'innerHTML',
-                    'class': 'className',
-                    'for': 'htmlFor',
-                    'text': 'textContent'
-                };
+            var el = this.top_window.document.createElement(tag);
 
             if (isObj(options)) {
                 for (var name in options) {
                     var value = options[name];
-                    if (name === 'styles') {
-                        this.setStyles(el, value);
+                    if ((name === 'styles') || (name === 'css')) {
+                        $cms.dom.css(el, value);
                     } else if (name === 'html') {
                         $cms.dom.html(el, value);
-                    } else if (attributes[name]) {
-                        el[attributes[name]] = value;
+                    } else if (name === 'class') {
+                        el.className = value;
+                    } else if (name === 'text') {
+                        el.textContent = value;
+                    } else if (name === 'for') {
+                        el.htmlFor = value;
                     } else {
-                        el.setAttribute(name, value);
+                        $cms.dom.attr(el, name, value);
                     }
                 }
             }
             return el;
-        },
-
-        setStyles: function (el, obj) {
-            for (var k in obj) {
-                this.setStyle(el, k, obj[k]);
-            }
-        },
-
-        setStyle: function (el, prop, val) {
-            try {
-                el.style[prop] = val;
-            } catch (e) {}
         },
 
         getPageSize: function () {
@@ -7021,42 +7211,42 @@
      * Ask a user a question: they must click a button
      * 'Cancel' should come as index 0 and Ok/default-option should come as index 1. This is so that the fallback works right.
      * @param message
-     * @param button_set
-     * @param window_title
-     * @param fallback_message
+     * @param buttonSet
+     * @param windowTitle
+     * @param fallbackMessage
      * @param callback
-     * @param dialog_width
-     * @param dialog_height
+     * @param dialogWidth
+     * @param dialogHeight
      */
-    $cms.ui.generateQuestionUi = function generateQuestionUi(message, button_set, window_title, fallback_message, callback, dialog_width, dialog_height) {
-        var image_set = [];
-        var new_button_set = [];
-        for (var s in button_set) {
-            new_button_set.push(button_set[s]);
-            image_set.push(s);
+    $cms.ui.generateQuestionUi = function generateQuestionUi(message, buttonSet, windowTitle, fallbackMessage, callback, dialogWidth, dialogHeight) {
+        var imageSet = [];
+        var newButtonSet = [];
+        for (var s in buttonSet) {
+            newButtonSet.push(buttonSet[s]);
+            imageSet.push(s);
         }
-        button_set = new_button_set;
+        buttonSet = newButtonSet;
 
         if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
-            if (button_set.length > 4) {
-                dialog_height += 5 * (button_set.length - 4);
+            if (buttonSet.length > 4) {
+                dialogHeight += 5 * (buttonSet.length - 4);
             }
 
             // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
-            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(image_set.join(',')) + '&button_set=' + encodeURIComponent(button_set.join(',')) + '&window_title=' + encodeURIComponent(window_title) + $cms.keepStub());
-            if (dialog_width === undefined) {
-                dialog_width = 440;
+            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.keepStub());
+            if (dialogWidth === undefined) {
+                dialogWidth = 440;
             }
-            if (dialog_height === undefined) {
-                dialog_height = 180;
+            if (dialogHeight === undefined) {
+                dialogHeight = 180;
             }
             $cms.ui.showModalDialog(
                 url,
                 null,
-                'dialogWidth=' + dialog_width + ';dialogHeight=' + dialog_height + ';status=no;unadorned=yes',
+                'dialogWidth=' + dialogWidth + ';dialogHeight=' + dialogHeight + ';status=no;unadorned=yes',
                 function (result) {
                     if (result == null) {
-                        callback(button_set[0]); // just pressed 'cancel', so assume option 0
+                        callback(buttonSet[0]); // just pressed 'cancel', so assume option 0
                     } else {
                         callback(result);
                     }
@@ -7066,31 +7256,31 @@
             return;
         }
 
-        if (button_set.length == 1) {
+        if (buttonSet.length == 1) {
             $cms.ui.alert(
-                fallback_message ? fallback_message : message,
+                fallbackMessage ? fallbackMessage : message,
                 function () {
-                    callback(button_set[0]);
+                    callback(buttonSet[0]);
                 },
-                window_title
+                windowTitle
             );
-        } else if (button_set.length == 2) {
+        } else if (buttonSet.length == 2) {
             $cms.ui.confirm(
-                fallback_message ? fallback_message : message,
+                fallbackMessage ? fallbackMessage : message,
                 function (result) {
-                    callback(result ? button_set[1] : button_set[0]);
+                    callback(result ? buttonSet[1] : buttonSet[0]);
                 },
-                window_title
+                windowTitle
             );
         } else {
-            if (!fallback_message) {
+            if (!fallbackMessage) {
                 message += '\n\n{!INPUTSYSTEM_TYPE_EITHER;^}';
-                for (var i = 0; i < button_set.length; i++) {
-                    message += button_set[i] + ',';
+                for (var i = 0; i < buttonSet.length; i++) {
+                    message += buttonSet[i] + ',';
                 }
                 message = message.substr(0, message.length - 1);
             } else {
-                message = fallback_message;
+                message = fallbackMessage;
             }
 
             $cms.ui.prompt(
@@ -7098,15 +7288,15 @@
                 '',
                 function (result) {
                     if ((result === undefined) || (result === null)) {
-                        callback(button_set[0]); // just pressed 'cancel', so assume option 0
+                        callback(buttonSet[0]); // just pressed 'cancel', so assume option 0
                         return;
                     } else {
                         if (result == '') {
-                            callback(button_set[1]); // just pressed 'ok', so assume option 1
+                            callback(buttonSet[1]); // just pressed 'ok', so assume option 1
                             return;
                         }
-                        for (var i = 0; i < button_set.length; i++) {
-                            if (result.toLowerCase() === button_set[i].toLowerCase()) {// match
+                        for (var i = 0; i < buttonSet.length; i++) {
+                            if (result.toLowerCase() === buttonSet[i].toLowerCase()) {// match
                                 callback(result);
                                 return;
                             }
@@ -7114,41 +7304,41 @@
                     }
 
                     // unknown
-                    callback(button_set[0]);
+                    callback(buttonSet[0]);
                 },
-                window_title
+                windowTitle
             );
         }
     };
 
-    var ajaxInstances,
-        ajaxCallbacks,
+    var ajaxInstances = [],
+        ajaxCallbacks = [],
         networkDownAlerted = false;
 
     /**
      *
      * @param url
-     * @param callbackMethod
-     * @param post
+     * @param ajaxCallback
+     * @param post - Note that 'post' is not an array, it's a string (a=b)
      * @returns {*}
      */
-    $cms.doAjaxRequest = function doAjaxRequest(url, callbackMethod, post) { // Note: 'post' is not an array, it's a string (a=b)
-        var async = !!callbackMethod, index, result;
+    function doAjaxRequest(url, ajaxCallback, post) {
+        var async = !!ajaxCallback;
+
+        url = strVal(url);
 
         if (!url.includes('://') && url.startsWith('/')) {
             url = window.location.protocol + '//' + window.location.host + url;
         }
 
-        ajaxInstances || (ajaxInstances = []);
-        ajaxCallbacks || (ajaxCallbacks = []);
-
-        index = ajaxInstances.length;
-
-        ajaxInstances[index] = new XMLHttpRequest();
-        ajaxCallbacks[index] = callbackMethod;
+        var ajaxInstance = new XMLHttpRequest();
 
         if (async) {
-            ajaxInstances[index].onreadystatechange = readyStateChangeListener;
+            ajaxInstance.onreadystatechange = function () {
+                if ((ajaxInstance.readyState === XMLHttpRequest.DONE) && (typeof ajaxCallback === 'function')) {
+                    readyStateChangeListener(ajaxInstance, ajaxCallback);
+                }
+            };
         }
 
         if (typeof post === 'string') {
@@ -7156,93 +7346,72 @@
                 post += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken());
             }
 
-            ajaxInstances[index].open('POST', url, async);
-            ajaxInstances[index].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            ajaxInstances[index].send(post);
+            ajaxInstance.open('POST', url, async);
+            ajaxInstance.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            ajaxInstance.send(post);
         } else {
-            ajaxInstances[index].open('GET', url, async);
-            ajaxInstances[index].send(null);
+            ajaxInstance.open('GET', url, async);
+            ajaxInstance.send(null);
         }
 
-        result = ajaxInstances[index];
+        return ajaxInstance;
 
-        if (!async) {
-            delete ajaxInstances[index];
-        }
-
-        return result;
-
-        function readyStateChangeListener() {
-            ajaxInstances || (ajaxInstances = []);
-            ajaxCallbacks || (ajaxCallbacks = []);
-
-            // Check if any ajax requests are complete
-            ajaxInstances.forEach(function (xhr, i) {
-                if (!xhr || (xhr.readyState !== 4)) { // 4 = DONE
-                    return; // (continue)
+        function readyStateChangeListener(ajaxInstance, ajaxCallback) {
+            var okStatusCodes = [200, 500, 400, 401];
+            // If status is 'OK'
+            if (ajaxInstance.status && okStatusCodes.includes(ajaxInstance.status)) {
+                // Process the result
+                if ((!ajaxInstance.responseXML/*Not payload handler and not stack trace*/ || !ajaxInstance.responseXML.firstChild)) {
+                    return callAjaxMethod(ajaxCallback, ajaxInstance);
                 }
 
-                delete ajaxInstances[i];
+                // XML result. Handle with a potentially complex call
+                var xml = (ajaxInstance.responseXML && ajaxInstance.responseXML.firstChild) ? ajaxInstance.responseXML : handleErrorsInResult(ajaxInstance);
 
-                var okStatusCodes = [200, 500, 400, 401];
-                // If status is 'OK'
-                if (xhr.status && okStatusCodes.includes(xhr.status)) {
-                    // Process the result
-                    if ((!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild)) {
-                        return callAjaxMethod(ajaxCallbacks[i], xhr);
-                    }
-
-                    // XML result. Handle with a potentially complex call
-                    var xml = (xhr.responseXML && xhr.responseXML.firstChild) ? xhr.responseXML : handleErrorsInResult(xhr);
-
-                    if (xml) {
-                        xml.validateOnParse = false;
-                        processRequestChange(xml.documentElement || xml, i);
-                    } else {
-                        // Error parsing
-                        return callAjaxMethod(ajaxCallbacks[i]);
-                    }
+                if (xml) {
+                    xml.validateOnParse = false;
+                    processRequestChange(xml.documentElement || xml, ajaxCallback);
                 } else {
-                    // HTTP error...
-                    callAjaxMethod(ajaxCallbacks[i]);
-
-                    try {
-                        if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
-                            if (!networkDownAlerted && !window.unloaded) {
-                                $cms.ui.alert('{!NETWORK_DOWN;^}');
-                                networkDownAlerted = true;
-                            }
-                        } else {
-                            $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.', xhr);
-                        }
-                    } catch (e) {
-                        $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
-                    }
+                    // Error parsing
+                    return callAjaxMethod(ajaxCallback);
                 }
-            });
+            } else {
+                // HTTP error...
+                callAjaxMethod(ajaxCallback);
+
+                try {
+                    if ((ajaxInstance.status === 0) || (ajaxInstance.status > 10000)) { // implies site down, or network down
+                        if (!networkDownAlerted && !window.unloaded) {
+                            $cms.ui.alert('{!NETWORK_DOWN;^}');
+                            networkDownAlerted = true;
+                        }
+                    } else {
+                        $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + ajaxInstance.status + ': ' + ajaxInstance.statusText + '.', ajaxInstance);
+                    }
+                } catch (e) {
+                    $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
+                }
+            }
         }
 
-        function processRequestChange(ajaxResultFrame, i) {
-            ajaxInstances || (ajaxInstances = []);
-            ajaxCallbacks || (ajaxCallbacks = []);
-
+        function processRequestChange(ajaxResultFrame, ajaxCallback) {
             var method = null,
                 methodEl = ajaxResultFrame.querySelector('method');
 
-            if (methodEl || ajaxCallbacks[i]) {
-                method = methodEl ? eval('return ' + methodEl.textContent) : ajaxCallbacks[i];
+            if (methodEl || ajaxCallback) {
+                method = methodEl ? eval('return ' + methodEl.textContent) : ajaxCallback;
             }
 
             var messageEl = ajaxResultFrame.querySelector('message');
             if (messageEl) {
                 // Either an error or a message was returned. :(
-                var message = messageEl.firstChild.data;
+                var message = messageEl.firstChild.textContent;
 
                 callAjaxMethod(method);
 
                 if (ajaxResultFrame.querySelector('error')) {
                     // It's an error :|
-                    $cms.ui.alert('An error (' + ajaxResultFrame.querySelector('error').firstChild.data + ') message was returned by the server: ' + message);
+                    $cms.ui.alert('An error (' + ajaxResultFrame.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message);
                     return;
                 }
 
@@ -7251,12 +7420,12 @@
             }
 
             var ajaxResultEl = ajaxResultFrame.querySelector('result');
-            if (!ajaxResultEl) {
-                callAjaxMethod(method);
+            if (ajaxResultEl) {
+                callAjaxMethod(method, ajaxResultFrame, ajaxResultEl);
                 return;
             }
 
-            callAjaxMethod(ajaxResultFrame, ajaxResultEl);
+            callAjaxMethod(method);
         }
 
         function handleErrorsInResult(xhr) {
@@ -7288,338 +7457,42 @@
                 method = null;
             }
 
-            if (method != null) {
-                if (method.response !== undefined) {
-                    method.response(ajaxResultFrame, ajaxResult);
-                } else if (typeof method === 'function') {
-                    method(ajaxResultFrame, ajaxResult);
-                }
+            if (typeof method === 'function') {
+                method(ajaxResultFrame, ajaxResult);
             }
-        }
-    };
-
-
-}(window.$cms || (window.$cms = {}), !window.IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {}));
-
-(function () {
-    /*
-     Faux frames and faux scrolling
-     */
-    window.infinite_scrolling_block = infinite_scrolling_block;
-    window.infinite_scrolling_block_hold = infinite_scrolling_block_hold;
-    window.infinite_scrolling_block_unhold = infinite_scrolling_block_unhold;
-    window.internalise_infinite_scrolling = internalise_infinite_scrolling;
-    window.internalise_infinite_scrolling_go = internalise_infinite_scrolling_go;
-    window.internalise_ajax_block_wrapper_links = internalise_ajax_block_wrapper_links;
-
-    var infinite_scroll_pending = false, // Blocked due to queued HTTP request
-        infinite_scroll_blocked = false, // Blocked due to event tracking active
-        infinite_scroll_mouse_held = false;
-
-    /**
-     *
-     * @param event
-     */
-    function infinite_scrolling_block(event) {
-        if (event.keyCode === 35) {// 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
-            infinite_scroll_blocked = true;
-            window.setTimeout(function () {
-                infinite_scroll_blocked = false;
-            }, 3000);
-        }
-    }
-
-    function infinite_scrolling_block_hold() {
-        if (!infinite_scroll_blocked) {
-            infinite_scroll_blocked = true;
-            infinite_scroll_mouse_held = true;
         }
     }
 
     /**
-     *
-     * @param infinite_scrolling
+     * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)
+     * @memberof $cms.form
+     * @param url
+     * @param post
+     * @returns { Promise }
      */
-    function infinite_scrolling_block_unhold(infinite_scrolling) {
-        if (infinite_scroll_mouse_held) {
-            infinite_scroll_blocked = false;
-            infinite_scroll_mouse_held = false;
-            infinite_scrolling();
-        }
-    }
+    $cms.form.doAjaxFieldTest = function doAjaxFieldTest(url, post) {
+        url = strVal(url);
 
-    /**
-     *
-     * @param url_stem
-     * @param wrapper
-     * @returns {*}
-     */
-    function internalise_infinite_scrolling(url_stem, wrapper) {
-        if (infinite_scroll_blocked || infinite_scroll_pending) {
-            // Already waiting for a result
-            return false;
-        }
-
-        var _pagination = wrapper.querySelectorAll('.pagination');
-
-        if (_pagination.length === 0) {
-            return false;
-        }
-
-        var more_links = [], found_new_links = null;
-
-        for (var _i = 0; _i < _pagination.length; _i++) {
-            var pagination = _pagination[_i];
-
-            if (pagination.style.display != 'none') {
-                // Remove visibility of pagination, now we've replaced with AJAX load more link
-                var pagination_parent = pagination.parentNode;
-                pagination.style.display = 'none';
-                var num_node_children = 0;
-                for (var i = 0; i < pagination_parent.childNodes.length; i++) {
-                    if (pagination_parent.childNodes[i].nodeName != '#text') num_node_children++;
-                }
-                if (num_node_children == 0) // Remove empty pagination wrapper
-                {
-                    pagination_parent.style.display = 'none';
-                }
-
-                // Add AJAX load more link before where the last pagination control was
-                // Remove old pagination_load_more's
-                var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
-                if (pagination_load_more.length > 0) pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
-
-                // Add in new one
-                var load_more_link = document.createElement('div');
-                load_more_link.className = 'pagination_load_more';
-                var load_more_link_a = document.createElement('a');
-                $cms.dom.html(load_more_link_a, '{!LOAD_MORE;^}');
-                load_more_link_a.href = '#!';
-                load_more_link_a.onclick = function () {
-                    internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
-                    return false;
-                }; // Click link -- load
-                load_more_link.appendChild(load_more_link_a);
-                _pagination[_pagination.length - 1].parentNode.insertBefore(load_more_link, _pagination[_pagination.length - 1].nextSibling);
-
-                more_links = pagination.getElementsByTagName('a');
-                found_new_links = _i;
-            }
-        }
-        for (var _i = 0; _i < _pagination.length; _i++) {
-            var pagination = _pagination[_i];
-            if (found_new_links != null) // Cleanup old pagination
-            {
-                if (_i != found_new_links) {
-                    var _more_links = pagination.getElementsByTagName('a');
-                    var num_links = _more_links.length;
-                    for (var i = num_links - 1; i >= 0; i--) {
-                        _more_links[i].parentNode.removeChild(_more_links[i]);
-                    }
-                }
-            } else {// Find links from an already-hidden pagination
-
-                more_links = pagination.getElementsByTagName('a');
-                if (more_links.length != 0) {
-                    break;
-                }
-            }
-        }
-
-        // Is more scrolling possible?
-        var rel, found_rel = false;
-        for (var i = 0; i < more_links.length; i++) {
-            rel = more_links[i].getAttribute('rel');
-            if (rel && rel.indexOf('next') != -1) {
-                found_rel = true;
-            }
-        }
-        if (!found_rel) // Ah, no more scrolling possible
-        {
-            // Remove old pagination_load_more's
-            var pagination_load_more = wrapper.querySelectorAll('.pagination_load_more');
-            if (pagination_load_more.length > 0) {
-                pagination_load_more[0].parentNode.removeChild(pagination_load_more[0]);
-            }
-
-            return;
-        }
-
-        // Used for calculating if we need to scroll down
-        var wrapper_pos_y = $cms.dom.findPosY(wrapper);
-        var wrapper_height = wrapper.offsetHeight;
-        var wrapper_bottom = wrapper_pos_y + wrapper_height;
-        var window_height = $cms.dom.getWindowHeight();
-        var page_height = $cms.dom.getWindowScrollHeight();
-        var scroll_y = window.pageYOffset;
-
-        // Scroll down -- load
-        if ((scroll_y + window_height > wrapper_bottom - window_height * 2) && (scroll_y + window_height < page_height - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-        {
-            return internalise_infinite_scrolling_go(url_stem, wrapper, more_links);
-        }
-
-        return false;
-    }
-
-    /**
-     *
-     * @param url_stem
-     * @param wrapper
-     * @param more_links
-     * @returns {boolean}
-     */
-    function internalise_infinite_scrolling_go(url_stem, wrapper, more_links) {
-        if (infinite_scroll_pending) {
-            return false;
-        }
-
-        var wrapper_inner = $cms.dom.$id(wrapper.id + '_inner');
-        if (!wrapper_inner) wrapper_inner = wrapper;
-
-        var rel;
-        for (var i = 0; i < more_links.length; i++) {
-            rel = more_links[i].getAttribute('rel');
-            if (rel && rel.indexOf('next') != -1) {
-                var next_link = more_links[i];
-                var url_stub = '';
-
-                var matches = next_link.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
-                if (matches) {
-                    url_stub += (url_stem.indexOf('?') == -1) ? '?' : '&';
-                    url_stub += matches[1] + '=' + matches[2];
-                    url_stub += '&raw=1';
-                    infinite_scroll_pending = true;
-
-                    return $cms.callBlock(url_stem + url_stub, '', wrapper_inner, true, function () {
-                        infinite_scroll_pending = false;
-                        internalise_infinite_scrolling(url_stem, wrapper);
-                    });
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     *
-     * @param url_stem
-     * @param block_element
-     * @param look_for
-     * @param extra_params
-     * @param append
-     * @param forms_too
-     * @param scroll_to_top
-     */
-    function internalise_ajax_block_wrapper_links(url_stem, block_element, look_for, extra_params, append, forms_too, scroll_to_top) {
-        look_for || (look_for = []);
-        extra_params || (extra_params = []);
-        append = !!append;
-        forms_too = !!forms_too;
-        scroll_to_top = (scroll_to_top !== undefined) ? !!scroll_to_top : true;
-
-        var block_pos_y = $cms.dom.findPosY(block_element, true);
-        if (block_pos_y > window.pageYOffset) {
-            scroll_to_top = false;
-        }
-
-        var _link_wrappers = block_element.querySelectorAll('.ajax_block_wrapper_links');
-        if (_link_wrappers.length === 0) {
-            _link_wrappers = [block_element];
-        }
-        var links = [];
-        for (var i = 0; i < _link_wrappers.length; i++) {
-            var _links = _link_wrappers[i].getElementsByTagName('a');
-
-            for (var j = 0; j < _links.length; j++) {
-                links.push(_links[j]);
-            }
-
-            if (forms_too) {
-                _links = _link_wrappers[i].getElementsByTagName('form');
-
-                for (var k = 0; k < _links.length; k++) {
-                    links.push(_links[k]);
-                }
-
-                if (_link_wrappers[i].localName === 'form') {
-                    links.push(_link_wrappers[i]);
-                }
-            }
-        }
-
-        links.forEach(function (link) {
-            if (!link.target || (link.target !== '_self') || (link.href && link.href.startsWith('#'))) {
-                return; // (continue)
-            }
-
-            if (link.localName === 'a') {
-                $cms.dom.on(link, 'click', submit_func);
-            } else {
-                $cms.dom.on(link, 'submit', submit_func);
-            }
-        });
-
-        function submit_func() {
-            var url_stub = '', j;
-
-            var href = (this.localName === 'a') ? this.href : this.action;
-
-            // Any parameters matching a pattern must be sent in the URL to the AJAX block call
-            for (j = 0; j < look_for.length; j++) {
-                var matches = href.match(new RegExp('[&\?](' + look_for[j] + ')=([^&]*)'));
-                if (matches) {
-                    url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
-                    url_stub += matches[1] + '=' + matches[2];
-                }
-            }
-            for (j in extra_params) {
-                url_stub += (url_stem.indexOf('?') === -1) ? '?' : '&';
-                url_stub += j + '=' + encodeURIComponent(extra_params[j]);
-            }
-
-            // Any POST parameters?
-            var post_params = null, param;
-            if (this.localName === 'form') {
-                post_params = '';
-                for (j = 0; j < this.elements.length; j++) {
-                    if (this.elements[j].name) {
-                        param = this.elements[j].name + '=' + encodeURIComponent($cms.form.cleverFindValue(this, this.elements[j]));
-
-                        if ((!this.method) || (this.method.toLowerCase() !== 'get')) {
-                            if (post_params != '') post_params += '&';
-                            post_params += param;
+        return new Promise(function (resolve) {
+            $cms.doAjaxRequest(url, function (xhr) {
+                if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
+                    if (xhr.responseText !== 'false') {
+                        if (xhr.responseText.length > 1000) {
+                            $cms.log('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
+                            $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
                         } else {
-                            url_stub += (url_stem.indexOf('?') == -1) ? '?' : '&';
-                            url_stub += param;
+                            $cms.ui.alert(xhr.responseText);
                         }
                     }
+                    resolve(false);
+                    return;
                 }
-            }
+                resolve(true);
+            }, post);
+        });
+    };
 
-            if (window.history && window.history.pushState) {
-                try {
-                    window.has_js_state = true;
-                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
-                } catch (ignore) {
-                    // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
-                    // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
-                }
-            }
-
-            $cms.ui.clearOutTooltips();
-
-            // Make AJAX block call
-            return $cms.callBlock(url_stem + url_stub, '', block_element, append, function () {
-                if (scroll_to_top) {
-                    window.scrollTo(0, block_pos_y);
-                }
-            }, false, post_params);
-        }
-    }
-}());
-
+}(window.$cms || (window.$cms = {}), (!window.IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {})));
 
 (function ($cms) {
     'use strict';
@@ -7715,14 +7588,14 @@
 
                         // Convert <a> title attributes into composr tooltips
                         if (!anchor.classList.contains('no_tooltip')) {
-                            convert_tooltip(anchor);
+                            convertTooltip(anchor);
                         }
                     }
 
                     if ($cms.$VALUE_OPTION('js_keep_params')) {
                         // Keep parameters need propagating
                         if (anchor.href && anchor.href.startsWith($cms.$BASE_URL_S())) {
-                            anchor.href += keep_stub_with_context(anchor.href);
+                            anchor.href += keepStubWithContext(anchor.href);
                         }
                     }
                 });
@@ -7735,8 +7608,8 @@
 
                 forms.forEach(function (form) {
                     // HTML editor
-                    if (window.load_html_edit !== undefined) {
-                        load_html_edit(form);
+                    if (window.loadHtmlEdit !== undefined) {
+                        loadHtmlEdit(form);
                     }
 
                     // Remove tooltips from forms as they are for screenreader accessibility only
@@ -7749,14 +7622,14 @@
 
                         for (j = 0; j < elements.length; j++) {
                             if ((elements[j].title !== undefined) && (elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no_tooltip')) {
-                                convert_tooltip(elements[j]);
+                                convertTooltip(elements[j]);
                             }
                         }
 
                         elements = form.querySelectorAll('input[type="image"][title]'); // JS DOM does not include type="image" ones in form.elements
                         for (j = 0; j < elements.length; j++) {
                             if ((elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no_tooltip')) {
-                                convert_tooltip(elements[j]);
+                                convertTooltip(elements[j]);
                             }
                         }
                     }
@@ -7764,17 +7637,17 @@
                     if ($cms.$VALUE_OPTION('js_keep_params')) {
                         /* Keep parameters need propagating */
                         if (form.action && form.action.startsWith($cms.$BASE_URL_S())) {
-                            form.action += keep_stub_with_context(form.action);
+                            form.action += keepStubWithContext(form.action);
                         }
                     }
 
                     // This "proves" that JS is running, which is an anti-spam heuristic (bots rarely have working JS)
-                    if (typeof form.elements['csrf_token'] != 'undefined' && typeof form.elements['js_token'] == 'undefined') {
-                        var js_token = document.createElement('input');
-                        js_token.name = 'js_token';
-                        js_token.value = form.elements['csrf_token'].value.split("").reverse().join(""); // Reverse the CSRF token for our JS token
-                        js_token.type = 'hidden';
-                        form.appendChild(js_token);
+                    if (typeof form.elements['csrf_token'] != 'undefined' && typeof form.elements['jsToken'] == 'undefined') {
+                        var jsToken = document.createElement('input');
+                        jsToken.name = 'js_token';
+                        jsToken.value = form.elements['csrf_token'].value.split("").reverse().join(""); // Reverse the CSRF token for our JS token
+                        jsToken.type = 'hidden';
+                        form.appendChild(jsToken);
                     }
                 });
             }
@@ -7803,7 +7676,7 @@
                 }
 
                 $cms.dom.$$$(context, 'img:not([data-cms-rich-tooltip])').forEach(function (img) {
-                    convert_tooltip(img);
+                    convertTooltip(img);
                 });
             }
         },
@@ -7831,16 +7704,18 @@
         // Implementation for [data-cms-select2]
         select2Plugin: {
             attach: function (context) {
-                if (!window.jQuery || !window.jQuery.fn.select2) {
+                if (window.IN_MINIKERNEL_VERSION) {
                     return;
                 }
 
-                var els = $cms.dom.$$$(context, '[data-cms-select2]');
+                $cms.requireJavascript(['jquery', 'select2']).then(function () {
+                    var els = $cms.dom.$$$(context, '[data-cms-select2]');
 
-                // Select2 plugin hook
-                els.forEach(function (el) {
-                    var options = objVal($cms.dom.data(el, 'cmsSelect2'));
-                    window.jQuery(el).select2(options);
+                    // Select2 plugin hook
+                    els.forEach(function (el) {
+                        var options = objVal($cms.dom.data(el, 'cmsSelect2'));
+                        window.jQuery(el).select2(options);
+                    });
                 });
             }
         },
@@ -7869,30 +7744,30 @@
         }
     });
 
-    function keep_stub_with_context(context) {
-        context || (context = '');
+    function keepStubWithContext(context) {
+        context = strVal(context);
 
         var starting = !context || !context.includes('?');
 
-        var to_add = '', i,
+        var toAdd = '', i,
             bits = (window.location.search || '?').substr(1).split('&'),
             gapSymbol;
 
         for (i = 0; i < bits.length; i++) {
             if (bits[i].startsWith('keep_')) {
                 if (!context || (!context.includes('?' + bits[i]) && !context.includes('&' + bits[i]))) {
-                    gapSymbol = ((to_add === '') && starting) ? '?' : '&';
-                    to_add += gapSymbol + bits[i];
+                    gapSymbol = ((toAdd === '') && starting) ? '?' : '&';
+                    toAdd += gapSymbol + bits[i];
                 }
             }
         }
 
-        return to_add;
+        return toAdd;
     }
 
     /**
      * @memberof $cms.views
-     * @class
+     * @class Global
      * @extends $cms.View
      * */
     $cms.views.Global = function Global() {
@@ -7962,8 +7837,7 @@
 
         if (($cms.$ZONE() === 'adminzone') && $cms.$CONFIG_OPTION('background_template_compilation')) {
             var page = $cms.filter.url($cms.$PAGE());
-            $cms.loadSnippet('background_template_compilation&page=' + page, '', function () {
-            });
+            $cms.loadSnippet('background_template_compilation&page=' + page, '', true);
         }
 
         if (((window === window.top) && !window.opener) || (window.name === '')) {
@@ -8012,9 +7886,9 @@
 
         // Monitor pasting, for anti-spam reasons
         window.addEventListener('paste', function (event) {
-            var clipboard_data = event.clipboardData || window.clipboardData;
-            var pasted_data = clipboard_data.getData('Text');
-            if (pasted_data && pasted_data.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting')) {
+            var clipboardData = event.clipboardData || window.clipboardData;
+            var pastedData = clipboardData.getData('Text');
+            if (pastedData && pastedData.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting')) {
                 $cms.setPostDataFlag('paste');
             }
         });
@@ -8030,29 +7904,29 @@
                 return;
             }
 
-            var panel_right = view.$('#panel_right');
-            if (!panel_right) {
+            var panelRight = view.$('#panel_right');
+            if (!panelRight) {
                 return;
             }
 
-            var helperPanel = panel_right.querySelector('.global_helper_panel');
+            var helperPanel = panelRight.querySelector('.global_helper_panel');
             if (!helperPanel) {
                 return;
             }
 
-            var middle = panel_right.parentNode.querySelector('.global_middle');
+            var middle = panelRight.parentNode.querySelector('.global_middle');
             if (!middle) {
                 return;
             }
 
             middle.style.marginRight = '0';
-            var boxes = panel_right.querySelectorAll('.standardbox_curved'), i;
+            var boxes = panelRight.querySelectorAll('.standardbox_curved'), i;
             for (i = 0; i < boxes.length; i++) {
                 boxes[i].style.width = 'auto';
             }
-            panel_right.classList.add('horiz_helper_panel');
-            panel_right.parentNode.removeChild(panel_right);
-            middle.parentNode.appendChild(panel_right);
+            panelRight.classList.add('horiz_helper_panel');
+            panelRight.parentNode.removeChild(panelRight);
+            middle.parentNode.appendChild(panelRight);
             $cms.dom.$('#helper_panel_toggle').style.display = 'none';
             helperPanel.style.minHeight = '0';
         });
@@ -8062,7 +7936,7 @@
         }
     };
 
-    $cms.inherits($cms.views.Global, $cms.View, /**@lends $cms.views.Global#*/{
+    $cms.inherits($cms.views.Global, $cms.View, /**@lends Global#*/{
         events: function () {
             return {
                 // Show a confirmation dialog for clicks on a link (is higher up for priority)
@@ -8071,14 +7945,14 @@
                 'click [data-click-eval]': 'clickEval',
 
                 'click [data-click-alert]': 'showModalAlert',
-                'click [data-keypress-alert]': 'showModalAlert',
+                'keypress [data-keypress-alert]': 'showModalAlert',
 
                 // Prevent url change for clicks on anchor tags with a placeholder href
                 'click a[href$="#!"]': 'preventDefault',
                 // Prevent form submission for forms with a placeholder action
                 'submit form[action$="#!"]': 'preventDefault',
                 // Prevent-default for JS-activated elements (which may have noscript fallbacks as default actions)
-                'submit [data-click-pd]': 'clickPreventDefault',
+                'click [data-click-pd]': 'clickPreventDefault',
                 'submit [data-submit-pd]': 'submitPreventDefault',
 
                 // Simulated href for non <a> elements
@@ -8089,6 +7963,8 @@
                 // Toggle classes on mouseover/out
                 'mouseover [data-mouseover-class]': 'mouseoverClass',
                 'mouseout [data-mouseout-class]': 'mouseoutClass',
+
+                'click [data-click-toggle-checked]': 'clickToggleChecked',
 
                 // Disable button after click
                 'click [data-disable-on-click]': 'disableButton',
@@ -8154,56 +8030,56 @@
 
         stuckNavs: function () {
             // Pinning to top if scroll out
-            var stuck_navs = $cms.dom.$$('.stuck_nav');
+            var stuckNavs = $cms.dom.$$('.stuck_nav');
 
-            if (!stuck_navs.length) {
+            if (!stuckNavs.length) {
                 return;
             }
 
             $cms.dom.on(window, 'scroll', function () {
-                for (var i = 0; i < stuck_navs.length; i++) {
-                    var stuck_nav = stuck_navs[i],
-                        stuck_nav_height = (stuck_nav.real_height === undefined) ? $cms.dom.contentHeight(stuck_nav) : stuck_nav.real_height;
+                for (var i = 0; i < stuckNavs.length; i++) {
+                    var stuckNav = stuckNavs[i],
+                        stuckNavHeight = (stuckNav.real_height === undefined) ? $cms.dom.contentHeight(stuckNav) : stuckNav.real_height;
 
-                    stuck_nav.real_height = stuck_nav_height;
-                    var pos_y = $cms.dom.findPosY(stuck_nav.parentNode, true),
-                        footer_height = document.querySelector('footer') ? document.querySelector('footer').offsetHeight : 0,
-                        panel_bottom = $cms.dom.$id('panel_bottom');
+                    stuckNav.real_height = stuckNavHeight;
+                    var posY = $cms.dom.findPosY(stuckNav.parentNode, true),
+                        footerHeight = document.querySelector('footer') ? document.querySelector('footer').offsetHeight : 0,
+                        panelBottom = $cms.dom.$id('panel_bottom');
 
-                    if (panel_bottom) {
-                        footer_height += panel_bottom.offsetHeight;
+                    if (panelBottom) {
+                        footerHeight += panelBottom.offsetHeight;
                     }
-                    panel_bottom = $cms.dom.$id('global_messages_2');
-                    if (panel_bottom) {
-                        footer_height += panel_bottom.offsetHeight;
+                    panelBottom = $cms.dom.$id('global_messages_2');
+                    if (panelBottom) {
+                        footerHeight += panelBottom.offsetHeight;
                     }
-                    if (stuck_nav_height < $cms.dom.getWindowHeight() - footer_height) {// If there's space in the window to make it "float" between header/footer
-                        var extra_height = (window.pageYOffset - pos_y);
-                        if (extra_height > 0) {
-                            var width = $cms.dom.contentWidth(stuck_nav);
-                            var height = $cms.dom.contentHeight(stuck_nav);
-                            var stuck_nav_width = $cms.dom.contentWidth(stuck_nav);
-                            if (!window.getComputedStyle(stuck_nav).getPropertyValue('width')) {// May be centered or something, we should be careful
-                                stuck_nav.parentNode.style.width = width + 'px';
+                    if (stuckNavHeight < $cms.dom.getWindowHeight() - footerHeight) {// If there's space in the window to make it "float" between header/footer
+                        var extraHeight = (window.pageYOffset - posY);
+                        if (extraHeight > 0) {
+                            var width = $cms.dom.contentWidth(stuckNav);
+                            var height = $cms.dom.contentHeight(stuckNav);
+                            var stuckNavWidth = $cms.dom.contentWidth(stuckNav);
+                            if (!window.getComputedStyle(stuckNav).getPropertyValue('width')) {// May be centered or something, we should be careful
+                                stuckNav.parentNode.style.width = width + 'px';
                             }
-                            stuck_nav.parentNode.style.height = height + 'px';
-                            stuck_nav.style.position = 'fixed';
-                            stuck_nav.style.top = '0px';
-                            stuck_nav.style.zIndex = '1000';
-                            stuck_nav.style.width = stuck_nav_width + 'px';
+                            stuckNav.parentNode.style.height = height + 'px';
+                            stuckNav.style.position = 'fixed';
+                            stuckNav.style.top = '0px';
+                            stuckNav.style.zIndex = '1000';
+                            stuckNav.style.width = stuckNavWidth + 'px';
                         } else {
-                            stuck_nav.parentNode.style.width = '';
-                            stuck_nav.parentNode.style.height = '';
-                            stuck_nav.style.position = '';
-                            stuck_nav.style.top = '';
-                            stuck_nav.style.width = '';
+                            stuckNav.parentNode.style.width = '';
+                            stuckNav.parentNode.style.height = '';
+                            stuckNav.style.position = '';
+                            stuckNav.style.top = '';
+                            stuckNav.style.width = '';
                         }
                     } else {
-                        stuck_nav.parentNode.style.width = '';
-                        stuck_nav.parentNode.style.height = '';
-                        stuck_nav.style.position = '';
-                        stuck_nav.style.top = '';
-                        stuck_nav.style.width = '';
+                        stuckNav.parentNode.style.width = '';
+                        stuckNav.parentNode.style.height = '';
+                        stuckNav.style.position = '';
+                        stuckNav.style.top = '';
+                        stuckNav.style.width = '';
                     }
                 }
             });
@@ -8319,6 +8195,22 @@
             }
         },
 
+        // Implementation for [data-click-toggle-checked]
+        clickToggleChecked: function (e, target) {
+            var selector = strVal(target.dataset.clickToggleChecked),
+                checkboxes  = [];
+
+            if (selector === '') {
+                checkboxes.push(target);
+            } else {
+                checkboxes = $cms.dom.$$$(selector)
+            }
+
+            checkboxes.forEach(function (checkbox) {
+                $cms.dom.toggleChecked(checkbox);
+            });
+        },
+
         // Implementation for [data-disable-on-click]
         disableButton: function (e, target) {
             $cms.ui.disableButton(target);
@@ -8412,8 +8304,8 @@
             }
 
             function openImageIntoLightbox(el) {
-                var has_full_button = (el.firstElementChild === null) || (el.href !== el.firstElementChild.src);
-                $cms.ui.openImageIntoLightbox(el.href, ((el.cms_tooltip_title !== undefined) ? el.cms_tooltip_title : el.title), null, null, has_full_button);
+                var hasFullButton = (el.firstElementChild === null) || (el.href !== el.firstElementChild.src);
+                $cms.ui.openImageIntoLightbox(el.href, ((el.cms_tooltip_title !== undefined) ? el.cms_tooltip_title : el.title), null, null, hasFullButton);
             }
         },
 
@@ -8513,7 +8405,7 @@
             var url = window.location.href,
                 append = '?';
 
-            if ($cms.$JS_ON() || $cms.usp.get('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
+            if ($cms.$JS_ON() || +$cms.usp.get('keep_has_js') || url.includes('upgrader.php') || url.includes('webdav.php')) {
                 return;
             }
 
@@ -8607,21 +8499,21 @@
                     form.elements.cache.value = (val.substring(val.length - 4, val.length) == '.css') ? '1' : '0';
                 }
 
-                var window_name = 'cms_dev_tools' + Math.floor(Math.random() * 10000);
-                var window_options;
+                var windowName = 'cms_dev_tools' + Math.floor(Math.random() * 10000);
+                var windowOptions;
                 if (val == 'templates') {
-                    window_options = 'width=' + window.screen.availWidth + ',height=' + window.screen.availHeight + ',scrollbars=yes';
+                    windowOptions = 'width=' + window.screen.availWidth + ',height=' + window.screen.availHeight + ',scrollbars=yes';
 
                     window.setTimeout(function () { // Do a refresh with magic markers, in a comfortable few seconds
-                        var old_url = window.location.href;
-                        if (old_url.indexOf('keep_template_magic_markers=1') == -1) {
-                            window.location.href = old_url + ((old_url.indexOf('?') == -1) ? '?' : '&') + 'keep_template_magic_markers=1&cache_blocks=0&cache_comcode_pages=0';
+                        var oldUrl = window.location.href;
+                        if (oldUrl.indexOf('keep_template_magic_markers=1') == -1) {
+                            window.location.href = oldUrl + ((oldUrl.indexOf('?') == -1) ? '?' : '&') + 'keep_template_magic_markers=1&cache_blocks=0&cache_comcode_pages=0';
                         }
                     }, 10000);
                 } else {
-                    window_options = 'width=1020,height=700,scrollbars=yes';
+                    windowOptions = 'width=1020,height=700,scrollbars=yes';
                 }
-                var test = window.open('', window_name, window_options);
+                var test = window.open('', windowName, windowOptions);
 
                 if (test) {
                     form.setAttribute('target', test.name);
@@ -8636,14 +8528,43 @@
         },
 
         loadRealtimeRain: function () {
-            if (window.load_realtime_rain) {
-                load_realtime_rain();
+            loadRealtimeRain();
+
+            function loadRealtimeRain() {
+                if ((window.realtimeRainButtonLoadHandler === undefined)) {
+                    if (document.getElementById('realtime_rain_img_loader')) {
+                        setTimeout(loadRealtimeRain, 200);
+                        return false;
+                    }
+
+                    var img = document.getElementById('realtime_rain_img');
+                    img.className = 'footer_button_loading';
+                    var tmpElement = document.createElement('img');
+                    tmpElement.src = $cms.img('{$IMG;,loading}');
+                    tmpElement.style.position = 'absolute';
+                    tmpElement.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
+                    tmpElement.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
+                    tmpElement.id = 'realtime_rain_img_loader';
+                    img.parentNode.appendChild(tmpElement);
+
+                    $cms.requireJavascript('realtime_rain');
+                    $cms.requireCss('realtime_rain');
+                    window.setTimeout(loadRealtimeRain, 200);
+
+                    return false;
+                }
+                if ((window.realtimeRainButtonLoadHandler !== undefined)) {
+                    return realtimeRainButtonLoadHandler();
+                }
+                window.location.href = document.getElementById('realtime_rain_button').href;
+                return false;
             }
+
         },
 
         loadCommandr: function () {
-            if (window.load_commandr) {
-                load_commandr();
+            if (window.loadCommandr) {
+                loadCommandr();
             }
         },
 
@@ -8654,7 +8575,7 @@
             if ($cms.$CONFIG_OPTION('enable_animations')) {
                 if ((window.parent === window) && !loc.includes('js_cache=1') && (loc.includes('/cms/') || loc.includes('/adminzone/'))) {
                     window.addEventListener('beforeunload', function () {
-                        staff_unload_action();
+                        staffUnloadAction();
                     });
                 }
             }
@@ -8667,9 +8588,9 @@
 
                 if (isImage) {
                     $cms.dom.on(el, {
-                        mouseover: handle_image_mouse_over,
-                        mouseout: handle_image_mouse_out,
-                        click: handle_image_click
+                        mouseover: handleImageMouseOver,
+                        mouseout: handleImageMouseOut,
+                        click: handleImageClick
                     });
                 }
             }
@@ -8688,7 +8609,7 @@
                         if (link.href && !link.onmouseover) {
                             var id = link.href.match(patternRgx);
                             if (id) {
-                                apply_comcode_tooltip(hook, id, link);
+                                applyComcodeTooltip(hook, id, link);
                             }
                         }
                     });
@@ -8696,7 +8617,7 @@
             }
 
             /* Screen transition, for staff */
-            function staff_unload_action() {
+            function staffUnloadAction() {
                 $cms.undoStaffUnloadAction();
 
                 // If clicking a download link then don't show the animation
@@ -8742,7 +8663,7 @@
              TOOLTIPS FOR THUMBNAILS TO CONTENT, AS DISPLAYED IN CMS ZONE
              */
 
-            function apply_comcode_tooltip(hook, id, link) {
+            function applyComcodeTooltip(hook, id, link) {
                 link.addEventListener('mouseout', function () {
                     $cms.ui.deactivateTooltip(link);
                 });
@@ -8750,17 +8671,17 @@
                     $cms.ui.repositionTooltip(link, event, false, false, null, true);
                 });
                 link.addEventListener('mouseover', function (event) {
-                    var id_chopped = id[1];
+                    var idChopped = id[1];
                     if (id[2] !== undefined) {
-                        id_chopped += ':' + id[2];
+                        idChopped += ':' + id[2];
                     }
-                    var comcode = '[block="' + hook + '" id="' + decodeURIComponent(id_chopped) + '" no_links="1"]main_content[/block]';
+                    var comcode = '[block="' + hook + '" id="' + decodeURIComponent(idChopped) + '" no_links="1"]main_content[/block]';
                     if (link.rendered_tooltip === undefined) {
                         link.is_over = true;
 
-                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), function (ajax_result_frame) {
-                            if (ajax_result_frame && ajax_result_frame.responseText) {
-                                link.rendered_tooltip = ajax_result_frame.responseText;
+                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), function (ajaxResultFrame) {
+                            if (ajaxResultFrame && ajaxResultFrame.responseText) {
+                                link.rendered_tooltip = ajaxResultFrame.responseText;
                             }
                             if (link.rendered_tooltip !== undefined) {
                                 if (link.is_over) {
@@ -8777,7 +8698,7 @@
             /*
              THEME IMAGE CLICKING
              */
-            function handle_image_mouse_over(event) {
+            function handleImageMouseOver(event) {
                 var target = event.target;
                 if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
                     return;
@@ -8805,7 +8726,7 @@
                     // Add edit button
                     var ml = document.createElement('input');
                     ml.onclick = function (event) {
-                        handle_image_click(event, target, true);
+                        handleImageClick(event, target, true);
                     };
                     ml.type = 'button';
                     ml.id = 'editimg_' + target.id;
@@ -8829,7 +8750,7 @@
                 window.status = '{!SPECIAL_CLICK_TO_EDIT;^}';
             }
 
-            function handle_image_mouse_out(event) {
+            function handleImageMouseOut(event) {
                 var target = event.target;
 
                 if ($cms.$CONFIG_OPTION('enable_theme_img_buttons')) {
@@ -8858,7 +8779,7 @@
                 window.status = window.old_status_img;
             }
 
-            function handle_image_click(event, ob, force) {
+            function handleImageClick(event, ob, force) {
                 ob || (ob = this);
 
                 var src = ob.origsrc ? ob.origsrc : ((ob.src === undefined) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
@@ -8975,7 +8896,7 @@
 
             nodes.forEach(function (node) {
                 if ((node.parentNode !== el) && $cms.dom.isDisplayed(node) && node.parentNode.classList.contains('js-tray-accordion-item')) {
-                    $cms.toggleableTray(node, true);
+                    $cms.toggleableTray({ el: node, animate: false });
                 }
             });
 
@@ -8996,25 +8917,32 @@
             var cookieValue = $cms.readCookie('tray_' + this.trayCookie);
 
             if (($cms.dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($cms.dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
-                $cms.toggleableTray(this.contentEl, true);
+                $cms.toggleableTray({ el: this.contentEl, animate: false });
             }
         }
     });
 
-    $cms.toggleableTray = toggleableTray;
     // Toggle a ToggleableTray
-    function toggleableTray(el, noAnimateHeight) {
-        var $IMG_expand = '{$IMG;,1x/trays/expand}',
+    $cms.toggleableTray = function toggleableTray(elOrOptions) {
+        var options, el, animate,
+            $IMG_expand = '{$IMG;,1x/trays/expand}',
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
             $IMG_contract = '{$IMG;,1x/trays/contract}',
             $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
 
-        if (!el) {
-            return;
+        if ($cms.isPlainObj(elOrOptions)) {
+            options = elOrOptions;
+            el =  options.el;
+            //@TODO: Implement slide-up/down animation triggered by this boolean
+            animate = $cms.$CONFIG_OPTION('enable_animations') ? ((options.animate != null) ? !!options.animate : true) : false;
+        } else {
+            el = elOrOptions;
+            animate = $cms.$CONFIG_OPTION('enable_animations');
         }
 
-        //@TODO: Implement slide-up/down animation which is triggered by this boolean
-        //noAnimateHeight = $cms.$CONFIG_OPTION('enable_animations') ? !!noAnimateHeight : true;
+        if (!$cms.isEl(el)) {
+            return;
+        }
 
         if (!el.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
             el = $cms.dom.$(el, '.toggleable_tray') || el;
@@ -9032,13 +8960,13 @@
             $cms.dom.fadeIn(el);
 
             if (pic) {
-                set_tray_theme_image('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
+                setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
             }
         } else {
             $cms.dom.hide(el);
 
             if (pic) {
-                set_tray_theme_image('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
+                setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
                 pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
                 pic.title = '{!EXPAND;^}';
             }
@@ -9049,24 +8977,24 @@
         // Execution ends here
 
         var isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
-        function set_tray_theme_image(before_theme_img, after_theme_img, before1_url, after1_url, after2_url) {
-            var is_1 = $cms.dom.matchesThemeImage(pic.src, before1_url);
+        function setTrayThemeImage(beforeThemeImg, afterThemeImg, before1Url, after1Url, after2Url) {
+            var is_1 = $cms.dom.matchesThemeImage(pic.src, before1Url);
 
             if (is_1) {
                 if (isThemeWizard) {
-                    pic.src = pic.src.replace(before_theme_img, after_theme_img);
+                    pic.src = pic.src.replace(beforeThemeImg, afterThemeImg);
                 } else {
-                    pic.src = $cms.img(after1_url);
+                    pic.src = $cms.img(after1Url);
                 }
             } else {
                 if (isThemeWizard) {
-                    pic.src = pic.src.replace(before_theme_img + '2', after_theme_img + '2');
+                    pic.src = pic.src.replace(beforeThemeImg + '2', afterThemeImg + '2');
                 } else {
-                    pic.src = $cms.img(after2_url);
+                    pic.src = $cms.img(after2Url);
                 }
             }
         }
-    }
+    };
 
     $cms.functions.abstractFileManagerGetAfmForm = function abstractFileManagerGetAfmForm() {
         var usesFtp = document.getElementById('uses_ftp');
@@ -9074,10 +9002,10 @@
             return;
         }
 
-        ftp_ticker();
-        usesFtp.onclick = ftp_ticker;
+        ftpTicker();
+        usesFtp.onclick = ftpTicker;
 
-        function ftp_ticker() {
+        function ftpTicker() {
             var form = usesFtp.form;
             form.elements.ftp_domain.disabled = !usesFtp.checked;
             form.elements.ftp_directory.disabled = !usesFtp.checked;
@@ -9099,7 +9027,7 @@
             form = delBtn.form;
 
         $cms.dom.on(delBtn, 'click', function () {
-            confirm_delete(form, true, function () {
+            confirmDelete(form, true, function () {
                 var idEl = $cms.dom.$id('id'),
                     ids = (idEl.value === '') ? [] : idEl.value.split(',');
 
@@ -9130,7 +9058,7 @@
         var form = this;
         $cms.dom.on(form, 'submit', function (e) {
             e.preventDefault();
-            confirm_delete(form, true);
+            confirmDelete(form, true);
         });
     };
 
@@ -9147,9 +9075,9 @@
     };
 
     $cms.templates.uploadSyndicationSetupScreen = function (params) {
-        var win_parent = window.parent || window.opener,
+        var winParent = window.parent || window.opener,
             id = 'upload_syndicate__' + params.hook + '__' + params.name,
-            el = win_parent.document.getElementById(id);
+            el = winParent.document.getElementById(id);
 
         el.checked = true;
 
@@ -9210,7 +9138,7 @@
     };
 
     $cms.templates.ipBanScreen = function (params, container) {
-        var textarea = commandrLs.querySelector('#bans');
+        var textarea = container.querySelector('#bans');
         $cms.manageScrollHeight(textarea);
 
         if (!$cms.$MOBILE()) {
@@ -9221,7 +9149,7 @@
     };
 
     $cms.templates.jsBlock = function jsBlock(params) {
-        $cms.callBlock(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, null, false, null, false, false);
+        $cms.callBlock(params.blockCallUrl, '', $cms.dom.$id(params.jsBlockId), false, false, null, false, false);
     };
 
     $cms.templates.massSelectMarker = function (params, container) {
@@ -9233,10 +9161,16 @@
 
     $cms.templates.blockTopPersonalStats = function (params, container) {
         $cms.dom.on(container, 'click', '.js-click-toggle-top-personal-stats', function (e) {
-            if (toggle_top_personal_stats(e) === false) {
+            if (toggleTopPersonalStats(e) === false) {
                 e.preventDefault();
             }
         });
+
+        function toggleTopPersonalStats(event) {
+            _toggleMessagingBox(event, 'pts', true);
+            _toggleMessagingBox(event, 'web_notifications', true);
+            return _toggleMessagingBox(event, 'top_personal_stats');
+        }
     };
 
     $cms.templates.blockSidePersonalStatsNo = function blockSidePersonalStatsNo(params, container) {
@@ -9260,22 +9194,24 @@
     };
 
     $cms.functions.decisionTreeRender = function decisionTreeRender(parameter, value, notice, noticeTitle) {
-        var e=document.getElementById('main_form').elements[parameter];
+        var e = document.getElementById('main_form').elements[parameter];
         if (e.length === undefined) {
-            e=[e];
+            e = [e];
         }
-        for (var i=0;i<e.length;i++) {
-            e[i].addEventListener('click',function(_e) { return function() {
-                var selected=false;
-                if (_e.type!='undefined' && _e.type=='checkbox') {
-                    selected=(_e.checked && _e.value==value) || (!_e.checked && ''==value);
-                } else {
-                    selected=(_e.value== value);
+        for (var i = 0; i < e.length; i++) {
+            e[i].addEventListener('click', function (_e) {
+                return function () {
+                    var selected = false;
+                    if (_e.type != 'undefined' && _e.type == 'checkbox') {
+                        selected = (_e.checked && _e.value == value) || (!_e.checked && '' == value);
+                    } else {
+                        selected = (_e.value == value);
+                    }
+                    if (selected) {
+                        $cms.ui.alert(notice, null, noticeTitle, true);
+                    }
                 }
-                if (selected) {
-                    $cms.ui.alert(notice, null, noticeTitle, true);
-                }
-            }}(e[i]));
+            }(e[i]));
         }
     };
 
@@ -9312,14 +9248,14 @@
             span.textContent = el.alt;
 
             el.parentNode.insertBefore(span, el);
-            var span_proxy = span.cloneNode(true); // So we can measure width even with hidden tabs
-            span_proxy.style.position = 'absolute';
-            span_proxy.style.visibility = 'hidden';
-            document.body.appendChild(span_proxy);
+            var spanProxy = span.cloneNode(true); // So we can measure width even with hidden tabs
+            spanProxy.style.position = 'absolute';
+            spanProxy.style.visibility = 'hidden';
+            document.body.appendChild(spanProxy);
 
             window.setTimeout(function () {
-                var width = span_proxy.offsetWidth + 15;
-                span_proxy.parentNode.removeChild(span_proxy);
+                var width = spanProxy.offsetWidth + 15;
+                spanProxy.parentNode.removeChild(spanProxy);
                 if (el.parentNode.nodeName === 'TH' || el.parentNode.nodeName === 'TD') {
                     el.parentNode.style.height = width + 'px';
                 } else {
@@ -9339,13 +9275,13 @@
 
         var el = options.el,
             url = (el.href === undefined) ? el.action : el.href,
-            url_stripped = url.replace(/#.*/, ''),
-            new_url = url_stripped + (!url_stripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
+            urlStripped = url.replace(/#.*/, ''),
+            newUrl = urlStripped + (!urlStripped.includes('?') ? '?' : '&') + 'wide_high=1' + url.replace(/^[^\#]+/, '');
 
-        $cms.ui.open(new_url, null, 'width=' + options.width + ';height=' + options.height, options.target);
+        $cms.ui.open(newUrl, null, 'width=' + options.width + ';height=' + options.height, options.target);
     }
 
-    function convert_tooltip(el) {
+    function convertTooltip(el) {
         var title = el.title;
 
         if (!title || $cms.isTouchEnabled() || el.classList.contains('leave_native_tooltip')) {
@@ -9402,7 +9338,7 @@
         });
     }
 
-    function confirm_delete(form, multi, callback) {
+    function confirmDelete(form, multi, callback) {
         multi = !!multi;
 
         $cms.ui.confirm(
@@ -9421,21 +9357,349 @@
 
 
     function prepareMassSelectMarker(set, type, id, checked) {
-        var mass_delete_form = $cms.dom.$id('mass_select_form__' + set);
-        if (!mass_delete_form) {
-            mass_delete_form = $cms.dom.$id('mass_select_button').form;
+        var massDeleteForm = $cms.dom.$id('mass_select_form__' + set);
+        if (!massDeleteForm) {
+            massDeleteForm = $cms.dom.$id('mass_select_button').form;
         }
         var key = type + '_' + id;
         var hidden;
-        if (mass_delete_form.elements[key] === undefined) {
+        if (massDeleteForm.elements[key] === undefined) {
             hidden = document.createElement('input');
             hidden.type = 'hidden';
             hidden.name = key;
-            mass_delete_form.appendChild(hidden);
+            massDeleteForm.appendChild(hidden);
         } else {
-            hidden = mass_delete_form.elements[key];
+            hidden = massDeleteForm.elements[key];
         }
         hidden.value = checked ? '1' : '0';
-        mass_delete_form.style.display = 'block';
+        massDeleteForm.style.display = 'block';
     }
 }(window.$cms));
+
+(function () {
+    /*
+     Faux frames and faux scrolling
+     */
+    window.infiniteScrollingBlock = infiniteScrollingBlock;
+    window.infiniteScrollingBlockHold = infiniteScrollingBlockHold;
+    window.infiniteScrollingBlockUnhold = infiniteScrollingBlockUnhold;
+    window.internaliseInfiniteScrolling = internaliseInfiniteScrolling;
+    window.internaliseInfiniteScrollingGo = internaliseInfiniteScrollingGo;
+    window.internaliseAjaxBlockWrapperLinks = internaliseAjaxBlockWrapperLinks;
+
+    var infiniteScrollPending = false, // Blocked due to queued HTTP request
+        infiniteScrollBlocked = false, // Blocked due to event tracking active
+        infiniteScrollMouseHeld = false;
+
+    /**
+     *
+     * @param event
+     */
+    function infiniteScrollingBlock(event) {
+        if (event.keyCode === 35) {// 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
+            infiniteScrollBlocked = true;
+            window.setTimeout(function () {
+                infiniteScrollBlocked = false;
+            }, 3000);
+        }
+    }
+
+    function infiniteScrollingBlockHold() {
+        if (!infiniteScrollBlocked) {
+            infiniteScrollBlocked = true;
+            infiniteScrollMouseHeld = true;
+        }
+    }
+
+    /**
+     *
+     * @param infiniteScrolling
+     */
+    function infiniteScrollingBlockUnhold(infiniteScrolling) {
+        if (infiniteScrollMouseHeld) {
+            infiniteScrollBlocked = false;
+            infiniteScrollMouseHeld = false;
+            infiniteScrolling();
+        }
+    }
+
+    /**
+     *
+     * @param urlStem
+     * @param wrapper
+     * @returns {*}
+     */
+    function internaliseInfiniteScrolling(urlStem, wrapper) {
+        if (infiniteScrollBlocked || infiniteScrollPending) {
+            // Already waiting for a result
+            return false;
+        }
+
+        var _pagination = wrapper.querySelectorAll('.pagination');
+
+        if (_pagination.length === 0) {
+            return false;
+        }
+
+        var moreLinks = [], foundNewLinks = null;
+
+        for (var _i = 0; _i < _pagination.length; _i++) {
+            var pagination = _pagination[_i];
+
+            if (pagination.style.display != 'none') {
+                // Remove visibility of pagination, now we've replaced with AJAX load more link
+                var paginationParent = pagination.parentNode;
+                pagination.style.display = 'none';
+                var numNodeChildren = 0;
+                for (var i = 0; i < paginationParent.childNodes.length; i++) {
+                    if (paginationParent.childNodes[i].nodeName != '#text') numNodeChildren++;
+                }
+                if (numNodeChildren == 0) // Remove empty pagination wrapper
+                {
+                    paginationParent.style.display = 'none';
+                }
+
+                // Add AJAX load more link before where the last pagination control was
+                // Remove old pagination_load_more's
+                var paginationLoadMore = wrapper.querySelectorAll('.pagination_load_more');
+                if (paginationLoadMore.length > 0) paginationLoadMore[0].parentNode.removeChild(paginationLoadMore[0]);
+
+                // Add in new one
+                var loadMoreLink = document.createElement('div');
+                loadMoreLink.className = 'pagination_load_more';
+                var loadMoreLinkA = document.createElement('a');
+                $cms.dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
+                loadMoreLinkA.href = '#!';
+                loadMoreLinkA.onclick = function () {
+                    internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+                    return false;
+                }; // Click link -- load
+                loadMoreLink.appendChild(loadMoreLinkA);
+                _pagination[_pagination.length - 1].parentNode.insertBefore(loadMoreLink, _pagination[_pagination.length - 1].nextSibling);
+
+                moreLinks = pagination.getElementsByTagName('a');
+                foundNewLinks = _i;
+            }
+        }
+        for (var _i = 0; _i < _pagination.length; _i++) {
+            var pagination = _pagination[_i];
+            if (foundNewLinks != null) // Cleanup old pagination
+            {
+                if (_i != foundNewLinks) {
+                    var _moreLinks = pagination.getElementsByTagName('a');
+                    var numLinks = _moreLinks.length;
+                    for (var i = numLinks - 1; i >= 0; i--) {
+                        _moreLinks[i].parentNode.removeChild(_moreLinks[i]);
+                    }
+                }
+            } else {// Find links from an already-hidden pagination
+
+                moreLinks = pagination.getElementsByTagName('a');
+                if (moreLinks.length !== 0) {
+                    break;
+                }
+            }
+        }
+
+        // Is more scrolling possible?
+        var rel, foundRel = false;
+        for (var i = 0; i < moreLinks.length; i++) {
+            rel = moreLinks[i].getAttribute('rel');
+            if (rel && rel.indexOf('next') !== -1) {
+                foundRel = true;
+            }
+        }
+        if (!foundRel) // Ah, no more scrolling possible
+        {
+            // Remove old pagination_load_more's
+            var paginationLoadMore = wrapper.querySelectorAll('.pagination_load_more');
+            if (paginationLoadMore.length > 0) {
+                paginationLoadMore[0].parentNode.removeChild(paginationLoadMore[0]);
+            }
+
+            return;
+        }
+
+        // Used for calculating if we need to scroll down
+        var wrapperPosY = $cms.dom.findPosY(wrapper);
+        var wrapperHeight = wrapper.offsetHeight;
+        var wrapperBottom = wrapperPosY + wrapperHeight;
+        var windowHeight = $cms.dom.getWindowHeight();
+        var pageHeight = $cms.dom.getWindowScrollHeight();
+        var scrollY = window.pageYOffset;
+
+        // Scroll down -- load
+        if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
+        {
+            return internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param urlStem
+     * @param wrapper
+     * @param moreLinks
+     * @returns {boolean}
+     */
+    function internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks) {
+        if (infiniteScrollPending) {
+            return false;
+        }
+
+        var wrapperInner = $cms.dom.$id(wrapper.id + '_inner');
+        if (!wrapperInner) wrapperInner = wrapper;
+
+        var rel;
+        for (var i = 0; i < moreLinks.length; i++) {
+            rel = moreLinks[i].getAttribute('rel');
+            if (rel && rel.indexOf('next') !== -1) {
+                var nextLink = moreLinks[i];
+                var urlStub = '';
+
+                var matches = nextLink.href.match(new RegExp('[&?](start|[^_]*_start|start_[^_]*)=([^&]*)'));
+                if (matches) {
+                    urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
+                    urlStub += matches[1] + '=' + matches[2];
+                    urlStub += '&raw=1';
+                    infiniteScrollPending = true;
+
+                    $cms.callBlock(urlStem + urlStub, '', wrapperInner, true).then(function () {
+                        infiniteScrollPending = false;
+                        internaliseInfiniteScrolling(urlStem, wrapper);
+                    });
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param urlStem
+     * @param blockElement
+     * @param lookFor
+     * @param extraParams
+     * @param append
+     * @param formsToo
+     * @param scrollToTop
+     */
+    function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
+        lookFor || (lookFor = []);
+        extraParams || (extraParams = []);
+        append = !!append;
+        formsToo = !!formsToo;
+        scrollToTop = (scrollToTop !== undefined) ? !!scrollToTop : true;
+
+        if (!blockElement) {
+            return;
+        }
+
+        var blockPosY = blockElement ? $cms.dom.findPosY(blockElement, true) : 0;
+
+        if (blockPosY > window.pageYOffset) {
+            scrollToTop = false;
+        }
+
+        var _linkWrappers = blockElement.querySelectorAll('.ajax_block_wrapper_links');
+        if (_linkWrappers.length === 0) {
+            _linkWrappers = [blockElement];
+        }
+        var links = [];
+        for (var i = 0; i < _linkWrappers.length; i++) {
+            var _links = _linkWrappers[i].getElementsByTagName('a');
+
+            for (var j = 0; j < _links.length; j++) {
+                links.push(_links[j]);
+            }
+
+            if (formsToo) {
+                _links = _linkWrappers[i].getElementsByTagName('form');
+
+                for (var k = 0; k < _links.length; k++) {
+                    links.push(_links[k]);
+                }
+
+                if (_linkWrappers[i].localName === 'form') {
+                    links.push(_linkWrappers[i]);
+                }
+            }
+        }
+
+        links.forEach(function (link) {
+            if (!link.target || (link.target !== '_self') || (link.href && link.href.startsWith('#'))) {
+                return; // (continue)
+            }
+
+            if (link.localName === 'a') {
+                $cms.dom.on(link, 'click', submitFunc);
+            } else {
+                $cms.dom.on(link, 'submit', submitFunc);
+            }
+        });
+
+        function submitFunc() {
+            var urlStub = '', j;
+
+            var href = (this.localName === 'a') ? this.href : this.action;
+
+            // Any parameters matching a pattern must be sent in the URL to the AJAX block call
+            for (j = 0; j < lookFor.length; j++) {
+                var matches = href.match(new RegExp('[&\?](' + lookFor[j] + ')=([^&]*)'));
+                if (matches) {
+                    urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
+                    urlStub += matches[1] + '=' + matches[2];
+                }
+            }
+            for (j in extraParams) {
+                urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
+                urlStub += j + '=' + encodeURIComponent(extraParams[j]);
+            }
+
+            // Any POST parameters?
+            var postParams = null, param;
+            if (this.localName === 'form') {
+                postParams = '';
+                for (j = 0; j < this.elements.length; j++) {
+                    if (this.elements[j].name) {
+                        param = this.elements[j].name + '=' + encodeURIComponent($cms.form.cleverFindValue(this, this.elements[j]));
+
+                        if ((!this.method) || (this.method.toLowerCase() !== 'get')) {
+                            if (postParams != '') {
+                                postParams += '&';
+                            }
+                            postParams += param;
+                        } else {
+                            urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
+                            urlStub += param;
+                        }
+                    }
+                }
+            }
+
+            if (window.history && window.history.pushState) {
+                try {
+                    window.has_js_state = true;
+                    window.history.pushState({js: true}, document.title, href.replace('&ajax=1', '').replace(/&zone=[{$URL_CONTENT_REGEXP_JS}]+/, ''));
+                } catch (ignore) {
+                    // Exception could have occurred due to cross-origin error (e.g. "Failed to execute 'pushState' on 'History':
+                    // A history state object with URL 'https://xxx' cannot be created in a document with origin 'http://xxx'")
+                }
+            }
+
+            $cms.ui.clearOutTooltips();
+
+            // Make AJAX block call
+            $cms.callBlock(urlStem + urlStub, '', blockElement, append, false, postParams).then(function () {
+                if (scrollToTop) {
+                    window.scrollTo(0, blockPosY);
+                }
+            });
+            return false;
+        }
+    }
+}());

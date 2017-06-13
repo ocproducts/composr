@@ -1,5 +1,6 @@
-'use strict';
 (function ($cms) {
+    'use strict';
+
     if (window.slideshow_timer === undefined) {
         window.slideshow_timer = null;
         window.slideshow_slides = {};
@@ -7,6 +8,11 @@
     }
 
     $cms.views.BlockMainImageFader = BlockMainImageFader;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainImageFader(params) {
         BlockMainImageFader.base(this, 'constructor', arguments);
 
@@ -38,7 +44,7 @@
         }
     }
 
-    $cms.inherits(BlockMainImageFader, $cms.View, {
+    $cms.inherits(BlockMainImageFader, $cms.View, /**@lends BlockMainImageFader#*/{
         initializeTitle: function (data, v, k) {
             data['title' + k] = v;
             if (k == 0) {
@@ -56,11 +62,11 @@
             }
         },
         initializeImage: function (data, v, k, mill, total) {
-            var period_in_msecs = 50;
+            var periodInMsecs = 50;
             var increment = 3;
-            if (period_in_msecs * 100 / increment > mill) {
-                period_in_msecs = mill * increment / 100;
-                period_in_msecs *= 0.9; // A little give
+            if (periodInMsecs * 100 / increment > mill) {
+                periodInMsecs = mill * increment / 100;
+                periodInMsecs *= 0.9; // A little give
             }
 
             data['url' + k] = v;
@@ -69,9 +75,9 @@
                 function func() {
                     data.fp_animation_fader.src = data.fp_animation.src;
                     $cms.dom.clearTransitionAndSetOpacity(data.fp_animation_fader, 1.0);
-                    $cms.dom.fadeTransition(data.fp_animation_fader, 0, period_in_msecs, increment * -1);
+                    $cms.dom.fadeTransition(data.fp_animation_fader, 0, periodInMsecs, increment * -1);
                     $cms.dom.clearTransitionAndSetOpacity(data.fp_animation, 0.0);
-                    $cms.dom.fadeTransition(data.fp_animation, 100, period_in_msecs, increment);
+                    $cms.dom.fadeTransition(data.fp_animation, 100, periodInMsecs, increment);
                     data.fp_animation.src = data['url' + k];
                     data.fp_animation_fader.style.left = ((data.fp_animation_fader.parentNode.offsetWidth - data.fp_animation_fader.offsetWidth) / 2) + 'px';
                     data.fp_animation_fader.style.top = ((data.fp_animation_fader.parentNode.offsetHeight - data.fp_animation_fader.offsetHeight) / 2) + 'px';
@@ -93,6 +99,11 @@
     });
 
     $cms.views.GalleryNav = GalleryNav;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function GalleryNav(params) {
         GalleryNav.base(this, 'constructor', arguments);
 
@@ -104,12 +115,12 @@
         }
     }
 
-    $cms.inherits(GalleryNav, $cms.View, {
+    $cms.inherits(GalleryNav, $cms.View, /**@lends GalleryNav#*/{
         initializeSlideshow: function () {
-            reset_slideshow_countdown();
-            start_slideshow_timer();
+            resetSlideshowCountdown();
+            startSlideshowTimer();
 
-            window.addEventListener('keypress', toggle_slideshow_timer);
+            window.addEventListener('keypress', toggleSlideshowTimer);
 
             document.getElementById('gallery_entry_screen').addEventListener('click', function (event) {
                 if (event.altKey || event.metaKey) {
@@ -124,11 +135,11 @@
                         b.requestFullScreenWithKeys();
                     }
                 } else {
-                    toggle_slideshow_timer();
+                    toggleSlideshowTimer();
                 }
             });
 
-            slideshow_show_slide(window.slideshow_current_position); // To ensure next is preloaded
+            slideshowShowSlide(window.slideshow_current_position); // To ensure next is preloaded
         },
         events: function () {
             return {
@@ -139,35 +150,35 @@
             };
         },
         resetCountdown: function () {
-            reset_slideshow_countdown();
+            resetSlideshowCountdown();
         },
         stopTimer: function () {
-            stop_slideshow_timer('{!STOPPED^;}');
+            stopSlideshowTimer('{!STOPPED^;}');
         },
         slideshowBackward: function () {
-            slideshow_backward();
+            slideshowBackward();
 
         },
         slideshowForward: function () {
-            slideshow_forward();
+            slideshowForward();
         }
     });
 
     $cms.functions.moduleCmsQuiz = function moduleCmsQuiz() {
-        document.getElementById('type').addEventListener('change', hide_func);
-        hide_func();
+        document.getElementById('type').addEventListener('change', hideFunc);
+        hideFunc();
 
-        function hide_func() {
+        function hideFunc() {
             var ob = document.getElementById('type');
-            if (ob.value == 'TEST') {
+            if (ob.value === 'TEST') {
                 document.getElementById('percentage').disabled = false;
                 document.getElementById('num_winners').disabled = true;
             }
-            if (ob.value == 'COMPETITION') {
+            if (ob.value === 'COMPETITION') {
                 document.getElementById('num_winners').disabled = false;
                 document.getElementById('percentage').disabled = true;
             }
-            if (ob.value == 'SURVEY') {
+            if (ob.value === 'SURVEY') {
                 document.getElementById('text').value = document.getElementById('text').value.replace(/ \[\*\]/g, '');
                 document.getElementById('num_winners').disabled = true;
                 document.getElementById('percentage').disabled = true;
@@ -188,15 +199,20 @@
     };
 
     $cms.functions.moduleCmsGalleriesRunStartAddCategory = function moduleCmsGalleriesRunStartAddCategory() {
-        var form = document.getElementById('main_form');
-        form.addEventListener('submit', function () {
-            document.getElementById('submit_button').disabled = true;
+        var form = document.getElementById('main_form'),
+            submitBtn = document.getElementById('submit_button');
+        form.addEventListener('submit', function submitCheck() {
+            submitBtn.disabled = true;
             var url = '{$FIND_SCRIPT_NOHTTP;^,snippet}?snippet=exists_gallery&name=' + encodeURIComponent(form.elements['name'].value);
-            if (!$cms.form.doAjaxFieldTest(url)) {
-                document.getElementById('submit_button').disabled = false;
-                return false;
-            }
-            document.getElementById('submit_button').disabled = false;
+            e.preventDefault();
+            $cms.form.doAjaxFieldTest(url).then(function (valid) {
+                if (valid) {
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
         });
     };
 
@@ -231,33 +247,27 @@
             return;
         }
 
-        function preview_generator_mouseover(event) {
-            $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL()) + '/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
-        }
-
-        function preview_generator_mousemove(event) {
-            $cms.ui.repositionTooltip(this, event);
-        }
-
-        function preview_generator_mouseout(event) {
-            $cms.ui.deactivateTooltip(this);
-        }
-
         for (i = 0; i < files.options.length; i++) {
-            $cms.dom.on(files[i], 'mouseover', preview_generator_mouseover);
-            $cms.dom.on(files[i], 'mousemove', preview_generator_mousemove);
-            $cms.dom.on(files[i], 'mouseout', preview_generator_mouseout);
+            $cms.dom.on(files[i], 'mouseover', function (event) {
+                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL()) + '/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
+            });
+            $cms.dom.on(files[i], 'mousemove', function (event) {
+                $cms.ui.repositionTooltip(this, event);
+            });
+            $cms.dom.on(files[i], 'mouseout', function (event) {
+                $cms.ui.deactivateTooltip(this);
+            });
         }
     };
 
-    function start_slideshow_timer() {
+    function startSlideshowTimer() {
         if (!window.slideshow_timer) {
             window.slideshow_timer = window.setInterval(function () {
                 window.slideshow_time--;
-                show_current_slideshow_time();
+                showCurrentSlideshowTime();
 
                 if (window.slideshow_time == 0) {
-                    slideshow_forward();
+                    slideshowForward();
                 }
             }, 1000);
         }
@@ -267,34 +277,34 @@
         }
     }
 
-    function show_current_slideshow_time() {
+    function showCurrentSlideshowTime() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
             $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', Math.max(0, window.slideshow_time)));
         }
     }
 
-    function reset_slideshow_countdown() {
-        var slideshow_from = document.getElementById('slideshow_from');
-        window.slideshow_time = slideshow_from ? window.parseInt(slideshow_from.value) : 5;
+    function resetSlideshowCountdown() {
+        var slideshowFrom = document.getElementById('slideshow_from');
+        window.slideshow_time = slideshowFrom ? window.parseInt(slideshowFrom.value) : 5;
 
-        show_current_slideshow_time();
+        showCurrentSlideshowTime();
 
         if (window.slideshow_current_position == window.slideshow_total_slides - 1) {
             window.slideshow_time = 0;
         }
     }
 
-    function toggle_slideshow_timer() {
+    function toggleSlideshowTimer() {
         if (window.slideshow_timer) {
-            stop_slideshow_timer();
+            stopSlideshowTimer();
         } else {
-            show_current_slideshow_time();
-            start_slideshow_timer();
+            showCurrentSlideshowTime();
+            startSlideshowTimer();
         }
     }
 
-    function stop_slideshow_timer(message) {
+    function stopSlideshowTimer(message) {
         if (message === undefined) {
             message = '{!galleries:STOPPED;^}';
         }
@@ -309,28 +319,28 @@
         document.getElementById('gallery_entry_screen').style.cursor = '';
     }
 
-    function slideshow_backward() {
+    function slideshowBackward() {
         if (window.slideshow_current_position === 0) {
             return;
         }
 
-        slideshow_show_slide(window.slideshow_current_position - 1);
+        slideshowShowSlide(window.slideshow_current_position - 1);
     }
 
-    function player_stopped() {
-        slideshow_forward();
+    function playerStopped() {
+        slideshowForward();
     }
 
-    function slideshow_forward() {
+    function slideshowForward() {
         if (window.slideshow_current_position === (window.slideshow_total_slides - 1)) {
-            stop_slideshow_timer('{!galleries:LAST_SLIDE;^}');
+            stopSlideshowTimer('{!galleries:LAST_SLIDE;^}');
             return;
         }
 
-        slideshow_show_slide(window.slideshow_current_position + 1);
+        slideshowShowSlide(window.slideshow_current_position + 1);
     }
 
-    function slideshow_ensure_loaded(slide, callback) {
+    function slideshowEnsureLoaded(slide, callback) {
         if (window.slideshow_slides[slide] !== undefined) {
             if (callback !== undefined) {
                 callback();
@@ -353,13 +363,13 @@
             }
 
             if (callback !== undefined) {
-                $cms.doAjaxRequest(url, function (ajax_result_raw) {
-                    _slideshow_read_in_slide(ajax_result_raw, slide);
+                $cms.doAjaxRequest(url, function (ajaxResultRaw) {
+                    _slideshowReadInSlide(ajaxResultRaw, slide);
                     callback();
                 });
             } else {
-                $cms.doAjaxRequest(url, function (ajax_result_raw) {
-                    _slideshow_read_in_slide(ajax_result_raw, slide);
+                $cms.doAjaxRequest(url, function (ajaxResultRaw) {
+                    _slideshowReadInSlide(ajaxResultRaw, slide);
                 });
             }
         } else {
@@ -367,61 +377,57 @@
         }
     }
 
-    function _slideshow_read_in_slide(ajax_result_raw, slide) {
-        window.slideshow_slides[slide] = ajax_result_raw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, '');
+    function _slideshowReadInSlide(ajaxResultRaw, slide) {
+        window.slideshow_slides[slide] = ajaxResultRaw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, '');
     }
 
-    function slideshow_show_slide(slide) {
-        slideshow_ensure_loaded(slide, function () {
-            var fade_elements;
+    function slideshowShowSlide(slide) {
+        slideshowEnsureLoaded(slide, function () {
+            var fadeElements;
 
             if (window.slideshow_current_position !== slide) { // If not already here
-                var slideshow_from = document.getElementById('slideshow_from');
+                var slideshowFrom = document.getElementById('slideshow_from');
 
-                var fade_elements_old = document.body.querySelectorAll('.scale_down');
-                if (fade_elements_old[0] !== undefined) {
-                    var fade_element_old = fade_elements_old[0];
-                    var left_pos = fade_element_old.parentNode.offsetWidth / 2 - fade_element_old.offsetWidth / 2;
-                    fade_element_old.style.left = left_pos + 'px';
-                    fade_element_old.style.position = 'absolute';
+                var fadeElementsOld = document.body.querySelectorAll('.scale_down');
+                if (fadeElementsOld[0] !== undefined) {
+                    var fadeElementOld = fadeElementsOld[0];
+                    var leftPos = fadeElementOld.parentNode.offsetWidth / 2 - fadeElementOld.offsetWidth / 2;
+                    fadeElementOld.style.left = leftPos + 'px';
+                    fadeElementOld.style.position = 'absolute';
                 } // else probably a video
 
-                var cleaned_slide_html = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, '').replace(/<script[^>]*>(.|\n)*?<\/script>/gi, '');
-                $cms.dom.html(document.getElementById('gallery_entry_screen'), cleaned_slide_html);
+                var cleanedSlideHtml = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, '').replace(/<script[^>]*>(.|\n)*?<\/script>/gi, '');
+                $cms.dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
 
-                fade_elements = document.body.querySelectorAll('.scale_down');
-                if ((fade_elements[0] !== undefined) && (fade_elements_old[0] !== undefined)) {
-                    var fade_element = fade_elements[0];
-                    $cms.dom.clearTransitionAndSetOpacity(fade_element, 0);
-                    fade_element.parentNode.insertBefore(fade_element_old, fade_element);
-                    fade_element.parentNode.style.position = 'relative';
-                    $cms.dom.fadeTransition(fade_element, 100.0, 30, 10);
-                    $cms.dom.clearTransitionAndSetOpacity(fade_element_old, 1.0);
-                    $cms.dom.fadeTransition(fade_element_old, 0.0, 30, -10, true);
+                fadeElements = document.body.querySelectorAll('.scale_down');
+                if ((fadeElements[0] !== undefined) && (fadeElementsOld[0] !== undefined)) {
+                    var fadeElement = fadeElements[0];
+                    $cms.dom.clearTransitionAndSetOpacity(fadeElement, 0);
+                    fadeElement.parentNode.insertBefore(fadeElementOld, fadeElement);
+                    fadeElement.parentNode.style.position = 'relative';
+                    $cms.dom.fadeTransition(fadeElement, 100.0, 30, 10);
+                    $cms.dom.clearTransitionAndSetOpacity(fadeElementOld, 1.0);
+                    $cms.dom.fadeTransition(fadeElementOld, 0.0, 30, -10, true);
                 } // else probably a video
 
-                if (slideshow_from){
+                if (slideshowFrom){
                     // Make sure stays the same
-                    document.getElementById('slideshow_from').value = slideshow_from.value;
+                    document.getElementById('slideshow_from').value = slideshowFrom.value;
                 }
 
                 window.slideshow_current_position = slide;
-
-                if (window.show_slide_callback !== undefined) {
-                    show_slide_callback();
-                }
             }
 
-            fade_elements = document.body.querySelectorAll('.scale_down');
-            if (fade_elements[0] !== undefined) {// Is image
-                start_slideshow_timer();
-                reset_slideshow_countdown();
+            fadeElements = document.body.querySelectorAll('.scale_down');
+            if (fadeElements[0] !== undefined) {// Is image
+                startSlideshowTimer();
+                resetSlideshowCountdown();
             } else {// Is video
-                stop_slideshow_timer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
+                stopSlideshowTimer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
             }
 
             if (window.slideshow_current_position != window.slideshow_total_slides - 1) {
-                slideshow_ensure_loaded(slide + 1);
+                slideshowEnsureLoaded(slide + 1);
             } else {
                 document.getElementById('gallery_entry_screen').style.cursor = '';
             }
@@ -429,7 +435,7 @@
     }
 
     // Exports to be gotten rid of later
-    window.player_stopped = player_stopped;
-    window.stop_slideshow_timer = stop_slideshow_timer;
+    window.playerStopped = playerStopped;
+    window.stopSlideshowTimer = stopSlideshowTimer;
 }(window.$cms));
 

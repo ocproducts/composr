@@ -2,6 +2,11 @@
     'use strict';
 
     $cms.views.Menu = Menu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function Menu(params) {
         Menu.base(this, 'constructor', arguments);
 
@@ -22,6 +27,11 @@
     // MENU_dropdown.tpl
     // - MENU_BRANCH_dropdown.tpl
     $cms.views.DropdownMenu = DropdownMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function DropdownMenu(params) {
         DropdownMenu.base(this, 'constructor', arguments);
     }
@@ -87,7 +97,7 @@
         unsetActiveMenu: function (e, target) {
             if (!target.contains(e.relatedTarget)) {
                 window.active_menu = null;
-                recreate_clean_timeout();
+                recreateCleanTimeout();
             }
         },
 
@@ -99,7 +109,7 @@
             window.menu_hold_time = 3000;
             if (!target.dataset.timer) {
                 target.dataset.timer = window.setTimeout(function () {
-                    var ret = pop_up_menu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
+                    var ret = popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
                     try {
                         document.getElementById('search_content').focus();
                     } catch (ignore) {}
@@ -116,11 +126,16 @@
     });
 
     $cms.views.PopupMenu = PopupMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function PopupMenu(params) {
         PopupMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(PopupMenu, Menu, /**@lends PopupMenu.prototype*/{
+    $cms.inherits(PopupMenu, Menu, /**@lends PopupMenu#*/{
         events: function () {
             return {
                 'click .js-click-unset-active-menu': 'unsetActiveMenu',
@@ -131,12 +146,17 @@
         unsetActiveMenu: function (e, target) {
             if (!target.contains(e.relatedTarget)) {
                 window.active_menu = null;
-                recreate_clean_timeout();
+                recreateCleanTimeout();
             }
         }
     });
 
     $cms.views.PopupMenuBranch = PopupMenuBranch;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function PopupMenuBranch() {
         PopupMenuBranch.base(this, 'constructor', arguments);
 
@@ -145,7 +165,7 @@
         this.popup = this.menu + '_pexpand_' + this.rand;
     }
 
-    $cms.inherits(PopupMenuBranch, $cms.View, /**@lends PopupMenuBranch.prototype*/{
+    $cms.inherits(PopupMenuBranch, $cms.View, /**@lends PopupMenuBranch#*/{
         events: function () {
             return {
                 'focus .js-focus-pop-up-menu': 'popUpMenu',
@@ -164,11 +184,16 @@
     });
 
     $cms.views.TreeMenu = TreeMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function TreeMenu() {
         TreeMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(TreeMenu, Menu, /**@lends TreeMenu.prototype*/{
+    $cms.inherits(TreeMenu, Menu, /**@lends TreeMenu#*/{
         events: function () {
             return {
                 'click [data-menu-tree-toggle]': 'toggleMenu'
@@ -186,12 +211,17 @@
     // MENU_mobile.tpl
     // - MENU_BRANCH_mobile.tpl
     $cms.views.MobileMenu = MobileMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function MobileMenu() {
         MobileMenu.base(this, 'constructor', arguments);
         this.menuContentEl = this.$('.js-el-menu-content');
     }
 
-    $cms.inherits(MobileMenu, Menu, /**@lends MobileMenu.prototype*/{
+    $cms.inherits(MobileMenu, Menu, /**@lends MobileMenu#*/{
         events: function () {
             return {
                 'click .js-click-toggle-content': 'toggleContent',
@@ -236,11 +266,16 @@
     };
 
     $cms.views.SelectMenu = SelectMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
     function SelectMenu() {
         SelectMenu.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(SelectMenu, Menu, /**@lends SelectMenu.prototype*/{
+    $cms.inherits(SelectMenu, Menu, /**@lends SelectMenu#*/{
         events: function () {
             return {
                 'change .js-change-redirect-to-value': 'redirect'
@@ -318,7 +353,7 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-check-menu', function (e, button) {
-            if (!check_menu()) {
+            if (!checkMenu()) {
                 e.preventDefault();
                 return;
             }
@@ -358,7 +393,7 @@
         document.getElementById('branch_type_' + id).selectedIndex = sIndex;
 
         $cms.dom.on(container, 'focus', '.js-focus-make-caption-field-selected', function (e, focused) {
-            make_field_selected(focused);
+            makeFieldSelected(focused);
         });
 
         $cms.dom.on(container, 'dblclick', '.js-dblclick-scroll-to-heading', function (e) {
@@ -368,26 +403,134 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-delete-menu-branch', function (e, clicked) {
-            delete_menu_branch(clicked);
+            deleteMenuBranch(clicked);
         });
 
         $cms.dom.on(container, 'click', '.js-click-menu-editor-branch-type-change', function () {
-            menu_editor_branch_type_change(id);
+            menuEditorBranchTypeChange(id);
         });
 
         $cms.dom.on(container, 'change', '.js-change-menu-editor-branch-type-change', function () {
-            menu_editor_branch_type_change(id);
+            menuEditorBranchTypeChange(id);
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-move-down-handle-ordering', function (e, btn) {
-            handle_ordering(btn, false, true);
+            handleOrdering(btn, /*up*/false, /*down*/true);
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-move-up-handle-ordering', function (e, btn) {
-            handle_ordering(btn, true, false);
+            handleOrdering(btn, /*up*/true, /*down*/false);
         });
 
-        function delete_menu_branch(ob) {
+        function makeFieldSelected(el) {
+            if (el.classList.contains('menu_editor_selected_field')) {
+                return;
+            }
+
+            el.classList.add('menu_editor_selected_field');
+
+            var changed = false;
+            for (var i = 0; i < el.form.elements.length; i++) {
+                if ((el.form.elements[i].classList.contains('menu_editor_selected_field')) && (el.form.elements[i] !== el)) {
+                    el.form.elements[i].classList.remove('menu_editor_selected_field');
+                    changed = true;
+                }
+            }
+
+            copyFieldsIntoBottom(el.id.substr(8), changed);
+        }
+
+        function handleOrdering(el, upwards) {
+                var form = $cms.dom.$('#edit_form');
+
+                // Find the num
+                var index = el.id.substring(el.id.indexOf('_') + 1, el.id.length);
+                var num = window.parseInt(form.elements['order_' + index].value) || 0;
+
+                // Find the parent
+                var parentNum = $cms.dom.$('#parent_' + index).value;
+
+                var i, b, bindex;
+                var best = -1, bestindex = -1;
+
+            if (upwards) {// Up
+                // Find previous branch with same parent (if exists)
+                for (i = 0; i < form.elements.length; i++) {
+                    if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parentNum)) {
+                        bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
+                        b = window.parseInt(form.elements['order_' + bindex].value) || 0;
+                        if ((b < num) && (b > best)) {
+                            best = b;
+                            bestindex = bindex;
+                        }
+                    }
+                }
+            } else {// Down
+                // Find next branch with same parent (if exists)
+                for (i = 0; i < form.elements.length; i++) {
+                    if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value === parentNum)) {
+                        bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
+                        b = window.parseInt(form.elements['order_' + bindex].value);
+                        if ((b > num) && ((b < best) || (best === -1))) {
+                            best = b;
+                            bestindex = bindex;
+                        }
+                    }
+                }
+            }
+
+
+            var elements = form.querySelectorAll('input');
+            for (i = 0; i < elements.length; i++) {
+                if (elements[i].name === 'parent_' + index) {// Found our spot
+                    var el = elements[i];
+                    for (b = upwards ? (i - 1) : (i + 1); upwards ? (b > 0) : (b < elements.length); upwards ? b-- : b++) {
+                        if ((!isChild(elements, index, elements[b].name.substr(7))) && (elements[b].name.startsWith('parent_') && ((upwards) || (document.getElementById('branch_type_' + elements[b].name.substr(7)).selectedIndex === 0) || (!existsChild(elements, elements[b].name.substr(7)))))) {
+                            var target = elements[b];
+                            var main = el.parentNode.parentNode;
+                            var place = target.parentNode.parentNode;
+                            if ((upwards && (branchDepth(target) <= branchDepth(el))) || ((branchDepth(target) !== branchDepth(el)))) {
+                                main.parentNode.removeChild(main);
+                                place.parentNode.insertBefore(main, place);
+                            } else {
+                                main.parentNode.removeChild(main);
+                                if (!place.nextSibling) {
+                                    place.parentNode.appendChild(main);
+                                } else {
+                                    place.parentNode.insertBefore(main, place.nextSibling);
+                                }
+                            }
+                            el.value = target.value;
+                            return;
+                        }
+                    }
+                }
+            }
+
+            function isChild(elements, possibleParent, possibleChild) {
+                for (var i = 0; i < elements.length; i++) {
+                    if ((elements[i].name.substr(7) == possibleChild) && (elements[i].name.substr(0, 7) == 'parent_')) {
+                        if (elements[i].value == possibleParent) {
+                            return true;
+                        }
+
+                        return isChild(elements, possibleParent, elements[i].value);
+                    }
+                }
+
+                return false;
+            }
+
+            function branchDepth(branch) {
+                if (branch.parentNode) {
+                    return branchDepth(branch.parentNode) + 1;
+                }
+
+                return 0;
+            }
+        }
+
+        function deleteMenuBranch(ob) {
             var id = ob.id.substring(4, ob.id.length);
 
             if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) || (ob.form.elements['branch_type_' + id] != 'page')) {
@@ -398,9 +541,9 @@
                     '{!menus:DELETE_MENU_ITEM;^}',
                     null,
                     function (result) {
-                        if (result.toLowerCase() == '{!DELETE;^}'.toLowerCase()) {
-                            delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
-                        } else if (result.toLowerCase() == '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
+                        if (result.toLowerCase() === '{!DELETE;^}'.toLowerCase()) {
+                            deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                        } else if (result.toLowerCase() === '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
                             var choices = {buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}'};
                             for (var i = 0; i < window.all_menus.length; i++) {
                                 choices['buttons__choose___' + i] = window.all_menus[i];
@@ -411,25 +554,30 @@
                                 '{!menus:MOVE_MENU_ITEM;^}',
                                 null,
                                 function (result) {
-                                    if (result.toLowerCase() != '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) {
+                                    if (result.toLowerCase() !== '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) {
                                         var post = '', name, value;
                                         for (var i = 0; i < ob.form.elements.length; i++) {
                                             name = ob.form.elements[i].name;
-                                            if (name.substr(name.length - (('_' + id).length)) == '_' + id) {
-                                                if (ob.localName == 'select') {
+                                            if (name.substr(name.length - (('_' + id).length)) === '_' + id) {
+                                                if (ob.localName === 'select') {
                                                     value = ob.form.elements[i].value;
                                                     window.myValue = ob.options[ob.selectedIndex].value;
                                                 } else {
-                                                    if ((ob.type.toLowerCase() == 'checkbox') && (!ob.checked)) continue;
+                                                    if ((ob.type.toLowerCase() === 'checkbox') && (!ob.checked)) {
+                                                        continue;
+                                                    }
 
                                                     value = ob.form.elements[i].value;
                                                 }
-                                                if (post != '') post += '&';
+                                                if (post !== '') {
+                                                    post += '&';
+                                                }
                                                 post += name + '=' + encodeURIComponent(value);
                                             }
                                         }
+                                        /*FIXME: Synchronous XHR*/
                                         $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,menu_management}' + '?id=' + encodeURIComponent(id) + '&menu=' + encodeURIComponent(result) + $cms.keepStub(), null, post);
-                                        delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                                        deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                                     }
                                 }
                             );
@@ -441,7 +589,7 @@
                     '{!CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     function (result) {
                         if (result)
-                            delete_branch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                            deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                     }
                 );
             }
@@ -453,38 +601,38 @@
             clickableSections = !!params.clickableSections && (params.clickableSections !== '0');
 
         $cms.dom.on(container, 'click', '.js-click-add-new-menu-item', function () {
-            var insert_before_id = 'branches_go_before_' + parentId;
+            var insertBeforeId = 'branches_go_before_' + parentId;
 
             var template = $cms.dom.$id('template').value;
 
-            var before = $cms.dom.$id(insert_before_id);
-            var new_id = 'm_' + Math.floor(Math.random() * 10000);
-            var template2 = template.replace(/replace\_me\_with\_random/gi, new_id);
-            var highest_order_element = $cms.dom.$id('highest_order');
-            var new_order = highest_order_element.value + 1;
-            highest_order_element.value++;
-            template2 = template2.replace(/replace\_me\_with\_order/gi, new_order);
+            var before = $cms.dom.$id(insertBeforeId);
+            var newId = 'm_' + Math.floor(Math.random() * 10000);
+            var template2 = template.replace(/replace\_me\_with\_random/gi, newId);
+            var highestOrderElement = $cms.dom.$id('highest_order');
+            var newOrder = highestOrderElement.value + 1;
+            highestOrderElement.value++;
+            template2 = template2.replace(/replace\_me\_with\_order/gi, newOrder);
             template2 = template2.replace(/replace\_me\_with\_parent/gi, parentId);
 
             // Backup form branches
             var form = $cms.dom.$id('edit_form');
-            var _elements_bak = form.elements, elements_bak = [];
+            var _elementsBak = form.elements, elementsBak = [];
             var i;
-            for (i = 0; i < _elements_bak.length; i++) {
-                elements_bak.push([_elements_bak[i].name, _elements_bak[i].value]);
+            for (i = 0; i < _elementsBak.length; i++) {
+                elementsBak.push([_elementsBak[i].name, _elementsBak[i].value]);
             }
 
             $cms.dom.append(before, template2); // Technically we are actually putting after "branches_go_before_XXX", but it makes no difference. It only needs to act as a divider.
 
             // Restore form branches
-            for (i = 0; i < elements_bak.length; i++) {
-                if (elements_bak[i][0]) {
-                    form.elements[elements_bak[i][0]].value = elements_bak[i][1];
+            for (i = 0; i < elementsBak.length; i++) {
+                if (elementsBak[i][0]) {
+                    form.elements[elementsBak[i][0]].value = elementsBak[i][1];
                 }
             }
 
             if (!clickableSections) {
-                menu_editor_branch_type_change(new_id);
+                menuEditorBranchTypeChange(newId);
             }
 
             $cms.dom.$id('mini_form_hider').style.display = 'none';
@@ -492,7 +640,7 @@
     };
 
 
-    function menu_editor_branch_type_change(id) {
+    function menuEditorBranchTypeChange(id) {
         var disabled = (document.getElementById('branch_type_' + id).value !== 'page');
         var sub = $cms.dom.$id('branch_' + id + '_follow_1');
         if (sub) {
@@ -508,12 +656,12 @@
         var menuId = strVal(params.menuSitemapId),
             content = arrVal($cms.dom.data(container, 'tpMenuContent'));
 
-        generate_menu_sitemap($cms.dom.$('#' + menuId), content, 0);
+        generateMenuSitemap($cms.dom.$('#' + menuId), content, 0);
 
         // ==============================
         // DYNAMIC TREE CREATION FUNCTION
         // ==============================
-        function generate_menu_sitemap(targetEl, structure, theLevel) {
+        function generateMenuSitemap(targetEl, structure, theLevel) {
             structure = arrVal(structure);
             theLevel = +theLevel || 0;
 
@@ -527,10 +675,10 @@
             var node;
             for (var i = 0; i < structure.length; i++) {
                 node = structure[i];
-                _generate_menu_sitemap(targetEl, node, theLevel);
+                _generateMenuSitemap(targetEl, node, theLevel);
             }
 
-            function _generate_menu_sitemap(target, node, theLevel) {
+            function _generateMenuSitemap(target, node, theLevel) {
                 theLevel = +theLevel || 0;
 
                 var branchId = 'sitemap_menu_branch_' + $cms.random();
@@ -592,7 +740,7 @@
 
                     // Show children...
                     $cms.dom.append(li, ul);
-                    generate_menu_sitemap(ul, node.children, theLevel + 1);
+                    generateMenuSitemap(ul, node.children, theLevel + 1);
                 }
             }
         }
@@ -629,19 +777,19 @@
         });
     };
 
-    function menuActiveSelection(menu_id) {
-        var menu_element = $cms.dom.$('#' + menu_id),
-            possibilities = [], is_selected, url, min_score, i;
+    function menuActiveSelection(menuId) {
+        var menuElement = $cms.dom.$('#' + menuId),
+            possibilities = [], isSelected, url, min_score, i;
 
-        if (menu_element.localName === 'select') {
-            for (i = 0; i < menu_element.options.length; i++) {
-                url = menu_element.options[i].value;
-                is_selected = menuItemIsSelected(url);
-                if (is_selected !== null) {
+        if (menuElement.localName === 'select') {
+            for (i = 0; i < menuElement.options.length; i++) {
+                url = menuElement.options[i].value;
+                isSelected = menuItemIsSelected(url);
+                if (isSelected !== null) {
                     possibilities.push({
                         url: url,
-                        score: is_selected,
-                        element: menu_element.options[i]
+                        score: isSelected,
+                        element: menuElement.options[i]
                     });
                 }
             }
@@ -660,12 +808,12 @@
                 }
             }
         } else {
-            var menu_items = menu_element.querySelectorAll('.non_current'), a;
-            for (i = 0; i < menu_items.length; i++) {
+            var menuItems = menuElement.querySelectorAll('.non_current'), a;
+            for (i = 0; i < menuItems.length; i++) {
                 a = null;
-                for (var j = 0; j < menu_items[i].children.length; j++) {
-                    if (menu_items[i].children[j].localName === 'a') {
-                        a = menu_items[i].children[j];
+                for (var j = 0; j < menuItems[i].children.length; j++) {
+                    if (menuItems[i].children[j].localName === 'a') {
+                        a = menuItems[i].children[j];
                     }
                 }
                 if (!a) {
@@ -673,12 +821,12 @@
                 }
 
                 url = (a.getAttribute('href') === '') ? '' : a.href;
-                is_selected = menuItemIsSelected(url);
-                if (is_selected !== null) {
+                isSelected = menuItemIsSelected(url);
+                if (isSelected !== null) {
                     possibilities.push({
                         url: url,
-                        score: is_selected,
-                        element: menu_items[i]
+                        score: isSelected,
+                        element: menuItems[i]
                     });
                 }
             }
@@ -707,14 +855,14 @@
             return null;
         }
 
-        var current_url = window.location.href;
-        if (current_url === url) {
+        var currentUrl = window.location.href;
+        if (currentUrl === url) {
             return 0;
         }
-        var global_breadcrumbs = document.getElementById('global_breadcrumbs');
+        var globalBreadcrumbs = document.getElementById('global_breadcrumbs');
 
-        if (global_breadcrumbs) {
-            var links = global_breadcrumbs.querySelectorAll('a');
+        if (globalBreadcrumbs) {
+            var links = globalBreadcrumbs.querySelectorAll('a');
             for (var i = 0; i < links.length; i++) {
                 if (url == links[links.length - 1 - i].href) {
                     return i + 1;
@@ -729,27 +877,27 @@
     window.active_menu = null;
     window.last_active_menu = null;
 
-    var clean_menus_timeout,
-        last_active_menu;
+    var cleanMenusTimeout,
+        lastActiveMenu;
 
     function setActiveMenu(id, menu) {
         window.active_menu = id;
         if (menu != null) {
-            last_active_menu = menu;
+            lastActiveMenu = menu;
         }
     }
 
-    function recreate_clean_timeout() {
-        if (clean_menus_timeout) {
-            window.clearTimeout(clean_menus_timeout);
+    function recreateCleanTimeout() {
+        if (cleanMenusTimeout) {
+            window.clearTimeout(cleanMenusTimeout);
         }
-        clean_menus_timeout = window.setTimeout(clean_menus, window.menu_hold_time);
+        cleanMenusTimeout = window.setTimeout(cleanMenus, window.menu_hold_time);
     }
 
-    function clean_menus() {
-        clean_menus_timeout = null;
+    function cleanMenus() {
+        cleanMenusTimeout = null;
 
-        var m = $cms.dom.$('#r_' + last_active_menu);
+        var m = $cms.dom.$('#r_' + lastActiveMenu);
         if (!m) {
             return;
         }
@@ -757,7 +905,7 @@
         var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
         var i, hideable;
         for (i = tags.length - 1; i >= 0; i--) {
-            if (tags[i].localName != 'ul' && tags[i].localName != 'div') continue;
+            if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') continue;
 
             hideable = true;
             if (e) {
@@ -765,7 +913,7 @@
                 do {
                     if (tags[i].id == t.id) hideable = false;
                     t = t.parentNode.parentNode;
-                } while (t.id != 'r_' + last_active_menu);
+                } while (t.id != 'r_' + lastActiveMenu);
             }
             if (hideable) {
                 tags[i].style.left = '-999px';
@@ -774,9 +922,9 @@
         }
     }
 
-    function popUpMenu(id, place, menu, outside_fixed_width) {
+    function popUpMenu(id, place, menu, outsideFixedWidth) {
         place || (place = 'right');
-        outside_fixed_width = !!outside_fixed_width;
+        outsideFixedWidth = !!outsideFixedWidth;
 
         var el = $cms.dom.$('#' + id);
 
@@ -784,8 +932,8 @@
             return;
         }
 
-        if (clean_menus_timeout) {
-            window.clearTimeout(clean_menus_timeout);
+        if (cleanMenusTimeout) {
+            window.clearTimeout(cleanMenusTimeout);
         }
 
         if ($cms.dom.isDisplayed(el)) {
@@ -793,8 +941,8 @@
         }
 
         window.active_menu = id;
-        last_active_menu = menu;
-        clean_menus();
+        lastActiveMenu = menu;
+        cleanMenus();
 
         var l = 0;
         var t = 0;
@@ -825,56 +973,53 @@
             l += el.parentNode.offsetWidth;
         }
 
-        var full_height = $cms.dom.getWindowScrollHeight(); // Has to be got before e is visible, else results skewed
+        var fullHeight = $cms.dom.getWindowScrollHeight(); // Has to be got before e is visible, else results skewed
         el.style.position = 'absolute';
         el.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
         el.style.display = 'block';
         $cms.dom.clearTransitionAndSetOpacity(el, 0.0);
         $cms.dom.fadeTransition(el, 100, 30, 8);
 
-        var full_width = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
+        var fullWidth = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
 
-        if ($cms.$CONFIG_OPTION('fixed_width') && !outside_fixed_width) {
-            var main_website_inner = document.getElementById('main_website_inner');
-            if (main_website_inner) {
-                full_width = main_website_inner.offsetWidth;
+        if ($cms.$CONFIG_OPTION('fixed_width') && !outsideFixedWidth) {
+            var mainWebsiteInner = document.getElementById('main_website_inner');
+            if (mainWebsiteInner) {
+                fullWidth = mainWebsiteInner.offsetWidth;
             }
         }
 
-        var e_parent_width = el.parentNode.offsetWidth;
-        el.style.minWidth = e_parent_width + 'px';
-        var e_parent_height = el.parentNode.offsetHeight;
-        var e_width = el.offsetWidth;
-        function position_l() {
-            var pos_left = l;
+        var eParentWidth = el.parentNode.offsetWidth;
+        el.style.minWidth = eParentWidth + 'px';
+        var eParentHeight = el.parentNode.offsetHeight;
+        var eWidth = el.offsetWidth;
+        function positionL() {
+            var posLeft = l;
             if (place == 'below') {// Top-level of drop-down
-                if (pos_left + e_width > full_width) {
-                    pos_left += e_parent_width - e_width;
+                if (posLeft + eWidth > fullWidth) {
+                    posLeft += eParentWidth - eWidth;
                 }
             } else { // NB: For non-below, we can't assume 'left' is absolute, as it is actually relative to parent node which is itself positioned
-                if ($cms.dom.findPosX(el.parentNode, true) + e_width + e_parent_width + 10 > full_width) pos_left -= e_width + e_parent_width;
+                if ($cms.dom.findPosX(el.parentNode, true) + eWidth + eParentWidth + 10 > fullWidth) posLeft -= eWidth + eParentWidth;
             }
-            el.style.left = pos_left + 'px';
+            el.style.left = posLeft + 'px';
         }
-        position_l();
-        window.setTimeout(position_l, 0);
-        function position_t() {
-            var pos_top = t;
-            if (pos_top + el.offsetHeight + 10 > full_height) {
-                var above_pos_top = pos_top - $cms.dom.contentHeight(el) + e_parent_height - 10;
-                if (above_pos_top > 0) pos_top = above_pos_top;
+        positionL();
+        window.setTimeout(positionL, 0);
+        function positionT() {
+            var posTop = t;
+            if (posTop + el.offsetHeight + 10 > fullHeight) {
+                var abovePosTop = posTop - $cms.dom.contentHeight(el) + eParentHeight - 10;
+                if (abovePosTop > 0) posTop = abovePosTop;
             }
-            el.style.top = pos_top + 'px';
+            el.style.top = posTop + 'px';
         }
-        position_t();
-        window.setTimeout(position_t, 0);
+        positionT();
+        window.setTimeout(positionT, 0);
         el.style.zIndex = 200;
 
-        recreate_clean_timeout();
+        recreateCleanTimeout();
 
         return false;
     }
-
-    window.set_active_menu = setActiveMenu;
-    window.pop_up_menu = popUpMenu;
 }(window.$cms));

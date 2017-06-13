@@ -103,6 +103,7 @@ class Module_admin_banners
      */
     public function banner_statistics()
     {
+        require_lang('banners');
         check_privilege('view_anyones_banner_stats');
 
         $start = get_param_integer('start', 0);

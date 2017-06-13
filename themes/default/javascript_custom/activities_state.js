@@ -5,7 +5,11 @@
      */
 
     $cms.views.BlockMainActivitiesState = BlockMainActivitiesState;
-
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function BlockMainActivitiesState(params) {
         BlockMainActivitiesState.base(this, 'constructor', arguments);
 
@@ -15,7 +19,7 @@
         this.notificationEl = this.$('.js-el-activities-update-notification');
     }
 
-    $cms.inherits(BlockMainActivitiesState, $cms.View, {
+    $cms.inherits(BlockMainActivitiesState, $cms.View, /**@lends BlockMainActivitiesState#*/{
         events: function () {
             return {
                 'focus textarea.js-textarea-activity-status': 'textareaFocus',
@@ -113,7 +117,7 @@
                             view.notificationEl.textContent = feedbackEl.textContent;
 
                             if ($cms.dom.$('#activities_feed')) {// The update box won't necessarily have a displayed feed to update
-                                s_update_get_data();
+                                sUpdateGetData();
                             }
 
                             $cms.dom.fadeIn(view.notificationEl, 1200, function () {

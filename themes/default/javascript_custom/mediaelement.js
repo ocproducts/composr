@@ -14,11 +14,11 @@
                     }
                     if (document.getElementById('next_slide')) {
                         media.addEventListener('canplay', function () {
-                            stop_slideshow_timer();
+                            stopSlideshowTimer();
                             player.play();
                         });
                         media.addEventListener('ended', function () {
-                            player_stopped();
+                            playerStopped();
                         });
                     }
                 }
@@ -51,11 +51,11 @@
                     }
                     if (document.getElementById('next_slide')) {
                         media.addEventListener('canplay', function () {
-                            stop_slideshow_timer();
+                            stopSlideshowTimer();
                             player.play();
                         });
                         media.addEventListener('ended', function () {
-                            player_stopped();
+                            playerStopped();
                         });
                     }
                 }

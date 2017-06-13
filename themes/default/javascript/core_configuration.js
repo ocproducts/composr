@@ -2,10 +2,15 @@
     'use strict';
 
     $cms.views.XmlConfigScreen = XmlConfigScreen;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function XmlConfigScreen() {
         XmlConfigScreen.base(this, 'constructor', arguments);
 
-        ace_composr_loader('xml', 'xml');
+        aceComposrLoader('xml', 'xml');
     }
 
     $cms.inherits(XmlConfigScreen, $cms.View, /**@lends XmlConfigScreen#*/{

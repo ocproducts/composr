@@ -655,6 +655,7 @@ class Module_cms_calendar extends Standard_crud_module
                 } else {
                     // Error if wrong way around
                     if ($start > $end) {
+                        require_lang('calendar');
                         warn_exit(do_lang_tempcode('EVENT_CANNOT_AROUND'));
                     }
                 }

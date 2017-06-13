@@ -5,7 +5,7 @@
 
         $cms.dom.on(container, 'mouseover', '.js-mouseover-activate-member-tooltip', function (e, el) {
             el.cancelled = false;
-            $cms.loadSnippet('member_tooltip&member_id=' + submitter, null, function (result) {
+            $cms.loadSnippet('member_tooltip&member_id=' + submitter, null, true).then(function (result) {
                 if (!el.cancelled) {
                     $cms.ui.activateTooltip(el, e, result.responseText, 'auto', null, null, false, true);
                 }
@@ -131,14 +131,15 @@
     };
 
     $cms.templates.internalizedAjaxScreen = function internalizedAjaxScreen(params, element) {
-        internalise_ajax_block_wrapper_links(params.url, element, ['.*'], {}, false, true);
+        internaliseAjaxBlockWrapperLinks(params.url, element, ['.*'], {}, false, true);
 
         if (params.changeDetectionUrl && (Number(params.refreshTime) > 0)) {
             window.detect_interval = window.setInterval(function () {
                 detectChange(params.changeDetectionUrl, params.refreshIfChanged, function () {
                     if ((!document.getElementById('post')) || (document.getElementById('post').value === '')) {
-                        var _detectedChange = detectedChange;
-                        $cms.callBlock(params.url, '', element, false, _detectedChange, true, null, true);
+                        $cms.callBlock(params.url, '', element, false, true, null, true).then(function () {
+                            detectedChange();
+                        });
                     }
                 });
             }, params.refreshTime * 1000);
@@ -151,19 +152,19 @@
             infiniteScrollCallUrl = params.infiniteScrollCallUrl,
             infiniteScrollFunc;
 
-        internalise_ajax_block_wrapper_links(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
+        internaliseAjaxBlockWrapperLinks(blockCallUrl, wrapperEl, ['[^_]*_start', '[^_]*_max'], {});
 
         if (infiniteScrollCallUrl) {
-            infiniteScrollFunc = internalise_infinite_scrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
+            infiniteScrollFunc = internaliseInfiniteScrolling.bind(undefined, infiniteScrollCallUrl, wrapperEl);
 
             $cms.dom.on(window, {
                 scroll: infiniteScrollFunc,
                 touchmove: infiniteScrollFunc,
-                keydown: infinite_scrolling_block,
-                mousedown: infinite_scrolling_block_hold,
+                keydown: infiniteScrollingBlock,
+                mousedown: infiniteScrollingBlockHold,
                 mousemove: function () {
                     // mouseup/mousemove does not work on scrollbar, so best is to notice when mouse moves again (we know we're off-scrollbar then)
-                    infinite_scrolling_block_unhold(infiniteScrollFunc);
+                    infiniteScrollingBlockUnhold(infiniteScrollFunc);
                 }
             });
 
@@ -207,17 +208,15 @@
         });
     };
 
-    function detectChange(change_detection_url, refresh_if_changed, callback) {
-        $cms.doAjaxRequest(change_detection_url, function (result) {
-            var response = result.responseText;
-            if (response == '1') {
+    function detectChange(changeDetectionUrl, refreshIfChanged, callback) {
+        $cms.doAjaxRequest(changeDetectionUrl, function (result) {
+            var response = strVal(result.responseText);
+            if (response === '1') {
                 window.clearInterval(window.detect_interval);
-
                 $cms.log('detectChange(): Change detected');
-
                 callback();
             }
-        }, 'refresh_if_changed=' + encodeURIComponent(refresh_if_changed));
+        }, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged));
     }
 
     function detectedChange() {
@@ -228,12 +227,12 @@
         } catch (e) {}
 
         if (window.soundManager !== undefined) {
-            var sound_url = 'data/sounds/message_received.mp3',
-                base_url = (!sound_url.includes('data_custom') && !sound_url.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP : $cms.$CUSTOM_BASE_URL_NOHTTP,
-                sound_object = window.soundManager.createSound({ url: base_url + '/' + sound_url });
+            var soundUrl = 'data/sounds/message_received.mp3',
+                baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP : $cms.$CUSTOM_BASE_URL_NOHTTP,
+                soundObject = window.soundManager.createSound({ url: baseUrl + '/' + soundUrl });
 
-            if (sound_object) {
-                sound_object.play();
+            if (soundObject) {
+                soundObject.play();
             }
         }
     }

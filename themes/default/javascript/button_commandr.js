@@ -1,39 +1,28 @@
 "use strict";
 
-function load_commandr() {
-    // (Still?) loading
-    if ((window.commandr_command_response === undefined) || (window.$cms.doAjaxRequest === undefined)) {
-        if (document.getElementById('commandr_img_loader')) {
-            setTimeout(load_commandr, 200);
-            return false;
-        }
+function loadCommandr() {
+    $cms.requireCss('commandr');
 
+    if (!document.getElementById('commandr_img_loader')) {
         var img = document.getElementById('commandr_img');
         img.className = 'footer_button_loading';
-        var tmp_element = document.createElement('img');
-        tmp_element.src = $cms.img('{$IMG;,loading}');
-        tmp_element.style.position = 'absolute';
-        tmp_element.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
-        tmp_element.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
-        tmp_element.id = 'commandr_img_loader';
-        img.parentNode.appendChild(tmp_element);
-
-        $cms.requireJavascript('ajax');
-        $cms.requireJavascript('commandr');
-        $cms.requireCss('commandr');
-        window.setTimeout(load_commandr, 200);
-        return false;
+        var tmpElement = document.createElement('img');
+        tmpElement.id = 'commandr_img_loader';
+        tmpElement.src = $cms.img('{$IMG;,loading}');
+        tmpElement.style.position = 'absolute';
+        tmpElement.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
+        tmpElement.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
+        img.parentNode.appendChild(tmpElement);
     }
 
-    // Loaded
-    if (window.$cms.doAjaxRequest && (window.commandr_command_response !== undefined)) {
+    $cms.requireJavascript('commandr').then(function () {
         $cms.ui.confirmSession(
             function (result) {
                 // Remove "loading" indicator from button
-                var img = document.getElementById('commandr_img');
-                var tmp_element = document.getElementById('commandr_img_loader');
-                if (tmp_element) {
-                    tmp_element.parentNode.removeChild(tmp_element);
+                var img = document.getElementById('commandr_img'),
+                    tmpElement = document.getElementById('commandr_img_loader');
+                if (tmpElement) {
+                    tmpElement.parentNode.removeChild(tmpElement);
                 }
 
                 if (!result) {
@@ -41,25 +30,28 @@ function load_commandr() {
                 }
 
                 // Set up Commandr window
-                var commandr_box = document.getElementById('commandr_box');
-                if (!commandr_box) {
-                    commandr_box = document.createElement('div');
-                    commandr_box.setAttribute('id', 'commandr_box');
-                    commandr_box.style.position = 'absolute';
-                    commandr_box.style.zIndex = 2000;
-                    commandr_box.style.left = ($cms.dom.getWindowWidth() - 800) / 2 + 'px';
-                    var top_temp = ($cms.dom.getWindowHeight() - 600) / 2;
-                    if (top_temp < 100) top_temp = 100;
-                    commandr_box.style.top = top_temp + 'px';
-                    commandr_box.style.display = 'none';
-                    commandr_box.style.width = '800px';
-                    commandr_box.style.height = '500px';
-                    document.body.appendChild(commandr_box);
-                    $cms.dom.html(commandr_box, $cms.loadSnippet('commandr'));
+                var commandrBox = document.getElementById('commandr_box');
+                if (!commandrBox) {
+                    commandrBox = document.createElement('div');
+                    commandrBox.setAttribute('id', 'commandr_box');
+                    commandrBox.style.position = 'absolute';
+                    commandrBox.style.zIndex = 2000;
+                    commandrBox.style.left = ($cms.dom.getWindowWidth() - 800) / 2 + 'px';
+                    var topTemp = ($cms.dom.getWindowHeight() - 600) / 2;
+                    if (topTemp < 100) {
+                        topTemp = 100;
+                    }
+                    commandrBox.style.top = topTemp + 'px';
+                    commandrBox.style.display = 'none';
+                    commandrBox.style.width = '800px';
+                    commandrBox.style.height = '500px';
+                    document.body.appendChild(commandrBox);
+                    $cms.dom.html(commandrBox, $cms.loadSnippet('commandr'));
                 }
 
-                if (commandr_box.style.display == 'none')  {// Showing Commandr again
-                    commandr_box.style.display = 'block';
+                var bi;
+                if ($cms.dom.notDisplayed(commandrBox)) {// Showing Commandr again
+                    $cms.dom.show(commandrBox);
 
                     if (img) {
                         img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_off}');
@@ -78,7 +70,7 @@ function load_commandr() {
                     $cms.dom.fadeTransition(document.getElementById('command_line'), 90, 30, 5);
 
 
-                    var bi = document.getElementById('main_website_inner');
+                    bi = document.getElementById('main_website_inner');
                     if (bi) {
                         $cms.dom.clearTransition(bi);
                         bi.style.opacity = 1.0;
@@ -96,23 +88,13 @@ function load_commandr() {
                         img.style.opacity = 1.0;
                     }
 
-                    commandr_box.style.display = 'none';
-                    var bi = document.getElementById('main_website_inner');
+                    commandrBox.style.display = 'none';
+                    bi = document.getElementById('main_website_inner');
                     if (bi) {
                         $cms.dom.fadeTransition(bi, 100, 30, 5);
                     }
                 }
             }
         );
-
-        return false;
-    }
-
-    // Fallback to link to module
-    var btn = document.getElementById('commandr_button');
-    if (btn) {
-        window.location.href = btn.href;
-    }
-
-    return false;
+    });
 }

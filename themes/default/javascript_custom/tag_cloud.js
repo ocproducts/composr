@@ -2,7 +2,7 @@
     'use strict';
 
     $cms.templates.blockSideTagCloud = function blockSideTagCloud() {
-        load_tag_cloud(document.getElementById('tag_sphere'));
+        loadTagCloud(document.getElementById('tag_sphere'));
     };
 }(window.$cms));
 
@@ -233,7 +233,7 @@ var Sphere = function (radius, sides, numOfItems) {
 Sphere.prototype = new DisplayObject3D();
 
 
-function load_tag_cloud(container) {
+function loadTagCloud(container) {
     var width = container.offsetWidth;
     var height = container.offsetHeight;
 

@@ -171,30 +171,7 @@ function _start_svg()
     return '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>
 <' . '?xml-stylesheet href="' . escape_html($css_file) . '"?' . '>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ' . float_to_raw_string(VIEWPORT_WIDTH) . ' ' . float_to_raw_string(VIEWPORT_HEIGHT) . '" preserveAspectRatio="xMinYMin meet" width="' . float_to_raw_string(SVG_WIDTH) . '" height="' . float_to_raw_string(SVG_HEIGHT) . '" version="1.1">
-<script>// <![CDATA[
-if (typeof window.addEventListenerAbstract==\'undefined\') addEventListenerAbstract=function(element,the_event,command,capture)
-{
-    if(element)
-    {
-        if (typeof element.simulated_events==\'undefined\') element.simulated_events=[];
-        if (typeof element.simulated_events[the_event]==\'undefined\') element.simulated_events[the_event]=[];
-        element.simulated_events[the_event].push(command);
-
-        if(typeof element.addEventListener!=\'undefined\')
-        {
-            return element.addEventListener(the_event,command,capture);
-        }
-        else if(typeof element.attachEvent!=\'undefined\')
-        {
-            return element.attachEvent("on"+the_event,command);
-        }
-        else return false;
-    }
-    else return false;
-};
-//]]></script>
-<script xlink:href="' . escape_html($js_file) . '" />' . "\n";
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ' . float_to_raw_string(VIEWPORT_WIDTH) . ' ' . float_to_raw_string(VIEWPORT_HEIGHT) . '" preserveAspectRatio="xMinYMin meet" width="' . float_to_raw_string(SVG_WIDTH) . '" height="' . float_to_raw_string(SVG_HEIGHT) . '" version="1.1">';
 }
 
 /**
@@ -342,17 +319,18 @@ function create_bar_chart($data, $x_label = 'X axis', $y_label = 'Y axis', $x_un
         $height = (is_float($value) ? $value : floatval($value)) * $y_scale;
 
         // Bar and label
-        $plot .= '<rect id="' . float_to_raw_string($x) . float_to_raw_string($y) . '_bar" x="' . float_to_raw_string($x) . '" y="' . float_to_raw_string($y) . '" width="' . float_to_raw_string(BAR_WIDTH) . '" height="' . float_to_raw_string($height) . '" style="fill: #' . ($colour) . ';" class="bar_chart" />' . "\n";
-        $labels .= '<text style="fill: ' . (($height == 0.0) ? 'black' : 'white') . '; font-weight: normal" id="' . float_to_raw_string($x) . float_to_raw_string($y) . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT - 3) . ',' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS - TEXT_HEIGHT) . ') rotate(270)" class="bar_chart_text">' . escape_html($key) . '</text>
+        $x_raw = float_to_raw_string($x);
+        $y_raw = float_to_raw_string($y);
+        $plot .= '<rect id="' . $x_raw . $y_raw . '_bar" x="' . $x_raw . '" y="' . $y_raw . '" width="' . float_to_raw_string(BAR_WIDTH) . '" height="' . float_to_raw_string($height) . '" style="fill: #' . ($colour) . ';" class="bar_chart" />' . "\n";
+        $labels .= '<text style="fill: ' . (($height == 0.0) ? 'black' : 'white') . '; font-weight: normal" id="' . $x_raw . $y_raw . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT - 3) . ',' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS - TEXT_HEIGHT) . ') rotate(270)" class="bar_chart_text">' . escape_html($key) . '</text>
         <script>
         <![CDATA[
-            page_loaded=true;
-            addEventListenerAbstract(document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '"),"mouseover",function(event) { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); },false);
-            document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '").de_clarify=function(event) { document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '").setAttribute("style","fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
-            addEventListenerAbstract(document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '"),"focus",function(event) { this.onmouseover(event); },false);
-            addEventListenerAbstract(document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '_bar"),"mouseover",function(event) { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); },false);
-            document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '_bar").de_clarify=function(event) { document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '").setAttribute("style","fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
-            addEventListenerAbstract(document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '_bar"),"focus",function(event) { this.onmouseover(event); },false);
+            document.getElementById("' . $x_raw . $y_raw . '").addEventListener("mouseover",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
+            document.getElementById("' . $x_raw . $y_raw . '").de_clarify = function () { document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
+            document.getElementById("' . $x_raw . $y_raw . '").addEventListener("focus",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
+            document.getElementById("' . $x_raw . $y_raw . '_bar").addEventListener("mouseover",function() { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
+            document.getElementById("' . $x_raw . $y_raw . '_bar").de_clarify = function () { document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
+            document.getElementById("' . $x_raw . $y_raw . '_bar").addEventListener("focus",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
         ]]>
         </script>' . "\n";
 
@@ -454,7 +432,9 @@ function create_scatter_graph($data, $x_label = 'X Axis', $y_label = 'Y Axis', $
             if (!$first) {
                 $path_data .= ' ';
             }
-            $path_data .= float_to_raw_string($x) . ',' . float_to_raw_string($y);
+            $x_raw = float_to_raw_string($x);
+            $y_raw = float_to_raw_string($y);
+            $path_data .= $x_raw . ',' . $y_raw;
 
             // The cross
             $plot .= '<line x1="' . float_to_raw_string($x - CROSS_SIZE / 2.0) . '" y1="' . float_to_raw_string($y - CROSS_SIZE / 2.0) . '" x2="' . float_to_raw_string($x + CROSS_SIZE / 2.0) . '" y2="' . float_to_raw_string($y + CROSS_SIZE / 2.0) . '" class="scatter_graph_marker" />' . "\n";
@@ -462,14 +442,13 @@ function create_scatter_graph($data, $x_label = 'X Axis', $y_label = 'Y Axis', $
 
             // The label
             if (($first) || (abs($x - $prev_x) > MIN_X_MARKER_DISTANCE)) {
-                $labels .= '<text id="' . float_to_raw_string($x) . float_to_raw_string($y) . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT / 2) . ',' . float_to_raw_string(PLOT_HEIGHT + X_AXIS_HEIGHT + PLOT_HEIGHT_BIAS) . ') rotate(270)" class="scatter_graph_text">' . escape_html($value['key']) . '</text>
+                $labels .= '<text id="' . $x_raw . $y_raw . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT / 2) . ',' . float_to_raw_string(PLOT_HEIGHT + X_AXIS_HEIGHT + PLOT_HEIGHT_BIAS) . ') rotate(270)" class="scatter_graph_text">' . escape_html($value['key']) . '</text>
                     <script>
                     <![CDATA[
-                            page_loaded=true;
-                            addEventListenerAbstract(document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '"),"mouseover",function(event) { this.setAttribute("style","fill: red; stroke: red; background-color: black; z-index: 999999;"); },false);
-                            addEventListenerAbstract(document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '"),"mouseout",function(event) { this.setAttribute("style",""); },false);
-                            addEventListenerAbstract(document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '"),"focus",function(event) { this.onmouseover(event); },false);
-                            addEventListenerAbstract(document.getElementById("' . float_to_raw_string($x) . float_to_raw_string($y) . '"),"blur",function(event) { this.onmouseout(event); },false);
+                         document.getElementById("' . $x_raw . $y_raw . '").addEventListener("mouseover",function(event) { this.setAttribute("style","fill: red; stroke: red; background-color: black; z-index: 999999;"); });
+                         document.getElementById("' . $x_raw . $y_raw . '").addEventListener("mouseout",function(event) { this.setAttribute("style",""); });
+                         document.getElementById("' . $x_raw . $y_raw . '").addEventListener("focus",function(event) { this.setAttribute("style","fill: red; stroke: red; background-color: black; z-index: 999999;") });
+                         document.getElementById("' . $x_raw . $y_raw . '").addEventListener("blur",function(event) { this.setAttribute("style",""); });
                     ]]>
                     </script>' . "\n";
             }

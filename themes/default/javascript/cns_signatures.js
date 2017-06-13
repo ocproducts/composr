@@ -19,7 +19,6 @@
                 post = post[1];
             }
             if (post.value.length > size) {
-
                 $cms.ui.alert('{!SIGNATURE_TOO_BIG;^}');
                 return false;
             }

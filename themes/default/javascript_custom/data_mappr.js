@@ -11,21 +11,21 @@
 
         $cms.requireJavascript('https://www.google.com/jsapi').then(function () {
             window.setTimeout(function() {
-                window.google.load('maps', '3', { callback: google_map_users_initialize, other_params: ((googleMapKey !== '') ? 'key=' + googleMapKey : '') });
+                window.google.load('maps', '3', { callback: googleMapUsersInitialize, other_params: ((googleMapKey !== '') ? 'key=' + googleMapKey : '') });
             },0);
         });
 
         $cms.dom.on(container, 'change', '.js-change-set-place-marker', function () {
-            place_marker(latitudeInput.value, longitudeInput.value);
+            placeMarker(latitudeInput.value, longitudeInput.value);
         });
 
         $cms.dom.on(container, 'click', '.js-click-geolocate-user-for-map-field', function () {
-            geolocate_user_for_map_field();
+            geolocateUserForMapField();
         });
 
-        var marker, map, last_point;
+        var marker, map, lastPoint;
 
-        function google_map_users_initialize() {
+        function googleMapUsersInitialize() {
             marker = new google.maps.Marker();
 
             var bounds = new google.maps.LatLngBounds(),
@@ -53,37 +53,37 @@
 
             // Show marker for current position
             if (latitude !== '') {
-                place_marker(((latitude !== '') ? latitude : 0), ((longitude !== '') ? longitude : 0));
+                placeMarker(((latitude !== '') ? latitude : 0), ((longitude !== '') ? longitude : 0));
             }
             marker.setMap(map);
 
             //{$,Save into hidden fields}
             google.maps.event.addListener(map, 'mousemove', function (point) {
-                last_point = point.latLng;
+                lastPoint = point.latLng;
             });
-            google.maps.event.addListener(map, 'click', _place_marker);
-            google.maps.event.addListener(marker, 'click', _place_marker);
+            google.maps.event.addListener(map, 'click', _placeMarker);
+            google.maps.event.addListener(marker, 'click', _placeMarker);
         }
 
-        function _place_marker() {
-            document.getElementById(name + '_latitude').value = last_point.lat();
-            document.getElementById(name + '_longitude').value = last_point.lng();
-            place_marker(last_point.lat(), last_point.lng());
+        function _placeMarker() {
+            document.getElementById(name + '_latitude').value = lastPoint.lat();
+            document.getElementById(name + '_longitude').value = lastPoint.lng();
+            placeMarker(lastPoint.lat(), lastPoint.lng());
             marker.setMap(map);
         }
 
-        function place_marker(latitude, longitude) {
+        function placeMarker(latitude, longitude) {
             var latLng = new google.maps.LatLng(latitude, longitude);
             marker.setPosition(latLng);
             map.setCenter(latLng);
             map.setZoom(12);
         }
 
-        function geolocate_user_for_map_field() {
+        function geolocateUserForMapField() {
             if (navigator.geolocation != null) {
                 try {
                     navigator.geolocation.getCurrentPosition(function (position) {
-                        place_marker(position.coords.latitude, position.coords.longitude);
+                        placeMarker(position.coords.latitude, position.coords.longitude);
 
                         document.getElementById(name + '_latitude').value = position.coords.latitude;
                         document.getElementById(name + '_longitude').value = position.coords.longitude;
@@ -115,7 +115,7 @@
         }
 
         var options = {
-            callback: google_map_initialize,
+            callback: googleMapInitialize,
             other_params: (googleMapKey !== '') ? 'key=' + $cms.$CONFIG_OPTION('googleMapKey') : ''
         };
 
@@ -128,31 +128,31 @@
         }
 
         $cms.requireJavascript(scripts).then(function () {
-            google.load('maps','3', options);
+            google.load('maps', '3', options);
         });
 
-        function google_map_initialize() {
+        function googleMapInitialize() {
             var bounds = new google.maps.LatLngBounds();
-            var specified_center = new google.maps.LatLng((latitude !== '' ? latitude : 0.0), (longitude !== '' ? longitude : 0.0));
+            var specifiedCenter = new google.maps.LatLng((latitude !== '' ? latitude : 0.0), (longitude !== '' ? longitude : 0.0));
             var gOptions = {
                 zoom: zoom,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 overviewMapControl: true,
-                overviewMapControlOptions: { opened: true }
+                overviewMapControlOptions: {opened: true}
             };
 
             if (!center) { //{$,NB: the block center parameter means to autofit the contents cleanly; if the parameter is not set it will center about the given latitude/longitude}
-                gOptions.center = specified_center;
+                gOptions.center = specifiedCenter;
             }
 
             window.data_map = new google.maps.Map(document.getElementById(divId), gOptions);
 
 
-            var info_window=new google.maps.InfoWindow();
+            var infoWindow = new google.maps.InfoWindow();
 
             //{$,Close InfoWindow when clicking anywhere on the map.}
-            google.maps.event.addListener(data_map,'click',function () {
-                info_window.close();
+            google.maps.event.addListener(data_map, 'click', function () {
+                infoWindow.close();
             });
 
             var data = [];
@@ -170,36 +170,35 @@
             }
 
             //{$,Show markers}
-            var latLng,marker_options,marker;
-            var bound_length=0;
+            var latLng, markerOptions, marker;
+            var boundLength = 0;
             if (cluster) {
-                var markers=[];
+                var markers = [];
             }
 
             if ((minLatitude !== maxLatitude) && (minLongitude !== maxLongitude)) {
                 if ((minLatitude + minLongitude) !== '') {
                     latLng = new google.maps.LatLng(minLatitude, minLongitude);
                     bounds.extend(latLng);
-                    bound_length++;
+                    boundLength++;
                 }
 
                 if ((maxLatitude + maxLongitude) !== '') {
                     latLng = new google.maps.LatLng(maxLatitude, maxLongitude);
                     bounds.extend(latLng);
-                    bound_length++;
+                    boundLength++;
                 }
             }
 
-            var bound_by_contents=(bound_length==0);
-            for (var i=0;i<data.length;i++) {
-                latLng=new google.maps.LatLng(data[i][1],data[i][2]);
-                if (bound_by_contents)
-                {
+            var boundByContents = (boundLength == 0);
+            for (var i = 0; i < data.length; i++) {
+                latLng = new google.maps.LatLng(data[i][1], data[i][2]);
+                if (boundByContents) {
                     bounds.extend(latLng);
-                    bound_length++;
+                    boundLength++;
                 }
 
-                marker_options={
+                markerOptions = {
                     position: latLng,
                     title: data[i][0]
                 };
@@ -207,12 +206,12 @@
                 /*{$,Reenable if you have put appropriate images in place
                  var categoryIcon='{$BASE_URL;/}/themes/default/images_custom/map_icons/catalogue_category_'+data[i][3]+'.png';
                  marker_options.icon=categoryIcon;}*/
-                if (data[i][6]==1) {
-                    var starIcon= $cms.$BASE_URL() + '/themes/default/images_custom/star_highlight.png';
-                    marker_options.icon = starIcon;
+                if (data[i][6] == 1) {
+                    var starIcon = $cms.$BASE_URL() + '/themes/default/images_custom/star_highlight.png';
+                    markerOptions.icon = starIcon;
                 }
 
-                marker=new google.maps.Marker(marker_options);
+                marker = new google.maps.Marker(markerOptions);
 
                 if (cluster) {
                     markers.push(marker);
@@ -220,27 +219,27 @@
                     marker.setMap(data_map);
                 }
 
-                google.maps.event.addListener(marker,'click',(function (arg_marker,entry_title,entry_id,entry_content) {
+                google.maps.event.addListener(marker, 'click', (function (argMarker, entryTitle, entryId, entryContent) {
                     return function () {
                         //{$,Dynamically load entry details only when their marker is clicked.}
-                        var content=entry_content.replace(/<colgroup>(.|\n)*<\/colgroup>/,'').replace(/&nbsp;/g,' ');
-                        if (content!='') {
-                            info_window.setContent('<div class="global_middle_faux float_surrounder">'+content+'<\/div>');
-                            info_window.open(data_map,arg_marker);
+                        var content = entryContent.replace(/<colgroup>(.|\n)*<\/colgroup>/, '').replace(/&nbsp;/g, ' ');
+                        if (content != '') {
+                            infoWindow.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
+                            infoWindow.open(data_map, argMarker);
                         }
                     };
-                })(marker,data[i][0],data[i][4],data[i][5])); //{$,These are the args passed to the dynamic function above.}
+                })(marker, data[i][0], data[i][4], data[i][5])); //{$,These are the args passed to the dynamic function above.}
             }
 
             if (cluster) {
-                var markerCluster=new MarkerClusterer(data_map,markers);
+                var markerCluster = new MarkerClusterer(data_map, markers);
             }
 
             //{$,Autofit the map around the markers}
             if (center) {
-                if (bound_length == 0) {//{$,We may have to center at given lat/long after all if there are no pins}
-                    data_map.setCenter(specified_center);
-                } else if (bound_length == 1) {//{$,Center around the only pin}
+                if (boundLength == 0) {//{$,We may have to center at given lat/long after all if there are no pins}
+                    data_map.setCenter(specifiedCenter);
+                } else if (boundLength == 1) {//{$,Center around the only pin}
                     data_map.setCenter(new google.maps.LatLng(data[0][1], data[0][2]));
                 } else {//{$,Good - autofit lots of pins}
                     data_map.fitBounds(bounds);
@@ -248,11 +247,11 @@
             }
             //{$,Sample code to grab clicked positions
             var lastPoint;
-            google.maps.event.addListener(data_map,'mousemove',function(point) {
-                lastPoint=point.latLng;
+            google.maps.event.addListener(data_map, 'mousemove', function (point) {
+                lastPoint = point.latLng;
             });
-            google.maps.event.addListener(data_map,'click',function() {
-                console.log(lastPoint.lat()+', '+lastPoint.lng());
+            google.maps.event.addListener(data_map, 'click', function () {
+                console.log(lastPoint.lat() + ', ' + lastPoint.lng());
             });
         }
     }

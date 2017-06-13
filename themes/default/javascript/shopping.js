@@ -1,7 +1,6 @@
 (function ($cms) {
     'use strict';
 
-    /* TODO: fix for v11 */
     window.$cmsReady.push(function() {
         var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
 
@@ -15,7 +14,7 @@
 
             $cms.dom.on(billing, 'change', function () {
                 if (billing.localName === 'select') {
-                    if (shipping.selectedIndex == 0) {
+                    if (shipping.selectedIndex === 0) {
                         shipping.selectedIndex = billing.selectedIndex;
                         if (window.jQuery && window.jQuery.fn.select2) {
                             window.jQuery(shipping).trigger('change');
@@ -36,13 +35,13 @@
             emptyCaryUrl = strVal(params.emptyCartUrl);
 
         $cms.dom.on(container, 'click', '.js-click-btn-cart-update', function (e) {
-            if (update_cart(productIds) === false) {
+            if (updateCart(productIds) === false) {
                 e.preventDefault();
             }
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-cart-empty', function (e, btn) {
-            if (confirm_empty('{!EMPTY_CONFIRM;}', emptyCaryUrl, btn.form) === false) {
+            if (confirmEmpty('{!EMPTY_CONFIRM;}', emptyCaryUrl, btn.form) === false) {
                 e.preventDefault();
             }
         });
@@ -51,15 +50,15 @@
             $cms.form.doFormSubmit(btn.form, e);
         });
 
-        function update_cart(pro_ids) {
-            var pro_ids_array = pro_ids.split(',');
+        function updateCart(proIds) {
+            var proIdsArray = proIds.split(',');
 
-            var tot = pro_ids_array.length;
+            var tot = proIdsArray.length;
 
             for (var i = 0; i < tot; i++) {
-                var quantity_data = 'quantity_' + pro_ids_array[i];
+                var quantityData = 'quantity_' + proIdsArray[i];
 
-                var qval = document.getElementById(quantity_data).value;
+                var qval = document.getElementById(quantityData).value;
 
                 if (isNaN(qval)) {
                     $cms.ui.alert('{!shopping:CART_VALIDATION_REQUIRE_NUMBER;^}');
@@ -68,11 +67,11 @@
             }
         }
 
-        function confirm_empty(message, action_url, form) {
+        function confirmEmpty(message, actionUrl, form) {
             $cms.ui.confirm(
                 message,
                 function () {
-                    form.action = action_url;
+                    form.action = actionUrl;
                     form.submit();
                 }
             );
@@ -88,9 +87,7 @@
         });
     };
 
-    $cms.templates.ecomAdminOrderActions = function ecomAdminOrderActions() {
-        var container = this;
-
+    $cms.templates.ecomAdminOrderActions = function ecomAdminOrderActions(params, container) {
         $cms.dom.on(container, 'change', '.js-select-change-action-submit-form', function (e, select) {
             if (select.selectedIndex > 0) {
                 select.form.submit();
@@ -139,9 +136,9 @@
     };
 
     window.checkout = checkout;
-    function checkout(form_name, checkout_url) {
-        var form = document.getElementById(form_name);
-        form.action = checkout_url;
+    function checkout(formName, checkoutUrl) {
+        var form = document.getElementById(formName);
+        form.action = checkoutUrl;
         form.submit();
         return true;
     }

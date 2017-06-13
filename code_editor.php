@@ -110,7 +110,7 @@ function code_editor_do_footer()
 <script>// <![CDATA[
 if (document.getElementById('file'))
 {
-    ace_composr_loader('file','php');
+    aceComposrLoader('file','php');
 }
 //]]></script>
 

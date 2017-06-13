@@ -32,6 +32,7 @@ function init__site()
     $REDIRECTED_TO_CACHE = null;
 
     // Get ready for breadcrumbs
+    require_code('config');
     $bcl = get_option('breadcrumb_crop_length');
     define('BREADCRUMB_CROP_LENGTH', intval($bcl));
 

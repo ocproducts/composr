@@ -21,7 +21,7 @@
         }
 
         var options = {
-            callback: google_map_users_initialize,
+            callback: googleMapUsersInitialize,
             other_params: (googleMapKey !== '') ? 'key=' + $cms.$CONFIG_OPTION('googleMapKey') : ''
         };
 
@@ -32,7 +32,7 @@
             google.load('maps','3', options);
         });
 
-        function google_map_users_initialize() {
+        function googleMapUsersInitialize() {
             var bounds = new google.maps.LatLngBounds();
             var center = new google.maps.LatLng((latitude !== '' ? latitude : 0.0), (longitude !== '' ? longitude : 0.0));
             var map = new google.maps.Map(document.getElementById('map_canvas'), {
@@ -59,11 +59,11 @@
                 }
             }
 
-            var info_window = new google.maps.InfoWindow();
+            var infoWindow = new google.maps.InfoWindow();
 
             // Close InfoWindow when clicking anywhere on the map.
             google.maps.event.addListener(map, 'click', function () {
-                info_window.close();
+                infoWindow.close();
             });
 
             if (dataEval !== '') {
@@ -73,7 +73,7 @@
             //{$,Show markers}
             var markers = [];
             for (var i = 0; i < data.length; i++) {
-                add_data_point(data[i], bounds, markers, info_window, map);
+                addDataPoint(data[i], bounds, markers, infoWindow, map);
             }
 
             if (cluster) {
@@ -91,9 +91,9 @@
                     try {
                         navigator.geolocation.getCurrentPosition(function(position) {
                             $cms.doAjaxRequest(setCoordUrl + position.coords.latitude + '_' + position.coords.longitude + $cms.keepStub(), function() {});
-                            var initial_location = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-                            map.setCenter(initial_location);
-                            add_data_point([username, position.coords.latitude, position.coords.longitude, ''], bounds, markers, info_window, map);
+                            var initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                            map.setCenter(initialLocation);
+                            addDataPoint([username, position.coords.latitude, position.coords.longitude, ''], bounds, markers, infoWindow, map);
                         });
                     } catch (e) {}
                 }
@@ -110,13 +110,13 @@
              }*/
         }
 
-        function add_data_point(data_point,bounds,markers,info_window,map) {
-            var lat_lng = new google.maps.LatLng(data_point[1], data_point[2]);
-            bounds.extend(lat_lng);
+        function addDataPoint(dataPoint,bounds,markers,infoWindow,map) {
+            var latLng = new google.maps.LatLng(dataPoint[1], dataPoint[2]);
+            bounds.extend(latLng);
 
-            var marker_options = {
-                position: lat_lng,
-                title: usernamePrefix + data_point[0]
+            var markerOptions = {
+                position: latLng,
+                title: usernamePrefix + dataPoint[0]
             };
 
             /*{$,Reenable if you have put appropriate images in place
@@ -125,7 +125,7 @@
              marker_options.icon=usergroup_icon;
              }*/
 
-            var marker = new google.maps.Marker(marker_options);
+            var marker = new google.maps.Marker(markerOptions);
 
             if (cluster) {
                 markers.push(marker);
@@ -133,18 +133,18 @@
                 marker.setMap(map);
             }
 
-            google.maps.event.addListener(marker, 'click', (function (arg_marker, arg_member) {
+            google.maps.event.addListener(marker, 'click', (function (argMarker, argMember) {
                 return function () {
                     //{$,Dynamically load a specific members details only when their marker is clicked.}
-                    $cms.doAjaxRequest($cms.$BASE_URL() + '/data_custom/get_member_tooltip.php?member=' + arg_member + $cms.keepStub(), function (reply) {
+                    $cms.doAjaxRequest($cms.$BASE_URL() + '/data_custom/get_member_tooltip.php?member=' + argMember + $cms.keepStub(), function (reply) {
                         var content = reply.querySelector('result').firstChild.nodeValue;
                         if (content != '') {
-                            info_window.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
-                            info_window.open(map, arg_marker);
+                            infoWindow.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
+                            infoWindow.open(map, argMarker);
                         }
                     });
                 };
-            })(marker, data_point[0])); //{$,These are the args passed to the dynamic function above.}
+            })(marker, dataPoint[0])); //{$,These are the args passed to the dynamic function above.}
         }
     };
 

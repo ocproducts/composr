@@ -106,6 +106,7 @@ class Block_main_members
         require_code('cns_members2');
 
         require_css('cns_member_directory');
+        require_lang('cns');
         require_lang('cns_member_directory');
 
         $block_id = get_block_id($map);

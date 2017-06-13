@@ -72,6 +72,7 @@ class Hook_profiles_tabs_edit_signature
 
         $size = cns_get_member_best_group_property($member_id_of, 'max_sig_length_comcode');
 
+        require_lang('cns');
         require_javascript('cns_signatures');
         $js_function_calls = [];
         $js_function_calls[] = ['hookProfilesTabsEditSignatureRenderTab', $size];

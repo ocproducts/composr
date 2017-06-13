@@ -1,13 +1,17 @@
 (function ($cms) {
     'use strict';
 
-    /** @class */
     $cms.views.CnsForumTopicWrapper = CnsForumTopicWrapper;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
     function CnsForumTopicWrapper() {
         CnsForumTopicWrapper.base(this, 'constructor', arguments);
     }
 
-    $cms.inherits(CnsForumTopicWrapper, $cms.View, {
+    $cms.inherits(CnsForumTopicWrapper, $cms.View, /**@lends CnsForumTopicWrapper#*/{
         events: function () {
             return {
                 'click .js-click-mark-all-topics': 'markAllTopics',
@@ -52,20 +56,20 @@
 
         var form = $cms.dom.$('form#comments_form');
 
-        var parent_id_field;
+        var parentIdField;
         if (form.elements.parent_id === undefined) {
-            parent_id_field = document.createElement('input');
-            parent_id_field.type = 'hidden';
-            parent_id_field.name = 'parent_id';
-            form.appendChild(parent_id_field);
+            parentIdField = document.createElement('input');
+            parentIdField.type = 'hidden';
+            parentIdField.name = 'parent_id';
+            form.appendChild(parentIdField);
         } else {
-            parent_id_field = form.elements['parent_id'];
+            parentIdField = form.elements['parent_id'];
             if (window.last_reply_to !== undefined) {
                 $cms.dom.clearTransitionAndSetOpacity(window.last_reply_to, 1.0);
             }
         }
         window.last_reply_to = el;
-        parent_id_field.value = isThreaded ? id : '';
+        parentIdField.value = isThreaded ? id : '';
 
         el.classList.add('activated_quote_button');
 
@@ -105,21 +109,21 @@
         var form = document.getElementById('post').form;
         form.addEventListener('submit', function () {
             var post = form.elements['post'],
-                text_value;
+                textValue;
 
             if ($cms.form.isWysiwygField(post)) {
                 try {
 
-                    text_value = window.CKEDITOR.instances['post'].getData();
+                    textValue = window.CKEDITOR.instances['post'].getData();
                 } catch (ignore) { }
             } else {
                 if (!post.value && post[1]) {
                     post = post[1];
                 }
-                text_value = post.value;
+                textValue = post.value;
             }
 
-            if (text_value.length > size) {
+            if (textValue.length > size) {
                 $cms.ui.alert('{!POST_TOO_LONG;}');
                 return false;
             }
@@ -136,15 +140,15 @@
     };
 
     $cms.functions.moduleTopicsPostJavascriptForceGuestNames = function moduleTopicsPostJavascriptForceGuestNames() {
-        var poster_name_if_guest = document.getElementById("poster_name_if_guest");
-        if (poster_name_if_guest) {
+        var posterNameIfGuest = document.getElementById("poster_name_if_guest");
+        if (posterNameIfGuest) {
             var crf = function () {
-                if (poster_name_if_guest.value == "{!GUEST;}") {
-                    poster_name_if_guest.value = "";
+                if (posterNameIfGuest.value == "{!GUEST;}") {
+                    posterNameIfGuest.value = "";
                 }
             };
             crf();
-            poster_name_if_guest.addEventListener("blur", crf);
+            posterNameIfGuest.addEventListener("blur", crf);
         }
     };
 
@@ -155,11 +159,11 @@
         form.addEventListener('change', pollFormElementsChangeListener);
 
         function pollFormElementsChangeListener() {
-            var disable_all = (existing.selectedIndex !== 0);
+            var disableAll = (existing.selectedIndex !== 0);
             for (var i = 0; i < form.elements.length; i++) {
                 if ((form.elements[i] !== existing) && (form.elements[i].id !== 'perform_keywordcheck') && ((form.elements[i].getAttribute('type') === 'checkbox') || (form.elements[i].getAttribute('type') === 'text'))) {
-                    $cms.form.setRequired(form.elements[i].name, (!disable_all) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
-                    $cms.form.setLocked(form.elements[i], disable_all);
+                    $cms.form.setRequired(form.elements[i].name, (!disableAll) && ((form.elements[i].id === 'question') || (form.elements[i].id === 'answer_0')));
+                    $cms.form.setLocked(form.elements[i], disableAll);
                 }
             }
         }
@@ -196,9 +200,8 @@
         });
     };
 
-    $cms.templates.cnsForumInGrouping = function cnsForumInGrouping(params) {
-        var container = this,
-            forumRulesUrl = params.forumRulesUrl,
+    $cms.templates.cnsForumInGrouping = function cnsForumInGrouping(params, container) {
+        var forumRulesUrl = params.forumRulesUrl,
             introQuestionUrl = params.introQuestionUrl;
 
         $cms.dom.on(container, 'click', '.js-click-open-forum-rules-popup', function () {
@@ -249,12 +252,12 @@
             error  = (minSelections === maxSelections) ? $cms.format('{!POLL_NOT_ENOUGH_ERROR_2;^}', minSelections) : $cms.format('{!POLL_NOT_ENOUGH_ERROR;^}', minSelections, maxSelections);
 
         $cms.dom.on(form, 'submit', function (e) {
-            if (cns_check_poll() === false) {
+            if (cnsCheckPoll() === false) {
                 e.preventDefault();
             }
         });
 
-        function cns_check_poll() {
+        function cnsCheckPoll() {
             var j = 0;
             for (var i = 0; i < form.elements.length; i++) {
                 if (form.elements[i].checked && ((form.elements[i].type === 'checkbox') || (form.elements[i].type === 'radio'))) {
@@ -309,11 +312,9 @@
         });
     };
 
-    $cms.templates.cnsPrivateTopicLink = function (params) {
-        var container = this;
-
+    $cms.templates.cnsPrivateTopicLink = function (params, container) {
         $cms.dom.on(container, 'click', '.js-click-poll-for-notifications', function () {
-            poll_for_notifications(true, true);
+            pollForNotifications(true, true);
         });
     };
 

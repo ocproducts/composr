@@ -4,20 +4,21 @@
 // COLOUR CHOOSER
 // ==============
 
-function dec_to_hex(number) {
-    var hexbase = '0123456789ABCDEF';
-    return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
-}
-
-function hex_to_dec(number) {
-    return parseInt(number, 16);
-}
 
 window.names_to_numbers || (window.names_to_numbers = {});
 window.last_cc || (window.last_cc = {});
 window.last_cc_i || (window.last_cc_i = {});
 
-function make_colour_chooser(name, color, context, tabindex, label, className) {
+function decToHex(number) {
+    var hexbase = '0123456789ABCDEF';
+    return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
+}
+
+function hexToDec(number) {
+    return parseInt(number, 16);
+}
+
+function makeColourChooser(name, color, context, tabindex, label, className) {
     label || (label = '&lt;color-' + name + '&gt;');
 
     if (className === undefined) {
@@ -76,7 +77,7 @@ function make_colour_chooser(name, color, context, tabindex, label, className) {
     }
 
     $cms.dom.on(p, 'change', '.js-change-update-chooser', function (e, target) {
-        update_chooser(target.id);
+        updateChooser(target.id);
     });
 
     /*
@@ -87,21 +88,21 @@ function make_colour_chooser(name, color, context, tabindex, label, className) {
      */
 }
 
-function do_color_chooser() {
+function doColorChooser() {
     var elements = document.getElementsByTagName('div');
-    var ce, a = 0, my_elements = [];
+    var ce, a = 0, myElements = [];
     for (ce = 0; ce < elements.length; ce++) {
         if (elements[ce].id.substring(0, 10) == 'cc_target_') {
-            my_elements[a] = elements[ce];
+            myElements[a] = elements[ce];
             a++;
         }
     }
     for (ce = 0; ce < a; ce++) {
-        do_color_chooser_element(my_elements[ce]);
+        doColorChooserElement(myElements[ce]);
     }
 
 
-    function do_color_chooser_element(element) {
+    function doColorChooserElement(element) {
         var id = element.id.substring(10),
             source = document.getElementById('cc_source_' + id),
             bgColor = source.style.backgroundColor;
@@ -110,11 +111,11 @@ function do_color_chooser() {
             bgColor = '#000000';
         }
         if (bgColor.substr(0, 1) === '#') {
-            bgColor = 'rgb(' + hex_to_dec(bgColor.substr(1, 2)) + ',' + hex_to_dec(bgColor.substr(3, 2)) + ',' + hex_to_dec(bgColor.substr(5, 2)) + ')';
+            bgColor = 'rgb(' + hexToDec(bgColor.substr(1, 2)) + ',' + hexToDec(bgColor.substr(3, 2)) + ',' + hexToDec(bgColor.substr(5, 2)) + ')';
         }
 
-        var s_rgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
-        var rgb = s_rgb.split(',');
+        var sRgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
+        var rgb = sRgb.split(',');
 
         rgb[0] = Math.round(rgb[0] / 4) * 4;
         rgb[1] = Math.round(rgb[1] / 4) * 4;
@@ -167,13 +168,13 @@ function do_color_chooser() {
             }
             $cms.dom.html(c[d], innert);
             $cms.dom.on(c[d].querySelector('.js-click-do-color-change'), 'click', function (e) {
-                do_color_change(e);
+                doColorChange(e);
             });
         }
     }
 }
 
-function do_color_change(e) {
+function doColorChange(e) {
     // Find our colour element we clicked on
     var targ;
     if (e.target !== undefined) {
@@ -199,12 +200,12 @@ function do_color_change(e) {
     rgb[1] = 0;
     rgb[2] = 0;
     rgb[d] = window.last_cc_i[d + window.names_to_numbers[_id] * 3];
-    var temp_last_cc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + _id);
-    if (temp_last_cc != targ) {
-        temp_last_cc.style.backgroundColor = '#' + dec_to_hex(rgb[0]) + dec_to_hex(rgb[1]) + dec_to_hex(rgb[2]);
-        temp_last_cc.style.cursor = 'pointer';
-        temp_last_cc.style.outline = 'none';
-        temp_last_cc.style.position = 'static';
+    var tempLastCc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + _id);
+    if (tempLastCc !== targ) {
+        tempLastCc.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]);
+        tempLastCc.style.cursor = 'pointer';
+        tempLastCc.style.outline = 'none';
+        tempLastCc.style.position = 'static';
         window.last_cc_i[d + window.names_to_numbers[_id] * 3] = i;
 
         // Show a white line over the colour we clicked
@@ -214,58 +215,62 @@ function do_color_change(e) {
         targ.style.position = 'relative';
 
         var element = document.getElementById('cc_target_' + _id);
-        var bg_color = element.style.backgroundColor;
-        if (bg_color.substr(0, 1) == '#') bg_color = 'rgb(' + hex_to_dec(bg_color.substr(1, 2)) + ',' + hex_to_dec(bg_color.substr(3, 2)) + ',' + hex_to_dec(bg_color.substr(5, 2)) + ')';
+        var bgColor = element.style.backgroundColor;
+        if (bgColor.substr(0, 1) === '#') bgColor = 'rgb(' + hexToDec(bgColor.substr(1, 2)) + ',' + hexToDec(bgColor.substr(3, 2)) + ',' + hexToDec(bgColor.substr(5, 2)) + ')';
 
-        var s_rgb = bg_color.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
-        var _rgb = s_rgb.split(',');
+        var sRgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
+        var _rgb = sRgb.split(',');
         _rgb[d] = i;
-        element.style.backgroundColor = '#' + dec_to_hex(_rgb[0]) + dec_to_hex(_rgb[1]) + dec_to_hex(_rgb[2]);
-        element.style.color = '#' + dec_to_hex(255 - _rgb[0]) + dec_to_hex(255 - _rgb[1]) + dec_to_hex(255 - _rgb[2]);
+        element.style.backgroundColor = '#' + decToHex(_rgb[0]) + decToHex(_rgb[1]) + decToHex(_rgb[2]);
+        element.style.color = '#' + decToHex(255 - _rgb[0]) + decToHex(255 - _rgb[1]) + decToHex(255 - _rgb[2]);
 
-        finality.value = '#' + dec_to_hex(_rgb[0]) + dec_to_hex(_rgb[1]) + dec_to_hex(_rgb[2]);
+        finality.value = '#' + decToHex(_rgb[0]) + decToHex(_rgb[1]) + decToHex(_rgb[2]);
     }
 }
 
-function update_chooser(chooser) {
+function updateChooser(chooser) {
     var ob = document.getElementById(chooser);
-    if (ob.disabled) return false;
+    if (ob.disabled) {
+        return false;
+    }
 
-    return update_choose(chooser, 0, ob.value.substr(1, 2))
-        && update_choose(chooser, 1, ob.value.substr(3, 2))
-        && update_choose(chooser, 2, ob.value.substr(5, 2));
+    return updateChoose(chooser, 0, ob.value.substr(1, 2))
+        && updateChoose(chooser, 1, ob.value.substr(3, 2))
+        && updateChoose(chooser, 2, ob.value.substr(5, 2));
+
+    function updateChoose(id, d, i) {
+        i = hexToDec(i);
+        i = i - i % 4;
+
+        var tid = 'cc_col_' + d + '_' + i + '#' + id;
+        var targ = document.getElementById(tid);
+        if (!targ) return false;
+        var rgb = [];
+        rgb[0] = 0;
+        rgb[1] = 0;
+        rgb[2] = 0;
+        rgb[d] = window.last_cc_i[d + window.names_to_numbers[id] * 3];
+        var tempLastCc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + id);
+        tempLastCc.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]); // Reset old
+        tempLastCc.style.outline = 'none';
+        tempLastCc.style.position = 'static';
+        window.last_cc_i[d + window.names_to_numbers[id] * 3] = i;
+
+        var element = document.getElementById('cc_target_' + id);
+        var bgColor = element.style.backgroundColor;
+        if (bgColor.substr(0, 1) == '#') bgColor = 'rgb(' + hexToDec(bgColor.substr(1, 2)) + ',' + hexToDec(bgColor.substr(3, 2)) + ',' + hexToDec(bgColor.substr(5, 2)) + ')';
+        var sRgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
+        rgb = sRgb.split(',');
+        rgb[d] = i;
+        element.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]);
+        element.style.color = '#' + decToHex(255 - rgb[0]) + decToHex(255 - rgb[1]) + decToHex(255 - rgb[2]);
+
+        targ.style.backgroundColor = '#FFFFFF';
+        targ.style.outline = '3px solid gray';
+        targ.style.position = 'relative';
+
+        return true;
+    }
 }
 
-function update_choose(id, d, i) {
-    i = hex_to_dec(i);
-    i = i - i % 4;
 
-    var tid = 'cc_col_' + d + '_' + i + '#' + id;
-    var targ = document.getElementById(tid);
-    if (!targ) return false;
-    var rgb = [];
-    rgb[0] = 0;
-    rgb[1] = 0;
-    rgb[2] = 0;
-    rgb[d] = window.last_cc_i[d + window.names_to_numbers[id] * 3];
-    var temp_last_cc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + id);
-    temp_last_cc.style.backgroundColor = '#' + dec_to_hex(rgb[0]) + dec_to_hex(rgb[1]) + dec_to_hex(rgb[2]); // Reset old
-    temp_last_cc.style.outline = 'none';
-    temp_last_cc.style.position = 'static';
-    window.last_cc_i[d + window.names_to_numbers[id] * 3] = i;
-
-    var element = document.getElementById('cc_target_' + id);
-    var bg_color = element.style.backgroundColor;
-    if (bg_color.substr(0, 1) == '#') bg_color = 'rgb(' + hex_to_dec(bg_color.substr(1, 2)) + ',' + hex_to_dec(bg_color.substr(3, 2)) + ',' + hex_to_dec(bg_color.substr(5, 2)) + ')';
-    var s_rgb = bg_color.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
-    rgb = s_rgb.split(',');
-    rgb[d] = i;
-    element.style.backgroundColor = '#' + dec_to_hex(rgb[0]) + dec_to_hex(rgb[1]) + dec_to_hex(rgb[2]);
-    element.style.color = '#' + dec_to_hex(255 - rgb[0]) + dec_to_hex(255 - rgb[1]) + dec_to_hex(255 - rgb[2]);
-
-    targ.style.backgroundColor = '#FFFFFF';
-    targ.style.outline = '3px solid gray';
-    targ.style.position = 'relative';
-
-    return true;
-}

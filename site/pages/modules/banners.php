@@ -264,6 +264,7 @@ class Module_banners
      */
     public function pre_run()
     {
+        require_lang('banners');
         $type = get_param_string('type', 'browse');
 
         require_lang('banners');
