@@ -427,5 +427,10 @@ function _post_param_date($stub, $get_also = false, $do_timezone_conversion = tr
         }
     }
 
+    // TODO: #3046 in tracker
+    if ($time > 2147483647) {
+        $time = 2147483647;
+    }
+
     return $time;
 }

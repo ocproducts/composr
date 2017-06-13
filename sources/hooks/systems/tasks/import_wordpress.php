@@ -113,7 +113,7 @@ class Hook_task_import_wordpress
                     if ($post_time === false) {
                         $post_time = strtotime($post['post_date']);
                     }
-                    if (($post_time < 0) || ($post_time > 2147483647)) {
+                    if (($post_time < 0) || ($post_time > 2147483647)) { // TODO: #3046 in tracker
                         $post_time = 2147483647;
                     }
                     $edit_time = is_null($post['post_modified_gmt']) ? null : strtotime($post['post_modified_gmt']);
@@ -121,7 +121,7 @@ class Hook_task_import_wordpress
                         $edit_time = strtotime($post['post_modified']);
                     }
                     if (!is_null($edit_time)) {
-                        if (($edit_time < 0) || ($edit_time > 2147483647)) {
+                        if (($edit_time < 0) || ($edit_time > 2147483647)) { // TODO: #3046 in tracker
                             $edit_time = 2147483647;
                         }
                     }

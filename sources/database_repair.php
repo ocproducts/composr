@@ -234,7 +234,8 @@ class DatabaseRepair
                         $bad_type = ($meta_field_type_raw != $existent_details['type']);
                         $bad_null_ok = ($meta_null_ok != $existent_details['null_ok']);
                         $bad_is_auto_increment = ($meta_is_auto_increment != $existent_details['is_auto_increment']);
-                        if (/*$bad_type || MySQL may report in different ways so cannot compare*/$bad_null_ok || $bad_is_auto_increment) {
+                        $bad_meta_type = (isset($expected_tables[$table_name][$field_name])) && (($field_type != $expected_tables[$table_name][$field_name]));
+                        if (/*$bad_type || MySQL may report in different ways so cannot compare so instead we will compare meta-type and expected-type as a special case and later compare existent type to meta type*/$bad_null_ok || $bad_is_auto_increment || $bad_meta_type) {
                             $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, false);
                             $needs_changes = true;
                         }
@@ -563,7 +564,7 @@ class DatabaseRepair
             } else {
                 $db_types = '';
                 foreach ($expected_fields as $field) {
-                    $db_type = $meta_tables[$index['table']][$field];
+                    $db_type = isset($meta_tables[$index['table']][$field]) ? $meta_tables[$index['table']][$field] : null;
                     if ($db_type !== null) {
                         if ($db_types != '') {
                             $db_types .= ',';
