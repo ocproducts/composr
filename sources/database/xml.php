@@ -528,7 +528,7 @@ class Database_Static_xml
                 return $this->_do_query_create($tokens, $query, $db, $fail_ok);
 
             case 'INSERT':
-                $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
+                $random_key = mt_rand(0, mt_getrandmax());
                 return $this->_do_query_insert($tokens, $query, $db, $fail_ok, $get_insert_id, $random_key, $save_as_volatile);
 
             case 'UPDATE':
@@ -1794,7 +1794,7 @@ class Database_Static_xml
                                 $TABLE_BASES[$table_name] = $record[$key] + 1;
                             } else {
                                 if ($record_num != 0) {
-                                    $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
+                                    $random_key = mt_rand(0, mt_getrandmax());
                                 }
                                 $record[$key] = $random_key; // We don't use auto-increment, we use randomisation. As otherwise when people sync over revision control there'd be conflicts
                             }
@@ -3789,7 +3789,7 @@ class Database_Static_xml
             }
         }
 
-        $fuzz = strtoupper(md5(uniqid(strval(mt_rand(0, min(2147483647, mt_getrandmax()))), true)));
+        $fuzz = strtoupper(md5(uniqid(strval(mt_rand(0, mt_getrandmax())), true)));
 
         return '{'
                . substr($fuzz, 0, 8) . '-'

@@ -611,6 +611,8 @@ class Module_catalogues
             $catalogue = load_catalogue_row($catalogue_name);
             $is_ecommerce = is_ecommerce_catalogue($catalogue_name, $catalogue);
 
+            $catalogue_title = get_translated_text($catalogue['c_title']);
+
             // Breadcrumbs
             $breadcrumbs = array();
             if ($root === null) {
@@ -627,7 +629,6 @@ class Module_catalogues
             } else {
                 if ($root === null) {
                     $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $catalogue['c_is_tree']), '_SELF');
-                    $catalogue_title = get_translated_text($catalogue['c_title']);
                     $breadcrumbs[] = array($page_link, $catalogue_title);
                 }
                 $breadcrumbs[] = array('', $_title);
@@ -636,7 +637,7 @@ class Module_catalogues
 
             // Metadata
             set_extra_request_metadata(array(
-                'type' => get_translated_text($catalogue['c_title']) . ' category',
+                'type' => $catalogue_title . ' category',
                 'identifier' => '_SEARCH:catalogues:category:' . strval($id),
             ), $category, 'catalogue_category', strval($id));
 
@@ -649,6 +650,7 @@ class Module_catalogues
             $this->catalogue = $catalogue;
             $this->is_ecommerce = $is_ecommerce;
             $this->_title = $_title;
+            $this->catalogue_title = $catalogue_title;
         }
 
         if ($type == 'entry') {
@@ -1036,6 +1038,7 @@ class Module_catalogues
             'ADD_DATE_RAW' => strval($category['cc_add_date']),
             'TITLE' => $this->title,
             '_TITLE' => $_title,
+            'CATALOGUE_TITLE' => $this->catalogue_title,
             'TAGS' => get_loaded_tags('catalogue_categories'),
             'CATALOGUE' => $catalogue_name,
             'ADD_ENTRY_URL' => $add_link,

@@ -89,20 +89,29 @@ class Hook_whatsnew_comcode_pages
                 }
 
                 $id = $zone . ':' . $page;
+
                 $_url = build_url(array('page' => $page), $zone, null, false, false, true);
                 $url = $_url->evaluate();
-                $name = titleify($page);
+
+                $path = find_comcode_page($lang, $page, $zone);
+
+                require_code('zones2');
+                $name = get_comcode_page_title_from_disk($path);
                 if (array_key_exists($id, $rows)) {
                     $_name = get_translated_text($rows[$id]['cc_page_title'], null, null, true);
                     if (!is_null($_name)) {
                         $name = $_name;
                     }
                 }
+
                 $description = '';
+
                 $member_id = null;
+
                 if (array_key_exists($id, $rows2)) {
                     $description = get_translated_text($rows2[$id]['meta_description']);
                 }
+
                 $new->attach(do_template('NEWSLETTER_WHATSNEW_RESOURCE_FCOMCODE', array('_GUID' => '67f165847dacd54d2965686d561b57ee', 'MEMBER_ID' => $member_id, 'URL' => $url, 'NAME' => $name, 'DESCRIPTION' => $description, 'CONTENT_TYPE' => 'comcode_page', 'CONTENT_ID' => $zone . ':' . $page), null, false, null, '.txt', 'text'));
 
                 handle_has_checked_recently($url); // We know it works, so mark it valid so as to not waste CPU checking within the generated Comcode

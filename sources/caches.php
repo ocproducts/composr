@@ -773,7 +773,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
             $langs_required = explode(':', $bits[0]); // Sometimes lang has got intertwinded with non cacheable stuff (and thus was itself not cached), so we need the lang files
             foreach ($langs_required as $lang) {
                 if ($lang != '') {
-                    require_lang($lang, null, null, true);
+                    require_lang($lang);
                 }
             }
             if (isset($bits[1])) {

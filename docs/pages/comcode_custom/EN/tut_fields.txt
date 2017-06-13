@@ -198,7 +198,7 @@ Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
 | Up to 255 characters of text
 |-
 ! Special default values
-| [tt]RANDOM[/tt]: 10 random numbers and letters (for catalogues it will be enforced as unique also)
+| [tt]RANDOM[/tt]: 10 random numbers and letters (for catalogues it will be enforced as unique also) [catalogues only]
 |-
 ! Supported field options
 | [i]None[/i]
@@ -267,7 +267,7 @@ Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
 | Integer, or null
 |-
 ! Special default values
-| [tt]AUTO_INCREMENT[/tt]: An automatically assigned sequential number
+| [tt]AUTO_INCREMENT[/tt]: An automatically assigned sequential number [catalogues only]
 |-
 ! Supported field options
 | [tt]range_search=on|off[/tt]: search forms will allow a range-based search

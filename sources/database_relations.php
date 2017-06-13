@@ -607,6 +607,19 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
             }
         }
 
+        $fields_copy = $fields;
+        foreach ($fields_copy as $name => $type) {
+            if (!multi_lang_content()) {
+                if (strpos($type, '_TRANS') !== false) {
+                    if (strpos($type, '__COMCODE') !== false) {
+                        $fields[$name . '__text_parsed'] = 'LONG_TEXT';
+                        $fields[$name . '__source_user'] = 'MEMBER';
+                    }
+
+                    $fields[$name] = 'LONG_TEXT'; // In the DB layer, it must now save as such
+                }
+            }
+        }
         $queries = $db_static->db_create_table($conn->get_table_prefix() . $table_name, $fields, $table_name, $conn->connection_write, null);
         foreach ($queries as $sql) {
             fwrite($out_file, $sql . ";\n\n");

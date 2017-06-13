@@ -48,9 +48,12 @@ function catalogue_file_script()
     }
     $entry_id = get_param_integer('id');
     $field_id = get_param_integer('field_id', null);
-    $id_field = get_param_string('id_field');
+    $id_field = filter_naughty_harsh(get_param_string('id_field'));
     $field_id_field = get_param_string('field_id_field', null);
-    $url_field = get_param_string('url_field');
+    if ($field_id_field !== null) {
+        $field_id_field = filter_naughty_harsh($field_id_field);
+    }
+    $url_field = filter_naughty_harsh(get_param_string('url_field'));
     $ev = 'uploads/catalogues/' . $file;
     if ($original_filename === null) {
         $original_filename = basename($file);

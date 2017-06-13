@@ -373,21 +373,15 @@ function get_zone_chooser($inline = false, $no_go = null, $reorder = null)
  */
 function get_templates_list()
 {
+    require_code('zones2');
+
     $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/';
     $templates = array();
     if (($handle = @opendir($templates_dir)) !== false) {
-        $unknown_count = 0;
-
         while (false !== ($entry = readdir($handle))) {
             if (substr($entry, -4) == '.txt' && $entry[0] != '.') {
                 $template_path = $templates_dir . $entry;
-                $matches = array();
-                if (preg_match('#\[title[^\]]*\](.*)\[/title\]#', file_get_contents($template_path), $matches) != 0) {
-                    $template_title = $matches[1];
-                } else {
-                    $unknown_count++;
-                    $template_title = do_lang('UNKNOWN') . strval($unknown_count);
-                }
+                $template_title = get_comcode_page_title_from_disk($template_path);
                 $templates[basename($entry, '.txt')] = $template_title;
             }
         }

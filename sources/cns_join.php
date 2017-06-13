@@ -89,7 +89,9 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         }
     }
 
-    $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
+    if ($captcha_if_enabled) {
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'a8197832e4467b08e953535202235501', 'TITLE' => do_lang_tempcode('SPECIAL_REGISTRATION_FIELDS'))));
+    }
 
     /*PSEUDO-HOOK: cns_join_form special fields*/
 

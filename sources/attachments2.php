@@ -495,7 +495,12 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id,
 
     $_info = do_comcode_attachments($text, $type, $id, false, $connection, $insert_as_admin, $for_member);
     $text_parsed = $_info['tempcode']->to_assembly();
-    $source_user = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
+
+    if ($for_member === null) {
+        $source_user = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
+    } else {
+        $source_user = $for_member;
+    }
 
     if (!multi_lang_content()) {
         final_attachments_from_preview($id, $connection);

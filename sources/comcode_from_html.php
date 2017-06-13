@@ -471,7 +471,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     if (preg_match('#^\[semihtml\]([^\[\]<>]*)\[\/semihtml\]$#', $semihtml, $matches) != 0) {
         return $matches[1];
     }
-    if (preg_match('#^([^\[\]<>]*)$#', $semihtml) != 0) {
+    if (preg_match('#^([^\[\]<>\{\}]*)$#', $semihtml) != 0) {
         return $semihtml;
     }
 
@@ -483,7 +483,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     }
 
     $decoded = html_entity_decode($semihtml, ENT_QUOTES, get_charset());
-    if (strpos($semihtml, '<') === false && strpos($semihtml, '[') === false && strpos($decoded, '&') === false) {
+    if (strpos($semihtml, '<') === false && strpos($semihtml, '[') === false && strpos($semihtml, '{') === false && strpos($decoded, '&') === false) {
         return $decoded;
     }
 

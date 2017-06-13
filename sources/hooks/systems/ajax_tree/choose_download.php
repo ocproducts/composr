@@ -114,7 +114,7 @@ class Hook_choose_download
                                 $view_url = get_custom_base_url() . '/' . $view_url;
                             }
                             $thumb_url = ensure_thumbnail($row['url'], $row['thumb_url'], 'galleries', 'images', $row['id']);
-                            $description_image = get_translated_tempcode('download_downloads', $row, 'description');
+                            $description_image = get_translated_tempcode('images', $row, 'description');
                             $thumb = do_image_thumb($thumb_url, '');
                             $iedit_url = new Tempcode();
                             $_content = do_template('DOWNLOAD_SCREEN_IMAGE', array('_GUID' => '45905cd5823af4b066ccbc18a39edd74', 'ID' => strval($row['id']), 'VIEW_URL' => $view_url, 'EDIT_URL' => $iedit_url, 'THUMB' => $thumb, 'DESCRIPTION' => $description_image));

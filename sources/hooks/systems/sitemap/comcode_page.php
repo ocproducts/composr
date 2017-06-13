@@ -197,31 +197,11 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
             $full_path = get_file_base() . '/' . $path;
         }
         $page_contents = file_get_contents($full_path);
-        if (!$got_title || strpos($page_contents, 'sub="') !== false) {
-            $matches = array();
-            if (preg_match('#\[title([^\]]*\ssub="([^"]*)")?[^\]]*\]#', $page_contents, $matches) != 0) {
-                $start = strpos($page_contents, $matches[0]) + strlen($matches[0]);
-                $end = strpos($page_contents, '[/title]', $start);
-                $_title = substr($page_contents, $start, $end - $start);
-                if ($_title != '') {
-                    if (!empty($matches[2])) {
-                        if (stripos($matches[2], $_title) !== false) {
-                            $_title = ucfirst($matches[2]);
-                        } else {
-                            $_title .= ' (' . $matches[2] . ')';
-                        }
-                    }
-
-                    if (substr($page_contents, 0, 9) == '[semihtml') {
-                        $__title = make_string_tempcode(escape_html(strip_html($_title)));
-                    } else {
-                        require_code('comcode');
-                        $__title = comcode_to_tempcode($_title, null, true);
-                    }
-                    if (!$__title->is_empty()) {
-                        $struct['title'] = $__title;
-                    }
-                }
+        if (!$got_title || strpos($page_contents, 'sub=') !== false) {
+            require_code('zones2');
+            $__title = get_comcode_page_title_from_disk($full_path, true, true);
+            if (!$__title->is_empty()) {
+                $struct['title'] = $__title;
             }
         }
 

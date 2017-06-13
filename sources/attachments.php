@@ -302,7 +302,7 @@ function attachments_script()
     error_reporting(0);
 
     if ($from == 0) {
-        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=(the_value+' . strval($size) . ') WHERE the_name=\'download_bandwidth\'', 1);
+        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=' . db_cast('(' . db_cast('the_value', 'INT') . '+' . strval($size) . ')', 'CHAR') . ' WHERE the_name=\'download_bandwidth\'', 1);
     }
 
     safe_ini_set('ocproducts.xss_detect', '0');

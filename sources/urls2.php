@@ -555,12 +555,8 @@ function _page_path_to_page_link($page)
         $page2 = $matches[1] . ':' . $matches[4];
         if (($matches[2] == 'comcode') || ($matches[2] == 'comcode_custom')) {
             if (file_exists(get_custom_file_base() . '/' . $page)) {
-                $file = file_get_contents(get_custom_file_base() . '/' . $page);
-                if (preg_match('#\[title\](.*)\[/title\]#U', $file, $matches) != 0) {
-                    $page2 .= ' (' . $matches[1] . ')';
-                } elseif (preg_match('#\[title=[\'"]?1[\'"]?\](.*)\[/title\]#U', $file, $matches) != 0) {
-                    $page2 .= ' (' . $matches[1] . ')';
-                }
+                require_code('zones2');
+                $page2 .= ' (' . get_comcode_page_title_from_disk(get_custom_file_base() . '/' . $page) . ')';
                 $page2 = preg_replace('#\[[^\[\]]*\]#', '', $page2);
             }
         }

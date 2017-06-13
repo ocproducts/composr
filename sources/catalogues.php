@@ -937,7 +937,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         if ($field['cf_type'] == 'picture') {
             if (($ev !== null) && ($dereference_ev != '')) {
                 require_code('images');
-                $map['FIELD_' . $str_i . '_THUMB'] = do_image_thumb($dereference_ev, ($i == 0) ? '' : (is_object($map['FIELD_0']) ? $map['FIELD_0']->evaluate() : $map['FIELD_0']), false, false);
+                $map['FIELD_' . $str_i . '_THUMB'] = do_image_thumb($dereference_ev, ($i == 0) ? new Tempcode() : (is_object($map['FIELD_0']) ? $map['FIELD_0'] : protect_from_escaping(escape_html($map['FIELD_0']))), false, false);
             } else {
                 $map['FIELD_' . $str_i . '_THUMB'] = new Tempcode();
             }

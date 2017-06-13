@@ -283,6 +283,10 @@ class Commandr_fs
             }
         }
 
+        if (count($contents) == 1000) {
+            return true; // We can assume it's a dir, it's just there's too much to list here
+        }
+
         return false;
     }
 

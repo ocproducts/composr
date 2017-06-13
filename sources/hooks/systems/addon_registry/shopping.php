@@ -359,6 +359,7 @@ class Hook_addon_registry_shopping
                 'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
+                'CATALOGUE_TITLE' => lorem_phrase(),
                 'TAGS' => '',
                 'CATALOGUE' => lorem_word_2(),
                 'ADD_ENTRY_URL' => placeholder_url(),
