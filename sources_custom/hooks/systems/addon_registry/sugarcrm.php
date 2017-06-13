@@ -46,7 +46,7 @@ class Hook_addon_registry_sugarcrm
      */
     public function get_category()
     {
-        return 'Development';
+        return 'Third Party Integration';
     }
 
     /**
