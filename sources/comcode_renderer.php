@@ -1491,6 +1491,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'contents':
+            return new Tempcode(); // TODO: Fix this
             // Do structure sweep
             $urls_for = array();
 

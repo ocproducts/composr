@@ -86,7 +86,7 @@ function notification_poller_script()
     header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
     header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
     header('Content-Type: application/xml');
-    $xml .= '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
+    $xml .= '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
 ' . get_xml_entities() . '
 <response>
     <result>
