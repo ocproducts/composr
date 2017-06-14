@@ -3753,6 +3753,11 @@ function ecv_INC($lang, $escaped, $param)
         if (!isset($TEMPCODE_SETGET[$param[0]])) {
             $TEMPCODE_SETGET[$param[0]] = '0';
         }
+
+        if ((isset($param[1])) && ($param[1] == '1')) {
+            $value = $TEMPCODE_SETGET[$param[0]];
+        }
+
         $TEMPCODE_SETGET[$param[0]] = strval(intval($TEMPCODE_SETGET[$param[0]]) + 1);
     }
 
