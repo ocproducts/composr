@@ -57,6 +57,14 @@ class Block_main_staff_checklist
     }
 
     /**
+     * Uninstall the block.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('staff_checklist_cus_tasks');
+    }
+
+    /**
      * Install the block.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -85,7 +93,6 @@ class Block_main_staff_checklist
                 '[page="adminzone:admin_themes:edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
                 '[page="adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl"]' . do_lang('CHECKLIST_INITIAL_TASK_MAIL') . '[/page]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS') . '"]https://www.google.com/webmasters/tools/[/url]',
-                '[url="' . do_lang('CHECKLIST_INITIAL_TASK_DMOZ') . '"]http://www.dmoz.org/add.html[/url]',
                 '[url="' . do_lang('CHECKLIST_INITIAL_TASK_UPTIME_MONITOR') . '"]https://uptimerobot.com/[/url]',
                 // NB: Google and Bing submission is automatic, via Sitemaps feature
                 '[html]<p style="margin: 0">Facebook user? Like Composr on Facebook:</p><iframe src="https://compo.sr/uploads/website_specific/compo.sr/facebook.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:430px; height:20px;" allowTransparency="true"></iframe>[/html]',
@@ -104,14 +111,6 @@ class Block_main_staff_checklist
     }
 
     /**
-     * Uninstall the block.
-     */
-    public function uninstall()
-    {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('staff_checklist_cus_tasks');
-    }
-
-    /**
      * Execute the block.
      *
      * @param  array $map A map of parameters.
@@ -119,9 +118,9 @@ class Block_main_staff_checklist
      */
     public function run($map)
     {
+        require_lang('dates');
         require_lang('staff_checklist');
         require_css('adminzone_dashboard');
-        require_lang('dates');
 
         $block_id = get_block_id($map);
 

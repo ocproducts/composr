@@ -39,6 +39,7 @@ function init__database_search()
 
 /**
  * Get a list of MySQL stopwords.
+ * May be overridden for other databases, if you want to tune your stopword list.
  *
  * @return array List of stopwords (actually a map of stopword to true)
  */
@@ -984,6 +985,8 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
     $db = (substr($table, 0, 2) != 'f_') ? $GLOBALS['SITE_DB'] : $GLOBALS['FORUM_DB'];
 
+    $db->set_query_time_limit(30);
+
     // This is so for example catalogue_entries.php can use brackets in it's table specifier while avoiding the table prefix after the first bracket. A bit weird, but that's our convention and it does save a small amount of typing
     $table_clause = $db->get_table_prefix() . (($table[0] == '(') ? (substr($table, 1)) : $table);
     if ($table[0] == '(') {
@@ -996,12 +999,12 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
     // Rating ordering, via special encoding
     if (strpos($order, 'compound_rating:') !== false) {
         list(, $rating_type, $meta_rating_id_field) = explode(':', $order);
-        $select .= ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . $meta_rating_id_field . ') AS compound_rating';
+        $select .= ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . db_cast($meta_rating_id_field, 'CHAR') . ') AS compound_rating';
         $order = 'compound_rating';
     }
     if (strpos($order, 'average_rating:') !== false) {
         list(, $rating_type, $meta_rating_id_field) = explode(':', $order);
-        $select .= ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . $meta_rating_id_field . ') AS average_rating';
+        $select .= ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', $rating_type) . ' AND rating_for_id=' . db_cast($meta_rating_id_field, 'CHAR') . ') AS average_rating';
         $order = 'average_rating';
     }
 
@@ -1009,6 +1012,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
     if ((get_param_integer('keep_just_show_query', 0) == 0) && ($meta_type !== null) && ($content != '')) {
         if (strpos($content, '"') !== false || strpos($content, '+') !== false || strpos($content, '-') !== false || strpos($content, ' ') !== false) {
             list($meta_content_where) = build_content_where($content, $boolean_search, $boolean_operator, true);
+            $meta_content_where = '(' . $meta_content_where . ' OR ' . db_string_equal_to('?', $content) . ')';
         } else {
             $meta_content_where = db_string_equal_to('?', $content);
         }
@@ -1020,9 +1024,9 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
 
         if ($keywords_where != '') {
             if ($meta_id_field == 'the_zone:the_page') { // Special case
-                $meta_join = 'm.meta_for_id=CONCAT(r.the_zone,\':\',r.the_page)';
+                $meta_join = 'm.meta_for_id=' . db_function('CONCAT', array('r.the_zone', '\':\'', 'r.the_page'));
             } else {
-                $meta_join = 'm.meta_for_id=r.' . $meta_id_field;
+                $meta_join = 'm.meta_for_id=' . db_cast('r.' . $meta_id_field, 'CHAR');
             }
             $extra_join = '';
             if (multi_lang_content()) {
@@ -1120,7 +1124,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                             $where_clause_3 .= (($where_clause == '') ? '' : ' AND ') . 'NOT EXISTS (SELECT * FROM ' . $db->get_table_prefix() . 'f_cpf_perms cpfp WHERE cpfp.member_id=r.id AND cpfp.field_id=' . substr($field, 6) . ' AND cpfp.guest_view=0)';
                         }
 
-                        if (($order == '') && ($db->has_expression_ordering()) && ($content_where != '')) {
+                        if (($order == '') && ($GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) && ($content_where != '')) {
                             $_select = preg_replace('#\?#', 't' . strval($i) . '.text_original', $content_where) . ' AS contextual_relevance';
                         } else {
                             $_select = '1';
@@ -1147,7 +1151,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                             $where_clause_3 .= (($where_clause == '') ? '' : ' AND ') . 'NOT EXISTS (SELECT * FROM ' . $db->get_table_prefix() . 'f_cpf_perms cpfp WHERE cpfp.member_id=r.id AND cpfp.field_id=' . substr($field, 6) . ' AND cpfp.guest_view=0)';
                         }
 
-                        if (($order == '') && ($db->has_expression_ordering()) && ($content_where != '')) {
+                        if (($order == '') && ($GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) && ($content_where != '')) {
                             $_select = preg_replace('#\?#', $field, $content_where) . ' AS contextual_relevance';
                         } else {
                             $_select = '1';
@@ -1163,12 +1167,12 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             if (count($where_alternative_matches) == 0) {
                 $where_alternative_matches[] = array($where_clause, '', '', $table_clause, null);
             } else {
-                if (($order == '') && ($db->has_expression_ordering()) && ($content_where != '')) {
+                if (($order == '') && ($GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) && ($content_where != '')) {
                     $order = 'contextual_relevance DESC';
                 }
             }
 
-            $group_by_ok = ($db->can_arbitrary_groupby() && $meta_id_field === 'id');
+            $group_by_ok = ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() && $meta_id_field === 'id');
             if (strpos($table, ' LEFT JOIN') === false) {
                 $group_by_ok = false; // Don't actually need to do a group by, as no duplication possible. We want to avoid GROUP BY as it forces MySQL to create a temporary table, slowing things down a lot.
             }
@@ -1202,6 +1206,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             }
             $query .= ' LIMIT ' . strval($max + $start);
             $query .= ')';
+
             // Work out COUNT(*) query. This is inaccurate (does not filter dupes from each +'d query) but much more efficient on MySQL
             $_count_query = '';
             foreach ($where_alternative_matches as $parts) { // We "+" them, because doing OR's on MATCH's is insanely slow in MySQL (sometimes I hate SQL...)
@@ -1363,7 +1368,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
                 }
             }
 
-            $group_by_ok = ($db->can_arbitrary_groupby() && $meta_id_field === 'id');
+            $group_by_ok = ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() && $meta_id_field === 'id');
             if (strpos($table, ' LEFT JOIN') === false) {
                 $group_by_ok = false; // Don't actually need to do a group by, as no duplication possible. We want to avoid GROUP BY as it forces MySQL to create a temporary table, slowing things down a lot.
             }
@@ -1670,7 +1675,7 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
 
     $body_where = array();
     foreach ($body_words as $word) {
-        if ((strtoupper($word) == $word) && ($GLOBALS['SITE_DB']->has_collate_settings()) && (!is_numeric($word))) {
+        if ((strtoupper($word) == $word) && ($GLOBALS['DB_STATIC_OBJECT']->has_collate_settings()) && (!is_numeric($word))) {
             $body_where[] = 'CONVERT(? USING latin1) LIKE _latin1\'' . db_encode_like($fc_before . $word . $fc_after) . '\' COLLATE latin1_general_cs';
         } else {
             $body_where[] = '? LIKE \'' . db_encode_like($fc_before . $word . $fc_after) . '\'';
@@ -1678,7 +1683,7 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
     }
     $include_where = array();
     foreach ($include_words as $word) {
-        if ((strtoupper($word) == $word) && ($GLOBALS['SITE_DB']->has_collate_settings()) && (!is_numeric($word))) {
+        if ((strtoupper($word) == $word) && ($GLOBALS['DB_STATIC_OBJECT']->has_collate_settings()) && (!is_numeric($word))) {
             $include_where[] = 'CONVERT(? USING latin1) LIKE _latin1\'' . db_encode_like($fc_before . $word . $fc_after) . '\' COLLATE latin1_general_cs';
         } else {
             $include_where[] = '? LIKE \'' . db_encode_like($fc_before . $word . $fc_after) . '\'';
@@ -1689,7 +1694,7 @@ function db_like_assemble($content, $boolean_operator = 'AND', $full_coverage = 
         if ($disclude_where != '') {
             $disclude_where .= ' AND ';
         }
-        if ((strtoupper($word) == $word) && ($GLOBALS['SITE_DB']->has_collate_settings()) && (!is_numeric($word))) {
+        if ((strtoupper($word) == $word) && ($GLOBALS['DB_STATIC_OBJECT']->has_collate_settings()) && (!is_numeric($word))) {
             $disclude_where .= 'CONVERT(? USING latin1) NOT LIKE _latin1\'' . db_encode_like($fc_before . $word . $fc_after) . '\' COLLATE latin1_general_cs';
         } else {
             $disclude_where .= '? NOT LIKE \'' . db_encode_like($fc_before . $word . $fc_after) . '\'';

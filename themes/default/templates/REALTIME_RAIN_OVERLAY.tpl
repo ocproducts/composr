@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,realtime_rain}
+
 <div class="webstandards_checker_off" data-tpl="realtimeRainOverlay" data-tpl-params="{+START,PARAMS_JSON,MIN_TIME}{_*}{+END}">
 	<div id="real_time_surround">
 		<div id="real_time">

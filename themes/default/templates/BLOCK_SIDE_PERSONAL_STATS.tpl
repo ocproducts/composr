@@ -23,4 +23,3 @@
 		</ul>
 	{+END}
 </div></section>
-

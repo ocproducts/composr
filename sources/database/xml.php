@@ -21,15 +21,15 @@
 /*EXTRA FUNCTIONS: glob*/
 
 /*
-    Known (intentional) issues in SQL support (we are targeting MySQL-4.0 compatibility, similar to SQL-92)
-        We support a few MySQL functions: LEFT, RIGHT, REPLACE, LENGTH, CONCAT, COALESCE. These are not likely usable on all DB's.
-        We do not support the range of standard SQL functions.
-        We do not support SQL data types, we use Composr ones instead. We don't support complex type-specific ops such as "+" for string concatenation.
+    Known (intentional) issues in SQL support (we are targeting rough MySQL-4.3 parity, similar to SQL-92)
+        We support a few SQL/MySQL functions, the ones the Composr db_function outputs and the very basic operators. However we prefix with 'X_' so that we don't accidentally code in assumptions about MySQL.
+        We do not support SQL data types, we use Composr ones instead.
         We do not have any special table/field naming escaping support-- so you need to use names that aren't awkward
         MySQL-style auto-increment is supported, but actually done as key randomisation, once install has finished
         Indexes are not supported
         We ARE type strict, unlike MySQL (even MySQL strict mode won't complain if a type conversion is always lossless, such as integer to string)
         Data Control Language (DCL) is not supported
+        Information schemas are not supported
         Semi-colons to split queries are not supported at the driver level
         Temporary tables are not supported
         Views are not supported
@@ -46,7 +46,6 @@
         Field naming for things like COUNT(*) will not be consistent with MySQL
         You must specify the field names in INSERT queries
         Expressions in ORDER BY clauses will be ignored
-        GROUP_CONCAT not implemented
     This database system is intended only for Composr, and not as a general purpose database. In Composr our philosophy is to write logic in PHP, not SQL, hence the subset supported.
     Also as we have to target MySQL-4.3 we can't implement some more sophisticated featured, in case programmers rely on them!
 */
@@ -78,7 +77,7 @@ function init__database__xml()
     $TABLE_BASES = array();
 
     global $INT_TYPES, $STRING_TYPES;
-    $INT_TYPES = array('REAL', 'AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME');
+    $INT_TYPES = array('REAL', 'AUTO', 'AUTO_LINK', 'INTEGER', 'UINTEGER', 'SHORT_INTEGER', 'BINARY', 'MEMBER', 'GROUP', 'TIME', 'integer');
     if (multi_lang_content()) {
         $INT_TYPES[] = 'SHORT_TRANS';
         $INT_TYPES[] = 'LONG_TRANS';
@@ -104,15 +103,6 @@ function init__database__xml()
 
     require_code('xml');
 
-    // Support for chaining a DB- to make reads faster
-    global $SITE_INFO;
-    if ((!empty($SITE_INFO['db_chain_type'])) && (!running_script('xml_db_import')) && (get_param_integer('keep_chain', null) !== 0)) {
-        require_code('database/' . $SITE_INFO['db_chain_type']);
-        $GLOBALS['XML_CHAIN_DB'] = new DatabaseConnector($SITE_INFO['db_chain'], $SITE_INFO['db_chain_host'], $SITE_INFO['db_chain_user'], $SITE_INFO['db_chain_password'], get_table_prefix(), false, object_factory('Database_Static_' . $SITE_INFO['db_chain_type']));
-    } else {
-        $GLOBALS['XML_CHAIN_DB'] = null;
-    }
-
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(100); // XML DB is *slow*
     }
@@ -128,15 +118,17 @@ function init__database__xml()
 function _get_sql_keywords()
 {
     return array(
-        'LEFT', 'RIGHT', 'CONCAT', 'LENGTH', 'REPLACE', 'COALESCE',
+        'LEFT', 'RIGHT', // Join types
+        'X_CONCAT', 'X_LENGTH', 'X_REPLACE', 'X_COALESCE',
+        'X_SUBSTR', 'X_RAND', 'X_LEAST', 'X_GREATEST', 'X_MOD',
         'WHERE',
         'SELECT', 'FROM', 'AS', 'UNION', 'ALL', 'DISTINCT',
         'INSERT', 'INTO', 'VALUES', 'UPDATE', 'SET', 'DELETE',
-        'ALTER', 'CREATE', 'DROP', 'ADD', 'CHANGE', 'RENAME', 'DEFAULT', 'TABLE', 'PRIMARY', 'KEY',
+        'ALTER', 'CREATE', 'X_CREATE_TABLE', 'DROP', 'X_DROP_TABLE', 'ADD', 'CHANGE', 'RENAME', 'DEFAULT', 'TABLE', 'PRIMARY', 'KEY',
         'LIKE', 'IF', 'NOT', 'IS', 'NULL', 'AND', 'OR', 'BETWEEN', 'IN', 'EXISTS',
         'GROUP', 'BY', 'ORDER', 'ASC', 'DESC',
         'JOIN', 'OUTER', 'INNER', 'ON',
-        'COUNT', 'SUM', 'AVG', 'MAX', 'MIN',
+        'COUNT', 'SUM', 'AVG', 'MAX', 'MIN', 'X_GROUP_CONCAT',
         'LIMIT',
         '+', '-', '*', '/',
         '<>', '>', '<', '>=', '<=', '=',
@@ -187,9 +179,10 @@ class Database_Static_xml extends DatabaseDriver
     /**
      * Get a map of Composr field types, to actual database types.
      *
+     * @param  boolean $for_alter Whether this is for adding a table field
      * @return array The map
      */
-    public function get_type_remap()
+    public function get_type_remap($for_alter)
     {
         $type_remap = array(
             'AUTO' => 'AUTO',
@@ -218,16 +211,21 @@ class Database_Static_xml extends DatabaseDriver
     }
 
     /**
-     * Create a table index.
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
-     * @param  array $db The DB connection to make on
+     * @param  mixed $connection The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @param  string $table_prefix The table prefix
+     * @return array List of SQL queries to run
      */
-    public function create_index($table_name, $index_name, $_fields, $db)
+    public function create_index($table_name, $index_name, $_fields, $connection, $raw_table_name, $unique_key_fields, $table_prefix)
     {
         // Indexes not supported
+        return array();
     }
 
     /**
@@ -239,9 +237,9 @@ class Database_Static_xml extends DatabaseDriver
      */
     public function change_primary_key($table_name, $new_key, $db)
     {
-        $this->query('UPDATE db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name), $db);
+        $this->query('UPDATE db_meta SET m_type=X_REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name), $db);
         foreach ($new_key as $_new_key) {
-            $this->query('UPDATE db_meta SET m_type=CONCAT(\'*\',m_type) WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key), $db);
+            $this->query('UPDATE db_meta SET m_type=' . db_function('CONCAT', array('\'*\'', 'm_type')) . ' WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key), $db);
         }
     }
 
@@ -255,11 +253,6 @@ class Database_Static_xml extends DatabaseDriver
      */
     public function create_table($table_name, $fields, $db, $if_not_exists = false)
     {
-        if ($GLOBALS['XML_CHAIN_DB'] !== null) {
-            // DB chaining: It's a write query, so needs doing on chained DB too
-            $GLOBALS['XML_CHAIN_DB']->static_ob->create_table($table_name, $fields, $GLOBALS['XML_CHAIN_DB']->connection_write, $if_not_exists);
-        }
-
         $path = $db[0] . '/' . $table_name;
 
         if (($if_not_exists) && (file_exists($path))) {
@@ -290,11 +283,6 @@ class Database_Static_xml extends DatabaseDriver
      */
     public function drop_table_if_exists($table_name, $db)
     {
-        if ($GLOBALS['XML_CHAIN_DB'] !== null) {
-            // DB chaining: It's a write query, so needs doing on chained DB too
-            $GLOBALS['XML_CHAIN_DB']->static_ob->drop_table_if_exists($table_name, $GLOBALS['XML_CHAIN_DB']->connection_write);
-        }
-
         $file_path = $db[0] . '/' . $table_name;
         $dh = @opendir($file_path);
         if ($dh !== false) {
@@ -370,12 +358,12 @@ class Database_Static_xml extends DatabaseDriver
     /**
      * Find whether full-text-search is present
      *
-     * @param  array $db A DB connection
+     * @param  array $db The DB connection
      * @return boolean Whether it is
      */
     public function has_full_text($db)
     {
-        return ($GLOBALS['XML_CHAIN_DB'] === null) ? false : $GLOBALS['XML_CHAIN_DB']->static_ob->has_full_text($GLOBALS['XML_CHAIN_DB']->connection_read);
+        return false;
     }
 
     /**
@@ -387,7 +375,7 @@ class Database_Static_xml extends DatabaseDriver
      */
     public function full_text_assemble($content, $boolean)
     {
-        return ($GLOBALS['XML_CHAIN_DB'] === null) ? '' : $GLOBALS['XML_CHAIN_DB']->static_ob->full_text_assemble($content, $boolean);
+        return '';
     }
 
     /**
@@ -397,7 +385,7 @@ class Database_Static_xml extends DatabaseDriver
      */
     public function has_full_text_boolean()
     {
-        return ($GLOBALS['XML_CHAIN_DB'] === null) ? false : $GLOBALS['XML_CHAIN_DB']->static_ob->has_full_text_boolean($GLOBALS['XML_CHAIN_DB']->connection_read);
+        return false;
     }
 
     /**
@@ -417,7 +405,7 @@ class Database_Static_xml extends DatabaseDriver
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
-     * @param  array $db A DB connection
+     * @param  array $db The DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
@@ -504,101 +492,6 @@ class Database_Static_xml extends DatabaseDriver
 
         $query = substr($query, 0, $len - 1);
 
-        // CHAINING
-        // --------
-
-        $random_key = mt_rand(0, min(2147483647, mt_getrandmax())); // Generated later, passed by reference. We will assume we only need one; multi inserts will need to each specify the key in full
-
-        if (($GLOBALS['XML_CHAIN_DB'] !== null) && (!$no_syndicate)) {
-            $GLOBALS['XML_CHAIN_DB']->ensure_connected();
-            if (substr(strtoupper($query), 0, 7) == 'SELECT ') {
-                $chain_connection = &$GLOBALS['XML_CHAIN_DB']->connection_read;
-            } else {
-                $chain_connection = &$GLOBALS['XML_CHAIN_DB']->connection_write;
-            }
-
-            switch ($tokens[0]) {
-                case 'INSERT':
-                    // DB chaining: It's a write query, so needs doing on chained DB too
-                    //  But because it's an insert we may need to put in an auto-increment also
-                    $_inserts = $this->_do_query_insert__parse($tokens, $query, $db, $fail_ok);
-                    if ($_inserts === null) {
-                        return null;
-                    }
-                    list($table_name, $inserts) = $_inserts;
-                    $insert_keys = array_keys($inserts[0]);
-                    $query_new = 'INSERT INTO ' . $table_name . ' (';
-                    $schema = $this->_read_schema($db, $table_name, $fail_ok);
-                    global $TABLE_BASES;
-                    foreach ($schema as $key => $val) {
-                        if ((preg_replace('#[^\w]#', '', $val) == 'AUTO') && (!in_array($key, $insert_keys))) {
-                            $insert_keys[] = $key;
-                            foreach (array_keys($inserts) as $i) {
-                                if ($i != 0) {
-                                    $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
-                                }
-
-                                $inserts[$i][$key] = isset($TABLE_BASES[$table_name]) ? $TABLE_BASES[$table_name] : $this->get_first_id(); // We always want first record as '1', because we often reference it in a hard-coded way
-                                while ((file_exists($db[0] . '/' . $table_name . '/' . strval($inserts[$i][$key]) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $inserts[$i]) . '.xml')) || (file_exists($db[0] . '/' . $table_name . '/' . strval($inserts[$i][$key]) . '.xml-volatile')) || (file_exists($db[0] . '/' . $table_name . '/' . $this->_guid($schema, $inserts[$i]) . '.xml-volatile'))) {
-                                    if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // In particular the f_groups/f_forum_groupings/calendar_types usage of tables references ID numbers for things. But let's just make all installer stuff linear
-                                        $inserts[$i][$key]++;
-                                        $TABLE_BASES[$table_name] = $inserts[$i][$key] + 1;
-                                    } else {
-                                        if ($i != 0) {
-                                            $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
-                                        }
-                                        $inserts[$i][$key] = $random_key; // We don't use auto-increment, we use randomisation. As otherwise when people sync over revision control there'd be conflicts
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    foreach ($insert_keys as $i => $key) {
-                        if ($i != 0) {
-                            $query_new .= ',';
-                        }
-                        $query_new .= $key;
-                    }
-                    $query_new .= ')';
-                    foreach ($inserts as $ii => $insert) {
-                        if ($ii != 0) {
-                            $query_new .= ', (';
-                        } else {
-                            $query_new .= ' VALUES (';
-                        }
-                        $i = 0;
-                        foreach ($insert as $value) {
-                            if ($i != 0) {
-                                $query_new .= ',';
-                            }
-                            if (is_integer($value)) {
-                                $query_new .= strval($value);
-                            } elseif (is_float($value)) {
-                                $query_new .= float_to_raw_string($value);
-                            } elseif ($value === null) {
-                                $query_new .= 'NULL';
-                            } else {
-                                $query_new .= '\'' . db_escape_string($value) . '\'';
-                            }
-                            $i++;
-                        }
-                        $query_new .= ')';
-                    }
-
-                    $GLOBALS['XML_CHAIN_DB']->static_ob->query($query_new, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
-                    break;
-
-                case 'UPDATE':
-                case 'DELETE':
-                    // DB chaining: It's a write query, so needs doing on chained DB too
-                    $GLOBALS['XML_CHAIN_DB']->static_ob->query($query, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
-                    break;
-
-                case 'SELECT':
-                    return $GLOBALS['XML_CHAIN_DB']->static_ob->query($query, $chain_connection, $max, $start, $fail_ok, $get_insert_id);
-            }
-        }
-
         // PARSING/EXECUTION STAGE
         // -----------------------
 
@@ -610,6 +503,7 @@ class Database_Static_xml extends DatabaseDriver
                 return $this->_do_query_create($tokens, $query, $db, $fail_ok);
 
             case 'INSERT':
+                $random_key = mt_rand(0, mt_getrandmax());
                 return $this->_do_query_insert($tokens, $query, $db, $fail_ok, $get_insert_id, $random_key, $save_as_volatile);
 
             case 'UPDATE':
@@ -618,6 +512,7 @@ class Database_Static_xml extends DatabaseDriver
             case 'DELETE':
                 return $this->_do_query_delete($tokens, $query, $db, $max, $start, $fail_ok);
 
+            case '(':
             case 'SELECT':
                 $at = 0;
                 $results = $this->_do_query_select($tokens, $query, $db, $max, $start, $fail_ok, $at);
@@ -705,11 +600,7 @@ class Database_Static_xml extends DatabaseDriver
                 ),
             );
         } else {
-            if (get_db_type() != 'xml') {
-                $fields = $GLOBALS['SITE_DB']->query($schema_query);
-            } else {
-                $fields = $this->query($schema_query, $db, null, null, $fail_ok);
-            }
+            $fields = $this->query($schema_query, $db, null, null, $fail_ok);
             if ($fields === null) {
                 return array(); // Can happen during installation
             }
@@ -1375,6 +1266,45 @@ class Database_Static_xml extends DatabaseDriver
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?mixed The results (null: no results)
      */
+    protected function _do_query_x_drop($tokens, $query, $db, $fail_ok)
+    {
+        $at = 0;
+        if (!$this->_parsing_expects($at, $tokens, 'X_DROP_TABLE', $query)) {
+            return null;
+        }
+
+        $table_name = $this->_parsing_read($at, $tokens, $query);
+
+        $file_path = $db[0] . '/' . $table_name;
+        $dh = @opendir($file_path);
+        if ($dh !== false) {
+            while (($file = readdir($dh)) !== false) {
+                if ((substr($file, -4) == '.xml') || (substr($file, -13) == '.xml-volatile')) {
+                    unlink($file_path . '/' . $file);
+                    sync_file($file_path . '/' . $file);
+                }
+            }
+            closedir($dh);
+            @rmdir($file_path);
+            sync_file($file_path);
+        }
+
+        global $SCHEMA_CACHE, $DIR_CONTENTS_CACHE;
+        unset($SCHEMA_CACHE[$table_name]);
+        unset($DIR_CONTENTS_CACHE[$table_name]);
+
+        return null;
+    }
+
+    /**
+     * Execute a DROP query.
+     *
+     * @param  array $tokens Tokens
+     * @param  string $query Query that was executed
+     * @param  array $db Database connection
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
+     * @return ?mixed The results (null: no results)
+     */
     protected function _do_query_drop($tokens, $query, $db, $fail_ok)
     {
         $at = 0;
@@ -1560,6 +1490,58 @@ class Database_Static_xml extends DatabaseDriver
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?mixed The results (null: no results)
      */
+    protected function _do_query_x_create($tokens, $query, $db, $fail_ok)
+    {
+        $at = 0;
+        if (!$this->_parsing_expects($at, $tokens, 'X_CREATE_TABLE', $query)) {
+            return null;
+        }
+
+        if (!$this->_parsing_expects($at, $tokens, "'", $query)) {
+            return null;
+        }
+
+        $parameters = $this->_parsing_read($at, $tokens, $query);
+
+        if (!$this->_parsing_expects($at, $tokens, "'", $query)) {
+            return null;
+        }
+
+        list($table_name, $fields, $raw_table_name, $save_bytes) = unserialize($parameters);
+
+        $path = $db[0] . '/' . $table_name;
+
+        if (file_exists($path)) {
+            return;
+        }
+
+        $found_key = false;
+        foreach ($fields as $type) {
+            if (strpos($type, '*') !== false) {
+                $found_key = true;
+            }
+        }
+        if (!$found_key) {
+            fatal_exit('No key specified for table ' . $table_name);
+        }
+
+        @mkdir($path, 0777);
+        require_code('files');
+        fix_permissions($path);
+        sync_file($path);
+
+        return null;
+    }
+
+    /**
+     * Execute a CREATE query.
+     *
+     * @param  array $tokens Tokens
+     * @param  string $query Query that was executed
+     * @param  array $db Database connection
+     * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
+     * @return ?mixed The results (null: no results)
+     */
     protected function _do_query_create($tokens, $query, $db, $fail_ok)
     {
         $at = 0;
@@ -1633,7 +1615,10 @@ class Database_Static_xml extends DatabaseDriver
             return null;
         }
 
-        $this->create_table($table_name, $fields, $db, $if_not_exists);
+        $queries = $this->create_table($table_name, $fields, $db, $if_not_exists);
+        foreach ($queries as $query) {
+            $this->query($query, $db);
+        }
 
         if (!$this->_parsing_check_ended($at, $tokens, $query)) {
             return null;
@@ -1775,7 +1760,7 @@ class Database_Static_xml extends DatabaseDriver
                                 $TABLE_BASES[$table_name] = $record[$key] + 1;
                             } else {
                                 if ($record_num != 0) {
-                                    $random_key = mt_rand(0, min(2147483647, mt_getrandmax()));
+                                    $random_key = mt_rand(0, mt_getrandmax());
                                 }
                                 $record[$key] = $random_key; // We don't use auto-increment, we use randomisation. As otherwise when people sync over revision control there'd be conflicts
                             }
@@ -1864,6 +1849,7 @@ class Database_Static_xml extends DatabaseDriver
             case 'MAX':
             case 'MIN':
             case 'SUM':
+            case 'X_GROUP_CONCAT':
             case 'AVG':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
@@ -1889,19 +1875,51 @@ class Database_Static_xml extends DatabaseDriver
 
             // Conventional expressions...
 
-            case 'COALESCE':
+            case 'X_RAND':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
-                $expr1 = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
-                if (!$this->_parsing_expects($at, $tokens, ',', $query)) {
-                    return null;
-                }
-                $expr2 = $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok);
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('COALESCE', $expr1, $expr2);
+                $expr = array($token);
+                break;
+
+            case 'X_MOD':
+                if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
+                    return null;
+                }
+                $expr1 = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
+                if (!$this->_parsing_expects($at, $tokens, ',', $query)) {
+                    return null;
+                }
+                $expr2 = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
+                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                    return null;
+                }
+                $expr = array($token, $expr1, $expr2);
+                break;
+
+            case 'X_LEAST':
+            case 'X_GREATEST':
+            case 'X_COALESCE':
+            case 'X_CONCAT':
+                if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
+                    return null;
+                }
+                $exprx = array();
+                do {
+                    $exprx[] = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
+                    if (!$this->_parsing_expects($at, $tokens, ',', $query, true)) {
+                        $at--;
+                        break;
+                    }
+                }
+                while (true);
+                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                    return null;
+                }
+                $expr = array($token, $exprx);
                 break;
 
             case 'CAST':
@@ -1916,10 +1934,11 @@ class Database_Static_xml extends DatabaseDriver
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('CAST', $expr, $type);
+                $expr = array($token, $expr, $type);
                 break;
 
-            case 'REPLACE':
+            case 'X_REPLACE':
+            case 'X_SUBSTR':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
@@ -1935,25 +1954,10 @@ class Database_Static_xml extends DatabaseDriver
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('REPLACE', $expr1, $expr2, $expr3);
+                $expr = array($token, $expr1, $expr2);
                 break;
 
-            case 'CONCAT':
-                if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
-                    return null;
-                }
-                $expr1 = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
-                if (!$this->_parsing_expects($at, $tokens, ',', $query)) {
-                    return null;
-                }
-                $expr2 = $this->_parsing_read_expression($at, $tokens, $query, $db, true, true, $fail_ok);
-                if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
-                    return null;
-                }
-                $expr = array('CONCAT', $expr1, $expr2);
-                break;
-
-            case 'LENGTH':
+            case 'X_LENGTH':
                 if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
                     return null;
                 }
@@ -1961,7 +1965,7 @@ class Database_Static_xml extends DatabaseDriver
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('LENGTH', $expr1);
+                $expr = array($token, $expr1);
                 break;
 
             case 'EXISTS':
@@ -1975,7 +1979,7 @@ class Database_Static_xml extends DatabaseDriver
                 if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
                     return null;
                 }
-                $expr = array('EXISTS', $results);
+                $expr = array($token, $results);
                 break;
 
             case '(':
@@ -2056,7 +2060,6 @@ class Database_Static_xml extends DatabaseDriver
             switch ($token) {
                 case '+':
                 case '-':
-                case '*':
                 case '/':
                 case '>':
                 case '<':
@@ -2066,6 +2069,10 @@ class Database_Static_xml extends DatabaseDriver
                 case '<>':
                 case 'LIKE':
                     $expr = array($token, $expr, $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok));
+                    break;
+
+                case '*':
+                    $expr = array('MULTI', $expr, $this->_parsing_read_expression($at, $tokens, $query, $db, false, true, $fail_ok));
                     break;
 
                 case 'IS':
@@ -2188,6 +2195,7 @@ class Database_Static_xml extends DatabaseDriver
             case 'MAX':
             case 'MIN':
             case 'SUM':
+            case 'X_GROUP_CONCAT':
             case 'AVG':
                 if ($full_set === null) {
                     return $this->_bad_query($query, $fail_ok, 'Cannot use aggregate function outside SELECT/HAVING scope');
@@ -2203,10 +2211,14 @@ class Database_Static_xml extends DatabaseDriver
 
             // Conventional expressions...
 
-            case 'COALESCE':
-                $val = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
-                if ($val === null) {
-                    $val = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+            case 'X_COALESCE':
+                $vals = array();
+                $val = null;
+                foreach ($expr[1] as $_expr) {
+                    $val = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                    if ($val !== null) {
+                        break;
+                    }
                 }
                 return $val;
 
@@ -2244,7 +2256,7 @@ class Database_Static_xml extends DatabaseDriver
             case '-':
                 return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) - $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
 
-            case '*':
+            case 'MULTI':
                 return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) * $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
 
             case '/':
@@ -2309,13 +2321,20 @@ class Database_Static_xml extends DatabaseDriver
                 $comp = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
                 return $comp >= $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set) && $comp <= $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok, $full_set);
 
-            case 'REPLACE':
-                return str_replace($this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set), $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok), $this->_execute_expression($expr[1], $bindings, $query, $fail_ok, $full_set));
+            case 'X_REPLACE':
+                $search = $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+                $replace = $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok);
+                $subject = $this->_execute_expression($expr[1], $bindings, $query, $fail_ok, $full_set);
+                return str_replace($search, $replace, $subject);
 
-            case 'CONCAT':
-                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) . $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
+            case 'X_CONCAT':
+                $vals = array();
+                foreach ($expr[1] as $_expr) {
+                    $vals[] = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                }
+                return implode('', $vals);
 
-            case 'LENGTH':
+            case 'X_LENGTH':
                 return strlen($this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set));
 
             case 'SUBQUERY_VALUE':
@@ -2325,6 +2344,32 @@ class Database_Static_xml extends DatabaseDriver
                     return null;
                 }
                 return isset($subquery[0]) ? array_shift($subquery[0]) : null;
+
+            case 'X_RAND':
+                return mt_rand(0, mt_getrandmax());
+
+            case 'X_SUBSTR':
+                $string = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
+                $start = min(0, $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set) - 1);
+                $length = $this->_execute_expression($expr[3], $bindings, $query, $db, $fail_ok, $full_set);
+                return substr($string, $start, $length);
+
+            case 'X_LEAST':
+                $vals = array();
+                foreach ($expr[1] as $_expr) {
+                    $vals[] = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                }
+                return call_user_func_array('min', $vals);
+
+            case 'X_GREATEST':
+                $vals = array();
+                foreach ($expr[1] as $_expr) {
+                    $vals[] = $this->_execute_expression($_expr, $bindings, $query, $db, $fail_ok, $full_set);
+                }
+                return call_user_func_array('max', $vals);
+
+            case 'X_MOD':
+                return $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set) % $this->_execute_expression($expr[2], $bindings, $query, $db, $fail_ok, $full_set);
 
             case 'IN':
                 $val = $this->_execute_expression($expr[1], $bindings, $query, $db, $fail_ok, $full_set);
@@ -2565,6 +2610,18 @@ class Database_Static_xml extends DatabaseDriver
 
         // SELECT
 
+        if ($tokens[$at] == '(') {
+            if (!$this->_parsing_expects($at, $tokens, '(', $query)) {
+                return null;
+            }
+
+            $is_bracketed = true;
+        } else {
+            $is_bracketed = false;
+        }
+
+        $as = null;
+
         if (!$this->_parsing_expects($at, $tokens, 'SELECT', $query)) {
             return null;
         }
@@ -2785,6 +2842,12 @@ class Database_Static_xml extends DatabaseDriver
             }
         }
 
+        if ($is_bracketed) {
+            if (!$this->_parsing_expects($at, $tokens, ')', $query)) {
+                return null;
+            }
+        }
+
         // UNION clause?
         $unions = array();
         $token = $this->_parsing_read($at, $tokens, $query, true);
@@ -2797,7 +2860,7 @@ class Database_Static_xml extends DatabaseDriver
                 $at--;
             }
 
-            $test = $this->_parse_query_select($tokens, $query, $db, $max, $start, $fail_ok, $at);
+            $test = $this->_parse_query_select($tokens, $query, $db, $max, $start, $fail_ok, $at, $do_end_check);
             if ($test === null) {
                 return null;
             }
@@ -2845,7 +2908,7 @@ class Database_Static_xml extends DatabaseDriver
         if (count($joins) == 0) {
             $records = array(array());
         }
-        elseif ((count($joins) == 1) && (!is_array($joins[0][1])) && ($where_expr == array('LITERAL', true)) && ($select === array(array('COUNT', '*')))) { // Quick fudge to get fast table counts
+        elseif ((count($joins) == 1) && (!is_array($joins[0][1])) && ($where_expr == array('LITERAL', true)) && ($select === array(array('COUNT', '*'))) && ($orders === null)) { // Quick fudge to get fast table counts
             global $DIR_CONTENTS_CACHE;
             if (!isset($DIR_CONTENTS_CACHE[$joins[0][1]])) {
                 if (is_dir($db[0] . '/' . $joins[0][1])) {
@@ -2978,7 +3041,7 @@ class Database_Static_xml extends DatabaseDriver
             // Now handle functions (as applied to all records, as no GROUP BY)
             $single_result = false;
             foreach ($select as $s) {
-                if (($s[0] == 'MIN') || ($s[0] == 'MAX') || ($s[0] == 'SUM') || ($s[0] == 'COUNT') || ($s[0] == 'AVG')) {
+                if (($s[0] == 'MIN') || ($s[0] == 'MAX') || ($s[0] == 'SUM') || ($s[0] == 'X_GROUP_CONCAT') || ($s[0] == 'COUNT') || ($s[0] == 'AVG')) {
                     $single_result = true;
                 }
             }
@@ -3023,6 +3086,7 @@ class Database_Static_xml extends DatabaseDriver
                     case 'MIN':
                     case 'COUNT':
                     case 'SUM':
+                    case 'X_GROUP_CONCAT':
                     case 'AVG':
                         // Was already specially process, compound function - just copy through
                         $as = $this->_param_name_for($want[1], $i);
@@ -3061,22 +3125,28 @@ class Database_Static_xml extends DatabaseDriver
                         break;
 
                     case 'AS':
-                        $as = $want[2];
-                        $want = $want[1];
-                        switch ($want[0]) {
+                        switch ($want[1][0]) {
+                            case 'DISTINCT':
                             case 'MAX':
                             case 'MIN':
                             case 'COUNT':
                             case 'SUM':
+                            case 'X_GROUP_CONCAT':
                             case 'AVG':
                                 // Was already specially process, compound function - just copy through
+                                $as = $want[2];
                                 $_record[preg_replace('#^.*\.#', '', $as)] = $record[$as];
+                                $want = $want[1];
                                 break 2;
+                            default:
+                                $as = $want[2];
+                                $want = $want[1];
+                                break;
                         }
 
                     default:
                         if ($as === null) {
-                            $as = $this->_param_name_for($want[1], $i);
+                            $as = $this->_param_name_for(((isset($want[1])) && ($want[0] == 'FIELD')) ? $want[1] : ('arb' . strval($i)), $i);
                         }
                         $_record[preg_replace('#^.*\.#', '', $as)] = $this->_execute_expression($want, $record, $query, $db, $fail_ok);
                         break;
@@ -3117,6 +3187,18 @@ class Database_Static_xml extends DatabaseDriver
                 }
 
                 $results[] = $rep;
+            }
+        }
+
+        // Try and validate some stuff PostgreSQL wouldn't like, so we make XML driver as strict as possible
+        //  It's not perfect, only works if we actually have a non-zero result set.
+        //  Can't dig into expressions because the XML driver doesn't support ordering by them.
+        if (count($results) > 0) {
+            $matches = array();
+            if (preg_match('#^\!?(\w+)$#', $orders, $matches) != 0) {
+                if (!isset($records[0][$matches[1]])) {
+                    warn_exit('Cannot sort by ' . $matches[1] . ', it\'s not selected');
+                }
             }
         }
 
@@ -3243,6 +3325,18 @@ class Database_Static_xml extends DatabaseDriver
                     } else {
                         $rep[$as] = $temp;
                     }
+                    break;
+
+                case 'X_GROUP_CONCAT':
+                    $temp_str = '';
+                    foreach ($set as $set_item) {
+                        $val = $this->_execute_expression($s_term[1], $set_item, $query, $db, $fail_ok);
+                        if ($temp_str != '') {
+                            $temp_str .= ',';
+                        }
+                        $temp_str .= $val;
+                    }
+                    $rep[$as] = $temp_str;
                     break;
 
                 case 'AVG':
@@ -3661,7 +3755,7 @@ class Database_Static_xml extends DatabaseDriver
             }
         }
 
-        $fuzz = strtoupper(md5(uniqid(strval(mt_rand(0, min(2147483647, mt_getrandmax()))), true)));
+        $fuzz = strtoupper(md5(uniqid(strval(mt_rand(0, mt_getrandmax())), true)));
 
         return '{'
                . substr($fuzz, 0, 8) . '-'

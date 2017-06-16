@@ -30,7 +30,6 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
 
             $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data));
             @print(escape_html($error));
-
             @ob_end_flush();
         }
     }

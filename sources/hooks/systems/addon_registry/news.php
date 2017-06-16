@@ -77,7 +77,7 @@ class Hook_addon_registry_news
     {
         return array(
             'requires' => array(
-                'news_shared'
+                'news_shared',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),
@@ -258,7 +258,6 @@ class Hook_addon_registry_news
             'RECENT_BLOG_POSTS' => lorem_paragraph_html(),
             'RSS_URL' => placeholder_url(),
             'ADD_BLOG_POST_URL' => placeholder_url(),
-            'PAGINATION' => '',
         ));
         return array(
             lorem_globalise($tab_content, null, '', true)
@@ -329,6 +328,7 @@ class Hook_addon_registry_news
         require_lang('news');
         require_lang('cns');
         require_css('news');
+
         $contents = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $contents->attach(do_lorem_template('NEWS_BOX', array(
@@ -396,6 +396,7 @@ class Hook_addon_registry_news
     public function tpl_preview__administrative__news_wordpress_import_screen()
     {
         require_lang('news');
+
         return array(
             lorem_globalise(do_lorem_template('NEWS_WORDPRESS_IMPORT_SCREEN', array(
                 'TITLE' => lorem_title(),
@@ -480,6 +481,7 @@ class Hook_addon_registry_news
     public function tpl_preview__block_side_news_categories()
     {
         require_lang('news');
+
         $categories = array();
         foreach (placeholder_array() as $k => $v) {
             $categories[] = array(
@@ -547,7 +549,7 @@ class Hook_addon_registry_news
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,

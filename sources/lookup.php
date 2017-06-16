@@ -44,6 +44,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
     }
 
     require_code('type_sanitisation');
+    require_lang('submitban');
 
     if (is_numeric($member)) {
         // From member ID
@@ -194,6 +195,8 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
  */
 function find_security_alerts($where = array())
 {
+    require_lang('security');
+
     // Alerts
     $start = get_param_integer('alert_start', 0);
     $max = get_param_integer('alert_max', 50);

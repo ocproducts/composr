@@ -1209,7 +1209,7 @@ insert into `cms_addons_files` values('cns_thematic_avatars','themes/default/ima
  ('commandr','sources_custom/hooks/systems/commandr_commands/.htaccess','1022'),
  ('commandr','sources/hooks/systems/commandr_commands/alien_check.php','1023'),
  ('commandr','sources/hooks/systems/commandr_commands/directory_sizes.php','1024'),
- ('commandr','sources/hooks/systems/commandr_commands/mysql_table_sizes.php','1025'),
+ ('commandr','sources/hooks/systems/commandr_commands/db_table_sizes.php','1025'),
  ('commandr','sources/hooks/systems/commandr_commands/db_search.php','1026'),
  ('commandr','sources/hooks/systems/commandr_commands/append.php','1027'),
  ('commandr','sources/hooks/systems/commandr_commands/ban_ip.php','1028'),
@@ -7446,7 +7446,7 @@ insert into `cms_config` values('0','1','is_on_post_titles','0',''),
  ('default, defaultness, celebration, community','1','keywords','0',''),
  ('','1','staff_address','0',''),
  ('1','1','site_closed','0',''),
- ('','1','closed','1','This is a Composr demo.\n\nLog in using the details you put in when you set up the demo, or if this is the shared demo use the username \'admin\' and the password \'demo123\'.'),
+ ('This is a Composr demo.\n\nLog in using the details you put in when you set up the demo, or if this is the shared demo use the username \'admin\' and the password \'demo123\'.','1','closed','1','This is a Composr demo.\n\nLog in using the details you put in when you set up the demo, or if this is the shared demo use the username \'admin\' and the password \'demo123\'.'),
  ('1','1','is_on_rating','0',''),
  ('1','1','is_on_comments','0',''),
  ('7','1','comments_forum_name','0',''),
@@ -13698,7 +13698,6 @@ insert into `cms_staff_checklist_cus_tasks` values('1','Set up website configura
  ('7','[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=MAIL.tpl\"]Customise your \'MAIL\' template[/page]','1332808931','0','',null),
  ('8','[url=\"P3P Wizard (set up privacy policy)\"]http://www.p3pwiz.com/[/url]','1332808931','0','',null),
  ('9','[url=\"Submit to Google\"]http://www.google.com/addurl/[/url]','1332808931','0','',null),
- ('10','[url=\"Submit to OpenDMOZ\"]http://www.dmoz.org/add.html[/url]','1332808931','0','',null),
  ('11','[url=\"Submit to Bing\"]http://www.bing.com/webmaster/SubmitSitePage.aspx[/url]','1332808931','0','',null);
 
 DROP TABLE IF EXISTS `cms_staff_links`;

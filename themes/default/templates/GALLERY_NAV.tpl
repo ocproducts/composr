@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,galleries}
+
 <div data-view="GalleryNav" data-view-params="{+START,PARAMS_JSON,_X,_N,SLIDESHOW}{_*}{+END}">
 	{+START,IF,{SLIDESHOW}}
 		<label for="slideshow_from" class="slideshow_speed">
@@ -9,7 +10,7 @@
 		<input type="hidden" id="previous_slide" name="previous_slide" value="{SLIDESHOW_PREVIOUS_URL*}" />
 	{+END}
 
-	<div class="trinav_wrap">
+	<div class="trinav_wrap" id="gallery_nav">
 		<div class="trinav_left">
 			{$,Back}
 			{+START,IF_NON_EMPTY,{BACK_URL}}
@@ -25,7 +26,7 @@
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
 				{+START,IF,{$NOT,{$MOBILE}}}
 					{+START,IF,{$NOT,{SLIDESHOW}}}
-						<a class="button_screen buttons__slideshow" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+						<a class="button_screen buttons__slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					{+END}
 				{+END}
 			{+END}
@@ -66,7 +67,7 @@
 			{+START,IF,{$NOT,{SLIDESHOW}}}
 				<div class="float_surrounder">
 					<div class="right">
-						<a class="button_screen buttons__slideshow" rel="nofollow" target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}" href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+						<a class="button_screen buttons__slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					</div>
 				</div>
 			{+END}

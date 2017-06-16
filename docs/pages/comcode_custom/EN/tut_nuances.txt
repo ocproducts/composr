@@ -215,5 +215,6 @@ You are likely better off using Conversr rather than no forum and simply restric
 
  - [page="_SEARCH:tut_importer"]Importing data into Composr[/page]
  - [page="_SEARCH:tut_staff"]Coordination between staff and staff/members[/page]
+ - https://www.youtube.com/watch?v=mI2STe_Kklk
 
 {$SET,tutorial_tags,core_forum_drivers,Installation,Forum,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr supports integration with a number of forum systems through our forum driver system. We discuss any issues here.}[block]main_tutorial_rating[/block]

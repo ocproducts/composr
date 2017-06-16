@@ -49,7 +49,7 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
     t = t + '<div class="css_colour_chooser">';
     t = t + '	<div class="css_colour_chooser_name">';
     t = t + '		<label class="field_name" for="' + name + '"> ' + label + '</label><br />';
-    t = t + '<input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" size="7" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
+    t = t + '<input ' + className + 'alt="{!COLOUR;^}" type="color" value="' + _color + '" id="' + name + '" name="' + name + '" size="6" class="js-change-update-chooser" />';
     t = t + '	</div>';
     t = t + '	<div class="css_colour_chooser_fixed">';
     t = t + '	<div class="css_colour_chooser_from" style="background-color: ' + ((color == '') ? '#000' : color) + '" id="cc_source_' + name + '">';
@@ -80,12 +80,15 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
         updateChooser(target.id);
     });
 
-    /*
-     Uncomment if you want to force spectrum widget even when there is native browser input support
-     $("#"+name).spectrum({
-     color: color
-     });
-     */
+    if (typeof $("#"+name).spectrum != 'undefined') {
+        var test = document.createElement('input');
+        test.type = 'color';
+        if (test.type == 'text') {
+            $("#" + name).spectrum({
+                color: color
+            });
+        }
+    }
 }
 
 function doColorChooser() {
@@ -272,5 +275,3 @@ function updateChooser(chooser) {
         return true;
     }
 }
-
-

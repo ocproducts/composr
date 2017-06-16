@@ -3,8 +3,8 @@
 {$SET,is_block_raw,{$EQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 
 {+START,IF,{$NOT,{$GET,is_block_raw}}}
-	{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-	<div id="{$GET*,wrapper_id}" data-require-javascript="['activities', 'activity_feed']" data-tpl="blockMainActivities" data-tpl-params="{+START,PARAMS_JSON,is_block_raw,MODE,MEMBER_IDS,START,GROW,MAX,REFRESH_TIME}{_*}{+END}">
+	{$SET,ajax_block_main_activities_wrapper,ajax_block_main_activities_wrapper_{$RAND%}}
+	<div id="{$GET*,ajax_block_main_activities_wrapper}" data-require-javascript="['activities', 'activity_feed']" data-tpl="blockMainActivities" data-tpl-params="{+START,PARAMS_JSON,is_block_raw,MODE,MEMBER_IDS,START,GROW,MAX,REFRESH_TIME}{_*}{+END}">
 		<div class="float_surrounder">
 			<div id="activities_feed">
 				<div id="activities_general_notify"></div>

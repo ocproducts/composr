@@ -134,6 +134,10 @@ class Mail_dispatcher_override extends Mail_dispatcher_base
             $headers->addTextHeader('Require-Recipient-Valid-Since', $to_emails[0] . '; ' . $_require_recipient_valid_since);
         }
 
+        // DKIM
+        $signer = new Swift_Signers_DKIMSigner(get_option('dkim_private_key'), get_domain(), get_option('dkim_selector'));
+        $message->attachSigner($signer);
+
         // Attachments
         foreach ($this->real_attachments as $r) {
             if (isset($r['path'])) {

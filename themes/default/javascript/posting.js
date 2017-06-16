@@ -136,15 +136,15 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                     comcode,
                     document.selection ? document.selection : null
                 );
-
-                // Add field for next one
-                var addAnotherField = (number == window.num_attachments) && (window.num_attachments < window.max_attachments); // Needs running late, in case something happened inbetween
-                if (addAnotherField) {
-                    addAttachment(window.num_attachments + 1, fieldName);
-                }
             }
             if (suffix != '') {
                 insertTextbox(post, suffix);
+            }
+
+            // Add field for next one
+            var addAnotherField = (number == window.num_attachments) && (window.num_attachments < window.max_attachments); // Needs running late, in case something happened inbetween
+            if (addAnotherField) {
+                addAttachment(window.num_attachments + 1, fieldName);
             }
 
             if (uploaderSettings !== undefined) {

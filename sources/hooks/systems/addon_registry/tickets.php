@@ -253,7 +253,7 @@ class Hook_addon_registry_tickets
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => lorem_word(),
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
             'EM' => placeholder_emoticon_chooser(),
             'DISPLAY' => 'block',

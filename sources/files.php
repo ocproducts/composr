@@ -92,7 +92,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
     if (php_function_allowed('disk_free_space')) {
         $num_bytes_to_write = $num_bytes_to_save;
         if (is_file($path)) {
-            $num_bytes_to_write -= filesize($path);
+            $num_bytes_to_write -= @filesize($path); /* @ is for race condition */
         }
         static $disk_space = null;
         if ($disk_space === null) {
@@ -113,7 +113,7 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
     // Save
     $num_bytes_written = @file_put_contents($path, $contents, LOCK_EX);
     if (php_function_allowed('disk_free_space')) {
-        if ($disk_space !== false) {
+        if (($disk_space !== false) && ($num_bytes_written !== false)) {
             $disk_space -= $num_bytes_written;
         }
     }
@@ -489,7 +489,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         array('google.*\.html', ''), // Google authorisation files
         array('\.\_.*', '.*'), // MacOS extended attributes
         array('tmpfile__.*', '.*'), // cms_tempnam produced temporarily files (unfortunately we can't specify a .tmp suffix)
-        array('.*\.\d+', 'exports/file_backups'), // File backups (saved as revisions)
+        array('.*\.\d+.*', 'exports/file_backups'), // File backups (saved as revisions)
     );
     $ignore_filename_patterns = array( // Case insensitive; we'll use this only when we *need* directories that would match to be valid
     );
@@ -521,6 +521,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'breadcrumbs.xml' => 'data_custom/xml_config',
             'fields.xml' => 'data_custom/xml_config',
             'EN.pwl' => 'data_custom/spelling/personal_dicts',
+            'out.csv' => 'data_custom/modules/user_export',
         );
     }
 
@@ -600,7 +601,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
     if (($bitmask & IGNORE_REVISION_FILES) != 0) { // E.g. global.css.<timestamp>
         $ignore_filename_and_dir_name_patterns = array_merge($ignore_filename_and_dir_name_patterns, array(
-            array('.*\.\d+', '.*'),
+            array('.*\.\d+.*', '.*'),
         ));
     }
 

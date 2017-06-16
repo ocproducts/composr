@@ -21,7 +21,7 @@
 /**
  * Get the active forum sort order from a URL specifier.
  *
- * @param string $_sort Sort order keyword.
+ * @param  string $_sort Sort order keyword.
  * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field.
  */
 function get_forum_sort_order_simplified($_sort = 'first_post')
@@ -32,8 +32,8 @@ function get_forum_sort_order_simplified($_sort = 'first_post')
 /**
  * Get the active forum sort order from a URL specifier.
  *
- * @param string $_sort Sort order keyword.
- * @param boolean $simplified Whether to not include pinning etc in the order.
+ * @param  string $_sort Sort order keyword.
+ * @param  boolean $simplified Whether to not include pinning etc in the order.
  * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field.
  */
 function get_forum_sort_order($_sort = 'first_post', $simplified = false)
@@ -251,7 +251,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                         }
                     }
 
-                    $edit_url = has_actual_page_access(get_member(), 'admin_cns_forums') ? build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $subforum['id']), 'adminzone') : new Tempcode();
+                    $edit_url = has_actual_page_access(get_member(), 'admin_cns_forums') ? build_url(array('page' => 'admin_cns_forums', 'type' => '_edit', 'id' => $subforum['id']), get_module_zone('admin_cns_forums')) : new Tempcode();
 
                     $forum_rules_url = '';
                     $intro_question_url = '';
@@ -331,7 +331,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         $moderator_actions .= '<option value="open_topics">' . do_lang('OPEN_TOPIC') . '</option>';
         $moderator_actions .= '<option value="close_topics">' . do_lang('CLOSE_TOPIC') . '</option>';
     }
-    if (($id !== null) && (cns_may_perform_multi_moderation($id))) {
+    if (($id !== null) && (addon_installed('cns_multi_moderations')) && (cns_may_perform_multi_moderation($id))) {
         $multi_moderations = cns_list_multi_moderations($id);
         if (count($multi_moderations) != 0) {
             require_lang('cns_multi_moderations');
@@ -594,7 +594,7 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
  */
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {
-    if ((array_key_exists('last_post_id', $topic)) && ($topic['last_post_id'] !== null)) {
+    if ((array_key_exists('last_post_id', $topic)) && ($topic['last_post_id'] !== null) && (get_bot_type() === null)) {
         $last_post_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $topic['last_post_id']), get_module_zone('topicview'));
         $last_post_url->attach('#post_' . strval($topic['last_post_id']));
         if ($topic['last_member_id'] !== null) {

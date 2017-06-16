@@ -8,9 +8,9 @@
 		<div class="box box___permissions_tree_editor_screen"><div class="box_inner">
 			<h2>{!PERMISSIONS_TREE_EDITOR_HOW_WORK}</h2>
 
-			<p>{!PERMISSIONS_TREE_EDITOR_ABOUT_BARRIERS,<img src="{$IMG*,led_on}" alt="" />}</p>
+			<p class="vertical_alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_BARRIERS,<img src="{$IMG*,led_on}" alt="" />}</p>
 
-			<p>{!PERMISSIONS_TREE_EDITOR_ABOUT_GROUP,<img src="{$IMG*,permlevels/3}" alt="" />}</p>
+			<p class="vertical_alignment">{!PERMISSIONS_TREE_EDITOR_ABOUT_GROUP,<img src="{$IMG*,permlevels/3}" alt="" />}</p>
 
 			<p class="pte_tips">{!PERMISSIONS_TREE_EDITOR_ABOUT_MULTI_SELECT}</p>
 

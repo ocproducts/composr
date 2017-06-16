@@ -23,7 +23,7 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 */
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
-{$THEME_WIZARD_COLOR,#94979d,seed,100% 426aa9}
+{$THEME_WIZARD_COLOR,#426aa9,seed,100% 426aa9}
 {$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}
 {$THEME_WIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 426aa9*/
@@ -196,6 +196,7 @@ tt, kbd, samp {
 
 abbr {
 	border-bottom: 1px dotted; /* For Safari, which does not have it by default */
+	text-decoration: none;
 }
 
 /* Give all browsers a 'q' tag with smart quotes */
@@ -247,9 +248,6 @@ h1, h2, h3, .faux_h2 {
 	color: {$GET,heading_text};
 	border-bottom: 1px solid {$GET,pale_border};
 }
-h3 {
-	letter-spacing: -0.75px;
-}
 h1 {
 	font-size: 1.6em;
 	margin-top: 0.27em; /* Consistency with boxes (so gap between header and content is consistent), but rationalised against higher em font size */
@@ -259,6 +257,7 @@ h2, .faux_h2 {
 }
 h3 {
 	font-size: 1.1em;
+	letter-spacing: -0.75px;
 }
 h3 a, h3 a:hover {
 	text-decoration: none;
@@ -398,7 +397,7 @@ iframe {
 /*{+END}*/
 
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
-::selection {
+.website_body ::selection {
 	background: {$GET,yellow_highlight_background};
 }
 comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {
@@ -471,6 +470,7 @@ body.website_body, #wysiwyg_editor {
 	margin: 0;
 	color: {$GET,slightly_seeded_text};
 	background-color: {$GET,main_background};
+	{$BETA_CSS_PROPERTY,user-select: text !important;}
 }
 
 body#main_website {
@@ -583,7 +583,7 @@ header h1 {
 	margin-top: 1px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 
-.global_navigation .top_form {
+.global_navigation .top_form.top_search {
 	margin-top: 3px; /* To force it align correctly with the form in a different block (which is taller) */
 }
 .global_navigation .top_form * {
@@ -653,10 +653,10 @@ header h1 {
 	padding: 7px 0 7px 0;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-			text-align: {!en_right};
+			text-align: {!en_right}; /* Goes on own line in fixed width mode, due to lack of space */
 		/*{+END}*/
 		/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-			float: {!en_right};
+			float: {!en_right}; /* Sits beside title on non-fixed width */
 		/*{+END}*/
 		margin-left: 0.5em;
 	/*{+END}*/
@@ -1335,6 +1335,7 @@ div.red_alert, p.red_alert, .inline_wip_message {
 div.red_alert, p.red_alert {
 	border: 1px solid {$GET,light_error_border};
 	background: url('{$IMG;,icons/24x24/status/notice}') 0.6em 0.75em no-repeat {$GET,light_error_background};
+	overflow: hidden;
 }
 .inline_wip_message {
 	border: 1px solid {$GET,dark_border};
@@ -1463,7 +1464,7 @@ th.metadata_title {
 
 	overflow: hidden;
 }
-td>.box, .right .box, .left .box {
+td>.box, .right .box:first-child:last-child, .left .box:first-child:last-child {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -1993,11 +1994,11 @@ table.scrollable_inside {
 	padding: 0.7em;
 }
 
-{+START,IF,{$MOBILE}}
+/*{+START,IF,{$MOBILE}}*/
 	.spaced_table td {
 		overflow-x: auto;
 	}
-{+END}
+/*{+END}*/
 
 /* Undo any descendant spacing for nested tables made in WYSIWYG */
 .results_table table[cellpadding="0"] td, .results_table table[cellpadding="0"] th {
@@ -2013,6 +2014,13 @@ table.scrollable_inside {
 
 .results_table {
 	border-collapse: separate;
+}
+
+.results_table_simplified {
+	border-collapse: collapse;
+}
+
+.results_table, .results_table_simplified {
 	border: 0 !important;
 	border-spacing: 0;
 	margin: 1em 0;
@@ -2025,6 +2033,10 @@ table.scrollable_inside {
 }
 .wide_table_wrap + .wide_table_wrap>.results_table {
 	margin-top: 1em;
+}
+
+.results_table_simplified th, .results_table_simplified td {
+	border: 1px solid {$GET,standard_border} !important;
 }
 
 .results_table>thead:first-child>tr:first-child *:first-child, .results_table>thead:nth-child(2)/*after colspan*/>tr:first-child *:first-child, .results_table>tbody>tr:first-child>*:first-child {
@@ -2137,6 +2149,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	z-index: 10000;
 	opacity: 0.9;
 	word-wrap: break-word;
+	min-width: 6em;
 }
 .tooltip_ownlayout {
 	padding: 0.5em;
@@ -2145,7 +2158,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	border-radius: 10px;
 	color: {$GET,area_text} !important;
 }
-.tooltip_ownlayout, .tooltip_nolayout th, .tooltip_nolayout td {
+.tooltip_ownlayout, .tooltip_nolayout th.de_th, .tooltip_nolayout td {
 	background-color: {$GET,area_faded_background};
 	background-image: linear-gradient(to bottom, {$GET,area_faded_background}, {$GET,area_background});
 }
@@ -2341,6 +2354,9 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
+.compacted_subbox_stream>.raw_ajax_grow_spot>h3 {
+	margin: 1em 5px;
+}
 .compacted_subbox_stream .box {
 	border-top: 1px dotted {$GET,standard_border} !important;
 	border-left: 0;
@@ -2535,10 +2551,12 @@ div.ajax_loading, p.ajax_loading {
 /*{+START,IF,{$MOBILE}}*/
 	.lined_up_boxes .right {
 		width: 100%;
+		float: none;
 	}
 
 	.lined_up_boxes .left {
 		width: 100%;
+		float: none;
 	}
 /*{+END}*/
 
@@ -2778,17 +2796,18 @@ div .post_buttons>*, div .buttons_group_faded>* {
 		text-align: center;
 	/*{+END}*/
 	/*{+START,IF,{$NOT,{$MOBILE}}}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
-		margin: 0 0 1em 13.5em;
+		margin: 0 0 1em 0;
 	/*{+END}*//*{+END}*/
 }
 
-.comments_posting_form_end input {
-	float: left;
-	margin-right: 0.5em !important;
+.comments_posting_form_end .proceed_button input:first-child, .comments_captcha {
+	margin-left: 180px !important;
 }
 
 .comments_posting_form_end #submit_button {
-	float: right;
+	/*{+START,IF,{$CONFIG_OPTION,enable_previews}}*/
+		float: right;
+	/*{+END}*/
 	margin-right: 1em !important;
 }
 
@@ -2809,12 +2828,12 @@ div .post_buttons>*, div .buttons_group_faded>* {
 =========================
 */
 
-ul.compact_list, ol.compact_list {
+ul.compact_list, .global_side_panel ul, ol.compact_list {
 	margin: 0;
 	padding: 0;
 	text-align: left; /* In case cascading from somewhere */
 }
-ul.compact_list>li, ol.compact_list>li {
+ul.compact_list>li, .global_side_panel ul>li, ol.compact_list>li {
 	margin: 0 0 0 17px;
 	padding: 0;
 }
@@ -2843,14 +2862,14 @@ dl.compact_list>dd {
 	margin: 0;
 }
 
-ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul, .zone_running_docs .comcode_page ol {
+ul.spaced_list, .spaced_list ul, ol.spaced_list, .spaced_list ol, .zone_running_docs .comcode_page ul:not([class]), .zone_running_docs .comcode_page ol:not([class]) {
 	margin: 0;
 	padding: 0 !important;
 }
-ul.spaced_list, .spaced_list ul, .zone_running_docs .comcode_page ul {
+ul.spaced_list, .spaced_list ul, .zone_running_docs .comcode_page ul:not([class]) {
 	list-style-type: square;
 }
-.spaced_list li, .zone_running_docs .comcode_page li {
+.spaced_list li, .zone_running_docs .comcode_page ul:not([class])>li, .zone_running_docs .comcode_page ol:not([class])>li {
 	margin: 0.5em 0 0.5em 30px !important;
 	padding: 0;
 }
@@ -2938,6 +2957,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 }
 .meta_details>dl.meta_details_list {
 	margin-bottom: 0;
+	overflow: hidden;
 }
 
 /*
@@ -3305,6 +3325,9 @@ ul.buttons_group, ul.associated_links_block_group {
 .fields_set_contents .constrain_field, .fields_set_contents input .wide_field {
 	display: inline;
 }
+.constrain_field + .constrain_field {
+	margin: 0.25em 0;
+}
 
 /*
 =========================
@@ -3410,6 +3433,9 @@ body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.
 .proceed_button {
 	text-align: center;
 }
+.proceed_button:last-child {
+	margin-bottom: 0;
+}
 div.proceed_button_left {
 	text-align: {!en_left};
 }
@@ -3419,6 +3445,7 @@ div.proceed_button_left_2 {
 }
 
 .shunted_button {
+	clear: {!en_right};
 	text-align: {!en_right};
 }
 
@@ -3583,14 +3610,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
-{+START,IF,{$ADDON_INSTALLED,actionlog}}
+/*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
 	.buttons__undo {
 		background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
 	}
 	.buttons__revisions {
 		background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
 	}
-{+END}
+/*{+END}*/
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
@@ -4112,8 +4139,15 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 
 /* .comcode_quote is used where the [quote] tag is parsed. */
 /* .comcode_code is used where the [code] tag is parsed. */
+.email_body .comcode_quote, .email_body .comcode_code {
+	margin: 1em 0;
+}
 .comcode_quote, .comcode_code {
 	margin: 1em;
+
+	/* Takes off default from email clients */
+	border: 0 !important;
+	padding: 0 !important;
 
 	/* To prevent horizontal overlapping with floats */
 	outline: 0;
@@ -4329,14 +4363,17 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 	display: inline-block;
 	padding: 0.2em 0.25em;
 	vertical-align: middle;
-	position: relative;
-	top: -0.3em;
-	margin-top: 0.26em; /* Expands the whole line just enough so that our top offset doesn't cause an overflow */
+	line-height: 1em;
+	margin: 1px; /* Needed to stop border getting cropped off */
 }
 .comcode_member_link img {
 	cursor: inherit;
 }
+.comcode_member_link .embedded_mini_avatar {
+	vertical-align: middle;
+}
 .comcode_member_link a {
+	vertical-align: middle;
 	color: {$GET,area_text};
 	text-decoration: none;
 }
@@ -4459,6 +4496,31 @@ a[rel="lightbox"] {
 	width: {$DIV,{$CONFIG_OPTION,thumb_width},2}px;
 	height: auto;
 }
+
+/* Wrap video code with <div class="responsive_video">...</div> if you want it responsive; jwplayer is doing this by default using its own JS though */
+.responsive_video video {
+	max-width: 100%;
+	height: auto;
+}
+
+/* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
+/*{+START,IF,{$MOBILE}}*/
+	.youtube_player {
+		overflow: hidden;
+		width: 100%;
+		position: relative;
+		padding-bottom: 56.25%;
+		padding-top: 25px;
+		height: 0;
+	}
+	.youtube_player iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+/*{+END}*/
 
 /*
 =========================
@@ -4651,6 +4713,7 @@ a[rel="lightbox"] {
 	.print_icon {
 		background: url('{$IMG;,icons/24x24/links/print}') no-repeat left top !important;
 		padding: 0 0 5px 32px !important;
+		display: inline-block;
 	}
 
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
@@ -4678,6 +4741,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 .overlay {
 	overflow: visible;
 	border: 0;
+	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
 }
 
 .overlay_close_button {
@@ -4731,6 +4795,17 @@ span:not(:empty)+#lightbox_position_in_set:before, span:not(:empty)+#lightbox_fu
 	content: "\00b7" !important;
 	padding-right: 0.5em;
 	vertical-align: middle;
+}
+
+/*
+=========================
+======E-mail rules=======
+=========================
+*/
+
+.email_logo img {
+	max-width: 100%;
+	height: auto;
 }
 
 /*

@@ -70,7 +70,12 @@ class Hook_upon_query_add_mentor
                 return;
             }
 
-            $mentor_id = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON (g.gm_member_id=m.id AND gm_validated=1) WHERE gm_group_id=' . strval($mentor_usergroup_id) . ' OR m_primary_group=' . strval($mentor_usergroup_id) . ' ORDER BY RAND()', true);
+            $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_group_members g ON (g.gm_member_id=m.id AND gm_validated=1) WHERE gm_group_id=' . strval($mentor_usergroup_id) . ' OR m_primary_group=' . strval($mentor_usergroup_id) . ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+            if (addon_installed('unvalidated')) {
+                $sql .= ' AND m_validated=1';
+            }
+            $sql .= ' ORDER BY ' . db_function('RAND');
+            $mentor_id = $GLOBALS['FORUM_DB']->query_value_if_there($sql, true);
             if ($mentor_id === null) {
                 return;
             }

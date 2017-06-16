@@ -185,21 +185,21 @@ class Block_main_gallery_embed
             $total_videos = 0;
         }
         if ($_sort == 'average_rating') {
-            $rating_sort = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS average_rating';
+            $rating_sort = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
         } elseif ($_sort == 'compound_rating') {
-            $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=r.id) AS compound_rating';
+            $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'images') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
         } elseif ($_sort == 'fixed_random') {
-            $rating_sort = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
+            $rating_sort = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
         } else {
             $rating_sort = '';
         }
         $rows_images = $GLOBALS['SITE_DB']->query('SELECT *' . $rating_sort . $extra_filter_sql . ' FROM ' . get_table_prefix() . 'images r' . $extra_join_sql . $extra_join_image . ' WHERE ' . $cat_select . $where_sup . $extra_where_image . ' ORDER BY ' . $sort, $max + $start, null, false, true);
         if ($_sort == 'average_rating') {
-            $rating_sort = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS average_rating';
+            $rating_sort = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
         } elseif ($_sort == 'compound_rating') {
-            $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=r.id) AS compound_rating';
+            $rating_sort = ',(SELECT SUM(rating-1) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS compound_rating';
         } elseif ($_sort == 'fixed_random') {
-            $rating_sort = ',(MOD(r.id,' . date('d') . ')) AS fixed_random';
+            $rating_sort = ',(' . db_function('MOD', array('r.id', date('d'))) . ') AS fixed_random';
         } else {
             $rating_sort = '';
         }
@@ -228,7 +228,7 @@ class Block_main_gallery_embed
                         $entry_title = get_translated_text($row_image['title']);
                         $view_url = build_url(array('page' => 'galleries', 'type' => 'image', 'id' => $row_image['id'], 'root' => $root), $zone);
                         $thumb_url = ensure_thumbnail($row_image['url'], $row_image['thumb_url'], 'galleries', 'images', $row_image['id']);
-                        $thumb = do_image_thumb($thumb_url, $entry_title, true);
+                        $thumb = do_image_thumb($thumb_url, $entry_title);
                         $full_url = $row_image['url'];
                         $file_size = url_is_local($full_url) ? file_exists(get_custom_file_base() . '/' . rawurldecode($full_url)) ? strval(filesize(get_custom_file_base() . '/' . rawurldecode($full_url))) : '' : '';
                         if (url_is_local($full_url)) {
@@ -286,7 +286,7 @@ class Block_main_gallery_embed
                         if ($thumb_url == '') {
                             $thumb_url = find_theme_image('na');
                         }
-                        $thumb = do_image_thumb($thumb_url, $entry_title, true);
+                        $thumb = do_image_thumb($thumb_url, $entry_title);
                         $full_url = $row_video['url'];
                         if (url_is_local($full_url)) {
                             $full_url = get_custom_base_url() . '/' . $full_url;

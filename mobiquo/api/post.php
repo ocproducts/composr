@@ -19,7 +19,7 @@
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function report_post_func($raw_params)
@@ -40,7 +40,7 @@ function report_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function reply_post_func($raw_params)
@@ -66,7 +66,7 @@ function reply_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_quote_post_func($raw_params)
@@ -99,7 +99,7 @@ function get_quote_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_raw_post_func($raw_params)
@@ -128,7 +128,7 @@ function get_raw_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function save_raw_post_func($raw_params)
@@ -154,7 +154,7 @@ function save_raw_post_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_thread_func($raw_params)
@@ -178,7 +178,7 @@ function get_thread_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_thread_by_unread_func($raw_params)
@@ -227,7 +227,7 @@ function get_thread_by_unread_func($raw_params)
  * Standard Tapatalk endpoint implementation.
  * Sits in front of a more Composr-appropriate equivalent API method.
  *
- * @param  mixed $raw_params  Mobiquo parameters
+ * @param  mixed $raw_params Mobiquo parameters
  * @return mixed Mobiquo result
  */
 function get_thread_by_post_func($raw_params)

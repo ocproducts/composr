@@ -486,7 +486,7 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
     }
 
     if ($PAGE_CACHE_LAZY_LOAD) {
-        $support_smart_decaching = support_smart_decaching();
+        $support_smart_decaching = support_smart_decaching(true);
         if ($support_smart_decaching) {
             $cache_path = $cfb . '/caches/lang/' . $lang . '/' . $codename . '.lcd';
             $lang_file_default = $fb . '/lang/' . $lang . '/' . $codename . '.ini';
@@ -606,12 +606,12 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
  * Include all the language files for use in the script.
  * NOTE: This may reduce performance, so you should only use it if you really have to.
  *
- * @param ?LANGUAGE_NAME   $lang The language to include files from (null: use current users language).
- * @param boolean $only_if_for_lang Only load it up if it is specifically defined for our language.
+ * @param  ?LANGUAGE_NAME $lang The language to include files from (null: use current users language).
+ * @param  boolean $only_if_for_lang Only load it up if it is specifically defined for our language.
  */
 function require_all_lang($lang = null, $only_if_for_lang = false)
 {
-    $support_smart_decaching = support_smart_decaching();
+    $support_smart_decaching = support_smart_decaching(true);
 
     if ($lang === null) {
         global $REQUIRED_ALL_LANG;
@@ -1329,6 +1329,43 @@ function get_ordinal_suffix($index)
         $abbreviation = $ends[$index % 10];
     }
     return $abbreviation;
+}
+
+/**
+ * Start locking and get faux auto-increment ID for inserting into a table.
+ *
+ * @param  object $db Database connector to use
+ * @param  ?integer $id ID number (returned by reference) (null: just do normal auto-increment)
+ * @param  boolean $lock Whether locking has happened (returned by reference)
+ * @param  string $table Translate table
+ * @param  string $id_field ID field
+ */
+function table_id_locking_start($db, &$id, &$lock, $table = 'translate', $id_field = 'id')
+{
+    if (($id === null) && (multi_lang()) && (strpos(get_db_type(), 'mysql') !== false)) { // Needed as MySQL auto-increment works separately for each combo of other key values (i.e. language in this case). We can't let a language string ID get assigned to something entirely different in another language. This MySQL behaviour is not well documented, it may work differently on different versions.
+        $db->query('LOCK TABLES ' . $db->get_table_prefix() . $table, null, null, true);
+        $lock = true;
+        $id = $db->query_select_value($table, 'MAX(' . $id_field . ')');
+        $id = ($id === null) ? null : ($id + 1);
+    } else {
+        $lock = false;
+    }
+}
+
+/**
+ * End locking for inserting into a table.
+ *
+ * @param  object $db Database connector to use
+ * @param  ?integer $id ID number (null: just do normal auto-increment)
+ * @param  boolean $lock Whether locking has happened
+ * @param  string $table Translate table
+ * @param  string $id_field ID field
+ */
+function table_id_locking_end($db, $id, $lock, $table = 'translate', $id_field = 'id')
+{
+    if ($lock) {
+        $db->query('UNLOCK TABLES', null, null, true);
+    }
 }
 
 /**

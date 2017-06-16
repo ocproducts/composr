@@ -63,7 +63,7 @@ class Hook_cleanup_tags
                 }
 
                 $sql = 'SELECT m.* FROM ' . get_table_prefix() . 'seo_meta m';
-                $sql .= ' LEFT JOIN ' . get_table_prefix() . $table . ' r ON r.' . $id_field . '=m.meta_for_id AND ' . db_string_equal_to('m.meta_for_type', $seo_type_code);
+                $sql .= ' LEFT JOIN ' . get_table_prefix() . $table . ' r ON ' . db_cast('r.' . $id_field, 'CHAR') . '=m.meta_for_id AND ' . db_string_equal_to('m.meta_for_type', $seo_type_code);
                 $sql .= ' WHERE r.' . $id_field . ' IS NULL AND ' . db_string_equal_to('m.meta_for_type', $seo_type_code);
                 $orphaned = $GLOBALS[(substr($table, 0, 2) == 'f_') ? 'FORUM_DB' : 'SITE_DB']->query($sql);
                 if (count($orphaned) != 0) {

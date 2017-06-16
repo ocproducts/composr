@@ -65,6 +65,7 @@ $s_csv_export = 'CSV Export';
 $s_excel_export = 'Excel Export';
 $s_login_anonymously = 'Login Anonymously';
 $s_anonymous = 'Anonymous';
+$s_not_logged_in_bad = '<strong>You are not logged in</strong>. This means you will not get any e-mail notifications, and if you reply we will not know for sure you are the original poster of the issue.';
 $s_jump_to_bugnotes = 'Jump to Notes';
 $s_public_project_msg = 'This project is public. All users have access.';
 $s_private_project_msg = 'This project is private. Only administrators and manually added users have access.';

@@ -6,4 +6,3 @@
 		{!WEBSTANDARDS_ERROR_AT,{ERROR},<a href="#errorloc_{I*}">{LINE}</a>,{POS}}
 	{+END}
 </li>
-

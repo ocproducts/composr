@@ -13,4 +13,3 @@
 		<a href="{URL*}" {+START,IF_PASSED,TARGET}target="{TARGET*}"{+END}>{DESCRIPTION*}</a>
 	</div>
 </div>
-

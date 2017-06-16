@@ -123,14 +123,14 @@ class TapatalkPush extends TapatalkBasePush
             $this->do_push_post($post_row, $is_new_topic);
 
             // Send mentions
-            comcode_to_tempcode(get_translated_text($post_row['p_post'])); // Just so that the mentions are found
+            comcode_to_tempcode(get_translated_text($post_row['p_post'], $GLOBALS['FORUM_DB'])); // Just so that the mentions are found
             global $MEMBER_MENTIONS_IN_COMCODE;
             if (isset($MEMBER_MENTIONS_IN_COMCODE)) {
                 $this->do_push_mention($post_row, array_unique($MEMBER_MENTIONS_IN_COMCODE));
             }
 
             // Send quotes
-            $comcode = get_translated_text($post_row['p_post']);
+            $comcode = get_translated_text($post_row['p_post'], $GLOBALS['FORUM_DB']);
             $matches = array();
             $num_matches = preg_match_all('#\[quote( param)?="([^"]+)"\]#', $comcode, $matches);
             $quoted_members = array();

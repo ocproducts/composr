@@ -1681,6 +1681,7 @@ class Hook_addon_registry_core_form_interfaces
     {
         require_lang('comcode');
         require_lang('dates');
+
         $input = new Tempcode();
         $fields = new Tempcode();
         foreach (placeholder_array(1) as $key => $val) {
@@ -1904,6 +1905,7 @@ class Hook_addon_registry_core_form_interfaces
     public function tpl_preview__administrative__form_screen_input_permission()
     {
         require_lang('permissions');
+
         $permission_rows = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $overrides = new Tempcode();

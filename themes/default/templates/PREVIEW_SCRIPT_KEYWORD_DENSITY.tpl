@@ -18,4 +18,3 @@
 		{+END}
 	</tbody>
 </table>
-

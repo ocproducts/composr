@@ -13,10 +13,6 @@
  * @package    activity_feed
  */
 
-/*
-TODO: Support if JS disabled, possibly remove jQuery dependency
-*/
-
 /**
  * Get SQL for querying activities, appropriate to the given settings.
  *

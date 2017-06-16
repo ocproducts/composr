@@ -147,5 +147,4 @@
             })(marker, dataPoint[0])); //{$,These are the args passed to the dynamic function above.}
         }
     };
-
 }(window.$cms));

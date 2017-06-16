@@ -116,7 +116,7 @@
                             view.notificationEl.className = 'update_success';
                             view.notificationEl.textContent = feedbackEl.textContent;
 
-                            if ($cms.dom.$('#activities_feed')) {// The update box won't necessarily have a displayed feed to update
+                            if ($cms.dom.$('#activities_feed')) { // The update box won't necessarily have a displayed feed to update
                                 sUpdateGetData();
                             }
 
@@ -159,5 +159,4 @@
             }
         }
     });
-
 }(window.$cms));

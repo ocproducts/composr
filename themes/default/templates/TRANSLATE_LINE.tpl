@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_language_editing}
+
 <tr data-tpl="translateLine" data-tpl-params="{+START,PARAMS_JSON,TRANSLATE_AUTO}{_*}{+END}">
 	<th class="translate_line_first">
 		<a id="jmp_{NAME*}"></a>
@@ -35,4 +36,3 @@
 		<div id="exp_{NAME*}"></div>
 	</td>
 </tr>
-

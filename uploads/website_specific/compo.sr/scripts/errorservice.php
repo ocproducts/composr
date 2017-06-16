@@ -14,7 +14,11 @@
  * @package    composr_homesite
  */
 
+
 /*EXTRA FUNCTIONS: get_problem_match*/
+
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;

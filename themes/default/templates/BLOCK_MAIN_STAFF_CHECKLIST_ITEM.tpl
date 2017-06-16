@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
+
 <div data-tpl="blockMainStaffChecklistItem" class="checklist_row {+START,IF_PASSED,CONFIG_URL}js-hover-change-img-toggle-icon{+END}">
 	<div class="float_surrounder">
 		{+START,IF_PASSED,INFO}{+START,IF_NON_EMPTY,{INFO}}
@@ -24,4 +25,3 @@
 		</p>
 	</div>
 </div>
-

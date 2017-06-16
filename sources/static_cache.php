@@ -24,7 +24,10 @@ This allows static cache to run even when Composr is itself not booting at all.
 */
 
 if (!isset($GLOBALS['FILE_BASE'])) {
-    // Find Composr base directory, and chdir into it
+    // Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
+// Find Composr base directory, and chdir into it
     global $FILE_BASE;
     $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
     $FILE_BASE = dirname(dirname($FILE_BASE));
@@ -49,13 +52,14 @@ if (!isset($GLOBALS['FILE_BASE'])) {
  */
 function static_cache__get_self_url_easy()
 {
+    // May not be called from Composr, so can't rely on Composr's normal fixup_bad_php_env_vars function having being called
     $self_url = '';
     if (!empty($_SERVER['REQUEST_URI'])) {
         $self_url .= $_SERVER['REQUEST_URI'];
     } elseif (!empty($_SERVER['PHP_SELF'])) {
         $self_url .= $_SERVER['PHP_SELF'];
-        if (!empty($_SERVER['QUERY_STRING'])) {
-            $self_url .= '?' . $_SERVER['QUERY_STRING'];
+        if (count($_GET) != 0) {
+            $self_url .= '?' . http_build_query($_GET);
         }
     }
     return $self_url;

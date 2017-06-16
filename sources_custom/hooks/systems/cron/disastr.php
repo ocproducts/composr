@@ -140,7 +140,12 @@ class Hook_cron_disastr
             $avoid_members = (strlen($avoid_members) == 0) ? '0' : $avoid_members;
 
             // if there is a randomly selected members that can be infected, otherwise all of the members are already infected or immunised
-            $random_member = $GLOBALS['FORUM_DB']->query('SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id NOT IN (' . $avoid_members . ') ORDER BY RAND()', 1, null, true);
+            $sql = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id NOT IN (' . $avoid_members . ') AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+            if (addon_installed('unvalidated')) {
+                $sql .= ' AND m_validated=1';
+            }
+            $sql .= ' ORDER BY ' . db_function('RAND');
+            $random_member = $GLOBALS['FORUM_DB']->query($sql, 1, null, true);
             if (isset($random_member[0])) {
                 $members_disease_rows = $GLOBALS['SITE_DB']->query_select('members_diseases', array('*'), array('member_id' => strval($random_member[0]['id']), 'disease_id' => $disease['id']));
 

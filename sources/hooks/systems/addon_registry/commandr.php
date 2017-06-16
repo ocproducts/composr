@@ -75,7 +75,9 @@ class Hook_addon_registry_commandr
     public function get_dependencies()
     {
         return array(
-            'requires' => array('import'),
+            'requires' => array(
+                'import',
+            ),
             'recommends' => array(),
             'conflicts_with' => array(),
         );
@@ -157,7 +159,8 @@ class Hook_addon_registry_commandr
             'sources_custom/hooks/systems/commandr_commands/.htaccess',
             'sources/hooks/systems/commandr_commands/alien_check.php',
             'sources/hooks/systems/commandr_commands/directory_sizes.php',
-            'sources/hooks/systems/commandr_commands/mysql_table_sizes.php',
+            'sources/hooks/systems/commandr_commands/db_table_sizes.php',
+            'sources/hooks/systems/commandr_commands/sql_dump.php',
             'sources/hooks/systems/commandr_commands/db_search.php',
             'sources/hooks/systems/commandr_commands/append.php',
             'sources/hooks/systems/commandr_commands/ban_ip.php',

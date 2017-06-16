@@ -157,8 +157,9 @@ class Hook_addon_registry_shopping
             'themes/default/templates/ECOM_SHOPPING_ITEM_QUANTITY_FIELD.tpl',
             'themes/default/templates/ECOM_SHOPPING_ITEM_REMOVE_FIELD.tpl',
             'themes/default/templates/RESULTS_cart_TABLE.tpl',
-            'themes/default/templates/RESULTS_TABLE_cart_ENTRY.tpl',
             'themes/default/templates/RESULTS_TABLE_cart_FIELD.tpl',
+            'sources/hooks/systems/symbols/STOCK_CHECK.php',
+            'sources/hooks/systems/symbols/CART_LINK.php',
         );
     }
 
@@ -181,7 +182,6 @@ class Hook_addon_registry_shopping
             'templates/ECOM_ORDERS_SCREEN.tpl' => 'ecom_orders_screen',
             'templates/ECOM_ORDERS_DETAILS_SCREEN.tpl' => 'ecom_orders_details_screen',
             'templates/RESULTS_cart_TABLE.tpl' => 'shopping_cart_screen',
-            'templates/RESULTS_TABLE_cart_ENTRY.tpl' => 'shopping_cart_screen',
             'templates/RESULTS_TABLE_cart_FIELD.tpl' => 'shopping_cart_screen',
             'templates/ECOM_CART_LINK.tpl' => 'ecom_cart_link_screen',
             'templates/CATALOGUE_products_CATEGORY_EMBED.tpl' => 'grid_category_screen__products',
@@ -220,7 +220,7 @@ class Hook_addon_registry_shopping
     /**
      * Function to display custom result tables
      *
-     * @param   ID_TEXT $tplset Tpl set name
+     * @param  ID_TEXT $tplset Tpl set name
      * @return Tempcode Tempcode
      */
     public function show_custom_tables($tplset)
@@ -410,7 +410,7 @@ class Hook_addon_registry_shopping
                     'CLASS' => '',
                 )));
             }
-            $shopping_cart->attach(do_lorem_template('RESULTS_TABLE_cart_ENTRY', array(
+            $shopping_cart->attach(do_lorem_template('RESULTS_TABLE_ENTRY', array(
                 'VALUES' => $cells,
             )));
         }
@@ -529,11 +529,9 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__products_entry_screen()
     {
-        require_lang('shopping');
         require_lang('catalogues');
         require_lang('ecommerce');
         require_css('catalogues');
-        require_lang('catalogues');
 
         $fields = new Tempcode();
         $fields_table = new Tempcode();
@@ -623,11 +621,9 @@ class Hook_addon_registry_shopping
      */
     public function tpl_preview__grid_category_screen__products()
     {
-        require_lang('shopping');
         require_lang('catalogues');
         require_lang('ecommerce');
         require_css('catalogues');
-        require_lang('catalogues');
 
         $fields = new Tempcode();
         $fields_table = new Tempcode();
@@ -692,6 +688,7 @@ class Hook_addon_registry_shopping
                 'ADD_DATE_RAW' => placeholder_date(),
                 'TITLE' => lorem_title(),
                 '_TITLE' => lorem_phrase(),
+                'CATALOGUE_TITLE' => lorem_phrase(),
                 'TAGS' => '',
                 'CATALOGUE' => lorem_word_2(),
                 'ADD_ENTRY_URL' => placeholder_url(),

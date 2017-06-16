@@ -51,9 +51,10 @@ function init__php()
  *
  * @param  PATH $filename The PHP code module to get API information for
  * @param  boolean $include_code Whether to include function source code
+ * @param  boolean $pedantic_warnings Whether to give warnings for non-consistent alignment of spacing
  * @return array The complex structure of API information
  */
-function get_php_file_api($filename, $include_code = true)
+function get_php_file_api($filename, $include_code = true, $pedantic_warnings = false)
 {
     require_code('type_sanitisation');
 
@@ -195,6 +196,12 @@ function get_php_file_api($filename, $include_code = true)
                             continue 2;
                         }
 
+                        if ($pedantic_warnings) {
+                            if (preg_match('#^@param  [^\s]+ \$\w+ #s', $ltrim) == 0) {
+                                attach_message('The spacing alignment for a phpdoc parameter definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'warn');
+                            }
+                        }
+
                         $parts = _cleanup_array(preg_split('/\s/', substr($ltrim, 6)));
                         if ((strpos($parts[0], '?') === false) && (array_key_exists('default', $parameters[$arg_counter])) && ($parameters[$arg_counter]['default'] === null)) {
                             attach_message(do_lang_tempcode('UNALLOWED_NULL', escape_html($parameters[$arg_counter]['name']), escape_html($function_name), array(escape_html('null'))), 'warn');
@@ -233,6 +240,12 @@ function get_php_file_api($filename, $include_code = true)
                         $parameters[$arg_counter]['phpdoc_name'] = ltrim(preg_replace('#^(\$\w+) .*#', '$1', $_description), '$');
                     } elseif (substr($ltrim, 0, 7) == '@return') {
                         $return = array();
+
+                        if ($pedantic_warnings) {
+                            if (preg_match('#^@return [^ ]#s', $ltrim) == 0) {
+                                attach_message('The spacing alignment for a phpdoc return definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'warn');
+                            }
+                        }
 
                         $parts = _cleanup_array(preg_split('/\s/', substr($ltrim, 7)));
                         $return['type'] = $parts[0];

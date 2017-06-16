@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,tag_cloud}
+
 <section class="box box___block_side_tag_cloud" data-require-javascript="tag_cloud" data-tpl="blockSideTagCloud"><div class="box_inner">
 	<h3>{TITLE*}</h3>
 

@@ -23,6 +23,40 @@
  */
 class Hook_commandr_fs_members
 {
+    private $field_mapping = array(
+        'id' => 'id',
+        'theme' => 'm_theme',
+        'avatar' => 'm_avatar_url',
+        'validated' => 'm_validated',
+        'timezone_offset' => 'm_timezone_offset',
+        'primary_group' => 'm_primary_group',
+        'signature' => 'm_signature',
+        'banned' => 'm_is_perm_banned',
+        'preview_posts' => 'm_preview_posts',
+        'dob_day' => 'm_dob_day',
+        'dob_month' => 'm_dob_month',
+        'dob_year' => 'm_dob_year',
+        'reveal_age' => 'm_reveal_age',
+        'email' => 'm_email_address',
+        'title' => 'm_title',
+        'photo' => 'm_photo_url',
+        'photo_thumb' => 'm_photo_thumb_url',
+        'views_signatures' => 'm_views_signatures',
+        'auto_monitor_contrib_content' => 'm_auto_monitor_contrib_content',
+        'language' => 'm_language',
+        'allow_emails' => 'm_allow_emails',
+        'allow_emails_from_staff' => 'm_allow_emails_from_staff',
+        'max_email_attach_size_mb' => 'm_max_email_attach_size_mb',
+        'last_visit_time' => 'm_last_visit_time',
+        'last_submit_time' => 'm_last_submit_time',
+        'ip_address' => 'm_ip_address',
+        'highlighted_name' => 'm_highlighted_name',
+        'pt_allow' => 'm_pt_allow',
+        'pt_rules_text' => 'm_pt_rules_text',
+        'on_probation_until' => 'm_on_probation_until',
+        'auto_mark_read' => 'm_auto_mark_read',
+    );
+
     /**
      * Standard Commandr-fs listing function for commandr_fs hooks.
      *
@@ -68,39 +102,13 @@ class Hook_commandr_fs_members
                 return false;
             }
             $member_data = $_member_data[0];
-            $props = array(
-                'id',
-                'theme',
-                'avatar',
-                'validated',
-                'timezone_offset',
-                'primary_group',
-                'signature',
-                'banned',
-                'preview_posts',
-                'dob_day',
-                'dob_month',
-                'dob_year',
-                'reveal_age',
-                'e-mail',
-                'title',
-                'photo',
-                'photo_thumb',
-                'view_signatures',
-                'auto_monitor_contrib_content',
-                'language',
-                'allow_e-mails',
-                'notes',
-                'wide',
-                'max_attach_size'
-            );
 
             $listing = array();
-            foreach ($props as $prop) {
+            foreach ($this->field_mapping as $prop => $field) {
                 $listing[] = array(
                     $prop,
                     COMMANDR_FS_FILE,
-                    strlen($member_data['m_' . $prop]),
+                    strlen($member_data[$field]),
                     $member_data['m_join_time'],
                 );
             }
@@ -119,13 +127,28 @@ class Hook_commandr_fs_members
             $member_custom_fields = $_member_custom_fields[0];
 
             foreach (array_keys($member_custom_fields) as $_i) {
+                if (preg_match('#^field_#', $_i) == 0) {
+                    continue;
+                }
+
                 $i = intval(substr($_i, strlen('field_')));
+
+                $_cpf_name = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'cf_name', array('id' => $i));
+                if ($_cpf_name === null) {
+                    continue; // Corrupt data
+                }
+
+                $cpf_name = get_translated_text($_cpf_name);
+                if (preg_match('#^[\w\s]*$#', $cpf_name) == 0) {
+                    $cpf_name = $_i;
+                }
+
                 $cpf_value = $member_custom_fields['field_' . strval($i)];
-                $cpf_name = get_translated_text($GLOBALS['SITE_DB']->query_select_value('f_custom_fields', 'cf_name', array('id' => $i)));
+
                 $listing[] = array(
                     $cpf_name,
                     COMMANDR_FS_FILE,
-                    strlen($cpf_value),
+                    @strlen(strval($cpf_value)),
                     $member_data['m_join_time'],
                 );
             }
@@ -225,44 +248,18 @@ class Hook_commandr_fs_members
 
         if (count($meta_dir) == 1) {
             // We're in a member's directory, and deleting one of their profile fields
-            if (in_array($file_name, array(
-                'id',
-                'theme',
-                'avatar',
-                'validated',
-                'timezone_offset',
-                'primary_group',
-                'signature',
-                'banned',
-                'preview_posts',
-                'dob_day',
-                'dob_month',
-                'dob_year',
-                'reveal_age',
-                'e-mail',
-                'title',
-                'photo',
-                'photo_thumb',
-                'view_signatures',
-                'auto_monitor_contrib_content',
-                'language',
-                'allow_e-mails',
-                'notes',
-                'wide',
-                'max_attach_size'
-            ))) {
+            if (array_key_exists($file_name, $this->field_mapping)) {
                 return false; // Can't delete a hard-coded (non-custom) profile field
             }
 
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            if ($field_id === null) { // Should never happen, but sometimes on upgrades/corruption...
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($file_name, 10);
-                $field_id = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            }
 
-            cns_delete_custom_field($field_id);
+            $field_id = $this->get_field_id_for($file_name);
+
+            return false; // This is too dangerous, probably not what the user wants!
+
+            //cns_delete_custom_field($field_id);
         } elseif (count($meta_dir) == 2) {
             if ($meta_dir[1] != 'groups') {
                 return false;
@@ -302,33 +299,8 @@ class Hook_commandr_fs_members
 
         if (count($meta_dir) == 1) {
             // We're in a member's directory, and reading one of their profile fields
-            $coded_fields = array(
-                'id' => 'id',
-                'theme' => 'm_theme',
-                'avatar' => 'm_avatar_url',
-                'validated' => 'm_validated',
-                'timezone_offset' => 'm_timezone_offset',
-                'primary_group' => 'm_primary_group',
-                'signature' => 'm_signature',
-                'banned' => 'm_is_perm_banned',
-                'preview_posts' => 'm_preview_posts',
-                'dob_day' => 'm_dob_day',
-                'dob_month' => 'm_dob_month',
-                'dob_year' => 'm_dob_year',
-                'reveal_age' => 'm_reveal_age',
-                'e-mail' => 'm_email_address',
-                'title' => 'm_title',
-                'photo' => 'm_photo_url',
-                'photo_thumb' => 'm_photo_thumb_url',
-                'view_signatures' => 'm_views_signatures',
-                'auto_monitor_contrib_content' => 'm_auto_monitor_contrib_content',
-                'language' => 'm_language',
-                'allow_e-mails' => 'm_allow_emails',
-                'allow_e-mails_from_staff' => 'm_allow_emails_from_staff',
-                'max_attach_size' => 'm_max_email_attach_size_mb'
-            );
-            if (array_key_exists($file_name, $coded_fields)) {
-                return $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', $coded_fields[$file_name], array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])));
+            if (array_key_exists($file_name, $this->field_mapping)) {
+                return $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', $this->field_mapping[$file_name], array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])));
             }
 
             require_code('cns_members');
@@ -336,11 +308,8 @@ class Hook_commandr_fs_members
 
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            if ($field_id === null) { // Should never happen, but sometimes on upgrades/corruption...
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($file_name, 10);
-                $field_id = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            }
+
+            $field_id = $this->get_field_id_for($file_name);
 
             if (array_key_exists($field_id, $fields)) {
                 return $fields[$field_id];
@@ -377,47 +346,16 @@ class Hook_commandr_fs_members
 
         if (count($meta_dir) == 1) {
             // We're in a member's directory, and writing one of their profile fields
-            $coded_fields = array(
-                'id' => 'id',
-                'theme' => 'm_theme',
-                'avatar' => 'm_avatar_url',
-                'validated' => 'm_validated',
-                'timezone_offset' => 'm_timezone_offset',
-                'primary_group' => 'm_primary_group',
-                'signature' => 'm_signature',
-                'banned' => 'm_is_perm_banned',
-                'preview_posts' => 'm_preview_posts',
-                'dob_day' => 'm_dob_day',
-                'dob_month' => 'm_dob_month',
-                'dob_year' => 'm_dob_year',
-                'reveal_age' => 'm_reveal_age',
-                'e-mail' => 'm_email_address',
-                'title' => 'm_title',
-                'photo' => 'm_photo_url',
-                'photo_thumb' => 'm_photo_thumb_url',
-                'view_signatures' => 'm_views_signatures',
-                'auto_monitor_contrib_content' => 'm_auto_monitor_contrib_content',
-                'language' => 'm_language',
-                'allow_e-mails' => 'm_allow_emails',
-                'allow_e-mails_from_staff' => 'm_allow_emails_from_staff',
-                'max_attach_size' => 'm_max_email_attach_size_mb',
-                'highlighted_name' => 'm_highlighted_name',
-            );
-            if (array_key_exists($file_name, $coded_fields)) {
-                $GLOBALS['FORUM_DB']->query_update('f_members', array($coded_fields[$file_name] => $contents), array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])), '', 1);
+            if (array_key_exists($file_name, $this->field_mapping)) {
+                $GLOBALS['FORUM_DB']->query_update('f_members', array($this->field_mapping[$file_name] => $contents), array('id' => $GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0])), '', 1);
                 return true;
             }
+
             require_code('cns_members_action');
             require_code('cns_members_action2');
-            $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            if ($field_id === null) { // Should never happen, but sometimes on upgrades/corruption...
-                $GLOBALS['FORUM_DRIVER']->install_create_custom_field($file_name, 10);
-                $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name));
-            }
 
-            if ($field_id === null) {
-                $field_id = cns_make_custom_field($file_name);
-            }
+            $field_id = $this->get_field_id_for($file_name, true);
+
             cns_set_custom_field($GLOBALS['FORUM_DRIVER']->get_member_from_username($meta_dir[0]), $field_id, $contents);
         } elseif (count($meta_dir) == 2) {
             if ($meta_dir[1] != 'groups') {
@@ -439,5 +377,30 @@ class Hook_commandr_fs_members
         }
 
         return true;
+    }
+
+    /**
+     * Get the field ID of a CPF from a filename.
+     *
+     * @param  string $file_name Filename
+     * @param  boolean $missing_ok If the field may be missing
+     * @return AUTO_LINK CPF ID
+     */
+    protected function get_field_id_for($file_name, $missing_ok = false)
+    {
+        $matches = array();
+        if (preg_match('#^field_(\d+)#', $file_name, $matches) != 0) {
+            return intval($matches[1]);
+        }
+
+        $where = array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => $file_name);
+
+        if ($missing_ok) {
+            $field_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', $where);
+        } else {
+            $field_id = $GLOBALS['FORUM_DB']->query_select_value('f_custom_fields', 'id', $where);
+        }
+
+        return $field_id;
     }
 }

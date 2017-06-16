@@ -26,7 +26,7 @@ $stars = array();
 $sql = 'SELECT gift_to,SUM(amount) as cnt FROM ' . get_table_prefix() . 'gifts g WHERE ';
 $sql .= $GLOBALS['SITE_DB']->translate_field_ref('reason') . ' LIKE \'' . db_encode_like($map['param'] . ': %') . '\' AND gift_from<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id());
 $sql .= ' GROUP BY gift_to ORDER BY cnt DESC';
-$gifts = $GLOBALS['SITE_DB']->query($sql, 10);
+$gifts = $GLOBALS['SITE_DB']->query($sql, 10, null, false, false, array('reason' => 'SHORT_TRANS'));
 
 if (count($gifts) == 0 && $GLOBALS['DEV_MODE']) {
     $gifts[] = array('gift_to' => 2, 'cnt' => 123);
@@ -40,7 +40,8 @@ foreach ($gifts as $gift) {
     if ($username !== null) {
         $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
         $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
-        $signature = get_translated_tempcode('gifts', $GLOBALS['FORUM_DRIVER']->get_member_row($member_id), 'm_signature', $GLOBALS['FORUM_DB']);
+        $just_member_row = db_map_restrict($GLOBALS['FORUM_DRIVER']->get_member_row($member_id), array('id', 'm_signature'));
+        $signature = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);
         $points = $gift['cnt'];
         $rank = get_translated_text(cns_get_group_property(cns_get_member_primary_group($member_id), 'name'), $GLOBALS['FORUM_DB']);
 

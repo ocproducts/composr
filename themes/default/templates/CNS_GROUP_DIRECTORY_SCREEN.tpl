@@ -1,23 +1,23 @@
 {TITLE}
 
 {+START,IF_NON_EMPTY,{STAFF}}
-	 <h2>{!STAFF}</h2>
+	<h2>{!STAFF}</h2>
 
-	 {STAFF}
+	{STAFF}
 {+END}
 
 {+START,IF_NON_EMPTY,{RANKS}}
 	<h2>{!RANK_SETS}</h2>
 
 	{+START,LOOP,RANKS}
-		 {_loop_var}
+		{_loop_var}
 	{+END}
 {+END}
 
 {+START,IF_NON_EMPTY,{OTHERS}}
-	 <h2>{!OTHER_USERGROUPS}</h2>
+	<h2>{!OTHER_USERGROUPS}</h2>
 
-	 {OTHERS}
+	{OTHERS}
 {+END}
 
 {$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}

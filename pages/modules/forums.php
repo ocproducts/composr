@@ -97,10 +97,6 @@ class Module_forums
         foreach ($_GET as $key => $val) {
             if (is_array($val)) {
                 foreach ($val as $_key => $_val) { // We'll only support one level deep.
-                    if (get_magic_quotes_gpc()) {
-                        $_val = stripslashes($_val);
-                    }
-
                     if (strpos($access_url, '?') === false) {
                         $access_url .= '?';
                     } else {
@@ -109,10 +105,6 @@ class Module_forums
                     $access_url .= $key . '[' . $_key . ']' . '=' . urlencode($_val);
                 }
             } else {
-                if (get_magic_quotes_gpc()) {
-                    $val = stripslashes($val);
-                }
-
                 if (strpos($access_url, '?') === false) {
                     $access_url .= '?';
                 } else {

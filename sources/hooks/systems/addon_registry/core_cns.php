@@ -102,6 +102,7 @@ class Hook_addon_registry_core_cns
     public function get_file_list()
     {
         return array(
+            'themes/default/images/cns_default_avatars/default.png',
             'themes/default/images/icons/24x24/tool_buttons/inbox.png',
             'themes/default/images/icons/48x48/tool_buttons/inbox.png',
             'themes/default/images/icons/24x24/tool_buttons/inbox2.png',
@@ -561,6 +562,7 @@ class Hook_addon_registry_core_cns
         require_css('forms');
 
         require_lang('dates');
+
         $fields = new Tempcode();
 
         $name = placeholder_random_id();
@@ -931,7 +933,6 @@ class Hook_addon_registry_core_cns
      */
     public function tpl_preview__cns_member_profile_screen()
     {
-        require_lang('news');
         $sections = array(
             'contact' => lorem_word(),
             'profile' => lorem_word_2(),
@@ -952,8 +953,6 @@ class Hook_addon_registry_core_cns
             ));
             $i++;
         }
-
-        require_lang('menus');
 
         $tabs = array();
         $tab_content = do_lorem_template('CNS_MEMBER_PROFILE_ABOUT', array(

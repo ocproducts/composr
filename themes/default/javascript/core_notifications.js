@@ -201,7 +201,7 @@
 
 window.notifications_already_presented || (window.notifications_already_presented = {});
 (window.NOTIFICATION_POLL_FREQUENCY != null) || (window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}');
-(window.notifications_time_barrier != null) || (window.notifications_time_barrier = null);
+(window.notifications_time_barrier != null) || (window.notifications_time_barrier = 0);
 
 function pollForNotifications(forcedUpdate, delay) {
     forcedUpdate = !!forcedUpdate;
@@ -299,7 +299,7 @@ function _pollForNotifications(rawAjaxResult) {
                     var soundUrl = 'data/sounds/message_received.mp3';
                     var baseUrl = ((soundUrl.indexOf('data_custom') == -1) && (soundUrl.indexOf('uploads/') == -1)) ? '{$BASE_URL_NOHTTP;^}' : '{$CUSTOM_BASE_URL_NOHTTP;^}';
                     var soundObject = window.soundManager.createSound({url: baseUrl + '/' + soundUrl});
-                    if (soundObject) soundObject.play();
+                    if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) soundObject.play();
                 };
 
                 if (!window.soundManager.setupOptions.url) {
@@ -353,7 +353,7 @@ function _toggleMessagingBox(event, name, hide) {
     event.stopPropagation();
 
     var body = document.body;
-    if (el.parentNode !== body) {// Move over, so it is not cut off by overflow:hidden of the header
+    if (el.parentNode !== body) { // Move over, so it is not cut off by overflow:hidden of the header
         el.parentNode.removeChild(el);
         body.appendChild(el);
 

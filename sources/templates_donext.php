@@ -85,15 +85,15 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
  * @param  Tempcode $text The 'text' (actually, a full XHTML lump) to show on the page
  * @param  array $main An array of entry types, with each array entry being -- an array consisting of the type codename and a URL array as per following parameters
  * @param  ?string $main_title The title to use for the main links (null: none)
- * @param  ?array $url_add_one The URL used to 'add-one' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $url_edit_this The URL used to 'edit-this' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $url_edit_one The URL used to 'edit-one' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $url_view_this The URL used to 'view-this' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $url_view_archive The URL used to 'view-archive' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $url_add_one_category The URL used to 'add-one-category' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $url_edit_one_category The URL used to 'edit-one-category' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $url_edit_this_category The URL used to 'edit-this-category' (null: impossible)  (format: array of page, param, zone[, custom label])
- * @param  ?array $url_view_this_category The URL used to 'view-this-category' (null: impossible)  (format: array of page, param, zone[, custom label])
+ * @param  ?array $url_add_one The URL used to 'add-one' (null: impossible) (format: array of page, param, zone[, custom label])
+ * @param  ?array $url_edit_this The URL used to 'edit-this' (null: impossible) (format: array of page, param, zone[, custom label])
+ * @param  ?array $url_edit_one The URL used to 'edit-one' (null: impossible) (format: array of page, param, zone[, custom label])
+ * @param  ?array $url_view_this The URL used to 'view-this' (null: impossible) (format: array of page, param, zone[, custom label])
+ * @param  ?array $url_view_archive The URL used to 'view-archive' (null: impossible) (format: array of page, param, zone[, custom label])
+ * @param  ?array $url_add_one_category The URL used to 'add-one-category' (null: impossible) (format: array of page, param, zone[, custom label])
+ * @param  ?array $url_edit_one_category The URL used to 'edit-one-category' (null: impossible) (format: array of page, param, zone[, custom label])
+ * @param  ?array $url_edit_this_category The URL used to 'edit-this-category' (null: impossible) (format: array of page, param, zone[, custom label])
+ * @param  ?array $url_view_this_category The URL used to 'view-this-category' (null: impossible) (format: array of page, param, zone[, custom label])
  * @param  array $entry_extras An array of additional entry types, with each array entry being -- an array of type codename and a URL array as before
  * @param  array $category_extras As before, but with category types
  * @param  array $additional_extras As before, but for an 'extra types' box of do next actions

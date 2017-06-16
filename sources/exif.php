@@ -253,6 +253,10 @@ function store_exif($content_type, $content_id, $exif, $map = array())
 {
     require_code('fields');
 
+    if (!addon_installed('catalogues')) {
+        return;
+    }
+
     if (!has_tied_catalogue($content_type)) {
         return;
     }

@@ -54,7 +54,7 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
             }
             $array .= "        '" . $name . "' => '" . $type . "'";
         }
-        fwrite($install_php_file, preg_replace('#^#m', '//', "    \$GLOBALS['SITE_DB']->create_table('$table', array(\n$array), true, true);\n"));
+        fwrite($install_php_file, preg_replace('#^#m', '//', "    \$GLOBALS['SITE_DB']->create_table('$table', array(\n$array), false, false, null);\n"));
 
         require_code('database_relations');
         if (table_has_purpose_flag($table, TABLE_PURPOSE__NO_BACKUPS)) {
@@ -142,6 +142,7 @@ function make_backup($file, $b_type = 'full', $max_size = 100) // This is called
 
     $log_file_path = get_custom_file_base() . '/exports/backups/' . $file . '.txt';
     $log_file = @fopen($log_file_path, 'wb') or intelligent_write_error($log_file_path); // .txt file because IIS doesn't allow .log download
+    flock($log_file, LOCK_EX);
     safe_ini_set('log_errors', '1');
     safe_ini_set('error_log', $log_file_path);
 
@@ -296,6 +297,7 @@ function make_backup($file, $b_type = 'full', $max_size = 100) // This is called
         warn_exit(do_lang_tempcode('COULD_NOT_SAVE_FILE', escape_html('?')), false, true);
     }
 
+    flock($log_file, LOCK_UN);
     fclose($log_file);
 
     fix_permissions($log_file_path);
@@ -370,7 +372,7 @@ function directories_to_backup()
 /**
  * Send a backup to a remote server.
  *
- * @param string $file File to send
+ * @param  string $file File to send
  */
 function deliver_remote_backup($file)
 {

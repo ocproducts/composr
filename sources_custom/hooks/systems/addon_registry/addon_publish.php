@@ -109,7 +109,10 @@ Includes the code for pulling translations from {$IS_MAINTAINED,transifex,Transi
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'downloads',
+                'galleries',
+            ),
             'recommends' => array(),
             'conflicts_with' => array()
         );

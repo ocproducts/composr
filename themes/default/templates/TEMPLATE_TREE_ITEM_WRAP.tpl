@@ -1,4 +1,3 @@
 <li>
 	{CONTENT}
 </li>
-

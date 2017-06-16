@@ -23,4 +23,3 @@
 		{+END}
 	</tbody>
 </table></div>
-

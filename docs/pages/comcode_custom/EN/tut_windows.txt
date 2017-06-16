@@ -7,13 +7,16 @@ This tutorial will give basic instructions for installation of the various piece
 
 [title="2"]Software mass-packaging[/title]
 
+[media float="right" framed="0" width="300"]data_custom/images/docs/tut_windows/bitnami.png[/media]
 It is well worth pointing out that there are a number of 'all in one' packages that may be used to install AMP ([concept]Apache[/concept], [concept]MySQL[/concept] and [concept]PHP[/concept]) without any special configuration for them to appropriately bind to each other. This may be preferable and we will cover it first. However, by doing so you inevitably will not know as much about the environment that was created for you.
 
 [title="3"]Bitnami[/title]
 
-There is a [url="Composr software stack for Bitnami"]https://bitnami.com/stack/composr[/url] that allows easy installation on Windows. [staff_note]LEGACY[/staff_note](Actually at the time of writing it is for ocPortal, our predecessor, but we expect it will get upgraded soon).
+There is a [url="Composr software stack for Bitnami"]https://bitnami.com/stack/composr[/url] that allows easy installation on Windows (and OS X and Linux too).
 
 Bitnami is professionally-maintained and a good choice. They also provide all kinds of hosting and virtual machine services.
+
+The stack bypasses the Setup Wizard, with a default set of addons installed. You may want to run the Setup Wizard yourself to get more control over the default configuration.
 
 [title="3"]WampServer[/title]
 
@@ -30,21 +33,34 @@ Installing Composr on WampServer:
 [img]data_custom/images/docs/tut_windows/wampserver_composr.jpg[/img]
 [/hide]
 
-[title="3"]EasyPHP[/title]
+[title="3"]Further WAMP-style packages[/title]
 
-[url="EasyPHP"]http://www.easyphp.org/[/url] is similar to WampServer.
+Here are a few more:
+ - [url="EasyPHP"]http://www.easyphp.org/[/url]
+ - [url="XAMPP"]https://www.apachefriends.org/index.html[/url]
+ - [url="MAMP"]https://www.mamp.info/en/[/url]
+ - [url="AMPPS"]http://www.ampps.com/[/url] (which includes Softaculous)
+
+We aren't in a position to tell you which is best at this time, we're just listing some options for you.
 
 [title="3"]Microsoft Web Platform[/title]
 
-This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a {$IS_MAINTAINED,install_microsoft,Microsoft Web Platform installer} for Composr. If you download the Microsoft Web Platform, you'll find Composr is in there. [staff_note]LEGACY[/staff_note](Actually at the time of writing it is for ocPortal, our predecessor, but we expect it will get upgraded soon).
+This tutorial is primarily about how to install an Apache set up on Windows. However, we actually have a {$IS_MAINTAINED,install_microsoft,Microsoft Web Platform installer} for Composr. If you download the Microsoft Web Platform Installer, you'll find Composr is in there. This uses IIS, not Apache.
 
-This should work well, however we aren't able to regularly test it as it is very different from our normal development environment and workflow. Microsoft test the integration each time we publish an update.
+This should work well, however we aren't able to regularly test it as it is very different from our normal development environment and workflow. Let us know if you have any issues.
 
 If you'd like to use Microsoft Web Platform, proceed to the [url="Web Platform website"]http://www.microsoft.com/web/downloads/platform.aspx[/url].
 
 You may want to set full permissions on the install directory, at least initially, as this will be required for addon management (which the Setup Wizard does). Assign full write permissions to 'IIS_IUSRS' and 'IUSR'.
 
 One small note -- if you are developing locally, then choose to use WebMatrix to push a local site live, make sure you adjust the base URL setting in your [tt]_config.php[/tt] file to reflect your live URL.
+
+[title="4"]Manually deploying a package[/title]
+
+You can also find the packages on our [url="download directory"]https://compo.sr/downloads/browse/composr-releases/microsoft-integration.htm[/url].
+To install these you need IIS and Microsoft Web Deploy installed. From IIS manager you can right click on a site, and choose to deploy.
+
+You may find it is buggy, e.g. complaining about a MySQL Connector not being installed, even if it is. To workaround this you need to install a similar webapp package from Microsoft Web Platform Installer. This 'magically' seems to fix the dependency problem.
 
 [title="2"]Manually installing the software[/title]
 
@@ -86,13 +102,13 @@ CREATE DATABASE <your-database name>;
 [/code]
 [/list]
 
-[title="2"]Installing a forum[/title]
+[title="3"]Installing a forum[/title]
 
 If you want to install a supported third-party forum on your computer, follow their documentation to install it. We don't recommend using third-party forums, however, so we recommend you skip this step and just install Composr with the Conversr option.
 
-[title="2"]Installing Composr[/title]
+[title="3"]Installing Composr[/title]
 
-[title="3"]Setting file permissions, Extracting files[/title]
+[title="4"]Setting file permissions, Extracting files[/title]
 
 [surround]
 [media width="150" description="Setting permissions (2)" float="right"]data_custom/images/docs/tut_windows/windows_perm2.png[/media]
@@ -114,7 +130,7 @@ By default when you extract files, they are set to inherit permissions of the pa
 If you find that some files underneath your install directory, often ones moved in, have the wrong permissions, you can manually set them to inherit permissions (from the security tab of the file, click the advanced button, and set inheriting). Or you can tell Windows to reset permissions on all the files underneath the install directory (from the security tab of the install directory, click the advanced button, and select as demonstrated in the screen-shot).
 [/surround]
 
-[title="3"]The Composr installer[/title]
+[title="4"]The Composr installer[/title]
 
 Launch the installer by opening up [tt]http://yourbaseurl/install.php[/tt] in your web browser.
 Just run through the installer normally, and by the end you should have a working Composr installation.

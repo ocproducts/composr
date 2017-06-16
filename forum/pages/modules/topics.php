@@ -609,7 +609,7 @@ class Module_topics
             if ($_to_topic_id == '') {
                 $to_topic_id = null;
                 $to_forum_id = post_param_integer('to_forum_id', null);
-                if ($to_forum_id == null) {
+                if ($to_forum_id === null) {
                     warn_exit(do_lang_tempcode('MUST_MOVE_POSTS_SOMEWHERE'));
                 }
             } else {
@@ -1575,6 +1575,10 @@ class Module_topics
 
         // Where it goes to
         if ($private_topic) {
+            if ($GLOBALS['FORUM_DRIVER']->is_banned($member_id)) {
+                warn_exit(do_lang_tempcode('mail:NO_ACCEPT_EMAILS'));
+            }
+
             if ($member_id == get_member()) {
                 $specialisation->attach(form_input_username_multi(do_lang_tempcode('TO'), '', 'to_member_id_', array(), 1, true, 1));
                 cns_check_make_private_topic();
@@ -1721,7 +1725,7 @@ class Module_topics
         }
 
         $js_function_calls = $this->_post_javascript();
-        if (function_exists('captcha_ajax_check_function') && captcha_ajax_check_function()) {
+        if ((function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '')) {
             $js_function_calls[] = captcha_ajax_check_function();
         }
 
@@ -2839,7 +2843,7 @@ END;
         $or_list = get_forum_access_sql('t.t_forum_id');
         $polls = $GLOBALS['FORUM_DB']->query('SELECT p.*,t_cache_first_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics t LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_polls p ON p.id=t.t_poll_id WHERE (' . $or_list . ') AND p.id IS NOT NULL ORDER BY id DESC',
             30);
-        $js_function_calls = [];
+        $js_function_calls = array();
         if (count($polls) !== 0) {
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER',
                 array('_GUID' => '1fb2af282b014c3a6ae09d986e4f72eb', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ALT_COPY_EXISTING_POLL'))));
@@ -3111,14 +3115,14 @@ END;
     /**
      * Get JavaScript to restrict post lengths.
      *
-     * @return string The post JavaScript
+     * @return array The post JavaScript
      */
     public function _post_javascript()
     {
         $size = cns_get_member_best_group_property(get_member(), 'max_post_length_comcode');
 
         require_javascript('cns_forum');
-        $js_function_calls = [];
+        $js_function_calls = array();
 
         if (get_option('force_guest_names') == '1') {
             $js_function_calls[] = 'moduleTopicsPostJavascriptForceGuestNames';
@@ -3126,7 +3130,7 @@ END;
 
         $stub = str_replace("\n", '\n', addslashes(unixify_line_format(either_param_string('stub', ''))));
 
-        $js_function_calls[] = ['moduleTopicsPostJavascript', $size, $stub];
+        $js_function_calls[] = array('moduleTopicsPostJavascript', $size, $stub);
 
         return $js_function_calls;
     }
@@ -3165,9 +3169,16 @@ END;
         require_code('content2');
         $metadata = actual_metadata_get_fields('post', strval($post_id));
 
+        $poster_name_if_guest = null;
+        if (isset($metadata['submitter'])) {
+            if (($metadata['submitter'] != $post_details[0]['p_poster']) && ($post_details[0]['p_poster_name_if_guest'] == $GLOBALS['FORUM_DRIVER']->get_username($post_details[0]['p_poster'], true))) {
+                $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($metadata['submitter'], true);
+            }
+        }
+
         $topic_id = cns_edit_post($post_id, $validated, post_param_string('title', ''), post_param_string('post'), post_param_integer('skip_sig', 0), post_param_integer('is_emphasised', 0),
             $intended_solely_for, (post_param_integer('show_as_edited', 0) == 1), (post_param_integer('mark_as_unread', 0) == 1), post_param_string('reason'), true, $metadata['edit_time'],
-            $metadata['add_time'], $metadata['submitter'], true);
+            $metadata['add_time'], $metadata['submitter'], true, true, $poster_name_if_guest);
 
         require_code('fields');
         if (has_tied_catalogue('post')) {

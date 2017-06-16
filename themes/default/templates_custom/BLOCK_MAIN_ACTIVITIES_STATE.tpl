@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,activities_state}
+
 <div id="status_updates" class="float_surrounder" data-view="BlockMainActivitiesState">
 	{+START,IF_NON_EMPTY,{TITLE}}
 		<h2 class="status_icon">{TITLE*}</h2>

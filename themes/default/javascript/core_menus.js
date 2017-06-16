@@ -453,7 +453,7 @@
                 var i, b, bindex;
                 var best = -1, bestindex = -1;
 
-            if (upwards) {// Up
+            if (upwards) { // Up
                 // Find previous branch with same parent (if exists)
                 for (i = 0; i < form.elements.length; i++) {
                     if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parentNum)) {
@@ -465,7 +465,7 @@
                         }
                     }
                 }
-            } else {// Down
+            } else { // Down
                 // Find next branch with same parent (if exists)
                 for (i = 0; i < form.elements.length; i++) {
                     if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value === parentNum)) {
@@ -482,7 +482,7 @@
 
             var elements = form.querySelectorAll('input');
             for (i = 0; i < elements.length; i++) {
-                if (elements[i].name === 'parent_' + index) {// Found our spot
+                if (elements[i].name === 'parent_' + index) { // Found our spot
                     var el = elements[i];
                     for (b = upwards ? (i - 1) : (i + 1); upwards ? (b > 0) : (b < elements.length); upwards ? b-- : b++) {
                         if ((!isChild(elements, index, elements[b].name.substr(7))) && (elements[b].name.startsWith('parent_') && ((upwards) || (document.getElementById('branch_type_' + elements[b].name.substr(7)).selectedIndex === 0) || (!existsChild(elements, elements[b].name.substr(7)))))) {
@@ -724,7 +724,7 @@
                     });
 
                     var expandImg = $cms.dom.create('img');
-                    if (theLevel < 2) {// High-levels start expanded
+                    if (theLevel < 2) { // High-levels start expanded
                         expandImg.alt = '{!CONTRACT;^}';
                         expandImg.src = $cms.img('{$IMG;^,1x/trays/contract}');
                         expandImg.srcset = $cms.img('{$IMG;^,2x/trays/contract}') + ' 2x';
@@ -995,7 +995,7 @@
         var eWidth = el.offsetWidth;
         function positionL() {
             var posLeft = l;
-            if (place == 'below') {// Top-level of drop-down
+            if (place == 'below') { // Top-level of drop-down
                 if (posLeft + eWidth > fullWidth) {
                     posLeft += eParentWidth - eWidth;
                 }

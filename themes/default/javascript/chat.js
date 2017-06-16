@@ -315,7 +315,7 @@
                 if (dieOnLost === undefined) dieOnLost = false;
                 if (becomeAutonomousOnLost === undefined) becomeAutonomousOnLost = false;
 
-                if (becomeAutonomousOnLost) {// Becoming autonomous means allowing to work with a master window
+                if (becomeAutonomousOnLost) { // Becoming autonomous means allowing to work with a master window
                     chatWindowBecomeAutonomous();
                 } else if (dieOnLost) {
                     window.is_shutdown = true;
@@ -441,7 +441,7 @@ window.all_conversations = {};
 
 // Code...
 
-function playSoundUrl(url) {// Used for testing different sounds
+function playSoundUrl(url) { // Used for testing different sounds
     if (window.soundManager === undefined) {
         return;
     }
@@ -667,7 +667,7 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
 
 // Check for new messages
 function chatCheck(backlog, messageId, eventId) {
-    if (window.currently_sending_message)  {// We'll reschedule once our currently-in-progress message is sent
+    if (window.currently_sending_message)  { // We'll reschedule once our currently-in-progress message is sent
         return null;
     }
 
@@ -679,7 +679,7 @@ function chatCheck(backlog, messageId, eventId) {
     }, window.MESSAGE_CHECK_INTERVAL * 1.2);
 
     var theDate = new Date();
-    if (!window.message_checking || (window.message_checking + window.MESSAGE_CHECK_INTERVAL <= theDate.getTime()))  {// If not currently in process, or process stalled
+    if (!window.message_checking || (window.message_checking + window.MESSAGE_CHECK_INTERVAL <= theDate.getTime()))  { // If not currently in process, or process stalled
         window.message_checking = theDate.getTime();
         var url;
         var _roomId = (window.load_from_room_id == null) ? -1 : window.load_from_room_id;
@@ -710,7 +710,7 @@ function chatCheck(backlog, messageId, eventId) {
 // Check to see if there's been a packet loss
 function chatCheckTimeout(backlog, messageId, eventId) {
     var theDate = new Date();
-    if ((window.message_checking) && (window.message_checking <= theDate.getTime() - window.MESSAGE_CHECK_INTERVAL * 1.2) && (!window.currently_sending_message)) {// If we are awaiting a response (message_checking is not false, and that response was made more than 12 seconds ago
+    if ((window.message_checking) && (window.message_checking <= theDate.getTime() - window.MESSAGE_CHECK_INTERVAL * 1.2) && (!window.currently_sending_message)) { // If we are awaiting a response (message_checking is not false, and that response was made more than 12 seconds ago
         // Our response is tardy - presume we've lost our scheduler / AJAX request, so fire off a new AJAX request and reset the chatCheckTimeout timer
         chatCheck(backlog, messageId, eventId);
     }
@@ -789,7 +789,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 if ((tabElement) && (tabElement.className.indexOf('chat_lobby_convos_current_tab') === -1)) {
                     tabElement.className = ((tabElement.className.indexOf('chat_lobby_convos_tab_first') !== -1) ? 'chat_lobby_convos_tab_first ' : '') + 'chat_lobby_convos_tab_new_messages';
                 }
-            } else if (( opened_popups['room_' + currentRoomId] !== undefined) && (!opened_popups['room_' + currentRoomId].is_shutdown) && (opened_popups['room_' + currentRoomId].document)) {// Popup
+            } else if (( opened_popups['room_' + currentRoomId] !== undefined) && (!opened_popups['room_' + currentRoomId].is_shutdown) && (opened_popups['room_' + currentRoomId].document)) { // Popup
                 messageContainer = opened_popups['room_' + currentRoomId].document.getElementById('messages_window_' + currentRoomId);
             }
 
@@ -805,7 +805,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             var doc = document;
             if (opened_popups['room_' + currentRoomId] !== undefined) {
                 var popupWin = opened_popups['room_' + currentRoomId];
-                if (!popupWin.document) {// We have nowhere to put the message
+                if (!popupWin.document) { // We have nowhere to put the message
                     cannotProcessAll = true;
                     continue;
                 }
@@ -844,7 +844,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     }
                     flashableAlert = true;
                 }
-            } else {// First message
+            } else { // First message
                 $cms.dom.html(messageContainer, '');
                 messageContainer.appendChild(clonedMessage);
                 firstSet = true; // Let the code know the first set of messages has started, squashing any extra sounds for this event update
@@ -856,12 +856,12 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             if (!messageContainerGlobal) {
                 currentRoomId = -1; // We'll be gathering for all rooms we're in now, because this messaging is coming through the master control window
             }
-        } else if (messages[i].nodeName == 'chat_members_update') {// UPDATE MEMBERS LIST IN ROOM
+        } else if (messages[i].nodeName == 'chat_members_update') { // UPDATE MEMBERS LIST IN ROOM
             var membersElement = document.getElementById('chat_members_update');
             if (membersElement) $cms.dom.html(membersElement, messages[i].textContent);
         }
 
-        else if ((messages[i].nodeName == 'chat_event') && (window.im_participant_template !== undefined)) {// Some kind of transitory event
+        else if ((messages[i].nodeName == 'chat_event') && (window.im_participant_template !== undefined)) { // Some kind of transitory event
             eventType = messages[i].getAttribute('event_type');
             roomId = messages[i].getAttribute('room_id');
             memberId = messages[i].getAttribute('member_id');
@@ -1029,7 +1029,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 }
                 flashableAlert = true;
             }
-        } else if (messages[i].nodeName == 'chat_tracking') {// TRACKING
+        } else if (messages[i].nodeName == 'chat_tracking') { // TRACKING
             window.top_window.last_message_id = messages[i].getAttribute('last_msg');
             window.top_window.last_event_id = messages[i].getAttribute('last_event');
         }
@@ -1119,7 +1119,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
         }, 0);
     }
 
-    function detectedConversation(roomId, roomName, participants) {// Assumes conversation is new: something must check that before calling here
+    function detectedConversation(roomId, roomName, participants) { // Assumes conversation is new: something must check that before calling here
         window.top_window.last_event_id = -1; // So that invite events re-run
 
         var areas = document.getElementById('chat_lobby_convos_areas');
@@ -1179,8 +1179,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             if ((!newWindow) || (newWindow.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
                 $cms.ui.alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
             }
-            window.setTimeout(function () {// Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
-                if (( opened_popups['room_' + roomId] !== undefined) && (opened_popups['room_' + roomId] != null) && (!opened_popups['room_' + roomId].is_shutdown)) {// It's been reattached already
+            window.setTimeout(function () { // Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
+                if (( opened_popups['room_' + roomId] !== undefined) && (opened_popups['room_' + roomId] != null) && (!opened_popups['room_' + roomId].is_shutdown)) { // It's been reattached already
                     return;
                 }
 
@@ -1194,7 +1194,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     newWindow.room_id = roomId;
                     newWindow.load_from_room_id = -1;
 
-                    window.setTimeout(function () {// Allow XHTML to render; needed for .document to be available, which is needed to write in seeded chat messages
+                    window.setTimeout(function () { // Allow XHTML to render; needed for .document to be available, which is needed to write in seeded chat messages
                         if (!newWindow.document) {
                             return;
                         }
@@ -1284,7 +1284,7 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
     div.appendChild(pMessage);
 
     // Open link
-    if (!$cms.browserMatches('non_concurrent')) {// Can't do on iOS due to not being able to run windows/tabs concurrently - so for iOS we only show a lobby link
+    if (!$cms.browserMatches('non_concurrent')) { // Can't do on iOS due to not being able to run windows/tabs concurrently - so for iOS we only show a lobby link
         var aPopupOpen = document.createElement('a');
         aPopupOpen.onclick = function () {
             clickEvent();
@@ -1464,7 +1464,7 @@ function closeChatConversation(roomId) {
     /*{+END}*/
 }
 
-function deinvolveIm(roomId, logs, isPopup) {// is_popup means that we show a progress indicator over it, then kill the window after deinvolvement
+function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a progress indicator over it, then kill the window after deinvolvement
     if (isPopup) {
         var body = document.getElementsByTagName('body');
         if (body[0] !== undefined) {
@@ -1497,7 +1497,7 @@ function deinvolveIm(roomId, logs, isPopup) {// is_popup means that we show a pr
         window.is_shutdown = true;
     }
 
-    window.setTimeout(function ()  {// Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
+    window.setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
         window.top_window.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.top_window.$cms.keepStub(false), function () {
         }, 'room_id=' + encodeURIComponent(roomId)); // Has to be on top_window or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 

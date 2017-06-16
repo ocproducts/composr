@@ -264,7 +264,10 @@ function delete_config_option($name)
  */
 function rename_config_option($old, $new)
 {
+    $GLOBALS['SITE_DB']->query_delete('config', array('c_name' => $new), '', 1);
+
     $GLOBALS['SITE_DB']->query_update('config', array('c_name' => $new), array('c_name' => $old), '', 1);
+
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('OPTIONS');
     }

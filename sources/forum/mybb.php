@@ -1202,7 +1202,7 @@ class Forum_driver_mybb extends Forum_driver_base
         if (substr($member_cookie_name, 0, 5) != 'cms__') {
             $current_ip = get_ip_address();
 
-            $session_row = $this->db->query('SELECT * FROM ' . $this->connection->get_table_prefix() . 'sessions WHERE ' . db_string_equal_to('ip', $current_ip), 1);
+            $session_row = $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'sessions WHERE ' . db_string_equal_to('ip', $current_ip), 1);
             $session_row = (!empty($session_row[0])) ? $session_row[0] : array();
             $session_id = (!empty($session_row['sid'])) ? $session_row['sid'] : '';
 
@@ -1286,8 +1286,8 @@ class Forum_driver_mybb extends Forum_driver_base
     /**
      * Salts a password based on a supplied salt.
      *
-     * @param string $password The md5()'ed password.
-     * @param string $salt The salt.
+     * @param  string $password The md5()'ed password.
+     * @param  string $salt The salt.
      * @return string The password hash.
      */
     public function salt_password($password, $salt)

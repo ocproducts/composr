@@ -25,23 +25,25 @@
  */
 function init__menus()
 {
-    define('INCLUDE_SITEMAP_NO', 0);
-    define('INCLUDE_SITEMAP_OVER', 1);
-    define('INCLUDE_SITEMAP_UNDER', 2);
+    if (!defined('INCLUDE_SITEMAP_NO')) {
+        define('INCLUDE_SITEMAP_NO', 0);
+        define('INCLUDE_SITEMAP_OVER', 1);
+        define('INCLUDE_SITEMAP_UNDER', 2);
+    }
 }
 
 /**
  * Take a menu identifier, and return a menu created from it.
  *
  * @param  ID_TEXT $type The type of the menu (determines which templates to use)
- * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a stored menu, or syntax to load from the Sitemap)
+ * @param  SHORT_TEXT $menu The menu identifier to use (may be the name of a editable menu, or syntax to load from the Sitemap)
  * @param  boolean $silent_failure Whether to silently return blank if the menu does not exist
  * @param  boolean $apply_highlighting Whether to apply current-screen highlighting
  * @return array A pair: The generated Tempcode of the menu, the menu nodes
  */
 function build_menu($type, $menu, $silent_failure = false, $apply_highlighting = true)
 {
-    $is_sitemap_menu = (preg_match('#^[' . URL_CONTENT_REGEXP . ']*$#', $menu) == 0);
+    $is_sitemap_menu = (preg_match('#^[' . URL_CONTENT_REGEXP . ']+$#', $menu) == 0);
 
     if ($is_sitemap_menu) {
         $root = _build_sitemap_menu($menu);
@@ -103,9 +105,9 @@ function build_menu($type, $menu, $silent_failure = false, $apply_highlighting =
 }
 
 /**
- * Take a menu identifier, and return the stored menu.
+ * Take a menu identifier, and return the editable menu.
  *
- * @param  SHORT_TEXT $menu The menu identifier to use (the name of a stored menu)
+ * @param  SHORT_TEXT $menu The menu identifier to use (the name of a editable menu)
  * @return array The menu branch structure
  *
  * @ignore
@@ -399,7 +401,10 @@ function _find_child_page_links($branches, &$page_links)
 {
     foreach ($branches as $branch) {
         $page_links[$branch['page_link']] = true;
-        _find_child_page_links($branch['children'], $page_links);
+
+        if ($branch['children'] !== null) {
+            _find_child_page_links($branch['children'], $page_links);
+        }
     }
 }
 

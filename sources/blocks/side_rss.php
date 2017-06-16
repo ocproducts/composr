@@ -67,6 +67,7 @@ class Block_side_rss
         }
 
         require_lang('news');
+        require_lang('rss');
         require_css('news');
         require_code('obfuscate');
 

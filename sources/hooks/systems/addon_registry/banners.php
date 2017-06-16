@@ -425,7 +425,12 @@ class Hook_addon_registry_banners
      */
     public function tpl_preview__pointstore_banners_2()
     {
+        if (!addon_installed('pointstore')) {
+            return array();
+        }
+
         require_lang('pointstore');
+
         return array(
             lorem_globalise(do_lorem_template('POINTSTORE_BANNERS_2', array(
                 'BANNER_URL' => placeholder_url(),
@@ -442,7 +447,12 @@ class Hook_addon_registry_banners
      */
     public function tpl_preview__pointstore_banners_upgrade()
     {
+        if (!addon_installed('pointstore')) {
+            return array();
+        }
+
         require_lang('pointstore');
+
         return array(
             lorem_globalise(do_lorem_template('POINTSTORE_BANNERS_UPGRADE', array(
                 'UPGRADE_URL' => placeholder_url(),
@@ -459,7 +469,12 @@ class Hook_addon_registry_banners
      */
     public function tpl_preview__pointstore_banners_activate()
     {
+        if (!addon_installed('pointstore')) {
+            return array();
+        }
+
         require_lang('pointstore');
+
         return array(
             lorem_globalise(do_lorem_template('POINTSTORE_BANNERS_ACTIVATE', array(
                 'ACTIVATE_URL' => placeholder_url(),
@@ -476,7 +491,12 @@ class Hook_addon_registry_banners
      */
     public function tpl_preview__pointstore_banners_screen()
     {
+        if (!addon_installed('pointstore')) {
+            return array();
+        }
+
         require_lang('pointstore');
+
         return array(
             lorem_globalise(do_lorem_template('POINTSTORE_BANNERS_SCREEN', array(
                 'TITLE' => lorem_title(),

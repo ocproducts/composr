@@ -210,10 +210,10 @@ function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $gu
 
     $just_catalogue_row = db_map_restrict($row, array('c_name', 'c_description'));
 
-    if ($row['c_is_tree']) {
+    if ($row['c_is_tree'] == 1) {
         $url = build_url(array('page' => 'catalogues', 'type' => 'category', 'catalogue_name' => $row['c_name']), $zone);
     } else {
-        $url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $row['c_name']), $zone);
+        $url = build_url(array('page' => 'catalogues', 'type' => 'index', 'id' => $row['c_name'], 'tree' => $row['c_is_tree']), $zone);
     }
 
     $_title = get_translated_text($row['c_title']);
@@ -259,7 +259,7 @@ function count_catalogue_category_children($category_id)
 
     $rec_record = $GLOBALS['SITE_DB']->query_select('catalogue_childcountcache', array('c_num_rec_children', 'c_num_rec_entries'), array('cc_id' => $category_id), '', 1);
     if (!array_key_exists(0, $rec_record)) {
-        $rec_record[0] = array('c_num_rec_children' => 0, 'c_num_rec_entries' => 0);
+        $rec_record[0] = array('c_num_rec_children' => $out['num_children'], 'c_num_rec_entries' => $out['num_entries']);
     }
 
     $out['num_children_children'] = $rec_record[0]['c_num_rec_children'];
@@ -271,7 +271,7 @@ function count_catalogue_category_children($category_id)
 /**
  * Get an ordered array of all the entries in the specified catalogue.
  *
- * @param  ?AUTO_LINK $category_id The ID of the category for which the entries are being collected (null: entries are [and must be] passed instead)
+ * @param  ?AUTO_LINK $category_id The ID of the category for which the entries are being collected (null: no limitation)
  * @param  ID_TEXT $catalogue_name The name of the catalogue
  * @param  ?array $catalogue A database row of the catalogue we are working with (null: read it in)
  * @param  ID_TEXT $view_type The view type we're doing
@@ -279,22 +279,22 @@ function count_catalogue_category_children($category_id)
  * @param  ID_TEXT $tpl_set The template set we are rendering this category using
  * @param  ?integer $max The maximum number of entries to show on a single page of this this category (null: all)
  * @param  ?integer $start The entry number to start at (null: all)
- * @param  ?mixed $filter The entries to show, may be from other categories. Can either be SQL fragment, or array (null: use $start and $max)
+ * @param  ?mixed $select The entries to show, may be from other categories. Can either be SQL fragment (produced from Selectcode?), or array (null: use $start and $max)
  * @param  ?AUTO_LINK $root The virtual root for display of this category (null: default)
  * @param  ?SHORT_INTEGER $display_type The display type to use (null: lookup from $catalogue)
  * @param  boolean $do_sorting Whether to perform sorting
  * @param  ?array $entries A list of entry rows (null: select them normally)
- * @param  string $_filtercode Filtercode to apply (blank: none).
- * @param  ?ID_TEXT $_order_by Orderer (null: read from environment)
- * @param  ID_TEXT $ordering_param Environment param used for ordering
+ * @param  string $filter Filtercode to apply (blank: none).
+ * @param  ?ID_TEXT $order_by_high_level Orderer (null: read from environment)
+ * @param  ID_TEXT $ordering_param Environment param used for ordering. You should pass in $order_by_high_level if it is set.
  * @param  ?MEMBER $viewing_member_id Viewing member ID (null: current user)
  * @return array An array containing our built up entries (renderable Tempcode), our sorting interface, and our entries (entry records from database, with an additional 'map' field), and the max rows
  */
-function render_catalogue_category_entry_buildup($category_id, $catalogue_name, $catalogue, $view_type, $tpl_set, $max, $start, $filter, $root, $display_type = null, $do_sorting = true, $entries = null, $_filtercode = '', $_order_by = null, $ordering_param = 'sort', $viewing_member_id = null)
+function render_catalogue_category_entry_buildup($category_id, $catalogue_name, $catalogue, $view_type, $tpl_set, $max, $start, $select, $root, $display_type = null, $do_sorting = true, $entries = null, $filter = '', $order_by_high_level = null, $ordering_param = 'sort', $viewing_member_id = null)
 {
-    if ($_filtercode != '') {
+    if ($filter != '') {
         require_code('filtercode');
-        $filtercode = parse_filtercode($_filtercode);
+        $filtercode = parse_filtercode($filter);
     } else {
         $filtercode = mixed();
     }
@@ -312,47 +312,44 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
     require_code('fields');
     $fields = get_catalogue_fields($catalogue_name);
 
-    // Find order field from environment (assuming $_order_by not passed in), and decode to $order_by/$direction which are semantically quite different
+    // Find $order_by/$direction which are semantically quite different to $order_by_high_level
+    $order_by = mixed();
+    $direction = 'ASC';
     if ($do_sorting) {
         inform_non_canonical_parameter($ordering_param);
 
-        if ($_order_by === null) {
-            $_order_by = get_param_string($ordering_param, '');
+        if ((!empty($order_by_high_level)) && (strpos($order_by_high_level, ' ') !== false/*if false probably some bot probing URLs -- sorting always has a space between sorter and direction*/)) {
+            // Find order by URL parameter
+            list($order_by, $direction) = explode(' ', $order_by_high_level);
+            if (($direction != 'ASC') && ($direction != 'DESC')) {
+                log_hack_attack_and_exit('ORDERBY_HACK');
+            }
+            if (((!is_numeric($order_by)) || (!isset($fields[intval($order_by)]))) && (!in_array($order_by, array('fixed_random', 'average_rating', 'compound_rating', 'add_date', 'distance')))) {
+                $order_by = null; // Invalid
+            }
         }
-        if (($_order_by == '') || (strpos($_order_by, ' ') === false/*probably some bot probing URLs -- sorting always has a space between sorter and direction*/)) {
+
+        if ($order_by === null) {
+            // Find default order for catalogue
             $order_by = '0';
             $direction = 'ASC';
             foreach ($fields as $i => $field) {
                 if ($field['cf_defines_order'] != 0) {
                     $order_by = strval($i);
-                    $direction = ($field['cf_defines_order'] == 1) ? 'ASC' : 'DESC';
-                    $_order_by = strval($field['id']) . ' ' . $direction;
+                    $direction = ($field['cf_defines_order'] == 1) ? 'ASC'/*1*/ : 'DESC'/*2*/;
+                    $order_by_high_level = strval($i) . ' ' . $direction;
                     break;
                 }
             }
-        } else {
-            list($order_by, $direction) = explode(' ', $_order_by);
-            if (($direction != 'ASC') && ($direction != 'DESC')) {
-                log_hack_attack_and_exit('ORDERBY_HACK');
-            }
-            if (($order_by != 'fixed_random') && ($order_by != 'average_rating') && ($order_by != 'compound_rating') && ($order_by != 'add_date') && ($order_by != 'distance')) {
-                $found = false;
-                if (!isset($fields[intval($order_by)])) {
-                    $order_by = '0'; // Could not find
-                }
-            }
         }
-    } else {
-        $order_by = mixed();
-        $direction = 'ASC';
     }
 
     // Get entries in this category
-    if ($filter === '1=1') {
-        $filter = null;
+    if ($select === '1=1') {
+        $select = null;
     }
     if ($entries === null) {
-        list($in_db_sorting, $num_entries, $entries) = get_catalogue_entries($catalogue_name, $category_id, $max, $start, $filter, $do_sorting, $filtercode, $order_by, $direction);
+        list($in_db_sorting, $num_entries, $entries) = get_catalogue_entries($catalogue_name, $category_id, $max, $start, $select, $do_sorting, $filtercode, $order_by, $direction);
     } else { // Oh, we already have $entries
         $num_entries = count($entries);
         $in_db_sorting = false;
@@ -362,7 +359,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
     // Work out the actual rendering, but only for those results in our selection scope (for performance)
     foreach ($entries as $i => $entry) {
-        if (($in_db_sorting /*Only select rows were grabbed so $i is not the first entry, it is the $start entry*/) || (!$in_db_sorting /*Needs data to do manual sort*/) || ((($start === null) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($filter)) || ((is_array($filter)) && (in_array($entry['id'], $filter)))))) {
+        if (($in_db_sorting /*Only select rows were grabbed so $i is not the first entry, it is the $start entry*/) || (!$in_db_sorting /*Needs data to do manual sort*/) || ((($start === null) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select)))))) {
             $entries[$i]['map'] = get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root, $fields, (($display_type == C_DT_TITLELIST) && (!$is_ecomm) && ($order_by !== null)) ? array(0, intval($order_by)) : null, false, true, intval($order_by));
         }
     }
@@ -378,7 +375,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
                     $_potential_sorter_name = new Tempcode();
                     $_potential_sorter_name->attach(escape_html($potential_sorter_name));
                     $_potential_sorter_name->attach(do_lang_tempcode($dir_lang));
-                    $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => 'dfdsfdsusd0fsd0dsf', 'SELECTED' => $sort_sel, 'NAME' => protect_from_escaping($_potential_sorter_name), 'VALUE' => strval($field['id']) . ' ' . $dir_code)));
+                    $selectors->attach(do_template('PAGINATION_SORTER', array('_GUID' => 'dfdsfdsusd0fsd0dsf', 'SELECTED' => $sort_sel, 'NAME' => protect_from_escaping($_potential_sorter_name), 'VALUE' => strval($i) . ' ' . $dir_code)));
                 }
             }
         }
@@ -457,7 +454,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                 $entry = $entries[$i];
 
-                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($filter)) || ((is_array($filter)) && (in_array($entry['id'], $filter))))) {
+                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
                     $entry_buildup->attach(do_template('CATALOGUE_' . $tpl_set . '_FIELDMAP_ENTRY_WRAP', $entry['map'] + array('GIVE_CONTEXT' => false) + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array()), null, false, 'CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP'));
                 }
             }
@@ -474,7 +471,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                 $entry = $entries[$i];
 
-                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($filter)) || ((is_array($filter)) && (in_array($entry['id'], $filter))))) {
+                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
                     $entry_buildup->attach(do_template('CATALOGUE_' . $tpl_set . '_TITLELIST_ENTRY', $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array()), null, false, 'CATALOGUE_DEFAULT_TITLELIST_ENTRY'));
                 }
             }
@@ -511,7 +508,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
                 }
 
                 $entry = $entries[$i];
-                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($filter)) || (is_array($filter)) && (in_array($entry['id'], $filter)))) {
+                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || (is_array($select)) && (in_array($entry['id'], $select)))) {
                     $tab_entry_map = $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array());
                     if ($has_view_screens) {
                         $url_map = array('page' => 'catalogues', 'type' => 'entry', 'id' => $entry['id']);
@@ -537,8 +534,8 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
                 foreach ($fields as $i => $field) {
                     if (((($field['cf_put_in_category'] == 1) && ($view_type == 'CATEGORY')) || (($field['cf_put_in_search'] == 1) && ($view_type == 'SEARCH'))) && ($field['cf_visible'] == 1)) {
                         if ($field['cf_searchable'] == 1) {
-                            $sort_url_asc = get_self_url(false, false, array($ordering_param => strval($field['id']) . ' ASC'), true);
-                            $sort_url_desc = get_self_url(false, false, array($ordering_param => strval($field['id']) . ' DESC'), true);
+                            $sort_url_asc = get_self_url(false, false, array($ordering_param => strval($i) . ' ASC'), true);
+                            $sort_url_desc = get_self_url(false, false, array($ordering_param => strval($i) . ' DESC'), true);
                             $sort_asc_selected = (($order_by == strval($field['id'])) && ($direction == 'ASC'));
                             $sort_desc_selected = (($order_by == strval($field['id'])) && ($direction == 'DESC'));
                         } else {
@@ -580,7 +577,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                 $entry = $entries[$i];
 
-                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($filter)) || ((is_array($filter)) && (in_array($entry['id'], $filter))))) {
+                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
                     $entry_buildup->attach(do_template('CATALOGUE_' . $tpl_set . '_GRID_ENTRY_WRAP', $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array()), null, false, 'CATALOGUE_DEFAULT_GRID_ENTRY_WRAP'));
                 }
             }
@@ -604,7 +601,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
  * @param  ID_TEXT $filter_key The field to get
  * @param  string $filter_val The field value for this
  * @param  array $db_fields Database field data
- * @param  string $table_join_code What MySQL will join the table with
+ * @param  string $table_join_code What the database will join the table with
  * @return ?array A triple: Proper database field name to access with, The fields API table type (blank: no special table), The new filter value (null: error)
  * @ignore
  */
@@ -630,10 +627,10 @@ function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$ext
  * Fetch entries from database, with sorting if possible.
  *
  * @param  ID_TEXT $catalogue_name Name of the catalogue
- * @param  ?AUTO_LINK $category_id The ID of the category for which the entries are being collected (null: entries are [and must be] passed instead)
- * @param  ?integer $max The maximum number of entries to show on a single page of this this category (ignored if $filter is not null) (null: all)
- * @param  ?integer $start The entry number to start at (ignored if $filter is not null) (null: all)
- * @param  ?mixed $filter The entries to show, may be from other categories. Can either be SQL fragment, or array (null: use $start and $max)
+ * @param  ?AUTO_LINK $category_id The ID of the category for which the entries are being collected (null: no limitation)
+ * @param  ?integer $max The maximum number of entries to show on a single page of this this category (ignored if $select is not null) (null: all)
+ * @param  ?integer $start The entry number to start at (ignored if $select is not null) (null: all)
+ * @param  ?mixed $select The entries to show, may be from other categories. Can either be SQL fragment (produced from Selectcode?), or array (null: use $start and $max)
  * @param  boolean $do_sorting Whether to perform sorting
  * @param  ?array $filtercode List of filters to apply (null: none). Each filter is a triple: ORd comparison key(s) [separated by pipe symbols], comparison type (one of '<', '>', '<=', '>=', '=', '~=', or '~'), comparison value
  * @param  ID_TEXT $order_by Orderer
@@ -642,18 +639,12 @@ function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$ext
  * @param  ?MEMBER $viewing_member_id Viewing member ID (null: current user)
  * @return array A tuple: whether sorting was done, number of entries returned, list of entries
  */
-function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $filter, $do_sorting, $filtercode, $order_by, $direction, $extra_where = '', $viewing_member_id = null)
+function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $select, $do_sorting, $filtercode, $order_by, $direction, $extra_where = '', $viewing_member_id = null)
 {
     $where_clause = '1=1' . $extra_where;
     if ($category_id !== null) {
         // WHERE clause
-        $where_clause .= ' AND ';
-        if (get_option('catalogues_subcat_narrowin') == '1') {
-            require_code('selectcode');
-            $where_clause = selectcode_to_sqlfragment(strval($category_id) . '*', 'id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id');
-        } else {
-            $where_clause = 'r.cc_id=' . strval($category_id);
-        }
+        $where_clause .= ' AND r.cc_id=' . strval($category_id);
     }
     if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
         $where_clause .= ' AND r.ce_validated=1';
@@ -675,15 +666,15 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $fil
     $where_clause .= $privacy_where;
 
     // If we're listing what IDs to look at, work out SQL for this
-    if (($category_id === null) && ($filter !== null)) {
-        if (((is_array($filter)) && (count($filter) == 0)) || ((is_string($filter)) && ($filter == ''))) {
+    if (($category_id === null) && ($select !== null)) {
+        if (((is_array($select)) && (count($select) == 0)) || ((is_string($select)) && ($select == ''))) {
             $entries = array(); // This is saying we are selecting nothing, so just say that - it'll save us a query
         } else { // Put together some SQL for defining what to select
-            if (!is_array($filter)) {
-                $or_list = $filter;
+            if (!is_array($select)) {
+                $or_list = $select;
             } else {
                 $or_list = '';
-                foreach ($filter as $s) {
+                foreach ($select as $s) {
                     if ($or_list != '') {
                         $or_list .= ' OR ';
                     }
@@ -702,7 +693,6 @@ function get_catalogue_entries($catalogue_name, $category_id, $max, $start, $fil
         $order_by = 'average_rating';
     }
 
-    $cf_type = is_numeric($order_by) ? $fields[intval($order_by)]['cf_type'] : '';
     $can_do_db_sorting = ($order_by != 'distance');
 
     require_code('hooks/systems/content_meta_aware/catalogue_entry');
@@ -944,7 +934,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         if ($field['cf_type'] == 'picture') {
             if (($ev !== null) && ($dereference_ev != '')) {
                 require_code('images');
-                $map['FIELD_' . $str_i . '_THUMB'] = do_image_thumb($dereference_ev, ($i == 0) ? '' : (is_object($map['FIELD_0']) ? $map['FIELD_0']->evaluate() : $map['FIELD_0']), false, false);
+                $map['FIELD_' . $str_i . '_THUMB'] = do_image_thumb($dereference_ev, ($i == 0) ? new Tempcode() : (is_object($map['FIELD_0']) ? $map['FIELD_0'] : protect_from_escaping(escape_html($map['FIELD_0']))), false, false);
             } else {
                 $map['FIELD_' . $str_i . '_THUMB'] = new Tempcode();
             }
@@ -1075,7 +1065,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
     // Breadcrumbs
     if ($breadcrumbs_details) {
         $map['BREADCRUMBS'] = '';
-        if (($catalogue['c_is_tree'] == 1) && ($only_fields === null)) {
+        if ($only_fields === null) {
             $_breadcrumbs = catalogue_category_breadcrumbs($entry['cc_id'], $root, false);
             $breadcrumbs = breadcrumb_segments_to_tempcode($_breadcrumbs);
             $map['BREADCRUMBS'] = $breadcrumbs;
@@ -1254,40 +1244,67 @@ function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only
     static $catalogue_entry_cache = array();
     if ((!isset($catalogue_entry_cache[$entry_id])) || (class_exists('Resource_fs_base')/*Implies resource-fs import*/)) {
         $catalogue_entry_cache[$entry_id] = array();
-        $query = '';
-        foreach (array('catalogue_efv_float', 'catalogue_efv_integer', 'catalogue_efv_long', 'catalogue_efv_long_trans', 'catalogue_efv_short', 'catalogue_efv_short_trans',) as $table) {
-            if ($query != '') {
-                $query .= ' UNION ';
-            }
-            $query .= 'SELECT f.id AS f_id,v.cv_value';
-            if (!multi_lang_content()) {
-                if (strpos($table, '_trans') !== false) {
-                    $query .= ',v.cv_value__text_parsed,v.cv_value__source_user';
-                } else {
-                    $query .= ',NULL AS cv_value__text_parsed,NULL AS cv_value__source_user';
-                }
-            }
-            $query .= ' FROM ' . get_table_prefix() . 'catalogue_fields f JOIN ' . get_table_prefix() . $table . ' v ON v.cf_id=f.id';
-            $query .= ' WHERE v.ce_id=' . strval($entry_id);
-            if ($only_field_ids !== null) {
-                $query .= ' AND (';
-                if ($only_field_ids != array()) {
-                    foreach ($only_field_ids as $i => $_field_id) {
-                        if ($i != 0) {
-                            $query .= ' OR ';
-                        }
-                        $query .= 'f.id=' . strval($_field_id);
+
+        $only_fields_sql = '';
+        if ($only_field_ids !== null) {
+            $only_fields_sql .= ' AND (';
+            if ($only_field_ids != array()) {
+                foreach ($only_field_ids as $i => $_field_id) {
+                    if ($i != 0) {
+                        $only_fields_sql .= ' OR ';
                     }
-                } else {
-                    $query .= '1=0';
+                    $only_fields_sql .= 'f.id=' . strval($_field_id);
                 }
-                $query .= ')';
+            } else {
+                $only_fields_sql .= '1=0';
+            }
+            $only_fields_sql .= ')';
+        }
+
+        $tables = array('catalogue_efv_float', 'catalogue_efv_integer', 'catalogue_efv_long', 'catalogue_efv_long_trans', 'catalogue_efv_short', 'catalogue_efv_short_trans',);
+        if (strpos(get_db_type(), 'mysql') !== false) { // Optimised for MySQL
+            $query = '';
+            foreach ($tables as $table) {
+                if ($query != '') {
+                    $query .= ' UNION ';
+                }
+                $query .= 'SELECT f.id AS f_id,' . db_cast('v.cv_value', 'CHAR') . ' AS cv_value';
+                if (!multi_lang_content()) {
+                    if (strpos($table, '_trans') !== false) {
+                        $query .= ',v.cv_value__text_parsed,v.cv_value__source_user';
+                    } else {
+                        $query .= ',NULL AS cv_value__text_parsed,NULL AS cv_value__source_user';
+                    }
+                }
+                $query .= ' FROM ' . get_table_prefix() . 'catalogue_fields f JOIN ' . get_table_prefix() . $table . ' v ON v.cf_id=f.id';
+                $query .= ' WHERE v.ce_id=' . strval($entry_id);
+                $query .= $only_fields_sql;
+            }
+            $rows = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
+            foreach ($rows as $row) {
+                $catalogue_entry_cache[$entry_id][$row['f_id']] = $row;
+            }
+        } else { // Other databases may not support unions with different data types, even if we do casting (PostgreSQL definitely doesn't)
+            foreach ($tables as $table) {
+                $query = 'SELECT f.id AS f_id,v.cv_value';
+                if (!multi_lang_content()) {
+                    if (strpos($table, '_trans') !== false) {
+                        $query .= ',v.cv_value__text_parsed,v.cv_value__source_user';
+                    } else {
+                        $query .= ',NULL AS cv_value__text_parsed,NULL AS cv_value__source_user';
+                    }
+                }
+                $query .= ' FROM ' . get_table_prefix() . 'catalogue_fields f JOIN ' . get_table_prefix() . $table . ' v ON v.cf_id=f.id';
+                $query .= ' WHERE v.ce_id=' . strval($entry_id);
+                $query .= $only_fields_sql;
+
+                $rows = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
+                foreach ($rows as $row) {
+                    $catalogue_entry_cache[$entry_id][$row['f_id']] = $row;
+                }
             }
         }
-        $rows = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
-        foreach ($rows as $row) {
-            $catalogue_entry_cache[$entry_id][$row['f_id']] = $row;
-        }
+
         $value = isset($catalogue_entry_cache[$entry_id][$field_id]) ? $catalogue_entry_cache[$entry_id][$field_id] : null;
 
         if (class_exists('Resource_fs_base')) {
@@ -1344,12 +1361,12 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
         $query .= ' WHERE EXISTS(SELECT * FROM ' . get_table_prefix() . 'catalogue_entries e' . $privacy_join . ' WHERE ce_validated=1 AND ce_add_date>' . strval($updated_since) . $privacy_where . ')';
     } else {
         if ($prefer_ones_with_entries) {
-            if ($GLOBALS['SITE_DB']->can_arbitrary_groupby()) {
+            if ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) {
                 $query .= ' JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.c_name=c.c_name GROUP BY c.c_name';
             }
         }
     }
-    $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title') . ' DESC';
+    $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title') . ' ASC';
     $rows = $GLOBALS['SITE_DB']->query($query, intval(get_option('general_safety_listing_limit'))/*reasonable limit*/, null, false, false, array('c_title' => 'SHORT_TRANS'));
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
@@ -1607,7 +1624,11 @@ function get_catalogue_entries_tree($catalogue_name, $submitter = null, $categor
 
     // Put our title onto our breadcrumbs
     if ($title === null) {
-        $title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'cc_title', array('id' => $category_id)));
+        $_title = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'cc_title', array('id' => $category_id));
+        if ($_title === null) {
+            return array();
+        }
+        $title = get_translated_text($_title);
     }
     $breadcrumbs .= $title;
 
@@ -1694,7 +1715,8 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
         if (!array_key_exists($category_id, $pt_pair_cache)) {
             $category_rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('cc_parent_id', 'cc_title'), array('id' => $category_id), '', 1);
             if (!array_key_exists(0, $category_rows)) {
-                fatal_exit(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'catalogue_category'));
+                attach_message(do_lang_tempcode('CAT_NOT_FOUND', escape_html(strval($category_id)), 'catalogue_category'), 'warn');
+                return array();
             }
             $pt_pair_cache[$category_id] = $category_rows[0];
         }
@@ -1887,32 +1909,26 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     }
     seo_meta_load_for('catalogue_entry', strval($id), strip_html($title_to_use_2));
 
-    if ($map['BREADCRUMBS'] === '') {
-        $breadcrumbs = array();
-        $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name), '_SELF');
-        $breadcrumbs[] = array($page_link, get_translated_text($catalogue['c_title']));
-        $page_link_map = array('page' => '_SELF', 'type' => 'category', 'id' => $category['id']);
-        if ($attach_to_url_filter) {
-            $page_link_map += propagate_filtercode();
-        }
-        $page_link = build_page_link($page_link_map, '_SELF');
-        $breadcrumbs[] = array($page_link, get_translated_text($category['cc_title']));
-        $map['BREADCRUMBS'] = breadcrumb_segments_to_tempcode($breadcrumbs);
-    }
     $map['CATEGORY_TITLE'] = get_translated_text($category['cc_title']);
     $map['CAT'] = strval($entry['cc_id']);
 
     $map['TAGS'] = get_loaded_tags('catalogue_entries');
 
+    $_breadcrumbs = array();
     if ($root === null) {
-        $_breadcrumbs = array();
         $_breadcrumbs[] = array('_SELF:_SELF:browse' . ($ecommerce ? ':ecommerce=1' : ''), do_lang_tempcode('CATALOGUES'));
-        $breadcrumbs = $_breadcrumbs;
     }
-    $_breadcrumbs = catalogue_category_breadcrumbs($entry['cc_id'], ($root === null) ? get_param_integer('keep_catalogue_' . $catalogue['c_name'] . '_root', null) : $root, false);
-    $breadcrumbs = array_merge($breadcrumbs, $_breadcrumbs);
+    if ($catalogue['c_is_tree'] == 1) {
+        $breadcrumbs = array_merge($_breadcrumbs, $breadcrumbs);
+    } else {
+        if ($root === null) {
+            $page_link = build_page_link(array('page' => '_SELF', 'type' => 'index', 'id' => $catalogue_name, 'tree' => $catalogue['c_is_tree']), '_SELF');
+            $_breadcrumbs[] = array($page_link, get_translated_text($catalogue['c_title']));
+        }
+        $breadcrumbs = array_merge($_breadcrumbs, $breadcrumbs);
+    }
     $breadcrumbs[] = array('', $title_to_use);
-    breadcrumb_set_parents($_breadcrumbs);
+    breadcrumb_set_parents($breadcrumbs);
 
     set_extra_request_metadata(array(
         'type' => get_translated_text($catalogue['c_title']) . ' entry',

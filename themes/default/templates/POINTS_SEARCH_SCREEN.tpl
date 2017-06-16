@@ -4,4 +4,3 @@
 <ul>
 	{RESULTS}
 </ul>
-

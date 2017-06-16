@@ -102,7 +102,7 @@ abstract class Resource_fs_base
         if ($this->folder_resource_type !== null) {
             $ret = array_merge($ret, is_array($this->folder_resource_type) ? $this->folder_resource_type : array($this->folder_resource_type));
         }
-        if ($this->folder_resource_type !== null) {
+        if ($this->file_resource_type !== null) {
             $ret = array_merge($ret, is_array($this->file_resource_type) ? $this->file_resource_type : array($this->file_resource_type));
         }
         return $ret;
@@ -693,7 +693,7 @@ abstract class Resource_fs_base
      * Helper function: detect if a resource did not save all the properties it was given.
      *
      * @param  ?ID_TEXT $resource_type The resource type (null: unknown)
-     * @param  ~ID_TEXT                 $resource_id The resource ID (false: was not added/edited)
+     * @param  ~ID_TEXT $resource_id The resource ID (false: was not added/edited)
      * @param  string $path The path (blank: root / not applicable)
      * @param  array $properties Properties
      */
@@ -1373,7 +1373,7 @@ abstract class Resource_fs_base
 
         $page = $cma_info['cms_page'];
         require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+        $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
         if ($_overridables[0] === null) {
             $overridables = array();
         } else {
@@ -1502,7 +1502,7 @@ abstract class Resource_fs_base
 
         $page = $cma_info['cms_page'];
         require_code('zones2');
-        $_overridables = extract_module_functions_page(get_module_zone($page), $page, array('get_privilege_overrides'));
+        $_overridables = extract_module_functions_page(get_module_zone($page, 'modules', null, 'php', true, false), $page, array('get_privilege_overrides'));
         if ($_overridables[0] === null) {
             $overridables = array();
         } else {
@@ -1837,7 +1837,7 @@ abstract class Resource_fs_base
         // URL monikers
         if ($cma_info['support_url_monikers']) {
             $page_bits = explode(':', $cma_info['view_page_link_pattern']);
-            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_page' => $page_bits[1], 'm_resource_type' => $page_bits[2], 'm_resource_id' => $resource_id), $db);
+            $properties['url_id_monikers'] = table_to_portable_rows('url_id_monikers', /*skip*/array('id'), array('m_resource_page' => $page_bits[1], 'm_resource_type' => isset($page_bits[2]) ? $page_bits[2] : '', 'm_resource_id' => $resource_id), $db);
         }
 
         // Attachments
@@ -2189,6 +2189,10 @@ abstract class Resource_fs_base
      */
     protected function _custom_fields_load($type, $id)
     {
+        if (!addon_installed('catalogues')) {
+            return array();
+        }
+
         require_code('fields');
         if (!has_tied_catalogue($type)) {
             return array();
@@ -2235,6 +2239,10 @@ abstract class Resource_fs_base
      */
     protected function _custom_fields_save($type, $id, $filename, $label, $properties)
     {
+        if (!addon_installed('catalogues')) {
+            return;
+        }
+
         require_code('fields');
         if (!has_tied_catalogue($type)) {
             return;
@@ -2339,7 +2347,7 @@ abstract class Resource_fs_base
                 $select[] = 'main.' . $folder_info['id_field'];
             }
             $extra = '';
-            if ($folder_info['db']->can_arbitrary_groupby()) {
+            if ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) {
                 $extra .= 'GROUP BY main.' . $relationship['id_field'] . ' '; // In case it's not a real category table, just an implied one by self-categorisation of entries
             }
             $extra .= 'ORDER BY main.' . $relationship['id_field'];

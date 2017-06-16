@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,iotds}
+
 <div class="box box___iotd_box" data-require-javascript="iotds" data-tpl="iotdBox">
 <div class="box_inner">
 	{+START,IF,{GIVE_CONTEXT}}
@@ -13,7 +14,7 @@
 
 	{+START,IF_NON_EMPTY,{THUMB_URL}}
 		<div class="right float_separation">
-			 {+START,IF_NON_EMPTY,{VIEW_URL}}<a title="{I_TITLE*}" href="{VIEW_URL*}">{+END}<img alt="{!THUMBNAIL}" src="{THUMB_URL*}" />{+START,IF_NON_EMPTY,{VIEW_URL}}</a>{+END}
+			{+START,IF_NON_EMPTY,{VIEW_URL}}<a title="{I_TITLE*}" href="{VIEW_URL*}">{+END}<img alt="{!THUMBNAIL}" src="{THUMB_URL*}" />{+START,IF_NON_EMPTY,{VIEW_URL}}</a>{+END}
 		</div>
 	{+END}
 

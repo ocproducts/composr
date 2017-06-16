@@ -25,20 +25,22 @@
  */
 function init__media_renderer()
 {
-    define('MEDIA_RECOG_PRECEDENCE_SUPER', 50);
-    define('MEDIA_RECOG_PRECEDENCE_HIGH', 40);
-    define('MEDIA_RECOG_PRECEDENCE_MEDIUM', 30);
-    define('MEDIA_RECOG_PRECEDENCE_LOW', 20);
-    define('MEDIA_RECOG_PRECEDENCE_TRIVIAL', 10);
-    define('MEDIA_RECOG_PRECEDENCE_NONE', 0);
+    if (!defined('MEDIA_RECOG_PRECEDENCE_SUPER')) {
+        define('MEDIA_RECOG_PRECEDENCE_SUPER', 50);
+        define('MEDIA_RECOG_PRECEDENCE_HIGH', 40);
+        define('MEDIA_RECOG_PRECEDENCE_MEDIUM', 30);
+        define('MEDIA_RECOG_PRECEDENCE_LOW', 20);
+        define('MEDIA_RECOG_PRECEDENCE_TRIVIAL', 10);
+        define('MEDIA_RECOG_PRECEDENCE_NONE', 0);
 
-    define('MEDIA_TYPE_IMAGE', 1);
-    define('MEDIA_TYPE_VIDEO', 2);
-    define('MEDIA_TYPE_AUDIO', 4);
-    define('MEDIA_TYPE_OTHER', 8);
-    define('MEDIA_TYPE_ALL', 15);
+        define('MEDIA_TYPE_IMAGE', 1);
+        define('MEDIA_TYPE_VIDEO', 2);
+        define('MEDIA_TYPE_AUDIO', 4);
+        define('MEDIA_TYPE_OTHER', 8);
+        define('MEDIA_TYPE_ALL', 15);
 
-    define('MEDIA_LOWFI', 1);
+        define('MEDIA_LOWFI', 1);
+    }
 
     /** Options for media rendering.
      *
@@ -88,9 +90,10 @@ function peek_media_mode()
  * @param  ?MEMBER $source_member Member to run as (null: current member)
  * @param  integer $acceptable_media Bitmask of media that we will support
  * @param  ?ID_TEXT $limit_to Limit to a media rendering hook (null: no limit)
+ * @param  ?string $original_filename Originally filename to display as a link caption where appropriate (null: use $url_safe)
  * @return ?array The hooks (null: cannot find one)
  */
-function find_media_renderers($url, $attributes, $as_admin, $source_member, $acceptable_media = 15, $limit_to = null)
+function find_media_renderers($url, $attributes, $as_admin, $source_member, $acceptable_media = 15, $limit_to = null, $original_filename = null)
 {
     if ($source_member === null) {
         $source_member = get_member();
@@ -99,7 +102,14 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
         $as_admin = true;
     }
 
+    if ($limit_to !== null) {
+        if ((!is_file(get_file_base() . '/sources/hooks/systems/media_rendering/' . $limit_to . '.php')) && (!is_file(get_file_base() . '/sources_custom/hooks/systems/media_rendering/' . $limit_to . '.php'))) {
+            $limit_to = null;
+        }
+    }
+
     $hooks = ($limit_to === null) ? array_keys(find_all_hooks('systems', 'media_rendering')) : array($limit_to);
+
     $obs = array();
     foreach ($hooks as $hook) {
         if (($limit_to !== null) && ($limit_to != $hook)) {
@@ -159,6 +169,10 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
         $mime_type = $attributes['mime_type'];
     } else {
         $mime_type = $meta_details['t_mime_type'];
+        if (($mime_type == 'application/octet-stream') || ($mime_type == '')) {
+            require_code('mime_types');
+            $mime_type = get_mime_type(get_file_extension(($original_filename === null) ? $url : $original_filename), true);
+        }
     }
     if ($mime_type != '') {
         foreach ($hooks as $hook) {
@@ -189,9 +203,10 @@ function find_media_renderers($url, $attributes, $as_admin, $source_member, $acc
  * @param  integer $acceptable_media Bitmask of media that we will support
  * @param  ?ID_TEXT $limit_to Limit to a media rendering hook (null: no limit)
  * @param  ?URLPATH $url_to_scan_against The URL to do media detection against (null: use $url)
+ * @param  ?string $original_filename Originally filename to display as a link caption where appropriate (null: use $url_safe)
  * @return ?Tempcode The rendered version (null: cannot render)
  */
-function render_media_url($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $acceptable_media = 15, $limit_to = null, $url_to_scan_against = null)
+function render_media_url($url, $url_safe, $attributes, $as_admin = false, $source_member = null, $acceptable_media = 15, $limit_to = null, $url_to_scan_against = null, $original_filename = null)
 {
     $hooks = find_media_renderers(
         ($url_to_scan_against === null) ? (is_object($url) ? $url->evaluate() : $url) : $url_to_scan_against,
@@ -199,12 +214,17 @@ function render_media_url($url, $url_safe, $attributes, $as_admin = false, $sour
         $as_admin,
         $source_member,
         $acceptable_media,
-        $limit_to
+        $limit_to,
+        $original_filename
     );
     if ($hooks === null) {
         return null;
     }
     $hook = reset($hooks);
+
+    if ((empty($attributes['filename'])) && ($original_filename !== null)) {
+        $attributes['filename'] = $original_filename;
+    }
 
     $ob = object_factory('Hook_media_rendering_' . $hook);
     $ret = $ob->render($url, $url_safe, $attributes, $as_admin, $source_member, $url_to_scan_against);
@@ -289,7 +309,12 @@ function _create_media_template_parameters($url, $attributes, $as_admin = false,
         //  If this was an uploaded file (i.e. new file in the JS security context) with a dangerous mime type, it would have been blocked by now.
         require_code('http');
         $meta_details = get_webpage_meta_details($_url);
-        $attributes['mime_type'] = $meta_details['t_mime_type'];
+        $mime_type = $meta_details['t_mime_type'];
+        if (($mime_type == 'application/octet-stream') || ($mime_type == '')) {
+            require_code('mime_types');
+            $mime_type = get_mime_type(get_file_extension(isset($attributes['filename']) ? $attributes['filename'] : $url), true);
+        }
+        $attributes['mime_type'] = $mime_type;
     }
 
     if (!array_key_exists('description', $attributes)) {

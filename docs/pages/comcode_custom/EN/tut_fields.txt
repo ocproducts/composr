@@ -195,10 +195,10 @@ Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
 | A codename (short sequence of numbers and letters, no spaces)
 |-
 ! Storage format (for programmer reference)
-| [tt]RANDOM[/tt]: 10 random numbers and letters (for catalogues it will be enforced as unique also)
+| Up to 255 characters of text
 |-
 ! Special default values
-| [i]None[/i]
+| [tt]RANDOM[/tt]: 10 random numbers and letters (for catalogues it will be enforced as unique also) [catalogues only]
 |-
 ! Supported field options
 | [i]None[/i]
@@ -267,7 +267,7 @@ Note that you are only allowed one [tt]posting_field[/tt] field per catalogue.
 | Integer, or null
 |-
 ! Special default values
-| [tt]AUTO_INCREMENT[/tt]: An automatically assigned sequential number
+| [tt]AUTO_INCREMENT[/tt]: An automatically assigned sequential number [catalogues only]
 |-
 ! Supported field options
 | [tt]range_search=on|off[/tt]: search forms will allow a range-based search
@@ -657,6 +657,9 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__theme_image.png[/media]
 |}
 
+'xxx' may be any theme image directory. There is a version of this field type for each of them.
+If you have manually added new theme images and are not seeing field types for them, empty the block cache. The field type list is cached using the block cache for performance reasons.
+
 [title="2"]Magic fields[/title]
 
 [title="3"]guid[/title]
@@ -727,6 +730,8 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__reference.png[/media]
 |}
 
+'xxx' may be any catalogue. There is a version of this field type for each of them.
+
 [title="3"]reference_multi[/title]
 
 {| 15em wide
@@ -748,6 +753,8 @@ NB: You can see I uploaded a non-web-safe video as the first video. We do suppor
 ! Front-end UI
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__reference_multi.png[/media]
 |}
+
+'xxx' may be any catalogue. There is a version of this field type for each of them.
 
 [title="3"]content_link[/title]
 
@@ -772,6 +779,8 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__content_link.png[/media]
 |}
 
+'xxx' may be any content type. There is a version of this field type for each of them.
+
 [title="3"]content_link_multi[/title]
 
 {| 15em wide
@@ -794,6 +803,8 @@ NB: Where we support Composr tree-list inputters (like shown for 'reference') fo
 ! Front-end UI
 | [media framed="1" wysiwyg_editable="1" thumb="0" width="600"]data_custom/images/docs/tut_fields/core_fields_frontend__content_link_multi.png[/media]
 |}
+
+'xxx' may be any content type. There is a version of this field type for each of them.
 
 [title="3"]member[/title]
 

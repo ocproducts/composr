@@ -260,7 +260,7 @@ function create_selection_list_news_categories($it = null, $show_all_personal_ca
     if (isset($query_cache[$where])) {
         list($count, $_cats) = $query_cache[$where];
     } else {
-        $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories c ' . $where . ' ORDER BY id');
+        $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news_categories c ' . $where);
         if ($count > 500) { // Uh oh, loads, need to limit things more
             $where .= ' AND (nc_owner IS NULL OR nc_owner=' . strval(get_member()) . ')';
         }

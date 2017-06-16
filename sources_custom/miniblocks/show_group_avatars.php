@@ -26,14 +26,17 @@ i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_
 $order = 'm_join_time DESC';
 if (isset($map['order'])) {
     if ($map['order'] == 'random') {
-        $order = 'RAND()';
+        $order = db_function('RAND');
     }
     if ($map['order'] == 'username') {
         $order = 'm_username';
     }
 }
 
-$where = 'm_avatar_url<>\'\'';
+$where = 'm_avatar_url<>\'\' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
+if (addon_installed('unvalidated')) {
+    $where .= ' AND m_validated=1';
+}
 if (isset($map['param'])) {
     if (is_numeric($map['param'])) {
         $group_id = intval($map['param']);
@@ -51,6 +54,8 @@ if (isset($map['param'])) {
 $limit = isset($map['limit']) ? intval($map['limit']) : 200;
 
 require_code('cns_members2');
+
+echo '<div class="float_surrounder">';
 
 $query = 'SELECT m.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m WHERE ' . $where . ' ORDER BY ' . $order;
 $rows = $GLOBALS['FORUM_DB']->query($query, $limit);
@@ -74,3 +79,5 @@ foreach ($rows as $row) {
         </div></div>
     ';
 }
+
+echo '</div>';

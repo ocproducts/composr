@@ -76,7 +76,7 @@
             serverid = !!serverid;
 
             // Normally we could only ever use getElementsByTagName, but Konqueror and Safari don't like it
-            try {// IE9 beta has serious problems
+            try { // IE9 beta has serious problems
                 if (ob.getElementsByTagName) {
                     var results = ob.getElementsByTagName((type === 'c') ? 'category' : 'entry');
                     for (i = 0; i < results.length; i++) {
@@ -114,7 +114,7 @@
             } catch (e) {}
 
             var i, xml, tempNode, html;
-            if (!expandingId) {// Root
+            if (!expandingId) { // Root
                 html = $cms.dom.$id('tree_list__root_' + this.name);
                 $cms.dom.html(html, '');
 
@@ -443,7 +443,7 @@
             return a;
         },
 
-        handleTreeClick: function handleTreeClick(event, automated) {// Not called as a method
+        handleTreeClick: function handleTreeClick(event, automated) { // Not called as a method
             var element = $cms.dom.$id(this.object.name),
                 xmlNode;
             if (element.disabled || this.object.busy) {
@@ -511,7 +511,7 @@
             return true;
         },
 
-        handleSelection: function handleSelection(event, assumeCtrl) {// Not called as a method
+        handleSelection: function handleSelection(event, assumeCtrl) { // Not called as a method
             assumeCtrl = !!assumeCtrl;
 
             var element = $cms.dom.$id(this.object.name);
@@ -592,7 +592,7 @@
                     }
                 } else if (selectedAfter.indexOf(selectedId) == -1) {
                     selectedAfter.push(selectedId);
-                    if (!this.object.multi_selection) {// This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
+                    if (!this.object.multi_selection) { // This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
                         var anchors = $cms.dom.$id('tree_list__root_' + this.object.name).getElementsByTagName('label');
                         for (i = 0; i < anchors.length; i++) {
                             this.object.makeElementLookSelected(anchors[i], false);

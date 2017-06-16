@@ -150,9 +150,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_CATEGORY_TRANSACTION_FEES
         PAYMENT_GATEWAY_authorize
         PAYMENT_GATEWAY_ccbill
+        LOST_DISK_CONTENT
+        DESCRIPTION_LOST_DISK_CONTENT
         TICKETS_STAFF
         NO_CNS
         DOCS
+        EXPLANATION_WITH_DEFAULT
         PROJECT_SPONSORS
         PROJECT_SPONSORS_LABEL
         CONFIG_OPTION_complex_lists
@@ -205,11 +208,20 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PGE_D
         PGE_R
         PGE_HASH
+        DKIM_PRIVATE_KEY
+        CONFIG_OPTION_dkim_private_key
+        DKIM_SELECTOR
+        CONFIG_OPTION_dkim_selector
+        _EMAIL
+        PHP_UPLOAD_SETTING_VERY_LOW
+        ADDING_THEME_IMAGE
+        DESCRIPTION_ADDING_THEME_IMAGE
         NO_SSL_SETUP
         ADD_NOTE_TITLE
         CONFIG_OPTION_points_RECOMMEND_SITE
         SUBSCRIPTION_CANCELLED_BODY
         SUBSCRIPTION_CANCELLED_SUBJECT
+        NO_ISSUES_FOUND
         ADBLOCKER
         VIEW_THUMBNAILS
         USER_ONLINE_TRACKING
@@ -292,7 +304,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACTIVITY_VALIDATE_VIDEO
         ADDING_CONTENT_IN_LANGUAGE
         ADDING_CONTENT_IN_LANGUAGE_STAFF
-        ADDING_THEME_IMAGE
         ADDITIONAL_ACCESS
         TICKET_ACTIVITY_BODY
         GUEST_TICKET_REPLY_LINK
@@ -1176,6 +1187,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_multi_content_PARAM_zone_TITLE
         BLOCK_main_multi_content_USE
         BLOCK_main_news_DESCRIPTION
+        CONFIG_OPTION_autogrow
+        AUTOGROW
         BLOCK_main_news_PARAM_as_guest
         BLOCK_main_news_PARAM_as_guest_TITLE
         BLOCK_main_news_PARAM_attach_to_url_filter
@@ -1668,7 +1681,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHAT_TRANSITORY_ALERT_TIME
         CHAT_UNBAN
         CHECKLIST_INITIAL_TASK_CONTENT
-        CHECKLIST_INITIAL_TASK_DMOZ
         CHECKLIST_INITIAL_TASK_FAVICON
         CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS
         CHECKLIST_INITIAL_TASK_MAIL
@@ -1848,8 +1860,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CMD_MV_HELP
         CMD_MV_HELP_PARAM_0
         CMD_MV_HELP_PARAM_1
-        CMD_MYSQL_TABLE_SIZES_HELP
-        CMD_MYSQL_TABLE_SIZES_HELP_PARAM_0
+        CMD_DB_TABLE_SIZES_HELP
+        CMD_DB_TABLE_SIZES_HELP_PARAM_0
+        NOT_SUPPORTED_ON_DB
+        CMD_SQL_DUMP_HELP
+        CMD_SQL_DUMP_HELP_PARAM_0
+        CMD_SQL_DUMP_HELP_PARAM_1
+        SQL_DUMP_SAVED_TO
         CMD_PASSWD_HELP
         CMD_PASSWD_HELP_PARAM_0
         CMD_PASSWD_HELP_U
@@ -2979,6 +2996,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_use_lastondate
         CONFIG_OPTION_use_local_payment
         CONFIG_OPTION_use_true_from
+        CONFIG_OPTION_use_true_from_VALUE_0
+        CONFIG_OPTION_use_true_from_VALUE_1
+        CONFIG_OPTION_use_true_from_VALUE_2
+        EMAIL_LOG_DAYS
+        CONFIG_OPTION_email_log_days
         CONFIG_OPTION_user_postsize_errors
         CONFIG_OPTION_username_profile_links
         CONFIG_OPTION_users_online_time
@@ -7290,6 +7312,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COUNT_TOPICSCOUNT
         CONTENTS
         FILE
+        NEWSLETTER_SUBSCRIBER_DEFAULT_NAME
         ABOUT
         ABOUT_BLOCKING
         ABOUT_POP3
@@ -7734,6 +7757,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COUNT_VIEWS
         COUNT_VISITS
         COUNT_VOTINGS
+        AUDIO_CAPTCHA_HELP
         CREATE_BIRTHDAY_TOPIC
         CREATE_HERE
         CREATE_PRIVATE_CHATROOM

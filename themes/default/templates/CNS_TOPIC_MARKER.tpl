@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,cns_forum}
+
 <td id="cell_mark_{ID*}" class="cns_topic_marker_cell" data-tpl="cnsTopicMarker">
 	<form class="webstandards_checker_off inline" title="{!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}

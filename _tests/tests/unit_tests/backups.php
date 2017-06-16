@@ -20,6 +20,10 @@ class backups_test_set extends cms_test_case
 {
     public function testBackup()
     {
+        if (get_db_type() == 'xml') {
+            warn_exit('Cannot run on XML database driver');
+        }
+
         require_lang('backups');
         require_code('backup');
         require_code('tar');
@@ -56,26 +60,34 @@ class backups_test_set extends cms_test_case
             return;
         }
 
+        global $SITE_INFO;
         $config_path = get_custom_file_base() . '/' . $temp_test_dir . '/_config.php';
         $config_php = file_get_contents($config_path);
-        $config_php .= '
+        $config_php .= rtrim('
 unset($SITE_INFO[\'base_url\']); // Let it auto-detect
 unset($SITE_INFO[\'cns_table_prefix\']);
-$SITE_INFO[\'table_prefix\'] = \'bt_\';
-        ';
+$SITE_INFO[\'db_site\'] = \'cms_backup_test\';
+$SITE_INFO[\'db_forums\'] = \'cms_backup_test\';
+$SITE_INFO[\'table_prefix\'] = \'cms_backup_test_\';
+$SITE_INFO[\'multi_lang_content\'] = \'' . addslashes($SITE_INFO['multi_lang_content']) . '\';
+        ');
         cms_file_put_contents_safe($config_path, $config_php);
+
+        $GLOBALS['SITE_DB']->query('CREATE DATABASE cms_backup_test', null, null, true);
 
         for ($i = 0; $i < 2; $i++) {
             $test = cms_http_request(get_base_url() . '/exports/backups/test/restore.php?time_limit=1000', array('trigger_error' => false, 'post_params' => array(), 'timeout' => 100.0));
             $success = (strpos($test, do_lang('backups:BACKUP_RESTORE_SUCCESS')) !== false);
-            $this->assertTrue($success, 'Failed to run restorer script on iteration ' . strval($i + 1) . ' [' . $test . ']');
+            $this->assertTrue($success, 'Failed to run restorer script on iteration ' . strval($i + 1) . ' [' . $test . ']; to debug manually run exports/backups/test/restore.php?time_limit=1000');
             if (!$success) {
                 return;
             }
         }
 
-        $db = new DatabaseConnector(get_db_site(), get_db_site_host(), get_db_site_user(), get_db_site_password(), 'bt_');
+        $db = new DatabaseConnector('cms_backup_test', get_db_site_host(), get_db_site_user(), get_db_site_password(), 'cms_backup_test_');
         $count = $db->query_select_value('zones', 'COUNT(*)');
         $this->assertTrue($count > 0, 'Failed to restore database');
+
+        deldir_contents($temp_test_dir_full);
     }
 }

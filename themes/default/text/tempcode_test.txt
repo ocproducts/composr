@@ -399,4 +399,3 @@
 	</td>
 {+END}
 </tbody></table>
-

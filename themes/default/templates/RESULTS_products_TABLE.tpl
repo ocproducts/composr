@@ -24,4 +24,3 @@
 		</tbody>
 	</table></div>
 {+END}
-

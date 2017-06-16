@@ -212,10 +212,10 @@ function _create_selection_list_langs($select_lang = null, $show_unset = false)
  * @param  ID_TEXT $code The language string codename
  * @param  boolean $comcode Whether the given codes value is to be parsed as Comcode
  * @param  integer $level The level of importance this language string holds
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @return array The language string ID save fields
  */
-function lang_code_to_default_content($field_name, $code, $comcode = false, $level = 2, $connection = null)
+function lang_code_to_default_content($field_name, $code, $comcode = false, $level = 2, $db = null)
 {
     $insert_map = insert_lang($field_name, do_lang($code), $level, null, $comcode);
     if (multi_lang_content()) {
@@ -223,7 +223,7 @@ function lang_code_to_default_content($field_name, $code, $comcode = false, $lev
         foreach ($langs as $lang => $lang_type) {
             if ($lang != user_lang()) {
                 if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) { // Make sure it's a reasonable looking pack, not just a stub (Google Translate addon can be made to go nuts otherwise)
-                    insert_lang($field_name, do_lang($code, '', '', '', $lang), $level, $connection, true, $insert_map[$field_name], $lang);
+                    insert_lang($field_name, do_lang($code, '', '', '', $lang), $level, $db, true, $insert_map[$field_name], $lang);
                 }
             }
         }
@@ -238,18 +238,18 @@ function lang_code_to_default_content($field_name, $code, $comcode = false, $lev
  * @param  ID_TEXT $str The static string
  * @param  boolean $comcode Whether the given codes value is to be parsed as Comcode
  * @param  integer $level The level of importance this language string holds
- * @param  ?object $connection The database connection to use (null: standard site connection)
+ * @param  ?object $db The database connector to use (null: standard site connector)
  * @return array The language string ID save fields
  */
-function lang_code_to_static_content($field_name, $str, $comcode = false, $level = 2, $connection = null)
+function lang_code_to_static_content($field_name, $str, $comcode = false, $level = 2, $db = null)
 {
-    $insert_map = insert_lang($field_name, $str, $level, null, $comcode);
+    $insert_map = insert_lang($field_name, $str, $level, $db, $comcode);
     if (multi_lang_content()) {
         $langs = find_all_langs();
         foreach ($langs as $lang => $lang_type) {
             if ($lang != user_lang()) {
-                if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) { // Make sure it's a reasonable looking pack, not just a stub (Google Translate addon can be made to go nuts otherwise)
-                    insert_lang($field_name, $str, $level, $connection, true, $insert_map[$field_name], $lang);
+                if (is_file(get_file_base() . '/' . $lang_type . '/' . $lang . '/critical_error.ini')) { // Make sure it's a reasonable looking pack, not just a stub
+                    insert_lang($field_name, $str, $level, $db, $comcode, $insert_map[$field_name], $lang);
                 }
             }
         }
@@ -316,31 +316,26 @@ function _insert_lang($field_name, $text, $level, $db = null, $comcode = false, 
         return $ret;
     }
 
-    if (($id === null) && (multi_lang())) { // Needed as MySQL auto-increment works separately for each combo of other key values (i.e. language in this case). We can't let a language string ID get assigned to something entirely different in another language. This MySQL behaviour is not well documented, it may work differently on different versions.
-        $db->query('LOCK TABLES ' . $db->get_table_prefix() . 'translate', null, null, true);
-        $lock = true;
-        $id = $db->query_select_value('translate', 'MAX(id)');
-        $id = ($id === null) ? null : ($id + 1);
-    } else {
-        $lock = false;
-    }
+    $lock = false;
+    table_id_locking_start($db, $id, $lock);
 
     if ($lang == 'Gibb') { // Debug code to help us spot language layer bugs. We expect &keep_lang=EN to show EnglishEnglish content, but otherwise no EnglishEnglish content.
+        $map = array('source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => 'EnglishEnglishWarningWrongLanguageWantGibberishLang', 'text_parsed' => '', 'language' => 'EN');
         if ($id === null) {
-            $id = $db->query_insert('translate', array('source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => 'EnglishEnglishWarningWrongLanguageWantGibberishLang', 'text_parsed' => '', 'language' => 'EN'), true, false, $save_as_volatile);
+            $id = $db->query_insert('translate', $map, true, false, $save_as_volatile);
         } else {
-            $db->query_insert('translate', array('id' => $id, 'source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => 'EnglishEnglishWarningWrongLanguageWantGibberishLang', 'text_parsed' => '', 'language' => 'EN'), false, false, $save_as_volatile);
+            $db->query_insert('translate', array('id' => $id) + $map, false, false, $save_as_volatile);
         }
     }
+
+    $map = array('source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => $text, 'text_parsed' => $text_parsed, 'language' => $lang);
     if (($id === null) || ($id === 0)) { //==0 because unless MySQL NO_AUTO_VALUE_ON_ZERO is on, 0 insertion is same as null is same as "use autoincrement"
-        $id = $db->query_insert('translate', array('source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => $text, 'text_parsed' => $text_parsed, 'language' => $lang), true, false, $save_as_volatile);
+        $id = $db->query_insert('translate', $map, true, false, $save_as_volatile);
     } else {
-        $db->query_insert('translate', array('id' => $id, 'source_user' => $source_user, 'broken' => 0, 'importance_level' => $level, 'text_original' => $text, 'text_parsed' => $text_parsed, 'language' => $lang), false, false, $save_as_volatile);
+        $db->query_insert('translate', array('id' => $id) + $map, false, false, $save_as_volatile);
     }
 
-    if ($lock) {
-        $db->query('UNLOCK TABLES', null, null, true);
-    }
+    table_id_locking_end($db, $id, $lock);
 
     if (count($db->text_lookup_cache) < 5000) {
         if ($_text_parsed !== null) {

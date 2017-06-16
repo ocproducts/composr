@@ -1,4 +1,3 @@
 <p>
 	{CRITICISM*}
 </p>
-

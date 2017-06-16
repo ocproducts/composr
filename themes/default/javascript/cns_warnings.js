@@ -41,5 +41,4 @@
             return false;
         });
     };
-
 }(window.$cms));

@@ -55,8 +55,12 @@ function points_profile($member_id_of, $member_id_viewing)
     $remaining = available_points($member_id_of);
     $gift_points_used = get_gift_points_used($member_id_of); //$_point_info['gift_points_used'];
     $gift_points_available = get_gift_points_to_give($member_id_of);
-    $points_gained_credits = $GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member_id_of, 'purchase_validated' => 1));
-    if ($points_gained_credits === null) {
+    if ($GLOBALS['SITE_DB']->table_exists('credit_purchases')) {
+        $points_gained_credits = $GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member_id_of, 'purchase_validated' => 1));
+        if ($points_gained_credits === null) {
+            $points_gained_credits = 0;
+        }
+    } else {
         $points_gained_credits = 0;
     }
 

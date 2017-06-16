@@ -31,8 +31,8 @@ class Module_admin_cmsusers
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 2;
-        $info['locked'] = true;
         $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -172,12 +172,12 @@ class Module_admin_cmsusers
 
         $max = 500;
         if ($sortby != 'acp') {
-            $order_by = 'GROUP BY website_url ' . $order_by;
+            $order_by = 'GROUP BY website_url,website_name ' . $order_by;
         } else {
             $max = 1000;
         }
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'logged WHERE website_url NOT LIKE \'%.composr.info%\' AND website_name<>\'\' AND website_name<>\'(unnamed)\' ' . $order_by, $max);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT website_url,website_name,MAX(l_version) AS l_version,MAX(hittime) AS hittime FROM ' . get_table_prefix() . 'logged WHERE website_url NOT LIKE \'%.composr.info%\' AND ' . db_string_not_equal_to('website_name', '') . ' AND ' . db_string_not_equal_to('website_name', '(unnamed)') . ' ' . $order_by, $max);
 
         $seen_before = array();
 

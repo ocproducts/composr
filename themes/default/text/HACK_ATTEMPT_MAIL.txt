@@ -24,4 +24,3 @@
 {STACK_TRACE}
 [/html]
 {+END}
-

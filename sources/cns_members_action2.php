@@ -43,6 +43,7 @@ function member_get_csv_headings_extended()
     $headings = member_get_csv_headings();
     foreach ($cpfs as $i => $c) { // CPFs take precedence over normal fields of the same name
         $cpfs[$i]['_cf_name'] = get_translated_text($c['cf_name'], $GLOBALS['FORUM_DB']);
+        $cpfs[$i]['_cf_name'] = str_replace(',', (get_charset() == 'utf-8') ? (chr(hexdec('ef')) . chr(hexdec('b9')) . chr(hexdec('90'))) : '', $cpfs[$i]['_cf_name']); // Normal commas break sort_maps_by
         $headings[$cpfs[$i]['_cf_name']] = $i;
     }
 
@@ -53,7 +54,7 @@ function member_get_csv_headings_extended()
 
         $usergroup_subscription_rows = $GLOBALS['FORUM_DB']->query_select('f_usergroup_subs', array('id', 's_title'));
         foreach ($usergroup_subscription_rows as $usergroup_subscription_row) {
-            $item_name = get_translated_text($usergroup_subscription_row['s_title']);
+            $item_name = get_translated_text($usergroup_subscription_row['s_title'], $GLOBALS['FORUM_DB']);
             $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_START_TIME') . ')'] = null;
             $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_TERM_START_TIME') . ')'] = null;
             $headings[$item_name . ' (' . do_lang('SUBSCRIPTION_TERM_END_TIME') . ')'] = null;
@@ -300,7 +301,7 @@ function cns_read_in_custom_fields($custom_fields, $member_id = null)
             $custom_field['cf_required'] = 0;
         }
 
-        $value = $ob->inputted_to_field_value(true, $custom_field, 'uploads/cns_cpf_upload', $old_value);
+        $value = $ob->inputted_to_field_value(true, $custom_field, 'uploads/cns_cpf_upload', ($old_value === null) ? null : array('cv_value' => $old_value));
         if ((fractional_edit()) && ($value != STRING_MAGIC_NULL)) {
             $rendered = $ob->render_field_value($custom_field, $value, 0, null, 'f_members', $member_id, 'ce_id', 'cf_id', 'field_' . strval($custom_field['id']), $member_id);
             $_POST['field_' . strval($custom_field['id']) . '__altered_rendered_output'] = is_object($rendered) ? $rendered->evaluate() : $rendered;
@@ -1066,6 +1067,10 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
         $update['m_validated_email_confirm_code'] = '';
         if (addon_installed('unvalidated')) {
             $update['m_validated'] = $validated;
+
+            if (($validated == 1) && ($GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_validated') == 0)) {
+                $update['m_join_time'] = time(); // So welcome mails go out correctly
+            }
         }
     }
     if ($highlighted_name !== null) {
@@ -1163,7 +1168,7 @@ function cns_delete_member($member_id)
             list(, , $storage_type) = $object->get_field_value_row_bits($field);
 
             if (method_exists($object, 'cleanup')) {
-                $object->cleanup($l);
+                $object->cleanup(array('cv_value' => $l));
             }
 
             if ((strpos($storage_type, '_trans') !== false) && ($l !== null)) {
@@ -1232,6 +1237,7 @@ function cns_ban_member($member_id)
 
     log_it('BAN_MEMBER', strval($member_id), $username);
 
+    require_lang('cns');
     $mail = do_lang('BAN_MEMBER_MAIL', $username, get_site_name(), array(), get_lang($member_id));
     dispatch_mail(do_lang('BAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', array('priority' => 2, 'require_recipient_valid_since' => $join_time));
 
@@ -1261,6 +1267,7 @@ function cns_unban_member($member_id)
 
     log_it('UNBAN_MEMBER', strval($member_id), $username);
 
+    require_lang('cns');
     $mail = do_lang('UNBAN_MEMBER_MAIL', $username, get_site_name(), array(), get_lang($member_id));
     dispatch_mail(do_lang('UNBAN_MEMBER_MAIL_SUBJECT', null, null, null, get_lang($member_id)), $mail, array($email_address), $username, '', '', array('priority' => 2, 'require_recipient_valid_since' => $join_time));
 

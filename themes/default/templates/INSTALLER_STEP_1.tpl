@@ -38,5 +38,3 @@
 		<p>&dagger; Currently we do not directly ship additional languages with Composr. However community translations (made on Transifex) may be distributed in the addon directory.</p>
 	{+END}
 </form>
-
-

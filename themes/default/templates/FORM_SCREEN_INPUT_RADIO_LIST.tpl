@@ -9,7 +9,7 @@
 </div>
 
 {+START,IF_PASSED,NAME}
-{+START,IF,{REQUIRED}}
-	<input type="hidden" name="require__{NAME*}" value="1" />
-{+END}
+	{+START,IF,{REQUIRED}}
+		<input type="hidden" name="require__{NAME*}" value="1" />
+	{+END}
 {+END}

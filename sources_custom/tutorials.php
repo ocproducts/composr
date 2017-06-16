@@ -145,7 +145,7 @@ function list_tutorials()
     push_query_limiting(false);
 
     $_tags = $GLOBALS['SITE_DB']->query_select('tutorials_external_tags', array('t_id', 't_tag'));
-    $external = $GLOBALS['SITE_DB']->query_select('tutorials_external t', array('t.*', tutorial_sql_rating('t.id'), tutorial_sql_rating_recent('t.id'), tutorial_sql_likes('t.id'), tutorial_sql_likes_recent('t.id')));
+    $external = $GLOBALS['SITE_DB']->query_select('tutorials_external t', array('t.*', tutorial_sql_rating(db_cast('t.id', 'CHAR')), tutorial_sql_rating_recent(db_cast('t.id', 'CHAR')), tutorial_sql_likes(db_cast('t.id', 'CHAR')), tutorial_sql_likes_recent(db_cast('t.id', 'CHAR'))));
     foreach ($external as $e) {
         $tags = array();
         foreach ($_tags as $tag) {
@@ -370,22 +370,22 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
 
 function tutorial_sql_rating($field)
 {
-    return '(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE rating_for_type=\'tutorial\' AND rating_for_id=' . $field . ') AS rating';
+    return '(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'tutorial') . ' AND rating_for_id=' . $field . ') AS rating';
 }
 
 function tutorial_sql_rating_recent($field)
 {
-    return '(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE rating_for_type=\'tutorial\' AND rating_for_id=' . $field . ' AND rating_time>' . strval(time() - 60 * 60 * 24 * 31) . ') AS rating_recent';
+    return '(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'tutorial') . ' AND rating_for_id=' . $field . ' AND rating_time>' . strval(time() - 60 * 60 * 24 * 31) . ') AS rating_recent';
 }
 
 function tutorial_sql_likes($field)
 {
-    return '(SELECT COUNT(*) FROM ' . get_table_prefix() . 'rating WHERE rating_for_type=\'tutorial\' AND rating_for_id=' . $field . ' AND rating=10) AS likes';
+    return '(SELECT COUNT(*) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'tutorial') . ' AND rating_for_id=' . $field . ' AND rating=10) AS likes';
 }
 
 function tutorial_sql_likes_recent($field)
 {
-    return '(SELECT COUNT(*) FROM ' . get_table_prefix() . 'rating WHERE rating_for_type=\'tutorial\' AND rating_for_id=' . $field . ' AND rating=10 AND rating_time>' . strval(time() - 60 * 60 * 24 * 31) . ') AS likes_recent';
+    return '(SELECT COUNT(*) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'tutorial') . ' AND rating_for_id=' . $field . ' AND rating=10 AND rating_time>' . strval(time() - 60 * 60 * 24 * 31) . ') AS likes_recent';
 }
 
 function find_tutorial_image($icon, $tags, $get_theme_image = false)

@@ -123,7 +123,7 @@
         });
     };
 
-    $cms.templates.echomShoppingItemQuantityField = function echomShoppingItemQuantityField(params, container) {
+    $cms.templates.ecomShoppingItemQuantityField = function ecomShoppingItemQuantityField(params, container) {
         $cms.dom.on(container, 'keypress', '.js-keypress-unfade-cart-update-button', function () {
             document.getElementById('cart_update_button').classList.remove('button_faded');
         });

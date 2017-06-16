@@ -673,7 +673,7 @@
         for (i = 0; i < elements.length; i++) {
             if (elements[i].href && elements[i].href.includes('://')) {
                 try {
-                    if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) {// guard due to weird Firefox bug, JS actions still opening new window
+                    if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) { // guard due to weird Firefox bug, JS actions still opening new window
                         elements[i].target = 'false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
                     }
                 } catch (ignore) {} // IE can have security exceptions
@@ -789,7 +789,7 @@
         var value = field.value,
             errorEl = $cms.dom.$('#error_' + field.id);
 
-        if ((value.trim() === '') || (value === '****') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
+        if ((value.trim() === '') || (value === '{!POST_WARNING;^}') || (value === '{!THREADED_REPLY_NOTICE;^,{!POST_WARNING}}')) {
             if (errorEl !== null) {
                 errorEl.style.display = 'block';
                 $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');

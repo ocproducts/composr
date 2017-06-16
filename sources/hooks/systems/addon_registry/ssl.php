@@ -130,7 +130,6 @@ class Hook_addon_registry_ssl
      */
     public function tpl_preview__administrative__ssl_configuration_screen()
     {
-        require_lang('ssl');
         $entries = array();
         $k = 0;
         foreach (placeholder_array() as $_k => $v) {

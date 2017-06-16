@@ -198,7 +198,6 @@ function attach_wysiwyg()
         attach_to_javascript(do_template('WYSIWYG_LOAD'));
     }
     $WYSIWYG_ATTACHED = true;
-    @header('Content-type: text/html; charset=' . get_charset());
 }
 
 /**
@@ -316,19 +315,17 @@ function get_attachments($posting_field_name)
  * @param  string $extra Extra info to put on the posting form
  * @param  ?Tempcode $specialisation2 A buildup of trailing extra fields, in a format compatible with the templates used by this function. (null: none)
  * @param  ?Tempcode $default_parsed The parsed Comcode. (null: calculate)
- * @param  ?string $javascript JavaScript code to include (null: none)
+ * @param  ?array $js_function_calls JavaScript functions to execute (null: none)
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $required Whether this is a required input field
  * @param  boolean $has_preview Whether the form supports previewing
  * @param  boolean $avoid_wysiwyg Whether to avoid WYSIWYG mode
  * @param  boolean $support_autosave Whether to support auto-save
- * @param  boolean $specialisation2_hidden Whether to support auto-save
+ * @param  boolean $specialisation2_hidden Whether to hide trailing extra fields
  * @param  mixed $description A description for this input field
- * @param  mixed $js_function_calls JavaScript functions to execute
  * @return Tempcode The posting form
  */
-function
-get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $js_function_calls = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
+function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $js_function_calls = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
 {
     require_javascript('posting');
     require_javascript('plupload');
@@ -1957,7 +1954,7 @@ function form_input_theme_image($pretty_name, $description, $name, $ids, $select
                 if ($url == '') {
                     $url = find_theme_image($id, false, false, 'default', $lang, $db);
                 }
-                $pretty = $direct_titles ? make_string_tempcode($id) : make_string_tempcode(ucfirst((strrpos($id, '/') === false) ? $id : substr($id, strrpos($id, '/') + 1)));
+                $pretty = $direct_titles ? make_string_tempcode($id) : make_string_tempcode(titleify((strrpos($id, '/') === false) ? $id : substr($id, strrpos($id, '/') + 1)));
             }
             if ($url == '') {
                 continue;

@@ -207,10 +207,10 @@ function simple_tracker_script()
         'c_date_and_time' => time(),
         'c_member_id' => get_member(),
         'c_ip_address' => get_ip_address(),
-        'c_url' => $url,
+        'c_url' => cms_mb_substr($url, 0, 255),
     ));
 
-    header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+    header('Location: ' . escape_header($url));
 }
 
 /**
@@ -309,7 +309,7 @@ function cron_bridge_script($caller)
         }
 
         // Run, with basic locking support
-        if ($GLOBALS['DEV_MODE'] || get_value_newer_than('cron_currently_running__' . $hook, time() - 60 * 5, true) !== '1' || get_param_integer('force', 0) == 1) {
+        if ($GLOBALS['DEV_MODE'] || get_value_newer_than('cron_currently_running__' . $hook, time() - 60 * 60 * 5, true) !== '1' || get_param_integer('force', 0) == 1) {
             if ($log_file !== null) {
                 flock($log_file, LOCK_EX);
                 fseek($log_file, 0, SEEK_END);
@@ -429,7 +429,7 @@ function page_link_redirect_script()
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
 
-    header('Location: ' . $x);
+    header('Location: ' . escape_header($x));
 }
 
 /**
@@ -559,7 +559,7 @@ function thumb_script()
     if ((strpos($url_thumb, "\n") !== false) || (strpos($url_thumb, "\r") !== false)) {
         log_hack_attack_and_exit('HEADER_SPLIT_HACK');
     }
-    header('Location: ' . $url_thumb);
+    header('Location: ' . escape_header($url_thumb));
 }
 
 /**

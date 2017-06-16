@@ -69,8 +69,8 @@ function render_quiz_box($row, $zone = '_SEARCH', $give_context = true, $guid = 
 /**
  * Get quiz data for exporting it as a CSV.
  *
- * @param   AUTO_LINK $quiz_id Quiz ID
- * @return  array       Quiz data array
+ * @param  AUTO_LINK $quiz_id Quiz ID
+ * @return array Quiz data array
  */
 function get_quiz_data_for_csv($quiz_id)
 {
@@ -130,8 +130,8 @@ function get_quiz_data_for_csv($quiz_id)
 /**
  * Get quiz data for exporting it as CSV.
  *
- * @param   array $questions The quiz questions
- * @return  Tempcode    The rendered quiz
+ * @param  array $questions The quiz questions
+ * @return Tempcode The rendered quiz
  */
 function render_quiz($questions)
 {
@@ -186,12 +186,12 @@ function render_quiz($questions)
 /**
  * Score a particular quiz entry.
  *
- * @param   AUTO_LINK $entry_id Entry ID
- * @param   ?AUTO_LINK  $quiz_id Quiz ID (null: look up from entry ID)
- * @param   ?array      $quiz Quiz row (null: look up from entry ID)
- * @param   ?array      $questions Question rows (null: look up from entry ID)
- * @param   boolean $reveal_all Whether to show answers, regardless of whether the quiz is set to do so
- * @return  array       A tuple of quiz result details
+ * @param  AUTO_LINK $entry_id Entry ID
+ * @param  ?AUTO_LINK $quiz_id Quiz ID (null: look up from entry ID)
+ * @param  ?array $quiz Quiz row (null: look up from entry ID)
+ * @param  ?array $questions Question rows (null: look up from entry ID)
+ * @param  boolean $reveal_all Whether to show answers, regardless of whether the quiz is set to do so
+ * @return array A tuple of quiz result details
  */
 function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null, $reveal_all = false)
 {

@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
+
 <div class="constrain_field" data-tpl="formScreenInputLineMulti">
 	<div>
 		<div class="accessibility_hidden"><label for="{NAME_STUB*}{I*}">{PRETTY_NAME*}</label></div>
@@ -6,4 +7,3 @@
 		<input type="hidden" name="label_for__{NAME_STUB*}{I*}" value="{PRETTY_NAME*}" />
 	</div>
 </div>
-

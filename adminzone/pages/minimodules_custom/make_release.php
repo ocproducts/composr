@@ -61,24 +61,27 @@ function phase_0()
         $release_description = 'This version is a beta release of the next major version of Composr';
     } elseif (strpos($on_disk_version, 'RC') !== false) {
         $release_description = 'This version is a release candidate for the next major version of Composr';
-    } elseif (substr($on_disk_version, -2) == '.0') {
-        $release_description = 'This version is the gold release of the next version of Composr';
-    } else {
+    } elseif (substr_count($on_disk_version, '.') == 2) {
         $release_description = 'This version is a patch release that introduces a number of bug fixes since the last release';
+    } else {
+        $release_description = 'This version is the gold release of the next version of Composr';
     }
 
     $changes = 'All reported bugs since the last release have been fixed.';
-    if (strpos($release_description, 'patch release') !== false) {
-        $on_disk_version_parts = explode('.', $on_disk_version);
-        $last = count($on_disk_version_parts) - 1;
-        $on_disk_version_parts[$last] = strval(intval($on_disk_version_parts[$last]) - 1);
-        $on_disk_version_previous = implode('.', $on_disk_version_parts);
 
-        $changes .= ' For a list of the more important fixes, see the [url="bugs catalogue"]http://compo.sr/tracker/search.php?project_id=1&product_version=' . urlencode($on_disk_version_previous) . '[/url]. For all changes, see the [url="git history"]http://github.com/ocproducts/composr/commits/' . $on_disk_version_previous . '[/url].';
+    $on_disk_version_parts = explode('.', $on_disk_version);
+    $last = count($on_disk_version_parts) - 1;
+    $on_disk_version_parts[$last] = strval(intval($on_disk_version_parts[$last]) - 1);
+    $on_disk_version_previous = implode('.', $on_disk_version_parts);
+
+    $tracker_url = 'http://compo.sr/tracker/search.php?project_id=1';
+    if (($on_disk_version_parts[$last] >= 0) && (substr_count($on_disk_version, '.') == 2)) {
+        $tracker_url .= '&product_version=' . urlencode($on_disk_version_previous);
     }
-    if (strpos($release_description, 'gold') !== false) {
-        $changes = 'TODO';
-    }
+
+    $changes .= ' For a list of the more important fixes, see the [url="tracker"]' . $tracker_url . '[/url].
+
+For all changes, see the [url="git history"]http://github.com/ocproducts/composr/commits/[/url].';
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '1')));
 
@@ -127,7 +130,7 @@ function phase_0()
             <input type="checkbox" name="skip" id="skip" value="1" ' . $skip_check . ' /><label for="skip">Installer already compiled</label>
             <input type="checkbox" name="bleeding_edge" ' . (((strpos($release_description, 'patch release') === false) && (strpos($release_description, 'gold') === false)) ? 'checked="checked" ' : '') . 'id="bleeding_edge" value="1" /><label for="bleeding_edge">Bleeding-edge release</label>
             <input type="checkbox" name="old_tree" id="old_tree" value="1" /><label for="old_tree">Older-tree maintenance release</label>
-            <input type="checkbox" name="make_uni_upgrader" id="make_uni_upgrader" value="1" /><label for="make_uni_upgrader">Make uni-upgrader archive (for easy upgrader testing)</label>
+            <input type="checkbox" name="make_omni_upgrader" id="make_omni_upgrader" value="1" /><label for="make_omni_upgrader">Make omni-upgrader archive (for easy upgrader testing)</label>
             <p><input type="submit" class="buttons__proceed button_screen" value="Shake it baby" /></p>
         </fieldset>
     </form>
@@ -153,6 +156,7 @@ function phase_1_pre()
         ';
     }
     echo '
+        <li>Test doing an upgrade from the prior version</li>
         <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
         <li>A good way to test that module/block/addon upgrade code is working as expected is to use the MySQL cleanup tool. It will say if tables/indices/privileges are not in the database as they are expected to be (assuming you already generated <kbd>db_meta.dat</kbd> via <kbd>data_custom/build_db_meta_file.php</kbd> on a clean install).</li>
         <li>Write custom theme upgrading code into <kbd>sources/upgrade.php</kbd>. Make sure all ocProducts themes are up-to-date (CSS changes, template changes, theme image changes). TODO: Update this when Convertr done.</li>
@@ -173,10 +177,6 @@ function phase_1_pre()
         <li>Review the <a title="Non-maintained feature list (this link will open in a new window)" target="_blank" href="http://compo.sr/maintenance-status.htm">non-maintained feature list</a> to see if there are any obscure features this release may have broken (even if non-maintained we want things to generally remain as working)</li>
     </ul>
     ';
-
-    if (strpos(file_get_contents(get_file_base() . '/install.sql'), file_get_contents(get_file_base() . '/install1.sql')) === false) {
-        warn_exit('install1.sql seems out-dated. Run the \'installsql\' unit test.');
-    }
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '1')));
 
@@ -308,8 +308,10 @@ function phase_2()
 
         echo '
             <li><strong>Installatron</strong>: Go into <a target="_blank" href="http://installatron.com/editor">Installatron</a>, login with the privileged management account, and setup a new release with the new version number (Main tab), update the URL (Version Info tab, use "Installatron installer (direct download)") and scroll down and click "Save all changes", and Publish (Publisher tab).</li>
-            <li><strong>Microsoft Web Platform</strong>: <a target="_blank" href="https://webgallery.microsoft.com/portal">Submit the new MS Web App Gallery file to Microsoft</a> using the privileged management account (chris@compo.sr). Change the \'Version\', the \'Package Location URL\' (use "Microsoft installer (direct download)"), and set the shasum to <kbd>' . escape_html($ms_sha1) . '</kbd>. <strong>Wait a few days for this (note down the task); approval takes time and we want to make sure we are past any teething problems first</strong></li>
+            <li><strong>Microsoft Web Platform</strong>: <a target="_blank" href="https://webgallery.microsoft.com/portal">Submit the new MS Web App Gallery file to Microsoft</a> using the privileged management account (chris@compo.sr). Change the \'Version\', the \'Release Date\', the \'Package Location URL\' (use "Microsoft installer (direct download)"), and set the shasum to <kbd>' . escape_html($ms_sha1) . '</kbd>. <strong>Wait a few days for this (note down the task); approval takes time and we want to make sure we are past any teething problems first</strong></li>
             <li><strong>Other integrations</strong>: E-mail <a href="mailto:?bcc=punit@softaculous.com,brijesh@softaculous.com&amp;subject=New Composr release&amp;body=Hi, this is an automated notification that a new release of Composr has been released - regards, the Composr team.">integration partners</a></li>
+            <li>Update <a target="_blank" href="http://www.hotscripts.com/profile/listings/edit/32832/">listing on Hotscripts</a></li>
+            <li>Update <a target="_blank" href="https://en.wikipedia.org/w/index.php?title=Composr_CMS&action=edit">listing on Wikipedia</a> ("latest release version" and "latest release date")</li>
         ';
     }
 
@@ -364,6 +366,7 @@ function phase_2()
                 </ul></li>
                 <li>Zip the graphics into <kbd>erd_rendered__by_addon.zip</kbd></li>
                 <li>Put <kbd>erd_rendered__by_addon.zip</kbd> and <kbd>erd_sql__by_addon.zip</kbd> into <kbd>docs</kbd>)</li>
+                <li>Get <a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=sql-show-tables-by-addon&amp;keep_devtest=1">table details</a> and update <kbd>docs/codebook_data_dictionary.docx</kbd></li>
                 <li>Git: Commit/push</li>
             </ul></li>
 
@@ -402,11 +405,12 @@ function phase_2()
                 <li>Add <a target="_blank" href="http://cmsreport.com/submit-story">news on CMS Report</a></li>
                 <li>Add <a target="_blank" href="http://cmscritic.com/">news on CMS Critic</a> (may mean emailing the story in)</li>
                 <li>Update <a target="_blank" href="http://www.cmsmatrix.org/">listing on CMS Matrix</a></li>
-                <li>Update <a target="_blank" href="http://www.hotscripts.com/listing/composr/">listing on Hotscripts</a></li>
                 <li>Add news on the <a target="_blank" href="http://members.opensourcecms.com/login.php">Open Source CMS site</a></li>
             </ul></li>
 
             <li>Newsletter (<em>Optional</em>): Send <a target="_blank" href="http://compo.sr/adminzone/admin-newsletter.htm">newsletter</a></li>
+
+            <li><a target="_blank" href="https://compo.sr/docs/sup-professional-upgrading.htm">Upgrade users</a></li>
         ';
     }
 

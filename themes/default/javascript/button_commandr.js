@@ -50,7 +50,7 @@ function loadCommandr() {
                 }
 
                 var bi;
-                if ($cms.dom.notDisplayed(commandrBox)) {// Showing Commandr again
+                if ($cms.dom.notDisplayed(commandrBox)) { // Showing Commandr again
                     $cms.dom.show(commandrBox);
 
                     if (img) {
@@ -78,7 +78,7 @@ function loadCommandr() {
                     }
 
                     document.getElementById('commandr_command').focus();
-                } else {// Hiding Commandr
+                } else { // Hiding Commandr
                     if (img) {
                         img.src = $cms.img('{$IMG;,icons/24x24/tool_buttons/commandr_on}');
                         if (img.srcset !== undefined) {

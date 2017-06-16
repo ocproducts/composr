@@ -14,4 +14,3 @@
 <h2>{!ADD_TICKET_TYPE}</h2>
 
 {ADD_FORM}
-

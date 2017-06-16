@@ -70,7 +70,7 @@ function rescue_shortened_post_request()
     foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {
         if ((@is_numeric(ini_get($setting))) && (intval(ini_get($setting)) > 10)) {
             $this_setting_value = intval(ini_get($setting));
-            if ($this_setting_value < $setting_value) {
+            if (($setting_value === null) || ($this_setting_value < $setting_value)) {
                 $setting_value = $this_setting_value;
                 $setting_name = $setting;
             }
@@ -79,7 +79,7 @@ function rescue_shortened_post_request()
 
     if (($setting_value !== null) && ($setting_value > 1/*sanity check*/)) {
         if ((count($_POST) >= $setting_value - 5) || (array_count_recursive($_POST) >= $setting_value - 5)) {
-            if (has_zone_access(get_member(), 'adminzone')) {
+            if ((has_zone_access(get_member(), 'adminzone')) || (running_script('upgrader'))) {
                 $post = parse_raw_http_request();
                 if ($post !== null) {
                     $_POST = $post;
@@ -95,8 +95,8 @@ function rescue_shortened_post_request()
 /**
  * Count how many elements in an array, recursively.
  *
- * @param   array $arr The array
- * @return  integer  The count
+ * @param  array $arr The array
+ * @return integer The count
  */
 function array_count_recursive($arr)
 {
@@ -116,7 +116,7 @@ function array_count_recursive($arr)
  * Based on https://gist.github.com/chlab/4283560
  * Doesn't support more than one level of list nesting, or associative arrays
  *
- * @return  ?array   Associative array of request data (null: could not rescue)
+ * @return ?array Associative array of request data (null: could not rescue)
  */
 function parse_raw_http_request()
 {

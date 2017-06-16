@@ -32,7 +32,7 @@ class Hook_config_invites_per_day
     {
         return array(
             'human_name' => 'INVITES_PER_DAY',
-            'type' => 'float',
+            'type' => 'integer',
             'category' => 'USERS',
             'group' => 'JOINING',
             'explanation' => 'CONFIG_OPTION_invites_per_day',

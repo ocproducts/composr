@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,search}
+
 <form role="search" title="{TITLE*}" data-tpl="blockTopSearch" data-tpl-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}" class="js-submit-check-search-content-element" action="{$URL_FOR_GET_FORM*,{URL}}" method="get" autocomplete="off">
 	{$HIDDENS_FOR_GET_FORM,{URL}}
 

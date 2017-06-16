@@ -30,6 +30,8 @@ function init__chat()
 
     if (!defined('CHAT_ACTIVITY_PRUNE')) {
         define('CHAT_ACTIVITY_PRUNE', 25); // How many seconds before doing database cleanup operations, including member timeouts for going offline. NB: This define is duplicated in chat_poller.php for performance
+    }
+    if (!defined('CHAT_EVENT_PRUNE')) {
         define('CHAT_EVENT_PRUNE', 60 * 60 * 24); // How many seconds to keep event messages for
     }
 }
@@ -395,7 +397,10 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
     }
 
     require_lang('chat');
-    require_lang('submitban');
+
+    if (addon_installed('securitylogging')) {
+        require_lang('submitban');
+    }
 
     $room_check = null;
     $room_row = null;
@@ -461,15 +466,15 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
 
         if ((addon_installed('actionlog')) && (has_actual_page_access(get_member(), 'admin_actionlog')) && (preg_match('#[:\.]#', $_message['ip_address']) != 0)) {
             if (is_guest($_message['member_id'])) {
-                $ban_url = build_url(array('page' => 'admin_actionlog', 'type' => 'toggle_ip_ban', 'id' => $_message['ip_address']), get_module_zone('admin_actionlog'));
+                $ban_url = build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_ip_ban', 'id' => $_message['ip_address']), get_module_zone('admin_actionlog'));
             } else {
-                $ban_url = build_url(array('page' => 'admin_actionlog', 'type' => 'toggle_submitter_ban', 'id' => $_message['member_id']), get_module_zone('admin_actionlog'));
+                $ban_url = build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_submitter_ban', 'id' => $_message['member_id']), get_module_zone('admin_actionlog'));
             }
         } else {
             $ban_url = new Tempcode();
         }
 
-        if (($room_id != -1) && (addon_installed('actionlog')) && ((has_actual_page_access(get_member(), 'admin_actionlog')) || (has_actual_page_access(get_member(), 'cms_chat')))) {
+        if (($room_id != -1) && (addon_installed('actionlog')) && (addon_installed('securitylogging')) && ((has_actual_page_access(get_member(), 'admin_actionlog')) || (has_actual_page_access(get_member(), 'cms_chat')))) {
             $staff_actions = do_template('CHAT_STAFF_ACTIONS', array('_GUID' => 'd3fbcaa9eee688452091583ee436e465', 'CHAT_BAN_URL' => $chat_ban_url, 'CHAT_UNBAN_URL' => $chat_unban_url, 'EDIT_URL' => $edit_url, 'BAN_URL' => $ban_url));
         } else {
             $staff_actions = new Tempcode();
@@ -975,8 +980,8 @@ function chat_post_message($room_id, $message, $font_name, $text_colour)
 /**
  * Get the people who have posted a message in the specified room within the last x minutes (defaults to five). Note that this function performs no pruning- the chat lobby will do that. It does do an activity time-range select though.
  *
- * @param   ?AUTO_LINK     $room_id The room ID (null: lobby)
- * @return  array          A map of members in the room. User ID=>Username
+ * @param  ?AUTO_LINK $room_id The room ID (null: lobby)
+ * @return array A map of members in the room. User ID=>Username
  */
 function get_chatters_in_room($room_id)
 {
@@ -1000,8 +1005,8 @@ function get_chatters_in_room($room_id)
 /**
  * Get some template code showing the number of chatters in a room.
  *
- * @param   array $users A mapping (user=>username) of the chatters in the room
- * @return  Tempcode       The Tempcode
+ * @param  array $users A mapping (user=>username) of the chatters in the room
+ * @return Tempcode The Tempcode
  */
 function get_chatters_in_room_tpl($users)
 {
@@ -1069,7 +1074,7 @@ function get_chatroom_id($room_name, $must_not_be_im = false)
 /**
  * Get an array of all the chatrooms.
  *
- * @return  array       An array of all the chatrooms
+ * @return array An array of all the chatrooms
  */
 function chat_get_all_rooms()
 {
@@ -1471,8 +1476,8 @@ function _remove_empty_messages($messages, $message_ids)
 /**
  * Takes a comma-separated list of usernames, split it up, convert all the usernames to IDs, and put it all back together again.
  *
- * @param   string $_allow A comma-separated list of usernames
- * @return  string         A comma-separated list of member IDs
+ * @param  string $_allow A comma-separated list of usernames
+ * @return string A comma-separated list of member IDs
  */
 function parse_allow_list_input($_allow)
 {

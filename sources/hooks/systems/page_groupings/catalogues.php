@@ -91,7 +91,7 @@ class Hook_page_groupings_catalogues
                             }
                         }
 
-                        $ret2[] = array($page_grouping, $menu_icon, array('catalogues', array('type' => 'index', 'id' => $row['c_name']), get_module_zone('catalogues')), make_string_tempcode(escape_html(get_translated_text($row['c_title']))), get_translated_tempcode('catalogues', $row, 'c_description'));
+                        $ret2[] = array($page_grouping, $menu_icon, array('catalogues', array('type' => 'index', 'id' => $row['c_name'], 'tree' => $row['c_is_tree']), get_module_zone('catalogues')), make_string_tempcode(escape_html(get_translated_text($row['c_title']))), get_translated_tempcode('catalogues', $row, 'c_description'));
                     }
                 }
 

@@ -524,8 +524,9 @@ function edit_event_type($id, $title, $logo, $external_feed)
     require_code('urls2');
     suggest_new_idmoniker_for('calendar', 'browse', strval($id), '', $title);
 
-    require_code('files2');
-    delete_upload('themes/default/images_custom/calendar', 'calendar_types', 't_logo', 'id', $id, $logo);
+    $old_theme_img_code = $myrow['t_logo'];
+    require_code('themes2');
+    tidy_theme_img_code($logo, $old_theme_img_code, 'calendar_types', 't_logo');
 
     $map = array(
         't_logo' => $logo,
@@ -566,6 +567,11 @@ function delete_event_type($id)
 
     require_code('files2');
     delete_upload('themes/default/images_custom/calendar', 'calendar_types', 't_logo', 'id', $id);
+
+    $old_theme_img_code = $myrow['t_logo'];
+    require_code('themes2');
+    tidy_theme_img_code(null, $old_theme_img_code, 'calendar_types', 't_logo');
+
 
     $GLOBALS['SITE_DB']->query_delete('calendar_types', array('id' => $id), '', 1);
 

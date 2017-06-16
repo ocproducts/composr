@@ -49,7 +49,7 @@ function download_gateway_script()
         $url .= $keep->evaluate();
     }
 
-    attach_to_screen_header('<meta http-equiv="refresh" content="2; URL=' . $download_url . '">');
+    attach_to_screen_header('<meta http-equiv="refresh" content="2; URL=' . $download_url->evaluate() . '">');
 
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
@@ -60,7 +60,7 @@ function download_gateway_script()
         $tpl_wrapped = globalise($tpl, null, '', true, true);
         $tpl_wrapped->evaluate_echo();
     } else {
-        header('Location:' . $download_url);
+        header('Location:' . escape_header($download_url->evaluate()));
     }
 }
 
@@ -129,6 +129,7 @@ function dload_script()
 
                 $dif = $cost - available_points($member);
                 if (($dif > 0) && (!has_privilege(get_member(), 'have_negative_gift_points'))) {
+                    require_lang('points');
                     warn_exit(do_lang_tempcode('LACKING_POINTS', escape_html(integer_format($dif))));
                 }
                 require_code('points2');
@@ -159,10 +160,10 @@ function dload_script()
     $mime_type = get_mime_type(get_file_extension($myrow['original_filename']), false);
     if (get_option('immediate_downloads') == '1' && $mime_type != 'application/octet-stream') {
         header('Content-Type: ' . $mime_type . '; authoritative=true;');
-        header('Content-Disposition: inline; filename="' . escape_header($myrow['original_filename']) . '"');
+        header('Content-Disposition: inline; filename="' . escape_header($myrow['original_filename'], true) . '"');
     } else {
         header('Content-Type: application/octet-stream' . '; authoritative=true;');
-        header('Content-Disposition: attachment; filename="' . escape_header($myrow['original_filename']) . '"');
+        header('Content-Disposition: attachment; filename="' . escape_header($myrow['original_filename'], true) . '"');
     }
 
     // Is it non-local? If so, redirect
@@ -173,7 +174,7 @@ function dload_script()
         if ((strpos($full, "\n") !== false) || (strpos($full, "\r") !== false)) {
             log_hack_attack_and_exit('HEADER_SPLIT_HACK');
         }
-        header('Location: ' . str_replace("\r", '', str_replace("\n", '', $full)));
+        header('Location: ' . escape_header($full));
         log_download($id, 0, $got_before !== null); // Bandwidth used is 0 for an external download
         return;
     }
@@ -601,7 +602,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
         case 'tar':
             require_code('tar');
             $tmp_file = cms_tempnam();
-            file_put_contents($tmp_file, data);
+            file_put_contents($tmp_file, $data);
             $myfile_tar = tar_open($tmp_file, 'rb');
             if ($myfile_tar !== false) {
                 $directory = tar_get_directory($myfile_tar);
@@ -1330,8 +1331,8 @@ function log_download($id, $size, $got_before)
     $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'download_downloads SET num_downloads=(num_downloads+1) WHERE id=' . strval($id), 1, null, true);
 
     // Update stats
-    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=(the_value+1) WHERE the_name=\'num_downloads_downloaded\'', 1, null, true);
+    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=' . db_cast('(' . db_cast('the_value', 'INT') . '+1)', 'CHAR') . ' WHERE the_name=\'num_downloads_downloaded\'', 1, null, true);
     if ($size != 0) {
-        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=(the_value+' . strval($size) . ') WHERE the_name=\'download_bandwidth\'', 1, null, true);
+        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'values SET the_value=' . db_cast('(' . db_cast('the_value', 'INT') . '+' . strval($size) . ')', 'CHAR') . ' WHERE the_name=\'download_bandwidth\'', 1, null, true);
     }
 }

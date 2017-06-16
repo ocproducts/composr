@@ -53,7 +53,7 @@
 					<input value="1" class="input_tick js-click-value-input-toggle-disabled" id="{CUSTOM_NAME*}" name="{CUSTOM_NAME*}" type="checkbox" />
 					<label for="{CUSTOM_NAME*}">{!OTHER}</label> <label for="{CUSTOM_NAME*}_value"><span class="associated_details">({!PLEASE_STATE})</span></label>
 					<input id="{CUSTOM_NAME*}_value" class="js-change-value-checkbox-toggle-checked" name="{CUSTOM_NAME*}_value"
-                           value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" size="15" type="text" />
+						value="{+START,IF_PASSED,CUSTOM_VALUE}{CUSTOM_VALUE*}{+END}" size="15" type="text" />
 				</div></div>
 			{+END}
 		</div>
@@ -63,4 +63,3 @@
 		</div>
 	{+END}
 </div>
-

@@ -237,11 +237,11 @@
 
             //{$,Autofit the map around the markers}
             if (center) {
-                if (boundLength == 0) {//{$,We may have to center at given lat/long after all if there are no pins}
+                if (boundLength == 0) { //{$,We may have to center at given lat/long after all if there are no pins}
                     data_map.setCenter(specifiedCenter);
-                } else if (boundLength == 1) {//{$,Center around the only pin}
+                } else if (boundLength == 1) { //{$,Center around the only pin}
                     data_map.setCenter(new google.maps.LatLng(data[0][1], data[0][2]));
-                } else {//{$,Good - autofit lots of pins}
+                } else { //{$,Good - autofit lots of pins}
                     data_map.fitBounds(bounds);
                 }
             }

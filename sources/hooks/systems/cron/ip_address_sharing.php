@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    ecommerce
  */
 
 /**
@@ -42,6 +42,8 @@ class Hook_cron_ip_address_sharing
         if (is_cns_satellite_site()) {
             return;
         }
+
+        require_lang('ecommerce');
 
         $time = time();
 

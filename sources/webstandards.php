@@ -39,15 +39,17 @@ We have a few global flags to tweak behaviour:
  */
 function init__webstandards()
 {
-    // These are old doctypes we'll recognise for gracefulness, but we don't accept them as valid
-    define('DOCTYPE_HTML', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">');
-    define('DOCTYPE_HTML_STRICT', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">');
-    define('DOCTYPE_XHTML', '<!DOCTYPE html>');
-    define('DOCTYPE_XHTML_STRICT', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">');
-    define('DOCTYPE_XHTML_11', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">');
+    if (!defined('DOCTYPE_HTML')) {
+        // These are old doctypes we'll recognise for gracefulness, but we don't accept them as valid
+        define('DOCTYPE_HTML', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">');
+        define('DOCTYPE_HTML_STRICT', '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">');
+        define('DOCTYPE_XHTML', '<!DOCTYPE html>');
+        define('DOCTYPE_XHTML_STRICT', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">');
+        define('DOCTYPE_XHTML_11', '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">');
 
-    // (X)HTML5, the future
-    define('DOCTYPE_XHTML5', '<!DOCTYPE html>');
+        // (X)HTML5, the future
+        define('DOCTYPE_XHTML5', '<!DOCTYPE html>');
+    }
 
     global $WEBSTANDARDS_CHECKER_OFF, $WELL_FORMED_ONLY, $WEBSTANDARDS_JAVASCRIPT, $WEBSTANDARDS_CSS, $WEBSTANDARDS_WCAG, $WEBSTANDARDS_COMPAT, $WEBSTANDARDS_EXT_FILES, $WEBSTANDARDS_MANUAL, $WEBSTANDARDS_CSP;
     $WEBSTANDARDS_JAVASCRIPT = true;
@@ -1029,21 +1031,23 @@ function init__webstandards()
         'optgroup' => array('label'),
     );
 
-    define('IN_XML_TAG', -3);
-    define('IN_DTD_TAG', -2);
-    define('NO_MANS_LAND', -1);
-    define('IN_COMMENT', 0);
-    define('IN_TAG_NAME', 1);
-    define('STARTING_TAG', 2);
-    define('IN_TAG_BETWEEN_ATTRIBUTES', 3);
-    define('IN_TAG_ATTRIBUTE_NAME', 4);
-    define('IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT', 5);
-    define('IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT', 7);
-    define('IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES', 10);
-    define('IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES', 12);
-    define('IN_TAG_EMBEDDED_COMMENT', 9);
-    define('IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES', 8);
-    define('IN_CDATA', 11);
+    if (!defined('IN_XML_TAG')) {
+        define('IN_XML_TAG', -3);
+        define('IN_DTD_TAG', -2);
+        define('NO_MANS_LAND', -1);
+        define('IN_COMMENT', 0);
+        define('IN_TAG_NAME', 1);
+        define('STARTING_TAG', 2);
+        define('IN_TAG_BETWEEN_ATTRIBUTES', 3);
+        define('IN_TAG_ATTRIBUTE_NAME', 4);
+        define('IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_LEFT', 5);
+        define('IN_TAG_BETWEEN_ATTRIBUTE_NAME_VALUE_RIGHT', 7);
+        define('IN_TAG_ATTRIBUTE_VALUE_BIG_QUOTES', 10);
+        define('IN_TAG_ATTRIBUTE_VALUE_NO_QUOTES', 12);
+        define('IN_TAG_EMBEDDED_COMMENT', 9);
+        define('IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES', 8);
+        define('IN_CDATA', 11);
+    }
 }
 
 /**

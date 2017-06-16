@@ -186,14 +186,12 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
                     $this_details = $db->query_select('catalogue_categories cc JOIN ' . $db->get_table_prefix() . 'catalogues c ON c.c_name=cc.c_name', array('cc_parent_id', 'cc.c_name', 'c_is_tree'), array('id' => intval($matches[1])), '', 1);
                     if ($this_details[0]['c_is_tree'] == 0) {
                         $out_or .= _selectcode_eq($category_field_name, $matches[1], $numeric_category_set_ids);
-                    } elseif ($this_details[0]['cc_parent_id'] === null) {
+                    } else {
                         if ($this_details[0]['cc_parent_id'] === null) {
                             $out_or .= db_string_equal_to('c_name', $this_details[0]['c_name']);
                         } else {
                             $out_or .= $category_field_name . ' IN (SELECT cc_id FROM ' . $db->get_table_prefix() . 'catalogue_cat_treecache WHERE cc_ancestor_id=' . strval(intval($matches[1])) . ')';
                         }
-                    } else {
-                        $out_or = '1=0';
                     }
                 } else {
                     $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings, $matches[2] != '>', $matches[2] != '>');

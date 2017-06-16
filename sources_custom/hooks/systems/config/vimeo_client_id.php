@@ -33,6 +33,7 @@ class Hook_config_vimeo_client_id
             'explanation' => 'CONFIG_OPTION_vimeo_client_id',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 7,
 
             'addon' => 'gallery_syndication',
         );

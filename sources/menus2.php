@@ -100,7 +100,7 @@ function import_menu_csv($file_path = null)
     }
     fclose($myfile);
 
-    delete_cache_entry('side_stored_menu');
+    delete_cache_entry('menu');
 }
 
 /**

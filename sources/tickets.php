@@ -153,25 +153,36 @@ function get_ticket_forum_id($ticket_type_id = null, $create = false, $silent_er
  */
 function is_ticket_forum($forum_id)
 {
+    static $cache = array();
+    if (isset($cache[$forum_id])) {
+        return $cache[$forum_id];
+    }
+
     if ($forum_id === null) {
+        $cache[$forum_id] = false;
         return false;
     }
 
     $root_ticket_forum_id = get_ticket_forum_id(null, false, true);
     if ($root_ticket_forum_id === null) {
+        $cache[$forum_id] = false;
         return false;
     }
     if (($root_ticket_forum_id == db_get_first_id()) && ($forum_id != db_get_first_id())) {
+        $cache[$forum_id] = false;
         return false; // If ticket forum (oddly) set as root, don't cascade it through all!
     }
     if ($forum_id === $root_ticket_forum_id) {
+        $cache[$forum_id] = true;
         return true;
     }
 
     $query = 'SELECT COUNT(*) AS cnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($forum_id) . ' AND f_parent_forum IN (SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($root_ticket_forum_id) . ' OR f_parent_forum IN (SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($root_ticket_forum_id) . '))';
 
     $rows = $GLOBALS['FORUM_DB']->query($query);
-    return ($rows[0]['cnt'] != 0);
+    $ret = ($rows[0]['cnt'] != 0);
+    $cache[$forum_id] = $ret;
+    return $ret;
 }
 
 /**
@@ -195,7 +206,7 @@ function get_tickets($filters = array(), $include_first_posts = false, $silent_e
         $only_owner_id = get_member();
     }
 
-    $only_assigned_id = array_key_exists('only_assigned_id', $filters) ? $filters['only_assigned_id'] : null; // TODO
+    $only_assigned_id = array_key_exists('only_assigned_id', $filters) ? $filters['only_assigned_id'] : null; // TODO #2330
 
     $only_open = array_key_exists('only_open', $filters) ? $filters['only_open'] : false;
 

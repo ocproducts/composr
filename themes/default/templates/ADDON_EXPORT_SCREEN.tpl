@@ -38,4 +38,3 @@
 {+START,IF_EMPTY,{FILES}}
 	<p class="nothing_here">{!NONE_EM}</p>
 {+END}
-

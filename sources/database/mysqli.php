@@ -49,7 +49,7 @@ class Database_Static_mysqli extends Database_super_mysql
         if (!function_exists('mysqli_connect')) {
             $error = 'MySQLi not on server (anymore?). Try using the \'mysql\' database driver. To use it, edit the _config.php config file.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -65,12 +65,17 @@ class Database_Static_mysqli extends Database_super_mysql
 
             return array($this->cache_db[$x], $db_name);
         }
-        $db_link = @mysqli_connect(($persistent ? 'p:' : '') . $db_host, $db_user, $db_password);
+        $db_port = 3306;
+        if (strpos($db_host, ':') !== false) {
+            list($db_host, $_db_port) = explode(':', $db_host);
+            $db_port = intval($_db_port);
+        }
+        $db_link = @mysqli_connect(($persistent ? 'p:' : '') . $db_host, $db_user, $db_password, '', $db_port);
 
         if ($db_link === false) {
             $error = 'Could not connect to database-server (when authenticating) (' . mysqli_connect_error() . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
@@ -100,7 +105,7 @@ class Database_Static_mysqli extends Database_super_mysql
 
         global $SITE_INFO;
         if (function_exists('mysqli_set_charset')) {
-            mysqli_set_charset($db_link, $SITE_INFO['database_charset']);
+            @mysqli_set_charset($db_link, $SITE_INFO['database_charset']);
         } else {
         }
 
@@ -111,7 +116,7 @@ class Database_Static_mysqli extends Database_super_mysql
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
-     * @param  array $connection A DB connection
+     * @param  mixed $connection The DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
@@ -156,14 +161,13 @@ class Database_Static_mysqli extends Database_super_mysql
             return null;
         }
 
-        $sub = substr(ltrim($query), 0, 7);
-        $sub = substr($query, 0, 4);
+        $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->get_query_rows($results);
         }
 
         if ($get_insert_id) {
-            if (strtoupper(substr($query, 0, 7)) === 'UPDATE ') {
+            if (strtoupper(substr(ltrim($query), 0, 7)) === 'UPDATE ') {
                 return mysqli_affected_rows($db_link);
             }
             $ins = mysqli_insert_id($db_link);

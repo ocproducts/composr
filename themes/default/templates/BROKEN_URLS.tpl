@@ -16,4 +16,3 @@
 		{+END}
 	</div></section>
 {+END}
-

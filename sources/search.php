@@ -25,9 +25,11 @@
  */
 function init__search()
 {
-    define('MINIMUM_AUTOCOMPLETE_LENGTH', intval(get_option('minimum_autocomplete_length')));
-    define('MINIMUM_AUTOCOMPLETE_PAST_SEARCH', intval(get_option('minimum_autocomplete_past_search')));
-    define('MAXIMUM_AUTOCOMPLETE_SUGGESTIONS', intval(get_option('maximum_autocomplete_suggestions')));
+    if (!defined('MINIMUM_AUTOCOMPLETE_LENGTH')) {
+        define('MINIMUM_AUTOCOMPLETE_LENGTH', intval(get_option('minimum_autocomplete_length')));
+        define('MINIMUM_AUTOCOMPLETE_PAST_SEARCH', intval(get_option('minimum_autocomplete_past_search')));
+        define('MAXIMUM_AUTOCOMPLETE_SUGGESTIONS', intval(get_option('maximum_autocomplete_suggestions')));
+    }
 }
 
 /**
@@ -40,7 +42,7 @@ abstract class FieldsSearchHook
     /**
      * Get a list of extra sort fields.
      *
-     * @param string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
+     * @param  string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
      * @return array A map between parameter name and string label
      */
     protected function _get_extra_sort_fields($catalogue_name)
@@ -66,11 +68,15 @@ abstract class FieldsSearchHook
     /**
      * Get a list of extra fields to ask for.
      *
-     * @param string $catalogue_name Catalogue to search in (may be a special custom content fields catalogue)
+     * @param  string $catalogue_name Catalogue to search in (may be a special custom content fields catalogue)
      * @return array A list of maps specifying extra fields
      */
     protected function _get_fields($catalogue_name)
     {
+        if (!addon_installed('catalogues')) {
+            return array();
+        }
+
         $fields = array();
         $rows = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name, 'cf_searchable' => 1, 'cf_visible' => 1), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         require_code('fields');
@@ -93,8 +99,8 @@ abstract class FieldsSearchHook
     /**
      * Get details needed (SQL etc) to perform an advanced field search.
      *
-     * @param string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
-     * @param string $table_alias Table alias for main content table
+     * @param  string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
+     * @param  string $table_alias Table alias for main content table
      * @return ?array A big tuple of details used to search with (null: no fields)
      */
     protected function _get_search_parameterisation_advanced($catalogue_name, $table_alias = 'r')
@@ -244,11 +250,11 @@ abstract class FieldsSearchHook
     /**
      * Get details needed (SQL etc) to perform an advanced field search for custom content fields (builds on _get_search_parameterisation_advanced).
      *
-     * @param string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
-     * @param string $table Table clause to add to
-     * @param string $where_clause Where clause to add to
-     * @param array $trans_fields Translatable fields to add to
-     * @param array $nontrans_fields Non-translatable fields to add to
+     * @param  string $catalogue_name Catalogue we are searching in in (may be a special custom content fields catalogue)
+     * @param  string $table Table clause to add to
+     * @param  string $where_clause Where clause to add to
+     * @param  array $trans_fields Translatable fields to add to
+     * @param  array $nontrans_fields Non-translatable fields to add to
      */
     protected function _get_search_parameterisation_advanced_for_content_type($catalogue_name, &$table, &$where_clause, &$trans_fields, &$nontrans_fields)
     {
@@ -257,7 +263,7 @@ abstract class FieldsSearchHook
             return;
         }
 
-        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=r.id AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
+        $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entry_linkage l ON l.content_id=' . db_cast('r.id', 'CHAR') . ' AND ' . db_string_equal_to('content_type', substr($catalogue_name, 1));
         $table .= ' LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entries ce ON ce.id=l.catalogue_entry_id';
 
         list($sup_table, $sup_where_clause, $sup_trans_fields, $sup_nontrans_fields) = $advanced;
@@ -326,27 +332,7 @@ function is_under_radar($test)
         return false;
     }
 
-    return ((strlen($test) < get_minimum_search_length()) && ($test != ''));
-}
-
-/**
- * Get minimum search length for MySQL.
- *
- * @return integer    Search length
- */
-function get_minimum_search_length()
-{
-    static $min_word_length = null;
-    if ($min_word_length === null) {
-        $min_word_length = 4;
-        if (substr(get_db_type(), 0, 5) == 'mysql') {
-            $_min_word_length = $GLOBALS['SITE_DB']->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', null, null, true);
-            if (isset($_min_word_length[0])) {
-                $min_word_length = intval($_min_word_length[0]['Value']);
-            }
-        }
-    }
-    return $min_word_length;
+    return ((strlen($test) < $GLOBALS['SITE_DB']->get_minimum_search_length()) && ($test != ''));
 }
 
 /**
@@ -515,8 +501,9 @@ function do_search_block($map)
 
     $limit_to = array('all_defaults');
     $extrax = array();
-    if (array_key_exists('limit_to', $map)) {
+    if ((array_key_exists('limit_to', $map)) && ($map['limit_to'] != 'all_defaults')) {
         $limit_to = array();
+        $map['limit_to'] = str_replace('|', ',', $map['limit_to']); // "|" looks cleaner in templates
         foreach (explode(',', $map['limit_to']) as $key) {
             $limit_to[] = 'search_' . $key;
             if (strpos($map['limit_to'], ',') !== false) {

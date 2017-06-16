@@ -14,4 +14,3 @@
 		<div>{CONTENT}</div>
 	</body>
 </html>
-

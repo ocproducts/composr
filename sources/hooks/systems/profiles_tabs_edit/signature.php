@@ -74,8 +74,8 @@ class Hook_profiles_tabs_edit_signature
 
         require_lang('cns');
         require_javascript('cns_signatures');
-        $js_function_calls = [];
-        $js_function_calls[] = ['hookProfilesTabsEditSignatureRenderTab', $size];
+        $js_function_calls = array();
+        $js_function_calls[] = array('hookProfilesTabsEditSignatureRenderTab', $size);
 
         require_code('form_templates');
         $required = false;

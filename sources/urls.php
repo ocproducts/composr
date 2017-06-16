@@ -77,13 +77,15 @@ function init__urls()
     $HAS_NO_KEEP_CONTEXT = false;
     $NO_KEEP_CONTEXT_STACK = array();
 
-    define('SELF_REDIRECT', '!--:)defUNLIKELY');
+    if (!defined('SELF_REDIRECT')) {
+        define('SELF_REDIRECT', '!--:)defUNLIKELY');
+    }
 }
 
 /**
  * Get a well formed URL equivalent to the current URL. Reads direct from the environment and does no clever mapping at all. This function should rarely be used.
  *
- * @param boolean $script_name_if_cli Return the script name instead of a URL, if running on the CLI. If this is set to false it will return the base URL instead.
+ * @param  boolean $script_name_if_cli Return the script name instead of a URL, if running on the CLI. If this is set to false it will return the base URL instead.
  * @return URLPATH The URL
  */
 function get_self_url_easy($script_name_if_cli = false)
@@ -97,22 +99,7 @@ function get_self_url_easy($script_name_if_cli = false)
 
     $protocol = tacit_https() ? 'https' : 'http';
     $self_url = $protocol . '://' . cms_srv('HTTP_HOST');
-    $ruri = cms_srv('REQUEST_URI');
-    if ($ruri != '') {
-        if (substr($ruri, 0, 1) != '/') {
-            $self_url .= '/';
-        }
-        $self_url .= $ruri;
-    } else {
-        $s = cms_srv('PHP_SELF');
-        if (substr($s, 0, 1) != '/') {
-            $self_url .= '/';
-        }
-        $self_url .= $s;
-        if ((array_key_exists('QUERY_STRING', $_SERVER)) && ($_SERVER['QUERY_STRING'] != '')) {
-            $self_url .= '?' . $_SERVER['QUERY_STRING'];
-        }
-    }
+    $self_url .= cms_srv('REQUEST_URI');
     return $self_url;
 }
 
@@ -1038,7 +1025,7 @@ function page_link_decode($page_link)
     } elseif ($zone === '_SELF') {
         $zone = get_zone_name();
     }
-    if (isset($bits[1])) {
+    if ((isset($bits[1])) && (strpos($bits[1], '=') === false)) {
         if ($bits[1] !== '') {
             if ($bits[1] === '_SELF') {
                 $attributes = array('page' => get_page_name());

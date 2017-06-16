@@ -41,6 +41,9 @@ if ($limit_file == '') {
     $files = array($limit_file);
 }
 foreach ($files as $i => $file) {
+    if (preg_match('#^exports/#', $file) != 0) {
+        continue;
+    }
     if (substr($file, -4) != '.php') {
         continue;
     }

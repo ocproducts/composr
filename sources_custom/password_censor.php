@@ -44,7 +44,7 @@ function password_censor($auto = false, $display = true, $days_ago = 30)
     header('Content-type: text/plain; charset=' . get_charset());
 
     foreach ($rows as $row) {
-        $text_start = get_translated_text($row['p_post']);
+        $text_start = get_translated_text($row['p_post'], $GLOBALS['FORUM_DB']);
         $text_after = _password_censor($text_start, PASSWORD_CENSOR__TIMEOUT_SCAN);
         if ($text_after != $text_start) {
             if (multi_lang_content()) {

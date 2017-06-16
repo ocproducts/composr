@@ -90,7 +90,7 @@ function realtimeRainButtonLoadHandler() {
     var img = $cms.dom.$('#realtime_rain_img');
 
     var e = $cms.dom.$('#real_time_surround');
-    if (e) {// Clicked twice - so now we close it
+    if (e) { // Clicked twice - so now we close it
         bubblesTidyUp();
         if (window.bubble_timer_1) {
             window.clearInterval(window.bubble_timer_1);

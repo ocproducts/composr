@@ -94,6 +94,10 @@ class Block_main_staff_actions
      */
     public function run($map)
     {
+        if (!addon_installed('actionlog')) {
+            return new Tempcode();
+        }
+
         require_all_lang();
 
         require_css('adminzone_dashboard');

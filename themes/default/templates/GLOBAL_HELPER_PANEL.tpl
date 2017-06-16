@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_primary_layout}
+
 <div class="global_helper_panel_wrap" data-view="GlobalHelperPanel">
 	<a id="helper_panel_toggle" href="#!" class="js-click-toggle-helper-panel">
 		{+START,IF,{$NOT,{$HIDE_HELP_PANEL}}}

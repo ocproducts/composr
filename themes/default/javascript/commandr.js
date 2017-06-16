@@ -69,7 +69,7 @@ window.previous_commands || (window.previous_commands = []);
 
     // Deal with Commandr history
     function commandrHandleHistory(element, keyCode, e) {
-        if ((keyCode == 38) && (window.previous_commands.length > 0)) {// Up button
+        if ((keyCode == 38) && (window.previous_commands.length > 0)) { // Up button
             e && event.stopPropagation();
             if (e.cancelable) {
                 e.preventDefault();
@@ -84,7 +84,7 @@ window.previous_commands || (window.previous_commands = []);
                 element.value = window.previous_commands[window.current_command];
             }
             return false;
-        } else if ((keyCode == 40) && (window.previous_commands.length > 0)) {// Down button
+        } else if ((keyCode == 40) && (window.previous_commands.length > 0)) { // Down button
 
             e && e.stopPropagation();
             if (e.cancelable) {
@@ -132,7 +132,6 @@ window.previous_commands || (window.previous_commands = []);
 
         return false;
     }
-
 }(window.$cms));
 
 // Deal with the response to a command
@@ -294,5 +293,3 @@ function bsod() {
         }
     }
 }
-
-

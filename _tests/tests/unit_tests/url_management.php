@@ -20,17 +20,20 @@ class url_management_test_set extends cms_test_case
 {
     public function testUrlToPageLink()
     {
-        $test = url_to_page_link(get_base_url() . '/site/pg/downloads/browse/test?foo=bar');
-        $this->assertTrue($test == 'site:downloads:browse:test:foo=bar', 'Got wrong page-link for decode on PG scheme (' . $test . ')');
+        $zone_pathed = (get_option('collapse_user_zones') == '1') ? '' : 'site/';
+        $zone = (get_option('collapse_user_zones') == '1') ? '' : 'site';
 
-        $test = url_to_page_link(get_base_url() . '/site/downloads/browse/test?foo=bar');
-        $this->assertTrue($test == 'site:downloads:browse:test:foo=bar', 'Got wrong page-link for decode on SIMPLE scheme (' . $test . ')');
+        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'pg/downloads/browse/test?foo=bar');
+        $this->assertTrue($test == $zone . ':downloads:browse:test:foo=bar', 'Got wrong page-link for decode on PG scheme (' . $test . '), ' . $test);
 
-        $test = url_to_page_link(get_base_url() . '/site/downloads/browse/test.htm?foo=bar');
-        $this->assertTrue($test == 'site:downloads:browse:test:foo=bar', 'Got wrong page-link for decode on HTM scheme (' . $test . ')');
+        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'downloads/browse/test?foo=bar');
+        $this->assertTrue($test == $zone . ':downloads:browse:test:foo=bar', 'Got wrong page-link for decode on SIMPLE scheme (' . $test . '), ' . $test);
 
-        $test = url_to_page_link(get_base_url() . '/site/index.php?page=downloads&type=browse&id=test&&foo=bar');
-        $this->assertTrue($test == 'site:downloads:browse:test:foo=bar', 'Got wrong page-link for decode on RAW scheme (' . $test . ')');
+        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'downloads/browse/test.htm?foo=bar');
+        $this->assertTrue($test == $zone . ':downloads:browse:test:foo=bar', 'Got wrong page-link for decode on HTM scheme (' . $test . '), ' . $test);
+
+        $test = url_to_page_link(get_base_url() . '/' . $zone_pathed . 'index.php?page=downloads&type=browse&id=test&&foo=bar');
+        $this->assertTrue($test == $zone . ':downloads:browse:test:foo=bar', 'Got wrong page-link for decode on RAW scheme (' . $test . '), ' . $test);
     }
 
     public function testCycle()

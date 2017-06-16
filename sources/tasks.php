@@ -100,7 +100,7 @@ function execute_task_background($task_row)
             if ($mime_type === null) {
                 $subject = do_lang('TASK_FAILED_SUBJECT', $task_row['t_title']);
                 $_content_result = is_object($content_result) ? ('[semihtml]' . $content_result->evaluate() . '[/semihtml]') : $content_result;
-                $message = do_notification_lang('TASK_FAILED_SIMPLE', $_content_result);
+                $message = do_notification_lang('TASK_FAILED_BODY', $_content_result);
             } else {
                 $subject = do_lang('TASK_COMPLETED_SUBJECT', $task_row['t_title']);
 

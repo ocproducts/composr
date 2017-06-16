@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,twitter_feed_integration_block}
+
 <section class="box box___block_main_quotes" data-require-javascript="twitter_feed_integration_block" data-tpl="blockTwitterFeed"><div class="box_inner">
 	{+START,IF_NON_EMPTY,{TWITTER_TITLE}}<h3>{TWITTER_TITLE*}</h3>{+END}
 	{+START,IF_EMPTY,{TWITTER_ERROR}}
@@ -62,7 +63,7 @@
 	{+START,IF_NON_EMPTY,{TWITTER_ERROR}}
 		<div class="webstandards_checker_off">
 			{+START,IF,{$IS_STAFF}}
-			   <b>Twitter Name:</b> <a href='http://www.twitter.com/{USER_SCREEN_NAME&*}' target='_blank'>{USER_SCREEN_NAME*}</a><br />
+				<b>Twitter Name:</b> <a href='http://www.twitter.com/{USER_SCREEN_NAME&*}' target='_blank'>{USER_SCREEN_NAME*}</a><br />
 				<b>Error:</b> {TWITTER_ERROR`}<br />
 				You are seeing the block error message(s) because you are an admin.<br />
 				Normal web site guests and members won't see this.<br />

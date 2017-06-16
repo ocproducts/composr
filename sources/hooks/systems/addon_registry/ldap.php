@@ -147,6 +147,7 @@ class Hook_addon_registry_ldap
     public function tpl_preview__administrative__cns_ldap_sync_screen()
     {
         require_lang('cns');
+
         $members_delete = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('CNS_LDAP_LIST_ENTRY', array(

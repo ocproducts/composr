@@ -88,7 +88,7 @@ class Hook_search_news extends FieldsSearchHook
     /**
      * Get a list of extra fields to ask for.
      *
-     * @return array A list of maps specifying extra fields
+     * @return array A list of maps specifying extra fields (null: no tree)
      */
     public function get_fields()
     {

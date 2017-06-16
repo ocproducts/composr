@@ -6,4 +6,3 @@
 		{!NO_FORWARDINGS}
 	</p>
 {+END}
-

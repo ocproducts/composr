@@ -468,10 +468,17 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         window.lang_NO_IMAGE_PASTE_SAFARI = '{!javascript:NO_IMAGE_PASTE_SAFARI;^}';
 
         // Mainly used by autosaving, but also sometimes CKEditor seems to not refresh the textarea (e.g. for one user's site when pressing delete key on an image)
-        editor.on('change', function (event) {
+        var sync = function (event) {
             element.value = editor.getData();
             if (element.externalOnKeyPress !== undefined) {
                 element.externalOnKeyPress(event, element);
+            }
+        };
+        editor.on('change', sync);
+        editor.on('mode',function() {
+            var ta = editor.container.$.getElementsByTagName('textarea');
+            if (typeof ta[0] != 'undefined') {
+                ta[0].onchange = sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
             }
         });
 
@@ -549,8 +556,10 @@ function findTagsInEditor(editor, element) {
                 if (event.pageY) eventCopy.pageY = 3000;
                 if (event.clientY) eventCopy.clientY = 3000;
 
-                $cms.ui.repositionTooltip(this, eventCopy);
-                this.title = this.orig_title;
+                if (typeof this.orig_title != 'undefined') {
+                    $cms.ui.repositionTooltip(this, eventCopy);
+                    this.title = this.orig_title;
+                }
             }
         };
         comcodes[i].onmousedown = function (event) {
@@ -782,7 +791,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
         } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
 
             var after = editor.getData();
-            if (after === before) {// Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
+            if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
                 editor.document.getBody().appendHtml(insert);
             }
         }
@@ -800,7 +809,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
         sel = document.selection ? document.selection : null;
     }
 
-    if (element.selectionEnd !== undefined)  {// Mozilla style
+    if (element.selectionEnd !== undefined)  { // Mozilla style
         from = element.selectionStart;
         to = element.selectionEnd;
 
@@ -809,7 +818,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
 
         element.value = start + element.value.substring(from, to) + text + end;
         setSelectionRange(element, from + text.length, from + text.length);
-    } else if (sel) {// IE style
+    } else if (sel) { // IE style
         var ourRange = sel.createRange();
         if ((ourRange.moveToElementText) || (ourRange.parentElement() == element)) {
             if (ourRange.parentElement() != element) ourRange.moveToElementText(element);
@@ -842,10 +851,10 @@ function getSelectedHtml(editor) {
 
     var selectedText = '';
     if (mySelection.getNative()) {
-        if ((window.CKEDITOR.env.ie) && (mySelection.getNative().getRangeAt === undefined)) {// IE8 and under (selection object)
+        if ((window.CKEDITOR.env.ie) && (mySelection.getNative().getRangeAt === undefined)) { // IE8 and under (selection object)
             mySelection.unlock(true);
             selectedText = mySelection.getNative().createRange().htmlText;
-        } else {// IE9 / standards (HTMLSelection object)
+        } else { // IE9 / standards (HTMLSelection object)
             try {
                 selectedText = $cms.dom.html(mySelection.getNative().getRangeAt(0).cloneContents());
             } catch (e) {}
@@ -893,7 +902,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
             newHtml = selectedHtml;
         }
 
-        if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() == 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
+        if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() == 'kbd')) { // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
             editor.document.getBody().appendHtml(newHtml);
         } else {
             editor.insertHtml(newHtml);
@@ -906,7 +915,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         return;
     }
 
-    if (element.selectionEnd != null)  {// Mozilla style
+    if (element.selectionEnd != null)  { // Mozilla style
         from = element.selectionStart;
         to = element.selectionEnd;
 
@@ -919,7 +928,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
             element.value = start + beforeWrapTag + afterWrapTag + end;
         }
         setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
-    } else if (document.selection != null) {// IE style
+    } else if (document.selection != null) { // IE style
         element.focus();
         var sel = document.selection;
         var ourRange = sel.createRange();

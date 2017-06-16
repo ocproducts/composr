@@ -183,7 +183,7 @@ function bookings_ical_script()
 
     $id = get_param_integer('id');
     $where = 'bookable_id=' . strval($id) . ' AND (b_year>' . date('Y', $time) . ' OR (b_year=' . date('Y', $time) . ' AND b_month>' . date('m', $time) . ') OR (b_year=' . date('Y', $time) . ' AND b_month=' . date('m', $time) . ' AND b_day>=' . date('d', $time) . '))';
-    $members_with_bookings = $GLOBALS['SITE_DB']->query('SELECT DISTINCT member_id FROM ' . get_table_prefix() . 'booking WHERE ' . $where . ' ORDER BY booked_at DESC', 10000/*reasonable limit*/);
+    $members_with_bookings = $GLOBALS['SITE_DB']->query('SELECT DISTINCT member_id,booked_at FROM ' . get_table_prefix() . 'booking WHERE ' . $where . ' ORDER BY booked_at DESC', 10000/*reasonable limit*/);
     echo "BEGIN:VCALENDAR\n";
     echo "VERSION:2.0\n";
     echo "PRODID:-//ocProducts/Composr//NONSGML v1.0//EN\n";

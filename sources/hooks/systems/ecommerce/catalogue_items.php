@@ -587,7 +587,7 @@ class Hook_ecommerce_catalogue_items
             $stock_level_warn_threshold = intval($field_rows[4]['effective_value_pure']);
         }
 
-        $product_name = get_translated_text($row['cc_id']);
+        $product_name = $field_rows[0]['effective_value_pure'];
 
         if ($available_quantity < $quantity && !$stock_maintained) {
             require_code('site');
@@ -608,7 +608,7 @@ class Hook_ecommerce_catalogue_items
     /**
      * Function to return dispatch type of product.
      *
-     * @return  ID_TEXT    Dispatch type (manual/automatic).
+     * @return ID_TEXT Dispatch type (manual/automatic).
      */
     public function get_product_dispatch_type()
     {
@@ -666,7 +666,7 @@ class Hook_ecommerce_catalogue_items
 /**
  * Update stock count after transaction.
  *
- * @param  AUTO_LINK $entry_id Product ID.
+ * @param  ID_TEXT $entry_id Product ID.
  * @param  array $details Details of product.
  */
 function handle_catalogue_items($entry_id, $details)

@@ -1267,7 +1267,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     protected function _get_moderator_groups()
     {
-        $moderator_group = $this->db->query_value_if_there('SELECT group_id FROM ' . $this->db->get_table_prefix() . 'groups WHERE group_name=\'GLOBAL_MODERATORS\'');
+        $moderator_group = $this->db->query_value_if_there('SELECT group_id FROM ' . $this->db->get_table_prefix() . 'groups WHERE' . db_string_equal_to('group_name', 'GLOBAL_MODERATORS'));
         if ($moderator_group === null) {
             return array();
         }

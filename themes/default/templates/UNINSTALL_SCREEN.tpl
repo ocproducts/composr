@@ -14,4 +14,3 @@
 		<input class="button_screen menu___generic_admin__delete" type="submit" value="{!UNINSTALL}" />
 	</p>
 </form>
-

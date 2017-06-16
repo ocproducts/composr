@@ -314,9 +314,9 @@ function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = nul
 
     if ((get_option('post_read_history_days') != '0') && (get_value('avoid_normal_topic_read_history') !== '1')) {
         // Occasionally we need to delete old entries
-        if (mt_rand(0, 1000) == 123) {
+        if (mt_rand(0, 100) == 1) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
-                $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs WHERE l_time<' . strval($post_read_history_days_ago) . ' AND l_time<>0');
+                $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs WHERE l_time<' . strval($post_read_history_days_ago) . ' AND l_time<>0', 500/*to reduce lock times*/);
             }
         }
     }

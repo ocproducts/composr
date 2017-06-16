@@ -157,15 +157,17 @@ class Module_admin_pointstore
                 $username = do_lang('UNKNOWN');
             }
             switch ($row['purchasetype']) {
-                case 'banner':
-                    require_lang('banners');
-                    $type = do_lang('ADD_BANNER');
-                    break;
                 case 'pop3':
                     $type = do_lang('POP3');
                     break;
                 case 'forwarding':
                     $type = do_lang('FORWARDING');
+                    break;
+                case 'banner':
+                    if (addon_installed('banners')) {
+                        require_lang('banners');
+                        $type = do_lang('ADD_BANNER');
+                    }
                     break;
                 default:
                     $_type = do_lang($row['purchasetype'], null, null, null, null, false);

@@ -50,6 +50,8 @@
                         });
                     }
                     if (document.getElementById('next_slide')) {
+                        media.preload = 'auto';
+                        media.loop = false;
                         media.addEventListener('canplay', function () {
                             stopSlideshowTimer();
                             player.play();

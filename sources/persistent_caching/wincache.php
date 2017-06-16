@@ -32,7 +32,7 @@ class Persistent_caching_wincache
      *
      * @return array The list of objects
      */
-    public function load_objects_list()
+    public function &load_objects_list()
     {
         if ($this->objects_list === null) {
             $success = false;
@@ -75,10 +75,10 @@ class Persistent_caching_wincache
     public function set($key, $data, $flags = 0, $expire_secs = null)
     {
         // Update list of persistent-objects
-        $objects_list = $this->load_objects_list();
-        if (!array_key_exists($key, $objects_list)) {
-            $objects_list[$key] = true;
-            wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        $this->load_objects_list();
+        if (!array_key_exists($key, $this->objects_list)) {
+            $this->objects_list[$key] = true;
+            wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list);
         }
 
         if ($expire_secs === null) {
@@ -95,9 +95,9 @@ class Persistent_caching_wincache
     public function delete($key)
     {
         // Update list of persistent-objects
-        $objects_list = $this->load_objects_list();
-        unset($objects_list[$key]);
-        //wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list); Wasteful
+        $this->load_objects_list();
+        unset($this->objects_list[$key]);
+        //wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list); Wasteful
 
         wincache_ucache_delete($key);
     }
@@ -108,8 +108,8 @@ class Persistent_caching_wincache
     public function flush()
     {
         // Update list of persistent-objects
-        $objects_list = array();
-        wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list);
+        $this->objects_list = array();
+        wincache_ucache_set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list);
 
         wincache_ucache_clear();
     }

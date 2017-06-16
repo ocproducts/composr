@@ -91,7 +91,7 @@ class Hook_task_import_rss
             if ($post_time === false) {
                 $post_time = time(); // We've seen this situation in an error email, it's if the add date won't parse by PHP
             }
-            if (($post_time < 0) || ($post_time > 2147483647)) {
+            if (($post_time < 0) || ($post_time > 2147483647)) { // TODO: #3046 in tracker
                 $post_time = 2147483647;
             }
             $edit_time = array_key_exists('clean_edit_date', $item) ? $item['clean_edit_date'] : (array_key_exists('edit_date', $item) ? strtotime($item['edit_date']) : null);
@@ -99,7 +99,7 @@ class Hook_task_import_rss
                 $edit_time = null;
             }
             if ($edit_time !== null) {
-                if (($edit_time < 0) || ($edit_time > 2147483647)) {
+                if (($edit_time < 0) || ($edit_time > 2147483647)) { // TODO: #3046 in tracker
                     $edit_time = 2147483647;
                 }
             }

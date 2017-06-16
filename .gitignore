@@ -63,6 +63,16 @@ gibberish
 php.ini
 /*.shtml
 /uploads/auto_thumbs/*
+/uploads/incoming/*.dat
+/uploads/*/*__*.png
+images_custom/*/*__*.png
+default/images/*/*__*.png
+/uploads/*/*__*.jpg
+images_custom/*/*__*.jpg
+default/images/*/*__*.jpg
+/uploads/*/*__*.jpeg
+images_custom/*/*__*.jpeg
+default/images/*/*__*.jpeg
 /data_custom/failover_rewritemap.txt
 /data_custom/failover_rewritemap__mobile.txt
 _meta_tree

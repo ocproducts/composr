@@ -18,6 +18,10 @@
  * @package    core
  */
 
+/*
+REMEMBER to keep db_export.sh updated too
+*/
+
 /**
  * Standard code module initialisation function.
  *
@@ -25,18 +29,20 @@
  */
 function init__database_relations()
 {
-    define('TABLE_PURPOSE__NORMAL', 0);
-    define('TABLE_PURPOSE__NO_BACKUPS', 1); // For some reason we do not backup this
-    define('TABLE_PURPOSE__FLUSHABLE', 2 + (4)); // Flushable because the contents is not HUGELY important. Should not be routinely flushed. Logs, chats, etc - not member settings, etc. Think: "stuff to do before opening a new site that has just gone through testing"
-    define('TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE', 4); // Flushable if we're being extra aggressive. Don't set if already has FLUSHABLE set
-    define('TABLE_PURPOSE__NO_STAGING_COPY', 8); // For some special reason we don't copy this between staging to live. Don't set if already has FLUSHABLE set
-    define('TABLE_PURPOSE__NON_BUNDLED', 16); // Non-bundled. Do not apply this to anything defined in this core file. Applies only to non-bundled tables injected via an override to this file
-    define('TABLE_PURPOSE__AUTOGEN_STATIC', 32); // Contents is auto-generated/meta and essentially static, not for merging between sites
-    define('TABLE_PURPOSE__MISC_NO_MERGE', 64); // Should not be merged between sites for other unspecified reasons
-    define('TABLE_PURPOSE__SUBDATA', 128); // Data which is subsumed under other data when doing a transfer and has some importance but is totally meaningless when taken on its own
-    define('TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG', 256); // We won't give the table full handling somewhere under a Resource-fs hook, we'll have a Commandr-fs extended config hook instead
-    // -
-    define('TABLE_PURPOSE__NOT_KNOWN', 512);
+    if (!defined('TABLE_PURPOSE__NORMAL')) {
+        define('TABLE_PURPOSE__NORMAL', 0);
+        define('TABLE_PURPOSE__NO_BACKUPS', 1); // For some reason we do not backup this
+        define('TABLE_PURPOSE__FLUSHABLE', 2 + (4)); // Flushable because the contents is not HUGELY important. Should not be routinely flushed. Logs, chats, etc - not member settings, etc. Think: "stuff to do before opening a new site that has just gone through testing"
+        define('TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE', 4); // Flushable if we're being extra aggressive. Don't set if already has FLUSHABLE set
+        define('TABLE_PURPOSE__NO_STAGING_COPY', 8); // For some special reason we don't copy this between staging to live. Don't set if already has FLUSHABLE set
+        define('TABLE_PURPOSE__NON_BUNDLED', 16); // Non-bundled. Do not apply this to anything defined in this core file. Applies only to non-bundled tables injected via an override to this file
+        define('TABLE_PURPOSE__AUTOGEN_STATIC', 32); // Contents is auto-generated/meta and essentially static, not for merging between sites
+        define('TABLE_PURPOSE__MISC_NO_MERGE', 64); // Should not be merged between sites for other unspecified reasons
+        define('TABLE_PURPOSE__SUBDATA', 128); // Data which is subsumed under other data when doing a transfer and has some importance but is totally meaningless when taken on its own
+        define('TABLE_PURPOSE__AS_COMMANDER_FS_EXTENDED_CONFIG', 256); // We won't give the table full handling somewhere under a Resource-fs hook, we'll have a Commandr-fs extended config hook instead
+        // -
+        define('TABLE_PURPOSE__NOT_KNOWN', 512);
+    }
 }
 
 /**
@@ -110,7 +116,7 @@ function get_table_purpose_flags()
         'db_meta' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
         'db_meta_indices' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__AUTOGEN_STATIC,
         'digestives_consumed' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
-        'digestives_tin' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
+        'digestives_tin' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__MISC_NO_MERGE/*ephemeral*/,
         'download_categories' => TABLE_PURPOSE__NORMAL,
         'download_downloads' => TABLE_PURPOSE__NORMAL,
         'download_licences' => TABLE_PURPOSE__NORMAL,
@@ -260,8 +266,8 @@ function get_table_purpose_flags()
 /**
  * Find if a table must be ignored for backups or whatever flag(s).
  *
- * @param string $table The table name
- * @param integer $flag A particular flag(s)
+ * @param  string $table The table name
+ * @param  integer $flag A particular flag(s)
  * @return boolean Whether the flag(s) exists (at least one)
  */
 function table_has_purpose_flag($table, $flag)
@@ -346,7 +352,7 @@ function get_table_descriptions()
 /**
  * Get a map of foreign key relations.
  *
- * @param string $table A particular table
+ * @param  string $table A particular table
  * @return array Map of foreign key relations
  */
 function get_relation_map_for_table($table)
@@ -514,4 +520,194 @@ function get_relation_map()
         'wiki_posts.page_id' => 'wiki_pages.id',
         'newsletter_drip_send.d_message_id' => 'newsletter_archive.id',
     );
+}
+
+/**
+ * Get a list of the defined tables.
+ *
+ * @param  object $db Database connector to look in
+ * @return array The tables
+ */
+function find_all_tables($db)
+{
+    $fields = $db->query_select('db_meta', array('m_table', 'm_name', 'm_type'), null, 'ORDER BY m_table');
+    $tables = array();
+    foreach ($fields as $field) {
+        if (!isset($tables[$field['m_table']])) {
+            $tables[$field['m_table']] = array();
+        }
+        $tables[$field['m_table']][$field['m_name']] = $field['m_type'];
+    }
+    $tables['db_meta'] = array('m_table' => '*ID_TEXT', 'm_name' => '*ID_TEXT', 'm_type' => 'ID_TEXT');
+    $tables['db_meta_indices'] = array('i_table' => '*ID_TEXT', 'i_name' => '*ID_TEXT', 'i_fields' => '*ID_TEXT');
+
+    ksort($tables);
+
+    return $tables;
+}
+
+/**
+ * Get an SQL dump of a database.
+ *
+ * @param  resource $out_file File to stream into
+ * @param  boolean $include_drops Whether to include 'DROP' statements
+ * @param  boolean $output_statuses Whether to output status as we go
+ * @param  array $skip Array of table names to skip
+ * @param  ?array $only Array of only table names to do (null: all)
+ * @param  ?object $db Database connector to use (null: site database)
+ * @param  ?string $intended_db_type Database driver to use (null: site database driver)
+ */
+function get_sql_dump($out_file, $include_drops = false, $output_statuses = false, $skip = array(), $only = null, $db = null, $intended_db_type = null)
+{
+    disable_php_memory_limit();
+    if (php_function_allowed('set_time_limit')) {
+        @set_time_limit(0);
+    }
+    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
+
+    require_code('database_helper');
+
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
+    }
+
+    if ($intended_db_type === null) {
+        $intended_db_type = get_db_type();
+    }
+    require_code('database/' . $intended_db_type);
+    $db_static = object_factory('Database_Static_' . $intended_db_type);
+
+    if (!$GLOBALS['DB_STATIC_OBJECT']->supports_drop_table_if_exists($db->connection_write)) {
+        $include_drops = false; // "DROP IF EXISTS" only supported on some DBs.
+    }
+
+    // Tables
+    $tables = find_all_tables($db);
+    foreach ($tables as $table_name => $fields) {
+        if (in_array($table_name, $skip)) {
+            continue;
+        }
+        if (($only !== null) && (!in_array($table_name, $only))) {
+            continue;
+        }
+
+        if ($output_statuses) {
+            print('Working out SQL for table: ' . $table_name . "\n");
+            flush();
+        }
+
+        if ($include_drops) {
+            $queries = $db_static->drop_table_if_exists($db->get_table_prefix() . $table_name, $db->connection_write);
+            foreach ($queries as $sql) {
+                fwrite($out_file, $sql . ";\n\n");
+            }
+        }
+
+        $fields_copy = $fields;
+        foreach ($fields_copy as $name => $type) {
+            if (!multi_lang_content()) {
+                if (strpos($type, '_TRANS') !== false) {
+                    if (strpos($type, '__COMCODE') !== false) {
+                        $fields[$name . '__text_parsed'] = 'LONG_TEXT';
+                        $fields[$name . '__source_user'] = 'MEMBER';
+                    }
+
+                    $fields[$name] = 'LONG_TEXT'; // In the DB layer, it must now save as such
+                }
+            }
+        }
+        $queries = $db_static->create_table($db->get_table_prefix() . $table_name, $fields, $table_name, $db->connection_write, null);
+        foreach ($queries as $sql) {
+            fwrite($out_file, $sql . ";\n\n");
+        }
+
+        // Data
+        $start = 0;
+        do {
+            $data = $db->query_select($table_name, array('*'), null, '', 100, $start, false, array());
+            foreach ($data as $map) {
+                $keys = '';
+                $all_values = array();
+
+                foreach ($map as $key => $value) {
+                    if ($keys != '') {
+                        $keys .= ', ';
+                    }
+                    $keys .= $key;
+
+                    $_value = (!is_array($value)) ? array($value) : $value;
+
+                    $v = mixed();
+                    foreach ($_value as $i => $v) {
+                        if (!array_key_exists($i, $all_values)) {
+                            $all_values[$i] = '';
+                        }
+                        $values = $all_values[$i];
+
+                        if ($values != '') {
+                            $values .= ', ';
+                        }
+
+                        if ($value === null) {
+                            $values .= 'NULL';
+                        } else {
+                            if (is_float($v)) {
+                                $values .= float_to_raw_string($v);
+                            } elseif (is_integer($v)) {
+                                $values .= strval($v);
+                            } else {
+                                $values .= '\'' . $db_static->db_escape_string($v) . '\'';
+                            }
+                        }
+
+                        $all_values[$i] = $values; // essentially appends, as $values was loaded from former $all_values[$i] value
+                    }
+                }
+
+                $sql = 'INSERT INTO ' . $db->get_table_prefix() . $table_name . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
+                fwrite($out_file, $sql . ";\n");
+            }
+
+            if (count($data) != 0) {
+                $start += 100;
+            }
+        } while (count($data) != 0);
+
+        // Divider, if we put out some data
+        if ($start > 0) {
+            fwrite($out_file, "\n");
+        }
+
+        // Indexes
+        $indexes = $db->query_select('db_meta_indices', array('*'), array('i_table' => $table_name));
+        foreach ($indexes as $index) {
+            $index_name = $index['i_name'];
+
+            if ($index_name[0] == '#') {
+                $_index_name = substr($index_name, 1);
+                $is_full_text = true;
+            } else {
+                $_index_name = $index_name;
+                $is_full_text = false;
+            }
+
+            $fields = array();
+            foreach (explode(',', $index['i_fields']) as $field_name) {
+                $db_type = $GLOBALS['SITE_DB']->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field_name));
+                $fields[$field_name] = $db_type;
+            }
+
+            $_fields = _helper_generate_index_fields($table_name, $fields, $is_full_text);
+
+            if ($_fields !== null) {
+                $unique_key_fields = implode(',', _helper_get_table_key_fields($table_name));
+
+                $queries = $db_static->create_index(get_table_prefix() . $table_name, $index_name, $_fields, $db->connection_write, $table_name, $unique_key_fields, $db);
+                foreach ($queries as $sql) {
+                    fwrite($out_file, $sql . ";\n\n");
+                }
+            }
+        }
+    }
 }

@@ -30,7 +30,10 @@ function png_compress($path, $lossy = false)
         return;
     }
 
-    $img = imagecreatefrompng($path);
+    $img = @imagecreatefrompng($path);
+    if ($img === false) {
+        return; // Error, e.g. "is not a valid PNG file"
+    }
     imagepalettetotruecolor($img);
 
     // Has alpha?

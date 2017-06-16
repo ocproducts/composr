@@ -107,7 +107,10 @@ class Hook_addon_registry_pointstore_to_main
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'pointstore',
+                'ecommerce',
+            ),
             'recommends' => array(),
             'conflicts_with' => array()
         );

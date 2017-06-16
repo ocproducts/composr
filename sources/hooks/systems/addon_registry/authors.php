@@ -149,8 +149,6 @@ class Hook_addon_registry_authors
      */
     public function tpl_preview__administrative__author_manage_screen()
     {
-        require_lang('global');
-        require_lang('authors');
         return array(
             lorem_globalise(do_lorem_template('AUTHOR_MANAGE_SCREEN', array(
                 'TITLE' => lorem_title(),
@@ -169,8 +167,6 @@ class Hook_addon_registry_authors
      */
     public function tpl_preview__author_screen()
     {
-        require_lang('authors');
-
         $news_released = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $tpl = do_lorem_template('NEWS_BRIEF', array(
@@ -238,8 +234,6 @@ class Hook_addon_registry_authors
      */
     public function tpl_preview__author_popup_window()
     {
-        require_lang('authors');
-
         $authors = array();
         $authors[] = array(
             'AUTHOR' => lorem_phrase(),

@@ -12087,9 +12087,14 @@
                 } else {
                     file.loaded = offset; // reset all progress
 
+                    var contentType = xhr.getResponseHeader('content-type');
+                    if ((typeof contentType != 'undefined') && (contentType != null)) {
+                        contentType = contentType.replace(/;.*$/, '').replace(/^.*:\s*/, '');
+                    }
+
                     up.trigger('Error', {
                         code: plupload.HTTP_ERROR,
-                        message: plupload.translate('HTTP Error.'),
+                        message: (contentType == 'text/plain') ? xhr.responseText : plupload.translate('HTTP Error.'),
                         file: file,
                         response: xhr.responseText,
                         status: xhr.status,
@@ -13295,7 +13300,7 @@ function uploadUpdateProgress(ob, file) {
     }
 
     var progress = new FileProgress(file, ob.settings.progress_target);
-    if (!progress.completed) {// In case it reflects progress after completion, which can happen
+    if (!progress.completed) { // In case it reflects progress after completion, which can happen
         progress.setProgress(percent);
         progress.setStatus('{!javascript:PLUPLOAD_UPLOADING^;}');
     }
@@ -13745,6 +13750,9 @@ function FileProgress(file, targetID) {
         this.fileProgressElement.completed = false;
     } else {
         this.fileProgressElement = this.fileProgressWrapper.firstChild;
+
+        this.appear();
+
         if (file && file.name != undefined)
             $cms.dom.html(this.fileProgressElement.childNodes[1], file.name);
     }
@@ -13776,7 +13784,7 @@ FileProgress.prototype.setError = function () {
     this.fileProgressElement.setAttribute('aria-valuenow', '0');
 
     var oSelf = this;
-    setTimeout(function () {
+    this.fileProgressElement.fader = setTimeout(function () {
         oSelf.disappear();
     },5000);
 };
@@ -13788,7 +13796,7 @@ FileProgress.prototype.setCancelled = function () {
     this.fileProgressElement.setAttribute('aria-valuenow', '0');
 
     var oSelf = this;
-    setTimeout(function () {
+    this.fileProgressElement.fader = setTimeout(function () {
         oSelf.disappear();
     },2000);
 };
@@ -13800,6 +13808,10 @@ FileProgress.prototype.setStatus = function (status) {
 FileProgress.prototype.appear = function () {
     this.fileProgressWrapper.style.opacity = 1;
 
+    if ((typeof this.fileProgressElement.fader != 'undefined') && (this.fileProgressElement.fader)) {
+        window.clearTimeout(this.fileProgressElement.fader);
+        this.fileProgressElement.fader = null;
+    }
     this.fileProgressWrapper.style.height = '';
     this.height = this.fileProgressWrapper.offsetHeight;
     this.opacity = 100;
@@ -13833,7 +13845,7 @@ FileProgress.prototype.disappear = function () {
 
     if (this.height > 0 || this.opacity > 0) {
         var oSelf = this;
-        setTimeout(function () {
+        this.fileProgressElement.fader = setTimeout(function () {
             oSelf.disappear();
         }, rate);
     } else {

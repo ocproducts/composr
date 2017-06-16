@@ -346,6 +346,7 @@ class Hook_addon_registry_polls
     public function tpl_preview__poll_screen()
     {
         require_lang('trackbacks');
+
         $trackbacks = new Tempcode();
         foreach (placeholder_array(1) as $k => $v) {
             $trackbacks->attach(do_lorem_template('TRACKBACK', array(

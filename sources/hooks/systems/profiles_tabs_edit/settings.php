@@ -274,7 +274,7 @@ class Hook_profiles_tabs_edit_settings
         $hidden->attach(form_input_hidden('submitting_settings_tab', '1'));
 
         require_javascript('core_cns');
-        $js_function_calls = ['hookProfilesTabsEditSettingsRenderTab'];
+        $js_function_calls = array('hookProfilesTabsEditSettingsRenderTab');
         $text = '';
 
         return array($title, $fields, $text, $js_function_calls, $order, $hidden, 'tabs/member_account/edit/settings');

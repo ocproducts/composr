@@ -70,14 +70,14 @@ function init__users()
         $SESSION_CACHE = array();
         if ((get_forum_type() == 'cns') && (!is_on_multi_site_network())) {
             push_db_scope_check(false);
-            $_s = $GLOBALS['SITE_DB']->query('SELECT s.*,m.m_primary_group FROM ' . get_table_prefix() . 'sessions s LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_members m ON m.id=s.member_id' . $where, null, null, true, true);
+            $_s = $GLOBALS['SITE_DB']->query('SELECT s.*,m.m_primary_group FROM ' . get_table_prefix() . 'sessions s LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_members m ON m.id=s.member_id' . $where . ' ORDER BY the_session', null, null, true, true);
             if ($_s === null) {
                 $_s = array();
             }
             $SESSION_CACHE = list_to_map('the_session', $_s);
             pop_db_scope_check();
         } else {
-            $SESSION_CACHE = list_to_map('the_session', $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'sessions' . $where));
+            $SESSION_CACHE = list_to_map('the_session', $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'sessions' . $where . ' ORDER BY the_session'));
         }
         if (get_option('session_prudence') == '0' && function_exists('persistent_cache_set')) {
             persistent_cache_set('SESSION_CACHE', $SESSION_CACHE);
@@ -458,9 +458,9 @@ function delete_expired_sessions_or_recover($member = null)
     $ip = get_ip_address(3);
 
     // Delete expired sessions; it's important we do this reasonably routinely, as the session table is loaded up and can get large -- unless we aren't tracking online users, in which case the table is never loaded up
-    if (mt_rand(0, 1000) == 50) {
+    if (mt_rand(0, 100) == 1) {
         if (!$GLOBALS['SITE_DB']->table_is_locked('sessions')) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'sessions WHERE last_activity<' . strval(time() - intval(60.0 * 60.0 * max(0.017, floatval(get_option('session_expiry_time'))))));
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'sessions WHERE last_activity<' . strval(time() - intval(60.0 * 60.0 * max(0.017, floatval(get_option('session_expiry_time'))))), 500/*to reduce lock times*/);
         }
     }
 

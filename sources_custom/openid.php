@@ -141,10 +141,17 @@ class LightOpenID
             throw new ErrorException('Invalid request.');
         }
 
+        $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
+        $opts = array(
+            'ssl' => array(
+                'cafile' => $crt_path,
+            ),
+        );
+
         $params = http_build_query($params, '', '&');
         switch ($method) {
             case 'GET':
-                $opts = array(
+                $opts += array(
                     'http' => array(
                         'method' => 'GET',
                         'header' => 'Accept: application/xrds+xml, */*',
@@ -153,8 +160,9 @@ class LightOpenID
                 );
                 $url = $url . ($params ? '?' . $params : '');
                 break;
+
             case 'POST':
-                $opts = array(
+                $opts += array(
                     'http' => array(
                         'method' => 'POST',
                         'header' => 'Content-type: application/x-www-form-urlencoded',
@@ -163,18 +171,18 @@ class LightOpenID
                     )
                 );
                 break;
+
             case 'HEAD':
                 // We want to send a HEAD request,
                 // but since get_headers doesn't accept $context parameter,
                 // we have to change the defaults.
+                $opts += array('http' => array(
+                    'method' => 'HEAD',
+                    'header' => 'Accept: application/xrds+xml, */*',
+                    'ignore_errors' => true,
+                ));
                 $default = stream_context_get_options(stream_context_get_default());
-                stream_context_get_default(
-                    array('http' => array(
-                        'method' => 'HEAD',
-                        'header' => 'Accept: application/xrds+xml, */*',
-                        'ignore_errors' => true,
-                    ))
-                );
+                stream_context_set_default($opts);
 
                 $url = $url . ($params ? '?' . $params : '');
                 $headers_tmp = get_headers($url);
@@ -207,7 +215,7 @@ class LightOpenID
                 }
 
                 // And restore them.
-                stream_context_get_default($default);
+                stream_context_set_default($default);
                 return $headers;
         }
         $context = stream_context_create($opts);

@@ -119,8 +119,8 @@ function require_code($codename, $light_exit = false)
                 $pure = true; // We will set this to false if it does not have all functions the main one has. If it does have all functions we know we should not run the original init, as it will almost certainly just have been the same code copy&pasted through.
                 $overlaps = false;
                 foreach ($functions_diff as $function) { // Go through override's functions and make sure original doesn't have them: rename original's to non_overridden__ equivs.
-                    if (strpos($orig, 'function ' . $function . '(') !== false) { // NB: If this fails, it may be that "function\t" is in the file (you can't tell with a three-width proper tab)
-                        $orig = str_replace('function ' . $function . '(', 'function non_overridden__' . $function . '(', $orig);
+                    if (stripos($orig, 'function ' . $function . '(') !== false) { // NB: If this fails, it may be that "function\t" is in the file (you can't tell with a three-width proper tab)
+                        $orig = str_ireplace('function ' . $function . '(', 'function non_overridden__' . $function . '(', $orig);
                         $overlaps = true;
                     } else {
                         $pure = false;
@@ -292,16 +292,16 @@ function require_code($codename, $light_exit = false)
             $codename .= '... "' . $php_errormsg . '"';
         }
     }
-    $error_string = (is_file($path_orig) || is_file($path_custom)) ? 'MISSING_SOURCE_FILE' : 'CORRUPT_SOURCE_FILE';
-    $error_message = do_lang_tempcode($error_string, escape_html($codename), escape_html($path_orig));
-    if ($light_exit) {
-        warn_exit($error_message, false, true);
-    }
     if (!function_exists('do_lang')) {
         if ($codename === 'critical_errors') {
             exit('<!DOCTYPE html>' . "\n" . '<html lang="EN"><head><title>Critical startup error</title></head><body><h1>Composr startup error</h1><p>The Composr critical error message file, sources/critical_errors.php, could not be located. This is almost always due to an incomplete upload of the Composr system, so please check all files are uploaded correctly.</p><p>Once all Composr files are in place, Composr must actually be installed by running the installer. You must be seeing this message either because your system has become corrupt since installation, or because you have uploaded some but not all files from our manual installer package: the quick installer is easier, so you might consider using that instead.</p><p>ocProducts maintains full documentation for all procedures and tools, especially those for installation. These may be found on the <a href="http://compo.sr">Composr website</a>. If you are unable to easily solve this problem, we may be contacted from our website and can help resolve it for you.</p><hr /><p style="font-size: 0.8em">Composr is a website engine created by ocProducts.</p></body></html>');
         }
         critical_error('MISSING_SOURCE', $codename);
+    }
+    $error_string = (is_file($path_orig) || is_file($path_custom)) ? 'MISSING_SOURCE_FILE' : 'CORRUPT_SOURCE_FILE';
+    $error_message = do_lang_tempcode($error_string, escape_html($codename), escape_html($path_orig));
+    if ($light_exit) {
+        warn_exit($error_message, false, true);
     }
     fatal_exit($error_message);
 }
@@ -602,7 +602,10 @@ if (count($SITE_INFO) == 0) {
     if ((!is_file($FILE_BASE . '/_config.php')) && (is_file($FILE_BASE . '/info.php'))) {
         @copy($FILE_BASE . '/info.php', $FILE_BASE . '/_config.php');
         if (is_file($FILE_BASE . '/_config.php')) {
-            file_put_contents($FILE_BASE . '/_config.php', str_replace(array('ocf_table_prefix', 'use_mem_cache'), array('cns_table_prefix', 'use_persistent_cache'), file_get_contents($FILE_BASE . '/_config.php')), LOCK_EX);
+            $new_config_file = file_get_contents($FILE_BASE . '/_config.php');
+            $new_config_file = str_replace(array('ocf_table_prefix', 'use_mem_cache', 'ocp_member_id', 'ocp_member_hash', 'ocf', 'admin_password'), array('cns_table_prefix', 'use_persistent_cache', 'cms_member_id', 'cms_member_hash', 'cns', 'master_password'), $new_config_file);
+            $new_config_file = str_replace(']=\'', '] = \'', $new_config_file); // Clean up formatting to new convention
+            file_put_contents($FILE_BASE . '/_config.php', $new_config_file, LOCK_EX);
         } else {
             exit('Error, cannot rename info.php to _config.php: check the Composr upgrade instructions');
         }

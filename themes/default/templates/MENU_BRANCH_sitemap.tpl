@@ -1,7 +1,12 @@
-{$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}}{+START,IF,{$NOT,{$GET,js_menu}}}
-	<li class="{$?,{CURRENT},current,non_current} {$?,{$IS_EMPTY,{IMG}},has_no_img,has_img}">
+{$SET,js_menu,{$NOT,{$BROWSER_MATCHES,bot}}}
+
+{$SET,img,{$?,{$AND,{$IS_EMPTY,{IMG}},{$LT,{THE_LEVEL},3}},{$IMG,icons/24x24/menu/_generic_spare/page},{IMG}}}
+{$SET,img_2x,{$?,{$AND,{$IS_EMPTY,{IMG_2X}},{$LT,{THE_LEVEL},3}},{$IMG,icons/48x48/menu/_generic_spare/page},{IMG_2X}}}
+
+{+START,IF,{$NOT,{$GET,js_menu}}}
+	<li class="{$?,{CURRENT},current,non_current} has_img">
 		<span>
-			{+START,IF_NON_EMPTY,{IMG}}<img alt="" src="{IMG*}" srcset="{IMG_2X*} 2x" />{+END}
+			<img alt="" src="{$GET*,img}" srcset="{$GET*,img_2x} 2x" />
 			{+START,IF_NON_EMPTY,{URL}}
 				<a {+START,IF_NON_EMPTY,{TOOLTIP}} title="{$STRIP_TAGS,{CAPTION}}{+START,IF_NON_EMPTY,{TOOLTIP}}: {TOOLTIP*}{+END}"{+END} href="{URL*}">{CAPTION}</a>
 			{+END}
@@ -16,4 +21,4 @@
 		{+END}
 	</li>
 {+END}
-{+START,IF,{$GET,js_menu}}{$?,{FIRST},[}{"caption": {$JSON_ENCODE,{CAPTION}}, "tooltip": {$JSON_ENCODE,{TOOLTIP}}, "url": {$JSON_ENCODE,{URL}}, "img": {$JSON_ENCODE,{IMG}}, "img_2x": {$JSON_ENCODE,{IMG_2X}}, "current": {$?,{CURRENT},true,false}, "children": {$?,{$IS_EMPTY,{CHILDREN}},[],{$TRIM,{CHILDREN}}}}{$?,{LAST},],\,}{+END}
+{+START,IF,{$GET,js_menu}}{$?,{FIRST},[}{"caption": {$JSON_ENCODE,{CAPTION}}, "tooltip": {$JSON_ENCODE,{TOOLTIP}}, "url": {$JSON_ENCODE,{URL}}, "img": {$JSON_ENCODE,{$GET,IMG}}, "img_2x": {$JSON_ENCODE,{$GET,IMG_2X}}, "current": {$?,{CURRENT},true,false}, "children": {$?,{$IS_EMPTY,{CHILDREN}},[],{$TRIM,{CHILDREN}}}}{$?,{LAST},],\,}{+END}

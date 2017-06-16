@@ -593,6 +593,16 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
     if (($url[0] != '') && (url_is_local($url[0]))) {
         $missing_ok = false;
 
+        // Check the file exists
+        if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($url[0]))) && (!$missing_ok)) {
+            if ($accept_errors) {
+                attach_message(do_lang_tempcode('MISSING_FILE'), 'warn', false, true);
+                return array('', '');
+            } else {
+                warn_exit(do_lang_tempcode('MISSING_FILE'), false, true);
+            }
+        }
+
         // Its not in the upload folder, so maybe we aren't allowed to download it
         if (
             (
@@ -618,16 +628,6 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
                 if (@strcmp(substr($shouldbe, 0, 8000), substr($actuallyis->data, 0, 8000)) != 0) {
                     log_hack_attack_and_exit('TRY_TO_DOWNLOAD_SCRIPT');
                 }
-            }
-        }
-
-        // Check the file exists
-        if ((!file_exists(get_custom_file_base() . '/' . rawurldecode($url[0]))) && (!$missing_ok)) {
-            if ($accept_errors) {
-                attach_message(do_lang_tempcode('MISSING_FILE'), 'warn', false, true);
-                return array('', '');
-            } else {
-                warn_exit(do_lang_tempcode('MISSING_FILE'), false, true);
             }
         }
     }

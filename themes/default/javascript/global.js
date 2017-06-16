@@ -3651,7 +3651,14 @@
     }
 
     function setAttr(el, name, value) {
-        (value != null) ? el.setAttribute(name, value) : el.removeAttribute(name);
+        if (value != null) {
+            try {
+                el.setAttribute(name, value);
+            }
+            catch (e) {};
+        } else {
+            el.removeAttribute(name);
+        }
     }
 
     /**
@@ -4232,7 +4239,7 @@
 
         doc.body.classList.add('website_body', 'main_website_faux');
 
-        if (!de.querySelector('style')) {// The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
+        if (!de.querySelector('style')) { // The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
             $cms.dom.html(doc.head, head);
         }
 
@@ -4404,6 +4411,11 @@
      * @returns {number}
      */
     $cms.dom.findPosX = function findPosX(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+        if (!el) {
+            return 0;
+        }
+
+        el = elArg(el);
         notRelative = !!notRelative;
 
         var left = el.getBoundingClientRect().left + window.pageXOffset;
@@ -4430,6 +4442,10 @@
      * @returns {number}
      */
     $cms.dom.findPosY = function findPosY(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+        if (!el) {
+            return 0;
+        }
+
         el = elArg(el);
         notRelative = !!notRelative;
 
@@ -4965,7 +4981,7 @@
      * @param starting
      * @returns {string}
      */
-    function keepStub(starting) {// `starting` set to true means "Put a '?' for the first parameter"
+    function keepStub(starting) { // `starting` set to true means "Put a '?' for the first parameter"
         starting = !!starting;
 
         var keep = $cms.uspKeepSession.toString();
@@ -5757,7 +5773,7 @@
                 // IE gives "Access is denied" if popup was blocked, due to var result assignment to non-real window
             }
             var timerNow = new Date().getTime();
-            if (timerNow - 100 > timer) {// Not popup blocked
+            if (timerNow - 100 > timer) { // Not popup blocked
                 if ((result === undefined) || (result === null)) {
                     callback(null);
                 } else {
@@ -5849,6 +5865,8 @@
     $cms.ui.disableButton = function disableButton(btn, permanent) {
         permanent = !!permanent;
 
+        // TODO: Salman merge in this change https://github.com/ocproducts/composr/commit/670ad2c791eedd4f0e3bf2290854d1f1a02369ff and also the relevant bits in here which fix this change https://github.com/ocproducts/composr/commit/f42749ec932a3143e6d3d4f59ce48f48b04a331c
+
         if (btn.form && (btn.form.target === '_blank')) {
             return;
         }
@@ -5902,7 +5920,7 @@
         permanent = !!permanent;
 
         buttons.forEach(function (btn) {
-            if (!btn.disabled && !tempDisabledButtons[$cms.uid(btn)]) {// We do not want to interfere with other code potentially operating
+            if (!btn.disabled && !tempDisabledButtons[$cms.uid(btn)]) { // We do not want to interfere with other code potentially operating
                 $cms.ui.disableButton(btn, permanent);
             }
         });
@@ -6071,13 +6089,13 @@
                 return;
             }
 
-            if (ret.responseText === '') {// Blank means success, no error - so we can call callback
+            if (ret.responseText === '') { // Blank means success, no error - so we can call callback
                 callback(true);
                 return;
             }
 
             // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-            if (ret.responseText === '{!GUEST;^}') {// Hmm, actually whole login was lost, so we need to ask for username too
+            if (ret.responseText === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
                 $cms.ui.prompt(
                     '{!USERNAME;^}',
                     '',
@@ -6099,7 +6117,7 @@
                 function (promptt) {
                     if (promptt !== null) {
                         $cms.doAjaxRequest(url, function (ret) {
-                            if (ret && ret.responseText === '') {// Blank means success, no error - so we can call callback
+                            if (ret && ret.responseText === '') { // Blank means success, no error - so we can call callback
                                 callback(true);
                             } else {
                                 _confirmSession(callback, username, url); // Recurse
@@ -6202,6 +6220,10 @@
         win || (win = window);
         haveLinks = !!haveLinks;
 
+        if ((typeof el.deactivated_at != 'undefined') && (el.deactivated_at != null) && (Date.now() - el.deactivated_at < 200)) {
+            return;
+        }
+
         if (!window.page_loaded || !tooltip) {
             return;
         }
@@ -6210,6 +6232,12 @@
             // Don't want tooltips appearing when doing a drag and drop operation
             return;
         }
+
+        if (!el) {
+            return;
+        }
+
+        //console.log('activate_tooltip');
 
         if (!haveLinks && $cms.isTouchEnabled()) {
             return; // Too erratic
@@ -6243,6 +6271,7 @@
         }
 
         el.is_over = true;
+        el.deactivated_at = null;
         el.tooltip_on = false;
         el.initial_width = width;
         el.have_links = haveLinks;
@@ -6329,14 +6358,15 @@
                 return;
             }
 
-            if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) {// Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
+            if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) { // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
                 $cms.dom.append(tooltipEl, tooltip);
             }
 
             el.tooltip_on = true;
             tooltipEl.style.display = 'block';
-            if (tooltipEl.style.width == 'auto')
+            if ((tooltipEl.style.width == 'auto') && ((tooltipEl.childNodes.length != 1) || (tooltipEl.childNodes[0].nodeName.toLowerCase() != 'img'))) {
                 tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+            }
 
             if (!noDelay) {
                 // If delayed we will sub in what the currently known global mouse coordinate is
@@ -6362,7 +6392,13 @@
         bottom = !!bottom;
         win || (win = window);
 
-        if (!starting) {// Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
+        if (!el.is_over) {
+            return;
+        }
+
+        //console.log('reposition_tooltip');
+
+        if (!starting) { // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
 
             if (el.getAttribute('title')) {
                 el.setAttribute('title', '');
@@ -6433,7 +6469,7 @@
         }
         var height = tooltipElement.offsetHeight;
         var xExcess = x - $cms.dom.getWindowWidth(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
-        if (xExcess > 0) {// Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
+        if (xExcess > 0) { // Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
             var xBefore = x;
             x -= xExcess + 20 + styleOffsetX;
             if (x < 100) { // Do not make it impossible to de-focus the tooltip
@@ -6461,7 +6497,12 @@
      * @param tooltipElement
      */
     $cms.ui.deactivateTooltip = function deactivateTooltip(el, tooltipElement) {
+        if (el.is_over) {
+            el.deactivated_at = Date.now();
+        }
         el.is_over = false;
+
+        //console.log('deactivate_tooltip');
 
         if (el.tooltip_id == null) {
             return;
@@ -6635,8 +6676,9 @@
 
             // Constrain to window width
             if (width.match(/^\d+$/) !== null) {
-                if ((window.parseInt(width) > dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width == 'auto'))
+                if ((window.parseInt(width) > dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width == 'auto')) {
                     width = '' + (dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
+                }
             }
 
             // Auto width means full width
@@ -6675,7 +6717,7 @@
             this.boxWrapperEl.firstElementChild.style.height = boxHeight;
             var iframe = this.boxWrapperEl.querySelector('iframe');
 
-            if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body)) {// Balance iframe height
+            if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body)) { // Balance iframe height
                 iframe.style.width = '100%';
                 if (height == 'auto') {
                     if (!init) {
@@ -6736,14 +6778,14 @@
                 if (/*maybe a navigation has happened and we need to scroll back up*/iframe && ($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.scrolled_up_for === undefined)) {
                     doScroll = true;
                 }
-            } else {// Fixed positioning, with scrolling turned off until the overlay is closed
+            } else { // Fixed positioning, with scrolling turned off until the overlay is closed
                 this.boxWrapperEl.style.position = 'fixed';
                 this.boxWrapperEl.firstElementChild.style.position = 'fixed';
                 this.top_window.document.body.style.overflow = 'hidden';
             }
 
             if (doScroll) {
-                try {// Scroll to top to see
+                try { // Scroll to top to see
                     this.top_window.scrollTo(0, 0);
                     if (iframe && ($cms.dom.hasIframeAccess(iframe))) {
                         iframe.contentWindow.scrolled_up_for = true;
@@ -6871,7 +6913,7 @@
                     e && e.target && e.stopPropagation && e.stopPropagation();
                 } catch (e) {}
 
-                if ($cms.$MOBILE() && (that.type === 'lightbox')) {// IDEA: Swipe detect would be better, but JS does not have this natively yet
+                if ($cms.$MOBILE() && (that.type === 'lightbox')) { // IDEA: Swipe detect would be better, but JS does not have this natively yet
                     that.option('right');
                 }
             });
@@ -6984,7 +7026,7 @@
                                 };
                             }
 
-                            if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) {// Loaded now
+                            if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) { // Loaded now
                                 iframe.contentWindow.document.body.done_popup_trans = true;
                             }
                         } else
@@ -7296,7 +7338,7 @@
                             return;
                         }
                         for (var i = 0; i < buttonSet.length; i++) {
-                            if (result.toLowerCase() === buttonSet[i].toLowerCase()) {// match
+                            if (result.toLowerCase() === buttonSet[i].toLowerCase()) { // match
                                 callback(result);
                                 return;
                             }
@@ -7382,7 +7424,7 @@
                 try {
                     if ((ajaxInstance.status === 0) || (ajaxInstance.status > 10000)) { // implies site down, or network down
                         if (!networkDownAlerted && !window.unloaded) {
-                            $cms.ui.alert('{!NETWORK_DOWN;^}');
+                            //$cms.ui.alert('{!NETWORK_DOWN;^}');	Annoying because it happens when unsleeping a laptop (for example)
                             networkDownAlerted = true;
                         }
                     } else {
@@ -7433,6 +7475,7 @@
             var xml;
             try {
                 xml = (new DOMParser()).parseFromString(xhr.responseText, 'application/xml');
+                if ((xml) && (xml.documentElement.nodeName == 'parsererror')) xml = null;
             } catch (ignore) {}
 
             if (xml) {
@@ -8053,13 +8096,13 @@
                     if (panelBottom) {
                         footerHeight += panelBottom.offsetHeight;
                     }
-                    if (stuckNavHeight < $cms.dom.getWindowHeight() - footerHeight) {// If there's space in the window to make it "float" between header/footer
+                    if (stuckNavHeight < $cms.dom.getWindowHeight() - footerHeight) { // If there's space in the window to make it "float" between header/footer
                         var extraHeight = (window.pageYOffset - posY);
                         if (extraHeight > 0) {
                             var width = $cms.dom.contentWidth(stuckNav);
                             var height = $cms.dom.contentHeight(stuckNav);
                             var stuckNavWidth = $cms.dom.contentWidth(stuckNav);
-                            if (!window.getComputedStyle(stuckNav).getPropertyValue('width')) {// May be centered or something, we should be careful
+                            if (!window.getComputedStyle(stuckNav).getPropertyValue('width')) { // May be centered or something, we should be careful
                                 stuckNav.parentNode.style.width = width + 'px';
                             }
                             stuckNav.parentNode.style.height = height + 'px';
@@ -8348,7 +8391,7 @@
 
         activateRichTooltip: function (e, el) {
             if (el.ttitle === undefined) {
-                el.ttitle = el.title;
+                el.ttitle = ((typeof el.attributes['data-title'] != 'undefined') ? el.getAttribute('data-title') : el.title);
             }
 
             //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
@@ -8842,7 +8885,7 @@
                 if (!window.done_one_error) {
                     window.done_one_error = true;
                     var alert = '{!JAVASCRIPT_ERROR;^}\n\n' + code + ': ' + msg + '\n' + file;
-                    if (window.document.body) {// i.e. if loaded
+                    if (window.document.body) { // i.e. if loaded
                         $cms.ui.alert(alert, null, '{!ERROR_OCCURRED;^}');
                     }
                 }
@@ -8933,7 +8976,7 @@
         if ($cms.isPlainObj(elOrOptions)) {
             options = elOrOptions;
             el =  options.el;
-            //@TODO: Implement slide-up/down animation triggered by this boolean
+            //@TODO: Implement slide-up/down animation triggered by this boolean    Salman
             animate = $cms.$CONFIG_OPTION('enable_animations') ? ((options.animate != null) ? !!options.animate : true) : false;
         } else {
             el = elOrOptions;
@@ -8944,7 +8987,7 @@
             return;
         }
 
-        if (!el.classList.contains('toggleable_tray')) {// Suspicious, maybe we need to probe deeper
+        if (!el.classList.contains('toggleable_tray')) { // Suspicious, maybe we need to probe deeper
             el = $cms.dom.$(el, '.toggleable_tray') || el;
         }
 
@@ -9218,7 +9261,7 @@
     function gdImageTransform(el) {
         /* GD text maybe can do with transforms */
         var span = document.createElement('span');
-        if (typeof span.style.writingMode === 'string') {// IE (which has buggy rotation space reservation, but a decent writing-mode instead)
+        if (typeof span.style.writingMode === 'string') { // IE (which has buggy rotation space reservation, but a decent writing-mode instead)
             el.style.display = 'none';
             span.style.writingMode = 'tb-lr';
             if (span.style.writingMode !== 'tb-lr') {
@@ -9396,7 +9439,7 @@
      * @param event
      */
     function infiniteScrollingBlock(event) {
-        if (event.keyCode === 35) {// 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
+        if (event.keyCode === 35) { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
             infiniteScrollBlocked = true;
             window.setTimeout(function () {
                 infiniteScrollBlocked = false;
@@ -9492,7 +9535,7 @@
                         _moreLinks[i].parentNode.removeChild(_moreLinks[i]);
                     }
                 }
-            } else {// Find links from an already-hidden pagination
+            } else { // Find links from an already-hidden pagination
 
                 moreLinks = pagination.getElementsByTagName('a');
                 if (moreLinks.length !== 0) {

@@ -22,7 +22,7 @@ The sub-forum system exists so that forums may be organised such that subjects a
 Add or edit forums from:
 Admin Zone > Structure > Forums
 
-You can delete a forum from the bottom of its edit form.
+You can delete a forum from the bottom of its edit form. The root forum cannot be deleted, however.
 
 [box="Flexibility"]
 While discussion forums are primarily meant for discussion, they may in fact be used for the general purpose of conveying information.

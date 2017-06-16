@@ -265,55 +265,69 @@ class Module_search
             $extra_sort_fields = array_key_exists('extra_sort_fields', $info) ? $info['extra_sort_fields'] : array();
 
             $under = null;
+            $got_tree_selector = false;
+
             if (method_exists($ob, 'ajax_tree')) {
-                $ajax = true;
                 $under = get_param_string('search_under', '', INPUT_FILTER_GET_COMPLEX);
                 $ajax_tree = $ob->ajax_tree();
-                if (is_object($ajax_tree)) {
-                    return $ajax_tree;
-                }
-                list($ajax_hook, $ajax_options) = $ajax_tree;
 
-                require_code('hooks/systems/ajax_tree/' . $ajax_hook);
-                $tree_hook_ob = object_factory('Hook_ajax_tree_' . $ajax_hook);
-                $simple_content = $tree_hook_ob->simple(null, $ajax_options, preg_replace('#,.*$#', '', $under));
+                if ($ajax_tree !== null) {
+                    $got_tree_selector = true;
 
-                $nice_label = $under;
-                if ($under !== null) {
-                    $simple_content_evaluated = $simple_content->evaluate();
-                    $matches = array();
-                    if (preg_match('#<option [^>]*value="' . preg_quote($under, '#') . '(' . ((strpos($under, ',') === false) ? ',' : '') . '[^"]*)?"[^>]*>([^>]* &gt; )?([^>]*)</option>#', $simple_content_evaluated, $matches) != 0) {
-                        if (strpos($under, ',') === false) {
-                            $under = $under . $matches[1];
-                        }
-                        $nice_label = trim($matches[3]);
+                    if (is_object($ajax_tree)) {
+                        return $ajax_tree;
                     }
-                }
+                    list($ajax_hook, $ajax_options) = $ajax_tree;
 
-                require_code('form_templates');
-                $tree = do_template('FORM_SCREEN_INPUT_TREE_LIST', array(
-                    '_GUID' => '25368e562be3b4b9c6163aa008b47c91',
-                    'MULTI_SELECT' => false,
-                    'TABINDEX' => strval(get_form_field_tabindex()),
-                    'NICE_LABEL' => (($nice_label === null) || $nice_label == '-1') ? '' : $nice_label,
-                    'END_OF_FORM' => true,
-                    'REQUIRED' => '',
-                    '_REQUIRED' => false,
-                    'USE_SERVER_ID' => false,
-                    'NAME' => 'search_under',
-                    'DEFAULT' => $under,
-                    'HOOK' => $ajax_hook,
-                    'ROOT_ID' => '',
-                    'OPTIONS' => serialize($ajax_options),
-                    'DESCRIPTION' => '',
-                    'CONTENT_TYPE' => $content_type,
-                ));
-            } else {
+                    require_code('hooks/systems/ajax_tree/' . $ajax_hook);
+                    $tree_hook_ob = object_factory('Hook_ajax_tree_' . $ajax_hook);
+                    $simple_content = $tree_hook_ob->simple(null, $ajax_options, preg_replace('#,.*$#', '', $under));
+
+                    $ajax = true;
+
+                    $nice_label = $under;
+                    if ($under !== null) {
+                        $simple_content_evaluated = $simple_content->evaluate();
+                        $matches = array();
+                        if (preg_match('#<option [^>]*value="' . preg_quote($under, '#') . '(' . ((strpos($under, ',') === false) ? ',' : '') . '[^"]*)?"[^>]*>([^>]* &gt; )?([^>]*)</option>#', $simple_content_evaluated, $matches) != 0) {
+                            if (strpos($under, ',') === false) {
+                                $under = $under . $matches[1];
+                            }
+                        }
+                    }
+
+                    require_code('form_templates');
+                    $tree = do_template('FORM_SCREEN_INPUT_TREE_LIST', array(
+                        '_GUID' => '25368e562be3b4b9c6163aa008b47c91',
+                        'MULTI_SELECT' => false,
+                        'TABINDEX' => strval(get_form_field_tabindex()),
+                        'NICE_LABEL' => (($nice_label === null) || $nice_label == '-1') ? '' : $nice_label,
+                        'END_OF_FORM' => true,
+                        'REQUIRED' => '',
+                        '_REQUIRED' => false,
+                        'USE_SERVER_ID' => false,
+                        'NAME' => 'search_under',
+                        'DEFAULT' => $under,
+                        'HOOK' => $ajax_hook,
+                        'ROOT_ID' => '',
+                        'OPTIONS' => serialize($ajax_options),
+                        'DESCRIPTION' => '',
+                        'CONTENT_TYPE' => $content_type,
+                    ));
+                }
+            }
+
+            if (!$got_tree_selector) {
                 $ajax = false;
                 $tree = form_input_list_entry('!', false, do_lang_tempcode('NA_EM'));
                 if (method_exists($ob, 'get_tree')) {
                     $under = get_param_string('search_under', '!', INPUT_FILTER_GET_COMPLEX);
-                    $tree->attach($ob->get_tree($under));
+
+                    if ($under !== null) {
+                        $got_tree_selector = true;
+
+                        $tree->attach($ob->get_tree($under));
+                    }
                 }
             }
 
@@ -535,7 +549,7 @@ class Module_search
         // Did you mean?
         require_code('spelling');
         $corrected = spell_correct_phrase($content);
-        if ($corrected != $content) {
+        if (cms_mb_strtolower($corrected) != cms_mb_strtolower($content)) {
             $search_url = get_self_url(true, false, array('content' => $corrected));
             attach_message(do_lang_tempcode('DID_YOU_MEAN', escape_html($corrected), escape_html($search_url)), 'notice');
         }

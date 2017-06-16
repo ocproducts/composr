@@ -29,4 +29,3 @@
 			<link length="{ENCLOSURE_LENGTH*}" type="{ENCLOSURE_TYPE*}" rel="enclosure">{ENCLOSURE_URL*}</link>
 		{+END}{+END}{+END}
 	</entry>
-

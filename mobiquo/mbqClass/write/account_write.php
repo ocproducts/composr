@@ -170,7 +170,7 @@ class CMSAccountWrite
     /**
      * Join.
      *
-     * @param  ID_TEXT $username  Username
+     * @param  ID_TEXT $username Username
      * @param  EMAIL $email E-mail address
      * @param  string $password Password
      * @param  array $custom_fields Map of custom fields

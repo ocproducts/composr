@@ -351,7 +351,7 @@ function _webstandards_js_parse_command_actual()
                     $init_commands = null;
                 } else {
                     $init_commands = _webstandards_js_parse_comma_commands();
-                    if ($init_command === null) {
+                    if ($init_commands === null) {
                         return null;
                     }
                 }
@@ -370,7 +370,7 @@ function _webstandards_js_parse_command_actual()
                     $control_commands = null;
                 } else {
                     $control_commands = _webstandards_js_parse_comma_commands();
-                    if ($control_command === null) {
+                    if ($control_commands === null) {
                         return null;
                     }
                 }

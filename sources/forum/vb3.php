@@ -97,7 +97,7 @@ class Forum_driver_vb3 extends Forum_driver_base
 
         $name = 'cms_' . $name;
         if ((!isset($GLOBALS['SITE_INFO']['vb_version'])) || ($GLOBALS['SITE_INFO']['vb_version'] >= 3.6)) {
-            $r = $this->db->query('SELECT f.profilefieldid FROM ' . $this->db->get_table_prefix() . 'profilefield f LEFT JOIN ' . $this->db->get_table_prefix() . 'phrase p ON (' . db_string_equal_to('product', 'vbulletin') . ' AND p.varname=CONCAT(\'field\',f.profilefieldid,\'_title\')) WHERE ' . db_string_equal_to('p.text', $name));
+            $r = $this->db->query('SELECT f.profilefieldid FROM ' . $this->db->get_table_prefix() . 'profilefield f LEFT JOIN ' . $this->db->get_table_prefix() . 'phrase p ON (' . db_string_equal_to('product', 'vbulletin') . ' AND p.varname=' . db_function('CONCAT', array('\'field\'', 'f.profilefieldid', '\'_title\'')) . ') WHERE ' . db_string_equal_to('p.text', $name));
         } else {
             $r = $this->db->query_select('profilefield', array('profilefieldid'), array('title', $name));
         }
@@ -835,7 +835,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     public function set_custom_field($member, $field, $value)
     {
         if ((!isset($GLOBALS['SITE_INFO']['vb_version'])) || ($GLOBALS['SITE_INFO']['vb_version'] >= 3.6)) {
-            $id = $this->db->query_value_if_there('SELECT f.profilefieldid FROM ' . $this->db->get_table_prefix() . 'profilefield f LEFT JOIN ' . $this->db->get_table_prefix() . 'phrase p ON (' . db_string_equal_to('product', 'vbulletin') . ' AND p.varname=CONCAT(\'field\',f.profilefieldid,\'_title\')) WHERE ' . db_string_equal_to('p.text', 'cms_' . $field));
+            $id = $this->db->query_value_if_there('SELECT f.profilefieldid FROM ' . $this->db->get_table_prefix() . 'profilefield f LEFT JOIN ' . $this->db->get_table_prefix() . 'phrase p ON (' . db_string_equal_to('product', 'vbulletin') . ' AND  p.varname=' . db_function('CONCAT', array('\'field\'', 'f.profilefieldid', '\'_title\'')) . ') WHERE ' . db_string_equal_to('p.text', 'cms_' . $field));
         } else {
             $id = $this->db->query_select_value_if_there('profilefield', 'profilefieldid', array('title' => 'cms_' . $field));
         }
@@ -858,7 +858,7 @@ class Forum_driver_vb3 extends Forum_driver_base
     public function get_custom_fields($member)
     {
         if ((!isset($GLOBALS['SITE_INFO']['vb_version'])) || ($GLOBALS['SITE_INFO']['vb_version'] >= 3.6)) {
-            $rows = $this->db->query('SELECT f.profilefieldid,p.text AS title FROM ' . $this->db->get_table_prefix() . 'profilefield f LEFT JOIN ' . $this->db->get_table_prefix() . 'phrase p ON (' . db_string_equal_to('product', 'vbulletin') . ' AND p.varname=CONCAT(\'field\',f.profilefieldid,\'_title\')) WHERE p.text LIKE \'' . db_encode_like('cms\_%') . '\'');
+            $rows = $this->db->query('SELECT f.profilefieldid,p.text AS title FROM ' . $this->db->get_table_prefix() . 'profilefield f LEFT JOIN ' . $this->db->get_table_prefix() . 'phrase p ON (' . db_string_equal_to('product', 'vbulletin') . ' AND  p.varname=' . db_function('CONCAT', array('\'field\'', 'f.profilefieldid', '\'_title\'')) . ') WHERE p.text LIKE \'' . db_encode_like('cms\_%') . '\'');
         } else {
             $rows = $this->db->query('SELECT profilefieldid,title FROM ' . $this->db->get_table_prefix() . 'profilefield WHERE title LIKE \'' . db_encode_like('cms\_%') . '\'');
         }

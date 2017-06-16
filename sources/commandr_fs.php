@@ -25,8 +25,10 @@
  */
 function init__commandr_fs()
 {
-    define('COMMANDR_FS_FILE', 0);
-    define('COMMANDR_FS_DIR', 1);
+    if (!defined('COMMANDR_FS_FILE')) {
+        define('COMMANDR_FS_FILE', 0);
+        define('COMMANDR_FS_DIR', 1);
+    }
 }
 
 /**
@@ -276,6 +278,10 @@ class Commandr_fs
             if ($entry[0] == $filename) {
                 return $entry[1] == COMMANDR_FS_DIR;
             }
+        }
+
+        if (count($contents) == 1000) {
+            return true; // We can assume it's a dir, it's just there's too much to list here
         }
 
         return false;

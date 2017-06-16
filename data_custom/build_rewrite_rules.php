@@ -186,6 +186,8 @@ function write_to($file_path, $type, $match_start, $match_end, $indent_level, $r
 
             # WebDAV implementation (requires the non-bundled WebDAV addon)
             RewriteRule ^webdav(/.*|$) data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+            RewriteCond %{HTTP_HOST} ^webdav\..*
+            RewriteRule ^(.*)$ data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 
             ';
             foreach ($rewrite_rules as $x => $rewrite_rule_block) {

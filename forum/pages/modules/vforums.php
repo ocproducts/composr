@@ -188,7 +188,7 @@ class Module_vforums
         );
         // NB: "t_cache_num_posts<5" above is an optimisation, to do accurate detection of "only poster" only if there are a handful of posts (scanning huge topics can be slow considering this is just to make a subquery pass). We assume that a topic is not consisting of a single user posting more than 5 times (and if so we can consider them a spammer so rule it out)
 
-        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top' . $GLOBALS['FORUM_DB']->prefer_index('f_topics', 'unread_forums');
+        $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top';
 
         return $this->_vforum($title, $condition, 'last_post', true, null, $initial_table);
     }
@@ -207,15 +207,23 @@ class Module_vforums
         $title = do_lang_tempcode('INVOLVED_TOPICS');
 
         $_condition = 'pos.p_poster=' . strval(get_member());
-        if (($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 1000) && (get_value('innodb') !== '1')) { // Too many posts, so make time-sensitive
-            $_condition .= ' AND pos.p_time>' . strval(time() - 60 * 60 * 24 * 90);
+        if (($GLOBALS['FORUM_DRIVER']->get_post_count(get_member()) > 5000) && (get_value('innodb') !== '1')) { // Too many posts, so make time-sensitive
+            $_condition .= ' AND pos.p_time>' . strval(time() - 60 * 60 * 24 * 365);
         }
         $condition = array($_condition);
 
         $initial_table = $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts pos' . $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'posts_by');
         $initial_table .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics top ON top.id=pos.p_topic_id';
 
-        return $this->_vforum($title, $condition, 'post_time_grouped', true, null, $initial_table, ',MAX(pos.p_time) AS p_time');
+        if ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) {
+            $extra_select = ',MAX(pos.p_time) AS p_time';
+            $order = 'post_time_grouped';
+        } else {
+            $extra_select = '';
+            $order = 'post_time';
+        }
+
+        return $this->_vforum($title, $condition, $order, true, null, $initial_table, $extra_select);
     }
 
     /**
@@ -297,14 +305,17 @@ class Module_vforums
             if (!is_guest()) {
                 $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_read_logs l ON (top.id=l.l_topic_id AND l.l_member_id=' . strval(get_member()) . ')';
             }
+            $query_cnt = $query;
+            $_query_cnt = $query;
             if (!multi_lang_content()) {
                 $query .= ' LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts p ON p.id=top.t_cache_first_post_id';
             }
-            $query .= ' WHERE ((' . $_condition . ')' . $extra . ') AND t_forum_id IS NOT NULL';
-            $query_cnt = $query;
-            $_query_cnt = $query;
+            $where = ' WHERE ((' . $_condition . ')' . $extra . ') AND t_forum_id IS NOT NULL';
+            $query .= $where;
+            $query_cnt .= $where;
+            $_query_cnt .= $where;
             $query .= $sql_sup;
-            if (($GLOBALS['SITE_DB']->can_arbitrary_groupby()) && ($initial_table !== null)) {
+            if (($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) && ($initial_table !== null)) {
                 $query .= ' GROUP BY top.id';
                 $query_cnt .= ' GROUP BY top.id';
             }
@@ -322,7 +333,7 @@ class Module_vforums
             } else {
                 $topic_rows = array_merge($topic_rows, $GLOBALS['FORUM_DB']->query($full_query, $max, $start));
             }
-            if (($GLOBALS['SITE_DB']->can_arbitrary_groupby()) && ($initial_table !== null)) {
+            if (($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) && ($initial_table !== null)) {
                 $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(DISTINCT top.id) ' . $_query_cnt);
             } else {
                 $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) ' . $query_cnt);

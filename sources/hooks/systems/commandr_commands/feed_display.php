@@ -43,6 +43,7 @@ class Hook_commandr_command_feed_display
             }
 
             require_lang('news');
+            require_lang('rss');
             require_code('rss');
 
             $rss = new CMS_RSS($parameters[0]);

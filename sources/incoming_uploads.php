@@ -47,7 +47,8 @@ function incoming_uploads_script()
                 error_log('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])), 0);
             }
 
-            exit('Composr: ' . do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])));
+            header('Content-type: text/plain; charset=' . get_charset());
+            exit(do_lang('ERROR_UPLOADING_' . strval($_FILES['file']['error'])));
         }
 
         $name = $_FILES['file']['name'];
@@ -57,7 +58,7 @@ function incoming_uploads_script()
         if ($is_uploaded) { // && (file_exists($_FILES['file']['tmp_name']))) // file_exists check after is_uploaded_file to avoid race conditions. >>> Actually, open_basedir might block it
             @move_uploaded_file($_FILES['file']['tmp_name'], get_custom_file_base() . '/' . $savename) or intelligent_write_error(get_custom_file_base() . '/' . $savename);
         }
-    } elseif (post_param_string('name', '') != '') { // Less nice raw post, which most HTML5 browsers have to do
+    } elseif (post_param_string('name', '') != '') { // Less nice raw post, which most HTML5 browsers have to do. OR *post_max_size* exceeded (which blocks $_FILES population, even with error messages)
         prepare_for_known_ajax_response();
 
         $name = post_param_string('name');

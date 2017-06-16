@@ -351,12 +351,12 @@ class Hook_sitemap_page extends Hook_sitemap_base
                             }
                         }
                     }
-                }
-            }
 
-            if (!$has_entry_points) {
-                if (($options & SITEMAP_GEN_NO_EMPTY_PAGE_LINKS) == 0) {
-                    $struct['page_link'] = '';
+                    if (!$has_entry_points) {
+                        if (($options & SITEMAP_GEN_NO_EMPTY_PAGE_LINKS) == 0) {
+                            $struct['page_link'] = ''; // get_entry_points is defined, but there are no entry points, meaning we can't link direct to the module
+                        }
+                    }
                 }
             }
 
@@ -398,9 +398,9 @@ class Hook_sitemap_page extends Hook_sitemap_base
                 }
             }
 
-            if (!$has_entry_points && (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0)) {
-                if ($children == array()) {
-                    return null;
+            if ($children == array()) {
+                if (($struct['page_link'] == '') && (($options & SITEMAP_GEN_KEEP_FULL_STRUCTURE) == 0)) {
+                    return null; // There's no reason for this Sitemap node
                 }
             }
         }

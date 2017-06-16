@@ -36,6 +36,10 @@ abstract class CMS_API_object
 
 function catalogue_find_options($field, $catalogue_name, $where = '')
 {
+    if (!addon_installed('catalogues')) {
+        return array();
+    }
+
     $sx = $catalogue_name . '__' . $field;
     static $capi_catalogue_options = array();
     if (isset($capi_catalogue_options[$sx])) {
@@ -55,6 +59,10 @@ function catalogue_find_options($field, $catalogue_name, $where = '')
 
 function catalogue_query_select($catalogue_name, $select, $where = null, $filters = '', $max = null, $start = 0)
 {
+    if (!addon_installed('catalogues')) {
+        return array();
+    }
+
     static $capi_catalogue_query_cache = array();
     $sz = serialize(array($catalogue_name, $select, $where, $filters, $max, $start));
     if (isset($capi_catalogue_query_cache[$sz])) {
@@ -101,6 +109,10 @@ function catalogue_query_select($catalogue_name, $select, $where = null, $filter
 
 function catalogue_query_select_count($catalogue_name, $where = null, $filters = '')
 {
+    if (!addon_installed('catalogues')) {
+        return 0;
+    }
+
     require_code('catalogues');
 
     require_code('filtercode');
@@ -124,6 +136,10 @@ abstract class CMS_API_catalogue_object extends CMS_API_object
 
     public function __construct($entity_id, $missing_ok = false)
     {
+        if (!addon_installed('catalogues')) {
+            return;
+        }
+
         static $capi_catalogue_object_cache = array();
         if (!isset($capi_catalogue_object_cache[$entity_id])) {
             $rows = $GLOBALS['SITE_DB']->query_select('catalogue_entries', array('*'), array('id' => $entity_id), '', 1);
@@ -165,6 +181,10 @@ abstract class CMS_API_catalogue_object extends CMS_API_object
 
     public function set($property_label, $val)
     {
+        if (!addon_installed('catalogues')) {
+            return;
+        }
+
         if (!isset($this->field_refs[$property_label])) {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }

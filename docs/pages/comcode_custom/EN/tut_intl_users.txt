@@ -60,7 +60,7 @@ Once you have your new language set up, simply edit your content (pages etc) to 
 
 [title="2"]Cheating[/title]
 
-If you don't want to worry about a proper translation, but do want to support multiple languages, Google provide some code for Google Translate that you can easily include in your site footer (or header, or a panel) to allow people to translate the site. Modern browsers often have translate features built directly in too.
+If you don't want to worry about a proper translation, but do want to support multiple languages, Microsoft provide some code for Bing Translator that you can easily include in your site footer (or header, or a panel) to allow people to translate the site. Modern browsers often have translate features built directly in too.
 I realise this isn't a translation solution, but it may be enough to cover the simplest cases and hence worth considering.
 
 [title="2"]See also[/title]

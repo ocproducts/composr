@@ -35,6 +35,9 @@ if ((!array_key_exists('type', $_GET)) && (file_exists('install_locked'))) {
 global $IN_MINIKERNEL_VERSION;
 $IN_MINIKERNEL_VERSION = true;
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -46,6 +49,7 @@ error_reporting(E_ALL);
 
 safe_ini_set('display_errors', '1');
 safe_ini_set('assert.active', '0');
+safe_ini_set('opcache.revalidate_freq', '1'); // Bitnami WAMP puts it to 60 by default, breaking reading of _config.php
 
 global $DEFAULT_FORUM;
 $DEFAULT_FORUM = 'cns';
@@ -278,6 +282,23 @@ if (@is_resource($DATADOTCMS_FILE)) {
     }
 }
 
+/**
+ * Propagate certain keep_ parameters to a URL.
+ *
+ * @param  URLPATH The URL
+ * @return URLPATH Corrected URL
+ */
+function prepare_installer_url($url)
+{
+    if (in_safe_mode()) {
+        $url .= '&keep_safe_mode=1';
+    }
+    if (get_param_integer('keep_quick_hybrid', 0) == 1) {
+        $url .= '&keep_quick_hybrid=1';
+    }
+    return $url;
+}
+
 // ========================================
 // Installation steps
 // ========================================
@@ -405,6 +426,11 @@ function step_1()
         }
     }
 
+    // Github downloads should not be used directly
+    if (file_exists(get_file_base() . '/_tests')) {
+        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => 'You appear to be installing via the official github repository. This is not intended for end-users and will lead to a bloated insecure site. You should use an official package from the Composr download page.')));
+    }
+
     // Language selection...
 
     if (file_exists('lang_custom/langs.ini')) {
@@ -459,10 +485,7 @@ function step_1()
 
     // UI...
 
-    $url = 'install.php?step=2';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=2');
 
     $hidden = build_keep_post_fields();
     $max = strval(get_param_integer('max', 1000));
@@ -493,10 +516,7 @@ function step_2()
         }
     }
 
-    $url = 'install.php?step=3';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=3');
 
     $hidden = build_keep_post_fields();
     return do_template('INSTALLER_STEP_2', array('_GUID' => 'b08b0268784c9a0f44863ae3aece6789', 'URL' => $url, 'HIDDEN' => $hidden, 'LICENCE' => $licence));
@@ -631,6 +651,10 @@ function step_3()
             continue;
         }
 
+        if (isset($SITE_INFO['db_type'])) {
+            $selected = ($database == $SITE_INFO['db_type']);
+        }
+
         if (array_key_exists($database, $database_names)) {
             $mapped_name = $database_names[$database];
         } else {
@@ -650,10 +674,7 @@ function step_3()
     $js = new Tempcode();
     $js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
 
-    $url = 'install.php?step=4';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=4');
 
     $hidden = build_keep_post_fields();
     return do_template('INSTALLER_STEP_3', array(
@@ -863,7 +884,7 @@ function step_4()
     $webdir_stub = $dr_parts[count($dr_parts) - 1];
 
     // If we have a host where the FTP is two+ levels down (often when we have one FTP covering multiple virtual hosts), then this "last component" rule would be insufficient; do a search through for critical strings to try and make a better guess
-    $special_root_dirs = array('public_html', 'www', 'webroot', 'httpdocs', 'wwwroot');
+    $special_root_dirs = array('public_html', 'www', 'webroot', 'httpdocs', 'httpsdocs', 'wwwroot', 'Documents');
     $webdir_stub = $dr_parts[count($dr_parts) - 1];
     foreach ($dr_parts as $i => $part) {
         if (in_array($part, $special_root_dirs)) {
@@ -1058,10 +1079,7 @@ function gaeOnChange() {
         $message->attach(paragraph(do_lang_tempcode('FORUM_DRIVER_NATIVE_LOGIN')));
     }
 
-    $url = 'install.php?step=5';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=5');
 
     $hidden = build_keep_post_fields();
     return do_template('INSTALLER_STEP_4', array(
@@ -1094,10 +1112,7 @@ function step_5()
         @set_time_limit(180);
     }
 
-    $url = 'install.php?step=6';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=6');
 
     $use_msn = post_param_integer('use_msn', 0);
     if ($use_msn == 0) {
@@ -1208,10 +1223,7 @@ function step_5()
             global $INSTALL_LANG;
             $sections = new Tempcode();
 
-            $url = 'install.php?step=5';
-            if (in_safe_mode()) {
-                $url .= '&keep_safe_mode=1';
-            }
+            $url = prepare_installer_url('install.php?step=5');
 
             $hidden = build_keep_post_fields();
             $hidden->attach(form_input_hidden('confirm', '1'));
@@ -1246,10 +1258,7 @@ function step_5()
         $ftp_status = step_5_ftp();
         $log->attach($ftp_status[0]);
         if ($ftp_status[1] != -1) {
-            $url = 'install.php?step=5&start_from=' . strval($ftp_status[1]);
-            if (in_safe_mode()) {
-                $url .= '&keep_safe_mode=1';
-            }
+            $url = prepare_installer_url('install.php?step=5&start_from=' . strval($ftp_status[1]));
             $still_ftp = true;
         }
     }
@@ -1971,6 +1980,8 @@ function step_5_core()
         'a_last_downloaded_time' => '?INTEGER',
         'a_add_time' => 'INTEGER'
     ));
+    $GLOBALS['SITE_DB']->create_index('attachments', 'ownedattachments', array('a_member_id'));
+    $GLOBALS['SITE_DB']->create_index('attachments', 'attachmentlimitcheck', array('a_add_time'));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('attachment_refs');
     $GLOBALS['SITE_DB']->create_table('attachment_refs', array(
@@ -1979,8 +1990,6 @@ function step_5_core()
         'r_referer_id' => 'ID_TEXT',
         'a_id' => 'AUTO_LINK'
     ));
-    $GLOBALS['SITE_DB']->create_index('attachments', 'ownedattachments', array('a_member_id'));
-    $GLOBALS['SITE_DB']->create_index('attachments', 'attachmentlimitcheck', array('a_add_time'));
 
     return do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'c6b6d92c670b7f1b223798ace54102f9', 'SOMETHING' => do_lang_tempcode('PRIMARY_CORE_INSTALLED')));
 }
@@ -2122,10 +2131,7 @@ function step_6()
         exit(do_lang('INST_POST_ERROR'));
     }
 
-    $url = 'install.php?step=7';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=7');
 
     $log = new Tempcode();
 
@@ -2226,10 +2232,7 @@ function step_7()
         $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '9fafb3dd014d589fcc057bba54fc4ag3', 'SOMETHING' => do_lang_tempcode('INSTALLED_ADDON', escape_html($addon)))));
     }
 
-    $url = 'install.php?step=8';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=8');
 
     return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'c016b2a364d20cf711af7e14c60a7921', 'PREVIOUS_STEP' => '6', 'CURRENT_STEP' => '7', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
@@ -2252,10 +2255,7 @@ function step_8()
         }
     }
 
-    $url = 'install.php?step=9';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=9');
 
     return do_template('INSTALLER_STEP_LOG', array('_GUID' => '27fad5aa7f96d26a51e6afb6b7e5c7b1', 'PREVIOUS_STEP' => '7', 'CURRENT_STEP' => '8', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
@@ -2292,10 +2292,7 @@ function step_9()
         }
     }
 
-    $url = 'install.php?step=10';
-    if (in_safe_mode()) {
-        $url .= '&keep_safe_mode=1';
-    }
+    $url = prepare_installer_url('install.php?step=10');
 
     return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'b20121b8f4f84dd8e625e3b821c753b3', 'PREVIOUS_STEP' => '8', 'CURRENT_STEP' => '9', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
 }
@@ -2499,7 +2496,7 @@ function handle_self_referencing_embedment()
                     exit();
                 }
                 $conn = false;
-                $domain = trim(get_param_string('ftp_domain', false, INPUT_FILTER_GET_COMPLEX));
+                $domain = trim(post_param_string('ftp_domain', false, INPUT_FILTER_GET_COMPLEX));
                 $port = 21;
                 if (strpos($domain, ':') !== false) {
                     list($domain, $_port) = explode(':', $domain, 2);
@@ -2509,8 +2506,8 @@ function handle_self_referencing_embedment()
                     $conn = @ftp_ssl_connect($domain, $port);
                 }
                 $ssl = ($conn !== false);
-                $username = get_param_string('ftp_username', false, INPUT_FILTER_GET_COMPLEX);
-                $password = get_param_string('ftp_password', false, INPUT_FILTER_GET_COMPLEX);
+                $username = post_param_string('ftp_username', false, INPUT_FILTER_GET_COMPLEX);
+                $password = post_param_string('ftp_password', false, INPUT_FILTER_GET_COMPLEX);
                 $ssl = ($conn !== false);
                 if (($ssl) && (!@ftp_login($conn, $username, $password))) {
                     $conn = false;
@@ -2528,7 +2525,7 @@ function handle_self_referencing_embedment()
                     ftp_close($conn);
                     exit();
                 }
-                $ftp_folder = get_param_string('ftp_folder', false, INPUT_FILTER_GET_COMPLEX);
+                $ftp_folder = post_param_string('ftp_folder', false, INPUT_FILTER_GET_COMPLEX);
                 if (substr($ftp_folder, -1) != '/') {
                     $ftp_folder .= '/';
                 }
@@ -2556,12 +2553,12 @@ function handle_self_referencing_embedment()
                 if (!isset($SITE_INFO)) {
                     $SITE_INFO = array();
                 }
-                $SITE_INFO['db_type'] = get_param_string('db_type');
+                $SITE_INFO['db_type'] = post_param_string('db_type');
                 require_code('database');
                 if (get_param_string('db_site') == '') {
-                    $db = new DatabaseConnector(get_param_string('db_forums'), get_param_string('db_forums_host'), get_param_string('db_forums_user'), get_param_string('db_forums_password', false, INPUT_FILTER_GET_COMPLEX), '', true);
+                    $db = new DatabaseConnector(post_param_string('db_forums'), post_param_string('db_forums_host'), post_param_string('db_forums_user'), post_param_string('db_forums_password', false, INPUT_FILTER_GET_COMPLEX), '', true);
                 } else {
-                    $db = new DatabaseConnector(get_param_string('db_site'), get_param_string('db_site_host'), get_param_string('db_site_user'), get_param_string('db_site_password', false, INPUT_FILTER_GET_COMPLEX), '', true);
+                    $db = new DatabaseConnector(post_param_string('db_site'), post_param_string('db_site_host'), post_param_string('db_site_user'), post_param_string('db_site_password', false, INPUT_FILTER_GET_COMPLEX), '', true);
                 }
                 $db->ensure_connected();
                 exit();

@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_themeing}
+
 <li data-tpl="themeScreenPreview">
 	{+START,IF_NON_EMPTY,{URL}}<a title="{TEMPLATE*} {!LINK_NEW_WINDOW}" data-click-pd="1" class="js-link-click-open-template-preview-window" href="{URL*}&amp;keep_wide_high=1" target="_blank">{+END}<span {+START,IF_NON_EMPTY,{COLOR}} style="color: {COLOR*}"{+END}>{TEMPLATE*}</span>{+START,IF_NON_EMPTY,{URL}}</a>{+END}
 

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
+<meta http-equiv="Content-Type" content="text/html; charset={$LCASE*,{$CHARSET}}" />
 <title>{TITLE*}</title>
 {CSS}
 </head>
@@ -36,4 +36,3 @@
 	</div>
 </body>
 </html>
-

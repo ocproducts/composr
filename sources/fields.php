@@ -46,9 +46,12 @@ function catalogue_file_script()
     }
     $entry_id = get_param_integer('id');
     $field_id = get_param_integer('field_id', null);
-    $id_field = get_param_string('id_field');
+    $id_field = filter_naughty_harsh(get_param_string('id_field'));
     $field_id_field = get_param_string('field_id_field', null);
-    $url_field = get_param_string('url_field');
+    if ($field_id_field !== null) {
+        $field_id_field = filter_naughty_harsh($field_id_field);
+    }
+    $url_field = filter_naughty_harsh(get_param_string('url_field'));
     $ev = 'uploads/catalogues/' . $file;
     if ($original_filename === null) {
         $original_filename = basename($file);
@@ -93,9 +96,9 @@ function catalogue_file_script()
         if (get_option('immediate_downloads', true) === '1' || get_param_integer('inline', 0) == 1) {
             require_code('mime_types');
             header('Content-Type: ' . get_mime_type(get_file_extension($original_filename), has_privilege($GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'ce_submitter', array('id' => $entry_id)), 'comcode_dangerous')) . '; authoritative=true;');
-            header('Content-Disposition: inline; filename="' . escape_header($original_filename) . '"');
+            header('Content-Disposition: inline; filename="' . escape_header($original_filename, true) . '"');
         } else {
-            header('Content-Disposition: attachment; filename="' . escape_header($original_filename) . '"');
+            header('Content-Disposition: attachment; filename="' . escape_header($original_filename, true) . '"');
         }
     } else {
         header('Content-Disposition: attachment');
@@ -322,7 +325,7 @@ function manage_custom_fields_entry_points($content_type)
 
             return array(
                 '_SEARCH:cms_catalogues:' . ($exists ? '_edit_catalogue' : 'add_catalogue') . ':_' . $content_type => array(
-                    do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('EDIT_CUSTOM_FIELDS', do_lang($info['content_type_label'])), make_string_tempcode(escape_html(integer_format($count[$content_type])))),
+                    do_lang_tempcode('menus:ITEMS_HERE', do_lang_tempcode('EDIT_CUSTOM_FIELDS', do_lang($info['content_type_label'])), make_string_tempcode(escape_html(integer_format($count[$content_type])))),
                     'menu/cms/catalogues/edit_one_catalogue'
                 ),
             );

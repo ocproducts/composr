@@ -454,6 +454,10 @@ class Module_admin_aggregate_types extends Standard_crud_module
      */
     public function _sync()
     {
+        if (!isset($_POST['aggregate_type'])) {
+            warn_exit(do_lang_tempcode('NO_PARAMETER_SENT', escape_html('aggregate_type')));
+        }
+
         $types = $_POST['aggregate_type'];
         foreach ($types as $type) {
             resync_all_aggregate_type_instances($type);

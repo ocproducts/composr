@@ -267,7 +267,7 @@ function get_banner_form_fields($simplified = false, $name = '', $image_url = ''
     }
 
     require_javascript('banners');
-    $js_function_calls = ['getBannerFormFields'];
+    $js_function_calls = array('getBannerFormFields');
 
     return array($fields, $js_function_calls);
 }
@@ -406,7 +406,7 @@ function check_banner($title_text = '', $direct_code = '', $b_type = '', $b_type
  * @param  integer $hits_to The number of banner hits to this banners site
  * @param  integer $views_from The number of return views from this banners site
  * @param  integer $views_to The number of banner views to this banners site
- * @param  ?TIME $edit_date The banner edit date  (null: never)
+ * @param  ?TIME $edit_date The banner edit date (null: never)
  * @param  boolean $uniqify Whether to force the name as unique, if there's a conflict
  * @return ID_TEXT The name
  */

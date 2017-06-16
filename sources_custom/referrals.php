@@ -15,10 +15,7 @@
 
 function get_referral_scheme_stats_for($referrer, $scheme_name, $raw = false)
 {
-    $num_total_by_referrer = count($GLOBALS['FORUM_DB']->query_select('f_invites', array('*'), array('i_inviter' => $referrer), 'GROUP BY i_email_address'));
-    if ($num_total_by_referrer === null) {
-        $num_total_by_referrer = 0;
-    }
+    $num_total_by_referrer = count($GLOBALS['FORUM_DB']->query_select('f_invites', array('DISTINCT i_email_address'), array('i_inviter' => $referrer)));
     $num_total_qualified_by_referrer = $GLOBALS['SITE_DB']->query_select_value('referees_qualified_for', 'COUNT(*)', array('q_referee' => $referrer, 'q_scheme_name' => $scheme_name));
 
     if (!$raw) {
@@ -492,7 +489,7 @@ function referrer_report_script($ret = false)
         $GLOBALS['FORUM_DB']->get_table_prefix() . $table .
         ' WHERE ' .
         $where .
-        ' GROUP BY i_email_address ORDER BY i_time DESC',
+        (can_arbitrary_groupby() ? ' GROUP BY i_email_address' : '') . ' ORDER BY i_time DESC',
         $max,
         $start
     );

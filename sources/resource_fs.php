@@ -48,9 +48,11 @@ function init__resource_fs()
     require_code('resource_fs_base_class');
     require_code('content');
 
-    define('RESOURCE_FS_DEFAULT_EXTENSION', 'cms');
+    if (!defined('RESOURCE_FS_DEFAULT_EXTENSION')) {
+        define('RESOURCE_FS_DEFAULT_EXTENSION', 'cms');
 
-    define('RESOURCE_FS_SPECIAL_DIRECTORY_FILE', '_folder.' . RESOURCE_FS_DEFAULT_EXTENSION);
+        define('RESOURCE_FS_SPECIAL_DIRECTORY_FILE', '_folder.' . RESOURCE_FS_DEFAULT_EXTENSION);
+    }
 
     push_query_limiting(false);
 
@@ -61,9 +63,11 @@ function init__resource_fs()
     global $RESOURCE_FS_ADD_ONLY;
     $RESOURCE_FS_ADD_ONLY = false;
 
-    define('TABLE_REPLACE_MODE_NONE', 0);
-    define('TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA', 1);
-    define('TABLE_REPLACE_MODE_SEVERE', 2);
+    if (!defined('TABLE_REPLACE_MODE_NONE')) {
+        define('TABLE_REPLACE_MODE_NONE', 0);
+        define('TABLE_REPLACE_MODE_BY_EXTRA_FIELD_DATA', 1);
+        define('TABLE_REPLACE_MODE_SEVERE', 2);
+    }
 }
 
 /**
@@ -889,7 +893,7 @@ function remap_portable_as_urlpath($portable_data, $ignore_conflicts = false)
     }
 
     require_code('files');
-    cms_file_put_contents_safe($place, $binary, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+    cms_file_put_contents_safe($path, $binary, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
 
     return $urlpath;
 }

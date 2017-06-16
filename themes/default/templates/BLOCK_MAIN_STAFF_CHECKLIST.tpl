@@ -1,5 +1,6 @@
 {$REQUIRE_JAVASCRIPT,staff}
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
+
 <section id="tray_{!CHECK_LIST|}" class="box box___block_main_staff_checklist" data-tpl="blockMainStaffChecklist" data-view="ToggleableTray" data-tray-cookie="{!CHECK_LIST|}">
 	<h3 class="toggleable_tray_title js-tray-header">
 		<a href="#!" id="checklist_show_all_link" class="top_left_toggleicon js-click-disable-task-hiding" title="{!SHOW_ALL}: {!CHECK_LIST}">{!SHOW_ALL}</a>

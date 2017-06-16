@@ -112,7 +112,7 @@ function checkMenu() {
     var i, id, name, theParent, ignore, caption, url, branchType;
     for (i = 0; i < form.elements.length; i++) {
         name = form.elements[i].name.substr(0, 7);
-        if (name === 'parent_') {// We don't care about this, but it does tell us we have found a menu branch ID
+        if (name === 'parent_') { // We don't care about this, but it does tell us we have found a menu branch ID
 
             id = form.elements[i].name.substring(7, form.elements[i].name.length);
 
@@ -126,7 +126,7 @@ function checkMenu() {
                 theParent = theParent.parentNode;
             } while (theParent.parentNode);
 
-            if (!ignore) {// It's the real deal
+            if (!ignore) { // It's the real deal
 
                 // Check we have a caption
                 caption = $cms.dom.$id('caption_' + id);
@@ -150,4 +150,3 @@ function checkMenu() {
 
     return true;
 }
-

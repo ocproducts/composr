@@ -285,7 +285,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	display: inline-block;
 }
 .input_dimensions input {
-	width: 3em !important;
+	width: 4em !important;
 }
 .input_dimensions, .input_dimensions * {
 	vertical-align: middle;
@@ -344,7 +344,7 @@ span.validated_checkbox.checked {
 }
 span.validated_checkbox+input[name="validated"].input_tick {
 	padding-right: 0.5em;
-	z-index: 1000;
+	z-index: 100;
 	position: relative;
 	opacity: 0;
 }
@@ -679,7 +679,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 }
 
 .skip_step_button_wrap {
-	height: 35px;
+	overflow: hidden;
 }
 
 .skip_step_button_wrap div {
@@ -707,6 +707,10 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 .fields_set_radio {
 	margin-bottom: 0.5em;
+}
+
+.fields_set_contents {
+	overflow: hidden;
 }
 
 .fields_set_contents .associated_details {

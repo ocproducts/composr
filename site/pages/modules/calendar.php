@@ -43,8 +43,8 @@ class Module_calendar
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 8;
-        $info['locked'] = false;
         $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -1591,7 +1591,7 @@ class Module_calendar
         );
         if ($event['e_do_timezone_conv'] == 0) {
             $timezone_map = get_timezone_list();
-            $map['TIMEZONE'] = $timezone_map[$event['e_timezone']];
+            $map['TIMEZONE'] = isset($timezone_map[$event['e_timezone']]) ? $timezone_map[$event['e_timezone']] : null;
         }
         return do_template('CALENDAR_EVENT_SCREEN', $map);
     }

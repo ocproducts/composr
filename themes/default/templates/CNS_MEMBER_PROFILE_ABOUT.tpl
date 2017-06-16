@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
+
 <div class="float_surrounder" data-tpl="cnsMemberProfileAbout">
 	<div class="cns_profile_column">
 		{+START,IF_NON_EMPTY,{AVATAR_URL}}

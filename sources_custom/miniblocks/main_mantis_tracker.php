@@ -40,7 +40,7 @@ if (!running_script('tracker') && get_param_integer('keep_frames', null) !== 0) 
 
 // Some fundamental settings...
 
-$sql = 'SELECT id FROM mantis_custom_field_table WHERE name=\'Time estimation (hours)\'';
+$sql = 'SELECT id FROM mantis_custom_field_table WHERE ' . db_string_equal_to('name', 'Time estimation (hours)');
 $cms_hours_field = $GLOBALS['FORUM_DB']->query_value_if_there($sql);
 
 $s_currency = get_option('currency', true);

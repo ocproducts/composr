@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_themeing}
+
 <div data-tpl="tempcodeTesterScreen">
 	{TITLE}
 
@@ -61,4 +62,3 @@
 		</div>
 	</div>
 </div>
-

@@ -45,13 +45,13 @@ function get_future_version_information()
 {
     require_lang('version');
 
-    $version_dotted = get_param_string('keep_test_version', get_version_dotted());
+    $version_dotted = get_param_string('keep_test_version', get_version_dotted()); // E.g. ?keep_test_version=10%20RC29&keep_cache_blocks=0 to test
     $url = 'http://compo.sr/uploads/website_specific/compo.sr/scripts/version.php?version=' . rawurlencode($version_dotted) . '&lang=' . rawurlencode(user_lang());
 
     static $http_result = null; // Cache
     if ($http_result === null) {
         require_code('http');
-        $http_result = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), 5/*5 minute cache*/);
+        $http_result = cache_and_carry('cms_http_request', array($url, array('trigger_error' => false)), ($version_dotted == get_version_dotted()) ? 5/*5 minute cache*/ : 0);
     }
     if (is_object($http_result) && ($http_result->data !== null)) {
         $data = $http_result->data;

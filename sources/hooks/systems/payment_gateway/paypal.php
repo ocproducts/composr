@@ -218,6 +218,15 @@ class Hook_payment_gateway_paypal
             $member_address['state'] = get_cms_cpf('state');
             $member_address['zip'] = get_cms_cpf('post_code');
             $member_address['country'] = get_cms_cpf('country');
+
+            require_code('locations');
+            if (find_country_name_from_iso($member_address['country'])  === null) {
+                $member_address['country'] = ''; // PayPal only allows valid countries
+            }
+
+            if (($member_address['address1'] == '') || ($member_address['city'] == '') || ($member_address['zip'] == '') || ($member_address['country'] == '')) {
+                $member_address = array(); // Causes error on PayPal due to it crashing when trying to validate the address
+            }
         }
         return $member_address;
     }
@@ -335,6 +344,9 @@ class Hook_payment_gateway_paypal
                 exit(); // Non-supported for IPN in Composr
         }
         $payment_status = post_param_string('payment_status', '');
+        if (($payment_status == 'Pending') && (ecommerce_test_mode())) {
+            $payment_status = 'Completed';
+        }
         switch ($payment_status) {
             // Subscription
             case '': // We map certain values of txn_type for subscriptions over to payment_status, as subscriptions have no payment status but similar data in txn_type which we do not use
@@ -457,7 +469,10 @@ class Hook_payment_gateway_paypal
         }
 
         // SECURITY: Check it came into our own account
-        $receiver_email = post_param_string('receiver_email');
+        $receiver_email = post_param_string('receiver_email', null);
+        if ($receiver_email === null) {
+            $receiver_email = post_param_string('business');
+        }
         $primary_paypal_email = get_option('primary_paypal_email');
         if ($primary_paypal_email == '') {
             $primary_paypal_email = $this->_get_payment_address();

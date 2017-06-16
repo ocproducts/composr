@@ -77,9 +77,7 @@ class Hook_addon_registry_unvalidated
             'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
-            'previously_in_addon' => array(
-                'core_unvalidated'
-            )
+            'previously_in_addon' => array('core_unvalidated'),
         );
     }
 
@@ -143,7 +141,6 @@ class Hook_addon_registry_unvalidated
      */
     public function tpl_preview__administrative__validation_request_mail()
     {
-        require_lang('unvalidated');
         return array(
             lorem_globalise(do_lorem_template('VALIDATION_REQUEST_MAIL', array(
                 'USERNAME' => lorem_word(),

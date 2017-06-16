@@ -59,5 +59,4 @@
             return false;
         }
     };
-
 }(window.$cms));

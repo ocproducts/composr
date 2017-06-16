@@ -79,12 +79,16 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
     /**
      * Get details for an ajax-tree-list of entries for the content covered by this search hook.
      *
-     * @return mixed Either Tempcode of a full screen to show, or a pair: the hook, and the options
+     * @return ?mixed Either Tempcode of a full screen to show, or a pair: the hook, and the options (null: no tree)
      */
     public function ajax_tree()
     {
         $catalogue_name = get_param_string('catalogue_name', '');
         if ($catalogue_name == '') {
+            if (get_param_string('content') != '') {
+                return null; // Mid-searc
+            }
+
             $tree = create_selection_list_catalogues(null, true);
             if ($tree->is_empty()) {
                 inform_exit(do_lang_tempcode('NO_ENTRIES', 'catalogue'));
@@ -106,11 +110,14 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
     /**
      * Get a list of extra fields to ask for.
      *
-     * @return array A list of maps specifying extra fields
+     * @return array A list of maps specifying extra fields (null: no tree)
      */
     public function get_fields()
     {
-        $catalogue_name = get_param_string('catalogue_name');
+        $catalogue_name = get_param_string('catalogue_name', '');
+        if ($catalogue_name == '') {
+            return array();
+        }
         return $this->_get_fields($catalogue_name);
     }
 
@@ -151,7 +158,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
                 break;
 
             case 'title':
-                $remapped_orderer = 'cv_value'; // short table
+                $remapped_orderer = 'b_cv_value'; // short table
                 break;
 
             case 'add_date':
@@ -250,7 +257,7 @@ class Hook_search_catalogue_entries extends FieldsSearchHook
 
         global $SEARCH_CATALOGUE_ENTRIES_CATALOGUES_CACHE;
         $query = 'SELECT c.* FROM ' . get_table_prefix() . 'catalogues c';
-        if ($GLOBALS['SITE_DB']->can_arbitrary_groupby()) {
+        if ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) {
             $query .= ' JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.c_name=c.c_name GROUP BY c.c_name';
         }
         $_catalogues = $GLOBALS['SITE_DB']->query($query);

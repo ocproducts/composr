@@ -480,6 +480,7 @@ class Hook_addon_registry_core_rich_media
     public function tpl_preview__comcode_page_edit_screen()
     {
         require_lang('zones');
+
         return array(
             lorem_globalise(do_lorem_template('COMCODE_PAGE_EDIT_SCREEN', array(
                 'NEW' => lorem_phrase(),

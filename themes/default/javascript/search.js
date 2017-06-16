@@ -108,5 +108,4 @@
             $cms.form.updateAjaxSearchList(input, e, searchType);
         });
     };
-
 }(window.$cms));

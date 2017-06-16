@@ -130,7 +130,7 @@ class Hook_sitemap_root extends Hook_sitemap_base
             }
 
             if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
-                $struct['title'] = make_string_tempcode(do_lang('ZONE') . ': ' . $struct['title']->evaluate());
+                $struct['title'] = make_string_tempcode(do_lang('zones:ZONE') . ': ' . $struct['title']->evaluate());
             }
 
             if (($options & SITEMAP_GEN_USE_PAGE_GROUPINGS) == 0) {

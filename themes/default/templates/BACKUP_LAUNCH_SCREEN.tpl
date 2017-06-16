@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,backup}
+
 <div data-tpl="backupLaunchScreen">
 	{TITLE}
 

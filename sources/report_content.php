@@ -64,9 +64,9 @@ function find_reported_content_ticket_type()
 /**
  * The UI to report content.
  *
- * @param Tempcode $title Screen title
- * @param ID_TEXT $content_type The content type being reported
- * @param ID_TEXT $content_id The content ID being reported
+ * @param  Tempcode $title Screen title
+ * @param  ID_TEXT $content_type The content type being reported
+ * @param  ID_TEXT $content_id The content ID being reported
  * @return Tempcode The UI
  */
 function report_content_form($title, $content_type, $content_id)
@@ -104,7 +104,7 @@ function report_content_form($title, $content_type, $content_id)
     return do_template('POSTING_SCREEN', array(
         '_GUID' => '92a0a35a7c07edd0d3f8a960710de608',
         'TITLE' => $title,
-        'JS_FUNCTION_CALLS' => function_exists('captcha_ajax_check_function') && captcha_ajax_check_function() ? [captcha_ajax_check_function()] : [],
+        'JS_FUNCTION_CALLS' => (function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '') ? array(captcha_ajax_check_function()) : array(),
         'TEXT' => $text,
         'POSTING_FORM' => $posting_form,
     ));
@@ -113,11 +113,11 @@ function report_content_form($title, $content_type, $content_id)
 /**
  * The UI to report a post.
  *
- * @param Tempcode $title Screen title
- * @param AUTO_LINK $post_id The post ID
- * @param string $js_function_calls JavaScript code to include
- * @param ?array $topic_info The topic row (returned by reference) (null: )
- * @param ?array $post_info The topic row (returned by reference) (null: )
+ * @param  Tempcode $title Screen title
+ * @param  AUTO_LINK $post_id The post ID
+ * @param  array $js_function_calls JavaScript code to include
+ * @param  ?array $topic_info The topic row (returned by reference) (null: )
+ * @param  ?array $post_info The topic row (returned by reference) (null: )
  * @return Tempcode The UI
  */
 function report_post_form($title, $post_id, $js_function_calls, &$topic_info = null, &$post_info = null)
@@ -167,11 +167,7 @@ function report_post_form($title, $post_id, $js_function_calls, &$topic_info = n
 
     url_default_parameters__disable();
 
-    if (!is_array($js_function_calls)) {
-        $js_function_calls = [];
-    }
-
-    if (function_exists('captcha_ajax_check_function') && captcha_ajax_check_function()) {
+    if ((function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '')) {
         $js_function_calls[] = captcha_ajax_check_function();
     }
 
@@ -187,8 +183,8 @@ function report_post_form($title, $post_id, $js_function_calls, &$topic_info = n
 /**
  * Get a member content link in Comcode format.
  *
- * @param ?MEMBER $content_member_id Member ID of the original content (null: unknown)
- * @param ?string $content_poster_name_if_guest Member name if a guest (null: unknown)
+ * @param  ?MEMBER $content_member_id Member ID of the original content (null: unknown)
+ * @param  ?string $content_poster_name_if_guest Member name if a guest (null: unknown)
  * @return string Member link
  */
 function report_content_member_link($content_member_id, $content_poster_name_if_guest)
@@ -261,8 +257,8 @@ function report_content_form_fields()
 /**
  * Get standard text for a report form.
  *
- * @param Tempcode $text Append the text here
- * @param ID_TEXT $ticket_id Ticket ID
+ * @param  Tempcode $text Append the text here
+ * @param  ID_TEXT $ticket_id Ticket ID
  */
 function report_content_append_text(&$text, $ticket_id)
 {
@@ -290,13 +286,13 @@ function report_content_append_text(&$text, $ticket_id)
 /**
  * The actualiser to report content.
  *
- * @param ID_TEXT $content_type Post ID being reported
- * @param ID_TEXT $content_id Post ID being reported
- * @param string $report_post Report post
- * @param BINARY $anonymous Anonymous
- * @param BINARY $open Report is open
- * @param ?TIME $time Report time (null: now)
- * @param ?MEMBER $member_id Reporting member (null: current member)
+ * @param  ID_TEXT $content_type Post ID being reported
+ * @param  ID_TEXT $content_id Post ID being reported
+ * @param  string $report_post Report post
+ * @param  BINARY $anonymous Anonymous
+ * @param  BINARY $open Report is open
+ * @param  ?TIME $time Report time (null: now)
+ * @param  ?MEMBER $member_id Reporting member (null: current member)
  * @return object URL to content
  */
 function report_content($content_type, $content_id, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
@@ -344,12 +340,12 @@ function report_content($content_type, $content_id, $report_post, $anonymous = 0
 /**
  * The actualiser to report a post.
  *
- * @param AUTO_LINK $post_id Post ID being reported
- * @param string $report_post Report post
- * @param BINARY $anonymous Anonymous
- * @param BINARY $open Report is open
- * @param ?TIME $time Report time (null: now)
- * @param ?MEMBER $member_id Reporting member (null: current member)
+ * @param  AUTO_LINK $post_id Post ID being reported
+ * @param  string $report_post Report post
+ * @param  BINARY $anonymous Anonymous
+ * @param  BINARY $open Report is open
+ * @param  ?TIME $time Report time (null: now)
+ * @param  ?MEMBER $member_id Reporting member (null: current member)
  * @return object URL to content
  */
 function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
@@ -403,14 +399,14 @@ function report_post($post_id, $report_post, $anonymous = 0, $open = 1, $time = 
 /**
  * The shared backend to report content/posts.
  *
- * @param ID_TEXT $content_type The content type being reported
- * @param ID_TEXT $content_id The content ID being reported
- * @param string $report_title Report title
- * @param string $report_post Report post
- * @param BINARY $anonymous Anonymous
- * @param BINARY $open Report is open
- * @param ?TIME $time Report time (null: now)
- * @param ?MEMBER $member_id Reporting member (null: current member)
+ * @param  ID_TEXT $content_type The content type being reported
+ * @param  ID_TEXT $content_id The content ID being reported
+ * @param  string $report_title Report title
+ * @param  string $report_post Report post
+ * @param  BINARY $anonymous Anonymous
+ * @param  BINARY $open Report is open
+ * @param  ?TIME $time Report time (null: now)
+ * @param  ?MEMBER $member_id Reporting member (null: current member)
  * @return object URL to content
  */
 function _report_content($content_type, $content_id, $report_title, $report_post, $anonymous = 0, $open = 1, $time = null, $member_id = null)
@@ -512,8 +508,8 @@ function _report_content($content_type, $content_id, $report_title, $report_post
 /**
  * Find if a particular support ticket ID exists.
  *
- * @param ID_TEXT $ticket_id Ticket ID
- * @param ?AUTO_LINK $topic_id Topic ID (null: )
+ * @param  ID_TEXT $ticket_id Ticket ID
+ * @param  ?AUTO_LINK $topic_id Topic ID (null: )
  * @return boolean Whether it exists
  */
 function ticket_exists($ticket_id, &$topic_id = null)

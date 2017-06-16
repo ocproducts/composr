@@ -31,15 +31,17 @@ function init__database_helper()
         return;
     }
 
-    // Limits (we also limit field names to not conflict with keywords - those defined in database_action.php)
-    define('DB_MAX_KEY_SIZE', 500);
-    define('DB_MAX_PRIMARY_KEY_SIZE', 251);
-    define('DB_MAX_ROW_SIZE', 8000);
-    define('DB_MAX_FIELD_IDENTIFIER_SIZE', 31);
-    define('DB_MAX_IDENTIFIER_SIZE', 32);
-    // We have to take into account that chars might take 3 bytes - but we'll assume unicode is only used on db's with higher limits
-    define('DB_MAX_KEY_SIZE_UNICODE', 1000);
-    define('DB_MAX_ROW_SIZE_UNICODE', 24000);
+    if (!defined('DB_MAX_KEY_SIZE')) {
+        // Limits (we also limit field names to not conflict with keywords - those defined in database_action.php)
+        define('DB_MAX_KEY_SIZE', 500);
+        define('DB_MAX_PRIMARY_KEY_SIZE', 251);
+        define('DB_MAX_ROW_SIZE', 8000);
+        define('DB_MAX_FIELD_IDENTIFIER_SIZE', 31);
+        define('DB_MAX_IDENTIFIER_SIZE', 32);
+        // We have to take into account that chars might take 3 bytes - but we'll assume unicode is only used on db's with higher limits
+        define('DB_MAX_KEY_SIZE_UNICODE', 1000);
+        define('DB_MAX_ROW_SIZE_UNICODE', 24000);
+    }
 }
 
 /**
@@ -59,6 +61,8 @@ function init__database_helper()
  */
 function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_check = false, $skip_null_check = false, $save_bytes = false, $return_on_error = false)
 {
+    require_code('database_action');
+
     // Check constraints
     $take_unicode_into_account = $save_bytes ? 3 : 4;
     $data_sizes = array(
@@ -77,9 +81,9 @@ function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_c
         'SHORT_TRANS' => 4,
         'LONG_TRANS__COMCODE' => 255 + 1,
         'SHORT_TRANS__COMCODE' => 255 + 1,
-        'SHORT_TEXT' => $primary_key ? (150) : (255 + 1), /* We underestimate for primary key, as it is very unlikely to be very high and the limit only exists on our own 'xml' database driver as a run-time limit */
+        'SHORT_TEXT' => $primary_key ? (150) : (255 + 1), /* We underestimate for primary key, as it is very unlikely to be very high and the higher limit only exists on our own 'xml' database driver as a run-time limit */
         'LONG_TEXT' => 255 + 1,
-        'ID_TEXT' => $primary_key ? (16) : (80 + 1), /* We underestimate for primary key, as it is very unlikely to be very high and the limit only exists on our own 'xml' database driver as a run-time limit */
+        'ID_TEXT' => $primary_key ? (16) : (80 + 1), /* We underestimate for primary key, as it is very unlikely to be very high and the higher limit only exists on our own 'xml' database driver as a run-time limit */
         'MINIID_TEXT' => 40 + 1,
         'IP' => 15 + 1,
         'LANGUAGE_NAME' => 5 + 1,
@@ -185,7 +189,7 @@ function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_c
  * @param  array $fields The fields
  * @param  boolean $skip_size_check Whether to skip the size check for the table (only do this for addon modules that don't need to support anything other than MySQL)
  * @param  boolean $skip_null_check Whether to skip the check for NULL string fields
- * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+ * @param  ?boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue (null: auto-detect if needed). Pass as true/false for normal install code to make intentions explicit, maintenance code may use auto-detect.
  *
  * @ignore
  */
@@ -200,18 +204,30 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         fatal_exit('Inappropriate identifier, too long: ' . $table_name); // (the +7 is for prefix: max length of 7 chars allocated for prefix)
     }
 
-    if (!$skip_size_check || running_script('restore')) {
-        if (!_check_sizes($table_name, true, $fields, $table_name, false, false, $save_bytes, running_script('restore'))) {
-            $save_bytes = true; // Automation for restore.php
+    $_save_bytes = _helper_needs_to_save_bytes($table_name, $fields);
+    if ($save_bytes === null) {
+        $save_bytes = $_save_bytes;
+    } else {
+        if ($save_bytes != $_save_bytes) {
+            warn_exit(protect_from_escaping('<kbd>$save_bytes</kbd> setting was not needed when creating table <kbd>' . escape_html($table_name) . '</kbd>'));
         }
+    }
+
+    if (!$skip_size_check) {
+        _check_sizes($table_name, true, $fields, $table_name, false, false, $save_bytes);
     }
 
     // Note that interbase has a 31000byte limit on LONG_TEXT/LONG_TRANS, because we can't use blobs on it (those have too many restraints)
 
+    $ins_m_table = array();
+    $ins_m_name = array();
+    $ins_m_type = array();
     $fields_copy = $fields;
     foreach ($fields_copy as $name => $type) {
         if (($table_name != 'db_meta') && ($table_name != 'db_meta_indices')) {
-            $this_ref->query_insert('db_meta', array('m_table' => $table_name, 'm_name' => $name, 'm_type' => $type), false, true); // Allow errors because sometimes bugs when developing can call for this happening twice
+            $ins_m_table[] = $table_name;
+            $ins_m_name[] = $name;
+            $ins_m_type[] = $type;
         }
 
         if (!multi_lang_content()) {
@@ -226,8 +242,14 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         }
     }
 
+    $this_ref->query_insert('db_meta', array('m_table' => $ins_m_table, 'm_name' => $ins_m_name, 'm_type' => $ins_m_type), false, true); // Allow errors because sometimes bugs when developing can call for this happening twice
+
     $this_ref->ensure_connected();
-    $this_ref->static_ob->create_table($this_ref->table_prefix . $table_name, $fields, $this_ref->connection_write, $table_name, $save_bytes);
+
+    $queries = $GLOBALS['DB_STATIC_OBJECT']->create_table($this_ref->table_prefix . $table_name, $fields, $this_ref->connection_write, $table_name, $save_bytes);
+    foreach ($queries as $sql) {
+        $GLOBALS['DB_STATIC_OBJECT']->query($sql, $this_ref->connection_write);
+    }
 
     // Considering tabes in a DB reference may be in multiple (if they point to same actual DB's), make sure all our DB objects have their cache cleared
     if (isset($GLOBALS['SITE_DB'])) {
@@ -247,7 +269,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         }
     }
 
-    reload_lang_fields();
+    reload_lang_fields(false, $table_name);
 }
 
 /**
@@ -257,35 +279,52 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
  * @param  ID_TEXT $table_name The table name
  * @param  ID_TEXT $index_name The index name
  * @param  array $fields The fields
- * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
+ * @param  ?string $unique_key_fields Comma-separated names of the unique key field for the table (null: lookup)
  *
  * @ignore
  */
-function _helper_create_index($this_ref, $table_name, $index_name, $fields, $unique_key_field = 'id')
+function _helper_create_index($this_ref, $table_name, $index_name, $fields, $unique_key_fields = null)
 {
     require_code('database_action');
 
-    //if ($GLOBALS['DEV_MODE']) {  Actually, no we want to run in installer, which would not be in dev mode
+    $fields_with_types = array();
     if ($table_name != 'db_meta') {
-        $fields_full = array();
-        foreach ($fields as $field) {
-            $_field = preg_replace('#\(.*\)$#', '', $field);
+        $db_types = collapse_2d_complexity('m_name', 'm_type', $this_ref->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table_name)));
 
-            $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $_field));
+        $sized = false;
+        $fields_full = array();
+        foreach ($fields as $field_name) {
+            if (strpos($field_name, '(') !== false) {
+                $sized = true;
+            }
+            $_field_name = preg_replace('#\(.*\)$#', '', $field_name);
+
+            $db_type = isset($db_types[$_field_name]) ? $db_types[$_field_name] : null;
             if ($db_type === null) {
                 $db_type = 'INTEGER';
                 if (running_script('install')) {
-                    fatal_exit('It seems we are creating an index on a table & field combo that is not yet created (' . $table_name  . ' & ' . $_field . ').');
+                    fatal_exit('It seems we are creating an index on a table & field combo that is not yet created (' . $table_name  . ' & ' . $_field_name . ').');
                 }
             }
             if (substr($db_type, 0, 1) != '*') {
                 $db_type = '*' . $db_type;
             }
-            $fields_full[$field] = $db_type;
+            $fields_full[$field_name] = $db_type;
+
+            $fields_with_types[$_field_name] = $db_type;
         }
-        _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
+        if (!$sized) {
+            _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
+        }
+    } else {
+        foreach ($fields as $field_name) {
+            if (strpos($field_name, '(') !== false) {
+                $sized = true;
+            }
+            $_field_name = preg_replace('#\(.*\)$#', '', $field_name);
+            $fields_with_types[$_field_name] = null;
+        }
     }
-    //}
 
     $keywords = get_db_keywords();
     if (in_array(strtoupper(str_replace('#', '', $index_name)), $keywords)) {
@@ -300,27 +339,12 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
     $ok_to_create = true;
 
-    reload_lang_fields(true);
+    reload_lang_fields(true, $table_name);
 
-    $_fields = '';
-    foreach ($fields as $field) {
-        if ($_fields != '') {
-            $_fields .= ',';
-        }
-        $_fields .= $field;
+    $is_full_text = ($index_name[0] == '#');
 
-        if (strpos($field, '(') === false) {
-            $db_type = $this_ref->query_select_value_if_there('db_meta', 'm_type', array('m_table' => $table_name, 'm_name' => $field));
-            if ((substr($index_name, 0, 1) != '#') && ($db_type !== null) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
-                if (($db_type !== null) && ((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
-                    $_fields .= '(250)'; // 255 would be too much with MySQL's UTF
-                }
-            }
-        }
-    }
-    if ((multi_lang_content()) && (strpos($index_name, '__combined') !== false) && (substr($index_name, 0, 1) == '#') && ($table_name != 'translate')) {
-        $ok_to_create = false;
-    }
+    $_fields = _helper_generate_index_fields($table_name, $fields_with_types, $is_full_text);
+
     $insert_map = array('i_table' => $table_name, 'i_name' => $index_name, 'i_fields' => implode(',', $fields));
     $test = $this_ref->query_select('db_meta_indices', array('*'), $insert_map);
     if (!empty($test)) { // Already exists, so we'll recreate it
@@ -328,10 +352,66 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
     }
     $this_ref->query_insert('db_meta_indices', $insert_map);
 
-    if ($ok_to_create) {
+    if ($_fields !== null) {
         $this_ref->ensure_connected();
-        $this_ref->static_ob->create_index($this_ref->table_prefix . $table_name, $index_name, $_fields, $this_ref->connection_write, $unique_key_field);
+
+        if ($unique_key_fields === null) {
+            $unique_key_fields = implode(',', _helper_get_table_key_fields($table_name));
+        }
+
+        $queries = $GLOBALS['DB_STATIC_OBJECT']->create_index($this_ref->table_prefix . $table_name, $index_name, $_fields, $this_ref->connection_write, $table_name, $unique_key_fields, $this_ref->get_table_prefix());
+        foreach ($queries as $sql) {
+            $GLOBALS['DB_STATIC_OBJECT']->query($sql, $this_ref->connection_write, null, null, $is_full_text/*May fail on database backends that don't cleanup full-text well when dropping tables*/);
+        }
     }
+}
+
+/**
+ * Get the key tables for a table.
+ *
+ * @param  ID_TEXT $table_name Table name
+ * @return array List of key fields
+ *
+ * @ignore
+ */
+function _helper_get_table_key_fields($table_name)
+{
+    return collapse_1d_complexity('m_name', $GLOBALS['SITE_DB']->query_select('db_meta', array('m_name'), array('m_table' => $table_name), ' AND m_type LIKE \'' . db_encode_like('*%') . '\''));
+}
+
+/**
+ * Generate an index field SQL snippet.
+ *
+ * @param  string $table_name The table name
+ * @param  array $fields List of fields for the index
+ * @param  boolean $is_full_text Whether the index is a full-text index
+ * @return ?string The SQL (null: won't create index)
+ *
+ * @ignore
+ */
+function _helper_generate_index_fields($table_name, $fields, $is_full_text)
+{
+    $_fields = '';
+    foreach ($fields as $field_name => $db_type) {
+        if ($_fields != '') {
+            $_fields .= ',';
+        }
+        $_fields .= $field_name;
+
+        if ($db_type !== null) {
+            if (($is_full_text) && (multi_lang_content()) && (strpos($db_type, '_TRANS') !== false)) {
+                return null; // We don't create a full-text index on *_TRANS fields if we are directing through the translate table
+            }
+
+            if ((!$is_full_text) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
+                if (((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
+                    $_fields .= '(250)'; // 255 would be too much with MySQL's UTF. Only MySQL supports index lengths, but the other drivers will strip them back out again.
+                }
+            }
+        }
+    }
+
+    return $_fields;
 }
 
 /**
@@ -346,15 +426,21 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 function _helper_delete_index_if_exists($this_ref, $table_name, $index_name)
 {
     $full_index_name = $index_name;
-    if (substr($index_name, 0, 1) == '#') {
+    if ($index_name[0] == '#') {
         $index_name = substr($index_name, 1);
     }
-    $query = 'DROP INDEX ' . $index_name . ' ON ' . $this_ref->get_table_prefix() . $table_name;
-    $this_ref->query($query, null, null, true);
 
-    if (isset($GLOBALS['XML_CHAIN_DB'])) {
-        // DB chaining: It's a write query, so needs doing on chained DB too
-        $GLOBALS['XML_CHAIN_DB']->_query($query, null, null, true);
+    $possible_final_index_names = array(
+        $index_name,
+
+        // Some DB drivers have to make it globally unique via using table name in name
+        $index_name . '__' . $table_name,
+        $index_name . '__' . $this_ref->get_table_prefix() . $table_name,
+    );
+
+    foreach ($possible_final_index_names as $_index_name) {
+        $query = 'DROP INDEX ' . $_index_name . ' ON ' . $this_ref->get_table_prefix() . $table_name;
+        $this_ref->query($query, null, null, true);
     }
 
     $this_ref->query_delete('db_meta_indices', array('i_table' => $table_name, 'i_name' => $full_index_name));
@@ -382,16 +468,44 @@ function _helper_drop_table_if_exists($this_ref, $table)
             mass_delete_lang($table, $_attrs, $this_ref);
         }
 
+        // In case DB needs pre-cleanup for full-text indexes if they get left behind (for example)
+        $indices = $this_ref->query_select('db_meta_indices', array('*'), array('i_table' => $table));
+        foreach ($indices as $index) {
+            $this_ref->delete_index_if_exists($table, $index['i_name']);
+        }
+
         $this_ref->query_delete('db_meta', array('m_table' => $table));
         $this_ref->query_delete('db_meta_indices', array('i_table' => $table));
     }
 
     $this_ref->ensure_connected();
-    $this_ref->static_ob->drop_table_if_exists($this_ref->table_prefix . $table, $this_ref->connection_write);
+
+    $queries = $GLOBALS['DB_STATIC_OBJECT']->drop_table_if_exists($this_ref->table_prefix . $table, $this_ref->connection_write);
+    foreach ($queries as $sql) {
+        $GLOBALS['DB_STATIC_OBJECT']->query($sql, $this_ref->connection_write, null, null, true); // Might already exist so suppress errors
+    }
 
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('TABLE_LANG_FIELDS_CACHE');
     }
+}
+ 
+/**
+ * Whether byte saving is needed for a particular table's fields.
+ *
+ * @param  ID_TEXT $table_name The table name
+ * @param  array $fields Map of field names to types
+ * @return boolean Whether byte saving is needed
+ *
+ * @ignore
+ */
+function _helper_needs_to_save_bytes($table_name, $fields)
+{
+    $save_bytes = false;
+    if (!_check_sizes($table_name, true, $fields, $table_name, false, false, $save_bytes, true)) {
+        $save_bytes = true;
+    }
+    return $save_bytes;
 }
 
 /**
@@ -407,11 +521,6 @@ function _helper_rename_table($this_ref, $old, $new)
 {
     $query = 'ALTER TABLE ' . $this_ref->table_prefix . $old . ' RENAME ' . $this_ref->table_prefix . $new;
     $this_ref->query($query);
-
-    if (isset($GLOBALS['XML_CHAIN_DB'])) {
-        // DB chaining: It's a write query, so needs doing on chained DB too
-        $GLOBALS['XML_CHAIN_DB']->_query($query);
-    }
 
     $this_ref->query_update('db_meta', array('m_table' => $new), array('m_table' => $old));
     $this_ref->query_update('db_meta_indices', array('i_table' => $new), array('i_table' => $old));
@@ -473,11 +582,6 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
     list($query, $default_st) = _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $default);
     $this_ref->_query($query);
 
-    if (isset($GLOBALS['XML_CHAIN_DB'])) {
-        // DB chaining: It's a write query, so needs doing on chained DB too
-        $GLOBALS['XML_CHAIN_DB']->_query($query);
-    }
-
     $lang_level = 3;
  
     if (multi_lang_content()) {
@@ -494,32 +598,25 @@ function _helper_add_table_field($this_ref, $table_name, $name, $_type, $default
     }
 
     $this_ref->query_insert('db_meta', array('m_table' => $table_name, 'm_name' => $name, 'm_type' => $_type));
-    reload_lang_fields();
+    reload_lang_fields(false, $table_name);
 
-    if (!multi_lang_content()) {
-        if (strpos($_type, '_TRANS') !== false) {
-            $GLOBALS['SITE_DB']->create_index($table_name, '#' . $name, array($name));
-        }
+    if (strpos($_type, '_TRANS') !== false) {
+        $GLOBALS['SITE_DB']->create_index($table_name, '#' . $name, array($name));
     }
 
     if ((!multi_lang_content()) && (strpos($_type, '__COMCODE') !== false)) {
-        $type_remap = $this_ref->static_ob->get_type_remap();
+        $type_remap = $GLOBALS['DB_STATIC_OBJECT']->get_type_remap();
 
         foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $_sub_name => $sub_type) {
             $sub_name = $name . '__' . $_sub_name;
             $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name . ' ADD ' . $sub_name . ' ' . $type_remap[$sub_type];
             if ($_sub_name == 'text_parsed') {
-                $query .= ' DEFAULT \'\'';
+                //$query .= ' DEFAULT \'\''; Gives "BLOB, TEXT, GEOMETRY or JSON column 'xxx__text_parsed' can't have a default value"
             } elseif ($_sub_name == 'source_user') {
                 $query .= ' DEFAULT ' . strval(db_get_first_id());
             }
             $query .= ' NOT NULL';
             $this_ref->_query($query);
-
-            if (isset($GLOBALS['XML_CHAIN_DB'])) {
-                // DB chaining: It's a write query, so needs doing on chained DB too
-                $GLOBALS['XML_CHAIN_DB']->_query($query);
-            }
         }
     }
 
@@ -584,7 +681,7 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
         }
     }
 
-    $type_remap = $this_ref->static_ob->get_type_remap();
+    $type_remap = $GLOBALS['DB_STATIC_OBJECT']->get_type_remap(true);
 
     $_final_type = $_type;
     if (strpos($_type, '_TRANS') !== false) {
@@ -609,7 +706,7 @@ function _helper_add_table_field_sql($this_ref, $table_name, $name, $_type, $def
     }
     $final_type = str_replace(array('*', '?'), array('', ''), $_final_type);
     $extra = '';
-    if (($final_type != 'LONG_TEXT') || ($GLOBALS['DB_STATIC_OBJECT']->has_default_for_text_fields())) {
+    if ((($final_type != 'LONG_TEXT') || ($GLOBALS['DB_STATIC_OBJECT']->has_default_for_text_fields())) && (($_final_type[0] != '?') || ($default !== null))) {
         $extra = ($default === null) ? 'DEFAULT NULL' : ('DEFAULT ' . (is_string($default) ? ('\'' . db_escape_string($default) . '\'') : strval($default)));
     }
     $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name;
@@ -634,16 +731,28 @@ function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_n
 
     $this_ref->_query($query);
 
-    if (isset($GLOBALS['XML_CHAIN_DB'])) {
-        // DB chaining: It's a write query, so needs doing on chained DB too
-        $GLOBALS['XML_CHAIN_DB']->_query($query);
-    }
-
     $update_map = array('m_type' => $_type);
     if ($new_name !== null) {
         $update_map['m_name'] = $new_name;
     }
     $this_ref->query_update('db_meta', $update_map, array('m_table' => $table_name, 'm_name' => $name));
+
+    if ($new_name !== null) {
+        $indices = $this_ref->query_select('db_meta_indices', array('*'), array('i_table' => $table_name));
+        foreach ($indices as $index) {
+            $changed_index = false;
+            $fields = explode(',', $index['i_fields']);
+            foreach ($fields as &$field) {
+                if ($field == $name) {
+                    $field = $new_name;
+                    $changed_index = true;
+                }
+            }
+            if ($changed_index) {
+                $this_ref->query_update('db_meta_indices', array('i_fields' => implode(',', $fields)), array('i_table' =>$table_name, 'i_name' => $index['i_name']));
+            }
+        }
+    }
 
     if (function_exists('persistent_cache_delete')) {
         persistent_cache_delete('TABLE_LANG_FIELDS_CACHE');
@@ -664,7 +773,7 @@ function _helper_alter_table_field($this_ref, $table_name, $name, $_type, $new_n
  */
 function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $new_name = null)
 {
-    $type_remap = $this_ref->static_ob->get_type_remap();
+    $type_remap = $GLOBALS['DB_STATIC_OBJECT']->get_type_remap();
 
     if ((strpos($_type, '__COMCODE') !== false) && ($new_name !== null) && ($new_name != $name)) {
         foreach (array('text_parsed' => 'LONG_TEXT', 'source_user' => 'MEMBER') as $sub_name => $sub_type) {
@@ -678,11 +787,6 @@ function _helper_alter_table_field_sql($this_ref, $table_name, $name, $_type, $n
             }
             $query .= ' NOT NULL';
             $this_ref->_query($query);
-
-            if (isset($GLOBALS['XML_CHAIN_DB'])) {
-                // DB chaining: It's a write query, so needs doing on chained DB too
-                $GLOBALS['XML_CHAIN_DB']->_query($query);
-            }
         }
     }
 
@@ -724,10 +828,10 @@ function _helper_change_primary_key($this_ref, $table_name, $new_key)
 
     $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=REPLACE(m_type,\'*\',\'\') WHERE ' . db_string_equal_to('m_table', $table_name));
     foreach ($new_key as $_new_key) {
-        $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=CONCAT(\'*\',m_type) WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key));
+        $this_ref->query('UPDATE ' . $this_ref->get_table_prefix() . 'db_meta SET m_type=' . db_function('CONCAT', array('\'*\'', 'm_type')) . ' WHERE ' . db_string_equal_to('m_table', $table_name) . ' AND ' . db_string_equal_to('m_name', $_new_key));
     }
 
-    $this_ref->static_ob->change_primary_key($this_ref->table_prefix . $table_name, $new_key, $this_ref->connection_write);
+    $GLOBALS['DB_STATIC_OBJECT']->change_primary_key($this_ref->table_prefix . $table_name, $new_key, $this_ref->connection_write);
 }
 
 /**
@@ -830,11 +934,6 @@ function _helper_delete_table_field($this_ref, $table_name, $name)
     foreach ($cols_to_delete as $col) {
         $query = 'ALTER TABLE ' . $this_ref->table_prefix . $table_name . ' DROP COLUMN ' . $col;
         $this_ref->_query($query);
-
-        if (isset($GLOBALS['XML_CHAIN_DB'])) {
-            // DB chaining: It's a write query, so needs doing on chained DB too
-            $GLOBALS['XML_CHAIN_DB']->_query($query);
-        }
     }
 
     $this_ref->query_delete('db_meta', array('m_table' => $table_name, 'm_name' => $name));

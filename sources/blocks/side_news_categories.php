@@ -78,7 +78,7 @@ class Block_side_news_categories
         foreach ($categories as $category) {
             if (has_category_access(get_member(), 'news', strval($category['id']))) {
                 $join = ' LEFT JOIN ' . get_table_prefix() . 'news_category_entries d ON d.news_entry=p.id';
-                $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news p' . $join . ' WHERE validated=1 AND (news_entry_category=' . strval($category['id']) . ' OR news_category=' . strval($category['id']) . ') ORDER BY date_and_time DESC');
+                $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'news p' . $join . ' WHERE validated=1 AND (news_entry_category=' . strval($category['id']) . ' OR news_category=' . strval($category['id']) . ')');
                 if ($count > 0) {
                     $category['_nc_title'] = get_translated_text($category['nc_title']);
                     $categories2[] = $category;

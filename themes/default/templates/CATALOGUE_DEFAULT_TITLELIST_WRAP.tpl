@@ -4,4 +4,3 @@
 <ul class="spaced_list">
 	{CONTENT}
 </ul>
-

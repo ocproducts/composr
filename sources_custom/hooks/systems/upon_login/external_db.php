@@ -52,19 +52,19 @@ class Hook_upon_login_external_db
         switch (get_option('one_per_email_address')) {
             case '1':
                 $query .= '(';
-                $query .= $db->static_ob->string_equal_to($username_field, $username);
+                $query .= db_string_equal_to($username_field, $username);
                 $query .= ' OR ';
-                $query .= $db->static_ob->string_equal_to($email_address_field, $username);
+                $query .= db_string_equal_to($email_address_field, $username);
                 $query .= ')';
                 break;
 
             case '2':
-                $query .= $db->static_ob->string_equal_to($email_address_field, $username);
+                $query .= db_string_equal_to($email_address_field, $username);
                 break;
 
             case '0':
             default:
-                $query .= $db->static_ob->string_equal_to($username_field, $username);
+                $query .= db_string_equal_to($username_field, $username);
                 break;
         }
         $records = $db->query($query);

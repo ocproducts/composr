@@ -681,7 +681,7 @@ class Module_topicview
                     } else {
                         $width = 0;
                     }
-                    $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array('_GUID' => 'b32f4c526e147abf20ca0d668e40d515', 'ID' => strval($_poll['id']), 'NUM_VOTES' => integer_format($num_votes), 'WIDTH' => strval($width), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
+                    $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array('_GUID' => 'b32f4c526e147abf20ca0d668e40d515', 'ID' => strval($_poll['id']), 'NUM_VOTES' => integer_format($num_votes), 'TOTAL_VOTES' => integer_format($total_votes), 'WIDTH' => strval($width), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
                 } else {
                     $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER' . ($_poll['maximum_selections'] == 1 ? '_RADIO' : ''), array('REAL_BUTTON' => $real_button, 'ID' => strval($_poll['id']), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
                 }
@@ -820,7 +820,7 @@ class Module_topicview
                     }
                 }
             }
-            if ((array_key_exists('may_multi_moderate', $topic_info)) && (array_key_exists('forum_id', $topic_info))) {
+            if ((array_key_exists('may_multi_moderate', $topic_info)) && (array_key_exists('forum_id', $topic_info)) && (addon_installed('cns_multi_moderations'))) {
                 $multi_moderations = cns_list_multi_moderations($topic_info['forum_id']);
                 if (count($multi_moderations) != 0) {
                     require_lang('cns_multi_moderations');
@@ -951,6 +951,13 @@ class Module_topicview
         require_code('cns_general');
         cns_set_context_forum($topic_info['forum_id']);
 
+        if (addon_installed('tickets')) {
+            require_code('tickets');
+            $is_ticket_forum = is_ticket_forum($topic_info['forum_id']);
+        } else {
+            $is_ticket_forum = false;
+        }
+
         $topic_tpl = do_template('CNS_TOPIC_SCREEN', array(
             '_GUID' => 'bb201d5d59559e5e2bd60e7cf2e6f7e9',
             'TITLE' => $this->title,
@@ -978,6 +985,7 @@ class Module_topicview
             'THREADED' => $threaded,
             'FORUM_ID' => ($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id']),
             'IS_ALREADY_READ' => cns_has_read_topic($id),
+            'TICKET_FORUM' => $is_ticket_forum,
         ));
 
         require_code('templates_internalise_screen');

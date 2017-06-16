@@ -193,6 +193,8 @@ class LangFilter_EN extends LangFilter
 
                 // Various...
 
+                'forename (first name)' => 'first name',
+                'surname (last name)' => 'last name',
                 'forename' => 'first name',
                 'surname' => 'last name',
                 'maths' => 'math',

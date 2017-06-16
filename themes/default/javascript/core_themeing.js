@@ -337,7 +337,7 @@
                 css_text = (selectors[i].cssText === undefined) ? selectors[i].style.cssText : selectors[i].cssText;
                 if (css_text.indexOf('{') !== -1) {
                     css_text = css_text.replace(/ \{ /g, ' {<br />\n&nbsp;&nbsp;&nbsp;').replace(/; \}/g, '<br />\n}').replace(/; /g, ';<br />\n&nbsp;&nbsp;&nbsp;');
-                } else  {// IE
+                } else  { // IE
                     css_text = css_text.toLowerCase().replace(/; /, ';<br />\n');
                 }
                 li.addEventListener('mouseout', function (event) {
@@ -842,7 +842,7 @@
 
             node = node.firstChild;
             while (node) {
-                if (node.nodeType === 3) {// Text node
+                if (node.nodeType === 3) { // Text node
                     var matches = node.data.match(/[\u200B\uFEFF]+/g);
                     if (matches) {
                         var allDecoded = [];
@@ -868,7 +868,7 @@
                             node.data = node.data.replace(matches[i], ''); // Strip it, to clean document
                         }
                     }
-                } else if (node.nodeType === 1) {// Element node
+                } else if (node.nodeType === 1) { // Element node
                     var before = node.getAttribute('data-template');
                     if (!before) before = '';
                     node.setAttribute('data-template', before + ' ' + inside.join(' ') + ' ');
@@ -1163,7 +1163,7 @@
 
                 node = node.firstChild;
                 while (node) {
-                    if (node.nodeType === 1) {// Element node
+                    if (node.nodeType === 1) { // Element node
                         var template = node.getAttribute('data-template');
                         var dataMatch = (template && template.includes(' ' + templatePath + ' '));
                         if (dataMatch) {
@@ -1196,4 +1196,3 @@
         return hexbase.charAt((number >> 4) & 0xf) + hexbase.charAt(number & 0xf);
     }
 }(window.$cms));
-

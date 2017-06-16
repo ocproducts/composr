@@ -77,9 +77,7 @@ class Hook_addon_registry_wordfilter
             'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
-            'previously_in_addon' => array(
-                'core_wordfilter',
-            )
+            'previously_in_addon' => array('core_wordfilter'),
         );
     }
 

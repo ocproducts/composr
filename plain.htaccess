@@ -30,6 +30,8 @@ RewriteRule ^(.*) - [L]
 
 # WebDAV implementation (requires the non-bundled WebDAV addon)
 RewriteRule ^webdav(/.*|$) data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+RewriteCond %{HTTP_HOST} ^webdav\..*
+RewriteRule ^(.*)$ data_custom/webdav.php [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 
 #FAILOVER STARTS
 ### LEAVE THIS ALONE, AUTOMATICALLY MAINTAINED ###

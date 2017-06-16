@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,search}
+
 <section class="box box___block_main_search" data-view="BlockMainSearch" data-view-params="{+START,PARAMS_JSON,SEARCH_TYPE}{_*}{+END}"><div class="box_inner">
 	<h3>{TITLE*}</h3>
 

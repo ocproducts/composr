@@ -58,4 +58,3 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
         }
     }
 }
-

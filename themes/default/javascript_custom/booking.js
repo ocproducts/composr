@@ -32,6 +32,4 @@
             $cms.dom.html(document.getElementById('price'), $cms.filter.html(result.responseText));
         }, post);
     }
-
 }(window.$cms));
-

@@ -86,6 +86,11 @@ require_code('comcode');
 require_code('database');
 require_code('database_action');
 
+// No restoration (needed) on XML DB driver
+if (get_db_type() == 'xml') {
+    warn_exit('Cannot run on XML database driver');
+}
+
 // If we are referencing this file in order to extract dependant url's from a pack
 handle_self_referencing_embedment();
 

@@ -4,10 +4,10 @@
 
 {+START,IF,{$NEQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 
-{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
+{$SET,ajax_block_main_friends_list_wrapper,ajax_block_main_friends_list_wrapper_{$RAND%}}
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
-<div data-require-javascript="chat" data-tpl="blockMainFriendsList" data-tpl-params="{+START,PARAMS_JSON,wrapper_id,block_call_url}{_*}{+END}">
-	<div id="{$GET*,wrapper_id}">
+<div data-require-javascript="chat" data-tpl="blockMainFriendsList" data-tpl-params="{+START,PARAMS_JSON,ajax_block_main_friends_list_wrapper,block_call_url}{_*}{+END}">
+	<div id="{$GET*,ajax_block_main_friends_list_wrapper}">
 		<form target="_self" class="right" role="search" title="{!FRIENDS}, {!SEARCH}" action="{$URL_FOR_GET_FORM*,{$SELF_URL}}#tab__friends" method="get" autocomplete="off">
 			{$HIDDENS_FOR_GET_FORM,{$SELF_URL}}
 

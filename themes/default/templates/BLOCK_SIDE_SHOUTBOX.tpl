@@ -1,7 +1,8 @@
 {$REQUIRE_JAVASCRIPT,chat}
+
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}}
-{$SET,wrapper_id,ajax_block_wrapper_{$RAND%}}
-<div id="{$GET*,wrapper_id}" class="box_wrapper" data-require-javascript="chat" data-tpl="blockSideShoutbox" data-tpl-params="{+START,PARAMS_JSON,wrapper_id,block_call_url}{_*}{+END}">
+{$SET,ajax_block_side_shoutbox_wrapper,ajax_block_side_shoutbox_wrapper_{$RAND%}}
+<div id="{$GET*,ajax_block_side_shoutbox_wrapper}" class="box_wrapper" data-require-javascript="chat" data-tpl="blockSideShoutbox" data-tpl-params="{+START,PARAMS_JSON,ajax_block_side_shoutbox_wrapper,block_call_url}{_*}{+END}">
 	<section class="box box___block_side_shoutbox"><div class="box_inner">
 		<h3>{!SHOUTBOX}</h3>
 

@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_addon_management}
+
 <tr>
 	<td class="addon_name">
 		{+START,SET,description}
@@ -64,4 +65,3 @@
 		<input title="{!UNINSTALL} {NAME*}" type="checkbox" name="uninstall_{NAME*}" id="uninstall_{NAME*}" value="{PASSTHROUGH*}" {$?,{$EQ,{TYPE},uninstall},,disabled="disabled" }/>
 	</td>
 </tr>
-

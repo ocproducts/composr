@@ -128,8 +128,6 @@ class Hook_payment_gateway_authorize
      */
     public function get_logos()
     {
-        // TODO: Force CSP off on v11
-
         return do_template('ECOM_LOGOS_AUTHORIZE', array('_GUID' => '5b3254b330b3b1719d66d2b754c7a8c8', 'CUSTOMER_ID' => get_option('payment_gateway_vpn_username')));
     }
 
@@ -422,7 +420,7 @@ class Hook_payment_gateway_authorize
     /**
      * This function defines the parameters needed to make a cancelation API call.
      *
-     * @param AUTO_LINK $subscription_id Subscription ID
+     * @param  AUTO_LINK $subscription_id Subscription ID
      */
     protected function _set_cancelation_api_parameters($subscription_id)
     {
@@ -799,7 +797,7 @@ class Hook_payment_gateway_authorize
     /**
      * Function to parse ARB Authorize.net response.
      *
-     * @param string $response The response
+     * @param  string $response The response
      * @return array A tuple: Result code (e.g. "OK"), Status Code, Text, Subscription ID
      */
     protected function _parse_arb_return($response)
@@ -815,9 +813,9 @@ class Hook_payment_gateway_authorize
     /**
      * Helper function for parsing response, gets a substring between two text strings.
      *
-     * @param string $haystack The response
-     * @param string $start Start text
-     * @param string $end End text
+     * @param  string $haystack The response
+     * @param  string $start Start text
+     * @param  string $end End text
      * @return ?string The substring (null: error)
      */
     protected function _substring_between($haystack, $start, $end)

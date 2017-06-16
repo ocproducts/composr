@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
+
 <div class="fields_set_item" data-tpl="formScreenFieldsSetItem" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 	<div class="fields_set_radio">
 		<label class="accessibility_hidden" for="choose_{NAME*}">{!USE}: {PRETTY_NAME*}</label>

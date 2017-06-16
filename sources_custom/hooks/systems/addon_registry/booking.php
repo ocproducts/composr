@@ -109,7 +109,10 @@ You may wish to deny access to the usergroup and member directories when using t
     public function get_dependencies()
     {
         return array(
-            'requires' => array(),
+            'requires' => array(
+                'calendar',
+                'ecommerce',
+            ),
             'recommends' => array(),
             'conflicts_with' => array()
         );

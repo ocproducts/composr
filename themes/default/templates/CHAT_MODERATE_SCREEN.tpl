@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,chat}
+
 <div data-tpl="chatModerateScreen">
 	{TITLE}
 

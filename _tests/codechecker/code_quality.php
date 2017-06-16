@@ -585,6 +585,8 @@ $ERROR_FUNCS = array(
     'passthru' => true,
 );
 
+@set_time_limit(10000);
+
 global $COMPOSR_PATH;
 global $FUNCTION_SIGNATURES;
 $FUNCTION_SIGNATURES = array();
@@ -1367,9 +1369,9 @@ function check_call($c, $c_pos, $class = null, $function_guard = '')
     }
     if ((($function == 'sprintf') || ($function == 'printf')) && (@$params[0][0][0] == 'LITERAL')) {
         $matches = array();
-        $num_matches = preg_match_all('#\%[+-]?.?-?\d*(\.\d+)?[%bcdefuFodsxX]#', $params[0][0][1][1], $matches);
+        $num_matches = preg_match_all('#\%[+-]?.?-?\d*(\.\d+)?(\$[bcdefuFodsxX])?#', $params[0][0][1][1], $matches);
         if ($num_matches + 1 != count($params)) {
-            log_warning('Looks like the wrong number of parameters were sent to this [s]printf function', $c_pos);
+            log_warning('Looks like the wrong number of parameters were sent to this [s]printf function, got ' . integer_format(count($params)) . ', expected, ' . integer_format($num_matches + 1), $c_pos);
         }
     }
     if ((isset($GLOBALS['CHECKS'])) && ($function == 'tempname')) {

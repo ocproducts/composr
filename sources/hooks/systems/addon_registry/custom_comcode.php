@@ -77,9 +77,7 @@ class Hook_addon_registry_custom_comcode
             'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
-            'previously_in_addon' => array(
-                'core_page_management'
-            )
+            'previously_in_addon' => array('core_page_management'),
         );
     }
 

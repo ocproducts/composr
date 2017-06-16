@@ -164,7 +164,7 @@ class CMSAttachmentWrite
         if ($_post_comcode === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'post'));
         }
-        $post_comcode = get_translated_text($_post_comcode);
+        $post_comcode = get_translated_text($_post_comcode, $GLOBALS['FORUM_DB']);
         $post_comcode = preg_replace('#\n*\[attachment(_safe)?( [^\[\]]*)?\]' . strval($attachment_id) . '\[/attachment(_safe)?\]#U', '', $post_comcode);
         $GLOBALS['FORUM_DB']->query_update('f_posts', lang_remap_comcode('p_post', $_post_comcode, $post_comcode, $GLOBALS['FORUM_DB']), array('id' => $post_id), '', 1);
 

@@ -6,4 +6,3 @@
 		<p class="svg_graph_text">{TEXT*}</p>
 	</div>
 </div>
-

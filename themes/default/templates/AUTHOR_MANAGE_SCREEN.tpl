@@ -17,4 +17,3 @@
 
 	{MERGE_FORM}
 {+END}
-

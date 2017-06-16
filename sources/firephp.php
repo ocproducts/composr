@@ -1070,7 +1070,7 @@ class FirePHP {
         if ($this->logToInsightConsole !== null && (get_class($this) == 'FirePHP_Insight' || is_subclass_of($this, 'FirePHP_Insight'))) {
             $trace = debug_backtrace();
             if (!$trace) return false;
-            for ($i = 0; $i < sizeof($trace); $i++) {
+            for ($i = 0; $i < count($trace); $i++) {
                 if (isset($trace[$i]['class'])) {
                     if ($trace[$i]['class'] == 'FirePHP' || $trace[$i]['class'] == 'FB') {
                         continue;
@@ -1214,7 +1214,7 @@ class FirePHP {
           
             $trace = debug_backtrace();
             if (!$trace) return false;
-            for ($i = 0; $i < sizeof($trace); $i++) {
+            for ($i = 0; $i < count($trace); $i++) {
     
                 if (isset($trace[$i]['class'])
                    && isset($trace[$i]['file'])
@@ -1277,7 +1277,7 @@ class FirePHP {
             if (!isset($meta['file']) || !isset($meta['line'])) {
     
                 $trace = debug_backtrace();
-                for ($i = 0; $trace && $i < sizeof($trace); $i++) {
+                for ($i = 0; $trace && $i < count($trace); $i++) {
           
                     if (isset($trace[$i]['class'])
                        && isset($trace[$i]['file'])
@@ -1350,8 +1350,8 @@ class FirePHP {
                                      . '|' . $part . '|'
                                      . (($i < count($parts) - 2) ? '\\' : ''));
                 } else {
-                    $this->setHeader('X-Wf-1-' . $structureIndex . '-' . '1-' . $this->messageIndex,
-                                     strlen($part) . '|' . $part . '|');
+                    $this->setHeader('X-Wf-1-' . strval($structureIndex) . '-' . '1-' . strval($this->messageIndex),
+                                     strval(strlen($part)) . '|' . $part . '|');
                 }
                 
                 $this->messageIndex++;
@@ -1362,7 +1362,7 @@ class FirePHP {
             }
         }
     
-        $this->setHeader('X-Wf-1-Index', $this->messageIndex - 1);
+        $this->setHeader('X-Wf-1-Index', strval($this->messageIndex - 1));
     
         return true;
     }
@@ -1387,7 +1387,7 @@ class FirePHP {
     protected function _escapeTrace($trace)
     {
         if (!$trace) return $trace;
-        for ($i = 0; $i < sizeof($trace); $i++) {
+        for ($i = 0; $i < count($trace); $i++) {
             if (isset($trace[$i]['file'])) {
                 $trace[$i]['file'] = $this->_escapeTraceFile($trace[$i]['file']);
             }
@@ -2009,7 +2009,7 @@ class FirePHP {
                  */
 
                 // treat as a JSON object
-                if (is_array($var) && count($var) && (array_keys($var) !== range(0, sizeof($var) - 1))) {
+                if (is_array($var) && count($var) && (array_keys($var) !== range(0, count($var) - 1))) {
                   
                     $this->json_objectStack[] = $var;
 

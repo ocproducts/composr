@@ -17,6 +17,9 @@
 // Example test URL:
 //  http://localhost/composr/uploads/website_specific/compo.sr/scripts/version.php?version=13.0.0&test_mode=1&html=1
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = realpath(__FILE__);
@@ -175,47 +178,45 @@ function display_version_upgrade_path($higher_version)
     $tooltip = comcode_to_tempcode('[title="2"]Inbetween versions[/title]' . $higher_version['download_description']);
 
     $upgrade_url = static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $higher_version['news_id'], 'from_version' => $version_dotted, 'wide_high' => 1), 'site'));
-    echo '<p class="version">';
 
-    // First line of details
-    echo '<span class="version_number">' . escape_html($higher_version['version_pretty']) . '</span>';
-    echo ' ';
-    echo '<span class="version_news_link">[ <a onclick="window.open(this.href,null,\'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600\'); return false;" target="_blank" title="' . escape_html($higher_version['version_pretty']) . ' news post (this link will open in a new window)" href="' . escape_html($upgrade_url) . '">view news post</a> ]</span>';
-    echo ' ';
+    echo '<p class="version vertical_alignment">';
+
+    // Version number
+    echo '<span class="version_number">' . escape_html($higher_version['version_pretty']) . '</span> ';
 
     // Output upgrader link
-    $out = '';
     $upgrade_script = 'upgrader.php';
     if (isset($higher_version['news_id'])) {
-        $upgrade_script .= '?news_id=' . strval($higher_version['news_id']);
+        $upgrade_script .= '?news_id=' . strval($higher_version['news_id']) . '&from_version=' . urlencode($version_dotted);
     }
-    $out = "
+    echo "
         <span class=\"version_button\" id=\"link_pos_" . strval($i) . "\"></span>
         <script>// <![CDATA[
             var div=document.getElementById('link_pos_" . strval($i) . "');
             var upgrader_link=get_base_url()+'/" . $upgrade_script . "';
-            var h='<form style=\"display: inline\" action=\"'+upgrader_link+'\" target=\"_blank\" method=\"post\"><input class=\"menu__adminzone__tools__upgrade button_screen_item\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_version['version_pretty']) . "\" value=\"Launch upgrader\" /<\/form>';
+            var h='<form style=\"display: inline\" action=\"'+upgrader_link+'\" target=\"_blank\" method=\"post\"><input class=\"menu__adminzone__tools__upgrade button_micro\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_version['version_pretty']) . "\" value=\"Launch upgrader\" /><\/form>';
             div.innerHTML=h;
         //]]></script>
         ";
 
-    // Next line of details
+    // Version News link
+    echo '<span class="version_news_link">[ <a onclick="window.open(this.href,null,\'status=yes,toolbar=no,location=no,menubar=no,resizable=yes,scrollbars=yes,width=976,height=600\'); return false;" target="_blank" title="' . escape_html($higher_version['version_pretty']) . ' news post (this link will open in a new window)" href="' . escape_html($upgrade_url) . '">view news post</a> ]</span>';
+
+    // Details
     echo '<span class="version_details">(' . escape_html($higher_version['version_pretty']) . ', released ' . display_time_period(time() - $higher_version['add_date']) . ' ago)</span>';
     echo ' ';
     echo '<span class="version_note">' . $note . '</span>';
     echo ' ';
     echo '<img class="version_help_icon" onmouseout="if (typeof window.deactivateTooltip!=\'undefined\') deactivateTooltip(this,event);" onmousemove="if (typeof window.activateTooltip!=\'undefined\') repositionTooltip(this,event);" onmouseover="if (this.parentNode.title!=undefined) this.parentNode.title=\'\'; if (typeof window.activateTooltip!=\'undefined\') activateTooltip(this,event,\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip->evaluate()))) . '\',\'600px\',null,null,false,true);" alt="Help" src="' . escape_html(find_theme_image('icons/16x16/help')) . '" />';
-    echo ' ';
 
     echo '</p>';
 
     // Noscript version
-    $out = "
+    echo "
     <noscript>
         <form style=\"display: inline\" action=\"../" . $upgrade_script . "\" target=\"_blank\" method=\"post\">
             <input class=\"menu__adminzone__tools__upgrade button_screen_item\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_version['version_pretty']) . "\" value=\"Launch upgrader\" />
         </form>
     </noscript>
     ";
-    echo str_replace("\n", '', str_replace("\r", '', $out));
 }

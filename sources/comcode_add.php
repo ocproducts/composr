@@ -342,12 +342,12 @@ function comcode_helper_script_replace()
         switch ($action) {
             case 'add':
                 $url = find_script('comcode_helper') . '?type=step1&field_name=' . urlencode(get_param_string('field_name')) . $keep->evaluate();
-                header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+                header('Location: ' . escape_header($url));
                 exit();
 
             case 'edit':
                 $url = str_replace('&type=replace', '&type=step2', get_self_url_easy());
-                header('Location: ' . str_replace("\r", '', str_replace("\n", '', $url)));
+                header('Location: ' . escape_header($url));
                 exit();
 
             case 'delete':
@@ -485,7 +485,7 @@ function comcode_helper_script_step2()
     $fields_advanced = new Tempcode();
     $done_tag_contents = false;
     $hidden = new Tempcode();
-    $js_function_calls = [];
+    $js_function_calls = array();
 
     $preview = true; // Whether we can preview the tag
 
@@ -734,13 +734,13 @@ function _find_comcode_tag_embed_required($tag)
  * @param  boolean $done_tag_contents Whether the tag contents input has also been handled here.
  * @param  array $defaults Default parameter values.
  * @param  array $params List of tag parameters.
- * @param  string $javascript JavaScript to deploy.
+ * @param  array $js_function_calls JavaScript functions to execute
  * @param  boolean $preview Whether previewing will be allowed.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
  *
  * @ignore
  */
-function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, &$done_tag_contents, $defaults, $params, &$javascript, $preview)
+function _try_for_special_comcode_tag_all_params_ui($tag, $actual_tag, &$fields, &$fields_advanced, $hidden, &$done_tag_contents, $defaults, $params, &$js_function_calls, $preview)
 {
     if ($tag == 'currency') {
         $default = array_key_exists('param', $defaults) ? $defaults['param'] : get_param_string('default_param', get_option('currency'));
@@ -980,7 +980,7 @@ function _try_for_special_comcode_tag_extra_param_ui($tag, $actual_tag, &$fields
  * @param  Tempcode $fields_advanced Advanced UI fields.
  * @param  Tempcode $hidden Hidden fields.
  * @param  string $default_embed Default embed contents.
- * @param  string $js_function_calls JavaScript to deploy.
+ * @param  array $js_function_calls JavaScript to deploy.
  * @param  boolean $preview Whether previewing will be allowed.
  * @return boolean Whether we did render specialisation code (if not, standard code will be deployed by the calling function).
  *
@@ -1008,9 +1008,6 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
         if (get_option('eager_wysiwyg') == '0') {
             if ((!isset($_COOKIE['use_wysiwyg'])) || ($_COOKIE['use_wysiwyg'] != '0')) {
                 require_javascript('core_rich_media');
-                if (!is_array($js_function_calls)) {
-                    $js_function_calls = [];
-                }
                 $js_function_calls[] = 'comcodeAddTryForSpecialComcodeTag';
             }
         }

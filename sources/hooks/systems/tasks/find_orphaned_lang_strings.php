@@ -26,8 +26,8 @@ class Hook_task_find_orphaned_lang_strings
     /**
      * Run the task hook.
      *
-     * @param ?string $table The table to limit to (null: no limit)
-     * @param boolean $fix Whether to fix issues
+     * @param  ?string $table The table to limit to (null: no limit)
+     * @param  boolean $fix Whether to fix issues
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
     public function run($table = null, $fix = true)
@@ -61,7 +61,7 @@ class Hook_task_find_orphaned_lang_strings
 
         $langidfields = array();
         foreach ($all_fields as $f) {
-            if (substr($f['m_type'], -6) == '_TRANS') {
+            if (strpos($f['m_type'], '_TRANS') !== false) {
                 $langidfields[] = array('m_name' => $f['m_name'], 'm_table' => $f['m_table']);
             }
         }

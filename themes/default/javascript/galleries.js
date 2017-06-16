@@ -122,7 +122,7 @@
 
             window.addEventListener('keypress', toggleSlideshowTimer);
 
-            document.getElementById('gallery_entry_screen').addEventListener('click', function (event) {
+            document.getElementById('gallery_nav').addEventListener('click', function (event) {
                 if (event.altKey || event.metaKey) {
                     var b = document.getElementById('gallery_entry_screen');
                     if (b.webkitRequestFullScreen !== undefined) {
@@ -348,7 +348,7 @@
             return; // Already have it
         }
 
-        if (window.slideshow_current_position === slide) {// Ah, it's where we are, so save that in
+        if (window.slideshow_current_position === slide) { // Ah, it's where we are, so save that in
             window.slideshow_slides[slide] = $cms.dom.html(document.getElementById('gallery_entry_screen'));
             return;
         }
@@ -378,7 +378,7 @@
     }
 
     function _slideshowReadInSlide(ajaxResultRaw, slide) {
-        window.slideshow_slides[slide] = ajaxResultRaw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, '');
+        window.slideshow_slides[slide] = ajaxResultRaw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // HACKHACK
     }
 
     function slideshowShowSlide(slide) {
@@ -396,7 +396,7 @@
                     fadeElementOld.style.position = 'absolute';
                 } // else probably a video
 
-                var cleanedSlideHtml = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, '').replace(/<script[^>]*>(.|\n)*?<\/script>/gi, '');
+                var cleanedSlideHtml = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, ''); // HACKHACK
                 $cms.dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
 
                 fadeElements = document.body.querySelectorAll('.scale_down');
@@ -419,10 +419,10 @@
             }
 
             fadeElements = document.body.querySelectorAll('.scale_down');
-            if (fadeElements[0] !== undefined) {// Is image
+            if (fadeElements[0] !== undefined) { // Is image
                 startSlideshowTimer();
                 resetSlideshowCountdown();
-            } else {// Is video
+            } else { // Is video
                 stopSlideshowTimer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
             }
 

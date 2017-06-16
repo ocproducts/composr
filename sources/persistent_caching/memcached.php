@@ -23,15 +23,17 @@
 /**
  * Cache driver class.
  */
-class Persistent_caching_memcached extends Memcached
+class Persistent_caching_memcached
 {
+    protected $object;
+
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->addServer('localhost', 11211);
-        parent::__construct();
+        $this->object = new Memcached();
+        $this->object->addServer('localhost', 11211);
     }
 
     public $objects_list = null;
@@ -41,10 +43,10 @@ class Persistent_caching_memcached extends Memcached
      *
      * @return array The list of objects
      */
-    public function load_objects_list()
+    public function &load_objects_list()
     {
         if ($this->objects_list === null) {
-            $this->objects_list = parent::get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
+            $this->objects_list = $this->object->get(get_file_base() . 'PERSISTENT_CACHE_OBJECTS');
             if ($this->objects_list === false) {
                 $this->objects_list = array();
             }
@@ -61,7 +63,7 @@ class Persistent_caching_memcached extends Memcached
      */
     public function get($key, $min_cache_date = null)
     {
-        $data = parent::get($key);
+        $data = $this->object->get($key);
         if ($data === false) {
             return null;
         }
@@ -82,13 +84,13 @@ class Persistent_caching_memcached extends Memcached
     public function set($key, $data, $flags = 0, $expire_secs = null)
     {
         // Update list of persistent-objects
-        $objects_list = $this->load_objects_list();
-        if (!array_key_exists($key, $objects_list)) {
-            $objects_list[$key] = true;
-            $this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0, 0);
+        $this->load_objects_list();
+        if (!array_key_exists($key, $this->objects_list)) {
+            $this->objects_list[$key] = true;
+            $this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list, 0, 0);
         }
 
-        parent::set($key, array(time(), $data), $expire_secs);
+        $this->object->set($key, array(time(), $data), $expire_secs);
     }
 
     /**
@@ -99,11 +101,11 @@ class Persistent_caching_memcached extends Memcached
     public function delete($key)
     {
         // Update list of persistent-objects
-        $objects_list = $this->load_objects_list();
-        unset($objects_list[$key]);
-        //$this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0, 0); Wasteful
+        $this->load_objects_list();
+        unset($this->objects_list[$key]);
+        //$this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list, 0, 0); Wasteful
 
-        parent::delete($key);
+        $this->object->delete($key);
     }
 
     /**
@@ -112,9 +114,9 @@ class Persistent_caching_memcached extends Memcached
     public function flush()
     {
         // Update list of persistent-objects
-        $objects_list = array();
-        $this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $objects_list, 0, 0);
+        $this->objects_list = array();
+        $this->set(get_file_base() . 'PERSISTENT_CACHE_OBJECTS', $this->objects_list, 0, 0);
 
-        parent::flush();
+        $this->object->flush();
     }
 }

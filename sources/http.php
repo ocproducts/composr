@@ -23,9 +23,9 @@
 /**
  * Call a function, with inbuilt on-disk caching support.
  *
- * @param string $func Function to call
- * @param array $args Arguments to call with
- * @param ?integer $timeout Timeout in minutes (null: no timeout)
+ * @param  string $func Function to call
+ * @param  array $args Arguments to call with
+ * @param  ?integer $timeout Timeout in minutes (null: no timeout)
  * @return mixed The function result OR for cms_http_request calls a tuple of result details
  */
 function cache_and_carry($func, $args, $timeout = null)
@@ -149,7 +149,9 @@ function get_webpage_meta_details($url)
         }
 
         if ($meta_details['t_image_url'] != '') {
-            $meta_details['t_image_url'] = qualify_url($meta_details['t_image_url'], $url);
+            if (strlen($meta_details['t_image_url']) > 255) {
+                $meta_details['t_image_url'] = ''; // We can't deal with really long URLs here
+            }
         }
 
         if (($result[1] == 'application/octet-stream') || ($result[1] == '')) {
@@ -169,9 +171,15 @@ function get_webpage_meta_details($url)
             if ((preg_match('#\srel=["\']?alternate["\']?#i', $line) != 0) && (preg_match('#\shref=["\']?([^"\']+)["\']?#i', $line, $matches2) != 0)) {
                 if (preg_match('#\stype=["\']?application/json\+oembed["\']?#i', $line) != 0) {
                     $meta_details['t_json_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES, get_charset());
+                    if (strlen($meta_details['t_json_discovery']) > 255) {
+                        $meta_details['t_json_discovery'] = ''; // We can't deal with really long URLs here
+                    }
                 }
                 if (preg_match('#\stype=["\']?text/xml\+oembed["\']?#i', $line) != 0) {
                     $meta_details['t_xml_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES, get_charset());
+                    if (strlen($meta_details['t_xml_discovery']) > 255) {
+                        $meta_details['t_xml_discovery'] = ''; // We can't deal with really long URLs here
+                    }
                 }
             }
         }
@@ -281,6 +289,7 @@ abstract class HttpDownloader
     public $new_cookies = array(); // ?ID_TEXT. The cookies returned from the last file lookup.
     public $filename = null; // ?ID_TEXT. The filename returned from the last file lookup.
     public $charset = null; // ?ID_TEXT. The character set returned from the last file lookup.
+    public $headers = array(); // Any HTTP headers collected.
 
     /**
      * See if this class may run.
@@ -372,7 +381,7 @@ abstract class HttpDownloader
                 }
                 $this->connect_to = $config_ip_forwarding;
             }
-        } elseif (php_function_allowed('gethostbyname')) {
+        } elseif ((php_function_allowed('gethostbyname')) && ($this->url_parts['scheme'] == 'http')) {
             $this->connect_to = @gethostbyname($this->connect_to); // for DNS caching
         }
         if (!array_key_exists('scheme', $this->url_parts)) {
@@ -383,7 +392,8 @@ abstract class HttpDownloader
 
         // More preprocessing...
 
-        $this->raw_payload = '';
+        $this->raw_payload = ''; // Note that this will contain HTTP headers (it is appended directly after headers with no \r\n between -- so it contains \r\n\r\n itself when the content body is going to start)
+        $this->raw_payload_curl = '';
         $this->sent_http_post_content = false;
         $this->put = mixed();
         $this->put_path = mixed();
@@ -668,7 +678,7 @@ abstract class HttpDownloader
             $headers .= 'Authorization: Basic ' . base64_encode(implode(':', $this->auth)) . "==\r\n";
         }
         foreach ($this->extra_headers as $key => $val) {
-            $headers .= $key . ': ' . rawurlencode($val) . "\r\n";
+            $headers .= $key . ': ' . $val . "\r\n";
         }
         if ($this->accept !== null) {
             $headers .= 'Accept: ' . rawurlencode($this->accept) . "\r\n";
@@ -688,7 +698,7 @@ abstract class HttpDownloader
     }
 
     /**
-     * Read in any HTTP headers from an HTTP line, that we probe for.
+     * Read in any HTTP headers that we probe for, from an HTTP line.
      *
      * @param  string $line The line
      */
@@ -741,6 +751,8 @@ abstract class HttpDownloader
                 }
             }
         }
+
+        $this->headers[] = $line;
     }
 
     /**
@@ -770,6 +782,10 @@ class HttpDownloaderCurl extends HttpDownloader
     protected $add_content_type_header_manually = true;
     protected $add_files_manually = true;
 
+    // Data collection
+    protected $curl_headers = array();
+    protected $curl_body = '';
+
     /**
      * See if this class may run.
      *
@@ -798,7 +814,7 @@ class HttpDownloaderCurl extends HttpDownloader
             return HttpDownloader::RUN_PRIORITY_HIGH;
         }
 
-        return HttpDownloader::RUN_PRIORITY_NO;
+        return HttpDownloader::RUN_PRIORITY_LOW;
     }
 
     /**
@@ -811,10 +827,13 @@ class HttpDownloaderCurl extends HttpDownloader
     protected function _run($url, $options)
     {
         $ch = curl_init($this->do_ip_forwarding ? $this->connecting_url : $url);
-        $curl_headers = array();
+
+        // Cookie prep
         if ($this->cookies != array()) {
             curl_setopt($ch, CURLOPT_COOKIE, $this->get_cookie_string());
         }
+
+        // SSL prep
         $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
         $verifypeer_disabled = ((function_exists('get_value')) && (get_value('disable_ssl_for__' . $this->url_parts['host']) === '1'));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, !$verifypeer_disabled);
@@ -822,20 +841,26 @@ class HttpDownloaderCurl extends HttpDownloader
             curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
             curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
         }
-        curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+        curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1); // https://jve.linuxwall.info/blog/index.php?post/TLS_Survey
         if ($this->do_ip_forwarding) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         }
+
+        // Misc settings
         //if (!$this->no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // we can do better ourselves anyway and protect against file:// exploits.
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, intval($this->timeout));
         curl_setopt($ch, CURLOPT_TIMEOUT, intval($this->timeout));
-        curl_setopt($ch, CURLOPT_USERAGENT, $this->ua);
+
+        // Request type
         if ($this->http_verb == 'HEAD') {
             curl_setopt($ch, CURLOPT_NOBODY, true); // Branch needed as doing a HEAD via CURLOPT_CUSTOMREQUEST can cause a timeout bug in cURL
         } else {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->http_verb);
         }
+
+        // Headers
+        $curl_headers = array();
         if ($this->accept !== null) {
             $curl_headers[] = 'Accept: ' . $this->accept;
         }
@@ -870,20 +895,26 @@ class HttpDownloaderCurl extends HttpDownloader
             }
         }
         if ($this->do_ip_forwarding) {
-            $curl_headers[] = 'Host: ' . $this->url_parts['host'] . "\r\n";
+            $curl_headers[] = 'Host: ' . $this->url_parts['host'];
         }
         if ((count($curl_headers) != 0) && ((($this->files == array())/*Breaks file uploads for some reason*/) || ($this->extra_headers != array()))) {
             curl_setopt($ch, CURLINFO_HEADER_OUT, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $curl_headers);
         }
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, true); // include header in output
+
+        // cURL options that will create headers also
         if ($this->auth !== null) {
             curl_setopt($ch, CURLOPT_USERPWD, implode(':', $this->auth));
         }
         if ($this->referer !== null) {
             curl_setopt($ch, CURLOPT_REFERER, $this->referer);
         }
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->ua);
+        if ($this->byte_limit !== null) {
+            curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($this->byte_limit == 0) ? 0 : ($this->byte_limit - 1)));
+        }
+
+        // Proxy settings
         $proxy = function_exists('get_option') ? get_option('proxy') : '';
         if (($proxy != '') && ($this->url_parts['host'] != 'localhost') && ($this->url_parts['host'] != '127.0.0.1')) {
             $port = get_option('proxy_port');
@@ -894,23 +925,22 @@ class HttpDownloaderCurl extends HttpDownloader
                 curl_setopt($ch, CURLOPT_PROXYUSERPWD, $proxy_user . ':' . $proxy_password);
             }
         }
-        if ($this->byte_limit !== null) {
-            curl_setopt($ch, CURLOPT_RANGE, '0-' . strval(($this->byte_limit == 0) ? 0 : ($this->byte_limit - 1)));
-        }
-        $line = curl_exec($ch);
+
+        // Data collection
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION, array($this, 'file_curl_headers'));
+        curl_setopt($ch, CURLOPT_WRITEFUNCTION, array($this, 'file_curl_body'));
+
+        // Response
+        $curl_result = curl_exec($ch);
         /*if ((count($curl_headers)!=0) && (($this->files != array()))) { // Useful for debugging
             var_dump(curl_getinfo($ch,CURLINFO_HEADER_OUT));exit();
         }*/
-        if ($line === false) {
+        if ($curl_result === false) {
+            // Error
             $error = curl_error($ch);
             curl_close($ch);
         } else {
-            if (substr($line, 0, 25) == "HTTP/1.1 100 Continue\r\n\r\n") {
-                $line = substr($line, 25);
-            }
-            if (substr($line, 0, 25) == "HTTP/1.0 100 Continue\r\n\r\n") {
-                $line = substr($line, 25);
-            }
+            // Response metadata that cURL lets us gather easily
             $this->download_mime_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
             $this->download_size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
             $this->download_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
@@ -922,33 +952,20 @@ class HttpDownloaderCurl extends HttpDownloader
                 $this->charset = substr($this->download_mime_type, 8 + strpos($this->download_mime_type, 'charset='));
                 $this->download_mime_type = substr($this->download_mime_type, 0, strpos($this->download_mime_type, ';'));
             }
+
             curl_close($ch);
-            if (substr($line, 0, strlen('HTTP/1.0 200 Connection Established')) == 'HTTP/1.0 200 Connection Established') {
-                $line = substr($line, strpos($line, "\r\n\r\n") + 4);
-            }
-            $pos = strpos($line, "\r\n\r\n");
 
-            if (substr($line, 0, strlen('HTTP/1.1 100 ')) == 'HTTP/1.1 100 ' || substr($line, 0, strlen('HTTP/1.0 100 ')) == 'HTTP/1.0 100 ') {
-                $pos = strpos($line, "\r\n\r\n", $pos + 4);
-            }
-            if ($pos === false) {
-                $pos = strlen($line);
-            } else {
-                $pos += 4;
-            }
-            $lines = explode("\r\n", substr($line, 0, $pos));
-
-            foreach ($lines as $lno => $_line) {
-                $_line .= "\r\n";
+            // Receive headers
+            foreach ($this->curl_headers as $header) {
                 $matches = array();
 
-                if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $_line, $matches) != 0) {
-                    $this->read_in_headers($_line);
+                if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $header, $matches) != 0) {
+                    $this->read_in_headers($header);
                 }
-                if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $_line, $matches) != 0) {
-                    $this->read_in_headers($_line);
+                if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $header, $matches) != 0) {
+                    $this->read_in_headers($header);
                 }
-                if (preg_match("#^Location: (.*)\r\n#i", $_line, $matches) != 0) {
+                if (preg_match("#^Location: (.*)\r\n#i", $header, $matches) != 0) {
                     if ($this->filename === null) {
                         $this->filename = urldecode(basename($matches[1]));
                     }
@@ -967,39 +984,64 @@ class HttpDownloaderCurl extends HttpDownloader
                         if ($this->filename === null) {
                             $this->filename = $bak;
                         }
-                        if ($this->put !== null) {
-                            fclose($this->put);
-                            if (!$this->put_no_delete) {
-                                @unlink($this->put_path);
-                            }
-                        }
-                        if ($text !== null) {
-                            if ($this->write_to_file !== null) {
-                                fwrite($this->write_to_file, $text);
-                                $text = '';
-                            }
-                        }
+
                         return $text;
                     }
                 }
             }
 
+            // Cleanup
             if ($this->put !== null) {
                 fclose($this->put);
                 if (!$this->put_no_delete) {
                     @unlink($this->put_path);
                 }
             }
-            $text = substr($line, $pos);
-            if ($this->write_to_file !== null) {
-                fwrite($this->write_to_file, $text);
-                $text = '';
+
+            // Receive body
+            if ($this->message != 200) {
+                $this->curl_body = '';
             }
-            return $text;
+
+            return $this->curl_body;
         }
 
         return '';
     }
+
+   /**
+    * Callback for receiving cURL headers.
+    *
+    * @param  resource $ch cURL resource handle
+    * @param  string $header Header
+    * @return integer Length of header
+    *
+    * @ignore
+    */
+   protected function file_curl_headers($ch, $header)
+   {
+       $this->curl_headers[] = $header;
+       return strlen($header);
+   }
+
+   /**
+    * Callback for receiving a part of the cURL body.
+    *
+    * @param  resource $ch cURL resource handle
+    * @param  string $str Body part
+    * @return integer Length of body part
+    *
+    * @ignore
+    */
+   protected function file_curl_body($ch, $str)
+   {
+       if ($this->write_to_file !== null) {
+           fwrite($this->write_to_file, $str);
+       } else {
+           $this->curl_body .= $str;
+       }
+       return strlen($str);
+   }
 }
 
 /**
@@ -1073,14 +1115,14 @@ class HttpDownloaderSockets extends HttpDownloader
 
             if (($proxy != '') && ($this->connect_to != 'localhost') && ($this->connect_to != '127.0.0.1')) {
                 $out = '';
-                $out .= $this->http_verb . ' ' . str_replace("\r", '', str_replace("\n", '', $url)) . " HTTP/1.1\r\n";
+                $out .= $this->http_verb . ' ' . escape_header($url) . " HTTP/1.1\r\n";
                 $proxy_user = get_option('proxy_user');
                 if ($proxy_user != '') {
                     $proxy_password = get_option('proxy_password');
                     $out .= 'Proxy-Authorization: Basic ' . base64_encode($proxy_user . ':' . $proxy_password) . "\r\n";
                 }
             } else {
-                $out = (($this->post_params === null) ? (($this->byte_limit === 0) ? 'HEAD ' : 'GET ') : 'POST ') . str_replace("\r", '', str_replace("\n", '', $url2)) . " HTTP/1.1\r\n";
+                $out = $this->http_verb . ' ' . escape_header($url2) . " HTTP/1.1\r\n";
             }
             $out .= 'Host: ' . $this->url_parts['host'] . "\r\n";
             $out .= $this->get_header_string();
@@ -1486,17 +1528,19 @@ class HttpDownloaderFileWrapper extends HttpDownloader
             }
             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
             $opts = array(
-                'method' => $this->http_verb,
-                'header' => rtrim(($this->do_ip_forwarding ? ('Host: ' . $this->url_parts['host'] . "\r\n") : '') . $this->get_header_string()),
-                'user_agent' => $this->ua,
-                'content' => $this->raw_payload,
-                'follow_location' => $this->no_redirect ? 0 : 1,
-                'ssl' => array(
-                    'verify_peer' => !$this->do_ip_forwarding,
-                    'cafile' => $crt_path,
-                    'SNI_enabled' => true,
-                    'ciphers' => 'TLSv1',
-                )
+                'http' => array(
+                    'method' => $this->http_verb,
+                    'header' => rtrim((($this->url_parts['host'] != $this->connect_to) ? ('Host: ' . $this->url_parts['host'] . "\r\n") : '') . $this->get_header_string()),
+                    'user_agent' => $this->ua,
+                    'content' => $this->raw_payload,
+                    'follow_location' => $this->no_redirect ? 0 : 1,
+                    'ssl' => array(
+                        'verify_peer' => !$this->do_ip_forwarding,
+                        'cafile' => $crt_path,
+                        'SNI_enabled' => true,
+                        'ciphers' => 'TLSv1',
+                    ),
+                ),
             );
             $proxy = function_exists('get_option') ? get_option('proxy') : '';
             if ($proxy != '') {
@@ -1504,17 +1548,33 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                 $proxy_user = get_option('proxy_user');
                 if ($proxy_user != '') {
                     $proxy_password = get_option('proxy_password');
-                    $opts['proxy'] = 'tcp://' . $proxy_user . ':' . $proxy_password . '@' . $proxy . ':' . $port;
+                    $opts['http']['proxy'] = 'tcp://' . $proxy_user . ':' . $proxy_password . '@' . $proxy . ':' . $port;
                 } else {
-                    $opts['proxy'] = 'tcp://' . $proxy . ':' . $port;
+                    $opts['http']['proxy'] = 'tcp://' . $proxy . ':' . $port;
                 }
             }
-            $context = stream_context_create(array('http' => $opts));
+            $context = stream_context_create($opts);
             $php_errormsg = mixed();
             if (($this->byte_limit === null) && ($this->write_to_file === null)) {
-                $read_file = @file_get_contents($this->connecting_url, false, $context);
+                if ($this->trigger_error) {
+                    global $SUPPRESS_ERROR_DEATH;
+                    $bak_sed = $SUPPRESS_ERROR_DEATH;
+                    $SUPPRESS_ERROR_DEATH = true; // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.                $read_file = file_get_contents($this->connecting_url, false, $context);
+                    $read_file = file_get_contents($this->connecting_url, false, $context);
+                    $SUPPRESS_ERROR_DEATH = $bak_sed;
+                } else {
+                    $read_file = @file_get_contents($this->connecting_url, false, $context);
+                }
             } else {
-                $_read_file = @fopen($this->connecting_url, 'rb', false, $context);
+                if ($this->trigger_error) {
+                    global $SUPPRESS_ERROR_DEATH;
+                    $bak_sed = $SUPPRESS_ERROR_DEATH;
+                    $SUPPRESS_ERROR_DEATH = true; // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.                $read_file = file_get_contents($this->connecting_url, false, $context);
+                    $_read_file = fopen($this->connecting_url, 'rb', false, $context);
+                    $SUPPRESS_ERROR_DEATH = $bak_sed;
+                } else {
+                    $_read_file = @fopen($this->connecting_url, 'rb', false, $context);
+                }
                 if ($_read_file !== false) {
                     $read_file = '';
                     while ((!feof($_read_file)) && (($this->byte_limit === null) || (strlen($read_file) < $this->byte_limit))) {

@@ -2,6 +2,7 @@
 {$REQUIRE_JAVASCRIPT,profile}
 {$REQUIRE_JAVASCRIPT,editing}
 {$REQUIRE_CSS,cns}
+
 <div class="box" data-require-javascript="password_censor" data-tpl="comcodeEncrypt"><div class="box_inner">
 	<h3>Encrypted text</h3>
 

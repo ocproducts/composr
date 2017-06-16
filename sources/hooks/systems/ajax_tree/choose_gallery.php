@@ -36,6 +36,8 @@ class Hook_ajax_tree_choose_gallery
         require_code('galleries');
         require_lang('galleries');
 
+        $GLOBALS['NO_QUERY_LIMIT'] = true;
+
         $must_accept_images = array_key_exists('must_accept_images', $options) ? $options['must_accept_images'] : false;
         $must_accept_videos = array_key_exists('must_accept_videos', $options) ? $options['must_accept_videos'] : false;
         $must_accept_something = array_key_exists('must_accept_something', $options) ? $options['must_accept_something'] : false;

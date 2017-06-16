@@ -8,4 +8,3 @@
 		{+START,INCLUDE,MEDIA__DOWNLOAD_LINK}{+END}
 	</div>
 </figure>
-

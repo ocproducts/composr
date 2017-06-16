@@ -13,6 +13,9 @@
  * @package    directory_protect
  */
 
+// Fixup SCRIPT_FILENAME potentially being missing
+$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+
 // Find Composr base directory, and chdir into it
 global $FILE_BASE, $RELATIVE_PATH;
 $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
@@ -94,7 +97,7 @@ if (!$okay) {
 header('Content-Type: application/octet-stream' . '; authoritative=true;');
 require_code('mime_types');
 header('Content-Type: ' . get_mime_type(get_file_extension($filename), false) . '; authoritative=true;');
-header('Content-Disposition: inline; filename="' . escape_header($filename) . '"');
+header('Content-Disposition: inline; filename="' . escape_header($filename, true) . '"');
 header('Accept-Ranges: bytes');
 
 // Caching

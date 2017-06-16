@@ -751,7 +751,7 @@ class Hook_import_mybb
      * Substitution callback for 'fix_links'.
      *
      * @param  array $m The match
-     * @return  string        The substitution string
+     * @return string The substitution string
      */
     protected function _fix_links_callback_topic($m)
     {
@@ -773,7 +773,7 @@ class Hook_import_mybb
      * Substitution callback for 'fix_links'.
      *
      * @param  array $m The match
-     * @return  string        The substitution string
+     * @return string The substitution string
      */
     protected function _fix_links_callback_forum($m)
     {
@@ -784,7 +784,7 @@ class Hook_import_mybb
      * Substitution callback for 'fix_links'.
      *
      * @param  array $m The match
-     * @return  string        The substitution string
+     * @return string The substitution string
      */
     protected function _fix_links_callback_member($m)
     {

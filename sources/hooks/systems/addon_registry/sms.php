@@ -51,7 +51,7 @@ class Hook_addon_registry_sms
      */
     public function get_description()
     {
-        return 'Provides an option for the software to send SMS messages, via the commercial Clickatell web service.';
+        return 'Provides an option for the software to send SMS messages, via the commercial Clickatell web service. By default this is only used by the notifications system.';
     }
 
     /**

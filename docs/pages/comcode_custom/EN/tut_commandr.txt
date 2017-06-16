@@ -175,12 +175,12 @@ passwd -u johnDoe newpassword
 [title="3"]Directory and table sizes[/title]
 
 [surround]
-[media width="150" description="[tt]mysql_table_sizes[/tt] command" float="right"]data_custom/images/docs/tut_commandr/mysql_table_sizes.png[/media]
+[media width="150" description="[tt]db_table_sizes[/tt] command" float="right"]data_custom/images/docs/tut_commandr/db_table_sizes.png[/media]
 [media width="150" description="[tt]directory_sizes[/tt] command" float="right"]data_custom/images/docs/tut_commandr/directory_sizes.png[/media]
 The [tt]directory_sizes[/tt] command can come handy to quickly find out the size of any directory within the Composr system.
 It will output a nice formatted list of all the directories for you.
 
-The [tt]mysql_table_sizes[/tt] command will output a tabular list of all the database tables within Composr with their respective size.
+The [tt]db_table_sizes[/tt] command will output a tabular list of all the database tables within Composr with their respective size.
 
 These commands are very useful when trying to cut down on disk usage (for example, maybe you are up against a quota limit, or are finding backup files too large).
 [/surround]

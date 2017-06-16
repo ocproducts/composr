@@ -46,6 +46,13 @@
 	border-bottom: 1px dotted {$GET,standard_border};
 }
 
+.active_item td, td.active_item {
+	background-color: {$GET,area_2_background} !important;
+}
+.active_item td.do_theme_item, td.active_item.do_theme_item {
+	background-color: {$GET,area_4_background} !important;
+}
+
 .do_next_item {
 }
 
@@ -53,8 +60,8 @@
 	width: 100px;
 }
 
-.do_next_item:hover, .do_theme_item:hover {
-	background-color: {$GET,area_hover_background};
+.do_next_item:hover, .do_theme_item:hover, .active_item td.do_theme_item:hover, td.active_item.do_theme_item:hover {
+	background-color: {$GET,area_hover_background} !important;
 	cursor: pointer;
 }
 

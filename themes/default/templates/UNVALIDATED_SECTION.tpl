@@ -7,4 +7,3 @@
 		{!NO_ENTRIES}
 	</p>
 {+END}
-

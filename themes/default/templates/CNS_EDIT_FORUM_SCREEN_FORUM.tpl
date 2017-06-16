@@ -20,4 +20,3 @@
 		{FORUM_GROUPINGS}
 	</div>
 {+END}
-

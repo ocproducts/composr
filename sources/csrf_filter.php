@@ -63,7 +63,7 @@ function generate_csrf_token()
 /**
  * Check a provided CSRF-token is valid.
  *
- * @param ?ID_TEXT $token Provided token (null: none)
+ * @param  ?ID_TEXT $token Provided token (null: none)
  */
 function check_csrf_token($token)
 {

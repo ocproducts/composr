@@ -1,2 +1,1 @@
 {$PARAGRAPH,{TEXT}}
-

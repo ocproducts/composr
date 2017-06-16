@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_configuration}
+
 <div data-tpl="configCategoryScreen">
 	{TITLE}
 

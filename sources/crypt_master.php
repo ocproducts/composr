@@ -46,7 +46,7 @@ function check_master_password($password_given)
         $salt = 'cms';
 
         // LEGACY
-        if ($actual_password_hashed != md5($password_given . $salt)) {
+        if ($actual_password_hashed !== md5($password_given . $salt)) {
             $salt = 'ocp';
         }
     }
@@ -69,7 +69,7 @@ function check_master_password_from_hash($password_given_hashed)
 
     $actual_password_hashed = $SITE_INFO['master_password'];
 
-    if ($password_given_hashed == md5($actual_password_hashed)) {
+    if ($password_given_hashed === md5($actual_password_hashed)) {
         $ret = true; // LEGACY: Upgrade from v7 where hashed input password given even if plain-text password is in use
         _master_password_check__result($ret);
         return $ret;

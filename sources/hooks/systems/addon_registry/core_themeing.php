@@ -187,8 +187,9 @@ class Hook_addon_registry_core_themeing
     public function tpl_preview__administrative__theme_manage_screen()
     {
         require_lang('zones');
+
         $themes = array();
-        foreach (placeholder_array() as $value) {
+        foreach (placeholder_array() as $i => $value) {
             $themes[] = array(
                 'THEME_USAGE' => lorem_phrase(),
                 'SEED' => '123456',
@@ -205,6 +206,7 @@ class Hook_addon_registry_core_themeing
                 'EDIT_URL' => placeholder_url(),
                 'DELETE_URL' => placeholder_url(),
                 'SCREEN_PREVIEW_URL' => placeholder_url(),
+                'IS_MAIN_THEME' => ($i == 2),
             );
         }
 

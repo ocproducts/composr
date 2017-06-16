@@ -276,7 +276,7 @@ function add_room_wrap($member_id, $relative, $name, $text, $password_question, 
  * @param  string $name Name for the room
  * @param  AUTO_LINK $realm The room's realm
  * @param  integer $x The room's X ordinate
- * @param  integer $y The room's  Y ordinate
+ * @param  integer $y The room's Y ordinate
  * @param  string $text Description of room
  * @param  string $password_question Hint for password to enter room
  * @param  string $password_answer Password to enter room

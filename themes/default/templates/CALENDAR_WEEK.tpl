@@ -21,4 +21,3 @@
 		{HOURS}
 	</tbody>
 </table>
-

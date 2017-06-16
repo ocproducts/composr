@@ -193,4 +193,3 @@ function permissionsImgFunc2(node, id) {
         return [$cms.img('{$IMG;,led_off}'), '{!permissions:PINTERFACE_VIEW_NO;^}'];
     }
 }
-

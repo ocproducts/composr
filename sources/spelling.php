@@ -27,13 +27,15 @@
  */
 function init__spelling()
 {
-    define('WORD_REGEXP', '#([\w\'\-]{1,200})#' . ((get_charset() == 'utf-8') ? 'u' : ''));
+    if (!defined('WORD_REGEXP')) {
+        define('WORD_REGEXP', '#([\w\'\-]{1,200})#' . ((get_charset() == 'utf-8') ? 'u' : ''));
+    }
 }
 
 /**
  * Find all the words in some text.
  *
- * @param string $text Text to scan for words in (should be plain text, not be HTML text)
+ * @param  string $text Text to scan for words in (should be plain text, not be HTML text)
  * @return array List of words
  */
 function find_words($text)
@@ -85,7 +87,7 @@ function find_spell_checker()
 /**
  * Fix spellings in input string.
  *
- * @param string $text Input string
+ * @param  string $text Input string
  * @return string Fixed input string
  */
 function spell_correct_phrase($text)
@@ -113,9 +115,9 @@ function spell_correct_phrase($text)
 /**
  * Run a spellcheck on some text.
  *
- * @param string $text Text to scan for words in (should be plain text, not be HTML text)
- * @param ?ID_TEXT $lang Language to check in (null: current language)
- * @param boolean $skip_known_words_in_db Whether to avoid spellchecking known keywords etc
+ * @param  string $text Text to scan for words in (should be plain text, not be HTML text)
+ * @param  ?ID_TEXT $lang Language to check in (null: current language)
+ * @param  boolean $skip_known_words_in_db Whether to avoid spellchecking known keywords etc
  * @return array A map of misspellings, lower case bad word => array of corrections
  */
 function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
@@ -213,7 +215,7 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
 /**
  * Add words to the spellchecker.
  *
- * @param array $words List of words
+ * @param  array $words List of words
  */
 function add_spellchecker_words($words)
 {
@@ -244,7 +246,7 @@ function add_spellchecker_words($words)
 /**
  * Initialise the spellcheck engine.
  *
- * @param ?ID_TEXT $lang Language to check in (null: current language)
+ * @param  ?ID_TEXT $lang Language to check in (null: current language)
  * @return ?mixed Spellchecker (null: error)
  *
  * @ignore

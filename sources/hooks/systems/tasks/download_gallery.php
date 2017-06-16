@@ -44,7 +44,7 @@ class Hook_task_download_gallery
         $headers = array();
         $headers['Content-Type'] = 'application/octet-stream; authoritative=true;';
         $filename = 'gallery-' . $cat . '.zip';
-        $headers['Content-Disposition'] = 'attachment; filename="' . str_replace("\r", '', str_replace("\n", '', $filename)) . '"';
+        $headers['Content-Disposition'] = 'attachment; filename="' . escape_header($filename) . '"';
 
         $ini_set = array();
         $ini_set['ocproducts.xss_detect'] = '0';

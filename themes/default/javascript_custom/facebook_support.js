@@ -106,7 +106,7 @@
 
                     // Facebook has automatically rebuilt its expired fbsr cookie, auth.login not triggered as already technically logged in
                     else {
-                        if (serversideFbuid === null)  {// Definitive mismatch between server-side and client-side, so we must refresh
+                        if (serversideFbuid === null)  { // Definitive mismatch between server-side and client-side, so we must refresh
                             facebookTriggerRefresh(homePageUrl);
                         }
                     }
@@ -128,7 +128,7 @@
                 }
             });
 
-            if (serversideFbuid === null) {// If not already in a Composr Facebook login session we may need to listen for explicit new logins
+            if (serversideFbuid === null) { // If not already in a Composr Facebook login session we may need to listen for explicit new logins
                 window.FB.Event.subscribe('auth.login', function (response) { // New login status arrived - so a Composr Facebook login session should be established, or ignore as we are calling a logout within this request (above)
                     if (!justLoggedOut) { // Check it is not that logout
                         // ... and therefore refresh to let Composr server-side re-sync, as this was a new login initiated just now on the client side

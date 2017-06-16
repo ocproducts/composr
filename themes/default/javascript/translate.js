@@ -35,7 +35,6 @@ function translate(name, old, langFrom, langTo) {
     }
 }
 
-
 function translateText(response) {
     document.getElementById(window.translating).value = response.data.translations[0].translatedText;
 }

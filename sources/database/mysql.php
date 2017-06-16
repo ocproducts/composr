@@ -100,7 +100,7 @@ class Database_Static_mysql extends Database_super_mysql
 
         global $SITE_INFO;
         if (function_exists('mysql_set_charset')) {
-            mysql_set_charset($SITE_INFO['database_charset'], $db_link);
+            @mysql_set_charset($SITE_INFO['database_charset'], $db_link);
         } else {
             @mysql_query('SET NAMES "' . addslashes($SITE_INFO['database_charset']) . '"', $db_link);
         }
@@ -112,7 +112,7 @@ class Database_Static_mysql extends Database_super_mysql
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
-     * @param  array $connection A DB connection
+     * @param  mixed $connection The DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
@@ -161,8 +161,7 @@ class Database_Static_mysql extends Database_super_mysql
             return null;
         }
 
-        $query = ltrim($query);
-        $sub = substr($query, 0, 4);
+        $sub = substr(ltrim($query), 0, 4);
         if (($results !== true) && (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW')) && ($results !== false)) {
             return $this->get_query_rows($results);
         }

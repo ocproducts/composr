@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_permission_management}
+
 <tr class="{$CYCLE,zebra,zebra_0,zebra_1}" data-tpl="permissionRow">
 	<th>
 		{PERMISSION*}

@@ -396,13 +396,14 @@ function block_helper_script()
                     $list = new Tempcode();
                     $hooks = find_all_hooks($matches[1], $matches[2]);
                     ksort($hooks);
-                    if (($default == '') && ($has_default)) {
+                    $is_multi_list = (($block == 'main_search') && ($parameter == 'limit_to')) || ($block == 'side_tag_cloud');
+                    if (($default == '') && ($has_default) && (!$is_multi_list)) {
                         $list->attach(form_input_list_entry('', true));
                     }
                     foreach (array_keys($hooks) as $hook) {
                         $list->attach(form_input_list_entry($hook, $hook == $default));
                     }
-                    if ((($block == 'main_search') && ($parameter == 'limit_to')) || ($block == 'side_tag_cloud')) {
+                    if ($is_multi_list) {
                         $fields->attach(form_input_multi_list($parameter_title, escape_html($description), $parameter, $list, null, 0));
                     } else {
                         $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));

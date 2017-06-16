@@ -36,4 +36,3 @@
 		{QUERIES}
 	</tbody>
 </table></div>
-

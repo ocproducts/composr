@@ -290,7 +290,7 @@ class Hook_ajax_tree_choose_theme_files
     /**
      * Find what addons templates are.
      *
-     * @param ?ID_TEXT $filter_addon Just for this addon (null: all)
+     * @param  ?ID_TEXT $filter_addon Just for this addon (null: all)
      * @return array Map of template file to addon
      */
     private function templates_for_addons($filter_addon = null)

@@ -7,4 +7,3 @@
 		{ENTRY}
 	</div>
 {+END}
-

@@ -28,4 +28,3 @@
 		<input data-disable-on-click="1" class="button_screen menu__adminzone__audit__ecommerce__subscriptions" type="submit" value="{!START_SUBSCRIPTION}" />
 	</div>
 </form>
-

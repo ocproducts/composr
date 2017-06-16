@@ -39,5 +39,3 @@
 		{!COMCODE_ERROR_HELP_B}
 	</div>
 </div></div>
-
-

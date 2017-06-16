@@ -34,4 +34,3 @@
 		{+START,IF_NON_EMPTY,{SUBMIT_URL}}<li><a rel="add" target="_top" href="{SUBMIT_URL*}">{!ADD}</a></li>{+END}
 	</ul>
 </div></section>
-

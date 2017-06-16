@@ -594,7 +594,7 @@ class Module_admin_newsletter extends Standard_crud_module
             $filename = 'subscribers_' . $id . '.csv';
 
             header('Content-type: text/csv; charset=' . get_charset());
-            header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
+            header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
             if (cms_srv('REQUEST_METHOD') == 'HEAD') {
                 exit();
@@ -688,30 +688,23 @@ class Module_admin_newsletter extends Standard_crud_module
         $start = 0;
         do {
             if (substr($id, 0, 1) == 'g') {
-                if (strpos(get_db_type(), 'mysql') !== false) {
+                if ($GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) {
                     $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails' => 1, 'm_primary_group' => intval(substr($id, 1))), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
                 } else {
                     $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails' => 1, 'm_primary_group' => intval(substr($id, 1))), '', 500, $start);
                 }
             } elseif ($id == '-1') {
-                if (strpos(get_db_type(), 'mysql') !== false) {
+                if ($GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) {
                     $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email', 'COUNT(*) as cnt'), array('m_allow_emails' => 1), 'GROUP BY SUBSTRING_INDEX(m_email_address,\'@\',-1)'); // Far less PHP processing
                 } else {
                     $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('DISTINCT m_email_address AS email'), array('m_allow_emails' => 1), '', 500, $start);
                 }
             } else {
-                if ($GLOBALS['SITE_DB']->has_expression_ordering()) {
+                if ($GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) {
                     $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email', 'COUNT(*) as cnt'), null, 'GROUP BY SUBSTRING_INDEX(email,\'@\',-1)'); // Far less PHP processing
                 } else {
                     $where = array('newsletter_id' => $id, 'code_confirm' => 0);
-                    if (get_option('interest_levels') == '1') {
-                        $where['the_level'] = $level;
-                    }
-                    if (strpos(get_db_type(), 'mysql') !== false) {
-                        $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter_subscribers x ON s.email=x.email', array('DISTINCT s.email', 'COUNT(*) as cnt'), $where, 'GROUP BY SUBSTRING_INDEX(s.email,\'@\',-1)'); // Far less PHP processing
-                    } else {
-                        $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter_subscribers x ON s.email=x.email', array('DISTINCT s.email'), $where, '', 500, $start);
-                    }
+                    $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter_subscribers x ON s.email=x.email', array('DISTINCT s.email'), $where, '', 500, $start);
                 }
             }
             foreach ($rows as $row) {
@@ -731,7 +724,7 @@ class Module_admin_newsletter extends Standard_crud_module
             }
 
             $start += 500;
-        } while ((array_key_exists(0, $rows)) && (!$GLOBALS['SITE_DB']->has_expression_ordering()));
+        } while ((array_key_exists(0, $rows)) && (!$GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()));
         arsort($domains);
         foreach ($domains as $key => $val) {
             $domains[$key] = strval($val);
@@ -1636,7 +1629,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $sortables = array(
             'title' => do_lang_tempcode('TITLE'),
         );
-        $sortables['(SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter n JOIN ' . get_table_prefix() . 'newsletter_subscribe s ON n.id=s.newsletter_id WHERE code_confirm=0)'] = do_lang_tempcode('COUNT_MEMBERS');
+        $sortables['(SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter_subscribers n JOIN ' . get_table_prefix() . 'newsletter_subscribe s ON n.id=s.newsletter_id WHERE code_confirm=0)'] = do_lang_tempcode('COUNT_MEMBERS');
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }

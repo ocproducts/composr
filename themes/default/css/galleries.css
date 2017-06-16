@@ -89,6 +89,7 @@
 
 .img_thumb_wrap .img_thumb {
 	width: 100%;
+	vertical-align: bottom; /* Removes gap under this centered inline image, by moving it to baseline */
 }
 
 .gallery_media_title_cropped * {

@@ -603,7 +603,7 @@ function themewizard_script()
     if ($type == 'image') {
         $image = calculate_theme($seed, $source_theme, $algorithm, $show, $dark);
         if ($image === null) {
-            header('Location: ' . find_theme_image($show));
+            header('Location: ' . escape_header(find_theme_image($show)));
             exit();
         }
 

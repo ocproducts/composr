@@ -267,13 +267,34 @@ function privilege_exists($name)
 function add_privilege($section, $name, $default = false, $not_even_mods = false)
 {
     if (!$not_even_mods) { // NB: Don't actually need to explicitly give admins privileges
+        $ins_privilege = array();
+        $ins_group_id = array();
+        $ins_the_page = array();
+        $ins_module_the_name = array();
+        $ins_category_name = array();
+        $ins_the_value = array();
+
         $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
         $admin_groups = array_merge($GLOBALS['FORUM_DRIVER']->get_super_admin_groups(), $GLOBALS['FORUM_DRIVER']->get_moderator_groups());
         foreach (array_keys($usergroups) as $id) {
             if (($default) || (in_array($id, $admin_groups))) {
-                $GLOBALS['SITE_DB']->query_insert('group_privileges', array('privilege' => $name, 'group_id' => $id, 'the_page' => '', 'module_the_name' => '', 'category_name' => '', 'the_value' => 1));
+                $ins_privilege[] = $name;
+                $ins_group_id[] = $id;
+                $ins_the_page[] = '';
+                $ins_module_the_name[] = '';
+                $ins_category_name[] = '';
+                $ins_the_value[] = 1;
             }
         }
+
+        $GLOBALS['SITE_DB']->query_insert('group_privileges', array(
+            'privilege' => $ins_privilege,
+            'group_id' => $ins_group_id,
+            'the_page' => $ins_the_page,
+            'module_the_name' => $ins_module_the_name,
+            'category_name' => $ins_category_name,
+            'the_value' => $ins_the_value,
+        ));
     }
 
     $GLOBALS['SITE_DB']->query_insert('privilege_list', array('p_section' => $section, 'the_name' => $name, 'the_default' => ($default ? 1 : 0)));
@@ -322,14 +343,14 @@ function rename_privilege($old, $new)
 }
 
 /**
- * Delete a privilege, and every usergroup is then relaxed from the restrictions of this permission.
+ * Delete a privilege.
  *
  * @param  ID_TEXT $name The codename of the permission
  */
 function delete_privilege($name)
 {
     $GLOBALS['SITE_DB']->query_delete('privilege_list', array('the_name' => $name), '', 1);
-    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'group_privileges WHERE ' . db_string_not_equal_to('module_the_name', 'forums') . ' AND ' . db_string_equal_to('privilege', $name));
+    $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'group_privileges WHERE ' . db_string_equal_to('privilege', $name));
 }
 
 /**

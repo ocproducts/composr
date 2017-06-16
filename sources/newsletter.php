@@ -452,7 +452,7 @@ function newsletter_who_send_to($send_details, $language, $start, $max, $get_raw
                         $surnames[] = $_temp['n_surname'];
                         $username = trim($_temp['n_forename'] . ' ' . $_temp['n_surname']);
                         if ($username == '') {
-                            $username = do_lang('NEWSLETTER_SUBSCRIBER', get_site_name());
+                            $username = do_lang('NEWSLETTER_SUBSCRIBER_DEFAULT_NAME', get_site_name());
                         }
                         $usernames[] = $username;
                         $ids[] = 'n' . strval($_temp['id']);
@@ -1100,7 +1100,7 @@ function remove_email_bounces($bounces)
     $GLOBALS['SITE_DB']->query($query);
 
     if (get_forum_type() == 'cns') {
-        $query = 'UPDATE ' . get_table_prefix() . 'f_members SET m_allow_emails_from_staff=0 WHERE ' . $delete_sql_members;
+        $query = 'UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members SET m_allow_emails_from_staff=0 WHERE ' . $delete_sql_members;
         $GLOBALS['FORUM_DB']->query($query);
     }
 }

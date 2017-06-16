@@ -4,4 +4,3 @@
 		{FIELDS}
 	</tbody>
 </table></div>
-

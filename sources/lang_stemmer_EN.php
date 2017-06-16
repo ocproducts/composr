@@ -113,7 +113,7 @@ class Stemmer_EN
     /**
      * Step 1c
      *
-     * @param string $word Word to stem
+     * @param  string $word Word to stem
      */
     private static function step1c($word)
     {
@@ -129,7 +129,7 @@ class Stemmer_EN
     /**
      * Step 2
      *
-     * @param string $word Word to stem
+     * @param  string $word Word to stem
      */
     private static function step2($word)
     {
@@ -186,7 +186,7 @@ class Stemmer_EN
     /**
      * Step 3
      *
-     * @param string $word String to stem
+     * @param  string $word String to stem
      */
     private static function step3($word)
     {
@@ -223,7 +223,7 @@ class Stemmer_EN
     /**
      * Step 4
      *
-     * @param string $word Word to stem
+     * @param  string $word Word to stem
      */
     private static function step4($word)
     {
@@ -293,7 +293,7 @@ class Stemmer_EN
     /**
      * Step 5
      *
-     * @param string $word Word to stem
+     * @param  string $word Word to stem
      */
     private static function step5($word)
     {

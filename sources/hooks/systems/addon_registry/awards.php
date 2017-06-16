@@ -77,9 +77,6 @@ class Hook_addon_registry_awards
             'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
-            'previously_in_addon' => array(
-                'awards'
-            )
         );
     }
 

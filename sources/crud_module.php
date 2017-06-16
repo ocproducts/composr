@@ -67,10 +67,10 @@ abstract class Standard_crud_module
     public $posting_form_text_parsed = null;
     public $posting_form_tabindex = null;
     public $javascript = null;
-    public $js_function_calls = [];
+    public $js_function_calls = array();
     public $functions = null;
     public $javascript_for_choose = null;
-    public $js_function_calls_for_choose = [];
+    public $js_function_calls_for_choose = array();
     public $functions_for_choose = null;
     public $form_id = 'selection_table';
     public $type_code = '';
@@ -396,18 +396,18 @@ abstract class Standard_crud_module
             if ((((method_exists($this, 'browse')) && ($type != 'browse')) || ((isset($this->is_chained_with_parent_browse)) && ($this->is_chained_with_parent_browse)))) {
                 global $BREADCRUMB_SET_PARENTS;
                 if (($this->special_edit_frontend) && (($type == '_edit') || ($type == '_edit_category'))) {
-                    breadcrumb_set_parents(array_merge(array(array('_SELF:_SELF:browse', do_lang_tempcode(($this->menu_label === null) ? 'MENU' : $this->menu_label)), array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE'))), $BREADCRUMB_SET_PARENTS));
+                    breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse', do_lang_tempcode(($this->menu_label === null) ? 'MENU' : $this->menu_label)), array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE')))));
                 } else {
                     if (($this->catalogue) && (either_param_string('catalogue_name', '') != '')) {
                         $catalogue_title = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title', array('c_name' => either_param_string('catalogue_name'))));
-                        breadcrumb_set_parents(array_merge(array(array('_SELF:_SELF:browse:catalogue_name=' . either_param_string('catalogue_name', ''), $catalogue_title)), $BREADCRUMB_SET_PARENTS));
+                        breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse:catalogue_name=' . either_param_string('catalogue_name', ''), $catalogue_title))));
                     } else {
-                        breadcrumb_set_parents(array_merge(array(array('_SELF:_SELF:browse', do_lang_tempcode(($this->menu_label === null) ? 'MENU' : $this->menu_label))), $BREADCRUMB_SET_PARENTS));
+                        breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:browse', do_lang_tempcode(($this->menu_label === null) ? 'MENU' : $this->menu_label)))));
                     }
                 }
             } else {
                 if (($this->special_edit_frontend) && (($type == '_edit') || ($type == '_edit_category'))) {
-                    breadcrumb_set_parents(array_merge(array(array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE'))), $BREADCRUMB_SET_PARENTS));
+                    breadcrumb_set_parents(array_merge($BREADCRUMB_SET_PARENTS, array(array('_SELF:_SELF:' . substr($type, 1), do_lang_tempcode('CHOOSE')))));
                 }
             }
         }
@@ -1116,13 +1116,13 @@ abstract class Standard_crud_module
         if ($force_site_db) {
             push_db_scope_check(false);
         }
-        $max_rows = $db->query_select_value($table . $join, 'COUNT(*)', $where, 'ORDER BY ' . $orderer, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
+        $max_rows = $db->query_select_value($table . $join, 'COUNT(*)', $where, '', false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($max_rows == 0) {
             return array(array(), 0);
         }
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 20);
-        $rows = $db->query_select($table . $join, array('r.*'), $where, 'ORDER BY ' . $orderer, $max, $start, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
+        $rows = $db->query_select($table . $join, array('r.*'), $where, '', $max, $start, false, isset($GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw]) ? $GLOBALS['TABLE_LANG_FIELDS_CACHE'][$table_raw] : null);
         if ($force_site_db) {
             pop_db_scope_check();
         }
@@ -1584,7 +1584,7 @@ abstract class Standard_crud_module
         }
 
         $delete = post_param_integer('delete', 0);
-        if (($delete == 1) || ($delete == 2)) { //1=partial,2=full,...=unknown,thus handled as an edit
+        if (($delete == 1) || ($delete == 2)) { // Delete: 1=partial,2=full,...=unknown,thus handled as an edit
             if ($this->permissions_require !== null) {
                 check_delete_permission($this->permissions_require, $submitter, array($this->permissions_cat_require, ($this->permissions_cat_name === null) ? null : $this->get_cat($id), $this->permissions_cat_require_b, ($this->permissions_cat_name_b === null) ? null : $this->get_cat_b($id)), $this->privilege_page_name);
             }
@@ -1602,23 +1602,10 @@ abstract class Standard_crud_module
                 delete_form_custom_fields($this->content_type, $id);
             }
 
-            /*    No - resource is gone now, and redirect would almost certainly try to take us back there
-            if (($this->redirect_type !== null) || ((get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null))) {
-                $url = (($this->redirect_type == '!') || ($this->redirect_type === null)) ? get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL) : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
-                return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
-            }
-            */
-
-            if (($this->redirect_type !== null) || ((get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null))) {
-                $url = make_string_tempcode(str_replace('__ID__', $id, get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL)));
-
-                return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
-            }
-
             $description = ($this->do_next_description === null) ? do_lang_tempcode($this->success_message_str) : $this->do_next_description;
 
             return $this->do_next_manager($this->title, $description);
-        } else {
+        } else { // Edit
             if ($this->permissions_require !== null) {
                 check_edit_permission($this->permissions_require, $submitter, array($this->permissions_cat_require, ($this->permissions_cat_name === null) ? null : $this->get_cat($id), $this->permissions_cat_require_b, ($this->permissions_cat_name_b === null) ? null : $this->get_cat_b($id)), $this->privilege_page_name);
             }
@@ -1683,7 +1670,7 @@ abstract class Standard_crud_module
             }
         }
 
-        if (($this->redirect_type !== null) || (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null)) {
+        if ((($this->redirect_type !== null) || (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null)) && ($orig_id == $id)) {
             $url = (($this->redirect_type == '!') || ($this->redirect_type === null)) ? make_string_tempcode(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL)) : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
 
             return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
@@ -1701,11 +1688,12 @@ abstract class Standard_crud_module
     public function mass_delete($top_level = true)
     {
         $delete = array();
-        foreach ($_POST as $key => $val) {
-            if (($val === '1') && (strpos($key, '_') !== false)) {
-                list($type, $id) = explode('_', $key, 2);
+        if ($this->supports_mass_delete) {
+            foreach ($_POST as $key => $val) {
+                $matches = array();
+                if (($val === '1') && (preg_match('#^' . preg_quote($this->content_type) . '_(.*)$#', $key, $matches) != 0)) {
+                    $id = $matches[1];
 
-                if ($type == $this->content_type) {
                     if ($this->permissions_require !== null) {
                         if (method_exists($this, 'get_submitter')) {
                             list($submitter, $timestamp) = $this->get_submitter($id);
@@ -1718,9 +1706,9 @@ abstract class Standard_crud_module
                     $delete[] = $id; // Don't do right away, we want to check all permissions first so that we don't do a partial action
                 }
             }
-        }
-        foreach ($delete as $id) {
-            $this->delete_actualisation($id);
+            foreach ($delete as $id) {
+                $this->delete_actualisation($id);
+            }
         }
         if (($this->cat_crud_module !== null) && ($this->cat_crud_module->content_type !== null)) {
             foreach ($_POST as $key => $val) {

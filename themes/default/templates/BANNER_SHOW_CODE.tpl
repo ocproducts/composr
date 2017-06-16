@@ -2,4 +2,3 @@
 &lt;iframe style="width: {WIDTH'*}px; height: {HEIGHT'*}px" scrolling="no" src="{$FIND_SCRIPT*,banner}?source={NAME&*}&amp;b_type={TYPE&*}"&gt;<br />
 &lt;/iframe&gt;<br />
 &lt;!-- {!BANNER_SHARING_END} --&gt;
-

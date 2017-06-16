@@ -50,6 +50,7 @@ class Module_contact_member
      */
     public function uninstall()
     {
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'contact_member'));
     }
 
     /**
@@ -69,6 +70,20 @@ class Module_contact_member
                 $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => 'contact_member', 'zone_name' => 'site', 'group_id' => $id));
             }
         }
+    }
+
+    /**
+     * Find entry-points available within this module.
+     *
+     * @param  boolean $check_perms Whether to check permissions.
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     */
+    public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
+    {
+        return array();
     }
 
     /**
@@ -131,7 +146,7 @@ class Module_contact_member
         $type = get_param_string('type', 'browse');
 
         $member_id = get_param_integer('id');
-        if (($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address') == '') || ((get_option('allow_email_disable') == '1') && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_allow_emails') == 0)) || (is_guest($member_id))) {
+        if (($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_email_address') == '') || ((get_option('allow_email_disable') == '1') && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_allow_emails') == 0)) || (is_guest($member_id)) || ($GLOBALS['FORUM_DRIVER']->is_banned($member_id))) {
             warn_exit(do_lang_tempcode('NO_ACCEPT_EMAILS'));
         }
 
@@ -213,7 +228,7 @@ class Module_contact_member
             '_GUID' => 'e06557e6eceacf1f46ee930c99ac5bb5',
             'TITLE' => $this->title,
             'HIDDEN' => $hidden,
-            'JS_FUNCTION_CALLS' => function_exists('captcha_ajax_check_function') && captcha_ajax_check_function() ? [captcha_ajax_check_function()] : [],
+            'JS_FUNCTION_CALLS' => ((function_exists('captcha_ajax_check_function')) && (captcha_ajax_check_function() != '')) ? array(captcha_ajax_check_function()) : array(),
             'FIELDS' => $fields,
             'TEXT' => $text,
             'SUBMIT_ICON' => 'buttons__send',

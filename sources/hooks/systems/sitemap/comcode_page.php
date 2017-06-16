@@ -196,30 +196,17 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
         if (!is_file($full_path)) {
             $full_path = get_file_base() . '/' . $path;
         }
-        $page_contents = cms_file_get_contents_safe($full_path);
-        if (!$got_title || strpos($page_contents, 'sub="') !== false) {
-            $matches = array();
-            if (preg_match('#\[title([^\]]*\ssub="([^"]*)")?[^\]]*\]#', $page_contents, $matches) != 0) {
-                $start = strpos($page_contents, $matches[0]) + strlen($matches[0]);
-                $end = strpos($page_contents, '[/title]', $start);
-                $_title = substr($page_contents, $start, $end - $start);
-                if ($_title != '') {
-                    if (!empty($matches[2])) {
-                        if (stripos($matches[2], $_title) !== false) {
-                            $_title = ucfirst($matches[2]);
-                        } else {
-                            $_title .= ' (' . $matches[2] . ')';
-                        }
-                    }
-
-                    require_code('comcode');
-                    $struct['title'] = comcode_to_tempcode($_title, null, true);
-                }
+        $page_contents = file_get_contents($full_path);
+        if (!$got_title || strpos($page_contents, 'sub=') !== false) {
+            require_code('zones2');
+            $__title = get_comcode_page_title_from_disk($full_path, true, true);
+            if (!$__title->is_empty()) {
+                $struct['title'] = $__title;
             }
         }
 
         if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) != 0) {
-            $struct['title'] = make_string_tempcode(do_lang('COMCODE_PAGE') . ': ' . $page);
+            $struct['title'] = make_string_tempcode(do_lang('zones:COMCODE_PAGE') . ': ' . $page);
         }
 
         if (!$this->_check_node_permissions($struct)) {

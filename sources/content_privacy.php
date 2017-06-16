@@ -39,6 +39,8 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
         $cma_ob = get_content_object($content_type);
         $cma_info = $cma_ob->info();
 
+        $first_id_field = (is_array($cma_info['id_field']) ? implode(',', $cma_info['id_field']) : $cma_info['id_field']);
+
         if (!$cma_info['support_privacy']) {
             return array('', '', '', '');
         }
@@ -48,7 +50,7 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
             return array('', '', '', '');
         }
 
-        $join = ' LEFT JOIN ' . get_table_prefix() . 'content_privacy priv ON priv.content_id=' . $table_alias . '.' . $cma_info['id_field'] . ' AND ' . db_string_equal_to('priv.content_type', $content_type);
+        $join = ' LEFT JOIN ' . get_table_prefix() . 'content_privacy priv ON priv.content_id=' . db_cast($table_alias . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('priv.content_type', $content_type);
     } else {
         if (has_privilege($viewing_member_id, 'view_private_content')) {
             return array('', '', '', '');
@@ -66,7 +68,7 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
             $where .= ' OR priv.friend_view=1 AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'chat_friends f WHERE f.member_liked=' . (($submitter === null) ? ($table_alias . '.' . $cma_info['submitter_field']) : strval($submitter)) . ' AND f.member_likes=' . strval($viewing_member_id) . ')';
         }
         $where .= ' OR ' . (($submitter === null) ? ($table_alias . '.' . $cma_info['submitter_field']) : strval($submitter)) . '=' . strval($viewing_member_id);
-        $where .= ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_privacy__members pm WHERE pm.member_id=' . strval($viewing_member_id) . ' AND pm.content_id=' . (($submitter === null) ? ($table_alias . '.' . $cma_info['id_field']) : strval($submitter)) . ' AND ' . db_string_equal_to('pm.content_type', $content_type) . ')';
+        $where .= ' OR EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_privacy__members pm WHERE pm.member_id=' . strval($viewing_member_id) . ' AND pm.content_id=' . (($submitter === null) ? db_cast($table_alias . '.' . $first_id_field, 'CHAR') : strval($submitter)) . ' AND ' . db_string_equal_to('pm.content_type', $content_type) . ')';
         if ($additional_or != '') {
             $where .= ' OR ' . $additional_or;
         }
@@ -116,6 +118,7 @@ function has_privacy_access($content_type, $content_id, $viewing_member_id = nul
     require_code('content');
     $cma_ob = get_content_object($content_type);
     $cma_info = $cma_ob->info();
+    $first_id_field = (is_array($cma_info['id_field']) ? implode(',', $cma_info['id_field']) : $cma_info['id_field']);
 
     if (!$cma_info['support_privacy']) {
         return true;
@@ -129,9 +132,9 @@ function has_privacy_access($content_type, $content_id, $viewing_member_id = nul
     list($privacy_join, $privacy_where) = get_privacy_where_clause($content_type, 'e', $viewing_member_id);
 
     if ($cma_info['id_field_numeric']) {
-        $where = 'e.' . $cma_info['id_field'] . '=' . strval(intval($content_id));
+        $where = 'e.' . $first_id_field . '=' . strval(intval($content_id));
     } else {
-        $where = db_string_equal_to('e.' . $cma_info['id_field'], $content_id);
+        $where = db_string_equal_to('e.' . $first_id_field, $content_id);
     }
     $query = 'SELECT * FROM ' . get_table_prefix() . $cma_info['table'] . ' e' . $privacy_join . ' WHERE ' . $where . $privacy_where;
     $results = $GLOBALS['SITE_DB']->query($query, 1);

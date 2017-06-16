@@ -18,7 +18,7 @@
  * @package    core
  */
 
-/*EXTRA FUNCTIONS: fsockopen|Mail_dispatcher_override*/
+/*EXTRA FUNCTIONS: fsockopen|Mail_dispatcher_override|DKIMSignature*/
 
 /**
  * Standard code module initialisation function.
@@ -160,10 +160,17 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
 
         push_suppress_error_death(true);
 
+        // DKIM prep
+        $dkim_private_key = get_option('dkim_private_key');
+        $signed_headers = ''; // Will be filled later, potentially
+        if (trim($dkim_private_key) != '') {
+            require_code('mail_dkim');
+        }
+
         foreach ($to_emails as $i => $_to_email) {
             $additional = '';
             if (($this->enveloper_override) && ($this->website_email != '')) {
-                if (is_email_address($website_email)) { // Required for security
+                if (is_email_address($this->website_email)) { // Required for security
                     $additional = '-f ' . $this->website_email;
                 }
             }
@@ -173,8 +180,15 @@ class Mail_dispatcher_php extends Mail_dispatcher_base
             } else {
                 $to_line = '"' . $_to_name . '" <' . $_to_email . '>';
             }
+
+            // DKIM
+            if (trim($dkim_private_key) != '') {
+                $signature = new DKIMSignature(trim($dkim_private_key, " \t\r\n\"'"), '', get_domain(), get_option('dkim_selector'));
+                $signed_headers = str_replace("\r\n", $this->line_term, $signature->get_signed_headers($to_line, $subject_wrapped, str_replace($this->line_term, "\r\n", $sending_message), str_replace($this->line_term, "\r\n", $headers)));
+            }
+
             $php_errormsg = mixed();
-            $_worked = mail($to_line, $subject_wrapped, $sending_message, $headers, $additional);
+            $_worked = mail($to_line, $subject_wrapped, $sending_message, $signed_headers . $headers, $additional);
             if ((!$worked) && (isset($php_errormsg))) {
                 $error = $php_errormsg;
                 $worked = false;
@@ -297,6 +311,13 @@ class Mail_dispatcher_smtp extends Mail_dispatcher_base
         $worked = false;
         $error = null;
 
+        // DKIM prep
+        $dkim_private_key = get_option('dkim_private_key');
+        $signed_headers = ''; // Will be filled later, potentially
+        if (trim($dkim_private_key) != '') {
+            require_code('mail_dkim');
+        }
+
         $errno = 0;
         $errstr = '';
         foreach ($to_emails as $i => $to) {
@@ -359,7 +380,16 @@ class Mail_dispatcher_smtp extends Mail_dispatcher_base
                             fwrite($socket, "DATA\r\n");
                             $rcv = fread($socket, 1024);
                             if (strtolower(substr($rcv, 0, 3)) == '354') {
-                                fwrite($socket, preg_replace('#^\.#m', '..', $this->assemble_full_mime_message($to_emails, $to_names, $i, $subject_wrapped, $headers, $sending_message)));
+                                $to_line = '';
+                                $mime_message = $this->assemble_full_mime_message($to_emails, $to_names, $i, $subject_wrapped, $signed_headers . $headers, $sending_message, $to_line);
+
+                                // DKIM
+                                if (trim($dkim_private_key) != '') {
+                                    $signature = new DKIMSignature(trim($dkim_private_key, " \t\r\n\"'"), '', get_domain(), get_option('dkim_selector'));
+                                    $signed_headers = str_replace("\r\n", $this->line_term, $signature->get_signed_headers($to_line, $subject_wrapped, str_replace($this->line_term, "\r\n", $sending_message), str_replace($this->line_term, "\r\n", $headers)));
+                                }
+
+                                fwrite($socket, preg_replace('#^\.#m', '..', $mime_message));
                                 fwrite($socket, "\r\n.\r\n");
                                 $rcv = fread($socket, 1024);
                                 if (strtolower(substr($rcv, 0, 3)) != '250') {
@@ -472,7 +502,7 @@ abstract class Mail_dispatcher_base
         }
 
         $this->priority = isset($advanced_parameters['priority']) ? $advanced_parameters['priority'] : 3; // The message priority (1=urgent, 3=normal, 5=low)
-        $this->attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : array(); // An list of attachments (each attachment being a map, path=>filename) (null: none)
+        $this->attachments = isset($advanced_parameters['attachments']) ? $advanced_parameters['attachments'] : array(); // An list of attachments (each attachment being a map, absolute path=>filename) (null: none)
         $this->no_cc = isset($advanced_parameters['no_cc']) ? $advanced_parameters['no_cc'] : false; // Whether to CC to the CC address
         $this->as = isset($advanced_parameters['as']) ? $advanced_parameters['as'] : $GLOBALS['FORUM_DRIVER']->get_guest_id(); // Convert Comcode->tempcode as this member (a privilege thing: we don't want people being able to use admin rights by default!) (null: guest)
         $this->as_admin = isset($advanced_parameters['as_admin']) ? $advanced_parameters['as_admin'] : false; // Replace above with arbitrary admin
@@ -679,7 +709,7 @@ abstract class Mail_dispatcher_base
                     $css = css_tempcode(true, false, ($message_html === null) ? null : $message_html->evaluate($lang), $theme);
                     $_css = $css->evaluate($lang);
                     if (!$this->allow_ext_images) {
-                        $_css = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', array($this, 'mail_css_rep_callback'), $_css);
+                        $_css = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', array($this, 'mail_css_rep_callback'), $_css);
                     }
                     if ($message_html !== null) {
                         $message_html->singular_bind('CSS', $_css);
@@ -710,10 +740,16 @@ abstract class Mail_dispatcher_base
         // Headers
         $headers = '';
         if ($this->website_email != '') {
-            if (get_option('use_true_from') == '0') {
-                $headers .= 'From: "' . $from_name . '" <' . $this->website_email . '>' . $this->line_term;
-            } else {
+            if (
+                (get_option('use_true_from') == '1') ||
+                ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('website_email')))) ||
+                ((get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('staff_address')))) ||
+                ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == preg_replace('#^.*@#', '', get_option('ticket_email_from')))) ||
+                ((addon_installed('tickets')) && (get_option('use_true_from') == '0') && (preg_replace('#^.*@#', '', $from_email) == get_domain()))
+            ) {
                 $headers .= 'From: "' . $from_name . '" <' . $from_email . '>' . $this->line_term;
+            } else {
+                $headers .= 'From: "' . $from_name . '" <' . $this->website_email . '>' . $this->line_term;
             }
             $headers .= 'Return-Path: <' . $this->website_email . '>' . $this->line_term;
             $headers .= 'X-Sender: <' . $this->website_email . '>' . $this->line_term;
@@ -747,19 +783,23 @@ abstract class Mail_dispatcher_base
             $brand_name = 'Composr';
         }
         $headers .= 'X-Mailer: ' . $brand_name . $this->line_term;
+        $list_unsubscribe_target = get_value('list_unsubscribe_target');
+        if (!empty($list_unsubscribe_target)) {
+            $headers .= 'List-Unsubscribe: <' . $list_unsubscribe_target . '>' . $this->line_term;
+        }
         if ((count($to_emails) == 1) && ($this->require_recipient_valid_since !== null)) {
             $_require_recipient_valid_since = date('r', $this->require_recipient_valid_since);
             $headers .= 'Require-Recipient-Valid-Since: ' . $to_emails[0] . '; ' . $_require_recipient_valid_since . $this->line_term;
         }
         $headers .= 'MIME-Version: 1.0' . $this->line_term;
-        if ($this->attachments !== array()) {
+        if (!empty($this->attachments)) {
             $headers .= 'Content-Type: multipart/mixed; boundary="' . $boundary . '"';
         } else {
             $headers .= 'Content-Type: multipart/alternative; boundary="' . $boundary2 . '"';
         }
         $sending_message = '';
         $sending_message .= 'This is a multi-part message in MIME format.' . $this->line_term . $this->line_term;
-        if ($this->attachments !== array()) {
+        if (!empty($this->attachments)) {
             $sending_message .= '--' . $boundary . $this->line_term;
             $sending_message .= 'Content-Type: multipart/alternative; boundary="' . $boundary2 . '"' . $this->line_term . $this->line_term . $this->line_term;
         }
@@ -772,20 +812,25 @@ abstract class Mail_dispatcher_base
             $sending_message .= wordwrap(str_replace("\n", $this->line_term, unixify_line_format($message_plain)) . $this->line_term, 988, $this->line_term, true);
         }
 
+        // Make sure all inline images are referenced with img tags, otherwise some e-mail software may show it as an attachment
+        foreach ($this->cid_attachments_url_mapping as $id => $img) {
+            $html_evaluated .= '<!-- <img src="cid:' . $id . '" /> -->';
+        }
+
         // HTML version
         $sending_message .= '--' . $boundary2 . $this->line_term;
-        $sending_message .= 'Content-Type: multipart/related; type="text/html"; boundary="' . $boundary3 . '"' . $this->line_term . $this->line_term . $this->line_term;
+        $sending_message .= 'Content-Type: multipart/related; boundary="' . $boundary3 . '"' . $this->line_term . $this->line_term . $this->line_term;
         $sending_message .= '--' . $boundary3 . $this->line_term;
         $sending_message .= 'Content-Type: text/html; charset=' . ((preg_match($regexp, $html_evaluated) == 0) ? $charset : 'us-ascii') . $this->line_term; // .'; name="message.html"'. Outlook doesn't like: makes it think it's an attachment
         if (!$this->allow_ext_images) {
             $cid_before = array_keys($this->cid_attachments_url_mapping);
-            $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(http://[^"]*)"#U', array($this, 'mail_img_rep_callback'), $html_evaluated);
+            $html_evaluated = preg_replace_callback('#<img\s([^>]*)src="(https?://[^"]*)"#U', array($this, 'mail_img_rep_callback'), $html_evaluated);
             $cid_just_html = array_diff(array_keys($this->cid_attachments_url_mapping), $cid_before);
             $matches = array();
             foreach (array('#<([^"<>]*\s)style="([^"]*)"#', '#<style( [^<>]*)?' . '>(.*)</style>#Us') as $over) {
                 $num_matches = preg_match_all($over, $html_evaluated, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
-                    $altered_inner = preg_replace_callback('#url\(["\']?(http://[^"]*)["\']?\)#U', array($this, 'mail_css_rep_callback'), $matches[2][$i]);
+                    $altered_inner = preg_replace_callback('#url\(["\']?(https?://[^"]*)["\']?\)#U', array($this, 'mail_css_rep_callback'), $matches[2][$i]);
                     if ($matches[2][$i] != $altered_inner) {
                         $altered_outer = str_replace($matches[2][$i], $altered_inner, $matches[0][$i]);
                         $html_evaluated = str_replace($matches[0][$i], $altered_outer, $html_evaluated);
@@ -812,10 +857,10 @@ abstract class Mail_dispatcher_base
             list($mime_type, $filename, $file_contents) = $test;
 
             $sending_message .= '--' . $boundary3 . $this->line_term;
-            $sending_message .= 'Content-Type: ' . $this->clean_parameter($mime_type) . $this->line_term;
-            $sending_message .= 'Content-ID: <' . $id . '>' . $this->line_term;
-            $sending_message .= 'Content-Disposition: inline; filename="' . escape_header($filename) . '"' . $this->line_term;
+            $sending_message .= 'Content-Type: ' . escape_header($mime_type) . '; name="' . escape_header($filename) . '"' . $this->line_term;
             $sending_message .= 'Content-Transfer-Encoding: base64' . $this->line_term . $this->line_term;
+            $sending_message .= 'Content-ID: <' . $id . '>' . $this->line_term;
+            $sending_message .= 'Content-Disposition: inline; filename="' . escape_header($filename) . '"' . $this->line_term . $this->line_term;
             if (is_string($file_contents)) {
                 $sending_message .= chunk_split(base64_encode($file_contents), 76, $this->line_term);
             }
@@ -829,9 +874,9 @@ abstract class Mail_dispatcher_base
             );
             $this->cid_attachments[] = $cid_attachment;
         }
-        $sending_message .= $this->line_term . '--' . $boundary3 . '--' . $this->line_term . $this->line_term;
+        $sending_message .= $this->line_term . '--' . $boundary3 . '--' . $this->line_term;
 
-        $sending_message .= $this->line_term . '--' . $boundary2 . '--' . $this->line_term . $this->line_term;
+        $sending_message .= $this->line_term . '--' . $boundary2 . '--' . $this->line_term;
 
         // Attachments
         $this->real_attachments = array();
@@ -891,18 +936,20 @@ abstract class Mail_dispatcher_base
      * @param  string $tightened_subject Subject
      * @param  string $headers Headers
      * @param  string $sending_message Message body
+     * @param  string $to_line To line
      * @return string The mime message
      */
-    protected function assemble_full_mime_message($to_emails, $to_names, $i, $tightened_subject, $headers, $sending_message)
+    protected function assemble_full_mime_message($to_emails, $to_names, $i, $tightened_subject, $headers, $sending_message, &$to_line)
     {
         $full_mime_message = '';
 
         if (count($to_emails) == 1) {
             if ($to_emails[$i] == $to_names[$i]) {
-                $full_mime_message .= 'To: ' . $to_emails[$i] . $this->line_term;
+                $to_line = $to_emails[$i] . $this->line_term;
             } else {
-                $full_mime_message .= 'To: ' . $to_names[$i] . ' <' . $to_emails[$i] . '>' . $this->line_term;
+                $to_line = $to_names[$i] . ' <' . $to_emails[$i] . '>' . $this->line_term;
             }
+            $full_mime_message .= 'To: ' . $to_line;
         } else {
             $full_mime_message .= 'To: ' . $to_names[$i] . $this->line_term;
         }
@@ -930,11 +977,20 @@ abstract class Mail_dispatcher_base
      */
     protected function tidy_parameters(&$subject_line, &$message_raw, &$to_emails, &$to_names, &$from_email, &$from_name, &$lang, &$theme)
     {
-        $this->clean_parameter($subject_line);
+        escape_header($subject_line);
 
         $staff_address = get_option('staff_address');
         if (!is_email_address($staff_address)) { // Required for security
             $staff_address = '';
+        }
+
+        // Filter our e-mails of banned members
+        if ($this->priority != 1 && $to_emails !== null) {
+            foreach ($to_emails as $key => $email) {
+                if ($GLOBALS['FORUM_DRIVER']->is_banned($GLOBALS['FORUM_DRIVER']->get_member_from_email_address($email))) {
+                    unset($to_emails[$key]);
+                }
+            }
         }
 
         // To e-mail (an array)
@@ -943,7 +999,7 @@ abstract class Mail_dispatcher_base
         }
         $to_emails_new = array();
         foreach ($to_emails as $_to_email) {
-            $this->clean_parameter($_to_email);
+            escape_header($_to_email);
             if ($_to_email != '') {
                 $to_emails_new[] = $_to_email;
             }
@@ -970,7 +1026,7 @@ abstract class Mail_dispatcher_base
         }
         foreach ($to_names as &$_to_name) {
             $_to_name = preg_replace('#@.*$#', '', $_to_name); // preg_replace is because some servers may reject sending names that look like e-mail addresses. Composr tries this from recommend module.
-            $this->clean_parameter($_to_name);
+            escape_header($_to_name);
         }
 
         // From e-mail
@@ -980,13 +1036,13 @@ abstract class Mail_dispatcher_base
         if (!is_email_address($from_email)) { // Required for security
             $from_email = '';
         }
-        $this->clean_parameter($from_email);
+        escape_header($from_email);
 
         // From name
         if ($from_name == '') {
             $from_name = get_site_name();
         }
-        $this->clean_parameter($from_name);
+        escape_header($from_name);
 
         // Language
         if (!isset($to_emails[0]) || $to_emails[0] != $staff_address) {
@@ -1007,16 +1063,6 @@ abstract class Mail_dispatcher_base
     }
 
     /**
-     * Make sure some text can't break out of a MIME line, which would corrupt the e-mail and create a potential security hole.
-     *
-     * @param  string $param Parameter
-     */
-    protected function clean_parameter(&$param)
-    {
-        str_replace(array("\r", "\n"), array('', ''), $param);
-    }
-
-    /**
      * Log a message into the database.
      *
      * @param  boolean $queued Whether the message is to be queued rather than just logged
@@ -1030,7 +1076,7 @@ abstract class Mail_dispatcher_base
     protected function log_message($queued, $subject_line, $message_raw, $to_emails, $to_names, $from_email, $from_name)
     {
         if ((mt_rand(0, 100) == 1) && (!$GLOBALS['SITE_DB']->table_is_locked('logged_mail_messages'))) {
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * 14) . ' AND m_queued=0'); // Log it all for 2 weeks, then delete
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_date_and_time<' . strval(time() - 60 * 60 * 24 * intval(get_option('email_log_days'))) . ' AND m_queued=0', 500/*to reduce lock times*/); // Log it all for 2 weeks, then delete
         }
 
         $GLOBALS['SITE_DB']->query_insert('logged_mail_messages', array(
@@ -1064,8 +1110,8 @@ abstract class Mail_dispatcher_base
      */
     protected function is_through_queue()
     {
-        $through_queue = (!$this->bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1')) || (get_option('mail_queue_debug') === '1'));
-        if ($this->attachments !== null) {
+        $through_queue = (!$this->bypass_queue) && (((cron_installed()) && (get_option('mail_queue') === '1'))) || (get_option('mail_queue_debug') === '1');
+        if ((!empty($this->attachments)) && (get_option('mail_queue_debug') === '0')) {
             foreach (array_keys($this->attachments) as $path) {
                 if ((substr($path, 0, strlen(get_custom_file_base() . '/')) != get_custom_file_base() . '/') && (substr($path, 0, strlen(get_file_base() . '/')) != get_file_base() . '/')) {
                     $through_queue = false;

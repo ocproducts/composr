@@ -46,13 +46,18 @@
         var nid = strVal(params.nid);
 
         $cms.dom.on(container, 'submit', '.js-form-submit-newsletter-check-email-field', function (e, form) {
-            if (($cms.form.checkFieldForBlankness(form.elements['address' + nid])) && (form.elements['address' + nid].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
-                $cms.ui.disableFormButtons(form);
+            if (!$cms.form.checkFieldForBlankness(form.elements['address' + nid])) {
+                e.preventDefault();
                 return;
             }
 
-            e.preventDefault();
-            $cms.ui.alert('{!javascript:NOT_A_EMAIL;}');
+            if (!form.elements['address' + nid].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/)) {
+                e.preventDefault();
+                $cms.ui.alert('{!javascript:NOT_A_EMAIL;}');
+                return;
+            }
+
+            $cms.ui.disableFormButtons(form);
         });
     };
 
@@ -63,6 +68,4 @@
             }, 100);
         });
     };
-
 }(window.$cms));
-

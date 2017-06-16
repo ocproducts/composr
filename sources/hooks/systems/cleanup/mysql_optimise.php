@@ -57,7 +57,7 @@ class Hook_cleanup_mysql_optimise
 
         $GLOBALS['SITE_DB']->ensure_connected();
         $connection = $GLOBALS['SITE_DB']->connection_write;
-        $static_ob = $GLOBALS['SITE_DB']->static_ob;
+        $static_ob = $GLOBALS['DB_STATIC_OBJECT'];
 
         foreach ($tables as $table) {
             if ($table['m_table'] == 'sessions') {

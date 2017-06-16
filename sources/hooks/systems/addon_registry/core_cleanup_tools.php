@@ -116,6 +116,7 @@ class Hook_addon_registry_core_cleanup_tools
             'lang/EN/cleanup.ini',
             'sources/hooks/systems/cleanup/.htaccess',
             'sources_custom/hooks/systems/cleanup/.htaccess',
+            'sources/hooks/systems/cleanup/lost_disk_content.php',
             'sources/hooks/systems/cleanup/admin_theme_images.php',
             'sources/hooks/systems/cleanup/blocks.php',
             'sources/hooks/systems/cleanup/broken_urls.php',
@@ -161,8 +162,6 @@ class Hook_addon_registry_core_cleanup_tools
      */
     public function tpl_preview__administrative__cleanup_completed_screen()
     {
-        require_lang('stats');
-
         $urls = array();
         foreach (placeholder_array() as $v) {
             $urls[] = array(
@@ -174,9 +173,14 @@ class Hook_addon_registry_core_cleanup_tools
         $message = do_lorem_template('CLEANUP_ORPHANED_UPLOADS', array(
             'FOUND' => $urls,
         ));
-        $message->attach(do_lorem_template('CLEANUP_PAGE_STATS', array(
-            'STATS_BACKUP_URL' => placeholder_url(),
-        )));
+
+        if (addon_installed('stats')) {
+            require_lang('stats');
+            $message->attach(do_lorem_template('CLEANUP_PAGE_STATS', array(
+                'STATS_BACKUP_URL' => placeholder_url(),
+            )));
+        }
+
         return array(
             lorem_globalise(do_lorem_template('CLEANUP_COMPLETED_SCREEN', array(
                 'TITLE' => lorem_title(),

@@ -37,7 +37,6 @@ class Block_main_rss
         $info['hack_version'] = null;
         $info['version'] = 3;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = true;
         $info['parameters'] = array('param', 'max_entries', 'title', 'copyright');
         return $info;
     }
@@ -68,6 +67,7 @@ class Block_main_rss
         }
 
         require_lang('news');
+        require_lang('rss');
         require_css('news');
         require_code('obfuscate');
 
@@ -199,6 +199,12 @@ class Block_main_rss
                     }
                 }
                 $category = $item['category'];
+            }
+
+            if ($category_img == '') {
+                if (!empty($item['rep_image'])) {
+                    $category_img = $item['rep_image'];
+                }
             }
 
             $content->attach(do_template('BLOCK_MAIN_RSS_SUMMARY', array(

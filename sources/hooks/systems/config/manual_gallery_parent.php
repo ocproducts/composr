@@ -50,6 +50,6 @@ class Hook_config_manual_gallery_parent
      */
     public function get_default()
     {
-        return '0';
+        return '1';
     }
 }

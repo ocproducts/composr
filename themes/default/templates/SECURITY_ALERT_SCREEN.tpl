@@ -59,4 +59,3 @@
 		{POST}
 	</div></div>
 {+END}
-

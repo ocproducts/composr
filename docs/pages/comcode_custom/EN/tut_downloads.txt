@@ -14,7 +14,7 @@ This tree principle applies to many areas of Composr: we strive to standardise t
 Download categories may have 'representative images'. When you are viewing a link to a category from its parent category, the representative image will be included.
 
 Manage download categories from Content Management > Downloads.
-You can delete a download category from the bottom of its edit form.
+You can delete a download category from the bottom of its edit form. The root download category cannot be deleted, however.
 
 [title="2"]Adding downloads (and editing/deleting)[/title]
 

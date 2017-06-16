@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_themeing}
+
 <span class="vertical_alignment" data-tpl="templateTreeItem">
 	<a {+START,IF_PASSED,GUID} title="{CODENAME*} GUID: {GUID*} {!LINK_NEW_WINDOW}"{+END}{+START,IF_NON_PASSED,GUID} title="{CODENAME*} {!LINK_NEW_WINDOW}"{+END} target="_blank" href="{EDIT_URL*}">{CODENAME*}</a>
 

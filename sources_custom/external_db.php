@@ -94,7 +94,7 @@ function external_db_user_from_session()
     if ($session_id == '') {
         return null;
     }
-    $sql = 'SELECT u.* FROM tblUserSession s JOIN tbllogin u ON s.IDUser=u.Userid WHERE ' . $db->static_ob->string_equal_to('s.IDSession', $session_id);
+    $sql = 'SELECT u.* FROM tblUserSession s JOIN tbllogin u ON s.IDUser=u.Userid WHERE ' . db_string_equal_to('s.IDSession', $session_id);
     $records = $db->query($sql);
     return isset($records[0]) ? $records[0] : null; // If not set it's odd, remote session for a non-existent remote user
 }

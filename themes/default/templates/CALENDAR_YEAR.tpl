@@ -3,4 +3,3 @@
 		{MONTH_ROWS}
 	</tbody>
 </table></div>
-

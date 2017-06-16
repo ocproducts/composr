@@ -55,6 +55,8 @@ class Block_main_personal_galleries_list
     {
         $block_id = get_block_id($map);
 
+        require_lang('galleries');
+
         $member_id = array_key_exists('member_id', $map) ? intval($map['member_id']) : get_member();
         $member_id_viewing = get_member();
 

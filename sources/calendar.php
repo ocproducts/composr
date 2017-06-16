@@ -25,11 +25,13 @@ function init__calendar()
 {
     require_code('temporal2');
 
-    define('DETECT_CONFLICT_SCOPE_NONE', 0);
-    define('DETECT_CONFLICT_SCOPE_SAME_MEMBER', 1);
-    define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL', 2);
-    define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE', 2);
-    define('DETECT_CONFLICT_SCOPE_ALL', 3);
+    if (!defined('DETECT_CONFLICT_SCOPE_NONE')) {
+        define('DETECT_CONFLICT_SCOPE_NONE', 0);
+        define('DETECT_CONFLICT_SCOPE_SAME_MEMBER', 1);
+        define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL', 2);
+        define('DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE', 2);
+        define('DETECT_CONFLICT_SCOPE_ALL', 3);
+    }
 
     require_lang('calendar');
 }
@@ -513,7 +515,7 @@ function create_selection_list_event_types($it = null, $updated_since = null)
             $first_type = $type;
         }
     }
-    if ((addon_installed('commandr')) && (has_actual_page_access(get_member(), 'admin_commandr', 'adminzone')) && ($first_type !== null) && ($GLOBALS['CURRENT_SHARE_USER'] === null)) {
+    if ((addon_installed('commandr')) && (has_actual_page_access(get_member(), 'admin_commandr')) && ($first_type !== null) && ($GLOBALS['CURRENT_SHARE_USER'] === null)) {
         $type_list->attach(form_input_list_entry(strval(db_get_first_id()), db_get_first_id() == $it, get_translated_text($first_type['t_title'])));
     }
 

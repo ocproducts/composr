@@ -59,9 +59,6 @@ $urls = array();
 // Bugs list
 
 if (!$is_bleeding_edge) {
-    require_code('catalogues');
-    require_code('catalogues2');
-
     $urls['Bugs'] = 'http://compo.sr/tracker/search.php?project_id=1&product_version=' . urlencode($version_dotted);
 }
 
@@ -75,6 +72,7 @@ $release_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('downloa
 if ($release_category_id === null) {
     $release_category_id = add_download_category('Version ' . strval(intval($version_dotted)), $releases_category_id, '', '');
     set_global_category_access('downloads', $release_category_id);
+    set_privilege_access('downloads', $release_category_id, 'submit_midrange_content', 0);
 }
 // NB: We don't add addon categories. This is done in publish_addons_as_downloads.php
 
@@ -82,18 +80,21 @@ $installatron_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('do
 if ($installatron_category_id === null) {
     $installatron_category_id = add_download_category('Installatron integration', $releases_category_id, '', '');
     set_global_category_access('downloads', $installatron_category_id);
+    set_privilege_access('downloads', $installatron_category_id, 'submit_midrange_content', 0);
 }
 
 $microsoft_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'Microsoft integration'));
 if ($microsoft_category_id === null) {
     $microsoft_category_id = add_download_category('Microsoft integration', $releases_category_id, '', '');
     set_global_category_access('downloads', $microsoft_category_id);
+    set_privilege_access('downloads', $microsoft_category_id, 'submit_midrange_content', 0);
 }
 
 $aps_category_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => $releases_category_id, $GLOBALS['SITE_DB']->translate_field_ref('category') => 'APS integration'));
 if ($aps_category_id === null) {
     $aps_category_id = add_download_category('APS integration', $releases_category_id, '', '');
     set_global_category_access('downloads', $aps_category_id);
+    set_privilege_access('downloads', $aps_category_id, 'submit_midrange_content', 0);
 }
 
 $all_downloads_to_add = array(
@@ -101,7 +102,7 @@ $all_downloads_to_add = array(
         'name' => "Composr Version {$version_pretty}{$bleeding1}",
         'description' => "This is version {$version_pretty}.",
         'filename' => 'composr_quick_installer-' . $version_dotted . '.zip',
-        'comments' => ($is_bleeding_edge || $is_old_tree) ? '' : 'This is the latest version.',
+        'additional_details' => ($is_bleeding_edge || $is_old_tree) ? '' : 'This is the latest version.',
         'category_id' => $release_category_id,
         'internal_name' => 'Quick installer',
     ),
@@ -110,7 +111,7 @@ $all_downloads_to_add = array(
         'name' => "Composr Version {$version_pretty} ({$bleeding2}manual)",
         'description' => "Manual installer (as opposed to the regular quick installer). Please note this isn't documentation.",
         'filename' => 'composr_manualextraction_installer-' . $version_dotted . '.zip',
-        'comments' => '',
+        'additional_details' => '',
         'category_id' => $release_category_id,
         'internal_name' => 'Manual installer',
     ),
@@ -119,7 +120,7 @@ $all_downloads_to_add = array(
         'name' => "Composr {$version_pretty}",
         'description' => "This archive is designed for webhosting control panels that integrate Composr. It contains an SQL dump for a fresh install, and a config-file-template. It is kept up-to-date with the most significant releases of Composr.",
         'filename' => 'composr-' . $version_dotted . '.tar.gz',
-        'comments' => '',
+        'additional_details' => '',
         'category_id' => $installatron_category_id,
         'internal_name' => 'Installatron installer',
     ),
@@ -128,7 +129,7 @@ $all_downloads_to_add = array(
         'name' => "Composr {$version_pretty}",
         'description' => "This is a Microsoft Web Platform Installer package of Composr. We will update this routinely when we release new versions, and update Microsoft with the the details.\n\nIt can be manually installed into IIS running the Web Deploy Tool, but it should soon be featured in the Web App Gallery directly. Therefore accessing this archive directly is probably of no direct use to you. If you do want to install on IIS manually, the regular Composr installers can do it fine.",
         'filename' => 'composr-' . $version_dotted . '-webpi.zip',
-        'comments' => '',
+        'additional_details' => '',
         'category_id' => $microsoft_category_id,
         'internal_name' => 'Microsoft installer',
     ),
@@ -137,7 +138,7 @@ $all_downloads_to_add = array(
         'name' => "Composr {$version_pretty}",
         'description' => "This is an APS package of Composr. APS is a standardised package format potentially supported by multiple vendors, including Plesk. We will update this routinely when we release new versions, and update the APS catalog.\n\nIt can be manually installed into Plesk using the Application Vault interface available to administrators.",
         'filename' => 'composr-' . $version_dotted . '.app.zip',
-        'comments' => '',
+        'additional_details' => '',
         'category_id' => $aps_category_id,
         'internal_name' => 'Plesk APS package',
     ),
@@ -164,14 +165,14 @@ foreach ($all_downloads_to_add as $i => $d) {
     $name = $d['name'];
     $url = 'uploads/downloads/' . rawurlencode($d['filename']);
     $description = $d['description'];
-    $comments = $d['comments'];
+    $additional_details = $d['additional_details'];
     $category_id = $d['category_id'];
 
     $download_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'id', array('category_id' => $category_id, $GLOBALS['SITE_DB']->translate_field_ref('name') => $name));
     if ($download_id === null) {
-        $download_id = add_download($category_id, $name, $url, $description, 'ocProducts', $comments, null, 1, 0, 0, 0, '', $original_filename, $file_size, 0, 0);
+        $download_id = add_download($category_id, $name, $url, $description, 'ocProducts', $additional_details, null, 1, 0, 0, 0, '', $original_filename, $file_size, 0, 0);
     } else {
-        edit_download($download_id, $category_id, $name, $url, $description, 'ocProducts', $comments, null, 0, 1, 0, 0, 0, '', $original_filename, $file_size, 0, 0, null, '', '');
+        edit_download($download_id, $category_id, $name, $url, $description, 'ocProducts', $additional_details, null, 0, 1, 0, 0, 0, '', $original_filename, $file_size, 0, 0, null, '', '');
     }
 
     $d['download_id'] = $download_id;
@@ -184,12 +185,12 @@ foreach ($all_downloads_to_add as $i => $d) {
 // Edit past download
 
 if ((!$is_bleeding_edge) && (!$is_old_tree) && (isset($all_downloads_to_add[0]['download_id']))) {
-    $last_version_str = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'comments', array($GLOBALS['SITE_DB']->translate_field_ref('comments') => 'This is the latest version.'), ' AND d.id<>' . strval($all_downloads_to_add[0]['download_id']));
+    $last_version_str = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'additional_details', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), ' AND main.id<>' . strval($all_downloads_to_add[0]['download_id']));
     if ($last_version_str !== null) {
-        $last_version_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('comments') => 'This is the latest version.'), ' AND d.id<>' . strval($all_downloads_to_add[0]['download_id']));
+        $last_version_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('additional_details') => 'This is the latest version.'), ' AND main.id<>' . strval($all_downloads_to_add[0]['download_id']));
         if ($last_version_id != $all_downloads_to_add[0]['download_id']) {
             $description = "A new version, {$version_pretty} is available. Upgrading to {$version_pretty} is considered {$needed} by ocProducts{$justification}. There may have been other upgrades since {$version_pretty} - see [url=\"the ocProducts news archive\" target=\"_blank\"]http://compo.sr/site/news.htm[/url].";
-            $GLOBALS['SITE_DB']->query_update('downloads', lang_remap_comcode($last_version_str, 'description', $description), array('id' => $last_version_id), '', 1);
+            $GLOBALS['SITE_DB']->query_update('download_downloads', lang_remap_comcode('description', $last_version_str, $description), array('id' => $last_version_id), '', 1);
         }
     }
 }

@@ -199,13 +199,21 @@ c) Extend the IM system for a sales-chat use case
 d) Support storage of messages in an IRC server -- perhaps directly integrating with its database, or via some kind of plugin (or even our own custom IRC server)
 e) Support for file sharing
 
+[title="3"]CometChat[/title]
+
+CometChat (a commercial chat system) provides support for Composr CMS. See our video tutorial: https://www.youtube.com/watch?v=ItrBhsRTAOU&feature=youtu.be
+
 [title="3"]Video chat[/title]
 
 Video chat either needs a powerful central video server, or a complex peer-to-peer system.
 
-For video chat it is therefore best just to use an established third-party infrastructure such as [url="Talky"]https://talky.io/[/url] (which lets you access rooms by just giving an identifying URL -- meaning you can integrate it into a Composr chat template easily). Google Hangouts is very popular as another option.
+For video chat it is therefore best just to use an established third-party infrastructure such as:
+ - [url="Talky"]https://talky.io/[/url] (which lets you access rooms by just giving an identifying URL -- meaning you can integrate it into a Composr chat template easily)
+ - Google Hangouts (you'd need to direct people to start a hangout)
+ - Skype (ditto)
+ - CometChat (they provide a video chat option on their Platinum Edition)
 
-We'd love there to be feasible Open Source offerings, but the complexity of software and hardware infrastructure of Open Source systems is currently very high such that it is not feasible for anything less than a full time team to deploy. Proprietary flash systems used to be simpler, but Flash is no longer an appropriate technology for website development.
+We'd love there to be feasible Open Source offerings, but the complexity of software and hardware infrastructure of Open Source systems is currently very high such that it is not feasible for anything less than a full time team to deploy. Proprietary Flash systems used to be simpler, but Flash is no longer an appropriate technology for website development.
 
 [title="3"]Desktop app chat[/title]
 

@@ -34,7 +34,7 @@ if ($target_cat === null) {
     if ($GLOBALS['DEV_MODE']) {
         $target_cat = 'Version ' . float_to_raw_string(cms_version_number(), 2, true);
     } else {
-        exit('Please pass the target category name in the URL (?cat=name).');
+        warn_exit('Please pass the target category name in the URL (?cat=name).');
     }
 }
 $version_branch = get_param_string('version_branch', null);
@@ -42,7 +42,7 @@ if ($version_branch === null) {
     if ($GLOBALS['DEV_MODE']) {
         $version_branch = get_version_branch();
     } else {
-        exit('Please pass the branch version in the URL (?version_branch=num.x).');
+        warn_exit('Please pass the branch version in the URL (?version_branch=num.x).');
     }
 }
 

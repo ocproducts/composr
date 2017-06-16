@@ -69,7 +69,7 @@ function disable_content_translation()
 
     $db = $GLOBALS['SITE_DB'];
 
-    $type_remap = $db->static_ob->get_type_remap();
+    $type_remap = $GLOBALS['DB_STATIC_OBJECT']->get_type_remap();
 
     $_table_lang_fields = $db->query('SELECT m_table,m_name,m_type FROM ' . $db->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%\_TRANS%') . '\' ORDER BY m_table,m_name');
     foreach ($_table_lang_fields as $field) {
@@ -85,11 +85,11 @@ function disable_content_translation()
         foreach ($to_add as $sub_name => $sub_type) {
             $sub_name = $field['m_name'] . '__' . $sub_name;
             $query = 'ALTER TABLE ' . $db->table_prefix . $field['m_table'] . ' ADD ' . $sub_name . ' ' . $type_remap[$sub_type];
-            if ($sub_name == 'text_parsed') {
-                $query .= ' DEFAULT \'\'';
-            } elseif ($sub_name == 'new') {
+            if ($sub_name == $field['m_name'] . '__' . 'text_parsed') {
+                //$query .= ' DEFAULT \'\''; Gives "BLOB, TEXT, GEOMETRY or JSON column 'xxx__text_parsed' can't have a default value"
+            } elseif ($sub_name == $field['m_name'] . '__' . 'new') {
                 $query .= ' DEFAULT \'\''; // Has a default of '' for now, will be removed further down
-            } elseif ($sub_name == 'source_user') {
+            } elseif ($sub_name == $field['m_name'] . '__' . 'source_user') {
                 $query .= ' DEFAULT ' . strval(db_get_first_id());
             }
             $query .= ' NOT NULL';
@@ -98,9 +98,9 @@ function disable_content_translation()
 
         // Copy from translate table
         $query = 'UPDATE ' . $db->table_prefix . $field['m_table'] . ' a SET ';
-        $query .= 'a.' . $field['m_name'] . '__new=IFNULL((SELECT b.text_original FROM ' . $db->table_prefix . 'translate b WHERE b.id=a.' . $field['m_name'] . ' ORDER BY broken), \'\')';
+        $query .= 'a.' . $field['m_name'] . '__new=' . db_function('COALESCE', array('(SELECT b.text_original FROM ' . $db->table_prefix . 'translate b WHERE b.id=a.' . $field['m_name'] . ' ORDER BY broken)', '\'\''));
         if (strpos($field['m_type'], '__COMCODE') !== false) {
-            $query .= ', a.' . $field['m_name'] . '__source_user=IFNULL((SELECT b.source_user FROM ' . $db->table_prefix . 'translate b WHERE b.id=a.' . $field['m_name'] . ' ORDER BY broken), ' . strval(db_get_first_id()) . ')';
+            $query .= ', a.' . $field['m_name'] . '__source_user=' . db_function('COALESCE', array('(SELECT b.source_user FROM ' . $db->table_prefix . 'translate b WHERE b.id=a.' . $field['m_name'] . ' ORDER BY broken)', strval(db_get_first_id())));
             $query .= ', a.' . $field['m_name'] . '__text_parsed=\'\'';
         }
         $db->_query($query);
@@ -116,7 +116,7 @@ function disable_content_translation()
         // Create fulltext search index
         $GLOBALS['SITE_DB']->create_index($field['m_table'], '#' . $field['m_name'], array($field['m_name']));
 
-        reload_lang_fields(true);
+        reload_lang_fields(true, $field['m_table']);
     }
 
     global $HAS_MULTI_LANG_CONTENT;
@@ -153,7 +153,7 @@ function enable_content_translation()
 
     $db = $GLOBALS['SITE_DB'];
 
-    $type_remap = $db->static_ob->get_type_remap();
+    $type_remap = $GLOBALS['DB_STATIC_OBJECT']->get_type_remap();
 
     $_table_lang_fields = $db->query('SELECT m_table,m_name,m_type FROM ' . $db->get_table_prefix() . 'db_meta WHERE m_type LIKE \'' . db_encode_like('%\_TRANS%') . '\' ORDER BY m_table,m_name');
     foreach ($_table_lang_fields as $field) {
@@ -197,6 +197,10 @@ function enable_content_translation()
         do {
             $trans = $db->query_select($field['m_table'], array('*'), null, '', 100, $start, false, array()/*Needs to disable auto-field-grabbing as DB state is currently inconsistent*/);
             foreach ($trans as $t) {
+                $lang_id = null;
+                $lock = false;
+                table_id_locking_start($db, $lang_id, $lock);
+
                 $insert_map = array(
                     'language' => get_site_default_lang(),
                     'importance_level' => 3,
@@ -205,8 +209,15 @@ function enable_content_translation()
                     'broken' => 0,
                     'source_user' => $has_comcode ? $t[$field['m_name'] . '__source_user'] : $GLOBALS['FORUM_DRIVER']->get_guest_id(),
                 );
-                $ins_id = $db->query_insert('translate', $insert_map, true);
-                $GLOBALS['SITE_DB']->query_update($field['m_table'], array($field['m_name'] => $ins_id), $t, '', 1);
+                if ($lang_id === null) {
+                    $lang_id = $db->query_insert('translate', $insert_map, true);
+                } else {
+                    $db->query_insert('translate', array('id' => $lang_id) + $insert_map);
+                }
+
+                table_id_locking_end($db, $lang_id, $lock);
+
+                $GLOBALS['SITE_DB']->query_update($field['m_table'], array($field['m_name'] => $lang_id), $t, '', 1);
             }
             $start += 100;
         } while (count($trans) > 0);
@@ -223,7 +234,7 @@ function enable_content_translation()
             $db->_query($query);
         }
 
-        reload_lang_fields(true);
+        reload_lang_fields(true, $field['m_table']);
     }
 
     global $HAS_MULTI_LANG_CONTENT;

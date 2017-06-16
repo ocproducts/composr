@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_menus}
+
 <div class="menu_editor_branch" id="branch_wrap_{I*}" data-tpl="menuEditorBranchWrap" data-tpl-params="{+START,PARAMS_JSON,CLICKABLE_SECTIONS,BRANCH_TYPE,I}{_*}{+END}">
 	<div id="branch_{I*}">
 		<label id="label_caption_{I*}" for="caption_{I*}">{!CAPTION}: </label>
@@ -33,4 +34,3 @@
 	</div>
 	<div class="menu_editor_branch_indent" id="branch_{I*}_follow_2" style="{DISPLAY*}"></div>
 </div>
-

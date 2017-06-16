@@ -67,6 +67,8 @@ class Module_authors
                 'description' => 'LONG_TRANS__COMCODE',
                 'skills' => 'LONG_TRANS__COMCODE',
             ));
+
+            add_privilege('SUBMISSION', 'set_own_author_profile');
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 3)) {
@@ -82,8 +84,6 @@ class Module_authors
         if (($upgrade_from === null) || ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->create_index('authors', 'findmemberlink', array('member_id'));
         }
-
-        add_privilege('SUBMISSION', 'set_own_author_profile');
     }
 
     /**

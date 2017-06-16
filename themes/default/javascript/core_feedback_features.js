@@ -309,7 +309,7 @@
                 }
 
                 var commentsWrapper = $cms.dom.$id(commentsWrapperId);
-                if (!commentsWrapper) {// No AJAX, as stuff missing from template
+                if (!commentsWrapper) { // No AJAX, as stuff missing from template
                     commentsForm.submit();
                     return true;
                 }

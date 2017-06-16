@@ -89,11 +89,11 @@
                 left = imgs[imgs.length - 2],
                 right = imgs[imgs.length - 1];
 
-            if (left.style.position === 'absolute') {// Check it really is a fader (stops bugs in other areas making bigger weirdness)
+            if (left.style.position === 'absolute') { // Check it really is a fader (stops bugs in other areas making bigger weirdness)
                 left.style.visibility = (mainEl.scrollLeft == 0) ? 'hidden' : 'visible';
             }
 
-            if (right.style.position === 'absolute'){// Ditto
+            if (right.style.position === 'absolute'){ // Ditto
                 right.style.visibility = (mainEl.scrollLeft + mainEl.offsetWidth >= mainEl.scrollWidth - 1) ? 'hidden' : 'visible';
             }
         },
@@ -199,7 +199,7 @@
             }
 
             // If you only want a single image-based thumbnail
-            if (containsVideo) {// Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
+            if (containsVideo) { // Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
                 var width = params.width ? 'style="width: ' + Number(params.width) + 'px"' : '',
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
                     mediaSetHtml = '\
@@ -430,7 +430,8 @@
             window.num_attachments = 1;
 
             window.$cmsLoad.push(function () {
-                if (document.getElementById('attachment_upload_button')) {
+                aub = document.getElementById('attachment_upload_button');
+                if ((aub) && (aub.className.indexOf('for_field_' + params.postingFieldName + ' ') != -1))
                     window.rebuildAttachmentButtonForNext(params.postingFieldName, 'attachment_upload_button');
                 }
             });
@@ -889,11 +890,14 @@
         }
 
         if (params.playerWidth) {
-            playerOptions.width = params.playerWidth;
+            //playerOptions.width = params.playerWidth;
         }
-
+        playerOptions.width = '100%';
         if (params.playerHeight) {
-            playerOptions.height = params.playerHeight;
+            //playerOptions.height = params.playerHeight;
+        }
+        if (params.playerWidth && params.playerHeight) {
+            playerOptions = params.playerWidth + ':' + params.playerHeight;
         }
 
         if (!$cms.$CONFIG_OPTION('show_inline_stats')) {

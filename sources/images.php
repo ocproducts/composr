@@ -219,8 +219,10 @@ function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb
                         return _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb_field_name, $thumb_width, $only_make_smaller);
                     }
                 } else {
-                    require_code('galleries2');
-                    create_video_thumb($full_url, $thumb_path);
+                    if (addon_installed('galleries')) {
+                        require_code('galleries2');
+                        create_video_thumb($full_url, $thumb_path);
+                    }
                 }
             }
             return get_custom_base_url() . '/' . $thumb_url;

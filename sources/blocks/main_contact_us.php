@@ -163,6 +163,7 @@ class Block_main_contact_us
             'DISPLAY' => 'block',
             'COMMENT_URL' => $comment_url,
             'TITLE' => $box_title,
+            'SUBMIT_NAME' => do_lang_tempcode('SEND'),
             'HIDDEN' => $hidden,
         ));
 

@@ -26,7 +26,7 @@ class Hook_notes_msn
     /**
      * Decaching trigger for main_notes saves. See if we have to decache based on the passed filename.
      *
-     * @param PATH $file Filename.
+     * @param  PATH $file Filename.
      */
     public function run($file)
     {

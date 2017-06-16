@@ -347,7 +347,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
     /**
      * Check defined parameters are consistent with replace text.
      *
-     * @param  array  $_parameters Parameters configured
+     * @param  array $_parameters Parameters configured
      * @param  string $replace Text to replace within
      */
     private function check_parameters_all_there($_parameters, $replace)

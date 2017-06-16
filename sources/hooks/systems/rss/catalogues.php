@@ -44,8 +44,13 @@ class Hook_rss_catalogues
             return null;
         }
 
-        $filters_1 = selectcode_to_sqlfragment($_filters, 'id', 'catalogue_categories', 'cc_parent_id', 'id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
-        $filters = selectcode_to_sqlfragment($_filters, 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        if (preg_match('#^[\d\!\-\+\*\#\~\>\,]*$#', $_filters) != 0) {
+            $filters_1 = selectcode_to_sqlfragment($_filters, 'id', 'catalogue_categories', 'cc_parent_id', 'id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+            $filters = selectcode_to_sqlfragment($_filters, 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)
+        } else {
+            $filters_1 = db_string_equal_to('c_name', $_filters);
+            $filters = db_string_equal_to('c_name', $_filters);
+        }
 
         require_code('catalogues');
 
@@ -67,7 +72,7 @@ class Hook_rss_catalogues
         }
 
         $query = 'SELECT c.* FROM ' . get_table_prefix() . 'catalogues c';
-        if ($GLOBALS['SITE_DB']->can_arbitrary_groupby()) {
+        if ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby()) {
             $query .= ' JOIN ' . get_table_prefix() . 'catalogue_entries e ON e.c_name=c.c_name' . $privacy_join . ' WHERE 1=1' . $privacy_where . ' GROUP BY c.c_name';
         }
         $_catalogues = $GLOBALS['SITE_DB']->query($query);

@@ -1253,7 +1253,7 @@ function _parse_expression_inner()
             pparse__parser_expect('FUNCTION');
             $GLOBALS['I']--;
         case 'FUNCTION':
-            $_function = _parse_function_def(null, true);
+            $_function = _parse_function_def(array(), true);
             $expression = array('CLOSURE', $_function, ($next == 'STATIC'), $GLOBALS['I']);
             break;
 
@@ -1694,7 +1694,7 @@ function _parse_create_array($closes_with)
                 unset($expression[2]);
             }
             if (isset($seen[serialize($expression)])) {
-                parser_warning('Duplicated key in array creation');
+                parser_warning('Duplicated key in array creation,' . serialize($expression));
             }
             $seen[serialize($expression)] = 1;
             $next = pparse__parser_peek();

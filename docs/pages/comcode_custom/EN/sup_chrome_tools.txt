@@ -55,6 +55,8 @@ When we hover over or select a DOM node, the rendered element is highlighted in 
 
 [media thumb="1" width="940" framed="0"]data_custom/images/docs/sup_chrome_tools/4.png[/media]
 
+https://www.youtube.com/watch?v=AlnceCvG-Fs
+
 [title="3"]Styles[/title]
 
 The CSS of the page defines its appearance: that is the positioning and alignment of elements within the page. We can view and modify the CSS declarations that affect an element on the page. Clicking on any element in the elements tab will display all the styles attached to that element in the Styles pane as shown below.
@@ -91,11 +93,15 @@ The Resources tab shows the communication between the web server and client brow
 
 You may want to load the Composr page with [tt]&keep_minify=0[/tt]/[tt]?keep_minify=0[/tt] so that the CSS and JavaScript resources show more clearly.
 
+https://www.youtube.com/watch?v=mI2STe_Kklk
+
 [title="2"]Network[/title]
 
 The Network tab provides the information about the resources that are requested and downloaded over the network in real-time. As with the Resources tab, the Network tab needs enabling first. For optimising our page we need to identify those requests that are taking longer time than expected or are superfluous.
 
 [media thumb="1" width="940" framed="0"]data_custom/images/docs/sup_chrome_tools/9.png[/media]
+
+https://www.youtube.com/watch?v=8KXGIZGUPwE
 
 [title="2"]Sources[/title]
 
@@ -111,6 +117,8 @@ The Console tab is a place to:
  - Log diagnostic information in the development process (via the [tt]console.log()[/tt] function).
  - View errors and warnings.
  - A shell prompt which can be used to interact with the document and the development tools (we can enter arbitrary JavaScript and thus interact with our page).
+
+https://www.youtube.com/watch?v=FNEnGF4qYGk
 
 [title="2"]Audit (advanced)[/title]
 

@@ -38,7 +38,7 @@
             }
         }
 
-        if (!delayed) {// A delay, so as not to throw out too many requests
+        if (!delayed) { // A delay, so as not to throw out too many requests
             if (currentlyDoingListTimer) {
                 window.clearTimeout(currentlyDoingListTimer);
             }
@@ -87,7 +87,7 @@
             if (isDataList) {
                 currentListForEl.setAttribute('list', 'ajax_list');
             } else {
-                if (listContents.childNodes.length == 1) {// We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
+                if (listContents.childNodes.length == 1) { // We need to make sure it is not a dropdown. Normally we'd use size (multiple isn't correct, but we'll try this for 1 as it may be more stable on some browsers with no side effects)
                     list.setAttribute('multiple', 'multiple');
                 } else {
                     list.setAttribute('size', listContents.childNodes.length + 1);
@@ -161,7 +161,7 @@
                     return ret;
                 }
 
-                if ($cms.dom.keyPressed(event, 'Enter')) {// ENTER
+                if ($cms.dom.keyPressed(event, 'Enter')) { // ENTER
                     makeSelection(event);
                     currentListForCopy.disabled = true;
                     window.setTimeout(function () {
@@ -205,7 +205,7 @@
             function handleArrowUsage(event) {
                 var temp;
 
-                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) {// DOWN
+                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) { // DOWN
                     currentListForCopy.disabled = true;
                     window.setTimeout(function () {
                         currentListForCopy.disabled = false;
@@ -226,7 +226,7 @@
                     return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                 }
 
-                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) {// UP
+                if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) { // UP
                     currentListForCopy.disabled = true;
                     window.setTimeout(function () {
                         currentListForCopy.disabled = false;
@@ -272,5 +272,4 @@
             }
         }
     };
-
 }(window.$cms));

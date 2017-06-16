@@ -11,4 +11,3 @@
 		<input data-disable-on-click="1" value="{!EDIT_TEMPLATES}" class="button_screen buttons__edit" type="submit" />
 	</p>
 </form>
-

@@ -51,10 +51,14 @@ class Hook_task_download_member_csv
         require_code('cns_members_action2');
         list($headings, $cpfs, $subscription_types) = member_get_csv_headings_extended();
 
+        $_headings = $headings;
+
         // What to filter on
         if ($preset == '') {
-            if (!in_array($order_by, $fields_to_use)) {
-                $fields_to_use[] = $order_by;
+            foreach (explode(',', $order_by) as $_order_by) {
+                if ((!in_array($_order_by, $fields_to_use)) && (isset($_headings[$_order_by]))) {
+                    $fields_to_use[] = $_order_by;
+                }
             }
         } else {
             $presets = $this->_get_export_presets();
@@ -64,10 +68,9 @@ class Hook_task_download_member_csv
             $order_by = array_key_exists('row_order', $_preset) ? $_preset['row_order'] : 'ID';
             $usergroups = array_key_exists('usergroups', $_preset) ? $_preset['usergroups'] : array();
         }
-        $_headings = $headings;
         $headings = array();
         foreach ($fields_to_use as $field_label) {
-            $field_name = isset($_headings[$field_label]) ? $_headings[$field_label] : $field_label;/*Must be a psuedo-field so just carry it forward*/
+            $field_name = isset($_headings[$field_label]) ? $_headings[$field_label] : $field_label;/*Must be a pseudo-field so just carry it forward*/
             $headings[$field_label] = is_numeric($field_name) ? intval($field_name) : $field_name;
         }
 
@@ -303,7 +306,7 @@ class Hook_task_download_member_csv
                             break;
 
                         default: // string
-                            // Psuedo fields
+                            // Pseudo fields
                             /*switch ($part) {
                                 case 'Initials':
                                     $at = preg_replace('#\s*(\w)\w*\s*#', '${1}', $m['field_' . find_cpf_field_id('Forenames')] . ' ' . $m['field_' . find_cpf_field_id('Surname')]);

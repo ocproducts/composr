@@ -43,13 +43,13 @@
 	</substitution>
 
 	<!-- Simple catalogue links back to home page (most people don't want to expose catalogues technically as such) -->
-	<substitution match_key="_WILD:catalogues:category">
+	<substitution match_key="_WILD:catalogues:index:tree=0" final="true"> <!-- Skip catalogues list. -->
 		<link label="{!HOME}">:</link>
 	</substitution>
-	<substitution match_key="_WILD:catalogues:index">
+	<substitution match_key="_WILD:catalogues:category"> <!-- Skip catalogues list. This rule won't run for non-tree catalogues as the above rule terminates first; i.e. it is only for tree catalogues -->
 		<link label="{!HOME}">:</link>
 	</substitution>
-	<substitution match_key="_WILD:catalogues:atoz">
+	<substitution match_key="_WILD:catalogues:atoz"> <!-- Skip catalogues list. -->
 		<link label="{!HOME}">:</link>
 	</substitution>
 

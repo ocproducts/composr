@@ -37,4 +37,3 @@
 		</p>
 	</div></section>
 {+END}
-

@@ -391,7 +391,25 @@ class Module_admin_zones
                 $comcode_editor->attach(do_template('COMCODE_EDITOR_BUTTON', array('_GUID' => '1acc5dcf299325d0cf55871923148a54', 'DIVIDER' => false, 'IS_POSTING_FIELD' => false, 'FIELD_NAME' => $field_name, 'TITLE' => do_lang_tempcode('INPUT_COMCODE_' . $button), 'B' => $button)));
             }
 
-            $preview = (substr($page_info[0], 0, 6) == 'MODULE') ? null : request_page($for, false, $id, null, true);
+            if (substr($page_info[0], 0, 6) == 'MODULE') {
+                $preview = null;
+            } else {
+                require_code('urls2');
+                list($old_get, $old_zone, $old_current_script) = set_execution_context(
+                    array('page' => $for),
+                    $id
+                );
+
+                $preview = request_page($for, false, $id, null, true);
+
+                // Get things back to prior state
+                set_execution_context(
+                    $old_get,
+                    $old_zone,
+                    $old_current_script,
+                    false
+                );
+            }
             if ($preview !== null) {
                 $_preview = $preview->evaluate();
                 if ((!$is_comcode) || (strpos($comcode, '<') !== false)) { // Save RAM by only doing this if needed
@@ -415,8 +433,12 @@ class Module_admin_zones
 
             $is_panel = (substr($for, 0, 6) == 'panel_');
 
-            require_code('zones3');
-            $zone_list = ($for == $current_for) ? create_selection_list_zones($redirecting_to, array($id)) : new Tempcode(); // not simple so leave field out
+            if (($redirecting_to !== null) && ($redirecting_to != $id)) {
+                $zone_list = null;
+            } else {
+                require_code('zones3');
+                $zone_list = ($for == $current_for) ? create_selection_list_zones($redirecting_to, array($id)) : new Tempcode(); // not simple so leave field out
+            }
 
             $editor[$for] = static_evaluate_tempcode(do_template('ZONE_EDITOR_PANEL', array(
                 '_GUID' => 'f32ac84fe18b90497acd4afa27698bf0',
@@ -512,11 +534,13 @@ class Module_admin_zones
                 $full_path = zone_black_magic_filterer(get_custom_file_base() . (((($redirect === null) ? $id : $redirect) == '') ? '' : '/') . (($redirect === null) ? $id : $redirect) . '/pages/comcode_custom/' . $lang . '/' . $for . '.txt');
 
                 // Store revision
-                require_code('revisions_engine_files');
-                $revision_engine = new RevisionEngineFiles();
-                list(, , $existing_path) = find_comcode_page($lang, $for, $id);
-                if ($existing_path != '') {
-                    $revision_engine->add_revision(dirname($existing_path), $for, 'txt', cms_file_get_contents_safe($existing_path), filemtime($existing_path));
+                if (addon_installed('actionlog')) {
+                    require_code('revisions_engine_files');
+                    $revision_engine = new RevisionEngineFiles();
+                    list(, , $existing_path) = find_comcode_page($lang, $for, $id);
+                    if ($existing_path != '') {
+                        $revision_engine->add_revision(dirname($existing_path), $for, 'txt', cms_file_get_contents_safe($existing_path), filemtime($existing_path));
+                    }
                 }
 
                 // Save
@@ -556,7 +580,7 @@ class Module_admin_zones
         require_lang('permissions');
         require_javascript('core_zone_editor');
 
-        $js_function_calls = ['moduleAdminZonesGetFormFields'];
+        $js_function_calls = array('moduleAdminZonesGetFormFields');
 
         $fields = '';
         $hidden = new Tempcode();
@@ -570,10 +594,17 @@ class Module_admin_zones
         // Theme
         require_code('themes2');
         $entries = create_selection_list_themes($theme, false, true);
-        $fields .= static_evaluate_tempcode(form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode((get_forum_type() == 'cns') ? '_DESCRIPTION_THEME_CNS' : '_DESCRIPTION_THEME', get_default_theme_name()), 'theme', $entries));
+        $theme_field = form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode((get_forum_type() == 'cns') ? '_DESCRIPTION_THEME_CNS' : '_DESCRIPTION_THEME', get_default_theme_name()), 'theme', $entries);
+        $is_normal_zone = ($zone !== 'adminzone') && ($zone !== 'cms');
+        if ($is_normal_zone) {
+            $fields .= static_evaluate_tempcode($theme_field);
+        }
 
         $fields .= static_evaluate_tempcode(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b997e901934b59fa72c944e0ce6fc1b0', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
         $fields .= static_evaluate_tempcode(form_input_tick(do_lang_tempcode('REQUIRE_SESSION'), do_lang_tempcode('DESCRIPTION_REQUIRE_SESSION'), 'require_session', ($require_session == 1)));
+        if (!$is_normal_zone) {
+            $fields .= static_evaluate_tempcode($theme_field);
+        }
 
         $base_url = '';
         if (($zone !== null) && ($zone != '')) {
@@ -673,7 +704,7 @@ class Module_admin_zones
         list($_fields, $hidden, $field_js_function_calls) = $this->get_form_fields();
         $fields->attach($_fields);
 
-        $js_function_calls = ['moduleAdminZonesAddZone'];
+        $js_function_calls = array('moduleAdminZonesAddZone');
         if (is_array($field_js_function_calls)) {
             $js_function_calls = array_merge($js_function_calls, $field_js_function_calls);
         }
@@ -915,8 +946,12 @@ class Module_admin_zones
             sync_htaccess_with_zones();
 
             // Show it worked / Refresh
-            $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-            if ($url === null) {
+            if ($new_zone == $zone) {
+                $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
+            } else {
+                $url = null; // Can't redirect back
+            }
+            if (is_null($url)) {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF');
                 $url = $_url->evaluate();
             }

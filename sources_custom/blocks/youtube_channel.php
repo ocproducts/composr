@@ -25,7 +25,6 @@ class Block_youtube_channel
         $info['hack_version'] = null;
         $info['version'] = 11;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = true;
         $info['parameters'] = array('name', 'api_key', 'playlist_id', 'title', 'template_main', 'template_style', 'start_video', 'max_videos', 'description_type', 'embed_allowed', 'show_player', 'player_align', 'player_width', 'player_height', 'style', 'nothumbplayer', 'thumbnail', 'formorelead', 'formoretext', 'formoreurl');
         return $info;
     }
@@ -520,8 +519,8 @@ class Block_youtube_channel
 /**
  * Find the cache signature for the block.
  *
- * @param  array                    The block parameters.
- * @return array                    The cache signature.
+ * @param  array The block parameters.
+ * @return array The cache signature.
  */
 function block_youtube_channel__cache_on($map)
 {

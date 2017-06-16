@@ -201,6 +201,7 @@ class Block_main_members
         if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) {
             $where .= ' AND m_validated=1';
         }
+        $where .= ' AND ' . db_string_equal_to('m_validated_email_confirm_code', '');
 
         $include_form = array_key_exists('include_form', $map) ? ($map['include_form'] == '1') : true;
 
@@ -263,7 +264,7 @@ class Block_main_members
             'm_profile_views' => do_lang_tempcode('PROFILE_VIEWS'),
             'random' => do_lang_tempcode('RANDOM'),
         );
-        if ($GLOBALS['SITE_DB']->has_expression_ordering()) {
+        if ($GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) {
             $sortables['m_total_sessions'] = do_lang_tempcode('LOGIN_FREQUENCY');
         }
         if (strpos($sort, ' ') === false) {
@@ -273,13 +274,13 @@ class Block_main_members
         switch ($sort) {
             case 'random ASC':
             case 'random DESC':
-                $sort = 'RAND() ASC';
+                $sort = db_function('RAND') . ' ASC';
                 break;
             case 'm_total_sessions ASC':
-                $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) ASC';
+                $sort = 'm_total_sessions/(' . strval(time()) . '-m_join_time) ASC';
                 break;
             case 'm_total_sessions DESC':
-                $sort = 'm_total_sessions/(UNIX_TIMESTAMP()-m_join_time) DESC';
+                $sort = 'm_total_sessions/(' . strval(time()) . '-m_join_time) DESC';
                 break;
             case 'm_join_time':
             case 'm_last_visit_time':
@@ -297,7 +298,7 @@ class Block_main_members
         $main_sql .= $extra_join_sql;
         $main_sql .= ' WHERE ' . $where;
         $sql .= $main_sql;
-        $sql .= ($GLOBALS['FORUM_DB']->can_arbitrary_groupby() ? ' GROUP BY r.id' : '');
+        $sql .= ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() ? ' GROUP BY r.id' : '');
         $sql .= ' ORDER BY ' . $sort;
         $count_sql = 'SELECT COUNT(DISTINCT r.id) FROM ' . $main_sql;
 

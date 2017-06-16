@@ -79,6 +79,7 @@
 			</ul>
 		{+END}
 
+		{$,Choosing where to redirect to, same page name but in a different zone}
 		{+START,IF_PASSED,ZONES}
 			{+START,IF,{$ADDON_INSTALLED,redirects_editor}}
 				<form title="{ID*}: {!DRAWS_FROM}" action="index.php" method="post" autocomplete="off">

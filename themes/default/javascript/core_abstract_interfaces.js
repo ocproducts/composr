@@ -231,10 +231,9 @@
                 baseUrl = (!soundUrl.includes('data_custom') && !soundUrl.includes('uploads/')) ? $cms.$BASE_URL_NOHTTP : $cms.$CUSTOM_BASE_URL_NOHTTP,
                 soundObject = window.soundManager.createSound({ url: baseUrl + '/' + soundUrl });
 
-            if (soundObject) {
+            if (soundObject && document.hasFocus()/*don't want multiple tabs all pinging*/) {
                 soundObject.play();
             }
         }
     }
-
 }(window.$cms));

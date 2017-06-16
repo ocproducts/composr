@@ -299,6 +299,8 @@ class Hook_addon_registry_calendar
      */
     public function tpl_preview__block_side_calendar()
     {
+        require_lang('dates');
+
         $_entries = new Tempcode();
         $__entries = new Tempcode();
         $dotw = 0;
@@ -346,7 +348,6 @@ class Hook_addon_registry_calendar
             'ENTRIES' => $__entries,
         )));
 
-        require_lang('dates');
         return array(
             lorem_globalise(do_lorem_template('BLOCK_SIDE_CALENDAR', array(
                 'BLOCK_ID' => lorem_word(),
@@ -433,6 +434,7 @@ class Hook_addon_registry_calendar
     public function calendar_main_screen($view)
     {
         require_lang('dates');
+
         switch ($view) {
             case 'day':
                 $hours = new Tempcode();
@@ -742,7 +744,7 @@ class Hook_addon_registry_calendar
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => lorem_word(),
+            'EMAIL_OPTIONAL' => true,
             'POST_WARNING' => '',
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,

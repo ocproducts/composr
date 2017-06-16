@@ -44,12 +44,12 @@ function _helper_install_create_custom_field($this_ref, $name, $length, $locked 
     require_code('cns_members_action');
 
     $name = 'cms_' . $name;
-    $id = $this_ref->db->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => $name));
+    $id = $this_ref->db->query_select_value_if_there('f_custom_fields', 'id', array($this_ref->db->translate_field_ref('cf_name') => $name));
     if ($id === null) {
         if ($default === null) {
             $default = (strpos($name, 'points') !== false) ? '0' : '';
         }
-        $id = cns_make_custom_field($name, $locked, $description, $default, $viewable, $viewable, $settable, $encrypted, $type, $required);
+        $id = cns_make_custom_field($name, $locked, $description, $default, $viewable, $viewable, $settable, $encrypted, $type, $required, 0, 0, null, '', 0, '', true);
     }
     return $id !== null;
 }

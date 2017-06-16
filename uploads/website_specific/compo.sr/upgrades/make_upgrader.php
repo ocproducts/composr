@@ -123,6 +123,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
         @deldir_contents($wip_path);
         @rmdir($wip_path);
     }
+    @mkdir($wip_path, 0777);
 
     // Unzip old
     if ($old_download_row !== null) {
@@ -144,12 +145,12 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
     _find_helper($new_base_path);
 
     // Work out files for upgrader
-    @mkdir($wip_path, 0777);
     make_upgrader_do_dir($wip_path, $new_base_path, $old_base_path, $addons_in_upgrader);
     if ($addons_in_upgrader !== null) {
-        @mkdir($wip_path . '/imports', 0777);
-        @mkdir($wip_path . '/imports/addons', 0777);
+        @mkdir($wip_path . '/exports', 0777);
+        @mkdir($wip_path . '/exports/addons', 0777);
 
+        // Build all addon TARs
         global $CACHE_FROM_ADDONS;
         foreach ($CACHE_FROM_ADDONS as $addon => $addon_files) {
             $addon_info = read_addon_info($addon, true, null, null, $new_base_path . '/sources/hooks/systems/addon_registry/' . $addon . '.php');

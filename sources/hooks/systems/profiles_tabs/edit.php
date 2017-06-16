@@ -122,7 +122,7 @@ class Hook_profiles_tabs_edit
         sort_maps_by($tabs, 4);
         $tabs = array_values($tabs); // Reindex, needed for lastness check
 
-        $js_function_calls = [];
+        $js_function_calls = array();
 
         $hidden = new Tempcode();
 

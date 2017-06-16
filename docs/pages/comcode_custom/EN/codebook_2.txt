@@ -416,3 +416,111 @@ Generally you should rarely use the Composr inbuilt theming tools when acting as
 The only caveat with theme images is that if Composr has already searched for it a theme image in your theme, and only found the default one, you'd need to empty the theme_images table to make it search again. That's safe as long as you only add/edit via filesystem and never from inside Composr.
 
 {$SET,tutorial_tags,Development,PHP,Development,CSS,JavaScript,expert}{$SET,tutorial_add_date,Jan 2006}{$SET,tutorial_summary,The programmer's guide for Composr development. Front-end development.}[block]main_tutorial_rating[/block]
+
+[title="2"]Meta-analysis of the code-base[/title]
+
+[title="3"]Language string word count[/title]
+
+Here's a script for if you want to know some basic stats about Composr's English language pack:
+[codebox="PHP"]
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2017
+
+ See text/EN/licence.txt for full licencing information.
+
+ Meta Script:
+   Count the number of words in ocPortal currently
+*/
+
+if (!isset($_GET['path'])) {
+    exit('Must give a \'path\' parameter');
+}
+chdir($_GET['path']);
+
+$count = 0;
+$strings = 0;
+$files = 0;
+$path = 'lang/EN/';
+$dh = opendir($path);
+while (($f = readdir($dh)) !== false) {
+    if (substr($f, -4) == '.ini') {
+        $files++;
+        $lines = file($path . $f);
+        foreach ($lines as $line) {
+            $bits = explode('=', $line, 2);
+            if (count($bits) == 2) {
+                $count += count(preg_split('/\s+/', $bits[1]));
+                $strings++;
+            }
+        }
+    }
+}
+
+header('Content-type: text/plain');
+
+echo number_format($count) . ' words, in ' . number_format($strings) . ' language strings, in ' . number_format($files) . ' files.';
+[/codebox]
+
+[title="3"]Top functions[/title]
+
+Here's a script for if you you to found out what are the most common functions used in the Composr PHP code:
+[codebox="PHP"]
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2017
+
+ See text/EN/licence.txt for full licencing information.
+
+ Meta Script:
+   Find top functions used in a codebase
+*/
+
+header('Content-type: text/plain');
+
+if (isset($_GET['path'])) {
+    chdir($_GET['path']);
+}
+
+$out = do_dir('.');
+$calls = array();
+foreach ($out as $file) {
+    $code = file_get_contents($file);
+    $matches = array();
+    $num_matches = preg_match_all('#(\w+)\(#', $code, $matches);
+    for ($i = 0; $i < $num_matches; $i++) {
+        $call = $matches[1][$i];
+        if ($call != 'array') {
+            if (!isset($calls[$call])) {
+                $calls[$call] = 0;
+            }
+            $calls[$call]++;
+        }
+    }
+}
+
+arsort($calls);
+
+var_dump($calls);
+
+function do_dir($dir)
+{
+    $out = array();
+    $_dir = ($dir == '') ? '.' : $dir;
+    $dh = opendir($_dir);
+    if ($dh) {
+        while (($file = readdir($dh)) !== false) {
+            if (($file{0} != '.') && ($file != 'exports')) {
+                if ((is_file($_dir . '/' . $file)) && (substr($file, -4) == '.php')) {
+                    $out[] = $_dir . '/' . $file;
+                } elseif ((is_dir($_dir . '/' . $file)) && (strpos($file, '_custom') === false) && ($file != 'tracker')) {
+                    $out = array_merge($out, do_dir($dir . (($dir != '') ? '/' : '') . $file));
+                }
+            }
+        }
+    }
+    return $out;
+}
+[/codebox]

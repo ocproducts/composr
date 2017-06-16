@@ -453,8 +453,8 @@ class Module_groups
     /**
      * Find table column widths and headings.
      *
-     * @param boolean $has_images Whether there are rank images
-     * @param boolean $has_rank Whether there are rank promotions
+     * @param  boolean $has_images Whether there are rank images
+     * @param  boolean $has_rank Whether there are rank promotions
      * @return array A pair: column widths, table headings
      */
     private function _find_table_headings($has_images, $has_rank)

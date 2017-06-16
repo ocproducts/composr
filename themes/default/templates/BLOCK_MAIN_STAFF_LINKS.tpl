@@ -30,9 +30,6 @@
 					<input data-disable-on-click="1" class="button_screen_item buttons__save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-form-submit-headless{+END}" type="submit" value="{!SAVE}" />
 				</div>
 			</form>
-
-
 		</div>
 	</section>
 </div>
-

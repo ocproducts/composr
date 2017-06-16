@@ -118,13 +118,15 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
             $text = preg_replace("#\[media[^\[\]]*\](.*)\[/media\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $text);
         }
     }
+    $text = str_replace('{$BASE_URL*}', escape_html(get_base_url()), $text);
+    $text = str_replace('{$BASE_URL}', get_base_url(), $text);
     if (!in_array('thumb', $tags_to_preserve)) {
         $text = str_replace('[/thumb', '[/img', str_replace('[thumb', '[img', $text));
     }
     if (stripos($text, '[img') !== false) {
         if (!in_array('img', $tags_to_preserve)) {
-            $text = preg_replace("#\[img=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]\1[/url] ', $text);
-            $text = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url] ', $text);
+            $text = preg_replace("#\[img( param)?=\"([^\"]*)\"[^\[\]]*\](.*)\[/img\]#Usi", '[url="\3"]\2[/url] ', $text);
+            $text = preg_replace("#\[img[^\[\]]*\](.*)\[/img\]#Usi", '[url="\2"]' . do_lang('VIEW') . '[/url] ', $text);
         }
     }
     if (stripos($text, '[email') !== false) {
@@ -135,11 +137,11 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
 
     if (stripos($text, '[url') !== false) {
         if (!in_array('url', $tags_to_preserve)) {
-            $text = preg_replace("#\[url=\"([^\"]*)\"[^\[\]]*\]\\1\[/url\]#", '\1', $text);
-            $text = preg_replace("#\(\[url=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]\)#", '\1', $text);
-            $text = preg_replace("#\[url=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\3' : '\3 (\1)', $text);
-            $text = preg_replace("#\[url=\"([^\"]*)\"[^\[\]]*\]([^\[\]]*)\[/url\]#", '\1 (\3)', $text);
-            $text = preg_replace("#\[url=\"([^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\1' : '\1 (\3)', $text);
+            $text = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]\\1\[/url\]#", '\2', $text);
+            $text = preg_replace("#\(\[url( param)?=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]\)#", '\2', $text);
+            $text = preg_replace("#\[url( param)?=\"(https?://[^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\4' : '\4 (\2)', $text);
+            $text = preg_replace("#\[url( param)?=\"([^\"]*)\"[^\[\]]*\]([^\[\]]*)\[/url\]#", '\2 (\4)', $text);
+            $text = preg_replace("#\[url( param)?=\"([^\"]*)\"([^\]]*)\]([^\[\]]*)\[/url\]#", $for_extract ? '\2' : '\2 (\4)', $text);
         }
     }
 

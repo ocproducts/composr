@@ -344,21 +344,15 @@ function create_selection_list_zones($sel = null, $no_go = array(), $reorder = n
  */
 function get_templates_list()
 {
+    require_code('zones2');
+
     $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/';
     $templates = array();
     if (($handle = @opendir($templates_dir)) !== false) {
-        $unknown_count = 0;
-
         while (false !== ($entry = readdir($handle))) {
             if (substr($entry, -4) == '.txt' && $entry[0] != '.') {
                 $template_path = $templates_dir . $entry;
-                $matches = array();
-                if (preg_match('#\[title[^\]]*\](.*)\[/title\]#', file_get_contents($template_path), $matches) != 0) {
-                    $template_title = $matches[1];
-                } else {
-                    $unknown_count++;
-                    $template_title = do_lang('UNKNOWN') . strval($unknown_count);
-                }
+                $template_title = get_comcode_page_title_from_disk($template_path);
                 $templates[basename($entry, '.txt')] = $template_title;
             }
         }
@@ -600,6 +594,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
  * @param  ID_TEXT $zone The zone
  * @param  ID_TEXT $page The page
  * @param  ?ID_TEXT $type The page type (null: Comcode page in Composr's fallback language) [NB: page is deleted in all languages regardless of which is given]
+ * @set modules modules_custom minimodules minimodules_custom comcode comcode_custom html html_custom
  * @param  boolean $use_afm Whether to use the AFM
  */
 function delete_cms_page($zone, $page, $type = null, $use_afm = false)

@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,commandr}
+
 <div id="command_line" data-tpl="commandrMain">
 	<div id="commands_go_here">
 		<p>{!WELCOME_TO_COMMANDR}</p>
@@ -12,7 +13,7 @@
 			<div id="command_prompt">
 				<label for="commandr_command">{PROMPT*}</label>
 				<input type="text" id="commandr_command" name="command" autofocus class="js-keyup-input-commandr-handle-history" value="" />
-                <input class="button_micro buttons__proceed" type="submit" value="{$STRIP_TAGS,{!PROCEED_SHORT}}" role="textbox" />
+				<input class="button_micro buttons__proceed" type="submit" value="{$STRIP_TAGS,{!PROCEED_SHORT}}" role="textbox" />
 			</div>
 		</form>
 	</div>

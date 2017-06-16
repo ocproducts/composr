@@ -122,8 +122,6 @@ class Hook_addon_registry_ecommerce
             'themes/default/images/icons/24x24/menu/rich_content/ecommerce/index.html',
             'themes/default/images/icons/48x48/menu/adminzone/audit/ecommerce/index.html',
             'themes/default/images/icons/48x48/menu/rich_content/ecommerce/index.html',
-            'sources/hooks/systems/symbols/STOCK_CHECK.php',
-            'sources/hooks/systems/symbols/CART_LINK.php',
             'sources/hooks/systems/resource_meta_aware/usergroup_subscription.php',
             'sources/hooks/systems/commandr_fs/usergroup_subscriptions.php',
             'sources/hooks/systems/config/payment_gateway_callback_password.php',
@@ -205,6 +203,7 @@ class Hook_addon_registry_ecommerce
             'sources/currency.php',
             'sources/hooks/systems/config/max_ip_addresses_per_subscriber.php',
             'sources/hooks/systems/notifications/ip_address_sharing.php',
+            'sources/hooks/systems/cron/ip_address_sharing.php',
             'sources/hooks/systems/symbols/CURRENCY_SYMBOL.php',
             'sources/hooks/systems/commandr_fs_extended_member/invoices.php',
             'sources/hooks/systems/commandr_fs_extended_member/subscriptions.php',
@@ -895,6 +894,7 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__purchase_wizard_stage_terms()
     {
         require_lang('installer');
+
         return array(
             lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_TERMS', array(
                 'TITLE' => lorem_title(),
@@ -956,7 +956,7 @@ class Hook_addon_registry_ecommerce
                 'AMOUNT' => placeholder_number(),
                 'DATE' => placeholder_date(),
                 'STATE' => lorem_word(),
-                'DELIVERABLE' => lorem_word(),
+                'DELIVERABLE' => true,
                 'PAYABLE' => lorem_word(),
                 'NOTE' => lorem_phrase(),
                 'TYPE_CODE' => lorem_word(),

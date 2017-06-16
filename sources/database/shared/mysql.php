@@ -58,10 +58,9 @@ class Database_super_mysql extends DatabaseDriver
     /**
      * Find whether expression ordering support is present
      *
-     * @param  array $connection A DB connection
      * @return boolean Whether it is
      */
-    public function has_expression_ordering($connection)
+    public function has_expression_ordering()
     {
         return true;
     }
@@ -69,10 +68,9 @@ class Database_super_mysql extends DatabaseDriver
     /**
      * Find whether collate support is present
      *
-     * @param  array $connection A DB connection
      * @return boolean Whether it is
      */
-    public function has_collate_settings($connection)
+    public function has_collate_settings()
     {
         return true;
     }
@@ -80,10 +78,9 @@ class Database_super_mysql extends DatabaseDriver
     /**
      * Find whether update queries may have joins
      *
-     * @param  array $connection A DB connection
      * @return boolean Whether it is
      */
-    public function has_update_joins($connection)
+    public function has_update_joins()
     {
         return true;
     }
@@ -111,8 +108,8 @@ class Database_super_mysql extends DatabaseDriver
     /**
      * Create an SQL cast.
      *
-     * @param string $field The field identifier
-     * @param string $type The type wanted
+     * @param  string $field The field identifier
+     * @param  string $type The type wanted
      * @set CHAR INT
      * @return string The database type
      */
@@ -161,7 +158,7 @@ class Database_super_mysql extends DatabaseDriver
     /**
      * Get a strict mode set query. Takes into account configuration also.
      *
-     * @param boolean $setting Whether it is on (may be overridden be configuration)
+     * @param  boolean $setting Whether it is on (may be overridden be configuration)
      * @return ?string The query (null: none)
      */
     public function strict_mode_query($setting)
@@ -180,11 +177,11 @@ class Database_super_mysql extends DatabaseDriver
      * Find if a database query may run, showing errors if it cannot
      *
      * @param  string $query The complete SQL query
-     * @param  array $connection A DB connection
+     * @param  mixed $connection The DB connection
      * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
      * @return boolean Whether it can
      */
-    protected function query_may_run($query, $connection, $get_insert_id)
+    public function query_may_run($query, $connection, $get_insert_id)
     {
         if (isset($query[500000])) { // Let's hope we can fail on this, because it's a huge query. We can only allow it if MySQL can.
             $test_result = $this->query('SHOW VARIABLES LIKE \'max_allowed_packet\'', $connection, null, null, true);
@@ -193,7 +190,7 @@ class Database_super_mysql extends DatabaseDriver
                 return false;
             }
             if (intval($test_result[0]['Value']) < intval(strlen($query) * 1.2)) {
-                /*@mysql_query('SET max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $db); Does not work well, as MySQL server has gone away error will likely just happen instead */
+                /*@mysql_query('SET max_allowed_packet=' . strval(intval(strlen($query) * 1.3)), $connection); Does not work well, as MySQL server has gone away error will likely just happen instead */
 
                 if ($get_insert_id) {
                     $this->failed_query_exit(do_lang_tempcode('QUERY_FAILED_TOO_BIG', escape_html($query), escape_html(integer_format(strlen($query))), escape_html(integer_format(intval($test_result[0]['Value'])))));
@@ -205,6 +202,18 @@ class Database_super_mysql extends DatabaseDriver
         }
 
         return true;
+    }
+
+    /**
+     * Set a time limit on future queries.
+     * Not all database drivers support this.
+     *
+     * @param  integer $seconds The time limit in seconds
+     * @param  mixed $connection The DB connection
+     */
+    public function set_query_time_limit($seconds, $connection)
+    {
+        $this->query('SET SESSION MAX_EXECUTION_TIME=' . strval($seconds * 1000), $connection, null, null, true); // Only works in MySQL 5.7+
     }
 
     /**
@@ -223,14 +232,14 @@ class Database_super_mysql extends DatabaseDriver
      *
      * @param  string $query The complete SQL query
      * @param  string $err The error message
-     * @param  array $connection A DB connection
+     * @param  mixed $connection The DB connection
      */
     protected function handle_failed_query($query, $err, $connection)
     {
         if (function_exists('ocp_mark_as_escaped')) {
             ocp_mark_as_escaped($err);
         }
-        if ((!running_script('upgrader')) && (!get_mass_import_mode()) && (strpos($err, 'Duplicate entry') === false)) {
+        if ((!running_script('upgrader')) && ((!get_mass_import_mode()) || (get_param_integer('keep_fatalistic', 0) == 1)) && (strpos($err, 'Duplicate entry') === false)) {
             $matches = array();
             if (preg_match('#/(\w+)\' is marked as crashed and should be repaired#U', $err, $matches) !== 0) {
                 $this->query('REPAIR TABLE ' . $matches[1], $connection);
@@ -248,12 +257,13 @@ class Database_super_mysql extends DatabaseDriver
     /**
      * Get a map of Composr field types, to actual database types.
      *
+     * @param  boolean $for_alter Whether this is for adding a table field
      * @return array The map
      */
-    public function get_type_remap()
+    public function get_type_remap($for_alter)
     {
         $type_remap = array(
-            'AUTO' => 'integer unsigned auto_increment',
+            'AUTO' => $for_alter ? 'integer unsigned PRIMARY KEY auto_increment' : 'integer unsigned auto_increment',
             'AUTO_LINK' => 'integer', // not unsigned because it's useful to have -ve for temporary usage while importing (NB: *_TRANS is signed, so trans fields are not perfectly AUTO_LINK compatible and can have double the positive range -- in the real world it will not matter though)
             'INTEGER' => 'integer',
             'UINTEGER' => 'integer unsigned',
@@ -279,30 +289,16 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Create a new table.
+     * Get SQL for creating a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
-     * @param  array $connection The DB connection to make on
+     * @param  mixed $connection The DB connection to make on
      * @param  ID_TEXT $raw_table_name The table name with no table prefix
      * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
      */
     public function create_table($table_name, $fields, $connection, $raw_table_name, $save_bytes = false)
-    {
-        $query = $this->create_table_sql($table_name, $fields, $raw_table_name, $save_bytes);
-        $this->query($query, $connection, null, null);
-    }
-
-    /**
-     * SQL to create a new table.
-     *
-     * @param  ID_TEXT $table_name The table name
-     * @param  array $fields A map of field names to Composr field types (with *#? encodings)
-     * @param  ID_TEXT $raw_table_name The table name with no table prefix
-     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
-     * @return string SQL
-     */
-    public function create_table_sql($table_name, $fields, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->get_type_remap();
 
@@ -336,15 +332,14 @@ class Database_super_mysql extends DatabaseDriver
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $table_type = (get_value('innodb') == '1') ? 'InnoDB' : 'MyISAM';
+        $innodb = ((function_exists('get_value')) && (get_value('innodb') == '1'));
+        $table_type = ($innodb ? 'INNODB' : 'MyISAM');
         $type_key = 'engine';
         /*if ($raw_table_name == 'sessions') {
             $table_type = 'HEAP';   Some MySQL servers are very regularly reset
         }*/
 
-        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '
-            PRIMARY KEY (' . $keys . ')
-        )';
+        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
 
         global $SITE_INFO;
         if (empty($SITE_INFO['database_charset'])) {
@@ -359,18 +354,17 @@ class Database_super_mysql extends DatabaseDriver
 
         $query .= ' ' . $type_key . '=' . $table_type;
 
-        return $query;
+        return array($query);
     }
 
     /**
-     * Delete a table.
+     * Find whether drop table "if exists" is present
      *
-     * @param  ID_TEXT $table The table name
-     * @param  array $connection The DB connection to delete on
+     * @return boolean Whether it is
      */
-    public function drop_table_if_exists($table, $connection)
+    public function supports_drop_table_if_exists()
     {
-        $this->query('DROP TABLE IF EXISTS ' . $table, $connection);
+        return true;
     }
 
     /**
@@ -378,7 +372,7 @@ class Database_super_mysql extends DatabaseDriver
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  array $new_key A list of fields to put in the new key
-     * @param  array $connection The DB connection to make on
+     * @param  mixed $connection The DB connection to make on
      */
     public function change_primary_key($table_name, $new_key, $connection)
     {
@@ -386,30 +380,61 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Create a table index.
+     * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
      *
-     * @param  ID_TEXT $table_name The name of the table to create the index on
-     * @param  ID_TEXT $index_name The index name (not really important at all)
-     * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
-     * @param  array $connection The DB connection to make on
+     * @param  string $table The table name
+     * @param  mixed $connection The DB connection
+     * @return ?integer The count (null: do it normally)
      */
-    public function create_index($table_name, $index_name, $_fields, $connection)
+    public function get_table_count_approx($table, $connection)
     {
-        $query = $this->create_index_sql($table_name, $index_name, $_fields, $connection);
-        if ($query !== null) {
-            $this->query($query, $connection);
+        if (get_value('slow_counts') === '1') {
+            $sql = 'SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema=DATABASE() AND TABLE_NAME=\'' . $this->escape_string($table) . '\'';
+            $values = $this->query($sql, $connection, null, null, true);
+            if (!isset($values[0])) {
+                return null; // No result found
+            }
+            $first = $values[0];
+            $v = current($first); // Result found
+            return $v;
         }
+
+        return null;
     }
 
     /**
-     * SQL to create a table index.
+     * Get minimum search length.
+     * This is broadly MySQL-specific. For other databases we will usually return 4, although there may truly not be a limit on it.
+     *
+     * @param  mixed $connection The DB connection
+     * @return integer Search length
+     */
+    public function get_minimum_search_length($connection)
+    {
+        static $min_word_length = null;
+        if (is_null($min_word_length)) {
+            $min_word_length = 4;
+            $_min_word_length = $this->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', $connection, null, null, true);
+            if (isset($_min_word_length[0])) {
+                $min_word_length = intval($_min_word_length[0]['Value']);
+            }
+        }
+        return $min_word_length;
+    }
+
+    /**
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
-     * @return ?string SQL (null: do nothing)
+     * @param  mixed $connection The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @param  string $table_prefix The table prefix
+     * @return array List of SQL queries to run
      */
-    public function create_index_sql($table_name, $index_name, $_fields)
+    public function create_index($table_name, $index_name, $_fields, $connection, $raw_table_name, $unique_key_fields, $table_prefix)
     {
         if ($index_name[0] == '#') {
             $index_name = substr($index_name, 1);
@@ -417,13 +442,23 @@ class Database_super_mysql extends DatabaseDriver
         } else {
             $type = 'INDEX';
         }
-        return 'ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')';
+        return array('ALTER TABLE ' . $table_name . ' ADD ' . $type . ' ' . $index_name . ' (' . $_fields . ')');
+    }
+
+    /**
+     * Find whether table truncation support is present
+     *
+     * @return boolean Whether it is
+     */
+    public function supports_truncate_table()
+    {
+        return true;
     }
 
     /**
      * Find whether full-text-search is present
      *
-     * @param  array $connection A DB connection
+     * @param  mixed $connection The DB connection
      * @return boolean Whether it is
      */
     public function has_full_text($connection)

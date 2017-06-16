@@ -1,5 +1,4 @@
-<div id="comments_wrapper" class="comments_wrapper" role="complementary"
-	 data-tpl="commentsWrapper" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
+<div id="comments_wrapper" class="comments_wrapper" role="complementary" data-tpl="commentsWrapper" data-tpl-params="{+START,PARAMS_JSON,SERIALIZED_OPTIONS,HASH}{_*}{+END}">
 	{+START,SET,REVIEWS_TITLE}
 		<span class="field_title">{!_REVIEWS,{$METADATA*,numcomments}}:</span>
 

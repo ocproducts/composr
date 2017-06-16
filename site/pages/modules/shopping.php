@@ -636,6 +636,10 @@ class Module_shopping
      */
     public function my_orders()
     {
+        if (is_guest()) {
+            access_denied('NOT_AS_GUEST');
+        }
+
         $member_id = get_member();
 
         if (has_privilege(get_member(), 'assume_any_member')) {
@@ -650,7 +654,7 @@ class Module_shopping
             if ($row['purchase_through'] == 'cart') {
                 $order_details_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
 
-                $order_title = do_lang('CART_ORDER', $row['id']);
+                $order_title = do_lang('CART_ORDER', strval($row['id']));
             } else {
                 $res = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('p_id', 'p_name'), array('order_id' => $row['id']));
 
@@ -681,7 +685,22 @@ class Module_shopping
      */
     public function order_details()
     {
+        if (is_guest()) {
+            access_denied('NOT_AS_GUEST');
+        }
+
         $id = get_param_integer('id');
+
+        if (!has_privilege(get_member(), 'assume_any_member')) {
+            $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'member_id', array('id' => $id));
+            if ($member_id === null) {
+                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+            }
+
+            if ($member_id != get_member()) {
+                access_denied('I_ERROR');
+            }
+        }
 
         $products = array();
 
@@ -689,7 +708,7 @@ class Module_shopping
         foreach ($rows as $row) {
             $product_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['p_id']), get_module_zone('catalogues'));
 
-            $products[] = array('PRODUCT_NAME' => $row['p_name'], 'ID' => strval($row['p_id']), 'AMOUNT' => strval($row['p_price']), 'QUANTITY' => strval($row['p_quantity']), 'DISPATCH_STATUS' => do_lang_tempcode($row['dispatch_status']), 'PRODUCT_DET_URL' => $product_det_url, 'DELIVERABLE' => '');
+            $products[] = array('PRODUCT_NAME' => $row['p_name'], 'ID' => strval($row['p_id']), 'AMOUNT' => strval($row['p_price']), 'QUANTITY' => strval($row['p_quantity']), 'DISPATCH_STATUS' => do_lang_tempcode($row['dispatch_status']), 'PRODUCT_DET_URL' => $product_det_url);
         }
 
         if (count($products) == 0) {

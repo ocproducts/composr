@@ -26,7 +26,7 @@
 			<input type="hidden" name="answer" value="" />
 
 			<p class="proceed_button">
-				 <input accesskey="u" data-disable-on-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
+				<input accesskey="u" data-disable-on-click="1" class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 			</p>
 		</div>
 	{+END}

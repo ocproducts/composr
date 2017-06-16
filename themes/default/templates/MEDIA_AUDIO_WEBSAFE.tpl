@@ -35,12 +35,12 @@
 {+END}
 
 <div data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_*}{+END}">
-{+START,IF_PASSED_AND_TRUE,FRAMED}
-	<figure>
+	{+START,IF_PASSED_AND_TRUE,FRAMED}
+		<figure>
+			{$GET,media}
+		</figure>
+	{+END}
+	{+START,IF_NON_PASSED_OR_FALSE,FRAMED}
 		{$GET,media}
-	</figure>
-{+END}
-{+START,IF_NON_PASSED_OR_FALSE,FRAMED}
-	{$GET,media}
-{+END}
+	{+END}
 </div>

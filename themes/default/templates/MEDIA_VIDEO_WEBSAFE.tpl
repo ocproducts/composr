@@ -1,8 +1,6 @@
 {$REQUIRE_JAVASCRIPT,jwplayer}
 {$SET,player_id,player_{$RAND}}
 
-{$,Scale to a maximum width because we can always maximise - for object/embed players we can use max-width for this}
-
 {$SET,player_width,}
 {+START,IF_NON_EMPTY,{WIDTH}}
 	{$SET,player_width,{$MIN,950,{WIDTH%}}},
@@ -50,20 +48,20 @@
 {+END}
 
 <div data-tpl="mediaAudioWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,player_width,player_height,LENGTH,URL,THUMB_URL,type,flashplayer,inline_stats}{_*}{+END}">
-{+START,IF,{$GET,raw_video}}
-	<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls">
-		<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
-		<span>{DESCRIPTION}</span>
-	</video>
-{+END}
-{+START,IF,{$NOT,{$GET,raw_video}}}
-	{+START,IF_PASSED_AND_TRUE,FRAMED}
-		<figure>
+	{+START,IF,{$GET,raw_video}}
+		<video{+START,IF_NON_EMPTY,{THUMB_URL}} poster="{THUMB_URL*}"{+END} width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" controls="controls">
+			<source src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" type="{MIME_TYPE*}" />
+			<span>{DESCRIPTION}</span>
+		</video>
+	{+END}
+	{+START,IF,{$NOT,{$GET,raw_video}}}
+		{+START,IF_PASSED_AND_TRUE,FRAMED}
+			<figure>
+				{$GET,media}
+			</figure>
+		{+END}
+		{+START,IF_NON_PASSED_OR_FALSE,FRAMED}
 			{$GET,media}
-		</figure>
+		{+END}
 	{+END}
-	{+START,IF_NON_PASSED_OR_FALSE,FRAMED}
-		{$GET,media}
-	{+END}
-{+END}
 </div>

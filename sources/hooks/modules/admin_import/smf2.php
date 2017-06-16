@@ -469,7 +469,7 @@ class Hook_import_smf2
         $rows = $db->query_select('custom_fields', array('*'));
 
         foreach ($rows as $row) {
-            if (import_check_if_imported('cpf', $row['id_field'])) {
+            if (import_check_if_imported('cpf', strval($row['id_field']))) {
                 continue;
             }
 
@@ -565,7 +565,7 @@ class Hook_import_smf2
                 $id_new = cns_make_custom_field($name, 0, $desc, $def, $pub_view, $own_view, $own_set, 0, $type, $req, $show_in_posts, 0, null, '', $on_join, $options, false);
             }
 
-            import_id_remap_put('cpf', $row['id_field'], $id_new);
+            import_id_remap_put('cpf', strval($row['id_field']), $id_new);
         }
     }
 
@@ -649,7 +649,7 @@ class Hook_import_smf2
 
                 $avatar_url = '';
                 if (!isset($row['avatar']) || (strlen($row['avatar']) == 0)) {
-                    $query_attachments = 'SELECT id_member,filename,width,height,size,attachment_type FROM ' . $table_prefix . 'attachments WHERE attachment_type=\'1\' AND id_member=\'' . strval($row['id_member']) . '\'';
+                    $query_attachments = 'SELECT id_member,filename,width,height,size,attachment_type FROM ' . $table_prefix . 'attachments WHERE ' . db_string_equal_to('attachment_type', '1') . ' AND ' . db_string_equal_to('id_member', strval($row['id_member']));
 
                     $attachment_data = $db->query($query_attachments, 1, 0);
                     if (isset($attachment_data[0]['filename']) && (strlen($attachment_data[0]['filename']) > 0)) {
@@ -894,10 +894,10 @@ class Hook_import_smf2
     /**
      * Fills the static_perm_arr with profile permissions for all Composr groups
      *
-     * @param integer $pid Profile ID to use
-     * @param integer $fid Forum ID to use
-     * @param object $db The database connector to import from
-     * @param string $table_prefix The table prefix the target prefix is using
+     * @param  integer $pid Profile ID to use
+     * @param  integer $fid Forum ID to use
+     * @param  object $db The database connector to import from
+     * @param  string $table_prefix The table prefix the target prefix is using
      */
     public function fill_static_perms_all($pid, $fid, $db, $table_prefix)
     {
@@ -971,7 +971,7 @@ class Hook_import_smf2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'topics t LEFT JOIN ' . $table_prefix . 'messages m ON t.id_first_msg=m.id_msg' . ($db->can_arbitrary_groupby() ? ' GROUP BY t.id_topic' : ''), 200, $row_start);
+            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'topics t LEFT JOIN ' . $table_prefix . 'messages m ON t.id_first_msg=m.id_msg' . ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() ? ' GROUP BY t.id_topic' : ''), 200, $row_start);
             $rows = remove_duplicate_rows($rows, 'id_topic');
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic', strval($row['id_topic']))) {
@@ -1072,7 +1072,7 @@ class Hook_import_smf2
      */
     protected function _fix_links_callback_member($m)
     {
-        return 'index.php?action=profile;u=' . strval(import_id_remap_get('member', strval($m[2]), true));
+        return 'index.php?action=profile;u=' . strval(import_id_remap_get('member', $m[2], true));
     }
 
     /**
@@ -1152,7 +1152,7 @@ class Hook_import_smf2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'attachments a JOIN ' . $table_prefix . 'messages m ON a.id_msg=m.id_msg WHERE a.id_msg<>0' . ($db->can_arbitrary_groupby() ? ' GROUP BY id_attach' : ''), 200, $row_start);
+            $rows = $db->query('SELECT * FROM ' . $table_prefix . 'attachments a JOIN ' . $table_prefix . 'messages m ON a.id_msg=m.id_msg WHERE a.id_msg<>0' . ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() ? ' GROUP BY id_attach' : ''), 200, $row_start);
             $rows = remove_duplicate_rows($rows, 'id_attach');
             foreach ($rows as $row) {
                 if (substr($row['filename'], -5) == 'thumb') {
@@ -1489,8 +1489,8 @@ class Hook_import_smf2
     /**
      * Used to set view access to Forums
      *
-     * @param integer $gid The Group ID to set
-     * @param string $fid The Forum ID to set
+     * @param  integer $gid The Group ID to set
+     * @param  string $fid The Forum ID to set
      */
     public function set_forum_view_accesss($gid, $fid)
     {
@@ -1512,8 +1512,8 @@ class Hook_import_smf2
     /**
      * Used to set view access to Forums
      *
-     * @param array $arr The static array map built from static_perm_arr
-     * @param integer $forum_id The Forum ID to set
+     * @param  array $arr The static array map built from static_perm_arr
+     * @param  integer $forum_id The Forum ID to set
      */
     public function sort_set_forum_perms_array($arr, $forum_id)
     {
@@ -1546,9 +1546,9 @@ class Hook_import_smf2
     /**
      * Used to Set Forum Permissions
      *
-     * @param integer $group_id The Group ID to set
-     * @param string $forum_id The Forum ID to set
-     * @param integer $role The basic Role they have: 0=ReadOnly, 1=Post/Submit, 2=Unvetted, 3=Moderate
+     * @param  integer $group_id The Group ID to set
+     * @param  string $forum_id The Forum ID to set
+     * @param  integer $role The basic Role they have: 0=ReadOnly, 1=Post/Submit, 2=Unvetted, 3=Moderate
      */
     public function set_forums_perms($group_id, $forum_id, $role = 0)
     {
@@ -1778,7 +1778,7 @@ class Hook_import_smf2
                     $news_article = '[html]' . $news_article . '[/html]';
                 }
 
-                $main_news_category = import_id_remap_get('news_category', $row['category'], true);
+                $main_news_category = import_id_remap_get('news_category', strval($row['category']), true);
                 if ($main_news_category === null) {
                     $main_news_category = $GLOBALS['SITE_DB']->query_select_value('news', 'MIN(id)');
                 }
@@ -1804,7 +1804,7 @@ class Hook_import_smf2
                     $image = '';
                 }
 
-                $submitter = import_id_remap_get('member', $row['author_id'], true);
+                $submitter = import_id_remap_get('member', strval($row['author_id']), true);
                 if ($submitter === null) {
                     $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                 }
@@ -1817,7 +1817,7 @@ class Hook_import_smf2
                 // Comments
                 $comments = $db->query_select('tp_variables', array('value1 AS subject', 'value2 AS post', 'value3 AS poster', 'value4 AS time'), array('type' => 'article_comment', 'value5' => $row['id']));
                 foreach ($comments as $comment) {
-                    $comment['poster'] = import_id_remap_get('member', $comment['poster'], true);
+                    $comment['poster'] = import_id_remap_get('member', strval($comment['poster']), true);
                     if ($comment['poster'] === null) {
                         $comment['poster'] = $GLOBALS['FORUM_DRIVER']->get_guest_id();
                     }

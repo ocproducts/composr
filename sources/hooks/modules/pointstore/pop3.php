@@ -173,7 +173,7 @@ class Hook_pointstore_pop3
         $newpop_url = build_url(array('page' => '_SELF', 'type' => '_newpop3', 'id' => 'pop3'), '_SELF');
         return do_template('FORM_SCREEN', array(
             '_GUID' => 'addf1563770845ba5fe4aaf2e60ca6fc',
-            'JS_FUNCTION_CALLS' => ['hookPointstorePop3'],
+            'JS_FUNCTION_CALLS' => array('hookPointstorePop3'),
             'HIDDEN' => '',
             'TITLE' => $title,
             'TEXT' => paragraph(do_lang_tempcode('ADDRESSES_ABOUT')),

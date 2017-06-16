@@ -40,5 +40,4 @@
             $cms.dom.$('#poll' + pollId).disabled = false;
         });
     };
-
 }(window.$cms));

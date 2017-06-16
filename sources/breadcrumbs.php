@@ -59,8 +59,11 @@ function load_breadcrumb_substitutions($segments)
 
     $segments_new = array();
     $done_one = false;
+    $final = false;
 
     foreach ($segments as $i => $segment) { // Loop by active breadcrumb segments
+        $include_self = true;
+
         if (!$done_one && $segment[0] !== '') {
             if ($segment[0] === null) {
                 list($segment_zone, $segment_attributes, $segment_hash) = array(null, null, null); // active page
@@ -70,15 +73,17 @@ function load_breadcrumb_substitutions($segments)
 
             foreach ($substitutions as $j => $substitution_details) { // Loop by substitutions
                 if ($substitution_details !== null) {
+                    list($substitution_match_key, $substitution_label, $substitution_links, $substitution_include_self, $substitution_final) = $substitution_details;
+
                     if ($segment[0] === null) {
-                        $does_match = match_key_match($substitution_details[0], false);
+                        $does_match = match_key_match($substitution_match_key, false);
                     } else {
-                        if (($substitution_details[0][0][0] == 'site') && ($segment_zone == '') || ($substitution_details[0][0][0] == '') && ($segment_zone == 'site')) {
+                        if (($substitution_match_key[0][0] == 'site') && ($segment_zone == '') || ($substitution_match_key[0][0] == '') && ($segment_zone == 'site')) {
                             // Special handling, we don't want single public zone option (collapse_user_zones) to be too "smart" and apply a rule intended for when that option is off
                             continue;
                         }
 
-                        $does_match = isset($segment_attributes['page']) && match_key_match($substitution_details[0], false, $segment_attributes, $segment_zone, $segment_attributes['page']);
+                        $does_match = isset($segment_attributes['page']) && match_key_match($substitution_match_key, false, $segment_attributes, $segment_zone, $segment_attributes['page']);
                     }
 
                     if ($does_match) {
@@ -86,7 +91,7 @@ function load_breadcrumb_substitutions($segments)
                             // New stem found
                             $segments_new_bak = $segments_new;
                             $segments_new = array();
-                            foreach ($substitution_details[2] as $new_segment) {
+                            foreach ($substitution_links as $new_segment) {
                                 if ((empty($new_segment[0])) && (empty($new_segment[1]))) { // <link /> indicating to keep existing links on tail, possibly new links on head
                                     $segments_new = array_merge($segments_new, $segments_new_bak);
                                 } else {
@@ -98,21 +103,29 @@ function load_breadcrumb_substitutions($segments)
                         }
 
                         if ($segment[0] === null) { // New label for active page specified here?
-                            if ($substitution_details[1] !== null) {
-                                $GLOBALS['BREADCRUMB_SET_SELF'] = $substitution_details[1];
+                            if ($substitution_label !== null) {
+                                $GLOBALS['BREADCRUMB_SET_SELF'] = $substitution_label;
                             }
                         }
 
                         $substitutions[$j] = null; // Stop loops when recursing
+
+                        if ($substitution_final) {
+                            $final = true;
+                        }
+
+                        $include_self = $substitution_include_self;
                     }
                 }
             }
         }
 
-        $segments_new[] = $segment;
+        if ($include_self) {
+            $segments_new[] = $segment;
+        }
     }
 
-    if ($done_one) {
+    if (($done_one) && (!$final)) {
         return load_breadcrumb_substitutions($segments_new); // Try a new sweep
     }
 
@@ -128,7 +141,7 @@ class Breadcrumb_substitution_loader
 {
     // Used during parsing
     private $tag_stack, $attribute_stack, $text_so_far;
-    private $substitution_current_match_key, $substitution_current_label, $substitution_current_links;
+    private $substitution_current_links;
     public $substitutions; // output
 
     /**
@@ -142,7 +155,6 @@ class Breadcrumb_substitution_loader
         $this->attribute_stack = array();
 
         $this->substitution_current_match_key = null;
-        $this->substitution_current_label = null;
         $this->substitution_current_links = array();
 
         $this->substitutions = array();
@@ -187,10 +199,6 @@ class Breadcrumb_substitution_loader
 
         switch ($tag) {
             case 'substitution':
-                $_substitution_current_match_key = isset($tag_attributes['match_key']) ? $tag_attributes['match_key'] : '_WILD:_WILD';
-                //$this->substitution_current_match_key = page_link_decode($_substitution_current_match_key); match_key_match doesn't actually want it like this
-                $this->substitution_current_match_key = array(explode(':', $_substitution_current_match_key));
-                $this->substitution_current_label = isset($tag_attributes['label']) ? $tag_attributes['label'] : null;
                 $this->substitution_current_links = array();
                 break;
 
@@ -227,10 +235,16 @@ class Breadcrumb_substitution_loader
                     break;
                 }
 
+                $_substitution_current_match_key = isset($tag_attributes['match_key']) ? $tag_attributes['match_key'] : '_WILD:_WILD';
+                //$substitution_current_match_key = page_link_decode($_substitution_current_match_key); match_key_match doesn't actually want it like this
+                $substitution_current_match_key = array(explode(':', $_substitution_current_match_key));
+
                 $this->substitutions[] = array(
-                    $this->substitution_current_match_key,
-                    $this->substitution_current_label,
-                    $this->substitution_current_links
+                    $substitution_current_match_key,
+                    isset($tag_attributes['label']) ? $tag_attributes['label'] : null,
+                    $this->substitution_current_links,
+                    isset($tag_attributes['include_self']) ? ($tag_attributes['include_self'] == 'true') : true,
+                    isset($tag_attributes['final']) ? ($tag_attributes['final'] == 'true') : false,
                 );
                 break;
 

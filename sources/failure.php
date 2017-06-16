@@ -48,6 +48,11 @@ function init__failure()
 
     global $RUNNING_TASK;
     $RUNNING_TASK = false;
+
+    global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+    if (!isset($BLOCK_OCPRODUCTS_ERROR_EMAILS)) {
+        $BLOCK_OCPRODUCTS_ERROR_EMAILS = false;
+    }
 }
 
 /**
@@ -659,13 +664,13 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         $username = function_exists('do_lang') ? do_lang('UNKNOWN') : 'Unknown';
     }
 
-    $url = cms_srv('SCRIPT_NAME') . '?' . cms_srv('QUERY_STRING');
+    $url = cms_srv('REQUEST_URI');
     $post = '';
     foreach ($_POST as $key => $val) {
         if (!is_string($val)) {
             continue;
         }
-        $post .= $key . '=>' . $val . "\n\n";
+        $post .= $key . ' => ' . $val . "\n\n";
     }
 
     $count = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', array('ip' => $ip));
@@ -1009,7 +1014,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         if ($num == 51) {
             return; // We've sent too many error mails today
         }
-        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
+        $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'values_elective WHERE the_name LIKE \'' . db_encode_like('num\_error\_mails\_%') . '\'');
         persistent_cache_delete('VALUES');
         set_value('num_error_mails_' . date('Y-m-d'), strval($num), true);
     }
@@ -1019,6 +1024,8 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
 
     $error_url = get_self_url_easy(true);
 
+    global $BLOCK_OCPRODUCTS_ERROR_EMAILS;
+
     require_code('notifications');
     require_code('comcode');
     $mail = do_notification_lang('ERROR_MAIL', comcode_escape($error_url), $text, $ocproducts ? '?' : get_ip_address(), get_site_default_lang());
@@ -1026,6 +1033,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
     if (
         ($ocproducts) &&
         (get_option('send_error_emails_ocproducts') == '1') &&
+        (!$BLOCK_OCPRODUCTS_ERROR_EMAILS) &&
         (!running_script('cron_bridge')) &&
         (strpos($text, '_custom/') === false) &&
         (strpos($text, '_custom\\') === false) &&
@@ -1050,6 +1058,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, 'INSERT command denied to user') === false) &&
         (strpos($text, 'Disk is full writing') === false) &&
         (strpos($text, 'Disk quota exceeded') === false) &&
+        (strpos($text, 'Lock wait timeout exceeded') === false) &&
         (strpos($text, 'No space left on device') === false) &&
         (strpos($text, 'from storage engine') === false) &&
         (strpos($text, 'Lost connection to MySQL server') === false) &&
@@ -1061,6 +1070,7 @@ function relay_error_notification($text, $ocproducts = true, $notification_type 
         (strpos($text, '.MAD') === false) && // MariaDB
         (strpos($text, '.MYI') === false) && // MySQL
         (strpos($text, '.MYD') === false) && // MySQL
+        (strpos($text, 'syntax error, unexpected') === false) && // MySQL full-text parsing error
         (strpos($text, 'MySQL server has gone away') === false) &&
         (strpos($text, 'Incorrect key file') === false) &&
         (strpos($text, 'Too many connections') === false) &&
@@ -1347,7 +1357,7 @@ function _access_denied($class, $param, $force_login)
     require_code('global3');
     set_http_status_code(401); // Stop spiders ever storing the URL that caused this
 
-    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new')) { // Architecturally hackerish chat erroring. We do this as a session may have expired while the background message checker is running (e.g. after a computer unsuspend) and we don't want to leave it doing relatively intensive access-denied pages responses
+    if ((running_script('messages')) && (get_param_string('action', 'new') == 'new') && (addon_installed('chat'))) { // Architecturally hackerish chat erroring. We do this as a session may have expired while the background message checker is running (e.g. after a computer unsuspend) and we don't want to leave it doing relatively intensive access-denied pages responses
         require_code('chat_poller');
         chat_null_exit();
     }
@@ -1416,7 +1426,7 @@ function _access_denied($class, $param, $force_login)
 /**
  * Specify if errors should be thrown, rather than resulting in HTML exit screens.
  *
- * @param  boolean  $_throwing_errors Whether we should throw errors
+ * @param  boolean $_throwing_errors Whether we should throw errors
  */
 function set_throw_errors($_throwing_errors = true)
 {
@@ -1427,7 +1437,7 @@ function set_throw_errors($_throwing_errors = true)
 /**
  * Find whether we should throw errors, rather than create HTML exit screens with the error messages / correction screens.
  *
- * @return boolean        Whether to are throwing errors
+ * @return boolean Whether to are throwing errors
  */
 function throwing_errors()
 {
@@ -1445,7 +1455,7 @@ class CMSException extends Exception
     /**
      * Constructor.
      *
-     * @param mixed $msg Error message (Tempcode containing HTML, or string containing non-HTML)
+     * @param  mixed $msg Error message (Tempcode containing HTML, or string containing non-HTML)
      */
     public function __construct($msg)
     {

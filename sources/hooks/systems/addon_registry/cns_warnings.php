@@ -182,6 +182,7 @@ class Hook_addon_registry_cns_warnings
     {
         require_lang('cns');
         require_css('cns');
+
         return array(
             lorem_globalise(do_lorem_template('CNS_WARNING_HISTORY_SCREEN', array(
                 'TITLE' => lorem_title(),

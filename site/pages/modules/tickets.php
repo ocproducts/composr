@@ -879,7 +879,7 @@ class Module_tickets
             if ($email == '') {
                 $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
             }
-            send_ticket_email($ticket_id, $ticket_title, $post, $ticket_url, $email, $ticket_type_id, null);
+            send_ticket_email($ticket_id, $ticket_title, $post, $ticket_url, ($ticket_type_id !== null) ? $email : '', $ticket_type_id, null);
         }
 
         // Close ticket, if requested...
@@ -944,6 +944,10 @@ class Module_tickets
      */
     public function do_search($title, $ticket_id, $content)
     {
+        if (!addon_installed('catalogues')) {
+            return null;
+        }
+
         require_code('database_search');
 
         // We don't want to display too many --- just enough to show the top results

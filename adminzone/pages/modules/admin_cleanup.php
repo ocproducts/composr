@@ -37,7 +37,6 @@ class Module_admin_cleanup
         $info['hack_version'] = null;
         $info['version'] = 3;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = true;
         return $info;
     }
 
@@ -115,7 +114,7 @@ class Module_admin_cleanup
 
         require_code('form_templates');
 
-        $checkbox_ids = [];
+        $checkbox_ids = array();
         $_fields_cache = array();
         $_fields_optimise = array();
         $fields_cache_expand = true;
@@ -156,7 +155,7 @@ class Module_admin_cleanup
 
         $fields = new Tempcode();
 
-        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'SECTION_HIDDEN' =>  !$fields_cache_expand, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_CACHES', escape_html(join(', ', $checkbox_ids))))));
+        $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '3ddb387dba8c42ac4ef7b85621052e11', 'SECTION_HIDDEN' =>  !$fields_cache_expand, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_CACHES'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_CACHES', escape_html(implode(', ', $checkbox_ids))))));
         $fields->attach($fields_cache);
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4a9d6e722f246887160c444a062a9d00', 'SECTION_HIDDEN' =>  !$fields_optimise_expand, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_OPTIMISERS'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_OPTIMISERS'))));

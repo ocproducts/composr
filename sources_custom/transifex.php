@@ -485,7 +485,7 @@ function transifex_pull_script()
         } else {
             $filename = 'language-' . escape_header($lang) . '-' . get_version_branch(floatval(cms_version_number())) . '.tar';
         }
-        header('Content-Disposition: attachment; filename="' . addslashes($filename) . '"');
+        header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
         safe_ini_set('ocproducts.xss_detect', '0');
 
         require_code('tar');
@@ -598,13 +598,13 @@ function pull_lang_from_transifex($project_slug, $tar_file, $lang, $core_only, $
                 $files_str .= "\n            '" . $file . "',";
             }
 
-            $description = 'Translation into {$language_name}.
+            $description = "Translation into {$language_name}.
 
 Completeness: {$percentage}% (29% typically means translated fully apart from administrative strings).
 
 This addon was automatically bundled from community contributions provided on Transifex and will be routinely updated alongside new Composr patch releases.
 
-Translations may also be downloaded directly from Transifex.';
+Translations may also be downloaded directly from Transifex.";
 
             $open = '<' . '?php';
 

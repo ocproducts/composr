@@ -166,8 +166,8 @@ function get_ticket_type($ticket_type_id)
 /**
  * Generate a new ticket ID.
  *
- * @param ?MEMBER $member_id Member ID ticket is for (null: current member)
- * @param ?ID_TEXT $stem Ticket ID stem (null: randomise)
+ * @param  ?MEMBER $member_id Member ID ticket is for (null: current member)
+ * @param  ?ID_TEXT $stem Ticket ID stem (null: randomise)
  * @return string New ticket ID
  */
 function ticket_generate_new_id($member_id = null, $stem = null)

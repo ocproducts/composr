@@ -95,10 +95,10 @@
         var isCms = null;
         var rows = matrix.getElementsByTagName('tr');
         var doneHeader = false;
-        for (i = 0; i < values.length; i++) {// For all items that we are loading permissions for (we usually just do it for one, but sometimes we load whole sets if we are batch setting permissions)
+        for (i = 0; i < values.length; i++) { // For all items that we are loading permissions for (we usually just do it for one, but sometimes we load whole sets if we are batch setting permissions)
             node = window.sitemap.getElementByIdHack(values[i]);
 
-            if (i === 0) {// On first iteration we do a cleanup
+            if (i === 0) { // On first iteration we do a cleanup
 
                 // Find usergroups
                 for (j = 0; j < node.attributes.length; j++) {
@@ -178,12 +178,13 @@
                         group = rows[k].id.substring(7, rows[k].id.indexOf('_privilege_container'));
 
                         element = document.getElementById('access_' + group + '_privilege_' + privilege);
-                        if (!element) // We haven't added it yet for one of the resources we're doing permissions for
+                        if ((!element) && (!document.getElementById('privilege_cell_' + group + '_' + privilege))) // We haven't added it yet for one of the resources we're doing permissions for
                         {
                             if (!doneHeader) {
                                 row = rows[0];
                                 newCell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 newCell.className = 'privilege_header';
+                                newCell.id = 'privilege_header_' + privilege;
                                 $cms.dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.column_color + '&amp;text=' + encodeURIComponent(privilegeTitle) + $cms.filter.html($cms.keepStub()) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
@@ -197,6 +198,7 @@
                             row = document.getElementById('access_' + group + '_privilege_container');
                             newCell = row.insertBefore(document.createElement('td'), row.cells[row.cells.length - 1]);
                             newCell.className = 'form_table_field_input privilege_cell';
+                            new_cell.id = 'privilege_cell_' + group + '_' + privilege;
                             if (document.getElementById('access_' + group).name != '_ignore') {
                                 $cms.dom.html(newCell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilegeTitle) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
                                 $cms.dom.on(newCell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {

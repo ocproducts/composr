@@ -9,4 +9,3 @@
 	<li>{!NEW_COMMENT_E}</li>
 	<li>{!NEW_COMMENT_F}</li>
 </ul>
-

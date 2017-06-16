@@ -12,4 +12,3 @@
 		{FIELDS}
 	</tbody>
 </table></div>
-

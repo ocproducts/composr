@@ -611,7 +611,7 @@ class Module_admin_cns_members
         $hidden = new Tempcode();
         $fields = new Tempcode();
 
-        $js_function_calls = [];
+        $js_function_calls = array();
 
         // Contents (preset / detailed specification)...
 
@@ -647,7 +647,7 @@ class Module_admin_cns_members
         foreach ($headings as $field_label => $field_name) {
             $fields_to_order_by->attach(form_input_list_entry($field_label, $field_name == 'id'));
         }
-        $fields->attach(form_input_list(do_lang_tempcode('ORDER'), do_lang_tempcode('MEMBER_EXPORT_ORDER'), 'order_by', $fields_to_order_by, null, false, true));
+        $fields->attach(form_input_multi_list(do_lang_tempcode('ORDER'), do_lang_tempcode('MEMBER_EXPORT_ORDER'), 'order_by', $fields_to_order_by, null, 10, true));
 
         // Usergroups
         $groups = cns_create_selection_list_usergroups();
@@ -751,7 +751,7 @@ class Module_admin_cns_members
             if (filesize($_FILES['file']['tmp_name']) < 1024 * 1024 * 3) { // Cleanup possible line ending problems, but only if file not too big
                 $fixed_contents = unixify_line_format(file_get_contents($_FILES['file']['tmp_name']));
                 require_code('files');
-                cms_file_put_contents_safe($_FILES['upload']['tmp_name'], $fixed_contents, FILE_WRITE_FAILURE_SILENT);
+                cms_file_put_contents_safe($_FILES['file']['tmp_name'], $fixed_contents, FILE_WRITE_FAILURE_SILENT);
             }
 
             $target_path = get_custom_file_base() . '/temp/' . basename($_FILES['file']['tmp_name']);

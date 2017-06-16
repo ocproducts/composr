@@ -7,4 +7,3 @@
  - {!TYPE@} {TYPE@}
  - {!IDENTIFIER@} {ID@}
  - [url="{!CLICK_TO_EDIT#}"]{URL@}[/url]
-

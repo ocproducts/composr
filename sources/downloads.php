@@ -36,7 +36,7 @@ function download_licence_script()
 }
 
 /**
- * Get Tempcode for a download 'feature box' for the sgiven row
+ * Get Tempcode for a download 'feature box' for the given row
  *
  * @param  array $row The database field row of this download
  * @param  boolean $pic Whether to show a picture
@@ -62,7 +62,11 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         $zone = get_module_zone('downloads');
     }
 
-    $just_download_row = db_map_restrict($row, array('id', 'description'));
+    if (array_key_exists('id', $row)) {
+        $just_download_row = db_map_restrict($row, array('id', 'description'));
+    } else {
+        $just_download_row = db_map_restrict($row, array('description'));
+    }
 
     // Details
     $file_size = $row['file_size'];
@@ -129,7 +133,11 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
 
     $may_download = has_privilege(get_member(), 'download', 'downloads', array(strval($row['category_id'])));
 
-    $download_url = generate_dload_url($row['id'], $row['url_redirect'] != '');
+    if (array_key_exists('id', $row)) {
+        $download_url = generate_dload_url($row['id'], $row['url_redirect'] != '');
+    } else {
+        $download_url = new Tempcode();
+    }
     
     // Final template
     if (($full_img_url != '') && (url_is_local($full_img_url))) {
@@ -315,7 +323,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
     $children[0]['breadcrumbs'] = $breadcrumbs;
 
     // Children of this category
-    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('id', 'category'), array('parent_id' => $category_id), '', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
+    $rows = $GLOBALS['SITE_DB']->query_select('download_categories', array('id', 'category'), array('parent_id' => $category_id), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('category') . ' ASC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         $rows = array();
     }
@@ -323,7 +331,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
     if ($submitter !== null) {
         $where['submitter'] = $submitter;
     }
-    $erows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id', 'name', 'submitter', 'original_filename'), $where, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
+    $erows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id', 'name', 'submitter', 'original_filename'), $where, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' ASC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     if (count($erows) == intval(get_option('general_safety_listing_limit'))) {
         $erows = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id', 'name', 'submitter', 'original_filename'), $where, 'ORDER BY add_date DESC', intval(get_option('general_safety_listing_limit'))/*reasonable limit*/);
     }
@@ -611,7 +619,7 @@ function count_download_category_children($category_id)
  *
  * @param  AUTO_LINK $id The ID of the download to be downloaded
  * @param  boolean $use_gateway Whether to use the gateway script
- * @return URLPATH The URL
+ * @return Tempcode The URL
  */
 function generate_dload_url($id, $use_gateway)
 {
@@ -622,15 +630,17 @@ function generate_dload_url($id, $use_gateway)
     $keep = symbol_tempcode('KEEP', array('0', '1'));
 
     if ($use_gateway) {
-        $download_url = find_script('download_gateway');
+        $download_url = make_string_tempcode(find_script('download_gateway'));
     } else {
-        $download_url = find_script('dload');
+        $download_url = make_string_tempcode(find_script('dload'));
     }
 
-    $download_url .= '?id=' . strval($id) . $keep->evaluate();
+    $download_url->attach('?id=' . strval($id));
+    $download_url->attach($keep);
 
     if (get_option('anti_leech') == '1') {
-        $download_url .= '&for_session=' . md5(strval(get_session_id()));
+        $download_url->attach('&for_session=');
+        $download_url->attach(symbol_tempcode('SESSION_HASHED'));
     }
 
     return $download_url;

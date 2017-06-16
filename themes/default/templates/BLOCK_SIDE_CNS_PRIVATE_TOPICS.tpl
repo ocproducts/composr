@@ -19,4 +19,3 @@
 		</ul>
 	{+END}
 </div></section>
-

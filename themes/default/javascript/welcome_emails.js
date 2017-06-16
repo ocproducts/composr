@@ -17,5 +17,4 @@
             newsletterField.form.elements['usergroup_type'][2].disabled = hasNewsletter || !hasUsergroup;
         }
     };
-
 }(window.$cms));

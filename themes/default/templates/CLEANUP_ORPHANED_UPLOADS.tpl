@@ -7,4 +7,3 @@
 		{+END}
 	</div></section>
 {+END}
-

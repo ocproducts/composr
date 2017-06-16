@@ -34,7 +34,7 @@ class Hook_config_bcc
             'human_name' => 'BCC',
             'type' => 'tick',
             'category' => 'SITE',
-            'group' => 'EMAIL',
+            'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_bcc',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

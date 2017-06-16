@@ -19,7 +19,7 @@
 		</div>
 
 		<p>{!EMAIL_NEWSLETTER}</p>
-	 </div>
+	</div>
 
 	<p class="proceed_button">
 		<input class="button_screen buttons__yes" type="submit" value="{!I_AGREE}" />

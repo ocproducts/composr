@@ -12,13 +12,15 @@
 
 */
 
-/*EXTRA FUNCTIONS: pg\_.+*/
+/*EXTRA FUNCTIONS: pg\_.+|get_current_user*/
 
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
  * @package    core_database_drivers
  */
+
+// See sup_postgresql tutorial for documentation on using PostgreSQL.
 
 /**
  * Database Driver.
@@ -36,6 +38,14 @@ class Database_Static_postgresql extends DatabaseDriver
      */
     public function default_user()
     {
+        if ((php_function_allowed('get_current_user'))) {
+            //$_ret = posix_getpwuid(posix_getuid()); $ret = $_ret['name'];
+            //$ret = posix_getlogin();
+            $ret = get_current_user();
+            if (!in_array($ret, array('apache', 'nobody', 'www', '_www'))) {
+                return $ret;
+            }
+        }
         return 'postgres';
     }
 
@@ -70,7 +80,7 @@ class Database_Static_postgresql extends DatabaseDriver
         if (!function_exists('pg_pconnect')) {
             $error = 'The postgreSQL PHP extension not installed (anymore?). You need to contact the system administrator of this server.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -80,7 +90,7 @@ class Database_Static_postgresql extends DatabaseDriver
         if ($connection === false) {
             $error = 'Could not connect to database-server (' . @pg_last_error() . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
@@ -97,7 +107,7 @@ class Database_Static_postgresql extends DatabaseDriver
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
-     * @param  array $connection A DB connection
+     * @param  mixed $connection The DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
@@ -106,7 +116,7 @@ class Database_Static_postgresql extends DatabaseDriver
      */
     public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
-        if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) {
+        if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) {
             if (($max !== null) && ($start !== null)) {
                 $query .= ' LIMIT ' . strval(intval($max)) . ' OFFSET ' . strval(intval($start));
             } elseif ($max !== null) {
@@ -116,13 +126,16 @@ class Database_Static_postgresql extends DatabaseDriver
             }
         }
 
+        $sub = substr(ltrim($query), 0, 4);
+        $has_results = (($sub === '(SEL') || ($sub === 'SELE') || ($sub === 'sele') || ($sub === 'CHEC') || ($sub === 'EXPL') || ($sub === 'REPA') || ($sub === 'DESC') || ($sub === 'SHOW'));
+
         $results = @pg_query($connection, $query);
-        if ((($results === false) || (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results === true))) && (!$fail_ok)) {
+        if ((($results === false) || (($has_results) && ($results === true))) && (!$fail_ok)) {
             $err = pg_last_error($connection);
             if (function_exists('ocp_mark_as_escaped')) {
                 ocp_mark_as_escaped($err);
             }
-            if ((!running_script('upgrader')) && (!get_mass_import_mode())) {
+            if ((!running_script('upgrader')) && ((!get_mass_import_mode()) || (get_param_integer('keep_fatalistic', 0) == 1))) {
                 if ((!function_exists('do_lang')) || (do_lang('QUERY_FAILED', null, null, null, null, false) === null)) {
                     $this->failed_query_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
                 }
@@ -134,12 +147,12 @@ class Database_Static_postgresql extends DatabaseDriver
             }
         }
 
-        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
+        if (($results !== true) && ($has_results) && ($results !== false)) {
             return $this->get_query_rows($results);
         }
 
         if ($get_insert_id) {
-            if (strtoupper(substr($query, 0, 7)) == 'UPDATE ') {
+            if (strtoupper(substr(ltrim($query), 0, 7)) == 'UPDATE ') {
                 return null;
             }
 
@@ -189,6 +202,8 @@ class Database_Static_postgresql extends DatabaseDriver
                     } else {
                         $newrow[$name] = null;
                     }
+                } elseif (substr($type, 0, 5) == 'FLOAT') {
+                        $newrow[$name] = floatval($v);
                 } else {
                     $newrow[$name] = $v;
                 }
@@ -207,9 +222,10 @@ class Database_Static_postgresql extends DatabaseDriver
     /**
      * Get a map of Composr field types, to actual database types.
      *
+     * @param  boolean $for_alter Whether this is for adding a table field
      * @return array The map
      */
-    public function get_type_remap()
+    public function get_type_remap($for_alter)
     {
         $type_remap = array(
             'AUTO' => 'serial',
@@ -238,13 +254,16 @@ class Database_Static_postgresql extends DatabaseDriver
     }
 
     /**
-     * Create a new table.
+     * Get SQL for creating a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
-     * @param  array $connection The DB connection to make on
+     * @param  mixed $connection The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
      */
-    public function create_table($table_name, $fields, $connection)
+    public function create_table($table_name, $fields, $connection, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->get_type_remap();
 
@@ -277,27 +296,72 @@ class Database_Static_postgresql extends DatabaseDriver
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $query = 'CREATE TABLE ' . $table_name . ' (
-          ' . $_fields . '
-          PRIMARY KEY (' . $keys . ')
-        )';
-        $this->query($query, $connection, null, null);
+        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
+        return array($query);
     }
 
     /**
-     * Create a table index.
+     * Find whether table truncation support is present
+     *
+     * @return boolean Whether it is
+     */
+    public function supports_truncate_table()
+    {
+        return true;
+    }
+
+    /**
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
-     * @param  array $connection The DB connection to make on
+     * @param  mixed $connection The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @param  string $table_prefix The table prefix
+     * @return array List of SQL queries to run
      */
-    public function create_index($table_name, $index_name, $_fields, $connection)
+    public function create_index($table_name, $index_name, $_fields, $connection, $raw_table_name, $unique_key_fields, $table_prefix)
     {
         if ($index_name[0] == '#') {
-            return;
+            $index_name = substr($index_name, 1);
+
+            $postgres_fulltext_language = function_exists('get_value') ? get_value('postgres_fulltext_language') : null/*backup restore?*/;
+            if ($postgres_fulltext_language === null) {
+                $postgres_fulltext_language = 'english';
+            }
+
+            $aggregation = '';
+            foreach (explode(',', $_fields) as $_field) {
+                if ($aggregation != '') {
+                    $aggregation .= ' || \' \' || ';
+                }
+                $aggregation .= '\'' . $this->db_escape_string($_field) . '\'';
+            }
+
+            return array('CREATE INDEX ' . $index_name . '__' . $table_name . ' ON ' . $table_name . ' USING gin(to_tsvector(\'pg_catalog.' . $postgres_fulltext_language . '\', ' . $aggregation . '))');
         }
-        $this->query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $connection);
+
+        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
+
+        $fields = explode(',', $_fields);
+        foreach ($fields as $field) {
+            $sql = 'SELECT m_type FROM ' . $table_prefix . 'db_meta WHERE m_table=\'' . $this->escape_string($raw_table_name) . '\' AND m_name=\'' . $this->escape_string($field) . '\'';
+            $values = $this->query($sql, $connection, null, null, true);
+            if (!isset($values[0])) {
+                continue; // No result found
+            }
+            $first = $values[0];
+            $field_type = current($first); // Result found
+
+            if (strpos($field_type, 'LONG') !== false) {
+                // We can't support this in PostgreSQL, too much data will give an error when inserting into the index
+                return array();
+            }
+        }
+
+        return array('CREATE INDEX ' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')');
     }
 
     /**
@@ -305,12 +369,114 @@ class Database_Static_postgresql extends DatabaseDriver
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  array $new_key A list of fields to put in the new key
-     * @param  array $connection The DB connection to make on
+     * @param  mixed $connection The DB connection to make on
      */
     public function change_primary_key($table_name, $new_key, $connection)
     {
         $this->query('ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY', $connection);
         $this->query('ALTER TABLE ' . $table_name . ' ADD PRIMARY KEY (' . implode(',', $new_key) . ')', $connection);
+    }
+
+    /**
+     * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
+     *
+     * @param  string $table The table name
+     * @param  mixed $connection The DB connection
+     * @return ?integer The count (null: do it normally)
+     */
+    public function get_table_count_approx($table, $connection)
+    {
+        $sql = 'SELECT n_live_tup FROM pg_stat_all_tables WHERE relname=\'' . $this->escape_string($table) . '\'';
+        $values = $this->query($sql, $connection, null, null, true);
+        if (!isset($values[0])) {
+            return null; // No result found
+        }
+        $first = $values[0];
+        $v = current($first); // Result found
+        return $v;
+    }
+
+    /**
+     * Get minimum search length.
+     * This is broadly MySQL-specific. For other databases we will usually return 4, although there may truly not be a limit on it.
+     *
+     * @param  mixed $connection The DB connection
+     * @return integer Search length
+     */
+    public function get_minimum_search_length($connection)
+    {
+        return 1;
+    }
+
+    /**
+     * Find whether full-text-search is present
+     *
+     * @param  mixed $connection The DB connection
+     * @return boolean Whether it is
+     */
+    public function has_full_text($connection)
+    {
+        return true;
+    }
+
+    /**
+     * Find whether full-text-boolean-search is present
+     *
+     * @return boolean Whether it is
+     */
+    public function has_full_text_boolean()
+    {
+        return true; // Actually it is always boolean for PostgreSQL
+    }
+
+    /**
+     * Assemble part of a WHERE clause for doing full-text search
+     *
+     * @param  string $content Our match string (assumes "?" has been stripped already)
+     * @param  boolean $boolean Whether to do a boolean full text search
+     * @return string Part of a WHERE clause for doing full-text search
+     */
+    public function full_text_assemble($content, $boolean)
+    {
+        static $stopwords = null;
+        if ($stopwords === null) {
+            require_code('database_search');
+            $stopwords = get_stopwords_list();
+        }
+        if (isset($stopwords[trim(strtolower($content), '"')])) {
+            // This is an imperfect solution for searching for a stop-word
+            // It will not cover the case where the stop-word is within the wider text. But we can't handle that case efficiently anyway
+            return db_string_equal_to('?', trim($content, '"'));
+        }
+
+        $postgres_fulltext_language = get_value('postgres_fulltext_language');
+        if ($postgres_fulltext_language === null) {
+            $postgres_fulltext_language = 'english';
+        }
+
+        return 'to_tsvector(?) @@ plainto_tsquery(\'pg_catalog.' . $postgres_fulltext_language . '\', \'' . $this->db_escape_string($content) . '\')';
+    }
+
+    /**
+     * Whether 'OFFSET' syntax is used on limit clauses.
+     *
+     * @return boolean Whether it is
+     */
+    public function uses_offset_syntax()
+    {
+        return true;
+    }
+
+    /**
+     * Set a time limit on future queries.
+     * Not all database drivers support this.
+     *
+     * @param  integer $seconds The time limit in seconds
+     * @param  mixed $connection The DB connection
+     */
+    public function set_query_time_limit($seconds, $connection)
+    {
+        $this->query('SET statement_timeout TO ' . strval($seconds * 1000), $connection, null, null, true);
     }
 
     /**
@@ -322,7 +488,7 @@ class Database_Static_postgresql extends DatabaseDriver
      */
     public function string_equal_to($attribute, $compare)
     {
-        return $attribute . " LIKE '" . $this->escape_string($compare) . "'";
+        return $attribute . "='" . $this->escape_string($compare) . "'";
     }
 
     /**

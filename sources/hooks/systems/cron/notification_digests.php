@@ -41,7 +41,7 @@ class Hook_cron_notification_digests
             $start = 0;
             do {
                 // Find where not tint-in-tin
-                $members = $GLOBALS['SITE_DB']->query('SELECT DISTINCT d_to_member_id FROM ' . get_table_prefix() . 'digestives_consumed c JOIN ' . get_table_prefix() . 'digestives_tin t ON c.c_member_id=t.d_to_member_id AND c.c_frequency=' . strval($frequency) . ' WHERE c_time<' . strval(time() - $timespan) . ' AND c_frequency=' . strval($frequency), 100, $start);
+                $members = $GLOBALS['SITE_DB']->query('SELECT DISTINCT d_to_member_id FROM ' . get_table_prefix() . 'digestives_consumed c JOIN ' . get_table_prefix() . 'digestives_tin t ON c.c_member_id=t.d_to_member_id AND c.c_frequency=t.d_frequency WHERE c_time<' . strval(time() - $timespan) . ' AND c_frequency=' . strval($frequency), 100, $start);
 
                 foreach ($members as $member) {
                     require_lang('notifications');

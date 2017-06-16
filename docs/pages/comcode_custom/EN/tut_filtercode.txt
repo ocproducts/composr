@@ -1,6 +1,8 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Filtering using Filtercode syntax[/title]
 
-Composr contains a filtering system for selecting content based upon defined filters. Filtercode is the language for defining filter strings, and is an advanced feature of Composr. It is not to be confused with Selectcode, which is the language for determining what categories to return results from.
+Composr contains a filtering system for selecting content based upon defined filters. Filtercode is the language for defining filter strings, and is an advanced feature of Composr. 
+
+Filtercode is not to be confused with Selectcode, which is the language for determining what results to return via ID, ID range, category, or tree-position.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -201,6 +203,16 @@ If you wanted it on the news archive screen, you'd edit the [tt]NEWS_ARCHIVE_SCR
 [code="Tempcode"]
 {$BLOCK,block=main_content_filtering,param=author~=<author>\,date_and_time><date_and_time>\,news|news_article|title|meta_keywords|meta_description~=<news>\,submitter=<submitter>\,average_rating>=<average_rating>,content_type=news,labels=date_and_time=Newer than\,news=Containing\,submitter=Submitted by\,average_rating=Minimum rating,types=date_and_time=days}
 [/code]
+
+[title="2"]Sorting[/title]
+
+Filtercode has support for a number of hard-coded special field names...
+ - [tt]average_rating[/tt] -- rating
+ - [tt]compound_rating[/tt] -- total likes
+ - [tt]fixed_random[/tt] -- a psuedo-random number for the entry that changes daily
+ - [tt]meta_description[/tt] -- meta description
+ - [tt]meta_keywords[/tt] -- meta keywords
+Some of these may also appear as sorting options in various blocks.
 
 [concepts
  0_key="Filtercode"  0_value="Composr's syntax for filtering returned content"

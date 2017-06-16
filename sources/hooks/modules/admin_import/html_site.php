@@ -106,7 +106,7 @@ class Hook_import_html_site
 
         $fields->attach(form_input_tick(do_lang_tempcode('FIX_INVALID_HTML'), do_lang_tempcode('DESCRIPTION_FIX_INVALID_HTML'), 'fix_html', true));
 
-        $fields->attach(form_input_line(do_lang_tempcode('BASE_URL'), do_lang_tempcode('DESCRIPTION_IMPORT_BASE_URL'), 'base_url', get_base_url(), true));
+        $fields->attach(form_input_line(do_lang_tempcode('installer:BASE_URL'), do_lang_tempcode('DESCRIPTION_IMPORT_BASE_URL'), 'base_url', get_base_url(), true));
 
         return $fields;
     }

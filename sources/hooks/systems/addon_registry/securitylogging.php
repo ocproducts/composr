@@ -78,9 +78,7 @@ class Hook_addon_registry_securitylogging
             'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
-            'previously_in_addon' => array(
-                'core_securitylogging'
-            )
+            'previously_in_addon' => array('core_securitylogging'),
         );
     }
 
@@ -154,8 +152,6 @@ class Hook_addon_registry_securitylogging
      */
     public function tpl_preview__ip_ban_screen()
     {
-        require_lang('submitban');
-
         return array(
             lorem_globalise(do_lorem_template('IP_BAN_SCREEN', array(
                 'PING_URL' => placeholder_url(),
@@ -205,7 +201,6 @@ class Hook_addon_registry_securitylogging
      */
     public function tpl_preview__administrative__security_screen()
     {
-        require_lang('security');
         return array(
             lorem_globalise(do_lorem_template('SECURITY_SCREEN', array(
                 'TITLE' => lorem_title(),
@@ -227,7 +222,6 @@ class Hook_addon_registry_securitylogging
      */
     public function tpl_preview__administrative__security_alert_screen()
     {
-        require_lang('security');
         return array(
             lorem_globalise(do_lorem_template('SECURITY_ALERT_SCREEN', array(
                 'TITLE' => lorem_title(),
@@ -252,8 +246,6 @@ class Hook_addon_registry_securitylogging
      */
     public function tpl_preview__administrative__lookup_screen()
     {
-        require_lang('actionlog');
-
         $inner_ip_list = new Tempcode();
         foreach (placeholder_array() as $value) {
             $inner_ip_list->attach(do_lorem_template('LOOKUP_IP_LIST_ENTRY', array(

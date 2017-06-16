@@ -128,7 +128,6 @@ class Hook_addon_registry_stats
             'sources/hooks/systems/page_groupings/stats.php',
             'sources/hooks/systems/non_active_urls/stats.php',
             'sources/hooks/systems/addon_registry/stats.php',
-            'sources/hooks/modules/admin_import_types/stats.php',
             'sources/hooks/modules/admin_stats/.htaccess',
             'sources_custom/hooks/modules/admin_stats/.htaccess',
             'sources/hooks/modules/admin_stats/index.html',

@@ -29,7 +29,9 @@ function init__sitemap_xml()
 
     require_code('sitemap');
 
-    define('URLS_PER_SITEMAP_SET', 250); // Limit is 50,000, but we are allowed up to 50,000 sets, so let's be performant here and have small sets
+    if (!defined('URLS_PER_SITEMAP_SET')) {
+        define('URLS_PER_SITEMAP_SET', 250); // Limit is 50,000, but we are allowed up to 50,000 sets, so let's be performant here and have small sets
+    }
 }
 
 /**
@@ -86,6 +88,10 @@ function rebuild_sitemap_set($set_number, $last_time)
         list($zone, $attributes, $hash) = page_link_decode($page_link);
 
         if (!has_actual_page_access(get_member(), $attributes['page'], $zone)) {
+            continue;
+        }
+
+        if (substr($attributes['page'], 0, 1) == '_') {
             continue;
         }
 
@@ -292,13 +298,13 @@ function _sitemap_cache_node($node)
 /**
  * Add a row to our sitemap cache.
  *
- * @param SHORT_TEXT $page_link The page-link
- * @param ?TIME $add_date The add time (null: unknown)
- * @param ?TIME $edit_date The edit time (null: same as add time)
- * @param float $priority The sitemap priority, a SITEMAP_IMPORTANCE_* constant
- * @param ID_TEXT $refreshfreq The refresh frequency
+ * @param  SHORT_TEXT $page_link The page-link
+ * @param  ?TIME $add_date The add time (null: unknown)
+ * @param  ?TIME $edit_date The edit time (null: same as add time)
+ * @param  float $priority The sitemap priority, a SITEMAP_IMPORTANCE_* constant
+ * @param  ID_TEXT $refreshfreq The refresh frequency
  * @set always hourly daily weekly monthly yearly never
- * @param boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML sitemap, but we'll keep tabs of it for other possible uses)
+ * @param  boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML sitemap, but we'll keep tabs of it for other possible uses)
  */
 function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $refreshfreq, $guest_access)
 {
@@ -348,8 +354,8 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
 /**
  * Edit a row in our sitemap cache.
  *
- * @param SHORT_TEXT $page_link The page-link
- * @param boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML sitemap, but we'll keep tabs of it for other possible uses)
+ * @param  SHORT_TEXT $page_link The page-link
+ * @param  boolean $guest_access Whether guests may access this resource in terms of category permissions not zone/page permissions (if not set to 1 then it will not end up in an XML sitemap, but we'll keep tabs of it for other possible uses)
  */
 function notify_sitemap_node_edit($page_link, $guest_access)
 {
@@ -375,7 +381,7 @@ function notify_sitemap_node_edit($page_link, $guest_access)
  * It won't be immediately deleted, as we use this as a signal that the XML sitemap will need updating too.
  * Updates are done in batch, via CRON.
  *
- * @param SHORT_TEXT $page_link The page-link
+ * @param  SHORT_TEXT $page_link The page-link
  */
 function notify_sitemap_node_delete($page_link)
 {

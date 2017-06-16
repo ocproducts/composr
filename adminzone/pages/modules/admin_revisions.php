@@ -169,6 +169,8 @@ class Module_admin_revisions
      */
     public function gui()
     {
+        require_all_lang();
+
         $resource_types = get_param_string('resource_types', '');
         if ($resource_types == '') {
             $resource_types = null;
@@ -211,7 +213,7 @@ class Module_admin_revisions
     /**
      * Render a revision.
      *
-     * @param array $revision A revision map.
+     * @param  array $revision A revision map.
      * @return ?Tempcode A rendered revision row (null: won't render).
      */
     public function _render_revision($revision)

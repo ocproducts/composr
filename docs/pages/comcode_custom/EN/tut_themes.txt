@@ -64,7 +64,7 @@ There are more design tips like this in books and across the Internet, if you ar
 
 [surround]
 [media width="150" description="The link to add a theme" float="right"]data_custom/images/docs/tut_themes/manage_themes.png[/media]
-To create a new theme manually, go to Admin Zone > Style > Manage Themes, and you will find a link to do it. This will bring up a list of your current themes, which is probably just the "default" theme. We highly recommend creating a new theme and working within that, since if you accidentally make a mistake you can always fall back to the default theme.
+To create a new theme manually, go to Admin Zone > Style > Themes, and you will find a link to do it. This will bring up a list of your current themes, which is probably just the "default" theme. We highly recommend creating a new theme and working within that, since if you accidentally make a mistake you can always fall back to the default theme.
 
 Click the "Add empty theme" link at the bottom. This will bring you to a screen prompting you for a name for this new theme, an option to apply it as the default theme across all of your zones, as well as other options. It is advisable to not tick (check) the 'use as default on all zones' option until you've styled your new theme to your liking, unless your website is closed to the public anyway. If your website is currently open and you want to make sure that no other members may even manually select your new theme until you are ready, you may set permissions for it.
 
@@ -87,7 +87,7 @@ Comcode pages aren't theme files but we allow them to be edited within the templ
 
 [media width="150" description="Page rendering tools in the footer" float="right"]data_custom/images/docs/tut_themes/rendering_tools.png[/media]
 You can get to the template editor in two main ways:
-1) From Admin Zone > Style > Manage Themes (for a particular theme). This will open up a default set of common files.
+1) From Admin Zone > Style > Themes (for a particular theme). This will open up a default set of common files.
 2) From the "Page rendering tools" at the bottom of any screen (for the active theme, and assuming those tools were not removed in that theme). This will open up most of the files relating to the screen you are on.
 
 Opening via the "page rendering tools" is incredibly powerful, as it opens the editor in a new window and forms an "anchor" to the page you opened it from: you will see automatic live previews of changes to CSS, and dynamic highlighting of how the page relates to what you're editings.
@@ -148,6 +148,48 @@ If you find the CSS totally "corrupts", it is likely you have made a typo somewh
 You can't effectively check the Composr CSS because it has lots of Tempcode in it. Additionally, the normal outputted CSS is minified, so hard to read and relate to.
 Fortunately there is a solution. If you go to [tt]http://yourbaseurl/index.php?keep_minify=0[/tt] then the CSS will not be minified. You may then look at your HTML source, locate the URL to your CSS, and then pass this onto a regular [url="http://jigsaw.w3.org/css-validator/"]CSS validator[/url].
 
+[title="4"]Equations[/title]
+
+Some CSS files have [tt]{$THEME_WIZARD_COLOR,#RRGGBB,name,equation}[/tt] lines near the top.
+
+When the Theme Wizard runs the first parameter (the colour) of the [tt]THEME_WIZARD_COLOR[/tt] line is regenerated from the third parameter (the equation) by running through the calculation logic of the Theme Wizard.
+
+For example,
+[code="Tempcode"]
+{$THEME_WIZARD_COLOR,#426aa9,box_title_background,100% seed}
+[/code]
+... may become:
+[code="Tempcode"]
+{$THEME_WIZARD_COLOR,#ff0000,box_title_background,100% seed}
+[/code]
+(this would happen if the seed colour used in the Theme Wizard was [tt]#ff0000[/tt])
+
+This is all happening only when the Theme Wizard is run.
+
+There is a special case for these particular equations in [tt]global.css[/tt] only:
+[code="Tempcode"]
+{$THEME_WIZARD_COLOR,#94979d,seed,100% 426aa9}
+{$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}
+{$THEME_WIZARD_COLOR,#000000,BW,100% 000000}
+[/code]
+The Theme Wizard actually totally replaces these equations based on the seed, and whether light or dark was specified for the theme. It is these equations that sit at the root of the Theme Wizard calculation (because they don't depend on any other equations, they are defined directly by colour). The Theme Wizard is essentially an algebra solver using colour theory (a branch of applied mathematics). It keeps working at solving the equations, using the ones from [tt]global.css[/tt] as a base, until it concludes.
+
+When the CSS file is compiled, it works as a simple variable system. The second parameter serves as the variable name, which can then be referenced in the CSS as [tt]{$GET,name}[/tt]. It's a very straight-forward substitution system.
+
+You can if you wish just bypass the Theme Wizard equations system and directly enter your own CSS colour codes in place or in addition to what the Theme Wizard is doing. You are in no way tied into the mechanism of the Theme Wizard once you begin editing your own theme. That said, it can be useful to help you keep your colour palette consistent.
+
+[title="4"]CSS prefixing[/title]
+
+Some browsers experiment with new CSS properties using prefixes. More details are explained here: https://www.thoughtco.com/css-vendor-prefixes-3466867.
+
+In Composr we use [tt]{$BETA_CSS_PROPERTY,property: value;}[/tt] to automatically adding prefixing to a property, or make other changes to make a property work across different web browsers.
+
+Of course doing this risks relying on browser CSS behaviour that may be buggy or subject to change. By passing it through [tt]BETA_CSS_PROPERTY[/tt] in a consistent way we can actually change the output across Composr patch releases, if browsers change their syntax -- so it's a nice little solution we have here.
+
+[title="4"]Other notes about CSS conventions[/title]
+
+Some additional comments are made available at the top of [tt]global.css[/tt]. Mainly, our support for rtl languages and our use of em units.
+
 [title="3"]Screen previews[/title]
 
 For templates of bundled functionality, the template editor will show a 'Lorem Preview' button. The button invokes the screen preview that covers the particular template, but incorporating any live changes you're making in the editor. The screen previews are a Lorem Ipsum sandbox that works regardless of the content on the actual website.
@@ -199,19 +241,48 @@ It is permissable to hand-copy files into your theme's [tt]templates_custom[/tt]
 
 There's even a special dynamic "meta-tree" system of symbolic links that provide a file-system equivalent to the template browser within the template editor. For example, you can find symbolic links to all the templates that are used on a particular screen. This is very useful for developers who host on their own machines and like to edit within their standard text editor, alongside the PHP code they are editing.
 
-[title="2"]Images[/title]
+[title="2"]Theme images[/title]
 
-Many of the links and buttons in Composr are created as images ("theme images"). If you wish to edit these images (or add new ones), you can do so via Composr's "Edit theme images" interface.
+An image used by a Composr theme (including the default theme) is called a "theme image"; this is basically every image that isn't a part of content (gallery images, banners, etc, would be content). There's a whole system for dealing with theme images.
+
+[title="3"]Naming convention[/title]
+
+Theme image codenames are mapped to URLs via a database table, but initially they are auto-detected from a very simple naming convention...
+
+[tt]themes/mytheme/images_custom/foo/bar.png[/tt] would be the [tt]foo/bar[/tt] theme image and could be referenced by this Tempcode in templates or CSS files: [tt]{$IMG,foo/bar}[/tt].
+
+Composr searches under your theme's [tt]images_custom[/tt] and [tt]images[/tt] folders for matches, and if it can't find one it will fallback to searching the default theme's [tt]images_custom[/tt] and [tt]images[/tt] folders.
+
+All the following file extensions are recognised, in precedence order:
+ - [tt]png[/tt]
+ - [tt]jpg[/tt]
+ - [tt]jpeg[/tt]
+ - [tt]gif[/tt]
+ - [tt]ico[/tt]
+ - [tt]svg[/tt]
+Don't have multiple files with the same base name but different file extensions as only the highest-precedence one will ever be used.
+
+Once the correct URL has been detected, the database table is updated. This is basically a cache and can be cleared out from Admin Zone > Tools > Website Cleanup Tools.
 
 [title="3"]Editing theme images[/title]
 
 [media width="150" description="The \"edit theme image\" form" float="right"]data_custom/images/docs/tut_themes/edit_theme_image.png[/media]
 [media width="150" description="The \"edit theme image\" button appears after hovering some images for a few seconds" float="right"]data_custom/images/docs/tut_themes/button.png[/media]
-To edit a theme image, go to the Admin Zone > Style > Themes, then choose the "Edit theme images" link for the theme of your choice. You will be taken to a screen with a list of every image currently in use. Choose an image to edit.
+To edit a theme image from within Composr, go to the Admin Zone > Style > Themes, then choose the "Edit theme images" link for the theme of your choice. You will be taken to a screen with a list of every image currently in use. Choose an image to edit.
 
 Alternatively, for many images (larger ones using [tt]<img>[/tt] tags) you can get straight to their editing screen by hovering the mouse over the image and clicking the "Edit theme image" button that appears (see screenshot).
 
 On the edit theme image screen, you are shown the current version of this image in the top. You also have the opportunity to edit this image's name, location, or to upload a new image in its place.
+
+[box="Manually"]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
+If you prefer to edit files directly using something like FTP you may do this too.
+However, if the theme image is currently only in the default theme you'll need to copy it to your theme's [tt]images_custom[/tt] folder first, then edit the theme image cache from Admin Zone > Tools > Website Cleanup Tools.
+
+If you delete a file with one extension then add a file with the same theme image codename but another extension, the theme image cache will also need clearing from Admin Zone > Tools > Website Cleanup Tools.
+[/box]
+
+[title="3"]Deleting theme images[/title]
 
 You can delete a theme image from the bottom of its edit form, if it's not a default theme image.
 
@@ -248,8 +319,8 @@ Go to Admin Zone > Style > Themes > Edit templates (against your own theme).
 [media width="150" description="Edited CSS" float="right"]data_custom/images/docs/tut_themes/add_image_4.png[/media]
 [media width="150" description="Searching the CSS" float="right"]data_custom/images/docs/tut_themes/add_image_3.png[/media]
 [/surround]Select the [tt]global.css[/tt] file to edit (actually it's selected by default), and click the "Edit" button.
-[*] Find where [tt]outer_background[/tt] is used as a background property using either the browser's find feature or the find feature in the editor bar.
-[*] Change [tt]outer_background[/tt] to [tt]new_background[/tt] (our new theme image).
+[*] Find [tt]background: url('{$IMG_INLINE;,outer_background}');[/tt] using either the browser's find feature or the find feature in the editor bar.
+[*] Change [tt]background: url('{$IMG_INLINE;,outer_background}');[/tt] to [tt]background: url('{$IMG_INLINE;,new_background}');[/tt] (our new theme image).
 [/list]
 
 (a more sane option would have been to directly edit the [tt]outer_background[/tt] theme image, but I wanted to give a simple example of a new theme image while doing only minimal CSS editing)
@@ -257,7 +328,7 @@ Go to Admin Zone > Style > Themes > Edit templates (against your own theme).
 [html]<div style="clear: right"></div>[/html]
 [box="Manually"]
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tip.png[/media]
-You can add new theme images by saving them directly into [tt]themes/mytheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image name). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to Composr itself. If you wish to override a default image, copy it to the directory where you'd put it as if it were a new image, then clear the Theme Image cache using Admin Zone > Tools > Website cleanup tools. If you delete a file with one extension then add a file with the same theme image name but another extension, the theme image cache will need clearing first.
+You can add new theme images using something like FTP by saving them directly into [tt]themes/mytheme/images[/tt] or [tt]themes/default/images_custom[/tt], using subdirectories where appropriate (the path forms part of the theme image codename, see "Naming convention"). You should never save into [tt]themes/default/images[/tt] though, or make changes to those files directly, because this directory 'belongs' to Composr itself.
 [/box]
 [html]<div style="clear: right"></div>[/html]
 [title="2"]Deleting themes[/title]
@@ -283,6 +354,10 @@ You can delete a theme from the bottom of its edit form.
 14) If you get stuck or make a mistake, don't feel bad -- this happens to the best developers too
 
 Many more tips and points of guidance are included in the [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design tutorial[/page].
+
+[title="2"]Copying themes[/title]
+
+You may copy themes between sites, or duplicate them, but make sure you empty the template cache before using a copied theme. The cache files hard-code file paths, URL paths, and the theme name.
 
 [concepts
  1_key="Theme"      1_value="Your theme is the sum of your CSS, images, and templates, which work together to create the style and layout for your site."

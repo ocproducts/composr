@@ -656,8 +656,8 @@ class Hook_import_vb3
         $rows = $db->query_select('threadread', array('*'), '', null, null, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
-                $member_id = import_id_remap_get('member', $row['userid'], true);
-                $topic_id = import_id_remap_get('topic', $row['threadid'], true);
+                $member_id = import_id_remap_get('member', strval($row['userid']), true);
+                $topic_id = import_id_remap_get('topic', strval($row['threadid']), true);
                 if ($member_id === null) {
                     continue;
                 }

@@ -212,7 +212,7 @@ function delete_booking($id)
 /**
  * Read bookable details from POST environment.
  *
- * @return array Tuple:  bookable_details, blacked, codes, supplements.
+ * @return array Tuple: bookable_details, blacked, codes, supplements.
  */
 function get_bookable_details_from_form()
 {

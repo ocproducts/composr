@@ -58,8 +58,10 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
     if (!$is_vector) {
         // Do thumbnail conversion
         if (is_video($full_url, true)) {
-            require_code('galleries2');
-            create_video_thumb($full_url, $thumb_path);
+            if (addon_installed('galleries')) {
+                require_code('galleries2');
+                create_video_thumb($full_url, $thumb_path);
+            }
         } else {
             $thumb_url = convert_image($full_url, $thumb_path, null, null, intval($thumb_width), false);
         }
@@ -84,7 +86,7 @@ function _ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thum
  * @param  ?URLPATH $fallback_image Fallback URL if we fail (null: use $orig_url)
  * @param  string $algorithm Algorithm to use
  * @set box width height crop pad pad_horiz_crop_horiz pad_vert_crop_vert
- * @param  string $where
+ * @param  string $where Where to cut from or pad
  * @set start end both start_if_vertical start_if_horizontal end_if_vertical end_if_horizontal
  * @param  ?string $background Background colour to use for padding, RGB/RGBA style and the "#" may be omitted -- or 'none' (null: choose the average colour in the image)
  * @param  boolean $only_make_smaller Only ever make the output smaller than the source image, no blowing small images up
@@ -331,9 +333,6 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
     imagepalettetotruecolor($source);
 
     list($source, $reorientated) = adjust_pic_orientation($source, $exif);
-    if (($thumb_options !== null) || (!$only_make_smaller)) {
-        unset($from_file);
-    }
 
     //$source = remove_white_edges($source);    Not currently enabled, as PHP seems to have problems with alpha transparency reading
 
@@ -378,12 +377,12 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
             $_height = $height;
             $_width = intval($height / ($sy / $sx));
         }
-        if (($_width > $sx) && ($only_make_smaller)) {
+        if (($_width >= $sx) && ($only_make_smaller)) {
             $_width = $sx;
             $_height = $sy;
 
             if (!$reorientated) {
-                // We can just escape, nothing to do
+                // We can just escape, nothing to do...
 
                 imagedestroy($source);
 
@@ -574,6 +573,28 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
         }
     }
 
+    if (($_width == $sx) && ($_height == $sy)) {
+        // We can just escape, nothing to do...
+
+        imagedestroy($source);
+
+        if (($using_path) && ($from == $to)) {
+            return $from;
+        }
+
+        if ($using_path) {
+            copy($from, $to);
+            fix_permissions($to);
+            sync_file($to);
+        } else {
+            require_code('files');
+            cms_file_put_contents_safe($to, $from_file, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+        }
+        return $to;
+    }
+
+    unset($from_file);
+
     // Resample/copy
     imagecopyresampled($dest, $source, $dest_x, $dest_y, $source_x, $source_y, $_width, $_height, $sx, $sy);
 
@@ -746,7 +767,7 @@ function find_imagemagick()
  * http://stackoverflow.com/questions/3657023/how-to-detect-shot-angle-of-photo-and-auto-rotate-for-website-display-like-desk
  *
  * @param  resource $source GD image resource
- * @param  ~array   $exif EXIF details (false: could not load)
+ * @param  ~array $exif EXIF details (false: could not load)
  * @return array A pair: Adjusted GD image resource, Whether a change was made
  */
 function adjust_pic_orientation($source, $exif)

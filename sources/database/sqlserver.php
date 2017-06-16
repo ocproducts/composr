@@ -86,7 +86,7 @@ class Database_Static_sqlserver extends DatabaseDriver
         if ((!function_exists('sqlsrv_connect')) && (!function_exists('mssql_pconnect'))) {
             $error = 'The sqlserver PHP extension not installed (anymore?). You need to contact the system administrator of this server.';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error);
@@ -103,7 +103,7 @@ class Database_Static_sqlserver extends DatabaseDriver
         if ($connection === false) {
             $error = 'Could not connect to database-server (' . @strval($php_errormsg) . ')';
             if ($fail_ok) {
-                echo $error;
+                echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                 return null;
             }
             critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_DB_ERROR'));
@@ -112,7 +112,7 @@ class Database_Static_sqlserver extends DatabaseDriver
             if (!mssql_select_db($db_name, $connection)) {
                 $error = 'Could not connect to database (' . mssql_get_last_message() . ')';
                 if ($fail_ok) {
-                    echo $error;
+                    echo ((running_script('install')) && (get_param_string('type', '') == 'ajax_db_details')) ? strip_html($error) : $error;
                     return null;
                 }
                 critical_error('PASSON', $error); //warn_exit(do_lang_tempcode('CONNECT_ERROR'));
@@ -124,74 +124,10 @@ class Database_Static_sqlserver extends DatabaseDriver
     }
 
     /**
-     * Encode an SQL statement fragment for a conditional to see if two strings are equal.
-     *
-     * @param  ID_TEXT $attribute The attribute
-     * @param  string $compare The comparison
-     * @return string The SQL
-     */
-    public function string_equal_to($attribute, $compare)
-    {
-        return $attribute . " LIKE '" . $this->escape_string($compare) . "'";
-    }
-
-    /**
-     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
-     *
-     * @param  string $pattern The pattern
-     * @return string The encoded pattern
-     */
-    public function encode_like($pattern)
-    {
-        return $this->escape_string(str_replace('%', '*', $pattern));
-    }
-
-    /**
-     * Find whether full-text-search is present
-     *
-     * @param  array $connection A DB connection
-     * @return boolean Whether it is
-     */
-    public function has_full_text($connection)
-    {
-        global $SITE_INFO;
-        if ((!empty($SITE_INFO['skip_fulltext_sqlserver'])) && ($SITE_INFO['skip_fulltext_sqlserver'] == '1')) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Assemble part of a WHERE clause for doing full-text search
-     *
-     * @param  string $content Our match string (assumes "?" has been stripped already)
-     * @param  boolean $boolean Whether to do a boolean full text search
-     * @return string Part of a WHERE clause for doing full-text search
-     */
-    public function full_text_assemble($content, $boolean)
-    {
-        $content = str_replace('"', '', $content);
-        return 'CONTAINS ((?),\'' . $this->escape_string($content) . '\')';
-    }
-
-    /**
-     * Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.
-     *
-     * @param  string $string The string
-     * @return string The escaped string
-     */
-    public function escape_string($string)
-    {
-        $string = fix_bad_unicode($string);
-
-        return str_replace("'", "''", $string);
-    }
-
-    /**
      * This function is a very basic query executor. It shouldn't usually be used by you, as there are abstracted versions available.
      *
      * @param  string $query The complete SQL query
-     * @param  array $connection A DB connection
+     * @param  mixed $connection The DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
      * @param  ?integer $start The start row to affect (null: no specification)
      * @param  boolean $fail_ok Whether to output an error on failure
@@ -205,7 +141,7 @@ class Database_Static_sqlserver extends DatabaseDriver
                 $max += $start;
             }
 
-            if ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
                 $query = 'SELECT TOP ' . strval(intval($max)) . substr($query, 6);
             }
         }
@@ -217,7 +153,7 @@ class Database_Static_sqlserver extends DatabaseDriver
             $results = mssql_query($query, $connection);
         }
         pop_suppress_error_death();
-        if (($results === false) && (strtoupper(substr($query, 0, 12)) == 'INSERT INTO ') && (strpos($query, '(id, ') !== false)) {
+        if (($results === false) && (strtoupper(substr(ltrim($query), 0, 12)) == 'INSERT INTO ') && (strpos($query, '(id, ') !== false)) {
             $pos = strpos($query, '(');
             $table_name = substr($query, 12, $pos - 13);
             if (function_exists('sqlsrv_query')) {
@@ -233,7 +169,7 @@ class Database_Static_sqlserver extends DatabaseDriver
                 @mssql_data_seek($results, $start);
             }
         }
-        if ((($results === false) || ((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results === true)) && (!$fail_ok)) {
+        if ((($results === false) || ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results === true)) && (!$fail_ok)) {
             if (function_exists('sqlsrv_errors')) {
                 $err = serialize(sqlsrv_errors());
             } else {
@@ -248,7 +184,7 @@ class Database_Static_sqlserver extends DatabaseDriver
                     ocp_mark_as_escaped($err);
                 }
             }
-            if ((!running_script('upgrader')) && (!get_mass_import_mode())) {
+            if ((!running_script('upgrader')) && ((!get_mass_import_mode()) || (get_param_integer('keep_fatalistic', 0) == 1))) {
                 if ((!function_exists('do_lang')) || (do_lang('QUERY_FAILED', null, null, null, null, false) === null)) {
                     $this->failed_query_exit(htmlentities('Query failed: ' . $query . ' : ' . $err));
                 }
@@ -260,12 +196,12 @@ class Database_Static_sqlserver extends DatabaseDriver
             }
         }
 
-        if (((strtoupper(substr($query, 0, 7)) == 'SELECT ') || (strtoupper(substr($query, 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
+        if (((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) && ($results !== false) && ($results !== true)) {
             return $this->get_query_rows($results);
         }
 
         if ($get_insert_id) {
-            if (strtoupper(substr($query, 0, 7)) == 'UPDATE ') {
+            if (strtoupper(substr(ltrim($query), 0, 7)) == 'UPDATE ') {
                 return null;
             }
 
@@ -318,6 +254,8 @@ class Database_Static_sqlserver extends DatabaseDriver
                         } else {
                             $newrow[$name] = null;
                         }
+                    } elseif (substr($type, 0, 5) == 'FLOAT') {
+                        $newrow[$name] = floatval($v);
                     } else {
                         if ($v == ' ') {
                             $v = '';
@@ -355,9 +293,10 @@ class Database_Static_sqlserver extends DatabaseDriver
     /**
      * Get a map of Composr field types, to actual database types.
      *
+     * @param  boolean $for_alter Whether this is for adding a table field
      * @return array The map
      */
-    public function get_type_remap()
+    public function get_type_remap($for_alter)
     {
         $type_remap = array(
             'AUTO' => 'integer identity',
@@ -386,13 +325,16 @@ class Database_Static_sqlserver extends DatabaseDriver
     }
 
     /**
-     * Create a new table.
+     * Get SQL for creating a new table.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  array $fields A map of field names to Composr field types (with *#? encodings)
-     * @param  array $connection The DB connection to make on
+     * @param  mixed $connection The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  boolean $save_bytes Whether to use lower-byte table storage, with tradeoffs of not being able to support all unicode characters; use this if key length is an issue
+     * @return array List of SQL queries to run
      */
-    public function create_table($table_name, $fields, $connection)
+    public function create_table($table_name, $fields, $connection, $raw_table_name, $save_bytes = false)
     {
         $type_remap = $this->get_type_remap();
 
@@ -425,35 +367,70 @@ class Database_Static_sqlserver extends DatabaseDriver
             $_fields .= ' ' . $perhaps_null . ',' . "\n";
         }
 
-        $query = 'CREATE TABLE ' . $table_name . ' (
-          ' . $_fields . '
-          PRIMARY KEY (' . $keys . ')
-        )';
-        $this->query($query, $connection, null, null);
+        $query = 'CREATE TABLE ' . $table_name . ' (' . "\n" . $_fields . '    PRIMARY KEY (' . $keys . ")\n)";
+        return array($query);
     }
 
     /**
-     * Create a table index.
+     * Find whether table truncation support is present
+     *
+     * @return boolean Whether it is
+     */
+    public function supports_truncate_table()
+    {
+        return true;
+    }
+
+    /**
+     * Get SQL for creating a table index.
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  ID_TEXT $index_name The index name (not really important at all)
      * @param  string $_fields Part of the SQL query: a comma-separated list of fields to use on the index
-     * @param  array $connection The DB connection to make on
-     * @param  ID_TEXT $unique_key_field The name of the unique key field for the table
+     * @param  mixed $connection The DB connection to make on
+     * @param  ID_TEXT $raw_table_name The table name with no table prefix
+     * @param  string $unique_key_fields The name of the unique key field for the table
+     * @param  string $table_prefix The table prefix
+     * @return array List of SQL queries to run
      */
-    public function create_index($table_name, $index_name, $_fields, $connection, $unique_key_field = 'id')
+    public function create_index($table_name, $index_name, $_fields, $connection, $raw_table_name, $unique_key_fields, $table_prefix)
     {
         if ($index_name[0] == '#') {
-            if ($this->has_full_text($connection)) {
+            $ret = array();
+            if ($this->has_full_text()) {
                 $index_name = substr($index_name, 1);
-                $unique_index_name = 'index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax()));
-                $this->query('CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_field . ')', $connection);
-                $this->query('CREATE FULLTEXT CATALOG ft AS DEFAULT', $connection, null, null, true); // Might already exist
-                $this->query('CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name, $connection, null, null, true);
+
+                $unique_index_name = $index_name . '__' . $table_name;
+
+                $ret[] = 'CREATE UNIQUE INDEX ' . $unique_index_name . ' ON ' . $table_name . '(' . $unique_key_fields . ')';
+
+                $ret[] = 'CREATE FULLTEXT CATALOG ft AS DEFAULT';
+
+                $ret[] = 'CREATE FULLTEXT INDEX ON ' . $table_name . '(' . $_fields . ') KEY INDEX ' . $unique_index_name;
             }
-            return;
+            return $ret;
         }
-        $this->query('CREATE INDEX index' . $index_name . '_' . strval(mt_rand(0, mt_getrandmax())) . ' ON ' . $table_name . '(' . $_fields . ')', $connection);
+
+        $_fields = preg_replace('#\(\d+\)#', '', $_fields);
+
+        $fields = explode(',', $_fields);
+        foreach ($fields as $field) {
+            $sql = 'SELECT m_type FROM ' . $table_prefix . 'db_meta WHERE m_table=\'' . $this->escape_string($raw_table_name) . '\' AND m_name=\'' . $this->escape_string($field) . '\'';
+            $values = $this->query($sql, $connection, null, null, true);
+            if (!isset($values[0])) {
+                continue; // No result found
+            }
+            $first = $values[0];
+            $field_type = current($first); // Result found
+
+            if (strpos($field_type, 'LONG') !== false) {
+                // We can't support this in SQL Server https://blogs.msdn.microsoft.com/bartd/2011/01/06/living-with-sqls-900-byte-index-key-length-limit/.
+                // We assume shorter numbers than 250 are only being used on short columns anyway, which will index perfectly fine without any constraint.
+                return array();
+            }
+        }
+
+        return array('CREATE INDEX ' . $index_name . '__' . $table_name . ' ON ' . $table_name . '(' . $_fields . ')');
     }
 
     /**
@@ -461,12 +438,114 @@ class Database_Static_sqlserver extends DatabaseDriver
      *
      * @param  ID_TEXT $table_name The name of the table to create the index on
      * @param  array $new_key A list of fields to put in the new key
-     * @param  array $connection The DB connection to make on
+     * @param  mixed $connection The DB connection to make on
      */
     public function change_primary_key($table_name, $new_key, $connection)
     {
         $this->query('ALTER TABLE ' . $table_name . ' DROP PRIMARY KEY', $connection);
         $this->query('ALTER TABLE ' . $table_name . ' ADD PRIMARY KEY (' . implode(',', $new_key) . ')', $connection);
+    }
+
+    /**
+     * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
+     *
+     * @param  string $table The table name
+     * @param  mixed $connection The DB connection
+     * @return ?integer The count (null: do it normally)
+     */
+    public function get_table_count_approx($table, $connection)
+    {
+        $sql = 'SELECT SUM(p.rows) FROM sys.partitions AS p
+            INNER JOIN sys.tables AS t
+            ON p.[object_id] = t.[object_id]
+            INNER JOIN sys.schemas AS s
+            ON s.[schema_id] = t.[schema_id]
+            WHERE t.name = N\'' . $this->escape_string($table) . '\'
+            AND s.name = N\'dbo\'
+            AND p.index_id IN (0,1)';
+        $values = $this->query($sql, $connection, null, null, true);
+        if (!isset($values[0])) {
+            return null; // No result found
+        }
+        $first = $values[0];
+        $v = current($first); // Result found
+        return $v;
+    }
+
+    /**
+     * Set a time limit on future queries.
+     * Not all database drivers support this.
+     *
+     * @param  integer $seconds The time limit in seconds
+     * @param  mixed $connection The DB connection
+     */
+    public function set_query_time_limit($seconds, $connection)
+    {
+        safe_ini_set('mssql.timeout', strval($seconds));
+    }
+
+    /**
+     * Encode an SQL statement fragment for a conditional to see if two strings are equal.
+     *
+     * @param  ID_TEXT $attribute The attribute
+     * @param  string $compare The comparison
+     * @return string The SQL
+     */
+    public function string_equal_to($attribute, $compare)
+    {
+        return $attribute . " LIKE '" . $this->escape_string($compare) . "'";
+    }
+
+    /**
+     * Encode a LIKE string comparision fragement for the database system. The pattern is a mixture of characters and ? and % wildcard symbols.
+     *
+     * @param  string $pattern The pattern
+     * @return string The encoded pattern
+     */
+    public function encode_like($pattern)
+    {
+        return $this->escape_string(str_replace('%', '*', $pattern));
+    }
+
+    /**
+     * Find whether full-text-search is present
+     *
+     * @param  mixed $connection The DB connection
+     * @return boolean Whether it is
+     */
+    public function has_full_text($connection)
+    {
+        global $SITE_INFO;
+        if ((!empty($SITE_INFO['skip_fulltext_sqlserver'])) && ($SITE_INFO['skip_fulltext_sqlserver'] == '1')) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Assemble part of a WHERE clause for doing full-text search
+     *
+     * @param  string $content Our match string (assumes "?" has been stripped already)
+     * @param  boolean $boolean Whether to do a boolean full text search
+     * @return string Part of a WHERE clause for doing full-text search
+     */
+    public function full_text_assemble($content, $boolean)
+    {
+        $content = str_replace('"', '', $content);
+        return 'CONTAINS ((?),\'' . $this->escape_string($content) . '\')';
+    }
+
+    /**
+     * Escape a string so it may be inserted into a query. If SQL statements are being built up and passed using db_query then it is essential that this is used for security reasons. Otherwise, the abstraction layer deals with the situation.
+     *
+     * @param  string $string The string
+     * @return string The escaped string
+     */
+    public function escape_string($string)
+    {
+        $string = fix_bad_unicode($string);
+
+        return str_replace("'", "''", $string);
     }
 
     /**

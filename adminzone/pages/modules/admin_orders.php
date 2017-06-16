@@ -100,7 +100,7 @@ class Module_admin_orders
         $action = either_param_string('action', '');
 
         if ($type == 'order_details' || $action == 'order_act' || $action == '_add_note' || $action == 'order_export' || $action == '_order_export') {
-            breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')), array('_SELF:_SELF:show_orders', do_lang_tempcode('ORDERS'))));
+            breadcrumb_set_parents(array(array('_SEARCH:admin_ecommerce_logs:browse', do_lang_tempcode('ECOMMERCE')), array('_SELF:_SELF:browse', do_lang_tempcode('ORDERS')), array('_SELF:_SELF:show_orders', do_lang_tempcode('SHOW_ORDERS'))));
         }
 
         if ($action == 'order_act') {
@@ -250,8 +250,8 @@ class Module_admin_orders
         if (($search !== null) && ($search != '')) {
             push_db_scope_check(false);
 
-            $cond .= ' AND (t1.id LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\' OR t2.m_username LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\')';
-            $extra_join = ' JOIN ' . get_table_prefix() . 'f_members t2 ON t2.id=t1.c_member';
+            $cond .= ' AND (t1.id=' . strval(intval($search)) . ' OR t2.m_username LIKE \'' . db_encode_like(str_replace('#', '', $search) . '%') . '\')';
+            $extra_join = ' JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members t2 ON t2.id=t1.c_member';
         }
 
         $start = get_param_integer('start', 0);
@@ -293,7 +293,7 @@ class Module_admin_orders
 
         push_db_scope_check(false);
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,(t3.p_quantity*t3.included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond . ' GROUP BY t1.id ORDER BY ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled') . ',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,SUM(t3.p_quantity*t3.included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond . ' GROUP BY t1.id ORDER BY ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled') . ',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
         $order_entries = new Tempcode();
         foreach ($rows as $row) {
             if ($row['purchase_through'] == 'cart') {
@@ -390,7 +390,7 @@ class Module_admin_orders
     {
         $id = get_param_integer('id');
 
-        $order_title = do_lang('CART_ORDER', $id);
+        $order_title = do_lang('CART_ORDER', strval($id));
 
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 10);
@@ -760,7 +760,7 @@ class Module_admin_orders
             $cond .= ' AND ' . db_string_equal_to('t1.order_status', $order_status);
         }
 
-        $qry = 'SELECT t1.*,(t2.included_tax*t2.p_quantity) AS tax_amt,t3.*
+        $qry = 'SELECT t1.*,(t2.included_tax*t2.p_quantity) AS tax_amt,t3.*,t1.id AS o_id
             FROM ' . get_table_prefix() . 'shopping_order t1
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t2 ON t1.id=t2.order_id
             LEFT JOIN ' . get_table_prefix() . 'shopping_order_addresses t3 ON t1.id=t3.a_order_id
@@ -769,7 +769,7 @@ class Module_admin_orders
         remove_duplicate_rows($rows);
 
         foreach ($rows as $order) {
-            $orders[do_lang('ORDER_NUMBER')] = strval($order['id']);
+            $orders[do_lang('ORDER_NUMBER')] = strval($order['o_id']);
             $orders[do_lang('ORDERED_DATE')] = get_timezoned_date_time($order['add_date']);
             $orders[do_lang('ORDER_PRICE')] = $order['tot_price'];
             $orders[do_lang('ORDER_STATUS')] = do_lang($order['order_status']);

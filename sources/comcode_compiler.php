@@ -339,6 +339,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     $is_all_semihtml = ($flags & COMCODE_IS_ALL_SEMIHTML) != 0;
     $structure_sweep = ($flags & COMCODE_STRUCTURE_SWEEP) != 0;
     $check_only = ($flags & COMCODE_CHECK_ONLY) != 0;
+    $in_code_tag = ($flags & COMCODE_IN_CODE_TAG) != 0;
 
     global $ADVERTISING_BANNERS_CACHE, $ALLOWED_COMCODE_ENTITIES, $CODE_TAGS, $DANGEROUS_TAGS, $VALID_COMCODE_TAGS, $BLOCK_TAGS, $POTENTIAL_JS_NAUGHTY_ARRAY, $TEXTUAL_TAGS, $LEET_FILTER, $IMPORTED_CUSTOM_COMCODE;
 
@@ -477,7 +478,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     $in_html = false;
     $in_semihtml = $is_all_semihtml;
     $in_separate_parse_section = false; // Not escaped because it has to be passed to a secondary filter
-    $in_code_tag = false;
     $code_nest_stack = 0;
 
     // Our state
@@ -680,7 +680,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                     } else {
                         $continuation .= $next;
                     }
-                } else { // Not in HTML
+                } else { // Not in HTML or in a code tag ($formatting_allowed will be false, so ok)
                     // Text-format possibilities
                     if ((($just_new_line) || ($just_ended)) && ($formatting_allowed)) {
                         if ($continuation != '') {
@@ -906,8 +906,9 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
 
                             // Variable lookahead (symbols, directives, language string references)
                             if ((!$in_code_tag) && (($next === '{') && (isset($comcode[$pos])) && (($comcode[$pos] === '$') || ($comcode[$pos] === '+') || ($comcode[$pos] === '!')))) {
-                                if ($comcode_dangerous) {
-                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ((!$html_errors) && ($comcode[$pos] === '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
+                                $is_basic_symbol = (substr($comcode, $pos, 4) == '$IMG') || (substr($comcode, $pos, 9) == '$BASE_URL'); // Anyone may use, and must parse even in semi-parse mode
+                                if ($comcode_dangerous || $is_basic_symbol) {
+                                    if ((!$in_code_tag) && ((!$semiparse_mode) || ($is_basic_symbol) || ((!$html_errors) && ($comcode[$pos] === '+')) || (in_tag_stack($tag_stack, array('url', 'img', 'flash', 'media'))))) {
                                         if ($GLOBALS['XSS_DETECT']) {
                                             ocp_mark_as_escaped($continuation);
                                         }
@@ -1154,7 +1155,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                             }
 
                                             $this_member_id = mixed();
-                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY LENGTH(m_username) DESC', 1);
+                                            $results = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE ' . $username_sql . ' ORDER BY ' . db_function('LENGTH', array('m_username')) . ' DESC', 1);
                                             if (isset($results[0])) {
                                                 $this_member_id = $results[0]['id'];
                                                 $username = $results[0]['m_username'];
@@ -1214,18 +1215,29 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 }
                                 foreach ($shortcuts as $code => $replacement) {
                                     if (($next === $code[0]) && (isset($comcode[$pos])) && ($comcode[$pos] === $code[1]) && (substr($comcode, $pos - 1, strlen($code)) === $code)) {
-                                        if ($GLOBALS['XSS_DETECT']) {
-                                            ocp_mark_as_escaped($continuation);
+
+                                        $passes = true;
+
+                                        if (($code == '--') || ($code == '<--') || ($code == '-->')) {
+                                            if ((strpos($comcode, '<!--') !== false)/* || (strpos($comcode, '-->') !== false)*/ || (strpos($comcode, '&lt;!--') !== false)/* || (strpos($comcode, '--&gt;') !== false)*/) {
+                                                $passes = false;
+                                            }
                                         }
-                                        $tag_output->attach($continuation);
-                                        $continuation = '';
-                                        $pos += strlen($code) - 1;
-                                        $differented = true;
-                                        if ($GLOBALS['XSS_DETECT']) {
-                                            ocp_mark_as_escaped($replacement);
+
+                                        if ($passes) {
+                                            if ($GLOBALS['XSS_DETECT']) {
+                                                ocp_mark_as_escaped($continuation);
+                                            }
+                                            $tag_output->attach($continuation);
+                                            $continuation = '';
+                                            $pos += strlen($code) - 1;
+                                            $differented = true;
+                                            if ($GLOBALS['XSS_DETECT']) {
+                                                ocp_mark_as_escaped($replacement);
+                                            }
+                                            $tag_output->attach($replacement);
+                                            break;
                                         }
-                                        $tag_output->attach($replacement);
-                                        break;
                                     }
                                 }
                             }
@@ -1451,6 +1463,8 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 if ((!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
+                                        $ADVERTISING_BANNERS_CACHE = array();
+
                                         require_code('banners');
                                         $banner_sql = banner_select_sql(null, true);
                                         $banner_sql .= ' AND t_comcode_inline=1 AND ' . db_string_not_equal_to('b_title_text', '');
@@ -1472,7 +1486,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                                 }
                                             }
 
-                                            $ADVERTISING_BANNERS_CACHE = array();
                                             foreach ($rows as $row) {
                                                 $trigger_text = $row['b_title_text'];
                                                 foreach (explode(',', $trigger_text) as $t) {
@@ -1534,7 +1547,29 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                 $b = strrpos($until_now, '>');
                                 $in_html_tag = ($a !== false) && (($b === false) || ($a > $b));
                             }
-                            if ((($textual_area) || ($in_semihtml) && ($tag_stack[count($tag_stack) - 1][0] === 'semihtml'/*Only just HTML, so not an unsafe Comcode context*/)) && ((!$in_semihtml) || ((!$in_html_tag))) && (!$in_code_tag) && ($not_white_space) && (!$differented) && ($next === 'h') && ((substr($comcode, $pos - 1, strlen('http://')) === 'http://') || (substr($comcode, $pos - 1, strlen('https://')) === 'https://') || (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://'))) {
+                            if (
+                                (
+                                    ($textual_area) ||
+                                    (
+                                        ($in_semihtml) &&
+                                        ($tag_stack[count($tag_stack) - 1][0] === 'semihtml'/*Only just entered semihtml, we're not inside an unsafe nested Comcode context*/) &&
+                                        (strpos($comcode, '<a') === false/*If links are explicit we don't want to detect links*/)
+                                    )
+                                ) &&
+                                (
+                                    (!$in_semihtml) ||
+                                    (!$in_html_tag)
+                                ) &&
+                                (!$in_code_tag) &&
+                                ($not_white_space) &&
+                                (!$differented) &&
+                                ($next === 'h') &&
+                                (
+                                    (substr($comcode, $pos - 1, strlen('http://')) === 'http://') ||
+                                    (substr($comcode, $pos - 1, strlen('https://')) === 'https://') ||
+                                    (substr($comcode, $pos - 1, strlen('ftp://')) === 'ftp://')
+                                )
+                            ) {
                                 // Find the full link portion in the upcoming Comcode
                                 $link_end_pos = strlen($comcode);
                                 foreach ($link_terminator_strs as $link_terminator_str) {

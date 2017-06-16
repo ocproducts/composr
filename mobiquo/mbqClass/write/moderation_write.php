@@ -385,6 +385,10 @@ class CMSModerationWrite
             return false;
         }
 
+        if (!addon_installed('cns_warnings')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         if (!cns_may_warn_members()) {
             access_denied('I_ERROR');
         }
@@ -443,6 +447,10 @@ class CMSModerationWrite
 
         if (is_guest()) {
             return false;
+        }
+
+        if (!addon_installed('cns_warnings')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
         if (!cns_may_warn_members()) {

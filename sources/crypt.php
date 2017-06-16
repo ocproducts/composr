@@ -108,6 +108,7 @@ function get_rand_password()
  */
 function get_secure_random_number()
 {
+    // TODO: #3046 in tracker
     // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.6/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
     if (function_exists('random_int')) {
         $code = random_int(0, PHP_INT_MAX);

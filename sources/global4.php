@@ -91,7 +91,7 @@ function _save_web_resource_merging($resources, $type, $write_path)
         }
         if ($merge_from != '') {
             if (is_file($merge_from)) {
-                $extra_data = unixify_line_format(file_get_contents($merge_from)) . "\n\n";
+                $extra_data = unixify_line_format(cms_file_get_contents_safe($merge_from)) . "\n\n";
                 $data .= $extra_data;
                 if (strpos($extra_data, '"use strict";') === false) {
                     $all_strict = false;
@@ -276,10 +276,10 @@ function member_personal_links_and_details($member_id)
     // Admin Zone link
     if (get_option('show_personal_adminzone_link') == '1') {
         if (has_zone_access($member_id, 'adminzone')) {
-            $url = build_url(array('page' => ''), 'adminzone');
+            $url = build_url(array('page' => '', 'keep_theme' => null), 'adminzone');
             $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => 'ae243058f780f9528016f7854763a5fa', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'ACCESSKEY' => 'I', 'NAME' => do_lang_tempcode('ADMIN_ZONE'), 'URL' => $url)));
-        } else {
-            $url = build_url(array('page' => ''), 'cms');
+        } elseif (has_zone_access($member_id, 'cms')) {
+            $url = build_url(array('page' => '', 'keep_theme' => null), 'cms');
             $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK', array('_GUID' => '3f63dad2645b6c39f68dcfebe7d7a0ab', 'ACCESSKEY' => 'I', 'TARGET' => '_blank', 'TITLE' => do_lang_tempcode('LINK_NEW_WINDOW'), 'NAME' => do_lang_tempcode('CMS'), 'URL' => $url)));
         }
     }

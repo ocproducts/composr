@@ -323,7 +323,7 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
         if ($end_point_forum != db_get_first_id()) {
             $map['id'] = $end_point_forum;
         }
-        $test = get_param_string('kfs' . strval($end_point_forum), null, true);
+        $test = get_param_string('kfs' . strval($end_point_forum), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
             $map['kfs' . strval($end_point_forum)] = $test;
         }

@@ -543,12 +543,8 @@ function _page_path_to_page_link($page)
         $page2 = $matches[1] . ':' . $matches[4];
         if (($matches[2] == 'comcode') || ($matches[2] == 'comcode_custom')) {
             if (file_exists(get_custom_file_base() . '/' . $page)) {
-                $file = cms_file_get_contents_safe(get_custom_file_base() . '/' . $page);
-                if (preg_match('#\[title\](.*)\[/title\]#U', $file, $matches) != 0) {
-                    $page2 .= ' (' . $matches[1] . ')';
-                } elseif (preg_match('#\[title=[\'"]?1[\'"]?\](.*)\[/title\]#U', $file, $matches) != 0) {
-                    $page2 .= ' (' . $matches[1] . ')';
-                }
+                require_code('zones2');
+                $page2 .= ' (' . get_comcode_page_title_from_disk(get_custom_file_base() . '/' . $page) . ')';
                 $page2 = preg_replace('#\[[^\[\]]*\]#', '', $page2);
             }
         }
@@ -586,7 +582,10 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
     if (isset($where['the_zone'])) {
         $where['the_zone'] = $zone;
     }
-    $_moniker_src = $db->query_select($ob_info['table'], $select, $where); // NB: For Comcode pages visited, this won't return anything -- it will become more performant when the page actually loads, so the moniker won't need redoing each time
+    $_moniker_src = $db->query_select($ob_info['table'], $select, $where, '', null, null, true); // NB: For Comcode pages visited, this won't return anything -- it will become more performant when the page actually loads, so the moniker won't need redoing each time
+    if ($_moniker_src === null) {
+        return null; // table missing?
+    }
     pop_db_scope_check();
     if (!array_key_exists(0, $_moniker_src)) {
         return null; // been deleted?
@@ -875,7 +874,10 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
         if (isset($where['the_zone'])) {
             $where['the_zone'] = $zone;
         }
-        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, $where);
+        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, $where, '', null, null, true);
+        if ($_moniker_src === null) {
+            return $moniker; // table missing?
+        }
         pop_db_scope_check();
         if (!array_key_exists(0, $_moniker_src)) {
             return $moniker; // been deleted?

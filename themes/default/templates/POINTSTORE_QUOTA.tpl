@@ -5,4 +5,3 @@
 <p>
 	{!QUOTA_COST,{PRICE*}} {!QUOTA_AMOUNT,{TOP_AMOUNT*},{EMAIL*}}
 </p>
-

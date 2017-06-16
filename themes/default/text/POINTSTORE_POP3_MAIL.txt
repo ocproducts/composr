@@ -27,4 +27,3 @@
 
 {!EMAIL_FOOT@,{$SITE_NAME}}
 [/code]
-

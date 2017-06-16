@@ -135,7 +135,7 @@ function upperkeysarray($testa)
 {
     $newtesta=array();
     $newkeys=@array_keys($testa);
-    for ($x=0;$x<sizeof($newkeys);$x++){
+    for ($x=0;$x<count($newkeys);$x++){
         $newtesta[strtoupper($newkeys[$x])]=$testa[$newkeys[$x]];
     }
     return $newtesta;
@@ -312,12 +312,12 @@ function insertmysentence($mybigsentence)
     //Use split
     $allwords=explode(" ",$mybigsentence);
     $qadd="";
-    for ($x=0;$x<sizeof($allwords)+1;$x++){
+    for ($x=0;$x<count($allwords)+1;$x++){
 
         // Last word in context
         $lwic=0;
 
-        if ($x==sizeof($allwords)){
+        if ($x==count($allwords)){
             $word="";
         }
         else {
@@ -333,11 +333,11 @@ function insertmysentence($mybigsentence)
         }
         
         // Find out if it is the last word in its context
-        if ($x==(sizeof($allwords)-1)){
+        if ($x==(count($allwords)-1)){
             $lwic=1;
         }
 		// Prevent some warnings by checking this first.
-		elseif (($x+1) >= (sizeof($allwords))){
+		elseif (($x+1) >= (count($allwords))){
 
 		}
         elseif ((strtoupper($allwords[$x+1])=="<THAT>") || (strtoupper($allwords[$x+1])=="<TOPIC>")){
@@ -1180,7 +1180,7 @@ function makesrphp($inarray,$sname)
 
     $myphp="\$" . $sname . "search=array(\n";
 
-    for ($x=0;$x<sizeof($inarray);$x++){
+    for ($x=0;$x<count($inarray);$x++){
 
         $searchvar=cleanforsearch($inarray[$x][0]);
 
@@ -1201,7 +1201,7 @@ function makesrphp($inarray,$sname)
 
     $myphp.="\$" . $sname . "replace=array(\n";
 
-    for ($x=0;$x<sizeof($inarray);$x++){
+    for ($x=0;$x<count($inarray);$x++){
         $myphp.="\"myfunc('" . cleanforreplace($inarray[$x][1]) . "')\",\n";
     }
 
@@ -1288,7 +1288,7 @@ function loadaimlcategory($aimlstring,$botid)
 function makesplitterphp($splitterarray)
 {
     $splitterphp="\$likeperiodsearch=array(\n";
-    for ($x=0;$x<sizeof($splitterarray);$x++){
+    for ($x=0;$x<count($splitterarray);$x++){
         
         $splitterphp.="\"" . $splitterarray[$x] . "\",\n";
 
@@ -1296,7 +1296,7 @@ function makesplitterphp($splitterarray)
     $splitterphp.=");\n";
 
     $splitterphp.="\$likeperiodreplace=array(\n";
-    for ($x=0;$x<sizeof($splitterarray);$x++){
+    for ($x=0;$x<count($splitterarray);$x++){
         
         $splitterphp.="\"" . "." . "\",\n";
 

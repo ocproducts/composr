@@ -105,15 +105,16 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
         }
 
         // If it's a theme, make a addon_install_code.php for the theme to restore images_custom mappings
-        if ((substr($val, 0, 7) == 'themes/') && (substr($val, 0, 15) == 'themes/default/') && (substr($val, 0, 12) == 'themes/admin/') && (substr($val, -10) == '/theme.ini')) {
+        if ((substr($val, 0, 7) == 'themes/') && (substr($val, 0, 15) == 'themes/default/') && (substr($val, 0, 12) != 'themes/admin/') && (substr($val, -10) == '/theme.ini')) {
             $theme = substr($val, 7, strpos($val, '/theme.ini') - 7);
 
             $images = $GLOBALS['SITE_DB']->query_select('theme_images', array('*'), array('theme' => $theme));
             $data = '<' . '?php' . "\n";
             foreach ($images as $image) {
-                $data .= '$GLOBALS[\'SITE_DB\']->query_insert(\'theme_images\',array(\'id\'=>\'' . db_escape_string($image['id']) . '\',\'theme\'=>\'' . db_escape_string($image['theme']) . '\',\'path\'=>\'' . db_escape_string($image['path']) . '\',\'lang\'=>\'' . db_escape_string($image['lang']) . '\'),false,true);' . "\n";
+                if (($image['path'] != '') && ($image['path'] != find_theme_image($image['id'], true, true, 'default'))) {
+                    $data .= '$GLOBALS[\'SITE_DB\']->query_insert(\'theme_images\', array(\'id\' => \'' . db_escape_string($image['id']) . '\', \'theme\' => \'' . db_escape_string($image['theme']) . '\', \'path\' => \'' . db_escape_string($image['path']) . '\', \'lang\' => \'' . db_escape_string($image['lang']) . '\'), false, true);' . "\n";
+                }
             }
-            $data .= "?" . ">\n";
             tar_add_file($tar, 'addon_install_code.php', $data, 0444, time());
         }
     }
@@ -140,7 +141,7 @@ function create_addon($file, $files, $addon, $incompatibilities, $dependencies, 
     tar_close($tar);
 
     $touch_result = @touch($_full, $max_mtime);
-    if ($GLOBALS['DEV_MODE'] && !$touch_result) {
+    if ($GLOBALS['DEV_MODE'] && !$touch_result && get_page_name() == 'build_addons') {
         warn_exit(comcode_to_tempcode('You need to fix file ownership of the existing tar files. Run a command like [tt]sudo chown _www exports/addons/*.tar[/tt]'));
     }
 
@@ -591,6 +592,9 @@ function has_feature($dependency)
     }
 
     // Some other features
+    if (($dependency == 'mysql') && (strpos(get_db_type(), 'mysql') !== false)) {
+        return true;
+    }
     if (($dependency == 'cron') && (cron_installed())) {
         return true;
     }
@@ -598,6 +602,9 @@ function has_feature($dependency)
         return true;
     }
     if ((strtolower($dependency) == 'gd') && (function_exists('imagetypes'))) {
+        return true;
+    }
+    if ((strtolower($dependency) == 'curl') && (function_exists('curl_init'))) {
         return true;
     }
     if (substr($dependency, 0, 3) == 'php') {
@@ -643,6 +650,10 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
     $addon = $info['name'];
 
     $was_already_installed = addon_installed($addon, true);
+
+    require_code('developer_tools');
+    destrictify();
+    set_mass_import_mode();
 
     // Extract files
     $directory = tar_get_directory($tar);
@@ -973,7 +984,11 @@ function upgrade_addon_soft($addon)
 
     $upgrade_from = $rows[0]['addon_version'];
 
-    require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
+    $code_file = 'hooks/systems/addon_registry/' . filter_naughty($addon);
+    if (!is_file(get_file_base() . '/sources_custom/' . $code_file . '.php')) {
+        return 0;
+    }
+    require_code($code_file);
     $ob = object_factory('Hook_addon_registry_' . $addon);
 
     $disk_version = float_to_raw_string($ob->get_version(), 2, true);
@@ -1074,6 +1089,10 @@ function uninstall_addon($addon, $clear_caches = true)
     require_code('zones2');
     require_code('zones3');
     require_code('abstract_file_manager');
+
+    require_code('developer_tools');
+    destrictify();
+    set_mass_import_mode();
 
     // Remove addon info from database, modules, blocks, and files
     uninstall_addon_soft($addon);
@@ -1200,7 +1219,11 @@ function uninstall_addon_soft($addon)
     require_code('files2');
 
     if (addon_installed($addon)) {
-        require_code('hooks/systems/addon_registry/' . filter_naughty($addon));
+        $code_file = 'hooks/systems/addon_registry/' . filter_naughty($addon);
+        if (!is_file(get_file_base() . '/sources_custom/' . $code_file . '.php')) {
+            return;
+        }
+        require_code($code_file);
         $ob = object_factory('Hook_addon_registry_' . $addon);
 
         if (method_exists($ob, 'uninstall')) {

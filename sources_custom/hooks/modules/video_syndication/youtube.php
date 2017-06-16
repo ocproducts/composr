@@ -86,7 +86,7 @@ class Hook_video_syndication_youtube
                 $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
                 $xml = $http_result->data;
 
-                if (!isset($parsed->entry)) // Annoying! Youtube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
+                if (!isset($parsed->entry)) // Annoying! YouTube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
                 {
                     unset($query_params['category']);
                     $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
@@ -320,7 +320,7 @@ class Hook_video_syndication_youtube
 
     public function unbind_remote_video($video)
     {
-        // No-op for youtube, can't be done via Youtube Data API. Fortunately we don't really need this method.
+        // No-op for youtube, can't be done via YouTube Data API. Fortunately we don't really need this method.
         return false;
     }
 

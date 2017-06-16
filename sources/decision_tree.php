@@ -217,7 +217,7 @@ class DecisionTree
 
         $text = comcode_to_tempcode(isset($details['text']) ? $details['text'] : '', null, true);
 
-        $js_function_calls = [];
+        $js_function_calls = array();
 
         // Screen messages
         foreach (array('inform', 'notice', 'warn') as $notice_type) {
@@ -234,7 +234,7 @@ class DecisionTree
 
                         $notice_title = do_lang('DYNAMIC_NOTICE_' . $notice_type);
 
-                        $js_function_calls[] = ['decisionTreeRender', $parameter, $value, $_notice->evaluate(), $notice_title];
+                        $js_function_calls[] = array('decisionTreeRender', $parameter, $value, $_notice->evaluate(), $notice_title);
                     } else { // Flat
                         $notice = $notice_details;
                         attach_message($notice, $notice_type);

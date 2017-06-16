@@ -316,9 +316,8 @@ class Forum_driver_base
      */
     public function get_moderator_groups()
     {
-        global $IN_MINIKERNEL_VERSION;
         static $moderator_group_cache = null;
-        if (($moderator_group_cache !== null) && ((!$IN_MINIKERNEL_VERSION) || ($moderator_group_cache != array()))) {
+        if ($moderator_group_cache !== null) {
             return $moderator_group_cache;
         }
 
@@ -346,12 +345,10 @@ class Forum_driver_base
         }
 
         $ret = $this->_get_usergroup_list($hide_hidden, $only_permissive, $force_show_all, $force_find, $for_member, $skip_hidden);
-        if (count($ret) != 0) { // Conditional is for when installing... can't cache at point of there being no usergroups
-            if ($usergroup_list_cache === null) {
-                $usergroup_list_cache = array();
-            }
-            $usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden] = $ret;
+        if ($usergroup_list_cache === null) {
+            $usergroup_list_cache = array();
         }
+        $usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden] = $ret;
         return $ret;
     }
 

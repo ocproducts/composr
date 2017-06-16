@@ -27,6 +27,10 @@
 	vertical-align: middle;
 }
 
+.manage_theme_theme_usage {
+	padding-bottom: 2em !important;
+}
+
 .manage_theme_theme_usage, .theme_manage_footnote {
 	font-size: 0.95em;
 }

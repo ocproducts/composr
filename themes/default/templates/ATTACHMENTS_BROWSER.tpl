@@ -1,5 +1,7 @@
 <div class="global_middle" data-view="AttachmentsBrowser" data-view-params="{+START,PARAMS_JSON,FIELD_NAME,ID,DESCRIPTION}{_*}{+END}">
 	<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
+		{$INSERT_SPAMMER_BLACKHOLE}
+
 		<label for="member_id">{!ATTACHMENTS_OF}:
 		<select id="member_id" name="member_id">
 			{LIST}

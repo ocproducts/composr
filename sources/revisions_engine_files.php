@@ -452,7 +452,11 @@ class RevisionEngineFiles
                 $text = cms_file_get_contents_safe($full_path);
                 $revision_loaded = true;
 
-                $revisions_tpl->attach(do_template('REVISION_UNDO'));
+                if (substr($full_path, -4) == '.txt') {
+                    $revisions_tpl = new Tempcode(); // Cloning a page, not undoing a revision
+                } else {
+                    $revisions_tpl->attach(do_template('REVISION_UNDO'));
+                }
             } else {
                 // Should not happen
             }

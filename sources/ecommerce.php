@@ -185,7 +185,7 @@ function make_cart_payment_button($order_id, $currency)
 
     if (!method_exists($payment_gateway_object, 'make_cart_transaction_button')) {
         $amount = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'tot_price', array('id' => $order_id));
-        return $payment_gateway_object->make_transaction_button('cart_orders', do_lang('CART_ORDER', $order_id), strval($order_id), $amount, $currency);
+        return $payment_gateway_object->make_transaction_button('cart_orders', do_lang('CART_ORDER', strval($order_id)), strval($order_id), $amount, $currency);
     }
 
     return $payment_gateway_object->make_cart_transaction_button($items, $currency, $order_id);
@@ -712,7 +712,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
  */
 function handle_ipn_transaction_script($silent_fail = false, $send_notifications = true)
 {
-    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
+    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (cms_is_writable(get_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'ab');
         flock($myfile, LOCK_EX);
         fseek($myfile, 0, SEEK_END);
@@ -859,7 +859,7 @@ function handle_confirmed_transaction($purchase_id, $item_name, $payment_status,
             if ($found[2] != '') {
                 call_user_func_array($found[2], array($purchase_id, $found, $type_code, true)); // Run cancel code
             }
-        } elseif ($item_name == do_lang('shopping:CART_ORDER', $purchase_id)) { // Cart orders have special support for tracking the order status
+        } elseif ((addon_installed('shopping')) && ($item_name == do_lang('shopping:CART_ORDER', $purchase_id))) { // Cart orders have special support for tracking the order status
             $found['ORDER_STATUS'] = 'ORDER_STATUS_awaiting_payment';
 
             if ($found[2] != '') {

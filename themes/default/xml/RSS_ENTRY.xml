@@ -40,4 +40,3 @@
 			<enclosure url="{ENCLOSURE_URL*}" length="{ENCLOSURE_LENGTH*}" type="{ENCLOSURE_TYPE*}" />
 		{+END}{+END}{+END}
 	</item>
-

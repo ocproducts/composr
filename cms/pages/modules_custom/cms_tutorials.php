@@ -29,6 +29,7 @@ class Module_cms_tutorials extends Standard_crud_module
     public $menu_label = 'TUTORIALS';
     public $select_name = 'TUTORIALS';
     public $orderer = 't_title';
+    public $orderer_is_multi_lang = false;
     public $table = 'tutorials_external';
     public $do_preview = null;
 
@@ -122,22 +123,41 @@ class Module_cms_tutorials extends Standard_crud_module
      * @param  SHORT_TEXT $title Title
      * @param  LONG_TEXT $summary Summary
      * @param  URLPATH $icon Icon
-     * @param  ID_TEXT $media_type Media type
+     * @param  ?ID_TEXT $media_type Media type (null: default)
      * @set document video audio slideshow book
      * @param  ID_TEXT $difficulty_level Difficulty level
      * @set novice regular expert
      * @param  BINARY $pinned Whether is pinned
      * @param  ID_TEXT $author Author
-     * @param  array $tags List of tags
+     * @param  ?array $tags List of tags (null: default)
      * @return array A pair: the Tempcode for the visible fields, and the Tempcode for the hidden fields
      */
-    public function get_form_fields($id = null, $url = '', $title = '', $summary = '', $icon = '', $media_type = 'document', $difficulty_level = 'regular', $pinned = 0, $author = '', $tags = array())
+    public function get_form_fields($id = null, $url = '', $title = '', $summary = '', $icon = '', $media_type = null, $difficulty_level = 'regular', $pinned = 0, $author = '', $tags = null)
     {
         if ($author == '') {
             $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
             if ($GLOBALS['FORUM_DRIVER']->is_staff(get_member())) {
                 $author .= ', ocProducts';
             }
+        }
+
+        if ($media_type === null) {
+            $media_type = get_param_string('media_type', 'document');
+        }
+
+        if ($tags === null || $icon == '') {
+            $tag = get_param_string('tag', null);
+            if ($tag !== null) {
+                if ($tags === null) {
+                    $tags = array($tag);
+                }
+                if ($icon == '') {
+                    $icon = 'tutorial_icons/' . strtolower($tag);
+                }
+            }
+        }
+        if ($tags === null) {
+            $tags = array();
         }
 
         $fields = new Tempcode();
@@ -152,7 +172,7 @@ class Module_cms_tutorials extends Standard_crud_module
 
         require_code('themes2');
         $ids = get_all_image_ids_type('tutorial_icons');
-        $fields->attach(form_input_theme_image('Icon', 'Icon for the tutorial.', 'icon', $ids, $icon));
+        $fields->attach(form_input_theme_image('Icon', 'Icon for the tutorial.', 'icon', $ids, null, $icon));
 
         $content = new Tempcode();
         foreach (array('document', 'video', 'audio', 'slideshow', 'book') as $_media_type) {

@@ -1,134 +1,135 @@
 {$REQUIRE_JAVASCRIPT,chat}
+
 <div data-tpl="chatLobbyScreen" data-tpl-params="{+START,PARAMS_JSON,IM_AREA_TEMPLATE,IM_PARTICIPANT_TEMPLATE}{_*}{+END}">
-{TITLE}
+	{TITLE}
 
-{+START,IF,{$HAS_FORUM,1}}
-	{MESSAGE}
-{+END}
+	{+START,IF,{$HAS_FORUM,1}}
+		{MESSAGE}
+	{+END}
 
-<p>{!USE_CHAT_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
+	<p>{!USE_CHAT_RULES,{$PAGE_LINK*,:rules},{$PAGE_LINK*,:privacy}}</p>
 
-<div class="box box___chat_lobby_screen_rooms box_prominent"><div class="box_inner">
-	<h2>{!CHATROOMS_LOBBY_TITLE}</h2>
+	<div class="box box___chat_lobby_screen_rooms box_prominent"><div class="box_inner">
+		<h2>{!CHATROOMS_LOBBY_TITLE}</h2>
 
-	<div class="float_surrounder">
-		{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}{PRIVATE_CHATROOM}{BLOCKING_LINK}{MOD_LINK}{SETEFFECTS_LINK}}
-			<nav class="chat_actions">
-				<h3>{!OTHER_ACTIONS}</h3>
+		<div class="float_surrounder">
+			{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}{PRIVATE_CHATROOM}{BLOCKING_LINK}{MOD_LINK}{SETEFFECTS_LINK}}
+				<nav class="chat_actions">
+					<h3>{!OTHER_ACTIONS}</h3>
 
-				<nav>
+					<nav>
+						<ul class="actions_list">
+							{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}}
+								<li class="icon_14_add"><a href="{ADD_CHATROOM_URL*}" rel="add">{!ADD_CHATROOM}</a></li>
+							{+END}
+							{+START,IF_NON_EMPTY,{PRIVATE_CHATROOM}}
+								<li class="icon_14_proceed">{PRIVATE_CHATROOM}</li>
+							{+END}
+							{+START,IF_NON_EMPTY,{BLOCKING_LINK}}
+								<li class="icon_14_remove_manage">{BLOCKING_LINK}</li>
+							{+END}
+							{+START,IF_NON_EMPTY,{MOD_LINK}}
+								<li class="icon_14_tools">{MOD_LINK}</li>
+							{+END}
+							{+START,IF_NON_EMPTY,{SETEFFECTS_LINK}}
+								<li class="icon_14_sound_effects">{SETEFFECTS_LINK}</li>
+							{+END}
+						</ul>
+					</nav>
+				</nav>
+			{+END}
+
+			<div class="chat_rooms">
+				<h3>{!SELECT_CHATROOM}</h3>
+
+				{+START,IF_NON_EMPTY,{CHATROOMS}}
 					<ul class="actions_list">
-						{+START,IF_NON_EMPTY,{ADD_CHATROOM_URL}}
-							<li class="icon_14_add"><a href="{ADD_CHATROOM_URL*}" rel="add">{!ADD_CHATROOM}</a></li>
-						{+END}
-						{+START,IF_NON_EMPTY,{PRIVATE_CHATROOM}}
-							<li class="icon_14_proceed">{PRIVATE_CHATROOM}</li>
-						{+END}
-						{+START,IF_NON_EMPTY,{BLOCKING_LINK}}
-							<li class="icon_14_remove_manage">{BLOCKING_LINK}</li>
-						{+END}
-						{+START,IF_NON_EMPTY,{MOD_LINK}}
-							<li class="icon_14_tools">{MOD_LINK}</li>
-						{+END}
-						{+START,IF_NON_EMPTY,{SETEFFECTS_LINK}}
-							<li class="icon_14_sound_effects">{SETEFFECTS_LINK}</li>
+						{+START,LOOP,CHATROOMS}
+							<li><a href="{URL*}">{NAME*}</a> <em class="associated_details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated_details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
 						{+END}
 					</ul>
-				</nav>
-			</nav>
-		{+END}
 
-		<div class="chat_rooms">
-			<h3>{!SELECT_CHATROOM}</h3>
-
-			{+START,IF_NON_EMPTY,{CHATROOMS}}
-				<ul class="actions_list">
-					{+START,LOOP,CHATROOMS}
-						<li><a href="{URL*}">{NAME*}</a> <em class="associated_details">({$?,{PRIVATE},{!CHATROOM_STATUS_PRIVATE},{!CHATROOM_STATUS_PUBLIC}})</em><span class="associated_details">({!STATIC_USERS_ONLINE,{$TIME*},{USERNAMES}})</span></li>
-					{+END}
-				</ul>
-
-				<p class="chat_multi_tab">{!OPEN_CHATROOMS_IN_TABS}</p>
-			{+END}
-			{+START,IF_EMPTY,{CHATROOMS}}
-				<p class="nothing_here">{!NO_CATEGORIES,chat}</p>
-			{+END}
-		</div>
-	</div>
-</div></div>
-
-{+START,IF,{$NOT,{$IS_GUEST}}}
-	<div class="chat_im_convos_wrap">
-		<div class="box box___chat_lobby_screen_im box_prominent"><div class="box_inner">
-			<h2>{!INSTANT_MESSAGING}</h2>
-
-			<div class="float_surrounder chat_im_convos_inner">
-				<div class="chat_lobby_convos">
-					<div class="chat_lobby_convos_tabs" id="chat_lobby_convos_tabs" style="display: none"></div>
-					<div class="chat_lobby_convos_areas" id="chat_lobby_convos_areas">
-						<p class="nothing_here">
-							{!NO_IM_CONVERSATIONS}
-						</p>
-					</div>
-				</div>
-
-				<div class="chat_lobby_friends">
-					<h3>{!FRIEND_LIST}</h3>
-
-					{+START,IF_NON_EMPTY,{FRIENDS}}
-						<form title="{!FRIEND_LIST}" method="post" action="{$?,{$IS_EMPTY,{URL_REMOVE_FRIENDS}},index.php,{URL_REMOVE_FRIENDS*}}" autocomplete="off">
-							{$INSERT_SPAMMER_BLACKHOLE}
-
-							<div id="friends_wrap">
-								{FRIENDS}
-							</div>
-
-							<div class="friend_actions">
-								{+START,IF,{CAN_IM}}
-									<input class="button_screen_item menu___generic_admin__add_to_category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
-									<input class="button_screen_item menu__social__chat__chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
-								{+END}
-								{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
-									<input data-click-pd="1" class="button_screen_item menu___generic_admin__delete js-click-btn-dump-friends-confirm" type="submit" value="{!DUMP_FRIENDS}" />
-								{+END}
-							</div>
-						</form>
-					{+END}
-
-					{+START,IF_NON_EMPTY,{URL_ADD_FRIEND}}
-						<p>{!MUST_ADD_CONTACTS}</p>
-
-						<form class="js-form-submit-add-friend" data-submit-pd="1" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
-							{$INSERT_SPAMMER_BLACKHOLE}
-
-							<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>
-							<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" class="js-keyup-input-update-ajax-member-list" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" />
-							<input class="button_micro menu___generic_admin__add_one" type="submit" value="{!ADD}" />
-						</form>
-					{+END}
-
-					<h3 class="chat_lobby_options_header">{!OPTIONS}</h3>
-
-					{CHAT_SOUND}
-
-					<form title="{!SOUND_EFFECTS}" action="index.php" method="post" class="inline sound_effects_form" autocomplete="off">
-						{$INSERT_SPAMMER_BLACKHOLE}
-
-						<p>
-							<label for="play_sound">{!SOUND_EFFECTS}:</label> <input type="checkbox" id="play_sound" name="play_sound" checked="checked" />
-						</p>
-					</form>
-
-					<div class="alert_box_wrap" id="alert_box_wrap" style="display: none">
-						<section class="box"><div class="box_inner">
-							<h3>{!ALERT}</h3>
-
-							<div id="alert_box"></div>
-						</div></section>
-					</div>
-				</div>
+					<p class="chat_multi_tab">{!OPEN_CHATROOMS_IN_TABS}</p>
+				{+END}
+				{+START,IF_EMPTY,{CHATROOMS}}
+					<p class="nothing_here">{!NO_CATEGORIES,chat}</p>
+				{+END}
 			</div>
-		</div></div>
-	</div>
-{+END}
+		</div>
+	</div></div>
+
+	{+START,IF,{$NOT,{$IS_GUEST}}}
+		<div class="chat_im_convos_wrap">
+			<div class="box box___chat_lobby_screen_im box_prominent"><div class="box_inner">
+				<h2>{!INSTANT_MESSAGING}</h2>
+
+				<div class="float_surrounder chat_im_convos_inner">
+					<div class="chat_lobby_convos">
+						<div class="chat_lobby_convos_tabs" id="chat_lobby_convos_tabs" style="display: none"></div>
+						<div class="chat_lobby_convos_areas" id="chat_lobby_convos_areas">
+							<p class="nothing_here">
+								{!NO_IM_CONVERSATIONS}
+							</p>
+						</div>
+					</div>
+
+					<div class="chat_lobby_friends">
+						<h3>{!FRIEND_LIST}</h3>
+
+						{+START,IF_NON_EMPTY,{FRIENDS}}
+							<form title="{!FRIEND_LIST}" method="post" action="{$?,{$IS_EMPTY,{URL_REMOVE_FRIENDS}},index.php,{URL_REMOVE_FRIENDS*}}" autocomplete="off">
+								{$INSERT_SPAMMER_BLACKHOLE}
+
+								<div id="friends_wrap">
+									{FRIENDS}
+								</div>
+
+								<div class="friend_actions">
+									{+START,IF,{CAN_IM}}
+										<input class="button_screen_item menu___generic_admin__add_to_category js-click-btn-im-invite-ticked-people" disabled="disabled" id="invite_ongoing_im_button" type="button" value="{!INVITE_CURRENT_IM}" />
+										<input class="button_screen_item menu__social__chat__chat js-click-btn-im-start-ticked-people" type="button" value="{!START_IM}" />
+									{+END}
+									{+START,IF_NON_EMPTY,{URL_REMOVE_FRIENDS}}
+										<input data-click-pd="1" class="button_screen_item menu___generic_admin__delete js-click-btn-dump-friends-confirm" type="submit" value="{!DUMP_FRIENDS}" />
+									{+END}
+								</div>
+							</form>
+						{+END}
+
+						{+START,IF_NON_EMPTY,{URL_ADD_FRIEND}}
+							<p>{!MUST_ADD_CONTACTS}</p>
+
+							<form class="js-form-submit-add-friend" data-submit-pd="1" title="{!ADD}: {!FRIEND_LIST}" method="post" action="{URL_ADD_FRIEND*}" autocomplete="off">
+								{$INSERT_SPAMMER_BLACKHOLE}
+
+								<label class="accessibility_hidden" for="friend_username">{!USERNAME}: </label>
+								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="18" maxlength="80" class="js-keyup-input-update-ajax-member-list" type="text" placeholder="{!USERNAME}" id="friend_username" name="friend_username" />
+								<input class="button_micro menu___generic_admin__add_one" type="submit" value="{!ADD}" />
+							</form>
+						{+END}
+
+						<h3 class="chat_lobby_options_header">{!OPTIONS}</h3>
+
+						{CHAT_SOUND}
+
+						<form title="{!SOUND_EFFECTS}" action="index.php" method="post" class="inline sound_effects_form" autocomplete="off">
+							{$INSERT_SPAMMER_BLACKHOLE}
+
+							<p>
+								<label for="play_sound">{!SOUND_EFFECTS}:</label> <input type="checkbox" id="play_sound" name="play_sound" checked="checked" />
+							</p>
+						</form>
+
+						<div class="alert_box_wrap" id="alert_box_wrap" style="display: none">
+							<section class="box"><div class="box_inner">
+								<h3>{!ALERT}</h3>
+
+								<div id="alert_box"></div>
+							</div></section>
+						</div>
+					</div>
+				</div>
+			</div></div>
+		</div>
+	{+END}
 </div>

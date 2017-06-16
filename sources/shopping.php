@@ -385,7 +385,7 @@ function render_cart_payment_form()
 /**
  * Find current order tax opt out status.
  *
- * @return  BINARY      Tax opt out status of current order
+ * @return BINARY Tax opt out status of current order
  */
 function get_order_tax_opt_out_status()
 {
@@ -411,7 +411,7 @@ function get_order_tax_opt_out_status()
 /**
  * Find current order ID.
  *
- * @return  ?AUTO_LINK      Order ID (null: none)
+ * @return ?AUTO_LINK Order ID (null: none)
  */
 function get_current_order_id()
 {
@@ -451,7 +451,7 @@ function purchase_done_staff_mail($order_id)
  */
 function stock_maintain_warn_mail($product_name, $product_id)
 {
-    $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_id), get_module_zone('catalogues'));
+    $product_info_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $product_id), get_module_zone('catalogues'), null, false, false, true);
 
     require_code('notifications');
 
@@ -493,7 +493,7 @@ function update_stock($order_id)
 /**
  * Return list entry of common order statuses of orders.
  *
- * @return  Tempcode    Order status list entries
+ * @return Tempcode Order status list entries
  */
 function get_order_status_list()
 {

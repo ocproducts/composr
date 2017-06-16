@@ -8,4 +8,3 @@
 	{ENTRY}
 </td>
 {+END}
-

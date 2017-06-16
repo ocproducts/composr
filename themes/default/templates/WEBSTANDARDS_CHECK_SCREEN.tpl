@@ -7,4 +7,3 @@
 <ul>
 	{CONTENTS}
 </ul>
-

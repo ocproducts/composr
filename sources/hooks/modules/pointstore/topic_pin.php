@@ -103,7 +103,7 @@ class Hook_pointstore_topic_pin
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => do_lang_tempcode('PURCHASE'),
             'FIELDS' => $fields,
-            'JS_FUNCTION_CALLS' => ['hookPointStoreTopicPin'],
+            'JS_FUNCTION_CALLS' => array('hookPointStoreTopicPin'),
         ));
     }
 

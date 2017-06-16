@@ -78,9 +78,7 @@ class Hook_addon_registry_page_management
             'requires' => array(),
             'recommends' => array(),
             'conflicts_with' => array(),
-            'previously_in_addon' => array(
-                'core_page_management'
-            )
+            'previously_in_addon' => array('core_page_management'),
         );
     }
 
@@ -139,7 +137,9 @@ class Hook_addon_registry_page_management
     {
         require_javascript('tree_list');
         require_javascript('sitemap_editor');
+
         require_lang('zones');
+
         return array(
             lorem_globalise(do_lorem_template('SITEMAP_EDITOR_SCREEN', array(
                 'TITLE' => lorem_title(),
@@ -157,6 +157,7 @@ class Hook_addon_registry_page_management
     public function tpl_preview__administrative__webstandards_check_screen()
     {
         require_lang('webstandards');
+
         $content = new Tempcode();
         foreach (placeholder_array() as $val) {
             $content->attach(do_lorem_template('WEBSTANDARDS_CHECK_ERROR', array(

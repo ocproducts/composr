@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,core_cns}
+
 <div class="search_option" data-tpl="cnsMemberDirectoryScreenFilter">
 	<label for="filter_{BLOCK_ID*}_{NAME|*}">{LABEL*}</label>
 

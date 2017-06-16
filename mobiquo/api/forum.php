@@ -54,6 +54,8 @@ function get_config_func($raw_params)
         $brand_name = 'Composr';
     }
 
+    require_code('database_search');
+
     $_config = array(
         'api_level' => '4',
         'is_open' => strval(1 - intval(get_option('site_closed'))),
@@ -77,7 +79,7 @@ function get_config_func($raw_params)
         'avatar' => addon_installed('cns_member_avatars') ? '1' : '0',
         'pm_load' => '1',
         'subscribe_load' => '1',
-        'min_search_length' => strval(get_minimum_search_length()),
+        'min_search_length' => strval($GLOBALS['SITE_DB']->get_minimum_search_length()),
         'inbox_stat' => '1',
         'multi_quote' => '1',
         'default_smilies' => '1',

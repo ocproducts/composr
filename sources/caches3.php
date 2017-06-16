@@ -28,15 +28,17 @@ function init__caches3()
     global $ERASED_TEMPLATES_ONCE;
     $ERASED_TEMPLATES_ONCE = false;
 
-    // Special ways of decaching templates
-    define('TEMPLATE_DECACHE_BASE', '\{\+START,INCLUDE');
-    // -
-    define('TEMPLATE_DECACHE_WITH_LANG', '\{\!|\{\$CHARSET' . '|' . TEMPLATE_DECACHE_BASE);
-    define('TEMPLATE_DECACHE_WITH_THEME_IMAGE', '\{\$IMG|\{\$IMG_INLINE' . '|' . TEMPLATE_DECACHE_BASE);
-    define('TEMPLATE_DECACHE_WITH_CONFIG', '\{\!|\{\$IMG|\{\$SITE_NAME|\{\$CONFIG_OPTION|\{\$SITE_SCOPE|\{\$SSW|\{\$DOMAIN|\{\$STAFF_ADDRESS|\{\$SHOW_DOCS|\{\$COPYRIGHT|\{\$VALID_FILE_TYPES\{\$BRAND_|\{\$INLINE_STATS' . '|' . TEMPLATE_DECACHE_BASE);
-    define('TEMPLATE_DECACHE_WITH_ADDON', '\{\$ADDON_INSTALLED' . '|' . TEMPLATE_DECACHE_WITH_CONFIG);
-    // -
-    define('TEMPLATE_DECACHE_WITH_ANYTHING_INTERESTING', TEMPLATE_DECACHE_WITH_ADDON); // because TEMPLATE_DECACHE_WITH_ADDON actually does include everything already, via chaining
+    if (!defined('TEMPLATE_DECACHE_BASE')) {
+        // Special ways of decaching templates
+        define('TEMPLATE_DECACHE_BASE', '\{\+START,INCLUDE');
+        // -
+        define('TEMPLATE_DECACHE_WITH_LANG', '\{\!|\{\$CHARSET' . '|' . TEMPLATE_DECACHE_BASE);
+        define('TEMPLATE_DECACHE_WITH_THEME_IMAGE', '\{\$IMG|\{\$IMG_INLINE' . '|' . TEMPLATE_DECACHE_BASE);
+        define('TEMPLATE_DECACHE_WITH_CONFIG', '\{\!|\{\$IMG|\{\$SITE_NAME|\{\$CONFIG_OPTION|\{\$SITE_SCOPE|\{\$SSW|\{\$DOMAIN|\{\$STAFF_ADDRESS|\{\$SHOW_DOCS|\{\$COPYRIGHT|\{\$VALID_FILE_TYPES\{\$BRAND_|\{\$INLINE_STATS' . '|' . TEMPLATE_DECACHE_BASE);
+        define('TEMPLATE_DECACHE_WITH_ADDON', '\{\$ADDON_INSTALLED' . '|' . TEMPLATE_DECACHE_WITH_CONFIG);
+        // -
+        define('TEMPLATE_DECACHE_WITH_ANYTHING_INTERESTING', TEMPLATE_DECACHE_WITH_ADDON); // because TEMPLATE_DECACHE_WITH_ADDON actually does include everything already, via chaining
+    }
 }
 
 /**
@@ -62,12 +64,12 @@ function auto_decache($changed_base_url)
 }
 
 /**
- * Rebuild the specified caches.
+ * Run the specified cleanup tools.
  *
- * @param  ?array $caches The caches to rebuild (null: all)
+ * @param  ?array $cleanup_tools The cleanup tools to run (null: all)
  * @return Tempcode Any messages returned
  */
-function composr_cleanup($caches = null)
+function composr_cleanup($cleanup_tools = null)
 {
     require_lang('cleanup');
 
@@ -87,17 +89,19 @@ function composr_cleanup($caches = null)
         $hooks['cns'] = $temp;
     }
 
-    if ($caches !== null) {
-        foreach ($caches as $cache) {
-            if (array_key_exists($cache, $hooks)) {
-                require_code('hooks/systems/cleanup/' . filter_naughty_harsh($cache));
-                $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($cache), true);
+    if ($cleanup_tools !== null) {
+        foreach ($cleanup_tools as $hook) {
+            if (array_key_exists($hook, $hooks)) {
+                require_code('hooks/systems/cleanup/' . filter_naughty_harsh($hook));
+                $object = object_factory('Hook_cleanup_' . filter_naughty_harsh($hook), true);
                 if ($object === null) {
                     continue;
                 }
                 $messages->attach($object->run());
+
+                log_it('CLEANUP_TOOLS', $hook);
             } else {
-                $messages->attach(paragraph(do_lang_tempcode('_MISSING_RESOURCE', escape_html($cache))));
+                $messages->attach(paragraph(do_lang_tempcode('_MISSING_RESOURCE', escape_html($hook))));
             }
         }
     } else {
@@ -110,11 +114,12 @@ function composr_cleanup($caches = null)
             $info = $object->info();
             if ($info['type'] == 'cache') {
                 $messages->attach($object->run());
+
+                log_it('CLEANUP_TOOLS', $hook);
             }
         }
     }
 
-    log_it('CLEANUP_TOOLS');
     return $messages;
 }
 
@@ -155,6 +160,8 @@ function erase_comcode_cache()
 
     cms_profile_start_for('erase_comcode_cache');
 
+    reload_lang_fields(true);
+
     if (multi_lang_content()) {
         $sql = 'UPDATE ' . get_table_prefix() . 'translate' . $GLOBALS['FORUM_DB']->prefer_index('translate', 'decache');
         $sql .= ' SET text_parsed=\'\' WHERE ' . db_string_not_equal_to('text_parsed', '')/*this WHERE is so indexing helps*/;
@@ -162,8 +169,8 @@ function erase_comcode_cache()
     } else {
         global $TABLE_LANG_FIELDS_CACHE;
         foreach ($TABLE_LANG_FIELDS_CACHE as $table => $fields) {
-            foreach (array_keys($fields) as $field) {
-                if (strpos($field, '__COMCODE') !== false) {
+            foreach ($fields as $field => $field_type) {
+                if (strpos($field_type, '__COMCODE') !== false) {
                     $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . $table . ' SET ' . $field . '__text_parsed=\'\' WHERE ' . db_string_not_equal_to($field . '__text_parsed', '')/*this WHERE is so indexing helps*/);
                 }
             }
@@ -192,7 +199,9 @@ function erase_thumb_cache()
     $dh = @opendir($full);
     if ($dh !== false) {
         while (($file = readdir($dh)) !== false) {
-            @unlink($full . '/' . $file);
+            if (!in_array($file, array('index.html', '.htaccess'))) {
+                @unlink($full . '/' . $file);
+            }
         }
         closedir($dh);
     }
@@ -211,7 +220,7 @@ function erase_cached_language()
         $_dir = @opendir($path);
         if ($_dir === false) {
             require_code('files2');
-            make_missing_directory($path);
+            @make_missing_directory($path);
         } else {
             while (false !== ($file = readdir($_dir))) {
                 if (substr($file, -4) == '.lcd') {
@@ -263,8 +272,9 @@ function erase_cached_language()
  * @param  boolean $preserve_some Whether to preserve CSS and JS files that might be linked to between requests
  * @param  ?array $only_templates Only erase specific templates with the following filename, excluding suffix(es) (null: erase all)
  * @param  ?string $raw_file_regexp The original template must contain a match for this regular expression (null: no restriction)
+ * @param  boolean $rebuild_some_deleted_files Whether to rebuild some files that are deleted (be very careful about this, it is high-intensity, and may break due to in-memory caches still existing)
  */
-function erase_cached_templates($preserve_some = false, $only_templates = null, $raw_file_regexp = null)
+function erase_cached_templates($preserve_some = false, $only_templates = null, $raw_file_regexp = null, $rebuild_some_deleted_files = false)
 {
     if ($only_templates === array()) {
         return; // Optimisation
@@ -338,7 +348,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
             $_dir = @opendir($path);
             if ($_dir === false) {
                 require_code('files2');
-                make_missing_directory($path);
+                @make_missing_directory($path);
             } else {
                 $rebuilt = array();
 
@@ -405,7 +415,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                     }
 
                     // Recreate static files right away because of parallelism...
-                    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
+                    if ((!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($rebuild_some_deleted_files)) {
                         if ((!$preserve_some) && (!isset($rebuilt[$file_template_name]))) {
                             if (/*filter what we'll do due to memory limitation*/in_array($file_template_name, array('global.css', 'cns.css', 'forms.css', 'menu__dropdown.css', 'ajax.js', 'custom_globals.js', 'editing.js', 'global.js', 'modalwindow.js', 'posting.js', 'staff.js'))) {
                                 if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {

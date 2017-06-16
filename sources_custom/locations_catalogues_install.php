@@ -137,7 +137,7 @@ function install_location_data()
  *
  * If there are no accent characters, then the string given is just returned.
  *
- * @param string $string Text that might have accent characters
+ * @param  string $string Text that might have accent characters
  * @return string Filtered string with replaced "nice" characters.
  */
 function remove_accents($string)

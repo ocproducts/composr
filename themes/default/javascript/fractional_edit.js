@@ -135,7 +135,7 @@ function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleCli
                 /*FIXME: Synchronous XHR*/
                 var sessionTestRet = $cms.doAjaxRequest(sessionTestUrl + $cms.keepStub(true));
 
-                if (sessionTestRet.responseText) {// If it failed, see if it is due to a non-confirmed session
+                if (sessionTestRet.responseText) { // If it failed, see if it is due to a non-confirmed session
                     $cms.ui.confirmSession(
                         function (result) {
                             if (result) {
@@ -150,7 +150,7 @@ function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleCli
 
                     $cms.ui.alert((response.status == 500) ? response.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', null, '{!FRACTIONAL_EDIT;^}');
                 }
-            } else {// Success
+            } else { // Success
                 object.raw_text = input.value;
                 $cms.dom.html(object, response.responseText);
 
@@ -177,9 +177,9 @@ function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleCli
 
     // Cancel or save actions
     if (type === 'line') {
-        input.onkeyup = function (event) {// Not using onkeypress because that only works for actual represented characters in the input box
+        input.onkeyup = function (event) { // Not using onkeypress because that only works for actual represented characters in the input box
 
-            if ($cms.dom.keyPressed(event, 'Escape')) {// Cancel (escape key)
+            if ($cms.dom.keyPressed(event, 'Escape')) { // Cancel (escape key)
                 var tmp = input.onblur;
                 input.onblur = null;
                 $cms.ui.confirm('{!javascript:FRACTIONAL_EDIT_CANCEL_CONFIRM;^}', function (result) {
@@ -193,7 +193,7 @@ function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleCli
                 return null;
             }
 
-            if ($cms.dom.keyPressed(event, 'Enter') && (this.value != '')) {// Save
+            if ($cms.dom.keyPressed(event, 'Enter') && (this.value != '')) { // Save
                 return saveFunction();
             }
 
@@ -218,4 +218,3 @@ function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleCli
     }
     return false;
 }
-

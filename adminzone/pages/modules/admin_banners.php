@@ -128,7 +128,7 @@ class Module_admin_banners
         }
         $field_titles_arr = array_merge($field_titles_arr, array(do_lang_tempcode('BANNER_HITS_TO'), do_lang_tempcode('BANNER_VIEWS_TO'), do_lang_tempcode('BANNER_CLICKTHROUGH'), do_lang_tempcode('IMPORTANCE_MODULUS'), do_lang_tempcode('SUBMITTER'), do_lang_tempcode('ADDED')));
         if (addon_installed('unvalidated')) {
-            $field_titles_arr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
+            $field_titles_arr[] = protect_from_escaping(do_template('COMCODE_ABBR', array('_GUID' => '7a2ed997384b823b25dc3c70d4ff82d6', 'TITLE' => do_lang_tempcode('VALIDATED'), 'CONTENT' => do_lang_tempcode('VALIDATED_SHORT'))));
         }
         $fields_title = results_field_title($field_titles_arr, $sortables, 'sort', $sortable . ' ' . $sort_order);
 

@@ -407,7 +407,7 @@ class Module_admin_cns_groups extends Standard_crud_module
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
-            if (($row['id'] == db_get_first_id() + 8) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_presented_at_install' => '1')) == 0)) {
+            if (($row['id'] == db_get_first_id() + 8) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_presented_at_install' => 1)) == 0)) {
                 $row['g_is_presented_at_install'] = 1;
             }
 

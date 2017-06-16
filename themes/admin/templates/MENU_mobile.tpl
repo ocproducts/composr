@@ -4,7 +4,7 @@
 {$SET,menu_id,r_{MENU|}_d}
 
 <a data-require-javascript="core_menus" data-tpl="menuMobile" data-tpl-params="{+START,PARAMS_JSON,menu_id}{_*}{+END}" href="{$PAGE_LINK*,:sitemap}" class="mobile_menu_button js-click-toggle-{$GET,menu_id}-content">
-    <img src="{$IMG*,mobile_menu}" alt="{!MENU}" />	<span>{!MENU}</span>
+	<img src="{$IMG*,mobile_menu}" alt="{!MENU}" />	<span>{!MENU}</span>
 </a>
 
 {+START,IF_NON_EMPTY,{CONTENT}}

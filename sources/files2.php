@@ -31,7 +31,7 @@ function init__files2()
 /**
  * Make a missing required directory, or exit with an error if we cannot (unless error suppression is on).
  *
- * @param PATH $dir Path to create
+ * @param  PATH $dir Path to create
  * @return boolean Success status
  */
 function make_missing_directory($dir)
@@ -54,7 +54,7 @@ function make_missing_directory($dir)
 /**
  * Discern the cause of a file-write error, and show an appropriate error message.
  *
- * @param PATH $path File path that could not be written (full path, not relative)
+ * @param  PATH $path File path that could not be written (full path, not relative)
  * @ignore
  */
 function _intelligent_write_error($path)
@@ -269,7 +269,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
 {
     if ($headers) {
         header('Content-Type: text/csv; charset=' . get_charset());
-        header('Content-Disposition: attachment; filename="' . escape_header($filename) . '"');
+        header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
         if (cms_srv('REQUEST_METHOD') == 'HEAD') {
             return '';
@@ -283,6 +283,12 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
     }
 
     $out = '';
+
+    if (get_charset() == 'utf-8') {
+        $bom = chr(0xEF) . chr(0xBB) . chr(0xBF);
+        //$out .= $bom; Shows as gibberish on Mac unless you explicitly import it with the correct settings
+    }
+
     foreach ($data as $i => $line) {
         if ($i == 0) { // Header
             foreach (array_keys($line) as $j => $val) {
@@ -735,7 +741,7 @@ function delete_upload($upload_path, $table, $field, $id_field, $id, $new_url = 
     // Try and delete the file
     if ((has_actual_page_access(get_member(), 'admin_cleanup')) || (get_option('cleanup_files') == '1')) { // This isn't really a permission - more a failsafe in case there is a security hole. Staff can cleanup leftover files from the Cleanup module anyway. NB: Also repeated in cms_galleries.php.
         $where = is_array($id_field) ? $id_field : array($id_field => $id);
-        $url = $GLOBALS['SITE_DB']->query_select_value_if_there($table, $field, $where);
+        $url = $GLOBALS['SITE_DB']->query_select_value_if_there($table, filter_naughty_harsh($field), $where);
         if (empty($url)) {
             return;
         }

@@ -30,7 +30,6 @@ class Block_twitter_feed
         $info['hack_version'] = null;
         $info['version'] = 2;
         $info['locked'] = false;
-        $info['update_require_upgrade'] = true;
         $info['parameters'] = array('consumer_key', 'consumer_secret', 'access_token', 'access_token_secret', 'screen_name', 'title', 'template_main', 'template_style', 'max_statuses', 'style', 'show_profile_image', 'follow_button_size', 'twitter_logo_color', 'twitter_logo_size');
         return $info;
     }

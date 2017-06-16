@@ -67,7 +67,7 @@ foreach ($files as $filename) {
         continue;
     }
     //echo 'SIGNATURES-DOING ' . $_filename . cnl();
-    $result = get_php_file_api($_filename, false);
+    $result = get_php_file_api($_filename, false, true);
 
     foreach ($result as $i => $r) {
         if ($r['name'] == '__global') {

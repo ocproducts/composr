@@ -18,6 +18,22 @@
  */
 class lang_misc_test_set extends cms_test_case
 {
+    private $lang_file_mapping = array();
+
+    public function testUnbalancedSmartQuotes()
+    {
+        require_code('lang2');
+        require_code('lang_compile');
+
+        $lang_files = get_lang_files(fallback_lang());
+        foreach (array_keys($lang_files) as $lang_file) {
+            $map = get_lang_file_map(fallback_lang(), $lang_file, false, false) + get_lang_file_map(fallback_lang(), $lang_file, true, false);
+            foreach ($map as $key => $value) {
+                $this->assertTrue(preg_match('#\} \w+\(s\)#', $value) == 0, 'Do better pluralisation for ' . $key);
+            }
+        }
+    }
+
     public function testUnknownReferences()
     {
         require_code('lang_compile');
@@ -25,69 +41,113 @@ class lang_misc_test_set extends cms_test_case
         disable_php_memory_limit();
         require_all_lang();
 
-        $all_code = '';
+        $lang_files = get_lang_files();
+        foreach (array_keys($lang_files) as $lang_file) {
+            $map = get_lang_file_map(fallback_lang(), $lang_file, false) + get_lang_file_map(fallback_lang(), $lang_file, true);
+            foreach (array_keys($map) as $key) {
+                $this->lang_file_mapping[$key] = $lang_file;
+            }
+        }
+
         $files = $this->do_dir(get_file_base(), '', 'php');
         foreach ($files as $file) {
             $c = file_get_contents($file);
-            $all_code .= $c;
+            $this->process_file_for_references($c, $file);
         }
         $files = $this->do_dir(get_file_base(), '', 'tpl');
         foreach ($files as $file) {
             $c = file_get_contents($file);
-            $all_code .= $c;
+            $this->process_file_for_references($c, $file);
         }
         $files = $this->do_dir(get_file_base() . '/themes', 'themes', 'js');
         foreach ($files as $file) {
             $c = file_get_contents($file);
             if (strpos($c, '/*{$,Parser hint: pure}*/') === false) {
-                $all_code .= $c;
+                $this->process_file_for_references($c, $file);
             }
         }
         $files = $this->do_dir(get_file_base(), '', 'txt');
         foreach ($files as $file) {
             $c = file_get_contents($file);
-            $all_code .= $c;
+            $this->process_file_for_references($c, $file);
         }
         $files = $this->do_dir(get_file_base(), '', 'xml');
         foreach ($files as $file) {
             $c = file_get_contents($file);
-            $all_code .= $c;
-        }
-        $all_code .= file_get_contents(get_file_base() . '/install.php');
-
-        $num_matches = preg_match_all('#do\_lang\_tempcode\(\'([^\']*)\'[\),]#', $all_code, $matches);
-        for ($i = 0; $i < $num_matches; $i++) {
-            $str = $matches[1][$i];
-            $this->process_str_reference($str, 'do_lang_tempcode');
+            $this->process_file_for_references($c, $file);
         }
 
-        $num_matches = preg_match_all('#do\_lang\(\'([^\']*)\'[\),]#', $all_code, $matches);
+        $c = file_get_contents(get_file_base() . '/install.php');
+        $this->process_file_for_references($c, get_file_base() . '/install.php');
+    }
+
+    private function process_file_for_references($c, $file)
+    {
+        $matches = array();
+
+        $num_matches = preg_match_all('#do\_lang\_tempcode\(\'([^\']*)\'[\),]#', $c, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $str = $matches[1][$i];
-            $this->process_str_reference($str, 'do_lang');
+            $this->process_str_reference($str, 'do_lang_tempcode', $file);
+            $this->check_includes($c, $str, $file);
         }
 
-        $num_matches = preg_match_all('#get_screen_title\(\'([^\']*)\'\)#', $all_code, $matches);
+        $num_matches = preg_match_all('#do\_lang\(\'([^\']*)\'[\),]#', $c, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $str = $matches[1][$i];
-            $this->process_str_reference($str, 'get_screen_title');
+            $this->process_str_reference($str, 'do_lang', $file);
+            $this->check_includes($c, $str, $file);
         }
 
-        $num_matches = preg_match_all('#[^\\\\]\{\!([\w:]+)[^\}]*\}#', $all_code, $matches);
+        $num_matches = preg_match_all('#do\_notification\_lang\(\'([^\']*)\'[\),]#', $c, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $str = $matches[1][$i];
-            $this->process_str_reference($str, 'Tempcode');
+            $this->process_str_reference($str, 'do_lang', $file);
+            $this->check_includes($c, $str, $file);
+        }
+
+        $num_matches = preg_match_all('#get_screen_title\(\'([^\']*)\'\)#', $c, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $str = $matches[1][$i];
+            $this->process_str_reference($str, 'get_screen_title', $file);
+        }
+
+        $num_matches = preg_match_all('#[^\\\\]\{\!([\w:]+)[^\}]*\}#', $c, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $str = $matches[1][$i];
+            $this->process_str_reference($str, 'Tempcode', $file);
         }
     }
 
-    private function process_str_reference($str, $type)
+    private function check_includes($c, $str, $file)
     {
-        $this->assertTrue(do_lang($str, null, null, null, null, false) !== null, 'Cannot find referenced lang string ' . $str);
+        if (get_param_integer('deep', 0) == 0) { // Pass deep=1 if you are okay with false-positives
+            return;
+        }
+
+        if (isset($this->lang_file_mapping[$str])) {
+            $lang_file = $this->lang_file_mapping[$str];
+            if (!in_array($lang_file, array('global', 'critical_error', 'cns'))) {
+                $require_lang = 'require_lang(\'' . $lang_file . '\')';
+                $ok = strpos($c, $require_lang) !== false;
+                if (!$ok) {
+                    $ok = strpos($c, 'require_all_lang') !== false;
+                }
+
+                $error_message = 'Cannot find ' . $require_lang . ' in ' . $file . ', caused by ' . $str . ' lang string';
+                $this->assertTrue($ok, $error_message);
+            }
+        }
+    }
+
+    private function process_str_reference($str, $type, $file)
+    {
+        $this->assertTrue(do_lang($str, null, null, null, null, false) !== null, 'Cannot find referenced lang string ' . $str . ' for a ' . $type . ' case in ' . $file);
 
         if (strpos($str, ':') !== false) {
-            list($file, $just_str) = explode(':', $str, 2);
-            $map = get_lang_file_map(fallback_lang(), $file, false) + get_lang_file_map(fallback_lang(), $file, true);
-            $this->assertTrue(isset($map[$just_str]), 'Incorrect implicit require_lang for ' . $str . ' for a ' . $type . ' case');
+            list($lang_file, $just_str) = explode(':', $str, 2);
+            $map = get_lang_file_map(fallback_lang(), $lang_file, false) + get_lang_file_map(fallback_lang(), $lang_file, true);
+            $this->assertTrue(isset($map[$just_str]), 'Cannot find referenced lang string ' . $str . ' for a ' . $type . ' case (has implicit include) in ' . $file);
         }
     }
 

@@ -58,6 +58,18 @@ class Module_admin_commandr
     }
 
     /**
+     * Uninstall the module.
+     */
+    public function uninstall()
+    {
+        $GLOBALS['SITE_DB']->drop_table_if_exists('commandrchat');
+
+        delete_value('last_commandr_command');
+
+        $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => 'admin_commandr'));
+    }
+
+    /**
      * Install the module.
      *
      * @param  ?integer $upgrade_from What version we're upgrading from (null: new install)
@@ -79,14 +91,6 @@ class Module_admin_commandr
         if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->drop_table_if_exists('commandrchat');
         }
-    }
-
-    /**
-     * Uninstall the module.
-     */
-    public function uninstall()
-    {
-        delete_value('last_commandr_command');
     }
 
     public $title;

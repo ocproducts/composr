@@ -23,6 +23,10 @@
  */
 function rules_script()
 {
+    if (!addon_installed('cns_forum')) {
+        warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+    }
+
     $id = get_param_integer('id', null);
 
     if ($id === null) {

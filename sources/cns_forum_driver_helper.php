@@ -49,8 +49,8 @@ function _helper_apply_emoticons($this_ref, $member_id = null)
     $EMOTICON_LEVELS = array();
 
     $query = 'SELECT e_code,e_theme_img_code,e_relevance_level FROM ' . $this_ref->db->get_table_prefix() . 'f_emoticons WHERE e_relevance_level<4' . $extra;
-    if ($this_ref->db->has_expression_ordering()) {
-        $query .= ' ORDER BY LENGTH(e_code) DESC';
+    if ($GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) {
+        $query .= ' ORDER BY ' . db_function('LENGTH', array('e_code')) . ' DESC';
     }
     $rows = $this_ref->db->query($query);
     foreach ($rows as $myrow) {
@@ -58,7 +58,7 @@ function _helper_apply_emoticons($this_ref, $member_id = null)
         $this_ref->EMOTICON_CACHE[$myrow['e_code']] = array($tpl, $myrow['e_theme_img_code'], $myrow['e_code']);
         $EMOTICON_LEVELS[$myrow['e_code']] = $myrow['e_relevance_level'];
     }
-    if (!$this_ref->db->has_expression_ordering()) {
+    if (!$GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) {
         uksort($this_ref->EMOTICON_CACHE, '_strlen_sort');
         $this_ref->EMOTICON_CACHE = array_reverse($this_ref->EMOTICON_CACHE);
     }
@@ -262,7 +262,7 @@ function _helper_show_forum_topics($this_ref, $name, $limit, $start, &$max_rows,
     if (!multi_lang_content()) {
         $post_query_select .= ',p_post__text_parsed,p_post__source_user';
     }
-    $post_query_where = 'p_validated=1 AND p_topic_id=top.id ' . not_like_spacer_posts($GLOBALS['SITE_DB']->translate_field_ref('p_post'));
+    $post_query_where = 'p_validated=1 AND p_topic_id=top.id ' . not_like_spacer_posts($GLOBALS['FORUM_DB']->translate_field_ref('p_post'));
     $post_query_sql = 'SELECT ' . $post_query_select . ' FROM ' . $this_ref->db->get_table_prefix() . 'f_posts p' . $this_ref->db->prefer_index('f_posts', 'in_topic', false);
     if (multi_lang_content()) {
         $post_query_sql .= ' LEFT JOIN ' . $this_ref->db->get_table_prefix() . 'translate t_p_post ON t_p_post.id=p.p_post ';
@@ -450,7 +450,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
 
     $where = '(' . cns_get_topic_where($topic_id) . ')';
     if (!$load_spacer_posts_too) {
-        $where .= not_like_spacer_posts($GLOBALS['SITE_DB']->translate_field_ref('p_post'));
+        $where .= not_like_spacer_posts($GLOBALS['FORUM_DB']->translate_field_ref('p_post'));
     }
     $where .= $extra_where;
 
@@ -467,8 +467,8 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
         $select = 'p.*';
     }
     if (($is_threaded) || ($sort == 'compound_rating') || ($sort == 'average_rating')) {
-        $select .= ',COALESCE((SELECT AVG(rating) FROM ' . $this_ref->db->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),5) AS average_rating';
-        $select .= ',COALESCE((SELECT SUM(rating-1) FROM ' . $this_ref->db->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=p.id),0) AS compound_rating';
+        $select .= ',' . db_function('COALESCE', array('(SELECT AVG(rating) FROM ' . $this_ref->db->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=' . db_cast('p.id', 'CHAR') . ')', '5')) . ') AS average_rating';
+        $select .= ',' . db_function('COALESCE', array('(SELECT SUM(rating-1) FROM ' . $this_ref->db->get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'post') . ' AND rating_for_id=' . db_cast('p.id', 'CHAR') . ')', '0')) . ') AS compound_rating';
     }
     $rows = $this_ref->db->query('SELECT ' . $select . ' FROM ' . $this_ref->db->get_table_prefix() . 'f_posts p' . $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'in_topic', false) . ' WHERE ' . $where . ' ORDER BY ' . $order, $max, $start, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
     $count = $this_ref->db->query_select_value_if_there('f_topics', 't_cache_num_posts', array('id' => $topic_id));//This may be slow for large topics: $this_ref->db->query_value_if_there('SELECT COUNT(*) FROM ' . $this_ref->db->get_table_prefix() . 'f_posts p' . $GLOBALS['FORUM_DB']->prefer_index('f_posts', 'in_topic', false) . ' WHERE ' . $where, false, true, array('p_post' => 'LONG_TRANS__COMCODE'));
@@ -507,7 +507,7 @@ function _helper_get_forum_topic_posts($this_ref, $topic_id, &$count, $max, $sta
     if ($mark_read) {
         require_code('cns_topics');
         if ((get_option('post_read_history_days') != '0') && (get_value('avoid_normal_topic_read_history') !== '1')) {
-            if (!$GLOBALS['SITE_DB']->table_is_locked('f_read_logs')) {
+            if (!$GLOBALS['FORUM_DB']->table_is_locked('f_read_logs')) {
                 cns_ping_topic_read($topic_id);
             }
         }

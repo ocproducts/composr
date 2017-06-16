@@ -109,7 +109,7 @@
                 tr = button.parentNode.parentNode,
                 trs = tr.parentNode.getElementsByTagName('tr');
 
-            if (window.permission_copying) {// Undo current copying
+            if (window.permission_copying) { // Undo current copying
                 document.getElementById('copy_button_' + window.permission_copying).style.textDecoration = 'none';
                 window.permission_copying = null;
                 for (var i = 0; i < trs.length; i++) {
@@ -117,7 +117,7 @@
                 }
             }
 
-            if (oldPermissionCopying !== name) {// Starting a new copying session
+            if (oldPermissionCopying !== name) { // Starting a new copying session
                 button.style.textDecoration = 'blink';
                 window.permission_copying = name;
                 $cms.ui.alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
@@ -231,9 +231,11 @@
         }
 
         if (params.supportAutosave && params.formName) {
-            if (window.initFormSaving !== undefined) {
-                initFormSaving(params.formName);
-            }
+            window.setTimeout(function() {
+                if (window.initFormSaving !== undefined) {
+                    initFormSaving(params.formName);
+                }
+            }, 3000/*Let CKEditor load*/);
         }
     }
 
@@ -621,7 +623,7 @@
                         function (result) {
                             if (result) {
                                 var form = el.form;
-                                if (!form.action.includes('_post')) {// Remove redirect if redirecting back, IF it's not just deleting an on-page post (Wiki+)
+                                if (!form.action.includes('_post')) { // Remove redirect if redirecting back, IF it's not just deleting an on-page post (Wiki+)
                                     form.action = form.action.replace(/([&\?])redirect=[^&]*/, '$1');
                                 }
                             } else {
@@ -959,8 +961,10 @@
                     var _comcodeSemihtml = comcodeSemihtml;
                     var _comcode = comcode;
                     if (repFrom !== undefined) {
-                        _comcodeSemihtml = _comcodeSemihtml.replace(repFrom, repTo);
-                        _comcode = _comcode.replace(repFrom, repTo);
+                        for (var i = 0; i < rep_from.length; i++) {
+                            _comcodeSemihtml = _comcodeSemihtml.replace(repFrom[i], repTo[i]);
+                            _comcode = _comcode.replace(repFrom[i], repTo[i]);
+                        }
                     }
 
                     if (ret !== undefined && ret) {
@@ -1392,7 +1396,7 @@
 
         while (next.classList.contains('field_input')) { // Sometimes divs or whatever may have errornously been put in a table by a programmer, skip past them
             next = next.nextElementSibling;
-            if (!next || next.classList.contains('form_table_field_spacer')) {// End of section, so no need to keep going
+            if (!next || next.classList.contains('form_table_field_spacer')) { // End of section, so no need to keep going
                 next = null;
                 break;
             }
@@ -1529,7 +1533,7 @@
             // Set up listeners...
             for (i = 0; i < fieldNames.length; i++) {
                 field = fields[i];
-                if ((!field) || (field.alternating === undefined)) {// ... but only if not already set
+                if ((!field) || (field.alternating === undefined)) { // ... but only if not already set
                     var selfFunction = function (e) {
                         standardAlternateFields(fieldNames, somethingRequired, true);
                     }; // We'll re-call ourself on change
@@ -1566,9 +1570,9 @@
                 function __standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired) {
                     if ((!field) || (field.nodeName !== undefined)) {
                         ___standardAlternateFieldUpdateEditability(field, chosenField, isLocked, isChosen, somethingRequired);
-                    } else {// List of fields (e.g. radio list, or just because standardAlternateFieldsWithin was used)
+                    } else { // List of fields (e.g. radio list, or just because standardAlternateFieldsWithin was used)
                         for (var i = 0; i < field.length; i++) {
-                            if (field[i].name !== undefined) {// If it is an object, as opposed to some string in the collection
+                            if (field[i].name !== undefined) { // If it is an object, as opposed to some string in the collection
                                 ___standardAlternateFieldUpdateEditability(field[i], chosenField, isLocked, isChosen, somethingRequired);
                                 somethingRequired = false; // Only the first will be required
                             }
@@ -1663,7 +1667,7 @@
                     if (!radioButton) {
                         radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
                     }
-                    if (radioButton) {// Radio button handles field alternation
+                    if (radioButton) { // Radio button handles field alternation
                         radioButton.addEventListener('change', refreshFunction);
                     } else { // Filling/blanking out handles field alternation
                         if (field) {

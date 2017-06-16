@@ -34,4 +34,3 @@
 		<ul class="horizontal_links">{$GET,staff_actions}</ul>
 	</aside></div>
 {+END}
-

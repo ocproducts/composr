@@ -1,8 +1,8 @@
 <div class="float_surrounder">
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		{$SET,search_url,{$SELF_URL}}
-		<form class="filedump_filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse}" method="get" autocomplete="off">
-			{$HIDDENS_FOR_GET_FORM,{$GET,search_url},search,type_filter,sort,place,recurse}
+		<form class="filedump_filter" role="search" title="{!SEARCH}" data-disable-buttons-on-submit="{}" action="{$URL_FOR_GET_FORM*,{$GET,search_url},search,type_filter,sort,place,recurse,file}#tab__{TAB%}" method="get" autocomplete="off">
+			{$HIDDENS_FOR_GET_FORM,{$GET,search_url},search,type_filter,sort,place,recurse,file}
 
 			<p class="left">
 				<label class="accessibility_hidden" for="search_filedump_{I*}">{!SEARCH}</label>

@@ -26,4 +26,3 @@
 		<input data-disable-on-click="1" class="button_screen menu__rich_content__ecommerce__purchase" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>
-

@@ -25,12 +25,14 @@
  */
 function init__antispam()
 {
-    define('ANTISPAM_RESPONSE_SKIP', -2);
-    define('ANTISPAM_RESPONSE_ERROR', -1);
-    define('ANTISPAM_RESPONSE_UNLISTED', 0);
-    define('ANTISPAM_RESPONSE_STALE', 1);
-    define('ANTISPAM_RESPONSE_ACTIVE', 2);
-    define('ANTISPAM_RESPONSE_ACTIVE_UNKNOWN_STALE', 3);
+    if (!defined('ANTISPAM_RESPONSE_SKIP')) {
+        define('ANTISPAM_RESPONSE_SKIP', -2);
+        define('ANTISPAM_RESPONSE_ERROR', -1);
+        define('ANTISPAM_RESPONSE_UNLISTED', 0);
+        define('ANTISPAM_RESPONSE_STALE', 1);
+        define('ANTISPAM_RESPONSE_ACTIVE', 2);
+        define('ANTISPAM_RESPONSE_ACTIVE_UNKNOWN_STALE', 3);
+    }
 }
 
 /**
@@ -41,8 +43,8 @@ function init__antispam()
  * Those will be picked up by the page level check if it is a POST request.
  * Do use it for anything that will result in publicly viewed content, or outbound emails.
  *
- * @param ?string $username Check this particular username that has just been supplied (null: none)
- * @param ?string $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?string $username Check this particular username that has just been supplied (null: none)
+ * @param  ?string $email Check this particular email address that has just been supplied (null: none)
  */
 function inject_action_spamcheck($username = null, $email = null)
 {
@@ -56,9 +58,9 @@ function inject_action_spamcheck($username = null, $email = null)
 /**
  * Spam check call front-end.
  *
- * @param ?string $username Check this particular username that has just been supplied (null: none)
- * @param ?string $email Check this particular email address that has just been supplied (null: none)
- * @param boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
+ * @param  ?string $username Check this particular username that has just been supplied (null: none)
+ * @param  ?string $email Check this particular email address that has just been supplied (null: none)
+ * @param  boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
  */
 function check_for_spam($username, $email, $page_level)
 {
@@ -95,8 +97,8 @@ function check_for_spam($username, $email, $page_level)
 /**
  * Check RBLs to see if we need to block this user.
  *
- * @param boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
- * @param ?IP $user_ip IP address (null: current user's)
+ * @param  boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
+ * @param  ?IP $user_ip IP address (null: current user's)
  */
 function check_rbls($page_level = false, $user_ip = null)
 {
@@ -370,10 +372,10 @@ function rbl_resolve($ip, $rbl_domain, $page_level)
 /**
  * Deal with a perceived spammer.
  *
- * @param IP $user_ip IP address
- * @param float $confidence_level Confidence level (0.0 to 1.0)
- * @param ID_TEXT $blocked_by Identifier for whatever did the blocking
- * @param boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
+ * @param  IP $user_ip IP address
+ * @param  float $confidence_level Confidence level (0.0 to 1.0)
+ * @param  ID_TEXT $blocked_by Identifier for whatever did the blocking
+ * @param  boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
  */
 function handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $blocked_by, $page_level)
 {
@@ -422,8 +424,8 @@ function handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $bl
 /**
  * Check the stopforumspam service to see if we need to block this user.
  *
- * @param ?string    $username Check this particular username that has just been supplied (null: none)
- * @param ?string    $email Check this particular email address that has just been supplied (null: none)
+ * @param  ?string $username Check this particular username that has just been supplied (null: none)
+ * @param  ?string $email Check this particular email address that has just been supplied (null: none)
  */
 function check_stopforumspam($username = null, $email = null)
 {
@@ -537,7 +539,7 @@ function _check_stopforumspam($user_ip, $username = null, $email = null)
 /**
  * Check internal spam heuristics.
  *
- * @param boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
+ * @param  boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
  */
 function check_spam_heuristics($page_level)
 {

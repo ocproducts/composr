@@ -113,6 +113,7 @@ Note that this addon only affects galleries at the moment, and it requires the "
         return array(
             'requires' => array(
                 'unvalidated',
+                'galleries',
             ),
             'recommends' => array(),
             'conflicts_with' => array()

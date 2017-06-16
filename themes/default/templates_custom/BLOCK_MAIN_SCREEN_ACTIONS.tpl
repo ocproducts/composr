@@ -1,4 +1,5 @@
 {$REQUIRE_JAVASCRIPT,facebook_support}
+
 <aside class="screen_actions_outer box" data-require-javascript="facebook_support" data-tpl="blockMainScreenActions" data-tpl-params="{+START,PARAMS_JSON,EASY_SELF_URL}{_*}{+END}">
 <nav class="screen_actions box_inner">
 	{+START,IF_NON_EMPTY,{$CONFIG_OPTION,facebook_appid}}

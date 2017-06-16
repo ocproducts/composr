@@ -408,7 +408,7 @@ The post-development process might be roughly as follows:
 6) Review project success, comparing expected times and actual times. Learn any lessons that need to be learnt and feed back to improve processes if required.
 7) For new clients, send them a feedback form. If you get good feedback from this then ask them for referrals (i.e. names of other businesses they may know).
 
-Of course through these processes you'll be invoices and checking/chasing payments too.
+Of course through these processes you'll be invoicing and checking/chasing payments too.
 
 [title="2"]Making quotes[/title]
 

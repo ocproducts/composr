@@ -90,41 +90,41 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         );
 
         require_code('config');
-        $value['CONFIG_OPTION'] = [
-            'thumb_width'        => get_option('thumb_width'),
-            'js_overlays'        => get_option('js_overlays'),
-            'js_captcha'         => get_option('js_captcha'),
-            'google_analytics'   => get_option('google_analytics'),
-            'long_google_cookies' => get_option('long_google_cookies'),
-            'editarea'          => get_option('editarea'),
-            'enable_animations'  => get_option('enable_animations'),
-            'detect_javascript'  => get_option('detect_javascript'),
-            'is_on_timezone_detection' => get_option('is_on_timezone_detection'),
-            'fixed_width'        => get_option('fixed_width'),
-            'infinite_scrolling' => get_option('infinite_scrolling'),
-            'wysiwyg'           => get_option('wysiwyg'),
-            'eager_wysiwyg'      => get_option('eager_wysiwyg'),
-            'simplified_attachments_ui'   => get_option('simplified_attachments_ui'),
-            'show_inline_stats'           => get_option('show_inline_stats'),
-            'notification_desktop_alerts' => get_option('notification_desktop_alerts'),
-            'enable_theme_img_buttons' => get_option('enable_theme_img_buttons'),
-            'enable_previews' => get_option('enable_previews'),
+        $value['CONFIG_OPTION'] = array(
+            'thumb_width'                     => get_option('thumb_width'),
+            'js_overlays'                     => get_option('js_overlays'),
+            'js_captcha'                      => get_option('js_captcha'),
+            'google_analytics'                => get_option('google_analytics'),
+            'long_google_cookies'             => get_option('long_google_cookies'),
+            'editarea'                        => get_option('editarea'),
+            'enable_animations'               => get_option('enable_animations'),
+            'detect_javascript'               => get_option('detect_javascript'),
+            'is_on_timezone_detection'        => get_option('is_on_timezone_detection'),
+            'fixed_width'                     => get_option('fixed_width'),
+            'infinite_scrolling'              => get_option('infinite_scrolling'),
+            'wysiwyg'                         => get_option('wysiwyg'),
+            'eager_wysiwyg'                   => get_option('eager_wysiwyg'),
+            'simplified_attachments_ui'       => get_option('simplified_attachments_ui'),
+            'show_inline_stats'               => get_option('show_inline_stats'),
+            'notification_desktop_alerts'     => get_option('notification_desktop_alerts'),
+            'enable_theme_img_buttons'        => get_option('enable_theme_img_buttons'),
+            'enable_previews'                 => get_option('enable_previews'),
             'background_template_compilation' => get_option('background_template_compilation'),
-            'complex_uploader' => get_option('complex_uploader'),
-            'collapse_user_zones' => get_option('collapse_user_zones'),
-            'sitewide_im' => get_option('sitewide_im'),
-            'topic_pin_max_days' => get_option('topic_pin_max_days'),
-            'cookie_notice' => get_option('cookie_notice'),
-        ];
+            'complex_uploader'                => get_option('complex_uploader'),
+            'collapse_user_zones'             => get_option('collapse_user_zones'),
+            'sitewide_im'                     => get_option('sitewide_im'),
+            'topic_pin_max_days'              => get_option('topic_pin_max_days'),
+            'cookie_notice'                   => get_option('cookie_notice'),
+        );
 
-        $value['VALUE_OPTION'] = [
+        $value['VALUE_OPTION'] = array(
             'js_keep_params' => get_value('js_keep_params'),
             'commercial_spellchecker' => get_value('commercial_spellchecker'),
-        ];
+        );
 
-        $value['HAS_PRIVILEGE'] = [
+        $value['HAS_PRIVILEGE'] = array(
             'sees_javascript_error_alerts' =>  has_privilege(get_member(), 'sees_javascript_error_alerts'),
-        ];
+        );
 
         require_code('urls');
         $value['can_try_url_schemes'] = can_try_url_schemes();
@@ -134,11 +134,11 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
     }
 
     /**
-     * @param boolean $is_staff If the current user is a staff member
+     * @param  boolean $is_staff If the current user is a staff member
      * @return array
      */
     private function staff_tooltips_url_patterns($is_staff) {
-        $url_patterns = [];
+        $url_patterns = array();
         if (!$is_staff) {
             return $url_patterns;
         }
@@ -173,7 +173,7 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
     }
 
     /**
-     * @param string $pattern Pattern
+     * @param  string $pattern Pattern
      * @return string
      */
     public function _escape_url_pattern_for_js_regex($pattern) {

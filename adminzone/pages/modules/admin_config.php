@@ -36,8 +36,7 @@ class Module_admin_config
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
         $info['version'] = 15;
-        $info['locked'] = true;
-        $info['update_require_upgrade'] = true;
+        $info['locked'] = false;
         return $info;
     }
 
@@ -429,6 +428,7 @@ class Module_admin_config
                 } else {
                     $explanation = do_lang_tempcode($option['explanation']);
                 }
+                $default = get_default_option($name);
 
                 if (!empty($option['maintenance_code'])) {
                     $explanation = is_maintained_description($option['maintenance_code'], $explanation);
@@ -469,16 +469,19 @@ class Module_admin_config
                         break;
 
                     case 'integer':
-                        $out .= static_evaluate_tempcode(form_input_integer($human_name, $explanation, $name, intval(get_option($name)), $required));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, ($default == '') ? do_lang_tempcode('BLANK_EM') : make_string_tempcode(escape_html($default)));
+                        $out .= static_evaluate_tempcode(form_input_integer($human_name, $explanation_with_default, $name, intval(get_option($name)), $required));
                         break;
 
                     case 'float':
-                        $out .= static_evaluate_tempcode(form_input_float($human_name, $explanation, $name, floatval(get_option($name)), $required));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, escape_html(($default == '') ? do_lang_tempcode('BLANK_EM') : make_string_tempcode(float_format(floatval($default)))));
+                        $out .= static_evaluate_tempcode(form_input_float($human_name, $explanation_with_default, $name, floatval(get_option($name)), $required));
                         break;
 
                     case 'line':
                     case 'transline':
-                        $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, ($default == '') ? do_lang_tempcode('BLANK_EM') : make_string_tempcode(escape_html($default)));
+                        $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation_with_default, $name, get_option($name), $required, null, 100000));
                         break;
 
                     case 'text':
@@ -487,7 +490,8 @@ class Module_admin_config
                         break;
 
                     case 'comcodeline':
-                        $out .= static_evaluate_tempcode(form_input_line_comcode($human_name, $explanation, $name, get_option($name), $required));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, ($default == '') ? do_lang_tempcode('BLANK_EM') : make_string_tempcode(escape_html($default)));
+                        $out .= static_evaluate_tempcode(form_input_line_comcode($human_name, $explanation_with_default, $name, get_option($name), $required));
                         break;
 
                     case 'comcodetext':
@@ -495,6 +499,7 @@ class Module_admin_config
                         break;
 
                     case 'list':
+                        $_default = make_string_tempcode(escape_html($default));
                         $list = '';
                         if (!$required) {
                             $list .= static_evaluate_tempcode(form_input_list_entry('', false, do_lang_tempcode('NA_EM')));
@@ -506,16 +511,21 @@ class Module_admin_config
                             $_option_text = do_lang('CONFIG_OPTION_' . $name . '_VALUE_' . $__value, null, null, null, null, false);
                             if ($_option_text !== null) {
                                 $option_text = do_lang_tempcode('CONFIG_OPTION_' . $name . '_VALUE_' . $__value);
+                                if ($value == $default) {
+                                    $_default = $option_text;
+                                }
                             } else {
                                 $option_text = make_string_tempcode($value);
                             }
                             $list .= static_evaluate_tempcode(form_input_list_entry($value, $_value == $value, $option_text));
                         }
-                        $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, make_string_tempcode($list), null, false, false));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, ($default == '') ? do_lang_tempcode('BLANK_EM') : $_default);
+                        $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation_with_default, $name, make_string_tempcode($list), null, false, false));
                         break;
 
                     case 'tick':
-                        $out .= static_evaluate_tempcode(form_input_tick($human_name, $explanation, $name, get_option($name) == '1'));
+                        $explanation_with_default = do_lang_tempcode('EXPLANATION_WITH_DEFAULT', $explanation, escape_html(($default == '1') ? do_lang('YES') : do_lang('NO')));
+                        $out .= static_evaluate_tempcode(form_input_tick($human_name, $explanation_with_default, $name, get_option($name) == '1'));
                         break;
 
                     case 'username':
@@ -696,7 +706,10 @@ class Module_admin_config
         // Go through all options on the page, saving
         foreach ($options as $name => $option) {
             // Save
-            if ($option['type'] == 'tick') {
+            if ($option['type'] == 'float') {
+                $_value = post_param_string($name, '');
+                $value = ($_value == '') ? '' : float_unformat($_value);
+            } elseif ($option['type'] == 'tick') {
                 $value = strval(post_param_integer($name, 0));
             } elseif ($option['type'] == 'date') {
                 $date_value = post_param_date($name);

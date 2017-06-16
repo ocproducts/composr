@@ -68,7 +68,7 @@ class Hook_search_cns_members extends FieldsSearchHook
     /**
      * Get a list of extra fields to ask for.
      *
-     * @return array A list of maps specifying extra fields
+     * @return array A list of maps specifying extra fields (null: no tree)
      */
     public function get_fields()
     {
@@ -187,7 +187,7 @@ class Hook_search_cns_members extends FieldsSearchHook
 
         require_lang('cns');
 
-        $indexes = collapse_2d_complexity('i_fields', 'i_name', $GLOBALS['FORUM_DB']->query_select('db_meta_indices', array('i_fields', 'i_name'), array('i_table' => 'f_member_custom_fields')));
+        $indexes = collapse_2d_complexity('i_fields', 'i_name', $GLOBALS['FORUM_DB']->query_select('db_meta_indices', array('i_fields', 'i_name'), array('i_table' => 'f_member_custom_fields'), 'ORDER BY i_name'));
 
         // Calculate our where clause (search)
         if ($author != '') {
@@ -296,7 +296,7 @@ class Hook_search_cns_members extends FieldsSearchHook
         $where_clause .= ' AND r.id IS NOT NULL';
 
         // Calculate and perform query
-        $rows = get_search_rows(null, null, $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, 'f_members r JOIN ' . get_table_prefix() . 'f_member_custom_fields a ON r.id=a.mf_member_id' . $table, array('!' => '!', 'm_signature' => 'LONG_TRANS__COMCODE') + $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.*,a.*,r.id AS id', $raw_fields);
+        $rows = get_search_rows(null, null, $content, $boolean_search, $boolean_operator, $only_search_meta, $direction, $max, $start, $only_titles, 'f_members r JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields a ON r.id=a.mf_member_id' . $table, array('!' => '!', 'm_signature' => 'LONG_TRANS__COMCODE') + $trans_fields, $where_clause, $content_where, $remapped_orderer, 'r.*,a.*,r.id AS id', $raw_fields);
 
         $out = array();
         foreach ($rows as $i => $row) {

@@ -81,7 +81,7 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
             'source_user' => $source_user,
         );
 
-        $test = $db->query_select_value_if_there('translate', 'text_original', array('id' => $id, 'language' => user_lang()));
+        $test = $db->query_select_value_if_there('translate', 'text_original', array('id' => $lang_id, 'language' => user_lang()));
         if ($test !== null) { // Good, we save into our own language, as we have a translation for the lang entry setup properly
             $db->query_update('translate', $remap, array('id' => $lang_id, 'language' => user_lang()));
         } else { // Darn, we'll have to save over whatever we did load from

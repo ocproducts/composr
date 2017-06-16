@@ -18,4 +18,3 @@
 	<span class="associated_details"><em>{!VOTES,{OVERALL_NUM_RATINGS*}}</em></span>
 	<span class="wiki_rating_inside">{RATING_FORM}</span>
 </div>
-

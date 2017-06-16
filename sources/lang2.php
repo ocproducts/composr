@@ -132,7 +132,7 @@ function find_lang_content_names($ids)
 
         $langidfields = array();
         foreach ($all_fields as $f) {
-            if (strpos(substr($f['m_type'], -6), '_TRANS') !== false) {
+            if (strpos($f['m_type'], '_TRANS') !== false) {
                 $langidfields[] = array('m_name' => $f['m_name'], 'm_table' => $f['m_table'], 'key' => '');
             }
         }

@@ -351,8 +351,13 @@ class Module_admin_themes
         $zones = $GLOBALS['SITE_DB']->query_select('zones', array('*'), null, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
         $free_choices = 0;
         $zone_list_free_choices = new Tempcode();
+        $no_themes_explicitly_set = true;
         foreach ($zones as $zone) {
-            if (!array_key_exists($zone['zone_theme'], $_themes)) {
+            if (array_key_exists($zone['zone_theme'], $_themes)) {
+                if (($zone['zone_name'] == '') && ($zone['zone_theme'] != '-1')) {
+                    $no_themes_explicitly_set = false;
+                }
+            } else {
                 if (!$zone_list_free_choices->is_empty()) {
                     $zone_list_free_choices->attach(do_lang_tempcode('LIST_SEP'));
                 }
@@ -373,6 +378,8 @@ class Module_admin_themes
                 $theme = strval($theme);
             }
 
+            $is_main_theme = false;
+
             // Get URLs
             $templates_url = build_url(array('page' => '_SELF', 'type' => 'edit_templates', 'theme' => $theme), '_SELF');
             $images_url = build_url(array('page' => '_SELF', 'type' => 'manage_images', 'theme' => $theme), '_SELF');
@@ -392,6 +399,10 @@ class Module_admin_themes
                     $zone_list->attach($zone_list_free_choices); // Actually will do nothing, as $free_choices == 0
                 } else {
                     $zone_list->attach(do_lang_tempcode('THEME_DEFAULT_FOR_SITE'));
+
+                    if ($no_themes_explicitly_set) {
+                        $is_main_theme = true;
+                    }
                 }
 
                 // Why is this the site-default theme?
@@ -403,6 +414,10 @@ class Module_admin_themes
             }
             foreach ($zones as $zone) {
                 if ($zone['zone_theme'] == $theme) {
+                    if ($zone['zone_name'] == '') {
+                        $is_main_theme = true;
+                    }
+
                     if ((get_option('collapse_user_zones') == '1') && ($zone['zone_name'] == 'site')) {
                         continue;
                     }
@@ -441,6 +456,7 @@ class Module_admin_themes
                 'EDIT_URL' => $edit_url,
                 'DELETE_URL' => $delete_url,
                 'SCREEN_PREVIEW_URL' => $screen_preview_url,
+                'IS_MAIN_THEME' => $is_main_theme,
             );
         }
 
@@ -536,7 +552,7 @@ class Module_admin_themes
         }
 
         require_javascript('core_themeing');
-        return do_template('FORM_SCREEN', array('_GUID' => '08b45be04f4035c7595458a719260bd9', 'HIDDEN' => '', 'JS_FUNCTION_CALLS' => ['adminThemesAddTheme'], 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array('_GUID' => '08b45be04f4035c7595458a719260bd9', 'HIDDEN' => '', 'JS_FUNCTION_CALLS' => array('adminThemesAddTheme'), 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
     }
 
     /**
@@ -567,6 +583,12 @@ class Module_admin_themes
     public function edit_theme()
     {
         $theme = $this->theme;
+
+        if (($theme == 'default') || ($theme == 'admin')) {
+            if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
+                warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
+            }
+        }
 
         $ini_file = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
         if (!file_exists($ini_file)) {
@@ -599,7 +621,7 @@ class Module_admin_themes
         $submit_name = do_lang_tempcode('EDIT_THEME');
 
         require_javascript('core_themeing');
-        return do_template('FORM_SCREEN', array('_GUID' => '2734c55cd4d7cfa785d307d932ce8af1', 'JS_FUNCTION_CALLS' => ['adminThemesEditTheme'], 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('DESCRIPTION_EDIT_THEME'), 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array('_GUID' => '2734c55cd4d7cfa785d307d932ce8af1', 'JS_FUNCTION_CALLS' => array('adminThemesEditTheme'), 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('DESCRIPTION_EDIT_THEME'), 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
     }
 
     /**
@@ -609,13 +631,19 @@ class Module_admin_themes
      */
     public function _edit_theme()
     {
+        $theme = get_param_string('old_theme', false, INPUT_FILTER_GET_COMPLEX);
+
+        if (($theme == 'default') || ($theme == 'admin')) {
+            if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
+                warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
+            }
+        }
+
         if (post_param_integer('delete', 0) == 1) {
-            $theme = get_param_string('old_theme', false, INPUT_FILTER_GET_COMPLEX);
             actual_delete_theme($theme);
 
             $to = '';
         } elseif (post_param_integer('copy', 0) == 1) {
-            $theme = get_param_string('old_theme', false, INPUT_FILTER_GET_COMPLEX);
             $to = post_param_string('theme', $theme); // Can't rename the default theme, so there's no such field for it
             if ($theme == $to) {
                 warn_exit(do_lang_tempcode('ALREADY_EXISTS', escape_html($to)));
@@ -625,7 +653,6 @@ class Module_admin_themes
 
             $this->save_theme_changes($to);
         } else {
-            $theme = get_param_string('old_theme', false, INPUT_FILTER_GET_COMPLEX);
             $to = post_param_string('theme', $theme); // Can't rename the default theme, so there's no such field for it
             if ($theme != $to) {
                 require_code('type_sanitisation');
@@ -895,7 +922,10 @@ class Module_admin_themes
         $submit_name = do_lang_tempcode('ADD_THEME_IMAGE');
 
         $text = new Tempcode();
+        $text->attach(paragraph(do_lang_tempcode('DESCRIPTION_ADDING_THEME_IMAGE')));
+
         require_code('images');
+
         $max = floatval(get_max_image_size()) / floatval(1024 * 1024);
         if ($max < 3.0) {
             require_code('files2');
@@ -1063,7 +1093,9 @@ class Module_admin_themes
             }
 
             $target_dir = 'themes/' . $theme . '/images_custom';
-            $target_dir .= '/' . dirname($id);
+            if (strpos($id, '/') !== false) {
+                $target_dir .= '/' . dirname($id);
+            }
             $path = get_url('path', 'file', $target_dir);
 
             if ((url_is_local($path[0])) && (!file_exists(((substr($path[0], 0, 15) == 'themes/default/') ? get_file_base() : get_custom_file_base()) . '/' . rawurldecode($path[0])))) {

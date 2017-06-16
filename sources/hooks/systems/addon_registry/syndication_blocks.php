@@ -76,7 +76,7 @@ class Hook_addon_registry_syndication_blocks
     {
         return array(
             'requires' => array(
-                'news'
+                'news',
             ),
             'recommends' => array(),
             'conflicts_with' => array(),

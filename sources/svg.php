@@ -28,24 +28,26 @@ function init__svg()
     require_css('svg');
 
     // Some default values
-    define('VIEWPORT_WIDTH', 1024.0);
-    define('VIEWPORT_HEIGHT', 400.0);
-    define('SVG_WIDTH', 1024.0);
-    define('SVG_HEIGHT', 400.0);
-    define('Y_LABEL_WIDTH', 50.0);
-    define('Y_AXIS_WIDTH', 50.0);
-    define('PLOT_WIDTH_BIAS', 10.0);
-    define('PLOT_WIDTH', SVG_WIDTH - Y_LABEL_WIDTH - Y_AXIS_WIDTH - PLOT_WIDTH_BIAS);
-    define('X_LABEL_HEIGHT', 13.0);
-    define('X_AXIS_HEIGHT', 13.0);
-    define('PLOT_HEIGHT_BIAS', 10.0);
-    define('PLOT_HEIGHT', SVG_HEIGHT - X_LABEL_HEIGHT - X_AXIS_HEIGHT - PLOT_HEIGHT_BIAS);
-    define('X_PADDING', 2.0);
-    define('Y_PADDING', 2.0);
-    define('MIN_Y_MARKER_DISTANCE', 14.0);
-    define('MIN_X_MARKER_DISTANCE', 14.0);
-    define('TEXT_HEIGHT', 14.0);
-    define('BAR_WIDTH', 15.0);
+    if (!defined('VIEWPORT_WIDTH')) {
+        define('VIEWPORT_WIDTH', 1024.0);
+        define('VIEWPORT_HEIGHT', 400.0);
+        define('SVG_WIDTH', 1024.0);
+        define('SVG_HEIGHT', 400.0);
+        define('Y_LABEL_WIDTH', 50.0);
+        define('Y_AXIS_WIDTH', 50.0);
+        define('PLOT_WIDTH_BIAS', 10.0);
+        define('PLOT_WIDTH', SVG_WIDTH - Y_LABEL_WIDTH - Y_AXIS_WIDTH - PLOT_WIDTH_BIAS);
+        define('X_LABEL_HEIGHT', 13.0);
+        define('X_AXIS_HEIGHT', 13.0);
+        define('PLOT_HEIGHT_BIAS', 10.0);
+        define('PLOT_HEIGHT', SVG_HEIGHT - X_LABEL_HEIGHT - X_AXIS_HEIGHT - PLOT_HEIGHT_BIAS);
+        define('X_PADDING', 2.0);
+        define('Y_PADDING', 2.0);
+        define('MIN_Y_MARKER_DISTANCE', 14.0);
+        define('MIN_X_MARKER_DISTANCE', 14.0);
+        define('TEXT_HEIGHT', 14.0);
+        define('BAR_WIDTH', 15.0);
+    }
 
     global $CSS_FILE_CONTENTS;
     $CSS_FILE_CONTENTS = '';
@@ -77,12 +79,12 @@ function _draw_segment($colour, $angle, $radius, $start_x, $start_y, $end_x, $en
 /**
  * Get the SVG markup for a key for a chart, such as a pie chart, using the specified data
  *
- * @param   array $data An array of the data to be keyed up
- * @param   string $start_colour The starting colour for the key
- * @param   integer $start_x The starting X position
- * @param   integer $start_y The starting Y position
- * @param   string $units The units (e.g. %)
- * @return  string         The SVG markup for the described key
+ * @param  array $data An array of the data to be keyed up
+ * @param  string $start_colour The starting colour for the key
+ * @param  integer $start_x The starting X position
+ * @param  integer $start_y The starting Y position
+ * @param  string $units The units (e.g. %)
+ * @return string The SVG markup for the described key
  *
  * @ignore
  */
@@ -125,8 +127,8 @@ function _draw_key($data, $start_colour, $start_x, $start_y, $units = '')
 /**
  * Get the next hexadecimal colour from the specified one, where each of the Red, Green or Blue columns can either be 00, 33, 66 or 99, to provide a viewable contrast between two adjacent colours
  *
- * @param   string $current_colour The hexadecimal-format colour to be incremented
- * @return  string         The incremented hexadecimal colour
+ * @param  string $current_colour The hexadecimal-format colour to be incremented
+ * @return string The incremented hexadecimal colour
  *
  * @ignore
  */
@@ -203,11 +205,11 @@ function _filter_svg_css($plot)
 /**
  * Get the markup for a standard pair of axes
  *
- * @param   float $max_y Maximum Y value
- * @param   float $y_scale Y scale
- * @param   string $x_label X axis label
- * @param   string $y_label Y axis label
- * @return  string         The markup
+ * @param  float $max_y Maximum Y value
+ * @param  float $y_scale Y scale
+ * @param  string $x_label X axis label
+ * @param  string $y_label Y axis label
+ * @return string The markup
  *
  * @ignore
  */

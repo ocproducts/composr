@@ -397,6 +397,12 @@ class Hook_addon_registry_core_adminzone_dashboard
      */
     public function tpl_preview__administrative__block_main_staff_actions()
     {
+        if (!addon_installed('actionlog')) {
+            return array();
+        }
+
+        require_lang('actionlog');
+
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_STAFF_ACTIONS', array(
                 'BLOCK_ID' => lorem_word(),
