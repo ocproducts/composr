@@ -1,5 +1,4 @@
 (function ($cms) {
-
     $cms.views.PollBox = PollBox;
     /**
      * @memberof $cms.views

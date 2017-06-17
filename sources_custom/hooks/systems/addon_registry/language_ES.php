@@ -145,8 +145,6 @@ Translations may also be downloaded directly from Transifex.';
             'buildr/pages/comcode_custom/ES/docs.txt',
             'buildr/pages/comcode_custom/ES/rules.txt',
             'buildr/pages/comcode_custom/ES/start.txt',
-            'collaboration/pages/comcode_custom/ES/about.txt',
-            'collaboration/pages/comcode_custom/ES/start.txt',
             'data_custom/modules/cms_comcode_pages/ES/rules_balanced.txt',
             'data_custom/modules/cms_comcode_pages/ES/rules_corporate.txt',
             'data_custom/modules/cms_comcode_pages/ES/rules_liberal.txt',

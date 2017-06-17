@@ -1,5 +1,4 @@
 (function ($cms) {
-
     /*
      This provides the JavaScript necessary for the "status" part of activities
      */

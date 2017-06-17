@@ -951,9 +951,9 @@
                 var message = '';
                 if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
                     if (isWysiwyg) {
-                        message = '';//'!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT_INSTANT;^}'; Not really needed
+                        message = '';
                     } else {
-                        message = '!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
+                        message = '{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
                     }
                 }
 
@@ -1341,12 +1341,12 @@
             }
 
             if ((form.elements['email_address_confirm'] !== undefined) && (form.elements['email_address_confirm'].value != form.elements['email_address'].value)) {
-                $cms.ui.alert('{!cns:EMAIL_ADDRESS_MISMATCH;^}');
+                $cms.ui.alert('{!EMAIL_ADDRESS_MISMATCH;^}');
                 return false;
             }
 
             if ((form.elements['password_confirm'] !== undefined) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
-                $cms.ui.alert('{!cns:PASSWORD_MISMATCH;^}');
+                $cms.ui.alert('{!PASSWORD_MISMATCH;^}');
                 return false;
             }
 

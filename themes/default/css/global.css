@@ -835,8 +835,8 @@ body.popup_spacer h2 {
 	/*{+END}*/
 }
 
-.global_side_panel
-	word-wrap: break-word;}
+.global_side_panel {
+	word-wrap: break-word;
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		width: 13em;
 	/*{+END}*/
@@ -4529,9 +4529,9 @@ a[rel="lightbox"] {
 */
 
 @keyframes greenPulse {
-	from { background-color: #749a02; box-shadow: 0 0 9px #333333; }
-	50% { background-color: #91bd09; box-shadow: 0 0 18px #91bd09; }
-	to { background-color: #749a02; box-shadow: 0 0 9px #333333; }
+	from { background-color: #749a02; box-shadow: 0 0 9px #333333;/*{$,hardcoded_ok}*/ }
+	50% { background-color: #91bd09; box-shadow: 0 0 18px #91bd09;/*{$,hardcoded_ok}*/ }
+	to { background-color: #749a02; box-shadow: 0 0 9px #333333;/*{$,hardcoded_ok}*/ }
 }
 .glowing_node {
 	animation-name: greenPulse;

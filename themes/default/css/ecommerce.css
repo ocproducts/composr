@@ -61,10 +61,6 @@
 .local_payment_verified_account_logo {
 }
 
-.local_payment_merchant_details p, .local_payment_merchant_details_simple p {
-	margin: 0;
-}
-
 .local_payment_merchant_details_wrap + .ecommerce_button, .local_payment_merchant_details + .ecommerce_button {
 	margin-top: 1em;
 }

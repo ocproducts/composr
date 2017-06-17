@@ -905,7 +905,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $chosen_categories = post_param_string('chosen_categories');
         $message = generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_time);
         if ($message === null) {
-            $message = do_lang('NOTHING_HERE');
+            $message = do_lang('NO_ENTRIES');
         }
 
         return $this->send_gui($message);
@@ -1287,7 +1287,7 @@ class Module_admin_newsletter extends Standard_crud_module
             // Re-generate preview from latest chosen_categories
             $message = generate_whatsnew_comcode(post_param_string('chosen_categories', ''), $in_full, $lang, post_param_date('cutoff'));
             if ($message === null) {
-                $message = do_lang('NOTHING_HERE');
+                $message = do_lang('NO_ENTRIES');
             }
         }
 

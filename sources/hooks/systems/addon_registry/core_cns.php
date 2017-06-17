@@ -164,7 +164,6 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/snippets/exists_emoticon.php',
             'sources/hooks/systems/sitemap/group.php',
             'sources/hooks/systems/sitemap/member.php',
-            'sources/hooks/systems/config/maintenance_script_htaccess.php',
             'sources/hooks/systems/config/page_after_join.php',
             'sources/hooks/systems/config/allow_alpha_search.php',
             'sources/hooks/systems/config/allow_email_disable.php',

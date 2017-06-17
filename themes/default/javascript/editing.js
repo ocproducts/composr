@@ -30,7 +30,7 @@ function toggleWysiwyg(name) {
                     //buttons__no: '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}',	Too confusing, re-enable if you want it
                     buttons__yes: '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
                 },
-                '{!javascript:DISABLE_WYSIWYG;^}',
+                '{!comcode:DISABLE_WYSIWYG;^}',
                 '{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
                 function (savingCookies) {
                     if (!savingCookies) {
@@ -97,7 +97,7 @@ function toggleWysiwyg(name) {
                         buttons__convert: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE_CONVERT;^}',
                         buttons__no: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'
                     },
-                    '{!javascript:DISABLE_WYSIWYG;^}',
+                    '{!comcode:DISABLE_WYSIWYG;^}',
                     '{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
                     function (prompt) {
                         if ((!prompt) || (prompt.toLowerCase() == '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase())) {

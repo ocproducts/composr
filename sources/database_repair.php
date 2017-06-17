@@ -699,7 +699,7 @@ class DatabaseRepair
             }
         }
 
-        $queries = $GLOBALS['DB_STATIC_OBJECT']->create_table_sql(get_table_prefix() . $table_name, $table, $table_name, null);
+        $queries = $GLOBALS['DB_STATIC_OBJECT']->create_table(get_table_prefix() . $table_name, $table, $table_name, null);
         foreach ($queries as $sql) {
             $this->add_fixup_query($sql);
         }

@@ -37,7 +37,7 @@ class lang_no_unused_test_set extends cms_test_case
         $files = $this->do_dir(get_file_base() . '/themes', 'themes', 'js');
         foreach ($files as $file) {
             $c = file_get_contents($file);
-            if (strpos('/*{$,Parser hint: pure}*/', $c) === false) {
+            if (strpos($c, '/*{$,Parser hint: pure}*/') === false) {
                 $all_code .= $c;
             }
         }
@@ -102,6 +102,7 @@ class lang_no_unused_test_set extends cms_test_case
             'ECOM_CATD_',
             'ARITHMETICAL_SYMBOL__',
             '_PASSWORD_RESET_TEXT_',
+            'SECURITY_LEVEL_',
         );
 
         $skip = array(

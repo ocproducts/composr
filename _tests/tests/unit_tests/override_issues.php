@@ -31,7 +31,7 @@ class override_issues_test_set extends cms_test_case
 
                 if ((strpos($c, '_custom') === false) && (!in_array($c, array('sources/global.php', 'sources/global2.php')))) {
                     if (strpos($_c, 'function init__') !== false) {
-                        $this->assertTrue((strpos($_c, "\n    define(") === false), 'define commands need a defined guard, so whole code file can be overridden naively, where init function will run twice: ' . $c);
+                        $this->assertTrue((strpos($_c, "\n    define(") === false), '\'define\' commands need a defined guard, so whole code file can be overridden naively, where init function will run twice: ' . $c);
                     }
                 }
             }

@@ -27,19 +27,21 @@
  */
 function init__themes_meta_tree()
 {
-    define('TEMPLATE_TREE_NODE__UNKNOWN', 0);
-    define('TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE', 1);
-    define('TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER', 2);
-    define('TEMPLATE_TREE_NODE__TEMPLATE_GUID', 3); // The GUID for a template call. Not quite a part of the tree, but it fits in nicely as it is a template parameter.
-    define('TEMPLATE_TREE_NODE__SET', 4);
-    define('TEMPLATE_TREE_NODE__BLOCK', 5);
-    define('TEMPLATE_TREE_NODE__TRIM', 6);
-    define('TEMPLATE_TREE_NODE__PANEL', 7);
-    define('TEMPLATE_TREE_NODE__PAGE', 8);
-    define('TEMPLATE_TREE_NODE__JS_TEMPCODE', 9);
-    define('TEMPLATE_TREE_NODE__CSS_TEMPCODE', 10);
-    define('TEMPLATE_TREE_NODE__INCLUDE', 11);
-    define('TEMPLATE_TREE_NODE__ATTACHED', 12);
+    if (!defined('TEMPLATE_TREE_NODE__UNKNOWN')) {
+        define('TEMPLATE_TREE_NODE__UNKNOWN', 0);
+        define('TEMPLATE_TREE_NODE__TEMPLATE_INSTANCE', 1);
+        define('TEMPLATE_TREE_NODE__TEMPLATE_PARAMETER', 2);
+        define('TEMPLATE_TREE_NODE__TEMPLATE_GUID', 3); // The GUID for a template call. Not quite a part of the tree, but it fits in nicely as it is a template parameter.
+        define('TEMPLATE_TREE_NODE__SET', 4);
+        define('TEMPLATE_TREE_NODE__BLOCK', 5);
+        define('TEMPLATE_TREE_NODE__TRIM', 6);
+        define('TEMPLATE_TREE_NODE__PANEL', 7);
+        define('TEMPLATE_TREE_NODE__PAGE', 8);
+        define('TEMPLATE_TREE_NODE__JS_TEMPCODE', 9);
+        define('TEMPLATE_TREE_NODE__CSS_TEMPCODE', 10);
+        define('TEMPLATE_TREE_NODE__INCLUDE', 11);
+        define('TEMPLATE_TREE_NODE__ATTACHED', 12);
+    }
 }
 
 /**

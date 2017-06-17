@@ -34,7 +34,6 @@
 		<directory>sources/</directory>
 		<ignore>sources/hooks/</ignore>
 		<ignore>sources/blocks/</ignore>
-		<ignore>sources/forum/aef.php</ignore>
 		<ignore>sources/forum/ipb*.php</ignore>
 		<ignore>sources/forum/mybb.php</ignore>
 		<ignore>sources/forum/none.php</ignore>
@@ -42,12 +41,9 @@
 		<ignore>sources/forum/smf*.php</ignore>
 		<ignore>sources/forum/vb*.php</ignore>
 		<ignore>sources/forum/wbb*.php</ignore>
-		<ignore>sources/forum/wowbb.php</ignore>
-		<ignore>sources/database/access.php</ignore>
 		<ignore>sources/database/ibm.php</ignore>
 		<ignore>sources/database/oracle.php</ignore>
 		<ignore>sources/database/postgresql.php</ignore>
-		<ignore>sources/database/sqlite.php</ignore>
 		<ignore>sources/database/sqlserver.php</ignore>
 		<ignore>sources/diff.php</ignore>
 		<ignore>sources/jsmin.php</ignore>

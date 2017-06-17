@@ -41,11 +41,13 @@ function init__tempcode_compiler()
 
     // Work out what symbols may be compiled out (look at patterns at top of caches3.php if changing this)...
 
-    define('SYMBOL_COMPILE_STATIC_SAFE', 0);
-    define('SYMBOL_COMPILE_STATIC_IF_AGGRESSIVE', 1);
-    define('SYMBOL_COMPILE_STATIC_SAFE_SIMPLE_BASE_URLS', 2);
-    define('SYMBOL_COMPILE_STATIC_SAFE_SIMPLE_JAVASCRIPT', 4);
-    define('SYMBOL_COMPILE_STATIC_SAFE_SIMPLE_KEEP', 8);
+    if (!defined('SYMBOL_COMPILE_STATIC_SAFE')) {
+        define('SYMBOL_COMPILE_STATIC_SAFE', 0);
+        define('SYMBOL_COMPILE_STATIC_IF_AGGRESSIVE', 1);
+        define('SYMBOL_COMPILE_STATIC_SAFE_SIMPLE_BASE_URLS', 2);
+        define('SYMBOL_COMPILE_STATIC_SAFE_SIMPLE_JAVASCRIPT', 4);
+        define('SYMBOL_COMPILE_STATIC_SAFE_SIMPLE_KEEP', 8);
+    }
 
     global $COMPILABLE_SYMBOLS;
     $COMPILABLE_SYMBOLS = array(

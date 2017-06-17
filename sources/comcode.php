@@ -37,13 +37,15 @@ function init__comcode()
     global $LAX_COMCODE;
     $LAX_COMCODE = array(!function_exists('get_option') || get_option('lax_comcode') === '1');
 
-    define('COMCODE_NORMAL', 0);
-    define('COMCODE_SEMIPARSE_MODE', 1); // Whether to parse so as to create something that would fit inside a semihtml tag. It means we generate HTML, with Comcode written into it where the tag could never be reverse-converted (e.g. a block).
-    define('COMCODE_PREPARSE_MODE', 2); // Whether this is being pre-parsed, to pick up errors before row insertion.
-    define('COMCODE_IS_ALL_SEMIHTML', 4); // Whether to treat this whole thing as being wrapped in semihtml, but apply normal security otherwise.
-    define('COMCODE_STRUCTURE_SWEEP', 8); // Whether we are only doing this parse to find the title structure.
-    define('COMCODE_CHECK_ONLY', 16); // Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
-    define('COMCODE_IN_CODE_TAG', 32); // Whether the parse context is already in a code tag.
+    if (!defined('COMCODE_NORMAL')) {
+        define('COMCODE_NORMAL', 0);
+        define('COMCODE_SEMIPARSE_MODE', 1); // Whether to parse so as to create something that would fit inside a semihtml tag. It means we generate HTML, with Comcode written into it where the tag could never be reverse-converted (e.g. a block).
+        define('COMCODE_PREPARSE_MODE', 2); // Whether this is being pre-parsed, to pick up errors before row insertion.
+        define('COMCODE_IS_ALL_SEMIHTML', 4); // Whether to treat this whole thing as being wrapped in semihtml, but apply normal security otherwise.
+        define('COMCODE_STRUCTURE_SWEEP', 8); // Whether we are only doing this parse to find the title structure.
+        define('COMCODE_CHECK_ONLY', 16); // Whether to only check the Comcode. It's best to use the check_comcode function which will in turn use this parameter.
+        define('COMCODE_IN_CODE_TAG', 32); // Whether the parse context is already in a code tag.
+    }
 }
 
 /**

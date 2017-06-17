@@ -4019,8 +4019,6 @@ insert into `cms_addons_files` values('core_form_interfaces','data/ckeditor/plug
  ('core_forum_drivers','sources/forum/vb3.php','3833'),
  ('core_forum_drivers','sources/forum/wbb2.php','3834'),
  ('core_forum_drivers','sources/forum/wbb22.php','3835'),
- ('core_forum_drivers','sources/forum/wowbb.php','3836'),
- ('core_forum_drivers','sources/forum/aef.php','3837'),
  ('core_forum_drivers','sources/forum/mybb.php','3838'),
  ('core_forum_drivers','sources_custom/forum/.htaccess','3839'),
  ('core_forum_drivers','sources_custom/forum/index.html','3840'),

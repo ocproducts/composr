@@ -150,7 +150,7 @@
 }
 #pause_but, #pre_but, #next_but, #time_line {
 	cursor: pointer;
-	transform: scale(1);} /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
+	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 #next_but, #pre_but, #pause_but, #timer_inner:hover {

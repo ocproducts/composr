@@ -71,7 +71,7 @@ There are a number of approaches that can help you with the above problems:
 
 Composr requires JavaScript to be enabled for the default theme and for administration screens. Themers may opt to use our JavaScript-detection functionality to cater to users with JavaScript-enabled if desired.
 
-Previously we suported JavaScript as disabled, but realistically all modern websites (YouTube, Facebook, etc) require Javascript, so to provide a competitive modern experience we do need it. The ARIA standard allows JavaScript-heavy sites to remain accessible, and print stylesheets can ensure web pages still print effectively.
+Previously we suported JavaScript as disabled, but realistically all modern websites (YouTube, Facebook, etc) require JavaScript, so to provide a competitive modern experience we do need it. The ARIA standard allows JavaScript-heavy sites to remain accessible, and print stylesheets can ensure web pages still print effectively.
 
 [title="2"]Cookies[/title]
 

@@ -1003,7 +1003,6 @@ The documentation is primarily maintained on our website, and this archive is on
             'data_custom/images/docs/tut_permissions/permissions_edit_privileges.png',
             'data_custom/images/docs/tut_permissions/permissions_edit_zone_permissions.png',
             'data_custom/images/docs/tut_permissions/permissions_mass_checkbox_change.gif',
-            'data_custom/images/docs/tut_permissions/permissions_mass_checkbox_change1.gif',
             'data_custom/images/docs/tut_permissions/permissions_su.png',
             'data_custom/images/docs/tut_permissions/permissions_tree_editor.png',
             'data_custom/images/docs/tut_points/inventory_custom.png',

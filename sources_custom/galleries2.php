@@ -40,7 +40,10 @@ function init__galleries2($code)
                 if ($workflow_id === null) {
                     // Use the default if it has none
                     add_content_to_workflow("image", strval($id));
-                    attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text(get_default_workflow())), "inform");
+                    $default_workflow = get_default_workflow();
+                    if ($default_workflow !== null) {
+                        attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text($default_workflow)), "inform");
+                    }
                 } else {
                     // The parent has a workflow. Copy it for this.
                     add_content_to_workflow("image", strval($id), $workflow_id);
@@ -77,7 +80,10 @@ function init__galleries2($code)
                 if ($workflow_id === null) {
                     // Use the default if it has none
                     add_content_to_workflow("video", strval($id));
-                    attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text(get_default_workflow())), "inform");
+                    $default_workflow = get_default_workflow();
+                    if ($default_workflow !== null) {
+                        attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text($default_workflow)), "inform");
+                    }
                 } else {
                     // The parent has a workflow. Copy it for this.
                     add_content_to_workflow("video", strval($id), $workflow_id);
@@ -149,15 +155,14 @@ function init__galleries2($code)
                 if ($workflow_id === null)
                 {
                     // Use the default if it has none
-                    if ($current_workflow != get_default_workflow())
-                    {
+                    $default_workflow = get_default_workflow();
+                    if (($default_workflow !== null) && ($current_workflow != $default_workflow)) {
                         add_content_to_workflow("image", strval($id), null, true);
-                        attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text(get_default_workflow())), "inform");
+                        attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text($default_workflow)), "inform");
                     }
                 } else {
                     // The parent has a workflow. Copy it for this.
-                    if ($workflow_id != $current_workflow)
-                    {
+                    if ($workflow_id != $current_workflow) {
                         add_content_to_workflow("image", strval($id), $workflow_id, true);
                         attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text($workflow_id)), "inform");
                     }
@@ -200,9 +205,10 @@ function init__galleries2($code)
                 $workflow_id = get_workflow_of_content("gallery", $title);
                 if ($workflow_id === null) {
                     // Use the default if it has none
-                    if ($current_workflow != get_default_workflow()) {
+                    $default_workflow = get_default_workflow();
+                    if (($default_workflow !== null) && ($current_workflow != $default_workflow)) {
                         add_content_to_workflow("video", strval($id), null, true);
-                        attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text(get_default_workflow())), "inform");
+                        attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text($default_workflow)), "inform");
                     }
                 } else {
                     // The parent has a workflow. Copy it for this.
@@ -246,7 +252,8 @@ function init__galleries2($code)
             if ($workflow_id === null)
             {
                 // Use the default if it has none
-                if ($current_workflow != get_default_workflow()) {
+                $default_workflow = get_default_workflow();
+                if (($default_workflow !== null) && ($current_workflow != $default_workflow)) {
                     add_content_to_workflow("gallery", $name, null, true);
                 }
             } else {

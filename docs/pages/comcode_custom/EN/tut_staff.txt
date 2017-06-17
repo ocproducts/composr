@@ -98,7 +98,7 @@ If a user finds, say, a gallery image to be offensive or in violation, they can 
 
 A logged in user will also be given the option to report anonymously, which causes the support ticket to be created under the Guest user.
 
-Non-logged-in users may be asked to enter a CAPTCHA to prevent spam, and may optionally provide an email address for staff follow-up.
+Non-logged-in users may be asked to enter a CAPTCHA to prevent spam, and may optionally provide an e-mail address for staff follow-up.
 
 Once content is reported, the report is actually created as a support ticket. This method allows staff to collaborate together to decide how to deal with the problem, as well as allowing clarity so that all staff know how the issue was reported and dealt with.
 

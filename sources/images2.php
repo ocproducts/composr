@@ -122,7 +122,6 @@ function convert_image_plus($orig_url, $dimensions = null, $output_dir = 'upload
             $exp_dimensions[1] = null;
         }
     }
-
     if ($filename === null) {
         $ext = get_file_extension($orig_url);
         if (!is_image('example.' . $ext, IMAGE_CRITERIA_WEBSAFE, true)) {
@@ -341,10 +340,10 @@ function _convert_image($from, &$to, $width, $height, $box_width = null, $exit_o
     $sy = imagesy($source);
 
     // Fix bad parameters
-    if ($width == 0) {
+    if ($width === 0) {
         $width = 1;
     }
-    if ($height == 0) {
+    if ($height === 0) {
         $height = 1;
     }
 

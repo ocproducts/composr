@@ -40,7 +40,7 @@ class missing_colour_equations_test_set extends cms_test_case
 
                 $contents = file_get_contents(get_file_base() . '/themes/default/css/' . $f);
                 $matches = array();
-                $count = preg_match_all('/^.+(\#[0-9A-Fa-f]{3,6}).*$/m', $contents, $matches);
+                $count = preg_match_all('/^.+(\#[0-9A-Fa-f]{3,6})(.*)$/m', $contents, $matches);
                 for ($i = 0; $i < $count; $i++) {
                     if (strpos($matches[0][$i], '{$') === false) {
                         $line = substr_count(substr($contents, 0, strpos($contents, $matches[0][$i])), "\n") + 1;

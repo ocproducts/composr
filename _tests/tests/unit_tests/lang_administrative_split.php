@@ -32,7 +32,7 @@ class lang_administrative_split_test_set extends cms_test_case
         list($just_lang_strings_admin, $just_lang_strings_non_admin, $lang_strings_shared, $lang_strings_unknown, $all_strings_in_lang) = string_scan($lang);
 
         foreach (array_merge($lang_strings_shared, $lang_strings_unknown) as $str) {
-            $this->assertTrue(false, $str . ': not defined as either administrative or not');
+            $this->assertTrue(false, $str . ': either not defined as administrative/non-administrative, or defined as both');
         }
     }
 

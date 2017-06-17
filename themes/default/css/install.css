@@ -119,10 +119,6 @@ textarea.mono_textbox {
 	font-family: Courier, monospace;
 }
 
-.popup_blocker_warning {
-	color: {$GET,red_highlight_text};
-}
-
 /* Step 1 */
 
 #install_welcome {

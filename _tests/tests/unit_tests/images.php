@@ -53,7 +53,7 @@ class images_test_set extends cms_test_case
         $this->assertTrue(is_image('test.jpeg', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
         $this->assertTrue(is_image('test.jpe', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
         $this->assertTrue(is_image('test.gif', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
-        $this->assertTrue(!is_image('test.ico', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
+        $this->assertTrue(is_image('test.ico', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
         $this->assertTrue(!is_image('test.webp', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
         $this->assertTrue(!is_image('test.dat', IMAGE_CRITERIA_WEBSAFE, /*$as_admin*/false));
 

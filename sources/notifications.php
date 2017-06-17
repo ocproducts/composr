@@ -329,7 +329,7 @@ class Notification_dispatcher
 
             $ticket_url = ticket_add_post($ticket_id, $ticket_type_id, $post_title, $post, false, $ticket_member_id);
 
-            $message = do_lang('MESSAGING_NOTIFICATION_WRAPPER', $message, $ticket_url);
+            $message = do_lang('NOTIFICATION_WITH_AUTO_TICKET_WRAPPER', $message, $ticket_url);
         }
 
         $testing = (get_param_integer('keep_debug_notifications', 0) == 1);

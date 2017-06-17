@@ -1,5 +1,4 @@
 (function ($cms) {
-
     $cms.templates.memberTooltip = function (params, container) {
         var submitter = strVal(params.submitter);
 

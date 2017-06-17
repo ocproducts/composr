@@ -276,7 +276,7 @@ For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and 
 [title="2"]Support tracker[/title]
 
 Composr does not come with its own issue management database, but we have a non-bundled addon that includes an integrated modified version of Mantis.
-Support tickets can work as a basic private issue management system, using Post Templates amongst other features.
+Support tickets can work as a basic private issue management system, using Post Templates among other features.
 
 [concepts
  1_key="Support desk      1_value="A virtual support desk is the virtual equivalent to a companies real-world help-desk/support-department/reception/call centre."

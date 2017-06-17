@@ -27,12 +27,14 @@
  */
 function init__images()
 {
-    define('IMAGE_CRITERIA_NONE', 0);
-    define('IMAGE_CRITERIA_GD_READ', 1);
-    define('IMAGE_CRITERIA_GD_WRITE', 2); // NB: We can assume IMAGE_CRITERIA_GD_READ is always true when IMAGE_CRITERIA_GD_WRITE is true, but not vice-versa
-    define('IMAGE_CRITERIA_RASTER', 4);
-    define('IMAGE_CRITERIA_VECTOR', 8); // Opposite of raster
-    define('IMAGE_CRITERIA_WEBSAFE', 16); // NB: We will make a basic assumption that we are not going to try to use IMAGE_CRITERIA_GD_READ to make something IMAGE_CRITERIA_WEBSAFE
+    if (!defined('IMAGE_CRITERIA_NONE')) {
+        define('IMAGE_CRITERIA_NONE', 0);
+        define('IMAGE_CRITERIA_GD_READ', 1);
+        define('IMAGE_CRITERIA_GD_WRITE', 2); // NB: We can assume IMAGE_CRITERIA_GD_READ is always true when IMAGE_CRITERIA_GD_WRITE is true, but not vice-versa
+        define('IMAGE_CRITERIA_RASTER', 4);
+        define('IMAGE_CRITERIA_VECTOR', 8); // Opposite of raster
+        define('IMAGE_CRITERIA_WEBSAFE', 16); // NB: We will make a basic assumption that we are not going to try to use IMAGE_CRITERIA_GD_READ to make something IMAGE_CRITERIA_WEBSAFE
+    }
 }
 
 /**
