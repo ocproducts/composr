@@ -310,10 +310,10 @@ function db_escape_string($string)
  *
  * @param  string $function Function name
  * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT
- * @param  ?array $args List of string arguments, assumed already quoted/escaped correctly for the particular database (null: none)
+ * @param  array $args List of string arguments, assumed already quoted/escaped correctly for the particular database
  * @return string SQL fragment
  */
-function db_function($function, $args = null)
+function db_function($function, $args = array())
 {
     return $GLOBALS['DB_STATIC_OBJECT']->db_function($function, $args);
 }
@@ -2336,7 +2336,7 @@ class DatabaseConnector
      *
      * @param  integer $seconds The time limit in seconds
      */
-    protected function set_query_time_limit($seconds)
+    public function set_query_time_limit($seconds)
     {
         $this->static_ob->set_query_time_limit($seconds, $this->connection_read);
     }

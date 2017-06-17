@@ -151,7 +151,7 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
 
     if ($forum_id === null) {
         if (!has_privilege($member_id, 'moderate_private_topic')) {
-            if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_personal_topic_posts'))) {
+            if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_private_topic_posts'))) {
                 return false;
             }
         }
@@ -221,7 +221,7 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
 
     if ($forum_id === null) {
         if (!has_privilege($member_id, 'moderate_private_topic')) {
-            if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_personal_topic_posts'))) {
+            if (($resource_owner != $member_id) || (!has_privilege($member_id, 'delete_private_topic_posts'))) {
                 return false;
             }
         }

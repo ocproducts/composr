@@ -64,6 +64,7 @@ class Hook_addon_registry_tickets
         return array(
             'tut_feedback',
             'tut_support_desk',
+            'tut_staff',
         );
     }
 

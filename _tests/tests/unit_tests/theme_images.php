@@ -83,7 +83,6 @@ class theme_images_test_set extends cms_test_case
             }
 
             $images_there = array_merge($default_images, $this->getThemeImages($theme));
-
             $images_referenced = array(); // true means referenced and exists, false means referenced and is not yet known to exist
             $non_css_contents = '';
 
@@ -162,8 +161,8 @@ class theme_images_test_set extends cms_test_case
                 $this->assertTrue($is_used || (strpos(find_theme_image($image), '_custom') !== false), 'Unused theme image in theme ' . $theme . ': ' . $image);
             }
 
-            foreach ($images_referenced as $image => $is_used) {
-                $this->assertTrue($is_used, 'Missing theme image in theme ' . $theme . ': ' . $image);
+            foreach ($images_referenced as $image => $is_existent) {
+                $this->assertTrue($is_existent, 'Missing theme image in theme ' . $theme . ': ' . $image);
             }
         }
     }
@@ -179,7 +178,11 @@ class theme_images_test_set extends cms_test_case
         foreach ($dirs as $dir) {
             $files = get_directory_contents($dir);
             foreach ($files as $f) {
-                if (is_image($f) || substr($f, -4) == '.svg' || substr($f, -4) == '.ico') {
+                if (substr($f, -8) == '.gif.png') {
+                    continue; // This is an APNG version of a gif, not a separate theme image
+                }
+
+                if (is_image($f, IMAGE_CRITERIA_WEBSAFE, true)) {
                     $img_code = substr($f, 0, strlen($f) - strlen('.' . get_file_extension($f)));
                     $images[$img_code] = false; // false means not yet found as used
                 }

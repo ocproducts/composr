@@ -263,7 +263,7 @@ function convert_image($from, &$to, $width, $height, $box_width = null, $exit_on
  * Find whether the image specified is actually an image, based on file extension
  *
  * @param  string $name A URL or file path to the image
- * @param  integer $criteria A bitmask of IMAGE_CRITERIA_* constants
+ * @param  integer $criteria A bitmask of IMAGE_CRITERIA_* constants that the image must match
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
  * @param  boolean $mime_too Whether to check mime as well as file extension. A full URL must have been passed
  * @return boolean Whether the string pointed to a file appeared to be an image
@@ -341,7 +341,7 @@ function is_image($name, $criteria, $as_admin = false, $mime_too = false)
 
     // Web-safe check
     if (($criteria & IMAGE_CRITERIA_WEBSAFE) != 0) {
-        if (!in_array($ext, array('jpeg', 'jpe', 'jpg', 'gif', 'png', 'bmp', 'svg'))) {
+        if (!in_array($ext, array('jpeg', 'jpe', 'jpg', 'gif', 'png', 'bmp', 'svg', 'ico'))) {
             return false;
         }
     }

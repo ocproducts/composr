@@ -638,9 +638,6 @@ function placeholder_img_code($type = '')
         if (substr($f, -4) == '.gif') {
             return basename($f, '.gif');
         }
-        if (substr($f, -4) == '.ico') {
-            return basename($f, '.ico');
-        }
     }
     return '';
 }

@@ -225,7 +225,7 @@ class Database_Static_postgresql extends DatabaseDriver
      * @param  boolean $for_alter Whether this is for adding a table field
      * @return array The map
      */
-    public function get_type_remap($for_alter)
+    public function get_type_remap($for_alter = false)
     {
         $type_remap = array(
             'AUTO' => 'serial',
