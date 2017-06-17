@@ -111,7 +111,6 @@ class Hook_addon_registry_core_permission_management
             'sources/hooks/systems/sitemap/privilege_category.php',
             'themes/default/templates/PERMISSION_KEYS_PERMISSIONS_SCREEN.tpl',
             'themes/default/templates/PERMISSION_KEYS_PERMISSION_ROW.tpl',
-            'themes/default/templates/PERMISSION_SCREEN_PERMISSIONS_SCREEN.tpl',
             'themes/default/templates/PERMISSION_PRIVILEGES_SECTION.tpl',
             'themes/default/templates/PERMISSION_PRIVILEGES_SCREEN.tpl',
             'themes/default/templates/PERMISSION_CELL.tpl',

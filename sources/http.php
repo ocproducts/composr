@@ -290,6 +290,7 @@ abstract class HttpDownloader
     public $filename = null; // ?ID_TEXT. The filename returned from the last file lookup.
     public $charset = null; // ?ID_TEXT. The character set returned from the last file lookup.
     public $headers = array(); // Any HTTP headers collected.
+    public $implementation_used = null; // For debugging.
 
     /**
      * See if this class may run.
@@ -310,6 +311,8 @@ abstract class HttpDownloader
     {
         global $DOWNLOAD_LEVEL;
 
+        $this->implementation_used = get_class($this);
+
         // Parse options...
 
         $this->read_in_options($options);
@@ -323,7 +326,7 @@ abstract class HttpDownloader
             return;
         }
         if ($DOWNLOAD_LEVEL == 8) {
-            $this->data = '';
+            $this->data = null;
             return;
         }//critical_error('FILE_DOS', $url);
 
@@ -393,7 +396,6 @@ abstract class HttpDownloader
         // More preprocessing...
 
         $this->raw_payload = ''; // Note that this will contain HTTP headers (it is appended directly after headers with no \r\n between -- so it contains \r\n\r\n itself when the content body is going to start)
-        $this->raw_payload_curl = '';
         $this->sent_http_post_content = false;
         $this->put = mixed();
         $this->put_path = mixed();
@@ -784,7 +786,7 @@ class HttpDownloaderCurl extends HttpDownloader
 
     // Data collection
     protected $curl_headers = array();
-    protected $curl_body = '';
+    protected $curl_body = null;
 
     /**
      * See if this class may run.
@@ -795,6 +797,9 @@ class HttpDownloaderCurl extends HttpDownloader
      */
     public function may_run_for($url, $options = array())
     {
+        $this->url_parts = @parse_url($url);
+        $this->read_in_options($options);
+
         if (!function_exists('curl_version')) {
             return HttpDownloader::RUN_PRIORITY_NO;
         }
@@ -939,74 +944,76 @@ class HttpDownloaderCurl extends HttpDownloader
             // Error
             $error = curl_error($ch);
             curl_close($ch);
-        } else {
-            // Response metadata that cURL lets us gather easily
-            $this->download_mime_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-            $this->download_size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
-            $this->download_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-            $this->message = strval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
-            if ($this->message == '206') {
-                $this->message = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
-            }
-            if (strpos($this->download_mime_type, ';') !== false) {
-                $this->charset = substr($this->download_mime_type, 8 + strpos($this->download_mime_type, 'charset='));
-                $this->download_mime_type = substr($this->download_mime_type, 0, strpos($this->download_mime_type, ';'));
-            }
-
-            curl_close($ch);
-
-            // Receive headers
-            foreach ($this->curl_headers as $header) {
-                $matches = array();
-
-                if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $header, $matches) != 0) {
-                    $this->read_in_headers($header);
-                }
-                if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $header, $matches) != 0) {
-                    $this->read_in_headers($header);
-                }
-                if (preg_match("#^Location: (.*)\r\n#i", $header, $matches) != 0) {
-                    if ($this->filename === null) {
-                        $this->filename = urldecode(basename($matches[1]));
-                    }
-
-                    if (strpos($matches[1], '://') === false) {
-                        $matches[1] = qualify_url($matches[1], $url);
-                    }
-                    $this->download_url = $matches[1];
-                    if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $this->message) != 0)) {
-                        $bak = $this->filename;
-
-                        $_options = $options;
-                        unset($_options['post_params']);
-                        $text = $this->no_redirect ? null : $this->run($matches[1], $_options);
-
-                        if ($this->filename === null) {
-                            $this->filename = $bak;
-                        }
-
-                        return $text;
-                    }
-                }
-            }
-
-            // Cleanup
-            if ($this->put !== null) {
-                fclose($this->put);
-                if (!$this->put_no_delete) {
-                    @unlink($this->put_path);
-                }
-            }
-
-            // Receive body
-            if ($this->message != 200) {
-                $this->curl_body = '';
-            }
-
-            return $this->curl_body;
+            return null;
         }
 
-        return '';
+        // Response metadata that cURL lets us gather easily
+        $this->download_mime_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+        $this->download_size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+        $this->download_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        $this->message = strval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
+        if ($this->message == '206') {
+            $this->message = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
+        }
+        if (strpos($this->download_mime_type, ';') !== false) {
+            $this->charset = substr($this->download_mime_type, 8 + strpos($this->download_mime_type, 'charset='));
+            $this->download_mime_type = substr($this->download_mime_type, 0, strpos($this->download_mime_type, ';'));
+        }
+
+        curl_close($ch);
+
+        // Receive headers
+        foreach ($this->curl_headers as $header) {
+            $matches = array();
+
+            if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $header, $matches) != 0) {
+                $this->read_in_headers($header);
+            }
+            if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $header, $matches) != 0) {
+                $this->read_in_headers($header);
+            }
+            if (preg_match("#^Location: (.*)\r\n#i", $header, $matches) != 0) {
+                if ($this->filename === null) {
+                    $this->filename = urldecode(basename($matches[1]));
+                }
+
+                if (strpos($matches[1], '://') === false) {
+                    $matches[1] = qualify_url($matches[1], $url);
+                }
+                $this->download_url = $matches[1];
+                if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $this->message) != 0)) {
+                    $bak = $this->filename;
+
+                    $_options = $options;
+                    unset($_options['post_params']);
+                    $text = $this->no_redirect ? null : $this->run($matches[1], $_options);
+
+                    if ($this->filename === null) {
+                        $this->filename = $bak;
+                    }
+
+                    return $text;
+                }
+            }
+        }
+
+        // Cleanup
+        if ($this->put !== null) {
+            fclose($this->put);
+            if (!$this->put_no_delete) {
+                @unlink($this->put_path);
+            }
+        }
+
+        // Receive body
+        if ($this->curl_body === null) {
+            $this->curl_body = '';
+        }
+        if ($this->message != 200) {
+            $this->curl_body = null;
+        }
+
+        return $this->curl_body;
     }
 
    /**
@@ -1038,6 +1045,9 @@ class HttpDownloaderCurl extends HttpDownloader
        if ($this->write_to_file !== null) {
            fwrite($this->write_to_file, $str);
        } else {
+           if ($this->curl_body === null) {
+               $this->curl_body = '';
+           }
            $this->curl_body .= $str;
        }
        return strlen($str);
@@ -1060,6 +1070,9 @@ class HttpDownloaderSockets extends HttpDownloader
      */
     public function may_run_for($url, $options = array())
     {
+        $this->url_parts = @parse_url($url);
+        $this->read_in_options($options);
+
         if (($this->url_parts['scheme'] == 'http') && (!GOOGLE_APPENGINE) && (php_function_allowed('fsockopen'))) {
             return HttpDownloader::RUN_PRIORITY_MEDIUM;
         }
@@ -1647,6 +1660,9 @@ class HttpDownloaderFilesystem extends HttpDownloader
      */
     public function may_run_for($url, $options = array())
     {
+        $this->url_parts = @parse_url($url);
+        $this->read_in_options($options);
+
         $faux = function_exists('get_value') ? get_value('http_faux_loopback') : null;
         if (($faux !== null) && ($faux != '') && ($this->post_params === null) && ($this->files == array())) { // NB: Does not support cookies, accept headers, referers
             if (substr($faux, 0, 1) != '#') {
