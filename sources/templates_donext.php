@@ -29,7 +29,6 @@
  */
 function do_next_manager_hooked($title, $text, $type, $main_title = null)
 {
-    require_lang('banners');
     $links = array();
 
     if ($main_title === null) {

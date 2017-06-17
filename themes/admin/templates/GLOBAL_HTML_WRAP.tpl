@@ -8,7 +8,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 {$REQUIRE_CSS,adminzone}
 {$REQUIRE_CSS,menu__dropdown}
-{$REQUIRE_JAVASCRIPT,menu_popup}
+{$REQUIRE_JAVASCRIPT,core_menus}
 {$REQUIRE_CSS,helper_panel}
 
 {$,We deploy as HTML5 but code and confirm strictly to XHTML5}

@@ -36,6 +36,10 @@ class CMSPmWrite
             access_denied('NOT_AS_GUEST');
         }
 
+        if (!addon_installed('tickets')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         require_code('report_content');
         report_post($msg_id, '', is_invisible() ? 1 : 0);
     }

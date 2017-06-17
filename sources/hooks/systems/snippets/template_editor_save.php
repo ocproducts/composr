@@ -79,16 +79,18 @@ class Hook_snippet_template_editor_save
             }
 
             // Store revision
-            require_code('revisions_engine_files');
-            $revision_engine = new RevisionEngineFiles();
-            $existing_path = find_template_path($_file, $subdir, $theme);
-            $revision_engine->add_revision(
-                dirname($custom_path),
-                $clean_file,
-                ltrim($suffix, '.'),
-                cms_file_get_contents_safe($existing_path),
-                filemtime($existing_path)
-            );
+            if (addon_installed('actionlog')) {
+                require_code('revisions_engine_files');
+                $revision_engine = new RevisionEngineFiles();
+                $existing_path = find_template_path($_file, $subdir, $theme);
+                $revision_engine->add_revision(
+                    dirname($custom_path),
+                    $clean_file,
+                    ltrim($suffix, '.'),
+                    cms_file_get_contents_safe($existing_path),
+                    filemtime($existing_path)
+                );
+            }
 
             // Clear cacheing
             require_code('caches3');

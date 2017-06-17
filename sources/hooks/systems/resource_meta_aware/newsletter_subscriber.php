@@ -104,6 +104,8 @@ class Hook_resource_meta_aware_newsletter_subscriber
 
             'support_content_reviews' => false,
 
+            'support_spam_heuristics' => null,
+
             'actionlog_regexp' => 'IMPORT_NEWSLETTER_SUBSCRIBERS',
         );
     }

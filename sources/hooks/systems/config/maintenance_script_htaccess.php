@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core_cns
+ * @package    core_configuration
  */
 
 /**
@@ -34,11 +34,11 @@ class Hook_config_maintenance_script_htaccess
             'human_name' => 'MAINTENANCE_SCRIPT_ACCESS',
             'type' => 'tick',
             'category' => 'SECURITY',
-            'group' => 'MEMBERS',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_maintenance_script_htaccess',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 10,
+            'order_in_category_group' => 9,
 
             'addon' => 'core_configuration',
         );

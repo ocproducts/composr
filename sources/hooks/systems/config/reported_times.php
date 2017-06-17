@@ -35,7 +35,7 @@ class Hook_config_reported_times
             'list_options' => '',
             'required' => true,
 
-            'addon' => 'reported_content',
+            'addon' => 'tickets',
         );
     }
 

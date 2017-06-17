@@ -155,7 +155,6 @@ class Hook_addon_registry_tickets
             'sources/hooks/systems/config/reported_times.php',
             'themes/default/images/icons/24x24/menu/site_meta/contact_us.png',
             'themes/default/images/icons/48x48/menu/site_meta/contact_us.png',
-            'themes/default/templates/BLOCK_MAIN_CONTACT_SIMPLE.tpl',
             'themes/default/templates/BLOCK_MAIN_CONTACT_US.tpl',
             'sources/blocks/main_contact_us.php',
             'themes/default/javascript/tickets.js',

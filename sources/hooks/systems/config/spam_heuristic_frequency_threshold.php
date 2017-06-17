@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    core
+ * @package    core_configuration
  */
 
 /**
@@ -40,7 +40,7 @@ class Hook_config_spam_heuristic_frequency_threshold
             'list_options' => '',
             'order_in_category_group' => 8,
 
-            'addon' => 'core',
+            'addon' => 'core_configuration',
         );
     }
 

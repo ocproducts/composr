@@ -36,10 +36,10 @@ class Hook_endpoint_account_contact_us
 
         // Send notification
         require_code('notifications');
-        require_lang('messaging');
+        require_lang('tickets');
         $notification_subject = do_lang('CONTACT_US_NOTIFICATION_SUBJECT', $title, null, null, get_site_default_lang());
         $notification_message = do_lang('CONTACT_US_NOTIFICATION_MESSAGE', comcode_escape(get_site_name()), comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member())), array($post, comcode_escape($category)), get_site_default_lang());
-        dispatch_notification('messaging', $type . '_' . $id, $notification_subject, $notification_message, null, null, array('create_ticket' => true));
+        dispatch_notification('ticket_reply', $type . '_' . $id, $notification_subject, $notification_message, null, null, array('create_ticket' => true));
 
         // Send standard confirmation email to current user
         $email_from = trim(post_param_string('email', $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member())));

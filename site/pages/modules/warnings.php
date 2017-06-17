@@ -523,7 +523,7 @@ class Module_warnings extends Standard_crud_module
         }
 
         // Moderation actions
-        if ($new) {
+        if ((addon_installed('commandr')) && ($new)) {
             $content = $this->find_member_content($member_id);
             if (count($content) > 0) {
                 $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c7eb70b13be74d8f3bd1f1c5e739d9ab', 'TITLE' => do_lang_tempcode('DELETE'), 'HELP' => do_lang_tempcode('DESCRIPTION_DELETE_CONTENT'))));
@@ -989,22 +989,24 @@ class Module_warnings extends Standard_crud_module
         }
 
         // Delete content
-        $content = $this->find_member_content($member_id);
-        $done_deleting = false;
-        foreach ($content as $content_details) {
-            list($content_type_title, $content_type, $content_id, $content_title, $content_url, $content_timestamp, $auto_selected) = $content_details;
+        if (addon_installed('commandr')) {
+            $content = $this->find_member_content($member_id);
+            $done_deleting = false;
+            foreach ($content as $content_details) {
+                list($content_type_title, $content_type, $content_id, $content_title, $content_url, $content_timestamp, $auto_selected) = $content_details;
 
-            if (post_param_integer('delete__' . $content_type . '_' . $content_id, 0) == 1) {
-                require_all_lang();
-                require_code('resource_fs');
-                $object_fs = get_resource_commandr_fs_object($content_type);
-                if ($object_fs !== null) {
-                    $filename = $object_fs->convert_id_to_filename($content_type, $content_id);
-                    if ($filename !== null) {
-                        $subpath = $object_fs->search($content_type, $content_id, true);
-                        $object_fs->resource_delete($content_type, $filename, dirname($subpath));
+                if (post_param_integer('delete__' . $content_type . '_' . $content_id, 0) == 1) {
+                    require_all_lang();
+                    require_code('resource_fs');
+                    $object_fs = get_resource_commandr_fs_object($content_type);
+                    if ($object_fs !== null) {
+                        $filename = $object_fs->convert_id_to_filename($content_type, $content_id);
+                        if ($filename !== null) {
+                            $subpath = $object_fs->search($content_type, $content_id, true);
+                            $object_fs->resource_delete($content_type, $filename, dirname($subpath));
 
-                        $done_deleting = true;
+                            $done_deleting = true;
+                        }
                     }
                 }
             }

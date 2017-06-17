@@ -104,6 +104,8 @@ class Hook_resource_meta_aware_welcome_email
 
             'support_content_reviews' => false,
 
+            'support_spam_heuristics' => null,
+
             'actionlog_regexp' => '\w+_WELCOME_EMAIL',
         );
     }

@@ -78,9 +78,6 @@ class auth_test_set extends cms_test_case
 
         $ips = array();
         $server_addr = get_ip_address(3, cms_srv('SERVER_ADDR'));
-        if (($server_addr == '0000:0000:0000:0000:0000:0000:*:*') && (cms_srv('HTTP_HOST') == 'localhost')) {
-            $server_addr = '127.0.0.*'; // DNS will resolve localhost using ipv4, regardless of what Apache self-reports, at least on my current dev machine -- ChrisG
-        }
         $ips[$server_addr] = true;
         $ips['1.2.3.4'] = false;
 
@@ -109,9 +106,9 @@ class auth_test_set extends cms_test_case
             $http_result = cms_http_request(static_evaluate_tempcode(build_url(array('page' => '', 'keep_session' => $fake_session_id), 'adminzone', null, false, false, true)), array('trigger_error' => false));
 
             if ($pass_expected) {
-                $this->assertTrue($http_result->message != '401');
+                $this->assertTrue($http_result->message != '401', 'No access when expected');
             } else {
-                $this->assertTrue($http_result->message == '401');
+                $this->assertTrue($http_result->message == '401', 'Access when none expected');
             }
         }
     }

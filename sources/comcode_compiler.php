@@ -1006,7 +1006,6 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                             $less_pos = $pos - 1;
                                             $ret->parse_from($comcode, $less_pos, $p_len);
                                             $pos = $p_len;
-
                                             /*if (!$in_html && !$in_semihtml) {     Actually, no, we must explicitly escape symbols in Comcode (except when there's a pre-Tempcode-pass of that Comcode / inside tag attributes / inside non-textual areas)
                                                 if (strpos(substr($comcode, $less_pos, $p_len), '*') === false) {
                                                     $ret = escape_html_tempcode($ret);

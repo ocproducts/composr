@@ -89,7 +89,7 @@ function get_comcode_page_title_from_disk($path, $include_subtitle = false, $in_
             $tempcode_title = make_string_tempcode(escape_html(strip_html($raw_title)));
         } else {
             require_code('comcode');
-            $tempcode_title = comcode_to_tempcode($raw_title, null, true, null, null, $html_context ? COMCODE_IN_CODE_TAG : 0);
+            $tempcode_title = comcode_to_tempcode($raw_title, null, true, null, null, $html_context ? COMCODE_IS_ALL_SEMIHTML : 0);
         }
         return $tempcode_title;
     }

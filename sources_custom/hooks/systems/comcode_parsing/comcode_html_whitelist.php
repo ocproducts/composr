@@ -33,7 +33,7 @@ class Hook_comcode_parsing_comcode_html_whitelist
         $allowed_html_seqs = array();
 
         require_code('textfiles');
-        $whitelists = explode("n", read_text_file('comcode_whitelist', null, true));
+        $whitelists = explode("\n", read_text_file('comcode_whitelist', null, true));
         foreach ($whitelists as $w) {
             if (trim($w) != '') {
                 if ($w[0] != '/') {

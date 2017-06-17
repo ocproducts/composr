@@ -108,6 +108,7 @@ class Hook_addon_registry_cns_signatures
             'sources/hooks/systems/notifications/cns_choose_signature.php',
             'sources/hooks/systems/config/enable_skip_sig.php',
             'sources/hooks/systems/config/enable_views_sigs_option.php',
+            'themes/default/javascript/cns_signatures.js',
         );
     }
 

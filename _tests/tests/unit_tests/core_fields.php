@@ -38,9 +38,8 @@ class core_fields_test_set extends cms_test_case
                     'c_name' => 'hosted',
                     'cf_type' => $type,
                     'cf_default' => '',
-                    'cf_name' => 'Test',
                     'cf_required' => 0,
-                );
+                ) + insert_lang('cf_name', 'Test', 4);
 
                 $test = $ob->get_search_inputter($field);
                 $this->assertTrue(($test === null) || is_array($test), 'Failed get_search_inputter for ' . $type);

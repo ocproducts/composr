@@ -99,7 +99,7 @@ class config_test_set extends cms_test_case
                     $_has_orders = isset($option['order_in_category_group']);
                     if ($has_orders !== null) {
                         if ($has_orders != $_has_orders) {
-                            $this->assertTrue(false, $category . '/' . $group_name . ' has inconsistent ordering settings (some set, some not)');
+                            $this->assertTrue(false, "'category' => '" . $category . "'" . ', ' . "'group' => '" . $group_name . "'" . ', has inconsistent ordering settings (some set, some not)');
                             break;
                         }
                     } else {

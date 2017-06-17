@@ -28,6 +28,10 @@ class CMSPostWrite
     {
         cms_verify_parameters_phpdoc();
 
+        if (!addon_installed('tickets')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         require_code('report_content');
         report_post($post_id, $reason, is_invisible() ? 1 : 0);
     }

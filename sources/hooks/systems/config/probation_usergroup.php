@@ -38,6 +38,7 @@ class Hook_config_probation_usergroup
             'explanation' => 'CONFIG_OPTION_probation_usergroup',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 3,
             'required' => true,
 
             'addon' => 'core_cns',

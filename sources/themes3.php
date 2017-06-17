@@ -344,7 +344,7 @@ function actual_add_theme_image($theme, $lang, $id, $path, $fail_ok = false)
 
     Self_learning_cache::erase_smart_cache();
 
-    if (addon_installed('!ssl')) {
+    if (addon_installed('ssl')) {
         require_code('caches3');
         erase_cached_templates(false, null, TEMPLATE_DECACHE_WITH_THEME_IMAGE); // Paths may have been cached
     }

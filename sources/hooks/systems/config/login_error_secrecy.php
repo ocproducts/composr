@@ -34,11 +34,11 @@ class Hook_config_login_error_secrecy
             'human_name' => 'LOGIN_ERROR_SECRECY',
             'type' => 'tick',
             'category' => 'SECURITY',
-            'group' => 'GENERAL',
+            'group' => 'MEMBERS',
             'explanation' => 'CONFIG_OPTION_login_error_secrecy',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 9,
+            'order_in_category_group' => 1,
 
             'addon' => 'core_configuration',
         );
