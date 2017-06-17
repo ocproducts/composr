@@ -404,7 +404,7 @@ function do_work()
     // blogs and news entries (remember to test both blogs [categories] list, and a list of all news entries)
     require_code('news2');
     for ($i = $GLOBALS['SITE_DB']->query_select_value('news', 'COUNT(*)'); $i < $num_wanted; $i++) {
-        add_news(random_line(), random_text(), 'admin', 1, 1, 1, 1, '', random_text(), null, null, null, db_get_first_id() + $i);
+        add_news(random_line(), random_text(), 'admin', 1, 1, 1, 1, '', random_text(), null, array(), null, db_get_first_id() + $i);
     }
     echo 'done news stuff' . "\n";
 

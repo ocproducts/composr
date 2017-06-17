@@ -25,7 +25,7 @@ class antispam_test_set extends cms_test_case
         set_option('spam_heuristic_country', 'IN');
         $_GET['keep_country'] = 'IN';
         unset($_SERVER['HTTP_ACCEPT']);
-        $_POST['foo_keywords']='Foo ViagrA Bar';
+        $_POST['foo_keywords'] = 'Foo ViagrA Bar';
         $_SERVER['HTTP_USER_AGENT'] = 'Spambot';
 
         require_code('antispam');

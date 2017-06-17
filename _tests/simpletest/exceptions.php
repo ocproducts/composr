@@ -184,7 +184,7 @@ class SimpleExceptionTrap {
      *    @return string/false     The failure message or false if none.
      */
     function getOutstanding() {
-        return sprintf($this->message, 'Failed to trap exception');
+        return @sprintf($this->message, 'Failed to trap exception');
     }
 
     /**

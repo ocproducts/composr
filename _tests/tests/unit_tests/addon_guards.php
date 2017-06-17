@@ -22,17 +22,15 @@ class addon_guards_test_set extends cms_test_case
     {
         $files_in_addons = array();
 
-        $addons = find_all_hook_obs('systems', 'addon_registry');
-        foreach ($addons as $ob) {
+        $addons = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+        foreach ($addons as $addon => $ob) {
             $files = $ob->get_file_list();
             foreach ($files as $file) {
                 $files_in_addons[$file] = $addon;
             }
         }
 
-        foreach (array_keys($addons) as $addon) {
-            $ob = object_factory('Hook_addon_registry_' . $addon);
-
+        foreach ($addons as $ob) {
             $files = $ob->get_file_list();
 
             $dependencies = $ob->get_dependencies();
@@ -48,6 +46,7 @@ class addon_guards_test_set extends cms_test_case
                 if ((substr($file, -4) == '.php') && (preg_match('#(^\_tests/|^data\_custom/stress\_test\_loader\.php$|^sources/hooks/modules/admin\_import/)#', $file) == 0)) {
                     $c = file_get_contents(get_file_base() . '/' . $file);
 
+                    $matches = array();
                     $num_matches = preg_match_all('#(require\_lang|require\_code|require\_css|require\_javascript|do\_template)\(\'([^\']*)\'[\),]#', $c, $matches);
                     for ($i = 0; $i < $num_matches; $i++) {
                         $include = $matches[2][$i];

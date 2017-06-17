@@ -36,7 +36,11 @@ class Hook_comcode_parsing_comcode_html_whitelist
         $whitelists = explode("n", read_text_file('comcode_whitelist', null, true));
         foreach ($whitelists as $w) {
             if (trim($w) != '') {
-                if ($w[0] != '/') $w = preg_quote($w, '#'); else $w = substr($w, 1, strlen($w) - 2);
+                if ($w[0] != '/') {
+                    $w = preg_quote($w, '#');
+                } else {
+                    $w = substr($w, 1, strlen($w) - 2);
+                }
                 $allowed_html_seqs[] = $w;
             }
         }
@@ -52,7 +56,7 @@ class Hook_comcode_parsing_comcode_html_whitelist
      *
      * @ignore
      */
-    function comcode_white_listed($comcode_portion)
+    public function comcode_white_listed($comcode_portion)
     {
         require_code('textfiles');
         static $whitelists = null;

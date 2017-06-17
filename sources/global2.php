@@ -2220,7 +2220,7 @@ function csp_send_header()
  */
 function csp_generate_nonce()
 {
-    $nonce = uniqid('', true);
+    $nonce = uniqid('', true); // TODO: uniqid is not cryptographically secure, fixme Salman, I think we can use random_bytes now
     return substr(base64_encode($nonce), 0, 10);
 }
 

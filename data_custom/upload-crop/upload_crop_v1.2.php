@@ -292,15 +292,15 @@ if (strlen($large_photo_exists) > 0) {
     <script type="text/javascript">
         function preview(img, selection) {
             var scaleX =
-            <?php echo $thumb_width;?> /
+            <?= $thumb_width ?> /
             selection.width;
             var scaleY =
-            <?php echo $thumb_height;?> /
+            <?= $thumb_height ?> /
             selection.height;
 
             $('#thumbnail + div > img').css({
-                width: Math.round(scaleX * <?php echo $current_large_image_width;?>) + 'px',
-                height: Math.round(scaleY * <?php echo $current_large_image_height;?>) + 'px',
+                width: Math.round(scaleX * <?= $current_large_image_width ?>) + 'px',
+                height: Math.round(scaleY * <?= $current_large_image_height ?>) + 'px',
                 marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
                 marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
             });
@@ -331,7 +331,7 @@ if (strlen($large_photo_exists) > 0) {
 
         $(window).load(function () {
             $('#thumbnail').imgAreaSelect({
-                aspectRatio: '1:<?php echo $thumb_height/$thumb_width;?>',
+                aspectRatio: '1:<?= $thumb_height/$thumb_width ?>',
                 onSelectChange: preview
             });
             <?php
@@ -355,24 +355,24 @@ if (strlen($large_photo_exists) > 0) {
         ?>
         <h2>Create Thumbnail</h2>
         <div align="center">
-            <img src="../../<?php echo $large_image_location; ?>" style="float: left; margin-right: 10px;" id="thumbnail" alt="Create Thumbnail"/>
+            <img src="../../<?= $large_image_location ?>" style="float: left; margin-right: 10px;" id="thumbnail" alt="Create Thumbnail"/>
 
-            <div style="border:1px #e5e5e5 solid; float:left; position:relative; overflow:hidden; width:<?php echo $thumb_width; ?>px; height:<?php echo $thumb_height; ?>px;">
-                <img src="../../<?php echo $large_image_location; ?>" style="position: relative;" alt="Thumbnail Preview"/>
+            <div style="border:1px #e5e5e5 solid; float:left; position:relative; overflow:hidden; width:<?= $thumb_width ?>px; height:<?= $thumb_height ?>px;">
+                <img src="../../<?= $large_image_location ?>" style="position: relative;" alt="Thumbnail Preview"/>
             </div>
             <br style="clear:both;"/>
 
-            <form style="float: left; width: 400px" onsubmit="document.getElementById('message').innerHTML='Changing size';" action="<?php echo htmlentities($_SERVER["SCRIPT_NAME"] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
+            <form style="float: left; width: 400px" onsubmit="document.getElementById('message').innerHTML='Changing size';" action="<?= htmlentities($_SERVER["SCRIPT_NAME"] . '?' . $_SERVER['QUERY_STRING']) ?>" method="post">
                 <p>
-                    <input size="5" type="text" name="thumb_width" value="<?php echo $thumb_width; ?>" id="thumb_width"/>
+                    <input size="5" type="text" name="thumb_width" value="<?= $thumb_width ?>" id="thumb_width"/>
                     &times;
-                    <input size="5" type="text" name="thumb_height" value="<?php echo $thumb_height; ?>" id="thumb_height"/>
+                    <input size="5" type="text" name="thumb_height" value="<?= $thumb_height ?>" id="thumb_height"/>
                     <input type="submit" name="change_size" value="Change thumbnail size" id="change_size"/>
                 </p>
             </form>
-            <form style="margin-right: 400px" onsubmit="document.getElementById('message').innerHTML='...';" action="<?php echo htmlentities($_SERVER["SCRIPT_NAME"] . '?' . $_SERVER['QUERY_STRING']); ?>" method="post">
-                <input type="hidden" name="thumb_width" value="<?php echo $thumb_width; ?>" id="thumb_width"/>
-                <input type="hidden" name="thumb_height" value="<?php echo $thumb_height; ?>" id="thumb_height"/>
+            <form style="margin-right: 400px" onsubmit="document.getElementById('message').innerHTML='...';" action="<?= htmlentities($_SERVER["SCRIPT_NAME"] . '?' . $_SERVER['QUERY_STRING']) ?>" method="post">
+                <input type="hidden" name="thumb_width" value="<?= $thumb_width ?>" id="thumb_width"/>
+                <input type="hidden" name="thumb_height" value="<?= $thumb_height ?>" id="thumb_height"/>
                 <input type="hidden" name="x1" value="" id="x1"/>
                 <input type="hidden" name="y1" value="" id="y1"/>
                 <input type="hidden" name="x2" value="" id="x2"/>

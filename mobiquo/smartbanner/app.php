@@ -62,7 +62,7 @@ function tt_is_https()
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><?php echo htmlspecialchars($title, ENT_QUOTES, "UTF-8"); ?></title>
+<title><?= htmlspecialchars($title, ENT_QUOTES, "UTF-8") ?></title>
 <meta name="format-detection" content="telephone=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="white" />
@@ -70,11 +70,11 @@ function tt_is_https()
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://welcome-screen.tapatalk-cdn.com/welcome_screen.css"/>
 <script type="text/javascript">
-    var banner_image_path = '<?php echo addslashes($banner_image_path); ?>';
-    var forum_name = '<?php echo addslashes(htmlspecialchars($name, ENT_QUOTES, "UTF-8")); ?>';
-    var app_api_key = '<?php echo addslashes(htmlspecialchars($code, ENT_QUOTES, "UTF-8")); ?>';
-    var app_deep_link = '<?php echo addslashes(htmlspecialchars($deeplink, ENT_QUOTES, "UTF-8")); ?>';
-    var banner_redirect_url = '<?php echo addslashes(htmlspecialchars($redirect_url, ENT_QUOTES, "UTF-8"))?>';
+    var banner_image_path = '<?= addslashes($banner_image_path) ?>';
+    var forum_name = '<?= addslashes(htmlspecialchars($name, ENT_QUOTES, "UTF-8")) ?>';
+    var app_api_key = '<?= addslashes(htmlspecialchars($code, ENT_QUOTES, "UTF-8")) ?>';
+    var app_deep_link = '<?= addslashes(htmlspecialchars($deeplink, ENT_QUOTES, "UTF-8")) ?>';
+    var banner_redirect_url = '<?= addslashes(htmlspecialchars($redirect_url, ENT_QUOTES, "UTF-8")) ?>';
     
     // ---- tapstream track ----
     var _tsq = _tsq || [];
@@ -131,7 +131,7 @@ function tt_is_https()
             check_device();
             $("#close_icon img").click(function() {
                 localStorage.hide = true;
-                window.location.href='<?php echo addslashes(htmlspecialchars($redirect_url, ENT_QUOTES, "UTF-8"))?>';
+                window.location.href='<?= addslashes(htmlspecialchars($redirect_url, ENT_QUOTES, "UTF-8")) ?>';
             });
         }, false);
 
@@ -139,7 +139,7 @@ function tt_is_https()
         //$("body").height(($(window).height()*2- $(document).height() )+ 'px');
         $("#close_icon img").click(function() {
             localStorage.hide = true;
-            window.location.href='<?php echo addslashes(htmlspecialchars($redirect_url, ENT_QUOTES, "UTF-8"))?>';
+            window.location.href='<?= addslashes(htmlspecialchars($redirect_url, ENT_QUOTES, "UTF-8")) ?>';
         });
         
         $("#button a").attr("href", 'http://tapstream.tapatalk.com/lzzq-1/?__tsid=$TSID&__tsid_override=1&referer='+encodeURIComponent(app_deep_link));

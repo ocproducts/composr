@@ -168,7 +168,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
                 $addon_info['licence'],
                 $addon_info['description'],
                 $_wip_path . '/exports/addons',
-                null,
+                array(),
                 $new_base_path
             );
         }
@@ -182,7 +182,7 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
     $log_file = fopen(get_file_base() . '/uploads/website_specific/compo.sr/upgrades/tarring.log', 'wb');
     flock($log_file, LOCK_EX);
     $tar_handle = tar_open($tar_path . '.new', 'wb');
-    tar_add_folder($tar_handle, $log_file, $wip_path, null, '', null, null, false, true);
+    tar_add_folder($tar_handle, $log_file, $wip_path, null, '', array(), null, false, true);
     tar_close($tar_handle);
     flock($log_file, LOCK_UN);
     fclose($log_file);

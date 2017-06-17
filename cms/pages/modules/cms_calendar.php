@@ -265,7 +265,11 @@ class Module_cms_calendar extends Standard_crud_module
             }
 
             list(, $time_raw) = find_event_start_timestamp($row);
-            $date = get_timezoned_date($time_raw, $row['e_start_hour'] !== null, false, false, true);
+            if ($row['e_start_hour'] !== null) {
+                $date = get_timezoned_date_time($time_raw, false);
+            } else {
+                $date = get_timezoned_date($time_raw, false);
+            }
 
             $fields->attach(results_entry(array(protect_from_escaping(hyperlink(build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar')), get_translated_text($row['e_title']), false, true)), $date, $type, ($row['validated'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))), true));
         }

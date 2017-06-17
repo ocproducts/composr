@@ -56,7 +56,7 @@ class Hook_check_functions_needed
             setcookie setlocale sha1 sin sort fprintf sprintf srand str_pad str_repeat str_replace
             strcmp strftime strip_tags stripslashes strlen strpos strrpos strstr strtok strtolower
             strtotime strtoupper strtr strval substr substr_count time trim trigger_error
-            uasort ucfirst ucwords uksort uniqid unlink unserialize unset urldecode urlencode usort
+            uasort ucfirst lcfirst ucwords uksort uniqid unlink unserialize unset urldecode urlencode usort
             utf8_decode utf8_encode wordwrap cos array_rand array_unshift asin assert
             assert_options atan base_convert basename bin2hex bindec call_user_func_array
             connection_aborted connection_status crc32 decbin each empty fflush fileatime flock flush

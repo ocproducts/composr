@@ -40,7 +40,7 @@ class comcode_test_set extends cms_test_case
             semihtml_to_comcode('[code]{$IMG,under_construction_animated}[/code]', true),
         );
         foreach ($expects_no_parse as $comcode) {
-            $actual = comcode_to_tempcode($comcode, null, false, null, null, null, false, false, false, false, false, null, null);
+            $actual = comcode_to_tempcode($comcode);
             $this->assertTrue(strpos($actual->evaluate(), '{$IMG') !== false, 'Tempcode was parsed when it should not have been, in (1): ' . $comcode);
         }
 
@@ -51,7 +51,7 @@ class comcode_test_set extends cms_test_case
             '[codebox]{$IMG,under_construction_animated}[/codebox]',
         );
         foreach ($expects_no_parse as $comcode) {
-            $actual = comcode_to_tempcode($comcode, null, false, null, null, null, false, false, true, false, false, null, null);
+            $actual = comcode_to_tempcode($comcode, null, false, null, null, COMCODE_IS_ALL_SEMIHTML);
             $this->assertTrue(strpos($actual->evaluate(), '{$IMG') !== false, 'Tempcode was parsed when it should not have been, in (2): ' . $comcode);
         }
 
@@ -61,7 +61,7 @@ class comcode_test_set extends cms_test_case
             '[url]{$IMG,under_construction_animated}[/url]',
         );
         foreach ($expects_parse as $comcode) {
-            $actual = comcode_to_tempcode($comcode, null, false, null, null, null, false, false, false, false, false, null, null);
+            $actual = comcode_to_tempcode($comcode);
             $this->assertTrue(strpos($actual->evaluate(), '{$IMG') === false, 'Tempcode was not parsed when it should have been, in: ' . $comcode);
         }
     }

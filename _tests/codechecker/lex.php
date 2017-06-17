@@ -217,7 +217,7 @@ function lex($text = null)
             $TEXT .= '?' . '>' . ((substr($TEXT, -1) == "\n") ? "\n" : '');
         }
 
-        $num_matches = preg_match_all('#<\\?php(.*)\\?' . '>#sU', $TEXT, $matches, PREG_OFFSET_CAPTURE);
+        $num_matches = preg_match_all('#<\\?(php|=)(.*)\\?' . '>#sU', $TEXT, $matches, PREG_OFFSET_CAPTURE);
     }
     $new_text = '';
     global $BETWEEN_ALL;
@@ -225,15 +225,24 @@ function lex($text = null)
     $extra_skipped = 0;
     $last_m = null;
     for ($i = 0; $i < $num_matches; $i++) {
-        $m = $matches[1][$i];
+        $m = $matches[2][$i];
+
         if (is_string($m)) {
             continue;
         } else {
+            if ($matches[1][$i][0] == '=') {
+                $m[0] = 'echo ' . $m[0] . ';';
+            }
+
             $between = substr($TEXT, strlen($new_text) + $extra_skipped, $m[1] - 5 - strlen($new_text) - $extra_skipped);
+
             $extra_skipped += 7;
+
             $BETWEEN_ALL .= $between;
+
             $new_text .= preg_replace('#[^\n]#s', ' ', $between);
             $new_text .= $m[0];
+
             $last_m = $m;
         }
     }
@@ -249,7 +258,7 @@ function lex($text = null)
     if ((trim($BETWEEN_ALL) != '') && (isset($GLOBALS['FILENAME']))) {
         global $WITHIN_PHP;
         $WITHIN_PHP = true;
-        require('xhtml.php');
+        //require('xhtml.php');     We don't want to do this anymore, too messy
     }
 
     // So that we don't have to consider end-of-file states as much.

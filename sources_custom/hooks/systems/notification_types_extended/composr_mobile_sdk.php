@@ -149,7 +149,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
                 require_code('tasks');
                 $args = array($to_member_id, $notification_code, $code_category, $subject, $message, $properties, $from_member_id, $priority, $no_cc, $attachments, $use_real_from);
                 require_lang('composr_mobile_sdk');
-                call_user_func_array__long_task(do_lang('NOTIFICATIONS_INSTANT_ANDROID'), get_screen_title('NOTIFICATIONS_INSTANT_ANDROID', true, array(), null, null, false), 'ios_notification', $args, false, false, false);
+                call_user_func_array__long_task(do_lang('NOTIFICATIONS_INSTANT_ANDROID'), get_screen_title('NOTIFICATIONS_INSTANT_ANDROID', true, array(), null, array(), false), 'ios_notification', $args, false, false, false);
             }
         }
 
@@ -161,7 +161,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
                 require_code('tasks');
                 $args = array($to_member_id, $notification_code, $code_category, $subject, $message, $properties, $from_member_id, $priority, $no_cc, $attachments, $use_real_from);
                 require_lang('composr_mobile_sdk');
-                call_user_func_array__long_task(do_lang('NOTIFICATIONS_INSTANT_IOS'), get_screen_title('NOTIFICATIONS_INSTANT_IOS', true, array(), null, null, false), 'android_notification', $args, false, false, false);
+                call_user_func_array__long_task(do_lang('NOTIFICATIONS_INSTANT_IOS'), get_screen_title('NOTIFICATIONS_INSTANT_IOS', true, array(), null, array(), false), 'android_notification', $args, false, false, false);
             }
         }
 

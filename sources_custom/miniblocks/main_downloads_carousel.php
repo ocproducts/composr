@@ -47,8 +47,8 @@ if ($subdownloads->is_empty()) {
 } else {
     $carousel_id = strval(mt_rand(0, mt_getrandmax()));
 
-    $content = /** @lang HTML */'
-        <div id="carousel_' . $carousel_id . '" class="carousel" style="display: none" data-view="Carousel" data-view-params=\'{"carouselId":"'. $carousel_id . '"}\'>
+    $content = make_string_tempcode(/** @lang HTML */'
+        <div id="carousel_' . $carousel_id . '" class="carousel" style="display: none" data-view="Carousel" data-view-params=\'{"carouselId":"' . $carousel_id . '"}\'>
             <div class="move_left js-btn-car-move" data-move-amount="-100"></div>
             <div class="move_right js-btn-car-move" data-move-amount="+100"></div>
 
@@ -59,8 +59,8 @@ if ($subdownloads->is_empty()) {
         <div class="carousel_temp" id="carousel_ns_' . $carousel_id . '">
             ' . $subdownloads->evaluate() . '
         </div>
-    ';
+    ');
 }
 
-$tpl = put_in_standard_box(make_string_tempcode($content), do_lang('RANDOM_20_DOWNLOADS'));
+$tpl = put_in_standard_box($content, do_lang('RANDOM_20_DOWNLOADS'));
 $tpl->evaluate_echo();

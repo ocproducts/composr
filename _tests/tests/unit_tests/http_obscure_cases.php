@@ -48,6 +48,7 @@ class http_obscure_cases_test_set extends cms_test_case
         global $HTTP_HEADERS;
         $found = false;
         foreach ($HTTP_HEADERS as $line) {
+            $matches = array();
             if (preg_match("#^" . $header . ": .*#i", $line, $matches) != 0) {
                 $found = true;
             }

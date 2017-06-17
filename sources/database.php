@@ -30,7 +30,7 @@ function init__database()
     global $HAS_MULTI_LANG_CONTENT;
     $HAS_MULTI_LANG_CONTENT = null;
 
-    global $QUERY_LIST, $QUERY_COUNT, $QUERY_LIMITING, $DB_SCOPE_CHECK, $QUERY_FILE_LOG, $SITE_INFO;
+    global $QUERY_LIST, $QUERY_COUNT, $QUERY_LIMITING, $DB_SCOPE_CHECK, $QUERY_FILE_LOG, $SITE_INFO, $DB_STATIC_OBJECT;
     $QUERY_LIST = array();
     $QUERY_COUNT = 0;
     $QUERY_LIMITING = array(array(true, 0));
@@ -44,9 +44,12 @@ function init__database()
         $QUERY_FILE_LOG = null;
     }
 
-    // This will be generalised some-time
     require_code('database/' . get_db_type());
-    $GLOBALS['DB_STATIC_OBJECT'] = object_factory('Database_Static_' . get_db_type());
+    /** The connection to the database driver.
+     *
+     * @global object $DB_STATIC_OBJECT
+     */
+    $DB_STATIC_OBJECT = object_factory('Database_Static_' . get_db_type());
 
     // Create our main database objects
     global $TABLE_LANG_FIELDS_CACHE;

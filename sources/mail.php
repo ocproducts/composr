@@ -921,7 +921,8 @@ abstract class Mail_dispatcher_base
         }
 
         // Pull it together
-        $this->mime_data = $this->assemble_full_mime_message($to_emails, $to_names, 0, $subject_wrapped, $headers, $sending_message);
+        $to_line = '';
+        $this->mime_data = $this->assemble_full_mime_message($to_emails, $to_names, 0, $subject_wrapped, $headers, $sending_message, $to_line);
 
         // Return what we need
         return array($to_emails, $to_names, $subject_wrapped, $headers, $sending_message, $charset, $html_evaluated, $message_plain);

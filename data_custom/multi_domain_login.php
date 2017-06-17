@@ -56,15 +56,3 @@ function get_cookie_path()
     $ret = array_key_exists('cookie_path', $SITE_INFO) ? $SITE_INFO['cookie_path'] : '/';
     return ($ret == '') ? null : $ret;
 }
-
-/**
- * Get the Composr cookie domain.
- *
- * @return ?string The Composr cookie domain (null: current domain)
- */
-function get_cookie_domain()
-{
-    global $SITE_INFO;
-    $ret = array_key_exists('cookie_domain', $SITE_INFO) ? $SITE_INFO['cookie_domain'] : null;
-    return ($ret == '') ? null : $ret;
-}

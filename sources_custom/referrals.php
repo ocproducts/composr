@@ -489,7 +489,7 @@ function referrer_report_script($ret = false)
         $GLOBALS['FORUM_DB']->get_table_prefix() . $table .
         ' WHERE ' .
         $where .
-        (can_arbitrary_groupby() ? ' GROUP BY i_email_address' : '') . ' ORDER BY i_time DESC',
+        ($GLOBALS['DB_STATIC_OBJECT']->can_arbitrary_groupby() ? ' GROUP BY i_email_address' : '') . ' ORDER BY i_time DESC',
         $max,
         $start
     );
