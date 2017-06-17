@@ -771,6 +771,51 @@ abstract class HttpDownloader
             }
         }
     }
+
+    /**
+     * Copy response metadata from one object to another.
+     * Does not copy response data, that is returned as a string.
+     *
+     * @param  object $from The child response
+     * @param  object $to The parent response
+     * @return ?string The data downloaded (null: error)
+     */
+    protected function copy_from_other($from, $to)
+    {
+        $to->download_mime_type = $from->download_mime_type;
+        $to->download_size = $from->download_size;
+        if ($to->download_url !== null) {
+            $to->download_url = $from->download_url;
+        }
+        $to->download_mtime = $from->download_mtime;
+        $to->message = $from->message;
+        $to->message_b = $from->message_b;
+        $to->new_cookies = array_merge($to->new_cookies, $from->new_cookies);
+        if ($to->filename !== null) {
+            $to->filename = $from->filename;
+        }
+        $to->charset = $from->charset;
+        $to->headers = $from->headers;
+        $to->implementation_used = $from->implementation_used;
+
+        return $from->data;
+    }
+
+    /**
+     * Cleanup object.
+     */
+    public function __destruct()
+    {
+        // Cleanup
+        if ($this->put !== null) {
+            fclose($this->put);
+        }
+        if (!$this->put_no_delete) {
+            if ($this->put_path !== null) {
+                @unlink($this->put_path);
+            }
+        }
+    }
 }
 
 /**
@@ -969,9 +1014,33 @@ class HttpDownloaderCurl extends HttpDownloader
             if (preg_match('#^Content-Disposition: [^;]*;\s*filename="([^"]*)"#i', $header, $matches) != 0) {
                 $this->read_in_headers($header);
             }
+
             if (preg_match("#^Set-Cookie: ([^\r\n=]*)=([^\r\n]*)\r\n#i", $header, $matches) != 0) {
                 $this->read_in_headers($header);
             }
+
+            if (preg_match("#^Refresh: (\d*);(.*)\r\n#i", $header, $matches) != 0) {
+                if ($this->filename === null) {
+                    $this->filename = urldecode(basename($matches[1]));
+                }
+
+                if (strpos($matches[1], '://') === false) {
+                    $matches[1] = qualify_url($matches[1], $url);
+                }
+
+                if ($this->no_redirect) {
+                    $text = null;
+                    $this->download_url = $matches[2];
+                } else {
+                    $_options = $options;
+                    unset($_options['post_params']);
+                    $inner_request = _cms_http_request($matches[2], $_options);
+                    $text = $this->copy_from_other($inner_request, $this);
+                }
+
+                return $text;
+            }
+
             if (preg_match("#^Location: (.*)\r\n#i", $header, $matches) != 0) {
                 if ($this->filename === null) {
                     $this->filename = urldecode(basename($matches[1]));
@@ -980,28 +1049,20 @@ class HttpDownloaderCurl extends HttpDownloader
                 if (strpos($matches[1], '://') === false) {
                     $matches[1] = qualify_url($matches[1], $url);
                 }
-                $this->download_url = $matches[1];
+
                 if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $this->message) != 0)) {
-                    $bak = $this->filename;
-
-                    $_options = $options;
-                    unset($_options['post_params']);
-                    $text = $this->no_redirect ? null : $this->run($matches[1], $_options);
-
-                    if ($this->filename === null) {
-                        $this->filename = $bak;
+                    if ($this->no_redirect) {
+                        $text = null;
+                        $this->download_url = $matches[1];
+                    } else {
+                        $_options = $options;
+                        unset($_options['post_params']);
+                        $inner_request = _cms_http_request($matches[1], $_options);
+                        $text = $this->copy_from_other($inner_request, $this);
                     }
 
                     return $text;
                 }
-            }
-        }
-
-        // Cleanup
-        if ($this->put !== null) {
-            fclose($this->put);
-            if (!$this->put_no_delete) {
-                @unlink($this->put_path);
             }
         }
 
@@ -1258,64 +1319,61 @@ class HttpDownloaderSockets extends HttpDownloader
                         if (preg_match("#Transfer-Encoding: chunked\r\n#i", $line, $matches) != 0) {
                             $chunked = true;
                         }
+
                         $this->read_in_headers($line);
+
                         if (preg_match("#^Refresh: (\d*);(.*)\r\n#i", $line, $matches) != 0) {
                             if ($this->filename === null) {
                                 $this->filename = urldecode(basename($matches[1]));
                             }
 
                             @fclose($mysock);
+
                             if (strpos($matches[1], '://') === false) {
                                 $matches[1] = qualify_url($matches[1], $url);
                             }
-                            $bak = $this->filename;
-                            $_options = $options;
-                            unset($_options['post_params']);
-                            $text = $this->no_redirect ? null : $this->run($matches[1], $_options);
+
                             if ($this->no_redirect) {
-                                $this->download_URL = $matches[2];
+                                $text = null;
+                                $this->download_url = $matches[2];
+                            } else {
+                                $_options = $options;
+                                unset($_options['post_params']);
+                                $inner_request = _cms_http_request($matches[2], $_options);
+                                $text = $this->copy_from_other($inner_request, $this);
                             }
-                            if ($this->filename === null) {
-                                $this->filename = $bak;
-                            }
-                            if ($this->put !== null) {
-                                fclose($this->put);
-                                if (!$this->put_no_delete) {
-                                    @unlink($this->put_path);
-                                }
-                            }
+
                             return $text;
                         }
+
                         if (preg_match("#^Location: (.*)\r\n#i", $line, $matches) != 0) {
                             if ($this->filename === null) {
                                 $this->filename = urldecode(basename($matches[1]));
                             }
 
                             @fclose($mysock);
+
                             if (strpos($matches[1], '://') === false) {
                                 $matches[1] = qualify_url($matches[1], $url);
                             }
-                            if ($matches[1] != $url) {
-                                $bak = $this->filename;
-                                $this->download_url = $matches[1];
-                                if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $this->message) != 0)) {
-                                    $_options = $options;
-                                    unset($_options['post_params']);
-                                    $text = $this->no_redirect ? null : $this->run($matches[1], $_options);
 
-                                    if ($this->filename === null) {
-                                        $this->filename = $bak;
+                            if ($matches[1] != $url) {
+                                if (($matches[1] != $url) && (preg_match('#^3\d\d$#', $this->message) != 0)) {
+                                    if ($this->no_redirect) {
+                                        $text = null;
+                                        $this->download_url = $matches[1];
+                                    } else {
+                                        $_options = $options;
+                                        unset($_options['post_params']);
+                                        $inner_request = _cms_http_request($matches[1], $_options);
+                                        $text = $this->copy_from_other($inner_request, $this);
                                     }
-                                    if ($this->put !== null) {
-                                        fclose($this->put);
-                                        if (!$this->put_no_delete) {
-                                            @unlink($this->put_path);
-                                        }
-                                    }
+
                                     return $text;
                                 }
                             }
                         }
+
                         if (preg_match("#HTTP/(\d*\.\d*) (\d*) #", $line, $matches) != 0) {
                             // 200=Ok
                             // 301/302/307=Redirected: Not good, we should not be here
@@ -1325,15 +1383,18 @@ class HttpDownloaderSockets extends HttpDownloader
                             // 405=Method not allowed
 
                             $this->message = $matches[2];
+
                             switch ($matches[2]) {
+                                case '200':
+                                    // Good
+                                    break;
+
                                 case '301':
                                 case '302':
                                 case '307':
                                     // We'll expect a location header
                                     break;
-                                case '200':
-                                    // Good
-                                    break;
+
                                 case '401':
                                 case '403':
                                     if ($this->trigger_error) {
@@ -1341,29 +1402,22 @@ class HttpDownloaderSockets extends HttpDownloader
                                     } else {
                                         $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
                                     }
+
                                     @fclose($mysock);
-                                    $this->download_mime_type = 'security';
-                                    if ($this->put !== null) {
-                                        fclose($this->put);
-                                        if (!$this->put_no_delete) {
-                                            @unlink($this->put_path);
-                                        }
-                                    }
+
                                     return null;
+
                                 case '404':
                                     if ($this->trigger_error) {
                                         warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)), false, true);
                                     } else {
                                         $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
                                     }
+
                                     @fclose($mysock);
-                                    if ($this->put !== null) {
-                                        fclose($this->put);
-                                        if (!$this->put_no_delete) {
-                                            @unlink($this->put_path);
-                                        }
-                                    }
+
                                     return null;
+
                                 case '400':
                                 case '500':
                                     if ($this->trigger_error) {
@@ -1371,36 +1425,41 @@ class HttpDownloaderSockets extends HttpDownloader
                                     } else {
                                         $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
                                     }
+
                                     @fclose($mysock);
-                                    if ($this->put !== null) {
-                                        fclose($this->put);
-                                        if (!$this->put_no_delete) {
-                                            @unlink($this->put_path);
-                                        }
-                                    }
+
                                     return null;
+
                                 case '405':
                                     if ($this->byte_limit == 0 && !$this->no_redirect && empty($this->post_params)) { // Try again as non-HEAD request if we just did a HEAD request that got "Method not allowed"
-                                        $_options = $options;
-                                        $_options['byte_limit'] = 1;
-                                        $text = $this->no_redirect ? null : $this->run($matches[1], $_options);
-
-                                        if ($this->put !== null) {
-                                            fclose($this->put);
-                                            if (!$this->put_no_delete) {
-                                                @unlink($this->put_path);
-                                            }
+                                        if ($this->no_redirect) {
+                                            $text = null;
+                                            $this->download_url = $matches[1];
+                                        } else {
+                                            $_options = $options;
+                                            $_options['byte_limit'] = 1;
+                                            $inner_request = _cms_http_request($matches[1], $_options);
+                                            $text = $this->copy_from_other($inner_request, $this);
                                         }
+
+                                        @fclose($mysock);
+
                                         return $text;
                                     }
+
                                 default:
                                     if ($this->trigger_error) {
                                         warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2])), false, true);
                                     } else {
                                         $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2]));
                                     }
+
+                                    @fclose($mysock);
+
+                                    return null;
                             }
                         }
+
                         if ($line == "\r\n") {
                             $data_started = true;
                             $buffer_unprocessed = substr($old_line, $tally);
@@ -1429,6 +1488,7 @@ class HttpDownloaderSockets extends HttpDownloader
             }
 
             @fclose($mysock);
+
             if (!$data_started) {
                 if ($this->byte_limit === 0) {
                     return '';
@@ -1440,14 +1500,11 @@ class HttpDownloaderSockets extends HttpDownloader
                     $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url));
                 }
                 $this->message = 'no-data';
-                if ($this->put !== null) {
-                    fclose($this->put);
-                    if (!$this->put_no_delete) {
-                        @unlink($this->put_path);
-                    }
-                }
+
+
                 return null;
             }
+
             $size_expected = $this->download_size;
             if ($this->byte_limit !== null) {
                 if ($this->byte_limit < $this->download_size) {
@@ -1461,21 +1518,10 @@ class HttpDownloaderSockets extends HttpDownloader
                     $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_CUT_SHORT', escape_html($url), escape_html(integer_format($size_expected)), escape_html(integer_format($input_len)));
                 }
                 $this->message = 'short-data';
-                if ($this->put !== null) {
-                    fclose($this->put);
-                    if (!$this->put_no_delete) {
-                        @unlink($this->put_path);
-                    }
-                }
+
                 return $input;
             }
 
-            if ($this->put !== null) {
-                fclose($this->put);
-                if (!$this->put_no_delete) {
-                    @unlink($this->put_path);
-                }
-            }
             return $input;
         }
 
@@ -1490,12 +1536,7 @@ class HttpDownloaderSockets extends HttpDownloader
             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url));
         }
         $this->message = 'could not connect to host'; // Could append  (' . $errstr . ') but only when debugging because we use this string like a constant in some places
-        if ($this->put !== null) {
-            fclose($this->put);
-            if (!$this->put_no_delete) {
-                @unlink($this->put_path);
-            }
-        }
+
         return null;
     }
 }
@@ -1567,6 +1608,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                 }
             }
             $context = stream_context_create($opts);
+
             $php_errormsg = mixed();
             if (($this->byte_limit === null) && ($this->write_to_file === null)) {
                 if ($this->trigger_error) {
@@ -1605,20 +1647,17 @@ class HttpDownloaderFileWrapper extends HttpDownloader
             if (($this->byte_limit !== null) && ($read_file !== false) && ($read_file != ''/*substr would fail with false*/)) {
                 $read_file = substr($read_file, 0, $this->byte_limit);
             }
+
             safe_ini_set('allow_url_fopen', '0');
             safe_ini_set('default_socket_timeout', $this->timeout_before);
+
             if (isset($http_response_header)) {
                 foreach ($http_response_header as $header) {
                     $this->read_in_headers($header . "\r\n");
                 }
             }
+
             if ($read_file !== false) {
-                if ($this->put !== null) {
-                    fclose($this->put);
-                    if (!$this->put_no_delete) {
-                        @unlink($this->put_path);
-                    }
-                }
                 return $read_file;
             }
         }
@@ -1634,12 +1673,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
             $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_NO_SERVER', escape_html($url));
         }
         $this->message = 'could not connect to host'; // Could append  (' . $errstr . ') but only when debugging because we use this string like a constant in some places
-        if ($this->put !== null) {
-            fclose($this->put);
-            if (!$this->put_no_delete) {
-                @unlink($this->put_path);
-            }
-        }
+
         return null;
     }
 }
