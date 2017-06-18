@@ -56,7 +56,7 @@
 				</p>
 				{DOWNLOADS_RELEASED}
 				{+START,IF_EMPTY,{DOWNLOADS_RELEASED}}
-				<p class="nothing_here">{!NO_DOWNLOADS_FOUND}</p>
+					<p class="nothing_here">{!NO_DOWNLOADS_FOUND}</p>
 				{+END}
 			</div>
 		</div>
@@ -70,7 +70,7 @@
 				</p>
 				{NEWS_RELEASED}
 				{+START,IF_EMPTY,{NEWS_RELEASED}}
-				<p class="nothing_here">{!NONE}</p>
+					<p class="nothing_here">{!NONE}</p>
 				{+END}
 			</div>
 		</div>
@@ -88,7 +88,7 @@
 	1_REL=edit
 	1_ICON=menu/_generic_admin/edit_this
 	{+START,IF,{$ADDON_INSTALLED,tickets}}
-		2_URL={$PAGE_LINK,_SEARCH:report_content:content_type=author:content_id={ID}:redirect={$SELF_URL&}}
+		2_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=author:content_id={ID}:redirect={$SELF_URL&}}
 		2_TITLE={!report_content:REPORT_THIS}
 		2_ICON=buttons/report
 		2_REL=report

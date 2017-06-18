@@ -62,7 +62,7 @@
 					2_ICON=menu/_generic_admin/add_one
 					{+START,COMMENT}
 						{+START,IF,{$ADDON_INSTALLED,tickets}}
-							3_URL={$PAGE_LINK,_SEARCH:report_content:content_type=comcode_page:content_id={NATIVE_ZONE}%3A{NAME}:redirect={$SELF_URL&}}
+							3_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=comcode_page:content_id={NATIVE_ZONE}%3A{NAME}:redirect={$SELF_URL&}}
 							3_TITLE={!report_content:REPORT_THIS}
 							3_ICON=buttons/report
 							3_REL=report

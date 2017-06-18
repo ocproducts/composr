@@ -65,13 +65,19 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
     // CSP violation
     if ($WEBSTANDARDS_CSP) {
-        if (($tag === 'script') && !empty($attributes['src']) && (empty($attributes['type']) || ($attributes['type'] === 'text/javascript') || ($attributes['type'] === 'application/javascript'))) {
-            $errors[] = array('CSP_SCRIPT_TAG');
-        }
+        if (!$close) {
+            if (
+                ($tag === 'script') &&
+                (empty($attributes['nonce'])) &&
+                ((empty($attributes['type'])) || ($attributes['type'] === 'text/javascript') || ($attributes['type'] === 'application/javascript'))
+            ) {
+                $errors[] = array('CSP_SCRIPT_TAG');
+            }
 
-        foreach (array_keys($attributes) as $attribute) {
-            if (substr($attribute, 0, 2) == 'on') {
-                $errors[] = array('CSP_EVENT_HANDLER');
+            foreach (array_keys($attributes) as $attribute) {
+                if (substr($attribute, 0, 2) == 'on') {
+                    $errors[] = array('CSP_EVENT_HANDLER');
+                }
             }
         }
     }

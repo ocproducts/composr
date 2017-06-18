@@ -30,7 +30,7 @@
 					{+END}
 						<div class="download_now" itemprop="significantLinks">
 							{+START,IF,{MAY_DOWNLOAD}}
-								<p class="download_link associated_link suggested_link"><a {+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
+								<p class="download_link associated_link suggested_link"><a{+START,IF,{$NOT,{$INLINE_STATS}}} data-click-ga-track="{ category: '{!DOWNLOAD;^*}', action: '{ORIGINAL_FILENAME;^*}' }"{+END} rel="nofollow" href="{DOWNLOAD_URL*}"><strong>{!DOWNLOAD_NOW}</strong></a></p>
 							{+END}
 							{+START,IF,{$NOT,{MAY_DOWNLOAD}}}
 								<p>{!NO_DOWNLOAD_ACCESS}</p>
@@ -183,7 +183,7 @@
 			2_ICON=menu/_generic_admin/add_one
 		{+END}
 		{+START,IF,{$ADDON_INSTALLED,tickets}}
-			3_URL={$PAGE_LINK,_SEARCH:report_content:content_type=download:content_id={ID}:redirect={$SELF_URL&}}
+			3_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=download:content_id={ID}:redirect={$SELF_URL&}}
 			3_TITLE={!report_content:REPORT_THIS}
 			3_ICON=buttons/report
 			3_REL=report

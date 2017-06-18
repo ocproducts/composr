@@ -6,10 +6,10 @@
 
 			<p class="left">
 				<label class="accessibility_hidden" for="search_filedump_{I*}">{!SEARCH}</label>
-				<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search_filedump_{I*}" name="search" placeholder="{!SEARCH*}" />
+				<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" size="22" type="search" id="search_filedump_{I*}" name="search" placeholder="{!SEARCH*}" />
 
 				<label for="recurse_{I*}">{!INCLUDE_SUBFOLDERS}</label>
-				<input {+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse_{I*}" value="1" />
+				<input{+START,IF,{$NEQ,{$_GET,recurse},0}} checked="checked"{+END} type="checkbox" name="recurse" id="recurse_{I*}" value="1" />
 
 				<label class="horiz_field_sep" for="type_filter_filedump_{I*}">{!SHOW}</label>
 				<select id="type_filter_filedump_{I*}" name="type_filter">

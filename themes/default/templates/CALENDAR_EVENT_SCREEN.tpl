@@ -173,7 +173,7 @@
 			1_NOREDIRECT=1
 
 			{+START,IF,{$ADDON_INSTALLED,tickets}}
-				2_URL={$PAGE_LINK,_SEARCH:report_content:content_type=event:content_id={ID}:redirect={$SELF_URL&}}
+				2_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=event:content_id={ID}:redirect={$SELF_URL&}}
 				2_TITLE={!report_content:REPORT_THIS}
 				2_ICON=buttons/report
 				2_REL=report

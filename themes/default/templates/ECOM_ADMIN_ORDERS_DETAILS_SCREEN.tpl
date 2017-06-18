@@ -25,7 +25,7 @@
 			</tr>
 
 			<tr>
-				<th >{!ORDER_PLACED_ON}</th>
+				<th>{!ORDER_PLACED_ON}</th>
 				<td>
 					{ADD_DATE*}
 				</td>

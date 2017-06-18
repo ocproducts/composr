@@ -8,10 +8,10 @@
 				<table width="100%">
 					<tr>
 						{+START,IF,{SHOW_PROFILE_IMAGE}}
-						<td style="text-align: center" width="56">
-							&nbsp;<img src="{USER_PROFILE_IMG_URL*}" />&nbsp;
-						</td>
-						<td style="background-color: rgb(204, 204, 204); padding: 0; width: 1px"></td>
+							<td style="text-align: center" width="56">
+								&nbsp;<img src="{USER_PROFILE_IMG_URL*}" />&nbsp;
+							</td>
+							<td style="background-color: rgb(204, 204, 204); padding: 0; width: 1px"></td>
 						{+END}
 						<td style="text-align: left">
 							<table width="100%">

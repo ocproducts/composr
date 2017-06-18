@@ -1522,6 +1522,7 @@ class Hook_addon_registry_core
             'templates/JAVASCRIPT_NEED_INLINE.tpl' => 'javascript_need_inline',
             'templates/CSS_NEED.tpl' => 'css_need',
             'templates/CSS_NEED_FULL.tpl' => 'css_need_full',
+            'templates/CSS_NEED_INLINE.tpl' => 'css_need_inline',
             'templates/PARAM_INFO.tpl' => 'param_info',
             'templates/BLOCK_SIDE_PERSONAL_STATS.tpl' => 'block_side_personal_stats',
             'templates/BLOCK_SIDE_PERSONAL_STATS_LINE.tpl' => 'block_side_personal_stats',

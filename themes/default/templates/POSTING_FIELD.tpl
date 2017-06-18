@@ -49,7 +49,7 @@
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,posting_field}}}
-		<th {+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
+		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
 			{$GET,posting_field}
 		</th>
 	{+END}
@@ -83,7 +83,7 @@
 		{+START,IF_NON_EMPTY,{$TRIM,{EMOTICON_CHOOSER}}}
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_news}}}
 				{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$CNS}}}
-					<div {+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
+					<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
 						{+START,IF,{$CNS}}
 							<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" class="js-link-click-open-site-emoticon-chooser-window" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1"  title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 						{+END}
@@ -116,13 +116,15 @@
 			{ATTACHMENTS}
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 		{+END}
+
+		<div class="tpl_placeholder" style="display: none;" data-tpl="postingField" data-tpl-params="{+START,PARAMS_JSON,id,NAME,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_*}{+END}"></div>
 	</td>
 </tr>
 
 {+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 	{$SET,init_drag_drop,1}
 	<tr class="form_table_field_spacer" id="field-{$GET*,id}-attachments-ui">
-		<th {+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
+		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
 			<a class="toggleable_tray_button js-click-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 
 			<span class="faux_h2 toggleable_tray_button js-click-toggle-subord-fields">
@@ -147,5 +149,3 @@
 		</td>
 	</tr>
 {+END}
-
-<div class="tpl_placeholder" style="display: none;" data-tpl="postingField" data-tpl-params="{+START,PARAMS_JSON,id,NAME,CLASS,WORD_COUNTER,word_count_id,init_drag_drop}{_*}{+END}"></div>

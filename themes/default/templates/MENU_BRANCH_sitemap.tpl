@@ -8,7 +8,7 @@
 		<span>
 			<img alt="" src="{$GET*,img}" srcset="{$GET*,img_2x} 2x" />
 			{+START,IF_NON_EMPTY,{URL}}
-				<a {+START,IF_NON_EMPTY,{TOOLTIP}} title="{$STRIP_TAGS,{CAPTION}}{+START,IF_NON_EMPTY,{TOOLTIP}}: {TOOLTIP*}{+END}"{+END} href="{URL*}">{CAPTION}</a>
+				<a{+START,IF_NON_EMPTY,{TOOLTIP}} title="{$STRIP_TAGS,{CAPTION}}{+START,IF_NON_EMPTY,{TOOLTIP}}: {TOOLTIP*}{+END}"{+END} href="{URL*}">{CAPTION}</a>
 			{+END}
 			{+START,IF_EMPTY,{URL}}
 				<span>{CAPTION}</span>

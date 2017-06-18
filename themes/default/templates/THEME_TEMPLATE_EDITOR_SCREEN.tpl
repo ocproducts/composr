@@ -8,8 +8,8 @@
 	{TITLE}
 
 	{+START,IF,{$CONFIG_OPTION,editarea}}
-		<script {$CSP_NONCE_HTML} defer src="{$BASE_URL*}/data/ace/ace.js"></script>
-		<script {$CSP_NONCE_HTML} defer src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
+		<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/ace/ace.js"></script>
+		<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/ace/ace_composr.js"></script>
 	{+END}
 
 	{+START,INCLUDE,HANDLE_CONFLICT_RESOLUTION}{+END}

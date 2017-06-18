@@ -85,6 +85,8 @@ class template_previews_test_set extends cms_test_case
         global $THEME_BEING_TESTED;
         $THEME_BEING_TESTED = $theme;
 
+        global $LOADED_TPL_CACHE, $BLOCKS_CACHE, $PANELS_CACHE;
+
         global $RECORD_TEMPLATES_USED, $RECORDED_TEMPLATES_USED;
         $RECORD_TEMPLATES_USED = true;
 
@@ -120,8 +122,18 @@ class template_previews_test_set extends cms_test_case
                 @set_time_limit(0);
             }
 
+            init__lorem();
+            push_output_state();
+            $LOADED_TPL_CACHE = array();
+            $BLOCKS_CACHE = array();
+            $PANELS_CACHE = array();
+
             $RECORDED_TEMPLATES_USED = array();
+
             $out = render_screen_preview($template, $hook, $function);
+
+            restore_output_state();
+
             $flag = false;
             foreach ($lists as $template_2 => $list_2) {
                 if (count($only_do_these) != 0) {

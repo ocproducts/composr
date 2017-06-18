@@ -42,8 +42,6 @@
 				</ul>
 			</div></div>
 		</div>
-		<a title="{!cns:PRIVATE_TOPICS}" id="pts_button" class="leave_native_tooltip count_{NUM_UNREAD_PTS%} js-click-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}">
-			<span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span>
-		</a>
+		<a title="{!cns:PRIVATE_TOPICS}" id="pts_button" class="leave_native_tooltip count_{NUM_UNREAD_PTS%} js-click-toggle-pts" href="{$PAGE_LINK*,_SEARCH:members:view#tab__pts}"><span aria-label="{!COUNT_TOTAL} {!cns:PRIVATE_TOPICS}">{NUM_UNREAD_PTS*}</span></a>
 	{+END}{+END}
 </div>

@@ -7,9 +7,7 @@
 
 	<ul class="actions_list">
 		<li>
-			<a rel="add" href="#!" id="add_new_menu_linka_{I*}" class="js-click-add-new-menu-item">
-				<img class="vertical_alignment" alt="" src="{$IMG*,1x/treefield/expand}" srcset="{$IMG*,2x/treefield/expand} 2x" />
-			</a>
+			<a rel="add" href="#!" id="add_new_menu_linka_{I*}" class="js-click-add-new-menu-item"><img class="vertical_alignment" alt="" src="{$IMG*,1x/treefield/expand}" srcset="{$IMG*,2x/treefield/expand} 2x" /></a>
 			<a class="vertical_alignment js-click-add-new-menu-item" rel="add" href="#!" id="add_new_menu_linkb_{I*}">{!ADD_BRANCH}</a>
 		</li>
 	</ul>

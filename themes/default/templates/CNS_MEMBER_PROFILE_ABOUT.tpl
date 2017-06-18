@@ -13,7 +13,7 @@
 		<ul class="compact_list">
 			<li><span class="role"{+START,IF_PASSED,ON_PROBATION} style="text-decoration: line-through"{+END}>{PRIMARY_GROUP}</span></li>
 			{+START,LOOP,SECONDARY_GROUPS}
-				<li {+START,IF_PASSED,ON_PROBATION}{+START,IF,{$NEQ,{$CONFIG_OPTION,probation_usergroup},{_loop_key},{_loop_var}}} style="text-decoration: line-through"{+END}{+END}><a href="{$PAGE_LINK*,_SEARCH:groups:view:{_loop_key}}">{_loop_var*}</a></li>
+				<li{+START,IF_PASSED,ON_PROBATION}{+START,IF,{$NEQ,{$CONFIG_OPTION,probation_usergroup},{_loop_key},{_loop_var}}} style="text-decoration: line-through"{+END}{+END}><a href="{$PAGE_LINK*,_SEARCH:groups:view:{_loop_key}}">{_loop_var*}</a></li>
 			{+END}
 		</ul>
 
@@ -52,9 +52,7 @@
 			{+START,IF_NON_EMPTY,{ACTIONS_content}}
 				<div data-view="ToggleableTray">
 					<h2 class="js-tray-header">
-						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">
-							<img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" />
-						</a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!EXPAND}: {!CONTENT}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CONTENT}</a>
 					</h2>
 
@@ -399,7 +397,7 @@
 
 		{+START,INCLUDE,STAFF_ACTIONS}
 			{+START,IF,{$ADDON_INSTALLED,tickets}}
-				1_URL={$PAGE_LINK,_SEARCH:report_content:content_type=member:content_id={MEMBER_ID}:redirect={$SELF_URL&}}
+				1_URL={$PAGE_LINK*,_SEARCH:report_content:content_type=member:content_id={MEMBER_ID}:redirect={$SELF_URL&}}
 				1_TITLE={!report_content:REPORT_THIS}
 				1_ICON=buttons/report
 				1_REL=report

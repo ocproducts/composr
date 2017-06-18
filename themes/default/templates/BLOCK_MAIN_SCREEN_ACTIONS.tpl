@@ -10,6 +10,6 @@
 
 	<div class="google_plusone">
 		<div class="g-plusone" data-size="medium" data-count="true" data-href="{EASY_SELF_URL*}"></div>
-		{$EXTRA_FOOT,<script {$CSP_NONCE_HTML} defer src="https://apis.google.com/js/plusone.js"></script>}
+		{$EXTRA_FOOT,<script {$CSP_NONCE_HTML} defer="defer" src="https://apis.google.com/js/plusone.js"></script>}
 	</div>
 </nav></aside>

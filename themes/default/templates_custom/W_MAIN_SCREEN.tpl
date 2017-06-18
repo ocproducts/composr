@@ -83,20 +83,20 @@
 							<td>
 								<div style="text-align: center">
 									{+START,IF,{HAS_DOWN_ROOM}}
-									<div>
-										<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button_hyperlink" type="submit" value="{DOWN_ROOM*}" /></form><br />
-										<div class="buildr_arrow">
-											&darr;
+										<div>
+											<form target="_self" class="inline" method="post" action="{$PAGE_LINK*,_SELF:_SELF}" autocomplete="off">{$INSERT_SPAMMER_BLACKHOLE}<input type="hidden" name="type" value="down" /><input class="button_hyperlink" type="submit" value="{DOWN_ROOM*}" /></form><br />
+											<div class="buildr_arrow">
+												&darr;
+											</div>
 										</div>
-									</div>
 									{+END}
 									{+START,IF,{$NOT,{HAS_DOWN_ROOM}}}
-									<div class="buildr_fadedtext">
-										<em>{!W_NO_ROOM}</em><br />
-										<div class="buildr_arrow">
-											&darr;
+										<div class="buildr_fadedtext">
+											<em>{!W_NO_ROOM}</em><br />
+											<div class="buildr_arrow">
+												&darr;
+											</div>
 										</div>
-									</div>
 									{+END}
 								</div>
 							</td>
@@ -723,9 +723,9 @@
 							<a href="{$PAGE_LINK*,_SELF:_SELF:addroom}"><img alt="{!W_ADD_ADJOINING_ROOM}" src="{$IMG*,buildr/addroom}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addroom}">{!W_ADD_ADJOINING_ROOM}</a>
 						</div>
 						{+START,IF,{MAY_ADD_PORTAL}}
-						<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
-							<a href="{$PAGE_LINK*,_SELF:_SELF:addportal}"><img alt="{!W_ADD_PORTAL}" src="{$IMG*,buildr/addportal}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addportal}">{!W_ADD_PORTAL}</a>
-						</div>
+							<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
+								<a href="{$PAGE_LINK*,_SELF:_SELF:addportal}"><img alt="{!W_ADD_PORTAL}" src="{$IMG*,buildr/addportal}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:addportal}">{!W_ADD_PORTAL}</a>
+							</div>
 						{+END}
 						<div class="buildr_icon" style="width: {$?,{MAY_ADD_PORTAL},20%,25%};">
 							<a href="{$PAGE_LINK*,_SELF:_SELF:additem}"><img alt="{!W_ADD_ITEM}" src="{$IMG*,buildr/additem}" /></a><br /><a href="{$PAGE_LINK*,_SELF:_SELF:additem}">{!W_ADD_ITEM}</a>

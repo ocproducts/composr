@@ -19,7 +19,7 @@
 					<label class="lonely_label" for="resource_types">{!TYPE}:</label>
 					<select multiple="multiple" name="resource_types" id="resource_types" data-cms-select2='{"dropdownAutoWidth": true}'>
 						{+START,LOOP,RESOURCE_TYPES}
-						<option value="{_loop_key*}"{+START,IF_IN_ARRAY,{_loop_key},{$_GET*,resource_types}} selected="selected"{+END}>{_loop_var*}</option>
+							<option value="{_loop_key*}"{+START,IF_IN_ARRAY,{_loop_key},{$_GET*,resource_types}} selected="selected"{+END}>{_loop_var*}</option>
 						{+END}
 					</select>
 				</div>

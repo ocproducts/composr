@@ -1,4 +1,4 @@
-<script {$CSP_NONCE_HTML} defer src="https://secure.worldpay.com/wcc/logo?instId={INST_ID*}"></script>
+<script {$CSP_NONCE_HTML} defer="defer" src="https://secure.worldpay.com/wcc/logo?instId={INST_ID*}"></script>
 
 <!--
 

@@ -21,7 +21,7 @@
 			</nav>
 		{+END}{+END}{+END}{+END}
 
-		<a id="maincontent"> </a>
+		<a id="maincontent"></a>
 
 		{MIDDLE}
 	</article>

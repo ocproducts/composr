@@ -6,10 +6,10 @@
 	{+START,IF_NON_EMPTY,{DOC}}<div id="doc_{$GET,rand_do_next_item}" style="display: none">{DOC}</div>{+END}
 
 	<div class="do_next_item_icon">
-		<a href="{URL*}" class="js-click-confirm-warning" {+START,IF_PASSED,TARGET}target="{TARGET*}"{+END}><img alt="{$STRIP_TAGS*,{DESCRIPTION}}" src="{$IMG*,icons/48x48/{PICTURE*}}" /></a>
+		<a href="{URL*}" class="js-click-confirm-warning"{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}><img alt="{$STRIP_TAGS*,{DESCRIPTION}}" src="{$IMG*,icons/48x48/{PICTURE*}}" /></a>
 	</div>
 
 	<div class="do_next_item_label">
-		<a href="{URL*}" {+START,IF_PASSED,TARGET}target="{TARGET*}"{+END}>{DESCRIPTION*}</a>
+		<a href="{URL*}"{+START,IF_PASSED,TARGET} target="{TARGET*}"{+END}>{DESCRIPTION*}</a>
 	</div>
 </div>

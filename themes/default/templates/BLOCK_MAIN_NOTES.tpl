@@ -17,7 +17,7 @@
 
 				<div class="accessibility_hidden"><label for="n_block_{TITLE|}">{!NOTES}</label></div>
 				<div class="constrain_field">
-					<textarea class="wide_field js-focus-textarea-expand js-blur-textarea-contract" cols="80" id="n_block_{TITLE|}" rows="10" name="new" {+START,IF,{SCROLLS}}wrap="off"{+END}>{CONTENTS*}</textarea>
+					<textarea class="wide_field js-focus-textarea-expand js-blur-textarea-contract" cols="80" id="n_block_{TITLE|}" rows="10" name="new"{+START,IF,{SCROLLS}} wrap="off"{+END}>{CONTENTS*}</textarea>
 				</div>
 
 				<div class="buttons_group">

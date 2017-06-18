@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,chat}
 
-<div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,KEY,MEMBER_ID}{_*}{+END}" {+START,IF_PASSED,MEMBER_ID}data-view="ToggleableTray"{+END}>
+<div data-tpl="chatSetEffectsSettingBlock" data-tpl-params="{+START,PARAMS_JSON,KEY,MEMBER_ID}{_*}{+END}"{+START,IF_PASSED,MEMBER_ID} data-view="ToggleableTray"{+END}>
 	{+START,IF_PASSED,USERNAME}{+START,IF_PASSED,MEMBER_ID}
 		<div class="toggleable_tray_title js-tray-header">
 			{!OVERRIDES_FOR_FRIEND,{USERNAME*}}
@@ -8,7 +8,7 @@
 		</div>
 	{+END}{+END}
 
-	<div {+START,IF_PASSED,MEMBER_ID} class="toggleable_tray js-tray-content" id="user_{MEMBER_ID*}"{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
+	<div class="toggleable_tray js-tray-content"{+START,IF_PASSED,MEMBER_ID} id="user_{MEMBER_ID*}"{+END}{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
 		<div class="wide_table_wrap"><table class="map_table form_table wide_table scrollable_inside">
 			{+START,IF,{$NOT,{$MOBILE}}}
 				<colgroup>
@@ -20,7 +20,7 @@
 			<tbody>
 				{+START,LOOP,EFFECTS}
 					<tr class="form_table_field_spacer">
-						<th {+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}  class="table_heading_cell">
+						<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
 							<span class="faux_h2">{EFFECT_TITLE*}</span>
 						</th>
 					</tr>
@@ -39,11 +39,11 @@
 						<td id="form_table_field_input__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_input">
 							<select name="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}">
 								{+START,IF_PASSED,USERNAME}
-									<option {+START,IF,{$EQ,-1,{VALUE}}} selected="selected"{+END} value="-1">{$STRIP_TAGS,{!_UNSET}}</option>
+									<option{+START,IF,{$EQ,-1,{VALUE}}} selected="selected"{+END} value="-1">{$STRIP_TAGS,{!_UNSET}}</option>
 								{+END}
-								<option {+START,IF,{$EQ,,{VALUE}}} selected="selected"{+END} value="">{!NONE_EM}</option>
+								<option{+START,IF,{$EQ,,{VALUE}}} selected="selected"{+END} value="">{!NONE_EM}</option>
 								{+START,LOOP,LIBRARY}
-									<option {+START,IF,{$EQ,{EFFECT},{VALUE}}} selected="selected"{+END} value="{EFFECT*}">{EFFECT_SHORT*}</option>
+									<option{+START,IF,{$EQ,{EFFECT},{VALUE}}} selected="selected"{+END} value="{EFFECT*}">{EFFECT_SHORT*}</option>
 								{+END}
 								{+START,IF,{$EQ,{$SUBSTR,{VALUE},0,8},uploads/}}
 									<option selected="selected" value="{VALUE*}">{!CUSTOM_UPLOAD}</option>

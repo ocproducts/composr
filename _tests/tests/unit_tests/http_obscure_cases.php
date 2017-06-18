@@ -23,31 +23,30 @@ class http_obscure_cases_test_set extends cms_test_case
     {
         $extra_headers = array('Origin' => 'http://example.com');
         $http_verb = 'GET';
-        $test = cms_http_request(get_base_url() . '/index.php', array('extra_headers' => $extra_headers, 'http_verb' => $http_verb));
-        $this->assertTrue($test->data != '');
-        $this->assertTrue(!$this->hasCORHeader('Access-Control-Allow-Origin'));
-        $this->assertTrue(!$this->hasCORHeader('Access-Control-Allow-Credentials'));
+        $response = cms_http_request(get_base_url() . '/index.php', array('extra_headers' => $extra_headers, 'http_verb' => $http_verb));
+        $this->assertTrue($response->data != '');
+        $this->assertTrue(!$this->hasCORHeader($response, 'Access-Control-Allow-Origin'));
+        $this->assertTrue(!$this->hasCORHeader($response, 'Access-Control-Allow-Credentials'));
 
         $extra_headers = array('Origin' => get_base_url());
         $http_verb = 'GET';
-        $test = cms_http_request(get_base_url() . '/index.php', array('extra_headers' => $extra_headers, 'http_verb' => $http_verb));
-        $this->assertTrue($test->data != '');
-        $this->assertTrue($this->hasCORHeader('Access-Control-Allow-Origin'));
-        $this->assertTrue(!$this->hasCORHeader('Access-Control-Allow-Credentials'));
+        $response = cms_http_request(get_base_url() . '/index.php', array('extra_headers' => $extra_headers, 'http_verb' => $http_verb));
+        $this->assertTrue($response->data != '');
+        $this->assertTrue($this->hasCORHeader($response, 'Access-Control-Allow-Origin'));
+        $this->assertTrue(!$this->hasCORHeader($response, 'Access-Control-Allow-Credentials'));
 
         $extra_headers = array('Origin' => get_base_url());
         $http_verb = 'OPTIONS';
-        $test = cms_http_request(get_base_url() . '/index.php', array('extra_headers' => $extra_headers, 'http_verb' => $http_verb));
-        $this->assertTrue($test->data == '');
-        $this->assertTrue($this->hasCORHeader('Access-Control-Allow-Origin'));
-        $this->assertTrue($this->hasCORHeader('Access-Control-Allow-Credentials'));
+        $response = cms_http_request(get_base_url() . '/index.php', array('extra_headers' => $extra_headers, 'http_verb' => $http_verb));
+        $this->assertTrue($response->data == '');
+        $this->assertTrue($this->hasCORHeader($response, 'Access-Control-Allow-Origin'));
+        $this->assertTrue($this->hasCORHeader($response, 'Access-Control-Allow-Credentials'));
     }
 
-    protected function hasCORHeader($header)
+    protected function hasCORHeader($response, $header)
     {
-        global $HTTP_HEADERS;
         $found = false;
-        foreach ($HTTP_HEADERS as $line) {
+        foreach ($response->headers as $line) {
             $matches = array();
             if (preg_match("#^" . $header . ": .*#i", $line, $matches) != 0) {
                 $found = true;

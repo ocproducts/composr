@@ -19,7 +19,7 @@
 						<input maxlength="80" size="15" type="text" placeholder="{!USERNAME}" id="member_bar_login_username" name="login_username" />
 						<input maxlength="255" size="15" type="password" placeholder="{!PASSWORD}" value="" name="password" id="member_bar_s_password" />
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
-							<label for="remember">{!REMEMBER_ME}:</label> <input {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" />
+							<label for="remember">{!REMEMBER_ME}:</label> <input{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" />
 						{+END}
 						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 

@@ -95,15 +95,15 @@
 					</table>
 				{+END}
 				{+START,IF,{$EQ,{$GET,showplayer},0}}
-				<td><table><tr>
-				<td width='{THUMBWIDTH}' style='vertical-align: middle; text-align: center' nowrap>
-					<a href='{VIDEO_URL}' target='_blank'><img src='{THUMBNAIL}' width='{THUMBWIDTH}' height='{THUMBHEIGHT}' alt='{THUMBALT}'></a>
-					{+START,IF,{$AND,{$NOT,{EMBEDPLAYER_ALLOWED}},{EMBED_ALLOWED}}}
-						<br />Embedding not allowed<br />
-						<a href='{VIDEO_URL}' target='_blank'>View on YouTube</a>
-					{+END}
-				</td>
-				<td>
+					<td><table><tr>
+					<td width='{THUMBWIDTH}' style='vertical-align: middle; text-align: center' nowrap>
+						<a href='{VIDEO_URL}' target='_blank'><img src='{THUMBNAIL}' width='{THUMBWIDTH}' height='{THUMBHEIGHT}' alt='{THUMBALT}'></a>
+						{+START,IF,{$AND,{$NOT,{EMBEDPLAYER_ALLOWED}},{EMBED_ALLOWED}}}
+							<br />Embedding not allowed<br />
+							<a href='{VIDEO_URL}' target='_blank'>View on YouTube</a>
+						{+END}
+					</td>
+					<td>
 				{+END}
 			{+END}
 			<table>

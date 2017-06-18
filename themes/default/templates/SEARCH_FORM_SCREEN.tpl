@@ -116,15 +116,15 @@
 									<div class="accessibility_hidden"><label for="search_days">{DAYS_LABEL*}</label></div>
 									<select id="search_days" name="days">
 										<option selected="selected" value="-1">{!NA}</option>
-										<option {+START,IF,{$EQ,{DAYS},2}} selected="selected"{+END} value="2">{!SUBMIT_AGE_DAYS,2}</option>
-										<option {+START,IF,{$EQ,{DAYS},5}} selected="selected"{+END} value="5">{!SUBMIT_AGE_DAYS,5}</option>
-										<option {+START,IF,{$EQ,{DAYS},15}} selected="selected"{+END} value="15">{!SUBMIT_AGE_DAYS,15}</option>
-										<option {+START,IF,{$EQ,{DAYS},30}} selected="selected"{+END} value="30">{!SUBMIT_AGE_DAYS,30}</option>
-										<option {+START,IF,{$EQ,{DAYS},45}} selected="selected"{+END} value="45">{!SUBMIT_AGE_DAYS,45}</option>
-										<option {+START,IF,{$EQ,{DAYS},60}} selected="selected"{+END} value="60">{!SUBMIT_AGE_DAYS,60}</option>
-										<option {+START,IF,{$EQ,{DAYS},120}} selected="selected"{+END} value="120">{!SUBMIT_AGE_DAYS,120}</option>
-										<option {+START,IF,{$EQ,{DAYS},240}} selected="selected"{+END} value="240">{!SUBMIT_AGE_DAYS,240}</option>
-										<option {+START,IF,{$EQ,{DAYS},365}} selected="selected"{+END} value="365">{!SUBMIT_AGE_DAYS,365}</option>
+										<option{+START,IF,{$EQ,{DAYS},2}} selected="selected"{+END} value="2">{!SUBMIT_AGE_DAYS,2}</option>
+										<option{+START,IF,{$EQ,{DAYS},5}} selected="selected"{+END} value="5">{!SUBMIT_AGE_DAYS,5}</option>
+										<option{+START,IF,{$EQ,{DAYS},15}} selected="selected"{+END} value="15">{!SUBMIT_AGE_DAYS,15}</option>
+										<option{+START,IF,{$EQ,{DAYS},30}} selected="selected"{+END} value="30">{!SUBMIT_AGE_DAYS,30}</option>
+										<option{+START,IF,{$EQ,{DAYS},45}} selected="selected"{+END} value="45">{!SUBMIT_AGE_DAYS,45}</option>
+										<option{+START,IF,{$EQ,{DAYS},60}} selected="selected"{+END} value="60">{!SUBMIT_AGE_DAYS,60}</option>
+										<option{+START,IF,{$EQ,{DAYS},120}} selected="selected"{+END} value="120">{!SUBMIT_AGE_DAYS,120}</option>
+										<option{+START,IF,{$EQ,{DAYS},240}} selected="selected"{+END} value="240">{!SUBMIT_AGE_DAYS,240}</option>
+										<option{+START,IF,{$EQ,{DAYS},365}} selected="selected"{+END} value="365">{!SUBMIT_AGE_DAYS,365}</option>
 									</select>
 								</td>
 							</tr>
@@ -174,18 +174,18 @@
 								<div class="accessibility_hidden"><label for="search_direction">{!DIRECTION}</label></div>
 								<div class="accessibility_hidden"><label for="search_sort">{!SORT_BY}</label></div>
 								<select class="search_sort" id="search_sort" name="sort">
-									<option {+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
-									<option {+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
-									<option {+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>
-									<option {+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
-									<option {+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
+									<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
+									<option{+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
+									<option{+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>
+									<option{+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="average_rating">{!RATING}</option>
+									<option{+START,IF,{$EQ,{SORT},rating}} selected="selected"{+END} value="compound_rating">{!POPULARITY}</option>
 									{+START,LOOP,EXTRA_SORT_FIELDS}
-										<option {+START,IF,{$EQ,{SORT},{_loop_key*}}} selected="selected"{+END} value="{_loop_key*}">{_loop_var*}</option>
+										<option{+START,IF,{$EQ,{SORT},{_loop_key*}}} selected="selected"{+END} value="{_loop_key*}">{_loop_var*}</option>
 									{+END}
 								</select>
 								<select id="search_direction" name="direction">
-									<option {+START,IF,{$EQ,{DIRECTION},ASC}} selected="selected"{+END} value="ASC">{!ASCENDING}</option>
-									<option {+START,IF,{$EQ,{DIRECTION},DESC}} selected="selected"{+END} value="DESC">{!DESCENDING}</option>
+									<option{+START,IF,{$EQ,{DIRECTION},ASC}} selected="selected"{+END} value="ASC">{!ASCENDING}</option>
+									<option{+START,IF,{$EQ,{DIRECTION},DESC}} selected="selected"{+END} value="DESC">{!DESCENDING}</option>
 								</select>
 							</td>
 						</tr>
