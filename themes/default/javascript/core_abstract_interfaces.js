@@ -104,7 +104,6 @@
             });
         }
 
-
         if (autoAdd) {
             var links = $cms.dom.$$(container, 'a');
 

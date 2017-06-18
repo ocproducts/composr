@@ -1097,7 +1097,6 @@
         }
     }
 
-
     window.tick_pos || (window.tick_pos = []);
 
     window.ticker_tick = tickerTick;

@@ -84,7 +84,6 @@
                 map.fitBounds(bounds);
             }
 
-
             if (geolocateUser && (setCoordUrl !== '')) {
                 // Geolocation for current member to get stored onto the map
                 if (typeof navigator.geolocation !== 'undefined') {

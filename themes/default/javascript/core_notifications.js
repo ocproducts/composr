@@ -275,7 +275,6 @@ function _pollForNotifications(rawAjaxResult) {
         }
     }
 
-
     function displayAlert(notification) {
         var id = notification.getAttribute('id');
 

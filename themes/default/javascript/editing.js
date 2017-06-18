@@ -118,7 +118,6 @@ function toggleWysiwyg(name) {
         return false;
     }
 
-
     function enableWysiwyg(forms, so, so2) {
         window.wysiwygOn = function () {
             return true;
@@ -128,7 +127,6 @@ function toggleWysiwyg(name) {
             loadHtmlEdit(forms[fid], true);
         }
     }
-
 
     function disableWysiwyg(forms, so, so2, discard) {
         for (var fid = 0; fid < forms.length; fid++) {

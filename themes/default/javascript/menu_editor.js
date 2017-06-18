@@ -101,7 +101,6 @@ function existsChild(elements, parent) {
     return false;
 }
 
-
 function deleteBranch(id) {
     var branch = $cms.dom.$id(id);
     branch.parentNode.removeChild(branch);

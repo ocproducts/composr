@@ -2286,7 +2286,6 @@
         return (property !== undefined) ? cs.getPropertyValue(property) : cs;
     }
 
-
     var rgxIdSelector = /^\#[\w\-]+$/,
         rgxSimpleSelector = /^[\#\.]?[\w\-]+$/,
         // Special attributes that should be set via method calls
@@ -5084,7 +5083,6 @@
             $cms.dom.triggerResize();
         }
     }
-
 
     /**
      * @param options
@@ -9400,7 +9398,6 @@
             }
         );
     }
-
 
     function prepareMassSelectMarker(set, type, id, checked) {
         var massDeleteForm = $cms.dom.$id('mass_select_form__' + set);

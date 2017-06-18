@@ -1495,7 +1495,6 @@
         imgOb.style.outline = '1px dotted';
     }
 
-
     function standardAlternateFieldsWithin(setName, somethingRequired) {
         var form = document.getElementById('set_wrapper_' + setName);
 
@@ -1684,8 +1683,6 @@
         }
     }
 }(window.$cms));
-
-
 
 // ===========
 // Multi-field

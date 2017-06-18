@@ -259,7 +259,6 @@
             }, 2000);
         }
 
-
         function receiveCompiledCss(ajaxResultFrame, file, win) {
             var doingCssFor = file.replace(/^css\//, '').replace('.css', '');
 

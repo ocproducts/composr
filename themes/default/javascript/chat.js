@@ -105,7 +105,6 @@
             }
         }
 
-
         $cms.dom.on(container, 'click', '.js-click-start-friend-im', function (e, link) {
             var memberId = strVal(link.dataset.tpMemberId);
 
@@ -338,8 +337,6 @@
                 }
             }
         }
-
-
     };
 
     $cms.templates.blockMainFriendsList = function (params, container) {

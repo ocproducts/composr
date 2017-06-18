@@ -479,7 +479,6 @@
                 }
             }
 
-
             var elements = form.querySelectorAll('input');
             for (i = 0; i < elements.length; i++) {
                 if (elements[i].name === 'parent_' + index) { // Found our spot

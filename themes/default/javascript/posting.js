@@ -678,7 +678,6 @@ function do_input_i(fieldName) {
     insertTextboxWrapping(element, 'i', '');
 }
 
-
 function do_input_font(fieldName) {
     if (window.insertTextboxWrapping === undefined) {
         return;
@@ -829,7 +828,6 @@ function initFormSaving(formId) {
         }
     }
 
-
     function _retrieveFormAutosave(result, form) {
         var fieldsToDo = {}, fieldsToDoCounter = 0, biggestLengthData = '';
         var key, value;
@@ -871,7 +869,6 @@ function initFormSaving(formId) {
             $cms.log('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
         }
     }
-
 
     function _restoreFormAutosave(form, fieldsToDo, biggestLengthData) {
         var autosaveName;
