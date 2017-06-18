@@ -25,13 +25,13 @@
 <tr class="field_input">
 	<td id="form_table_field_input__{$GET,randomised_id}"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="form_table_huge_field{+START,IF,{REQUIRED}} required{+END}">
 		<div id="container_for_{NAME*}" class="constrain_field container_for_wysiwyg">
-			<textarea data-textarea-auto-height="" tabindex="{TABINDEX*}" class="input_text{_REQUIRED} wide_field" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}"{+START,IF,{SCROLLS}} wrap="off"{+END}>{DEFAULT*}</textarea>
+			<textarea data-textarea-auto-height="" tabindex="{TABINDEX*}" class="input_text{_REQUIRED} wide_field{+START,IF,{SCROLLS}} textarea_scroll{+END}" cols="70" rows="{ROWS*}" id="{NAME*}" name="{NAME*}">{DEFAULT*}</textarea>
 
 			{+START,IF_PASSED,DEFAULT_PARSED}
 				<textarea aria-hidden="true" cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>
 			{+END}
 		</div>
+
+		<div class="tpl_placeholder" style="display: none;" data-require-javascript="core_form_interfaces" data-tpl="formScreenInputHugeComcode" data-tpl-params="{+START,PARAMS_JSON,REQUIRED,NAME,randomised_id,REQUIRED}{_*}{+END}"></div>
 	</td>
 </tr>
-
-<div class="tpl_placeholder" style="display: none;" data-require-javascript="core_form_interfaces" data-tpl="formScreenInputHugeComcode" data-tpl-params="{+START,PARAMS_JSON,REQUIRED,NAME,randomised_id,REQUIRED}{_*}{+END}"></div>

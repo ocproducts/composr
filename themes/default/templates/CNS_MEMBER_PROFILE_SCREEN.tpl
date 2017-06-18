@@ -11,7 +11,7 @@
 		<div class="modern_tabs">
 			<div class="modern_tab_headers" role="tablist">
 				{+START,LOOP,TABS}
-					<div id="t_{TAB_CODE*}"{+START,IF,{TAB_FIRST}} class="tab_active{+END}">
+					<div id="t_{TAB_CODE*}"{+START,IF,{TAB_FIRST}} class="tab_active"{+END}>
 						<a aria-controls="g_{TAB_CODE*}" role="tab" href="#!" class="js-click-select-tab-g" data-vw-tab="{TAB_CODE*}">{+START,IF_NON_EMPTY,{TAB_ICON}}<img alt="" src="{$IMG*,icons/24x24/{TAB_ICON}}" srcset="{$IMG*,icons/48x48/{TAB_ICON}} 2x" /> {+END}<span>{TAB_TITLE*}</span></a>
 					</div>
 				{+END}

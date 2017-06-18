@@ -1086,6 +1086,9 @@ footer .global_minilinks a:hover, footer .global_minilinks .button_hyperlink:hov
 	width: 100%;
 }
 
+.textarea_scroll { /* Turns off word-wrapping for a textarea: this has to be done using JavaScript so that the invalid 'wrap' property isn't written into the XHTML */
+}
+
 .leave_native_tooltip { /* No automatic tooltips on this element */
 }
 

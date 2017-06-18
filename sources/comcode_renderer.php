@@ -1517,7 +1517,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'contents':
-            return new Tempcode(); // TODO: Fix this
             // Do structure sweep
             $urls_for = array();
 
@@ -1532,7 +1531,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 foreach ($pages as $pg_name => $pg_type) {
                     if (substr($pg_name, 0, strlen($prefix)) == $prefix) {
                         $i = count($STRUCTURE_LIST);
-                        comcode_to_tempcode(cms_file_get_contents_safe(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt')), $source_member, $as_admin, null, $db, COMCODE_NORMAL, array(), $on_behalf_of_member);
+                        comcode_to_tempcode(cms_file_get_contents_safe(zone_black_magic_filterer(get_file_base() . '/' . $s_zone . '/pages/' . $pg_type . '/' . $pg_name . '.txt')), $source_member, $as_admin, null, $db, COMCODE_STRUCTURE_SWEEP, array(), $on_behalf_of_member);
                         $page_url = build_url(array('page' => $pg_name), $s_zone);
                         while (array_key_exists($i, $STRUCTURE_LIST)) {
                             $urls_for[] = $page_url;
@@ -1545,7 +1544,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             } else {
                 require_code('comcode_compiler');
 
-                __comcode_to_tempcode($comcode, $source_member, $as_admin, null, $db, COMCODE_NORMAL, array(), $on_behalf_of_member);
+                __comcode_to_tempcode($comcode, $source_member, $as_admin, null, $db, COMCODE_STRUCTURE_SWEEP, array(), $on_behalf_of_member);
 
                 $base = array_key_exists('base', $attributes) ? intval($attributes['base']) : 1;
             }

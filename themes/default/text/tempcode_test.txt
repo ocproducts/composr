@@ -31,11 +31,11 @@
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$MOBILE</td>
+		<th>$MOBILE</th>
 		<td>{$MOBILE}</td>
 	</tr>
 	<tr>
-		<td>$CNS</td>
+		<th>$CNS</th>
 		<td>{$CNS}</td>
 	</tr>
 </tbody></table>
@@ -44,47 +44,47 @@
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$CYCLE,my_cycle,1,2</td>
+		<th>$CYCLE,my_cycle,1,2</th>
 		<td>{$CYCLE,my_cycle,1,2}</td>
 	</tr>
 	<tr>
-		<td>$CYCLE,my_cycle,1,2</td>
+		<th>$CYCLE,my_cycle,1,2</th>
 		<td>{$CYCLE,my_cycle,1,2}</td>
 	</tr>
 	<tr>
-		<td>$CYCLE,my_cycle,1,2</td>
+		<th>$CYCLE,my_cycle,1,2</th>
 		<td>{$CYCLE,my_cycle,1,2}</td>
 	</tr>
 	<tr>
-		<td>$FROM_TIMESTAMP,Y-m-d,33424322</td>
+		<th>$FROM_TIMESTAMP,Y-m-d,33424322</th>
 		<td>{$FROM_TIMESTAMP,Y-m-d,33424322}</td>
 	</tr>
 	<tr>
-		<td>$IS_NON_EMPTY,</td>
+		<th>$IS_NON_EMPTY,</th>
 		<td>{$IS_NON_EMPTY,}</td>
 	</tr>
 	<tr>
-		<td>$IS_NON_EMPTY,a</td>
+		<th>$IS_NON_EMPTY,a</th>
 		<td>{$IS_NON_EMPTY,a}</td>
 	</tr>
 	<tr>
-		<td>$IS_EMPTY,</td>
+		<th>$IS_EMPTY,</th>
 		<td>{$IS_EMPTY,}</td>
 	</tr>
 	<tr>
-		<td>$IS_EMPTY,a</td>
+		<th>$IS_EMPTY,a</th>
 		<td>{$IS_EMPTY,a}</td>
 	</tr>
 	<tr>
-		<td>$NEGATE,3</td>
+		<th>$NEGATE,3</th>
 		<td>{$NEGATE,3}</td>
 	</tr>
 	<tr>
-		<td>$OBFUSCATE,chris@example.com (check HTML source to see if it is obfuscated)</td>
+		<th>$OBFUSCATE,chris@example.com (check HTML source to see if it is obfuscated)</th>
 		<td>{$OBFUSCATE,chris@example.com}</td>
 	</tr>
 	<tr>
-		<td>$GET,foobar</td>
+		<th>$GET,foobar</th>
 		<td>{$GET,foobar}</td>
 	</tr>
 </tbody></table>
@@ -93,15 +93,15 @@
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>+COUNT,SIMPLE_ARRAY</td>
+		<th>+COUNT,SIMPLE_ARRAY</th>
 		<td>{+COUNT,SIMPLE_ARRAY}</td>
 	</tr>
 	<tr>
-		<td>+IMPLODE, ,SIMPLE_ARRAY</td>
+		<th>+IMPLODE, ,SIMPLE_ARRAY</th>
 		<td>{+IMPLODE, ,SIMPLE_ARRAY}</td>
 	</tr>
 	<tr>
-		<td>+OF,SIMPLE_ARRAY,1</td>
+		<th>+OF,SIMPLE_ARRAY,1</th>
 		<td>{+OF,SIMPLE_ARRAY,1}</td>
 	</tr>
 </tbody></table>
@@ -110,51 +110,51 @@
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$WCASE,I am a Mushroom</td>
+		<th>$WCASE,I am a Mushroom</th>
 		<td>{$WCASE,I am a Mushroom}</td>
 	</tr>
 	<tr>
-		<td>$LCASE,I am a Mushroom</td>
+		<th>$LCASE,I am a Mushroom</th>
 		<td>{$LCASE,I am a Mushroom}</td>
 	</tr>
 	<tr>
-		<td>$UCASE,I am a Mushroom</td>
+		<th>$UCASE,I am a Mushroom</th>
 		<td>{$UCASE,I am a Mushroom}</td>
 	</tr>
 	<tr>
-		<td>$REPLACE,a,b,apple</td>
+		<th>$REPLACE,a,b,apple</th>
 		<td>{$REPLACE,a,b,apple}</td>
 	</tr>
 	<tr>
-		<td>$AT,apple,3</td>
+		<th>$AT,apple,3</th>
 		<td>{$AT,apple,3}</td>
 	</tr>
 	<tr>
-		<td>$SUBSTR,apple,1,2</td>
+		<th>$SUBSTR,apple,1,2</th>
 		<td>{$SUBSTR,apple,1,2}</td>
 	</tr>
 	<tr>
-		<td>$LENGTH,apple</td>
+		<th>$LENGTH,apple</th>
 		<td>{$LENGTH,apple}</td>
 	</tr>
 	<tr>
-		<td>$WORDWRAP,i love to eat cheese,5</td>
+		<th>$WORDWRAP,i love to eat cheese,5</th>
 		<td>{$WORDWRAP,i love to eat cheese,5}</td>
 	</tr>
 	<tr>
-		<td>$TRUNCATE_LEFT,i love to eat cheese,5</td>
+		<th>$TRUNCATE_LEFT,i love to eat cheese,5</th>
 		<td>{$TRUNCATE_LEFT,i love to eat cheese,5}</td>
 	</tr>
 	<tr>
-		<td>$TRUNCATE_RIGHT,i love to eat cheese,5</td>
+		<th>$TRUNCATE_RIGHT,i love to eat cheese,5</th>
 		<td>{$TRUNCATE_RIGHT,i love to eat cheese,5}</td>
 	</tr>
 	<tr>
-		<td>$TRUNCATE_SPREAD,i love to eat cheese,5</td>
+		<th>$TRUNCATE_SPREAD,i love to eat cheese,5</th>
 		<td>{$TRUNCATE_SPREAD,i love to eat cheese,5}</td>
 	</tr>
 	<tr>
-		<td>$ESCAPE,Bill &amp; Julie,ENTITY_ESCAPED</td>
+		<th>$ESCAPE,Bill &amp; Julie,ENTITY_ESCAPED</th>
 		<td>{$ESCAPE,Bill & Julie,ENTITY_ESCAPED}</td>
 	</tr>
 </tbody></table>
@@ -163,43 +163,43 @@
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$MULT,2,3</td>
+		<th>$MULT,2,3</th>
 		<td>{$MULT,2,3}</td>
 	</tr>
 	<tr>
-		<td>$ROUND,3.23,1</td>
+		<th>$ROUND,3.23,1</th>
 		<td>{$ROUND,3.23,1}</td>
 	</tr>
 	<tr>
-		<td>$MAX,3,2</td>
+		<th>$MAX,3,2</th>
 		<td>{$MAX,3,2}</td>
 	</tr>
 	<tr>
-		<td>$MIN,3,2</td>
+		<th>$MIN,3,2</th>
 		<td>{$MIN,3,2}</td>
 	</tr>
 	<tr>
-		<td>$MOD,-2</td>
+		<th>$MOD,-2</th>
 		<td>{$MOD,-2}</td>
 	</tr>
 	<tr>
-		<td>$MOD,2</td>
+		<th>$MOD,2</th>
 		<td>{$MOD,2}</td>
 	</tr>
 	<tr>
-		<td>$REM,3,2</td>
+		<th>$REM,3,2</th>
 		<td>{$REM,3,2}</td>
 	</tr>
 	<tr>
-		<td>$DIV,3,2</td>
+		<th>$DIV,3,2</th>
 		<td>{$DIV,3,2}</td>
 	</tr>
 	<tr>
-		<td>$SUBTRACT,3,2</td>
+		<th>$SUBTRACT,3,2</th>
 		<td>{$SUBTRACT,3,2}</td>
 	</tr>
 	<tr>
-		<td>$ADD,3,2</td>
+		<th>$ADD,3,2</th>
 		<td>{$ADD,3,2}</td>
 	</tr>
 </tbody></table>
@@ -208,55 +208,55 @@
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$NOT,1</td>
+		<th>$NOT,1</th>
 		<td>{$NOT,1}</td>
 	</tr>
 	<tr>
-		<td>$OR,1,0</td>
+		<th>$OR,1,0</th>
 		<td>{$OR,1,0}</td>
 	</tr>
 	<tr>
-		<td>$OR,0,0</td>
+		<th>$OR,0,0</th>
 		<td>{$OR,0,0}</td>
 	</tr>
 	<tr>
-		<td>$AND,1,0</td>
+		<th>$AND,1,0</th>
 		<td>{$AND,1,0}</td>
 	</tr>
 	<tr>
-		<td>$AND,1,1</td>
+		<th>$AND,1,1</th>
 		<td>{$AND,1,1}</td>
 	</tr>
 	<tr>
-		<td>$EQ,3,3</td>
+		<th>$EQ,3,3</th>
 		<td>{$EQ,3,3}</td>
 	</tr>
 	<tr>
-		<td>$EQ,3,2</td>
+		<th>$EQ,3,2</th>
 		<td>{$EQ,3,2}</td>
 	</tr>
 	<tr>
-		<td>$NEQ,3,3</td>
+		<th>$NEQ,3,3</th>
 		<td>{$NEQ,3,3}</td>
 	</tr>
 	<tr>
-		<td>$NEQ,3,2</td>
+		<th>$NEQ,3,2</th>
 		<td>{$NEQ,3,2}</td>
 	</tr>
 	<tr>
-		<td>$LT,1,2</td>
+		<th>$LT,1,2</th>
 		<td>{$LT,1,2}</td>
 	</tr>
 	<tr>
-		<td>$LT,2,1</td>
+		<th>$LT,2,1</th>
 		<td>{$LT,2,1}</td>
 	</tr>
 	<tr>
-		<td>$GT,1,2</td>
+		<th>$GT,1,2</th>
 		<td>{$GT,1,2}</td>
 	</tr>
 	<tr>
-		<td>$GT,2,1</td>
+		<th>$GT,2,1</th>
 		<td>{$GT,2,1}</td>
 	</tr>
 </tbody></table>
@@ -265,51 +265,51 @@
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$ISSET,test</td>
+		<th>$ISSET,test</th>
 		<td>{$ISSET,test}</td>
 	</tr>
 	<tr>
-		<td>$INIT,test,2</td>
+		<th>$INIT,test,2</th>
 		<td>{$INIT,test,2}</td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>{$GET,test}</td>
 	</tr>
 	<tr>
-		<td>$INIT,test,3</td>
+		<th>$INIT,test,3</th>
 		<td>{$INIT,test,3}</td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>{$GET,test}</td>
 	</tr>
 	<tr>
-		<td>$SET,test,3</td>
+		<th>$SET,test,3</th>
 		<td>{$SET,test,3}</td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>{$GET,test}</td>
 	</tr>
 	<tr>
-		<td>$INC,test</td>
+		<th>$INC,test</th>
 		<td>{$INC,test}</td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>{$GET,test}</td>
 	</tr>
 	<tr>
-		<td>$DEC,test</td>
+		<th>$DEC,test</th>
 		<td>{$DEC,test}</td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>{$GET,test}</td>
 	</tr>
 	<tr>
-		<td>$ISSET,test</td>
+		<th>$ISSET,test</th>
 		<td>{$ISSET,test}</td>
 	</tr>
 </tbody></table>
@@ -394,6 +394,7 @@
 
 <table><tbody>
 {+START,LOOP,ARRAY,2,<tr>,</tr>,A,DESC}
+	<th>Blah</th>
 	<td>
 		{A} {B} {C}
 	</td>

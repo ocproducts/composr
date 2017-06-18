@@ -353,7 +353,7 @@ class Hook_addon_registry_core_feedback_features
                 'HIGHLIGHT' => ($i == 1),
                 'TITLE' => lorem_word(),
                 '_TIME' => placeholder_number(),
-                'DATE' => placeholder_date(),
+                'TIME' => placeholder_date(),
                 'POSTER_ID' => placeholder_id(),
                 'POSTER_URL' => placeholder_url(),
                 'POSTER_NAME' => lorem_word(),

@@ -3,15 +3,15 @@
 <div style="height: {$ADD,20,{$GET,height}}px; text-align: center">
 	<script {$CSP_NONCE_HTML} charset="utf-8" type="text/javascript">
 	amzn_assoc_ad_type = "responsive_search_widget";
-	amzn_assoc_tracking_id = "{ASSOCIATES_ID*;/}";
+	amzn_assoc_tracking_id = "{ASSOCIATES_ID;/}";
 	amzn_assoc_marketplace = "amazon";
-	amzn_assoc_region = "{REGION*;/}";
+	amzn_assoc_region = "{REGION;/}";
 	amzn_assoc_placement = "";
 	amzn_assoc_search_type = "search_widget";
 	amzn_assoc_width = "auto";
-	amzn_assoc_height = "{$GET*;/,height}";
-	amzn_assoc_default_search_category = "{PRODUCT_LINE*;/}";
-	amzn_assoc_default_search_key = "{SUBJECT_KEYWORDS*;/}";
+	amzn_assoc_height = "{$GET;/,height}";
+	amzn_assoc_default_search_category = "{PRODUCT_LINE;/}";
+	amzn_assoc_default_search_key = "{SUBJECT_KEYWORDS;/}";
 	amzn_assoc_theme = "light";
 	amzn_assoc_bg_color = "FFFFFF";
 	</script>

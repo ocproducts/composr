@@ -49,7 +49,7 @@
 					</div>
 				{+END}
 				<div class="constrain_field">
-					<textarea rows="50" cols="20" class="{$?,{IS_PANEL},ze_textarea,ze_textarea_middle} {CLASS*} js-ta-ze-comcode" id="edit_{ID*}_textarea" name="{ID*}" wrap="off">{COMCODE*}</textarea>
+					<textarea rows="50" cols="20" class="{$?,{IS_PANEL},ze_textarea,ze_textarea_middle} {CLASS*} js-ta-ze-comcode textarea_scroll" id="edit_{ID*}_textarea" name="{ID*}">{COMCODE*}</textarea>
 
 					{+START,IF_PASSED,DEFAULT_PARSED}
 						<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="edit_{ID*}_textarea_parsed">{DEFAULT_PARSED*}</textarea>

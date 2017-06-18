@@ -9,8 +9,7 @@
 
 	{+START,IF,{TOP_LEVEL}}
 		<li class="{$?,{CURRENT},current,non_current}{+START,IF,{$GET,HAS_CHILDREN}} has_children{+END}{+START,IF,{$AND,{$NOT,{$GET,HAS_CHILDREN}},{LAST}}} last{+END}{+START,IF,{FIRST}} first{+END} toplevel {+START,IF,{$GET,HAS_CHILDREN}}{+START,IF,{$NOT,{$MOBILE}}}js-mousemove-timer-pop-up-menu js-mouseout-clear-pop-up-timer{+END}{+END}" data-vw-rand="{$GET*,RAND}">
-			<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} {+START,IF_EMPTY,{URL}} data-click-pd="1" {+END} class="{+START,IF_EMPTY,{URL}}non_link {+END}toplevel_link{+START,IF,{LAST}} last{+END}{+START,IF,{FIRST}} first{+END} {$?,{$GET,HAS_CHILDREN},js-focus-pop-up-menu js-click-unset-active-menu}">
-				{+START,IF_NON_EMPTY,{$GET,img}}<img width="32" height="32" alt="" src="{$REPLACE*,24x24,32x32,{$GET,img}}" srcset="{$REPLACE*,24x24,64x64,{$GET,img}} 2x" /> {+END}<span>{CAPTION}</span></a>
+			<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} {+START,IF_EMPTY,{URL}} data-click-pd="1" {+END} class="{+START,IF_EMPTY,{URL}}non_link {+END}toplevel_link{+START,IF,{LAST}} last{+END}{+START,IF,{FIRST}} first{+END} {$?,{$GET,HAS_CHILDREN},js-focus-pop-up-menu js-click-unset-active-menu}">{+START,IF_NON_EMPTY,{$GET,img}}<img width="32" height="32" alt="" src="{$REPLACE*,24x24,32x32,{$GET,img}}" srcset="{$REPLACE*,24x24,64x64,{$GET,img}} 2x" /> {+END}<span>{CAPTION}</span></a>
 			{+START,IF,{$GET,HAS_CHILDREN}}{+START,IF,{$NOT,{$MOBILE}}}
 				<ul aria-haspopup="true" class="nlevel js-mouseover-set-active-menu js-mouseout-unset-active-menu" id="{MENU|*}_dexpand_{$GET*,RAND}" style="display: none">{CHILDREN}</ul>
 			{+END}{+END}

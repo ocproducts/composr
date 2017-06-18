@@ -83,47 +83,47 @@ class Tempcode_test_set extends cms_test_case
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$CYCLE,my_cycle,1,2</td>
+		<th>$CYCLE,my_cycle,1,2</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$CYCLE,my_cycle,1,2</td>
+		<th>$CYCLE,my_cycle,1,2</th>
 		<td>2</td>
 	</tr>
 	<tr>
-		<td>$CYCLE,my_cycle,1,2</td>
+		<th>$CYCLE,my_cycle,1,2</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$FROM_TIMESTAMP,Y-m-d,33424322</td>
+		<th>$FROM_TIMESTAMP,Y-m-d,33424322</th>
 		<td>1971-01-22</td>
 	</tr>
 	<tr>
-		<td>$IS_NON_EMPTY,</td>
+		<th>$IS_NON_EMPTY,</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$IS_NON_EMPTY,a</td>
+		<th>$IS_NON_EMPTY,a</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$IS_EMPTY,</td>
+		<th>$IS_EMPTY,</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$IS_EMPTY,a</td>
+		<th>$IS_EMPTY,a</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$NEGATE,3</td>
+		<th>$NEGATE,3</th>
 		<td>-3</td>
 	</tr>
 	<tr>
-		<td>$OBFUSCATE,chris@example.com (check HTML source to see if it is obfuscated)</td>
+		<th>$OBFUSCATE,chris@example.com (check HTML source to see if it is obfuscated)</th>
 		<td>&#99;&#x68;&#114;&#x69;&#115;&#x40;&#101;&#x78;&#97;&#x6d;&#112;&#x6c;&#101;&#x2e;&#99;&#x6f;&#109;</td>
 	</tr>
 	<tr>
-		<td>$GET,foobar</td>
+		<th>$GET,foobar</th>
 		<td></td>
 	</tr>
 </tbody></table>
@@ -132,15 +132,15 @@ class Tempcode_test_set extends cms_test_case
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>+COUNT,SIMPLE_ARRAY</td>
+		<th>+COUNT,SIMPLE_ARRAY</th>
 		<td>3</td>
 	</tr>
 	<tr>
-		<td>+IMPLODE, ,SIMPLE_ARRAY</td>
+		<th>+IMPLODE, ,SIMPLE_ARRAY</th>
 		<td>1 2 3</td>
 	</tr>
 	<tr>
-		<td>+OF,SIMPLE_ARRAY,1</td>
+		<th>+OF,SIMPLE_ARRAY,1</th>
 		<td>2</td>
 	</tr>
 </tbody></table>
@@ -149,51 +149,51 @@ class Tempcode_test_set extends cms_test_case
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$WCASE,I am a Mushroom</td>
+		<th>$WCASE,I am a Mushroom</th>
 		<td>I Am A Mushroom</td>
 	</tr>
 	<tr>
-		<td>$LCASE,I am a Mushroom</td>
+		<th>$LCASE,I am a Mushroom</th>
 		<td>i am a mushroom</td>
 	</tr>
 	<tr>
-		<td>$UCASE,I am a Mushroom</td>
+		<th>$UCASE,I am a Mushroom</th>
 		<td>I AM A MUSHROOM</td>
 	</tr>
 	<tr>
-		<td>$REPLACE,a,b,apple</td>
+		<th>$REPLACE,a,b,apple</th>
 		<td>bpple</td>
 	</tr>
 	<tr>
-		<td>$AT,apple,3</td>
+		<th>$AT,apple,3</th>
 		<td>l</td>
 	</tr>
 	<tr>
-		<td>$SUBSTR,apple,1,2</td>
+		<th>$SUBSTR,apple,1,2</th>
 		<td>pp</td>
 	</tr>
 	<tr>
-		<td>$LENGTH,apple</td>
+		<th>$LENGTH,apple</th>
 		<td>5</td>
 	</tr>
 	<tr>
-		<td>$WORDWRAP,i love to eat cheese,5</td>
+		<th>$WORDWRAP,i love to eat cheese,5</th>
 		<td>i<br />love<br />to<br />eat<br />cheese</td>
 	</tr>
 	<tr>
-		<td>$TRUNCATE_LEFT,i love to eat cheese,5</td>
+		<th>$TRUNCATE_LEFT,i love to eat cheese,5</th>
 		<td>i&hellip;</td>
 	</tr>
 	<tr>
-		<td>$TRUNCATE_RIGHT,i love to eat cheese,5</td>
+		<th>$TRUNCATE_RIGHT,i love to eat cheese,5</th>
 		<td>&hellip;se</td>
 	</tr>
 	<tr>
-		<td>$TRUNCATE_SPREAD,i love to eat cheese,5</td>
+		<th>$TRUNCATE_SPREAD,i love to eat cheese,5</th>
 		<td>i&hellip;se</td>
 	</tr>
 	<tr>
-		<td>$ESCAPE,Bill &amp; Julie,ENTITY_ESCAPED</td>
+		<th>$ESCAPE,Bill &amp; Julie,ENTITY_ESCAPED</th>
 		<td>Bill &amp; Julie</td>
 	</tr>
 </tbody></table>
@@ -202,43 +202,43 @@ class Tempcode_test_set extends cms_test_case
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$MULT,2,3</td>
+		<th>$MULT,2,3</th>
 		<td>6</td>
 	</tr>
 	<tr>
-		<td>$ROUND,3.23,1</td>
+		<th>$ROUND,3.23,1</th>
 		<td>3.2</td>
 	</tr>
 	<tr>
-		<td>$MAX,3,2</td>
+		<th>$MAX,3,2</th>
 		<td>3</td>
 	</tr>
 	<tr>
-		<td>$MIN,3,2</td>
+		<th>$MIN,3,2</th>
 		<td>2</td>
 	</tr>
 	<tr>
-		<td>$MOD,-2</td>
+		<th>$MOD,-2</th>
 		<td>2</td>
 	</tr>
 	<tr>
-		<td>$MOD,2</td>
+		<th>$MOD,2</th>
 		<td>2</td>
 	</tr>
 	<tr>
-		<td>$REM,3,2</td>
+		<th>$REM,3,2</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$DIV,3,2</td>
+		<th>$DIV,3,2</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$SUBTRACT,3,2</td>
+		<th>$SUBTRACT,3,2</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$ADD,3,2</td>
+		<th>$ADD,3,2</th>
 		<td>5</td>
 	</tr>
 </tbody></table>
@@ -247,55 +247,55 @@ class Tempcode_test_set extends cms_test_case
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$NOT,1</td>
+		<th>$NOT,1</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$OR,1,0</td>
+		<th>$OR,1,0</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$OR,0,0</td>
+		<th>$OR,0,0</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$AND,1,0</td>
+		<th>$AND,1,0</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$AND,1,1</td>
+		<th>$AND,1,1</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$EQ,3,3</td>
+		<th>$EQ,3,3</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$EQ,3,2</td>
+		<th>$EQ,3,2</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$NEQ,3,3</td>
+		<th>$NEQ,3,3</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$NEQ,3,2</td>
+		<th>$NEQ,3,2</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$LT,1,2</td>
+		<th>$LT,1,2</th>
 		<td>1</td>
 	</tr>
 	<tr>
-		<td>$LT,2,1</td>
+		<th>$LT,2,1</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$GT,1,2</td>
+		<th>$GT,1,2</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$GT,2,1</td>
+		<th>$GT,2,1</th>
 		<td>1</td>
 	</tr>
 </tbody></table>
@@ -304,51 +304,51 @@ class Tempcode_test_set extends cms_test_case
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$ISSET,test</td>
+		<th>$ISSET,test</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$INIT,test,2</td>
+		<th>$INIT,test,2</th>
 		<td></td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>2</td>
 	</tr>
 	<tr>
-		<td>$INIT,test,3</td>
+		<th>$INIT,test,3</th>
 		<td></td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>2</td>
 	</tr>
 	<tr>
-		<td>$SET,test,3</td>
+		<th>$SET,test,3</th>
 		<td></td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>3</td>
 	</tr>
 	<tr>
-		<td>$INC,test</td>
+		<th>$INC,test</th>
 		<td></td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>4</td>
 	</tr>
 	<tr>
-		<td>$DEC,test</td>
+		<th>$DEC,test</th>
 		<td></td>
 	</tr>
 	<tr>
-		<td>$GET,test</td>
+		<th>$GET,test</th>
 		<td>3</td>
 	</tr>
 	<tr>
-		<td>$ISSET,test</td>
+		<th>$ISSET,test</th>
 		<td>1</td>
 	</tr>
 </tbody></table>
@@ -422,18 +422,22 @@ bar
 
 <table><tbody>
 <tr>
+	<th>Blah</th>
 	<td>
 		A1 B1 C1
 	</td>
 		
+	<th>Blah</th>
 	<td>
 		A2 B2 C2
 	</td>
 </tr><tr>
+    <th>Blah</th>
 	<td>
 		A3 B3 C3
 	</td>
 
+	<th>Blah</th>
 	<td>
 		A4 B4 C4
 	</td>

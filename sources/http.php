@@ -21,6 +21,17 @@
 /*EXTRA FUNCTIONS: shell_exec|fsockopen|ctype_xdigit|curl_.**/
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__http()
+{
+    global $DOWNLOAD_LEVEL;
+    $DOWNLOAD_LEVEL = 0;
+}
+
+/**
  * Call a function, with inbuilt on-disk caching support.
  *
  * @param  string $func Function to call

@@ -26,9 +26,6 @@
 function init__files()
 {
     if (!defined('IGNORE_DEFAULTS')) {
-        global $DOWNLOAD_LEVEL;
-        $DOWNLOAD_LEVEL = 0;
-
         define('IGNORE_DEFAULTS', 0);
         // -
         define('IGNORE_NON_EN_SCATTERED_LANGS', 1);

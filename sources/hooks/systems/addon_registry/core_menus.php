@@ -858,6 +858,7 @@ class Hook_addon_registry_core_menus
             )));
 
         }
+        $content->attach(do_template('MENU_SPACER_sitemap'));
         $menu = do_lorem_template('MENU_sitemap', array(
             'CONTENT' => $content,
             'MENU' => lorem_word_2(),

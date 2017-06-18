@@ -276,7 +276,7 @@ function SimpleTestErrorHandler($severity, $message, $filename = null, $line = n
         restore_error_handler();
         if (ini_get('log_errors')) {
             $label = SimpleErrorQueue::getSeverityAsString($severity);
-            error_log("$label: $message in $filename on line $line");
+            error_log("$label: $message in $filename on line " . strval($line));
         }
         $context = &SimpleTest::getContext();
         $queue = &$context->get('SimpleErrorQueue');

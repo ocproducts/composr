@@ -30,7 +30,7 @@
 			{+END}
 
 			<div class="float_surrounder">
-				<span class="{+START,IF,{$NOT,{$MOBILE}}}right {+END}float_separation">
+				<div class="{+START,IF,{$NOT,{$MOBILE}}}right {+END}float_separation">
 					{+START,INCLUDE,NOTIFICATION_BUTTONS}
 						NOTIFICATIONS_TYPE=comment_posted
 						NOTIFICATIONS_ID={TYPE}_{ID}
@@ -38,7 +38,7 @@
 						BUTTON_LABEL_ENABLE={!ENABLE_COMMENT_NOTIFICATIONS}
 						BUTTON_LABEL_DISABLE={!DISABLE_COMMENT_NOTIFICATIONS}
 					{+END}
-				</span>
+				</div>
 
 				<div class="comments_sorting_box inline{+START,IF,{$NOT,{$MOBILE}}} right{+END}">
 					<form title="{!SORT}" class="inline" action="{$SELF_URL*}" method="post" autocomplete="off">
