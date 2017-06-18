@@ -422,8 +422,12 @@ function webstandards_js_lex($text)
                     break 2;
                 }
 
-                if (($char == "\n") && ((strlen($special_token_value) == 0) || ($special_token_value[strlen($special_token_value) - 1] == '\\'))) {
-                    js_log_warning('LEXER', 'String literals may not contain explicit new lines without special escaping', $i, true);
+                if ($char == "\n") {
+                    if (!$escape_flag) {
+                        js_log_warning('LEXER', 'String literals may not contain explicit new lines without special escaping', $i, true);
+                    }
+
+                    $escape_flag = false;
                 }
 
                 // Exit case
@@ -446,10 +450,8 @@ function webstandards_js_lex($text)
                     } elseif ($char == 't') {
                         $actual_char = "\t";
                     }
-                } else {
-                    if ($char == '\\') {
-                        $actual_char = '';
-                    }
+                } elseif ($char == '\\') {
+                    $actual_char = '';
                 }
 
                 // Normal case
@@ -465,8 +467,12 @@ function webstandards_js_lex($text)
                     break 2;
                 }
 
-                if (($char == "\n") && ((strlen($special_token_value) == 0) || ($special_token_value[strlen($special_token_value) - 1] == '\\'))) {
-                    js_log_warning('LEXER', 'String literals may not contain explicit new lines', $i, true);
+                if ($char == "\n") {
+                    if (!$escape_flag) {
+                        js_log_warning('LEXER', 'String literals may not contain explicit new lines without special escaping', $i, true);
+                    }
+
+                    $escape_flag = false;
                 }
 
                 // Exit case
