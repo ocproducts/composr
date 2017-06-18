@@ -272,14 +272,14 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
                         nextIcon.animation_timer = window.setInterval(function () {
                             if (window.paused) return;
 
-                            var left = ((parseInt(nextIcon.style.left) || 0) + nextIcon.x_vector);
-                            nextIcon.style.left = left + 'px';
-                            var top = ((parseInt(nextIcon.style.top) || 0) + nextIcon.y_vector);
-                            nextIcon.style.top = top + 'px';
+                            var _left = ((parseInt(nextIcon.style.left) || 0) + nextIcon.x_vector);
+                            nextIcon.style.left = _left + 'px';
+                            var _top = ((parseInt(nextIcon.style.top) || 0) + nextIcon.y_vector);
+                            nextIcon.style._top = _top + 'px';
                             $cms.dom.clearTransitionAndSetOpacity(nextIcon, nextIcon.opacity);
                             nextIcon.opacity *= 0.98;
                             nextIcon.y_vector += 0.2;
-                            if ((top > maxHeight) || (nextIcon.opacity < 0.05) || (left + 50 > windowWidth) || (left < 0)) {
+                            if ((_top > maxHeight) || (nextIcon.opacity < 0.05) || (_left + 50 > windowWidth) || (_left < 0)) {
                                 window.clearInterval(nextIcon.animation_timer);
                                 nextIcon.animation_timer = null;
                                 nextIcon.parentNode.removeChild(nextIcon);

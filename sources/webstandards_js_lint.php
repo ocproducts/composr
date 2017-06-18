@@ -618,7 +618,7 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
         $exp = js_check_expression($e[2]);
         //$passes = js_ensure_type(array('Boolean'), $exp, $c_pos, 'Can only use Boolean combinators with Booleans');
         //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[2]);
-        return 'Boolean';
+        return '!Object'; // JS is weird, ORing actually returns the first "truey" element
     }
     if (in_array($e[0], array('BW_XOR', 'BW_AND', 'BW_OR', 'SL', 'SR', 'ZSR', 'REMAINDER'))) {
         $passes = js_ensure_type(array('Number'), js_check_expression($e[1], false, $is_guarded), $c_pos - 1, 'Can only use integer combinators with Numbers');
@@ -656,8 +656,8 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
     if (in_array($e[0], array('IS_GREATER_OR_EQUAL', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER', 'IS_SMALLER'))) {
         $type_a = js_check_expression($e[1], false, $is_guarded);
         $type_b = js_check_expression($e[2]);
-        js_ensure_type(array('Number', 'String', 'Date'), $type_a, $c_pos - 1, 'Can only use arithmetical comparators with Numbers or Strings');
-        js_ensure_type(array('Number', 'String', 'Date'), $type_b, $c_pos, 'Can only use arithmetical comparators with Numbers or Strings');
+        js_ensure_type(array('Number', 'String', 'Date'), $type_a, $c_pos - 1, 'Can only use arithmetical comparators with Numbers or Strings (not ' . $type_a . ')');
+        js_ensure_type(array('Number', 'String', 'Date'), $type_b, $c_pos, 'Can only use arithmetical comparators with Numbers or Strings (not ' . $type_b . ')');
         js_ensure_type(array($type_a), $type_b, $c_pos, 'Comparators must have type symmetric operands (' . $type_a . ' vs ' . $type_b . ')');
         return 'Boolean';
     }

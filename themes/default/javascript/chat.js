@@ -925,7 +925,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     for (var r in rooms) {
                         roomId = rooms[r];
                         var doc = document;
-                        if window.opened_popups['room_' + roomId] !== undefined) {
+                        if (typeof window.opened_popups['room_' + roomId] !== undefined) {
                             if (!window.opened_popups['room_' + roomId].document) continue;
                             doc = window.opened_popups['room_' + roomId].document;
                         }
@@ -1228,6 +1228,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 }
 
 function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, avatarUrl, roomId) {
+    var div;
+
     // Close link
     function closePopup() {
         if (div) {
@@ -1278,7 +1280,7 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
     }
 
     // Start DOM stuff
-    var div = document.createElement('div');
+    div = document.createElement('div');
     div.className = 'im_event';
     //div.style.left=($cms.dom.getWindowWidth()/2-140)+'px';
     div.style.right = '1em';
