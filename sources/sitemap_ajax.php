@@ -66,7 +66,7 @@ function sitemap_script_loading()
     $permissions_needed = (get_param_integer('get_perms', 0) == 1); // Whether we are limiting our tree to permission-supporting
     safe_ini_set('ocproducts.xss_detect', '0');
 
-    echo '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
+    echo '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
     echo "\n" . '<request><result>';
     require_lang('permissions');
     require_lang('zones');

@@ -63,7 +63,7 @@ function retrieve_autosave()
     require_code('xml');
 
     header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
+    echo '<?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
     echo '<request><result>' . "\n";
 
     $rows = $GLOBALS['SITE_DB']->query_select(

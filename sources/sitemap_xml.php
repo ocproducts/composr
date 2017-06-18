@@ -76,7 +76,7 @@ function rebuild_sitemap_set($set_number, $last_time)
     $sitemaps_out_temppath = cms_tempnam(); // We write to temporary path first to minimise the time our target file is invalid (during generation)
     $sitemaps_out_file = fopen($sitemaps_out_temppath, 'wb');
     $sitemaps_out_path = get_custom_file_base() . '/data_custom/sitemaps/set_' . strval($set_number) . '.xml';
-    $blob = '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>
+    $blob = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     fwrite($sitemaps_out_file, $blob);
 
@@ -159,7 +159,7 @@ function rebuild_sitemap_index()
     $sitemaps_out_temppath = cms_tempnam(); // We write to temporary path first to minimise the time our target file is invalid (during generation)
     $sitemaps_out_file = fopen($sitemaps_out_temppath, 'wb');
     $sitemaps_out_path = get_custom_file_base() . '/data_custom/sitemaps/index.xml';
-    $blob = '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>
+    $blob = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     fwrite($sitemaps_out_file, $blob);
 

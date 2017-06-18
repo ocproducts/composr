@@ -275,7 +275,7 @@ class Module_admin_awards extends Standard_crud_module
     {
         if ($hide_awardee === null) {
             $val = $GLOBALS['SITE_DB']->query_select_value('award_types', 'AVG(a_hide_awardee)');
-            $hide_awardee = ($val === null) ? 1 : intval(round($val));
+            $hide_awardee = ($val === null) ? 1 : @intval(round($val));
         }
 
         $fields = new Tempcode();

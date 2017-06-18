@@ -621,7 +621,7 @@ abstract class Standard_crud_module
 
         if ($allow_trackbacks === null) {
             $val = $GLOBALS['SITE_DB']->query_select_value($this->table, 'AVG(allow_trackbacks)');
-            $allow_trackbacks = ($val === null) ? 1 : intval(round($val));
+            $allow_trackbacks = ($val === null) ? 1 : @intval(round($val));
         }
 
         return array($allow_rating, $allow_comments, $allow_trackbacks);

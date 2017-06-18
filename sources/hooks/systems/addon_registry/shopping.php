@@ -303,7 +303,7 @@ class Hook_addon_registry_shopping
             'CITY' => lorem_phrase(),
             'COUNTY' => lorem_phrase(),
             'STATE' => lorem_phrase(),
-            'ZIP' => lorem_phrase(),
+            'POST_CODE' => lorem_phrase(),
             'COUNTRY' => lorem_phrase(),
             'EMAIL' => lorem_phrase(),
             'PHONE' => lorem_phrase(),

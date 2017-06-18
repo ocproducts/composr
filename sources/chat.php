@@ -617,7 +617,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
     header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
     header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
     header('Content-Type: application/xml');
-    $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
+    $output = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
 ' . get_xml_entities() . '
 <response>
     <result>
@@ -702,7 +702,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
         prepare_for_known_ajax_response();
 
         header('Content-Type: application/xml');
-        $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
+        $output = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
 <!DOCTYPE xc:content [
 <!ENTITY euro "&#8364;">
 <!ENTITY ldquo "&#8220;">
@@ -799,7 +799,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
         prepare_for_known_ajax_response();
 
         header('Content-Type: application/xml');
-        $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
+        $output = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
 <!DOCTYPE xc:content [
 <!ENTITY euro "&#8364;">
 <!ENTITY ldquo "&#8220;">

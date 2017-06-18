@@ -230,8 +230,8 @@ class Hook_addon_registry_core_feedback_features
         foreach (placeholder_array() as $k => $value) {
             $trackbacks->attach(do_lorem_template('TRACKBACK', array(
                 'ID' => strval($k),
-                'TIME_RAW' => placeholder_date_raw(),
-                'TIME' => placeholder_number(),
+                '_DATE' => placeholder_date_raw(),
+                'DATE' => placeholder_number(),
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_word(),
                 'EXCERPT' => lorem_phrase(),
@@ -352,7 +352,7 @@ class Hook_addon_registry_core_feedback_features
                 'INDIVIDUAL_REVIEW_RATINGS' => array(),
                 'HIGHLIGHT' => ($i == 1),
                 'TITLE' => lorem_word(),
-                '_TIME' => placeholder_number(),
+                'TIME_RAW' => placeholder_number(),
                 'TIME' => placeholder_date(),
                 'POSTER_ID' => placeholder_id(),
                 'POSTER_URL' => placeholder_url(),
@@ -449,7 +449,7 @@ class Hook_addon_registry_core_feedback_features
         foreach ($trackbacks as $i => $value) {
             $content->attach(do_lorem_template('TRACKBACK', array(
                 'ID' => placeholder_id() . strval($i),
-                '_TIME' => placeholder_date_raw(),
+                '_DATE' => placeholder_date_raw(),
                 'DATE' => placeholder_date(),
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_word(),

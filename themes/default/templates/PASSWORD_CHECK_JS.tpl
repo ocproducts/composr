@@ -1,4 +1,4 @@
-<script>
+<script {$CSP_NONCE_HTML}>
 function checkPasswords(form) {
 	if (form.confirm) {
 		return true;

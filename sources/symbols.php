@@ -5339,7 +5339,7 @@ function ecv_LOGIN_LABEL($lang, $escaped, $param)
  */
 function ecv_CSP_NONCE($lang, $escaped, $param) {
     global $CSP_NONCE;
-    $value = $CSP_NONCE;
+    $value = isset($CSP_NONCE) ? $CSP_NONCE : '';
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
@@ -5358,7 +5358,7 @@ function ecv_CSP_NONCE($lang, $escaped, $param) {
  */
 function ecv_CSP_NONCE_HTML($lang, $escaped, $param) {
     global $CSP_NONCE;
-    $value = 'nonce="' . escape_html($CSP_NONCE) . '"';
+    $value = isset($CSP_NONCE) ? ('nonce="' . escape_html($CSP_NONCE) . '"') : '';
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }

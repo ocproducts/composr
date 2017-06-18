@@ -448,6 +448,7 @@ class Hook_addon_registry_installer
         ));
 
         $section->attach(do_lorem_template('INSTALLER_STEP_4_SECTION_HIDE', array(
+            'TITLE' => lorem_word(),
             'CONTENT' => lorem_phrase(),
         )));
 

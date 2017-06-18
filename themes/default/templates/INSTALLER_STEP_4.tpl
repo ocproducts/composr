@@ -15,7 +15,7 @@
 </form>
 
 {+START,IF_PASSED,JS}
-	<script>
+	<script {$CSP_NONCE_HTML}>
 		{JS/}
 
 		var domain = document.getElementById('domain');

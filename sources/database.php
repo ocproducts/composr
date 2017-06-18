@@ -839,6 +839,8 @@ class DatabaseDriver
      * This is HACKHACK and should move into database drivers into the future.
      * Basic arithmetic and inequality operators are assumed supported without needing a function.
      *
+     * Note that AVG may return an integer or float, depending on whether the DB engine auto-converts round numbers to integers. MySQL seems to.
+     *
      * @param  string $function Function name
      * @set CONCAT REPLACE SUBSTR LENGTH RAND COALESCE LEAST GREATEST MOD GROUP_CONCAT
      * @param  array $args List of string arguments, assumed already quoted/escaped correctly for the particular database

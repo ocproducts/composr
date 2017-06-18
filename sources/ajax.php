@@ -140,7 +140,7 @@ function namelike_script()
     safe_ini_set('ocproducts.xss_detect', '0');
 
     header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
+    echo '<?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
     echo '<request><result>';
 
     if ($special == 'admin_search') {
@@ -410,7 +410,7 @@ function ajax_tree_script()
     safe_ini_set('ocproducts.xss_detect', '0');
     $html_mask = get_param_integer('html_mask', 0) == 1;
     if (!$html_mask) {
-        echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
+        echo '<?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
     }
     echo($html_mask ? '<html>' : '<request>');
     $_options = get_param_string('options', '', INPUT_FILTER_GET_COMPLEX);

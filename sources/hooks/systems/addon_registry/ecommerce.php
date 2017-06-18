@@ -383,7 +383,7 @@ class Hook_addon_registry_ecommerce
             lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
                 'FIELDS' => placeholder_fields(),
                 'HIDDEN' => '',
-                'LOGO' => placeholder_image(),
+                'LOGOS' => placeholder_image(),
                 'PAYMENT_PROCESSOR_LINKS' => placeholder_link(),
             )), null, '', true)
         );
@@ -401,7 +401,7 @@ class Hook_addon_registry_ecommerce
         $fields = do_lorem_template('PURCHASE_WIZARD_STAGE_TRANSACT', array(
             'FIELDS' => placeholder_fields(),
             'HIDDEN' => '',
-            'LOGO' => placeholder_image(),
+            'LOGOS' => placeholder_image(),
             'PAYMENT_PROCESSOR_LINKS' => placeholder_link(),
         ));
 
@@ -1037,6 +1037,7 @@ class Hook_addon_registry_ecommerce
         return array(
             lorem_globalise(do_lorem_template('PURCHASE_WIZARD_STAGE_SUBSCRIBE', array(
                 'LOGOS' => placeholder_image(),
+                'PAYMENT_PROCESSOR_LINKS' => lorem_phrase(),
                 'TRANSACTION_BUTTON' => placeholder_button(),
                 'CURRENCY' => placeholder_number(),
                 'ITEM_NAME' => lorem_word(),

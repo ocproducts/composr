@@ -202,7 +202,7 @@
     };
 
     $cms.functions.hookProfilesTabsEditDeleteRenderTab = function hookProfilesTabsEditDeleteRenderTab() {
-        var suffix = $cms.filter.id('{!DELETE_MEMBER;^}').toLowerCase();
+        var suffix = $cms.filter.id('{!cns:DELETE_MEMBER;^}').toLowerCase();
 
         window['load_tab__edit__' + suffix] = function () {
             var submitButton = document.getElementById('submit_button'),

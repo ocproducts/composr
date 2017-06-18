@@ -163,7 +163,7 @@ function comcode_convert_script()
         }
 
         header('Content-Type: text/xml');
-        echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
+        echo '<?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
         echo '<request><result>';
         echo xmlentities($out);
         echo '</result></request>';

@@ -857,7 +857,7 @@ abstract class Hook_sitemap_content extends Hook_sitemap_base
 
         if ((($meta_gather & SITEMAP_GATHER_RATING) != 0) && ($cma_info['feedback_type_code'] !== null)) {
             $rating = $GLOBALS['SITE_DB']->query_select_value('rating', 'AVG(rating)', array('rating_for_type' => $cma_info['feedback_type_code'], 'rating_for_id' => $content_id));
-            $struct['extra_meta']['rating'] = $rating;
+            $struct['extra_meta']['rating'] = @intval(round($rating));
         }
 
         if ((($meta_gather & SITEMAP_GATHER_NUM_COMMENTS) != 0) && ($cma_info['feedback_type_code'] !== null)) {

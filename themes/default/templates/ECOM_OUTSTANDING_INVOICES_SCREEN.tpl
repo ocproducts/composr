@@ -26,7 +26,7 @@
 					{$CURRENCY_SYMBOL}{AMOUNT*}
 				</td>
 				<td>
-					{TIME*}
+					{DATE*}
 				</td>
 				<td>
 					<a title="{!DELETE}: #{ID}" href="{$PAGE_LINK*,_SELF:_SELF:delete:{ID}:from={FROM}}"><img src="{$IMG*,icons/14x14/delete}" srcset="{$IMG*,icons/28x28/delete} 2x" title="{!DELETE_INVOICE}" alt="{!DELETE_INVOICE}" /></a>

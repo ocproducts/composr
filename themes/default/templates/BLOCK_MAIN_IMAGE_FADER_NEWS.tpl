@@ -73,7 +73,7 @@
 	{+END}
 </noscript>
 
-<script>// <![CDATA[
+<script {$CSP_NONCE_HTML}>// <![CDATA[
 	add_event_listener_abstract(window,'load',function() {
 		{$,Variables we will need}
 		var fp_animation=document.getElementById('image_fader_news_{$GET;/,RAND_FADER_NEWS}');

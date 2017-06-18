@@ -14,8 +14,8 @@
 		<title>{!INSTALLER,Composr}</title>
 
 		<meta name="robots" content="noindex, nofollow" />
-		<script src="{$BASE_URL}/data/polyfills/log-loaded-scripts.js"></script>
-		<script>
+		<script {$CSP_NONCE_HTML} src="{$BASE_URL}/data/polyfills/log-loaded-scripts.js"></script>
+		<script {$CSP_NONCE_HTML}>
 			window.IN_MINIKERNEL_VERSION = true;
 
 			function installStageLoad() {
@@ -131,7 +131,7 @@
 			</p>
 		</div>
 
-		<script>
+		<script {$CSP_NONCE_HTML}>
 			(function (){
 				'use strict';
 

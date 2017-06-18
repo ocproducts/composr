@@ -953,7 +953,7 @@
                     if (isWysiwyg) {
                         message = '';
                     } else {
-                        message = '{!ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
+                        message = '{!comcode:ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
                     }
                 }
 

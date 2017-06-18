@@ -32,7 +32,7 @@ function realtime_rain_script()
     safe_ini_set('ocproducts.xss_detect', '0');
 
     header('Content-Type: text/xml');
-    echo '<?xml version="1.0" encoding="' . get_charset() . '"?' . '>';
+    echo '<?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>';
     echo '<request><result>';
     require_code('realtime_rain');
     require_lang('realtime_rain');

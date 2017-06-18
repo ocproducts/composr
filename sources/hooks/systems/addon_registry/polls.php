@@ -351,7 +351,7 @@ class Hook_addon_registry_polls
         foreach (placeholder_array(1) as $k => $v) {
             $trackbacks->attach(do_lorem_template('TRACKBACK', array(
                 'ID' => placeholder_id(),
-                '_TIME' => placeholder_date_raw(),
+                '_DATE' => placeholder_date_raw(),
                 'DATE' => placeholder_date(),
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),

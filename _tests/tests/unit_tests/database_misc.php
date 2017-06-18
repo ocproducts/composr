@@ -136,8 +136,11 @@ class database_misc_test_set extends cms_test_case
     public function testAVG()
     {
         $sql = 'SELECT AVG(x) FROM (SELECT 1 AS x UNION SELECT 2 AS x UNION SELECT 3 AS x) x';
-        $expected_result = 2;
+        $expected_result = 2.0;
         $result = $GLOBALS['SITE_DB']->query_value_if_there($sql, false, true);
+        if (is_integer($result)) {
+            $result = floatval($result);
+        }
         $this->assertTrue($result == $expected_result);
     }
 

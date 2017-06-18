@@ -104,7 +104,7 @@ function commandr_script()
         } catch (Exception $e) {
             @header('HTTP/1.0 200 Ok');
             @header('Content-type: text/xml; charset=' . get_charset());
-            $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
+            $output = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
                 <response>
                     <result>
                         <command>' . xmlentities(post_param_string('command', '')) . '</command>
@@ -249,7 +249,7 @@ class Virtual_shell
         $html_bak = $this->output[STREAM_STDHTML];
         $this->output[STREAM_STDHTML] = convert_bad_entities($this->output[STREAM_STDHTML], get_charset());
 
-        $output = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>
+        $output = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
     <!DOCTYPE xc:content [
     <!ENTITY euro "&#8364;">
     <!ENTITY ldquo "&#8220;">

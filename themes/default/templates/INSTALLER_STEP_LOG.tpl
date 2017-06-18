@@ -21,7 +21,7 @@
 	</div>
 </form>
 
-<script>// <![CDATA[
+<script {$CSP_NONCE_HTML}>// <![CDATA[
 	/* Code to auto-submit the form after 5 seconds, but only if there were no errors */
 	var ps = document.getElementsByTagName('p');
 	var doh = false;

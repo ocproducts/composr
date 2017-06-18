@@ -1966,9 +1966,9 @@ class Module_cms_galleries_cat extends Standard_crud_module
         if ($flow_mode_interface === null) {
             $cnt = $GLOBALS['SITE_DB']->query_select_value('galleries', 'COUNT(*)');
             if ($cnt < 5000) {
-                $flow_mode_interface = intval(round($GLOBALS['SITE_DB']->query_select_value('galleries', 'AVG(flow_mode_interface)'))); // Determine default based on what is 'the norm' currently. Sometimes maths is beautiful :)
+                $flow_mode_interface = @intval(round($GLOBALS['SITE_DB']->query_select_value('galleries', 'AVG(flow_mode_interface)'))); // Determine default based on what is 'the norm' currently. Sometimes maths is beautiful :)
             } else {
-                $flow_mode_interface = intval(round($GLOBALS['SITE_DB']->query_select_value('galleries', 'AVG(flow_mode_interface)', array('parent_id' => 'root')))); // Determine default based on what is 'the norm' currently. Sometimes maths is beautiful :)
+                $flow_mode_interface = @intval(round($GLOBALS['SITE_DB']->query_select_value('galleries', 'AVG(flow_mode_interface)', array('parent_id' => 'root')))); // Determine default based on what is 'the norm' currently. Sometimes maths is beautiful :)
             }
         }
 

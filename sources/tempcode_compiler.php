@@ -1152,8 +1152,12 @@ function _do_template($theme, $directory, $codename, $_codename, $lang, $suffix,
 
 
     // Special case: HTML template file
-    if (!$GLOBALS['IN_MINIKERNEL_VERSION'] && ($GLOBALS['SEMI_DEV_MODE']) && ($suffix === '.tpl') && (preg_match('/<script[^>]*>\S+<\/script>/i', $template_contents) > 0)) {
-        attach_message(do_lang_tempcode('DO_NOT_USE_INLINE_SCRIPT_TAGS', escape_html($codename)), 'warn', false, true);
+    $matches = array();
+    if (!$GLOBALS['IN_MINIKERNEL_VERSION'] && ($GLOBALS['SEMI_DEV_MODE']) && ($suffix === '.tpl') && (preg_match('#<script[^>]*>.*<\/script>#is', $template_contents, $matches) > 0)) {
+        // TODO: Salman, Only do if CSP on for the page
+        if (strpos($matches[0], 'CSP_NONCE_HTML') === false) {
+            attach_message(do_lang_tempcode('DO_NOT_USE_INLINE_SCRIPT_TAGS', escape_html($codename)), 'warn', false, true);
+        }
     }
 
     // Special case: JavaScript file

@@ -187,7 +187,7 @@ class CMS_Topic
                 foreach ($this->reviews_rating_criteria as $review_title) {
                     $_rating = $GLOBALS['SITE_DB']->query_select_value('review_supplement', 'AVG(r_rating)', array('r_rating_type' => $review_title, 'r_topic_id' => $topic_id));
                     $rating = mixed();
-                    $rating = ($_rating === null) ? null : $_rating;
+                    $rating = ($_rating === null) ? null : @intval(round($_rating));
                     $reviews_rating_criteria[] = array('REVIEW_TITLE' => $review_title, 'REVIEW_RATING' => make_string_tempcode(($rating === null) ? '' : float_format($rating)));
                     if ($rating !== null) {
                         set_extra_request_metadata(array(

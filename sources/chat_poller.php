@@ -62,7 +62,7 @@ function chat_null_exit()
 
     header('Content-Type: application/xml');
 
-    //  encoding="' . get_charset() . '" not needed due to no data in it
+    //  encoding="' . escape_html(get_charset()) . '" not needed due to no data in it
     $output = '<?xml version="1.0" ?' . '><response><result></result></response>';
 
     exit($output);

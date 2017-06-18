@@ -1,3 +1,5 @@
+{$REQUIRE_CSS,core}
+
 {+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin,adminzone}}
 	<div class="adminzone_search" data-require-javascript="core" data-tpl="adminZoneSearch">
 		<form title="{!SEARCH}" action="{$URL_FOR_GET_FORM*,{$PAGE_LINK,adminzone:admin:search}}" method="get" class="inline" autocomplete="off">

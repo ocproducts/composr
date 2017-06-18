@@ -70,7 +70,7 @@ class Hook_preview_comments
 
         $highlight = false;
         $timestamp = time();
-        $date = get_timezoned_date_time(time());
+        $time = get_timezoned_date_time(time());
         $poster_url = $GLOBALS['FORUM_DRIVER']->member_profile_url(get_member());
         $title = post_param_string('title', '');
         $tpl = do_template('POST', array(
@@ -78,8 +78,8 @@ class Hook_preview_comments
             'INDIVIDUAL_REVIEW_RATINGS' => $individual_review_ratings,
             'HIGHLIGHT' => $highlight,
             'TITLE' => $title,
-            '_TIME' => strval($timestamp),
-            'DATE' => $date,
+            'TIME_RAW' => strval($timestamp),
+            'TIME' => $time,
             'POSTER_ID' => strval(get_member()),
             'POSTER_URL' => $poster_url,
             'POSTER_NAME' => $poster_name,

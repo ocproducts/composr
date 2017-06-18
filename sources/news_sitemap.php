@@ -39,7 +39,7 @@ function build_news_sitemap()
         ftruncate($sitemap_file, 0);
     }
 
-    fwrite($sitemap_file, '<' . '?xml version="1.0" encoding="' . get_charset() . '"?' . '>
+    fwrite($sitemap_file, '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '"?' . '>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     ');
 

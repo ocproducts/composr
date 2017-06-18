@@ -108,7 +108,7 @@ function activities_ajax_submit_handler()
 
     header('Content-Type: text/xml');
 
-    $response = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>';
+    $response = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>';
     $response .= '<response><content>';
 
     $map = array();
@@ -199,7 +199,7 @@ function activities_ajax_update_list_handler()
 
     header('Content-Type: text/xml');
 
-    $response = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>';
+    $response = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>';
 
     $can_remove_others = (has_zone_access($viewer_id, 'adminzone'));
 
@@ -270,7 +270,7 @@ function activities_ajax_removal_handler()
 
     header('Content-Type: text/xml');
 
-    $response = '<' . '?xml version="1.0" encoding="' . get_charset() . '" ?' . '>';
+    $response = '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>';
     $response .= '<response>';
 
     $stat_id = post_param_integer('removal_id');

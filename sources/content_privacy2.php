@@ -62,19 +62,19 @@ function get_privacy_form_fields($content_type, $content_id = null, $show_header
         if ($test === null) {
             $view_by_guests = true;
         } else {
-            $view_by_guests = (intval($test) == 1);
+            $view_by_guests = (@intval($test) == 1);
         }
         $test = ($content_type === null) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('content_privacy', 'AVG(member_view)', array('content_type' => $content_type));
         if ($test === null) {
             $view_by_members = true;
         } else {
-            $view_by_members = (intval($test) == 1);
+            $view_by_members = (@intval($test) == 1);
         }
         $test = ($content_type === null) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('content_privacy', 'AVG(friend_view)', array('content_type' => $content_type));
         if ($test === null) {
             $view_by_friends = true;
         } else {
-            $view_by_friends = (intval($test) == 1);
+            $view_by_friends = (@intval($test) == 1);
         }
         $additional_access = array();
     }
