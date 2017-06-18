@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,cns_forum}
+{$REQUIRE_JAVASCRIPT,core_cns}
 
 <section id="tray_{!MEMBER|}" data-tpl="cnsGuestBar" data-view="ToggleableTray" data-tray-cookie="{!MEMBER|}" class="box cns_information_bar_outer">
 	<h2 class="toggleable_tray_title js-tray-header">
@@ -10,16 +10,17 @@
 	<div class="toggleable_tray js-tray-content">
 		<div class="cns_information_bar float_surrounder">
 			<div class="cns_guest_column cns_guest_column_a">
-				<form title="{!_LOGIN}" action="{LOGIN_URL*}" method="post" class="inline js-submit-check-field-login-username" autocomplete="on">
+				<form title="{!_LOGIN}" class="inline js-submit-check-field-login-username" action="{LOGIN_URL*}" method="post" autocomplete="on">
 					{$INSERT_SPAMMER_BLACKHOLE}
 
 					<div>
 						<div class="accessibility_hidden"><label for="member_bar_login_username">{$LOGIN_LABEL}</label></div>
 						<div class="accessibility_hidden"><label for="member_bar_s_password">{!PASSWORD}</label></div>
-						<input maxlength="80" size="15" type="text" placeholder="{!USERNAME}" id="member_bar_login_username" name="login_username" />
-						<input maxlength="255" size="15" type="password" placeholder="{!PASSWORD}" value="" name="password" id="member_bar_s_password" />
+						<input size="15" type="text" placeholder="{!USERNAME}" id="member_bar_login_username" name="login_username" value="" />
+						<input size="15" type="password" placeholder="{!PASSWORD}" value="" name="password" id="member_bar_s_password" />
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
-							<label for="remember">{!REMEMBER_ME}:</label> <input{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" />
+							<label for="remember">{!REMEMBER_ME}:</label>
+							<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" />
 						{+END}
 						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 

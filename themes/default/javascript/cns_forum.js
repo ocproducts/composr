@@ -274,26 +274,6 @@
         }
     };
 
-    $cms.templates.cnsGuestBar = function cnsGuestBar(params, container) {
-        $cms.dom.on(container, 'submit', '.js-submit-check-field-login-username', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements.login_username)) {
-                $cms.ui.disableFormButtons(form);
-            } else {
-                e.preventDefault();
-            }
-        });
-
-        $cms.dom.on(container, 'click', '.js-click-checkbox-remember-me-confirm', function (e, checkbox) {
-            if (checkbox.checked) {
-                $cms.ui.confirm('{!REMEMBER_ME_COOKIE;}', function (answer) {
-                    if (!answer) {
-                        checkbox.checked = false;
-                    }
-                });
-            }
-        });
-    };
-
     $cms.templates.cnsNotification = function (params) {
         var container = this,
             ignoreUrl = params.ignoreUrl2;

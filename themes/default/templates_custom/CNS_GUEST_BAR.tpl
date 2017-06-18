@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,facebook_support}
 
-<section data-require-javascript="facebook_support" data-tpl="cnsGuestBar" id="tray_{!MEMBER|}" data-view="ToggleableTray" data-tray-cookie="{!MEMBER|}" class="box cns_information_bar_outer">
+<section id="tray_{!MEMBER|}" data-require-javascript="facebook_support" data-tpl="cnsGuestBar" data-view="ToggleableTray" data-tray-cookie="{!MEMBER|}" class="box cns_information_bar_outer">
 	<h2 class="toggleable_tray_title js-tray-header">
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!_LOGIN}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 
@@ -16,11 +16,11 @@
 					<div>
 						<div class="accessibility_hidden"><label for="member_bar_login_username">{$LOGIN_LABEL}</label></div>
 						<div class="accessibility_hidden"><label for="member_bar_s_password">{!PASSWORD}</label></div>
-						<input size="15" type="text" placeholder="{!USERNAME}" id="member_bar_login_username" name="login_username" />
+						<input size="15" type="text" placeholder="{!USERNAME}" id="member_bar_login_username" name="login_username" value="" />
 						<input size="15" type="password" placeholder="{!PASSWORD}" value="" name="password" id="member_bar_s_password" />
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
 							<label for="remember">{!REMEMBER_ME}:</label>
-						<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" />
+							<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" />
 						{+END}
 						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 

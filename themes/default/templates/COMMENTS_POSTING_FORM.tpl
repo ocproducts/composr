@@ -154,11 +154,11 @@
 									{+START,IF_NON_EMPTY,{FIRST_POST}{COMMENT_TEXT}}
 										<ul class="associated_links_block_group">
 											{+START,IF_NON_EMPTY,{FIRST_POST}}
-												<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" data-blur-deactivate-tooltip data-focus-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]">{!cns:FIRST_POST}</a></li>
+												<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]">{!cns:FIRST_POST}</a></li>
 											{+END}
 
 											{+START,IF_NON_EMPTY,{COMMENT_TEXT}}
-												<li><a class="non_link" href="{$PAGE_LINK*,:rules}" data-blur-deactivate-tooltip data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{!HOVER_MOUSE_IMPORTANT}</a></li>
+												<li><a class="non_link" href="{$PAGE_LINK*,:rules}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{!HOVER_MOUSE_IMPORTANT}</a></li>
 											{+END}
 										</ul>
 									{+END}
