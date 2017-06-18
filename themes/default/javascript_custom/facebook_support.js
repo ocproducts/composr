@@ -5,7 +5,7 @@
         var easySelfUrl = encodeURIComponent(strVal(params.easySelfUrl));
 
         $cms.dom.on(container, 'click', '.js-click-add-to-twitter', function (e, el) {
-            el.setAttribute('href','http://twitter.com/share?count=horizontal&counturl=' + easySelfUrl + '&original_referer=' + easySelfUrl + '&text='+encodeURIComponent(document.title)+'&url=' + easySelfUrl);
+            el.setAttribute('href', 'http://twitter.com/share?count=horizontal&counturl=' + easySelfUrl + '&original_referer=' + easySelfUrl + '&text='+encodeURIComponent(document.title)+'&url=' + easySelfUrl);
         });
     };
 

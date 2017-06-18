@@ -10,7 +10,7 @@
             longitudeInput = container.querySelector('#' + name + '_longitude');
 
         $cms.requireJavascript('https://www.google.com/jsapi').then(function () {
-            window.setTimeout(function() {
+            window.setTimeout(function () {
                 window.google.load('maps', '3', { callback: googleMapUsersInitialize, other_params: ((googleMapKey !== '') ? 'key=' + googleMapKey : '') });
             },0);
         });

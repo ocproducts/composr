@@ -502,7 +502,7 @@
         var id = 'pulse_wave_' + params.randIdPulse;
 
         window[id] = [0, params.maxColor, params.minColor, params.speed, []];
-        window.setInterval(function() {
+        window.setInterval(function () {
             processWave(document.getElementById(id));
         }, params.speed);
     };
@@ -577,7 +577,7 @@
             });
 
             if (!id || ($cms.readCookie('og_' + id) !== '1')) {
-                window.setTimeout(function() {
+                window.setTimeout(function () {
                     var element, bi;
 
                     $cms.dom.smoothScroll(0);

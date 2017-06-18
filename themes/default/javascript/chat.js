@@ -976,24 +976,24 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     tmpElement = doc.getElementById('participant__' + roomId + '__' + memberId);
                     if ((tmpElement) && (tmpElement.parentNode)) {
                         var parent = tmpElement.parentNode;
-                        /*Actually prefer to let them go away it's cleaner if (parent.childNodes.length==1) // Don't really let them go, flag them merely as away - we'll reinvite them upon next post
+                        /*Actually prefer to let them go away it's cleaner if (parent.childNodes.length == 1) // Don't really let them go, flag them merely as away - we'll reinvite them upon next post
                          {
-                         tmp_element=doc.getElementById('post_'+room_id);
-                         if (tmp_element) tmp_element.force_invite=member_id;
+                             tmp_element = doc.getElementById('post_' + room_id);
+                             if (tmp_element) tmp_element.force_invite = member_id;
 
-                         tmp_element=doc.getElementById('participant_online__'+room_id+'__'+member_id);
-                         if (tmp_element)
-                         {
-                         if ($cms.dom.html(tmp_element).toLowerCase()=='{!INACTIVE;^}'.toLowerCase()) break;
-                         $cms.dom.html(tmp_element,'{!INACTIVE;^}');
-                         }
+                             tmp_element=doc.getElementById('participant_online__' + room_id + '__' + member_id);
+                             if (tmp_element)
+                             {
+                                 if ($cms.dom.html(tmp_element).toLowerCase() == '{!INACTIVE;^}'.toLowerCase()) break;
+                                 $cms.dom.html(tmp_element, '{!INACTIVE;^}');
+                             }
                          } else*/
                         {
                             parent.removeChild(tmpElement);
                         }
                         /*if (parent.childNodes.length==0)		Don't set to none, as we want to allow the 'force_invite' IM re-activation feature, to draw the other guy back -- above we pretended they're merely 'away', not just left
                          {
-                         $cms.dom.html(parent,'<em class="none">{!NONE;^}</em>');
+                             $cms.dom.html(parent, '<em class="none">{!NONE;^}</em>');
                          }*/
 
                         if (!skipIncomingSound) {

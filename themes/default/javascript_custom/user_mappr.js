@@ -29,7 +29,7 @@
             options.region = region;
         }
         $cms.requireJavascript(scripts).then(function () {
-            google.load('maps','3', options);
+            google.load('maps', '3', options);
         });
 
         function googleMapUsersInitialize() {
@@ -100,11 +100,11 @@
 
             /*Sample code to grab clicked positions
              var last_point;
-             google.maps.event.addListener(map,'mousemove',function(point) \{
-             last_point=point.latLng;
+             google.maps.event.addListener(map, 'mousemove', function(point) \{
+             last_point = point.latLng;
              \});
-             google.maps.event.addListener(map,'click',function() \{
-             console.log(last_point.lat()+', '+last_point.lng());
+             google.maps.event.addListener(map, 'click', function() \{
+             console.log(last_point.lat() + ', ' + last_point.lng());
              \});
              }*/
         }

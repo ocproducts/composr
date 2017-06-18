@@ -22,7 +22,7 @@
     };
 
     $cms.functions.adminSetupwizardStep7 = function () {
-        document.getElementById('rules').addEventListener('change', function() {
+        document.getElementById('rules').addEventListener('change', function () {
             var items = ['preview_box_balanced', 'preview_box_liberal', 'preview_box_corporate'];
             for (var i = 0; i < items.length; i++) {
                 document.getElementById(items[i]).style.display = (this.selectedIndex != i) ? 'none' : 'block';

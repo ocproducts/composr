@@ -473,7 +473,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             }
         };
         editor.on('change', sync);
-        editor.on('mode',function() {
+        editor.on('mode', function () {
             var ta = editor.container.$.getElementsByTagName('textarea');
             if (typeof ta[0] != 'undefined') {
                 ta[0].onchange = sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event

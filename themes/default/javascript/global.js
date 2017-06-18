@@ -7838,7 +7838,7 @@
             } else {
                 window.ga('create', $cms.$CONFIG_OPTION('google_analytics').trim(), { cookieExpires: 0 });
             }
-            window.ga('send','pageview');
+            window.ga('send', 'pageview');
         }
 
         // Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent

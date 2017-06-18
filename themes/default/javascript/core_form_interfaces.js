@@ -231,7 +231,7 @@
         }
 
         if (params.supportAutosave && params.formName) {
-            window.setTimeout(function() {
+            window.setTimeout(function () {
                 if (window.initFormSaving !== undefined) {
                     initFormSaving(params.formName);
                 }
