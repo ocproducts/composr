@@ -393,6 +393,8 @@ function js_check_command($command, $depth)
         switch ($c[0]) {
             case 'INNER_FUNCTION':
                 js_check_function($c[1]);
+                js_add_variable_reference($c[1]['name'], $c_pos, true);
+                js_set_composr_type($c[1]['name'], 'function');
                 break;
             case 'RETURN':
                 $ret_type = js_check_expression($c[1]);

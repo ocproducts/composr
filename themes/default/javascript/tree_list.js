@@ -1,5 +1,6 @@
 (function ($cms) {
     'use strict';
+
     /**
      * @param name
      * @param ajaxUrl

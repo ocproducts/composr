@@ -2,8 +2,6 @@
     'use strict';
 
     $cms.views.Attachment = Attachment;
-    $cms.views.Carousel = Carousel;
-    $cms.views.ComcodeMediaSet = ComcodeMediaSet;
     /**
      * @memberof $cms.views
      * @class
@@ -32,6 +30,8 @@
             setAttachment('post', this.params.i, '');
         }
     });
+
+    $cms.views.Carousel = Carousel;
     /**
      * @memberof $cms.views
      * @class
@@ -133,6 +133,8 @@
             }
         }
     });
+
+    $cms.views.ComcodeMediaSet = ComcodeMediaSet;
     /**
      * @memberof $cms.views
      * @class
@@ -308,6 +310,7 @@
             }
         }
     });
+
     /**
      * @memberof $cms.views
      * @class
@@ -824,8 +827,8 @@
             }
         };
 
-        // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
-        // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
+    // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
+    // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
     $cms.templates.mediaAudioWebsafe = function (params) {
         var playerOptions = {
             width: params.width,
@@ -863,8 +866,8 @@
         jwplayer(params.playerId).setup(playerOptions);
     };
 
-        // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
-        // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
+    // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
+    // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
     $cms.templates.mediaVideoWebsafe = function (params) {
         var playerOptions = {
             autostart: false,
@@ -908,7 +911,6 @@
 
         jwplayer(params.playerId).setup(playerOptions);
     };
-
 
     function shockerTick(id, time, minColor, maxColor) {
         if ((document.hidden !== undefined) && (document.hidden)) return;
@@ -1050,10 +1052,10 @@
         return false;
     }
 
-
     // =======
     // COMCODE
     // =======
+
     window.countdown = countdown;
     function countdown(id, direction, tailing) {
         var countdown = (typeof id === 'object') ? id : document.getElementById(id), i;

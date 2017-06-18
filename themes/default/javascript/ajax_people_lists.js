@@ -1,5 +1,6 @@
 (function ($cms) {
     'use strict';
+
     /**
      * @memberof $cms.form
      * @param target
