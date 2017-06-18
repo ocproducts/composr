@@ -1833,7 +1833,7 @@ class DatabaseConnector
      * @param  boolean $ret Whether to return the auto-insert-id
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
-     * @return integer The ID of the new row
+     * @return ?integer The ID of the new row (null: no ID / batch insert)
      */
     public function query_insert($table, $map, $ret = false, $fail_ok = false, $save_as_volatile = false)
     {
@@ -1892,6 +1892,8 @@ class DatabaseConnector
             } else {
                 $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES (' . $all_values[0] . ')';
             }
+        } elseif (count($all_values) == 0) {
+            return null;
         } else {
             // So we can do batch inserts...
             $all_v = '';

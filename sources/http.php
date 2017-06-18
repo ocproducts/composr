@@ -279,16 +279,16 @@ abstract class HttpDownloader
     protected $put_no_delete = null;
 
     // Output
-    public $data = null; // ?string. The result returned from the last file lookup.
-    public $download_mime_type = null; // ?ID_TEXT. The mime type returned from the last file lookup.
-    public $download_size = null; // ?ID_TEXT. The download size returned from the last file lookup.
-    public $download_url = null; // ?ID_TEXT. The redirected URL for the last file lookup.
-    public $download_mtime = null; // ?ID_TEXT. The file modification time returned from the last file lookup.
-    public $message = null; // string. The status code returned from the last file lookup (e.g. "200" or "404").
-    public $message_b = null; // string. The status messagereturned from the last file lookup.
-    public $new_cookies = array(); // ?ID_TEXT. The cookies returned from the last file lookup.
-    public $filename = null; // ?ID_TEXT. The filename returned from the last file lookup.
-    public $charset = null; // ?ID_TEXT. The character set returned from the last file lookup.
+    public $data = null; // ?string. The result returned from the last HTTP lookup.
+    public $download_mime_type = null; // ?ID_TEXT. The mime type returned from the last HTTP lookup.
+    public $download_size = null; // ?ID_TEXT. The download size returned from the last HTTP lookup.
+    public $download_url = null; // ?ID_TEXT. The URL for the last HTTP lookup.
+    public $download_mtime = null; // ?ID_TEXT. The file modification time returned from the last HTTP lookup.
+    public $message = null; // string. The status code returned from the last HTTP lookup (e.g. "200" or "404").
+    public $message_b = null; // string. The status messagereturned from the last HTTP lookup.
+    public $new_cookies = array(); // ?ID_TEXT. The cookies returned from the last HTTP lookup.
+    public $filename = null; // ?ID_TEXT. The filename returned from the last HTTP lookup.
+    public $charset = null; // ?ID_TEXT. The character set returned from the last HTTP lookup.
     public $headers = array(); // Any HTTP headers collected.
     public $implementation_used = null; // For debugging.
 
@@ -312,6 +312,8 @@ abstract class HttpDownloader
         global $DOWNLOAD_LEVEL;
 
         $this->implementation_used = get_class($this);
+
+        $this->download_url = $url;
 
         // Parse options...
 
@@ -762,7 +764,7 @@ abstract class HttpDownloader
      */
     protected function detect_character_encoding()
     {
-        if ($this->charset === null) {
+        if (($this->charset === null) && ($this->data !== null)) {
             $matches = array();
             if (preg_match('#<' . '?xml[^<>]*\s+encoding="([^"]+)"#', $this->data, $matches) != 0) {
                 $this->charset = trim($matches[1]);
@@ -784,9 +786,7 @@ abstract class HttpDownloader
     {
         $to->download_mime_type = $from->download_mime_type;
         $to->download_size = $from->download_size;
-        if ($to->download_url !== null) {
-            $to->download_url = $from->download_url;
-        }
+        $to->download_url = $from->download_url;
         $to->download_mtime = $from->download_mtime;
         $to->message = $from->message;
         $to->message_b = $from->message_b;

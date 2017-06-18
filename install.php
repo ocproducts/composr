@@ -1228,8 +1228,12 @@ function step_5()
             $hidden = build_keep_post_fields();
             $hidden->attach(form_input_hidden('confirm', '1'));
 
+            $js = new Tempcode();
+            $js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
+
             return do_template('INSTALLER_STEP_4', array(
                 '_GUID' => 'aaf0386966dd4b75c8027a6b1f7454c6',
+                'JS' => $js,
                 'URL' => $url,
                 'HIDDEN' => $hidden,
                 'MESSAGE' => do_lang_tempcode('WARNING_DB_OVERWRITE', escape_html(get_tutorial_url('tut_upgrade'))),
@@ -2555,7 +2559,7 @@ function handle_self_referencing_embedment()
                 }
                 $SITE_INFO['db_type'] = post_param_string('db_type');
                 require_code('database');
-                if (get_param_string('db_site') == '') {
+                if (post_param_string('db_site') == '') {
                     $db = new DatabaseConnector(post_param_string('db_forums'), post_param_string('db_forums_host'), post_param_string('db_forums_user'), post_param_string('db_forums_password', false, INPUT_FILTER_GET_COMPLEX), '', true);
                 } else {
                     $db = new DatabaseConnector(post_param_string('db_site'), post_param_string('db_site_host'), post_param_string('db_site_user'), post_param_string('db_site_password', false, INPUT_FILTER_GET_COMPLEX), '', true);

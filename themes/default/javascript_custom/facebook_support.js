@@ -61,7 +61,7 @@
             }
             fbButton.addEventListener('click', function listener() {
                 $cms.ui.generateQuestionUi(
-                    '{!HOW_TO_SYNDICATE_DESCRIPTION;^}',
+                    '{!facebook:HOW_TO_SYNDICATE_DESCRIPTION;^}',
                     ['{!INPUTSYSTEM_CANCEL;^}', '{!FACEBOOK_PAGE;^}', '{!FACEBOOK_WALL;^}'],
                     '{!HOW_TO_SYNDICATE;^}',
                     $cms.format('{!SYNDICATE_TO_OWN_WALL;^}', $cms.$SITE_NAME()),

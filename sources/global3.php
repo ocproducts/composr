@@ -1694,8 +1694,7 @@ function get_page_name()
         $PAGE_NAME_CACHE = str_replace('-', '_', $page); // Temporary, good enough for site.php to finish loading
     }
     $page = fix_page_name_dashing(get_zone_name(), $page);
-    global $GETTING_PAGE_NAME;
-    if (!$GETTING_PAGE_NAME) { // It's been changed by process_url_monikers, which was called indirectly by fix_page_name_dashing
+    if (!$getting_page_name) { // It's been changed by process_url_monikers, which was called indirectly by fix_page_name_dashing
         return $PAGE_NAME_CACHE;
     }
     if ($ZONE !== null) {
