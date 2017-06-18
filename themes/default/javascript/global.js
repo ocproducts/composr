@@ -5565,25 +5565,25 @@
      * @returns {string}
      */
     $cms.filter.id = function id(str) {
-        var i, char, ascii, out = '';
+        var i, character, ascii, out = '';
 
         str = strVal(str);
 
         for (i = 0; i < str.length; i++) {
-            char = str[i];
+            character = str[i];
 
-            if (char in filterIdReplace) {
-                out += filterIdReplace[char];
+            if (character in filterIdReplace) {
+                out += filterIdReplace[character];
             } else {
-                ascii = char.charCodeAt(0);
+                ascii = character.charCodeAt(0);
 
                 if (
-                    ((i !== 0) && (char === '_'))
+                    ((i !== 0) && (character === '_'))
                     || ((ascii >= 48) && (ascii <= 57))
                     || ((ascii >= 65) && (ascii <= 90))
                     || ((ascii >= 97) && (ascii <= 122))
                 ) {
-                    out += char;
+                    out += character;
                 } else {
                     out += '_' + ascii + '_';
                 }
