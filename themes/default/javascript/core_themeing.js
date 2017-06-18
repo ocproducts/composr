@@ -883,13 +883,13 @@
 
             function invisibleOutputDecode(string) {
                 var ret = '';
-                var i, j, char, _bitsRep, bitsRep, _bit, bit;
+                var i, j, character, _bitsRep, bitsRep, _bit, bit;
                 var len = string.length;
                 for (i = 0; i < len / 8; i++) {
                     _bitsRep = '';
                     for (_bit = 0; _bit < 8; _bit++) {
-                        char = string.substr(i * 8 + _bit, 1);
-                        bit = (char == "\u200B") ? "1" : "0";
+                        character = string.substr(i * 8 + _bit, 1);
+                        bit = (character == "\u200B") ? "1" : "0";
                         _bitsRep += bit;
                     }
                     bitsRep = window.parseInt(_bitsRep, 2);

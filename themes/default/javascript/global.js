@@ -7535,7 +7535,6 @@
             }, post);
         });
     };
-
 }(window.$cms || (window.$cms = {}), (!window.IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {})));
 
 (function ($cms) {
@@ -8315,7 +8314,7 @@
                 return;
             }
 
-            if (/:\/\/(.[^/]+)/.exec(url)[1] !== window.location.hostname) {
+            if (/:\/\/(.[^\/]+)/.exec(url)[1] !== window.location.hostname) {
                 return; // Cannot overlay, different domain
             }
 

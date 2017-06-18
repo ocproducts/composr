@@ -561,119 +561,119 @@
     };
 
     $cms.templates.comcodeOverlay = function comcodeOverlay(params) {
-            var container = this, id = params.id;
+        var container = this, id = params.id;
 
-            $cms.dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
-                var bi = document.getElementById('main_website_inner');
-                if (bi) {
-                    $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
-                }
-
-                document.getElementById(params.randIdOverlay).style.display = 'none';
-
-                if (id) {
-                    $cms.setCookie('og_' + id, '1', 365);
-                }
-            });
-
-            if (!id || ($cms.readCookie('og_' + id) !== '1')) {
-                window.setTimeout(function () {
-                    var element, bi;
-
-                    $cms.dom.smoothScroll(0);
-
-                    element = document.getElementById(params.randIdOverlay);
-                    element.style.display = 'block';
-                    element.parentNode.removeChild(element);
-                    document.body.appendChild(element);
-
-                    bi = document.getElementById('main_website_inner');
-
-                    if (bi) {
-                        $cms.dom.clearTransitionAndSetOpacity(bi, 0.4);
-                    }
-
-                    $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
-                    $cms.dom.fadeTransition(element, 100, 30, 3);
-
-
-                    if (params.timeout !== '-1') {
-                        window.setTimeout(function () {
-                            if (bi) {
-                                $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
-                            }
-
-                            if (element) {
-                                element.style.display = 'none';
-                            }
-                        }, params.timeout);
-                    }
-                }, params.timein + 100);
+        $cms.dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
+            var bi = document.getElementById('main_website_inner');
+            if (bi) {
+                $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
             }
-        };
+
+            document.getElementById(params.randIdOverlay).style.display = 'none';
+
+            if (id) {
+                $cms.setCookie('og_' + id, '1', 365);
+            }
+        });
+
+        if (!id || ($cms.readCookie('og_' + id) !== '1')) {
+            window.setTimeout(function () {
+                var element, bi;
+
+                $cms.dom.smoothScroll(0);
+
+                element = document.getElementById(params.randIdOverlay);
+                element.style.display = 'block';
+                element.parentNode.removeChild(element);
+                document.body.appendChild(element);
+
+                bi = document.getElementById('main_website_inner');
+
+                if (bi) {
+                    $cms.dom.clearTransitionAndSetOpacity(bi, 0.4);
+                }
+
+                $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
+                $cms.dom.fadeTransition(element, 100, 30, 3);
+
+
+                if (params.timeout !== '-1') {
+                    window.setTimeout(function () {
+                        if (bi) {
+                            $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
+                        }
+
+                        if (element) {
+                            element.style.display = 'none';
+                        }
+                    }, params.timeout);
+                }
+            }, params.timein + 100);
+        }
+    };
 
     $cms.templates.comcodeBigTabsController = function (params) {
-            var container = this,
-                passId = $cms.filter.id(params.passId),
-                id = passId + '_' + params.bigTabSets,
-                fullId = 'a' + id + '_big_tab',
-                tabs = params.tabs,
-                sections = [], i;
+        var container = this,
+            passId = $cms.filter.id(params.passId),
+            id = passId + '_' + params.bigTabSets,
+            fullId = 'a' + id + '_big_tab',
+            tabs = params.tabs,
+            sections = [], i;
 
-            /* Precache images */
-            new Image().src = $cms.img('{$IMG;,big_tabs_controller_button}');
-            new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_active}');
-            new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top_active}');
-            new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top}');
+        /* Precache images */
+        new Image().src = $cms.img('{$IMG;,big_tabs_controller_button}');
+        new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_active}');
+        new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top_active}');
+        new Image().src = $cms.img('{$IMG;,big_tabs_controller_button_top}');
 
-            for (i = 0; i < tabs.length; i++) {
-                sections.push($cms.filter.id(tabs[i]));
-            }
+        for (i = 0; i < tabs.length; i++) {
+            sections.push($cms.filter.id(tabs[i]));
+        }
 
-            window[fullId] = sections;
-            window['big_tabs_auto_cycler_' + id] = null;
+        window[fullId] = sections;
+        window['big_tabs_auto_cycler_' + id] = null;
 
-            if (params.switchTime !== undefined) {
-                window['big_tabs_switch_time_' + id] = params.switchtime;
-                window['move_between_big_tabs_' + id] = function () {
-                    var nextPage = 0, i, x;
+        if (params.switchTime !== undefined) {
+            window['big_tabs_switch_time_' + id] = params.switchtime;
+            window['move_between_big_tabs_' + id] = function () {
+                var nextPage = 0, i, x;
 
-                    for (i = 0; i < sections.length; i++) {
-                        x = document.getElementById(id + '_section_' + sections[i]);
-                        if ((x.style.display === 'block') && (x.style.position !== 'absolute')) {
-                            nextPage = i + 1;
-                        }
+                for (i = 0; i < sections.length; i++) {
+                    x = document.getElementById(id + '_section_' + sections[i]);
+                    if ((x.style.display === 'block') && (x.style.position !== 'absolute')) {
+                        nextPage = i + 1;
                     }
-
-                    if (nextPage === sections.length) {
-                        nextPage = 0;
-                    }
-
-                    flipPage(sections[nextPage], id, sections);
-                };
-
-                flipPage(0, id, sections);
-            }
-
-            $cms.dom.on(container, 'click', '.js-click-flip-page', function (e, clicked) {
-                var flipTo = (clicked.dataset.vwFlipTo !== undefined) ? clicked.dataset.vwFlipTo : 0;
-                if ($cms.isNumeric(flipTo)) {
-                    flipTo = Number(flipTo);
                 }
 
-                flipPage(flipTo, id, fullId);
-            });
-        };
+                if (nextPage === sections.length) {
+                    nextPage = 0;
+                }
+
+                flipPage(sections[nextPage], id, sections);
+            };
+
+            flipPage(0, id, sections);
+        }
+
+        $cms.dom.on(container, 'click', '.js-click-flip-page', function (e, clicked) {
+            var flipTo = (clicked.dataset.vwFlipTo !== undefined) ? clicked.dataset.vwFlipTo : 0;
+            if ($cms.isNumeric(flipTo)) {
+                flipTo = Number(flipTo);
+            }
+
+            flipPage(flipTo, id, fullId);
+        });
+    };
 
     $cms.templates.comcodeTabBody = function (params) {
-            var title = $cms.filter.id(params.title);
+        var title = $cms.filter.id(params.title);
 
-            if (params.blockCallUrl) {
-                window['load_tab__' + title] = function () {
-                    $cms.callBlock(params.blockCallUrl, '', document.getElementById('g_' + title));
-                };
-            }
-        };
+        if (params.blockCallUrl) {
+            window['load_tab__' + title] = function () {
+                $cms.callBlock(params.blockCallUrl, '', document.getElementById('g_' + title));
+            };
+        }
+    };
 
     $cms.templates.comcodeTicker = function (params, container) {
         window.tick_pos || (window.tick_pos = []);
@@ -709,41 +709,41 @@
     };
 
     $cms.templates.mediaYoutube = function (params, element) {
-            // Tie into callback event to see when finished, for our slideshows}
-            // API: https://developers.google.com/youtube/iframe_api_reference}
-            var youtubeCallback = function () {
-                var slideshowMode = document.getElementById('next_slide');
-                var player = new YT.Player(element.id, {
-                    width: params.width,
-                    height: params.height,
-                    videoId: params.remoteId,
-                    events: {
-                        'onReady': function () {
-                            if (slideshowMode) {
-                                player.playVideo();
-                            }
-                        },
-                        'onStateChange': function (newState) {
-                            if (slideshowMode) {
-                                if (newState == 0) playerStopped();
-                            }
+        // Tie into callback event to see when finished, for our slideshows}
+        // API: https://developers.google.com/youtube/iframe_api_reference}
+        var youtubeCallback = function () {
+            var slideshowMode = document.getElementById('next_slide');
+            var player = new YT.Player(element.id, {
+                width: params.width,
+                height: params.height,
+                videoId: params.remoteId,
+                events: {
+                    'onReady': function () {
+                        if (slideshowMode) {
+                            player.playVideo();
+                        }
+                    },
+                    'onStateChange': function (newState) {
+                        if (slideshowMode) {
+                            if (newState == 0) playerStopped();
                         }
                     }
-                });
-            };
-
-            if (window.done_youtube_player_init === undefined) {
-                var tag = document.createElement('script');
-                tag.src = "https://www.youtube.com/iframe_api";
-                var firstScriptTag = document.querySelector('script');
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-                window.done_youtube_player_init = true;
-
-                window.onYouTubeIframeAPIReady = youtubeCallback;
-            } else {
-                youtubeCallback();
-            }
+                }
+            });
         };
+
+        if (window.done_youtube_player_init === undefined) {
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.querySelector('script');
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+            window.done_youtube_player_init = true;
+
+            window.onYouTubeIframeAPIReady = youtubeCallback;
+        } else {
+            youtubeCallback();
+        }
+    };
 
     $cms.templates.mediaRealmedia = function (params) {
         // Tie into callback event to see when finished, for our slideshows
@@ -780,39 +780,39 @@
     };
 
     $cms.templates.mediaVideoGeneral = function (params) {
-            // Tie into callback event to see when finished, for our slideshows
-            // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
-            // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
-        window.$cmsLoad.push(function () {
-                if (document.getElementById('next_slide')) {
-                    stopSlideshowTimer();
+        // Tie into callback event to see when finished, for our slideshows
+        // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
+        // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
+    window.$cmsLoad.push(function () {
+            if (document.getElementById('next_slide')) {
+                stopSlideshowTimer();
 
-                    window.setTimeout(function () {
-                        var player = document.getElementById(params.playerId);
-                        // WMP
-                        player.addEventListener('playstatechange', function (newState) {
-                            if (newState == 1) {
-                                playerStopped();
-                            }
-                        });
-
-                        // Quicktime
-                        player.addEventListener('qt_ended', function () {
+                window.setTimeout(function () {
+                    var player = document.getElementById(params.playerId);
+                    // WMP
+                    player.addEventListener('playstatechange', function (newState) {
+                        if (newState == 1) {
                             playerStopped();
-                        });
+                        }
+                    });
 
-                        try {
-                            player.Play();
-                        } catch (e) {
-                        }
-                        try {
-                            player.controls.play();
-                        } catch (e) {
-                        }
-                    }, 1000);
-                }
-            });
-        };
+                    // Quicktime
+                    player.addEventListener('qt_ended', function () {
+                        playerStopped();
+                    });
+
+                    try {
+                        player.Play();
+                    } catch (e) {
+                    }
+                    try {
+                        player.controls.play();
+                    } catch (e) {
+                    }
+                }, 1000);
+            }
+        });
+    };
 
     $cms.templates.mediaVimeo = function (params) {
             // Tie into callback event to see when finished, for our slideshows}
