@@ -1002,9 +1002,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     }
                     break;
             }
-        } else // INVITES
+        }
 
-        if ((messages[i].nodeName == 'chat_invite') && (window.im_participant_template !== undefined)) {
+        else if ((messages[i].nodeName == 'chat_invite') && (window.im_participant_template !== undefined)) { // INVITES
             roomId = messages[i].textContent;
 
             if ((!document.getElementById('room_' + roomId)) && ((window.opened_popups['room_' + roomId] === undefined) || (window.opened_popups['room_' + roomId].is_shutdown))) {
@@ -1025,6 +1025,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 }
                 flashableAlert = true;
             }
+
         } else if (messages[i].nodeName == 'chat_tracking') { // TRACKING
             window.top_window.last_message_id = messages[i].getAttribute('last_msg');
             window.top_window.last_event_id = messages[i].getAttribute('last_event');

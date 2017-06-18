@@ -434,7 +434,7 @@
 
             window.$cmsLoad.push(function () {
                 aub = document.getElementById('attachment_upload_button');
-                if ((aub) && (aub.className.indexOf('for_field_' + params.postingFieldName + ' ') != -1))
+                if ((aub) && (aub.className.indexOf('for_field_' + params.postingFieldName + ' ') != -1)) {
                     window.rebuildAttachmentButtonForNext(params.postingFieldName, 'attachment_upload_button');
                 }
             });
