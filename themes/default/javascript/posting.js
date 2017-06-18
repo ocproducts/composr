@@ -1023,7 +1023,6 @@ function handleFormSaving(event, element, force) {
 
         // Save remotely
         if (navigator.onLine) {
-
             if ($cms.$DEV_MODE()) {
                 console.log('Doing AJAX auto-save');
             }

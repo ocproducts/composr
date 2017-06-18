@@ -356,7 +356,6 @@
         internaliseAjaxBlockWrapperLinks(params.blockCallUrl, document.getElementById(params.wrapperId), [], {}, false, true);
 
         $cms.dom.on(container, 'submit', 'form.js-form-submit-side-shoutbox', function (e, form) {
-
             if ($cms.form.checkFieldForBlankness(form.elements['shoutbox_message'], e)) {
                 $cms.ui.disableFormButtons(form);
             } else {

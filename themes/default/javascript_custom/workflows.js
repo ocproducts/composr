@@ -2,8 +2,6 @@
     'use strict';
 
     $cms.templates.formScreenInputVariousTicks = function formScreenInputVariousTicks(params, container) {
-
-
         $cms.dom.on(container, 'keypress', '.js-keypress-ensure-next-field', function (e, el) {
             _ensureNextField(e, el);
         });

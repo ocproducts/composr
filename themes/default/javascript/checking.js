@@ -873,16 +873,15 @@
                 ':': '@'
             },
             out = '',
-            char;
+            character;
         for (var i = 0; i < data.length; i++) {
-            char = data[i];
-            if (remapper[char] !== undefined) {
-                out += remapper[char];
+            character = data[i];
+            if (remapper[character] !== undefined) {
+                out += remapper[character];
             } else {
-                out += char;
+                out += character;
             }
         }
         return out;
     }
-
 }(window.$cms));

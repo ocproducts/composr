@@ -4844,9 +4844,9 @@
             }
 
             var loadingImage = $cms.dom.create('img', {
-                class: 'ajax_loading_block',
-                src: $cms.img('{$IMG;,loading}'),
-                css: {
+                'class': 'ajax_loading_block',
+                'src': $cms.img('{$IMG;,loading}'),
+                'css': {
                     position: 'absolute',
                     zIndex: 1000,
                     left: (targetDiv.offsetWidth / 2 - 10) + 'px'
@@ -8443,7 +8443,7 @@
 
         // Implementation for [data-click-tray-accordion-toggle]
         clickTrayAccordionToggle: function () {
-
+            // TODO: Salman ???
         },
 
         // Detecting of JavaScript support

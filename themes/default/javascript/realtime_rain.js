@@ -206,9 +206,9 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
         } catch (ignore) {}
 
         clonedMessage = $cms.dom.create('div', {
-            id: _clonedMessage.getAttribute('id'),
-            class: _clonedMessage.getAttribute('class'),
-            html: $cms.dom.html(_clonedMessage)
+            'id': _clonedMessage.getAttribute('id'),
+            'class': _clonedMessage.getAttribute('class'),
+            'html': $cms.dom.html(_clonedMessage)
         });
 
         leftPos += 200;
