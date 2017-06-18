@@ -1969,7 +1969,7 @@
     }
 
     /**
-     *  Emulates super.method() call
+     * Emulates super.method() call
      * @param SuperClass
      * @param that
      * @param method
@@ -6194,7 +6194,7 @@
     };
 
     /**
-     *  Tooltips that can work on any element with rich HTML support
+     * Tooltips that can work on any element with rich HTML support
      * @memberof $cms.ui
      * @param el - the element
      * @param event - the event handler
@@ -8844,7 +8844,6 @@
 
                 return true;
             }
-
         },
 
         /* Staff JS error display */
