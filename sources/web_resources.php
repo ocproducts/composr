@@ -206,6 +206,9 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
         if ($temp == 'defer') {
             $_theme = $GLOBALS['FORUM_DRIVER']->get_theme();
             $url = find_script('script') . '?script=' . urlencode($j) . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            if (!$minify) {
+                $url .= '&keep_minify=0';
+            }
             $js->attach(do_template('JAVASCRIPT_NEED_FULL', array('_GUID' => 'a2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url)));
         } else {
             if (!$minify) {
@@ -448,6 +451,9 @@ function _css_tempcode($c, &$css, &$css_need_inline, $inline = false, $context =
         if ($temp == 'defer') {
             $_theme = ($theme === null) ? $GLOBALS['FORUM_DRIVER']->get_theme() : $theme;
             $url = find_script('sheet') . '?sheet=' . urlencode($c) . '&theme=' . urlencode($_theme) . '&keep_theme=' . urlencode($_theme);
+            if (!$minify) {
+                $url .= '&keep_minify=0';
+            }
             $css->attach(do_template('CSS_NEED_FULL', array('_GUID' => 'g2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url), user_lang(), false, null, '.tpl', 'templates', $theme));
         } else {
             if (!$minify) {

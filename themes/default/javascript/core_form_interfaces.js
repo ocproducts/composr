@@ -411,7 +411,7 @@
     };
 
     $cms.templates.formScreenInputLine = function formScreenInputLine(params) {
-        $cms.requireJavascript('jquery_autocomplete').then(function () {
+        $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
             setUpComcodeAutocomplete(params.name, !!params.wysiwyg);
         });
     };
@@ -487,7 +487,7 @@
         }
 
         $cms.manageScrollHeight(textarea);
-        $cms.requireJavascript('jquery_autocomplete').then(function () {
+        $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
             setUpComcodeAutocomplete(params.name, required.includes('wysiwyg'));
         });
     };
@@ -828,7 +828,7 @@
         }
 
         $cms.manageScrollHeight(postEl);
-        $cms.requireJavascript('jquery_autocomplete').then(function () {
+        $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
             setUpComcodeAutocomplete(name, true);
         });
 

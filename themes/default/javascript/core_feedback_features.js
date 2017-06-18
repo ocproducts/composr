@@ -13,7 +13,7 @@
         this.form = this.$('form.js-form-comments');
         this.btnSubmit = this.$('.js-btn-submit-comments');
 
-        $cms.requireJavascript('jquery_autocomplete').then(function () {
+        $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
             setUpComcodeAutocomplete('post', !!params.wysiwyg);
         });
 
