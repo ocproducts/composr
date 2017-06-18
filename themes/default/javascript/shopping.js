@@ -80,7 +80,7 @@
     };
 
     $cms.templates.ecomAdminOrdersScreen = function ecomAdminOrdersScreen(params, container) {
-        $cms.dom.on(container, 'submit', '.js-submit-scroll-to-top', function (){
+        $cms.dom.on(container, 'submit', '.js-submit-scroll-to-top', function () {
             try {
                 window.scrollTo(0, 0);
             } catch (ignore) {}

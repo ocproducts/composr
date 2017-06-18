@@ -264,12 +264,6 @@ function clearCl() {
 window.commandrFoxyTextnodes || (window.commandrFoxyTextnodes = []);
 
 function bsod() {
-    // Nothing to see here, move along.
-    var commandLine = document.getElementById('commands_go_here');
-    commandLine.style.backgroundColor = '#0000FF';
-    bsodTraverseNode(window.document.documentElement);
-    setInterval(foxy, 1);
-
     function bsodTraverseNode(node) {
         var i, t;
         for (i = 0; i < node.childNodes.length; i++) {
@@ -292,4 +286,10 @@ function bsod() {
             t.replaceData(at, 1, rep);
         }
     }
+
+    // Nothing to see here, move along.
+    var commandLine = document.getElementById('commands_go_here');
+    commandLine.style.backgroundColor = '#0000FF';
+    bsodTraverseNode(window.document.documentElement);
+    setInterval(foxy, 1);
 }

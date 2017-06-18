@@ -261,6 +261,12 @@ function init__webstandards()
         'cursor' => '(' . $enforce_functional_url . '|(?i)auto|crosshair|default|move|text|wait|help|n-resize|e-resize|s-resize|w-resize|ne-resize|nw-resize|se-resize|sw-resize|pointer|not-allowed|no-drop|vertical-text|all-scroll|col-resize|row-resize|none|progress(?-i))', // hand is actually IE specific version of pointer; we'll use Tempcode so as to only show that when really needed
         'direction' => '(ltr|rtl)',
         'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption|flex|-ms-flexbox|-\w+-flex)',
+        'flex-wrap' => 'nowrap|wrap|wrap-reverse',
+        'flex-shrink' => $enforce_number,
+        'flex-grow' => $enforce_number,
+        'flex-basis' => $enforce_length,
+        'flex-direction' => 'row|row-reverse|column|column-reverse',
+        'flex-flow' => '(row|row-reverse|column|column-reverse) (nowrap|wrap|wrap-reverse)',
         'empty-cells' => 'show|hide',
         'float' => '(left|right|none)',
         'font' => '((caption|icon|menu|message-box|small-caption|status-bar|' . $enforce_font_style . '|' . $enforce_font_variant . '|' . $enforce_font_weight . '|' . $enforce_font_size . '|' . $enforce_normal_or_length . '|' . $enforce_font_list . ')( |$))+',

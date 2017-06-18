@@ -31,7 +31,7 @@
             }
         });
 
-        $cms.dom.on(container, 'mouseover', '.js-mouseover-set-time-line-position', function (){
+        $cms.dom.on(container, 'mouseover', '.js-mouseover-set-time-line-position', function () {
             setTimeLinePosition(window.current_time);
         });
 

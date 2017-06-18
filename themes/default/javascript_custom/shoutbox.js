@@ -4,8 +4,6 @@ window.sb_last_message_id = null;
 function sbChatCheck(roomId, lastMessageId, lastEventId) {
     window.sb_room_id = roomId;
     window.sb_last_message_id = lastMessageId;
-    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + roomId + "&message_id=" + lastMessageId + "&event_id=" + lastEventId;
-    $cms.doAjaxRequest(url + $cms.keepStub(false), sbChatCheckResponse);
 
     function sbChatCheckResponse(ajaxResultFrame, ajaxResult) {
         if (!ajaxResult) return; // Some server side glitch. As this polls, lets ignore it
@@ -57,4 +55,7 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
             }
         }
     }
+
+    var url = '{$FIND_SCRIPT_NOHTTP;,messages}?action=new&no_reenter_message=1&room_id=' + roomId + "&message_id=" + lastMessageId + "&event_id=" + lastEventId;
+    $cms.doAjaxRequest(url + $cms.keepStub(false), sbChatCheckResponse);
 }

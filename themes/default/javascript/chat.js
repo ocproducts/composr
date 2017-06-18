@@ -489,7 +489,7 @@ function chatLoad(roomId) {
 
     window.text_colour = document.getElementById('text_colour');
     if (window.text_colour) {
-        window.text_colour.style.color = text_colour.value;
+        window.text_colour.style.color = window.text_colour.value;
     }
 
     $cms.manageScrollHeight(document.getElementById('post'));
@@ -600,6 +600,16 @@ function do_input_new_room(fieldName) {
 
 // Post a chat message
 function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
+    function errorFunc() {
+        window.top_window.currently_sending_message = false;
+        element.disabled = false;
+
+        // Reschedule the next check (cc_timer was reset already higher up in function)
+        window.top_window.cc_timer = window.top_window.setTimeout(function () {
+            window.top_window.chatCheck(false, window.top_window.last_message_id, window.top_window.last_event_id);
+        }, window.MESSAGE_CHECK_INTERVAL);
+    }
+
     // Catch the data being submitted by the form, and send it through XMLHttpRequest if possible. Stop the form submission if this is achieved.
     var element = document.getElementById(fieldName);
     event && event.stopPropagation();
@@ -653,20 +663,18 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
     }
 
     return false;
-
-    function errorFunc() {
-        window.top_window.currently_sending_message = false;
-        element.disabled = false;
-
-        // Reschedule the next check (cc_timer was reset already higher up in function)
-        window.top_window.cc_timer = window.top_window.setTimeout(function () {
-            window.top_window.chatCheck(false, window.top_window.last_message_id, window.top_window.last_event_id);
-        }, window.MESSAGE_CHECK_INTERVAL);
-    }
 }
 
 // Check for new messages
 function chatCheck(backlog, messageId, eventId) {
+    function func(ajaxResultFrame, ajaxResult) {
+        chatCheckResponse(ajaxResultFrame, ajaxResult, backlog/*backlog = skip_incoming_sound*/);
+    }
+
+    function errorFunc() {
+        chatCheckResponse(null, null);
+    }
+
     if (window.currently_sending_message)  { // We'll reschedule once our currently-in-progress message is sent
         return null;
     }
@@ -697,14 +705,6 @@ function chatCheck(backlog, messageId, eventId) {
     }
 
     return null;
-
-    function func(ajaxResultFrame, ajaxResult) {
-        chatCheckResponse(ajaxResultFrame, ajaxResult, backlog/*backlog = skip_incoming_sound*/);
-    }
-
-    function errorFunc() {
-        chatCheckResponse(null, null);
-    }
 }
 
 // Check to see if there's been a packet loss
@@ -789,8 +789,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 if ((tabElement) && (tabElement.className.indexOf('chat_lobby_convos_current_tab') === -1)) {
                     tabElement.className = ((tabElement.className.indexOf('chat_lobby_convos_tab_first') !== -1) ? 'chat_lobby_convos_tab_first ' : '') + 'chat_lobby_convos_tab_new_messages';
                 }
-            } else if (( opened_popups['room_' + currentRoomId] !== undefined) && (!opened_popups['room_' + currentRoomId].is_shutdown) && (opened_popups['room_' + currentRoomId].document)) { // Popup
-                messageContainer = opened_popups['room_' + currentRoomId].document.getElementById('messages_window_' + currentRoomId);
+            } else if ((window.opened_popups['room_' + currentRoomId] !== undefined) && (!window.opened_popups['room_' + currentRoomId].is_shutdown) && (window.opened_popups['room_' + currentRoomId].document)) { // Popup
+                messageContainer = window.opened_popups['room_' + currentRoomId].document.getElementById('messages_window_' + currentRoomId);
             }
 
             if (!messageContainer) {
@@ -803,8 +803,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             if ((newestTimestampHere = null) || (newestTimestampHere < parseInt(timestamp))) newestTimestampHere = parseInt(timestamp);
 
             var doc = document;
-            if (opened_popups['room_' + currentRoomId] !== undefined) {
-                var popupWin = opened_popups['room_' + currentRoomId];
+            if (window.opened_popups['room_' + currentRoomId] !== undefined) {
+                var popupWin = window.opened_popups['room_' + currentRoomId];
                 if (!popupWin.document) { // We have nowhere to put the message
                     cannotProcessAll = true;
                     continue;
@@ -827,7 +827,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
             // Clone the node so that we may insert it
             clonedMessage = doc.createElement('div');
-            $cms.dom.html(clonedMessage, ( messages[i].xml !== undefined) ? messages[i].xml/*IE-only optimisation*/ : messages[i].firstElementChild.outerHTML);
+            $cms.dom.html(clonedMessage, (messages[i].xml !== undefined) ? messages[i].xml/*IE-only optimisation*/ : messages[i].firstElementChild.outerHTML);
             clonedMessage = clonedMessage.firstElementChild;
             clonedMessage.id = 'chat_message__' + id;
 
@@ -904,9 +904,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     for (var r in rooms) {
                         roomId = rooms[r];
                         var doc = document;
-                        if (( opened_popups['room_' + roomId] !== undefined) && (!opened_popups['room_' + roomId].is_shutdown)) {
-                            if (!opened_popups['room_' + roomId].document) continue;
-                            doc = opened_popups['room_' + roomId].document;
+                        if ((window.opened_popups['room_' + roomId] !== undefined) && (!window.opened_popups['room_' + roomId].is_shutdown)) {
+                            if (!window.opened_popups['room_' + roomId].document) continue;
+                            doc = window.opened_popups['room_' + roomId].document;
                         }
                         tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
                         if (tmpElement) {
@@ -929,9 +929,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     for (var r in rooms) {
                         roomId = rooms[r];
                         var doc = document;
-                        if ( opened_popups['room_' + roomId] !== undefined) {
-                            if (!opened_popups['room_' + roomId].document) continue;
-                            doc = opened_popups['room_' + roomId].document;
+                        if window.opened_popups['room_' + roomId] !== undefined) {
+                            if (!window.opened_popups['room_' + roomId].document) continue;
+                            doc = window.opened_popups['room_' + roomId].document;
                         }
                         tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
                         if (tmpElement) $cms.dom.html(tmpElement, '{!INACTIVE;^}');
@@ -948,9 +948,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     addImMember(roomId, memberId, username, messages[i].getAttribute('away') == '1', avatarUrl);
 
                     var doc = document;
-                    if (( opened_popups['room_' + roomId] !== undefined) && (!opened_popups['room_' + roomId].is_shutdown)) {
-                        if (!opened_popups['room_' + roomId].document) break;
-                        doc = opened_popups['room_' + roomId].document;
+                    if ((window.opened_popups['room_' + roomId] !== undefined) && (!window.opened_popups['room_' + roomId].is_shutdown)) {
+                        if (!window.opened_popups['room_' + roomId].document) break;
+                        doc = window.opened_popups['room_' + roomId].document;
                     }
                     tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
                     if (tmpElement) {
@@ -972,9 +972,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
                 case 'DEINVOLVE_IM':
                     var doc = document;
-                    if ( opened_popups['room_' + roomId] !== undefined) {
-                        if (!opened_popups['room_' + roomId].document) break;
-                        doc = opened_popups['room_' + roomId].document;
+                    if (window.opened_popups['room_' + roomId] !== undefined) {
+                        if (!window.opened_popups['room_' + roomId].document) break;
+                        doc = window.opened_popups['room_' + roomId].document;
                     }
 
                     tmpElement = doc.getElementById('participant__' + roomId + '__' + memberId);
@@ -1011,7 +1011,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
         if ((messages[i].nodeName == 'chat_invite') && (window.im_participant_template !== undefined)) {
             roomId = messages[i].textContent;
 
-            if ((!document.getElementById('room_' + roomId)) && (( opened_popups['room_' + roomId] === undefined) || (opened_popups['room_' + roomId].is_shutdown))) {
+            if ((!document.getElementById('room_' + roomId)) && ((window.opened_popups['room_' + roomId] === undefined) || (window.opened_popups['room_' + roomId].is_shutdown))) {
                 roomName = messages[i].getAttribute('room_name');
                 avatarUrl = messages[i].getAttribute('avatar_url');
                 participants = messages[i].getAttribute('participants');
@@ -1037,17 +1037,17 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
     // Get attention, to indicate something has happened
     if (flashableAlert) {
-        if ((roomId) && ( opened_popups['room_' + roomId] !== undefined) && (!opened_popups['room_' + roomId].is_shutdown)) {
-            if ( opened_popups['room_' + roomId].getAttention !== undefined) opened_popups['room_' + roomId].getAttention();
-            if ( opened_popups['room_' + roomId].focus !== undefined) {
+        if ((roomId) && (window.opened_popups['room_' + roomId] !== undefined) && (!window.opened_popups['room_' + roomId].is_shutdown)) {
+            if (window.opened_popups['room_' + roomId].getAttention !== undefined) window.opened_popups['room_' + roomId].getAttention();
+            if (window.opened_popups['room_' + roomId].focus !== undefined) {
                 try {
-                    opened_popups['room_' + roomId].focus();
+                    window.opened_popups['room_' + roomId].focus();
                 }
                 catch (e) {
                 }
             }
-            if (opened_popups['room_' + roomId].document) {
-                var post = opened_popups['room_' + roomId].document.getElementById('post');
+            if (window.opened_popups['room_' + roomId].document) {
+                var post = window.opened_popups['room_' + roomId].document.getElementById('post');
                 if (post) {
                     try {
                         post.focus();
@@ -1082,10 +1082,10 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
     function addImMember(roomId, memberId, username, away, avatarUrl) {
         window.setTimeout(function () {
             var doc = document;
-            if ( opened_popups['room_' + roomId] !== undefined) {
-                if (opened_popups['room_' + roomId].is_shutdown) return;
-                if (!opened_popups['room_' + roomId].document) return;
-                doc = opened_popups['room_' + roomId].document;
+            if (window.opened_popups['room_' + roomId] !== undefined) {
+                if (window.opened_popups['room_' + roomId].is_shutdown) return;
+                if (!window.opened_popups['room_' + roomId].document) return;
+                doc = window.opened_popups['room_' + roomId].document;
             }
             if (away) {
                 var tmpElement = doc.getElementById('online_' + memberId);
@@ -1180,11 +1180,11 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 $cms.ui.alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
             }
             window.setTimeout(function () { // Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
-                if (( opened_popups['room_' + roomId] !== undefined) && (opened_popups['room_' + roomId] != null) && (!opened_popups['room_' + roomId].is_shutdown)) { // It's been reattached already
+                if ((window.opened_popups['room_' + roomId] !== undefined) && (window.opened_popups['room_' + roomId] != null) && (!window.opened_popups['room_' + roomId].is_shutdown)) { // It's been reattached already
                     return;
                 }
 
-                opened_popups['room_' + roomId] = newWindow;
+                window.opened_popups['room_' + roomId] = newWindow;
 
                 if ((newWindow) && (newWindow.document !== undefined)) {
                     newWindow.document.open();
@@ -1231,6 +1231,31 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 }
 
 function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, avatarUrl, roomId) {
+    // Close link
+    function closePopup() {
+        if (div) {
+            if (roomId) {
+                $cms.ui.generateQuestionUi(
+                    '{!HOW_REMOVE_CHAT_NOTIFICATION;^}',
+                    {/*buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',*/buttons__proceed: '{!CLOSE;^}', buttons__ignore: '{!HIDE;^}'},
+                    '{!REMOVE_CHAT_NOTIFICATION;^}',
+                    null,
+                    function (answer) {
+                        /*if (answer.toLowerCase()=='{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) return;*/
+                        if (answer.toLowerCase() == '{!CLOSE;^}'.toLowerCase()) {
+                            deinvolveIm(roomId, false, false);
+                        }
+                        document.body.removeChild(div);
+                        div = null;
+                    }
+                );
+            } else {
+                document.body.removeChild(div);
+                div = null;
+            }
+        }
+    }
+
     if (roomId === undefined) {
         roomId = null;
     }
@@ -1241,11 +1266,11 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
 
     // Make sure to not show multiple equiv ones, which could happen in various situations
     if (roomId !== null) {
-        if (( window.already_received_room_invites[roomId] !== undefined) && (window.already_received_room_invites[roomId]))
+        if ((window.already_received_room_invites[roomId] !== undefined) && (window.already_received_room_invites[roomId]))
             return;
         window.already_received_room_invites[roomId] = true;
     } else {
-        if (( window.already_received_contact_alert[memberId] !== undefined) && (window.already_received_contact_alert[memberId]))
+        if ((window.already_received_contact_alert[memberId] !== undefined) && (window.already_received_contact_alert[memberId]))
             return;
         window.already_received_contact_alert[memberId] = true;
     }
@@ -1318,31 +1343,6 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
         window.setTimeout(function () {
             closePopup();
         }, window.TRANSITORY_ALERT_TIME);
-    }
-
-    // Close link
-    function closePopup() {
-        if (div) {
-            if (roomId) {
-                $cms.ui.generateQuestionUi(
-                    '{!HOW_REMOVE_CHAT_NOTIFICATION;^}',
-                    {/*buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',*/buttons__proceed: '{!CLOSE;^}', buttons__ignore: '{!HIDE;^}'},
-                    '{!REMOVE_CHAT_NOTIFICATION;^}',
-                    null,
-                    function (answer) {
-                        /*if (answer.toLowerCase()=='{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) return;*/
-                        if (answer.toLowerCase() == '{!CLOSE;^}'.toLowerCase()) {
-                            deinvolveIm(roomId, false, false);
-                        }
-                        document.body.removeChild(div);
-                        div = null;
-                    }
-                );
-            } else {
-                document.body.removeChild(div);
-                div = null;
-            }
-        }
     }
 }
 
@@ -1425,7 +1425,7 @@ function findImConvoRoomIds() {
     var chatLobbyConvosTabs = document.getElementById('chat_lobby_convos_tabs');
     var rooms = [], i;
     if (!chatLobbyConvosTabs) {
-        for (i in opened_popups) {
+        for (i in window.opened_popups) {
             if (i.substr(0, 5) === 'room_') {
                 rooms.push(window.parseInt(i.substr(5)));
             }

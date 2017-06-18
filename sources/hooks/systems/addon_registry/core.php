@@ -1412,6 +1412,7 @@ class Hook_addon_registry_core
             'themes/default/css/widget_plupload.css',
             'themes/default/javascript/plupload.js',
             'themes/admin/templates/ADMIN_ZONE_SEARCH.tpl',
+            'themes/default/javascript/core.js',
             'themes/admin/javascript/core.js',
             'themes/default/text/NEWSLETTER_DEFAULT_FCOMCODE.txt',
             'themes/default/images/.htaccess',

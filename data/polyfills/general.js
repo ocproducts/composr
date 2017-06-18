@@ -1,4 +1,4 @@
-(function (){
+(function () {
     'use strict';
     // Credit for `isSymbol` and `definePolyfill`: https://github.com/inexorabletash/polyfill/blob/master/es6.js
     function isSymbol(s) {
