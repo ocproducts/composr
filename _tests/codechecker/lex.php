@@ -186,39 +186,47 @@ function lex($text = null)
         $TEXT = $text;
     }
 
-    // Composr doesn't make use of this, so no need to understand it
     $matches = array();
-    if (strpos($TEXT, '<' . '?php') === false) {
-        if (strpos($TEXT, '<' . '?') !== false) {
-            if (strpos($TEXT, '?' . '>') !== false) {
-                log_warning('It is best to only have one PHP code block and not to terminate it. This stops problems with white-space at the end of files.');
-            } else {
-                $TEXT .= '?' . '>' . ((substr($TEXT, -1) == "\n") ? "\n" : '');
-            }
-
-            log_warning('Use "<' . '?php" tagging for compatibility.');
-            $num_matches = preg_match_all('#<\\?(.*)\\?' . '>#sU', $TEXT, $matches, PREG_OFFSET_CAPTURE);
-        } elseif (strpos($TEXT, '<' . '%') !== false) {
-            if (strpos($TEXT, '%' . '>') !== false) {
-                log_warning('It is best to only have one PHP code block and not to terminate it. This stops problems with white-space at the end of files.');
-            } else {
-                $TEXT .= '%' . '>' . ((substr($TEXT, -1) == "\n") ? "\n" : '');
-            }
-
-            log_warning('Use "<' . '?php" tagging for compatibility.');
-            $num_matches = preg_match_all('#<%(.*)\\%>#sU', $TEXT, $matches, PREG_OFFSET_CAPTURE);
-        } else {
-            $num_matches = 0;
-        }
-    } else {
+    if (strpos($TEXT, '<' . '?=') !== false) { // PHP equation
         if (strpos($TEXT, '?' . '>') !== false) {
             log_warning('It is best to only have one PHP code block and not to terminate it. This stops problems with white-space at the end of files.');
         } else {
-            $TEXT .= '?' . '>' . ((substr($TEXT, -1) == "\n") ? "\n" : '');
+            $TEXT .= '?' . '>' . ((substr($TEXT, -1) == "\n") ? "\n" : ''); // Append missing closing tag
         }
 
-        $num_matches = preg_match_all('#<\\?(php|=)(.*)\\?' . '>#sU', $TEXT, $matches, PREG_OFFSET_CAPTURE);
+        $num_matches = preg_match_all('#<\\?(=)(.*)\\?' . '>#sU', $TEXT, $matches, PREG_OFFSET_CAPTURE);
+    } elseif (strpos($TEXT, '<' . '?php') !== false) { // PHP normal
+        if (strpos($TEXT, '?' . '>') !== false) {
+            log_warning('It is best to only have one PHP code block and not to terminate it. This stops problems with white-space at the end of files.');
+        } else {
+            $TEXT .= '?' . '>' . ((substr($TEXT, -1) == "\n") ? "\n" : ''); // Append missing closing tag
+        }
+
+        $num_matches = preg_match_all('#<\\?(php)(.*)\\?' . '>#sU', $TEXT, $matches, PREG_OFFSET_CAPTURE);
+    } elseif (strpos($TEXT, '<' . '?') !== false) { // Short-tags
+        // Composr doesn't make use of this, so no need to understand it
+        if (strpos($TEXT, '?' . '>') !== false) {
+            log_warning('It is best to only have one PHP code block and not to terminate it. This stops problems with white-space at the end of files.');
+        } else {
+            $TEXT .= '?' . '>' . ((substr($TEXT, -1) == "\n") ? "\n" : ''); // Append missing closing tag
+        }
+
+        log_warning('Use "<' . '?php" tagging for compatibility.');
+        $num_matches = preg_match_all('#<\\?()(.*)\\?' . '>#sU', $TEXT, $matches, PREG_OFFSET_CAPTURE);
+    } elseif (strpos($TEXT, '<' . '%') !== false) { // ASP
+        // Composr doesn't make use of this, so no need to understand it
+        if (strpos($TEXT, '%' . '>') !== false) {
+            log_warning('It is best to only have one PHP code block and not to terminate it. This stops problems with white-space at the end of files.');
+        } else {
+            $TEXT .= '%' . '>' . ((substr($TEXT, -1) == "\n") ? "\n" : ''); // Append missing closing tag
+        }
+
+        log_warning('Use "<' . '?php" tagging for compatibility.');
+        $num_matches = preg_match_all('#<%()(.*)\\%>#sU', $TEXT, $matches, PREG_OFFSET_CAPTURE);
+    } else { // Unknown
+        $num_matches = 0;
     }
+
     $new_text = '';
     global $BETWEEN_ALL;
     $BETWEEN_ALL = '';
@@ -255,6 +263,7 @@ function lex($text = null)
         $BETWEEN_ALL = $TEXT;
     }
     $TEXT = $new_text;
+
     if ((trim($BETWEEN_ALL) != '') && (isset($GLOBALS['FILENAME']))) {
         global $WITHIN_PHP;
         $WITHIN_PHP = true;

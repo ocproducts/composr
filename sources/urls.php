@@ -1457,7 +1457,7 @@ function check_url_exists($url, $test_freq_secs)
     $test1 = $GLOBALS['SITE_DB']->query_select('urls_checked', array('url_check_time', 'url_exists'), array('url' => $url), 'ORDER BY url_check_time DESC', 1);
 
     if ((!isset($test1[0])) || ($test1[0]['url_check_time'] < time() - $test_freq_secs)) {
-        $test2 = http_get_contents($url, array('trigger_error' => false, 'byte_limit' => 0));
+        $test2 = cms_http_request($url, array('trigger_error' => false, 'byte_limit' => 0));
         if (($test2 === null) && ($test2->message == 403)) {
             $test2 = http_get_contents($url, array('trigger_error' => false, 'byte_limit' => 1)); // Try without HEAD, sometimes it's not liked
         }

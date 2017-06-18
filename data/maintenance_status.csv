@@ -12,7 +12,7 @@ msn,Multi-site-networks,,,Not regularly tested. Liable to break due to cross-cut
 demonstratr,Shared-installs,ocProducts,,Not regularly tested. Liable to break due to cross-cutting complexity.,No
 database_ibm,IBM DB2 database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No
 database_oracle,Oracle database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No
-database_postgresql,PostgreSQL database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No
+database_postgresql,PostgreSQL database driver,ocProducts,,Not automatically regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No
 database_sqlserver,Microsoft SQL server database driver,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No
 database_xml,XML database driver,,,For developers only.,No
 platform_gae,Google App Engine platform support,,,Not regularly tested due to needing a testing platform. Could potentially break due to third-party changes.,No

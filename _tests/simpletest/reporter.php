@@ -100,7 +100,7 @@ class HtmlReporter extends SimpleReporter {
 
         if ($colour == "green" && !empty($_GET['close_if_passed'])) {
             print "
-                <script>
+                <script nonce=\"" . $GLOBALS['CSP_NONCE'] . "\">
                     if (typeof window.history!='undefined' && typeof window.history.length!='undefined' && window.history.length==1)
                     {
                         window.close();

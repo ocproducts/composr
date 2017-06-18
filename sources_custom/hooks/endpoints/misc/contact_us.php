@@ -27,6 +27,10 @@ class Hook_endpoint_account_contact_us
      */
     public function run($type, $id)
     {
+        if (!addon_installed('tickets')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         // Gather input
         $id = uniqid('', true);
         $category = post_param_string('category', do_lang('GENERAL'));

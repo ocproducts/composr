@@ -41,7 +41,7 @@
             var action = form.elements['action'].value;
 
             if (!action) {
-                $cms.ui.alert('{!SELECT_AN_ACTION;^}');
+                $cms.ui.alert('{!filedump:SELECT_AN_ACTION;^}');
                 return false;
             }
 

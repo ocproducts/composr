@@ -278,7 +278,7 @@ class DatabaseRepair
                             $field_type = $expected_tables[$table_name]['fields'][$field_name];
                         } else {
                             $field_type_raw = $field['type'];
-                            $field_type = $this->type_to_composr_type($field_name, $field_type_raw, $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
+                            $field_type = $this->db_type_to_composr_type($field_name, $field_type_raw, $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
                         }
 
                         if (preg_match('#^(.*)__(text_parsed|source_user)$#', $field_name, $matches) != 0) {
@@ -321,7 +321,7 @@ class DatabaseRepair
                     if (isset($expected_tables[$table_name]['fields'][$field_name])) {
                         $table_cleaned[$field_name] = $expected_tables[$table_name]['fields'][$field_name];
                     } else {
-                        $table_cleaned[$field_name] = $this->type_to_composr_type($field_name, $field['type'], $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
+                        $table_cleaned[$field_name] = $this->db_type_to_composr_type($field_name, $field['type'], $field['is_auto_increment'], $field['is_primary'], $field['null_ok']);
                     }
                 }
 

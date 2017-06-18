@@ -18,7 +18,7 @@
         confirmForfeit: function (e, target) {
             var form = target.form;
 
-            $cms.ui.confirm('{!VOTE_FORFEIGHT;^}', function(answer) {
+            $cms.ui.confirm('{!polls:VOTE_FORFEIGHT;^}', function(answer) {
                 if (answer) {
                     form.submit();
                 }

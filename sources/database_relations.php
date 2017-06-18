@@ -657,7 +657,7 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
                             } elseif (is_integer($v)) {
                                 $values .= strval($v);
                             } else {
-                                $values .= '\'' . $db_static->db_escape_string($v) . '\'';
+                                $values .= '\'' . db_escape_string($v) . '\'';
                             }
                         }
 

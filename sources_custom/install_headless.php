@@ -25,8 +25,8 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
         $success = ($http_result->message == '200');
 
         if ((!$success) && (isset($_GET['debug']))) {
+            @var_dump($http_result->message);
             @var_dump(escape_html($data));
-            @var_dump($GLOBALS['HTTP_MESSAGE']);
 
             $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data));
             @print(escape_html($error));
@@ -180,14 +180,13 @@ function _do_install_to($database, $username, $password, $table_prefix, $safe_mo
         }
         $http_result = cms_http_request($url, array('post_params' => $post));
         $data = $http_result->data;
-        if (strpos(strip_tags($data), 'An error has occurred') !== false) {
-            $http_result->message = '500';
-        }
         $success = ($http_result->message == '200');
 
         if ((!$success) && (isset($_GET['debug']))) {
+            @var_dump($url);
+            @var_dump($http_result->message);
+
             @var_dump(escape_html($data));
-            @var_dump($GLOBALS['HTTP_MESSAGE']);
 
             $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data));
             @print(escape_html($error));

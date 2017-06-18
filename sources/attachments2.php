@@ -352,11 +352,9 @@ function insert_lang_comcode_attachments($field_name, $level, $text, $type, $id,
         'language' => user_lang(),
     );
     if ($lang_id === null) {
-        if ($lang_id === null) {
-            $lang_id = $db->query_insert('translate', $map, true);
-        } else {
-            $db->query_insert('translate', array('id' => $lang_id) + $map);
-        }
+        $lang_id = $db->query_insert('translate', $map, true);
+    } else {
+        $db->query_insert('translate', array('id' => $lang_id) + $map);
     }
 
     table_id_locking_end($db, $lang_id, $lock);
