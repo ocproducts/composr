@@ -287,7 +287,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
 
     @ignore_user_abort(false);
 
-    $_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $post_id), 'forum', null, false, false, true, 'post_' . strval($post_id));
+    $_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $post_id), 'forum', array(), false, false, true, 'post_' . strval($post_id));
     $url = $_url->evaluate();
     if ($validated == 0) {
         if ($check_permissions) {

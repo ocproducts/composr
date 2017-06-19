@@ -272,7 +272,7 @@ class Module_admin_sitemap
         $zone = post_param_string('zone', null);
 
         if ($zone === null) {
-            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
+            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
             $hidden = build_keep_form_fields('', true);
 
             $from = $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_title', array('zone_name' => get_param_string('zone')));

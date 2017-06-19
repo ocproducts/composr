@@ -51,7 +51,7 @@ function find_post_id_url($post_id)
     if ($test_threaded !== null) {
         $map['threaded'] = $test_threaded;
     }
-    $_redirect = build_url($map, '_SELF', null, true);
+    $_redirect = build_url($map, '_SELF', array(), true);
     $redirect = $_redirect->evaluate();
     $redirect .= '#post_' . strval($post_id);
 
@@ -104,7 +104,7 @@ function find_first_unread_url($id)
             $map[$key] = $val;
         }
     }
-    $_redirect = build_url($map, '_SELF', null, true);
+    $_redirect = build_url($map, '_SELF', array(), true);
     $redirect = $_redirect->evaluate();
     if ($first_unread_id > 0) {
         $redirect .= '#post_' . strval($first_unread_id);
@@ -734,7 +734,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
     if (array_key_exists('may_edit', $_postdetails)) {
         $map = array('page' => 'topics', 'type' => 'edit_post', 'id' => $_postdetails['id']);
         if ($rendering_context == 'tickets') {
-            $map['redirect'] = static_evaluate_tempcode(build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => get_param_string('id')), get_module_zone('tickets'), null, false, false, false, '_top'));
+            $map['redirect'] = static_evaluate_tempcode(build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => get_param_string('id')), get_module_zone('tickets'), array(), false, false, false, '_top'));
         } else {
             $map['redirect'] = get_self_url(true);
         }
@@ -757,7 +757,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
     if (array_key_exists('may_delete', $_postdetails)) {
         $map = array('page' => 'topics', 'type' => 'delete_post', 'id' => $_postdetails['id']);
         if ($rendering_context == 'tickets') {
-            $map['redirect'] = static_evaluate_tempcode(build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => get_param_string('id')), get_module_zone('tickets'), null, false, false, false, '_top'));
+            $map['redirect'] = static_evaluate_tempcode(build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => get_param_string('id')), get_module_zone('tickets'), array(), false, false, false, '_top'));
         } else {
             $map['redirect'] = get_self_url(true);
         }

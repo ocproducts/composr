@@ -525,7 +525,7 @@ class Module_newsletter
             $password = do_lang('NEWSLETTER_PASSWORD_ENCRYPTED');
         }
 
-        $_url = build_url(array('page' => 'newsletter', 'type' => 'confirm', 'email' => $email, 'confirm' => $code_confirm), '_SELF', null, false, true);
+        $_url = build_url(array('page' => 'newsletter', 'type' => 'confirm', 'email' => $email, 'confirm' => $code_confirm), '_SELF', array(), false, true);
         $url = $_url->evaluate();
         $message = do_lang('NEWSLETTER_SIGNUP_TEXT', comcode_escape($url), comcode_escape($password), array($forename, $surname, $email, get_site_name()));
 

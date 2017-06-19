@@ -118,7 +118,7 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
     $their_displayname = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id, true);
     $yes = $GLOBALS['FORUM_DRIVER']->get_member_email_allowed($recipient_id);
     if (($yes) && ($send_email)) {
-        $_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $recipient_id), get_module_zone('points'), null, false, false, true);
+        $_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $recipient_id), get_module_zone('points'), array(), false, false, true);
         $url = $_url->evaluate();
         require_code('notifications');
         if ($anonymous) {

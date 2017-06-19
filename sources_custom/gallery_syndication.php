@@ -246,7 +246,7 @@ function _sync_onlylocal_video($ob, $local_video)
     $service_name = preg_replace('#^video\_syndication\_#', '', get_class($ob));
     $service_title = $ob->get_service_title();
 
-    $local_video_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $local_video['local_id']), get_module_zone('galleries'), null, false, false, true);
+    $local_video_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $local_video['local_id']), get_module_zone('galleries'), array(), false, false, true);
     $_local_video_url = $local_video_url->evaluate();
     $_local_video_url_cleaned = preg_replace('#^http://#', '', $_local_video_url); // Useful if URLs are not permitted
 

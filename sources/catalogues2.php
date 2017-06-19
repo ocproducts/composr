@@ -1040,7 +1040,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
             require_lang('catalogues');
             require_code('notifications');
             $subject = do_lang('CATALOGUE_ENTRY_NOTIFICATION_MAIL_SUBJECT', get_site_name(), strip_comcode($title), array($catalogue_title));
-            $self_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $id), get_module_zone('catalogues'), null, false, false, true);
+            $self_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $id), get_module_zone('catalogues'), array(), false, false, true);
             $mail = do_notification_lang('CATALOGUE_ENTRY_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(strip_comcode($title)), array(comcode_escape($self_url->evaluate()), comcode_escape($catalogue_title)));
             dispatch_notification('catalogue_entry__' . $catalogue_name, strval($category_id), $subject, $mail, $privacy_limits);
         }
@@ -1194,7 +1194,7 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
     require_code('seo2');
     seo_meta_set_for_explicit('catalogue_entry', strval($id), $meta_keywords, $meta_description);
 
-    $self_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $id), get_module_zone('catalogues'), null, false, false, true);
+    $self_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $id), get_module_zone('catalogues'), array(), false, false, true);
 
     if (($category_id != $old_category_id) || ($was_validated != ($validated == 1))) {
         calculate_category_child_count_cache($category_id);

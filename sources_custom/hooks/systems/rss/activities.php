@@ -61,7 +61,7 @@ class Hook_rss_activities
             $category = '';
             $category_raw = '';
 
-            $view_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['a_member_id']), get_module_zone('members'), null, false, false, true);
+            $view_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['a_member_id']), get_module_zone('members'), array(), false, false, true);
 
             $if_comments = new Tempcode();
 

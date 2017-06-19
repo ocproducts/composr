@@ -84,7 +84,7 @@ class Hook_whatsnew_calendar
 
         foreach ($rows as $row) {
             $id = $row['id'];
-            $_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar'), null, false, false, true);
+            $_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar'), array(), false, false, true);
             $url = $_url->evaluate();
             $name = get_translated_text($row['e_title'], null, $lang);
             $description = get_translated_text($row['e_content'], null, $lang);

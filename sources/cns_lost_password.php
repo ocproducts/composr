@@ -98,9 +98,9 @@ function lost_password_emailer_step($username, $email_address)
     // Send confirm mail
     if ($password_reset_process != 'ultra') {
         $zone = get_module_zone('lost_password');
-        $_url = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => $code, 'member' => $member_id), $zone, null, false, false, true);
+        $_url = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => $code, 'member' => $member_id), $zone, array(), false, false, true);
         $url = $_url->evaluate();
-        $_url_simple = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => null, 'username' => null, 'member' => null), $zone, null, false, false, true);
+        $_url_simple = build_url(array('page' => 'lost_password', 'type' => 'step3', 'code' => null, 'username' => null, 'member' => null), $zone, array(), false, false, true);
         $url_simple = $_url_simple->evaluate();
         $message = do_lang($temporary_passwords ? 'LOST_PASSWORD_TEXT_TEMPORARY' : 'LOST_PASSWORD_TEXT', comcode_escape(get_site_name()), comcode_escape($username), array($url, comcode_escape($url_simple), strval($member_id), $code), get_lang($member_id));
         require_code('mail');

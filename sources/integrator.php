@@ -136,7 +136,7 @@ function reprocess_url($url, $operation_base_url)
     }
 
     // Link filtering, so as to make non-external/non-new-window hyperlinks link through the Composr module
-    $_self_url = build_url(array('page' => '_SELF'), '_SELF', null, false, true);
+    $_self_url = build_url(array('page' => '_SELF'), '_SELF', array(), false, true);
     $self_url = $_self_url->evaluate();
     $expressions = array(
         '(src)="([^"]*)"', '(src)=\'([^\'])*\'',

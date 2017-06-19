@@ -367,14 +367,14 @@ function has_keep_parameters()
  *
  * @param  array $vars A map of parameter names to parameter values. E.g. array('page'=>'example','type'=>'foo','id'=>2). Values may be strings or integers, or Tempcode, or null. null indicates "skip this". 'page' cannot be null.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS: USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
- * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are true. (null: don't skip any)
+ * @param  array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are true.
  * @param  boolean $keep_all Whether to keep all non-skipped parameters that were in the current URL, in this URL
  * @param  boolean $avoid_remap Whether to avoid URL Schemes (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
  * @return Tempcode The URL in Tempcode format.
  */
-function build_url($vars, $zone_name = '_SEARCH', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
+function build_url($vars, $zone_name = '_SEARCH', $skip = array(), $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
 {
     if (empty($vars['page']) && running_script('index')) { // For SEO purposes we need to make sure we get the right URL
         $vars['page'] = get_zone_default_page($zone_name);
@@ -418,7 +418,7 @@ function build_url($vars, $zone_name = '_SEARCH', $skip = null, $keep_all = fals
         $skip_keep ? '1' : '0',
         $keep_all ? '1' : '0'
     );
-    if ($skip !== null) {
+    if ($skip != array()) {
         $arr[] = implode('|', array_keys($skip));
     }
 

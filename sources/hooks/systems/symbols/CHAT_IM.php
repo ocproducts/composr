@@ -86,9 +86,9 @@ class Hook_symbol_CHAT_IM
                     'POPUP' => true,
                 ));
 
-                $make_friend_url = build_url(array('page' => '_SELF', 'type' => 'friend_add', 'member_id' => '__id__'), '_SELF', null, false, false, true);
+                $make_friend_url = build_url(array('page' => '_SELF', 'type' => 'friend_add', 'member_id' => '__id__'), '_SELF', array(), false, false, true);
 
-                $block_member_url = build_url(array('page' => '_SELF', 'type' => 'blocking_add', 'member_id' => '__id__'), '_SELF', null, false, false, true);
+                $block_member_url = build_url(array('page' => '_SELF', 'type' => 'blocking_add', 'member_id' => '__id__'), '_SELF', array(), false, false, true);
 
                 $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url(-100);
                 $profile_url = str_replace('-100', '__id__', $profile_url);

@@ -1298,7 +1298,7 @@ class Module_tickets
         enable_notifications('ticket_assigned_staff', $ticket_id, $member_id);
 
         // Notification to support operator that they are assigned
-        $_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', null, false, true, true);
+        $_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', array(), false, true, true);
         $ticket_url = $_ticket_url->evaluate();
         $subject = do_lang(
             'TICKET_ASSIGNED_SUBJECT',
@@ -1353,7 +1353,7 @@ class Module_tickets
         require_code('notifications');
 
         // Notification to support operator that they are assigned
-        $_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', null, false, true, true);
+        $_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), '_SELF', array(), false, true, true);
         $ticket_url = $_ticket_url->evaluate();
         $subject = do_lang(
             'TICKET_UNASSIGNED_SUBJECT',

@@ -1028,7 +1028,7 @@ function get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root
         $c_value = $c_value->evaluate();
     }
     $url_map = array('page' => 'catalogues', 'type' => 'entry', 'id' => $id);
-    $self_url = build_url($url_map, $zone, null, false, false, true);
+    $self_url = build_url($url_map, $zone, array(), false, false, true);
     if (($feedback_details) || ($only_fields !== array(0))) {
         require_code('feedback');
         $map['RATING'] = ($entry['allow_rating'] == 1) ? display_rating($self_url, $c_value, 'catalogues__' . $catalogue_name, strval($id), $separate_view_screen ? 'RATING_INLINE_STATIC' : 'RATING_INLINE_DYNAMIC', $entry['ce_submitter']) : new Tempcode();

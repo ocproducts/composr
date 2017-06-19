@@ -686,7 +686,7 @@ class Module_calendar
             }
             $event_types_1->attach(do_template('CALENDAR_EVENT_TYPE', array('_GUID' => '104b723d5211f400267345f616c4a677', 'S' => 'I', 'INTERESTED' => $interested, 'TYPE' => get_translated_text($type['t_title']), 'TYPE_ID' => strval($type['id']))));
         }
-        $filter_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'view' => $view, 'id' => $id), '_SELF', null, false, true);
+        $filter_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'view' => $view, 'id' => $id), '_SELF', array(), false, true);
         $event_types_2 = new Tempcode();
         foreach ($types as $type) {
             if ($type['id'] == db_get_first_id()) {
@@ -1498,7 +1498,7 @@ class Module_calendar
             $event['allow_trackbacks'],
             (get_option('is_on_strong_forum_tie') == '0') ? 1 : 0,
             $event['e_submitter'],
-            build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', null, false, false, true),
+            build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', array(), false, false, true),
             $_title,
             find_overridden_comment_forum('calendar', strval($event['e_type'])),
             $event['e_add_date']

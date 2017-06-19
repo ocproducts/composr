@@ -1101,7 +1101,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
     $old_validated = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_validated');
     if (($old_validated == 0) && ($validated == 1)) {
         require_code('mail');
-        $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), null, false, false, true);
+        $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), array(), false, false, true);
         $login_url = $_login_url->evaluate();
         // NB: Same mail also sent in settings.php (quick-validate feature)
         dispatch_mail(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id)), array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));

@@ -63,7 +63,7 @@ function build_news_sitemap()
         $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY date_and_time DESC', $max, $start);
 
         foreach ($rows as $row) {
-            $url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), $zone, null, false, false, true);
+            $url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), $zone, array(), false, false, true);
 
             $is_blog = ($GLOBALS['SITE_DB']->query_select_value('news_categories', 'nc_owner', array('id' => $row['news_category'])) !== null);
 

@@ -135,7 +135,7 @@ class Block_side_cns_private_topics
         if (!cns_may_make_private_topic()) {
             $send_url = new Tempcode();
         }
-        $view_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), null, true, false, false, 'tab__pts');
+        $view_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), array(), true, false, false, 'tab__pts');
         return do_template('BLOCK_SIDE_CNS_PRIVATE_TOPICS', array(
             '_GUID' => '9376cd47884a78f3d1914c176b67ee28',
             'BLOCK_ID' => $block_id,

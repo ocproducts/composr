@@ -322,7 +322,7 @@ function get_tutorial_metadata($tutorial_name, $db_row = null, $tags = null)
             $add_date = filectime($tutorial_path);
         }
 
-        $url = build_url(array('page' => $tutorial_name), '_SEARCH', null, false, false, true);
+        $url = build_url(array('page' => $tutorial_name), '_SEARCH', array(), false, false, true);
 
         $media_type = 'document';
         if (in_array('audio', $raw_tags)) {

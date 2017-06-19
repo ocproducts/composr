@@ -236,7 +236,7 @@ class Module_points
      */
     public function points_search_form()
     {
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_search'), '_SELF', null, false, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_search'), '_SELF', array(), false, true);
         require_code('form_templates');
         if (!is_guest()) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());

@@ -71,7 +71,7 @@ class Hook_cron_content_reviews
                     $attributes[$key] = $content_id;
                 }
             }
-            $edit_url = build_url($attributes + array('validated' => 1), $zone, null, false, false, true);
+            $edit_url = build_url($attributes + array('validated' => 1), $zone, array(), false, false, true);
             require_code('notifications');
             $subject = do_lang('NOTIFICATION_SUBJECT_CONTENT_REVIEWS' . (($auto_action == 'delete') ? '_delete' : ''), $title, $auto_action_str);
             $message = do_notification_lang('NOTIFICATION_BODY_CONTENT_REVIEWS' . (($auto_action == 'delete') ? '_delete' : ''), $title, $auto_action_str, $edit_url->evaluate());

@@ -69,7 +69,7 @@ class Hook_rss_polls
             $category = '';
             $category_raw = '';
 
-            $view_url = build_url(array('page' => 'polls', 'type' => 'view', 'id' => $row['id']), get_module_zone('polls'), null, false, false, true);
+            $view_url = build_url(array('page' => 'polls', 'type' => 'view', 'id' => $row['id']), get_module_zone('polls'), array(), false, false, true);
 
             if (($prefix == 'RSS_') && (get_option('is_on_comments') == '1') && ($row['allow_comments'] >= 1)) {
                 $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => '0a3e8d0b18e619d88f12bc7665fbbbca', 'COMMENT_URL' => $view_url, 'ID' => strval($row['id'])), null, false, null, '.xml', 'xml');

@@ -585,7 +585,7 @@ class Module_news
             $myrow['allow_trackbacks'],
             $myrow['validated'],
             $myrow['submitter'],
-            build_url($self_url_map, '_SELF', null, false, false, true),
+            build_url($self_url_map, '_SELF', array(), false, false, true),
             get_translated_text($myrow['title']),
             find_overridden_comment_forum('news', strval($myrow['news_category'])),
             $myrow['date_and_time']

@@ -85,7 +85,7 @@ class Hook_rss_cns_forumview
                 $category = array_key_exists($row['t_forum_id'], $categories) ? $categories[$row['t_forum_id']] : do_lang('NA');
                 $category_raw = strval($row['t_forum_id']);
 
-                $view_url = build_url(array('page' => 'topicview', 'id' => $row['id']), get_module_zone('forumview'), null, false, false, true);
+                $view_url = build_url(array('page' => 'topicview', 'id' => $row['id']), get_module_zone('forumview'), array(), false, false, true);
 
                 if ($prefix == 'RSS_') {
                     $if_comments = do_template('RSS_ENTRY_COMMENTS', array('_GUID' => 'f5dd7ba612b989bba5e2d496da5bf161', 'COMMENT_URL' => $view_url, 'ID' => strval($row['id'])), null, false, null, '.xml', 'xml');

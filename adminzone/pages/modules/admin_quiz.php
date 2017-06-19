@@ -400,7 +400,7 @@ class Module_admin_quiz
         $fields = new Tempcode();
         $fields->attach(form_input_list(do_lang_tempcode('QUIZ'), '', 'id', $entries, null, true));
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_quiz_results'), '_SELF', null, false, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_quiz_results'), '_SELF', array(), false, true);
         $submit_name = do_lang_tempcode('QUIZ_RESULTS');
 
         return do_template('FORM_SCREEN', array('_GUID' => '03f611727000c1cb1c40780773bb8ebd', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'GET' => true, 'TITLE' => $this->title, 'TEXT' => '', 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));

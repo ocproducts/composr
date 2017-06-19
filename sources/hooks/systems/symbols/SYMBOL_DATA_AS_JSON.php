@@ -155,14 +155,14 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             $info = $content_type_ob->info();
             if (isset($info['view_page_link_pattern'])) {
                 list($zone, $attributes,) = page_link_decode($info['view_page_link_pattern']);
-                $url = build_url($attributes, $zone, null, false, false, true);
+                $url = build_url($attributes, $zone, array(), false, false, true);
                 $pattern = $this->_escape_url_pattern_for_js_regex($url->evaluate());
                 $hook = $content_type;
                 $url_patterns[$pattern] = $hook;
             }
             if (isset($info['edit_page_link_pattern'])) {
                 list($zone, $attributes,) = page_link_decode($info['edit_page_link_pattern']);
-                $url = build_url($attributes, $zone, null, false, false, true);
+                $url = build_url($attributes, $zone, array(), false, false, true);
                 $pattern = $this->_escape_url_pattern_for_js_regex($url->evaluate());
                 $hook = $content_type;
                 $url_patterns[$pattern] = $hook;

@@ -68,7 +68,7 @@ class auth_test_set extends cms_test_case
     public function testAdminZoneDoesFail()
     {
         require_code('files');
-        $http_result = cms_http_request(static_evaluate_tempcode(build_url(array('page' => ''), 'adminzone', null, false, false, true)), array('trigger_error' => false));
+        $http_result = cms_http_request(static_evaluate_tempcode(build_url(array('page' => ''), 'adminzone', array(), false, false, true)), array('trigger_error' => false));
         $this->assertTrue($http_result->message == '401');
     }
 
@@ -106,7 +106,7 @@ class auth_test_set extends cms_test_case
             persistent_cache_delete('SESSION_CACHE');
 
             require_code('files');
-            $http_result = cms_http_request(static_evaluate_tempcode(build_url(array('page' => '', 'keep_session' => $fake_session_id), 'adminzone', null, false, false, true)), array('trigger_error' => false));
+            $http_result = cms_http_request(static_evaluate_tempcode(build_url(array('page' => '', 'keep_session' => $fake_session_id), 'adminzone', array(), false, false, true)), array('trigger_error' => false));
 
             if ($pass_expected) {
                 $this->assertTrue($http_result->message != '401', 'No access when expected');

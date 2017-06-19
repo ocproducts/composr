@@ -534,7 +534,7 @@ function cns_invite_to_pt($member_id, $topic_id)
     $displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 
-    $_topic_url = build_url(array('page' => 'topicview', 'type' => 'view', 'id' => $topic_id), get_module_zone('topicview'), null, false, false, true);
+    $_topic_url = build_url(array('page' => 'topicview', 'type' => 'view', 'id' => $topic_id), get_module_zone('topicview'), array(), false, false, true);
     $topic_url = $_topic_url->evaluate();
     $topic_title = $topic_info[0]['t_cache_first_title'];
 

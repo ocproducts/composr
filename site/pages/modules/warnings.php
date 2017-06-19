@@ -232,7 +232,7 @@ class Module_warnings extends Standard_crud_module
 
         $add_warning_url = build_url(array('page' => '_SELF', 'type' => 'add', 'id' => $member_id, 'redirect' => get_self_url(true)), '_SELF');
         $view_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
-        $edit_profile_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, false, 'tab__edit');
+        $edit_profile_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab__edit');
 
         $tpl = do_template('CNS_WARNING_HISTORY_SCREEN', array(
             '_GUID' => '4444beed9305f0460a6c00e6c87d4208',
@@ -755,7 +755,7 @@ class Module_warnings extends Standard_crud_module
                         $content_title = get_content_title($cma_info, $row, $content_id);
 
                         list($zone, $url_bits, $hash) = page_link_decode(str_replace('_WILD', $content_id, $cma_info['view_page_link_pattern']));
-                        $content_url = build_url($url_bits, $zone, null, false, false, false, $hash);
+                        $content_url = build_url($url_bits, $zone, array(), false, false, false, $hash);
 
                         $auto_selected = false;
                         if (($hook == 'post') && ($post_id !== null) && ($content_id == strval($post_id))) {

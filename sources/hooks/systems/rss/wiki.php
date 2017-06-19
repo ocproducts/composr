@@ -72,7 +72,7 @@ class Hook_rss_wiki
             $category = '';
             $category_raw = '';
 
-            $view_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => ($row['id'] == db_get_first_id()) ? null : $row['id']), get_module_zone('wiki'), null, false, false, true);
+            $view_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => ($row['id'] == db_get_first_id()) ? null : $row['id']), get_module_zone('wiki'), array(), false, false, true);
 
             $if_comments = new Tempcode();
 

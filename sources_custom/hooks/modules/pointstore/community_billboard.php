@@ -188,7 +188,7 @@ class Hook_pointstore_community_billboard
 
         // Mail off the notice
         require_code('notifications');
-        $_url = build_url(array('page' => 'admin_community_billboard'), 'adminzone', null, false, false, true);
+        $_url = build_url(array('page' => 'admin_community_billboard'), 'adminzone', array(), false, false, true);
         $manage_url = $_url->evaluate();
         dispatch_notification('pointstore_request_community_billboard', null, do_lang('TITLE_NEWCOMMUNITY_BILLBOARD', null, null, null, get_site_default_lang()), do_notification_lang('MAIL_COMMUNITY_BILLBOARD_TEXT', $message, comcode_escape($manage_url), null, get_site_default_lang()));
 

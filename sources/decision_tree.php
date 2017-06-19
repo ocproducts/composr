@@ -200,7 +200,7 @@ class DecisionTree
      */
     private function build_url($target_position)
     {
-        return build_url(array('page' => '_SELF', 'type' => $target_position), '_SELF', null, true);
+        return build_url(array('page' => '_SELF', 'type' => $target_position), '_SELF', array(), true);
     }
 
     /**

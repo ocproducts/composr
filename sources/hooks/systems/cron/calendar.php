@@ -95,7 +95,7 @@ class Hook_cron_calendar
                     $title = get_translated_text($job['e_title']);
                     $timestamp = array_key_exists(0, $recurrences) ? usertime_to_utctime($recurrences[0][0]) : mktime($job['e_start_hour'], $job['e_start_minute'], 0, $job['e_start_month'], $start_day_of_month, $job['e_start_year']);
                     $date = get_timezoned_date_time($timestamp, true, false, $job['n_member_id']);
-                    $_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $job['j_event_id']), get_module_zone('calendar'), null, false, false, true);
+                    $_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $job['j_event_id']), get_module_zone('calendar'), array(), false, false, true);
                     $url = $_url->evaluate();
                     $subject_line = do_lang('EVENT_REMINDER_SUBJECT', $title, null, null, get_lang($job['n_member_id']));
                     $message_raw = do_notification_lang('EVENT_REMINDER_CONTENT', comcode_escape($date), comcode_escape($url), get_translated_text($job['e_content']), get_lang($job['n_member_id']));

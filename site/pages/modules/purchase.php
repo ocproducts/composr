@@ -287,7 +287,7 @@ class Module_purchase
      */
     public function choose()
     {
-        $url = build_url(array('page' => '_SELF', 'type' => 'message', 'id' => get_param_integer('id', -1)), '_SELF', null, true, true);
+        $url = build_url(array('page' => '_SELF', 'type' => 'message', 'id' => get_param_integer('id', -1)), '_SELF', array(), true, true);
 
         require_code('form_templates');
 
@@ -365,7 +365,7 @@ class Module_purchase
         if (($fields !== null) && ($fields->is_empty())) {
             $fields = null;
         }
-        $url = build_url(array('page' => '_SELF', 'type' => ($terms == '') ? (($fields === null) ? 'pay' : 'details') : 'terms', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', null, true);
+        $url = build_url(array('page' => '_SELF', 'type' => ($terms == '') ? (($fields === null) ? 'pay' : 'details') : 'terms', 'type_code' => $type_code, 'id' => get_param_integer('id', -1)), '_SELF', array(), true);
 
         if (method_exists($product_object, 'product_info')) {
             $text->attach($product_object->product_info(get_param_integer('type_code'), $this->title));
@@ -406,7 +406,7 @@ class Module_purchase
         if (($fields !== null) && ($fields->is_empty())) {
             $fields = null;
         }
-        $url = build_url(array('page' => '_SELF', 'type' => ($fields === null) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', null, true, true);
+        $url = build_url(array('page' => '_SELF', 'type' => ($fields === null) ? 'pay' : 'details', 'type_code' => $type_code, 'id' => get_param_integer('id', -1), 'accepted' => 1), '_SELF', array(), true, true);
 
         return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_TERMS', array('_GUID' => '55c7bc550bb327535db1aebdac9d85f2', 'TITLE' => $this->title, 'URL' => $url, 'TERMS' => $terms)), $this->title, null);
     }
@@ -435,7 +435,7 @@ class Module_purchase
 
         // Work out what next step is
         $fields = $product_object->get_needed_fields($type_code, get_param_integer('id', -1));
-        $url = build_url(array('page' => '_SELF', 'type' => 'pay', 'type_code' => $type_code), '_SELF', null, true);
+        $url = build_url(array('page' => '_SELF', 'type' => 'pay', 'type_code' => $type_code), '_SELF', array(), true);
 
         return $this->_wrap(do_template('PURCHASE_WIZARD_STAGE_DETAILS', array('_GUID' => '7fcbb0be5e90e52163bfec01f22f4ea0', 'TEXT' => is_array($fields) ? $fields[1] : '', 'FIELDS' => is_array($fields) ? $fields[0] : $fields)), $this->title, $url);
     }

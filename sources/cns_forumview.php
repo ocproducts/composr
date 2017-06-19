@@ -404,7 +404,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
     $starter_title = ($type == 'pt') ? do_lang_tempcode('WITH_TITLING') : new Tempcode();
 
     // Wrap it all up
-    $action_url = build_url(array('page' => 'topics'), get_module_zone('topics'), null, false, true);
+    $action_url = build_url(array('page' => 'topics'), get_module_zone('topics'), array(), false, true);
     if (!$topics->is_empty()) {
         if ($GLOBALS['XSS_DETECT']) {
             ocp_mark_as_escaped($moderator_actions);
@@ -445,7 +445,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
 
             foreach ($filter_cats as $fi => $filter_cat) {
                 if ($filter_cat != '') {
-                    $filtered_url = build_url(array('page' => '_SELF', 'category' => $filter_cat), '_SELF', null, true, false, false, 'tab__pts');
+                    $filtered_url = build_url(array('page' => '_SELF', 'category' => $filter_cat), '_SELF', array(), true, false, false, 'tab__pts');
                     $filter_active = $filter_cat == $current_filter_cat;
                     $filters_arr[] = array(
                         'URL' => $filter_active ? new Tempcode() : $filtered_url,
@@ -455,7 +455,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                 }
             }
 
-            $filters = do_template('CNS_PT_FILTERS', array('_GUID' => '1ffed81e1cfb82d0741d0669cdc38876', 'FILTERS' => $filters_arr, 'RESET_URL' => build_url(array('page' => '_SELF', 'category' => null), '_SELF', null, true)));
+            $filters = do_template('CNS_PT_FILTERS', array('_GUID' => '1ffed81e1cfb82d0741d0669cdc38876', 'FILTERS' => $filters_arr, 'RESET_URL' => build_url(array('page' => '_SELF', 'category' => null), '_SELF', array(), true)));
         }
     }
 

@@ -246,7 +246,7 @@ class Hook_pointstore_banners
 
         // Send mail to staff
         require_code('submit');
-        $edit_url = build_url(array('page' => 'cms_banners', 'type' => '_edit', 'name' => $name), get_module_zone('cms_banners'), null, false, false, true);
+        $edit_url = build_url(array('page' => 'cms_banners', 'type' => '_edit', 'name' => $name), get_module_zone('cms_banners'), array(), false, false, true);
         if (addon_installed('unvalidated')) {
             send_validation_request('ADD_BANNER', 'banners', true, $name, $edit_url);
         }

@@ -207,7 +207,7 @@ class Hook_task_import_wordpress
 
                         // Needed for adding comments/trackbacks
                         $comment_identifier = 'news_' . strval($id);
-                        $content_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id), get_module_zone('news'), null, false, false, true);
+                        $content_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id), get_module_zone('news'), array(), false, false, true);
                         $content_title = $post['post_title'];
                         $trackback_for_type = 'news';
                         $trackback_id = $id;
@@ -305,7 +305,7 @@ class Hook_task_import_wordpress
 
                         // Needed for adding comments/trackbacks
                         $comment_identifier = $file . '_main';
-                        $content_url = build_url(array('page' => $file), $zone, null, false, false, true);
+                        $content_url = build_url(array('page' => $file), $zone, array(), false, false, true);
                         $content_title = $post['post_title'];
                         $trackback_for_type = $file;
                         $trackback_id = 0;

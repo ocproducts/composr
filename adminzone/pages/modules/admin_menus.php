@@ -169,7 +169,7 @@ class Module_admin_menus
         if (get_param_string('redirect', '!', INPUT_FILTER_URL_INTERNAL) != '!') {
             $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
         }
-        $post_url = build_url($map, '_SELF', null, false, true);
+        $post_url = build_url($map, '_SELF', array(), false, true);
 
         $submit_name = do_lang_tempcode('EDIT');
 

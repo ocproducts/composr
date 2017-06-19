@@ -367,7 +367,7 @@ class Module_cms_wiki
         require_code('form_templates');
         $fields = form_input_huge_list(do_lang_tempcode('_WIKI_PAGE'), '', 'id', $list, null, true);
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'edit_page'), '_SELF', null, false, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'edit_page'), '_SELF', array(), false, true);
         $submit_name = do_lang_tempcode('PAGE');
 
         $search_url = build_url(array('page' => 'search', 'id' => 'wiki_pages'), get_module_zone('search'));

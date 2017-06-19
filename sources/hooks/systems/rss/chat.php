@@ -92,7 +92,7 @@ class Hook_rss_chat
                 $category = $categories[$row['room_id']]['room_name'];
                 $category_raw = strval($row['room_id']);
 
-                $view_url = build_url(array('page' => 'chat', 'type' => 'room', 'id' => $row['room_id']), get_module_zone('chat'), null, false, false, true);
+                $view_url = build_url(array('page' => 'chat', 'type' => 'room', 'id' => $row['room_id']), get_module_zone('chat'), array(), false, false, true);
 
                 $if_comments = new Tempcode();
 

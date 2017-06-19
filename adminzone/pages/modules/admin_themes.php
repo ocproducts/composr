@@ -1040,7 +1040,7 @@ class Module_admin_themes
             $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_THEME_IMAGE'), 'delete', false));
         }
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_edit_image', 'uploading' => 1), '_SELF', null, false, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_edit_image', 'uploading' => 1), '_SELF', array(), false, true);
         $submit_name = do_lang_tempcode('SAVE');
 
         require_code('images');

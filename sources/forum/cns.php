@@ -539,7 +539,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     public function member_home_url($id, $tempcode_okay = false)
     {
-        $_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $id), get_module_zone('members'), null, false, false, false, 'tab__edit');
+        $_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $id), get_module_zone('members'), array(), false, false, false, 'tab__edit');
         if (($tempcode_okay) && (get_base_url() == get_forum_base_url())) {
             return $_url;
         }
@@ -565,13 +565,13 @@ class Forum_driver_cns extends Forum_driver_base
             if (get_page_name() == 'members') {
                 $map += propagate_filtercode();
             }
-            $_url = build_url($map, get_module_zone('members'), null, false, false, !$tempcode_okay);
+            $_url = build_url($map, get_module_zone('members'), array(), false, false, !$tempcode_okay);
         } else {
             $map = array('page' => 'members', 'type' => 'view', 'id' => $id);
             if (get_page_name() == 'members') {
                 $map += propagate_filtercode();
             }
-            $_url = build_url($map, get_module_zone('members'), null, false, false, !$tempcode_okay);
+            $_url = build_url($map, get_module_zone('members'), array(), false, false, !$tempcode_okay);
         }
         if (($tempcode_okay) && (get_base_url() == get_forum_base_url())) {
             return $_url;
@@ -644,7 +644,7 @@ class Forum_driver_cns extends Forum_driver_base
      */
     protected function _member_pm_url($id, $tempcode_okay = false)
     {
-        $_url = build_url(array('page' => 'topics', 'type' => 'new_pt', 'id' => $id), get_module_zone('topics'), null, false, false, true);
+        $_url = build_url(array('page' => 'topics', 'type' => 'new_pt', 'id' => $id), get_module_zone('topics'), array(), false, false, true);
         if (($tempcode_okay) && (get_base_url() == get_forum_base_url())) {
             return $_url;
         }
@@ -668,7 +668,7 @@ class Forum_driver_cns extends Forum_driver_base
         if ($id != db_get_first_id()) {
             $view_map['id'] = $id;
         }
-        $_url = build_url($view_map, get_module_zone('forumview'), null, false, false, !$tempcode_okay);
+        $_url = build_url($view_map, get_module_zone('forumview'), array(), false, false, !$tempcode_okay);
         if (($tempcode_okay) && (get_base_url() == get_forum_base_url())) {
             return $_url;
         }
@@ -779,7 +779,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
 
         unset($forum);
-        $_url = build_url(array('page' => 'topicview', 'id' => $id), get_module_zone('topicview'), null, false, false, !$tempcode_okay);
+        $_url = build_url(array('page' => 'topicview', 'id' => $id), get_module_zone('topicview'), array(), false, false, !$tempcode_okay);
         if (($tempcode_okay) && (get_base_url() == get_forum_base_url())) {
             return $_url;
         }
@@ -806,7 +806,7 @@ class Forum_driver_cns extends Forum_driver_base
 
         unset($forum);
 
-        $_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $id), get_module_zone('topicview'), null, false, false, !$tempcode_okay);
+        $_url = build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $id), get_module_zone('topicview'), array(), false, false, !$tempcode_okay);
         if (($tempcode_okay) && (get_base_url() == get_forum_base_url())) {
             return $_url;
         }

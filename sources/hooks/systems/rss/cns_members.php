@@ -58,7 +58,7 @@ class Hook_rss_cns_members
             $category = array_key_exists($row['m_primary_group'], $categories) ? $categories[$row['m_primary_group']] : '';
             $category_raw = strval($row['m_primary_group']);
 
-            $view_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['id']), get_module_zone('members'), null, false, false, true);
+            $view_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['id']), get_module_zone('members'), array(), false, false, true);
 
             $if_comments = new Tempcode();
 

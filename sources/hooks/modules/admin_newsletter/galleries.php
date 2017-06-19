@@ -96,7 +96,7 @@ class Hook_whatsnew_galleries
 
         foreach ($rows as $row) {
             $id = $row['id'];
-            $_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $row['id']), get_module_zone('galleries'), null, false, false, true);
+            $_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $row['id']), get_module_zone('galleries'), array(), false, false, true);
             $url = $_url->evaluate();
             if (!array_key_exists($row['cat'], $galleries)) {
                 $galleries[$row['cat']] = get_translated_text($GLOBALS['SITE_DB']->query_select_value('galleries', 'fullname', array('name' => $row['cat'])));

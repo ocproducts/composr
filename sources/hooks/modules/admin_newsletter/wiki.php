@@ -51,7 +51,7 @@ class Hook_whatsnew_wiki
         }
         foreach ($rows as $row) {
             $id = $row['id'];
-            $_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => $row['id']), get_module_zone('wiki'), null, false, false, true);
+            $_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => $row['id']), get_module_zone('wiki'), array(), false, false, true);
             $url = $_url->evaluate();
             $name = get_translated_text($row['title'], null, $lang);
             $description = get_translated_text($row['description'], null, $lang);

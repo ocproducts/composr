@@ -42,7 +42,7 @@ class url_management_test_set extends cms_test_case
         $test_attributes = array('page' => DEFAULT_ZONE_PAGE_NAME, 'type' => 'bar', 'x' => 'y');
         $test_hash = 'fish';
 
-        $test_url = build_url($test_attributes, $test_zone, null, false, false, true, $test_hash);
+        $test_url = build_url($test_attributes, $test_zone, array(), false, false, true, $test_hash);
         $test_page_link = $test_zone . ':' . DEFAULT_ZONE_PAGE_NAME . ':bar:x=y#' . $test_hash;
 
         $_url = $test_url->evaluate();

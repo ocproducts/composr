@@ -143,7 +143,7 @@ class Hook_whatsnew_catalogues
                 }
             }
 
-            $_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['id']), get_module_zone('catalogues'), null, false, false, true);
+            $_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['id']), get_module_zone('catalogues'), array(), false, false, true);
             $url = $_url->evaluate();
 
             $catalogue = get_translated_text($c_title, null, $lang);

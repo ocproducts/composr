@@ -159,7 +159,7 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
         require_code('notifications');
         list($date_range) = get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences);
         $subject = do_lang('CALENDAR_EVENT_NOTIFICATION_MAIL_SUBJECT', get_site_name(), strip_comcode($title), $date_range);
-        $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id), get_module_zone('calendar'), null, false, false, true);
+        $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id), get_module_zone('calendar'), array(), false, false, true);
         $mail = do_notification_lang('CALENDAR_EVENT_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array($self_url->evaluate(), comcode_escape($date_range)));
         dispatch_notification('calendar_event', strval($type), $subject, $mail, $privacy_limits);
     }
@@ -172,7 +172,7 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
             $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);
             list($date_range) = get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences);
             $subject = do_lang('MEMBER_CALENDAR_NOTIFICATION_NEW_EVENT_SUBJECT', get_site_name(), strip_comcode($title), array($date_range, $username));
-            $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id, 'member_id' => $member_calendar, 'private' => 1), get_module_zone('calendar'), null, false, false, true);
+            $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id, 'member_id' => $member_calendar, 'private' => 1), get_module_zone('calendar'), array(), false, false, true);
             $mail = do_notification_lang('MEMBER_CALENDAR_NOTIFICATION_NEW_EVENT_BODY', comcode_escape(get_site_name()), comcode_escape($title), array($self_url->evaluate(), comcode_escape($date_range), comcode_escape($username)));
             dispatch_notification('member_calendar_changes', strval($member_calendar), $subject, $mail, array($member_calendar));
         }
@@ -327,7 +327,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
         $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'event', 'content_id' => strval($id), 'region' => $region));
     }
 
-    $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id), get_module_zone('calendar'), null, false, false, true);
+    $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id), get_module_zone('calendar'), array(), false, false, true);
 
     if ($just_validated) {
         if (addon_installed('content_privacy')) {
@@ -342,7 +342,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
         require_code('notifications');
         list($date_range) = get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences);
         $subject = do_lang('CALENDAR_EVENT_NOTIFICATION_MAIL_SUBJECT', get_site_name(), strip_comcode($title), $date_range);
-        $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id), get_module_zone('calendar'), null, false, false, true);
+        $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id), get_module_zone('calendar'), array(), false, false, true);
         $mail = do_notification_lang('CALENDAR_EVENT_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array($self_url->evaluate(), comcode_escape($date_range)));
         dispatch_notification('calendar_event', strval($type), $subject, $mail, $privacy_limits);
     }
@@ -359,7 +359,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
             list($date_range) = get_calendar_event_first_date($timezone, $do_timezone_conv, $start_year, $start_month, $start_day, $start_monthly_spec_type, $start_hour, $start_minute, $end_year, $end_month, $end_day, $end_monthly_spec_type, $end_hour, $end_minute, $recurrence, $recurrences);
             $l_subject = $rescheduled ? 'MEMBER_CALENDAR_NOTIFICATION_RESCHEDULED_EVENT_SUBJECT' : 'MEMBER_CALENDAR_NOTIFICATION_EDITED_EVENT_SUBJECT';
             $subject = do_lang($l_subject, get_site_name(), strip_comcode($title), array($date_range, $username));
-            $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id, 'member_id' => $member_calendar, 'private' => 1), get_module_zone('calendar'), null, false, false, true);
+            $self_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $id, 'member_id' => $member_calendar, 'private' => 1), get_module_zone('calendar'), array(), false, false, true);
             $l_body = $rescheduled ? 'MEMBER_CALENDAR_NOTIFICATION_RESCHEDULED_EVENT_BODY' : 'MEMBER_CALENDAR_NOTIFICATION_EDITED_EVENT_BODY';
             $mail = do_notification_lang($l_body, comcode_escape(get_site_name()), comcode_escape($title), array($self_url->evaluate(), comcode_escape($date_range), comcode_escape($username)));
             dispatch_notification('member_calendar_changes', strval($member_calendar), $subject, $mail, array((get_member() == $member_calendar) ? $myrow['e_submitter'] : $member_calendar));

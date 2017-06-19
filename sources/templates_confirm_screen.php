@@ -32,13 +32,13 @@
 function confirm_screen($title, $preview, $url_type, $back_url_type = null, $sup_post = array(), $fields = null)
 {
     if ((is_string($back_url_type)) && (strlen($back_url_type) < 10)) {
-        $back_url = build_url(array('page' => '_SELF', 'type' => $back_url_type), '_SELF', null, true);
+        $back_url = build_url(array('page' => '_SELF', 'type' => $back_url_type), '_SELF', array(), true);
     } else {
         $back_url = $back_url_type;
     }
 
     if ((is_string($url_type)) && (!looks_like_url($url_type))) {
-        $url = build_url(array('page' => '_SELF', 'type' => $url_type), '_SELF', null, true);
+        $url = build_url(array('page' => '_SELF', 'type' => $url_type), '_SELF', array(), true);
     } else {
         $url = $url_type;
     }

@@ -263,7 +263,7 @@ function edit_poll($id, $question, $a1, $a2, $a3, $a4, $a5, $a6, $a7, $a8, $a9, 
         $allow_comments != 0,
         'polls',
         strval($id),
-        build_url(array('page' => 'polls', 'type' => 'view', 'id' => $id), get_module_zone('polls'), null, false, false, true),
+        build_url(array('page' => 'polls', 'type' => 'view', 'id' => $id), get_module_zone('polls'), array(), false, false, true),
         $question,
         find_overridden_comment_forum('polls')
     );
@@ -348,7 +348,7 @@ function set_poll($id)
     require_lang('polls');
     require_code('notifications');
     $subject = do_lang('POLL_CHOSEN_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $question);
-    $poll_url = build_url(array('page' => 'polls', 'type' => 'view', 'id' => $id), get_module_zone('polls'), null, false, false, true);
+    $poll_url = build_url(array('page' => 'polls', 'type' => 'view', 'id' => $id), get_module_zone('polls'), array(), false, false, true);
     $mail = do_notification_lang('POLL_CHOSEN_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape(get_translated_text($question)), $poll_url->evaluate());
     dispatch_notification('poll_chosen', null, $subject, $mail);
 }

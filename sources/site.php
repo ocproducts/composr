@@ -775,7 +775,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && (cms_srv('REQUEST_METHOD') != 'POST')) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).
                             set_http_status_code(301);
                             header('HTTP/1.0 301 Moved Permanently');
-                            $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
+                            $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', array(), true);
                             $new_url = $_new_url->evaluate();
                             header('Location: ' . escape_header($new_url));
                             exit();
@@ -797,7 +797,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                             if ($correct_moniker != $url_id) { // Just in case database corruption means ALL are deprecated
                                 set_http_status_code(301);
                                 header('HTTP/1.0 301 Moved Permanently');
-                                $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
+                                $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', array(), true);
                                 $new_url = $_new_url->evaluate();
                                 header('Location: ' . escape_header($new_url));
                                 exit();
@@ -1298,7 +1298,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
                 }
             } else {
                 $title = get_screen_title('REDIRECTING');
-                $url = build_url($bits[1], $redirect['r_to_zone'], null, true);
+                $url = build_url($bits[1], $redirect['r_to_zone'], array(), true);
                 header('HTTP/1.1 301 Moved Permanently');
                 $ret = redirect_screen($title, $url, do_lang_tempcode('REDIRECTED_LINK'), true);
                 $REQUEST_PAGE_NEST_LEVEL--;

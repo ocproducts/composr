@@ -304,7 +304,7 @@ class Module_polls
             $myrow['allow_trackbacks'],
             ($myrow['date_and_time'] === null) ? 0 : 1,
             $myrow['submitter'],
-            build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', null, false, false, true),
+            build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', array(), false, false, true),
             $_title,
             find_overridden_comment_forum('polls'),
             $myrow['add_time']

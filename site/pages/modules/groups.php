@@ -743,7 +743,7 @@ class Module_groups
         if ($id === null) {
             $id = get_param_integer('id');
 
-            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
+            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
             $hidden = form_input_hidden('id', strval($id));
 
             return do_template('CONFIRM_SCREEN', array('_GUID' => 'f98ab98f130646f6fd33fbf85ae3f972', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE_REMOVE_FROM_GROUP', escape_html($username)), 'URL' => $post_url, 'HIDDEN' => $hidden, 'FIELDS' => ''));
@@ -775,7 +775,7 @@ class Module_groups
             $_leader = cns_get_group_property($id, 'group_leader');
             $free_access = (cns_get_group_property($id, 'open_membership') == 1);
 
-            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
+            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
             $hidden = form_input_hidden('id', strval($id));
 
             if ($free_access) {
@@ -827,7 +827,7 @@ class Module_groups
         if ($id === null) {
             $id = get_param_integer('id');
 
-            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
+            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
             $hidden = form_input_hidden('id', strval($id));
 
             return do_template('CONFIRM_SCREEN', array('_GUID' => 'ebc562534bceb3161a21307633bc229e', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => $hidden, 'FIELDS' => ''));
@@ -858,7 +858,7 @@ class Module_groups
 
             $text = paragraph(do_lang_tempcode('OPTIONAL_REASON'));
             $submit_name = do_lang_tempcode('DECLINE_FROM_GROUP');
-            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
+            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
             $fields = new Tempcode();
             $hidden = form_input_hidden('id', strval($id));
             $fields->attach(form_input_line(do_lang_tempcode('REASON'), '', 'reason', '', false));
@@ -889,7 +889,7 @@ class Module_groups
         if ($id === null) {
             $id = get_param_integer('id');
 
-            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
+            $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
             $hidden = form_input_hidden('id', strval($id));
 
             return do_template('CONFIRM_SCREEN', array('_GUID' => 'd9524899fbc243247a9d253cf93c8aa2', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => $hidden, 'FIELDS' => ''));

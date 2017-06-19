@@ -127,7 +127,7 @@ function upgrade_script()
                     $l_remove_addon_files = fu_link('upgrader.php?type=addon_remove', do_lang('FU_REMOVE_ADDON_FILES'));
                     $l_customisations = do_lang('FU_CUSTOMISATIONS');
                     $closed = comcode_to_tempcode(get_option('closed'), null, true);
-                    $closed_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SITE'), get_module_zone('admin_config'), null, false, false, false, 'group_CLOSED_SITE');
+                    $closed_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'SITE'), get_module_zone('admin_config'), array(), false, false, false, 'group_CLOSED_SITE');
 
                     echo "
 <p>{$l_choices}</p>

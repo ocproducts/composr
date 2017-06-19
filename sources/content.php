@@ -249,8 +249,8 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
                 'p_show_as_edit' => 0
             );
 
-            $content_url = build_url(array('page' => $page), $zone, null, false, false, false);
-            $content_url_email_safe = build_url(array('page' => $page), $zone, null, false, false, true);
+            $content_url = build_url(array('page' => $page), $zone, array(), false, false, false);
+            $content_url_email_safe = build_url(array('page' => $page), $zone, array(), false, false, true);
 
             $_content_title = $GLOBALS['SITE_DB']->query_select_value_if_there('cached_comcode_pages', 'cc_page_title', array('the_zone' => $zone, 'the_page' => $page));
             if ($_content_title !== null) {
@@ -287,8 +287,8 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
     $content_url_email_safe = mixed();
     if ($cma_info['view_page_link_pattern'] !== null) {
         list($zone, $url_bits, $hash) = page_link_decode(str_replace('_WILD', $content_id, $cma_info['view_page_link_pattern']));
-        $content_url = build_url($url_bits, $zone, null, false, false, false, $hash);
-        $content_url_email_safe = build_url($url_bits, $zone, null, false, false, true, $hash);
+        $content_url = build_url($url_bits, $zone, array(), false, false, false, $hash);
+        $content_url_email_safe = build_url($url_bits, $zone, array(), false, false, true, $hash);
     }
 
     return array($content_title, $submitter_id, $cma_info, $content_row, $content_url, $content_url_email_safe);

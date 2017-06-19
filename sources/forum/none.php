@@ -372,10 +372,10 @@ class Forum_driver_none extends Forum_driver_base
         }
 
         if ($id == 1) {
-            $url = build_url(array('page' => 'authors', 'type' => 'browse', 'id' => $this->get_admin_username()), get_module_zone('authors'), null, false, false, true);
+            $url = build_url(array('page' => 'authors', 'type' => 'browse', 'id' => $this->get_admin_username()), get_module_zone('authors'), array(), false, false, true);
             return $url->evaluate();
         }
-        $url = build_url(array('page' => 'authors', 'type' => 'browse', 'id' => do_lang('GUEST')), get_module_zone('authors'), null, false, false, true);
+        $url = build_url(array('page' => 'authors', 'type' => 'browse', 'id' => do_lang('GUEST')), get_module_zone('authors'), array(), false, false, true);
         return $url->evaluate();
     }
 
@@ -491,7 +491,7 @@ class Forum_driver_none extends Forum_driver_base
      */
     public function topic_url($id, $forum)
     {
-        $url = build_url(array('page' => 'news', 'id' => $id), get_module_zone('news'), null, false, false, true);
+        $url = build_url(array('page' => 'news', 'id' => $id), get_module_zone('news'), array(), false, false, true);
         return $url->evaluate();
     }
 
@@ -504,7 +504,7 @@ class Forum_driver_none extends Forum_driver_base
      */
     public function post_url($id, $forum)
     {
-        $url = build_url(array('page' => 'news', 'id' => $id), get_module_zone('news'), null, false, false, true);
+        $url = build_url(array('page' => 'news', 'id' => $id), get_module_zone('news'), array(), false, false, true);
         return $url->evaluate();
     }
 

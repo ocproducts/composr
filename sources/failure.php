@@ -62,10 +62,10 @@ function suggest_fatalistic()
 {
     if ((may_see_stack_traces()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index'))) {
         if (cms_srv('REQUEST_METHOD') != 'POST') {
-            $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
+            $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', array(), true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
         } elseif (count($_FILES) == 0 || function_exists('is_plupload') && is_plupload()) {
-            $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', null, true);
+            $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', array(), true);
             $p = build_keep_post_fields();
             $p->attach(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE'));
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE_2', escape_html($stack_trace_url->evaluate()), $p->evaluate());
@@ -777,7 +777,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 syndicate_spammer_report($alt_ip ? $ip2 : $ip, is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), do_lang('SPAM_REPORT_TRIGGERED_SPAM_HEURISTICS'));
             }
             $ban_happened = add_ip_ban($alt_ip ? $ip2 : $ip, $full_reason);
-            $_ip_ban_url = build_url(array('page' => 'admin_ip_ban', 'type' => 'browse'), get_module_zone('admin_ip_ban'), null, false, false, true);
+            $_ip_ban_url = build_url(array('page' => 'admin_ip_ban', 'type' => 'browse'), get_module_zone('admin_ip_ban'), array(), false, false, true);
             $ip_ban_url = $_ip_ban_url->evaluate();
             if ($ban_happened) {
                 $ip_ban_todo = do_lang('AUTO_BAN_HACK_MESSAGE', $alt_ip ? $ip2 : $ip, integer_format($hack_threshold), array($summary, $ip_ban_url), get_site_default_lang());

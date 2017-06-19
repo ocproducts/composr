@@ -421,7 +421,7 @@ function _box_callback($matches)
 function _page_callback($matches)
 {
     list($zone, $attributes, $hash) = page_link_decode($matches[1]);
-    $url = static_evaluate_tempcode(build_url($attributes, $zone, null, false, false, true, $hash));
+    $url = static_evaluate_tempcode(build_url($attributes, $zone, array(), false, false, true, $hash));
     return '[url="' . addslashes($url) . '"]' . $matches[2] . '[/url]';
 }
 

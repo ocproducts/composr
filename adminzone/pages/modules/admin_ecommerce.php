@@ -199,7 +199,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             $mail_start = do_lang('_PAID_SUBSCRIPTION_STARTED', get_option('site_name'));
         }
         if ($mail_end === null) {
-            $_purchase_url = build_url(array('page' => 'purchase'), get_module_zone('purchase'), null, false, false, true);
+            $_purchase_url = build_url(array('page' => 'purchase'), get_module_zone('purchase'), array(), false, false, true);
             $purchase_url = $_purchase_url->evaluate();
             $mail_end = do_lang('_PAID_SUBSCRIPTION_ENDED', get_option('site_name'), $purchase_url);
         }

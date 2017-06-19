@@ -115,7 +115,7 @@ class Hook_rss_calendar
             $category = array_key_exists($row['e_type'], $categories) ? $categories[$row['e_type']] : '';
             $category_raw = strval($row['e_type']);
 
-            $view_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar'), null, false, false, true);
+            $view_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $row['id']), get_module_zone('calendar'), array(), false, false, true);
 
             if (!array_key_exists('allow_comments', $row)) {
                 $row['allow_comments'] = 1;

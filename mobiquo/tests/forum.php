@@ -95,7 +95,7 @@ function get_id_by_url_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            static_evaluate_tempcode(build_url(array('page' => 'topicview', 'id' => 1), 'forum', null, false, false, false, 'post_4')),
+            static_evaluate_tempcode(build_url(array('page' => 'topicview', 'id' => 1), 'forum', array(), false, false, false, 'post_4')),
         ),
         'admin'
     );

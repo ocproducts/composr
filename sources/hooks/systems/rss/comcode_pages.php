@@ -135,7 +135,7 @@ class Hook_rss_comcode_pages
                 $category = $zone_details[1];
                 $category_raw = $zone;
 
-                $view_url = build_url(array('page' => $page), $zone, null, false, false, true);
+                $view_url = build_url(array('page' => $page), $zone, array(), false, false, true);
 
                 $if_comments = new Tempcode();
 

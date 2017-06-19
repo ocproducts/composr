@@ -146,7 +146,7 @@ function edit_iotd($id, $title, $caption, $thumb_url, $url, $allow_rating, $allo
         $allow_comments != 0,
         'videos',
         strval($id),
-        build_url(array('page' => 'iotds', 'type' => 'view', 'id' => $id), get_module_zone('iotds'), null, false, false, true),
+        build_url(array('page' => 'iotds', 'type' => 'view', 'id' => $id), get_module_zone('iotds'), array(), false, false, true),
         $title,
         find_overridden_comment_forum('iotds')
     );
@@ -233,7 +233,7 @@ function set_iotd($id)
 
     require_lang('iotds');
     require_code('notifications');
-    $view_url = build_url(array('page' => 'iotds', 'type' => 'view', 'id' => $id), get_module_zone('iotds'), null, false, false, true);
+    $view_url = build_url(array('page' => 'iotds', 'type' => 'view', 'id' => $id), get_module_zone('iotds'), array(), false, false, true);
     $thumb_url = $rows[0]['thumb_url'];
     if (url_is_local($thumb_url)) {
         $thumb_url = get_custom_base_url() . '/' . $thumb_url;

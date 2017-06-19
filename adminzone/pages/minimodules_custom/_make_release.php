@@ -178,7 +178,7 @@ foreach ($all_downloads_to_add as $i => $d) {
     $d['download_id'] = $download_id;
     $all_downloads_to_add[$i] = $d;
 
-    $urls[$d['internal_name']] = static_evaluate_tempcode(build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $download_id), get_module_zone('downloads'), null, false, false, true));
+    $urls[$d['internal_name']] = static_evaluate_tempcode(build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $download_id), get_module_zone('downloads'), array(), false, false, true));
     $urls[$d['internal_name'] . ' (direct download)'] = find_script('dload') . '?id=' . strval($download_id);
 }
 
@@ -241,7 +241,7 @@ if ($news_id === null) {
 } else {
     edit_news($news_id, $news_title, $summary, 'ocProducts', 1, 0, 1, 0, '', $article, $news_category, null, '', '', '');
 }
-$urls['News: ' . $news_title] = static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $news_id), get_module_zone('news'), null, false, false, true));
+$urls['News: ' . $news_title] = static_evaluate_tempcode(build_url(array('page' => 'news', 'type' => 'view', 'id' => $news_id), get_module_zone('news'), array(), false, false, true));
 
 // DONE!
 

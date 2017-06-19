@@ -1817,7 +1817,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 }
             }
             $external = (array_key_exists('external', $attributes) && $attributes['external'] == '1');
-            $pl_url = build_url($_attributes, $zone, null, false, false, false, $hash);
+            $pl_url = build_url($_attributes, $zone, array(), false, false, false, $hash);
             $temp_tpl = hyperlink($pl_url, $caption, $external, true);
             $page = $_attributes['page'];
 

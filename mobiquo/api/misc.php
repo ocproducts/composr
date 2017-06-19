@@ -31,13 +31,13 @@ function get_real_url_func($raw_params)
 
     switch ($mode) {
         case 'forum':
-            $url = static_evaluate_tempcode(build_url(array('page' => 'forumview', 'type' => 'browse', 'id' => $id), get_module_zone('forumview'), null, false, false, true));
+            $url = static_evaluate_tempcode(build_url(array('page' => 'forumview', 'type' => 'browse', 'id' => $id), get_module_zone('forumview'), array(), false, false, true));
             break;
         case 'topic':
-            $url = static_evaluate_tempcode(build_url(array('page' => 'topicview', 'type' => 'browse', 'id' => $id), get_module_zone('topicview'), null, false, false, true));
+            $url = static_evaluate_tempcode(build_url(array('page' => 'topicview', 'type' => 'browse', 'id' => $id), get_module_zone('topicview'), array(), false, false, true));
             break;
         case 'post':
-            $url = static_evaluate_tempcode(build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $id), get_module_zone('topicview'), null, false, false, true, '#post_' . strval($id)));
+            $url = static_evaluate_tempcode(build_url(array('page' => 'topicview', 'type' => 'findpost', 'id' => $id), get_module_zone('topicview'), array(), false, false, true, '#post_' . strval($id)));
             break;
         default:
             warn_exit('Unknown content type');

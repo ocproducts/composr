@@ -476,7 +476,7 @@ function do_search_block($map)
     if (array_key_exists('search_under', $map)) {
         $map2['search_under'] = $map['search_under'];
     }
-    $url = build_url($map2, $zone, null, false, true);
+    $url = build_url($map2, $zone, array(), false, true);
 
     $extra = array();
     foreach (explode(',', $_extra) as $_bits) {

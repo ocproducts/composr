@@ -653,7 +653,7 @@ class Module_cms_comcode_pages
             $extra = new Tempcode();
         } else {
             $map = array('page' => '_SELF', 'type' => '_edit', 'lang' => $lang);
-            $post_url = build_url($map, '_SELF', null, false, true);
+            $post_url = build_url($map, '_SELF', array(), false, true);
 
             $extra = do_template('FORM', array(
                 '_GUID' => '52f88211619a877e5c6f85fd4d46a90e',
@@ -681,7 +681,7 @@ class Module_cms_comcode_pages
 
         // Render...
 
-        $post_url = build_url(array('page' => '_SELF'), '_SELF', null, true);
+        $post_url = build_url(array('page' => '_SELF'), '_SELF', array(), true);
         $hidden = build_keep_post_fields(array('filter'));
 
         $tpl = do_template('COMCODE_PAGE_MANAGE_SCREEN', array(
@@ -1068,7 +1068,7 @@ class Module_cms_comcode_pages
         // Messaging to user
         if ($validated == 0) {
             require_code('submit');
-            $edit_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $zone . ':' . $new_file), '_SELF', null, false, false, true);
+            $edit_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'page_link' => $zone . ':' . $new_file), '_SELF', array(), false, false, true);
             if (addon_installed('unvalidated')) {
                 send_validation_request('COMCODE_PAGE_EDIT', 'comcode_pages', true, $zone . ':' . $new_file, $edit_url);
             }

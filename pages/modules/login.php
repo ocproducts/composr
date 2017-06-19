@@ -206,14 +206,14 @@ class Module_login
         $redirect = get_param_string('redirect', $redirect_default, INPUT_FILTER_URL_INTERNAL); // ... but often the login screen's URL tells us where to go back to
         $unhelpful_redirect = false;
         $unhelpful_url_stubs = array(
-            static_evaluate_tempcode(build_url(array('page' => 'login'), '', null, false, false, true)),
-            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'browse'), '', null, false, false, true)),
-            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'login'), '', null, false, false, true)),
-            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'logout'), '', null, false, false, true)),
-            static_evaluate_tempcode(build_url(array('page' => 'login'), '_SELF', null, false, false, true)),
-            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'browse'), '_SELF', null, false, false, true)),
-            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'login'), '_SELF', null, false, false, true)),
-            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'logout'), '_SELF', null, false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login'), '', array(), false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'browse'), '', array(), false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'login'), '', array(), false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'logout'), '', array(), false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login'), '_SELF', array(), false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'browse'), '_SELF', array(), false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'login'), '_SELF', array(), false, false, true)),
+            static_evaluate_tempcode(build_url(array('page' => 'login', 'type' => 'logout'), '_SELF', array(), false, false, true)),
         );
         foreach ($unhelpful_url_stubs as $unhelpful_url_stub) {
             if (substr($redirect, 0, strlen($unhelpful_url_stub)) == $unhelpful_url_stub) {

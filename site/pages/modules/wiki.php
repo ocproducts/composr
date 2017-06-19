@@ -386,7 +386,7 @@ class Module_wiki
         if ($type == 'findpost') {
             $post_id = get_param_integer('id');
             $page_id = $GLOBALS['SITE_DB']->query_select_value('wiki_posts', 'page_id', array('id' => $post_id));
-            $redirect = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $page_id), '_SELF', null, false, false, false, 'post_' . strval($post_id));
+            $redirect = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => $page_id), '_SELF', array(), false, false, false, 'post_' . strval($post_id));
             return redirect_screen(get_screen_title('WIKI'), $redirect);
         }
         if ($type == 'browse') {
@@ -764,7 +764,7 @@ class Module_wiki
     {
         $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
         $redir_url = $_redir_url->evaluate();
-        $merge_url = build_url(array('page' => '_SELF', 'type' => 'do', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => $redir_url), '_SELF', null, true);
+        $merge_url = build_url(array('page' => '_SELF', 'type' => 'do', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => $redir_url), '_SELF', array(), true);
 
         $merged = '';
         $markers = $this->get_markers();
@@ -1149,7 +1149,7 @@ class Module_wiki
 
             if ($validated == 0) {
                 require_code('submit');
-                $edit_url = build_url(array('page' => 'wiki', 'type' => 'post', 'post_id' => $post_id, 'validated' => 1), '_SELF', null, false, false, true);
+                $edit_url = build_url(array('page' => 'wiki', 'type' => 'post', 'post_id' => $post_id, 'validated' => 1), '_SELF', array(), false, false, true);
                 if (addon_installed('unvalidated')) {
                     send_validation_request('WIKI_MAKE_POST', 'wiki_posts', false, strval($post_id), $edit_url);
                 }

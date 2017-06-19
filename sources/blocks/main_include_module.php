@@ -176,11 +176,11 @@ class Block_main_include_module
 
         // More replacing, if _SELF wasn't used within the module
         if ($leave_page_and_zone) {
-            $url_from = static_evaluate_tempcode(build_url(array('page' => $attributes['page']), $zone, null, false, false, true));
+            $url_from = static_evaluate_tempcode(build_url(array('page' => $attributes['page']), $zone, array(), false, false, true));
             if (substr($url_from, -4) == '.htm') {
                 $url_from = substr($url_from, 0, strlen($url_from) - 4);
             }
-            $url_to = static_evaluate_tempcode(build_url(array('page' => get_page_name()), get_zone_name(), null, false, false, true));
+            $url_to = static_evaluate_tempcode(build_url(array('page' => get_page_name()), get_zone_name(), array(), false, false, true));
             if (substr($url_to, -4) == '.htm') {
                 $url_to = substr($url_to, 0, strlen($url_to) - 4);
             }

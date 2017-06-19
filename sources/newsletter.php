@@ -618,12 +618,12 @@ function newsletter_variable_substitution($message, $subject, $forename, $surnam
 {
     $unsub_url = new Tempcode();
     if ($hash == '') {
-        $unsub_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
+        $unsub_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), array(), false, false, true, 'tab__edit');
     } else {
         if (substr($sendid, 0, 1) == 'm') {
-            $unsub_url = build_url(array('page' => 'members', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('members'), null, false, false, true);
+            $unsub_url = build_url(array('page' => 'members', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('members'), array(), false, false, true);
         } else {
-            $unsub_url = build_url(array('page' => 'newsletter', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('newsletter'), null, false, false, true);
+            $unsub_url = build_url(array('page' => 'newsletter', 'type' => 'unsub', 'id' => substr($sendid, 1), 'hash' => $hash), get_module_zone('newsletter'), array(), false, false, true);
         }
     }
 

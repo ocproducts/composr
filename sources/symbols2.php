@@ -2908,7 +2908,7 @@ function ecv2_DISPLAY_CONCEPT($lang, $escaped, $param)
             if ($zone == get_zone_name() && $attributes['page'] == get_page_name()) {
                 $_url = make_string_tempcode('#' . $hash);
             } else {
-                $_url = build_url($attributes, $zone, null, false, false, false, $hash);
+                $_url = build_url($attributes, $zone, array(), false, false, false, $hash);
             }
             $temp_tpl = do_template('COMCODE_CONCEPT', array('_GUID' => 'ee0cd05f87329923f05145180004d8a8', 'TEXT' => $key, 'URL' => $_url));
         }

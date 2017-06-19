@@ -88,7 +88,7 @@ class Hook_whatsnew_news
         $rows = remove_duplicate_rows($rows, 'id');
         foreach ($rows as $row) {
             $id = $row['id'];
-            $_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), get_module_zone('news'), null, false, false, true);
+            $_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), get_module_zone('news'), array(), false, false, true);
             $url = $_url->evaluate();
             $name = get_translated_text($row['title'], null, $lang);
             $description = get_translated_text($row[($in_full == 1) ? 'news_article' : 'news'], null, $lang);

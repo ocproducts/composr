@@ -60,7 +60,7 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
         't_validated' => 1,
     ), array('id' => $topic_id), '', 1);
 
-    $_url = build_url(array('page' => 'topicview', 'id' => $topic_id), 'forum', null, false, false, true, 'post_' . strval($post_id));
+    $_url = build_url(array('page' => 'topicview', 'id' => $topic_id), 'forum', array(), false, false, true, 'post_' . strval($post_id));
     $url = $_url->evaluate();
 
     if ($forum_id !== null) {

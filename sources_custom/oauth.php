@@ -29,7 +29,7 @@ function ensure_got_oauth_client_id($service_name, $has_sep_key = false)
         $ob = object_factory('Hook_config_' . $service_name . '_client_id');
         $info = $ob->get_details();
 
-        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $info['category'], 'redirect' => get_self_url(true)), get_module_zone('admin_config'), null, false, false, false, 'group_' . $info['group']);
+        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $info['category'], 'redirect' => get_self_url(true)), get_module_zone('admin_config'), array(), false, false, false, 'group_' . $info['group']);
         require_code('site2');
         smart_redirect($config_url);
     }
@@ -75,7 +75,7 @@ function retrieve_oauth2_token($service_name, $service_title, $auth_url, $endpoi
             'code' => $code,
             'client_id' => $client_id,
             'client_secret' => get_option($service_name . '_client_secret'),
-            'redirect_uri' => static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, false, false, true)),
+            'redirect_uri' => static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', array(), false, false, true)),
             'grant_type' => 'authorization_code',
         );
 

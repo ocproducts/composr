@@ -223,7 +223,7 @@ function make_cancel_button($purchase_id, $payment_gateway)
 function send_invoice_notification($member_id, $id)
 {
     require_code('notifications');
-    $_url = build_url(array('page' => 'invoices', 'type' => 'browse'), get_module_zone('invoices'), null, false, false, true);
+    $_url = build_url(array('page' => 'invoices', 'type' => 'browse'), get_module_zone('invoices'), array(), false, false, true);
     $url = $_url->evaluate();
     dispatch_notification('invoice', null, do_lang('INVOICE_SUBJECT', strval($id), null, null, get_lang($member_id)), do_notification_lang('INVOICE_MESSAGE', $url, get_site_name(), null, get_lang($member_id)), array($member_id));
 }

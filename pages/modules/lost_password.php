@@ -242,7 +242,7 @@ class Module_lost_password
         $correct_code = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_change_code');
         if ($correct_code == '') {
             if (get_member() == $member_id) { // Already reset and already logged in
-                $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, false, 'tab__edit__settings');
+                $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab__edit__settings');
                 return redirect_screen($this->title, $redirect_url);
             }
 
@@ -275,9 +275,9 @@ class Module_lost_password
 
         if (!$temporary_passwords) {
             // Send password in mail
-            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('login'), null, false, false, true);
+            $_login_url = build_url(array('page' => 'login', 'type' => 'browse', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), get_module_zone('login'), array(), false, false, true);
             $login_url = $_login_url->evaluate();
-            $account_edit_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, true, 'tab__edit');
+            $account_edit_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), array(), false, false, true, 'tab__edit');
             if (get_option('one_per_email_address') != '0') {
                 $lang_string = 'MAIL_NEW_PASSWORD_EMAIL_LOGIN';
             } else {
@@ -313,7 +313,7 @@ class Module_lost_password
             require_code('users_inactive_occasionals');
             create_session($member_id, 1);
 
-            $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, false, 'tab__edit__settings');
+            $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab__edit__settings');
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
             $GLOBALS['FORCE_META_REFRESH'] = true; // Some browsers can't set cookies and redirect at the same time
             return redirect_screen($this->title, $redirect_url, do_lang_tempcode('YOU_HAVE_TEMPORARY_PASSWORD', escape_html($username)));

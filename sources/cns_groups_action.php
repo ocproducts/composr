@@ -166,7 +166,7 @@ function cns_make_group($name, $is_default = 0, $is_super_admin = 0, $is_super_m
     if ($is_private_club == 1) {
         require_code('notifications');
         $subject = do_lang('NEW_CLUB_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $name);
-        $view_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $group_id), get_module_zone('groups'), null, false, false, true);
+        $view_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $group_id), get_module_zone('groups'), array(), false, false, true);
         $mail = do_notification_lang('NEW_CLUB_NOTIFICATION_MAIL', get_site_name(), comcode_escape($name), array(comcode_escape($view_url->evaluate())));
         dispatch_notification('cns_club', null, $subject, $mail);
     }

@@ -485,7 +485,7 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
         require_lang('galleries');
         require_code('notifications');
         $subject = do_lang('IMAGE_NOTIFICATION_MAIL_SUBJECT', get_site_name(), strip_comcode($title));
-        $self_url = build_url(array('page' => 'galleries', 'type' => 'image', 'id' => $id), get_module_zone('galleries'), null, false, false, true);
+        $self_url = build_url(array('page' => 'galleries', 'type' => 'image', 'id' => $id), get_module_zone('galleries'), array(), false, false, true);
         $mail = do_notification_lang('IMAGE_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
@@ -588,7 +588,7 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'image', 'content_id' => strval($id), 'region' => $region));
     }
 
-    $self_url = build_url(array('page' => 'galleries', 'type' => 'image', 'id' => $id), get_module_zone('galleries'), null, false, false, true);
+    $self_url = build_url(array('page' => 'galleries', 'type' => 'image', 'id' => $id), get_module_zone('galleries'), array(), false, false, true);
 
     if ($just_validated) {
         if (addon_installed('content_privacy')) {
@@ -942,7 +942,7 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
         require_lang('galleries');
         require_code('notifications');
         $subject = do_lang('VIDEO_NOTIFICATION_MAIL_SUBJECT', get_site_name(), strip_comcode($title));
-        $self_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $id), get_module_zone('galleries'), null, false, false, true);
+        $self_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $id), get_module_zone('galleries'), array(), false, false, true);
         $mail = do_notification_lang('VIDEO_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($title), array(comcode_escape($self_url->evaluate())));
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
@@ -1066,7 +1066,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
     require_code('transcoding');
     transcode_video($url, 'videos', $id, 'id', 'url', null, 'video_width', 'video_height');
 
-    $self_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $id), get_module_zone('galleries'), null, false, false, true);
+    $self_url = build_url(array('page' => 'galleries', 'type' => 'video', 'id' => $id), get_module_zone('galleries'), array(), false, false, true);
 
     if ($just_validated) {
         if (addon_installed('content_privacy')) {
@@ -1556,7 +1556,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         $allow_comments != 0,
         'galleries',
         $name,
-        build_url(array('page' => 'galleries', 'type' => 'browse', 'id' => $name), get_module_zone('galleries'), null, false, false, true),
+        build_url(array('page' => 'galleries', 'type' => 'browse', 'id' => $name), get_module_zone('galleries'), array(), false, false, true),
         $fullname,
         process_overridden_comment_forum('galleries', $name, $name, $old_name)
     );

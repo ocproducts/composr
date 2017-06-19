@@ -258,7 +258,7 @@ class Module_topics
         $submit_icon = 'buttons__proceed';
         $submit_name = do_lang_tempcode('PROCEED');
         $type = '_' . get_param_string('type', 'browse');
-        $post_url = build_url(array('page' => '_SELF', 'type' => $type, 'id' => get_param_integer('id', null)), '_SELF', null, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => $type, 'id' => get_param_integer('id', null)), '_SELF', array(), true);
         $fields = new Tempcode();
         $hidden = new Tempcode();
         $hidden->attach(build_keep_post_fields());
@@ -324,7 +324,7 @@ class Module_topics
 
         // Show it worked / Refresh
         if ($forum_id === null) {
-            $url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), null, false, false, false, 'tab__pts');
+            $url = build_url(array('page' => 'members', 'type' => 'view', 'id' => get_member()), get_module_zone('members'), array(), false, false, false, 'tab__pts');
         } else {
             $url = build_url(array('page' => 'forumview', 'id' => $forum_id), get_module_zone('forumview'));
         }
@@ -952,7 +952,7 @@ class Module_topics
         $_mm = $mm[0];
         $post_text = $_mm['mm_post_text'];
         $submit_name = do_lang_tempcode('PERFORM_MULTI_MODERATION');
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_mass_multimod', 'mm_id' => $mm_id), '_SELF', null, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_mass_multimod', 'mm_id' => $mm_id), '_SELF', array(), true);
         $fields = new Tempcode();
         $hidden = new Tempcode();
         $hidden->attach(build_keep_post_fields());
@@ -2607,7 +2607,7 @@ END;
             $ip_url = $_ip_url->evaluate();
             $text = paragraph(do_lang_tempcode('DELETE_POSTS_DESCRIPTION', escape_html(integer_format($count)), escape_html($ip), escape_html($ip_url)));
             $submit_name = do_lang_tempcode('DELETE_POST');
-            $post_url = build_url(array('page' => '_SELF', 'type' => '_delete_post', 'id' => $post_id), '_SELF', null, true);
+            $post_url = build_url(array('page' => '_SELF', 'type' => '_delete_post', 'id' => $post_id), '_SELF', array(), true);
             $fields = new Tempcode();
             $hidden = new Tempcode();
             $hidden->attach(build_keep_post_fields());
@@ -2665,7 +2665,7 @@ END;
             if ($post_id === null) {
                 $post_id = get_param_integer('id');
 
-                $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', null, true);
+                $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
                 $hidden = new Tempcode();
                 $hidden->attach(form_input_hidden('id', strval($post_id)));
                 $hidden->attach(form_input_hidden('reason', post_param_string('reason')));
@@ -3856,7 +3856,7 @@ END;
         $_mm = $mm[0];
         $post_text = $_mm['mm_post_text'];
         $submit_name = do_lang_tempcode('PERFORM_MULTI_MODERATION');
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_multimod', 'id' => $topic_id, 'mm_id' => $mm_id), '_SELF', null, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_multimod', 'id' => $topic_id, 'mm_id' => $mm_id), '_SELF', array(), true);
         $fields = new Tempcode();
         $hidden = new Tempcode();
         $hidden->attach(build_keep_post_fields());

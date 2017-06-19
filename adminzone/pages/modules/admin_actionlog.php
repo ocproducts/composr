@@ -195,7 +195,7 @@ class Module_admin_actionlog
         $fields->attach(form_input_line(do_lang_tempcode('PARAMETER_A'), '', 'param_a', '', false));
         $fields->attach(form_input_line(do_lang_tempcode('PARAMETER_B'), '', 'param_b', '', false));
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'list'), '_SELF', null, false, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'list'), '_SELF', array(), false, true);
         $submit_name = do_lang_tempcode('VIEW_ACTIONLOGS');
 
         return do_template('FORM_SCREEN', array('_GUID' => 'f2c6eda24e0e973aa7e253054f6683a5', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => '', 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));

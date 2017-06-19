@@ -144,7 +144,7 @@ class Module_admin_tickets
             $list->attach(form_input_list_entry(strval($ticket_type_id), false, get_translated_text($ticket_type_name)));
         }
         if (!$list->is_empty()) {
-            $edit_url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF', null, false, true);
+            $edit_url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF', array(), false, true);
             $submit_name = do_lang_tempcode('EDIT');
             $fields = form_input_huge_list(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TICKET_TYPE'), 'ticket_type_id', $list);
 

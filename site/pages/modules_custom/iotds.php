@@ -221,7 +221,7 @@ class Module_iotds
             $myrow['allow_trackbacks'],
             (($myrow['date_and_time'] === null) && ($myrow['used'] == 0)) ? 0 : 1,
             $myrow['submitter'],
-            build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', null, false, false, true),
+            build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $id), '_SELF', array(), false, false, true),
             get_translated_text($myrow['i_title']),
             find_overridden_comment_forum('iotds'),
             $myrow['add_date']

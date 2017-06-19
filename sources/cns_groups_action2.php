@@ -309,7 +309,7 @@ function cns_member_ask_join_group($group_id, $member_id = null)
 
     if ($validated == 0) {
         $group_name = get_translated_text($group_info[0]['g_name'], $GLOBALS['FORUM_DB']);
-        $_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $group_id), get_module_zone('groups'), null, false, false, true);
+        $_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $group_id), get_module_zone('groups'), array(), false, false, true);
         $url = $_url->evaluate();
         $their_username = $GLOBALS['CNS_DRIVER']->get_member_row_field($member_id, 'm_username');
 
@@ -400,7 +400,7 @@ function cns_add_member_to_group($member_id, $id, $validated = 1)
         $displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
         $group_name = cns_get_group_name($id);
         $subject = do_lang('MJG_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $username, $group_name);
-        $group_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $id), get_module_zone('groups'), null, false, false, true);
+        $group_url = build_url(array('page' => 'groups', 'type' => 'view', 'id' => $id), get_module_zone('groups'), array(), false, false, true);
         $mail = do_notification_lang('MJG_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($username), array(comcode_escape($group_name), $group_url->evaluate(), comcode_escape($displayname)));
         dispatch_notification('cns_member_joined_group', strval($id), $subject, $mail);
     }

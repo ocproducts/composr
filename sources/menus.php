@@ -574,7 +574,7 @@ function _render_menu_branch($branch, $codename, $source_member, $level, $type, 
             }
         }
 
-        $url = build_url($map, $zone_name, null, false, false, false, $hash);
+        $url = build_url($map, $zone_name, array(), false, false, false, $hash);
 
         // See if this is current page
         if ($apply_highlighting) {

@@ -30,7 +30,7 @@ class Hook_checklist_newsletter_paused
      */
     public function run()
     {
-        $url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'FEATURE'), get_module_zone('admin_config'), null, false, false, false, 'group_NEWSLETTER');
+        $url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => 'FEATURE'), get_module_zone('admin_config'), array(), false, false, false, 'group_NEWSLETTER');
         $task = do_lang_tempcode('newsletter:NAG_UNPAUSE_NEWSLETTER', escape_html_tempcode($url));
 
         $status = (get_option('newsletter_paused') == '1' && $GLOBALS['SITE_DB']->query_select_value('newsletter_drip_send', 'COUNT(*)') > 0) ? 0 : 1;

@@ -1091,7 +1091,7 @@ class Module_chat
         $fields->attach(form_input_date(do_lang_tempcode('CHAT_DOWNLOAD_LOGS_FINISH_DATE'), do_lang_tempcode('CHAT_DOWNLOAD_LOGS_FINISH_DATE_DESCRIPTION'), 'finish', true, false, true, time(), 26));
 
         $posting_name = do_lang_tempcode('CHAT_DOWNLOAD_LOGS');
-        $posting_url = build_url(array('page' => '_SELF', 'type' => '_download_logs'), '_SELF', null, false, true);
+        $posting_url = build_url(array('page' => '_SELF', 'type' => '_download_logs'), '_SELF', array(), false, true);
 
         if (count($chatrooms) == 0) {
             inform_exit(do_lang_tempcode('NO_CATEGORIES', 'chat'));

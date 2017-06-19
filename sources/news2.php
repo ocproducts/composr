@@ -552,7 +552,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
 
     $GLOBALS['SITE_DB']->query_update('news', $update_map, array('id' => $id), '', 1);
 
-    $self_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id), get_module_zone('news'), null, false, false, true);
+    $self_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id), get_module_zone('news'), array(), false, false, true);
 
     if ($just_validated) {
         dispatch_news_notification($id, $title, $main_news_category);
@@ -609,7 +609,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
  */
 function dispatch_news_notification($id, $title, $main_news_category)
 {
-    $self_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id), get_module_zone('news'), null, false, false, true);
+    $self_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $id), get_module_zone('news'), array(), false, false, true);
 
     $is_blog = ($GLOBALS['SITE_DB']->query_select_value('news_categories', 'nc_owner', array('id' => $main_news_category)) !== null);
 
@@ -872,7 +872,7 @@ function _news_import_grab_images_and_fix_links($download_images, &$data, $impor
                 if (($matches[1][$i] == '') && ($matches[2][$i] == '') && (strpos($data, '[html]') === false)) {
                     $data = str_replace($matches[0][$i], '[page="_SEARCH:news:view:' . strval($item['import_id']) . '"]' . $matches[3][$i] . '[/page]', $data);
                 } else {
-                    $new_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $item['import_id']), get_module_zone('news'), null, false, false, true);
+                    $new_url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $item['import_id']), get_module_zone('news'), array(), false, false, true);
                     $data = str_replace($matches[0][$i], '<a ' . $matches[1][$i] . 'href="' . escape_html($new_url->evaluate()) . '"' . $matches[2][$i] . '>' . $matches[3][$i] . '</a>', $data);
                 }
             }

@@ -650,7 +650,7 @@ class Module_downloads
             $myrow['allow_trackbacks'],
             $myrow['validated'],
             $myrow['submitter'],
-            build_url(array('page' => '_SELF', 'type' => 'entry', 'id' => $id), '_SELF', null, false, false, true),
+            build_url(array('page' => '_SELF', 'type' => 'entry', 'id' => $id), '_SELF', array(), false, false, true),
             $name,
             find_overridden_comment_forum('downloads', strval($myrow['category_id'])),
             $myrow['add_date']

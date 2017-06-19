@@ -148,7 +148,7 @@ function output_ical()
             echo "CLASS:" . ($public ? 'PUBLIC' : 'PRIVATE') . "\n";
             echo "STATUS:" . (($event['validated'] == 1) ? 'CONFIRMED' : 'TENTATIVE') . "\n";
             echo "UID:" . ical_escape(strval($event['id']) . '@' . get_base_url()) . "\n";
-            $_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $event['id']), get_module_zone('calendar'), null, false, false, true);
+            $_url = build_url(array('page' => 'calendar', 'type' => 'view', 'id' => $event['id']), get_module_zone('calendar'), array(), false, false, true);
             $url = $_url->evaluate();
             echo "URL:" . ical_escape($url) . "\n";
 

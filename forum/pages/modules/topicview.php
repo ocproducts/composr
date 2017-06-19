@@ -892,7 +892,7 @@ class Module_topicview
             if ($test_threaded !== null) {
                 $map['threaded'] = $test_threaded;
             }
-            $action_url = build_url($map, get_module_zone('topics'), null, false, true);
+            $action_url = build_url($map, get_module_zone('topics'), array(), false, true);
             $marked_post_actions = '';
             if (array_key_exists('may_move_posts', $topic_info)) {
                 $marked_post_actions .= '<option value="move_posts_a">' . do_lang('MERGE_POSTS') . '</option>';

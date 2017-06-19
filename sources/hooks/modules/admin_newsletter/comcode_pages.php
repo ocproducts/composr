@@ -90,7 +90,7 @@ class Hook_whatsnew_comcode_pages
 
                 $id = $zone . ':' . $page;
 
-                $_url = build_url(array('page' => $page), $zone, null, false, false, true);
+                $_url = build_url(array('page' => $page), $zone, array(), false, false, true);
                 $url = $_url->evaluate();
 
                 list(, , $path) = find_comcode_page($lang, $page, $zone);

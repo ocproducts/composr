@@ -67,7 +67,7 @@ class Hook_whatsnew_cns_forumview
         foreach ($rows as $row) {
             if (has_category_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), 'forums', strval($row['t_forum_id']))) {
                 $id = $row['id'];
-                $_url = build_url(array('page' => 'topicview', 'type' => 'browse', 'id' => $row['id']), get_module_zone('topicview'), null, false, false, true);
+                $_url = build_url(array('page' => 'topicview', 'type' => 'browse', 'id' => $row['id']), get_module_zone('topicview'), array(), false, false, true);
                 $url = $_url->evaluate();
                 $name = $row['t_cache_first_title'];
                 $member_id = (is_guest($row['t_cache_first_member_id'])) ? null : strval($row['t_cache_first_member_id']);

@@ -35,7 +35,7 @@ class Hook_check_base_url
         if (file_exists(get_file_base() . '/uploads/index.html')) {
             $test_url = get_base_url() . '/uploads/index.html'; // Should normally exist, simple static URL call
         } else {
-            $test_url = static_evaluate_tempcode(build_url(array('page' => ''), '', null, false, false, true)); // But this definitely must exist
+            $test_url = static_evaluate_tempcode(build_url(array('page' => ''), '', array(), false, false, true)); // But this definitely must exist
         }
 
         $test = cms_http_request($test_url, array('byte_limit' => 0, 'trigger_error' => false, 'no_redirect' => true)); // Should return a 200 blank, not an HTTP error or a redirect; actual data would be a Composr error

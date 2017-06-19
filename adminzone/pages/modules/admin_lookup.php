@@ -121,7 +121,7 @@ class Module_admin_lookup
         if ($param == '') {
             require_code('form_templates');
             $submit_name = do_lang_tempcode('INVESTIGATE_USER');
-            $post_url = build_url(array('page' => '_SELF'), '_SELF', null, false, true);
+            $post_url = build_url(array('page' => '_SELF'), '_SELF', array(), false, true);
             $fields = form_input_line(do_lang_tempcode('DETAILS'), do_lang_tempcode('DESCRIPTION_INVESTIGATE'), 'param', '', false);
 
             return do_template('FORM_SCREEN', array('_GUID' => '9cc407037ec01a8f3483746a22889471', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'URL' => $post_url));

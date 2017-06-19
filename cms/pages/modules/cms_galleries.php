@@ -286,7 +286,7 @@ class Module_cms_galleries extends Standard_crud_module
 
         $cat = get_param_string('cat', '');
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_import'), '_SELF', null, false, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_import'), '_SELF', array(), false, true);
 
         require_code('form_templates');
 

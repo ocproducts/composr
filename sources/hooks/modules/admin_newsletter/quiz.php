@@ -51,7 +51,7 @@ class Hook_whatsnew_quiz
         }
         foreach ($rows as $row) {
             $id = $row['id'];
-            $_url = build_url(array('page' => 'quiz', 'type' => 'do', 'id' => $row['id']), get_module_zone('quiz'), null, false, false, true);
+            $_url = build_url(array('page' => 'quiz', 'type' => 'do', 'id' => $row['id']), get_module_zone('quiz'), array(), false, false, true);
             $url = $_url->evaluate();
             $name = get_translated_text($row['q_name'], null, $lang);
             $description = get_translated_text($row['q_start_text'], null, $lang);

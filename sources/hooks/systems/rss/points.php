@@ -75,7 +75,7 @@ class Hook_rss_points
             $category = '';
             $category_raw = '';
 
-            $view_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $row['gift_to']), get_module_zone('points'), null, false, false, true);
+            $view_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $row['gift_to']), get_module_zone('points'), array(), false, false, true);
 
             $if_comments = new Tempcode();
 

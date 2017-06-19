@@ -81,7 +81,7 @@ class Hook_whatsnew_downloads
 
         foreach ($rows as $row) {
             $id = $row['id'];
-            $_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $row['id']), get_module_zone('downloads'), null, false, false, true);
+            $_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $row['id']), get_module_zone('downloads'), array(), false, false, true);
             $url = $_url->evaluate();
             $name = get_translated_text($row['name'], null, $lang);
             $description = get_translated_text($row['description'], null, $lang);

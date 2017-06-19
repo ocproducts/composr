@@ -923,7 +923,7 @@ class Module_admin
                     if ($this->_keyword_match($n)) {
                         $n = do_lang_tempcode($array[0]);
                         $descrip = array_key_exists(1, $array) ? do_lang_tempcode($array[1]) : new Tempcode();
-                        $_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), null, false, false, false, 'tab__edit');
+                        $_url = build_url(array('page' => 'members', 'type' => 'view'), get_module_zone('members'), array(), false, false, false, 'tab__edit');
                         $url = $_url->evaluate();
                         $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '4b2b7dd9c8c81f15583428fc2692bca5', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => $descrip)));
                         continue 2;

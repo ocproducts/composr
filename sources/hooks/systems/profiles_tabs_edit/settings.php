@@ -228,7 +228,7 @@ class Hook_profiles_tabs_edit_settings
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_validated' => 1), array('id' => $member_id_of), '', 1);
 
             require_code('mail');
-            $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), null, false, false, true);
+            $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), array(), false, false, true);
             $login_url = $_login_url->evaluate();
 
             $username = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_username');
@@ -237,7 +237,7 @@ class Hook_profiles_tabs_edit_settings
 
             // NB: Same mail also sent in cns_members_action2.php (validate upon full edit)
             require_code('mail');
-            $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), null, false, false, true);
+            $_login_url = build_url(array('page' => 'login'), get_module_zone('login'), array(), false, false, true);
             $login_url = $_login_url->evaluate();
             dispatch_mail(do_lang('VALIDATED_MEMBER_SUBJECT', get_site_name(), null, get_lang($member_id_of)), do_lang('MEMBER_VALIDATED', get_site_name(), $username, $login_url, get_lang($member_id_of)), array($email_address), $username, '', '', array('require_recipient_valid_since' => $join_time));
 

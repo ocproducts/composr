@@ -230,7 +230,7 @@ class Module_recommend
         $page_title = get_param_string('page_title', null, INPUT_FILTER_GET_COMPLEX);
 
         $submit_name = ($page_title !== null) ? make_string_tempcode($page_title) : do_lang_tempcode('SEND');
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF', null, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF', array(), true);
 
         $hidden = new Tempcode();
 

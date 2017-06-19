@@ -1223,7 +1223,7 @@ class Module_admin_addons
         $list = create_selection_list_zones();
         $list->attach(form_input_list_entry('_block', false, do_lang_tempcode('BLOCKS')));
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'view'), '_SELF', null, false, true);
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'view'), '_SELF', array(), false, true);
         $fields = form_input_huge_list(do_lang_tempcode('ZONE_OR_BLOCKS'), '', 'id', $list, null, true);
         $submit_name = do_lang_tempcode('PROCEED');
 

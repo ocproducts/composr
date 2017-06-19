@@ -296,9 +296,9 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     // Send confirm mail
     if ($email_validation) {
         $zone = get_module_zone('join');
-        $_url = build_url(array('page' => 'join', 'type' => 'step4', 'email' => $email_address, 'code' => $validated_email_confirm_code), $zone, null, false, false, true);
+        $_url = build_url(array('page' => 'join', 'type' => 'step4', 'email' => $email_address, 'code' => $validated_email_confirm_code), $zone, array(), false, false, true);
         $url = $_url->evaluate();
-        $_url_simple = build_url(array('page' => 'join', 'type' => 'step4'), $zone, null, false, false, true);
+        $_url_simple = build_url(array('page' => 'join', 'type' => 'step4'), $zone, array(), false, false, true);
         $url_simple = $_url_simple->evaluate();
         $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
@@ -319,7 +319,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
                 $fields_done .= do_lang('THIS_WITH_COMCODE', $custom_field['trans_name'], post_param_string('field_' . $custom_field['id'])) . "\n";
             }
         }
-        $_privacy_url = build_url(array('page' => 'privacy'), '_SEARCH', null, false, false, true);
+        $_privacy_url = build_url(array('page' => 'privacy'), '_SEARCH', array(), false, false, true);
         $privacy_url = $_privacy_url->evaluate();
         $message = do_lang('COPPA_MAIL', comcode_escape(get_option('site_name')), comcode_escape(get_option('privacy_fax')), array(comcode_escape(get_option('privacy_postal_address')), comcode_escape($fields_done), comcode_escape($privacy_url)), $language);
         require_code('mail');
@@ -329,7 +329,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
     // Send 'validate this member' notification
     if ($staff_validation) {
         require_code('notifications');
-        $_validation_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, true, 'tab__edit');
+        $_validation_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, true, 'tab__edit');
         $validation_url = $_validation_url->evaluate();
         $message = do_notification_lang('VALIDATE_NEW_MEMBER_MAIL', comcode_escape($username), comcode_escape($validation_url), comcode_escape(strval($member_id)), get_site_default_lang());
         dispatch_notification('cns_member_needs_validation', null, do_lang('VALIDATE_NEW_MEMBER_SUBJECT', $username, null, null, get_site_default_lang()), $message, null, A_FROM_SYSTEM_PRIVILEGED);
@@ -337,7 +337,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     // Send new member notification
     require_code('notifications');
-    $_member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), null, false, false, true);
+    $_member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, true);
     $member_url = $_member_url->evaluate();
     $message = do_notification_lang('NEW_MEMBER_NOTIFICATION_MAIL', comcode_escape($username), comcode_escape(get_site_name()), array(comcode_escape($member_url), comcode_escape(strval($member_id))), get_site_default_lang());
     dispatch_notification('cns_new_member', null, do_lang('NEW_MEMBER_NOTIFICATION_MAIL_SUBJECT', $username, get_site_name(), null, get_site_default_lang()), $message, null, A_FROM_SYSTEM_PRIVILEGED);

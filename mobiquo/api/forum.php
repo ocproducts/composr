@@ -118,7 +118,7 @@ function get_config_func($raw_params)
         'sso_signin' => '1',
         'sso_register' => '1',
         'native_register' => '1',
-        'reg_url' => static_evaluate_tempcode(build_url(array('page' => 'join'), '', null, false, false, true)),
+        'reg_url' => static_evaluate_tempcode(build_url(array('page' => 'join'), '', array(), false, false, true)),
         'ignore_user' => addon_installed('chat') ? '1' : '0',
         'advanced_merge' => '1',
         'advanced_move' => '1',

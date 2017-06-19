@@ -173,7 +173,7 @@ class Block_main_forum_topics
                     $topic_url = $GLOBALS['FORUM_DRIVER']->topic_url($topic['id'], $forum_name, true);
                     $topic_url_unread = mixed();
                     if (get_forum_type() == 'cns') {
-                        $topic_url_unread = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'), null, false, false, false, 'first_unread');
+                        $topic_url_unread = build_url(array('page' => 'topicview', 'type' => 'first_unread', 'id' => $topic['id']), get_module_zone('topicview'), array(), false, false, false, 'first_unread');
                     }
                     $title = escape_html($topic['title']);
                     $date = get_timezoned_date_time_tempcode($topic[$date_key]);

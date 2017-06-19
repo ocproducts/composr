@@ -66,7 +66,7 @@ function bookables_ical_script()
         echo "CLASS:" . (($event['price'] == 0.0) ? 'PUBLIC' : 'PRIVATE') . "\n";
         echo "STATUS:" . (($event['enabled'] == 1) ? 'CONFIRMED' : 'TENTATIVE') . "\n";
         echo "UID:" . ical_escape(strval($event['id']) . '-bookable@' . get_base_url()) . "\n";
-        $_url = build_url(array('page' => 'booking', 'type' => 'browse', 'filter' => $event['id']), get_module_zone('booking'), null, false, false, true);
+        $_url = build_url(array('page' => 'booking', 'type' => 'browse', 'filter' => $event['id']), get_module_zone('booking'), array(), false, false, true);
         $url = $_url->evaluate();
         echo "URL:" . ical_escape($url) . "\n";
 
@@ -215,7 +215,7 @@ function bookings_ical_script()
                 'booking_id' => $booking['id'],
             ));
 
-            $_url = build_url(array('page' => 'cms_booking', 'type' => '_edit_booking', 'id' => find_booking_under($booking['member_id'], $booking['id'])), get_module_zone('cms_booking'), null, false, false, true);
+            $_url = build_url(array('page' => 'cms_booking', 'type' => '_edit_booking', 'id' => find_booking_under($booking['member_id'], $booking['id'])), get_module_zone('cms_booking'), array(), false, false, true);
             $url = $_url->evaluate();
 
             $time_start = mktime(0, 0, 0, $r['start_month'], $r['start_day'], $r['start_year']);
@@ -290,7 +290,7 @@ function bookings_ical_script()
                 echo "CLASS:PUBLIC\n";
                 echo "STATUS:TENTATIVE\n";
                 echo "UID:" . ical_escape(strval($day) . '/' . strval($month) . '/' . strval($year) . '-' . $code . '-booking@' . get_base_url()) . "\n";
-                $_url = build_url(array('page' => 'cms_booking', 'type' => 'add_booking', 'bookable_id' => $id, 'day' => $day, 'month' => $month, 'year' => $year, 'code' => $code), get_module_zone('cms_booking'), null, false, false, true);
+                $_url = build_url(array('page' => 'cms_booking', 'type' => 'add_booking', 'bookable_id' => $id, 'day' => $day, 'month' => $month, 'year' => $year, 'code' => $code), get_module_zone('cms_booking'), array(), false, false, true);
                 $url = $_url->evaluate();
                 echo "URL:" . ical_escape($url) . "\n";
 

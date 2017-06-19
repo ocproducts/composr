@@ -233,7 +233,7 @@ class Module_search
             if ($embedded == 1) {
                 $url_map['embedded'] = 1;
             }
-            $url = build_url($url_map, '_SELF', null, false, true);
+            $url = build_url($url_map, '_SELF', array(), false, true);
 
             require_code('content');
             $content_type = convert_composr_type_codes('search_hook', $id, 'content_type');
@@ -371,7 +371,7 @@ class Module_search
             if ($under != '-1') {
                 $map['search_under'] = $under;
             }
-            $url = build_url($map, '_SELF', null, false, true);
+            $url = build_url($map, '_SELF', array(), false, true);
 
             $search_domains = new Tempcode();
             $_search_domains = array();
@@ -386,7 +386,7 @@ class Module_search
 
                 $checked = (get_param_integer('search_' . $hook, ((($content === null) && (get_param_integer('all_defaults', null) !== 0)) || (get_param_integer('all_defaults', 0) == 1)) ? ($is_default_or_advanced ? 1 : 0) : 0) == 1);
 
-                $options_url = ((array_key_exists('special_on', $info)) || (array_key_exists('special_off', $info)) || (array_key_exists('extra_sort_fields', $info)) || (method_exists($ob, 'get_fields')) || (method_exists($ob, 'get_tree')) || (method_exists($ob, 'get_ajax_tree'))) ? build_url(array('page' => '_SELF', 'id' => $hook), '_SELF', null, false, true) : new Tempcode();
+                $options_url = ((array_key_exists('special_on', $info)) || (array_key_exists('special_off', $info)) || (array_key_exists('extra_sort_fields', $info)) || (method_exists($ob, 'get_fields')) || (method_exists($ob, 'get_tree')) || (method_exists($ob, 'get_ajax_tree'))) ? build_url(array('page' => '_SELF', 'id' => $hook), '_SELF', array(), false, true) : new Tempcode();
 
                 $_search_domains[] = array('_GUID' => '3d3099872184923aec0f49388f52c750', 'ADVANCED_ONLY' => (array_key_exists('advanced_only', $info)) && ($info['advanced_only']), 'CHECKED' => $checked, 'OPTIONS_URL' => $options_url, 'LANG' => $info['lang'], 'NAME' => $hook);
             }

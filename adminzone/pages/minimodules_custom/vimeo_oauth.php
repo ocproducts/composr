@@ -35,7 +35,7 @@ $oauth_token = get_param_string('oauth_token', '');
 
 if ($oauth_token == '') {
     // Grab initial unauthorized request tokens...
-    $callback_url = static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', null, false, false, true));
+    $callback_url = static_evaluate_tempcode(build_url(array('page' => '_SELF'), '_SELF', array(), false, false, true));
     $token = $vimeo->getRequestToken($callback_url);
     $auth_url = $vimeo->getAuthorizeUrl($token['oauth_token'], 'delete');
 

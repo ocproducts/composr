@@ -780,7 +780,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
                         require_code('notifications');
 
                         $zone = get_module_zone('chat');
-                        $_lobby_url = build_url(array('page' => 'chat'), $zone, null, false, false, true);
+                        $_lobby_url = build_url(array('page' => 'chat'), $zone, array(), false, false, true);
                         $lobby_url = $_lobby_url->evaluate();
                         $subject = do_lang('IM_INVITED_SUBJECT', null, null, null, get_lang($allow));
                         $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
@@ -1151,7 +1151,7 @@ function chat_get_room_content($room_id, $_rooms, $max_messages = null, $derefer
 
         require_code('notifications');
         $subject = do_lang('MEC_NOTIFICATION_MAIL_SUBJECT', get_site_name(), $their_username, $room_name, $room_language);
-        $room_url = build_url(array('page' => 'chat', 'type' => 'room', 'id' => $room_id), $zone, null, false, false, true);
+        $room_url = build_url(array('page' => 'chat', 'type' => 'room', 'id' => $room_id), $zone, array(), false, false, true);
         $mail = do_notification_lang('MEC_NOTIFICATION_MAIL', comcode_escape(get_site_name()), comcode_escape($their_username), array(comcode_escape($room_name), $room_url->evaluate()), $room_language);
         dispatch_notification('member_entered_chatroom', strval($room_id), $subject, $mail);
     }
