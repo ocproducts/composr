@@ -223,7 +223,7 @@ class Module_cms_quiz extends Standard_crud_module
      */
     public function create_selection_list_entries()
     {
-        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'), null, 'ORDER BY q_add_date DESC', intval(get_option('general_safety_listing_limit')));
+        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'), array(), 'ORDER BY q_add_date DESC', intval(get_option('general_safety_listing_limit')));
         $entries = new Tempcode();
         foreach ($_m as $m) {
             $entries->attach(form_input_list_entry(strval($m['id']), false, get_translated_text($m['q_name'])));
@@ -324,7 +324,7 @@ class Module_cms_quiz extends Standard_crud_module
         if (addon_installed('newsletter')) {
             $newsletters = new Tempcode();
             $newsletters->attach(form_input_list_entry('', false, do_lang_tempcode('NONE_EM')));
-            $_newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'), null, 'ORDER BY id');
+            $_newsletters = $GLOBALS['SITE_DB']->query_select('newsletters', array('*'), array(), 'ORDER BY id');
             foreach ($_newsletters as $n) {
                 $newsletters->attach(form_input_list_entry(strval($n['id']), $tied_newsletter == $n['id'], get_translated_text($n['title'])));
             }

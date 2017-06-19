@@ -762,7 +762,7 @@ class Module_calendar
      * @param  string $day The day (Y-m-d) we are viewing
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
-     * @param  ?array $filter The type filter (null: none)
+     * @param  ?array $filter The type filter (null: no filter)
      * @return Tempcode The UI
      */
     public function view_calendar_view_day($view_id, $day, $explode, $member_id, $filter)
@@ -899,7 +899,7 @@ class Module_calendar
      * @param  string $day The day (Y-m-d) we are viewing
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
-     * @param  ?array $filter The type filter (null: none)
+     * @param  ?array $filter The type filter (null: no filter)
      * @return Tempcode The UI
      */
     public function view_calendar_view_week($view_id, $day, $explode, $member_id, $filter)
@@ -1119,7 +1119,7 @@ class Module_calendar
      * @param  string $day The day (Y-m-d) we are viewing
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
-     * @param  ?array $filter The type filter (null: none)
+     * @param  ?array $filter The type filter (null: no filter)
      * @return Tempcode The UI
      */
     public function view_calendar_view_month($view_id, $day, $explode, $member_id, $filter)
@@ -1252,7 +1252,7 @@ class Module_calendar
      * @param  string $day The day (Y-m-d) we are viewing
      * @param  array $explode List of components of our viewed ID
      * @param  MEMBER $member_id The member ID we are viewing the calendar for
-     * @param  ?array $filter The type filter (null: none)
+     * @param  ?array $filter The type filter (null: no filter)
      * @return Tempcode The UI
      */
     public function view_calendar_view_year($view_id, $day, $explode, $member_id, $filter)

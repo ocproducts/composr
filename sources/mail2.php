@@ -225,7 +225,7 @@ function find_mail_bounces($server, $port, $folder, $username, $password, $since
 
     update_bounce_storage($server, $port, $folder, $username, $password, $_since);
 
-    $_ret = $GLOBALS['SITE_DB']->query_select('email_bounces', array('b_email_address', 'b_subject', 'b_time', 'b_body'), null, 'ORDER BY b_time');
+    $_ret = $GLOBALS['SITE_DB']->query_select('email_bounces', array('b_email_address', 'b_subject', 'b_time', 'b_body'), array(), 'ORDER BY b_time');
     $ret = array();
     foreach ($_ret as $r) {
         $ret[$r['b_email_address']] = array($r['b_subject'], true, $r['b_time'], $r['b_body']);

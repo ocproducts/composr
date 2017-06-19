@@ -574,7 +574,7 @@ function sync_aggregate_type_instance($id, $aggregate_label = null, $old_aggrega
             }
 
             $priv_reset = true;
-            $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true, true, null, null, false);
+            $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true, true, array(), null, false);
 
             // Load privilege presets
             $group_presets = array();

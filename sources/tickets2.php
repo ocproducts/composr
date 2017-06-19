@@ -110,7 +110,7 @@ function delete_ticket_type($ticket_type_id)
  */
 function build_types_list($selected_ticket_type_id, $ticket_types_to_let_through = array())
 {
-    $_types = $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'), null, 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name'));
+    $_types = $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'), array(), 'ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('ticket_type_name'));
     $types = array();
     foreach ($_types as $type) {
         if ((!has_category_access(get_member(), 'tickets', strval($type['id']))) && (!in_array($type['id'], $ticket_types_to_let_through))) {
@@ -154,7 +154,7 @@ function get_ticket_type($ticket_type_id)
         return $default;
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('ticket_types', null, array('id' => $ticket_type_id), '', 1);
+    $rows = $GLOBALS['SITE_DB']->query_select('ticket_types', array('*'), array('id' => $ticket_type_id), '', 1);
     if (count($rows) == 0) {
         return $default;
     }
@@ -508,7 +508,7 @@ function get_ticket_meta_details($ticket_id, $hard_error = true)
  */
 function get_ticket_posts($ticket_id, &$forum = null, &$topic_id = null, &$total_ticket_posts = null, $start = 0, $max = null)
 {
-    $ticket = $GLOBALS['SITE_DB']->query_select('tickets', null, array('ticket_id' => $ticket_id), '', 1, null, true);
+    $ticket = $GLOBALS['SITE_DB']->query_select('tickets', array('*'), array('ticket_id' => $ticket_id), '', 1, null, true);
     if (count($ticket) == 1) {
         // We know about it, so grab details from tickets table...
 
@@ -573,7 +573,7 @@ function update_ticket_type_lead_times()
         $total_lead_time = 0;
         $tickets_counted = 0;
 
-        $tickets = $GLOBALS['SITE_DB']->query_select('tickets', null, array('ticket_type' => $ticket_type['id']));
+        $tickets = $GLOBALS['SITE_DB']->query_select('tickets', array('*'), array('ticket_type' => $ticket_type['id']));
         foreach ($tickets as $ticket) {
             $max_rows = 0;
             $topic = $GLOBALS['FORUM_DRIVER']->show_forum_topics($ticket['forum_id'], 1, 0, $max_rows, $ticket['ticket_id'], true, 'lasttime', false, do_lang('SUPPORT_TICKET') . ': #' . $ticket['ticket_id']);

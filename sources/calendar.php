@@ -643,7 +643,7 @@ function date_range($from, $to, $do_time = true, $force_absolute = false, $timez
  * @param  boolean $restrict Whether to restrict only to viewable events for the current member (rarely pass this as false!)
  * @param  ?TIME $period_start The timestamp that found times must exceed. In user-time (null: use find_periods_recurrence default)
  * @param  ?TIME $period_end The timestamp that found times must not exceed. In user-time (null: use find_periods_recurrence default)
- * @param  ?array $filter The type filter, as used by the calendar module internally (null: none)
+ * @param  ?array $filter The type filter, as used by the calendar module internally (null: no filter)
  * @param  boolean $do_rss Whether to include RSS/iCal events in the results
  * @param  ?BINARY $private Whether to show private events (1) or public events (0) (null: both public and private)
  * @return array A list of events happening, with time details

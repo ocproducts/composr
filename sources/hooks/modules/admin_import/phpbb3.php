@@ -210,7 +210,7 @@ class Hook_import_phpbb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('attachments', array('*'), null, 'ORDER BY attach_id', 200, $row_start);
+            $rows = $db->query_select('attachments', array('*'), array(), 'ORDER BY attach_id', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('attachment', strval($row['attach_id']))) {
                     continue;
@@ -807,7 +807,7 @@ class Hook_import_phpbb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('posts', array('*'), null, 'ORDER BY post_id', 200, $row_start);
+            $rows = $db->query_select('posts', array('*'), array(), 'ORDER BY post_id', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post', strval($row['post_id']))) {
                     continue;
@@ -1034,7 +1034,7 @@ class Hook_import_phpbb3
      */
     public function import_cns_private_topics($db, $table_prefix, $old_base_dir)
     {
-        $rows = $db->query_select('privmsgs', array('*'), null, 'ORDER BY message_time');
+        $rows = $db->query_select('privmsgs', array('*'), array(), 'ORDER BY message_time');
 
         // Group them up into what will become topics
         $groups = array();
@@ -1175,7 +1175,7 @@ class Hook_import_phpbb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('topics_track', array('*'), null, '', 200, $row_start);
+            $rows = $db->query_select('topics_track', array('*'), array(), '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic_notification', strval($row['topic_id']) . '-' . strval($row['user_id']))) {
                     continue;
@@ -1200,7 +1200,7 @@ class Hook_import_phpbb3
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('forums_track', array('*'), null, '', 200, $row_start);
+            $rows = $db->query_select('forums_track', array('*'), array(), '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('forum_notification', strval($row['forum_id']) . '-' . strval($row['user_id']))) {
                     continue;

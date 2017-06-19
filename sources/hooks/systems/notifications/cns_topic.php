@@ -49,7 +49,7 @@ class Hook_notification_cns_topic extends Hook_Notification
         $notification_category = get_param_string('id', null);
         $done_in_url = ($notification_category === null);
 
-        $total = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'COUNT(*)');
+        $total = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'COUNT(*)');
         if ($total > intval(get_option('general_safety_listing_limit'))/*reasonable limit*/) {
             return parent::create_category_tree($notification_code, $id); // Too many, so just allow removing UI
         }

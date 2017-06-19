@@ -42,7 +42,7 @@ function get_privacy_form_fields($content_type, $content_id = null, $show_header
     require_code('form_templates');
 
     if ($content_id !== null) {
-        $rows = $GLOBALS['SITE_DB']->query_select('content_privacy', null, array('content_type' => $content_type, 'content_id' => $content_id));
+        $rows = $GLOBALS['SITE_DB']->query_select('content_privacy', array('*'), array('content_type' => $content_type, 'content_id' => $content_id));
         if (count($rows) == 0) {
             $view_by_guests = true;
             $view_by_members = true;
@@ -52,7 +52,7 @@ function get_privacy_form_fields($content_type, $content_id = null, $show_header
             $view_by_members = ($rows[0]['member_view'] == 1);
             $view_by_friends = ($rows[0]['friend_view'] == 1);
         }
-        $rows = $GLOBALS['SITE_DB']->query_select('content_privacy__members', null, array('content_type' => $content_type, 'content_id' => $content_id));
+        $rows = $GLOBALS['SITE_DB']->query_select('content_privacy__members', array('*'), array('content_type' => $content_type, 'content_id' => $content_id));
         $additional_access = array();
         foreach ($rows as $row) {
             $additional_access[] = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);

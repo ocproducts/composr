@@ -717,7 +717,7 @@ function load_module_page($string, $codename, &$out = null)
     if (get_value('assume_modules_correct') !== '1') {
         $rows = persistent_cache_get('MODULES');
         if ($rows === null) {
-            $rows = list_to_map('module_the_name', $GLOBALS['SITE_DB']->query_select('modules', array('*'), ($GLOBALS['PERSISTENT_CACHE'] === null) ? array('module_the_name' => $codename) : null));
+            $rows = list_to_map('module_the_name', $GLOBALS['SITE_DB']->query_select('modules', array('*'), ($GLOBALS['PERSISTENT_CACHE'] === null) ? array('module_the_name' => $codename) : array()));
             persistent_cache_set('MODULES', $rows);
         }
         if (array_key_exists($codename, $rows)) {
@@ -878,9 +878,9 @@ function find_all_zones($search = false, $get_titles = false, $force_all = false
         }
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), null, 'ORDER BY zone_name', $force_all ? null : $max, $start);
+    $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array(), 'ORDER BY zone_name', $force_all ? null : $max, $start);
     if ((!$force_all) && (count($rows) == $max)) {
-        $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), null, 'ORDER BY zone_title', $max/*reasonable limit; zone_title is sequential for default zones*/);
+        $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array(), 'ORDER BY zone_title', $max/*reasonable limit; zone_title is sequential for default zones*/);
     }
     $zones_titled = array();
     $zones = array();
@@ -1409,10 +1409,10 @@ function block_params_str_to_arr($_map, $block_symbol_style = false)
  * Get the block object for a given block codename.
  *
  * @param  ID_TEXT $codename The block name
- * @param  ?array $map The block parameter map (null: no parameters)
+ * @param  array $map The block parameter map
  * @return array A pair: Either the block object, or the string output of a miniblock ; and whether we entered a new security scope
  */
-function do_block_hunt_file($codename, $map = null)
+function do_block_hunt_file($codename, $map = array())
 {
     global $BLOCKS_AT_CACHE;
 
@@ -1472,7 +1472,7 @@ function do_block_hunt_file($codename, $map = null)
                     persistent_cache_set('BLOCKS_AT', $BLOCKS_AT_CACHE);
                 }
             }
-        } elseif (($map === null) || (!isset($map['failsafe'])) || ($map['failsafe'] !== '1')) {
+        } elseif ((!isset($map['failsafe'])) || ($map['failsafe'] !== '1')) {
             $temp = do_template('WARNING_BOX', array('_GUID' => '09f1bd6e117693a85fb69bfb52ea1799', 'WARNING' => do_lang_tempcode('MISSING_BLOCK_FILE', escape_html($codename))));
             $object = $temp->evaluate();
         } else {
@@ -1536,7 +1536,7 @@ function get_block_info_row($codename, $map)
  * We see if we have something cached by looking for a matching identifier.
  *
  * @param  mixed $cache_on PHP expression over $map (the parameter map of the block) OR a call_user_func specifier that will return a result (which will be used if caching is really very important, even for Hip Hop PHP)
- * @param  ?array $map The block parameter map (null: no parameters)
+ * @param  array $map The block parameter map
  * @return ?LONG_TEXT The derived cache identifier (null: the identifier is CURRENTLY null meaning cannot be cached)
  */
 function do_block_get_cache_identifier($cache_on, $map)

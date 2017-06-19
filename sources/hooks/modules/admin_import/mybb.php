@@ -277,7 +277,7 @@ class Hook_import_mybb
             $avatar_max_height = mixed();
         }
 
-        $rows = $db->query_select('usergroups', array('*'), null, 'ORDER BY gid');
+        $rows = $db->query_select('usergroups', array('*'), array(), 'ORDER BY gid');
         foreach ($rows as $row) {
             if (import_check_if_imported('group', strval($row['gid']))) {
                 continue;
@@ -702,7 +702,7 @@ class Hook_import_mybb
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('posts p', array('*'), null, 'ORDER BY p.pid', 200, $row_start);
+            $rows = $db->query_select('posts p', array('*'), array(), 'ORDER BY p.pid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post', strval($row['pid']))) {
                     continue;
@@ -865,7 +865,7 @@ class Hook_import_mybb
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('attachments', array('*'), null, 'ORDER BY aid', 200, $row_start);
+            $rows = $db->query_select('attachments', array('*'), array(), 'ORDER BY aid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post_files', strval($row['aid']))) {
                     continue;
@@ -966,7 +966,7 @@ class Hook_import_mybb
      */
     public function import_cns_private_topics($db, $table_prefix, $old_base_dir)
     {
-        $rows = $db->query_select('privatemessages p', array('*'), null, 'ORDER BY dateline');
+        $rows = $db->query_select('privatemessages p', array('*'), array(), 'ORDER BY dateline');
 
         // Group them up into what will become topics
         $groups = array();
@@ -1084,7 +1084,7 @@ class Hook_import_mybb
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('threadsubscriptions', array('*'), null, '', 200, $row_start);
+            $rows = $db->query_select('threadsubscriptions', array('*'), array(), '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic_notification', strval($row['tid']) . '-' . strval($row['uid']))) {
                     continue;

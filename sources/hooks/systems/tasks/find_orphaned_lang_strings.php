@@ -72,7 +72,7 @@ class Hook_task_find_orphaned_lang_strings
                     $select[] = $f['m_name'];
                 }
             }
-            $ofs = $GLOBALS['SITE_DB']->query_select($langidfield['m_table'], $select, null, '', null, null, false, array());
+            $ofs = $GLOBALS['SITE_DB']->query_select($langidfield['m_table'], $select, array(), '', null, null, false, array());
             foreach ($ofs as $of) {
                 $id = $of[$langidfield['m_name']];
                 if ($id === null) {

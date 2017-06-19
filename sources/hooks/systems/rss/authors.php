@@ -45,7 +45,7 @@ class Hook_rss_authors
         }
 
         $content = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('authors', array('*'), null, '', 1000);
+        $rows = $GLOBALS['SITE_DB']->query_select('authors', array('*'), array(), '', 1000);
         if (count($rows) == 1000) {
             return null; // Too much
         }

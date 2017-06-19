@@ -240,7 +240,7 @@ class Module_admin_orders
         $filter = get_param_string('filter', null);
         $search = get_param_string('search', '', INPUT_FILTER_GET_COMPLEX);
 
-        $cond = 'WHERE 1=1';
+        $cond = ' WHERE 1=1';
 
         if ($filter == 'undispatched') {
             $cond .= ' AND ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_payment_received');
@@ -293,7 +293,7 @@ class Module_admin_orders
 
         push_db_scope_check(false);
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,SUM(t3.p_quantity*t3.included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond . ' GROUP BY t1.id ORDER BY ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled') . ',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT t1.*,SUM(t3.p_quantity*t3.included_tax) as tax FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id' . $cond . ' GROUP BY t1.id ORDER BY ' . db_string_equal_to('t1.order_status', 'ORDER_STATUS_cancelled') . ',' . $sortable . ' ' . $sort_order, $max, $start, false, true);
         $order_entries = new Tempcode();
         foreach ($rows as $row) {
             if ($row['purchase_through'] == 'cart') {
@@ -354,7 +354,7 @@ class Module_admin_orders
         }
 
         require_code('templates_pagination');
-        $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id ' . $cond);
+        $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order t1' . $extra_join . ' LEFT JOIN ' . get_table_prefix() . 'shopping_order_details t3 ON t1.id=t3.order_id' . $cond);
         $pagination = pagination(do_lang_tempcode('ORDERS'), $start, 'start', $max, 'max', $max_rows, true);
 
         $widths = mixed();//array('110', '70', '80', '200', '120', '180', '180', '200');
@@ -414,7 +414,7 @@ class Module_admin_orders
             ), $sortables, 'sort', $sortable . ' ' . $sort_order
         );
 
-        $max_rows = $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_details', 'COUNT(*)', array('order_id' => $id));
+        $max_rows = $GLOBALS['SITE_DB']->query_select_value('shopping_order_details', 'COUNT(*)', array('order_id' => $id));
 
         // Show products in the order
         $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $id), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);

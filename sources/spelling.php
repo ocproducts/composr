@@ -144,7 +144,7 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
             $or_list .= db_string_equal_to('w_replacement', $word);
         }
         if (addon_installed('wordfilter')) {
-            $_non_words = $GLOBALS['SITE_DB']->query_select('wordfilter', array('w_replacement'), null, 'WHERE ' . $or_list);
+            $_non_words = $GLOBALS['SITE_DB']->query('SELECT w_replacement FROM ' . get_table_prefix() . 'wordfilter WHERE ' . $or_list);
             foreach ($_non_words as $_non_word) {
                 if ($_non_word['w_replacement'] != '') {
                     $non_words[] = $_non_word['w_replacement'];
@@ -160,7 +160,7 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
                 }
                 $or_list .= db_string_equal_to('text_original', $word);
             }
-            $_non_words = $GLOBALS['SITE_DB']->query_select('seo_meta_keywords k JOIN ' . get_table_prefix() . 'translate t ON k.meta_keyword=t.id', array('DISTINCT text_original AS meta_keyword'), null, 'WHERE ' . $or_list);
+            $_non_words = $GLOBALS['SITE_DB']->query('SELECT DISTINCT text_original AS meta_keyword FROM ' . get_table_prefix() . 'seo_meta_keywords k JOIN ' . get_table_prefix() . 'translate t ON k.meta_keyword=t.id WHERE ' . $or_list);
         } else {
             $or_list = '';
             foreach ($words as $word) {
@@ -169,7 +169,7 @@ function run_spellcheck($text, $lang = null, $skip_known_words_in_db = true)
                 }
                 $or_list .= db_string_equal_to('meta_keyword', $word);
             }
-            $_non_words = $GLOBALS['SITE_DB']->query_select('seo_meta_keywords', array('DISTINCT meta_keyword'), null, 'WHERE ' . $or_list);
+            $_non_words = $GLOBALS['SITE_DB']->query('SELECT DISTINCT meta_keyword FROM ' . get_table_prefix() . 'seo_meta_keywords WHERE ' . $or_list);
         }
         foreach ($_non_words as $_non_word) {
             if ($_non_word['meta_keyword'] != '') {

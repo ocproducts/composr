@@ -348,7 +348,7 @@ class Module_admin_themes
         $_themes = find_all_themes(true);
 
         // Look through zones
-        $zones = $GLOBALS['SITE_DB']->query_select('zones', array('*'), null, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
+        $zones = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array(), 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
         $free_choices = 0;
         $zone_list_free_choices = new Tempcode();
         $no_themes_explicitly_set = true;

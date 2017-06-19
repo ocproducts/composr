@@ -315,7 +315,7 @@ function get_attachments($posting_field_name)
  * @param  string $extra Extra info to put on the posting form
  * @param  ?Tempcode $specialisation2 A buildup of trailing extra fields, in a format compatible with the templates used by this function. (null: none)
  * @param  ?Tempcode $default_parsed The parsed Comcode. (null: calculate)
- * @param  ?array $js_function_calls JavaScript functions to execute (null: none)
+ * @param  array $js_function_calls JavaScript functions to execute
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  boolean $required Whether this is a required input field
  * @param  boolean $has_preview Whether the form supports previewing
@@ -325,7 +325,7 @@ function get_attachments($posting_field_name)
  * @param  mixed $description A description for this input field
  * @return Tempcode The posting form
  */
-function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $js_function_calls = null, $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
+function get_posting_form($submit_name, $submit_icon, $post, $post_url, $hidden_fields, $specialisation, $post_comment = null, $extra = '', $specialisation2 = null, $default_parsed = null, $js_function_calls = array(), $tabindex = null, $required = true, $has_preview = true, $avoid_wysiwyg = false, $support_autosave = true, $specialisation2_hidden = false, $description = '')
 {
     require_javascript('posting');
     require_javascript('plupload');

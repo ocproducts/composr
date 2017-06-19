@@ -290,7 +290,7 @@ function parse_articletrader($r)
     );
 }
 
-function http_get_contents_cached($url, $referer = '', $cookies = null)
+function http_get_contents_cached($url, $referer = '', $cookies = array())
 {
     require_code('files');
     $dir = get_custom_file_base() . '/data_custom/free_article_import_cache';

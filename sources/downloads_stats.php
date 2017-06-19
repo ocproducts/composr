@@ -28,7 +28,7 @@ function get_download_bandwidth()
     $value = intval(get_value_newer_than('download_bandwidth', time() - 60 * 60 * 24));
 
     if ($value == 0) {
-        $total = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'COUNT(*)', array('validated' => 1));
+        $total = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'COUNT(*)', array('validated' => 1));
         if ($total > 200) { // Fast but won't work on some databases
             $value = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'SUM(file_size*num_downloads)', array('validated' => 1));
         } else {
@@ -84,7 +84,7 @@ function get_num_archive_downloads()
     $value = intval(get_value_newer_than('num_archive_downloads', time() - 60 * 60 * 24));
 
     if ($value == 0) {
-        $value = $GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'COUNT(*)', array('validated' => 1));
+        $value = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'COUNT(*)', array('validated' => 1));
         if (!(intval($value) > 0)) {
             $value = 0;
         }

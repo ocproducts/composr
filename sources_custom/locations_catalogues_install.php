@@ -371,7 +371,7 @@ function transcode_remaining_locations()
 function create_catalogue_category_tree($catalogue_name = 'places', $country = null, $fixup = false/*used to fix old bug where countries without regions were not imported*/)
 {
     if ($country === null) { // We will do this by looping through each country, recursing back into this function to do just this country. This will take about 5 hours to run, so it's important to be able to do in a measured way.
-        $countries = $GLOBALS['SITE_DB']->query_select('locations', array('DISTINCT l_country'), null, 'ORDER BY l_country');
+        $countries = $GLOBALS['SITE_DB']->query_select('locations', array('DISTINCT l_country'), array(), 'ORDER BY l_country');
         foreach ($countries as $country) {
             create_catalogue_category_tree($catalogue_name, $country['l_country'], $fixup);
             echo('Done ' . $country['l_country'] . "\n");

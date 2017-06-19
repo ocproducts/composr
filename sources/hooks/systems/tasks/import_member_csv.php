@@ -52,7 +52,7 @@ class Hook_task_import_member_csv
 
         require_code('cns_members_action2');
         $headings = member_get_csv_headings();
-        $all_cpfs = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('*'), null, 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
+        $all_cpfs = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('*'), array(), 'ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'));
         foreach ($all_cpfs as $i => $c) { // CPFs take precedence over normal fields of the same name
             $c['_cf_name'] = get_translated_text($c['cf_name'], $GLOBALS['FORUM_DB']);
 

@@ -185,7 +185,7 @@ class Module_topicview
             if ($of_username === null) {
                 $of_username = do_lang('UNKNOWN');
             }
-            $private_topic_page_link = build_page_link(array('page' => 'members', 'type' => 'view', 'id' => $of_member), get_module_zone('members'), null, 'tab__pts');
+            $private_topic_page_link = build_page_link(array('page' => 'members', 'type' => 'view', 'id' => $of_member), get_module_zone('members'), array(), 'tab__pts');
             $breadcrumbs[] = array($private_topic_page_link, do_lang_tempcode('MEMBER_ACCOUNT', escape_html($of_username)));
         }
 

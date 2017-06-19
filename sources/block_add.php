@@ -331,7 +331,7 @@ function block_helper_script()
                     $fields->attach(form_input_list($parameter_title, escape_html($description), $parameter, $list, null, false, false));
                 } elseif ($block . ':' . $parameter == 'menu:param') { // special case for menus
                     $list = new Tempcode();
-                    $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), null, 'ORDER BY i_menu');
+                    $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), array(), 'ORDER BY i_menu');
                     foreach ($rows as $row) {
                         $list->attach(form_input_list_entry($row['i_menu'], $has_default && $row['i_menu'] == $default));
                     }

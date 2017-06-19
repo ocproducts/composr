@@ -847,7 +847,7 @@ class Hook_import_ipb2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('topics', array('*'), null, 'ORDER BY tid', 200, $row_start);
+            $rows = $db->query_select('topics', array('*'), array(), 'ORDER BY tid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic', strval($row['tid']))) {
                     continue;
@@ -928,7 +928,7 @@ class Hook_import_ipb2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('posts', array('*'), null, 'ORDER BY pid', 200, $row_start);
+            $rows = $db->query_select('posts', array('*'), array(), 'ORDER BY pid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post', strval($row['pid']))) {
                     continue;
@@ -1210,7 +1210,7 @@ class Hook_import_ipb2
         }
         $row_start = 0;
         do {
-            $rows = $db->query_select('tracker', array('*'), null, '', 200, $row_start);
+            $rows = $db->query_select('tracker', array('*'), array(), '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('topic_notification', strval($row['trid']))) {
                     continue;

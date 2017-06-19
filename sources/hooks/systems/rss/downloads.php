@@ -49,7 +49,7 @@ class Hook_rss_downloads
         }
 
         $content = new Tempcode();
-        $_categories = $GLOBALS['SITE_DB']->query_select('download_categories', array('id', 'category'), null, '', 300);
+        $_categories = $GLOBALS['SITE_DB']->query_select('download_categories', array('id', 'category'), array(), '', 300);
         foreach ($_categories as $i => $_category) {
             $_categories[$i]['_title'] = get_translated_text($_category['category']);
         }

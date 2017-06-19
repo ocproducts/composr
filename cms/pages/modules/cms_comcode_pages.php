@@ -192,7 +192,7 @@ class Module_cms_comcode_pages
      * Find all pages using a disk search.
      *
      * @param  LANGUAGE_NAME $lang The language we are searching for pages of
-     * @param  ?array $zone_filter List of zones to limit to (null: none)
+     * @param  ?array $zone_filter List of zones to limit to (null: no filter)
      * @param  boolean $check_permissions Whether to check edit permissions
      * @return array The map (page name => map [path & row])
      */
@@ -926,7 +926,7 @@ class Module_cms_comcode_pages
         $hidden_fields->attach(form_input_hidden('zone', $zone));
         $hidden_fields->attach(form_input_hidden('redirect', get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL)));
 
-        $posting_form = get_posting_form(do_lang(($file == '') ? 'COMCODE_PAGE_ADD' : 'SAVE'), ($file == '') ? 'menu___generic_admin__add_one' : 'menu___generic_admin__edit_this', $contents, $post_url, $hidden_fields, $fields, do_lang_tempcode('COMCODE_PAGE'), '', $fields2, $parsed, null, null, false);
+        $posting_form = get_posting_form(do_lang(($file == '') ? 'COMCODE_PAGE_ADD' : 'SAVE'), ($file == '') ? 'menu___generic_admin__add_one' : 'menu___generic_admin__edit_this', $contents, $post_url, $hidden_fields, $fields, do_lang_tempcode('COMCODE_PAGE'), '', $fields2, $parsed, array(), null, false);
 
         if ($file == '') {
             url_default_parameters__disable();
@@ -1223,7 +1223,7 @@ class Module_cms_comcode_pages
 
             $zone_start_pages = collapse_2d_complexity('zone_name', 'zone_default_page', $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page')));
 
-            $menu_branches = $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_menu', 'i_parent', 'i_caption', 'i_url'), null, 'ORDER BY i_menu');
+            $menu_branches = $GLOBALS['SITE_DB']->query_select('menu_items', array('id', 'i_menu', 'i_parent', 'i_caption', 'i_url'), array(), 'ORDER BY i_menu');
             $menu_branches_by_url = array();
             foreach ($menu_branches as $menu_branch) {
                 $matches = array();

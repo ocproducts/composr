@@ -135,7 +135,7 @@ class Module_admin_actionlog
         $_member_choice_list = array();
         if (get_forum_type() == 'cns') {
             if ($GLOBALS['FORUM_DB']->query_select_value('f_moderator_logs', 'COUNT(DISTINCT l_by)') < 5000) {
-                $members = list_to_map('l_by', $GLOBALS['FORUM_DB']->query_select('f_moderator_logs', array('l_by', 'COUNT(*) AS cnt'), null, 'GROUP BY l_by ORDER BY COUNT(*) DESC'));
+                $members = list_to_map('l_by', $GLOBALS['FORUM_DB']->query_select('f_moderator_logs', array('l_by', 'COUNT(*) AS cnt'), array(), 'GROUP BY l_by ORDER BY COUNT(*) DESC'));
                 foreach ($members as $member) {
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($member['l_by']);
                     if ($username === null) {
@@ -146,7 +146,7 @@ class Module_admin_actionlog
             }
         }
         if ($GLOBALS['SITE_DB']->query_select_value('actionlogs', 'COUNT(DISTINCT member_id)') < 5000) {
-            $_staff = list_to_map('member_id', $GLOBALS['SITE_DB']->query_select('actionlogs', array('member_id', 'COUNT(*) AS cnt'), null, 'GROUP BY member_id ORDER BY COUNT(*) DESC'));
+            $_staff = list_to_map('member_id', $GLOBALS['SITE_DB']->query_select('actionlogs', array('member_id', 'COUNT(*) AS cnt'), array(), 'GROUP BY member_id ORDER BY COUNT(*) DESC'));
             foreach ($_staff as $staff) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($staff['member_id']);
                 if ($username === null) {

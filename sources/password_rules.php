@@ -88,7 +88,7 @@ function bump_password_times_forward()
 {
     $start = 0;
     do {
-        $members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_pass_hash_salted', 'm_pass_salt'), null, '', 500, $start);
+        $members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_pass_hash_salted', 'm_pass_salt'), array(), '', 500, $start);
         foreach ($members as $member) {
             $GLOBALS['FORUM_DB']->query_delete('f_password_history', array(
                 'p_member_id' => $member['id'],

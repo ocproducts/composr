@@ -236,9 +236,9 @@ class database_misc_test_set extends cms_test_case
 
     public function testCountApprox()
     {
-        $this->assertTrue($GLOBALS['SITE_DB']->get_table_count_approx('download_categories', null, null) > 0);
+        $this->assertTrue($GLOBALS['SITE_DB']->get_table_count_approx('download_categories', array(), null) > 0);
         $this->assertTrue($GLOBALS['SITE_DB']->get_table_count_approx('download_categories', array('id' => db_get_first_id()), null) > 0);
-        $this->assertTrue($GLOBALS['SITE_DB']->get_table_count_approx('download_categories', null, 'id=' . strval(db_get_first_id())) > 0);
+        $this->assertTrue($GLOBALS['SITE_DB']->get_table_count_approx('download_categories', array(), 'id=' . strval(db_get_first_id())) > 0);
         $this->assertTrue($GLOBALS['SITE_DB']->get_table_count_approx('download_categories', array('id' => db_get_first_id()), 'id=' . strval(db_get_first_id())) > 0);
     }
 

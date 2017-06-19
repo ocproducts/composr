@@ -195,7 +195,7 @@ function enable_content_translation()
         // Copy to translate table
         $start = 0;
         do {
-            $trans = $db->query_select($field['m_table'], array('*'), null, '', 100, $start, false, array()/*Needs to disable auto-field-grabbing as DB state is currently inconsistent*/);
+            $trans = $db->query_select($field['m_table'], array('*'), array(), '', 100, $start, false, array()/*Needs to disable auto-field-grabbing as DB state is currently inconsistent*/);
             foreach ($trans as $t) {
                 $lang_id = null;
                 $lock = false;

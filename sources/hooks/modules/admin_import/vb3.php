@@ -653,7 +653,7 @@ class Hook_import_vb3
         }
 
         // Read logs
-        $rows = $db->query_select('threadread', array('*'), '', null, null, true);
+        $rows = $db->query_select('threadread', array('*'), array(), '', null, null, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $member_id = import_id_remap_get('member', strval($row['userid']), true);

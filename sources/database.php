@@ -1112,11 +1112,11 @@ class DatabaseConnector
      *
      * @param  string $table The table to select from
      * @param  ?array $select_map List of field selections (null: all fields)
-     * @param  ?array $where_map Map of conditions to enforce (null: no conditions)
+     * @param  array $where_map Map of conditions to enforce
      * @param  string $end Additional stuff to tack onto the query
      * @return string SQL query
      */
-    protected function _get_where_expand($table, $select_map = null, $where_map = null, $end = '')
+    protected function _get_where_expand($table, $select_map = null, $where_map = array(), $end = '')
     {
         global $DEV_MODE;
 
@@ -1136,7 +1136,7 @@ class DatabaseConnector
         }
 
         $where = '';
-        if (($where_map !== null) && ($where_map != array())) {
+        if ($where_map != array()) {
             foreach ($where_map as $key => $value) {
                 if ($DEV_MODE) {
                     if (!is_string($key)) {
@@ -1180,13 +1180,13 @@ class DatabaseConnector
      *
      * @param  string $table The table name
      * @param  string $selected_value The field to select
-     * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no where conditions)
+     * @param  array $where_map The WHERE map [will all be AND'd together]
      * @param  string $end Something to tack onto the end
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return mixed The first value of the first row returned
      */
-    public function query_select_value($table, $selected_value, $where_map = null, $end = '', $fail_ok = false, $lang_fields = null)
+    public function query_select_value($table, $selected_value, $where_map = array(), $end = '', $fail_ok = false, $lang_fields = null)
     {
         $values = $this->query_select($table, array($selected_value), $where_map, $end, 1, null, $fail_ok, $lang_fields);
         if ($values === null) {
@@ -1219,13 +1219,13 @@ class DatabaseConnector
      *
      * @param  string $table The table name
      * @param  string $select The field to select
-     * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no where conditions)
+     * @param  array $where_map The WHERE map [will all be AND'd together]
      * @param  string $end Something to tack onto the end
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return ?mixed The first value of the first row returned (null: nothing found, or null value found)
      */
-    public function query_select_value_if_there($table, $select, $where_map = null, $end = '', $fail_ok = false, $lang_fields = null)
+    public function query_select_value_if_there($table, $select, $where_map, $end = '', $fail_ok = false, $lang_fields = null)
     {
         $values = $this->query_select($table, array($select), $where_map, $end, 1, null, $fail_ok, $lang_fields);
         if ($values === null) {
@@ -1277,8 +1277,8 @@ class DatabaseConnector
      * Only use this if you're where condition is a series of AND clauses doing simple property comparisons.
      *
      * @param  string $table The table name
-     * @param  ?array $select The SELECT map (null: all fields)
-     * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no conditions)
+     * @param  array $select The SELECT map
+     * @param  array $where_map The WHERE map [will all be AND'd together]
      * @param  string $end Something to tack onto the end of the SQL query
      * @param  ?integer $max The maximum number of rows to select (null: get all)
      * @param  ?integer $start The starting row to select (null: start at first)
@@ -1286,15 +1286,11 @@ class DatabaseConnector
      * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return array The results (empty array: empty result set)
      */
-    public function query_select($table, $select = null, $where_map = null, $end = '', $max = null, $start = null, $fail_ok = false, $lang_fields = null)
+    public function query_select($table, $select = array('*'), $where_map = array(), $end = '', $max = null, $start = null, $fail_ok = false, $lang_fields = null)
     {
         $full_table = $this->table_prefix . $table;
 
         $field_prefix = '';
-
-        if ($select === null) {
-            $select = array('*');
-        }
 
         $this->_automatic_lang_fields($table, $full_table, $select, $where_map, $end, $lang_fields);
 
@@ -1307,7 +1303,7 @@ class DatabaseConnector
      * @param  string $table The table name
      * @param  string $full_table The table name, with prefix too
      * @param  array $select The SELECT map
-     * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no conditions)
+     * @param  array $where_map The WHERE map [will all be AND'd together]
      * @param  string $end Something to tack onto the end of the SQL query
      * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      */
@@ -1339,17 +1335,15 @@ class DatabaseConnector
                             $select[$i] = 'main.' . $s;
                         }
                     }
-                    if ($where_map !== null) {
-                        foreach ($where_map as $i => $s) {
-                            if (!is_string($i)) {
-                                $lang_fields_provisional = array();
-                                break; // Bad API call, but we'll let it fail naturally
-                            }
+                    foreach ($where_map as $i => $s) {
+                        if (!is_string($i)) {
+                            $lang_fields_provisional = array();
+                            break; // Bad API call, but we'll let it fail naturally
+                        }
 
-                            if (preg_match('#^[A-Za-z\_]+$#', $i) !== 0) {
-                                unset($where_map[$i]);
-                                $where_map['main.' . $i] = $s;
-                            }
+                        if (preg_match('#^[A-Za-z\_]+$#', $i) !== 0) {
+                            unset($where_map[$i]);
+                            $where_map['main.' . $i] = $s;
                         }
                     }
                     if ($end !== '') {
@@ -1367,7 +1361,7 @@ class DatabaseConnector
                             (isset($select_inv[$field_prefix . $lang_field])) ||
 
                             (isset($select_inv['t_' . $lang_field . '.text_original'])) ||
-                            (($where_map !== null) && (isset($where_map['t_' . $lang_field . '.text_original']))) ||
+                            (isset($where_map['t_' . $lang_field . '.text_original'])) ||
                             (strpos($end, 't_' . $lang_field . '.text_original') !== false)
                         ) {
                             $lang_fields[$lang_field] = $field_type;
@@ -1917,7 +1911,7 @@ class DatabaseConnector
      *
      * @param  string $table The table name
      * @param  array $update_map The UPDATE map
-     * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no conditions)
+     * @param  array $where_map The WHERE map [will all be AND'd together]
      * @param  string $end Something to tack onto the end of the statement
      * @param  ?integer $max The maximum number of rows to update (null: no limit)
      * @param  ?integer $start The starting row to update (null: no specific start)
@@ -1925,34 +1919,32 @@ class DatabaseConnector
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @return ?integer The number of touched records (null: hasn't been asked / error)
      */
-    public function query_update($table, $update_map, $where_map = null, $end = '', $max = null, $start = null, $num_touched = false, $fail_ok = false)
+    public function query_update($table, $update_map, $where_map = array(), $end = '', $max = null, $start = null, $num_touched = false, $fail_ok = false)
     {
         $where = '';
         $update = '';
 
         $value = mixed();
 
-        if ($where_map !== null) {
-            foreach ($where_map as $key => $value) {
-                if ($where !== '') {
-                    $where .= ' AND ';
-                }
+        foreach ($where_map as $key => $value) {
+            if ($where !== '') {
+                $where .= ' AND ';
+            }
 
-                if (is_float($value)) {
-                    $where .= $key . '=' . float_to_raw_string($value, 10);
-                } elseif (is_integer($value)) {
-                    $where .= $key . '=' . strval($value);
-                } elseif (($key === 'begin_num') || ($key === 'end_num')) {
-                    $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
+            if (is_float($value)) {
+                $where .= $key . '=' . float_to_raw_string($value, 10);
+            } elseif (is_integer($value)) {
+                $where .= $key . '=' . strval($value);
+            } elseif (($key === 'begin_num') || ($key === 'end_num')) {
+                $where .= $key . '=' . $value; // Fudge, for all our known large unsigned integers
+            } else {
+                if ($value === null) {
+                    $where .= $key . ' IS NULL';
                 } else {
-                    if ($value === null) {
-                        $where .= $key . ' IS NULL';
-                    } else {
-                        if (($value === '') && ($this->static_ob->empty_is_null())) {
-                            $value = ' ';
-                        }
-                        $where .= db_string_equal_to($key, $value);
+                    if (($value === '') && ($this->static_ob->empty_is_null())) {
+                        $value = ' ';
                     }
+                    $where .= db_string_equal_to($key, $value);
                 }
             }
         }
@@ -1994,15 +1986,15 @@ class DatabaseConnector
      * Deletes rows from the specified table, that match the specified conditions (if any). It may be limited to a row range (it is likely, only a maximum, of 1, will be used, if any kind of range at all).
      *
      * @param  string $table The table name
-     * @param  ?array $where_map The WHERE map [will all be AND'd together] (null: no conditions)
+     * @param  array $where_map The WHERE map [will all be AND'd together]
      * @param  string $end Something to tack onto the end of the statement
      * @param  ?integer $max The maximum number of rows to delete (null: no limit)
      * @param  ?integer $start The starting row to delete (null: no specific start)
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      */
-    public function query_delete($table, $where_map = null, $end = '', $max = null, $start = null, $fail_ok = false)
+    public function query_delete($table, $where_map = array(), $end = '', $max = null, $start = null, $fail_ok = false)
     {
-        if ($where_map === null) {
+        if ($where_map === array()) {
             if (($end === '') && ($max === null) && ($start === null) && ($this->static_ob->supports_truncate_table($GLOBALS['SITE_DB']->connection_read))) {
                 $this->_query('TRUNCATE ' . $this->table_prefix . $table, null, null, $fail_ok);
             } else {
@@ -2271,21 +2263,17 @@ class DatabaseConnector
      * Get the number of rows in a table, with approximation support for performance (if necessary on the particular database backend).
      *
      * @param  string $table The table name
-     * @param  ?array $where WHERE clauses if it will help get a more reliable number when we're not approximating in map form (null: none)
+     * @param  array $where WHERE clauses if it will help get a more reliable number when we're not approximating in map form
      * @param  ?string $where_clause WHERE clauses if it will help get a more reliable number when we're not approximating in SQL form (null: none)
      * @return ?integer The count (null: do it normally)
      */
-    public function get_table_count_approx($table, $where = null, $where_clause = null)
+    public function get_table_count_approx($table, $where = array(), $where_clause = null)
     {
         if (method_exists($this->static_ob, 'get_table_count_approx')) {
             $ret = $this->static_ob->get_table_count_approx($this->get_table_prefix() . $table, $this->connection_read);
             if ($ret !== null) {
                 return $ret;
             }
-        }
-
-        if ($where === null) {
-            $where = array();
         }
 
         return $this->query_select_value($table, 'COUNT(*)', $where, ($where_clause === null) ? '' : (' AND ' . $where_clause));

@@ -35,7 +35,7 @@ class Hook_task_cns_topics_recache
         // Topics and posts
         $start = 0;
         do {
-            $topics = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id', 't_forum_id'), null, '', 500, $start);
+            $topics = $GLOBALS['FORUM_DB']->query_select('f_topics', array('id', 't_forum_id'), array(), '', 500, $start);
             foreach ($topics as $topic) {
                 require_code('cns_posts_action2');
                 cns_force_update_topic_caching($topic['id'], null, true, true);
@@ -53,7 +53,7 @@ class Hook_task_cns_topics_recache
         // Polls
         $start = 0;
         do {
-            $polls = $GLOBALS['FORUM_DB']->query_select('f_polls', array('id'), null, '', 500, $start);
+            $polls = $GLOBALS['FORUM_DB']->query_select('f_polls', array('id'), array(), '', 500, $start);
             foreach ($polls as $poll) {
                 $total_votes = $GLOBALS['FORUM_DB']->query_select_value('f_poll_votes', 'COUNT(*)', array('pv_poll_id' => $poll['id']));
                 $GLOBALS['FORUM_DB']->query_update('f_polls', array('po_cache_total_votes' => $total_votes), array('id' => $poll['id']), '', 1);

@@ -33,7 +33,7 @@ class CMSAccountRead
 
         $tt_cipher = new TT_Cipher();
 
-        $_users = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), null, '', $max, $start);
+        $_users = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), array(), '', $max, $start);
 
         $users = array();
         foreach ($_users as $user) {

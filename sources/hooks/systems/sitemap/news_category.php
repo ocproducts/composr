@@ -76,7 +76,7 @@ class Hook_sitemap_news_category extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), null, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['SITE_DB']->query_select('news_categories', array('*'), array(), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':select=' . strval($row['id']);
                 if (strpos($page_link, ':blog=0') !== false) {

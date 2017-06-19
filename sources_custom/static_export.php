@@ -57,7 +57,7 @@ function _page_link_to_static($node)
             }
 
             list($zone, $attributes, $hash) = page_link_decode($page_link);
-            $url_test = _build_url($attributes, $zone, null, false, false, true, $hash);
+            $url_test = _build_url($attributes, $zone, array(), false, false, true, $hash);
             if (strpos($url_test, '?') !== false) {
                 continue;
             }
@@ -70,7 +70,7 @@ function _page_link_to_static($node)
                 $extended_page_link .= ':keep_lang=' . $lang . ':max=10000';
             }
             list($zone, $attributes, $hash) = page_link_decode($extended_page_link);
-            $url = _build_url($attributes, $zone, null, false, false, true, $hash);
+            $url = _build_url($attributes, $zone, array(), false, false, true, $hash);
 
             $target_path = urldecode(preg_replace('#\?.*$#', '', preg_replace('#^' . preg_quote(get_base_url(), '#') . '/#', '', $url)));
 

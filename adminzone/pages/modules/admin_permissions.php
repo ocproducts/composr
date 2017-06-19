@@ -547,7 +547,7 @@ class Module_admin_permissions
         }
 
         // Match-key messages
-        $m_rows = $GLOBALS['SITE_DB']->query_select('match_key_messages', array('*'), null, 'ORDER BY id');
+        $m_rows = $GLOBALS['SITE_DB']->query_select('match_key_messages', array('*'), array(), 'ORDER BY id');
         $m_rows[] = array('id' => 'new_1', 'k_message' => '', 'k_match_key' => '');
         $m_rows[] = array('id' => 'new_2', 'k_message' => '', 'k_match_key' => '');
         $m_rows[] = array('id' => 'new_3', 'k_message' => '', 'k_match_key' => '');

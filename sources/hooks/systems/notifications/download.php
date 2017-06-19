@@ -46,7 +46,7 @@ class Hook_notification_download extends Hook_Notification
     {
         require_code('downloads');
 
-        $total = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'COUNT(*)');
+        $total = $GLOBALS['SITE_DB']->query_select_value('download_categories', 'COUNT(*)');
         if ($total > intval(get_option('general_safety_listing_limit'))/*reasonable limit*/) {
             return parent::create_category_tree($notification_code, $id); // Too many, so just allow removing UI
         }

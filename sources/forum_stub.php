@@ -332,12 +332,12 @@ class Forum_driver_base
      * @param  boolean $hide_hidden Whether to obscure the name of hidden usergroups
      * @param  boolean $only_permissive Whether to only grab permissive usergroups
      * @param  boolean $force_show_all Do not limit things even if there are huge numbers of usergroups
-     * @param  ?array $force_find Usergroups that must be included in the results (null: no extras must be)
+     * @param  array $force_find Usergroups that must be included in the results
      * @param  ?MEMBER $for_member Always return usergroups of this member (null: current member)
      * @param  boolean $skip_hidden Whether to completely skip hidden usergroups
      * @return array The map
      */
-    public function get_usergroup_list($hide_hidden = false, $only_permissive = false, $force_show_all = false, $force_find = null, $for_member = null, $skip_hidden = false)
+    public function get_usergroup_list($hide_hidden = false, $only_permissive = false, $force_show_all = false, $force_find = array(), $for_member = null, $skip_hidden = false)
     {
         static $usergroup_list_cache = null;
         if (($usergroup_list_cache !== null) && (isset($usergroup_list_cache[$hide_hidden][$only_permissive][$force_show_all][serialize($force_find)][$for_member][$skip_hidden]))) {

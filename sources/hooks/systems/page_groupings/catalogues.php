@@ -44,10 +44,10 @@ class Hook_page_groupings_catalogues
 
         $ret = array();
         if (has_privilege($member_id, 'submit_cat_highrange_content', 'cms_catalogues')) {
-            $ret[] = array('cms', 'menu/rich_content/catalogues/catalogues', array('cms_catalogues', array('type' => 'browse'), get_module_zone('cms_catalogues')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('catalogues:CATALOGUES'), make_string_tempcode(escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'COUNT(*)', null, '', true))))), 'catalogues:DOC_CATALOGUES');
+            $ret[] = array('cms', 'menu/rich_content/catalogues/catalogues', array('cms_catalogues', array('type' => 'browse'), get_module_zone('cms_catalogues')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('catalogues:CATALOGUES'), make_string_tempcode(escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value('catalogues', 'COUNT(*)', array(), '', true))))), 'catalogues:DOC_CATALOGUES');
         }
         if ($exhaustive) {
-            $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), null, 'ORDER BY c_add_date', 50, null, true);
+            $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array(), 'ORDER BY c_add_date', 50, null, true);
             if ($catalogues !== null) {
                 $ret2 = array();
                 $count = 0;
@@ -65,7 +65,7 @@ class Hook_page_groupings_catalogues
 
                         if (has_submit_permission('mid', $member_id, get_ip_address(), 'cms_catalogues', array('catalogues_catalogue', $row['c_name']))) {
                             if ($count < 10) {
-                                $ret2[] = array('cms', $menu_icon, array('cms_catalogues', array('type' => 'browse', 'catalogue_name' => $row['c_name']), get_module_zone('cms_catalogues')), do_lang_tempcode('ITEMS_HERE', escape_html(get_translated_text($row['c_title'])), escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'COUNT(*)', array('c_name' => $row['c_name']), '', true)))), get_translated_tempcode('catalogues', $row, 'c_description'));
+                                $ret2[] = array('cms', $menu_icon, array('cms_catalogues', array('type' => 'browse', 'catalogue_name' => $row['c_name']), get_module_zone('cms_catalogues')), do_lang_tempcode('ITEMS_HERE', escape_html(get_translated_text($row['c_title'])), escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'COUNT(*)', array('c_name' => $row['c_name']), '', true)))), get_translated_tempcode('catalogues', $row, 'c_description'));
                             }
                             $count++;
                         }

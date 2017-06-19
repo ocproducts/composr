@@ -130,7 +130,7 @@ class Block_main_staff_actions
         ), $sortables, 'sa_sort', $sortable . ' ' . $sort_order);
 
         $max_rows = $max;//Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
-        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), null, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), array(), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         $fields = new Tempcode();
         foreach ($rows as $myrow) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);

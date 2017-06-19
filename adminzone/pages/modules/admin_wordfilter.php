@@ -159,7 +159,7 @@ class Module_admin_wordfilter
     {
         require_code('form_templates');
         $list = new Tempcode();
-        $words = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'), null, 'ORDER BY word');
+        $words = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'), array(), 'ORDER BY word');
         foreach ($words as $word) {
             $word_text = (($word['w_substr'] == 1) ? '*' : '') . $word['word'] . (($word['w_substr'] == 1) ? '*' : '');
             if ($word['w_replacement'] != '') {

@@ -659,7 +659,7 @@ class Module_admin_version
                 ),
             );
             push_db_scope_check(false);
-            $custom_fields = $GLOBALS['SITE_DB']->query_select('f_custom_fields', array('id'), null, 'WHERE cf_type IN (\'short_trans\',\'long_trans\')');
+            $custom_fields = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . get_table_prefix() . 'f_custom_fields WHERE cf_type IN (\'short_trans\',\'long_trans\')');
             $comcode_lang_fields['f_member_custom_fields'] = array();
             foreach ($custom_fields as $custom_field) {
                 $comcode_lang_fields['f_member_custom_fields'][] = 'field_' . strval($custom_field['id']);
@@ -727,7 +727,7 @@ class Module_admin_version
                 $start = 0;
                 $max = 500;
                 do {
-                    $url_id_monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('DISTINCT m_moniker'), null, '', $max, $start);
+                    $url_id_monikers = $GLOBALS['SITE_DB']->query_select('url_id_monikers', array('DISTINCT m_moniker'), array(), '', $max, $start);
                     foreach ($url_id_monikers as $url_id_moniker) {
                         $GLOBALS['SITE_DB']->query_update('url_id_monikers', array('m_moniker_reversed' => strrev($url_id_moniker['m_moniker'])), array('m_moniker' => $url_id_moniker['m_moniker']));
                     }
@@ -771,7 +771,7 @@ class Module_admin_version
             $start = 0;
             $max = 300;
             do {
-                $keywords = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_for_type', 'meta_for_id', 'meta_keywords'), null, '', $max, $start);
+                $keywords = $GLOBALS['SITE_DB']->query_select('seo_meta', array('meta_for_type', 'meta_for_id', 'meta_keywords'), array(), '', $max, $start);
                 if ($keywords !== null) {
                     foreach ($keywords as $_keyword) {
                         $_keywords = array_unique(explode(',', trim(get_translated_text($_keyword['meta_keywords']))));

@@ -60,6 +60,6 @@ class Hook_commandr_fs_extended_config__pstore_prices
      */
     public function write_file($meta_dir, $meta_root_node, $file_name, $contents, &$commandr_fs)
     {
-        return table_from_json('prices', $contents, null, TABLE_REPLACE_MODE_SEVERE);
+        return table_from_json('prices', $contents, array(), TABLE_REPLACE_MODE_SEVERE);
     }
 }

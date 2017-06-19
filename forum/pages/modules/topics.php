@@ -1730,8 +1730,7 @@ class Module_topics
         }
 
         // Render form
-        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons__new_topic', $post, $post_url, $hidden_fields, $specialisation, null, '',
-            $specialisation2, null, $js_function_calls, null, true, true, false, true, is_mobile());
+        $posting_form = get_posting_form(do_lang($private_topic ? 'ADD_PRIVATE_TOPIC' : 'ADD_TOPIC'), 'buttons__new_topic', $post, $post_url, $hidden_fields, $specialisation, null, '', $specialisation2, null, $js_function_calls, null, true, true, false, true, is_mobile());
 
         url_default_parameters__disable();
 

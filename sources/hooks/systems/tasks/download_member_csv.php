@@ -126,7 +126,7 @@ class Hook_task_download_member_csv
         }
 
         // Member count
-        $member_count = $GLOBALS['FORUM_DB']->query_select_value('f_members LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields ON id=mf_member_id', 'COUNT(*)', null, ' WHERE ' . $group_filter_2);
+        $member_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields ON id=mf_member_id WHERE ' . $group_filter_2);
 
         // Output headings
         foreach (array_keys($headings) as $i => $h) {
@@ -148,7 +148,7 @@ class Hook_task_download_member_csv
         $limit = get_param_integer('max', 200); // Set 'max' if you don't want all records
         $start = 0;
         do {
-            $members = $GLOBALS['FORUM_DB']->query_select('f_members LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields ON id=mf_member_id', array('*'), null, ' WHERE ' . $group_filter_2 . ' ORDER BY id', $limit, $start);
+            $members = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members LEFT JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields ON id=mf_member_id WHERE ' . $group_filter_2 . ' ORDER BY id', $limit, $start);
 
             foreach ($members as $m) {
                 if (is_guest($m['id'])) {

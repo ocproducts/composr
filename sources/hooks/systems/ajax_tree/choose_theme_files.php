@@ -90,7 +90,7 @@ class Hook_ajax_tree_choose_theme_files
             $is_related = (substr($id, -8) == '-related');
             if ($is_related) {
                 $id = substr($id, 0, strlen($id) - 8);
-                $relations = collapse_2d_complexity('rel_a', 'cnt', $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_a', 'COUNT(*) AS cnt'), null, 'GROUP BY rel_a'));
+                $relations = collapse_2d_complexity('rel_a', 'cnt', $GLOBALS['SITE_DB']->query_select('theme_template_relations', array('rel_a', 'COUNT(*) AS cnt'), array(), 'GROUP BY rel_a'));
             }
 
             switch ($id) {
@@ -161,7 +161,7 @@ class Hook_ajax_tree_choose_theme_files
                     break;
 
                 case 'screens':
-                    $screens = $GLOBALS['SITE_DB']->query_select('theme_screen_tree', array('page_link'), null, 'ORDER BY page_link');
+                    $screens = $GLOBALS['SITE_DB']->query_select('theme_screen_tree', array('page_link'), array(), 'ORDER BY page_link');
                     foreach ($screens as $screen) {
                         $page_link = $screen['page_link'];
 

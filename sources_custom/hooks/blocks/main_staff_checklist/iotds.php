@@ -71,7 +71,7 @@ class Hook_checklist_iotds
      */
     public function get_num_iotd_queue()
     {
-        $c = $GLOBALS['SITE_DB']->query_select_value_if_there('iotd', 'COUNT(*)', array('is_current' => 0, 'used' => 0));
+        $c = $GLOBALS['SITE_DB']->query_select_value('iotd', 'COUNT(*)', array('is_current' => 0, 'used' => 0));
         if ($c === null) {
             return 0;
         }

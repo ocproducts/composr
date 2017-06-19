@@ -44,7 +44,7 @@ class Hook_task_export_points_log
         $quizzes = array();
         if (addon_installed('quizzes')) {
             require_lang('quiz');
-            $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'), null, 'ORDER BY q_add_date DESC', 100);
+            $quizzes = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'), array(), 'ORDER BY q_add_date DESC', 100);
         }
 
         $members = $GLOBALS['FORUM_DRIVER']->get_matching_members('', 10000/*reasonable limit -- works via returning 'most active' first*/);

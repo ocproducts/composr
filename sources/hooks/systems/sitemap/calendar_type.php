@@ -76,7 +76,7 @@ class Hook_sitemap_calendar_type extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['SITE_DB']->query_select('calendar_types', array('*'), null, '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['SITE_DB']->query_select('calendar_types', array('*'), array(), '', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 if (($row['id'] != db_get_first_id()) || (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (cron_installed()))) { // Filters system commands
                     $child_page_link = $zone . ':' . $page . ':' . $this->screen_type . ':int_' . strval($row['id']) . '=1';

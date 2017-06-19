@@ -228,7 +228,7 @@ class Module_warnings extends Standard_crud_module
             $g = array($date_by, $is_warning, $changed_usergroup_from, $undoing);
             $out->attach(results_entry($g, false));
         }
-        $results_table = results_table(do_lang_tempcode('PUNITIVE_HISTORY'), 0, 'start', 1000000, 'max', $max_rows, $fields_title, $out, null, null, null, null, paragraph(do_lang_tempcode('PUNITIVE_HISTORY_TEXT'), '4t4ygyerhrth4'));
+        $results_table = results_table(do_lang_tempcode('PUNITIVE_HISTORY'), 0, 'start', 1000000, 'max', $max_rows, $fields_title, $out, array(), null, null, null, paragraph(do_lang_tempcode('PUNITIVE_HISTORY_TEXT'), '4t4ygyerhrth4'));
 
         $add_warning_url = build_url(array('page' => '_SELF', 'type' => 'add', 'id' => $member_id, 'redirect' => get_self_url(true)), '_SELF');
         $view_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
@@ -643,7 +643,7 @@ class Module_warnings extends Standard_crud_module
      */
     public function create_selection_list_entries()
     {
-        $_m = $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), null, 'ORDER BY w_time DESC');
+        $_m = $GLOBALS['FORUM_DB']->query_select('f_warnings', array('*'), array(), 'ORDER BY w_time DESC');
         $entries = new Tempcode();
         foreach ($_m as $m) {
             $entries->attach(form_input_list_entry(strval($m['id']), false, $GLOBALS['FORUM_DRIVER']->get_username($m['w_member_id']) . ' (' . get_timezoned_date_time($m['w_time']) . ')'));

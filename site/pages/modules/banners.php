@@ -381,13 +381,13 @@ class Module_banners
 
         require_code('form_templates');
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_banners') ? null : get_member();
-        $max_rows = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', ($only_owned === null) ? null : array('submitter' => $only_owned));
+        $max_rows = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)', ($only_owned === null) ? array() : array('submitter' => $only_owned));
         if ($max_rows == 0) {
             inform_exit(do_lang_tempcode('NO_ENTRIES', 'banner'));
         }
         $max = get_param_integer('banner_max', 20);
         $start = get_param_integer('banner_start', 0);
-        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), ($only_owned === null) ? null : array('submitter' => $only_owned), 'ORDER BY ' . $current_ordering, $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), ($only_owned === null) ? array() : array('submitter' => $only_owned), 'ORDER BY ' . $current_ordering, $max, $start);
         foreach ($rows as $row) {
             $view_url = build_url($url_map + array('source' => $row['name']), '_SELF');
 

@@ -478,7 +478,7 @@ class Module_booking
 
         $found = false;
 
-        $bookable_rows = $GLOBALS['SITE_DB']->query_select('bookable', array('*'), null, 'ORDER BY sort_order');
+        $bookable_rows = $GLOBALS['SITE_DB']->query_select('bookable', array('*'), array(), 'ORDER BY sort_order');
         foreach ($bookable_rows as $bookable_row) {
             if (post_param_integer('bookable_' . strval($bookable_row['id']) . '_quantity', 0) > 0) {
                 $found = true;

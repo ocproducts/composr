@@ -197,7 +197,7 @@ function warnings_script()
     // ---------------------------
 
     $content = new Tempcode();
-    $rows = $GLOBALS['FORUM_DB']->query_select('f_saved_warnings', array('*'), null, 'ORDER BY s_title');
+    $rows = $GLOBALS['FORUM_DB']->query_select('f_saved_warnings', array('*'), array(), 'ORDER BY s_title');
     $keep = symbol_tempcode('KEEP');
     $url = find_script('warnings') . '?type=delete' . $keep->evaluate();
     foreach ($rows as $myrow) {

@@ -29,7 +29,7 @@
  * @param  integer $max_rows The maximum number of rows in the entire dataset
  * @param  Tempcode $fields_title The titles of the fields we are showing in our table, presented in preprepared Tempcode
  * @param  Tempcode $fields The values of the fields we are showing in our table
- * @param  ?array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order (null: no sortables)
+ * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
  * @set    ASC DESC
@@ -43,7 +43,7 @@
  * @param  ?ID_TEXT $hash URL hash component (null: none)
  * @return Tempcode The results table
  */
-function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows, $fields_title, $fields, $sortables = null, $sortable = null, $sort_order = null, $sort_name = 'sort', $message = null, $widths = array(), $tplset = null, $max_page_links = 8, $guid = '1c8645bc2a3ff5bec2e003142185561f', $skip_sortables_form = false, $hash = null)
+function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows, $fields_title, $fields, $sortables = array(), $sortable = null, $sort_order = null, $sort_name = 'sort', $message = null, $widths = array(), $tplset = null, $max_page_links = 8, $guid = '1c8645bc2a3ff5bec2e003142185561f', $skip_sortables_form = false, $hash = null)
 {
     require_code('templates_pagination');
 
@@ -53,20 +53,18 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
 
     if ($message === null) {
         $message = new Tempcode();
-        if ($sortables !== null) {
-            foreach ($sortables as $_sortable => $text) {
-                if (is_object($text)) {
-                    $text = $text->evaluate();
-                }
-                if ($text == do_lang('DATE_TIME') && strpos($fields->evaluate(), '<a ') !== false) {
-                    $message = paragraph(do_lang_tempcode('CLICK_DATE_FOR_MORE'));
-                }
+        foreach ($sortables as $_sortable => $text) {
+            if (is_object($text)) {
+                $text = $text->evaluate();
+            }
+            if ($text == do_lang('DATE_TIME') && strpos($fields->evaluate(), '<a ') !== false) {
+                $message = paragraph(do_lang_tempcode('CLICK_DATE_FOR_MORE'));
             }
         }
     }
 
     // Sorting
-    if ($sortables !== null) {
+    if ($sortables != array()) {
         $sort = results_sorter($sortables, $sortable, $sort_order, $sort_name, $hash);
     } else {
         $sort = new Tempcode();
@@ -96,7 +94,7 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
 /**
  * Get the Tempcode for a results sorter.
  *
- * @param  ?array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order (null: no sortables)
+ * @param  array $sortables A map of sortable code (usually, db field names), to strings giving the human name for the sort order
  * @param  ?ID_TEXT $sortable The current sortable (null: none)
  * @param  ?ID_TEXT $sort_order The order we are sorting in (null: none)
  * @set    ASC DESC

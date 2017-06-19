@@ -113,7 +113,7 @@ function choose_community_billboard_message($id)
  */
 function create_selection_list_community_billboard_messages()
 {
-    $rows = $GLOBALS['SITE_DB']->query_select('community_billboard', array('*'), null, 'ORDER BY order_time ASC');
+    $rows = $GLOBALS['SITE_DB']->query_select('community_billboard', array('*'), array(), 'ORDER BY order_time ASC');
     $time = $GLOBALS['SITE_DB']->query_select_value_if_there('community_billboard', 'activation_time', array('active_now' => 1));
     $out = new Tempcode();
     foreach ($rows as $row) {

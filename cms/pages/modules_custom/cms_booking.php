@@ -267,7 +267,7 @@ class Module_cms_booking extends Standard_crud_module
         $fields->attach(form_input_line(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_BOOKABLE_PRICE'), 'price', float_to_raw_string($details['price'], 2), true));
         $categorisation = ($details['categorisation'] === null) ? '' : get_translated_text($details['categorisation']);
         if ($categorisation == '') {
-            $_categorisation = $GLOBALS['SITE_DB']->query_select_value_if_there('bookable', 'categorisation', null, 'GROUP BY categorisation ORDER BY COUNT(*) DESC');
+            $_categorisation = $GLOBALS['SITE_DB']->query_select_value_if_there('bookable', 'categorisation', array(), 'GROUP BY categorisation ORDER BY COUNT(*) DESC');
             if ($_categorisation === null) {
                 $categorisation = do_lang('GENERAL');
             } else {
@@ -284,7 +284,7 @@ class Module_cms_booking extends Standard_crud_module
         $fields->attach(form_input_text(do_lang_tempcode('BOOKABLE_CODES'), do_lang_tempcode('DESCRIPTION_BOOKABLE_CODES'), 'codes', implode("\n", $codes), true));
 
         $_supplements = new Tempcode();
-        $all_supplements = $GLOBALS['SITE_DB']->query_select('bookable_supplement', array('id', 'title'), null, 'ORDER BY sort_order');
+        $all_supplements = $GLOBALS['SITE_DB']->query_select('bookable_supplement', array('id', 'title'), array(), 'ORDER BY sort_order');
         foreach ($all_supplements as $s) {
             $_supplements->attach(form_input_list_entry(strval($s['id']), in_array($s['id'], $supplements), get_translated_text($s['title'])));
         }
@@ -293,7 +293,7 @@ class Module_cms_booking extends Standard_crud_module
         }
 
         $_blacks = new Tempcode();
-        $all_blacks = $GLOBALS['SITE_DB']->query_select('bookable_blacked', array('id', 'blacked_explanation'), null, 'ORDER BY blacked_from_year,blacked_from_month,blacked_from_day');
+        $all_blacks = $GLOBALS['SITE_DB']->query_select('bookable_blacked', array('id', 'blacked_explanation'), array(), 'ORDER BY blacked_from_year,blacked_from_month,blacked_from_day');
         foreach ($all_blacks as $s) {
             $_blacks->attach(form_input_list_entry(strval($s['id']), in_array($s['id'], $blacks), get_translated_text($s['blacked_explanation'])));
         }
@@ -496,7 +496,7 @@ class Module_cms_booking_supplements extends Standard_crud_module
         $fields->attach(form_input_integer(do_lang_tempcode('SORT_ORDER'), do_lang_tempcode('DESCRIPTION_SORT_ORDER'), 'sort_order', $details['sort_order'], true));
 
         $_bookables = new Tempcode();
-        $all_bookables = $GLOBALS['SITE_DB']->query_select('bookable', array('id', 'title'), null, 'ORDER BY sort_order');
+        $all_bookables = $GLOBALS['SITE_DB']->query_select('bookable', array('id', 'title'), array(), 'ORDER BY sort_order');
         foreach ($all_bookables as $s) {
             $_bookables->attach(form_input_list_entry(strval($s['id']), in_array($s['id'], $bookables), get_translated_text($s['title'])));
         }
@@ -680,7 +680,7 @@ class Module_cms_booking_blacks extends Standard_crud_module
         $fields->attach(form_input_text(do_lang_tempcode('BLACKED_EXPLANATION'), do_lang_tempcode('DESCRIPTION_BLACKED_EXPLANATION'), 'blacked_explanation', ($details['blacked_explanation'] === null) ? '' : get_translated_text($details['blacked_explanation']), true));
 
         $_bookables = new Tempcode();
-        $all_bookables = $GLOBALS['SITE_DB']->query_select('bookable', array('id', 'title'), null, 'ORDER BY sort_order');
+        $all_bookables = $GLOBALS['SITE_DB']->query_select('bookable', array('id', 'title'), array(), 'ORDER BY sort_order');
         foreach ($all_bookables as $s) {
             $_bookables->attach(form_input_list_entry(strval($s['id']), in_array($s['id'], $bookables), get_translated_text($s['title'])));
         }
@@ -939,7 +939,7 @@ class Module_cms_booking_bookings extends Standard_crud_module
         if ($details === null) {
             $bookable_id = get_param_integer('bookable_id', null);
             if ($bookable_id === null) {
-                $bookables = $GLOBALS['SITE_DB']->query_select('bookable', array('*'), null, 'ORDER BY sort_order');
+                $bookables = $GLOBALS['SITE_DB']->query_select('bookable', array('*'), array(), 'ORDER BY sort_order');
                 if (count($bookables) == 0) {
                     inform_exit(do_lang_tempcode('NO_CATEGORIES'));
                 }

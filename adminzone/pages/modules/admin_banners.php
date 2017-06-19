@@ -132,7 +132,7 @@ class Module_admin_banners
         }
         $fields_title = results_field_title($field_titles_arr, $sortables, 'sort', $sortable . ' ' . $sort_order);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), null, '', $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('banners', array('*'), array(), '', $max, $start);
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('banners', 'COUNT(*)');
         $fields = new Tempcode();
         foreach ($rows as $myrow) {

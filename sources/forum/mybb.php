@@ -494,7 +494,7 @@ class Forum_driver_mybb extends Forum_driver_base
 
         $username = $this->_get_username($member);//needed for the mybb_theads DB table
 
-        $test = $this->db->query_select('forums', array('*'), null, '', 1);
+        $test = $this->db->query_select('forums', array('*'), array(), '', 1);
         $fm = array_key_exists('status', $test[0]);
 
         $topic_id = $this->find_topic_id_for_topic_identifier($forum_name, $topic_identifier);

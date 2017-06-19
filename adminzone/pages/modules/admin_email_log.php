@@ -159,7 +159,7 @@ class Module_admin_email_log
         require_code('templates_results_table');
         $fields_title = results_field_title(array(do_lang_tempcode('DATE_TIME'), do_lang_tempcode('FROM'), do_lang_tempcode('TO'), do_lang_tempcode('SUBJECT')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         $fields = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), null, 'ORDER BY  ' . $sortable . ' ' . $sort_order, $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array(), 'ORDER BY  ' . $sortable . ' ' . $sort_order, $max, $start);
         foreach ($rows as $row) {
             $queued = $row['m_queued'] == 1;
 

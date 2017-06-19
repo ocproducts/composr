@@ -286,7 +286,7 @@ class Module_admin_giftr extends Standard_crud_module
     {
         $fields = new Tempcode();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('giftr', array('*'), null);
+        $rows = $GLOBALS['SITE_DB']->query_select('giftr', array('*'), array());
 
         foreach ($rows as $row) {
             $fields->attach(form_input_list_entry(strval($row['id']), false, $row['name']));

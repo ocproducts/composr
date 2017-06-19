@@ -306,7 +306,7 @@ function is_page_https($zone, $page)
     }
     if ($https_pages_cache === null) {
         if (isset($GLOBALS['SITE_DB'])) {
-            $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), null, '', null, null, true);
+            $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), array(), '', null, null, true);
             $https_pages_cache = array();
             foreach ($results as $r) {
                 $https_pages_cache[$r['https_page_name']] = true;
@@ -433,11 +433,11 @@ function build_url($vars, $zone_name = '_SEARCH', $skip = null, $keep_all = fals
  *
  * @param  array $vars A map of parameter names to parameter values. E.g. array('page'=>'example','type'=>'foo','id'=>2). Values may be strings or integers, or Tempcode, or null. null indicates "skip this". 'page' cannot be null.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
- * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are 1. (null: don't skip any)
+ * @param  array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are 1.
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
  * @return string The page-link.
  */
-function build_page_link($vars, $zone_name = '', $skip = null, $hash = '')
+function build_page_link($vars, $zone_name = '', $skip = array(), $hash = '')
 {
     $id = isset($vars['id']) ? $vars['id'] : null;
 
@@ -523,7 +523,7 @@ function url_monikers_enabled()
  *
  * @param  array $vars A map of parameter names to parameter values. Values may be strings or integers, or null. null indicates "skip this". 'page' cannot be null.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
- * @param  ?array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are 1. (null: don't skip any)
+ * @param  array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are 1.
  * @param  boolean $keep_all Whether to keep all non-skipped parameters that were in the current URL, in this URL
  * @param  boolean $avoid_remap Whether to avoid URL Schemes (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
@@ -532,7 +532,7 @@ function url_monikers_enabled()
  *
  * @ignore
  */
-function _build_url($vars, $zone_name = '', $skip = null, $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
+function _build_url($vars, $zone_name = '', $skip = array(), $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
 {
     global $HAS_KEEP_IN_URL_CACHE, $CAN_TRY_URL_SCHEMES_CACHE, $BOT_TYPE_CACHE, $WHAT_IS_RUNNING_CACHE, $KNOWN_AJAX, $IN_SELF_ROUTING_SCRIPT;
 
@@ -953,11 +953,11 @@ function build_keep_form_fields($page = '', $keep_all = false, $exclude = array(
 /**
  * Relay all POST variables for this URL, to the URL embedded in the form.
  *
- * @param  ?array $exclude A list of parameters to exclude (null: exclude none)
+ * @param  array $exclude A list of parameters to exclude
  * @param  boolean $force_everything Force field labels and descriptions to copy through even when there are huge numbers of parameters
  * @return Tempcode The builtup hidden form fields
  */
-function build_keep_post_fields($exclude = null, $force_everything = false)
+function build_keep_post_fields($exclude = array(), $force_everything = false)
 {
     require_code('urls2');
     return _build_keep_post_fields($exclude, $force_everything);

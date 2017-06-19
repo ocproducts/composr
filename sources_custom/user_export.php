@@ -75,7 +75,7 @@ function do_user_export($to_file = true)
     $start = 0;
     $max = 50;
     do {
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_members m JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields c ON m.id=c.mf_member_id', array('*'), null, 'ORDER BY m.id ASC', $max, $start);
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_members m JOIN ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_custom_fields c ON m.id=c.mf_member_id', array('*'), array(), 'ORDER BY m.id ASC', $max, $start);
         foreach ($rows as $row) {
             if (is_guest($row['id'])) {
                 continue;

@@ -137,7 +137,7 @@ class Module_admin_menus
     {
         require_code('form_templates');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), null, 'ORDER BY i_menu');
+        $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), array(), 'ORDER BY i_menu');
         $rows = list_to_map('i_menu', $rows);
         $list = new Tempcode();
         foreach ($rows as $row) {
@@ -320,7 +320,7 @@ class Module_admin_menus
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
         $all_menus = array();
-        $menu_rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), null, 'ORDER BY i_menu');
+        $menu_rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), array(), 'ORDER BY i_menu');
         foreach ($menu_rows as $menu_row) {
             if ($menu_row['i_menu'] != $id) {
                 $all_menus[] = $menu_row['i_menu'];

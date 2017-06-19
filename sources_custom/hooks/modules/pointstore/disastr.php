@@ -59,7 +59,7 @@ class Hook_pointstore_disastr
         $fields = '<table style="width: 100%" cellspacing="0" cellpadding="0" border="1"><tr style="border: 1px solid #ccc; background-color: #E3EAF6;"><th colspan="2">Disease</th><th width="33%">Cure</th><th width="33%">Immunisation</th></tr>';
 
         $member_id = get_member();
-        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), null, 'ORDER BY name');
+        $rows = $GLOBALS['SITE_DB']->query_select('diseases', array('*'), array(), 'ORDER BY name');
         foreach ($rows as $disease) {
             $_cure_url = build_url(array('page' => 'pointstore', 'type' => 'action_done', 'id' => 'disastr', 'disease' => $disease['id'], 'cure' => 1), get_module_zone('pointstore'));
             $cure_url = $_cure_url->evaluate();

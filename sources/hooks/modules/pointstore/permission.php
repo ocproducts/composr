@@ -78,7 +78,7 @@ class Hook_pointstore_permission
         $privileges = new Tempcode();
         $temp = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
         $privileges->attach($temp);
-        $_privileges = $GLOBALS['SITE_DB']->query_select('privilege_list', array('*'), null, 'ORDER BY p_section,the_name');
+        $_privileges = $GLOBALS['SITE_DB']->query_select('privilege_list', array('*'), array(), 'ORDER BY p_section,the_name');
         $__privileges = array();
         foreach ($_privileges as $_privilege) {
             $_pt_name = do_lang('PRIVILEGE_' . $_privilege['the_name'], null, null, null, null, false);
@@ -142,7 +142,7 @@ class Hook_pointstore_permission
     public function config()
     {
         $fields = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*'), null, 'ORDER BY id');
+        $rows = $GLOBALS['SITE_DB']->query_select('pstore_permissions', array('*'), array(), 'ORDER BY id');
         $hidden = new Tempcode();
         $out = array();
         foreach ($rows as $i => $row) {

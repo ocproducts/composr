@@ -163,7 +163,7 @@ class CMSSocialRead
                 $test = get_id_by_url($matches[1][$i]);
                 if ($test !== null) {
                     $arr['topic_id'] = strval($test['topic_id']);
-                    $arr['position'] = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', null, ' WHERE id<=' . strval($test['post_id']));
+                    $arr['position'] = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE id<=' . strval($test['post_id']));
                     break;
                 }
             }
@@ -189,10 +189,10 @@ class CMSSocialRead
 
         // Right now Tapatalk only supports topic and post activity
 
-        $where_str = 'WHERE a_language_string_code IN (\'cns:ACTIVITY_ADD_TOPIC\',\'cns:ACTIVITY_ADD_POST_IN\')'; // ,\'ACTIVITY_LIKES\'
+        $where_str = ' WHERE a_language_string_code IN (\'cns:ACTIVITY_ADD_TOPIC\',\'cns:ACTIVITY_ADD_POST_IN\')'; // ,\'ACTIVITY_LIKES\'
 
-        $total = $GLOBALS['SITE_DB']->query_select_value('activities', 'COUNT(*)', null, $where_str);
-        $rows = $GLOBALS['SITE_DB']->query_select('activities', array('*'), null, $where_str . ' ORDER BY a_time DESC', $max, $start);
+        $total = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'activities' . $where_str);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'activities' . $where_str . ' ORDER BY a_time DESC', $max, $start);
 
         $items = array();
         foreach ($rows as $row) {

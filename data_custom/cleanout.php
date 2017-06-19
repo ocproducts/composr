@@ -454,7 +454,7 @@ function cleanup()
                     $select[] = 'cc_parent_id';
                     $select[] = 'c_name';
                 }
-                $rows = $GLOBALS['SITE_DB']->query_select($table, $select, null, '', 100, $start);
+                $rows = $GLOBALS['SITE_DB']->query_select($table, $select, array(), '', 100, $start);
                 foreach ($rows as $i => $row) {
                     if (($function == 'actual_delete_catalogue_category') && ($row['cc_parent_id'] === null) && ($GLOBALS['SITE_DB']->query_select_value('catalogue_catalogues', 'c_is_tree', array('c_name' => $row['c_name'])) == 1)) {
                         unset($rows[$i]);

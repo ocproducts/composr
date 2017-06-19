@@ -126,7 +126,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
                 if ($lm_ids != '') {
                     $_where_clause .= ' AND member_liked NOT IN (' . $lm_ids . ')';
                 }
-                $like_outgoing = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), null, ' WHERE ' . $_where_clause);
+                $like_outgoing = $GLOBALS['SITE_DB']->query('SELECT member_liked FROM ' . get_table_prefix() . 'chat_friends WHERE ' . $_where_clause);
                 $lo_ids = '';
                 foreach ($like_outgoing as $l_o) {
                     if ($lo_ids != '') {
@@ -166,7 +166,7 @@ function get_activity_querying_sql($viewer_member, $mode, $member_ids)
                     $friends_check_where .= ' AND member_likes NOT IN (' . $blocked_by . ')';
                 }
 
-                $view_private = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_likes'), null, ' WHERE ' . $friends_check_where . ';');
+                $view_private = $GLOBALS['SITE_DB']->query('SELECT member_likes FROM ' . get_table_prefix() . 'chat_friends WHERE ' . $friends_check_where);
                 $view_private[] = array('member_likes' => $viewer_member);
                 foreach ($view_private as $v_p) {
                     if ($vp != '') {

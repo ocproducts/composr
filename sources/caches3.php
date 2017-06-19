@@ -134,7 +134,7 @@ function erase_block_cache($erase_cache_signatures_too = false, $theme = null)
     cms_profile_start_for('erase_tempcode_cache');
 
     if ($erase_cache_signatures_too) {
-        $GLOBALS['SITE_DB']->query_delete('cache_on', null, '', null, null, true);
+        $GLOBALS['SITE_DB']->query_delete('cache_on', array(), '', null, null, true);
     }
 
     $where_map = mixed();
@@ -507,7 +507,7 @@ function erase_comcode_page_cache()
     push_query_limiting(false);
 
     do {
-        $rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), null, '', 50, null, true, array());
+        $rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array(), '', 50, null, true, array());
         if ($rows === null) {
             $rows = array();
         }

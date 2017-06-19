@@ -60,7 +60,7 @@ function build_news_sitemap()
 
     $start = 0;
     do {
-        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), null, 'ORDER BY date_and_time DESC', $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('news', array('*'), array(), 'ORDER BY date_and_time DESC', $max, $start);
 
         foreach ($rows as $row) {
             $url = build_url(array('page' => 'news', 'type' => 'view', 'id' => $row['id']), $zone, null, false, false, true);

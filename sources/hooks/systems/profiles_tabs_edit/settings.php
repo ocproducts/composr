@@ -195,7 +195,7 @@ class Hook_profiles_tabs_edit_settings
                 require_code('cns_groups_action2');
                 $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id_of);
                 $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
-                $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : null));
+                $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : array()));
 
                 foreach ($_POST['secondary_groups'] as $group_id) { // Add to new secondary groups
                     $group = $groups[intval($group_id)];

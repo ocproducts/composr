@@ -854,7 +854,7 @@ function _helper_add_auto_key($this_ref, $table_name, $field_name)
     $start = 0;
     $i = db_get_first_id();
     do {
-        $rows = $this_ref->query_select($table_name, array('*'), null, '', 100, $start);
+        $rows = $this_ref->query_select($table_name, array('*'), array(), '', 100, $start);
         foreach ($rows as $row) {
             $this_ref->query_update($table_name, array($field_name => $i) + $row, $row, '', 1);
             $i++;

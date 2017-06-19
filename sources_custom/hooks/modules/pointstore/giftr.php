@@ -70,7 +70,7 @@ class Hook_pointstore_giftr
         require_code('templates_pagination');
         $pagination = pagination(do_lang_tempcode('GIFTR_TITLE'), $start, 'gifts_start', $max, 'gifts_max', $max_rows, true);
 
-        $rows = $GLOBALS['SITE_DB']->query_select('giftr g', array('*', '(SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'members_gifts m WHERE m.gift_id=g.id) AS popularity'), $map, 'ORDER BY popularity DESC', $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query('giftr g', array('*', '(SELECT COUNT(*) FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'members_gifts m WHERE m.gift_id=g.id) AS popularity'), $map, 'ORDER BY popularity DESC', $max, $start);
         $username = get_param_string('username', '');
         $gifts = array();
         foreach ($rows as $gift) {
@@ -90,7 +90,7 @@ class Hook_pointstore_giftr
             );
         }
 
-        $categories = collapse_1d_complexity('category', $GLOBALS['SITE_DB']->query_select('giftr', array('DISTINCT category'), null, 'ORDER BY category'));
+        $categories = collapse_1d_complexity('category', $GLOBALS['SITE_DB']->query_select('giftr', array('DISTINCT category'), array(), 'ORDER BY category'));
 
         $tpl = do_template('POINTSTORE_GIFTR_GIFTS', array('_GUID' => '5ff1ea34d0a71d50532e9b906879b72f', 'TITLE' => $title, 'GIFTS' => $gifts, 'PAGINATION' => $pagination, 'CATEGORY' => $category, 'CATEGORIES' => $categories));
 

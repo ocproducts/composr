@@ -435,7 +435,7 @@ class Module_cms_wiki
             $revisions = new Tempcode();
         }
 
-        $posting_form = get_posting_form(do_lang('SAVE'), 'menu___generic_admin__edit_this_category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, null, null, false);
+        $posting_form = get_posting_form(do_lang('SAVE'), 'menu___generic_admin__edit_this_category', $description, $edit_url, new Tempcode(), $fields, do_lang_tempcode('PAGE_TEXT'), '', $fields2, $_description, array(), null, false);
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 

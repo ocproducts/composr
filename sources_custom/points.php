@@ -52,7 +52,7 @@ function total_points($member, $timestamp = null)
 
 function get_group_points()
 {
-    $_group_points = $GLOBALS['SITE_DB']->query_select('group_points', array('*'), null, '', null, null, true);
+    $_group_points = $GLOBALS['SITE_DB']->query_select('group_points', array('*'), array(), '', null, null, true);
     if ($_group_points === null) {
         $group_points = array();
     } else {

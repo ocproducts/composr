@@ -446,7 +446,7 @@ class Module_admin_stats
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('usersonline_track', array('date_and_time', 'peak'), null, 'ORDER BY ' . $sortable . ' ' . $sort_order);
+        $rows = $GLOBALS['SITE_DB']->query_select('usersonline_track', array('date_and_time', 'peak'), array(), 'ORDER BY ' . $sortable . ' ' . $sort_order);
         if (count($rows) < 1) {
             return warn_screen($this->title, do_lang_tempcode('NO_DATA'));
         }
@@ -530,7 +530,7 @@ class Module_admin_stats
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('date_and_time', 'COUNT(*) AS cnt'), null, 'GROUP BY date_and_time ORDER BY ' . $sortable . ' ' . $sort_order, 3000/*reasonable limit*/);
+        $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('date_and_time', 'COUNT(*) AS cnt'), array(), 'GROUP BY date_and_time ORDER BY ' . $sortable . ' ' . $sort_order, 3000/*reasonable limit*/);
         if (count($rows) < 1) {
             return warn_screen($this->title, do_lang_tempcode('NO_DATA'));
         }
@@ -1016,7 +1016,7 @@ class Module_admin_stats
 
         $this->title = get_screen_title('PAGES_STATISTICS_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
 
-        $rows = $GLOBALS['SITE_DB']->query_select('stats', array('the_page'), null, 'GROUP BY the_page ORDER BY COUNT(*) DESC', 3000);
+        $rows = $GLOBALS['SITE_DB']->query_select('stats', array('the_page'), array(), 'GROUP BY the_page ORDER BY COUNT(*) DESC', 3000);
         if (count($rows) < 1) {
             return warn_screen($this->title, do_lang_tempcode('NO_DATA'));
         }
@@ -1026,9 +1026,9 @@ class Module_admin_stats
         foreach ($rows as $row) {
             $page = $row['the_page'];
             $matches = array();
-            if ((preg_match('#^/?([^/]+)/pages/([^/]+)/(\w\w/)?([^/\.]+)\.(php|txt|htm)$#', $page, $matches) == 1) && ($matches[4] == 'catalogues') && (addon_installed('catalogues')) && ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', null, '', true) < 300)) {
+            if ((preg_match('#^/?([^/]+)/pages/([^/]+)/(\w\w/)?([^/\.]+)\.(php|txt|htm)$#', $page, $matches) == 1) && ($matches[4] == 'catalogues') && (addon_installed('catalogues')) && ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array(), '', true) < 300)) {
                 require_lang('catalogues');
-                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), null, '', null, null, true);
+                $categories = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_title'), array(), '', null, null, true);
                 foreach ($categories as $cat) {
                     $where = db_string_equal_to('the_page', $page);
                     if (substr($page, 0, 6) == 'pages/') {

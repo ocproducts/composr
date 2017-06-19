@@ -200,7 +200,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
                 }
 
                 // Categories
-                $count = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'COUNT(*)', array('c_name' => $content_id));
+                $count = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $content_id));
                 $lots = ($count > 3000) || ($child_cutoff !== null) && ($count > $child_cutoff);
                 if (!$lots) {
                     $child_hook_ob = $this->_get_sitemap_object('catalogue_category');

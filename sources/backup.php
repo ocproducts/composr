@@ -63,7 +63,7 @@ function get_table_backup($log_file, $db_meta, $db_meta_indices, &$install_php_f
 
         $start = 0;
         do {
-            $data = $GLOBALS['SITE_DB']->query_select($table, array('*'), null, '', 100, $start, false, array());
+            $data = $GLOBALS['SITE_DB']->query_select($table, array('*'), array(), '', 100, $start, false, array());
             foreach ($data as $d) {
                 $list = '';
                 $value = mixed();

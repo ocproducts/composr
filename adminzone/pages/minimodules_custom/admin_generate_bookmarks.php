@@ -69,7 +69,7 @@ function bookmarks_process_node($node)
 {
     if ($node['page_link'] !== null) {
         list($zone, $attributes, $hash) = page_link_decode($node['page_link']);
-        $url = _build_url($attributes, $zone, null, false, false, true, $hash);
+        $url = _build_url($attributes, $zone, array(), false, false, true, $hash);
     } else {
         $url = $node['url'];
     }

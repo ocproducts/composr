@@ -71,7 +71,7 @@ class Hook_commandr_fs_database
                     $select[] = str_replace('*', '', $key['m_name']);
                 }
             }
-            $rows = $GLOBALS['SITE_DB']->query_select($meta_dir[0], $select, null, '', 1000/*reasonable limit*/);
+            $rows = $GLOBALS['SITE_DB']->query_select($meta_dir[0], $select, array(), '', 1000/*reasonable limit*/);
             foreach ($rows as $row) {
                 $x = '';
                 foreach ($select as $key) {

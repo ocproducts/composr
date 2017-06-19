@@ -151,7 +151,7 @@ function get_charset()
     return 'utf-8';
 }
 
-function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = null)
+function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = array())
 {
     global $COMPOSR_PATH;
     require_once($COMPOSR_PATH . '/sources/files.php');
@@ -162,7 +162,7 @@ function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = null)
     $dh = opendir($_dir);
     if ($dh) {
         while (($file = readdir($dh)) !== false) {
-            if (($avoid !== null) && (in_array($file, $avoid))) {
+            if (in_array($file, $avoid)) {
                 continue;
             }
 
@@ -192,7 +192,7 @@ function do_dir($dir, $no_custom = false, $orig_priority = false, $avoid = null)
                         }
                     }
                 } elseif (is_dir($_dir . '/' . $file)) {
-                    $out = array_merge($out, do_dir($dir . (($dir != '') ? '/' : '') . $file, $no_custom, $orig_priority));
+                    $out = array_merge($out, do_dir($dir . (($dir != '') ? '/' : '') . $file, $no_custom, $orig_priority, $avoid));
                 }
             }
         }

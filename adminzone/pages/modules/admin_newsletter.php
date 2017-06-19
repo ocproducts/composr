@@ -701,7 +701,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 }
             } else {
                 if ($GLOBALS['DB_STATIC_OBJECT']->has_expression_ordering()) {
-                    $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email', 'COUNT(*) as cnt'), null, 'GROUP BY SUBSTRING_INDEX(email,\'@\',-1)'); // Far less PHP processing
+                    $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe', array('DISTINCT email', 'COUNT(*) as cnt'), array(), 'GROUP BY SUBSTRING_INDEX(email,\'@\',-1)'); // Far less PHP processing
                 } else {
                     $where = array('newsletter_id' => $id, 'code_confirm' => 0);
                     $rows = $GLOBALS['SITE_DB']->query_select('newsletter_subscribe s JOIN ' . get_table_prefix() . 'newsletter_subscribers x ON s.email=x.email', array('DISTINCT s.email'), $where, '', 500, $start);

@@ -69,7 +69,7 @@ class Hook_admin_stats_cns_demographics
         }
 
         if (($time_start === null) && ($time_end === null)) {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('m_dob_year', 'COUNT(*) AS cnt', null, 'GROUP BY m_dob_year'));
+            $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('m_dob_year', 'COUNT(*) AS cnt', array(), 'GROUP BY m_dob_year'));
         } else {
             if ($time_start === null) {
                 $time_start = 0;

@@ -864,7 +864,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
         }
 
         $post_id = $this->db->query_insert('posts', array('author_id' => $member, 'author_name' => $this->ipb_escape($username), 'ip_address' => $ip, 'post_date' => $time, 'icon_id' => 0, 'post' => $post, 'queued' => 0, 'topic_id' => $topic_id, 'new_topic' => 1, 'post_htmlstate' => 1, 'post_title' => $post_title, 'post_key' => md5(microtime(false))), true);
-        $test = $this->db->query_select('forums', array('*'), null, '', 1);
+        $test = $this->db->query_select('forums', array('*'), array(), '', 1);
         if (array_key_exists('newest_title', $test[0])) {
             $this->db->query('UPDATE ' . $this->db->get_table_prefix() . 'forums SET posts=(posts+1), last_post=' . strval($time) . ', last_poster_id=' . strval($member) . ', last_poster_name=\'' . db_escape_string($this->ipb_escape($username)) . '\', newest_id=' . strval($topic_id) . ', newest_title=\'' . db_escape_string($this->ipb_escape($post_title)) . '\', last_id=' . strval($topic_id) . ', last_title=\'' . db_escape_string($this->ipb_escape($post_title)) . '\' WHERE id=' . strval($forum_id), 1);
         } else {

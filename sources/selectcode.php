@@ -516,7 +516,7 @@ function _selectcode_subtree_fetch($look_under, $table_name, $parent_name, $fiel
         }
     } else {
         if ($cached_mappings === null) {
-            $cached_mappings = $db->query_select($table_name, array($field_name, $parent_name), null, '', 1000/*reasonable limit*/);
+            $cached_mappings = $db->query_select($table_name, array($field_name, $parent_name), array(), '', 1000/*reasonable limit*/);
         }
 
         $cached_mappings_copy = $cached_mappings; // Works around weird PHP bug in some versions (due to recursing over reference parameter)

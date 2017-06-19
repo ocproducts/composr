@@ -43,7 +43,7 @@ function sitemap_xml_build()
     $time = time();
 
     // Build from sitemap_cache table
-    $set_numbers = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('DISTINCT set_number'), null, ' WHERE last_updated>=' . strval($last_time));
+    $set_numbers = $GLOBALS['SITE_DB']->query('SELECT DISTINCT set_number FROM ' . get_table_prefix() . 'sitemap_cache WHERE last_updated>=' . strval($last_time));
     if (count($set_numbers) > 0) {
         foreach ($set_numbers as $set_number) {
             rebuild_sitemap_set($set_number['set_number'], $last_time);
@@ -99,7 +99,7 @@ function rebuild_sitemap_set($set_number, $last_time)
         $edit_date = $node['edit_date'];
         $priority = $node['priority'];
 
-        $url = _build_url($attributes, $zone, null, false, false, true, $hash);
+        $url = _build_url($attributes, $zone, array(), false, false, true, $hash);
 
         $optional_details = '';
 
@@ -113,7 +113,7 @@ function rebuild_sitemap_set($set_number, $last_time)
         $langs = find_all_langs();
         foreach (array_keys($langs) as $lang) {
             if ($lang != get_site_default_lang()) {
-                $url = _build_url($attributes + array('keep_lang' => $lang), $zone, null, false, false, true, $hash);
+                $url = _build_url($attributes + array('keep_lang' => $lang), $zone, array(), false, false, true, $hash);
 
                 $optional_details = '
         <xhtml:link rel="alternate" hreflang="' . strtolower($lang) . '" href="' . xmlentities($url) . '" />';
@@ -164,7 +164,7 @@ function rebuild_sitemap_index()
     fwrite($sitemaps_out_file, $blob);
 
     // Write out each set
-    $sitemap_sets = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('set_number', 'MAX(last_updated) AS last_updated'), null, 'GROUP BY set_number');
+    $sitemap_sets = $GLOBALS['SITE_DB']->query_select('sitemap_cache', array('set_number', 'MAX(last_updated) AS last_updated'), array(), 'GROUP BY set_number');
     foreach ($sitemap_sets as $sitemap_set) {
         $path = get_custom_file_base() . '/data_custom/sitemaps/set_' . strval($sitemap_set['set_number']) . '.xml';
         $url = get_custom_base_url() . '/data_custom/sitemaps/set_' . strval($sitemap_set['set_number']) . '.xml';
@@ -316,7 +316,7 @@ function notify_sitemap_node_add($page_link, $add_date, $edit_date, $priority, $
     $fresh = ($GLOBALS['SITE_DB']->query_select_value('sitemap_cache', 'COUNT(*)') == 0);
 
     // Find set number we will write into
-    $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'set_number', null, 'GROUP BY set_number HAVING COUNT(*)<' . strval(URLS_PER_SITEMAP_SET));
+    $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'set_number', array(), 'GROUP BY set_number HAVING COUNT(*)<' . strval(URLS_PER_SITEMAP_SET));
     if ($set_number === null) {
         // Next set number in sequence
         $set_number = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(set_number)');

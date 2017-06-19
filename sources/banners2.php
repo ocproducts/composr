@@ -110,7 +110,7 @@ function create_selection_list_banner_types($it = null)
     }
 
     $list = new Tempcode();
-    $rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('id', 't_image_width', 't_image_height', 't_is_textual'), null, 'ORDER BY id');
+    $rows = $GLOBALS['SITE_DB']->query_select('banner_types', array('id', 't_image_width', 't_image_height', 't_is_textual'), array(), 'ORDER BY id');
     foreach ($rows as $row) {
         $caption = ($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'];
 

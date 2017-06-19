@@ -412,7 +412,7 @@ class Module_admin_workflow extends Standard_crud_module
 
         // We need a list of groups so that the user can choose those to give
         // permission to
-        $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true, false, null, null);
+        $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true, false, array(), null);
 
         // Add the form elements for each section
         if (count($clarify_points) > 0) {

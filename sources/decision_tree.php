@@ -179,7 +179,7 @@ class DecisionTree
             }
 
             if (count($_POST) > 0) {
-                $post = build_keep_post_fields(null, true);
+                $post = build_keep_post_fields(array(), true);
                 $refresh = do_template('JS_REFRESH', array('_GUID' => '63cb29a82471b7ba7fd594eb92cc02c1', 'FORM_NAME' => 'redir_form'));
 
                 return do_template('REDIRECT_POST_METHOD_SCREEN', array('_GUID' => 'f9f374626d7acdb0699399f970b2196a', 'REFRESH' => $refresh, 'TITLE' => $title, 'TEXT' => do_lang_tempcode('_REDIRECTING'), 'URL' => $url, 'POST' => $post));
@@ -251,7 +251,7 @@ class DecisionTree
 
         // What if no questions and no next? No form.
         if ((empty($details['questions'])) && (empty($details['next']))) {
-            return inform_screen($title, protect_from_escaping($text), false, $back_url, build_keep_post_fields(null, true));
+            return inform_screen($title, protect_from_escaping($text), false, $back_url, build_keep_post_fields(array(), true));
         }
 
         // Form...
@@ -312,7 +312,7 @@ class DecisionTree
 
         $form_method = empty($details['form_method']) ? 'POST' : $details['form_method'];
 
-        $hidden->attach(build_keep_post_fields(null, true));
+        $hidden->attach(build_keep_post_fields(array(), true));
 
         $next_tree_position = '_' . $tree_position; // Needs complex processing
         $next_url = $this->build_url($next_tree_position);

@@ -76,7 +76,7 @@ class Hook_commandr_command_db_table_sizes
                     if (array_key_exists(get_table_prefix() . $p, $sizes)) {
                         $num_rows = $db->query_select_value($p, 'COUNT(*)');
                         if ($num_rows > 0) {
-                            $row = $db->query_select($p, array('*'), null, '', 1, mt_rand(0, $num_rows - 1));
+                            $row = $db->query_select($p, array('*'), array(), '', 1, mt_rand(0, $num_rows - 1));
                             $out .= '<table class="results_table"><tbody>';
                             $val = mixed();
                             foreach ($row[0] as $key => $val) {

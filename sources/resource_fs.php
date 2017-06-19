@@ -569,7 +569,7 @@ function table_to_portable_rows($table, $fields_to_skip = array(), $where_map = 
  *
  * @param  string $table Table name
  * @param  mixed $json JSON data OR rows that are already decoded
- * @param  ?array $extra_field_data Extra data to add to each row (null: none)
+ * @param  array $extra_field_data Extra data to add to each row
  * @param  integer $replace_mode Whether to fully replace the current table contents
  * @return boolean Success status
  */
@@ -585,7 +585,7 @@ function table_from_json($table, $json, $extra_field_data, $replace_mode)
  *
  * @param  string $table Table name
  * @param  array $rows Portable rows
- * @param  ?array $extra_field_data Extra data to add to each row (null: none)
+ * @param  array $extra_field_data Extra data to add to each row
  * @param  integer $replace_mode Whether to fully replace the current table contents
  * @param  ?object $db Database connector to look up from (null: work out from table name)
  * @return boolean Success status
@@ -655,9 +655,7 @@ function table_from_portable_rows($table, $rows, $extra_field_data, $replace_mod
     $relation_map = get_relation_map_for_table($table);
 
     foreach ($rows as $row) {
-        if ($extra_field_data !== null) {
-            $row += $extra_field_data;
-        }
+        $row += $extra_field_data;
 
         $row = table_row_from_portable_row($row, $db_fields, $relation_map, $db);
 

@@ -174,7 +174,7 @@ class Hook_fields_content_link_multi
         if ($info['title_field'] !== null) {
             $select[] = $info['title_field'];
         }
-        $rows = $db->query_select($info['table'], $select, null, ($info['add_time_field'] === null) ? '' : ('ORDER BY ' . $info['add_time_field'] . ' DESC'), 2000/*reasonable limit*/);
+        $rows = $db->query_select($info['table'], $select, array(), ($info['add_time_field'] === null) ? '' : ('ORDER BY ' . $info['add_time_field'] . ' DESC'), 2000/*reasonable limit*/);
         $list = new Tempcode();
         $_list = array();
         foreach ($rows as $row) {

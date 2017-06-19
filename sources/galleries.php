@@ -713,7 +713,7 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
         if ((has_privilege(get_member(), 'can_submit_to_others_categories')) && (get_forum_type() == 'cns')) {
             cns_require_all_forum_stuff();
 
-            $members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_username', 'm_primary_group'), null, 'ORDER BY m_username', 100);
+            $members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_username', 'm_primary_group'), array(), 'ORDER BY m_username', 100);
             if (count($members) != 100) { // Performance tweak. Only do if we don't have too many results
                 $done_for_all = true;
                 $group_membership = $GLOBALS['FORUM_DB']->query_select('f_group_members', array('gm_group_id', 'gm_member_id'), array('gm_validated' => 1));

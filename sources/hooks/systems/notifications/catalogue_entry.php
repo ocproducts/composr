@@ -48,7 +48,7 @@ class Hook_notification_catalogue_entry extends Hook_Notification
 
         $name = substr($notification_code, strlen('catalogue_entry__'));
 
-        $total = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_categories', 'COUNT(*)', array('c_name' => $name));
+        $total = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $name));
         if ($total > intval(get_option('general_safety_listing_limit'))/*reasonable limit*/) {
             return parent::create_category_tree($notification_code, $id); // Too many, so just allow removing UI
         }
@@ -84,7 +84,7 @@ class Hook_notification_catalogue_entry extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('c_name', 'c_title'), null, 'WHERE c_name NOT LIKE \'\_%\'');
+        $catalogues = $GLOBALS['SITE_DB']->query('SELECT c_name,c_title FROM ' . get_table_prefix() . 'catalogues WHERE c_name NOT LIKE \'\_%\'');
         foreach ($catalogues as $catalogue) {
             $catalogue_name = $catalogue['c_name'];
             $nl = do_lang('catalogues:NOTIFICATION_TYPE_catalogue_entry__' . $catalogue_name, null, null, null, null, false);

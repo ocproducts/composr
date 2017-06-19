@@ -63,7 +63,7 @@ class Hook_deep_clean
             $start = 0;
             $max = 100;
             do {
-                $rows = $db->query_select($table, array('*'), null, '', $max, $start);
+                $rows = $db->query_select($table, array('*'), array(), '', $max, $start);
                 foreach ($rows as $row) {
                     $where = $row;
                     unset($where[$field]);

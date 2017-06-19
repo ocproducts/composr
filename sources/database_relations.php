@@ -530,7 +530,7 @@ function get_relation_map()
  */
 function find_all_tables($db)
 {
-    $fields = $db->query_select('db_meta', array('m_table', 'm_name', 'm_type'), null, 'ORDER BY m_table');
+    $fields = $db->query_select('db_meta', array('m_table', 'm_name', 'm_type'), array(), 'ORDER BY m_table');
     $tables = array();
     foreach ($fields as $field) {
         if (!isset($tables[$field['m_table']])) {
@@ -625,7 +625,7 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
         // Data
         $start = 0;
         do {
-            $data = $db->query_select($table_name, array('*'), null, '', 100, $start, false, array());
+            $data = $db->query_select($table_name, array('*'), array(), '', 100, $start, false, array());
             foreach ($data as $map) {
                 $keys = '';
                 $all_values = array();

@@ -133,7 +133,7 @@ class Block_main_bottom_bar
 
         // Usergroup keys
         $groups = array();
-        $all_groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, false, false, null, null, true);
+        $all_groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, false, false, array(), null, true);
         foreach ($all_groups as $gid => $gtitle) {
             if ($gid == db_get_first_id()) {
                 continue; // Throw out the first, guest

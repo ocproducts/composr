@@ -405,7 +405,7 @@ function mass_delete_lang($table, $attrs, $db)
 
     $start = 0;
     do {
-        $rows = $db->query_select($table, $attrs, null, '', 1000, $start, true);
+        $rows = $db->query_select($table, $attrs, array(), '', 1000, $start, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 foreach ($attrs as $attr) {

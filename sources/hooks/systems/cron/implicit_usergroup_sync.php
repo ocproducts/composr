@@ -44,7 +44,7 @@ class Hook_cron_implicit_usergroup_sync
                         } else {
                             $start = 0;
                             do {
-                                $members = collapse_1d_complexity('id', $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), null, '', 400, $start));
+                                $members = collapse_1d_complexity('id', $GLOBALS['FORUM_DB']->query_select('f_members', array('id'), array(), '', 400, $start));
                                 foreach ($members as $member_id) {
                                     if ($ob->is_member_within($member_id, $group_id)) {
                                         $GLOBALS['FORUM_DB']->query_insert('f_group_members', array('gm_group_id' => $group_id, 'gm_member_id' => $member_id, 'gm_validated' => 1));

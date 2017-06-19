@@ -343,7 +343,7 @@ class Module_admin_cns_members
             require_code('cns_groups_action2');
             $members_groups = array();
             $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
-            $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : null));
+            $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : array()));
             foreach ($_POST['secondary_groups'] as $group_id) {
                 $group = $groups[intval($group_id)];
 
@@ -462,7 +462,7 @@ class Module_admin_cns_members
         $fields->attach(form_input_integer(do_lang_tempcode('DELURK_MIN_DAYS_SINCE_JOIN'), do_lang_tempcode('DELURK_MIN_DAYS_SINCE_JOIN_DESCRIPTION'), 'min_days_since_join', $min_days_since_join, true));
         $groups = new Tempcode();
         $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
-        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), ($group_count > 200) ? array('g_is_private_club' => 0) : null);
+        $rows = $GLOBALS['FORUM_DB']->query_select('f_groups', array('id', 'g_name'), ($group_count > 200) ? array('g_is_private_club' => 0) : array());
         foreach ($rows as $row) {
             if ($row['id'] != db_get_first_id()) {
                 $groups->attach(form_input_list_entry(strval($row['id']), in_array($row['id'], $usergroups), get_translated_text($row['g_name'], $GLOBALS['FORUM_DB'])));

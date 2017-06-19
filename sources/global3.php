@@ -2110,9 +2110,9 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
     } else {
         $ip_bans = function_exists('persistent_cache_get') ? persistent_cache_get('IP_BANS') : null;
         if ($ip_bans === null) {
-            $ip_bans = $GLOBALS['SITE_DB']->query_select('banned_ip', array('*'), null, '', null, null, true);
+            $ip_bans = $GLOBALS['SITE_DB']->query_select('banned_ip', array('*'), array(), '', null, null, true);
             if (!is_array($ip_bans)) { // LEGACY
-                $ip_bans = $GLOBALS['SITE_DB']->query_select('usersubmitban_ip', array('*'), null, '', null, null, true);
+                $ip_bans = $GLOBALS['SITE_DB']->query_select('usersubmitban_ip', array('*'), array(), '', null, null, true);
             }
             if ($ip_bans !== null) {
                 persistent_cache_set('IP_BANS', $ip_bans);
@@ -2305,7 +2305,7 @@ function get_num_users_site()
         // Store a peak record if there is one
         $PEAK_USERS_EVER_CACHE = get_value('user_peak');
         if (($PEAK_USERS_EVER_CACHE === null) || ($PEAK_USERS_EVER_CACHE == '')) {
-            $_peak_users_user = $GLOBALS['SITE_DB']->query_select_value_if_there('usersonline_track', 'MAX(peak)', null, '', true);
+            $_peak_users_user = $GLOBALS['SITE_DB']->query_select_value_if_there('usersonline_track', 'MAX(peak)', array(), '', true);
             $PEAK_USERS_EVER_CACHE = ($_peak_users_user === null) ? $NUM_USERS_SITE_CACHE : strval($_peak_users_user);
             if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
                 set_value('user_peak', $PEAK_USERS_EVER_CACHE);
@@ -2932,7 +2932,7 @@ function get_zone_default_page($zone_name)
                 }
             }
             if ($_zone_default_page === null) {
-                $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), null/*Load multiple so we can cache for performance array('zone_name' => $zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
+                $_zone_default_page = $GLOBALS['SITE_DB']->query_select('zones', array('zone_name', 'zone_default_page'), array()/*Load multiple so we can cache for performance array('zone_name' => $zone_name)*/, 'ORDER BY zone_title', 50/*reasonable limit; zone_title is sequential for default zones*/);
             }
             $ZONE_DEFAULT_PAGES_CACHE[$zone_name] = DEFAULT_ZONE_PAGE_NAME;
             foreach ($_zone_default_page as $zone_row) {

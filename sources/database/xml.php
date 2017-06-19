@@ -968,7 +968,7 @@ class Database_Static_xml extends DatabaseDriver
      *
      * @param  PATH $path The file path
      * @param  ?array $schema Schema to type-set against (null: do not do type-setting)
-     * @param  ?array $must_contain_strings Substrings to check it is in, used for performance (null: none)
+     * @param  array $must_contain_strings Substrings to check it is in, used for performance
      * @param  boolean $include_unused_fields Whether to include fields that are present in the actual records but not in our schema
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?array The record map (null: does not contain requested substrings / error)

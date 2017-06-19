@@ -603,7 +603,7 @@ function rebuild_catalogue_cat_treecache()
     $max = 1000;
     $start = 0;
     do {
-        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_parent_id'), null, '', $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_parent_id'), array(), '', $max, $start);
 
         foreach ($rows as $row) {
             store_in_catalogue_cat_treecache($row['id'], $row['cc_parent_id'], false);
@@ -613,7 +613,7 @@ function rebuild_catalogue_cat_treecache()
     } while (count($rows) != 0);
     $start = 0;
     do {
-        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_parent_id'), null, '', $max, $start);
+        $rows = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id', 'cc_parent_id'), array(), '', $max, $start);
 
         foreach ($rows as $row) {
             calculate_category_child_count_cache($row['id'], false);

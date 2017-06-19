@@ -317,7 +317,7 @@ class Module_admin_ecommerce_logs
         $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*, 'start' => $start, 'max' => $max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
 
         $products = new Tempcode();
-        $product_rows = $GLOBALS['SITE_DB']->query_select('transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');
+        $product_rows = $GLOBALS['SITE_DB']->query_select('transactions', array('DISTINCT t_type_code'), array(), 'ORDER BY t_type_code');
         foreach ($product_rows as $p) {
             $products->attach(form_input_list_entry($p['t_type_code']));
         }

@@ -57,7 +57,7 @@ function catalogue_find_options($field, $catalogue_name, $where = '')
     return $out;
 }
 
-function catalogue_query_select($catalogue_name, $select, $where = null, $filters = '', $max = null, $start = 0)
+function catalogue_query_select($catalogue_name, $select, $where = array(), $filters = '', $max = null, $start = 0)
 {
     if (!addon_installed('catalogues')) {
         return array();
@@ -72,14 +72,14 @@ function catalogue_query_select($catalogue_name, $select, $where = null, $filter
     require_code('catalogues');
 
     require_code('filtercode');
-    if ($where !== null) {
-        foreach ($where as $key => $val) {
-            if ($filters != '') {
-                $filters .= ',';
-            }
-            $filters .= $key . '=' . (is_string($val) ? $val : strval($val));
+
+    foreach ($where as $key => $val) {
+        if ($filters != '') {
+            $filters .= ',';
         }
+        $filters .= $key . '=' . (is_string($val) ? $val : strval($val));
     }
+
     list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($filters), 'catalogue_entry', $catalogue_name);
 
     $query = 'SELECT r.*' . implode(',', $extra_select) . ' FROM ' . get_table_prefix() . 'catalogue_entries r' . implode('', $extra_join) . ' WHERE ' . db_string_equal_to('c_name', $catalogue_name) . $extra_where;
@@ -107,7 +107,7 @@ function catalogue_query_select($catalogue_name, $select, $where = null, $filter
     return $out;
 }
 
-function catalogue_query_select_count($catalogue_name, $where = null, $filters = '')
+function catalogue_query_select_count($catalogue_name, $where = array(), $filters = '')
 {
     if (!addon_installed('catalogues')) {
         return 0;
@@ -116,14 +116,14 @@ function catalogue_query_select_count($catalogue_name, $where = null, $filters =
     require_code('catalogues');
 
     require_code('filtercode');
-    if ($where !== null) {
-        foreach ($where as $key => $val) {
-            if ($filters != '') {
-                $filters .= ',';
-            }
-            $filters .= $key . '=' . (is_string($val) ? $val : strval($val));
+
+    foreach ($where as $key => $val) {
+        if ($filters != '') {
+            $filters .= ',';
         }
+        $filters .= $key . '=' . (is_string($val) ? $val : strval($val));
     }
+
     list($extra_select, $extra_join, $extra_where) = filtercode_to_sql($GLOBALS['SITE_DB'], parse_filtercode($filters), 'catalogue_entry', $catalogue_name);
 
     $query = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'catalogue_entries r' . implode('', $extra_join) . ' WHERE ' . db_string_equal_to('c_name', $catalogue_name) . $extra_where;

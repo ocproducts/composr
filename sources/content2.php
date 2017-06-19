@@ -59,7 +59,7 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
     $db_order_field = isset($info['order_field']) ? $info['order_field'] : 'order';
 
     if ($max === null) {
-        $max = $info['db']->query_select_value($info['table'], 'MAX(' . $db_order_field . ')', null, 'WHERE ' . $db_order_field . '<>' . strval(ORDER_AUTOMATED_CRITERIA));
+        $max = $info['db']->query_value_if_there('SELECT MAX(' . $db_order_field . ') FROM ' . $info['db']->get_table_prefix() . $info['table'] . ' WHERE ' . $db_order_field . '<>' . strval(ORDER_AUTOMATED_CRITERIA));
         if ($max === null) {
             $max = 0;
         }
@@ -75,7 +75,7 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
     }
 
     if ($new) {
-        $test = $info['db']->query_select_value($info['table'], 'COUNT(' . $db_order_field . ')', null, 'WHERE ' . $db_order_field . '=' . strval(ORDER_AUTOMATED_CRITERIA));
+        $test = $info['db']->query_value_if_there('SELECT COUNT(' . $db_order_field . ') FROM ' . $info['db']->get_table_prefix() . $info['table'] . ' WHERE ' . $db_order_field . '=' . strval(ORDER_AUTOMATED_CRITERIA));
 
         if ($test > 0) {
             $current_order = ORDER_AUTOMATED_CRITERIA; // Ah, we are already in the habit of automated ordering here

@@ -330,7 +330,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
     public function get_emoticon_chooser($field_name = 'post')
     {
         require_code('comcode_compiler');
-        $emoticons = $this->db->query_select('smilies', array('code'), null, 'GROUP BY code');
+        $emoticons = $this->db->query_select('smilies', array('code'), array(), 'GROUP BY code');
         $em = new Tempcode();
         foreach ($emoticons as $emo) {
             $code = $emo['code'];
@@ -630,7 +630,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         if ($forum_id === null) {
             warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
-        $test = $this->db->query_select('forums', array('*'), null, '', 1);
+        $test = $this->db->query_select('forums', array('*'), array(), '', 1);
         $fm = array_key_exists('hide_forum_in_cat', $test[0]);
         $topic_id = $this->find_topic_id_for_topic_identifier($forum_name, $topic_identifier);
         $ip_address = $this->_phpbb_ip($ip);
@@ -1076,7 +1076,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         if ($this->EMOTICON_CACHE !== null) {
             return $this->EMOTICON_CACHE;
         }
-        $rows = $this->db->query_select('smilies', array('*'), null, '', null, null, true);
+        $rows = $this->db->query_select('smilies', array('*'), array(), '', null, null, true);
         if ($rows === null) {
             $rows = array();
         }

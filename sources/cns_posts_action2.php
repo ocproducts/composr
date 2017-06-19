@@ -283,33 +283,33 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
     if ($first) {
         $update_first =
             't_cache_first_post_id=' . (($first_post_id === null) ? 'NULL' : strval($first_post_id)) . ',
-        ' . (($first_title == '') ? '' : ('t_cache_first_title=\'' . db_escape_string($first_title) . '\'') . ',') . '
-        t_cache_first_time=' . (($first_time === null) ? 'NULL' : strval($first_time)) . ',
-        t_cache_first_post=' . (multi_lang_content() ? ((($first_post === null) ? 'NULL' : strval($first_post))) : '\'\'') . ',
-        t_cache_first_username=\'' . db_escape_string($first_username) . '\',
-        t_cache_first_member_id=' . (($first_member_id === null) ? 'NULL' : strval($first_member_id)) . ',';
+            ' . (($first_title == '') ? '' : ('t_cache_first_title=\'' . db_escape_string($first_title) . '\'') . ',') . '
+            t_cache_first_time=' . (($first_time === null) ? 'NULL' : strval($first_time)) . ',
+            t_cache_first_post=' . (multi_lang_content() ? ((($first_post === null) ? 'NULL' : strval($first_post))) : '\'\'') . ',
+            t_cache_first_username=\'' . db_escape_string($first_username) . '\',
+            t_cache_first_member_id=' . (($first_member_id === null) ? 'NULL' : strval($first_member_id)) . ',';
     }
 
     if ($last) {
         $update_last =
             't_cache_last_post_id=' . (($last_post_id === null) ? 'NULL' : strval($last_post_id)) . ',
-        t_cache_last_title=\'' . db_escape_string($last_title) . '\',
-        t_cache_last_time=' . (($last_time === null) ? 'NULL' : strval($last_time)) . ',
-        t_cache_last_username=\'' . db_escape_string(cms_mb_substr($last_username, 0, 255)) . '\',
-        t_cache_last_member_id=' . (($last_member_id === null) ? 'NULL' : strval($last_member_id)) . ',';
+            t_cache_last_title=\'' . db_escape_string($last_title) . '\',
+            t_cache_last_time=' . (($last_time === null) ? 'NULL' : strval($last_time)) . ',
+            t_cache_last_username=\'' . db_escape_string(cms_mb_substr($last_username, 0, 255)) . '\',
+            t_cache_last_member_id=' . (($last_member_id === null) ? 'NULL' : strval($last_member_id)) . ',';
     }
 
     $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET ' .
-                                ($first ? $update_first : '') .
-                                ($last ? $update_last : '') .
-                                (
-                                $post_count_dif !== null
-                                    ?
-                                    ('t_cache_num_posts=(t_cache_num_posts+' . strval($post_count_dif) . ')')
-                                    :
-                                    ('t_cache_num_posts=' . strval($GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'COUNT(*)', array('p_topic_id' => $topic_id, 'p_intended_solely_for' => null))))
-                                ) .
-                                ' WHERE id=' . strval($topic_id),
+            ($first ? $update_first : '') .
+            ($last ? $update_last : '') .
+            (
+                $post_count_dif !== null
+                ?
+                ('t_cache_num_posts=(t_cache_num_posts+' . strval($post_count_dif) . ')')
+                :
+                ('t_cache_num_posts=' . strval($GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', array('p_topic_id' => $topic_id, 'p_intended_solely_for' => null))))
+            ) .
+            ' WHERE id=' . strval($topic_id),
         null,
         null,
         false,

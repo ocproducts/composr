@@ -208,7 +208,7 @@ class Module_admin_quiz
     {
         require_code('form_templates');
 
-        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'), null, 'ORDER BY q_add_date DESC', intval(get_option('general_safety_listing_limit')));
+        $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'), array(), 'ORDER BY q_add_date DESC', intval(get_option('general_safety_listing_limit')));
         $entries = new Tempcode();
         foreach ($_m as $m) {
             $entries->attach(form_input_list_entry(strval($m['id']), false, get_translated_text($m['q_name'])));

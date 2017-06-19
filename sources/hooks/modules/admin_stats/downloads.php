@@ -90,7 +90,7 @@ class Hook_admin_stats_downloads
         $downloads = array();
         foreach ($rows as $i => $row) {
             if (!array_key_exists('num_downloads', $row)) {
-                $row['num_downloads'] = $GLOBALS['SITE_DB']->query_select_value_if_there('download_logging', 'COUNT(*)', array('id' => $row['id']));
+                $row['num_downloads'] = $GLOBALS['SITE_DB']->query_select_value('download_logging', 'COUNT(*)', array('id' => $row['id']));
                 $rows[$i] = $row;
             }
             $downloads[get_translated_text($row['name']) . ' (#' . strval($row['id']) . ')'] = $row['num_downloads'];

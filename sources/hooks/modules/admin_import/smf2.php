@@ -263,12 +263,12 @@ class Hook_import_smf2
         $max_attachments_upload = !empty($ADDITIONAL_DATA['maxattachments']) ? $ADDITIONAL_DATA['maxattachments'] : 10;
 
         $group_leaders = array();
-        $grps = $db->query_select('group_moderators', array('*'), null, 'ORDER BY id_group');
+        $grps = $db->query_select('group_moderators', array('*'), array(), 'ORDER BY id_group');
         foreach ($grps as $grp) {
             $group_leaders[$grp['id_group']] = $grp['id_member'];
         }
 
-        $rows = $db->query_select('membergroups', array('*'), null, 'ORDER BY id_group');
+        $rows = $db->query_select('membergroups', array('*'), array(), 'ORDER BY id_group');
         foreach ($rows as $row) {
             if (import_check_if_imported('group', strval($row['id_group']))) {
                 continue;
@@ -1003,7 +1003,7 @@ class Hook_import_smf2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('messages p', array('*'), null, 'ORDER BY p.id_msg', 200, $row_start);
+            $rows = $db->query_select('messages p', array('*'), array(), 'ORDER BY p.id_msg', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post', strval($row['id_msg']))) {
                     continue;
@@ -1714,7 +1714,7 @@ class Hook_import_smf2
         require_code('banners');
         require_code('banners2');
 
-        $rows = $db->query_select('ads', array('*'), null, '', null, null, true);
+        $rows = $db->query_select('ads', array('*'), array(), '', null, null, true);
         if ($rows === null) {
             return; // SMFAds addon not installed
         }
@@ -1765,7 +1765,7 @@ class Hook_import_smf2
         $row_start = 0;
         $rows = array();
         do {
-            $rows = $db->query_select('tp_articles', array('*'), null, '', 200, $row_start);
+            $rows = $db->query_select('tp_articles', array('*'), array(), '', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('news', strval($row['id']))) {
                     continue;

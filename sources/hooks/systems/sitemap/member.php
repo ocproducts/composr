@@ -84,7 +84,7 @@ class Hook_sitemap_member extends Hook_sitemap_content
 
         $start = 0;
         do {
-            $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), $consider_validation ? array('m_validated' => 1) : null, 'ORDER BY m_username', SITEMAP_MAX_ROWS_PER_LOOP, $start);
+            $rows = $GLOBALS['FORUM_DB']->query_select('f_members', array('*'), $consider_validation ? array('m_validated' => 1) : array(), 'ORDER BY m_username', SITEMAP_MAX_ROWS_PER_LOOP, $start);
             foreach ($rows as $row) {
                 if ($row['id'] == db_get_first_id()) {
                     continue;

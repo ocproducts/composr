@@ -262,10 +262,10 @@ function _deldir_contents($dir, $default_preserve = false, $just_files = false)
  * @param  boolean $output_and_exit Whether to output/exit when we're done instead of return
  * @param  ?PATH $outfile_path File to spool into (null: none)
  * @param  ?mixed $callback Callback for dynamic row insertion (null: none). Only implemented for the excel_support addon. Is passed: row just done, next row (or null), returns rows to insert
- * @param  ?array $metadata List of maps, each map representing metadata of a row; supports 'url' (null: none)
+ * @param  array $metadata List of maps, each map representing metadata of a row; supports 'url'
  * @return string CSV data (we might not return though, depending on $exit; if $outfile_path is not null, this will be blank)
  */
-function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null, $callback = null, $metadata = null)
+function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_exit = true, $outfile_path = null, $callback = null, $metadata = array())
 {
     if ($headers) {
         header('Content-Type: text/csv; charset=' . get_charset());

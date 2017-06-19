@@ -76,7 +76,7 @@ if (count($_POST) != 0) {
 
 $title = get_screen_title('CLASSIFIEDS');
 
-$_prices = $GLOBALS['SITE_DB']->query_select('classifieds_prices', array('*'), null, 'ORDER BY c_catalogue_name,c_days,c_price');
+$_prices = $GLOBALS['SITE_DB']->query_select('classifieds_prices', array('*'), array(), 'ORDER BY c_catalogue_name,c_days,c_price');
 $prices = array();
 foreach ($_prices as $_price) {
     $prices[] = array(
@@ -98,7 +98,7 @@ for ($i = 0; $i < 10; $i++) {
     );
 }
 
-$_catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('c_name', 'c_title'), null, 'ORDER BY c_name');
+$_catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('c_name', 'c_title'), array(), 'ORDER BY c_name');
 $catalogues = array();
 foreach ($_catalogues as $_catalogue) {
     if (substr($_catalogue['c_name'], 0, 1) == '_') {

@@ -52,7 +52,7 @@ class Hook_cleanup_lost_disk_content
         $start = 0;
         $max = 100;
         do {
-            $zones = $GLOBALS['SITE_DB']->query_select('zones', array('*'), null, '', $max, $start);
+            $zones = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array(), '', $max, $start);
             foreach ($zones as $zone) {
                 if ((!is_file(get_custom_file_base() . '/' . $zone['zone_name'] . '/index.php')) && (!is_file(get_file_base() . '/' . $zone['zone_name'] . '/index.php'))) {
                     $to_delete[] = $zone['zone_name'];
@@ -71,7 +71,7 @@ class Hook_cleanup_lost_disk_content
             $start = 0;
             $max = 100;
             do {
-                $pages = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_zone', 'the_page'), null, '', $max, $start);
+                $pages = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_zone', 'the_page'), array(), '', $max, $start);
                 foreach ($pages as $page) {
                     if (
                         (!is_file(get_custom_file_base() . '/' . $page['the_zone'] . '/pages/comcode_custom/' . get_site_default_lang() . '/' . $page['the_page'] . '.txt')) &&

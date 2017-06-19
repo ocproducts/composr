@@ -356,7 +356,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
         }
         $start = 0;
         do {
-            $listeners = $GLOBALS['SITE_DB']->query_select('news_rss_cloud', array('*'), null, '', 100, $start);
+            $listeners = $GLOBALS['SITE_DB']->query_select('news_rss_cloud', array('*'), array(), '', 100, $start);
             foreach ($listeners as $listener) {
                 $data = $listener['watching_channel'];
                 if ($listener['rem_protocol'] == 'xml-rpc') {
@@ -759,7 +759,7 @@ function _get_wordpress_db_data()
     // Create database connector
     $db = new DatabaseConnector($db_name, $host_name, $db_user, $db_passwrod, $db_table_prefix);
 
-    $users = $db->query_select('users', array('*'), null, '', null, null, true);
+    $users = $db->query_select('users', array('*'), array(), '', null, null, true);
     if ($users === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }

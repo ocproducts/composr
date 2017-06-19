@@ -232,7 +232,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
                                 }
                             }
                         } elseif (($field_name != 'meta_keywords') && ($field_name != 'meta_description') && ($field_name != 'compound_rating') && ($field_name != 'average_rating')) {
-                            $_extra = $db->query_select($table, array('DISTINCT ' . filter_naughty_harsh($field_name)), null, 'ORDER BY ' . filter_naughty_harsh($field_name));
+                            $_extra = $db->query_select($table, array('DISTINCT ' . filter_naughty_harsh($field_name)), array(), 'ORDER BY ' . filter_naughty_harsh($field_name));
                             foreach ($_extra as $e) {
                                 if (!is_string($e[$field_name])) {
                                     $e[$field_name] = strval($e[$field_name]);
@@ -240,7 +240,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
                                 $extra[$e[$field_name]] = $e[$field_name];
                             }
                         } elseif ($field_name == 'meta_keywords') {
-                            $_extra = $db->query_select('seo_meta_keywords', array('DISTINCT meta_keyword'), null, 'ORDER BY meta_keyword');
+                            $_extra = $db->query_select('seo_meta_keywords', array('DISTINCT meta_keyword'), array(), 'ORDER BY meta_keyword');
                             foreach ($_extra as $e) {
                                 $extra[trim($e['meta_keyword'])] = trim($e['meta_keyword']);
                             }

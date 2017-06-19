@@ -140,7 +140,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
             $to_keep += $ob->to_enable();
         }
 
-        $where = 'WHERE 1=1 ';
+        $where = ' WHERE 1=1 ';
         if ($public_view !== null) {
             $where .= ' AND cf_public_view=' . strval($public_view);
         }
@@ -167,7 +167,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
         }
 
         global $TABLE_LANG_FIELDS_CACHE;
-        $_result = $GLOBALS['FORUM_DB']->query('SELECT f.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_custom_fields f ' . $where . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'), null, null, false, true, isset($TABLE_LANG_FIELDS_CACHE['f_custom_fields']) ? $TABLE_LANG_FIELDS_CACHE['f_custom_fields'] : array());
+        $_result = $GLOBALS['FORUM_DB']->query('SELECT f.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_custom_fields f' . $where . ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name'), null, null, false, true, isset($TABLE_LANG_FIELDS_CACHE['f_custom_fields']) ? $TABLE_LANG_FIELDS_CACHE['f_custom_fields'] : array());
         $result = array();
         foreach ($_result as $row) {
             $row['trans_name'] = get_translated_text($row['cf_name'], $GLOBALS['FORUM_DB']);
@@ -313,7 +313,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
                         if (strlen($cpf_permissions[0]['group_view']) > 0) {
                             require_code('selectcode');
 
-                            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, false, false, null, $member_id);
+                            $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, false, false, array(), $member_id);
 
                             $groups_to_search = array();
                             foreach (array_keys($groups) as $group_id) {

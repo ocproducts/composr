@@ -257,7 +257,7 @@ function install_cns($upgrade_from = null)
         $max = 500;
         $start = 0;
         do {
-            $members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_pass_hash_salted', 'm_pass_salt', 'm_last_submit_time', 'm_join_time'), null, '', $max, $start);
+            $members = $GLOBALS['FORUM_DB']->query_select('f_members', array('id', 'm_pass_hash_salted', 'm_pass_salt', 'm_last_submit_time', 'm_join_time'), array(), '', $max, $start);
             foreach ($members as $member) {
                 if ($member['id'] != $GLOBALS['FORUM_DRIVER']->get_guest_id()) {
                     $GLOBALS['FORUM_DB']->query_insert('f_password_history', array(

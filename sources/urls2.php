@@ -166,13 +166,13 @@ function _fixed_post_parser($key, $value)
 /**
  * Relay all POST variables for this URL, to the URL embedded in the form.
  *
- * @param  ?array $exclude A list of parameters to exclude (null: exclude none)
+ * @param  array $exclude A list of parameters to exclude
  * @param  boolean $force_everything Force field labels and descriptions to copy through even when there are huge numbers of parameters
  * @return Tempcode The builtup hidden form fields
  *
  * @ignore
  */
-function _build_keep_post_fields($exclude = null, $force_everything = false)
+function _build_keep_post_fields($exclude = array(), $force_everything = false)
 {
     $out = '';
     foreach ($_POST as $key => $val) {
@@ -180,7 +180,7 @@ function _build_keep_post_fields($exclude = null, $force_everything = false)
             $key = strval($key);
         }
 
-        if ((($exclude !== null) && (in_array($key, $exclude))) || ($key == 'session_id'/*for spam blackhole*/) || ($key == 'csrf_token')) {
+        if ((in_array($key, $exclude)) || ($key == 'session_id'/*for spam blackhole*/) || ($key == 'csrf_token')) {
             continue;
         }
 

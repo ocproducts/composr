@@ -528,7 +528,7 @@ function ecv_PAGE_LINK($lang, $escaped, $param)
     if (isset($param[0])) {
         list($zone, $map, $hash) = page_link_decode(isset($param[0]->codename)/*faster than is_object*/ ? $param[0]->evaluate() : $param[0]);
 
-        $skip = null;
+        $skip = array();
 
         if (isset($param[1])) {
             $avoid_remap = ($param[1] == '1');
