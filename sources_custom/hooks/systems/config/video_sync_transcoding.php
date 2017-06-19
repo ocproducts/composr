@@ -64,10 +64,8 @@ class Hook_config_video_sync_transcoding
         $list = '';
         $list .= static_evaluate_tempcode(form_input_list_entry(do_lang('OTHER', null, null, null, fallback_lang())));
 
-        $hooks = find_all_hooks('modules', 'video_syndication');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/modules/video_syndication/' . filter_naughty($hook));
-            $ob = object_factory('Hook_video_syndication_' . filter_naughty($hook));
+        $hooks = find_all_hook_obs('modules', 'video_syndication', 'Hook_video_syndication_');
+        foreach ($hooks as $hook => $ob) {
             $label = $ob->get_service_title();
 
             $list .= static_evaluate_tempcode(form_input_list_entry($hook, $hook == get_option($name), $label));

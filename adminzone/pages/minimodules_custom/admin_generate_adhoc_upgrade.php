@@ -335,11 +335,8 @@ function get_addon_structure()
 {
     $struct = array('bundled' => array(), 'non_bundled' => array());
 
-    $hooks = find_all_hooks('systems', 'addon_registry');
-    foreach ($hooks as $hook => $place) {
-        require_code('hooks/systems/addon_registry/' . filter_naughty_harsh($hook));
-        $hook_ob = object_factory('Hook_addon_registry_' . $hook, true);
-
+    $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+    foreach ($hooks as $hook => $hook_ob) {
         $file_list = $hook_ob->get_file_list();
 
         if ($place == 'sources') {

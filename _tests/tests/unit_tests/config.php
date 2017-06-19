@@ -20,10 +20,8 @@ class config_test_set extends cms_test_case
 {
     public function testAddonCategorisationConsistency()
     {
-        $hooks = find_all_hooks('systems', 'config');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . $hook);
-            $ob = object_factory('Hook_config_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+        foreach ($hooks as $hook => $ob) {
             $details = $ob->get_details();
 
             $path = get_file_base() . '/sources/hooks/systems/config/' . $hook . '.php';
