@@ -39,7 +39,7 @@
 
 			<p>
 				<label class="accessibility_hidden" for="give_amount">{!AMOUNT}</label>
-				<input maxlength="8" data-cms-invalid-pattern="[^\-\d\\{$DECIMAL_POINT*}]" size="7" id="give_amount" class="input_integer_required" placeholder="{!AMOUNT}"  type="text" name="amount" />
+				<input maxlength="8" data-cms-invalid-pattern="[^\-\d\\{$DECIMAL_POINT*}]" size="7" id="give_amount" class="input_integer_required" placeholder="{!AMOUNT}" type="text" name="amount" />
 
 				<label class="points_anon" for="give_anonymous">{!TICK_ANON}: <input type="checkbox" id="give_anonymous" name="anonymous" value="1" /></label>
 

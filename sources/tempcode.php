@@ -1441,7 +1441,7 @@ function handle_symbol_preprocessing($seq_part, &$children)
                 $temp = javascript_tempcode();
 
                 require_code('themes_meta_tree');
-                $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__JS_TEMPCODE, $param[0], $temp);
+                $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__JS_TEMPCODE, isset($param[0]) ? $param[0] : '', $temp);
             }
             return;
 

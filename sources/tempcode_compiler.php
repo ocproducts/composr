@@ -694,6 +694,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         $directive_name = $eval;
 
                         // Special case: Some nested pre-processables
+                        $added_preprocessable_bits = false;
                         switch ($directive_name) {
                             case 'INCLUDE':
                             case 'FRACTIONAL_EDITABLE':
@@ -701,6 +702,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (is_array($eval)) {
                                     $pp_bit = array(array(), TC_DIRECTIVE, str_replace('"', '', $directive_name), $eval);
                                     $preprocessable_bits[] = $pp_bit;
+                                    $added_preprocessable_bits = true;
                                 }
                                 break;
                         }
@@ -867,6 +869,9 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                         }
                                         list($_current_level_data, $_preprocessable_bits) = compile_template($filecontents, $eval, $theme, $lang, $tolerate_errors, $parameters, $parameters_used);
                                         $current_level_data = array_merge($current_level_data, $_current_level_data);
+                                        if ($added_preprocessable_bits) {
+                                            array_pop($preprocessable_bits);
+                                        }
                                         $preprocessable_bits = array_merge($preprocessable_bits, $_preprocessable_bits);
                                         break;
                                     }

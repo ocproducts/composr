@@ -900,7 +900,6 @@ function get_text_templates()
         'templates/CSS_NEED_INLINE.tpl',
         'templates/WYSIWYG_LOAD.tpl',
         'templates/JAVASCRIPT_NEED.tpl',
-        'templates/JAVASCRIPT_NEED_INLINE.tpl',
         'templates/AJAX_PAGINATION.tpl',
         'templates/JS_REFRESH.tpl',
         'templates/META_REFRESH_LINE.tpl',

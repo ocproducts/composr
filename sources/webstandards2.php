@@ -330,8 +330,6 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                         if (($GLOBALS['XHTML_FORM_ENCODING'] != 'multipart/form-data') && ($GLOBALS['XHTML_FORM_ENCODING'] != '')) {
                             $errors[] = array('XHTML_FORM_ENCODING');
                         }
-                    } elseif (($attributes['type'] == 'text') && (!isset($attributes['value']))) {
-                        $errors[] = array('XHTML_MISSING_ATTRIBUTE', $tag, 'value');
                     }
                 }
                 break;

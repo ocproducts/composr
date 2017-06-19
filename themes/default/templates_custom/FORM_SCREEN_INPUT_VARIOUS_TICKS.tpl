@@ -41,7 +41,7 @@
 						{+START,IF,{$EQ,{_loop_key},0}}
 							<label for="{CUSTOM_NAME*}_value_{_loop_key*}">{!OTHER}</label>&hellip;<br />
 						{+END}
-						<input id="{CUSTOM_NAME*}_value_{_loop_key*}" class="js-keypress-ensure-next-field" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" value="" />
+						<input id="{CUSTOM_NAME*}_value_{_loop_key*}" class="js-keypress-ensure-next-field" name="{CUSTOM_NAME*}_value[]" value="{_loop_var*}" size="15" type="text" />
 					</div></div>
 				{+END}
 			{+END}

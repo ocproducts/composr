@@ -56,7 +56,7 @@
 				<tr>
 					<td>
 						<label class="accessibility_hidden" for="gmt_username_new">{!USERNAME}</label>
-						<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="input_username_required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_new" name="gmt_username_new" value="" />
+						<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" size="20" maxlength="255" class="input_username_required js-focus-update-ajax-member-list js-keyup-update-ajax-member-list" type="text" id="gmt_username_new" name="gmt_username_new" />
 					</td>
 
 					<td>

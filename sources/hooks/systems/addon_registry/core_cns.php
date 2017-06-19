@@ -758,7 +758,7 @@ class Hook_addon_registry_core_cns
                 'FIELD_NAME' => lorem_word(),
                 'COLS' => strval($cols),
                 'CODE_ESC' => '',
-                'THEME_IMG_CODE' => 'cns_emoticons/smile',
+                'THEME_IMG_CODE' => 'cns_emoticons/' . placeholder_img_code('cns_emoticons'),
                 'CODE' => ':)',
             );
         }

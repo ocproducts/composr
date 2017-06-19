@@ -146,7 +146,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 						{+END}{+END}{+END}{+END}
 						{+START,IF,{$HAS_ZONE_ACCESS,adminzone}}
 							{+START,IF,{$ADDON_INSTALLED,commandr}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin_commandr}}{+START,IF,{$CONFIG_OPTION,bottom_show_commandr_button,1}}{+START,IF,{$NEQ,{$ZONE}:{$PAGE},adminzone:admin_commandr}}
-								<li><a id="commandr_button" accesskey="o"{+START,IF,{$NOT,{$MOBILE}}} class="js-global-click-load-commandr"  data-click-pd="1" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}">{$?,{$MOBILE},{!commandr:COMMANDR},<img id="commandr_img" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" alt="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" src="{$IMG*,icons/24x24/tool_buttons/commandr_on}" srcset="{$IMG*,icons/48x48/tool_buttons/commandr_on} 2x" />}</a></li>
+								<li><a id="commandr_button" accesskey="o"{+START,IF,{$NOT,{$MOBILE}}} class="js-global-click-load-commandr" data-click-pd="1" {+END} href="{$PAGE_LINK*,adminzone:admin_commandr}">{$?,{$MOBILE},{!commandr:COMMANDR},<img id="commandr_img" title="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" alt="{!commandr:COMMANDR_DESCRIPTIVE_TITLE}" src="{$IMG*,icons/24x24/tool_buttons/commandr_on}" srcset="{$IMG*,icons/48x48/tool_buttons/commandr_on} 2x" />}</a></li>
 							{+END}{+END}{+END}{+END}
 							{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
 								<li><a id="software_chat_button" accesskey="-" href="#!" class="js-click-load-software-chat">{$?,{$MOBILE},{!SOFTWARE_CHAT},<img id="software_chat_img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" />}</a></li>

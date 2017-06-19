@@ -1055,6 +1055,7 @@ function init__webstandards()
         define('IN_TAG_EMBEDDED_COMMENT', 9);
         define('IN_TAG_ATTRIBUTE_VALUE_LITTLE_QUOTES', 8);
         define('IN_CDATA', 11);
+        define('IN_IMPLICIT_CDATA', 13);
     }
 }
 
@@ -1152,7 +1153,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
     $stack_size = 0;
     $to_find = array('html' => true, 'head' => true, 'title' => true/*, 'meta' => true*/);
     $only_one_of_stack = array();
-    $only_one_of_template = array('title' => true, 'head' => true, 'body' => true, 'base' => true, 'thead' => true, 'tfoot' => true);
+    $only_one_of_template = array('title' => 1, 'head' => 1, 'body' => 1, 'base' => 1, 'thead' => 1, 'tfoot' => 1);
     $only_one_of = $only_one_of_template;
     $A_LINKS = array();
     $previous = '';
@@ -1314,23 +1315,6 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
                 }
                 $stack_size--;
                 $level_ranges[] = array($stack_size, $T_POS, $POS);
-
-                if ((($WEBSTANDARDS_CHECKER_OFF === null)) && (!$WELL_FORMED_ONLY) && (($WEBSTANDARDS_CHECKER_OFF === null))) {
-                    if ($previous == 'script') {
-                        $tag_contents = substr($OUT, $start_pos, $T_POS - $start_pos);
-                        $c_section = strpos($tag_contents, ']]>');
-                        if ((trim($tag_contents) != '') && (strpos($tag_contents, '//-->') === false) && (strpos($tag_contents, '// -->') === false) && ($c_section === false)) {
-                            $errors[] = _xhtml_error('XHTML_SCRIPT_COMMENTING', $previous);
-                        } elseif (($c_section === false) && ((strpos($tag_contents, '<!--') !== false))) {
-                            if ($XML_CONSTRAIN) {
-                                $errors[] = _xhtml_error('XHTML_CDATA');
-                            }
-                        }
-                        if (strpos($tag_contents, '</') !== false) {
-                            $errors[] = _xhtml_error('XML_JS_TAG_ESCAPE');
-                        }
-                    }
-                }
             } while ($basis_token != $previous);
         }
 
@@ -1564,7 +1548,7 @@ function _get_next_tag()
     global $PARENT_TAG, $POS, $LINENO, $LINESTART, $OUT, $T_POS, $ENTITIES, $LEN, $ANCESTER_BLOCK, $TAG_STACK, $WEBSTANDARDS_CHECKER_OFF, $TEXT_NO_BLOCK, $INBETWEEN_TEXT;
     global $TAG_RANGES, $VALUE_RANGES;
 
-    $status = NO_MANS_LAND;
+    $status = ($PARENT_TAG == 'script') ? IN_IMPLICIT_CDATA : NO_MANS_LAND;
 
     $current_tag = '';
     $current_attribute_name = '';
@@ -1592,7 +1576,7 @@ function _get_next_tag()
         }
 
         // Entity checking
-        if (($next == '&') && ($status != IN_CDATA) && ($status != IN_COMMENT) && ($WEBSTANDARDS_CHECKER_OFF === null)) {
+        if (($next == '&') && ($status != IN_CDATA) && ($status != IN_IMPLICIT_CDATA) && ($status != IN_COMMENT) && ($WEBSTANDARDS_CHECKER_OFF === null)) {
             $test = test_entity();
             if ($test !== null) {
                 $errors = array_merge($errors, $test);
@@ -1959,6 +1943,14 @@ function _get_next_tag()
             case IN_CDATA:
                 $INBETWEEN_TEXT .= $next;
                 if (($next == '>') && ($OUT[$POS - 2] == ']') && ($OUT[$POS - 3] == ']')) {
+                    $status = NO_MANS_LAND;
+                }
+                break;
+
+            case IN_IMPLICIT_CDATA:
+                $INBETWEEN_TEXT .= $next;
+                if (($next == '/') && ($OUT[$POS - 2] == '<')) {
+                    $POS -= 2;
                     $status = NO_MANS_LAND;
                 }
                 break;

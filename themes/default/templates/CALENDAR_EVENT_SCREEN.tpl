@@ -57,7 +57,9 @@
 				<h2>{!DESCRIPTION}</h2>
 
 				<div class="float_surrounder">
-					<img class="event_type_image" src="{$IMG*,{LOGO}}" alt="{TYPE*}" title="{TYPE*}" />
+					{+START,IF_NON_EMPTY,{LOGO}}
+						<img class="event_type_image" src="{$IMG*,{LOGO}}" alt="{TYPE*}" title="{TYPE*}" />
+					{+END}
 					{+START,IF_NON_EMPTY,{CONTENT}}
 						<div class="description" itemprop="description">{CONTENT}</div>
 					{+END}

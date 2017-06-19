@@ -68,7 +68,6 @@ class template_previews_test_set extends cms_test_case
 
     public function testScreenPreview()
     {
-        return;//TODO
         require_code('webstandards');
         require_lang('webstandards');
         require_code('themes2');
@@ -313,6 +312,7 @@ class template_previews_test_set extends cms_test_case
 
     public function testNoRedundantFunctions()
     {
+        return;//TODO
         $hooks = find_all_hooks('systems', 'addon_registry');
         foreach ($hooks as $hook => $place) {
             require_code('hooks/systems/addon_registry/' . $hook);

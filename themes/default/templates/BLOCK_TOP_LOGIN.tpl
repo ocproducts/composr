@@ -6,9 +6,9 @@
 		{+START,IF,{$NOT,{$MOBILE}}}
 			<div class="inline">
 				<div class="accessibility_hidden"><label for="s_login_username">{$LOGIN_LABEL}</label></div>
-				<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s_login_username" name="login_username" value="" />
+				<input maxlength="80" size="10" accesskey="l" type="text" placeholder="{!USERNAME}" id="s_login_username" name="login_username" />
 				<div class="accessibility_hidden"><label for="s_password">{!PASSWORD}</label></div>
-				<input maxlength="255" size="10" type="password" placeholder="{!PASSWORD}" value="" name="password" id="s_password" />
+				<input maxlength="255" size="10" type="password" placeholder="{!PASSWORD}" name="password" id="s_password" />
 
 				{+START,IF,{$CONFIG_OPTION,password_cookies}}
 					<label class="accessibility_hidden" for="s_remember">{!REMEMBER_ME}</label>

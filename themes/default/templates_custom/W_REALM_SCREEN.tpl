@@ -39,12 +39,12 @@
 		{+START,IF_NON_PASSED,OWNER}
 			<tr>
 				<th>{!W_REALM_JAIL_NAME}</th>
-				<td><label class="accessibility_hidden" for="jail_name">{!W_REALM_JAIL_NAME}</label><input type="text" size="20" name="jail_name" id="jail_name" value="" /></td>
+				<td><label class="accessibility_hidden" for="jail_name">{!W_REALM_JAIL_NAME}</label><input type="text" size="20" name="jail_name" id="jail_name" /></td>
 				<td>{!W_EG_REALM_JAIL_NAME}</td>
 			</tr>
 			<tr>
 				<th>{!W_REALM_JAIL_TEXT}</th>
-				<td><label class="accessibility_hidden" for="jail_text">{!W_REALM_JAIL_TEXT}</label><input type="text" size="20" name="jail_text" id="jail_text" value="" /></td>
+				<td><label class="accessibility_hidden" for="jail_text">{!W_REALM_JAIL_TEXT}</label><input type="text" size="20" name="jail_text" id="jail_text" /></td>
 				<td>{!W_EG_REALM_JAIL_TEXT}</td>
 			</tr>
 			<tr>
@@ -54,17 +54,17 @@
 			</tr>
 			<tr>
 				<th>{!ALT_FIELD,{!URL}}</th>
-				<td><label class="accessibility_hidden" for="jail_pic_url">{!ALT_FIELD,{!URL}}</label><input type="text" size="20" name="jail_pic_url" id="jail_pic_url" value="" /></td>
+				<td><label class="accessibility_hidden" for="jail_pic_url">{!ALT_FIELD,{!URL}}</label><input type="text" size="20" name="jail_pic_url" id="jail_pic_url" /></td>
 				<td>{!DESCRIPTION_ALTERNATE_URL}</td>
 			</tr>
 			<tr>
 				<th>{!W_REALM_JAILHOUSE_NAME}</th>
-				<td><label class="accessibility_hidden" for="jail_house_name">{!W_REALM_JAILHOUSE_NAME}</label><input type="text" size="20" name="jail_house_name" id="jail_house_name" value="" /></td>
+				<td><label class="accessibility_hidden" for="jail_house_name">{!W_REALM_JAILHOUSE_NAME}</label><input type="text" size="20" name="jail_house_name" id="jail_house_name" /></td>
 				<td>{!W_EG_REALM_JAILHOUSE_NAME}</td>
 			</tr>
 			<tr>
 				<th>{!W_REALM_JAILHOUSE_TEXT}</th>
-				<td><label class="accessibility_hidden" for="jail_house_text">{!W_REALM_JAILHOUSE_TEXT}</label><input type="text" size="20" name="jail_house_text" id="jail_house_text" value="" /></td>
+				<td><label class="accessibility_hidden" for="jail_house_text">{!W_REALM_JAILHOUSE_TEXT}</label><input type="text" size="20" name="jail_house_text" id="jail_house_text" /></td>
 				<td>{!W_EG_REALM_JAILHOUSE_TEXT}</td>
 			</tr>
 			<tr>
@@ -74,17 +74,17 @@
 			</tr>
 			<tr>
 				<th>{!ALT_FIELD,{!URL}}</th>
-				<td><label class="accessibility_hidden" for="jail_house_pic_url">{!ALT_FIELD,{!URL}}</label><input type="text" size="20" name="jail_house_pic_url" id="jail_house_pic_url" value="" /></td>
+				<td><label class="accessibility_hidden" for="jail_house_pic_url">{!ALT_FIELD,{!URL}}</label><input type="text" size="20" name="jail_house_pic_url" id="jail_house_pic_url" /></td>
 				<td>{!DESCRIPTION_ALTERNATE_URL}</td>
 			</tr>
 			<tr>
 				<th>{!W_REALM_LOBBY_NAME}</th>
-				<td><label class="accessibility_hidden" for="lobby_name">{!W_REALM_LOBBY_NAME}</label><input type="text" size="20" name="lobby_name" id="lobby_name" value="" /></td>
+				<td><label class="accessibility_hidden" for="lobby_name">{!W_REALM_LOBBY_NAME}</label><input type="text" size="20" name="lobby_name" id="lobby_name" /></td>
 				<td>{!W_EG_REALM_LOBBY_NAME}</td>
 			</tr>
 			<tr>
 				<th>{!W_REALM_LOBBY_TEXT}</th>
-				<td><label class="accessibility_hidden" for="lobby_text">{!W_REALM_LOBBY_TEXT}</label><input type="text" size="20" name="lobby_text" id="lobby_text" value="" /></td>
+				<td><label class="accessibility_hidden" for="lobby_text">{!W_REALM_LOBBY_TEXT}</label><input type="text" size="20" name="lobby_text" id="lobby_text" /></td>
 				<td>{!W_EG_REALM_LOBBY_TEXT}</td>
 			</tr>
 			<tr>
@@ -94,7 +94,7 @@
 			</tr>
 			<tr>
 				<th>{!ALT_FIELD,{!URL}}</th>
-				<td><label class="accessibility_hidden" for="lobby_pic_url">{!ALT_FIELD,{!URL}}</label><input type="text" size="20" name="lobby_pic_url" id="lobby_pic_url" value="" /></td>
+				<td><label class="accessibility_hidden" for="lobby_pic_url">{!ALT_FIELD,{!URL}}</label><input type="text" size="20" name="lobby_pic_url" id="lobby_pic_url" /></td>
 				<td>{!DESCRIPTION_ALTERNATE_URL}</td>
 			</tr>
 		{+END}

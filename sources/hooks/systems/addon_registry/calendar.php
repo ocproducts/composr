@@ -377,7 +377,7 @@ class Hook_addon_registry_calendar
                 'TITLE' => lorem_word(),
                 'TIME' => placeholder_date(),
                 'VIEW_URL' => placeholder_url(),
-                'ICON' => 'calendar/activity',
+                'ICON' => 'calendar/' . placeholder_img_code('calendar'),
                 'T_TITLE' => lorem_word(),
                 'DESCRIPTION' => lorem_paragraph_html(),
                 'TIME_VCAL' => placeholder_number(),
@@ -463,6 +463,7 @@ class Hook_addon_registry_calendar
                             'DESCRIPTION' => lorem_word_2(),
                             'VALIDATED' => true,
                             'RECURRING' => false,
+                            'PRIORITY_ICON' => 'calendar/priority_1',
                         ));
                         $_streams->attach(do_lorem_template('CALENDAR_DAY_STREAM_HOUR', array(
                             'CURRENT' => lorem_word(),
@@ -504,7 +505,7 @@ class Hook_addon_registry_calendar
                                 'TIME' => placeholder_date(),
                                 'TITLE' => lorem_word(),
                                 'E' => lorem_word(),
-                                'ICON' => 'calendar/general',
+                                'ICON' => 'calendar/' . placeholder_img_code('calendar'),
                                 'VALIDATED' => true,
                                 'RECURRING' => false,
                             ));
@@ -770,7 +771,7 @@ class Hook_addon_registry_calendar
                 'ADD_DATE_RAW' => placeholder_date_raw(),
                 'EDIT_DATE_RAW' => placeholder_date_raw(),
                 'VIEWS' => lorem_phrase(),
-                'LOGO' => placeholder_img_code(''),
+                'LOGO' => 'calendar/' . placeholder_img_code('calendar'),
                 'DAY' => placeholder_date(),
                 'RECURRENCE' => placeholder_number(),
                 'IS_PUBLIC' => lorem_phrase(),

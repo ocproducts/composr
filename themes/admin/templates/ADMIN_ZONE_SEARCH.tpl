@@ -9,7 +9,7 @@
 
 			<div>
 				<label for="search_content" class="accessibility_hidden">{!SEARCH}</label>
-				<input size="25" type="search" id="search_content" name="content" placeholder="{!SEARCH*}" value="" />
+				<input size="25" type="search" id="search_content" name="content" placeholder="{!SEARCH*}" />
 				<div class="accessibility_hidden"><label for="new_window">{!NEW_WINDOW}</label></div>
 				<input title="{!NEW_WINDOW}" type="checkbox" value="1" id="new_window" name="new_window" />
 				<input type="submit" value="{$?,{$MOBILE},{!SEARCH},{!SEARCH_ADMIN}}" class="button_screen_item buttons__search js-click-btn-admin-search" data-tp-hiddens="{$HIDDENS_FOR_GET_FORM*,{$PAGE_LINK,adminzone:admin:search}}" data-tp-action-url="{$URL_FOR_GET_FORM*,{$PAGE_LINK,adminzone:admin:search}}" />

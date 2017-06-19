@@ -809,7 +809,7 @@
 
     $cms.templates.templateTreeItem = function templateTreeItem(params, container) {
         $cms.dom.on(container, 'click', '.js-click-checkbox-toggle-guid-input', function (e, checkbox) {
-            var el = $cms.dom.$('#f__id__guid');
+            var el = $cms.dom.$('#f' + checkbox.id.replace(/file/, 'guid'));
             if (el) {
                 el.disabled = !checkbox.checked;
             }

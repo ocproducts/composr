@@ -19,9 +19,9 @@
 			<div class="vertical_alignment">
 				<label class="accessibility_hidden" for="key_{_loop_var*}">{!TEMPCODE_PARAMETER} #{_loop_var*}</label>
 				<label class="accessibility_hidden" for="val_{_loop_var*}">{!TEMPCODE_VALUE} #{_loop_var*}</label>
-				<input type="text" id="key_{_loop_var*}" name="key_{_loop_var*}" size="10" value="" />
+				<input type="text" id="key_{_loop_var*}" name="key_{_loop_var*}" size="10" />
 				&rarr;
-				<input type="text" id="val_{_loop_var*}" name="val_{_loop_var*}" size="60" value="" />
+				<input type="text" id="val_{_loop_var*}" name="val_{_loop_var*}" size="60" />
 			</div>
 		{+END}
 

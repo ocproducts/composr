@@ -7044,7 +7044,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_BROKEN_URL
         XHTML_CASE_ATTRIBUTE
         XHTML_CASE_TAG
-        XHTML_CDATA
         XHTML_CEMPTY_TAG
         XHTML_CONTENTTYPE
         XHTML_DEPRECATED_ATTRIBUTE
@@ -7069,7 +7068,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_ONLY_ONE_ALLOWED
         XHTML_PLACEHOLDER
         XHTML_PROHIBITION
-        XHTML_SCRIPT_COMMENTING
         XHTML_SPAM
         XHTML_SPELLING
         XHTML_TEXT_NO_BLOCK
@@ -7080,7 +7078,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         XHTML_WRONG_COMMENTING
         XML_ATTRIBUTE_ERROR
         XML_BROKEN_END
-        XML_JS_TAG_ESCAPE
         XML_MORE_CLOSE_THAN_OPEN
         XML_NEEDED
         XML_NO_CLOSE

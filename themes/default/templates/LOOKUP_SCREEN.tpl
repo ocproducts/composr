@@ -74,7 +74,7 @@
 			<tr>
 				<th>{!ACTIONS}</th>
 				<td>
-					<!-- If you like new windows, add this... title="{!LINK_NEW_WINDOW}" target="_blank"  -->
+					<!-- If you like new windows, add this... title="{!LINK_NEW_WINDOW}" target="_blank" -->
 					<nav>
 						<ul class="actions_list">
 							<li><a rel="external" href="http://whatismyipaddress.com/ip/{IP*}">Reverse-DNS/WHOIS</a></li>

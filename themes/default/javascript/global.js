@@ -6977,17 +6977,19 @@
                             // Allow scrolling, if we want it
                             //iframe.scrolling=(_this.scrollbars===false)?'no':'auto';	Actually, not wanting this now
 
-                            // Remove fixed width
-                            var mainWebsiteInner = iframe.contentWindow.$cms.dom.$id('main_website_inner');
-                            if (mainWebsiteInner) mainWebsiteInner.id = '';
+                            if (typeof iframe.contentWindow.$cms != 'undefined') {
+                                // Remove fixed width
+                                var mainWebsiteInner = iframe.contentWindow.$cms.dom.$id('main_website_inner');
+                                if (mainWebsiteInner) mainWebsiteInner.id = '';
 
-                            // Remove main_website marker
-                            var mainWebsite = iframe.contentWindow.$cms.dom.$id('main_website');
-                            if (mainWebsite) mainWebsite.id = '';
+                                // Remove main_website marker
+                                var mainWebsite = iframe.contentWindow.$cms.dom.$id('main_website');
+                                if (mainWebsite) mainWebsite.id = '';
 
-                            // Remove popup spacing
-                            var popupSpacer = iframe.contentWindow.$cms.dom.$id('popup_spacer');
-                            if (popupSpacer) popupSpacer.id = '';
+                                // Remove popup spacing
+                                var popupSpacer = iframe.contentWindow.$cms.dom.$id('popup_spacer');
+                                if (popupSpacer) popupSpacer.id = '';
+                            }
 
                             // Set linking scheme
                             var bases = iframe.contentWindow.document.getElementsByTagName('base');

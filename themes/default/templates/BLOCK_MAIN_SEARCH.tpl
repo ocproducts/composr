@@ -10,7 +10,7 @@
 			{+START,IF,{$EQ,{INPUT_FIELDS},1}}
 				<div class="constrain_field">
 					<label class="accessibility_hidden" for="main_search_content">{!SEARCH}</label>
-					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide_field js-keyup-update-ajax-search-list-with-type" type="search" id="main_search_content" name="content" value="" />
+					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide_field js-keyup-update-ajax-search-list-with-type" type="search" id="main_search_content" name="content" />
 				</div>
 			{+END}
 			{+START,IF,{$NEQ,{INPUT_FIELDS},1}}

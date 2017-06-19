@@ -20,7 +20,7 @@
 				{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
 					<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}" />
 				{+END}
-				<input maxlength="6" size="8" class="input_text_required" value="" type="text" id="captcha" name="captcha" />
+				<input maxlength="6" size="8" class="input_text_required" type="text" id="captcha" name="captcha" />
 			</div></div>
 		</div>
 	{+END}
@@ -70,7 +70,7 @@
 									</th>
 
 									<td>
-										<input maxlength="255" size="{$?,{$MOBILE},16,24}" value="" type="text" tabindex="1" id="poster_name_if_guest" name="poster_name_if_guest" />
+										<input maxlength="255" size="{$?,{$MOBILE},16,24}" type="text" tabindex="1" id="poster_name_if_guest" name="poster_name_if_guest" />
 										{+START,IF_PASSED,JOIN_BITS}{+START,IF_NON_EMPTY,{JOIN_BITS}}
 											<span class="horiz_field_sep">{JOIN_BITS}</span>
 										{+END}{+END}
@@ -94,7 +94,7 @@
 
 									<td>
 										<div class="constrain_field">
-											<input maxlength="255" class="wide_field" value="" type="text" tabindex="2" id="title" name="title" />
+											<input maxlength="255" class="wide_field" type="text" tabindex="2" id="title" name="title" />
 										</div>
 
 										<div id="error_title" style="display: none" class="input_error_here"></div>

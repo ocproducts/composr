@@ -125,7 +125,9 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
     $sections = new Tempcode();
 
     // Main section stuff (the "Main" section is not always shown - it is shown when the do-next screen is being used as a traditional menu, not as a followup-action screen)
-    $sections->attach(_do_next_section($main, make_string_tempcode($main_title), $entry_content_type, $category_content_type));
+    if ($main_title !== null) {
+        $sections->attach(_do_next_section($main, make_string_tempcode($main_title), $entry_content_type, $category_content_type));
+    }
 
     $current_page_type = get_param_string('type', '');
 
@@ -184,7 +186,7 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
             $entry_passed_2[] = $map;
         }
     }
-    $sections->attach(_do_next_section($entry_passed_2, ($entries_title === null) ? do_lang_tempcode('ENTRIES') : $entries_title, $entry_content_type, $category_content_type));
+    $sections->attach(_do_next_section($entry_passed_2, ($entries_title === null) ? do_lang_tempcode('ENTRIES') : (is_object($entries_title) ? $entries_title : make_string_tempcode($entries_title)), $entry_content_type, $category_content_type));
 
     // Category stuff
     $category_passed = array(
@@ -239,10 +241,12 @@ function do_next_manager($title, $text, $main = array(), $main_title = null, $ur
         }
     }
     $category_passed_2 = array_merge($category_passed_2, $category_extras);
-    $sections->attach(_do_next_section($category_passed_2, ($categories_title === null) ? do_lang_tempcode('CATEGORIES') : $categories_title, $entry_content_type, $category_content_type));
+    $sections->attach(_do_next_section($category_passed_2, ($categories_title === null) ? do_lang_tempcode('CATEGORIES') : (is_object($categories_title) ? $categories_title : make_string_tempcode($categories_title)), $entry_content_type, $category_content_type));
 
     // Additional section stuff
-    $sections->attach(_do_next_section($additional_extras, is_object($additional_title) ? $additional_title : make_string_tempcode($additional_title), $entry_content_type, $category_content_type));
+    if ($additional_title !== null) {
+        $sections->attach(_do_next_section($additional_extras, is_object($additional_title) ? $additional_title : make_string_tempcode($additional_title), $entry_content_type, $category_content_type));
+    }
 
     if (($main === null) && (get_option('global_donext_icons') == '1')) { // What-next
         // These go on a new row

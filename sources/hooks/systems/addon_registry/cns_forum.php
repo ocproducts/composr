@@ -535,7 +535,7 @@ class Hook_addon_registry_cns_forum
             lorem_globalise(do_lorem_template('CNS_RANK_IMAGE', array(
                 'GROUP_NAME' => lorem_word(),
                 'USERNAME' => lorem_word(),
-                'IMG' => placeholder_img_code(''),
+                'IMG' => 'cns_rank_images/' . placeholder_img_code('cns_rank_images'),
                 'IS_LEADER' => lorem_phrase(),
             )), null, '', true)
         );
@@ -1082,7 +1082,7 @@ class Hook_addon_registry_cns_forum
                 'TOPIC_ROW_MODIFIERS' => $topic_row_modifiers,
                 '_TOPIC_ROW_MODIFIERS' => array(),
                 'POST' => lorem_phrase(),
-                'EMOTICON' => 'cns_emoticons/constipated',
+                'EMOTICON' => 'cns_emoticons/' . placeholder_img_code('cns_emoticons'),
                 'DESCRIPTION' => lorem_paragraph(),
                 'URL' => placeholder_url(),
                 'TITLE' => lorem_phrase(),
@@ -1385,7 +1385,7 @@ class Hook_addon_registry_cns_forum
                     'TOPIC_ROW_LINKS' => $topic_row_links,
                     'TOPIC_ROW_MODIFIERS' => $topic_row_modifiers,
                     'POST' => lorem_phrase(),
-                    'EMOTICON' => 'cns_emoticons/depressed',
+                    'EMOTICON' => 'cns_emoticons/' . placeholder_img_code('cns_emoticons'),
                     'DESCRIPTION' => lorem_paragraph(),
                     'URL' => placeholder_url(),
                     'TITLE' => lorem_phrase(),
