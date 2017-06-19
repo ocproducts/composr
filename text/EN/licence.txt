@@ -157,6 +157,16 @@ This product includes:
   - Sew, autocomplete implementation (BSD-like licence / public domain)
   - Modernizr (MIT & BSD-like licences)
   - Silktide Cookie consent (GPL licence, but remotely linked)
+ - Smaller front-end polyfills:
+  - Web Animations (Google, Apache licence)
+  - URL Search parameters (WebReflection, BSD licence)
+  - RequireJS (jQuery Foundation and others, MIT licence)
+  - Promises (Forbes Lindesay, public domain)
+  - Keyboard Events (Chris Van, MIT licence)
+  - JSON5 (Aseem Kishore, MIT licence)
+  - Assorted polyfills (Joshua Bell, Mozilla, public domain)
+  - Fetch API (Xavier Badosa, public domain)
+  - Class Lists (Eli Grey, public domain)
 
 Non-bundled addons will often have their own third party materials documented within the addon.
 
