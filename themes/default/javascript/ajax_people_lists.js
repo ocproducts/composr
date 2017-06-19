@@ -79,7 +79,7 @@
 
             closeDownAjaxList();
 
-            var isDataList = false;//(document.createElement('datalist').options!==undefined);	Still too buggy in browsers
+            var isDataList = false;//(document.createElement('datalist').options!==undefined); Still too buggy in browsers
 
             //if (list_contents.childNodes.length==0) return;
             var list = document.createElement(isDataList ? 'datalist' : 'select');

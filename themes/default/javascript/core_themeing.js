@@ -4,10 +4,10 @@
     /*
      Naming conventions...
 
-     t_	Tab header
-     g_	Tab body
+     t_ Tab header
+     g_ Tab body
      b_ Toolbar
-     e_	Editor textbox
+     e_ Editor textbox
      */
 
     // INIT CODE

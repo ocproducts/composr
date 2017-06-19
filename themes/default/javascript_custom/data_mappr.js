@@ -46,7 +46,7 @@
 
             var infoWindow = new google.maps.InfoWindow();
 
-            //{$,Close InfoWindow when clicking anywhere on the map.}
+            // Close InfoWindow when clicking anywhere on the map
             google.maps.event.addListener(map, 'click', function () {
                 infoWindow.close();
             });
@@ -57,7 +57,7 @@
             }
             marker.setMap(map);
 
-            //{$,Save into hidden fields}
+            // Save into hidden fields
             google.maps.event.addListener(map, 'mousemove', function (point) {
                 lastPoint = point.latLng;
             });
@@ -141,7 +141,7 @@
                 overviewMapControlOptions: {opened: true}
             };
 
-            if (!center) { //{$,NB: the block center parameter means to autofit the contents cleanly; if the parameter is not set it will center about the given latitude/longitude}
+            if (!center) { // NB: the block center parameter means to autofit the contents cleanly; if the parameter is not set it will center about the given latitude/longitude
                 gOptions.center = specifiedCenter;
             }
 
@@ -150,7 +150,7 @@
 
             var infoWindow = new google.maps.InfoWindow();
 
-            //{$,Close InfoWindow when clicking anywhere on the map.}
+            // Close InfoWindow when clicking anywhere on the map
             google.maps.event.addListener(data_map, 'click', function () {
                 infoWindow.close();
             });
@@ -169,7 +169,7 @@
                 });
             }
 
-            //{$,Show markers}
+            // Show markers
             var latLng, markerOptions, marker;
             var boundLength = 0;
             if (cluster) {
@@ -221,31 +221,31 @@
 
                 google.maps.event.addListener(marker, 'click', (function (argMarker, entryTitle, entryId, entryContent) {
                     return function () {
-                        //{$,Dynamically load entry details only when their marker is clicked.}
+                        // Dynamically load entry details only when their marker is clicked
                         var content = entryContent.replace(/<colgroup>(.|\n)*<\/colgroup>/, '').replace(/&nbsp;/g, ' ');
                         if (content != '') {
                             infoWindow.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
                             infoWindow.open(data_map, argMarker);
                         }
                     };
-                })(marker, data[i][0], data[i][4], data[i][5])); //{$,These are the args passed to the dynamic function above.}
+                })(marker, data[i][0], data[i][4], data[i][5])); // These are the args passed to the dynamic function above
             }
 
             if (cluster) {
                 var markerCluster = new MarkerClusterer(data_map, markers);
             }
 
-            //{$,Autofit the map around the markers}
+            // Autofit the map around the markers
             if (center) {
-                if (boundLength == 0) { //{$,We may have to center at given lat/long after all if there are no pins}
+                if (boundLength == 0) { // We may have to center at given lat/long after all if there are no pins
                     data_map.setCenter(specifiedCenter);
-                } else if (boundLength == 1) { //{$,Center around the only pin}
+                } else if (boundLength == 1) { // Center around the only pin
                     data_map.setCenter(new google.maps.LatLng(data[0][1], data[0][2]));
-                } else { //{$,Good - autofit lots of pins}
+                } else { // Good - autofit lots of pins
                     data_map.fitBounds(bounds);
                 }
             }
-            //{$,Sample code to grab clicked positions
+            // Sample code to grab clicked positions
             var lastPoint;
             google.maps.event.addListener(data_map, 'mousemove', function (point) {
                 lastPoint = point.latLng;

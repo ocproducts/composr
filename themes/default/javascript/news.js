@@ -44,7 +44,7 @@
             new Image().src = news[i].imageUrl; // precache
         }
 
-        // Pause function}
+        // Pause function
         window[pause] = function () {
             if (window[cycleTimer]) {
                 window.clearTimeout(cycleTimer);
@@ -74,30 +74,32 @@
             }
             window[cycleCount] = j;
 
-            // Simple data copy}
+            // Simple data copy
             $cms.dom.html(fpAnimationHtml, data[j].html);
             fpAnimationUrl.href = data[j].url;
 
-            // Set up fade}
+            // Set up fade
             fpAnimationNews.src = fpAnimation.src;
             $cms.dom.clearTransitionAndSetOpacity(fpAnimationNews, 1.0);
             $cms.dom.fadeTransition(fpAnimationNews, 0, 30, -4);
             $cms.dom.clearTransitionAndSetOpacity(fpAnimation, 0.0);
             $cms.dom.fadeTransition(fpAnimation, 100, 30, 4);
             fpAnimation.src = data[j].image_url;
-            window.setTimeout(function () { // Will know dimensions by the time the timeout happens}
+            window.setTimeout(function () { // Will know dimensions by the time the timeout happens
                 fpAnimationNews.style.left = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetWidth) / 2) + 'px';
                 fpAnimationNews.style.top = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetHeight) / 2) + 'px';
             }, 0);
 
-            // Set up timer for next time}
+            // Set up timer for next time
             if (window[cycleTimer]) {
                 window.clearTimeout(window[cycleTimer]);
             }
             $cms.dom.$('#pause_button_' + rand).classList.remove('button_depressed');
-            window[cycleTimer] = window.setTimeout(function () {
-                window[cycle](1);
-            }, params.mill);
+            if (news.length > 1) {
+                window[cycleTimer] = window.setTimeout(function () {
+                    window[cycle](1);
+                }, params.mill);
+            }
 
             return false;
         };

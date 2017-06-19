@@ -70,7 +70,7 @@
                 eval.call(window, dataEval);
             }
 
-            //{$,Show markers}
+            // Show markers
             var markers = [];
             for (var i = 0; i < data.length; i++) {
                 addDataPoint(data[i], bounds, markers, infoWindow, map);
@@ -79,7 +79,7 @@
             if (cluster) {
                 var markerCluster = new MarkerClusterer(map,markers);
             }
-            //{$,Fit the map around the markers, but only if we want the map centered.}
+            // Fit the map around the markers, but only if we want the map centered
             if (params.center) {
                 map.fitBounds(bounds);
             }
@@ -134,7 +134,7 @@
 
             google.maps.event.addListener(marker, 'click', (function (argMarker, argMember) {
                 return function () {
-                    //{$,Dynamically load a specific members details only when their marker is clicked.}
+                    // Dynamically load a specific members details only when their marker is clicked
                     $cms.doAjaxRequest($cms.$BASE_URL() + '/data_custom/get_member_tooltip.php?member=' + argMember + $cms.keepStub(), function (reply) {
                         var content = reply.querySelector('result').firstChild.nodeValue;
                         if (content != '') {
@@ -143,7 +143,7 @@
                         }
                     });
                 };
-            })(marker, dataPoint[0])); //{$,These are the args passed to the dynamic function above.}
+            })(marker, dataPoint[0])); // These are the args passed to the dynamic function above
         }
     };
 }(window.$cms));

@@ -83,7 +83,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
         var showOverlay, defaults = {};
         if (filepath.indexOf('fakepath') === -1) // iPhone gives c:\fakepath\image.jpg, so don't use that
             defaults.description = filepath; // Default caption to local file path
-		/*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}{+END}*/
+        /*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}{+END}*/
 
         if (!showOverlay) {
             var comcode = '[' + tag;

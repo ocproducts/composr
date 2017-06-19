@@ -27,7 +27,7 @@ function toggleWysiwyg(name) {
                 {
                     buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',
                     buttons__clear: '{!javascript:WYSIWYG_DISABLE_ONCE;^}',
-                    //buttons__no: '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}',	Too confusing, re-enable if you want it
+                    //buttons__no: '{!javascript:WYSIWYG_DISABLE_ONCE_AND_DONT_ASK;^}', Too confusing, re-enable if you want it
                     buttons__yes: '{!javascript:WYSIWYG_DISABLE_ALWAYS;^}'
                 },
                 '{!comcode:DISABLE_WYSIWYG;^}',
@@ -348,7 +348,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             wysiwygColor += (window.parseInt(matches[5]) + 4) + matches[6];
         }
 
-    	/*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}{+END}*/
+        /*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}{+END}*/
 
         if (window.CKEDITOR.instances[element.id]) {
             // Workaround "The instance "xxx" already exists" error in Google Chrome
@@ -916,7 +916,7 @@ function showUploadSyndicationOptions(name, syndicationJson, noQuota) {
             document.getElementById(id).onclick = function () {
                 var el = document.getElementById(id);
                 if (el.checked && !authorised) {
-                    //e.checked=false;	Better to assume success, not all oAuth support callback
+                    //e.checked=false;  Better to assume success, not all oAuth support callback
                     var url = '{$FIND_SCRIPT_NOHTTP;,upload_syndication_auth}?hook=' + encodeURIComponent(hook) + '&name=' + encodeURIComponent(name) + $cms.keepStub();
 
                     if ($cms.$MOBILE()) {

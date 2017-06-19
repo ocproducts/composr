@@ -276,7 +276,7 @@
         function detectIfChatWindowClosed(dieOnLost, becomeAutonomousOnLost) {
             var lostConnection = false;
             try {
-                /*if ($cms.browserMatches('non_concurrent'))	Pointless as document.write doesn't work on iOS without tabbing back and forth, so initial load is horribly slow in first place
+                /*if ($cms.browserMatches('non_concurrent'))    Pointless as document.write doesn't work on iOS without tabbing back and forth, so initial load is horribly slow in first place
                  {
                  throw 'No multi-process on iOS';
                  }*/
@@ -991,8 +991,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                         {
                             parent.removeChild(tmpElement);
                         }
-                        /*if (parent.childNodes.length==0)		Don't set to none, as we want to allow the 'force_invite' IM re-activation feature, to draw the other guy back -- above we pretended they're merely 'away', not just left
-                         {
+                        /*if (parent.childNodes.length==0) { Don't set to none, as we want to allow the 'force_invite' IM re-activation feature, to draw the other guy back -- above we pretended they're merely 'away', not just left
                              $cms.dom.html(parent, '<em class="none">{!NONE;^}</em>');
                          }*/
 

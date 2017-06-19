@@ -441,17 +441,17 @@
         }
 
         function handleOrdering(el, upwards) {
-                var form = $cms.dom.$('#edit_form');
+            var form = $cms.dom.$('#edit_form');
 
-                // Find the num
-                var index = el.id.substring(el.id.indexOf('_') + 1, el.id.length);
-                var num = window.parseInt(form.elements['order_' + index].value) || 0;
+            // Find the num
+            var index = el.id.substring(el.id.indexOf('_') + 1, el.id.length);
+            var num = window.parseInt(form.elements['order_' + index].value) || 0;
 
-                // Find the parent
-                var parentNum = $cms.dom.$('#parent_' + index).value;
+            // Find the parent
+            var parentNum = $cms.dom.$('#parent_' + index).value;
 
-                var i, b, bindex;
-                var best = -1, bestindex = -1;
+            var i, b, bindex;
+            var best = -1, bestindex = -1;
 
             if (upwards) { // Up
                 // Find previous branch with same parent (if exists)

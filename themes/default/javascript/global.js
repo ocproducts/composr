@@ -6931,7 +6931,7 @@
                         'name': 'overlay_iframe',
                         'id': 'overlay_iframe',
                         'allowTransparency': 'true',
-                        //'seamless': 'seamless',	Not supported, and therefore testable yet. Would be great for mobile browsing.
+                        //'seamless': 'seamless',   Not supported, and therefore testable yet. Would be great for mobile browsing.
                         'css': {
                             'width': iframeWidth,
                             'height': iframeHeight,
@@ -6975,7 +6975,7 @@
                             }
 
                             // Allow scrolling, if we want it
-                            //iframe.scrolling=(_this.scrollbars===false)?'no':'auto';	Actually, not wanting this now
+                            //iframe.scrolling=(_this.scrollbars===false)?'no':'auto';  Actually, not wanting this now
 
                             if (typeof iframe.contentWindow.$cms != 'undefined') {
                                 // Remove fixed width
@@ -7427,7 +7427,7 @@
                 try {
                     if ((ajaxInstance.status === 0) || (ajaxInstance.status > 10000)) { // implies site down, or network down
                         if (!networkDownAlerted && !window.unloaded) {
-                            //$cms.ui.alert('{!NETWORK_DOWN;^}');	Annoying because it happens when unsleeping a laptop (for example)
+                            //$cms.ui.alert('{!NETWORK_DOWN;^}');   Annoying because it happens when unsleeping a laptop (for example)
                             networkDownAlerted = true;
                         }
                     } else {
@@ -7824,8 +7824,8 @@
             (function (i, s, o, g, r, a, m) {
                 i['GoogleAnalyticsObject'] = r;
                 i[r] = i[r] || function () {
-                        (i[r].q = i[r].q || []).push(arguments)
-                    };
+                    (i[r].q = i[r].q || []).push(arguments)
+                };
                 i[r].l = 1 * new Date();
                 a = s.createElement(o);
                 m = s.getElementsByTagName(o)[0];

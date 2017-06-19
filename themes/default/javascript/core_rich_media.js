@@ -205,16 +205,16 @@
                 var width = params.width ? 'style="width: ' + Number(params.width) + 'px"' : '',
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
                     mediaSetHtml = '\
-					<figure class="attachment" ' + width + '>\
-						<figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', imgs.length) + '<\/figcaption>\
-						<div>\
-							<div class="attachment_details">\
-								<a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
+                    <figure class="attachment" ' + width + '>\
+                        <figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', imgs.length) + '<\/figcaption>\
+                        <div>\
+                            <div class="attachment_details">\
+                                <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
                                     <img ' + imgWidthHeight + ' src="' + $cms.filter.html(imgsThumbs[0]) + '" />\
                                 <\/a>\
-							<\/div>\
-						<\/div>\
-					<\/figure>';
+                            <\/div>\
+                        <\/div>\
+                    <\/figure>';
 
                 $cms.dom.html(mediaSet, mediaSetHtml);
                 $cms.dom.on(mediaSet.querySelector('.js-click-open-images-into-lightbox'), 'click', function () {
@@ -709,8 +709,8 @@
     };
 
     $cms.templates.mediaYoutube = function (params, element) {
-        // Tie into callback event to see when finished, for our slideshows}
-        // API: https://developers.google.com/youtube/iframe_api_reference}
+        // Tie into callback event to see when finished, for our slideshows
+        // API: https://developers.google.com/youtube/iframe_api_reference
         var youtubeCallback = function () {
             var slideshowMode = document.getElementById('next_slide');
             var player = new YT.Player(element.id, {
@@ -783,7 +783,7 @@
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
         // API: http://msdn.microsoft.com/en-us/library/windows/desktop/dd563945(v=vs.85).aspx
-    window.$cmsLoad.push(function () {
+        window.$cmsLoad.push(function () {
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
 
@@ -808,24 +808,24 @@
                     try {
                         player.controls.play();
                     } catch (e) {
-                    }
+                }
                 }, 1000);
             }
         });
     };
 
     $cms.templates.mediaVimeo = function (params) {
-            // Tie into callback event to see when finished, for our slideshows}
-            if (document.getElementById('next_slide')) {
-                stopSlideshowTimer();
-                window.setTimeout(function () {
-                    window.addEventListener('message', playerStopped, false);
+        // Tie into callback event to see when finished, for our slideshows
+        if (document.getElementById('next_slide')) {
+            stopSlideshowTimer();
+            window.setTimeout(function () {
+                window.addEventListener('message', playerStopped, false);
 
-                    var player = document.getElementById(params.playerId);
-                    player.contentWindow.postMessage(JSON.stringify({method: 'addEventListener', value: 'finish'}), 'https://player.vimeo.com/video/' + params.remoteId);
-                }, 1000);
-            }
-        };
+                var player = document.getElementById(params.playerId);
+                player.contentWindow.postMessage(JSON.stringify({method: 'addEventListener', value: 'finish'}), 'https://player.vimeo.com/video/' + params.remoteId);
+            }, 1000);
+        }
+    };
 
     // API: http://www.longtailvideo.com/support/jw-player/jw-player-for-flash-v5/12540/javascript-api-reference
     // Carefully tuned to avoid this problem: http://www.longtailvideo.com/support/forums/jw-player/setup-issues-and-embedding/8439/sound-but-no-video
