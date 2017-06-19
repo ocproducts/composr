@@ -1188,7 +1188,7 @@ class DatabaseConnector
      */
     public function query_select_value($table, $selected_value, $where_map = array(), $end = '', $fail_ok = false, $lang_fields = null)
     {
-        $values = $this->query_select($table, array($selected_value), $where_map, $end, 1, null, $fail_ok, $lang_fields);
+        $values = $this->query_select($table, array($selected_value), $where_map, $end, 1, 0, $fail_ok, $lang_fields);
         if ($values === null) {
             return null; // error
         }
@@ -1227,7 +1227,7 @@ class DatabaseConnector
      */
     public function query_select_value_if_there($table, $select, $where_map = array(), $end = '', $fail_ok = false, $lang_fields = null)
     {
-        $values = $this->query_select($table, array($select), $where_map, $end, 1, null, $fail_ok, $lang_fields);
+        $values = $this->query_select($table, array($select), $where_map, $end, 1, 0, $fail_ok, $lang_fields);
         if ($values === null) {
             return null; // error
         }
@@ -1265,7 +1265,7 @@ class DatabaseConnector
             }
         }
 
-        $values = $this->query($query, 1, null, $fail_ok, $skip_safety_check, $lang_fields);
+        $values = $this->query($query, 1, 0, $fail_ok, $skip_safety_check, $lang_fields);
         if ($values === null) {
             return null; // error
         }

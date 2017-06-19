@@ -831,7 +831,7 @@ function demonstratr_delete_site($server, $codename, $bulk = false)
     //$master_conn->query('DROP USER \'demonstratr_site_' . $codename . '\'');
 
     $GLOBALS['SITE_DB']->query_delete('sites_deletion_codes', array('s_codename' => $codename), '', 1);
-    $GLOBALS['SITE_DB']->query_update('sites_email', array('s_codename' => $codename . '__expired_' . strval(mt_rand(0, 100))), array('s_codename' => $codename), '', 1, null, false, true);
+    $GLOBALS['SITE_DB']->query_update('sites_email', array('s_codename' => $codename . '__expired_' . strval(mt_rand(0, 100))), array('s_codename' => $codename), '', 1, 0, false, true);
 
     // Directory entry
     $GLOBALS['SITE_DB']->query_delete('sites', array('s_codename' => $codename), '', 1);

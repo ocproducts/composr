@@ -486,6 +486,10 @@ function get_directory_contents($path, $rel_path = '', $bitmask = IGNORE_ACCESS_
         return array();
     }
     while (($file = readdir($d)) !== false) {
+        if ($file == '_meta_tree') { // Very special case, directory can get huge
+            continue;
+        }
+
         if ($bitmask != 0) {
             if (should_ignore_file($rel_path . (($rel_path == '') ? '' : '/') . $file, $bitmask)) {
                 continue;

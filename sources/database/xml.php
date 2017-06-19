@@ -1243,7 +1243,7 @@ class Database_Static_xml extends DatabaseDriver
             }
         }
 
-        $test_results = $this->query('SELECT * FROM ' . $table_name . ' WHERE ' . $where, $db, 2, null, $fail_ok, false, true);
+        $test_results = $this->query('SELECT * FROM ' . $table_name . ' WHERE ' . $where, $db, 2, 0, $fail_ok, false, true);
         if (count($test_results) == 0) {
             return false;
         }

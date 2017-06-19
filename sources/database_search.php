@@ -1254,7 +1254,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             $t_count += $t_main_search_rows_count;
 
             cms_profile_start_for('SEARCH:t_main_search_rows');
-            $t_main_search_rows = $db->query($query, $max + $start, null, false, true);
+            $t_main_search_rows = $db->query($query, $max + $start, 0, false, true);
             cms_profile_end_for('SEARCH:t_main_search_rows', $query);
             if ($t_main_search_rows === null) {
                 warn_exit(do_lang_tempcode('SEARCH_QUERY_TOO_SLOW'), false, true);
@@ -1411,7 +1411,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
             $t_count += $t_main_search_rows_count;
 
             cms_profile_start_for('SEARCH:t_main_search_rows');
-            $t_main_search_rows = $db->query($query, $max + $start, null, false, true, $fields);
+            $t_main_search_rows = $db->query($query, $max + $start, 0, false, true, $fields);
             cms_profile_end_for('SEARCH:t_main_search_rows', $query);
             if ($t_main_search_rows === null) {
                 $t_main_search_rows = array(); // In case of a failed search query

@@ -1018,7 +1018,7 @@ class Hook_import_ipb2
         $select = array('pid', 'post_date');
         $rows = array();
         do {
-            $rows = $db->query('posts', $select, null, 'ORDER BY pid', 200, $row_start);
+            $rows = $db->query('posts', $select, array(), 'ORDER BY pid', 200, $row_start);
             foreach ($rows as $row) {
                 if (import_check_if_imported('post_files', strval($row['pid']))) {
                     continue;

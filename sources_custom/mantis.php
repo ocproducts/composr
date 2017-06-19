@@ -34,7 +34,7 @@ function create_tracker_issue($version, $tracker_title, $tracker_message, $track
             '',
             '" . db_escape_string($tracker_additional) . "'
         )
-    ", null, null, false, true, null, '', false);
+    ", null, 0, false, true, null, '', false);
 
     if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT version FROM mantis_project_version_table WHERE ' . db_string_equal_to('version', $version)) === null) {
         $GLOBALS['SITE_DB']->_query("
@@ -57,7 +57,7 @@ function create_tracker_issue($version, $tracker_title, $tracker_message, $track
                     0,
                     " . strval(time()) . "
             )
-        ", null, null, true);
+        ", null, 0, true);
     }
 
     return $GLOBALS['SITE_DB']->_query("
@@ -124,7 +124,7 @@ function create_tracker_issue($version, $tracker_title, $tracker_message, $track
             '1',
             '" . strval(time()) . "'
         )
-    ", null, null, false, true, null, '', false);
+    ", null, 0, false, true, null, '', false);
 }
 
 function upload_to_tracker_issue($tracker_id, $upload)
@@ -177,7 +177,7 @@ function create_tracker_post($tracker_id, $tracker_comment_message)
         (
             '" . db_escape_string($tracker_comment_message) . "'
         )
-    ", null, null, false, true, null, '', false);
+    ", null, 0, false, true, null, '', false);
 
     $monitors = $GLOBALS['SITE_DB']->query_select('mantis_bug_monitor_table', array('user_id'), array('bug_id' => $tracker_id));
     foreach ($monitors as $m) {
@@ -218,7 +218,7 @@ function create_tracker_post($tracker_id, $tracker_comment_message)
             '" . strval(time()) . "',
             '" . strval(time()) . "'
         )
-    ", null, null, false, true, null, '', false);
+    ", null, 0, false, true, null, '', false);
 }
 
 function close_tracker_issue($tracker_id)

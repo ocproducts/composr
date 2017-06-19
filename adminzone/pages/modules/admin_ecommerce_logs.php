@@ -244,7 +244,7 @@ class Module_admin_ecommerce_logs
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
 
-        $where = null;
+        $where = array();
         $type_code = get_param_string('type_code', null);
         $id = get_param_string('id', null);
         if ($type_code !== null) {
@@ -713,7 +713,7 @@ class Module_admin_ecommerce_logs
 
         $where = array('s_payment_gateway' => 'manual');
         if (get_param_integer('all', 0) == 1) {
-            $where = null;
+            $where = array();
         }
 
         $subscriptions = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), $where, 'ORDER BY s_type_code,s_time', 10000/*reasonable limit*/);

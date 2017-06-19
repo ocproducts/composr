@@ -524,7 +524,7 @@ class Meta_tree_builder
     private function put_in_screens($path, $theme, $filter_level_b = null)
     {
         if ($filter_level_b === null) {
-            $where = null;
+            $where = array();
         } else {
             $where = array('page_link' => $filter_level_b);
         }

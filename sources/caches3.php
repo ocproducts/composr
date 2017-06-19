@@ -137,7 +137,7 @@ function erase_block_cache($erase_cache_signatures_too = false, $theme = null)
         $GLOBALS['SITE_DB']->query_delete('cache_on', array(), '', null, 0, true);
     }
 
-    $where_map = mixed();
+    $where_map = array();
     if ($theme !== null) {
         $where_map = array('the_theme' => $theme);
     }

@@ -41,7 +41,7 @@
         });
 
         $cms.dom.on(container, 'click', '.js-click-btn-cart-empty', function (e, btn) {
-            if (confirmEmpty('{!EMPTY_CONFIRM;}', emptyCaryUrl, btn.form) === false) {
+            if (confirmEmpty('{!shopping:EMPTY_CONFIRM;}', emptyCaryUrl, btn.form) === false) {
                 e.preventDefault();
             }
         });

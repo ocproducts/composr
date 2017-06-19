@@ -20,7 +20,7 @@ $block_id = get_block_id($map);
 $max = array_key_exists('max', $map) ? intval($map['max']) : 10;
 
 $sql = 'SELECT * FROM ' . get_table_prefix() . 'gifts g WHERE gift_from<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' ORDER BY g.id DESC';
-$gifts = $GLOBALS['SITE_DB']->query($sql, $max, null, false, false, array('reason' => 'SHORT_TRANS__COMCODE'));
+$gifts = $GLOBALS['SITE_DB']->query($sql, $max, 0, false, false, array('reason' => 'SHORT_TRANS__COMCODE'));
 
 $_gifts = array();
 

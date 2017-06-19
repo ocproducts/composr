@@ -246,6 +246,10 @@ public class MainDialog extends JFrame {
                 continue;
             }
 
+            if (thefiles[i].equals("_meta_tree")) { // Very special case, directory can get huge
+                continue;
+            }
+
             tmpFile = new File(path + File.separator + thefiles[i]);
 
             last_m = tmpFile.lastModified() / 1000 + 60 * 60 * 24;

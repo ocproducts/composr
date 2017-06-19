@@ -218,7 +218,7 @@ function attachments_script()
         if (get_param_integer('no_count', 0) == 0) {
             // Update download count
             if (cms_srv('HTTP_RANGE') == '') {
-                $db->query_update('attachments', array('a_num_downloads' => $myrow['a_num_downloads'] + 1, 'a_last_downloaded_time' => time()), array('id' => $id), '', 1, null, false, true);
+                $db->query_update('attachments', array('a_num_downloads' => $myrow['a_num_downloads'] + 1, 'a_last_downloaded_time' => time()), array('id' => $id), '', 1, 0, false, true);
             }
         }
     }

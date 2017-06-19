@@ -96,7 +96,7 @@ class Hook_sitemap_catalogue extends Hook_sitemap_content
 
         $page = $this->_make_zone_concrete($zone, $page_link);
 
-        $map = null;
+        $map = array();
         if (get_forum_type() != 'cns' || !addon_installed('shopping')) {
             $map = array('c_ecommerce' => 0);
         }

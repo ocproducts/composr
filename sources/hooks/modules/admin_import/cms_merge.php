@@ -1086,7 +1086,7 @@ class Hook_import_cms_merge
                 $row['edit_date']);
 
             // Who has voted in the poll?
-            $votes = $db->query_select('poll_votes', array('*'), array('v_poll_id' => $row['id']), null, 0, true);
+            $votes = $db->query_select('poll_votes', array('*'), array('v_poll_id' => $row['id']), '', null, 0, true);
             if ($votes === null) { // Old Composr-style
                 $voters = explode('-', $row['ip']);
                 $votes = array();

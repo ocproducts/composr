@@ -753,7 +753,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
         $query .= ')';
 
-        $_result = $this->db->query($query, 1, null, false, true);
+        $_result = $this->db->query($query, 1, 0, false, true);
         if (array_key_exists(0, $_result)) {
             $TOPIC_IDENTIFIERS_TO_IDS_CACHE[$key] = $_result[0]['id'];
             global $TOPIC_IS_THREADED_CACHE;
@@ -1712,7 +1712,7 @@ class Forum_driver_cns extends Forum_driver_base
                 if (get_page_name() != 'lost_password') {
                     if (get_db_type() != 'xml') {
                         if (!$GLOBALS['SITE_DB']->table_is_locked('f_members')) {
-                            $this->db->query_update('f_members', $change_map, array('id' => $id), '', 1, null, false, true);
+                            $this->db->query_update('f_members', $change_map, array('id' => $id), '', 1, 0, false, true);
                         }
                     }
                 }

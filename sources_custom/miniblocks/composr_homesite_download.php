@@ -36,7 +36,7 @@ if (!function_exists('do_release')) {
         } else {
             $sql = 'SELECT d.num_downloads,d.name,d.file_size,d.id AS d_id FROM ' . get_table_prefix() . 'download_downloads d' . $GLOBALS['FORUM_DB']->prefer_index('download_downloads', 'downloadauthor');
             $sql .= ' WHERE ' . db_string_equal_to('author', 'ocProducts') . ' AND validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('%' . $name_suffix) . '\' ORDER BY add_date DESC';
-            $rows = $GLOBALS['SITE_DB']->query($sql, 1, null, false, false, array('name' => 'SHORT_TRANS'));
+            $rows = $GLOBALS['SITE_DB']->query($sql, 1, 0, false, false, array('name' => 'SHORT_TRANS'));
             if (!array_key_exists(0, $rows)) {
                 return null; // Shouldn't happen, but let's avoid transitional errors
             }

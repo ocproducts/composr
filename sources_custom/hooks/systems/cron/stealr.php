@@ -87,7 +87,7 @@ class Hook_cron_stealr
                     $sql .= ' AND m_validated=1';
                 }
                 $sql .= ' ORDER BY ' . db_function('RAND');
-                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, null, true);
+                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, 0, true);
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
@@ -146,7 +146,7 @@ class Hook_cron_stealr
                     $sql .= ' AND m_validated=1';
                 }
                 $sql .= ' ORDER BY ' . db_function('RAND');
-                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, null, true);
+                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, 0, true);
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
@@ -174,7 +174,7 @@ class Hook_cron_stealr
                 $sql .= ' AND m_validated=1';
             }
             $sql .= ' ORDER BY ' . db_function('RAND');
-            $random_members = $GLOBALS['FORUM_DB']->query($sql, $stealr_number, null, true);
+            $random_members = $GLOBALS['FORUM_DB']->query($sql, $stealr_number, 0, true);
 
             $stealr_number = (count($random_members) > $stealr_number) ? $stealr_number : count($random_members);
 
@@ -191,7 +191,7 @@ class Hook_cron_stealr
                     $sql .= ' AND m_validated=1';
                 }
                 $sql .= ' ORDER BY ' . db_function('RAND');
-                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, null, true);
+                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, 0, true);
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 
@@ -248,7 +248,7 @@ class Hook_cron_stealr
                     $sql .= ' AND m_validated=1';
                 }
                 $sql .= ' ORDER BY ' . db_function('RAND');
-                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, null, true);
+                $give_to_member = $GLOBALS['FORUM_DB']->query($sql, 1, 0, true);
 
                 $give_to_member = (isset($give_to_member[0]['id']) && $give_to_member[0]['id'] > 0) ? $give_to_member[0]['id'] : 0;
 

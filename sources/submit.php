@@ -94,7 +94,7 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
         if ($non_integer_id) {
             $where = db_string_equal_to($good['db_identifier'], $id);
         }
-        $rows = $db->query('SELECT ' . $good['db_identifier'] . (array_key_exists('db_title', $good) ? (',' . $good['db_title']) : '') . ' FROM ' . $db->get_table_prefix() . $good['db_table'] . ' WHERE ' . $where, 100, null, false, true);
+        $rows = $db->query('SELECT ' . $good['db_identifier'] . (array_key_exists('db_title', $good) ? (',' . $good['db_title']) : '') . ' FROM ' . $db->get_table_prefix() . $good['db_table'] . ' WHERE ' . $where, 100, 0, false, true);
 
         if (array_key_exists('db_title', $good)) {
             $title = $rows[0][$good['db_title']];

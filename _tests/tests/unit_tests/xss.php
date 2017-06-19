@@ -18,6 +18,11 @@
  */
 class xss_test_set extends cms_test_case
 {
+    public function testNoBackdoor()
+    {
+        $this->assertTrue(empty($GLOBALS['SITE_INFO']['backdoor_ip']), 'Backdoor to IP address present, may break other tests');
+    }
+
     public function testComcodeHTMLFilter()
     {
         // This won't check everything, but will make sure we don't accidentally regress our overall checking

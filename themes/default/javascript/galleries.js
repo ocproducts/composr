@@ -153,7 +153,7 @@
             resetSlideshowCountdown();
         },
         stopTimer: function () {
-            stopSlideshowTimer('{!STOPPED^;}');
+            stopSlideshowTimer('{!galleries:STOPPED^;}');
         },
         slideshowBackward: function () {
             slideshowBackward();

@@ -93,7 +93,7 @@ class theme_images_test_set extends cms_test_case
                 'news_categories' => 'nc_img',
             );
             foreach ($db_reference_sources as $table => $field) {
-                if (substr($table, 0, 2) =='f_') {
+                if (substr($table, 0, 2) == 'f_') {
                     $db = $GLOBALS['FORUM_DB'];
                 } else {
                     $db = $GLOBALS['SITE_DB'];
