@@ -1,7 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    $cms.functions.module_AdminCnsCustomprofilefields_createSelectionListChooseTable = function (formId) {
+    $cms.functions.moduleAdminCnsCustomProfileFields_createSelectionListChooseTable = function (formId) {
         formId = strVal(formId);
 
         var selectElements = document.getElementById(formId).getElementsByTagName('select');

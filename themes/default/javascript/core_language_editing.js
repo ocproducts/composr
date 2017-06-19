@@ -3,7 +3,7 @@
 
     $cms.templates.translateScreen = function (params, container) {
         $cms.dom.on(container, 'submit', '.js-form-submit-modsecurity-workaround', function (e, form) {
-            $cms.form.modsecurityWorkaround(form)
+            $cms.form.modSecurityWorkaround(form)
         });
     };
 

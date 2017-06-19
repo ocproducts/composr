@@ -33,7 +33,7 @@ class Module_cms_downloads extends Standard_crud_module
     public $user_facing = true;
     public $seo_type = 'downloads_download';
     public $upload = 'file';
-    public $functions = 'module_CmsDownloads';
+    public $functions = 'moduleCmsDownloads';
     public $content_type = 'download';
     public $menu_label = 'SECTION_DOWNLOADS';
     public $table = 'download_downloads';

@@ -22,13 +22,13 @@
 
         submit: function (e, form) {
             e.preventDefault();
-            $cms.form.modsecurityWorkaround(form);
+            $cms.form.modSecurityWorkaround(form);
         }
     });
 
     $cms.templates.configCategoryScreen = function configCategoryScreen(params, container) {
         $cms.dom.on(container, 'submit', '.js-form-primary-page', function (e, form) {
-            $cms.form.modsecurityWorkaround(form);
+            $cms.form.modSecurityWorkaround(form);
         });
     };
 }(window.$cms));

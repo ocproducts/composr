@@ -6408,7 +6408,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_csp_allowed_iframe_ancestors
         CONFIG_OPTION_csp_enabled
         CONFIG_OPTION_csp_exceptions
-        CONFIG_OPTION_csp_log_violations
         CONFIG_OPTION_csp_require_nonce
         CONFIG_OPTION_csp_whitelisted_plugins
         CONFIG_OPTION_csp_whitelisted_urls
@@ -6485,7 +6484,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CSP_ENABLED
         CSP_EVENT_HANDLER
         CSP_EXCEPTIONS
-        CSP_LOG_VIOLATIONS
         CSP_REQUIRE_NONCE
         CSP_SCRIPT_TAG
         CSP_WHITELISTED_PLUGINS

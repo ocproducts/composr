@@ -161,7 +161,7 @@ function toggleWysiwyg(name) {
                             url += '&forum_db=1';
                         }
                         var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
-                        post = $cms.form.modsecurityWorkaroundAjax(post);
+                        post = $cms.form.modSecurityWorkaroundAjax(post);
                         /*FIXME: Synchronous XHR*/
                         var request = $cms.doAjaxRequest(url, null, post);
                         if (!request.responseXML || (!request.responseXML.documentElement.querySelector('result'))) {

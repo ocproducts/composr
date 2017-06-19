@@ -266,7 +266,7 @@
         });
     };
 
-    $cms.templates.chatSitewideImPopup = function (params) {
+    $cms.templates.chatSiteWideImPopup = function (params) {
         window.detectIfChatWindowClosedChecker = window.setInterval(function () {
             if (detectIfChatWindowClosed !== undefined) {
                 detectIfChatWindowClosed();
@@ -361,7 +361,7 @@
         });
     };
 
-    $cms.templates.chatSitewideIm = function (params) {
+    $cms.templates.chatSiteWideIm = function (params) {
         if (!params.matched) {
             return;
         }

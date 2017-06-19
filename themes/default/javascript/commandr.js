@@ -117,7 +117,7 @@ window.previous_commands || (window.previous_commands = []);
         document.getElementById('commandr_command').disabled = true;
 
         var post = 'command=' + encodeURIComponent(command);
-        post = $cms.form.modsecurityWorkaroundAjax(post);
+        post = $cms.form.modSecurityWorkaroundAjax(post);
         $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandrCommandResponse, post);
 
         window.disable_timeout = window.setTimeout(function () {

@@ -216,7 +216,7 @@ function generateBackgroundPreview(post) {
             formPost += '&' + name + '=' + encodeURIComponent(value);
         }
     }
-    formPost = $cms.form.modsecurityWorkaroundAjax(formPost.substr(1));
+    formPost = $cms.form.modSecurityWorkaroundAjax(formPost.substr(1));
     /*FIXME: Synchronous XHR*/
     var previewRet = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', null, formPost);
     /*FIXME: eval() call*/
@@ -788,7 +788,7 @@ function initFormSaving(formId) {
 
                 // Save remotely
                 if (navigator.onLine) {
-                    post = $cms.form.modsecurityWorkaroundAjax(post);
+                    post = $cms.form.modSecurityWorkaroundAjax(post);
                     $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
                         if (document.body.style.cursor == 'wait') document.body.style.cursor = '';
 
@@ -996,7 +996,7 @@ function handleFormSaving(event, element, force) {
                 $cms.log('Doing AJAX auto-save');
             }
 
-            post = $cms.form.modsecurityWorkaroundAjax(post);
+            post = $cms.form.modSecurityWorkaroundAjax(post);
             $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
             }, post);
         }

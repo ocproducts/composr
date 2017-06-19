@@ -20,7 +20,7 @@
         },
 
         submit: function (e, form) {
-            $cms.form.modsecurityWorkaround(form);
+            $cms.form.modSecurityWorkaround(form);
             e.preventDefault();
         },
 
@@ -140,7 +140,7 @@
                 data += getTextbox(editElement);
                 var url = '{$FIND_SCRIPT_NOHTTP;,comcode_convert}?fix_bad_html=1&css=1&javascript=1&from_html=0&is_semihtml=' + ($cms.form.isWysiwygField(editElement) ? '1' : '0') + '&panel=' + (((id == 'panel_left') || (id == 'panel_right')) ? '1' : '0') + $cms.keepStub();
                 var post = ($cms.form.isWysiwygField(editElement) ? 'data__is_wysiwyg=1&' : '') + 'data=' + encodeURIComponent(data);
-                post = $cms.form.modsecurityWorkaroundAjax(post);
+                post = $cms.form.modSecurityWorkaroundAjax(post);
                 $cms.doAjaxRequest(url, reloadedPreview, post);
 
                 function reloadedPreview(ajaxResultFrame, ajaxResult) {
@@ -157,7 +157,7 @@
         },
 
         submitComcode: function (e, target) {
-            $cms.form.modsecurityWorkaround(target);
+            $cms.form.modSecurityWorkaround(target);
             e.preventDefault();
         },
 

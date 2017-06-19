@@ -8023,7 +8023,7 @@
                 'submit form[data-disable-buttons-on-submit]': 'disableFormButtons',
 
                 // mod_security workaround
-                'submit form[data-submit-modsecurity-workaround]': 'submitModsecurityWorkaround',
+                'submit form[data-submit-modsecurity-workaround]': 'submitmodSecurityWorkaround',
 
                 // Prevents input of matching characters
                 'input input[data-cms-invalid-pattern]': 'invalidPattern',
@@ -8276,9 +8276,9 @@
         },
 
         // Implementation for form[data-submit-modsecurity-workaround]
-        submitModsecurityWorkaround: function (e, form) {
+        submitmodSecurityWorkaround: function (e, form) {
             e.preventDefault();
-            $cms.form.modsecurityWorkaround(form);
+            $cms.form.modSecurityWorkaround(form);
         },
 
         // Implementation for input[data-cms-invalid-pattern]

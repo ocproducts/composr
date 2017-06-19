@@ -29,7 +29,7 @@
 
         workaround: function (e, target) {
             e.preventDefault();
-            $cms.form.modsecurityWorkaround(target);
+            $cms.form.modSecurityWorkaround(target);
         },
 
         toggleSubordinateFields: function (e, target) {
@@ -289,7 +289,6 @@
         }
     });
 
-
     $cms.templates.formScreenInputPassword = function (params, container) {
         var value = strVal(params.value),
             name = strVal(params.name);
@@ -366,7 +365,7 @@
 
         $cms.dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
             e.preventDefault();
-            $cms.form.modsecurityWorkaround(form);
+            $cms.form.modSecurityWorkaround(form);
         });
     };
 

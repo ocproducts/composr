@@ -1982,6 +1982,8 @@ function csp_send_header()
         }
     }
 
+    TODO: csp_allow_insecure_resources not used
+
     // The default policy for loading content such as JavaScript, Images, CSS, Font's, AJAX requests, Frames, HTML5 Media.
     $default_src = csp_extract_source_list(get_option('csp_whitelisted_urls'));
     $default_allow_insecure = true;
@@ -2047,6 +2049,8 @@ function csp_send_header()
     $style_allow_insecure = $default_allow_insecure;
     $style_allow_inline = $default_allow_inline;
     $style_require_nonce = false;
+
+    // TODO: Review all of https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy and https://scotthelme.co.uk/csp-cheat-sheet/
 
     if ($style_src === null) {
         $style_src = array();

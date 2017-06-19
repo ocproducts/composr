@@ -1,7 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    $cms.functions.adminThemewizardStep1 = function () {
+    $cms.functions.adminThemeWizardStep1 = function () {
         var form = document.getElementById('main_form'),
             submitBtn = document.getElementById('submit_button');
         form.elements['source_theme'].addEventListener('change', function () {

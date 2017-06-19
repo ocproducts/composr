@@ -1,13 +1,13 @@
 (function ($cms) {
     'use strict';
 
-    $cms.templates.setupwizard7 = function setupwizard7(params, container) {
+    $cms.templates.setupWizard7 = function setupWizard7(params, container) {
         $cms.dom.on('#rules', 'click', function () {
             $cms.dom.smoothScroll($cms.dom.findPosY('#rules_set'));
         });
     };
 
-    $cms.functions.adminSetupwizardStep5 = function () {
+    $cms.functions.adminSetupWizardStep5 = function () {
         var cuz = document.getElementById('collapse_user_zones');
         cuz.addEventListener('change', cuzFunc);
         cuzFunc();
@@ -21,7 +21,7 @@
         }
     };
 
-    $cms.functions.adminSetupwizardStep7 = function () {
+    $cms.functions.adminSetupWizardStep7 = function () {
         document.getElementById('rules').addEventListener('change', function () {
             var items = ['preview_box_balanced', 'preview_box_liberal', 'preview_box_corporate'];
             for (var i = 0; i < items.length; i++) {
@@ -30,7 +30,7 @@
         });
     };
 
-    $cms.functions.adminSetupwizardStep9 = function () {
+    $cms.functions.adminSetupWizardStep9 = function () {
         document.getElementById('site_closed').addEventListener('change', function () {
             document.getElementById('closed').disabled = !this.checked;
         });

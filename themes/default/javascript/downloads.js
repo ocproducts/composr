@@ -1,7 +1,7 @@
 (function ($cms) {
     'use strict';
 
-    $cms.functions.module_CmsDownloads = function module_CmsDownloads() {
+    $cms.functions.moduleCmsDownloads = function moduleCmsDownloads() {
         var url = document.getElementById('file__url'),
             form = document.getElementsByName('file_size')[0].form;
 

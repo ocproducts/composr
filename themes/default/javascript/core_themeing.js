@@ -252,7 +252,7 @@
                     var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keepStub());
                     $cms.doAjaxRequest(url, function (ajaxResultFrame) {
                         receiveCompiledCss(ajaxResultFrame, file);
-                    }, $cms.form.modsecurityWorkaroundAjax('css=' + encodeURIComponent(newCss)));
+                    }, $cms.form.modSecurityWorkaroundAjax('css=' + encodeURIComponent(newCss)));
 
                     lastCss = newCss;
                 }

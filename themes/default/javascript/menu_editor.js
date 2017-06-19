@@ -4,8 +4,6 @@
 // MENU FUNCTIONS
 // ==============
 
-
-
 function copyFieldsIntoBottom(i, changed) {
     window.current_selection = i;
     var form = $cms.dom.$id('edit_form');

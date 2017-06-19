@@ -334,7 +334,7 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-submit-modsecurity-workaround', function (e, form) {
-            $cms.form.modsecurityWorkaround(form);
+            $cms.form.modSecurityWorkaround(form);
         });
 
         $cms.dom.on(container, 'change', '.js-input-change-update-selection', function (e, input) {

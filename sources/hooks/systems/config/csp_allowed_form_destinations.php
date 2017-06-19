@@ -51,6 +51,6 @@ class Hook_config_csp_allowed_form_destinations
      */
     public function get_default()
     {
-        return 'none';
+        return '';
     }
 }

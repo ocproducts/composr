@@ -110,7 +110,6 @@ class Hook_addon_registry_core_configuration
             'sources/hooks/systems/config/csp_allowed_iframe_ancestors.php',
             'sources/hooks/systems/config/csp_enabled.php',
             'sources/hooks/systems/config/csp_exceptions.php',
-            'sources/hooks/systems/config/csp_log_violations.php',
             'sources/hooks/systems/config/csp_require_nonce.php',
             'sources/hooks/systems/config/csp_whitelisted_plugins.php',
             'sources/hooks/systems/config/csp_whitelisted_urls.php',
