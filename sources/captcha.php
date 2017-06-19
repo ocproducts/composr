@@ -183,7 +183,8 @@ function captcha_script()
         echo '</div>';
         if (get_option('js_captcha') === '1') {
             echo '</div>';
-            echo '<script>document.getElementById(\'hidden_captcha\').style.display=\'block\';</script>';
+            // TODO: Salman. CSP nonce needed?
+            echo '<script>document.getElementById(\'hidden_captcha\').style.display = \'block\';</script>';
         }
         echo '
         </body>

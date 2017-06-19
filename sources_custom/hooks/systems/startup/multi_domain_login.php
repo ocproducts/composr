@@ -35,6 +35,7 @@ class Hook_startup_multi_domain_login
                 }
             }
             if ($value != '') {
+                // TODO: Salman. CSP nonce needed
                 $value = "<!-- Syndicate sessions -->\n<script>" . $value . "</script>\n\n";
 
                 attach_to_screen_header($value);

@@ -61,6 +61,7 @@ td {
 }
 </style>
 
+<!-- TODO: Salman. CSP splitup needed -->
 <script>
 window.onscroll=function() {
     var ths=document.getElementsByTagName('div');

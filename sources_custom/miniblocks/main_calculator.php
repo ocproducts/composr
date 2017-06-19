@@ -50,3 +50,5 @@ echo '
     </p>
 </form>
 ';
+
+// TODO: Salman. CSP splitup needed

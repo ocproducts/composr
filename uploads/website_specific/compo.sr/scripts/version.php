@@ -50,6 +50,7 @@ require_code('version2');
 header('Content-type: text/plain; charset=' . get_charset());
 if (get_param_integer('html', 0) == 1) {
     header('Content-type: text/html');
+    // TODO: Salman. CSP nonce needed
     echo '<script src="' . get_base_url() . '/themes/default/templates_cached/EN/javascript.js"></script>';
 }
 

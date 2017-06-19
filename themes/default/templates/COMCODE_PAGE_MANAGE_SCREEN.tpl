@@ -11,6 +11,7 @@
 
 	<p>
 		<label for="filter">{!FILTER}:</label>
+		<!--TODO: Salman, new JS code here needing CSP splitup -->
 		<input type="text" id="filter" name="filter" value="{FILTER*}" onkeypress="if (enter_pressed(event)) { this.form.submit(); return false; }" />
 		<input class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
 	</p>
