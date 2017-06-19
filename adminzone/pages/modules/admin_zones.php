@@ -951,7 +951,7 @@ class Module_admin_zones
             } else {
                 $url = null; // Can't redirect back
             }
-            if (is_null($url)) {
+            if ($url === null) {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF');
                 $url = $_url->evaluate();
             }

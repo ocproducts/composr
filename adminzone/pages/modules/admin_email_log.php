@@ -265,7 +265,7 @@ class Module_admin_email_log
         if (is_string($to_email)) {
             $to_email = array($to_email);
         }
-        if ((is_null($to_email)) || (!array_key_exists(0, $to_email))) {
+        if (($to_email === null) || (!array_key_exists(0, $to_email))) {
             $to_email = array(get_option('staff_address'));
         }
         $to_emails = new Tempcode();
@@ -343,7 +343,7 @@ class Module_admin_email_log
         if (is_string($to_email)) {
             $to_email = array($to_email);
         }
-        if ((is_null($to_email)) || (!array_key_exists(0, $to_email))) {
+        if (($to_email === null) || (!array_key_exists(0, $to_email))) {
             $to_email = array(get_option('staff_address'));
         }
 

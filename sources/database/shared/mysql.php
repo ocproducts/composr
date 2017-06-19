@@ -412,7 +412,7 @@ class Database_super_mysql extends DatabaseDriver
     public function get_minimum_search_length($connection)
     {
         static $min_word_length = null;
-        if (is_null($min_word_length)) {
+        if ($min_word_length === null) {
             $min_word_length = 4;
             $_min_word_length = $this->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', $connection, null, null, true);
             if (isset($_min_word_length[0])) {

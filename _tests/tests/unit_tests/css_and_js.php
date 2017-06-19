@@ -180,7 +180,7 @@ class css_and_js_test_set extends cms_test_case
                     $errors = null; // Normalise
                 }
                 $this->assertTrue(($errors === null), 'Bad CSS in ' . $f);
-                if (!is_null($errors)) {
+                if ($errors !== null) {
                     if (get_param_integer('debug', 0) == 1) {
                         echo '<pre>';
                         var_dump($errors['errors']);

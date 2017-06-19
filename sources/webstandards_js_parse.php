@@ -773,7 +773,7 @@ function _webstandards_js_parse_expression_inner()
         case 'ADD': // When used like a cast
             parser_next();
             $_expression = _webstandards_js_parse_expression_inner();
-            if (is_null($_expression)) {
+            if ($_expression === null) {
                 return null;
             }
             $expression = $_expression;
@@ -996,7 +996,7 @@ function _webstandards_js_parse_identify_chain($variable)
         case 'IN':
             parser_next();
             $identifier = parser_expect('IDENTIFIER');
-            if (is_null($identifier)) {
+            if ($identifier === null) {
                 return null;
             }
             $expression = array('IN', $variable, $identifier, $GLOBALS['JS_PARSE_POSITION']);

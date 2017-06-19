@@ -1520,7 +1520,7 @@ class Hook_import_cms_merge
 
             $on_same_msn = ($this->on_same_msn($file_base));
             $submitter = $on_same_msn ? $row['submitter'] : import_id_remap_get('member', strval($row['submitter']), true);
-            if (is_null($submitter)) {
+            if ($submitter === null) {
                 $submitter = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 
@@ -2796,11 +2796,11 @@ class Hook_import_cms_merge
         $rows = $db->query('SELECT * FROM ' . $table_prefix . 'member_page_access');
         foreach ($rows as $row) {
             $member_id = import_id_remap_get('member', strval($row['member_id']), true);
-            if (is_null($member_id)) {
+            if ($member_id === null) {
                 continue;
             }
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('member_page_access', 'page_name', array('member_id' => $member_id, 'page_name' => $row['page_name']));
-            if (!is_null($test)) {
+            if ($test !== null) {
                 continue;
             }
             $zone_name = $row['zone_name'];
