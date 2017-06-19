@@ -20,7 +20,7 @@
 						<input size="15" type="password" placeholder="{!PASSWORD}" name="password" id="member_bar_s_password" />
 						{+START,IF,{$CONFIG_OPTION,password_cookies}}
 							<label for="remember">{!REMEMBER_ME}:</label>
-							<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}" {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" />
+							<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-confirm-remember-me{+END}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="remember" name="remember" />
 						{+END}
 						<input class="button_screen_item menu__site_meta__user_actions__login" type="submit" value="{!_LOGIN}" />
 

@@ -20,7 +20,7 @@
 		<li class="nlevel {$?,{CURRENT},current,non_current} has_img {$?,{$GET,HAS_CHILDREN},js-mousemove-pop-up-menu}" data-vw-rand="{$GET*,RAND}" data-click-forward="a">
 			{+START,IF_NON_EMPTY,{$GET,img}}<img alt="" src="{$GET*,img}" srcset="{$GET*,img_2x} 2x" />{+END}
 			{+START,IF_NON_EMPTY,{URL}}
-				<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END} {+START,IF,{$GET,HAS_CHILDREN}} class="drawer"{+END}>{CAPTION}</a>{+START,IF,{$GET,HAS_CHILDREN}}&nbsp;<span>&rarr;</span>{+END}
+				<a {+START,INCLUDE,MENU_LINK_PROPERTIES}{+END}{+START,IF,{$GET,HAS_CHILDREN}} class="drawer"{+END}>{CAPTION}</a>{+START,IF,{$GET,HAS_CHILDREN}}&nbsp;<span>&rarr;</span>{+END}
 			{+END}
 			{+START,IF_EMPTY,{URL}}
 				<a class="non_link{+START,IF,{$GET,HAS_CHILDREN}} drawer{+END}" href="#!">{CAPTION}</a>{+START,IF,{$GET,HAS_CHILDREN}}&nbsp;<span>&rarr;</span>{+END}

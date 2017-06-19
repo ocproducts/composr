@@ -45,7 +45,7 @@
 							URL={$PAGE_LINK,_SEARCH:report_content:content_type=wiki_post:content_id={ID}:redirect={$SELF_URL&}}
 							TITLE={!report_content:REPORT_THIS}
 							FULL_TITLE={!report_content:REPORT_THIS}
-							IMG=buttons/report
+							IMG=buttons__report
 							IMMEDIATE=0
 							REL=report
 						{+END}
@@ -56,7 +56,7 @@
 							<form class="webstandards_checker_off" title="{!MARKER}: {ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 								<div>
 									{+START,IF,{$NOT,{$IS_GUEST}}}<label for="mark_{ID*}">{!MARKER}<span class="accessibility_hidden"> #{ID*}</span>:</label>{+END}{$,Guests don't see this so search engines don't; hopefully people with screen-readers are logged in}
-									<input class="js-click-checkbox-set-cell-mark-class js-click-show-wiki-merge-button" {+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" />
+									<input class="js-click-checkbox-set-cell-mark-class js-click-show-wiki-merge-button"{+START,IF,{$NOT,{$IS_GUEST}}} title="{!MARKER} #{ID*}"{+END} value="1" type="checkbox" id="mark_{ID*}" name="mark_{ID*}" />
 								</div>
 							</form>
 						</div>

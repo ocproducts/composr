@@ -18,7 +18,7 @@
 					<div class="login_block_cookies">
 						<div class="float_surrounder">
 							<label for="ps_remember">{!REMEMBER_ME}</label>
-							<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} js-click-confirm-remember-me{+END}" {+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="ps_remember" name="remember" />
+							<input class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}} js-click-confirm-remember-me{+END}"{+START,IF,{$CONFIG_OPTION,remember_me_by_default}} checked="checked"{+END} type="checkbox" value="1" id="ps_remember" name="remember" />
 						</div>
 						{+START,IF,{$CONFIG_OPTION,is_on_invisibility}}
 							<div class="float_surrounder">

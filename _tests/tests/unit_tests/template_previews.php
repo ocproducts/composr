@@ -47,7 +47,6 @@ class template_previews_test_set extends cms_test_case
 
     public function testNoMissingPreviews()
     {
-        return;//TODO
         $templates = array();
         $dh = opendir(get_file_base() . '/themes/default/templates');
         while (($f = readdir($dh)) !== false) {
@@ -152,7 +151,16 @@ class template_previews_test_set extends cms_test_case
                 }
                 if ($list_2[1] == $function) {
                     // Ignore templates designed for indirect inclusion
-                    if ($template_2 == 'templates/GLOBAL_HELPER_PANEL.tpl' || $template_2 == 'templates/GLOBAL_HTML_WRAP_mobile.tpl' || $template_2 == 'templates/HTML_HEAD.tpl' || $template_2 == 'templates/MEMBER_TOOLTIP.tpl' || $template_2 == 'templates/FORM_STANDARD_END.tpl' || $template_2 == 'templates/MEMBER_BAR_SEARCH.tpl' || $template_2 == 'templates/MENU_LINK_PROPERTIES.tpl') {
+                    if (in_array($template_2, array(
+                        'templates/NEWSLETTER_PREVIEW.tpl',
+                        'templates/GLOBAL_HELPER_PANEL.tpl',
+                        'templates/GLOBAL_HTML_WRAP_mobile.tpl',
+                        'templates/HTML_HEAD.tpl',
+                        'templates/MEMBER_TOOLTIP.tpl',
+                        'templates/FORM_STANDARD_END.tpl',
+                        'templates/MEMBER_BAR_SEARCH.tpl',
+                        'templates/MENU_LINK_PROPERTIES.tpl',
+                    ))) {
                         continue;
                     }
 
@@ -192,7 +200,6 @@ class template_previews_test_set extends cms_test_case
 
     public function testRepeatConsistency()
     {
-        return;//TODO
         global $STATIC_TEMPLATE_TEST_MODE, $LOADED_TPL_CACHE, $BLOCKS_CACHE, $PANELS_CACHE;
         $STATIC_TEMPLATE_TEST_MODE = true;
 
@@ -223,11 +230,7 @@ class template_previews_test_set extends cms_test_case
             $BLOCKS_CACHE = array();
             $PANELS_CACHE = array();
             $out1 = render_screen_preview($template, $hook, $function);
-            $_out1 = $out1->evaluate();
-            $_out1 = preg_replace('#\s*<script[^<>]*>.*</script>\s*#Us', '', $_out1); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
-            $_out1 = preg_replace('#\s*<style[^<>]*>.*</style>\s*#Us', '', $_out1);
-            $_out1 = preg_replace('#\s*<link[^<>]*>\s*#', '', $_out1);
-            $_out1 = preg_replace('#\s#', '', $_out1);
+            $_out1 = $this->cleanupVaryingCode($out1->evaluate());
             restore_output_state();
 
             init__lorem();
@@ -236,11 +239,7 @@ class template_previews_test_set extends cms_test_case
             $BLOCKS_CACHE = array();
             $PANELS_CACHE = array();
             $out2 = render_screen_preview($template, $hook, $function);
-            $_out2 = $out2->evaluate();
-            $_out2 = preg_replace('#\s*<script[^<>]*>.*</script>\s*#Us', '', $_out2); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
-            $_out2 = preg_replace('#\s*<style[^<>]*>.*</style>\s*#Us', '', $_out2);
-            $_out2 = preg_replace('#\s*<link[^<>]*>\s*#', '', $_out2);
-            $_out2 = preg_replace('#\s#', '', $_out2);
+            $_out2 = $this->cleanupVaryingCode($out2->evaluate());
             restore_output_state();
 
             $different = ($_out1 != $_out2);
@@ -253,10 +252,7 @@ class template_previews_test_set extends cms_test_case
                 cms_file_put_contents_safe(get_file_base() . '/_tests/screens_tested/v1__' . '.tmp', $_out1, FILE_WRITE_FIX_PERMISSIONS);
                 cms_file_put_contents_safe(get_file_base() . '/_tests/screens_tested/v2__' . '.tmp', $_out2, FILE_WRITE_FIX_PERMISSIONS);
 
-                require_code('diff');
-                var_dump(diff_simple_2($_out1, $_out2));
-
-                exit('Error!');
+                exit('Error! Do a diff between v1__.tmp and v2__.tmp');
             }
 
             unset($out1);
@@ -267,9 +263,25 @@ class template_previews_test_set extends cms_test_case
         safe_ini_set('ocproducts.xss_detect', '0');
     }
 
+    protected function cleanupVaryingCode($_out)
+    {
+        $_out = preg_replace('#\s*<script[^<>]*>.*</script>\s*#Us', '', $_out); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
+        $_out = preg_replace('#\s*<style[^<>]*>.*</style>\s*#Us', '', $_out);
+        $_out = preg_replace('#\s*<link[^<>]*>\s*#', '', $_out);
+        $_out = preg_replace('#\s*<meta[^<>]*>\s*#', '', $_out);
+
+        // Maybe got into content, or somehow otherwise double encoded
+        $_out = preg_replace('#\s*&lt;script.*&gt;.*&lt;/script&gt;\s*#Us', '', $_out); // We need to replace CSS/JS as load order/merging is not guaranteed consistent
+        $_out = preg_replace('#\s*&lt;style.*&gt;.*&lt;/style&gt;\s*#Us', '', $_out);
+        $_out = preg_replace('#\s*&lt;link.*&gt;\s*#', '', $_out);
+
+        $_out = preg_replace('#\s#', '', $_out);
+
+        return $_out;
+    }
+
     public function testNoMissingParams()
     {
-        return;//TODO
         global $ATTACHED_MESSAGES, $ATTACHED_MESSAGES_RAW;
 
         $lists = find_all_previews__by_screen();
@@ -312,7 +324,6 @@ class template_previews_test_set extends cms_test_case
 
     public function testNoRedundantFunctions()
     {
-        return;//TODO
         $hooks = find_all_hooks('systems', 'addon_registry');
         foreach ($hooks as $hook => $place) {
             require_code('hooks/systems/addon_registry/' . $hook);
@@ -338,7 +349,6 @@ class template_previews_test_set extends cms_test_case
 
     public function testNoDoublePreviews()
     {
-        return;//TODO
         $all_used = array();
 
         $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');

@@ -9,7 +9,7 @@
 		<div class="comments_captcha">
 			<div class="box box___comments_posting_form__captcha"><div class="box_inner">
 				{+START,IF,{$CONFIG_OPTION,audio_captcha}}
-					<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a class="js-click-play-self-audio-link" title="{!AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}&amp;cache_break={$RAND}">{!AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+					<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a class="js-click-play-self-audio-link" title="{!captcha:AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}&amp;cache_break={$RAND}">{!captcha:AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
 				{+END}
 				{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha}}}
 					<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
@@ -38,7 +38,7 @@
 		<input type="hidden" name="comcode__post" value="1" />
 		<input type="hidden" name="stub" value="" />
 
-		<div class="box box___comments_posting_form" {+START,IF_PASSED,EXPAND_TYPE} data-view="ToggleableTray" {+END}>
+		<div class="box box___comments_posting_form"{+START,IF_PASSED,EXPAND_TYPE} data-view="ToggleableTray"{+END}>
 			{+START,IF_NON_EMPTY,{TITLE}}
 				<h3 class="toggleable_tray_title js-tray-header">
 					{+START,IF_NON_PASSED,EXPAND_TYPE}

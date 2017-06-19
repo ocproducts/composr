@@ -70,7 +70,7 @@
 	<div class="block_main_members block_main_members__{DISPLAY_MODE%}{+START,IF_NON_EMPTY,{ITEM_WIDTH}} has_item_width{+END} float_surrounder">
 		{+START,LOOP,MEMBER_BOXES}
 			{+START,IF,{$EQ,{DISPLAY_MODE},avatars,photos}}
-				<div data-mouseover-activate-tooltip="['{BOX;^*}','auto']" {+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}>
+				<div data-mouseover-activate-tooltip="['{BOX;^*}','auto']"{+START,IF_NON_EMPTY,{ITEM_WIDTH}} style="width: {ITEM_WIDTH*}"{+END}>
 					<p>
 						{+START,IF,{$EQ,{DISPLAY_MODE},avatars}}
 							{$SET,image,{$THUMBNAIL,{$?,{$IS_EMPTY,{$AVATAR,{MEMBER_ID}}},{$IMG,cns_default_avatars/default},{$AVATAR,{MEMBER_ID}}},80x80,,,{$IMG,cns_default_avatars/default},pad,both,FFFFFF00}}

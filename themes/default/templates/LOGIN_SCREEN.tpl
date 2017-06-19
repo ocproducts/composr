@@ -54,7 +54,7 @@
 						<div class="login_page_options">
 							<p>
 								<label for="remember">
-									<input id="remember" type="checkbox" value="1" name="remember" {+START,IF,{$OR,{$EQ,{$_POST,remember},1},{$CONFIG_OPTION,remember_me_by_default}}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" />
+									<input id="remember" type="checkbox" value="1" name="remember"{+START,IF,{$OR,{$EQ,{$_POST,remember},1},{$CONFIG_OPTION,remember_me_by_default}}} checked="checked"{+END} class="{+START,IF,{$NOT,{$CONFIG_OPTION,remember_me_by_default}}}js-click-checkbox-remember-me-confirm{+END}" />
 									<span class="field_name">{!REMEMBER_ME}</span>
 								</label>
 								<span class="associated_details">{!REMEMBER_ME_TEXT}</span>

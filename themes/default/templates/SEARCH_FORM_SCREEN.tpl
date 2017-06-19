@@ -34,7 +34,7 @@
 			</h2>
 		{+END}
 
-		<div id="search_form" class="toggleable_tray js-tray-content" {+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: none"{+END}{+END} aria-expanded="false">
+		<div id="search_form" class="toggleable_tray js-tray-content"{+START,IF_PASSED,RESULTS}{+START,IF_NON_EMPTY,{RESULTS}} style="display: none"{+END}{+END} aria-expanded="false">
 			<p>
 				{!SEARCH_HELP}
 			</p>
@@ -105,7 +105,7 @@
 								<div class="accessibility_hidden"><label for="search_author">{USER_LABEL*}</label></div>
 								<div class="constrain_field">
 									<span class="invisible_ref_point"></span>
-									<input autocomplete="off" maxlength="80" class="wide_field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author" {+START,IF,{$MOBILE}} autocorrect="off"{+END} />
+									<input autocomplete="off" maxlength="80" class="wide_field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 								</div>
 							</td>
 						</tr>
