@@ -204,18 +204,17 @@
             if (containsVideo) { // Remove this 'if' (so it always runs) if you do not want the grid-style layout (plus remove the media_set class from the outer div
                 var width = params.width ? 'style="width: ' + Number(params.width) + 'px"' : '',
                     imgWidthHeight = setImgWidthHeight ? ' width="' + Number(params.width) + '" height="' + Number(params.height) + '"' : '',
-                    mediaSetHtml = '\
-                    <figure class="attachment" ' + width + '>\
-                        <figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', imgs.length) + '<\/figcaption>\
-                        <div>\
-                            <div class="attachment_details">\
-                                <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!">\
-                                    <img ' + imgWidthHeight + ' src="' + $cms.filter.html(imgsThumbs[0]) + '" />\
-                                <\/a>\
-                            <\/div>\
-                        <\/div>\
-                    <\/figure>';
-
+                    mediaSetHtml = /** @lang HTML */' \
+                        <figure class="attachment" ' + width + '> \
+                            <figcaption>' + $cms.format('{!comcode:MEDIA_SET;^}', imgs.length) + '<\/figcaption> \
+                            <div> \
+                                <div class="attachment_details"> \
+                                    <a class="js-click-open-images-into-lightbox" target="_blank" title="' + $cms.filter.html($cms.format('{!comcode:MEDIA_SET^;}', imgs.length)) + ' {!LINK_NEW_WINDOW^/}" href="#!"> \
+                                        <img ' + imgWidthHeight + ' src="' + $cms.filter.html(imgsThumbs[0]) + '" /> \
+                                    <\/a> \
+                                <\/div> \
+                            <\/div> \
+                        <\/figure>';
                 $cms.dom.html(mediaSet, mediaSetHtml);
                 $cms.dom.on(mediaSet.querySelector('.js-click-open-images-into-lightbox'), 'click', function () {
                     openImageIntoLightbox(imgs);

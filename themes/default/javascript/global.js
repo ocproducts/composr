@@ -862,7 +862,6 @@
     }
 
     /**
-     *
      * @returns {boolean}
      */
     function returnTrue() {
@@ -870,7 +869,6 @@
     }
 
     /**
-     *
      * @returns {boolean}
      */
     function returnFalse() {
@@ -897,7 +895,6 @@
     }
 
     /**
-     *
      * @param val
      * @param withEnumerable (boolean)
      * @returns {boolean}
@@ -907,7 +904,6 @@
     }
 
     /**
-     *
      * @param val
      * @returns {boolean}
      */
@@ -921,7 +917,6 @@
     }
 
     /**
-     *
      * @param val
      * @returns {boolean}
      */
@@ -946,7 +941,6 @@
     }
 
     /**
-     *
      * @param val
      * @returns { boolean }
      */
@@ -955,7 +949,6 @@
     }
 
     /**
-     *
      * @param val
      * @returns {boolean}
      */
@@ -964,7 +957,6 @@
     }
 
     /**
-     *
      * @param obj
      * @param keys
      * @returns {boolean}
@@ -982,7 +974,6 @@
     }
 
     /**
-     *
      * @param prototype
      * @param data
      * @returns {prototype}
@@ -996,7 +987,6 @@
     }
 
     /**
-     *
      * @param data
      * @returns {prototype}
      */
@@ -1005,7 +995,6 @@
     }
 
     /**
-     *
      * @param key
      * @param value
      * @returns {{}}
@@ -1017,7 +1006,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1026,7 +1014,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1035,7 +1022,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean|*}
      */
@@ -1048,7 +1034,6 @@
         DOCUMENT_FRAGMENT_NODE = 11;
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1057,7 +1042,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1066,7 +1050,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1075,7 +1058,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1084,7 +1066,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1094,7 +1075,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1104,7 +1084,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1113,7 +1092,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {boolean}
      */
@@ -1134,7 +1112,6 @@
     }
 
     /**
-     *
      * @param obj
      * @param minLength
      * @returns {boolean}
@@ -1183,7 +1160,6 @@
     }
 
     /**
-     *
      * @param obj
      * @param callback
      * @returns {*}
@@ -1203,7 +1179,6 @@
     }
 
     /**
-     *
      * @param iterable
      * @param callback
      * @returns {*}
@@ -1384,7 +1359,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {*}
      */
@@ -1395,7 +1369,6 @@
     }
 
     /**
-     *
      * @param obj
      * @returns {*}
      */
@@ -1615,7 +1588,6 @@
     }
 
     /**
-     *
      * @param iterable
      * @returns { Array }
      */
@@ -1643,7 +1615,6 @@
         rgxHttpRel = /^(?:https?:)?(?=\/\/)/i;
 
     /**
-     *
      * @param relativeUrl
      * @returns {string}
      */
@@ -1686,7 +1657,6 @@
     }
 
     /**
-     *
      * @param absoluteUrl
      * @returns {string}
      */
@@ -1740,7 +1710,6 @@
     }
 
     /**
-     *
      * @param source
      * @returns {*}
      */
@@ -1880,7 +1849,6 @@
     }
 
     /**
-     *
      * @param scripts
      * @returns { Promise }
      */
@@ -1916,7 +1884,6 @@
     }
 
     /**
-     *
      * @param flag
      */
     function setPostDataFlag(flag) {
@@ -1943,7 +1910,6 @@
 
     // Inspired by goog.inherits and Babel's generated output for ES6 classes
     /**
-     *
      * @param SubClass
      * @param SuperClass
      * @param protoProps
@@ -2090,7 +2056,6 @@
     var alertedCookieConflict;
 
     /**
-     *
      * @param cookieName
      * @param cookieValue
      * @param numDays
@@ -2124,7 +2089,6 @@
     }
 
     /**
-     *
      * @param cookieName
      * @param defaultValue
      * @returns {string}
@@ -2197,7 +2161,6 @@
     }());
 
     /**
-     *
      * @param windowOrNodeOrSelector
      * @returns {*}
      */
@@ -2224,7 +2187,6 @@
     }
 
     /**
-     *
      * @param nodeOrSelector
      * @returns {*}
      */
@@ -2251,7 +2213,6 @@
     }
 
     /**
-     *
      * @param elementOrSelector
      * @returns {*}
      */
@@ -2278,7 +2239,6 @@
     }
 
     /**
-     *
      * @param el
      * @param property
      * @returns {*}
@@ -2846,8 +2806,8 @@
         : ('msMatchesSelector' in emptyEl) ? 'msMatchesSelector'
         : 'matches';
 
-    // Check if the given element matches selector
     /**
+     * Check if the given element matches selector
      * @memberof $cms.dom
      * @param el
      * @param selector
@@ -3218,7 +3178,6 @@
     };
 
     /**
-     *
      * @param str
      * @returns {string}
      */
@@ -3229,7 +3188,6 @@
     }
 
     /**
-     *
      * @param str
      * @returns {string}
      */
@@ -3244,7 +3202,6 @@
     var cssNumericProps = {'column-count': true, 'columns': true, 'font-weight': true, 'line-height': true, 'opacity': true, 'z-index': true, 'zoom': true};
 
     /**
-     *
      * @param name
      * @param value
      * @returns {*}
@@ -3538,7 +3495,7 @@
      * @param callback
      */
     $cms.dom.fadeToggle = function fadeToggle(el, duration, callback) {
-        // To be implemented
+        // TODO Salman. To be implemented
     };
 
     /**
@@ -3548,7 +3505,7 @@
      * @param callback
      */
     $cms.dom.slideDown = function slideDown(el, duration, callback) {
-        // To be implemented
+        // TODO Salman. To be implemented
     };
 
     /**
@@ -3558,7 +3515,7 @@
      * @param callback
      */
     $cms.dom.slideUp = function slideUp(el, duration, callback) {
-        // To be implemented
+        // TODO Salman. To be implemented
     };
 
     /**
@@ -3568,7 +3525,7 @@
      * @param callback
      */
     $cms.dom.slideToggle = function slideToggle(el, duration, callback) {
-        // To be implemented
+        // TODO Salman. To be implemented
     };
 
     /**
@@ -4711,7 +4668,6 @@
     }
 
     /**
-     *
      * @param context
      * @param settings
      */
@@ -4758,7 +4714,6 @@
     }
 
     /**
-     *
      * @param context
      * @param settings
      * @param trigger
@@ -5630,6 +5585,466 @@
             : '';
     };
 
+    /**
+     * Enforcing a session using AJAX
+     * @memberof $cms.ui
+     * @param callback
+     */
+    $cms.ui.confirmSession = function confirmSession(callback) {
+        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
+
+        $cms.doAjaxRequest(url, function (ret) {
+            if (!ret) {
+                return;
+            }
+
+            if (ret.responseText === '') { // Blank means success, no error - so we can call callback
+                callback(true);
+                return;
+            }
+
+            // But non blank tells us the username, and there is an implication that no session is confirmed for this login
+            if (ret.responseText === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
+                $cms.ui.prompt(
+                    '{!USERNAME;^}',
+                    '',
+                    function (promptt) {
+                        _confirmSession(callback, promptt, url);
+                    },
+                    '{!_LOGIN;^}'
+                );
+                return;
+            }
+
+            _confirmSession(callback, ret.responseText, url);
+        });
+
+        function _confirmSession(callback, username, url) {
+            $cms.ui.prompt(
+                $cms.$CONFIG_OPTION('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
+                '',
+                function (promptt) {
+                    if (promptt !== null) {
+                        $cms.doAjaxRequest(url, function (ret) {
+                            if (ret && ret.responseText === '') { // Blank means success, no error - so we can call callback
+                                callback(true);
+                            } else {
+                                _confirmSession(callback, username, url); // Recurse
+                            }
+                        }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
+                    } else {
+                        callback(false);
+                    }
+                },
+                '{!_LOGIN;^}',
+                'password'
+            );
+        }
+    };
+
+    /**
+     * @memberof $cms.ui
+     * @param id
+     * @param tab
+     * @param fromUrl
+     * @param automated
+     * @returns {boolean}
+     */
+    $cms.ui.selectTab = function selectTab(id, tab, fromUrl, automated) {
+        fromUrl = !!fromUrl;
+        automated = !!automated;
+
+        if (!fromUrl) {
+            var tabMarker = $cms.dom.$id('tab__' + tab.toLowerCase());
+            if (tabMarker) {
+                // For URL purposes, we will change URL to point to tab
+                // HOWEVER, we do not want to cause a scroll so we will be careful
+                tabMarker.id = '';
+                window.location.hash = '#tab__' + tab.toLowerCase();
+                tabMarker.id = 'tab__' + tab.toLowerCase();
+            }
+        }
+
+        var tabs = [], i, element;
+
+        element = $cms.dom.$id('t_' + tab);
+        for (i = 0; i < element.parentElement.children.length; i++) {
+            if (element.parentElement.children[i].id && (element.parentElement.children[i].id.substr(0, 2) === 't_')) {
+                tabs.push(element.parentElement.children[i].id.substr(2));
+            }
+        }
+
+        for (i = 0; i < tabs.length; i++) {
+            element = $cms.dom.$id(id + '_' + tabs[i]);
+            if (element) {
+                $cms.dom.toggle(element, (tabs[i] === tab));
+
+                if (tabs[i] === tab) {
+                    if (window['load_tab__' + tab] === undefined) {
+                        $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
+                        $cms.dom.fadeTransition(element, 100, 30, 8);
+                    }
+                }
+            }
+
+            element = $cms.dom.$id('t_' + tabs[i]);
+            if (element) {
+                element.classList.toggle('tab_active', tabs[i] === tab);
+            }
+        }
+
+        if (window['load_tab__' + tab] !== undefined) {
+            // Usually an AJAX loader
+            window['load_tab__' + tab](automated, $cms.dom.$id(id + '_' + tab));
+        }
+
+        return false;
+    };
+
+    /**
+     * Tooltips that can work on any element with rich HTML support
+     * @memberof $cms.ui
+     * @param el - the element
+     * @param event - the event handler
+     * @param tooltip - the text for the tooltip
+     * @param width - width is in pixels (but you need 'px' on the end), can be null or auto
+     * @param pic - the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
+     * @param height - the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
+     * @param bottom - set to true if the tooltip should definitely appear upwards; rarely use this parameter
+     * @param noDelay - set to true if the tooltip should appear instantly
+     * @param lightsOff - set to true if the image is to be dimmed
+     * @param forceWidth - set to true if you want width to not be a max width
+     * @param win - window to open in
+     * @param haveLinks - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
+     */
+    $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks) {
+        event || (event = {});
+        width || (width = 'auto');
+        pic || (pic = '');
+        height || (height = 'auto');
+        bottom = !!bottom;
+        noDelay = !!noDelay;
+        lightsOff = !!lightsOff;
+        forceWidth = !!forceWidth;
+        win || (win = window);
+        haveLinks = !!haveLinks;
+
+        if ((typeof el.deactivated_at != 'undefined') && (el.deactivated_at != null) && (Date.now() - el.deactivated_at < 200)) {
+            return;
+        }
+
+        if (!window.page_loaded || !tooltip) {
+            return;
+        }
+
+        if (window.is_doing_a_drag) {
+            // Don't want tooltips appearing when doing a drag and drop operation
+            return;
+        }
+
+        if (!el) {
+            return;
+        }
+
+        $cms.log('$cms.ui.activateTooltip');
+
+        if (!haveLinks && $cms.isTouchEnabled()) {
+            return; // Too erratic
+        }
+
+        $cms.ui.clearOutTooltips(el.tooltip_id);
+
+        // Add in move/leave events if needed
+        if (!haveLinks) {
+            $cms.dom.on(el, 'mouseout.cmsTooltip', function () {
+                $cms.ui.deactivateTooltip(el);
+            });
+
+            $cms.dom.on(el, 'mousemove.cmsTooltip', function () {
+                $cms.ui.repositionTooltip(el, event, false, false, null, false, win);
+            });
+        } else {
+            $cms.dom.on(el, 'click.cmsTooltip', function () {
+                $cms.ui.deactivateTooltip(el);
+            });
+        }
+
+        if (typeof tooltip === 'function') {
+            tooltip = tooltip();
+        }
+
+        tooltip = strVal(tooltip);
+
+        if (!tooltip) {
+            return;
+        }
+
+        el.is_over = true;
+        el.deactivated_at = null;
+        el.tooltip_on = false;
+        el.initial_width = width;
+        el.have_links = haveLinks;
+
+        var children = el.querySelectorAll('img');
+        for (var i = 0; i < children.length; i++) {
+            children[i].setAttribute('title', '');
+        }
+
+        var tooltipEl;
+        if ((el.tooltip_id != null) && ($cms.dom.$id(el.tooltip_id))) {
+            tooltipEl = $cms.dom.$('#' + el.tooltip_id);
+            tooltipEl.style.display = 'none';
+            $cms.dom.html(tooltipEl, '');
+            window.setTimeout(function () {
+                $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
+            }, 0);
+        } else {
+            tooltipEl = document.createElement('div');
+            tooltipEl.role = 'tooltip';
+            tooltipEl.style.display = 'none';
+            var rtPos = tooltip.indexOf('results_table');
+            tooltipEl.className = 'tooltip ' + ((rtPos == -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (haveLinks ? ' have_links' : '');
+            if (el.className.substr(0, 3) === 'tt_') {
+                tooltipEl.className += ' ' + el.className;
+            }
+            if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
+                tooltipEl.style.wordWrap = 'normal';
+            }
+
+            if (forceWidth) {
+                tooltipEl.style.width = width;
+            } else {
+                if (width === 'auto') {
+                    var newAutoWidth = $cms.dom.getWindowWidth(win) - 30 - window.mouse_x;
+                    if (newAutoWidth < 150) newAutoWidth = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
+                    tooltipEl.style.maxWidth = newAutoWidth + 'px';
+                } else {
+                    tooltipEl.style.maxWidth = width;
+                }
+                tooltipEl.style.width = 'auto'; // Needed for Opera, else it uses maxWidth for width too
+            }
+            if (height && (height !== 'auto')) {
+                tooltipEl.style.maxHeight = height;
+                tooltipEl.style.overflow = 'auto';
+            }
+            tooltipEl.style.position = 'absolute';
+            tooltipEl.id = 't_' + $cms.random();
+            el.tooltip_id = tooltipEl.id;
+            $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
+            document.body.appendChild(tooltipEl);
+        }
+        tooltipEl.ac = el;
+
+        if (pic) {
+            var img = win.document.createElement('img');
+            img.src = pic;
+            img.className = 'tooltip_img';
+            if (lightsOff) {
+                img.classList.add('faded_tooltip_img');
+            }
+            tooltipEl.appendChild(img);
+            tooltipEl.classList.add('tooltip_with_img');
+        }
+
+        var eventCopy = { // Needs to be copied as it will get erased on IE after this function ends
+            'pageX': +event.pageX || 0,
+            'pageY': +event.pageY || 0,
+            'clientX': +event.clientX || 0,
+            'clientY': +event.clientY || 0,
+            'type': event.type || ''
+        };
+
+        // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
+        var bi = $cms.dom.$('#main_website_inner') || document.body;
+        if ((window.TouchEvent !== undefined) && !bi.onmouseover) {
+            bi.onmouseover = function () {
+                return true;
+            };
+        }
+
+        window.setTimeout(function () {
+            if (!el.is_over) {
+                return;
+            }
+
+            if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) { // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
+                $cms.dom.append(tooltipEl, tooltip);
+            }
+
+            el.tooltip_on = true;
+            tooltipEl.style.display = 'block';
+            if ((tooltipEl.style.width == 'auto') && ((tooltipEl.childNodes.length != 1) || (tooltipEl.childNodes[0].nodeName.toLowerCase() != 'img'))) {
+                tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
+            }
+
+            if (!noDelay) {
+                // If delayed we will sub in what the currently known global mouse coordinate is
+                eventCopy.pageX = win.mouse_x;
+                eventCopy.pageY = win.mouse_y;
+            }
+
+            $cms.ui.repositionTooltip(el, eventCopy, bottom, true, tooltipEl, forceWidth, win);
+        }, noDelay ? 0 : 666);
+    };
+
+    /**
+     * @param el
+     * @param event
+     * @param bottom
+     * @param starting
+     * @param tooltipElement
+     * @param forceWidth
+     * @param win
+     */
+    $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltipElement, forceWidth, win) {
+        bottom = !!bottom;
+        win || (win = window);
+
+        if (!el.is_over) {
+            return;
+        }
+
+        //console.log('reposition_tooltip');
+
+        if (!starting) { // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
+
+            if (el.getAttribute('title')) {
+                el.setAttribute('title', '');
+            }
+
+            if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
+                el.parentElement.setAttribute('title', '');  // Do not want second tooltips that are not useful
+            }
+        }
+
+        if (!window.page_loaded) {
+            return;
+        }
+
+        if (!el.tooltip_id) {
+            if (el.onmouseover) {
+                el.onmouseover(event);
+            }
+            return;
+        }  // Should not happen but written as a fail-safe
+
+        tooltipElement || (tooltipElement = $cms.dom.$id(el.tooltip_id));
+
+        if (!tooltipElement) {
+            return;
+        }
+
+        var styleOffsetX = 9,
+            styleOffsetY = (el.have_links) ? 18 : 9,
+            x, y;
+
+        // Find mouse position
+        x = window.mouse_x;
+        y = window.mouse_y;
+        x += styleOffsetX;
+        y += styleOffsetY;
+        try {
+            if (event.type) {
+                if (event.type != 'focus') {
+                    el.done_none_focus = true;
+                }
+
+                if ((event.type === 'focus') && (el.done_none_focus)) {
+                    return;
+                }
+
+                x = (event.type === 'focus') ? (win.pageXOffset + $cms.dom.getWindowWidth(win) / 2) : (window.mouse_x + styleOffsetX);
+                y = (event.type === 'focus') ? (win.pageYOffset + $cms.dom.getWindowHeight(win) / 2 - 40) : (window.mouse_y + styleOffsetY);
+            }
+        } catch (ignore) {
+        }
+        // Maybe mouse position actually needs to be in parent document?
+        try {
+            if (event.target && (event.target.ownerDocument !== win.document)) {
+                x = win.mouse_x + styleOffsetX;
+                y = win.mouse_y + styleOffsetY;
+            }
+        } catch (ignore) {
+        }
+
+        // Work out which direction to render in
+        var width = $cms.dom.contentWidth(tooltipElement);
+        if (tooltipElement.style.width === 'auto') {
+            if (width < 200) {
+                // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
+                width = 200;
+            }
+        }
+        var height = tooltipElement.offsetHeight;
+        var xExcess = x - $cms.dom.getWindowWidth(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
+        if (xExcess > 0) { // Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
+            var xBefore = x;
+            x -= xExcess + 20 + styleOffsetX;
+            if (x < 100) { // Do not make it impossible to de-focus the tooltip
+                x = (xBefore < 100) ? xBefore : 100;
+            }
+        }
+        if (x < 0) {
+            x = 0;
+        }
+        if (bottom) {
+            tooltipElement.style.top = (y - height) + 'px';
+        } else {
+            var yExcess = y - $cms.dom.getWindowHeight(win) - win.pageYOffset + height + styleOffsetY;
+            if (yExcess > 0) y -= yExcess;
+            var scrollY = win.pageYOffset;
+            if (y < scrollY) y = scrollY;
+            tooltipElement.style.top = y + 'px';
+        }
+        tooltipElement.style.left = x + 'px';
+    };
+
+    /**
+     * @param el
+     * @param tooltipElement
+     */
+    $cms.ui.deactivateTooltip = function deactivateTooltip(el, tooltipElement) {
+        if (el.is_over) {
+            el.deactivated_at = Date.now();
+        }
+        el.is_over = false;
+
+        //console.log('deactivate_tooltip');
+
+        if (el.tooltip_id == null) {
+            return;
+        }
+
+        tooltipElement || (tooltipElement = $cms.dom.$('#' + el.tooltip_id));
+
+        if (tooltipElement) {
+            $cms.dom.off(tooltipElement, 'mouseout.cmsTooltip');
+            $cms.dom.off(tooltipElement, 'mousemove.cmsTooltip');
+            $cms.dom.off(tooltipElement, 'click.cmsTooltip');
+            $cms.dom.hide(tooltipElement);
+        }
+    };
+
+    /**
+     * @param tooltipBeingOpened
+     */
+    $cms.ui.clearOutTooltips = function clearOutTooltips(tooltipBeingOpened) {
+        // Delete other tooltips, which due to browser bugs can get stuck
+        var selector = '.tooltip';
+        if (tooltipBeingOpened) {
+            selector += ':not(#' + tooltipBeingOpened + ')';
+        }
+        $cms.dom.$$(selector).forEach(function (el) {
+            $cms.ui.deactivateTooltip(el.ac, el);
+        });
+    };
+
+    window.$cmsReady.push(function () {
+        // Tooltips close on browser resize
+        $cms.dom.on(window, 'resize', function () {
+            $cms.ui.clearOutTooltips();
+        });
+    });
 
     /*
 
@@ -5946,15 +6361,14 @@
 
         // Set up overlay for Lightbox
         var lightboxCode = /** @lang HTML */' \
-        <div style="text-align: center"> \
-            <p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p> \
-            <p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
-                <span id="lightbox_description">' + description + '</span> \
-                ' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
-                ' + (isVideo ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initialImgUrl) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
-            </p> \
-        </div> \
-    ';
+            <div style="text-align: center"> \
+                <p class="ajax_loading" id="lightbox_image"><img src="' + $cms.img('{$IMG*;,loading}') + '" /></p> \
+                <p id="lightbox_meta" style="display: none" class="associated_link associated_links_block_group"> \
+                    <span id="lightbox_description">' + description + '</span> \
+                    ' + ((n === null) ? '' : ('<span id="lightbox_position_in_set"><span id="lightbox_position_in_set_x">' + x + '</span> / <span id="lightbox_position_in_set_n">' + n + '</span></span>')) + ' \
+                    ' + (isVideo ? '' : ('<span id="lightbox_full_link"><a href="' + $cms.filter.html(initialImgUrl) + '" target="_blank" title="{$STRIP_TAGS;^,{!SEE_FULL_IMAGE}} {!LINK_NEW_WINDOW;^}">{!SEE_FULL_IMAGE;^}</a></span>')) + ' \
+                </p> \
+            </div>';
 
         // Show overlay
         var myLightbox = {
@@ -6078,470 +6492,6 @@
             }
         }
     };
-
-    /**
-     * Enforcing a session using AJAX
-     * @memberof $cms.ui
-     * @param callback
-     */
-    $cms.ui.confirmSession = function confirmSession(callback) {
-        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
-
-        $cms.doAjaxRequest(url, function (ret) {
-            if (!ret) {
-                return;
-            }
-
-            if (ret.responseText === '') { // Blank means success, no error - so we can call callback
-                callback(true);
-                return;
-            }
-
-            // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-            if (ret.responseText === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
-                $cms.ui.prompt(
-                    '{!USERNAME;^}',
-                    '',
-                    function (promptt) {
-                        _confirmSession(callback, promptt, url);
-                    },
-                    '{!_LOGIN;^}'
-                );
-                return;
-            }
-
-            _confirmSession(callback, ret.responseText, url);
-        });
-
-        function _confirmSession(callback, username, url) {
-            $cms.ui.prompt(
-                $cms.$CONFIG_OPTION('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
-                '',
-                function (promptt) {
-                    if (promptt !== null) {
-                        $cms.doAjaxRequest(url, function (ret) {
-                            if (ret && ret.responseText === '') { // Blank means success, no error - so we can call callback
-                                callback(true);
-                            } else {
-                                _confirmSession(callback, username, url); // Recurse
-                            }
-                        }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
-                    } else {
-                        callback(false);
-                    }
-                },
-                '{!_LOGIN;^}',
-                'password'
-            );
-        }
-    };
-
-    /**
-     * @memberof $cms.ui
-     * @param id
-     * @param tab
-     * @param fromUrl
-     * @param automated
-     * @returns {boolean}
-     */
-    $cms.ui.selectTab = function selectTab(id, tab, fromUrl, automated) {
-        fromUrl = !!fromUrl;
-        automated = !!automated;
-
-        if (!fromUrl) {
-            var tabMarker = $cms.dom.$id('tab__' + tab.toLowerCase());
-            if (tabMarker) {
-                // For URL purposes, we will change URL to point to tab
-                // HOWEVER, we do not want to cause a scroll so we will be careful
-                tabMarker.id = '';
-                window.location.hash = '#tab__' + tab.toLowerCase();
-                tabMarker.id = 'tab__' + tab.toLowerCase();
-            }
-        }
-
-        var tabs = [], i, element;
-
-        element = $cms.dom.$id('t_' + tab);
-        for (i = 0; i < element.parentElement.children.length; i++) {
-            if (element.parentElement.children[i].id && (element.parentElement.children[i].id.substr(0, 2) === 't_')) {
-                tabs.push(element.parentElement.children[i].id.substr(2));
-            }
-        }
-
-        for (i = 0; i < tabs.length; i++) {
-            element = $cms.dom.$id(id + '_' + tabs[i]);
-            if (element) {
-                $cms.dom.toggle(element, (tabs[i] === tab));
-
-                if (tabs[i] === tab) {
-                    if (window['load_tab__' + tab] === undefined) {
-                        $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
-                        $cms.dom.fadeTransition(element, 100, 30, 8);
-                    }
-                }
-            }
-
-            element = $cms.dom.$id('t_' + tabs[i]);
-            if (element) {
-                element.classList.toggle('tab_active', tabs[i] === tab);
-            }
-        }
-
-        if (window['load_tab__' + tab] !== undefined) {
-            // Usually an AJAX loader
-            window['load_tab__' + tab](automated, $cms.dom.$id(id + '_' + tab));
-        }
-
-        return false;
-    };
-
-    /**
-     * Tooltips that can work on any element with rich HTML support
-     * @memberof $cms.ui
-     * @param el - the element
-     * @param event - the event handler
-     * @param tooltip - the text for the tooltip
-     * @param width - width is in pixels (but you need 'px' on the end), can be null or auto
-     * @param pic - the picture to show in the top-left corner of the tooltip; should be around 30px x 30px
-     * @param height - the maximum height of the tooltip for situations where an internal but unusable scrollbar is wanted
-     * @param bottom - set to true if the tooltip should definitely appear upwards; rarely use this parameter
-     * @param noDelay - set to true if the tooltip should appear instantly
-     * @param lightsOff - set to true if the image is to be dimmed
-     * @param forceWidth - set to true if you want width to not be a max width
-     * @param win - window to open in
-     * @param haveLinks - set to true if we activate/deactivate by clicking due to possible links in the tooltip or the need for it to work on mobile
-     */
-    $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks) {
-        event || (event = {});
-        width || (width = 'auto');
-        pic || (pic = '');
-        height || (height = 'auto');
-        bottom = !!bottom;
-        noDelay = !!noDelay;
-        lightsOff = !!lightsOff;
-        forceWidth = !!forceWidth;
-        win || (win = window);
-        haveLinks = !!haveLinks;
-
-        if ((typeof el.deactivated_at != 'undefined') && (el.deactivated_at != null) && (Date.now() - el.deactivated_at < 200)) {
-            return;
-        }
-
-        if (!window.page_loaded || !tooltip) {
-            return;
-        }
-
-        if (window.is_doing_a_drag) {
-            // Don't want tooltips appearing when doing a drag and drop operation
-            return;
-        }
-
-        if (!el) {
-            return;
-        }
-
-        $cms.log('$cms.ui.activateTooltip');
-
-        if (!haveLinks && $cms.isTouchEnabled()) {
-            return; // Too erratic
-        }
-
-        $cms.ui.clearOutTooltips(el.tooltip_id);
-
-        // Add in move/leave events if needed
-        if (!haveLinks) {
-            $cms.dom.on(el, 'mouseout.cmsTooltip', function () {
-                $cms.ui.deactivateTooltip(el);
-            });
-
-            $cms.dom.on(el, 'mousemove.cmsTooltip', function () {
-                $cms.ui.repositionTooltip(el, event, false, false, null, false, win);
-            });
-        } else {
-            $cms.dom.on(el, 'click.cmsTooltip', function () {
-                $cms.ui.deactivateTooltip(el);
-            });
-        }
-
-        if (typeof tooltip === 'function') {
-            tooltip = tooltip();
-        }
-
-        tooltip = strVal(tooltip);
-
-        if (!tooltip) {
-            return;
-        }
-
-        el.is_over = true;
-        el.deactivated_at = null;
-        el.tooltip_on = false;
-        el.initial_width = width;
-        el.have_links = haveLinks;
-
-        var children = el.querySelectorAll('img');
-        for (var i = 0; i < children.length; i++) {
-            children[i].setAttribute('title', '');
-        }
-
-        var tooltipEl;
-        if ((el.tooltip_id != null) && ($cms.dom.$id(el.tooltip_id))) {
-            tooltipEl = $cms.dom.$('#' + el.tooltip_id);
-            tooltipEl.style.display = 'none';
-            $cms.dom.html(tooltipEl, '');
-            window.setTimeout(function () {
-                $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
-            }, 0);
-        } else {
-            tooltipEl = document.createElement('div');
-            tooltipEl.role = 'tooltip';
-            tooltipEl.style.display = 'none';
-            var rtPos = tooltip.indexOf('results_table');
-            tooltipEl.className = 'tooltip ' + ((rtPos == -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (haveLinks ? ' have_links' : '');
-            if (el.className.substr(0, 3) === 'tt_') {
-                tooltipEl.className += ' ' + el.className;
-            }
-            if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
-                tooltipEl.style.wordWrap = 'normal';
-            }
-
-            if (forceWidth) {
-                tooltipEl.style.width = width;
-            } else {
-                if (width === 'auto') {
-                    var newAutoWidth = $cms.dom.getWindowWidth(win) - 30 - window.mouse_x;
-                    if (newAutoWidth < 150) newAutoWidth = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
-                    tooltipEl.style.maxWidth = newAutoWidth + 'px';
-                } else {
-                    tooltipEl.style.maxWidth = width;
-                }
-                tooltipEl.style.width = 'auto'; // Needed for Opera, else it uses maxWidth for width too
-            }
-            if (height && (height !== 'auto')) {
-                tooltipEl.style.maxHeight = height;
-                tooltipEl.style.overflow = 'auto';
-            }
-            tooltipEl.style.position = 'absolute';
-            tooltipEl.id = 't_' + $cms.random();
-            el.tooltip_id = tooltipEl.id;
-            $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
-            document.body.appendChild(tooltipEl);
-        }
-        tooltipEl.ac = el;
-
-        if (pic) {
-            var img = win.document.createElement('img');
-            img.src = pic;
-            img.className = 'tooltip_img';
-            if (lightsOff) {
-                img.classList.add('faded_tooltip_img');
-            }
-            tooltipEl.appendChild(img);
-            tooltipEl.classList.add('tooltip_with_img');
-        }
-
-        var eventCopy = { // Needs to be copied as it will get erased on IE after this function ends
-            'pageX': +event.pageX || 0,
-            'pageY': +event.pageY || 0,
-            'clientX': +event.clientX || 0,
-            'clientY': +event.clientY || 0,
-            'type': event.type || ''
-        };
-
-        // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
-        var bi = $cms.dom.$('#main_website_inner') || document.body;
-        if ((window.TouchEvent !== undefined) && !bi.onmouseover) {
-            bi.onmouseover = function () {
-                return true;
-            };
-        }
-
-        window.setTimeout(function () {
-            if (!el.is_over) {
-                return;
-            }
-
-            if ((!el.tooltip_on) || (tooltipEl.childNodes.length === 0)) { // Some other tooltip jumped in and wiped out tooltip on a delayed-show yet never triggers due to losing focus during that delay
-                $cms.dom.append(tooltipEl, tooltip);
-            }
-
-            el.tooltip_on = true;
-            tooltipEl.style.display = 'block';
-            if ((tooltipEl.style.width == 'auto') && ((tooltipEl.childNodes.length != 1) || (tooltipEl.childNodes[0].nodeName.toLowerCase() != 'img'))) {
-                tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
-            }
-
-            if (!noDelay) {
-                // If delayed we will sub in what the currently known global mouse coordinate is
-                eventCopy.pageX = win.mouse_x;
-                eventCopy.pageY = win.mouse_y;
-            }
-
-            $cms.ui.repositionTooltip(el, eventCopy, bottom, true, tooltipEl, forceWidth, win);
-        }, noDelay ? 0 : 666);
-    };
-
-    /**
-     *
-     * @param el
-     * @param event
-     * @param bottom
-     * @param starting
-     * @param tooltipElement
-     * @param forceWidth
-     * @param win
-     */
-    $cms.ui.repositionTooltip = function repositionTooltip(el, event, bottom, starting, tooltipElement, forceWidth, win) {
-        bottom = !!bottom;
-        win || (win = window);
-
-        if (!el.is_over) {
-            return;
-        }
-
-        //console.log('reposition_tooltip');
-
-        if (!starting) { // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
-
-            if (el.getAttribute('title')) {
-                el.setAttribute('title', '');
-            }
-
-            if ((el.parentElement.localName === 'a') && (el.parentElement.getAttribute('title')) && ((el.localName === 'abbr') || (el.parentElement.getAttribute('title').includes('{!LINK_NEW_WINDOW;^}')))) {
-                el.parentElement.setAttribute('title', '');  // Do not want second tooltips that are not useful
-            }
-        }
-
-        if (!window.page_loaded) {
-            return;
-        }
-
-        if (!el.tooltip_id) {
-            if (el.onmouseover) {
-                el.onmouseover(event);
-            }
-            return;
-        }  // Should not happen but written as a fail-safe
-
-        tooltipElement || (tooltipElement = $cms.dom.$id(el.tooltip_id));
-
-        if (!tooltipElement) {
-            return;
-        }
-
-        var styleOffsetX = 9,
-            styleOffsetY = (el.have_links) ? 18 : 9,
-            x, y;
-
-        // Find mouse position
-        x = window.mouse_x;
-        y = window.mouse_y;
-        x += styleOffsetX;
-        y += styleOffsetY;
-        try {
-            if (event.type) {
-                if (event.type != 'focus') {
-                    el.done_none_focus = true;
-                }
-
-                if ((event.type === 'focus') && (el.done_none_focus)) {
-                    return;
-                }
-
-                x = (event.type === 'focus') ? (win.pageXOffset + $cms.dom.getWindowWidth(win) / 2) : (window.mouse_x + styleOffsetX);
-                y = (event.type === 'focus') ? (win.pageYOffset + $cms.dom.getWindowHeight(win) / 2 - 40) : (window.mouse_y + styleOffsetY);
-            }
-        } catch (ignore) {
-        }
-        // Maybe mouse position actually needs to be in parent document?
-        try {
-            if (event.target && (event.target.ownerDocument !== win.document)) {
-                x = win.mouse_x + styleOffsetX;
-                y = win.mouse_y + styleOffsetY;
-            }
-        } catch (ignore) {
-        }
-
-        // Work out which direction to render in
-        var width = $cms.dom.contentWidth(tooltipElement);
-        if (tooltipElement.style.width === 'auto') {
-            if (width < 200) {
-                // Give some breathing room, as might already have painfully-wrapped when it found there was not much space
-                width = 200;
-            }
-        }
-        var height = tooltipElement.offsetHeight;
-        var xExcess = x - $cms.dom.getWindowWidth(win) - win.pageXOffset + width + 10/*magic tolerance factor*/;
-        if (xExcess > 0) { // Either we explicitly gave too much width, or the width auto-calculated exceeds what we THINK is the maximum width in which case we have to re-compensate with an extra contingency to stop CSS/JS vicious disagreement cycles
-            var xBefore = x;
-            x -= xExcess + 20 + styleOffsetX;
-            if (x < 100) { // Do not make it impossible to de-focus the tooltip
-                x = (xBefore < 100) ? xBefore : 100;
-            }
-        }
-        if (x < 0) {
-            x = 0;
-        }
-        if (bottom) {
-            tooltipElement.style.top = (y - height) + 'px';
-        } else {
-            var yExcess = y - $cms.dom.getWindowHeight(win) - win.pageYOffset + height + styleOffsetY;
-            if (yExcess > 0) y -= yExcess;
-            var scrollY = win.pageYOffset;
-            if (y < scrollY) y = scrollY;
-            tooltipElement.style.top = y + 'px';
-        }
-        tooltipElement.style.left = x + 'px';
-    };
-
-    /**
-     *
-     * @param el
-     * @param tooltipElement
-     */
-    $cms.ui.deactivateTooltip = function deactivateTooltip(el, tooltipElement) {
-        if (el.is_over) {
-            el.deactivated_at = Date.now();
-        }
-        el.is_over = false;
-
-        //console.log('deactivate_tooltip');
-
-        if (el.tooltip_id == null) {
-            return;
-        }
-
-        tooltipElement || (tooltipElement = $cms.dom.$('#' + el.tooltip_id));
-
-        if (tooltipElement) {
-            $cms.dom.off(tooltipElement, 'mouseout.cmsTooltip');
-            $cms.dom.off(tooltipElement, 'mousemove.cmsTooltip');
-            $cms.dom.off(tooltipElement, 'click.cmsTooltip');
-            $cms.dom.hide(tooltipElement);
-        }
-    };
-
-    /**
-     *
-     * @param tooltipBeingOpened
-     */
-    $cms.ui.clearOutTooltips = function clearOutTooltips(tooltipBeingOpened) {
-        // Delete other tooltips, which due to browser bugs can get stuck
-        var selector = '.tooltip';
-        if (tooltipBeingOpened) {
-            selector += ':not(#' + tooltipBeingOpened + ')';
-        }
-        $cms.dom.$$(selector).forEach(function (el) {
-            $cms.ui.deactivateTooltip(el.ac, el);
-        });
-    };
-
-    window.$cmsReady.push(function () {
-        // Tooltips close on browser resize
-        $cms.dom.on(window, 'resize', function () {
-            $cms.ui.clearOutTooltips();
-        });
-    });
 
     /*
      Originally...
@@ -7358,12 +7308,13 @@
         }
     };
 
+    // ---
+
     var ajaxInstances = [],
         ajaxCallbacks = [],
         networkDownAlerted = false;
 
     /**
-     *
      * @param url
      * @param ajaxCallback
      * @param post - Note that 'post' is not an array, it's a string (a=b)
@@ -8023,7 +7974,7 @@
                 'submit form[data-disable-buttons-on-submit]': 'disableFormButtons',
 
                 // mod_security workaround
-                'submit form[data-submit-modsecurity-workaround]': 'submitmodSecurityWorkaround',
+                'submit form[data-submit-modsecurity-workaround]': 'submitModSecurityWorkaround',
 
                 // Prevents input of matching characters
                 'input input[data-cms-invalid-pattern]': 'invalidPattern',
@@ -8276,7 +8227,7 @@
         },
 
         // Implementation for form[data-submit-modsecurity-workaround]
-        submitmodSecurityWorkaround: function (e, form) {
+        submitModSecurityWorkaround: function (e, form) {
             e.preventDefault();
             $cms.form.modSecurityWorkaround(form);
         },
@@ -8478,7 +8429,7 @@
             window.location = url + append;
         },
 
-        /* SOFTWARE CHAT */
+        /* Software Chat */
         loadSoftwareChat: function () {
             var url = 'https://kiwiirc.com/client/irc.kiwiirc.com/?nick=';
             if ($cms.$USERNAME() !== 'admin') {
@@ -8489,15 +8440,15 @@
             url += '#composrcms';
 
             var SOFTWARE_CHAT_EXTRA = '{!SOFTWARE_CHAT_EXTRA;^}'.replace(/\{1\}/, $cms.filter.html(window.location.href.replace($cms.$BASE_URL(), 'http://baseurl')));
-            var html = '\
-                <div class="software_chat">\
-                    <h2>{!CMS_COMMUNITY_HELP}</h2>\
-                    <ul class="spaced_list">' + SOFTWARE_CHAT_EXTRA + '</ul>\
-                    <p class="associated_link associated_links_block_group">\
-                        <a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + $cms.filter.html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a>\
-                        <a href="#!" class="js-click-load-software-chat">{!HIDE}</a>\
-                    </p>\
-                </div>\
+            var html = /** @lang HTML */' \
+                <div class="software_chat"> \
+                    <h2>{!CMS_COMMUNITY_HELP}</h2> \
+                    <ul class="spaced_list">' + SOFTWARE_CHAT_EXTRA + '</ul> \
+                    <p class="associated_link associated_links_block_group"> \
+                        <a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + $cms.filter.html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a> \
+                        <a href="#!" class="js-click-load-software-chat">{!HIDE}</a> \
+                    </p> \
+                </div> \
                 <iframe class="software_chat_iframe" style="border: 0" src="' + $cms.filter.html(url) + '"></iframe>';
 
             var box = $cms.dom.$('#software_chat_box'), img;
@@ -8536,7 +8487,7 @@
             }
         },
 
-        /* STAFF ACTIONS LINKS */
+        /* Staff Actions links */
         staffActionsSelect: function (e, form) {
             var ob = form.elements.special_page_type;
 
@@ -9359,10 +9310,12 @@
         // Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
         if (!el.onmouseout) {
             el.onmouseout = function () {
+                // TODO: Salman, why empty?
             };
         }
         if (!el.onmousemove) {
             el.onmouseover = function () {
+                // TODO: Salman, why empty?
             };
         }
 
@@ -9437,7 +9390,6 @@
         infiniteScrollMouseHeld = false;
 
     /**
-     *
      * @param event
      */
     function infiniteScrollingBlock(event) {
@@ -9457,7 +9409,6 @@
     }
 
     /**
-     *
      * @param infiniteScrolling
      */
     function infiniteScrollingBlockUnhold(infiniteScrolling) {
@@ -9469,7 +9420,6 @@
     }
 
     /**
-     *
      * @param urlStem
      * @param wrapper
      * @returns {*}
@@ -9583,7 +9533,6 @@
     }
 
     /**
-     *
      * @param urlStem
      * @param wrapper
      * @param moreLinks
@@ -9624,7 +9573,6 @@
     }
 
     /**
-     *
      * @param urlStem
      * @param blockElement
      * @param lookFor

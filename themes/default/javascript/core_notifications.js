@@ -589,9 +589,6 @@ function _toggleMessagingBox(event, name, hide) {
         return permission;
     }
 
-    /**
-     *
-     */
     function config(params) {
         if (params && isObject(params)) {
             mixin(settings, params);
