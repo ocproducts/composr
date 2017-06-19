@@ -582,6 +582,9 @@ header h1 {
 	/*{+END}*/
 	margin-top: 1px; /* To force it align correctly with the form in a different block (which is taller) */
 }
+.global_navigation .top_buttons>div {
+	display: inline-block;
+}
 
 .global_navigation .top_form.top_search {
 	margin-top: 3px; /* To force it align correctly with the form in a different block (which is taller) */

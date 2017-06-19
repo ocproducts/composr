@@ -394,7 +394,9 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
         }
 
         // Crossing a DST in our reference timezone? (as we store in UTC, which is DST-less, we need to specially accomodate for this)
-        _compensate_for_dst_change($start_hour, $start_minute, $start_day, $start_month, $start_year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year);
+        if ($start_hour !== null) {
+            _compensate_for_dst_change($start_hour, $start_minute, $start_day, $start_month, $start_year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year);
+        }
         if ($end_hour !== null) {
             _compensate_for_dst_change($end_hour, $end_minute, $end_day, $end_month, $end_year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year);
         }
@@ -445,7 +447,7 @@ function _compensate_for_dst_change(&$hour, &$minute, $day_of_month, $month, $ye
     $new_time = tz_time($new_time_utc, $timezone);
     $old_time = tz_time($old_time_utc, $timezone);
 
-    $time_dif = ((float)($new_time - $old_time - $second_dif_utc)) / 60.0 / 60.0; // Hours, as a float, that changed
+    $time_dif = (floatval($new_time - $old_time - $second_dif_utc)) / 60.0 / 60.0; // Hours, as a float, that changed
     if (abs($time_dif) >= 1.0) {
         $hour -= intval($time_dif);
         $time_dif -= intval($time_dif);
