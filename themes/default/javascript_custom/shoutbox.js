@@ -1,3 +1,5 @@
+'use strict';
+
 window.sb_cc_timer = null;
 window.sb_last_message_id = null;
 

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function decryptData() {
     if (document.getElementById('decryption_overlay')) {

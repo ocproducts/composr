@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function showPermissionSetting(ob, event) {
     if (ob.disabled) { // already showing default in disabled dropdown

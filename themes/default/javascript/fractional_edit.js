@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleClick, controlButton, type) {
     wasDoubleClick = !!wasDoubleClick;

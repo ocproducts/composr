@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // Assume that our activity feed needs updating to start with
 if (window.latest_activity === undefined) {

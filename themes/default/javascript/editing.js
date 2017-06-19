@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /* Form editing code (general, may be used on many different kinds of form) */
 

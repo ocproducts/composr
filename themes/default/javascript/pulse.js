@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function decToHex(number) {
     var hexbase = '0123456789ABCDEF';
