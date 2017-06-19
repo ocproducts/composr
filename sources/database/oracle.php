@@ -107,19 +107,15 @@ class Database_Static_oracle extends DatabaseDriver
      * @param  string $query The complete SQL query
      * @param  mixed $connection The DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
      * @return ?mixed The results (null: no results), or the insert ID
      */
-    public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
+    public function query($query, $connection, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false)
     {
-        if (($start !== null) && ($max !== null) && ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT '))) {
+        if (($start != 0) && ($max !== null) && ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT '))) {
             $old_query = $query;
-
-            if ($start === null) {
-                $start = 0;
-            }
 
             $pos = strpos($old_query, 'FROM ');
             $pos2 = strpos($old_query, ' ', $pos + 5);
@@ -129,9 +125,9 @@ class Database_Static_oracle extends DatabaseDriver
                 if ($pos4 === false) {
                     $pos4 = strlen($old_query);
                 }
-                $query = substr($old_query, 0, $pos4) . ' WHERE rownum>=' . strval(intval($start));
+                $query = substr($old_query, 0, $pos4) . ' WHERE rownum>=' . strval($start);
                 if ($max !== null) {
-                    $query .= ' AND rownum<' . strval(intval($start + $max));
+                    $query .= ' AND rownum<' . strval($start + $max);
                 }
                 $query .= substr($old_query, $pos4);
             } else {
@@ -139,9 +135,9 @@ class Database_Static_oracle extends DatabaseDriver
                 if ($pos4 === false) {
                     $pos4 = strlen($old_query);
                 }
-                $query = substr($old_query, 0, $pos3) . 'WHERE (' . substr($old_query, $pos3 + 6, $pos4 - $pos3 - 6) . ') AND rownum>=' . strval(intval($start));
+                $query = substr($old_query, 0, $pos3) . 'WHERE (' . substr($old_query, $pos3 + 6, $pos4 - $pos3 - 6) . ') AND rownum>=' . strval($start);
                 if ($max !== null) {
-                    $query .= ' AND rownum<' . strval(intval($start + $max));
+                    $query .= ' AND rownum<' . strval($start + $max);
                 }
                 $query .= substr($old_query, $pos4);
             }
@@ -191,10 +187,10 @@ class Database_Static_oracle extends DatabaseDriver
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $stmt The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  integer $start Whether to start reading from
      * @return array A list of row maps
      */
-    public function get_query_rows($stmt, $start = null)
+    public function get_query_rows($stmt, $start = 0)
     {
         $out = array();
         $i = 0;
@@ -207,7 +203,7 @@ class Database_Static_oracle extends DatabaseDriver
             $names[$x] = strtolower(ocicolumnname($stmt, $x));
         }
         while (ocifetch($stmt)) {
-            if (($start === null) || ($i >= $start)) {
+            if ($i >= $start) {
                 $newrow = array();
 
                 for ($j = 1; $j <= $num_fields; $j++) {

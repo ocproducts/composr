@@ -66,7 +66,7 @@ class Hook_cron_disastr
                 // pick a random friend to infect
                 $friends_a = array();
                 if (addon_installed('chat')) {
-                    $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'chat_friends WHERE member_likes=' . strval(intval($sick_member['member_id'])) . ' OR member_liked=' . strval(intval($sick_member['member_id'])) . ' ORDER BY date_and_time');
+                    $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'chat_friends WHERE member_likes=' . strval($sick_member['member_id']) . ' OR member_liked=' . strval($sick_member['member_id']) . ' ORDER BY date_and_time');
 
                     // get friends
                     foreach ($rows as $i => $row) {

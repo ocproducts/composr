@@ -1587,7 +1587,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
             // Perhaps fsockopen is restricted... try fread/file_get_contents
             safe_ini_set('allow_url_fopen', '1');
             $this->timeout_before = ini_get('default_socket_timeout');
-            safe_ini_set('default_socket_timeout', strval(intval($this->timeout)));
+            safe_ini_set('default_socket_timeout', strval($this->timeout));
             if ($this->put !== null) {
                 $this->raw_payload .= file_get_contents($this->put_path);
             }

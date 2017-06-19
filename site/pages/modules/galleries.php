@@ -543,7 +543,7 @@ class Module_galleries
             $start = get_param_integer('module_start', 0);
         } else {
             $max = null;
-            $start = null;
+            $start = 0;
         }
 
         // Subgalleries

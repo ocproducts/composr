@@ -170,7 +170,7 @@ function create_session($member, $session_confirmed = 0, $invisible = false)
                 require_code('points');
                 $_before = point_info($member);
                 if (array_key_exists('points_gained_visiting', $_before)) {
-                    $GLOBALS['FORUM_DRIVER']->set_custom_field($member, 'points_gained_visiting', strval(intval($_before['points_gained_visiting']) + 1));
+                    $GLOBALS['FORUM_DRIVER']->set_custom_field($member, 'points_gained_visiting', strval($_before['points_gained_visiting'] + 1));
                 }
             }
         }

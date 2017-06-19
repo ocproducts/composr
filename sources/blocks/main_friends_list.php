@@ -83,7 +83,7 @@ class Block_main_friends_list
                 $join = '';
             }
 
-            $query = get_table_prefix() . 'chat_friends a' . $join . ' LEFT JOIN ' . get_table_prefix() . 'chat_friends b ON a.member_liked=b.member_likes AND a.member_liked=' . strval($member_id) . ' WHERE (a.member_likes=' . strval(intval($member_id)) . ' OR a.member_liked=' . strval(intval($member_id)) . ') AND b.member_liked IS NULL' . $where;
+            $query = get_table_prefix() . 'chat_friends a' . $join . ' LEFT JOIN ' . get_table_prefix() . 'chat_friends b ON a.member_liked=b.member_likes AND a.member_liked=' . strval($member_id) . ' WHERE (a.member_likes=' . strval($member_id) . ' OR a.member_liked=' . strval($member_id) . ') AND b.member_liked IS NULL' . $where;
             $rows = $GLOBALS['SITE_DB']->query('SELECT a.* FROM ' . $query . ' ORDER BY date_and_time', $max, $start);
         } else {
             if (($friends_search != '') && (!$msn)) {
@@ -93,7 +93,7 @@ class Block_main_friends_list
                 $join = '';
             }
 
-            $query = $GLOBALS['SITE_DB']->get_table_prefix() . 'chat_friends' . $join . ' WHERE member_likes=' . strval(intval($member_id)) . $where;
+            $query = $GLOBALS['SITE_DB']->get_table_prefix() . 'chat_friends' . $join . ' WHERE member_likes=' . strval($member_id) . $where;
             $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $query . ' ORDER BY date_and_time', $max, $start);
         }
         $max_rows = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $query);

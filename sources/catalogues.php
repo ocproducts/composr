@@ -278,7 +278,7 @@ function count_catalogue_category_children($category_id)
  * @set    PAGE SEARCH CATEGORY
  * @param  ID_TEXT $tpl_set The template set we are rendering this category using
  * @param  ?integer $max The maximum number of entries to show on a single page of this this category (null: all)
- * @param  ?integer $start The entry number to start at (null: all)
+ * @param  integer $start The entry number to start at
  * @param  ?mixed $select The entries to show, may be from other categories. Can either be SQL fragment (produced from Selectcode?), or array (null: use $start and $max)
  * @param  ?AUTO_LINK $root The virtual root for display of this category (null: default)
  * @param  ?SHORT_INTEGER $display_type The display type to use (null: lookup from $catalogue)
@@ -359,7 +359,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
     // Work out the actual rendering, but only for those results in our selection scope (for performance)
     foreach ($entries as $i => $entry) {
-        if (($in_db_sorting /*Only select rows were grabbed so $i is not the first entry, it is the $start entry*/) || (!$in_db_sorting /*Needs data to do manual sort*/) || ((($start === null) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select)))))) {
+        if (($in_db_sorting /*Only select rows were grabbed so $i is not the first entry, it is the $start entry*/) || (!$in_db_sorting /*Needs data to do manual sort*/) || ((($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select)))))) {
             $entries[$i]['map'] = get_catalogue_entry_map($entry, $catalogue, $view_type, $tpl_set, $root, $fields, (($display_type == C_DT_TITLELIST) && (!$is_ecomm) && ($order_by !== null)) ? array(0, intval($order_by)) : null, false, true, intval($order_by));
         }
     }
@@ -454,7 +454,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                 $entry = $entries[$i];
 
-                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
+                if (($max === null) || (($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
                     $entry_buildup->attach(do_template('CATALOGUE_' . $tpl_set . '_FIELDMAP_ENTRY_WRAP', $entry['map'] + array('GIVE_CONTEXT' => false) + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array()), null, false, 'CATALOGUE_DEFAULT_FIELDMAP_ENTRY_WRAP'));
                 }
             }
@@ -471,7 +471,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                 $entry = $entries[$i];
 
-                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
+                if ((($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
                     $entry_buildup->attach(do_template('CATALOGUE_' . $tpl_set . '_TITLELIST_ENTRY', $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array()), null, false, 'CATALOGUE_DEFAULT_TITLELIST_ENTRY'));
                 }
             }
@@ -508,7 +508,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
                 }
 
                 $entry = $entries[$i];
-                if ((($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || (is_array($select)) && (in_array($entry['id'], $select)))) {
+                if ((($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || (is_array($select)) && (in_array($entry['id'], $select)))) {
                     $tab_entry_map = $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array());
                     if ($has_view_screens) {
                         $url_map = array('page' => 'catalogues', 'type' => 'entry', 'id' => $entry['id']);
@@ -522,7 +522,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                     $entry_buildup->attach(/*Preserve memory*/static_evaluate_tempcode(do_template('CATALOGUE_' . $tpl_set . '_TABULAR_ENTRY_WRAP', $tab_entry_map, null, false, 'CATALOGUE_DEFAULT_TABULAR_ENTRY_WRAP')));
                 }
-                if (($start !== null) && ($i >= $start + $max)) {
+                if ($i >= $start + $max) {
                     break;
                 }
             }
@@ -577,7 +577,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 
                 $entry = $entries[$i];
 
-                if (($max === null) || (($start === null) || ($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
+                if (($max === null) || (($in_db_sorting) || ($i >= $start) && ($i < $start + $max)) && ((!is_array($select)) || ((is_array($select)) && (in_array($entry['id'], $select))))) {
                     $entry_buildup->attach(do_template('CATALOGUE_' . $tpl_set . '_GRID_ENTRY_WRAP', $entry['map'] + (array_key_exists($i, $extra_map) ? $extra_map[$i] : array()), null, false, 'CATALOGUE_DEFAULT_GRID_ENTRY_WRAP'));
                 }
             }
@@ -629,7 +629,7 @@ function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$ext
  * @param  ID_TEXT $catalogue_name Name of the catalogue
  * @param  ?AUTO_LINK $category_id The ID of the category for which the entries are being collected (null: no limitation)
  * @param  ?integer $max The maximum number of entries to show on a single page of this this category (ignored if $select is not null) (null: all)
- * @param  ?integer $start The entry number to start at (ignored if $select is not null) (null: all)
+ * @param  integer $start The entry number to start at (ignored if $select is not null)
  * @param  ?mixed $select The entries to show, may be from other categories. Can either be SQL fragment (produced from Selectcode?), or array (null: use $start and $max)
  * @param  boolean $do_sorting Whether to perform sorting
  * @param  ?array $filtercode List of filters to apply (null: none). Each filter is a triple: ORd comparison key(s) [separated by pipe symbols], comparison type (one of '<', '>', '<=', '>=', '=', '~=', or '~'), comparison value

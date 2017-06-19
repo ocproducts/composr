@@ -111,7 +111,7 @@ class Hook_admin_stats_cns_demographics
                 if ($age >= 100) {
                     $age_string = '100+';
                 } elseif ($age >= 30) {
-                    $age_string = strval(intval($age / 5) * 5) . '-' . strval(intval($age / 5) * 5 + 4);
+                    $age_string = strval(intval(floatval($age) / 5.0) * 5) . '-' . strval(intval(floatval($age) / 5.0) * 5 + 4);
                 } else {
                     $age_string = strval($age);
                 }

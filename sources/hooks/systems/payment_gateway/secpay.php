@@ -513,7 +513,7 @@ class Hook_payment_gateway_secpay
         $username = $this->_get_username();
         $vpn_password = get_option('payment_gateway_vpn_password');
         $digest = md5($trans_id . strval($amount) . get_option('payment_gateway_password'));
-        $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval(intval($card_cv2)) . ',mand_cv2=true';
+        $options = 'currency=' . $currency . ',card_type=' . str_replace(',', '', $card_type) . ',digest=' . $digest . ',cv2=' . strval($card_cv2) . ',mand_cv2=true';
         if (ecommerce_test_mode()) {
             $options .= ',test_status=true';
         }

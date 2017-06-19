@@ -894,7 +894,7 @@ class Module_catalogues
         $category_buildup = new Tempcode();
 
         $max = null;
-        $start = null;
+        $start = 0;
 
         require_code('selectcode');
         $sql_select = selectcode_to_sqlfragment(strval($id) . '*', 'cc_id', 'catalogue_categories', 'cc_parent_id', 'cc_id', 'id'); // Note that the parameters are fiddled here so that category-set and record-set are the same, yet SQL is returned to deal in an entirely different record-set (entries' record-set)

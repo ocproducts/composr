@@ -114,12 +114,12 @@ class Database_Static_mysql extends Database_super_mysql
      * @param  string $query The complete SQL query
      * @param  mixed $connection The DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
      * @return ?mixed The results (null: no results), or the insert ID
      */
-    public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
+    public function query($query, $connection, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false)
     {
         list($db_link, $db_name) = $connection;
 
@@ -132,11 +132,11 @@ class Database_Static_mysql extends Database_super_mysql
             $this->last_select_db = $db_name;
         }
 
-        if (($max !== null) && ($start !== null)) {
+        if (($max !== null) && ($start != 0)) {
             $query .= ' LIMIT ' . strval($start) . ',' . strval($max);
         } elseif ($max !== null) {
             $query .= ' LIMIT ' . strval($max);
-        } elseif ($start !== null) {
+        } elseif ($start != 0) {
             $query .= ' LIMIT ' . strval($start) . ',30000000';
         }
 

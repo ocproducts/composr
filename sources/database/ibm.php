@@ -223,18 +223,14 @@ class Database_Static_ibm extends DatabaseDriver
      * @param  string $query The complete SQL query
      * @param  mixed $connection The DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
      * @return ?mixed The results (null: no results), or the insert ID
      */
-    public function query($query, $connection, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
+    public function query($query, $connection, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false)
     {
         if ($max !== null) {
-            if ($start === null) {
-                $max += $start;
-            }
-
             if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
                 $query .= ' FETCH FIRST ' . strval($max + $start) . ' ROWS ONLY';
             }
@@ -282,10 +278,10 @@ class Database_Static_ibm extends DatabaseDriver
      * Get the rows returned from a SELECT query.
      *
      * @param  resource $results The query result pointer
-     * @param  ?integer $start Whether to start reading from (null: irrelevant for this forum driver)
+     * @param  integer $start Whether to start reading from
      * @return array A list of row maps
      */
-    public function get_query_rows($results, $start = null)
+    public function get_query_rows($results, $start = 0)
     {
         $out = array();
         $i = 0;
@@ -299,7 +295,7 @@ class Database_Static_ibm extends DatabaseDriver
         }
 
         while (odbc_fetch_row($results)) {
-            if (($start === null) || ($i >= $start)) {
+            if ($i >= $start) {
                 $newrow = array();
 
                 for ($j = 1; $j <= $num_fields; $j++) {

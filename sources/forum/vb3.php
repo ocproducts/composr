@@ -107,7 +107,7 @@ class Forum_driver_vb3 extends Forum_driver_base
                 $key = $this->db->query_insert('profilefield', array('required' => $required, 'hidden' => 1 - $viewable, 'maxlength' => $length, 'size' => $length, 'editable' => $settable), true);
                 $this->db->query_insert('phrase', array('languageid' => 0, 'varname' => 'field' . strval($key) . '_title', 'fieldname' => 'cprofilefield', 'text' => $name, 'product' => 'vbulletin', 'username' => '', 'dateline' => 0, 'version' => ''));
             } else {
-                $this->db->query('INSERT INTO ' . $_POST['vb_table_prefix'] . 'profilefield (title,description,required,hidden,maxlength,size,editable) VALUES (\'' . db_escape_string($name) . '\',\'\',' . strval(intval($required)) . ',' . strval(intval(1 - $viewable)) . ',\'' . strval($length) . '\',\'' . strval($length) . '\',' . strval(intval($settable)) . ')');
+                $this->db->query('INSERT INTO ' . $_POST['vb_table_prefix'] . 'profilefield (title,description,required,hidden,maxlength,size,editable) VALUES (\'' . db_escape_string($name) . '\',\'\',' . strval($required) . ',' . strval(1 - $viewable) . ',\'' . strval($length) . '\',\'' . strval($length) . '\',' . strval($settable) . ')');
                 $key = $this->db->query_select_value('profilefield', 'MAX(profilefieldid)');
             }
             $this->db->query('ALTER TABLE ' . $_POST['vb_table_prefix'] . 'userfield ADD field' . strval($key) . ' TEXT', null, null, true);

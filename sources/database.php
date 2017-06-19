@@ -1281,12 +1281,12 @@ class DatabaseConnector
      * @param  array $where_map The WHERE map [will all be AND'd together]
      * @param  string $end Something to tack onto the end of the SQL query
      * @param  ?integer $max The maximum number of rows to select (null: get all)
-     * @param  ?integer $start The starting row to select (null: start at first)
+     * @param  integer $start The starting row to select
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return array The results (empty array: empty result set)
      */
-    public function query_select($table, $select = array('*'), $where_map = array(), $end = '', $max = null, $start = null, $fail_ok = false, $lang_fields = null)
+    public function query_select($table, $select = array('*'), $where_map = array(), $end = '', $max = null, $start = 0, $fail_ok = false, $lang_fields = null)
     {
         $full_table = $this->table_prefix . $table;
 
@@ -1382,14 +1382,14 @@ class DatabaseConnector
      * @param  string $query The complete SQL query
      * @param  array $parameters The query parameters (a map)
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $skip_safety_check Whether to skip the query safety check
      * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
      */
-    public function query_parameterised($query, $parameters, $max = null, $start = null, $fail_ok = false, $skip_safety_check = false, $lang_fields = null, $field_prefix = '')
+    public function query_parameterised($query, $parameters, $max = null, $start = 0, $fail_ok = false, $skip_safety_check = false, $lang_fields = null, $field_prefix = '')
     {
         if (isset($parameters['prefix'])) {
             warn_exit('prefix is a reserved parameter, you should not set it.');
@@ -1421,14 +1421,14 @@ class DatabaseConnector
      *
      * @param  string $query The complete SQL query
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $skip_safety_check Whether to skip the query safety check
      * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @param  string $field_prefix All the core fields have a prefix of this on them, so when we fiddle with language lookup we need to use this (only consider this if you're setting $lang_fields)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
      */
-    public function query($query, $max = null, $start = null, $fail_ok = false, $skip_safety_check = false, $lang_fields = null, $field_prefix = '')
+    public function query($query, $max = null, $start = 0, $fail_ok = false, $skip_safety_check = false, $lang_fields = null, $field_prefix = '')
     {
         global $DEV_MODE;
         if (!$skip_safety_check && stripos($query, 'union') !== false) {
@@ -1476,7 +1476,7 @@ class DatabaseConnector
      *
      * @param  string $query The complete SQL query
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to output an error on failure
      * @param  boolean $get_insert_id Whether to get an insert ID
      * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
@@ -1484,7 +1484,7 @@ class DatabaseConnector
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension (used in the XML DB driver, to mark things as being non-syndicated to git)
      * @return ?mixed The results (null: no result set) (empty array: empty result set)
      */
-    public function _query($query, $max = null, $start = null, $fail_ok = false, $get_insert_id = false, $lang_fields = null, $field_prefix = '', $save_as_volatile = false)
+    public function _query($query, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false, $lang_fields = null, $field_prefix = '', $save_as_volatile = false)
     {
         global $QUERY_COUNT, $QUERY_LOG, $QUERY_LIST, $DEV_MODE, $IN_MINIKERNEL_VERSION, $QUERY_FILE_LOG, $UPON_QUERY_HOOKS_CACHE;
 
@@ -1538,7 +1538,7 @@ class DatabaseConnector
         $lang_strings_expecting = array();
         if ($lang_fields !== null) {
             if (multi_lang_content()) {
-                if ((strpos($query, 'text_original') !== false) || (function_exists('user_lang')) && (($start === null) || ($start < 200))) {
+                if ((strpos($query, 'text_original') !== false) || (function_exists('user_lang')) && ($start < 200)) {
                     $lang = function_exists('user_lang') ? user_lang() : get_site_default_lang(); // We can we assume this, as we will cache against it -- if subsequently code wants something else it'd be a cache miss which is fine
 
                     foreach ($lang_fields as $field => $field_type) {
@@ -1637,11 +1637,11 @@ class DatabaseConnector
             $query .= '/* ' . get_session_id() . ' */'; // Identify query to session, for accurate de-duping
 
             $real_query = $query;
-            if (($max !== null) && ($start !== null)) {
+            if (($max !== null) && ($start != 0)) {
                 $real_query .= ' LIMIT ' . strval($start) . ',' . strval($max);
             } elseif ($max !== null) {
                 $real_query .= ' LIMIT ' . strval($max);
-            } elseif ($start !== null) {
+            } elseif ($start != 0) {
                 $real_query .= ' LIMIT ' . strval($start) . ',30000000';
             }
 
@@ -1673,7 +1673,7 @@ class DatabaseConnector
         $ret = $this->static_ob->query($query, $connection, $max, $start, $fail_ok, $get_insert_id, false, $save_as_volatile);
         if ($QUERY_LOG) {
             $after = microtime(true);
-            $text = ($max !== null) ? ($query . ' (' . (($start === null) ? '0' : strval($start)) . '-' . strval((($start === null) ? 0 : $start) + $max) . ')') : $query;
+            $text = ($max !== null) ? ($query . ' (' . strval($start) . '-' . strval($start + $max) . ')') : $query;
             $out = array('time' => ($after - $before), 'text' => $text, 'rows' => is_array($ret) ? count($ret) : null);
             $QUERY_LIST[] = $out;
         }
@@ -1914,12 +1914,12 @@ class DatabaseConnector
      * @param  array $where_map The WHERE map [will all be AND'd together]
      * @param  string $end Something to tack onto the end of the statement
      * @param  ?integer $max The maximum number of rows to update (null: no limit)
-     * @param  ?integer $start The starting row to update (null: no specific start)
+     * @param  integer $start The starting row to update
      * @param  boolean $num_touched Whether to get the number of touched rows. WARNING: Do not use in core Composr code as it does not work on all database drivers
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      * @return ?integer The number of touched records (null: hasn't been asked / error)
      */
-    public function query_update($table, $update_map, $where_map = array(), $end = '', $max = null, $start = null, $num_touched = false, $fail_ok = false)
+    public function query_update($table, $update_map, $where_map = array(), $end = '', $max = null, $start = 0, $num_touched = false, $fail_ok = false)
     {
         $where = '';
         $update = '';
@@ -1989,13 +1989,13 @@ class DatabaseConnector
      * @param  array $where_map The WHERE map [will all be AND'd together]
      * @param  string $end Something to tack onto the end of the statement
      * @param  ?integer $max The maximum number of rows to delete (null: no limit)
-     * @param  ?integer $start The starting row to delete (null: no specific start)
+     * @param  integer $start The starting row to delete
      * @param  boolean $fail_ok Whether to allow failure (outputting a message instead of exiting completely)
      */
-    public function query_delete($table, $where_map = array(), $end = '', $max = null, $start = null, $fail_ok = false)
+    public function query_delete($table, $where_map = array(), $end = '', $max = null, $start = 0, $fail_ok = false)
     {
         if ($where_map === array()) {
-            if (($end === '') && ($max === null) && ($start === null) && ($this->static_ob->supports_truncate_table($GLOBALS['SITE_DB']->connection_read))) {
+            if (($end === '') && ($max === null) && ($start == 0) && ($this->static_ob->supports_truncate_table($GLOBALS['SITE_DB']->connection_read))) {
                 $this->_query('TRUNCATE ' . $this->table_prefix . $table, null, null, $fail_ok);
             } else {
                 $this->_query('DELETE FROM ' . $this->table_prefix . $table . ' ' . $end, $max, $start, $fail_ok);

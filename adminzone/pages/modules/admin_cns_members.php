@@ -494,7 +494,7 @@ class Module_admin_cns_members
     {
         $start = 0;
         do {
-            $rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id<>' . strval(get_member()) . ' AND m_cache_num_posts<=' . strval(intval($max_posts)) . ' AND m_last_visit_time<' . strval(time() - $min_days_since_login * 60 * 60 * 24) . ' AND m_join_time<' . strval(time() - $min_days_since_join * 60 * 60 * 24), 500, $start);
+            $rows = $GLOBALS['FORUM_DB']->query('SELECT id,m_username FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE id<>' . strval($GLOBALS['FORUM_DRIVER']->get_guest_id()) . ' AND id<>' . strval(get_member()) . ' AND m_cache_num_posts<=' . strval($max_posts) . ' AND m_last_visit_time<' . strval(time() - $min_days_since_login * 60 * 60 * 24) . ' AND m_join_time<' . strval(time() - $min_days_since_join * 60 * 60 * 24), 500, $start);
             $out = array();
             if (addon_installed('points')) {
                 require_code('points');

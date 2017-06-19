@@ -407,14 +407,14 @@ class Database_Static_xml extends DatabaseDriver
      * @param  string $query The complete SQL query
      * @param  array $db The DB connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @param  boolean $get_insert_id Whether to get the autoincrement ID created for an insert query
      * @param  boolean $no_syndicate Whether to force the query to execute on the XML database driver (won't optimise by using MySQL). Useful for calls happening for multi-part queries from within this DB driver
      * @param  boolean $save_as_volatile Whether we are saving as a 'volatile' file extension
      * @return ?mixed The results (null: no results), or the insert ID
      */
-    public function query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false, $no_syndicate = false, $save_as_volatile = false)
+    public function query($query, $db, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false, $no_syndicate = false, $save_as_volatile = false)
     {
         global $DELIMITERS_FLIPPED, $DELIMITERS, $SYMBOL_DELIMITER;
 
@@ -2411,7 +2411,7 @@ class Database_Static_xml extends DatabaseDriver
      * @param  string $query Query that was executed
      * @param  array $db Database connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?mixed The results (null: no results)
      */
@@ -2505,7 +2505,7 @@ class Database_Static_xml extends DatabaseDriver
      * @param  string $query Query that was executed
      * @param  array $db Database connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?mixed The results (null: no results)
      */
@@ -2575,7 +2575,7 @@ class Database_Static_xml extends DatabaseDriver
      * @param  string $query Query that was executed
      * @param  array $db Database connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @param  integer $at Our offset counter
      * @param  boolean $do_end_check Whether to not do the check to make sure we've parsed everything
@@ -2598,7 +2598,7 @@ class Database_Static_xml extends DatabaseDriver
      * @param  string $query Query that was executed
      * @param  array $db Database connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @param  integer $at Our offset counter
      * @param  boolean $do_end_check Whether to not do the check to make sure we've parsed everything
@@ -2896,7 +2896,7 @@ class Database_Static_xml extends DatabaseDriver
      * @param  string $query Query that was executed
      * @param  array $db Database connection
      * @param  ?integer $max The maximum number of rows to affect (null: no limit)
-     * @param  ?integer $start The start row to affect (null: no specification)
+     * @param  integer $start The start row to affect
      * @param  array $bindings Bindings available in the execution scope
      * @param  boolean $fail_ok Whether to not output an error on some kind of run-time failure (parse errors and clear programming errors are always fatal)
      * @return ?mixed The results (null: no results)

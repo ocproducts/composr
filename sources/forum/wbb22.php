@@ -119,7 +119,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
         $name = 'cms_' . $name;
         $test = $this->db->query('profilefields', array('profilefieldid'), array('title' => $name));
         if (!array_key_exists(0, $test)) {
-            $this->db->query('INSERT INTO bb' . $_POST['bb_forum_number'] . '_profilefields (title,description,required,hidden,maxlength,fieldsize) VALUES (\'' . db_escape_string($name) . '\',\'\',' . strval(intval($required)) . ',' . strval(1 - intval($viewable)) . ',' . strval($length) . ',' . strval($length) . ')');
+            $this->db->query('INSERT INTO bb' . $_POST['bb_forum_number'] . '_profilefields (title,description,required,hidden,maxlength,fieldsize) VALUES (\'' . db_escape_string($name) . '\',\'\',' . strval($required) . ',' . strval(1 - $viewable) . ',' . strval($length) . ',' . strval($length) . ')');
             $key = $this->db->query_select_value('profilefields', 'MAX(profilefieldid)');
             $this->db->query('ALTER TABLE bb' . $_POST['bb_forum_number'] . '_userfields ADD field' . $key . ' TEXT', null, null, true);
             return true;
