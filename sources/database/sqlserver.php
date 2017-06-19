@@ -414,7 +414,7 @@ class Database_Static_sqlserver extends DatabaseDriver
         $fields = explode(',', $_fields);
         foreach ($fields as $field) {
             $sql = 'SELECT m_type FROM ' . $table_prefix . 'db_meta WHERE m_table=\'' . $this->escape_string($raw_table_name) . '\' AND m_name=\'' . $this->escape_string($field) . '\'';
-            $values = $this->query($sql, $connection, null, null, true);
+            $values = $this->query($sql, $connection, null, 0, true);
             if (!isset($values[0])) {
                 continue; // No result found
             }
@@ -461,7 +461,7 @@ class Database_Static_sqlserver extends DatabaseDriver
             WHERE t.name = N\'' . $this->escape_string($table) . '\'
             AND s.name = N\'dbo\'
             AND p.index_id IN (0,1)';
-        $values = $this->query($sql, $connection, null, null, true);
+        $values = $this->query($sql, $connection, null, 0, true);
         if (!isset($values[0])) {
             return null; // No result found
         }

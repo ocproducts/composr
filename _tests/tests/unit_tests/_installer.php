@@ -73,7 +73,7 @@ class _installer_test_set extends cms_test_case
         $table_prefix = 'cms_installer_test_';
 
         // Cleanup old install
-        $tables = $GLOBALS['SITE_DB']->query('SHOW TABLES FROM ' . $database, null, null, true);
+        $tables = $GLOBALS['SITE_DB']->query('SHOW TABLES FROM ' . $database, null, 0, true);
         if ($tables === null) {
             $tables = array();
         }

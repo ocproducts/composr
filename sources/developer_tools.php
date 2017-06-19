@@ -127,7 +127,7 @@ function destrictify($change_content_type = true, $db_too = false)
     if (($db_too) && (is_object($GLOBALS['SITE_DB']->connection_read))) {
         $smq = $GLOBALS['SITE_DB']->strict_mode_query(false);
         if ($smq !== null) {
-            $GLOBALS['SITE_DB']->query($smq, null, null, true);
+            $GLOBALS['SITE_DB']->query($smq, null, 0, true);
         }
     }
     global $PREVIOUS_XSS_STATE;
@@ -176,7 +176,7 @@ function restrictify()
     if (is_object($GLOBALS['SITE_DB']->connection_read)) {
         $smq = $GLOBALS['SITE_DB']->strict_mode_query(true);
         if ($smq !== null) {
-            $GLOBALS['SITE_DB']->query($smq, null, null, true);
+            $GLOBALS['SITE_DB']->query($smq, null, 0, true);
         }
     }
     if (($GLOBALS['DEV_MODE']) && (strpos(cms_srv('SCRIPT_NAME'), '_tests') === false)) {

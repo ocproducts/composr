@@ -37,7 +37,7 @@ class Hook_checklist_community_billboard
 
         $num_queue = $this->get_num_community_billboard_queue();
 
-        $rows = $GLOBALS['SITE_DB']->query_select('community_billboard', array('activation_time', 'days'), array('active_now' => 1), '', null, null, true);
+        $rows = $GLOBALS['SITE_DB']->query_select('community_billboard', array('activation_time', 'days'), array('active_now' => 1), '', null, 0, true);
         if ($rows === null) {
             return array();
         }

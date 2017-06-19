@@ -122,7 +122,7 @@ class Hook_cleanup_page_stats
             }
 
             if ($or_list != '') {
-                $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'stats WHERE ' . $or_list, null, null, false, true);
+                $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'stats WHERE ' . $or_list, null, 0, false, true);
             }
         } while ($data != array());
 

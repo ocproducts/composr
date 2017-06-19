@@ -354,7 +354,7 @@ class Module_quiz
         $sql .= ' AND q_open_time<' . strval(time());
         $sql .= ' AND (q_close_time IS NULL OR q_close_time>' . strval(time()) . ')';
         $sql .= ' ORDER BY q_type ASC,q.id DESC';
-        $rows = $GLOBALS['SITE_DB']->query($sql, null, null, false, false, array('q_name' => 'SHORT_TRANS'));
+        $rows = $GLOBALS['SITE_DB']->query($sql, null, 0, false, false, array('q_name' => 'SHORT_TRANS'));
 
         $content_tests = new Tempcode();
         $content_competitions = new Tempcode();

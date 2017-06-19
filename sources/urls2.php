@@ -582,7 +582,7 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
     if (isset($where['the_zone'])) {
         $where['the_zone'] = $zone;
     }
-    $_moniker_src = $db->query_select($ob_info['table'], $select, $where, '', null, null, true); // NB: For Comcode pages visited, this won't return anything -- it will become more performant when the page actually loads, so the moniker won't need redoing each time
+    $_moniker_src = $db->query_select($ob_info['table'], $select, $where, '', null, 0, true); // NB: For Comcode pages visited, this won't return anything -- it will become more performant when the page actually loads, so the moniker won't need redoing each time
     if ($_moniker_src === null) {
         return null; // table missing?
     }
@@ -874,7 +874,7 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
         if (isset($where['the_zone'])) {
             $where['the_zone'] = $zone;
         }
-        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, $where, '', null, null, true);
+        $_moniker_src = $GLOBALS['SITE_DB']->query_select($ob_info['table'], $select, $where, '', null, 0, true);
         if ($_moniker_src === null) {
             return $moniker; // table missing?
         }

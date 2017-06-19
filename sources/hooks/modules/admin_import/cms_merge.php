@@ -296,7 +296,7 @@ class Hook_import_cms_merge
             return;
         }
 
-        $rows = $db->query_select('f_welcome_emails', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('f_welcome_emails', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -321,7 +321,7 @@ class Hook_import_cms_merge
      */
     public function import_quizzes($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select(($db->table_exists('quizzes') ? 'quizzes' : 'quiz'), array('*'), array(), 'ORDER BY id', null, null, true);
+        $rows = $db->query_select(($db->table_exists('quizzes') ? 'quizzes' : 'quiz'), array('*'), array(), 'ORDER BY id', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -512,7 +512,7 @@ class Hook_import_cms_merge
      */
     public function import_ecommerce($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select('transactions', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('transactions', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -542,7 +542,7 @@ class Hook_import_cms_merge
             $GLOBALS['SITE_DB']->query_insert('invoices', $row);
         }
 
-        $rows = $db->query_select('f_usergroup_subs', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('f_usergroup_subs', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             $this->_fix_comcode_ownership($rows);
             foreach ($rows as $row) {
@@ -802,7 +802,7 @@ class Hook_import_cms_merge
     {
         require_code('authors');
 
-        $rows = $db->query_select('authors', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('authors', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -840,7 +840,7 @@ class Hook_import_cms_merge
             $this->_import_content_reviews($db, $table_prefix, 'banner_type', null);
         }
 
-        $rows = $db->query_select('banners', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('banners', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -882,7 +882,7 @@ class Hook_import_cms_merge
         $this->_import_content_reviews($db, $table_prefix, 'banner', null);
 
         if ($db->table_exists('banner_clicks')) {
-            $rows = $db->query_select('banner_clicks', array('*'), array(), '', null, null, true);
+            $rows = $db->query_select('banner_clicks', array('*'), array(), '', null, 0, true);
             if ($rows === null) {
                 return;
             }
@@ -915,7 +915,7 @@ class Hook_import_cms_merge
     {
         require_code('points2');
 
-        $rows = $db->query_select('chargelog', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('chargelog', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             $rows = array();
         }
@@ -932,7 +932,7 @@ class Hook_import_cms_merge
             }
             add_to_charge_log($member, $row['amount'], $this->get_lang_string($db, $row['reason']), $row['date_and_time']);
         }
-        $rows = $db->query_select('gifts', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('gifts', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             $rows = array();
         }
@@ -959,7 +959,7 @@ class Hook_import_cms_merge
             $map += insert_lang_comcode('reason', $this->get_lang_string($db, $row['reason']), 4);
             $GLOBALS['SITE_DB']->query_insert('gifts', $map);
         }
-        $rows = $db->query_select('leader_board', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('leader_board', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             $rows = array();
         }
@@ -1037,7 +1037,7 @@ class Hook_import_cms_merge
     {
         require_code('polls2');
 
-        $rows = $db->query_select('poll', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('poll', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1086,7 +1086,7 @@ class Hook_import_cms_merge
                 $row['edit_date']);
 
             // Who has voted in the poll?
-            $votes = $db->query_select('poll_votes', array('*'), array('v_poll_id' => $row['id']), null, null, true);
+            $votes = $db->query_select('poll_votes', array('*'), array('v_poll_id' => $row['id']), null, 0, true);
             if ($votes === null) { // Old Composr-style
                 $voters = explode('-', $row['ip']);
                 $votes = array();
@@ -1126,7 +1126,7 @@ class Hook_import_cms_merge
     {
         require_code('news2');
 
-        $rows = $db->query_select('news_categories', array('*'), array(), 'ORDER BY id', null, null, true);
+        $rows = $db->query_select('news_categories', array('*'), array(), 'ORDER BY id', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1185,7 +1185,7 @@ class Hook_import_cms_merge
         $this->_import_content_reviews($db, $table_prefix, 'news', 'news');
         $this->_import_catalogue_entry_linkage($db, $table_prefix, 'news', 'news');
 
-        $rows = $db->query_select('news_rss_cloud', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('news_rss_cloud', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             $this->_fix_comcode_ownership($rows);
             foreach ($rows as $row) {
@@ -1204,7 +1204,7 @@ class Hook_import_cms_merge
      */
     public function import_newsletter_subscriptions($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select('newsletters', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('newsletters', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             $this->_fix_comcode_ownership($rows);
             foreach ($rows as $row) {
@@ -1225,7 +1225,7 @@ class Hook_import_cms_merge
             $old_format = true;
         }
 
-        $rowsn = $db->query_select(($db->table_exists('newsletter_subscribers') ? 'newsletter_subscribers' : 'newsletter'), array('*'), array(), '', null, null, true);
+        $rowsn = $db->query_select(($db->table_exists('newsletter_subscribers') ? 'newsletter_subscribers' : 'newsletter'), array('*'), array(), '', null, 0, true);
         if ($rowsn === null) {
             return;
         }
@@ -1267,7 +1267,7 @@ class Hook_import_cms_merge
             $GLOBALS['SITE_DB']->query_insert('newsletter_archive', array('date_and_time' => $row['date_and_time'], 'subject' => $row['subject'], 'newsletter' => $row['newsletter'], 'language' => $row['language'], 'importance_level' => $row['importance_level']));
         }
 
-        $rows = $db->query_select('newsletter_periodic', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('newsletter_periodic', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             $this->_fix_comcode_ownership($rows);
             foreach ($rows as $row) {
@@ -1286,7 +1286,7 @@ class Hook_import_cms_merge
      */
     public function import_pointstore($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select('prices', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('prices', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1323,7 +1323,7 @@ class Hook_import_cms_merge
     {
         require_code('downloads2');
 
-        $rows = $db->query_select('download_categories', array('*'), array(), 'ORDER BY id', null, null, true);
+        $rows = $db->query_select('download_categories', array('*'), array(), 'ORDER BY id', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1390,7 +1390,7 @@ class Hook_import_cms_merge
         }
 
         if ($db->table_exists('download_licences')) {
-            $rows = $db->query_select('download_licences', array('*'), array(), 'ORDER BY id', null, null, true);
+            $rows = $db->query_select('download_licences', array('*'), array(), 'ORDER BY id', null, 0, true);
             if ($rows === null) {
                 return;
             }
@@ -1412,7 +1412,7 @@ class Hook_import_cms_merge
     {
         require_code('galleries2');
 
-        $rows = $db->query_select('galleries', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('galleries', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1500,7 +1500,7 @@ class Hook_import_cms_merge
             import_id_remap_put('wiki_page', strval(db_get_first_id()), db_get_first_id());
         }
 
-        $rows_pages = $db->query_select(($db->table_exists('wiki_pages') ? 'wiki_pages' : 'seedy_pages'), array('*'), array(), '', null, null, true);
+        $rows_pages = $db->query_select(($db->table_exists('wiki_pages') ? 'wiki_pages' : 'seedy_pages'), array('*'), array(), '', null, 0, true);
         if ($rows_pages === null) {
             return;
         }
@@ -1657,7 +1657,7 @@ class Hook_import_cms_merge
     {
         require_code('custom_comcode');
 
-        $rows = $db->query_select('custom_comcode', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('custom_comcode', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1692,7 +1692,7 @@ class Hook_import_cms_merge
      */
     public function import_comcode_pages($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select('comcode_pages', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('comcode_pages', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1736,7 +1736,7 @@ class Hook_import_cms_merge
      */
     public function import_staff_checklist_cus_tasks($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select(($db->table_exists('staff_checklist_cus_tasks') ? 'staff_checklist_cus_tasks' : 'customtasks'), array('*'), array(), '', null, null, true);
+        $rows = $db->query_select(($db->table_exists('staff_checklist_cus_tasks') ? 'staff_checklist_cus_tasks' : 'customtasks'), array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1763,7 +1763,7 @@ class Hook_import_cms_merge
     {
         require_code('wordfilter');
 
-        $rows = $db->query_select('wordfilter', array('word'), array(), '', null, null, true);
+        $rows = $db->query_select('wordfilter', array('word'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1784,7 +1784,7 @@ class Hook_import_cms_merge
     {
         require_code('calendar2');
 
-        $rows = $db->query_select('calendar_types', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('calendar_types', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1805,7 +1805,7 @@ class Hook_import_cms_merge
         }
         $this->_import_content_reviews($db, $table_prefix, 'calendar_type', 'event_type');
 
-        $rows = $db->query_select(($db->table_exists('calendar_interests') ? 'calendar_interests' : 'calendar_declarations_of_interest'), array('*'), array(), '', null, null, true);
+        $rows = $db->query_select(($db->table_exists('calendar_interests') ? 'calendar_interests' : 'calendar_declarations_of_interest'), array('*'), array(), '', null, 0, true);
         $this->_fix_comcode_ownership($rows);
         $on_same_msn = ($this->on_same_msn($file_base));
         foreach ($rows as $row) {
@@ -1953,7 +1953,7 @@ class Hook_import_cms_merge
      */
     public function import_support_tickets($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select('ticket_types', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('ticket_types', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -1972,7 +1972,7 @@ class Hook_import_cms_merge
             import_id_remap_put('ticket_type', strval(isset($row['id']) ? $row['id'] : $row['ticket_type']), $ticket_type_id);
         }
 
-        $rows = $db->query_select('tickets', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('tickets', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2005,7 +2005,7 @@ class Hook_import_cms_merge
      */
     protected function _import_ticket_extra_access($db, $table_prefix)
     {
-        $rows = $db->query_select('ticket_extra_access', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('ticket_extra_access', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2029,7 +2029,7 @@ class Hook_import_cms_merge
      */
     protected function _import_ticket_known_emailers($db, $table_prefix)
     {
-        $rows = $db->query_select('ticket_known_emailers', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('ticket_known_emailers', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2137,7 +2137,7 @@ class Hook_import_cms_merge
     {
         require_code('catalogues2');
 
-        $rows = $db->query_select('catalogues', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('catalogues', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2297,7 +2297,7 @@ class Hook_import_cms_merge
 
             // Tedious...
             foreach (array('long', 'short', 'float', 'integer') as $table) {
-                $rows2 = $db->query('catalogue_efv_' . $table, array('*'), array('ce_id' => $row['id']), '', null, null, true);
+                $rows2 = $db->query('catalogue_efv_' . $table, array('*'), array('ce_id' => $row['id']), '', null, 0, true);
                 if ($rows2 !== null) { // Older versions of Composr don't have float and integer
                     foreach ($rows2 as $row2) {
                         $remapped = import_id_remap_get('catalogue_field', strval($row2['cf_id']), true);
@@ -2357,7 +2357,7 @@ class Hook_import_cms_merge
     {
         require_code('chat2');
 
-        $rows = $db->query_select('chat_rooms', array('*'), array('is_im' => 0), 'ORDER BY id', null, null, true);
+        $rows = $db->query_select('chat_rooms', array('*'), array('is_im' => 0), 'ORDER BY id', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2407,7 +2407,7 @@ class Hook_import_cms_merge
         }
         $this->_import_content_reviews($db, $table_prefix, 'chat', 'chat');
 
-        $rows = $db->query_select('chat_blocking', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('chat_blocking', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2429,7 +2429,7 @@ class Hook_import_cms_merge
             $GLOBALS['SITE_DB']->query_insert('chat_blocking', array('member_blocker' => $member_blocker, 'member_blocked' => $member_blocked, 'date_and_time' => $row['date_and_time']));
         }
 
-        $rows = $db->query_select(($db->table_exists('chat_friends') ? 'chat_friends' : 'chat_buddies'), array('*'), array(), '', null, null, true);
+        $rows = $db->query_select(($db->table_exists('chat_friends') ? 'chat_friends' : 'chat_buddies'), array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2450,7 +2450,7 @@ class Hook_import_cms_merge
             $GLOBALS['SITE_DB']->query_insert('chat_friends', array('member_likes' => $member_likes, 'member_liked' => $member_liked, 'date_and_time' => $row['date_and_time']));
         }
 
-        $rows = $db->query_select('chat_sound_effects', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('chat_sound_effects', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2479,7 +2479,7 @@ class Hook_import_cms_merge
     public function import_awards($db, $table_prefix, $file_base)
     {
         $content_types = array();
-        $rows = $db->query_select('award_types', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('award_types', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2540,7 +2540,7 @@ class Hook_import_cms_merge
      */
     public function import_filedump($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select('filedump', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('filedump', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -2761,7 +2761,7 @@ class Hook_import_cms_merge
             $GLOBALS['SITE_DB']->query_insert('group_category_access', $row);
         }
 
-        $rows = $db->query_select('member_zone_access', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('member_zone_access', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $member_id = import_id_remap_get('member', strval($row['member_id']), true);
@@ -2777,7 +2777,7 @@ class Hook_import_cms_merge
             }
         }
 
-        $rows = $db->query_select('member_category_access', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('member_category_access', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $member_id = import_id_remap_get('member', strval($row['member_id']), true);
@@ -2809,7 +2809,7 @@ class Hook_import_cms_merge
             $GLOBALS['SITE_DB']->query_insert('member_page_access', array('page_name' => $page_name, 'zone_name' => $zone_name, 'member_id' => $member_id, 'active_until' => $row['active_until']));
         }
 
-        $rows = $db->query_select(($db->table_exists('member_privileges') ? 'member_privileges' : 'msp'), array('*'), array(), '', null, null, true);
+        $rows = $db->query_select(($db->table_exists('member_privileges') ? 'member_privileges' : 'msp'), array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $member_id = import_id_remap_get('member', strval($row['member_id']), true);
@@ -2880,7 +2880,7 @@ class Hook_import_cms_merge
      */
     public function import_notifications($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select('notifications_enabled', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('notifications_enabled', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $member_id = import_id_remap_get('member', strval($row['l_member_id']), true);
@@ -2905,7 +2905,7 @@ class Hook_import_cms_merge
             }
         }
 
-        $rows = $db->query_select('device_token_details', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('device_token_details', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $member_id = import_id_remap_get('member', strval($row['member_id']), true);
@@ -2921,7 +2921,7 @@ class Hook_import_cms_merge
             }
         }
 
-        $rows = $db->query_select('notification_lockdown', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('notification_lockdown', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notification_lockdown', 'l_notification_code', array('l_notification_code' => $row['l_notification_code']));
@@ -3111,7 +3111,7 @@ class Hook_import_cms_merge
         }
 
         // Invites
-        $rows = $db->query_select('f_invites', array('*'), array(), 'ORDER BY id', null, null, true);
+        $rows = $db->query_select('f_invites', array('*'), array(), 'ORDER BY id', null, 0, true);
         if ($rows !== null) {
             foreach ($rows as $row) {
                 $i_inviter = import_id_remap_get('member', strval($row['i_inviter']), true);
@@ -3224,7 +3224,7 @@ class Hook_import_cms_merge
      */
     protected function _import_f_member_cpf_perms($db, $table_prefix)
     {
-        $rows = $db->query_select('f_member_cpf_perms', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('f_member_cpf_perms', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -3835,7 +3835,7 @@ class Hook_import_cms_merge
      */
     public function import_cns_saved_warnings($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select('f_saved_warnings', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('f_saved_warnings', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -3859,7 +3859,7 @@ class Hook_import_cms_merge
      */
     public function import_match_key_messages($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select('match_key_messages', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('match_key_messages', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -3935,7 +3935,7 @@ class Hook_import_cms_merge
      */
     protected function _import_pstore_customs($db, $table_prefix)
     {
-        $rows = $db->query_select('pstore_customs', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('pstore_customs', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -3957,7 +3957,7 @@ class Hook_import_cms_merge
      */
     protected function _import_pstore_permissions($db, $table_prefix)
     {
-        $rows = $db->query_select('pstore_permissions', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('pstore_permissions', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -3985,7 +3985,7 @@ class Hook_import_cms_merge
      */
     public function import_staff_website_monitoring($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select(($db->table_exists('staff_website_monitoring') ? 'staff_website_monitoring' : 'sitewatchlist'), array('*'), array(), '', null, null, true);
+        $rows = $db->query_select(($db->table_exists('staff_website_monitoring') ? 'staff_website_monitoring' : 'sitewatchlist'), array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }
@@ -4011,7 +4011,7 @@ class Hook_import_cms_merge
      */
     public function import_staff_links($db, $table_prefix, $file_base)
     {
-        $rows = $db->query_select(($db->table_exists('staff_links') ? 'staff_links' : 'stafflinks'), array('*'), array(), '', null, null, true);
+        $rows = $db->query_select(($db->table_exists('staff_links') ? 'staff_links' : 'stafflinks'), array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return;
         }

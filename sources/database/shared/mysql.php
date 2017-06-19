@@ -184,7 +184,7 @@ class Database_super_mysql extends DatabaseDriver
     public function query_may_run($query, $connection, $get_insert_id)
     {
         if (isset($query[500000])) { // Let's hope we can fail on this, because it's a huge query. We can only allow it if MySQL can.
-            $test_result = $this->query('SHOW VARIABLES LIKE \'max_allowed_packet\'', $connection, null, null, true);
+            $test_result = $this->query('SHOW VARIABLES LIKE \'max_allowed_packet\'', $connection, null, 0, true);
 
             if (!is_array($test_result)) {
                 return false;
@@ -213,7 +213,7 @@ class Database_super_mysql extends DatabaseDriver
      */
     public function set_query_time_limit($seconds, $connection)
     {
-        $this->query('SET SESSION MAX_EXECUTION_TIME=' . strval($seconds * 1000), $connection, null, null, true); // Only works in MySQL 5.7+
+        $this->query('SET SESSION MAX_EXECUTION_TIME=' . strval($seconds * 1000), $connection, null, 0, true); // Only works in MySQL 5.7+
     }
 
     /**
@@ -390,7 +390,7 @@ class Database_super_mysql extends DatabaseDriver
     {
         if (get_value('slow_counts') === '1') {
             $sql = 'SELECT TABLE_ROWS FROM information_schema.tables WHERE table_schema=DATABASE() AND TABLE_NAME=\'' . $this->escape_string($table) . '\'';
-            $values = $this->query($sql, $connection, null, null, true);
+            $values = $this->query($sql, $connection, null, 0, true);
             if (!isset($values[0])) {
                 return null; // No result found
             }
@@ -414,7 +414,7 @@ class Database_super_mysql extends DatabaseDriver
         static $min_word_length = null;
         if ($min_word_length === null) {
             $min_word_length = 4;
-            $_min_word_length = $this->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', $connection, null, null, true);
+            $_min_word_length = $this->query('SHOW VARIABLES LIKE \'ft_min_word_len\'', $connection, null, 0, true);
             if (isset($_min_word_length[0])) {
                 $min_word_length = intval($_min_word_length[0]['Value']);
             }

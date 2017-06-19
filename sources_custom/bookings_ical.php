@@ -39,7 +39,7 @@ function bookables_ical_script()
     $filter = get_param_string('filter', '*', INPUT_FILTER_GET_COMPLEX);
     require_code('selectcode');
     $query .= ' AND ' . selectcode_to_sqlfragment($filter, 'id');
-    $events = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
+    $events = $GLOBALS['SITE_DB']->query($query, null, 0, false, true);
     echo "BEGIN:VCALENDAR\n";
     echo "VERSION:2.0\n";
     echo "PRODID:-//ocProducts/Composr//NONSGML v1.0//EN\n";

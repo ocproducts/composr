@@ -142,7 +142,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function check_db()
     {
-        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'users', null, null, true);
+        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'users', null, 0, true);
         return $test !== null;
     }
 
@@ -218,7 +218,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function install_create_custom_field($name, $length)
     {
-        $this->db->query('ALTER TABLE ' . $this->db->get_table_prefix() . 'users ADD cms_' . $name . ' TEXT', null, null, true);
+        $this->db->query('ALTER TABLE ' . $this->db->get_table_prefix() . 'users ADD cms_' . $name . ' TEXT', null, 0, true);
         return true;
     }
 
@@ -360,7 +360,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
      */
     public function set_custom_field($member, $field, $value)
     {
-        $this->db->query_update('users', array('cms_' . $field => $value), array('user_id' => $member), '', null, null, false, true);
+        $this->db->query_update('users', array('cms_' . $field => $value), array('user_id' => $member), '', null, 0, false, true);
     }
 
     /**
@@ -1076,7 +1076,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         if ($this->EMOTICON_CACHE !== null) {
             return $this->EMOTICON_CACHE;
         }
-        $rows = $this->db->query_select('smilies', array('*'), array(), '', null, null, true);
+        $rows = $this->db->query_select('smilies', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             $rows = array();
         }

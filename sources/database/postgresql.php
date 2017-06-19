@@ -348,7 +348,7 @@ class Database_Static_postgresql extends DatabaseDriver
         $fields = explode(',', $_fields);
         foreach ($fields as $field) {
             $sql = 'SELECT m_type FROM ' . $table_prefix . 'db_meta WHERE m_table=\'' . $this->escape_string($raw_table_name) . '\' AND m_name=\'' . $this->escape_string($field) . '\'';
-            $values = $this->query($sql, $connection, null, null, true);
+            $values = $this->query($sql, $connection, null, 0, true);
             if (!isset($values[0])) {
                 continue; // No result found
             }
@@ -387,7 +387,7 @@ class Database_Static_postgresql extends DatabaseDriver
     public function get_table_count_approx($table, $connection)
     {
         $sql = 'SELECT n_live_tup FROM pg_stat_all_tables WHERE relname=\'' . $this->escape_string($table) . '\'';
-        $values = $this->query($sql, $connection, null, null, true);
+        $values = $this->query($sql, $connection, null, 0, true);
         if (!isset($values[0])) {
             return null; // No result found
         }
@@ -476,7 +476,7 @@ class Database_Static_postgresql extends DatabaseDriver
      */
     public function set_query_time_limit($seconds, $connection)
     {
-        $this->query('SET statement_timeout TO ' . strval($seconds * 1000), $connection, null, null, true);
+        $this->query('SET statement_timeout TO ' . strval($seconds * 1000), $connection, null, 0, true);
     }
 
     /**

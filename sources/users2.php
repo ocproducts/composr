@@ -152,7 +152,7 @@ function member_blocked($member_id, $member_blocker = null)
     if ($member_id == get_member()) {
         static $members_blocking_us_cache = array();
         if ($members_blocking_us_cache === null) {
-            $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocker'), array('member_blocked' => get_member()), '', null, null, true);
+            $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocker'), array('member_blocked' => get_member()), '', null, 0, true);
             if ($rows === null) {
                 $members_blocking_us_cache = array();
                 return false;
@@ -164,7 +164,7 @@ function member_blocked($member_id, $member_blocker = null)
 
     static $members_blocked_cache = array();
     if ($members_blocked_cache === null) {
-        $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => get_member()), '', null, null, true);
+        $rows = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => get_member()), '', null, 0, true);
         if ($rows === null) {
             $members_blocked_cache = array();
             return false;

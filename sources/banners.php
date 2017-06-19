@@ -218,7 +218,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
             require_code('permissions');
             $groups = _get_where_clause_groups(get_member());
             if ($groups !== null) {
-                $perhaps = collapse_1d_complexity('category_name', $GLOBALS['SITE_DB']->query('SELECT DISTINCT category_name FROM ' . get_table_prefix() . 'group_category_access WHERE ' . db_string_equal_to('module_the_name', 'banners') . ' AND (' . $groups . ')', null, null, false, true));
+                $perhaps = collapse_1d_complexity('category_name', $GLOBALS['SITE_DB']->query('SELECT DISTINCT category_name FROM ' . get_table_prefix() . 'group_category_access WHERE ' . db_string_equal_to('module_the_name', 'banners') . ' AND (' . $groups . ')', null, 0, false, true));
                 $new_rows = array();
                 foreach ($rows as $row) {
                     if (in_array($row['name'], $perhaps)) {

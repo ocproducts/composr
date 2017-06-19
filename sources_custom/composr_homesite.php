@@ -150,7 +150,7 @@ function load_version_download_rows()
                 $sql .= ' FORCE INDEX (recent_downloads)';
             }
             $sql .= ' WHERE validated=1 AND ' . $GLOBALS['SITE_DB']->translate_field_ref('name') . ' LIKE \'' . db_encode_like('Composr Version %') . '\' ORDER BY add_date';
-            $DOWNLOAD_ROWS = $GLOBALS['SITE_DB']->query($sql, null, null, false, false, array('name' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+            $DOWNLOAD_ROWS = $GLOBALS['SITE_DB']->query($sql, null, 0, false, false, array('name' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
             foreach ($DOWNLOAD_ROWS as $i => $row) {
                 $DOWNLOAD_ROWS[$i]['nice_title'] = get_translated_text($row['name']);
                 $DOWNLOAD_ROWS[$i]['nice_description'] = get_translated_text($row['description']);
@@ -379,8 +379,8 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
 
     // Create database
     $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $SITE_INFO['mysql_root_password'], 'cms_');
-    $master_conn->query('DROP DATABASE `demonstratr_site_' . $codename . '`', null, null, true);
-    $master_conn->query('CREATE DATABASE `demonstratr_site_' . $codename . '`', null, null, true);
+    $master_conn->query('DROP DATABASE `demonstratr_site_' . $codename . '`', null, 0, true);
+    $master_conn->query('CREATE DATABASE `demonstratr_site_' . $codename . '`', null, 0, true);
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
     $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'%\' IDENTIFIED BY \'' . db_escape_string($SITE_INFO['mysql_demonstratr_password']) . '\''); // tcp/ip
     $master_conn->query('GRANT ALL ON `demonstratr_site_' . $codename . '`.* TO \'' . $user . '\'@\'localhost\' IDENTIFIED BY \'' . db_escape_string($SITE_INFO['mysql_demonstratr_password']) . '\''); // local socket
@@ -827,7 +827,7 @@ function demonstratr_delete_site($server, $codename, $bulk = false)
     $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $SITE_INFO['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE IF EXISTS `demonstratr_site_' . $codename . '`');
     $user = substr(md5('demonstratr_site_' . $codename), 0, 16);
-    $master_conn->query('REVOKE ALL ON `demonstratr_site_' . $codename . '`.* FROM \'' . $user . '\'', null, null, true);
+    $master_conn->query('REVOKE ALL ON `demonstratr_site_' . $codename . '`.* FROM \'' . $user . '\'', null, 0, true);
     //$master_conn->query('DROP USER \'demonstratr_site_' . $codename . '\'');
 
     $GLOBALS['SITE_DB']->query_delete('sites_deletion_codes', array('s_codename' => $codename), '', 1);

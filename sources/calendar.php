@@ -497,7 +497,7 @@ function create_selection_list_event_types($it = null, $updated_since = null)
         }
         $where .= ' AND EXISTS(SELECT * FROM ' . get_table_prefix() . 'calendar_events e' . $extra_join . ' WHERE validated=1 AND e_add_date>' . strval($updated_since) . $extra_where . ')';
     }
-    $types = $GLOBALS['SITE_DB']->query('SELECT id,t_title FROM ' . get_table_prefix() . 'calendar_types WHERE ' . $where, null, null, false, true);
+    $types = $GLOBALS['SITE_DB']->query('SELECT id,t_title FROM ' . get_table_prefix() . 'calendar_types WHERE ' . $where, null, 0, false, true);
     $first_type = null;
     foreach ($types as $i => $type) {
         $types[$i]['t_title_deref'] = get_translated_text($type['t_title']);

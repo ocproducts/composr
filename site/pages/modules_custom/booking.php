@@ -257,7 +257,7 @@ class Module_booking
         $filter = get_param_string('filter', '*', INPUT_FILTER_GET_COMPLEX);
         require_code('selectcode');
         $query .= ' AND ' . selectcode_to_sqlfragment($filter, 'id');
-        $bookables = $GLOBALS['SITE_DB']->query($query . ' ORDER BY sort_order', null, null, false, true);
+        $bookables = $GLOBALS['SITE_DB']->query($query . ' ORDER BY sort_order', null, 0, false, true);
 
         $has_date_ranges = false;
         $has_single_dates = false;

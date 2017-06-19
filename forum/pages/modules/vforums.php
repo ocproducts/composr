@@ -349,7 +349,7 @@ class Module_vforums
         }
         $involved = array();
         if (($or_list != '') && (!is_guest())) {
-            $involved = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT p_topic_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE (' . $or_list . ') AND p_poster=' . strval(get_member()), null, null, false, true);
+            $involved = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT p_topic_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE (' . $or_list . ') AND p_poster=' . strval(get_member()), null, 0, false, true);
             $involved = collapse_1d_complexity('p_topic_id', $involved);
         }
         $topics_array = array();

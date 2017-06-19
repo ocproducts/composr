@@ -94,7 +94,7 @@ function edit_news_category($id, $title, $img, $notes, $owner)
         $sql .= db_string_equal_to('meta_for_type', 'news');
         $meta_keywords_field = $GLOBALS['SITE_DB']->translate_field_ref('meta_keyword');
         $sql .= ' AND ' . db_string_equal_to($meta_keywords_field, $old_title);
-        $affected_news = $GLOBALS['SITE_DB']->query($sql, null, null, false, false, array('meta_keyword' => 'SHORT_TRANS'));
+        $affected_news = $GLOBALS['SITE_DB']->query($sql, null, 0, false, false, array('meta_keyword' => 'SHORT_TRANS'));
         foreach ($affected_news as $af_row) {
             $GLOBALS['SITE_DB']->query_update('seo_meta_keywords', lang_remap('meta_keyword', $af_row['meta_keyword'], $title), $af_row);
         }
@@ -189,7 +189,7 @@ function delete_news_category($id)
         $sql .= db_string_equal_to('meta_for_type', 'news');
         $meta_keywords_field = $GLOBALS['SITE_DB']->translate_field_ref('meta_keyword');
         $sql .= ' AND ' . db_string_equal_to($meta_keywords_field, $old_title);
-        $affected_news = $GLOBALS['SITE_DB']->query($sql, null, null, false, false, array('meta_keyword' => 'SHORT_TRANS'));
+        $affected_news = $GLOBALS['SITE_DB']->query($sql, null, 0, false, false, array('meta_keyword' => 'SHORT_TRANS'));
         foreach ($affected_news as $af_row) {
             $GLOBALS['SITE_DB']->query_delete('seo_meta_keywords', array('id' => $af_row['id']), '', 1);
         }
@@ -759,7 +759,7 @@ function _get_wordpress_db_data()
     // Create database connector
     $db = new DatabaseConnector($db_name, $host_name, $db_user, $db_passwrod, $db_table_prefix);
 
-    $users = $db->query_select('users', array('*'), array(), '', null, null, true);
+    $users = $db->query_select('users', array('*'), array(), '', null, 0, true);
     if ($users === null) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }

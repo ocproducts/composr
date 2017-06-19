@@ -121,7 +121,7 @@ function find_nearest_location($latitude, $longitude, $latitude_field_id = null,
     } else { // Catalogue query (works both for entries and categories that use custom fields)
         $where = str_replace(array('l_latitude', 'l_longitude'), array('a.cv_value', 'b.cv_value'), $where);
         $query = 'SELECT a.ce_id,c.id,cc_title,a.cv_value AS l_latitude,b.cv_value AS l_longitude FROM ' . get_table_prefix() . 'catalogue_efv_float a JOIN ' . get_table_prefix() . 'catalogue_efv_float b ON a.ce_id=b.ce_id AND a.cf_id=' . strval($latitude_field_id) . ' AND b.cf_id=' . strval($longitude_field_id) . ' LEFT JOIN ' . get_table_prefix() . 'catalogue_entry_linkage x ON a.ce_id=x.catalogue_entry_id AND ' . db_string_equal_to('x.content_type', 'catalogue_category') . ' LEFT JOIN ' . get_table_prefix() . 'catalogue_categories c ON ' . db_cast('c.id', 'CHAR') . '=x.content_id WHERE ' . $where;
-        $locations = $GLOBALS['SITE_DB']->query($query, null, null, false, false, array('cc_title' => 'SHORT_TRANS'));
+        $locations = $GLOBALS['SITE_DB']->query($query, null, 0, false, false, array('cc_title' => 'SHORT_TRANS'));
     }
 
     if (count($locations) == 0) {

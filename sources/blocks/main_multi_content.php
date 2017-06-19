@@ -525,7 +525,7 @@ class Block_main_multi_content
                 $awarded_content_ids = array();
             } else {
                 $award_sql = 'SELECT a.a_type_id,a.content_id FROM ' . get_table_prefix() . 'award_archive a JOIN (SELECT MAX(date_and_time) AS max_date,a_type_id FROM ' . get_table_prefix() . 'award_archive WHERE ' . $where . ' GROUP BY a_type_id) b ON b.a_type_id=a.a_type_id AND a.date_and_time=b.max_date WHERE ' . str_replace('a_type_id', 'a.a_type_id', $where);
-                $awarded_content_ids = collapse_2d_complexity('a_type_id', 'content_id', $GLOBALS['SITE_DB']->query($award_sql, null, null, false, true));
+                $awarded_content_ids = collapse_2d_complexity('a_type_id', 'content_id', $GLOBALS['SITE_DB']->query($award_sql, null, 0, false, true));
             }
 
             foreach ($pinned as $p) {

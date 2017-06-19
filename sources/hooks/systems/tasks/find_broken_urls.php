@@ -164,7 +164,7 @@ class Hook_task_find_broken_urls
             }
             if ($or_list != '') {
                 $sql = 'SELECT id,cv_value,ce_id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_efv_short WHERE ' . $or_list;
-                $values = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+                $values = $GLOBALS['SITE_DB']->query($sql, null, 0, false, true);
                 foreach ($values as $value) {
                     $url = $value['cv_value'];
 

@@ -60,7 +60,7 @@ function check_wordfilter($a, $name = null, $no_die = false, $try_patterns = fal
     global $WORDS_TO_FILTER_CACHE;
     if ($WORDS_TO_FILTER_CACHE === null) {
         $WORDS_TO_FILTER_CACHE = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'), array(), '', null, null, true);
+        $rows = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'), array(), '', null, 0, true);
         if ($rows !== null) {
             foreach ($rows as $i => $r) {
                 if (($i == 0) && (!array_key_exists('w_replacement', $r))) {

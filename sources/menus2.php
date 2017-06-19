@@ -46,7 +46,7 @@ function export_menu_csv($file_path = null)
         $sql = 'SELECT m.id, i_menu, i_order, i_parent, i_url, i_check_permissions, i_expanded, i_new_window, i_page_only, i_theme_img_code, t1.text_original AS i_caption, t2.text_original AS i_caption_long, i_include_sitemap FROM ' . get_table_prefix() . 'menu_items m JOIN ' . get_table_prefix() . 'translate t1 ON t1.id=m.i_caption JOIN ' . get_table_prefix() . 'translate t2 ON t2.id=m.i_caption_long';
     }
 
-    $data = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+    $data = $GLOBALS['SITE_DB']->query($sql, null, 0, false, true);
 
     require_code('files');
     require_code('files2');

@@ -104,7 +104,7 @@ class Hook_search_cns_members extends FieldsSearchHook
         if ($group_count > 300) {
             $where .= ' AND g_is_private_club=0';
         }
-        $rows = $GLOBALS['FORUM_DB']->query('SELECT g.id,g_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $where . ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'), null, null, false, false, array('g_name' => 'SHORT_TRANS'));
+        $rows = $GLOBALS['FORUM_DB']->query('SELECT g.id,g_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $where . ' ORDER BY g_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('g_name'), null, 0, false, false, array('g_name' => 'SHORT_TRANS'));
         $groups = form_input_list_entry('', false, '---');
         $default_group = get_param_string('option__user_group', '');
         $group_titles = array();

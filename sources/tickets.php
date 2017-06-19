@@ -238,7 +238,7 @@ function get_tickets($filters = array(), $include_first_posts = false, $silent_e
         } else {
             $query = 'SELECT id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE ' . db_string_equal_to('f_name', get_translated_text($ticket_type_name)) . ' AND f_parent_forum=' . strval($fid);
 
-            $rows = $GLOBALS['FORUM_DB']->query($query, null, null, false, true);
+            $rows = $GLOBALS['FORUM_DB']->query($query, null, 0, false, true);
             $forums = collapse_2d_complexity('id', 'id', $rows);
         }
     } else {

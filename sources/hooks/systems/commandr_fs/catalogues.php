@@ -88,7 +88,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                 return $ret;
 
             case 'catalogue':
-                $ret = $GLOBALS['SITE_DB']->query('SELECT c_name FROM ' . get_table_prefix() . 'catalogues WHERE ' . db_string_equal_to($GLOBALS['SITE_DB']->translate_field_ref('c_title'), $label) . ' OR ' . db_string_equal_to('c_name', $label), null, null, false, false, array('c_title' => 'SHORT_TRANS'));
+                $ret = $GLOBALS['SITE_DB']->query('SELECT c_name FROM ' . get_table_prefix() . 'catalogues WHERE ' . db_string_equal_to($GLOBALS['SITE_DB']->translate_field_ref('c_title'), $label) . ' OR ' . db_string_equal_to('c_name', $label), null, 0, false, false, array('c_title' => 'SHORT_TRANS'));
                 return collapse_1d_complexity('c_name', $ret);
         }
         return array();

@@ -361,7 +361,7 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
 
         $queries = $GLOBALS['DB_STATIC_OBJECT']->create_index($this_ref->table_prefix . $table_name, $index_name, $_fields, $this_ref->connection_write, $table_name, $unique_key_fields, $this_ref->get_table_prefix());
         foreach ($queries as $sql) {
-            $GLOBALS['DB_STATIC_OBJECT']->query($sql, $this_ref->connection_write, null, null, $is_full_text/*May fail on database backends that don't cleanup full-text well when dropping tables*/);
+            $GLOBALS['DB_STATIC_OBJECT']->query($sql, $this_ref->connection_write, null, 0, $is_full_text/*May fail on database backends that don't cleanup full-text well when dropping tables*/);
         }
     }
 }
@@ -440,7 +440,7 @@ function _helper_delete_index_if_exists($this_ref, $table_name, $index_name)
 
     foreach ($possible_final_index_names as $_index_name) {
         $query = 'DROP INDEX ' . $_index_name . ' ON ' . $this_ref->get_table_prefix() . $table_name;
-        $this_ref->query($query, null, null, true);
+        $this_ref->query($query, null, 0, true);
     }
 
     $this_ref->query_delete('db_meta_indices', array('i_table' => $table_name, 'i_name' => $full_index_name));
@@ -482,7 +482,7 @@ function _helper_drop_table_if_exists($this_ref, $table)
 
     $queries = $GLOBALS['DB_STATIC_OBJECT']->drop_table_if_exists($this_ref->table_prefix . $table, $this_ref->connection_write);
     foreach ($queries as $sql) {
-        $GLOBALS['DB_STATIC_OBJECT']->query($sql, $this_ref->connection_write, null, null, true); // Might already exist so suppress errors
+        $GLOBALS['DB_STATIC_OBJECT']->query($sql, $this_ref->connection_write, null, 0, true); // Might already exist so suppress errors
     }
 
     if (function_exists('persistent_cache_delete')) {

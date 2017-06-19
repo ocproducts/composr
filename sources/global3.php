@@ -2110,9 +2110,9 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
     } else {
         $ip_bans = function_exists('persistent_cache_get') ? persistent_cache_get('IP_BANS') : null;
         if ($ip_bans === null) {
-            $ip_bans = $GLOBALS['SITE_DB']->query_select('banned_ip', array('*'), array(), '', null, null, true);
+            $ip_bans = $GLOBALS['SITE_DB']->query_select('banned_ip', array('*'), array(), '', null, 0, true);
             if (!is_array($ip_bans)) { // LEGACY
-                $ip_bans = $GLOBALS['SITE_DB']->query_select('usersubmitban_ip', array('*'), array(), '', null, null, true);
+                $ip_bans = $GLOBALS['SITE_DB']->query_select('usersubmitban_ip', array('*'), array(), '', null, 0, true);
             }
             if ($ip_bans !== null) {
                 persistent_cache_set('IP_BANS', $ip_bans);
@@ -2329,7 +2329,7 @@ function get_num_users_site()
             $PEAK_USERS_WEEK_CACHE = $NUM_USERS_SITE_CACHE;
 
             // But also delete anything else in the last 7 days that was less than the new weekly peak record, to keep the stats clean (we only want 7 day peaks to be stored)
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'usersonline_track WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * 7) . ' AND peak<=' . $PEAK_USERS_WEEK_CACHE, null, null, true);
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'usersonline_track WHERE date_and_time>' . strval(time() - 60 * 60 * 24 * 7) . ' AND peak<=' . $PEAK_USERS_WEEK_CACHE, null, 0, true);
 
             // Set record for week
             set_value('user_peak_week', $PEAK_USERS_WEEK_CACHE);

@@ -132,7 +132,7 @@ function get_local_videos($local_id = null)
         $where .= ' AND v.id=' . strval($local_id);
     }
 
-    $rows = $GLOBALS['SITE_DB']->query('SELECT v.* FROM ' . get_table_prefix() . 'videos v WHERE ' . $where, null, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
+    $rows = $GLOBALS['SITE_DB']->query('SELECT v.* FROM ' . get_table_prefix() . 'videos v WHERE ' . $where, null, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS'));
     $videos = array();
     foreach ($rows as $row) {
         $videos[$row['id']] = _get_local_video($row);

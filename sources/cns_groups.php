@@ -193,7 +193,7 @@ function cns_ensure_groups_cached($groups)
     if ($expected_load_count == 0) {
         return;
     }
-    $extra_groups = $GLOBALS['FORUM_DB']->query('SELECT g.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $groups_to_load, null, null, false, true, array('g_name' => 'SHORT_TRANS', 'g_title' => 'SHORT_TRANS'));
+    $extra_groups = $GLOBALS['FORUM_DB']->query('SELECT g.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_groups g WHERE ' . $groups_to_load, null, 0, false, true, array('g_name' => 'SHORT_TRANS', 'g_title' => 'SHORT_TRANS'));
 
     if (count($extra_groups) < $expected_load_count) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'group'));

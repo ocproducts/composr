@@ -75,7 +75,7 @@ function _delete_cache_entry($cached_for, $identifier = null, $member = null)
 
     $sql = 'DELETE FROM ' . get_table_prefix() . 'cache WHERE ' . $where;
 
-    $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+    $GLOBALS['SITE_DB']->query($sql, null, 0, false, true);
 
     $hooks = find_all_hook_obs('systems', 'decache', 'Hook_decache_');
     foreach ($hooks as $ob) {

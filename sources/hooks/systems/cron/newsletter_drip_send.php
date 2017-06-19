@@ -51,7 +51,7 @@ class Hook_cron_newsletter_drip_send
                 }
                 $id_list .= 'id=' . strval($mail['id']);
             }
-            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'newsletter_drip_send WHERE ' . $id_list, null, null, false, true);
+            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'newsletter_drip_send WHERE ' . $id_list, null, 0, false, true);
 
             // We'll cache messages here
             $cached_messages = array();

@@ -265,7 +265,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     }
 
     // Check access
-    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
+    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, 0, false, true);
     $num_posts_counted = 0;
     foreach ($_postdetails as $post) {
         if (($post['p_intended_solely_for'] === null) && ($post['p_validated'] == 1)) {
@@ -310,7 +310,7 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
         if (addon_installed('unvalidated')) {
             $sql .= ' AND p_validated=1';
         }
-        $_member_post_counts = $GLOBALS['FORUM_DB']->query($sql, null, null, false, true);
+        $_member_post_counts = $GLOBALS['FORUM_DB']->query($sql, null, 0, false, true);
         $member_post_counts = array();
         foreach ($_member_post_counts as $_member_post_count) {
             $_member = $_member_post_count['p_poster'];
@@ -337,8 +337,8 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
 
     // Delete everything...
 
-    $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
-    $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'review_supplement WHERE ' . str_replace('id=', 'r_post_id=', $or_list), null, null, false, true);
+    $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, 0, false, true);
+    $GLOBALS['SITE_DB']->query('DELETE FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'review_supplement WHERE ' . str_replace('id=', 'r_post_id=', $or_list), null, 0, false, true);
 
     $test = $GLOBALS['FORUM_DB']->query_select_value('f_posts', 'COUNT(*)', array('p_topic_id' => $topic_id));
     if (($test == 0) && ($cleanup)) {
@@ -409,7 +409,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
     if (!cns_may_moderate_forum($from_forum_id)) {
         access_denied('I_ERROR');
     }
-    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT p_cache_forum_id,p_intended_solely_for,p_validated FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, null, false, true);
+    $_postdetails = $GLOBALS['FORUM_DB']->query('SELECT p_cache_forum_id,p_intended_solely_for,p_validated FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE ' . $or_list, null, 0, false, true);
     $num_posts_counted = 0;
     foreach ($_postdetails as $post) {
         if (($post['p_intended_solely_for'] === null) && ($post['p_validated'] == 1)) {
@@ -453,7 +453,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
             }
             $ticket_url = ticket_add_post($ticket_id, $ticket_type, $title, '', false, $member_id);
             $to_topic_id = $GLOBALS['LAST_TOPIC_ID'];
-            $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_time=' . strval(time()) . ' WHERE ' . $or_list, null, null, false, true);
+            $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_time=' . strval(time()) . ' WHERE ' . $or_list, null, 0, false, true);
         } else {
             require_code('cns_topics_action');
             $to_topic_id = cns_make_topic($to_forum_id);
@@ -472,7 +472,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
     $to_forum_id = $to_info[0]['t_forum_id'];
 
     // Do move
-    $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_cache_forum_id=' . strval($to_forum_id) . ', p_topic_id=' . strval($to_topic_id) . ' WHERE ' . $or_list, null, null, false, true);
+    $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_cache_forum_id=' . strval($to_forum_id) . ', p_topic_id=' . strval($to_topic_id) . ' WHERE ' . $or_list, null, 0, false, true);
 
     // Update caching
     if (addon_installed('actionlog')) {
@@ -505,7 +505,7 @@ function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum
                 if (addon_installed('unvalidated')) {
                     $sql .= ' AND p_validated=1';
                 }
-                $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query($sql, null, null, false, true));
+                $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query($sql, null, 0, false, true));
                 $member_post_counts = array_count_values($_member_post_counts);
 
                 foreach ($member_post_counts as $member_id => $member_post_count) {

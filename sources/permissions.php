@@ -179,7 +179,7 @@ function has_zone_access($member, $zone)
     }
     $where .= ')';
 
-    $rows = $GLOBALS['SITE_DB']->query('SELECT DISTINCT zone_name FROM ' . get_table_prefix() . 'group_zone_access WHERE (' . $groups . ') ' . $where . ' UNION ALL SELECT DISTINCT zone_name FROM ' . get_table_prefix() . 'member_zone_access WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where, null, null, false, true);
+    $rows = $GLOBALS['SITE_DB']->query('SELECT DISTINCT zone_name FROM ' . get_table_prefix() . 'group_zone_access WHERE (' . $groups . ') ' . $where . ' UNION ALL SELECT DISTINCT zone_name FROM ' . get_table_prefix() . 'member_zone_access WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where, null, 0, false, true);
     $ZONE_ACCESS_CACHE[$member] = array();
     foreach ($rows as $row) {
         $ZONE_ACCESS_CACHE[$member][$row['zone_name']] = true;
@@ -338,7 +338,7 @@ function has_page_access($member, $page, $zone, $at_now = false)
     $sql = 'SELECT zone_name,page_name,group_id FROM ' . get_table_prefix() . 'group_page_access WHERE (' . $where . ') AND (' . $groups . ')';
     $sql .= ' UNION ';
     $sql .= 'SELECT zone_name,page_name,NULL AS group_id FROM ' . get_table_prefix() . 'member_page_access WHERE (' . $where . ') AND (member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . '))';
-    $rows = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+    $rows = $GLOBALS['SITE_DB']->query($sql, null, 0, false, true);
     $rows_organised_for_groups = array();
     $rows_organised_for_member = array();
     $rows_organised_for_groups_match_key = array();
@@ -424,7 +424,7 @@ function load_up_all_module_category_permissions($member, $module = null)
     if ($db->query_value_if_there('SELECT COUNT(*) FROM ' . $db->get_table_prefix() . 'group_category_access WHERE ' . $catclause . '(' . $groups . ')') > 1000) {
         return; // Performance issue
     }
-    $perhaps = $db->query('SELECT ' . $select . ' FROM ' . $db->get_table_prefix() . 'group_category_access WHERE ' . $catclause . '(' . $groups . ') UNION ALL SELECT ' . $select . ' FROM ' . $db->get_table_prefix() . 'member_category_access WHERE ' . $catclause . '(member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . '))', null, null, false, true);
+    $perhaps = $db->query('SELECT ' . $select . ' FROM ' . $db->get_table_prefix() . 'group_category_access WHERE ' . $catclause . '(' . $groups . ') UNION ALL SELECT ' . $select . ' FROM ' . $db->get_table_prefix() . 'member_category_access WHERE ' . $catclause . '(member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . '))', null, 0, false, true);
 
     $LOADED_ALL_CATEGORY_PERMISSIONS_FOR_CACHE[$module][$member] = true;
 
@@ -497,7 +497,7 @@ function has_category_access($member, $module, $category)
     $sql = 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'group_category_access WHERE (' . $groups . ') ' . $where;
     $sql .= ' UNION ALL ';
     $sql .= 'SELECT DISTINCT category_name,module_the_name FROM ' . $db->get_table_prefix() . 'member_category_access WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
-    $rows = $db->query($sql, null, null, false, true);
+    $rows = $db->query($sql, null, 0, false, true);
 
     foreach ($rows as $row) {
         $CATEGORY_ACCESS_CACHE[$member][$row['module_the_name'] . '/' . $row['category_name']] = true;
@@ -768,10 +768,10 @@ function has_privilege($member, $privilege, $page = null, $cats = null)
     }
     $where .= ')';
     $sql = 'SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ')' . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_privileges WHERE member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
-    $perhaps = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+    $perhaps = $GLOBALS['SITE_DB']->query($sql, null, 0, false, true);
     if (is_on_multi_site_network() && (get_forum_type() == 'cns')) {
         $sql = 'SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_privileges WHERE (' . $groups . ') AND ' . db_string_equal_to('module_the_name', 'forums') . $where . ' UNION ALL SELECT privilege,the_page,module_the_name,category_name,the_value FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_privileges WHERE ' . db_string_equal_to('module_the_name', 'forums') . ' AND member_id=' . strval($member) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
-        $perhaps = array_merge($perhaps, $GLOBALS['FORUM_DB']->query($sql, null, null, false, true));
+        $perhaps = array_merge($perhaps, $GLOBALS['FORUM_DB']->query($sql, null, 0, false, true));
     }
     $PRIVILEGE_CACHE[$member] = array();
     foreach ($perhaps as $p) {

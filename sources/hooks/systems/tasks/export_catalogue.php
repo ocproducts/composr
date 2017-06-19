@@ -42,7 +42,7 @@ class Hook_task_export_catalogue
 
         require_code('catalogues');
 
-        $catalogue_row = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array('c_name' => $catalogue_name), '', null, null, true);
+        $catalogue_row = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array('c_name' => $catalogue_name), '', null, 0, true);
         if ($catalogue_row === null) {
             $catalogue_row = array();
         }

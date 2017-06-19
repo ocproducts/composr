@@ -67,17 +67,17 @@ class Hook_endpoint_account_login
             $sql = 'SELECT privilege FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_privileges WHERE (' . $where_groups . ')' . $where;
             $sql .= ' UNION ALL ';
             $sql .= 'SELECT privilege FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_privileges WHERE member_id=' . strval($member_id) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')' . $where;
-            $privileges_perhaps = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+            $privileges_perhaps = $GLOBALS['SITE_DB']->query($sql, null, 0, false, true);
 
             $sql = 'SELECT page_name FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_page_access WHERE (' . $where_groups . ')';
             $sql .= ' UNION ALL ';
             $sql .= 'SELECT page_name FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_page_access WHERE member_id=' . strval($member_id) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')';
-            $pages_blacklist = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+            $pages_blacklist = $GLOBALS['SITE_DB']->query($sql, null, 0, false, true);
 
             $sql = 'SELECT zone_name FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'group_zone_access WHERE (' . $where_groups . ')';
             $sql .= ' UNION ALL ';
             $sql .= 'SELECT zone_name FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'member_zone_access WHERE member_id=' . strval($member_id) . ' AND (active_until IS NULL OR active_until>' . strval(time()) . ')';
-            $zones_perhaps = $GLOBALS['SITE_DB']->query($sql, null, null, false, true);
+            $zones_perhaps = $GLOBALS['SITE_DB']->query($sql, null, 0, false, true);
         }
 
         $groups = array();

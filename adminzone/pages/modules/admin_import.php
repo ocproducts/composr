@@ -695,7 +695,7 @@ class Module_admin_import
                     if ($remapped !== null) {
                         $value2 = $value;
                         $value2[$field['m_name']] = -$remapped;
-                        $c = $GLOBALS['SITE_DB']->query_update($field['m_table'], $value2, $value, '', null, null, true, true);
+                        $c = $GLOBALS['SITE_DB']->query_update($field['m_table'], $value2, $value, '', null, 0, true, true);
                         if ($c === null) { // Something went wrong apparently- but we still need to clean up
                             $GLOBALS['SITE_DB']->query_delete($field['m_table'], $value);
                         } else {

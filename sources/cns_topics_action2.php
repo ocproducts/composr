@@ -431,14 +431,14 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
             }
         }
 
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_forum_id=' . strval($to) . ',t_pt_from=NULL,t_pt_to=NULL WHERE t_forum_id' . (($from === null) ? ' IS NULL' : ('=' . strval($from))) . ' AND (' . $or_list . ')', null, null, false, true);
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics SET t_forum_id=' . strval($to) . ',t_pt_from=NULL,t_pt_to=NULL WHERE t_forum_id' . (($from === null) ? ' IS NULL' : ('=' . strval($from))) . ' AND (' . $or_list . ')', null, 0, false, true);
         log_it('MOVE_TOPICS', do_lang('MULTIPLE'));
 
         $post_count = $GLOBALS['FORUM_DB']->query_value_if_there('SELECT SUM(t_cache_num_posts) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE ' . $or_list, false, true);
 
         // Update forum IDs' for posts
         $or_list_2 = str_replace('id', 'p_topic_id', $or_list);
-        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_cache_forum_id=' . strval($to) . ' WHERE ' . $or_list_2, null, null, false, true);
+        $GLOBALS['FORUM_DB']->query('UPDATE ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts SET p_cache_forum_id=' . strval($to) . ' WHERE ' . $or_list_2, null, 0, false, true);
     }
 
     require_code('cns_posts_action2');
@@ -467,7 +467,7 @@ function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB:
             if (addon_installed('unvalidated')) {
                 $sql .= ' AND p_validated=1';
             }
-            $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query($sql, null, null, false, true));
+            $_member_post_counts = collapse_1d_complexity('p_poster', $GLOBALS['FORUM_DB']->query($sql, null, 0, false, true));
             $member_post_counts = array_count_values($_member_post_counts);
 
             foreach ($member_post_counts as $member_id => $member_post_count) {

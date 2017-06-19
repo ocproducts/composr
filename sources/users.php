@@ -70,7 +70,7 @@ function init__users()
         $SESSION_CACHE = array();
         if ((get_forum_type() == 'cns') && (!is_on_multi_site_network())) {
             push_db_scope_check(false);
-            $_s = $GLOBALS['SITE_DB']->query('SELECT s.*,m.m_primary_group FROM ' . get_table_prefix() . 'sessions s LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_members m ON m.id=s.member_id' . $where . ' ORDER BY the_session', null, null, true, true);
+            $_s = $GLOBALS['SITE_DB']->query('SELECT s.*,m.m_primary_group FROM ' . get_table_prefix() . 'sessions s LEFT JOIN ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'f_members m ON m.id=s.member_id' . $where . ' ORDER BY the_session', null, 0, true, true);
             if ($_s === null) {
                 $_s = array();
             }

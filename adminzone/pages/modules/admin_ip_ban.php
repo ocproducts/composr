@@ -262,7 +262,7 @@ class Module_admin_ip_ban
     {
         require_code('failure');
 
-        $rows = $GLOBALS['SITE_DB']->query('SELECT ip,i_descrip FROM ' . get_table_prefix() . 'banned_ip WHERE i_ban_until IS NULL'/*.' OR i_ban_until>'.strval(time())*/, null, null, false, true);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT ip,i_descrip FROM ' . get_table_prefix() . 'banned_ip WHERE i_ban_until IS NULL'/*.' OR i_ban_until>'.strval(time())*/, null, 0, false, true);
         $old_bans = collapse_1d_complexity('ip', $rows);
         $bans = post_param_string('bans');
         $_bans = explode("\n", $bans);

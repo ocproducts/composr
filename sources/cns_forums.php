@@ -94,7 +94,7 @@ function get_forum_access_sql($field)
         return '1=1';
     }
 
-    $perhaps = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_category_access WHERE (' . $groups . ') AND ' . db_string_equal_to('module_the_name', 'forums') . ' UNION ALL SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval(get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', 'forums'), null, null, false, true);
+    $perhaps = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'group_category_access WHERE (' . $groups . ') AND ' . db_string_equal_to('module_the_name', 'forums') . ' UNION ALL SELECT DISTINCT category_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'member_category_access WHERE (member_id=' . strval(get_member()) . ' AND active_until>' . strval(time()) . ') AND ' . db_string_equal_to('module_the_name', 'forums'), null, 0, false, true);
     if (count($perhaps) == 0) {
         return '0=1';
     }

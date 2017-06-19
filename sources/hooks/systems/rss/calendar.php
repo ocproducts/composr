@@ -56,7 +56,7 @@ class Hook_rss_calendar
 
         $content = new Tempcode();
 
-        $_categories = $GLOBALS['SITE_DB']->query('SELECT c.id,c.t_title FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types c WHERE ' . $filters, null, null, false, true, array('t_title' => 'SHORT_TRANS__COMCODE'));
+        $_categories = $GLOBALS['SITE_DB']->query('SELECT c.id,c.t_title FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'calendar_types c WHERE ' . $filters, null, 0, false, true, array('t_title' => 'SHORT_TRANS__COMCODE'));
         foreach ($_categories as $i => $_category) {
             $_categories[$i]['_t_title'] = get_translated_text($_category['t_title']);
         }

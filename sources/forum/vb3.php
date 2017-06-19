@@ -32,7 +32,7 @@ class Forum_driver_vb3 extends Forum_driver_base
      */
     public function check_db()
     {
-        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'user', null, null, true);
+        $test = $this->db->query('SELECT COUNT(*) FROM ' . $this->db->get_table_prefix() . 'user', null, 0, true);
         return $test !== null;
     }
 
@@ -110,7 +110,7 @@ class Forum_driver_vb3 extends Forum_driver_base
                 $this->db->query('INSERT INTO ' . $_POST['vb_table_prefix'] . 'profilefield (title,description,required,hidden,maxlength,size,editable) VALUES (\'' . db_escape_string($name) . '\',\'\',' . strval($required) . ',' . strval(1 - $viewable) . ',\'' . strval($length) . '\',\'' . strval($length) . '\',' . strval($settable) . ')');
                 $key = $this->db->query_select_value('profilefield', 'MAX(profilefieldid)');
             }
-            $this->db->query('ALTER TABLE ' . $_POST['vb_table_prefix'] . 'userfield ADD field' . strval($key) . ' TEXT', null, null, true);
+            $this->db->query('ALTER TABLE ' . $_POST['vb_table_prefix'] . 'userfield ADD field' . strval($key) . ' TEXT', null, 0, true);
             return true;
         }
         return false;

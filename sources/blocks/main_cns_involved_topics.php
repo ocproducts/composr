@@ -116,9 +116,9 @@ class Block_main_cns_involved_topics
             }
             $query .= ' WHERE ' . $where;
             if (multi_lang_content()) {
-                $topic_rows = $GLOBALS['FORUM_DB']->query($query, null, null, false, true, array('t_cache_first_post' => 'LONG_TRANS__COMCODE'));
+                $topic_rows = $GLOBALS['FORUM_DB']->query($query, null, 0, false, true, array('t_cache_first_post' => 'LONG_TRANS__COMCODE'));
             } else {
-                $topic_rows = $GLOBALS['FORUM_DB']->query($query, null, null, false, true);
+                $topic_rows = $GLOBALS['FORUM_DB']->query($query, null, 0, false, true);
             }
             $topic_rows_map = array();
             foreach ($topic_rows as $topic_row) {

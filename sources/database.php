@@ -215,7 +215,7 @@ function reload_lang_fields($full = false, $only_table = null)
     if ($only_table !== null) {
         $sql .= ' AND ' . db_string_equal_to('m_table', $only_table);
     }
-    $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, null, true);
+    $_table_lang_fields = $GLOBALS['SITE_DB']->query($sql, null, 0, true);
     if ($_table_lang_fields !== null) {
         foreach ($_table_lang_fields as $lang_field) {
             if (!isset($TABLE_LANG_FIELDS_CACHE[$lang_field['m_table']])) {
@@ -1645,11 +1645,11 @@ class DatabaseConnector
                 $real_query .= ' LIMIT ' . strval($start) . ',30000000';
             }
 
-            $ret = $this->static_ob->query('SHOW FULL PROCESSLIST', $connection, null, null, true);
+            $ret = $this->static_ob->query('SHOW FULL PROCESSLIST', $connection, null, 0, true);
             if (is_array($ret)) {
                 foreach ($ret as $process) {
                     if ($process['Info'] === $real_query) {
-                        $this->static_ob->query('KILL ' . strval($process['Id']), $connection, null, null, true);
+                        $this->static_ob->query('KILL ' . strval($process['Id']), $connection, null, 0, true);
                     }
                 }
             }
@@ -1903,7 +1903,7 @@ class DatabaseConnector
             $query = 'INSERT INTO ' . $this->table_prefix . $table . ' (' . $keys . ') VALUES ' . $all_v;
         }
 
-        return $this->_query($query, null, null, $fail_ok, $ret, null, '', $save_as_volatile);
+        return $this->_query($query, null, 0, $fail_ok, $ret, null, '', $save_as_volatile);
     }
 
     /**
@@ -1996,7 +1996,7 @@ class DatabaseConnector
     {
         if ($where_map === array()) {
             if (($end === '') && ($max === null) && ($start == 0) && ($this->static_ob->supports_truncate_table($GLOBALS['SITE_DB']->connection_read))) {
-                $this->_query('TRUNCATE ' . $this->table_prefix . $table, null, null, $fail_ok);
+                $this->_query('TRUNCATE ' . $this->table_prefix . $table, null, 0, $fail_ok);
             } else {
                 $this->_query('DELETE FROM ' . $this->table_prefix . $table . ' ' . $end, $max, $start, $fail_ok);
             }
@@ -2307,7 +2307,7 @@ class DatabaseConnector
             } else {
                 $db_name = get_db_forums();
             }
-            $locks = $this->query('SHOW OPEN TABLES FROM ' . $db_name . ' WHERE `Table`=\'' . db_escape_string($this->get_table_prefix() . $table) . '\' AND In_use>=1', null, null, true);
+            $locks = $this->query('SHOW OPEN TABLES FROM ' . $db_name . ' WHERE `Table`=\'' . db_escape_string($this->get_table_prefix() . $table) . '\' AND In_use>=1', null, 0, true);
             if ($locks === null) {
                 return false; // MySQL version older than 5.0 (e.g. 4.1.x)
             }

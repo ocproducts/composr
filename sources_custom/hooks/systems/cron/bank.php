@@ -27,7 +27,7 @@ class Hook_cron_bank
             return;
         }
 
-        $to_be_restored = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'bank WHERE add_time<' . strval(time() - (30 * 24 * 60 * 60)), null, null, true);
+        $to_be_restored = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'bank WHERE add_time<' . strval(time() - (30 * 24 * 60 * 60)), null, 0, true);
         if ($to_be_restored === null) {
             return;
         }

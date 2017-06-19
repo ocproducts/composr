@@ -306,7 +306,7 @@ function is_page_https($zone, $page)
     }
     if ($https_pages_cache === null) {
         if (isset($GLOBALS['SITE_DB'])) {
-            $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), array(), '', null, null, true);
+            $results = $GLOBALS['SITE_DB']->query_select('https_pages', array('*'), array(), '', null, 0, true);
             $https_pages_cache = array();
             foreach ($results as $r) {
                 $https_pages_cache[$r['https_page_name']] = true;
@@ -1342,7 +1342,7 @@ function find_id_moniker($url_parts, $zone)
                 if ($or_list != '') {
                     push_db_scope_check(false);
                     $query = 'SELECT m_moniker,m_resource_page,m_resource_type,m_resource_id FROM ' . get_table_prefix() . 'url_id_monikers WHERE m_deprecated=0 AND (' . $or_list . ')';
-                    $results = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
+                    $results = $GLOBALS['SITE_DB']->query($query, null, 0, false, true);
                     pop_db_scope_check();
                     foreach ($results as $result) {
                         $LOADED_MONIKERS_CACHE[$result['m_resource_type']][$result['m_resource_page']][$result['m_resource_id']] = $result['m_moniker'];

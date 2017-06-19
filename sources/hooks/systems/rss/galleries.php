@@ -52,7 +52,7 @@ class Hook_rss_galleries
         $content = new Tempcode();
         $_galleries = array();
         if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'galleries WHERE ' . $filters_1, false, true) < 3000) {
-            $_galleries = $GLOBALS['SITE_DB']->query('SELECT fullname,name FROM ' . get_table_prefix() . 'galleries WHERE ' . $filters_1, null, null, false, true);
+            $_galleries = $GLOBALS['SITE_DB']->query('SELECT fullname,name FROM ' . get_table_prefix() . 'galleries WHERE ' . $filters_1, null, 0, false, true);
             foreach ($_galleries as $i => $_gallery) {
                 $_galleries[$i]['_title'] = get_translated_text($_gallery['fullname']);
             }

@@ -1361,7 +1361,7 @@ class Forum_driver_cns extends Forum_driver_base
         $ret = function_exists('persistent_cache_get') ? persistent_cache_get('SUPER_ADMIN_GROUPS') : null;
 
         if ($ret === null) {
-            $_ret = $this->db->query_select('f_groups', array('id'), array('g_is_super_admin' => 1), '', null, null, running_script('install')/*may not be installed yet*/);
+            $_ret = $this->db->query_select('f_groups', array('id'), array('g_is_super_admin' => 1), '', null, 0, running_script('install')/*may not be installed yet*/);
             if ($_ret === null) {
                 return array();
             }
@@ -1386,7 +1386,7 @@ class Forum_driver_cns extends Forum_driver_base
         $ret = function_exists('persistent_cache_get') ? persistent_cache_get('SUPER_MODERATOR_GROUPS') : null;
 
         if ($ret === null) {
-            $_ret = $this->db->query_select('f_groups', array('id'), array('g_is_super_moderator' => 1), '', null, null, running_script('install')/*may not be installed yet*/);
+            $_ret = $this->db->query_select('f_groups', array('id'), array('g_is_super_moderator' => 1), '', null, 0, running_script('install')/*may not be installed yet*/);
             if ($_ret === null) {
                 return array();
             }
@@ -1462,7 +1462,7 @@ class Forum_driver_cns extends Forum_driver_base
             if (isset($rows_cache[$where]) && !running_script('install')) {
                 $rows = $rows_cache[$where];
             } else {
-                $rows = $this->db->query($query, null, null, running_script('install')/*maybe no table yet*/, true, array('g_name' => 'SHORT_TRANS'));
+                $rows = $this->db->query($query, null, 0, running_script('install')/*maybe no table yet*/, true, array('g_name' => 'SHORT_TRANS'));
                 if (!is_array($rows)) {
                     $rows = array();
                 }

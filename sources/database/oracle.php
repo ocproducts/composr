@@ -387,7 +387,7 @@ class Database_Static_oracle extends DatabaseDriver
         $fields = explode(',', $_fields);
         foreach ($fields as $field) {
             $sql = 'SELECT m_type FROM ' . $table_prefix . 'db_meta WHERE m_table=\'' . $this->escape_string($raw_table_name) . '\' AND m_name=\'' . $this->escape_string($field) . '\'';
-            $values = $this->query($sql, $connection, null, null, true);
+            $values = $this->query($sql, $connection, null, 0, true);
             if (!isset($values[0])) {
                 continue; // No result found
             }
@@ -427,7 +427,7 @@ class Database_Static_oracle extends DatabaseDriver
     public function get_table_count_approx($table, $connection)
     {
         $sql = 'SELECT NUM_ROWS FROM ALL_TABLES WHERE TABLE_NAME=\'' . strtoupper($this->escape_string($table)) . '\'';
-        $values = $this->query($sql, $connection, null, null, true);
+        $values = $this->query($sql, $connection, null, 0, true);
         if (!isset($values[0])) {
             return null; // No result found
         }

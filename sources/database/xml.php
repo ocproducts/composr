@@ -600,7 +600,7 @@ class Database_Static_xml extends DatabaseDriver
                 ),
             );
         } else {
-            $fields = $this->query($schema_query, $db, null, null, $fail_ok);
+            $fields = $this->query($schema_query, $db, null, 0, $fail_ok);
             if ($fields === null) {
                 return array(); // Can happen during installation
             }
@@ -1986,7 +1986,7 @@ class Database_Static_xml extends DatabaseDriver
                 $next_token = $this->_parsing_read($at, $tokens, $query);
                 $at--;
                 if ($next_token == 'SELECT') { // subquery
-                    $subquery = $this->_parse_query_select($tokens, $query, $db, null, null, $fail_ok, $at, false);
+                    $subquery = $this->_parse_query_select($tokens, $query, $db, null, 0, $fail_ok, $at, false);
                     if ($subquery === null) {
                         return null;
                     }
@@ -2672,7 +2672,7 @@ class Database_Static_xml extends DatabaseDriver
             $closing_brackets_needed = 0;
             $table_name = $this->_parsing_read($at, $tokens, $query);
             if ($table_name == '(') { // subquery
-                $table_name = $this->_parse_query_select($tokens, $query, $db, null, null, $fail_ok, $at, false);
+                $table_name = $this->_parse_query_select($tokens, $query, $db, null, 0, $fail_ok, $at, false);
                 if ($table_name === null) {
                     return null;
                 }

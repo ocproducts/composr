@@ -134,7 +134,7 @@ function erase_block_cache($erase_cache_signatures_too = false, $theme = null)
     cms_profile_start_for('erase_tempcode_cache');
 
     if ($erase_cache_signatures_too) {
-        $GLOBALS['SITE_DB']->query_delete('cache_on', array(), '', null, null, true);
+        $GLOBALS['SITE_DB']->query_delete('cache_on', array(), '', null, 0, true);
     }
 
     $where_map = mixed();

@@ -1656,7 +1656,7 @@ function _load_comcodes_page_from_cache($pages)
         }
     }
     if ($needs_query) {
-        $_ret = $GLOBALS['SITE_DB']->query($sql, null, null, false, false, array('string_index' => 'LONG_TRANS__COMCODE', 'cc_page_title' => '?SHORT_TRANS'));
+        $_ret = $GLOBALS['SITE_DB']->query($sql, null, 0, false, false, array('string_index' => 'LONG_TRANS__COMCODE', 'cc_page_title' => '?SHORT_TRANS'));
         foreach ($_ret as $_page) {
             $sz = serialize(array($_page['the_page'], $_page['the_zone'], $_page['the_theme']));
             $cache[$sz] = $_page;

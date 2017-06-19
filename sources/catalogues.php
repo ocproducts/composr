@@ -1280,7 +1280,7 @@ function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only
                 $query .= ' WHERE v.ce_id=' . strval($entry_id);
                 $query .= $only_fields_sql;
             }
-            $rows = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
+            $rows = $GLOBALS['SITE_DB']->query($query, null, 0, false, true);
             foreach ($rows as $row) {
                 $catalogue_entry_cache[$entry_id][$row['f_id']] = $row;
             }
@@ -1298,7 +1298,7 @@ function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only
                 $query .= ' WHERE v.ce_id=' . strval($entry_id);
                 $query .= $only_fields_sql;
 
-                $rows = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
+                $rows = $GLOBALS['SITE_DB']->query($query, null, 0, false, true);
                 foreach ($rows as $row) {
                     $catalogue_entry_cache[$entry_id][$row['f_id']] = $row;
                 }

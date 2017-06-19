@@ -424,7 +424,7 @@ abstract class Hook_sitemap_base
                 $pg_where .= ' OR page_name LIKE \'' . db_encode_like($zone . ':' . $page . ':%') . '\'';
                 $pg_where .= ' OR page_name LIKE \'' . db_encode_like('\_WILD:\_WILD:%') . '\'';
                 $pg_where .= ' OR page_name LIKE \'' . db_encode_like($zone . ':\_WILD:%') . '\'';
-                $perhaps = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'group_page_access WHERE (' . $pg_where . ') AND (' . $groups . ')', null, null, false, true);
+                $perhaps = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'group_page_access WHERE (' . $pg_where . ') AND (' . $groups . ')', null, 0, false, true);
 
                 $denied_groups = array();
                 foreach ($groups2 as $group) {

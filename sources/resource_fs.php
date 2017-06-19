@@ -491,7 +491,7 @@ function find_ids_via_guids($guids)
         $or_list .= db_string_equal_to('resource_guid', $guid);
     }
     $query = 'SELECT resource_id,resource_guid FROM ' . get_table_prefix() . 'alternative_ids WHERE ' . $or_list;
-    $ret = $GLOBALS['SITE_DB']->query($query, null, null, false, true);
+    $ret = $GLOBALS['SITE_DB']->query($query, null, 0, false, true);
     return collapse_2d_complexity('resource_id', 'resource_guid', $ret);
 }
 
@@ -1055,13 +1055,13 @@ function remap_portable_as_trans($portable_data, $field, $db)
         }
     }
 
-    $db->query('LOCK TABLES ' . get_table_prefix() . 'translate', null, null, true);
+    $db->query('LOCK TABLES ' . get_table_prefix() . 'translate', null, 0, true);
     $id = $db->query_select_value('translate', 'MAX(id)');
     $id = ($id === null) ? null : ($id + 1);
 
     table_from_portable_rows('translate', $portable_data, array('id' => $id, 'text_parsed' => ''), TABLE_REPLACE_MODE_NONE, $db);
 
-    $db->query('UNLOCK TABLES', null, null, true);
+    $db->query('UNLOCK TABLES', null, 0, true);
 
     return array($field => $id);
 }

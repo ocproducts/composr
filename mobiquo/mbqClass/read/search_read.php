@@ -142,7 +142,7 @@ class CMSSearchRead
             $count_sql = $count_sql1;
         }
 
-        $topics = (get_allowed_forum_sql() == '') ? array() : $GLOBALS['FORUM_DB']->query($full_sql, null, null, false, true);
+        $topics = (get_allowed_forum_sql() == '') ? array() : $GLOBALS['FORUM_DB']->query($full_sql, null, 0, false, true);
         $total_topic_num = (get_allowed_forum_sql() == '') ? 0 : $GLOBALS['FORUM_DB']->query_value_if_there($count_sql);
 
         if (($keywords != '') && (!$titleonly)) {

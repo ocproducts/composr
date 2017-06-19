@@ -1403,8 +1403,8 @@ class Module_galleries
 
         $total = $total_videos + $total_images;
         if ($total < 500) { // Not too many to navigate through
-            $rows_images = $GLOBALS['SITE_DB']->query('SELECT r.id,add_date,url' . $sql_suffix_images . ',title FROM ' . get_table_prefix() . 'images r' . $join . $extra_join_image . ' WHERE ' . $where_images . $extra_where_image . ' ORDER BY ' . $sort, null, null, false, true);
-            $rows_videos = $GLOBALS['SITE_DB']->query('SELECT r.id,add_date,url' . $sql_suffix_videos . ',title FROM ' . get_table_prefix() . 'videos r' . $join . $extra_join_video . ' WHERE ' . $where_videos . $extra_where_video . ' ORDER BY ' . $sort, null, null, false, true);
+            $rows_images = $GLOBALS['SITE_DB']->query('SELECT r.id,add_date,url' . $sql_suffix_images . ',title FROM ' . get_table_prefix() . 'images r' . $join . $extra_join_image . ' WHERE ' . $where_images . $extra_where_image . ' ORDER BY ' . $sort, null, 0, false, true);
+            $rows_videos = $GLOBALS['SITE_DB']->query('SELECT r.id,add_date,url' . $sql_suffix_videos . ',title FROM ' . get_table_prefix() . 'videos r' . $join . $extra_join_video . ' WHERE ' . $where_videos . $extra_where_video . ' ORDER BY ' . $sort, null, 0, false, true);
 
             list($_sort, $_dir) = explode(' ', $sort, 2);
 

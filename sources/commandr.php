@@ -963,7 +963,7 @@ class Virtual_shell
         } elseif ($this->parse_runtime['commandr_command'] == COMMAND_SQL) {
             // SQL command
             push_db_scope_check(false);
-            $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], null, null, false, true);
+            $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], null, 0, false, true);
             pop_db_scope_check();
             if ((is_array($commandr_output)) && (count($commandr_output) > 100)) {
                 $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100, null, true, true);

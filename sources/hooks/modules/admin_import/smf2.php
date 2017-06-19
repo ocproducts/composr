@@ -1714,7 +1714,7 @@ class Hook_import_smf2
         require_code('banners');
         require_code('banners2');
 
-        $rows = $db->query_select('ads', array('*'), array(), '', null, null, true);
+        $rows = $db->query_select('ads', array('*'), array(), '', null, 0, true);
         if ($rows === null) {
             return; // SMFAds addon not installed
         }
@@ -1739,7 +1739,7 @@ class Hook_import_smf2
         require_code('news');
         require_code('news2');
 
-        $rows = $db->query_select('tp_variables', array('value1 AS title', 'id'), array('type' => 'category'), '', null, null, true);
+        $rows = $db->query_select('tp_variables', array('value1 AS title', 'id'), array('type' => 'category'), '', null, 0, true);
         if ($rows === null) {
             return; // Not TinyPortal
         }

@@ -761,7 +761,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0,
             $subforum_rows = array(); // Will cause performance breakage
         }
     } else {
-        $subforum_rows = $GLOBALS['FORUM_DB']->query_select('f_forums f', array('f.*'), array(), 'ORDER BY f_parent_forum,' . $sort, null, null, false, array('f_description' => 'LONG_TRANS__COMCODE', 'f_intro_question' => 'LONG_TRANS__COMCODE'));
+        $subforum_rows = $GLOBALS['FORUM_DB']->query_select('f_forums f', array('f.*'), array(), 'ORDER BY f_parent_forum,' . $sort, null, 0, false, array('f_description' => 'LONG_TRANS__COMCODE', 'f_intro_question' => 'LONG_TRANS__COMCODE'));
     }
     $unread_forums = array();
     if (($forum_id !== null) && (get_member() != $GLOBALS['CNS_DRIVER']->get_guest_id())) {
@@ -807,7 +807,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0,
         }
     }
     if ($or_list != '') {
-        $forum_grouping_rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forum_groupings WHERE ' . $or_list, null, null, false, true);
+        $forum_grouping_rows = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forum_groupings WHERE ' . $or_list, null, 0, false, true);
         foreach ($forum_grouping_rows as $forum_grouping_row) {
             $forum_grouping_id = $forum_grouping_row['id'];
             $title = $forum_grouping_row['c_title'];
@@ -936,7 +936,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0,
         $or_list .= 'p_topic_id=' . strval($topic_row['id']);
     }
     if (($or_list != '') && (!is_guest())) {
-        $involved = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT p_topic_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE (' . $or_list . ') AND p_poster=' . strval(get_member()), null, null, false, true);
+        $involved = $GLOBALS['FORUM_DB']->query('SELECT DISTINCT p_topic_id FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE (' . $or_list . ') AND p_poster=' . strval(get_member()), null, 0, false, true);
         $involved = collapse_1d_complexity('p_topic_id', $involved);
     } else {
         $involved = array();

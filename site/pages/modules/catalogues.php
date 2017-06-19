@@ -431,7 +431,7 @@ class Module_catalogues
             $sql_integer = db_string_equal_to('cf_type', 'integer') . ' OR ' . db_string_equal_to('cf_type', 'member') . ' OR ' . db_string_equal_to('cf_type', 'tick');
             $sql_float = db_string_equal_to('cf_type', 'float');
             foreach (array($sql_float => 'float', $sql_integer => 'integer') as $where => $new_type) {
-                $fields = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . get_table_prefix() . 'catalogue_fields WHERE ' . $where, null, null, false, true);
+                $fields = $GLOBALS['SITE_DB']->query('SELECT id FROM ' . get_table_prefix() . 'catalogue_fields WHERE ' . $where, null, 0, false, true);
                 foreach ($fields as $field) {
                     do {
                         $or_list = '';
@@ -451,7 +451,7 @@ class Module_catalogues
                             $GLOBALS['SITE_DB']->query_insert('catalogue_efv_' . $new_type, $row);
                         }
                         if ($or_list != '') {
-                            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'catalogue_efv_short WHERE ' . $or_list, null, null, false, true);
+                            $GLOBALS['SITE_DB']->query('DELETE FROM ' . get_table_prefix() . 'catalogue_efv_short WHERE ' . $or_list, null, 0, false, true);
                         }
                     } while (count($rows) != 0);
                 }
@@ -912,7 +912,7 @@ class Module_catalogues
         }
 
         // Not done via main_cc_entries block due to complex organisation
-        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'catalogue_entries p' . $privacy_join . ' WHERE ce_validated=1 AND (' . $sql_select . ')' . $privacy_where, null, null, false, true);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'catalogue_entries p' . $privacy_join . ' WHERE ce_validated=1 AND (' . $sql_select . ')' . $privacy_where, null, 0, false, true);
         foreach ($rows as $row) {
             $entry_map = get_catalogue_entry_map($row, $catalogue, 'CATEGORY', 'DEFAULT', $root, null, array(0), false, false);
             $letter = strtoupper(substr(is_object($entry_map['FIELD_0_PLAIN']) ? $entry_map['FIELD_0_PLAIN']->evaluate() : $entry_map['FIELD_0_PLAIN'], 0, 1));

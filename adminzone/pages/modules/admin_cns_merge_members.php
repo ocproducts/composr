@@ -180,7 +180,7 @@ class Module_admin_cns_merge_members
         $meta = $GLOBALS['SITE_DB']->query('SELECT m_table,m_name FROM ' . get_table_prefix() . 'db_meta WHERE ' . db_string_equal_to('m_type', 'MEMBER') . ' OR ' . db_string_equal_to('m_type', '?MEMBER') . ' OR ' . db_string_equal_to('m_type', '*MEMBER'));
         foreach ($meta as $m) {
             $db = (substr($m['m_table'], 0, 2) == 'f_') ? $GLOBALS['FORUM_DB'] : $GLOBALS['SITE_DB'];
-            $db->query_update($m['m_table'], array($m['m_name'] => $to_id), array($m['m_name'] => $from_id), '', null, null, false, true);
+            $db->query_update($m['m_table'], array($m['m_name'] => $to_id), array($m['m_name'] => $from_id), '', null, 0, false, true);
         }
 
         // Reassign poster usernames
