@@ -859,7 +859,7 @@ function initFormSaving(formId) {
                         if (typeof fieldsToDo[key] != 'string') continue;
 
                         if (form.elements[key] !== undefined) {
-                            if (console.log !== undefined) console.log('Restoring ' + key);
+                            $cms.log('Restoring ' + key);
                             cleverSetValue(form, form.elements[key], fieldsToDo[key]);
                         }
                     }
@@ -993,7 +993,7 @@ function handleFormSaving(event, element, force) {
         // Save remotely
         if (navigator.onLine) {
             if ($cms.$DEV_MODE()) {
-                console.log('Doing AJAX auto-save');
+                $cms.log('Doing AJAX auto-save');
             }
 
             post = $cms.form.modsecurityWorkaroundAjax(post);
@@ -1033,7 +1033,7 @@ function _handleFormSaving(event, element, force) {
     // Save locally
     if (window.localStorage !== undefined) {
         if ($cms.$DEV_MODE()) {
-            console.log('Doing local storage auto-save for ' + elementName + ' (' + autosaveName + ')');
+            $cms.log('Doing local storage auto-save for ' + elementName + ' (' + autosaveName + ')');
         }
 
         try {

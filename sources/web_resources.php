@@ -209,7 +209,7 @@ function _javascript_tempcode($j, &$js, $_minify = null, $_https = null, $_mobil
             if (!$minify) {
                 $url .= '&keep_minify=0';
             }
-            $js->attach(do_template('JAVASCRIPT_NEED_FULL', array('_GUID' => 'a2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url)));
+            $js->attach(do_template('JAVASCRIPT_NEED_FULL', array('_GUID' => 'a2d7f0303a08b9aa9e92f8b0208ee9a7', 'URL' => $url, 'CODE' => $j)));
         } else {
             if (!$minify) {
                 $j .= '_non_minified';

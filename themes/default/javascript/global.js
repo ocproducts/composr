@@ -1861,6 +1861,8 @@
         }
 
         if (!scriptEl) {
+            $cms.log('_requireJavascript', script);
+
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
             if (isAbsoluteOrSchemeRelative(script)) {
@@ -6238,7 +6240,7 @@
             return;
         }
 
-        //console.log('activate_tooltip');
+        $cms.log('$cms.ui.activateTooltip');
 
         if (!haveLinks && $cms.isTouchEnabled()) {
             return; // Too erratic
