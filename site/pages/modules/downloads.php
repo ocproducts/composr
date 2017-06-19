@@ -660,7 +660,7 @@ class Module_downloads
         if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['download_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('download_downloads')) {
-                $GLOBALS['SITE_DB']->query_update('download_downloads', array('download_views' => $myrow['download_views']), array('id' => $id), '', 1, null, false, true);
+                $GLOBALS['SITE_DB']->query_update('download_downloads', array('download_views' => $myrow['download_views']), array('id' => $id), '', 1, 0, false, true);
             }
         }
 

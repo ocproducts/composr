@@ -312,7 +312,7 @@ class Block_main_members
 
         $max_rows = $GLOBALS['FORUM_DB']->query_value_if_there($count_sql);
 
-        $rows = $GLOBALS['FORUM_DB']->query($sql, ($display_mode == 'media') ? ($max + $start) : $max, ($display_mode == 'media') ? null : $start);
+        $rows = $GLOBALS['FORUM_DB']->query($sql, ($display_mode == 'media') ? ($max + $start) : $max, ($display_mode == 'media') ? 0 : $start);
         $rows = remove_duplicate_rows($rows, 'id');
 
         /*if (count($rows)==0)   We let our template control no-result output

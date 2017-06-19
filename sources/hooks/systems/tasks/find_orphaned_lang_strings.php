@@ -92,7 +92,7 @@ class Hook_task_find_orphaned_lang_strings
                 } elseif (array_key_exists($id, $ids_seen_so_far)) {
                     $looked_up = get_translated_text($id);
                     if ($fix) {
-                        $_of = $GLOBALS['SITE_DB']->query_select($langidfield['m_table'], array('*'), $of, '', 1, null, false, array());
+                        $_of = $GLOBALS['SITE_DB']->query_select($langidfield['m_table'], array('*'), $of, '', 1, 0, false, array());
                         $of = $_of[0];
                         $of_orig = $of;
                         $of = insert_lang($langidfield['m_name'], $looked_up, 2) + $of;

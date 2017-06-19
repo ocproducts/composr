@@ -47,7 +47,7 @@ class Hook_page_groupings_catalogues
             $ret[] = array('cms', 'menu/rich_content/catalogues/catalogues', array('cms_catalogues', array('type' => 'browse'), get_module_zone('cms_catalogues')), do_lang_tempcode('ITEMS_HERE', do_lang_tempcode('catalogues:CATALOGUES'), make_string_tempcode(escape_html(integer_format($GLOBALS['SITE_DB']->query_select_value('catalogues', 'COUNT(*)', array(), '', true))))), 'catalogues:DOC_CATALOGUES');
         }
         if ($exhaustive) {
-            $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array(), 'ORDER BY c_add_date', 50, null, true);
+            $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('*'), array(), 'ORDER BY c_add_date', 50, 0, true);
             if ($catalogues !== null) {
                 $ret2 = array();
                 $count = 0;

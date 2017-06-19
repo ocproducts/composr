@@ -756,7 +756,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0,
     if ($huge_forums) {
         $max_forum_inspect = intval(get_option('max_forum_inspect'));
 
-        $subforum_rows = $GLOBALS['FORUM_DB']->query('SELECT f.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums f WHERE f.id=' . strval($forum_id) . ' OR f_parent_forum=' . strval($forum_id) . ' ORDER BY f_parent_forum,' . $sort, $max_forum_inspect, null, false, false, array('f_description' => 'LONG_TRANS__COMCODE', 'f_intro_question' => 'LONG_TRANS__COMCODE'));
+        $subforum_rows = $GLOBALS['FORUM_DB']->query('SELECT f.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums f WHERE f.id=' . strval($forum_id) . ' OR f_parent_forum=' . strval($forum_id) . ' ORDER BY f_parent_forum,' . $sort, $max_forum_inspect, 0, false, false, array('f_description' => 'LONG_TRANS__COMCODE', 'f_intro_question' => 'LONG_TRANS__COMCODE'));
         if (count($subforum_rows) == $max_forum_inspect) {
             $subforum_rows = array(); // Will cause performance breakage
         }

@@ -1142,7 +1142,7 @@ class Module_admin_stats
             $where .= ' OR ' . db_string_equal_to('the_page', '/' . $page); // Legacy compatibility
         }
         $reasonable_max = 10000;
-        $rows = $GLOBALS['SITE_DB']->query('SELECT date_and_time FROM ' . get_table_prefix() . 'stats WHERE (' . $where . ') ORDER BY ' . $sortable . ' ' . $sort_order, $reasonable_max, null, false, true);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT date_and_time FROM ' . get_table_prefix() . 'stats WHERE (' . $where . ') ORDER BY ' . $sortable . ' ' . $sort_order, $reasonable_max, 0, false, true);
         if (count($rows) < 1) {
             $list_views = new Tempcode();
         } else {

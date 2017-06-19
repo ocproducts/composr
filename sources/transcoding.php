@@ -253,7 +253,7 @@ function store_transcoding_success($transcoder_id, $new_url = null)
     $descript_row = $descript_rows[0];
 
     // The database for for what has been transcoded
-    $rows = $GLOBALS['SITE_DB']->query_select($descript_row['t_table'], array('*'), array($descript_row['t_url_field'] => $descript_row['t_url']), '', 1, null, false, array());
+    $rows = $GLOBALS['SITE_DB']->query_select($descript_row['t_table'], array('*'), array($descript_row['t_url_field'] => $descript_row['t_url']), '', 1, 0, false, array());
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }

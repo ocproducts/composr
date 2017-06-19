@@ -102,7 +102,7 @@ class Block_side_tag_cloud
             WHERE ' . $where . '
             GROUP BY ' . $GLOBALS['SITE_DB']->translate_field_ref('meta_keyword') . '
             ORDER BY COUNT(*) DESC';
-        $meta_rows = $GLOBALS['SITE_DB']->query($sql, 300/*reasonable limit*/, null, false, false, array('meta_keyword' => 'SHORT_TRANS'));
+        $meta_rows = $GLOBALS['SITE_DB']->query($sql, 300/*reasonable limit*/, 0, false, false, array('meta_keyword' => 'SHORT_TRANS'));
         foreach ($meta_rows as $mr) {
             $keyword = $mr['meta_keyword'];
             if (strlen(is_numeric($keyword) ? strval(intval($keyword)) : $keyword) < 4) {

@@ -265,7 +265,7 @@ class Module_admin_actionlog
             }
 
             // Fetch
-            $rows1 = $GLOBALS['FORUM_DB']->query('SELECT l_reason,id,l_by AS member_id,l_date_and_time AS date_and_time,l_the_type AS the_type,l_param_a AS param_a,l_param_b AS param_b FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_moderator_logs WHERE ' . $where . ' ORDER BY ' . $sortable . ' ' . $sort_order, $max + $start, null, false, true);
+            $rows1 = $GLOBALS['FORUM_DB']->query('SELECT l_reason,id,l_by AS member_id,l_date_and_time AS date_and_time,l_the_type AS the_type,l_param_a AS param_a,l_param_b AS param_b FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_moderator_logs WHERE ' . $where . ' ORDER BY ' . $sortable . ' ' . $sort_order, $max + $start, 0, false, true);
             $max_rows += $GLOBALS['FORUM_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_moderator_logs WHERE ' . $where, false, true);
         } else {
             $rows1 = array();
@@ -301,7 +301,7 @@ class Module_admin_actionlog
         }
 
         // Fetch
-        $rows2 = $GLOBALS['SITE_DB']->query('SELECT id,member_id,date_and_time,the_type,param_a,param_b,ip FROM ' . get_table_prefix() . 'actionlogs WHERE ' . $where . ' ORDER BY ' . $sortable . ' ' . $sort_order, $max + $start, null, false, true);
+        $rows2 = $GLOBALS['SITE_DB']->query('SELECT id,member_id,date_and_time,the_type,param_a,param_b,ip FROM ' . get_table_prefix() . 'actionlogs WHERE ' . $where . ' ORDER BY ' . $sortable . ' ' . $sort_order, $max + $start, 0, false, true);
         $max_rows += $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'actionlogs WHERE ' . $where, false, true);
         $rows = array_merge($rows1, $rows2);
 

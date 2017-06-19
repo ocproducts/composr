@@ -193,7 +193,7 @@ class Block_main_gallery_embed
         } else {
             $rating_sort = '';
         }
-        $rows_images = $GLOBALS['SITE_DB']->query('SELECT *' . $rating_sort . $extra_filter_sql . ' FROM ' . get_table_prefix() . 'images r' . $extra_join_sql . $extra_join_image . ' WHERE ' . $cat_select . $where_sup . $extra_where_image . ' ORDER BY ' . $sort, $max + $start, null, false, true);
+        $rows_images = $GLOBALS['SITE_DB']->query('SELECT *' . $rating_sort . $extra_filter_sql . ' FROM ' . get_table_prefix() . 'images r' . $extra_join_sql . $extra_join_image . ' WHERE ' . $cat_select . $where_sup . $extra_where_image . ' ORDER BY ' . $sort, $max + $start, 0, false, true);
         if ($_sort == 'average_rating') {
             $rating_sort = ',(SELECT AVG(rating) FROM ' . get_table_prefix() . 'rating WHERE ' . db_string_equal_to('rating_for_type', 'videos') . ' AND rating_for_id=' . db_cast('r.id', 'CHAR') . ') AS average_rating';
         } elseif ($_sort == 'compound_rating') {
@@ -203,7 +203,7 @@ class Block_main_gallery_embed
         } else {
             $rating_sort = '';
         }
-        $rows_videos = $GLOBALS['SITE_DB']->query('SELECT *' . $rating_sort . $extra_filter_sql . ' FROM ' . get_table_prefix() . 'videos r' . $extra_join_sql . $extra_join_video . ' WHERE ' . $cat_select . $where_sup . $extra_where_video . ' ORDER BY ' . $sort, $max + $start, null, false, true);
+        $rows_videos = $GLOBALS['SITE_DB']->query('SELECT *' . $rating_sort . $extra_filter_sql . ' FROM ' . get_table_prefix() . 'videos r' . $extra_join_sql . $extra_join_video . ' WHERE ' . $cat_select . $where_sup . $extra_where_video . ' ORDER BY ' . $sort, $max + $start, 0, false, true);
 
         // Sort
         $combined = array();

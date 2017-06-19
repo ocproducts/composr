@@ -104,7 +104,7 @@ class Module_forumview
         if ($type == 'browse') {
             $id = get_param_integer('id', db_get_first_id());
 
-            $_forum_info = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('id' => $id), '', 1, null, false);
+            $_forum_info = $GLOBALS['FORUM_DB']->query_select('f_forums', array('*'), array('id' => $id), '', 1, 0, false);
             if (!array_key_exists(0, $_forum_info)) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'forum'));
             }

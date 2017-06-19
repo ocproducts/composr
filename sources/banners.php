@@ -208,7 +208,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         }
 
         // Run Query
-        $rows = $GLOBALS['SITE_DB']->query($myquery, 500/*reasonable limit - old ones should be turned off*/, null, true, true, array('caption' => 'SHORT_TRANS__COMCODE'));
+        $rows = $GLOBALS['SITE_DB']->query($myquery, 500/*reasonable limit - old ones should be turned off*/, 0, true, true, array('caption' => 'SHORT_TRANS__COMCODE'));
         if ($rows === null) {
             $rows = array(); // Error, but tolerate it as it could be on each page load
         }
@@ -304,13 +304,13 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
         // Update the counts (ones done per-view)
         if ((get_db_type() != 'xml') && (get_value('no_banner_count_updates') !== '1')) {
             if (!$GLOBALS['SITE_DB']->table_is_locked('banners')) {
-                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET views_to=(views_to+1) WHERE ' . db_string_equal_to('name', $name), 1, null, false, true);
+                $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET views_to=(views_to+1) WHERE ' . db_string_equal_to('name', $name), 1, 0, false, true);
             }
         }
         if ($source != '') {
             if (get_db_type() != 'xml') {
                 if (!$GLOBALS['SITE_DB']->table_is_locked('banners')) {
-                    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET views_from=(views_from+1) WHERE ' . db_string_equal_to('name', $name), 1, null, false, true);
+                    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'banners SET views_from=(views_from+1) WHERE ' . db_string_equal_to('name', $name), 1, 0, false, true);
                 }
             }
         }

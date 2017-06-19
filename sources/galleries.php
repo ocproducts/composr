@@ -633,7 +633,7 @@ function get_gallery_tree($gallery = 'root', $breadcrumbs = '', $gallery_info = 
         $rows = array();
     } else {
         if ($num_children >= intval(get_option('general_safety_listing_limit'))) {
-            $rows = $GLOBALS['SITE_DB']->query('SELECT name,fullname,accept_images,accept_videos,is_member_synched,g.fullname,parent_id ' . $query . ' ORDER BY add_date', intval(get_option('general_safety_listing_limit')), null, false, false, array('fullname' => 'SHORT_TRANS__COMCODE'));
+            $rows = $GLOBALS['SITE_DB']->query('SELECT name,fullname,accept_images,accept_videos,is_member_synched,g.fullname,parent_id ' . $query . ' ORDER BY add_date', intval(get_option('general_safety_listing_limit')), 0, false, false, array('fullname' => 'SHORT_TRANS__COMCODE'));
         } else {
             $rows = $GLOBALS['SITE_DB']->query('SELECT name,fullname,accept_images,accept_videos,is_member_synched,g.fullname,parent_id ' . $query . ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('fullname') . ' ASC', null, 0, false, false, array('fullname' => 'SHORT_TRANS__COMCODE'));
         }

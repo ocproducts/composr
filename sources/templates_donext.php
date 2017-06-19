@@ -98,8 +98,8 @@ function do_next_manager_hooked($title, $text, $type, $main_title = null)
  * @param  array $additional_extras As before, but for an 'extra types' box of do next actions
  * @param  ?mixed $additional_title The title to use for the extra types (null: none)
  * @param  ?Tempcode $intro Introductory text (null: none)
- * @param  ?Tempcode $entries_title Entries section title (null: default, Entries)
- * @param  ?Tempcode $categories_title Categories section title (null: default, Categories)
+ * @param  ?mixed $entries_title Entries section title (null: default, Entries)
+ * @param  ?mixed $categories_title Categories section title (null: default, Categories)
  * @param  ?string $entry_content_type Entry content type (null: unknown)
  * @param  ?string $category_content_type Category content type (null: unknown)
  * @return Tempcode The do next manager

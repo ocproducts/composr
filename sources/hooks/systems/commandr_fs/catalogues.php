@@ -68,7 +68,7 @@ class Hook_commandr_fs_catalogues extends Resource_fs_base
                     list(, , $storage_type) = $ob->get_field_value_row_bits(array('id' => null, 'cf_type' => $field_bits['cf_type'], 'cf_default' => ''));
                     if (strpos($storage_type, '_trans') !== false) {
                         $table = 'catalogue_entries a JOIN ' . get_table_prefix() . 'catalogue_efv_' . $storage_type . ' b ON a.id=b.ce_id AND b.cf_id=' . strval($field_bits['id']);
-                        $_ret = $GLOBALS['SITE_DB']->query_select($table, array('a.id'), array($GLOBALS['SITE_DB']->translate_field_ref('cv_value') => $label), '', 1000/*reasonable search limit*/, null, false, array('cv_value' => 'SHORT_TRANS'));
+                        $_ret = $GLOBALS['SITE_DB']->query_select($table, array('a.id'), array($GLOBALS['SITE_DB']->translate_field_ref('cv_value') => $label), '', 1000/*reasonable search limit*/, 0, false, array('cv_value' => 'SHORT_TRANS'));
                     } else {
                         $table = 'catalogue_entries a JOIN ' . get_table_prefix() . 'catalogue_efv_' . $storage_type . ' b ON a.id=b.ce_id AND b.cf_id=' . strval($field_bits['id']);
                         $_ret = $GLOBALS['SITE_DB']->query_select($table, array('a.id'), array('b.cv_value' => $label), '', 1000/*reasonable search limit*/);

@@ -54,11 +54,11 @@ class Hook_rss_catalogues
 
         require_code('catalogues');
 
-        $_categories = $GLOBALS['SITE_DB']->query('SELECT id,c_name,cc_title FROM ' . get_table_prefix() . 'catalogue_categories WHERE ' . $filters_1, 300, null, false, true);
+        $_categories = $GLOBALS['SITE_DB']->query('SELECT id,c_name,cc_title FROM ' . get_table_prefix() . 'catalogue_categories WHERE ' . $filters_1, 300, 0, false, true);
         foreach ($_categories as $i => $_category) {
             $_categories[$i]['_title'] = get_translated_text($_category['cc_title']);
         }
-        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entries WHERE ce_add_date>' . strval(time() - $cutoff) . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND ce_validated=1 ' : '') . ' AND ' . $filters . ' ORDER BY ce_add_date DESC', $max, null, false, true);
+        $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'catalogue_entries WHERE ce_add_date>' . strval(time() - $cutoff) . (((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated'))) ? ' AND ce_validated=1 ' : '') . ' AND ' . $filters . ' ORDER BY ce_add_date DESC', $max, 0, false, true);
         $categories = array();
         foreach ($_categories as $category) {
             $categories[$category['id']] = $category;

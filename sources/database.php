@@ -1225,7 +1225,7 @@ class DatabaseConnector
      * @param  ?array $lang_fields Extra language fields to join in for cache-prefilling. You only need to send this if you are doing a JOIN and carefully craft your query so table field names won't conflict (null: auto-detect, if not a join)
      * @return ?mixed The first value of the first row returned (null: nothing found, or null value found)
      */
-    public function query_select_value_if_there($table, $select, $where_map, $end = '', $fail_ok = false, $lang_fields = null)
+    public function query_select_value_if_there($table, $select, $where_map = array(), $end = '', $fail_ok = false, $lang_fields = null)
     {
         $values = $this->query_select($table, array($select), $where_map, $end, 1, null, $fail_ok, $lang_fields);
         if ($values === null) {

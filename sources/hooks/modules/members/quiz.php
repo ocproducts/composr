@@ -93,7 +93,7 @@ class Hook_members_quiz
             array('q_member' => $member_id, 'q_type' => 'TEST', 'q_validated' => 1),
             'ORDER BY ' . $order,
             null,
-            null,
+            0,
             false,
             array('q_name' => 'SHORT_TRANS')
         );

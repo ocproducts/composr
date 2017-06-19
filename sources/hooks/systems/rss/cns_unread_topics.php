@@ -61,9 +61,9 @@ class Hook_rss_cns_unread_topics
         $query .= ' AND t_cache_last_time>' . strval($cutoff);
         $query .= ' ORDER BY t_cache_last_time DESC';
         if (multi_lang_content()) {
-            $rows = $GLOBALS['FORUM_DB']->query($query, $max, null, false, false, array('t_cache_first_post' => 'LONG_TRANS__COMCODE'));
+            $rows = $GLOBALS['FORUM_DB']->query($query, $max, 0, false, false, array('t_cache_first_post' => 'LONG_TRANS__COMCODE'));
         } else {
-            $rows = $GLOBALS['FORUM_DB']->query($query, $max, null, false);
+            $rows = $GLOBALS['FORUM_DB']->query($query, $max, 0, false);
         }
         $categories = collapse_2d_complexity('id', 'f_name', $GLOBALS['FORUM_DB']->query('SELECT id,f_name FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE f_cache_num_posts>0'));
 

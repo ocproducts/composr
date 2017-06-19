@@ -311,7 +311,7 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
             ) .
             ' WHERE id=' . strval($topic_id),
         null,
-        null,
+        0,
         false,
         true
     );
@@ -342,7 +342,7 @@ function cns_force_update_forum_caching($forum_id, $num_topics_increment = null,
     if ($last_topic_id === null) { // We don't know what was last, so we'll have to work it out
         require_code('cns_forums');
         $or_list = cns_get_all_subordinate_forums($forum_id, 't_forum_id', null, true);
-        $last_topic = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE (' . $or_list . ') AND t_validated=1 ORDER BY t_cache_last_time DESC', 1, null, false, true);
+        $last_topic = $GLOBALS['FORUM_DB']->query('SELECT * FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_topics WHERE (' . $or_list . ') AND t_validated=1 ORDER BY t_cache_last_time DESC', 1, 0, false, true);
         if (!array_key_exists(0, $last_topic)) { // No topics left apparently
             $last_topic_id = null;
             $last_title = '';
@@ -384,7 +384,7 @@ function cns_force_update_forum_caching($forum_id, $num_topics_increment = null,
         f_cache_last_username=\'' . db_escape_string(cms_mb_substr($last_username, 0, 255)) . '\',
         f_cache_last_member_id=' . (($last_member_id !== null) ? strval($last_member_id) : 'NULL') . ',
         f_cache_last_forum_id=' . (($last_forum_id !== null) ? strval($last_forum_id) : 'NULL') . '
-            WHERE id=' . strval($forum_id), 1, null, false, true);
+            WHERE id=' . strval($forum_id), 1, 0, false, true);
 
     // Now, are there any parents who need updating?
     if ($forum_id !== null) {

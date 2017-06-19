@@ -148,7 +148,7 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
 
     $query .= ' ORDER BY t_cache_last_time DESC';
 
-    $ret = $GLOBALS['FORUM_DB']->query($query, $limit, null, false, true);
+    $ret = $GLOBALS['FORUM_DB']->query($query, $limit, 0, false, true);
     $ret = remove_duplicate_rows($ret, 't_id');
 
     $private_post_rows_cache[$cache_key] = $ret;

@@ -1367,7 +1367,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
         }
     }
     $query .= ' ORDER BY ' . $GLOBALS['SITE_DB']->translate_field_ref('c_title') . ' ASC';
-    $rows = $GLOBALS['SITE_DB']->query($query, intval(get_option('general_safety_listing_limit'))/*reasonable limit*/, null, false, false, array('c_title' => 'SHORT_TRANS'));
+    $rows = $GLOBALS['SITE_DB']->query($query, intval(get_option('general_safety_listing_limit'))/*reasonable limit*/, 0, false, false, array('c_title' => 'SHORT_TRANS'));
     if (count($rows) == intval(get_option('general_safety_listing_limit'))) {
         attach_message(do_lang_tempcode('TOO_MUCH_CHOOSE__ALPHABETICAL', escape_html(integer_format(intval(get_option('general_safety_listing_limit'))))), 'warn');
     }
@@ -1846,7 +1846,7 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
         $entry['ce_views']++;
         if (!$GLOBALS['SITE_DB']->table_is_locked('catalogue_entries')) {
-            $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_views' => $entry['ce_views']), array('id' => $id), '', 1, null, false, true);
+            $GLOBALS['SITE_DB']->query_update('catalogue_entries', array('ce_views' => $entry['ce_views']), array('id' => $id), '', 1, 0, false, true);
         }
     }
 

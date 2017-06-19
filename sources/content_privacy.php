@@ -104,7 +104,7 @@ function has_privacy_access($content_type, $content_id, $viewing_member_id = nul
         list(, , $privacy_table, $privacy_where) = get_privacy_where_clause($content_type, 'e', $viewing_member_id, '', intval($content_id));
 
         $query = 'SELECT * FROM ' . $privacy_table . ' WHERE ' . $privacy_where . ' AND ' . db_string_equal_to('priv.content_id', $content_id);
-        $results = $GLOBALS['SITE_DB']->query($query, 1, null, false, true);
+        $results = $GLOBALS['SITE_DB']->query($query, 1, 0, false, true);
 
         if (array_key_exists(0, $results)) {
             return true;

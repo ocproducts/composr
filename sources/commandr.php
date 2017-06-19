@@ -966,7 +966,7 @@ class Virtual_shell
             $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], null, 0, false, true);
             pop_db_scope_check();
             if ((is_array($commandr_output)) && (count($commandr_output) > 100)) {
-                $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100, null, true, true);
+                $commandr_output = $GLOBALS['SITE_DB']->query($this->parsed_input[SECTION_COMMAND], 100, 0, true, true);
                 $commandr_output[] = array('...' => '...');
             }
 

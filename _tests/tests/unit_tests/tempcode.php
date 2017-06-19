@@ -70,11 +70,11 @@ class Tempcode_test_set extends cms_test_case
 
 <table class="map_table"><tbody>
 	<tr>
-		<td>$MOBILE</td>
+		<th>$MOBILE</th>
 		<td>0</td>
 	</tr>
 	<tr>
-		<td>$CNS</td>
+		<th>$CNS</th>
 		<td>1</td>
 	</tr>
 </tbody></table>

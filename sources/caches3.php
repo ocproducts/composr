@@ -507,7 +507,7 @@ function erase_comcode_page_cache()
     push_query_limiting(false);
 
     do {
-        $rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array(), '', 50, null, true, array());
+        $rows = $GLOBALS['SITE_DB']->query_select('cached_comcode_pages', array('string_index'), array(), '', 50, 0, true, array());
         if ($rows === null) {
             $rows = array();
         }

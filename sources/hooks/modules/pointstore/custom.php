@@ -69,7 +69,7 @@ class Hook_pointstore_custom
      */
     public function config()
     {
-        $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('*'), array()'ORDER BY id');
+        $rows = $GLOBALS['SITE_DB']->query_select('pstore_customs', array('*'), array(), 'ORDER BY id');
         $out = array();
         foreach ($rows as $i => $row) {
             $fields = new Tempcode();

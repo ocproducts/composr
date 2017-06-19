@@ -472,7 +472,7 @@ class Module_wiki
         if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $page['wiki_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('wiki_pages')) {
-                $GLOBALS['SITE_DB']->query_update('wiki_pages', array('wiki_views' => $page['wiki_views']), array('id' => $id), '', 1, null, false, true);
+                $GLOBALS['SITE_DB']->query_update('wiki_pages', array('wiki_views' => $page['wiki_views']), array('id' => $id), '', 1, 0, false, true);
             }
         }
 

@@ -1130,7 +1130,7 @@ class Module_cms_comcode_pages
             $__pages = $GLOBALS['SITE_DB']->query_select(
                 'comcode_pages a LEFT JOIN ' . get_table_prefix() . 'cached_comcode_pages b ON a.the_zone=b.the_zone AND a.the_page=b.the_page',
                 array('a.the_zone', 'a.the_page', 'a.p_parent_page', 'a.p_validated', 'b.cc_page_title', 'b.string_index'),
-                null,
+                array(),
                 'ORDER BY the_zone,the_page'
             );
         }

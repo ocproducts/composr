@@ -574,7 +574,7 @@ class Module_galleries
         if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['gallery_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('galleries')) {
-                $GLOBALS['SITE_DB']->query_update('galleries', array('gallery_views' => $myrow['gallery_views']), array('name' => $cat), '', 1, null, false, true);
+                $GLOBALS['SITE_DB']->query_update('galleries', array('gallery_views' => $myrow['gallery_views']), array('name' => $cat), '', 1, 0, false, true);
             }
         }
 
@@ -698,7 +698,7 @@ class Module_galleries
             if (get_param_string('days', '') != '') {
                 $where .= ' AND add_date>' . strval(time() - get_param_integer('days') * 60 * 60 * 24);
             }
-            $first_video = $GLOBALS['SITE_DB']->query('SELECT *' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, 1, null, false, true);
+            $first_video = $GLOBALS['SITE_DB']->query('SELECT *' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, 1, 0, false, true);
             if (array_key_exists(0, $first_video)) {
                 $row = $first_video[0];
                 $probe_type = 'video';
@@ -711,7 +711,7 @@ class Module_galleries
                 if (get_param_string('days', '') != '') {
                     $where .= ' AND add_date>' . strval(time() - get_param_integer('days') * 60 * 60 * 24);
                 }
-                $first_image = $GLOBALS['SITE_DB']->query('SELECT *' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, 1, null, false, true);
+                $first_image = $GLOBALS['SITE_DB']->query('SELECT *' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, 1, 0, false, true);
                 if (array_key_exists(0, $first_image)) {
                     $row = $first_image[0];
                     $probe_type = 'image';
@@ -791,7 +791,7 @@ class Module_galleries
                     'VIDEO_DETAILS' => show_video_details($row),
                 ));
 
-                $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $row['video_views'] + 1), array('id' => $row['id']), '', 1, null, false, true);
+                $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $row['video_views'] + 1), array('id' => $row['id']), '', 1, 0, false, true);
 
                 break;
             case 'image':
@@ -857,7 +857,7 @@ class Module_galleries
                     'VIEW_URL' => $view_url,
                 ));
 
-                $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $row['image_views'] + 1), array('id' => $row['id']), '', 1, null, false, true);
+                $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $row['image_views'] + 1), array('id' => $row['id']), '', 1, 0, false, true);
 
                 break;
         }
@@ -873,8 +873,8 @@ class Module_galleries
             $where .= ' AND add_date>' . strval(time() - get_param_integer('days') * 60 * 60 * 24);
         }
         $max_entries = intval(get_option('gallery_entries_flow_per_page'));
-        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
-        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, null, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_videos = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_videos . ' FROM ' . get_table_prefix() . 'videos r ' . $extra_join_video . ' WHERE ' . $where . $extra_where_video . ' ORDER BY ' . $sort, $max_entries, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
+        $query_rows_images = $GLOBALS['SITE_DB']->query('SELECT *,r.id AS r_id' . $sql_suffix_images . ' FROM ' . get_table_prefix() . 'images r ' . $extra_join_image . ' WHERE ' . $where . $extra_where_image . ' ORDER BY ' . $sort, $max_entries, 0, false, true, array('title' => 'SHORT_TRANS', 'description' => 'LONG_TRANS__COMCODE'));
 
         // See if there is a numbering system to sort by
         $all_are = null;
@@ -1111,7 +1111,7 @@ class Module_galleries
         if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['image_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('images')) {
-                $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $myrow['image_views']), array('id' => $id), '', 1, null, false, true);
+                $GLOBALS['SITE_DB']->query_update('images', array('image_views' => $myrow['image_views']), array('id' => $id), '', 1, 0, false, true);
             }
         }
 
@@ -1229,7 +1229,7 @@ class Module_galleries
         if ((get_db_type() != 'xml') && (get_value('no_view_counts') !== '1') && (get_bot_type() === null)) {
             $myrow['video_views']++;
             if (!$GLOBALS['SITE_DB']->table_is_locked('videos')) {
-                $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $myrow['video_views']), array('id' => $id), '', 1, null, false, true);
+                $GLOBALS['SITE_DB']->query_update('videos', array('video_views' => $myrow['video_views']), array('id' => $id), '', 1, 0, false, true);
             }
         }
 

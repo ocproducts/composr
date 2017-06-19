@@ -103,7 +103,7 @@ class Hook_commandr_fs_database
             if ($where === false) {
                 return false;
             }
-            $row = $GLOBALS['SITE_DB']->query_select($meta_dir[0], array('*'), $where, '', 1, null, false, array());
+            $row = $GLOBALS['SITE_DB']->query_select($meta_dir[0], array('*'), $where, '', 1, 0, false, array());
             if (!array_key_exists(0, $row)) {
                 return false;
             }
