@@ -288,8 +288,6 @@ class Module_admin_themes
 
         require_css('themes_editor');
 
-        require_javascript('themeing');
-
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
@@ -772,7 +770,7 @@ class Module_admin_themes
                 'templates/HTML_HEAD.tpl',
                 'templates/GLOBAL_HTML_WRAP.tpl',
                 'css/global.css',
-                'javascript/custom_globals.js',
+                'javascript/global.js',
                 'templates/MAIL.tpl',
                 ':' . DEFAULT_ZONE_PAGE_NAME,
             );

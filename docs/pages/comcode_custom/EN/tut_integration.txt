@@ -210,8 +210,13 @@ You may also host the JavaScript library as local URLs. By convention we put the
 
 [title="3"]Copy & pasting into the global JavaScript code[/title]
 
-You may edit the [tt]custom_globals.js[/tt] template and paste all the JavaScript in there.
-This template is included into [tt]global.js[/tt] and was specifically designed for you to place your own code in, without needing to override the full [tt]global.js[/tt] file (which would cause you to miss out on any JavaScript bugfixes to it).
+There's a special process for this:
+1) Go to override the [tt]global.js[/tt] template in your theme
+2) Blank out your overridden version
+3) Put [tt]/*{+START,INCLUDE,global,.js,javascript}{+END}*/[/tt] at the top
+4) Paste all the JavaScript next
+
+This works by including the default code in, then your code follows.
 
 [title="3"]Adding formally to the Composr theme system[/title]
 

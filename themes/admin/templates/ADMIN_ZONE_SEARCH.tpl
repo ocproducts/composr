@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,core}
+{$REQUIRE_JAVASCRIPT,admin}
 
 {+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,admin,adminzone}}
 	<div class="adminzone_search" data-require-javascript="core" data-tpl="adminZoneSearch">

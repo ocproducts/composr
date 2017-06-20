@@ -391,7 +391,6 @@ class Hook_addon_registry_core_notifications
     public function tpl_preview__notifications_regular()
     {
         require_css('notifications');
-        require_javascript('notifications');
 
         $notification_types = array();
         $notification_types[] = array(
@@ -451,7 +450,6 @@ class Hook_addon_registry_core_notifications
     public function tpl_preview__notifications_advanced()
     {
         require_css('notifications');
-        require_javascript('notifications');
 
         $notification_types = array();
         $notification_types[] = array(

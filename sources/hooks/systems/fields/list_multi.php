@@ -253,7 +253,6 @@ class Hook_fields_list_multi
                 break;
 
             case 'multiple':
-                require_javascript('multi');
                 break;
         }
 

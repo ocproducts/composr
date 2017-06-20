@@ -856,8 +856,6 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
  */
 function form_input_line_multi($pretty_name, $description, $name, $default_array, $num_required, $tabindex = null, $class = 'line', $pattern = null, $pattern_error = null)
 {
-    require_javascript('multi');
-
     if (substr($name, -1) != '_' && substr($name, -2) != '[]') {
         $name .= '_';
     }
@@ -922,8 +920,6 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
  */
 function form_input_text_multi($pretty_name, $description, $name, $default_array, $num_required, $tabindex = null, $maxlength = null)
 {
-    require_javascript('multi');
-
     if (substr($name, -1) != '_') {
         $name .= '_';
     }
@@ -969,7 +965,6 @@ function form_input_username_multi($pretty_name, $description, $name, $default_a
         $name .= '_';
     }
 
-    require_javascript('multi');
     require_javascript('ajax_people_lists');
 
     $tabindex = get_form_field_tabindex($tabindex);
@@ -1522,7 +1517,6 @@ function form_input_upload_multi($pretty_name, $description, $name, $required, $
         require_javascript('plupload');
         require_css('widget_plupload');
     }
-    require_javascript('multi');
 
     $tabindex = get_form_field_tabindex($tabindex);
 

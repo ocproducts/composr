@@ -171,9 +171,9 @@ It is likely that you will have JavaScript code for the design.
 
 If this code is page-specific, you may just end up including it in your Comcode page.
 
-However, if it should run site-wide as initialisation or library code, you should add it to the [tt]custom_globals.js[/tt] JavaScript template.
+However, if it should run site-wide as initialisation or library code, you should add it to the [tt]global.js[/tt] JavaScript template.
 
-This template is specifically created so that you can easily slot in new JavaScript code.
+For instructions see the "Copy & pasting into the global JavaScript code" section of the [page="_SEARCH:tut_integration"]Integration of Composr and other installed scripts/applications[/page] template.
 
 [title="3"]Last steps[/title]
 

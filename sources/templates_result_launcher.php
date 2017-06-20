@@ -37,8 +37,6 @@ function results_launcher($title, $page, $category_id, $max, $max_rows, $type, $
         $max = 1;
     }
 
-    require_javascript('pagination');
-
     $out = new Tempcode();
 
     if ($max < $max_rows) { // If they don't all fit on one page

@@ -101,8 +101,6 @@ class Hook_profiles_tabs_edit_avatar
 
         $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_avatar_url');
 
-        require_javascript('multi');
-
         $fields = new Tempcode();
         require_code('form_templates');
         require_code('themes2');

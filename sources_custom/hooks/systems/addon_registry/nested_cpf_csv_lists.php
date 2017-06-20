@@ -138,7 +138,7 @@ Set Custom Profile Field list fields to have a default value like [tt]countries.
             'sources_custom/hooks/systems/addon_registry/nested_cpf_csv_lists.php',
             'sources_custom/miniblocks/nested_csv_lists_javascript.php',
             'sources_custom/nested_csv.php',
-            'themes/default/javascript_custom/custom_globals.js',
+            'themes/default/javascript_custom/global.js',
             'lang_custom/EN/nested_csv.ini',
         );
     }

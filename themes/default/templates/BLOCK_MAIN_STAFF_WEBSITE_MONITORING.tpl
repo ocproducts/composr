@@ -51,7 +51,6 @@
 			</form>
 
 			{$REQUIRE_JAVASCRIPT,checking}
-			{$REQUIRE_JAVASCRIPT,staff}
 		</div>
 	</section>
 </div>

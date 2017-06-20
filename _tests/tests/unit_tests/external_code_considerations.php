@@ -110,7 +110,6 @@ class external_code_considerations_test_set extends cms_test_case
                 'themes/default/javascript_custom/activities.js',
                 'themes/default/javascript_custom/activities_state.js',
                 'themes/default/javascript_custom/booking.js',
-                'themes/default/javascript_custom/custom_globals.js',
                 'themes/default/javascript_custom/index.html',
                 'themes/default/javascript_custom/shake.js',
                 'themes/default/javascript_custom/shoutbox.js',

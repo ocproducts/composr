@@ -1285,7 +1285,7 @@ class Forum_driver_cns extends Forum_driver_base
                 $where = ' AND p_validated=1';
             }
             $where = 'p_cache_forum_id IS NOT NULL' . $where;
-            $value = $this->db->get_table_count_approx('f_posts', null, $where);
+            $value = $this->db->get_table_count_approx('f_posts', array(), $where);
             if (!$this->db->table_is_locked('values')) {
                 set_value('cns_post_count', strval($value));
             }

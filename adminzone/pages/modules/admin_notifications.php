@@ -104,7 +104,6 @@ class Module_admin_notifications
     public function run()
     {
         require_css('notifications');
-        require_javascript('notifications');
         require_code('notifications');
         require_code('notifications2');
         require_all_lang();

@@ -54,7 +54,6 @@ class Block_top_personal_stats
         }
 
         require_css('personal_stats');
-        require_javascript('notification_poller');
 
         $block_id = get_block_id($map);
 

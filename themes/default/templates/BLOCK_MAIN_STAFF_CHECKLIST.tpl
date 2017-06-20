@@ -1,4 +1,3 @@
-{$REQUIRE_JAVASCRIPT,staff}
 {$REQUIRE_JAVASCRIPT,core_adminzone_dashboard}
 
 <section id="tray_{!CHECK_LIST|}" class="box box___block_main_staff_checklist" data-tpl="blockMainStaffChecklist" data-view="ToggleableTray" data-tray-cookie="{!CHECK_LIST|}">

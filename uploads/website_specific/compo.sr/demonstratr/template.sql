@@ -2468,7 +2468,6 @@ insert into `cms_addons_files` values('core','themes/default/templates/LOOKUP_IP
  ('core','themes/default/text/tempcode_test.txt','2283'),
  ('core','themes/default/templates/QUERY_LOG.tpl','2284'),
  ('core','themes/default/templates/QUERY_SCREEN.tpl','2285'),
- ('core','themes/default/javascript/custom_globals.js','2286'),
  ('core','themes/default/javascript/modalwindow.js','2287'),
  ('core','themes/default/images/product_logo.png','2288'),
  ('core','themes/default/images/button_lightbox_close.png','2289'),

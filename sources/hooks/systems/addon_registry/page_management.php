@@ -135,7 +135,6 @@ class Hook_addon_registry_page_management
     public function tpl_preview__administrative__sitemap_editor_screen()
     {
         require_javascript('tree_list');
-        require_javascript('sitemap_editor');
 
         require_lang('zones');
 

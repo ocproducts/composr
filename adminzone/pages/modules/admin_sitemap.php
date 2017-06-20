@@ -152,7 +152,6 @@ class Module_admin_sitemap
         }
 
         require_javascript('tree_list');
-        require_javascript('sitemap_editor');
 
         return do_template('SITEMAP_EDITOR_SCREEN', array('_GUID' => '2d42cb71e03d31c855a6b6467d2082d2', 'TITLE' => $this->title));
     }
