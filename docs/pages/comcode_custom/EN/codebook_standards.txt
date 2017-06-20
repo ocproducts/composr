@@ -1845,6 +1845,14 @@ Use relative font sizes
 
 [title="4"]JavaScript[/title]
 
+We broadly follow the same kind of conventions other JavaScript developers do, but with a focus on modern ways of doing things wherever possible.
+JavaScript has been historically a very clunky language with a messy history of new innovations that get constantly recycled as the basic platform moves forward or developers fight over approaches. We've designed a framework that moves beyond all this as much as possible. Our framework is broadly post-jQuery (although we do have jQuery bundled for third-party code) and post-preprocessor (because JavaScript is more powerful on its own than it was in the past).
+
+You do not need to:
+1) define jsdoc
+2) minify scripts (Composr does it for you)
+3) make third-party libraries meet our particular choice of standards (we trust third-party developers to have their own methods for ensuring standards are high)
+
 {|
 ! Standard
 ! Reason
@@ -1857,7 +1865,7 @@ Use relative font sizes
 | Consistency
 | Product development only
 | Manually
-| The JavaScript framework defines a way of writing objects, hooking in functionality (mainly via data attributes), querying the DOM tree, and naming variables -- follow the existing standard of the code. We broadly follow the same kind of conventions other JavaScript developers do, but with a focus on modern ways of doing things wherever possible (as JavaScript is historically a very messy language). You do not need to define jsdoc. We do not use any JavaScript preprocessors or pre-minification (automatic minification is done by Composr).
+| The JavaScript framework defines a way of writing objects, hooking in functionality (via data attributes, views, and behaviors), naming variables, querying the DOM tree, and lots of other helper methods -- follow the existing standard of the code.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Use official DOM (so no [tt]document.all[/tt], or [tt]window.images[/tt])

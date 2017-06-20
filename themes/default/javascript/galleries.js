@@ -164,6 +164,7 @@
         }
     });
 
+    /* TODO: Salman move to quizzes.js */
     $cms.functions.moduleCmsQuiz = function moduleCmsQuiz() {
         document.getElementById('type').addEventListener('change', hideFunc);
         hideFunc();

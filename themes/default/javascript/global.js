@@ -2579,6 +2579,8 @@
      * @returns {*}
      */
     $cms.dom.data = function data(el, key, value) {
+        // TODO: Salman is the internalised caching here actually worthwhile? To me it seems like it could introduce bugs for a case the browsers would already have optimised.
+
         var name, data;
 
         el = elArg(el);
@@ -2639,6 +2641,101 @@
         el = elArg(el);
 
         domData.remove(el, key);
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param win
+     * @returns {number}
+     */
+    $cms.dom.getWindowWidth = function getWindowWidth(win) {
+        return (win || window).innerWidth - 18;
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param win
+     * @returns {number}
+     */
+    $cms.dom.getWindowHeight = function getWindowHeight(win) {
+        return (win || window).innerHeight - 18;
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param win
+     * @returns {number}
+    */
+    $cms.dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
+        win || (win = window);
+
+        var rectA = win.document.body.parentElement.getBoundingClientRect(),
+            rectB = win.document.body.getBoundingClientRect(),
+            a = (rectA.bottom - rectA.top),
+            b = (rectB.bottom - rectB.top);
+
+        return (a > b) ? a : b;
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @deprecated
+     * @param el
+     * @param notRelative
+     * @returns {number}
+     */
+    $cms.dom.findPosX = function findPosX(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+        if (!el) {
+            return 0;
+        }
+
+        el = elArg(el);
+        notRelative = !!notRelative;
+
+        var left = el.getBoundingClientRect().left + window.pageXOffset;
+
+        if (!notRelative) {
+            var position;
+            while (el) {
+                if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
+                    left -= $cms.dom.findPosX(el, true);
+                    break;
+                }
+                el = el.parentElement;
+            }
+        }
+
+        return left;
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @deprecated
+     * @param el
+     * @param notRelative
+     * @returns {number}
+     */
+    $cms.dom.findPosY = function findPosY(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+        if (!el) {
+            return 0;
+        }
+
+        el = elArg(el);
+        notRelative = !!notRelative;
+
+        var top = el.getBoundingClientRect().top + window.pageYOffset;
+
+        if (!notRelative) {
+            var position;
+            while (el) {
+                if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
+                    top -= $cms.dom.findPosY(el, true);
+                    break;
+                }
+                el = el.parentElement;
+            }
+        }
+        return top;
     };
 
     /**
@@ -3529,6 +3626,184 @@
     };
 
     /**
+     * Animate the loading of an iframe
+     * @memberof $cms.dom
+     * @param pf
+     * @param frame
+     * @param leaveGapTop
+     * @param leaveHeight
+     */
+    $cms.dom.animateFrameLoad = function animateFrameLoad(pf, frame, leaveGapTop, leaveHeight) {
+        if (!pf) {
+            return;
+        }
+
+        leaveGapTop = +leaveGapTop || 0;
+        leaveHeight = !!leaveHeight;
+
+        if (!leaveHeight) {
+            // Enough to stop jumping around
+            pf.style.height = window.top.$cms.dom.getWindowHeight() + 'px';
+        }
+
+        $cms.dom.illustrateFrameLoad(frame);
+
+        var ifuob = window.top.$cms.dom.$('#iframe_under');
+        var extra = ifuob ? ((window != window.top) ? $cms.dom.findPosY(ifuob) : 0) : 0;
+        if (ifuob) {
+            ifuob.scrolling = 'no';
+        }
+
+        if (window === window.top) {
+            window.top.$cms.dom.smoothScroll($cms.dom.findPosY(pf) + extra - leaveGapTop);
+        }
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param iframeId
+     */
+    $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
+        var head, cssText = '', i, iframe = $cms.dom.$id(iframeId), doc, de;
+
+        if (!$cms.$CONFIG_OPTION('enable_animations') || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
+            return;
+        }
+
+        iframe.style.height = '80px';
+
+        try {
+            doc = iframe.contentDocument;
+            de = doc.documentElement;
+        } catch (e) {
+            // May be connection interference somehow
+            iframe.scrolling = 'auto';
+            return;
+        }
+
+        head = '<style>';
+
+        for (i = 0; i < document.styleSheets.length; i++) {
+            try {
+                var stylesheet = document.styleSheets[i];
+                if (stylesheet.href && !stylesheet.href.includes('/global') && !stylesheet.href.includes('/merged')) {
+                    continue;
+                }
+
+                if (stylesheet.cssText !== undefined) {
+                    cssText += stylesheet.cssText;
+                } else {
+                    var rules = [];
+                    try {
+                        rules = stylesheet.cssRules ? stylesheet.cssRules : stylesheet.rules;
+                    } catch (ignore) {
+                    }
+
+                    if (rules) {
+                        for (var j = 0; j < rules.length; j++) {
+                            if (rules[j].cssText) {
+                                cssText += rules[j].cssText + '\n\n';
+                            } else {
+                                cssText += rules[j].selectorText + '{ ' + rules[j].style.cssText + '}\n\n';
+                            }
+                        }
+                    }
+                }
+            } catch (ignore) {}
+        }
+
+        head += cssText + '<\/style>';
+
+        doc.body.classList.add('website_body', 'main_website_faux');
+
+        if (!de.querySelector('style')) { // The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
+            $cms.dom.html(doc.head, head);
+        }
+
+        $cms.dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + $cms.img('{$IMG_INLINE*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
+
+        // Stupid workaround for Google Chrome not loading an image on unload even if in cache
+        setTimeout(function () {
+            if (!doc.getElementById('loading_image')) {
+                return;
+            }
+
+            var iNew = doc.createElement('img');
+            iNew.src = doc.getElementById('loading_image').src;
+
+            var iDefault = doc.getElementById('loading_image');
+            if (iDefault) {
+                iNew.className = iDefault.className;
+                iNew.alt = iDefault.alt;
+                iNew.id = iDefault.id;
+                iDefault.parentNode.replaceChild(iNew, iDefault);
+            }
+        }, 0);
+    };
+
+    /**
+     * Smoothly scroll to another position on the page
+     * @memberof $cms.dom
+     * @param destY
+     * @param expectedScrollY
+     * @param dir
+     * @param eventAfter
+     */
+    $cms.dom.smoothScroll = function smoothScroll(destY, expectedScrollY, dir, eventAfter) {
+        if (!$cms.$CONFIG_OPTION('enable_animations')) {
+            try {
+                window.scrollTo(0, destY);
+            } catch (ignore) {}
+            return;
+        }
+
+        var scrollY = window.pageYOffset;
+        if (typeof destY === 'string') {
+            destY = $cms.dom.findPosY($cms.dom.$id(destY), true);
+        }
+        if (destY < 0) {
+            destY = 0;
+        }
+        if ((expectedScrollY != null) && (expectedScrollY != scrollY)) {
+            // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
+            return;
+        }
+
+        dir = (destY > scrollY) ? 1 : -1;
+
+        var distanceToGo = (destY - scrollY) * dir;
+        var dist = Math.round(dir * (distanceToGo / 25));
+
+        if (dir === -1 && dist > -25) {
+            dist = -25;
+        }
+        if (dir === 1 && dist < 25) {
+            dist = 25;
+        }
+
+        if (((dir === 1) && (scrollY + dist >= destY)) || ((dir === -1) && (scrollY + dist <= destY)) || (distanceToGo > 2000)) {
+            try {
+                window.scrollTo(0, destY);
+            } catch (e) {
+            }
+            if (eventAfter) {
+                eventAfter();
+            }
+            return;
+        }
+
+        try {
+            window.scrollBy(0, dist);
+        } catch (e) {
+            return; // May be stopped by popup blocker
+        }
+
+        window.setTimeout(function () {
+            $cms.dom.smoothScroll(destY, scrollY + dist, dir, eventAfter);
+        }, 30);
+    };
+
+    /**
      * @memberof $cms.dom
      * @param keyboardEvent
      * @param checkKey
@@ -4108,184 +4383,6 @@
     };
 
     /**
-     * Animate the loading of an iframe
-     * @memberof $cms.dom
-     * @param pf
-     * @param frame
-     * @param leaveGapTop
-     * @param leaveHeight
-     */
-    $cms.dom.animateFrameLoad = function animateFrameLoad(pf, frame, leaveGapTop, leaveHeight) {
-        if (!pf) {
-            return;
-        }
-
-        leaveGapTop = +leaveGapTop || 0;
-        leaveHeight = !!leaveHeight;
-
-        if (!leaveHeight) {
-            // Enough to stop jumping around
-            pf.style.height = window.top.$cms.dom.getWindowHeight() + 'px';
-        }
-
-        $cms.dom.illustrateFrameLoad(frame);
-
-        var ifuob = window.top.$cms.dom.$('#iframe_under');
-        var extra = ifuob ? ((window != window.top) ? $cms.dom.findPosY(ifuob) : 0) : 0;
-        if (ifuob) {
-            ifuob.scrolling = 'no';
-        }
-
-        if (window === window.top) {
-            window.top.$cms.dom.smoothScroll($cms.dom.findPosY(pf) + extra - leaveGapTop);
-        }
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param iframeId
-     */
-    $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
-        var head, cssText = '', i, iframe = $cms.dom.$id(iframeId), doc, de;
-
-        if (!$cms.$CONFIG_OPTION('enable_animations') || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
-            return;
-        }
-
-        iframe.style.height = '80px';
-
-        try {
-            doc = iframe.contentDocument;
-            de = doc.documentElement;
-        } catch (e) {
-            // May be connection interference somehow
-            iframe.scrolling = 'auto';
-            return;
-        }
-
-        head = '<style>';
-
-        for (i = 0; i < document.styleSheets.length; i++) {
-            try {
-                var stylesheet = document.styleSheets[i];
-                if (stylesheet.href && !stylesheet.href.includes('/global') && !stylesheet.href.includes('/merged')) {
-                    continue;
-                }
-
-                if (stylesheet.cssText !== undefined) {
-                    cssText += stylesheet.cssText;
-                } else {
-                    var rules = [];
-                    try {
-                        rules = stylesheet.cssRules ? stylesheet.cssRules : stylesheet.rules;
-                    } catch (ignore) {
-                    }
-
-                    if (rules) {
-                        for (var j = 0; j < rules.length; j++) {
-                            if (rules[j].cssText) {
-                                cssText += rules[j].cssText + '\n\n';
-                            } else {
-                                cssText += rules[j].selectorText + '{ ' + rules[j].style.cssText + '}\n\n';
-                            }
-                        }
-                    }
-                }
-            } catch (ignore) {}
-        }
-
-        head += cssText + '<\/style>';
-
-        doc.body.classList.add('website_body', 'main_website_faux');
-
-        if (!de.querySelector('style')) { // The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice
-            $cms.dom.html(doc.head, head);
-        }
-
-        $cms.dom.html(doc.body, '<div aria-busy="true" class="spaced"><div class="ajax_loading"><img id="loading_image" class="vertical_alignment" src="' + $cms.img('{$IMG_INLINE*;,loading}') + '" alt="{!LOADING;^}" /> <span class="vertical_alignment">{!LOADING;^}<\/span><\/div><\/div>');
-
-        // Stupid workaround for Google Chrome not loading an image on unload even if in cache
-        setTimeout(function () {
-            if (!doc.getElementById('loading_image')) {
-                return;
-            }
-
-            var iNew = doc.createElement('img');
-            iNew.src = doc.getElementById('loading_image').src;
-
-            var iDefault = doc.getElementById('loading_image');
-            if (iDefault) {
-                iNew.className = iDefault.className;
-                iNew.alt = iDefault.alt;
-                iNew.id = iDefault.id;
-                iDefault.parentNode.replaceChild(iNew, iDefault);
-            }
-        }, 0);
-    };
-
-    /**
-     * Smoothly scroll to another position on the page
-     * @memberof $cms.dom
-     * @param destY
-     * @param expectedScrollY
-     * @param dir
-     * @param eventAfter
-     */
-    $cms.dom.smoothScroll = function smoothScroll(destY, expectedScrollY, dir, eventAfter) {
-        if (!$cms.$CONFIG_OPTION('enable_animations')) {
-            try {
-                window.scrollTo(0, destY);
-            } catch (ignore) {}
-            return;
-        }
-
-        var scrollY = window.pageYOffset;
-        if (typeof destY === 'string') {
-            destY = $cms.dom.findPosY($cms.dom.$id(destY), true);
-        }
-        if (destY < 0) {
-            destY = 0;
-        }
-        if ((expectedScrollY != null) && (expectedScrollY != scrollY)) {
-            // We must terminate, as the user has scrolled during our animation and we do not want to interfere with their action -- or because our last scroll failed, due to us being on the last scroll screen already
-            return;
-        }
-
-        dir = (destY > scrollY) ? 1 : -1;
-
-        var distanceToGo = (destY - scrollY) * dir;
-        var dist = Math.round(dir * (distanceToGo / 25));
-
-        if (dir === -1 && dist > -25) {
-            dist = -25;
-        }
-        if (dir === 1 && dist < 25) {
-            dist = 25;
-        }
-
-        if (((dir === 1) && (scrollY + dist >= destY)) || ((dir === -1) && (scrollY + dist <= destY)) || (distanceToGo > 2000)) {
-            try {
-                window.scrollTo(0, destY);
-            } catch (e) {
-            }
-            if (eventAfter) {
-                eventAfter();
-            }
-            return;
-        }
-
-        try {
-            window.scrollBy(0, dist);
-        } catch (e) {
-            return; // May be stopped by popup blocker
-        }
-
-        window.setTimeout(function () {
-            $cms.dom.smoothScroll(destY, scrollY + dist, dir, eventAfter);
-        }, 30);
-    };
-
-    /**
      * Dimension functions
      * @memberof $cms.dom
      * @param e
@@ -4326,101 +4423,6 @@
 
             return 0;
         }
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param win
-     * @returns {number}
-     */
-    $cms.dom.getWindowWidth = function getWindowWidth(win) {
-        return (win || window).innerWidth - 18;
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param win
-     * @returns {number}
-     */
-    $cms.dom.getWindowHeight = function getWindowHeight(win) {
-        return (win || window).innerHeight - 18;
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param win
-     * @returns {number}
-     */
-    $cms.dom.getWindowScrollHeight = function getWindowScrollHeight(win) {
-        win || (win = window);
-
-        var rectA = win.document.body.parentElement.getBoundingClientRect(),
-            rectB = win.document.body.getBoundingClientRect(),
-            a = (rectA.bottom - rectA.top),
-            b = (rectB.bottom - rectB.top);
-
-        return (a > b) ? a : b;
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @deprecated
-     * @param el
-     * @param notRelative
-     * @returns {number}
-     */
-    $cms.dom.findPosX = function findPosX(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
-        if (!el) {
-            return 0;
-        }
-
-        el = elArg(el);
-        notRelative = !!notRelative;
-
-        var left = el.getBoundingClientRect().left + window.pageXOffset;
-
-        if (!notRelative) {
-            var position;
-            while (el) {
-                if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
-                    left -= $cms.dom.findPosX(el, true);
-                    break;
-                }
-                el = el.parentElement;
-            }
-        }
-
-        return left;
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @deprecated
-     * @param el
-     * @param notRelative
-     * @returns {number}
-     */
-    $cms.dom.findPosY = function findPosY(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
-        if (!el) {
-            return 0;
-        }
-
-        el = elArg(el);
-        notRelative = !!notRelative;
-
-        var top = el.getBoundingClientRect().top + window.pageYOffset;
-
-        if (!notRelative) {
-            var position;
-            while (el) {
-                if ($cms.dom.isCss(el, 'position', ['absolute', 'relative', 'fixed'])) {
-                    top -= $cms.dom.findPosY(el, true);
-                    break;
-                }
-                el = el.parentElement;
-            }
-        }
-        return top;
     };
 
     /**
