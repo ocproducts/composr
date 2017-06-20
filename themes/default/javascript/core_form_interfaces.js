@@ -1326,6 +1326,7 @@
         } catch (ignore) {}
     }
 
+    /* TODO: Salman move this into core_cns.js [I know it is referenced above, so you'll need to refactor a bit] */
     function joinForm(params) {
         var form = document.getElementById('username').form,
             submitBtn = document.getElementById('submit_button');

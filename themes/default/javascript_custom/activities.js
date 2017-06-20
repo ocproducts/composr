@@ -1,3 +1,5 @@
+/* TODO: Salman merge into activity_feed.js */
+
 'use strict';
 
 // Assume that our activity feed needs updating to start with

@@ -1,3 +1,5 @@
+/* TODO: Salman merge into shoutr.js */
+
 'use strict';
 
 window.sb_cc_timer = null;

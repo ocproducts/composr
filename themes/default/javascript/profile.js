@@ -1,3 +1,5 @@
+/* TODO: Salman, merge this into core_cns.js */
+
 'use strict';
 
 function decryptData() {

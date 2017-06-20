@@ -1,3 +1,5 @@
+/* TODO: Salman, merge this into global.js (it is a common include and not worth its own request for sake of modularisation) */
+
 (function ($cms) {
     'use strict';
 

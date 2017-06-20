@@ -40,6 +40,7 @@
         }
     });
 
+    /* TODO: Salman move to core_feedback_features.js */
     /**
      * Reply to a topic using AJAX
      * @param el

@@ -1,3 +1,5 @@
+/* TODO: Salman, merge this into global.js */
+
 (function ($cms) {
     'use strict';
 
@@ -20,6 +22,7 @@
         });
     };
 
+    /* TODO: Salman move to fractional_edit.js */
     $cms.templates.fractionalEdit = function fractionalEdit(params, el) {
         var explicitEditingLinks = !!params.explicitEditingLinks,
             url = strVal(params.url),
@@ -55,6 +58,7 @@
         }
     };
 
+    /* TODO: Salman move to core_feedback_features.js */
     $cms.templates.postChildLoadLink = function (params, container) {
         var ids = params.implodedIds,
             id = params.id;

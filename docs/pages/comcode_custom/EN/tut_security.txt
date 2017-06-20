@@ -48,7 +48,7 @@ Framework security:
   - automatic monitoring and scanning of database queries to confirm they were composed in a secure way
   - disabling of common attack vectors by default such as 'UNION' database queries (only enabling them when necessary)
   - automatic input sanitisation in standardised input-access APIs
- - Configurable levels of HTML filtering, to prevent XSS attacks (Cross-Site-Scripting attacks)
+ - Configurable levels of HTML filtering, to prevent XSS attacks (Cross-Site-Scripting attacks), including full CSP implementation
  - Our own version of PHP used during development -- featuring strict types and a detector for XSS security holes
  - Our Code Quality Checker tool has the ability to scan for security hotspots in the code (areas that need careful quality reviews)
  - "Kid-gloves modes" that automatically impose restrictions and filters on third-party code unless the programmers of them explicitly declare that they understand key security issues

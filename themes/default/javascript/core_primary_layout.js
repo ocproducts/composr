@@ -1,3 +1,5 @@
+/* TODO: Salman, merge this into global.js */
+
 (function ($cms) {
     'use strict';
 

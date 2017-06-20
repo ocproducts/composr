@@ -724,6 +724,7 @@
         return !blank;
     };
 
+    /* TODO: Salman move this into core_form_interfaces.js */
     /**
      * Marking things (to avoid illegally nested forms)
      * @param form
@@ -806,6 +807,7 @@
         return true;
     };
 
+    /* TODO: Salman move this into core_form_interfaces.js */
     /**
      * @memberof $cms.form
      * @param form

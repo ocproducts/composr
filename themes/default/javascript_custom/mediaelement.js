@@ -1,3 +1,5 @@
+/* TODO: Salman this file should be an override of core_rich_media.js [i.e. javascript_custom/core_rich_media.js], and it should include the original file in the same way javascript_custom/global.js includes the original global.js */
+
 (function ($cms) {
     $cms.templates.mediaAudioWebsafe = function mediaAudioWebsafe(params) {
         var playerId = strVal(params.playerId),

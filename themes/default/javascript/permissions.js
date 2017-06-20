@@ -1,3 +1,5 @@
+/* TODO: Salman merge into core_permission_management.js */
+
 'use strict';
 
 function showPermissionSetting(ob, event) {

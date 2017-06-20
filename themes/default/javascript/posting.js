@@ -1,5 +1,3 @@
-/* TODO: Salman, in the light of us having so many JavaScript files now I feel editing.js and posting.js should be merged into core_form_interfaces.js */
-
 'use strict';
 
 /* Form editing code (mostly stuff only used on posting forms) */
