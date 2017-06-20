@@ -2050,7 +2050,7 @@ function csp_send_header()
     $style_allow_inline = $default_allow_inline;
     $style_require_nonce = false;
 
-    // TODO: Review all of https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy and https://scotthelme.co.uk/csp-cheat-sheet/
+    // TODO: Review all of https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy and https://scotthelme.co.uk/csp-cheat-sheet/ and https://www.html5rocks.com/en/tutorials/security/content-security-policy/ and https://w3c.github.io/webappsec-csp/
 
     if ($style_src === null) {
         $style_src = array();

@@ -191,7 +191,7 @@
         }
     };
 
-    $cms.templates.cnsVforumFiltering = function cnsVforumFiltering() {
+    $cms.templates.cnsVirtualForumFiltering = function cnsVirtualForumFiltering() {
         var container = this;
 
         $cms.dom.on(container, 'change', '.js-select-change-form-submit', function (e, select) {

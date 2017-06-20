@@ -138,7 +138,6 @@ class Hook_addon_registry_core_menus
             'themes/default/templates/MENU_SPACER_sitemap.tpl',
             'themes/default/templates/MENU_SPACER_tree.tpl',
             'themes/default/templates/MENU_SPACER_mobile.tpl',
-            'themes/default/javascript/menu_sitemap.js',
             'themes/default/templates/MENU_STAFF_LINK.tpl',
             'themes/default/templates/MENU_EDITOR_BRANCH.tpl',
             'themes/default/templates/MENU_EDITOR_SCREEN.tpl',

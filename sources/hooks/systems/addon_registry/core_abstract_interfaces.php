@@ -169,7 +169,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/templates/RESULTS_TABLE_FIELD_TITLE.tpl',
             'themes/default/templates/RESULTS_TABLE_FIELD_TITLE_SORTABLE.tpl',
             'themes/default/templates/RESULTS_TABLE_TICK.tpl',
-            'themes/default/javascript/pagination.js',
             'themes/default/templates/INTERNALISED_AJAX_SCREEN.tpl',
             'themes/default/templates/MEMBER_TOOLTIP.tpl',
             'themes/default/templates/SIMPLE_PREVIEW_BOX.tpl',

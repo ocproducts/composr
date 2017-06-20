@@ -136,7 +136,6 @@ class Hook_addon_registry_core_themeing
             'themes/default/templates/TEMPLATE_TREE_ITEM_WRAP.tpl',
             'themes/default/templates/TEMPLATE_TREE_NODE.tpl',
             'themes/default/templates/TEMPLATE_TREE_SCREEN.tpl',
-            'themes/default/javascript/themeing.js',
             'sources/themes2.php',
             'sources/themes3.php',
             'lang/EN/themes.ini',

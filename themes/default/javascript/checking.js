@@ -725,7 +725,7 @@
     };
 
     /**
-     * Marking things (to avoid illegally nested forms
+     * Marking things (to avoid illegally nested forms)
      * @param form
      * @param prefix
      * @returns {boolean}

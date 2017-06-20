@@ -1,3 +1,5 @@
+/* TODO: Salman move the general stuff for normal page views into global.js, loading menu editing stuff just for drop downs to work is too much */
+
 (function ($cms) {
     'use strict';
 

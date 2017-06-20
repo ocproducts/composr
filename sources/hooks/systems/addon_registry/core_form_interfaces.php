@@ -120,7 +120,6 @@ class Hook_addon_registry_core_form_interfaces
             'themes/default/javascript/editing.js',
             'themes/default/javascript/WYSIWYG_SETTINGS.js',
             'themes/default/javascript/ATTACHMENT_UI_DEFAULTS.js',
-            'themes/default/javascript/multi.js',
             'themes/default/javascript/checking.js',
             'themes/default/templates/FORM_FIELD_SET_GROUPER.tpl',
             'themes/default/templates/FORM.tpl',

@@ -1058,7 +1058,7 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
  * Prepare some invisible text to annotate the HTML output stream.
  * It works using invisible unicode characters.
  * It's a bit like having hidden messages in the “umm”s and “err”s in speech. If I said “it’s lovely err err umm outside, want to umm err err umm go for a walk”, it can be a hidden code.
- * Also implemented in JavaScript (themeing.js), function invisible_output_encode(string).
+ * Also implemented in JavaScript (core_themeing.js), function invisible_output_encode(string).
  *
  * @param  string $string Input
  * @return string Output

@@ -1,3 +1,5 @@
+/* TODO: Salman, merge into news.js */
+
 (function ($cms) {
     'use strict';
     // Implementation for [data-cms-news-scroller]
