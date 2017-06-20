@@ -129,7 +129,7 @@ function checkMenu() {
                 caption = $cms.dom.$id('caption_' + id);
                 url = $cms.dom.$id('url_' + id);
                 if ((caption.value == '') && (url.value != '')) {
-                    $cms.ui.alert('{!MISSING_CAPTION_ERROR;^}');
+                    $cms.ui.alert('{!menus:MISSING_CAPTION_ERROR;^}');
                     return false;
                 }
 
@@ -137,7 +137,7 @@ function checkMenu() {
                 branchType = $cms.dom.$id('branch_type_' + id);
                 if (branchType.options[branchType.selectedIndex].value == 'page') {
                     if ((caption.value != '') && (url.value == '')) {
-                        $cms.ui.alert('{!MISSING_URL_ERROR;^}');
+                        $cms.ui.alert('{!menus:MISSING_URL_ERROR;^}');
                         return false;
                     }
                 }

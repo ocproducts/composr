@@ -59,7 +59,7 @@
             button.parentNode.appendChild(progressTicker);
 
             $cms.loadSnippet('backup_size&max_size=' + encodeURIComponent(maxSizeField.value), null, true).then(function (size) {
-                $cms.ui.alert($cms.format('{!CALCULATED_SIZE;^}', size));
+                $cms.ui.alert($cms.format('{!backups:CALCULATED_SIZE;^}', size));
                 button.parentNode.removeChild(progressTicker);
             });
         });

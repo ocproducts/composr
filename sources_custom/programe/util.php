@@ -987,4 +987,3 @@ function whichbots()
 
 	return "bot=$selectbot";
 }
-

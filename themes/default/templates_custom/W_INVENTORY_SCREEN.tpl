@@ -35,4 +35,3 @@
 {+START,IF_EMPTY,{INVENTORY}}
 	<p class="nothing_here">{!W_EMPTY_INVENTORY}</p>
 {+END}
-

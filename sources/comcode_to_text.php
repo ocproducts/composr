@@ -487,4 +487,3 @@ function _semihtml_to_comcode_callback($matches)
 {
     return semihtml_to_comcode($matches[1], true, true);
 }
-

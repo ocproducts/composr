@@ -1,4 +1,6 @@
 (function ($cms) {
+    'use strict';
+
     $cms.templates.quizScreen = function quizScreen(params, container) {
         var form = $cms.dom.$(container, '.js-quiz-form'),
             timeout = +params.timeout || 0;

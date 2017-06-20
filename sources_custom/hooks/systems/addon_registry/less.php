@@ -227,4 +227,3 @@ class Hook_addon_registry_less
         );
     }
 }
-

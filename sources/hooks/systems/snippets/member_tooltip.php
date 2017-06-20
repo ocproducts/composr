@@ -33,5 +33,3 @@ class Hook_snippet_member_tooltip
         return render_member_box(get_param_integer('member_id'), true, false);
     }
 }
-
-

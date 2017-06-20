@@ -102,7 +102,7 @@
         for (var i = 0; i < friends.length; i++) {
             friend = friends[i];
 
-            if (friend.onlineText !== '{!ACTIVE;^}') {
+            if (friend.onlineText !== '{!chat:ACTIVE;^}') {
                 $cms.dom.$('#friend_img_' + friend.memberId).className = 'friend_inactive';
             }
         }
@@ -407,7 +407,7 @@
         $cms.dom.on(container, 'click', '.js-click-require-sound-selection', function () {
             var select = $cms.dom.$('#select_' + key +  (memberId ? ('_' + memberId) : ''));
             if (select.value === '') {
-                $cms.ui.alert('{!PLEASE_SELECT_SOUND;}');
+                $cms.ui.alert('{!chat:PLEASE_SELECT_SOUND;}');
             } else {
                 playSoundUrl(select.value);
             }
@@ -643,7 +643,7 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
 
                 playChatSound('message_sent');
             } else {
-                $cms.ui.alert('{!MESSAGE_POSTING_ERROR;^}');
+                $cms.ui.alert('{!chat:MESSAGE_POSTING_ERROR;^}');
             }
 
             // Reschedule the next check (cc_timer was reset already higher up in function)
@@ -874,14 +874,14 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                         flashableAlert = true;
                         tmpElement = document.getElementById('online_' + memberId);
                         if (tmpElement) {
-                            if ($cms.dom.html(tmpElement).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) break;
-                            $cms.dom.html(tmpElement, '{!ACTIVE;^}');
+                            if ($cms.dom.html(tmpElement).toLowerCase() == '{!chat:ACTIVE;^}'.toLowerCase()) break;
+                            $cms.dom.html(tmpElement, '{!chat:ACTIVE;^}');
                             var friendImg = document.getElementById('friend_img_' + memberId);
                             if (friendImg) friendImg.className = 'friend_active';
                             var alertBoxWrap = document.getElementById('alert_box_wrap');
                             if (alertBoxWrap) alertBoxWrap.style.display = 'block';
                             var alertBox = document.getElementById('alert_box');
-                            if (alertBox) $cms.dom.html(alertBox, '{!NOW_ONLINE;^}'.replace('{' + '1}', username));
+                            if (alertBox) $cms.dom.html(alertBox, '{!chat:NOW_ONLINE;^}'.replace('{' + '1}', username));
                             window.setTimeout(function () {
                                 if (document.getElementById('alert_box')) // If the alert box is still there, remove it
                                     alertBoxWrap.style.display = 'none';
@@ -891,7 +891,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                                 playChatSound('contact_on', memberId);
                             }
                         } else if (!document.getElementById('chat_lobby_convos_tabs')) {
-                            createOverlayEvent(/*skip_incoming_sound*/true, memberId, '{!NOW_ONLINE;^}'.replace('{' + '1}', username), function () {
+                            createOverlayEvent(/*skip_incoming_sound*/true, memberId, '{!chat:NOW_ONLINE;^}'.replace('{' + '1}', username), function () {
                                 startIm(memberId, true);
                                 return false;
                             }, avatarUrl);
@@ -908,7 +908,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                         }
                         tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
                         if (tmpElement) {
-                            $cms.dom.html(tmpElement, '{!ACTIVE;^}');
+                            $cms.dom.html(tmpElement, '{!chat:ACTIVE;^}');
                         }
                     }
                     break;
@@ -917,8 +917,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     var friendBeingTracked = false;
                     tmpElement = document.getElementById('online_' + memberId);
                     if (tmpElement) {
-                        if ($cms.dom.html(tmpElement).toLowerCase() == '{!INACTIVE;^}'.toLowerCase()) break;
-                        $cms.dom.html(tmpElement, '{!INACTIVE;^}');
+                        if ($cms.dom.html(tmpElement).toLowerCase() == '{!chat:INACTIVE;^}'.toLowerCase()) break;
+                        $cms.dom.html(tmpElement, '{!chat:INACTIVE;^}');
                         document.getElementById('friend_img_' + memberId).className = 'friend_inactive';
                         friendBeingTracked = true;
                     }
@@ -932,7 +932,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                             doc = window.opened_popups['room_' + roomId].document;
                         }
                         tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
-                        if (tmpElement) $cms.dom.html(tmpElement, '{!INACTIVE;^}');
+                        if (tmpElement) $cms.dom.html(tmpElement, '{!chat:INACTIVE;^}');
                         friendBeingTracked = true;
                     }
 
@@ -952,10 +952,10 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     }
                     tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
                     if (tmpElement) {
-                        if ($cms.dom.html(tmpElement).toLowerCase() == '{!ACTIVE;^}'.toLowerCase()) {
+                        if ($cms.dom.html(tmpElement).toLowerCase() == '{!chat:ACTIVE;^}'.toLowerCase()) {
                             break;
                         }
-                        $cms.dom.html(tmpElement, '{!ACTIVE;^}');
+                        $cms.dom.html(tmpElement, '{!chat:ACTIVE;^}');
                         document.getElementById('friend_img_' + memberId).className = 'friend_active';
                     }
 
@@ -986,8 +986,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                              tmp_element=doc.getElementById('participant_online__' + room_id + '__' + member_id);
                              if (tmp_element)
                              {
-                                 if ($cms.dom.html(tmp_element).toLowerCase() == '{!INACTIVE;^}'.toLowerCase()) break;
-                                 $cms.dom.html(tmp_element, '{!INACTIVE;^}');
+                                 if ($cms.dom.html(tmp_element).toLowerCase() == '{!chat:INACTIVE;^}'.toLowerCase()) break;
+                                 $cms.dom.html(tmp_element, '{!chat:INACTIVE;^}');
                              }
                          } else*/
                         {
@@ -1016,7 +1016,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 var byYou = (messages[i].getAttribute('inviter') == messages[i].getAttribute('you'));
 
                 if ((!byYou) && (!window.instant_go) && (!document.getElementById('chat_lobby_convos_tabs'))) {
-                    createOverlayEvent(skipIncomingSound, messages[i].getAttribute('inviter'), '{!IM_INFO_CHAT_WITH;^}'.replace('{' + '1}', roomName), function () {
+                    createOverlayEvent(skipIncomingSound, messages[i].getAttribute('inviter'), '{!chat:IM_INFO_CHAT_WITH;^}'.replace('{' + '1}', roomName), function () {
                         window.last_message_id = -1 /*Ensure messages re-processed*/;
                         detectedConversation(roomId, roomName, participants);
                         return false;
@@ -1087,7 +1087,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             }
             if (away) {
                 var tmpElement = doc.getElementById('online_' + memberId);
-                if ((tmpElement) && ($cms.dom.html(tmpElement).toLowerCase() == '{!ACTIVE;^}'.toLowerCase())) away = false;
+                if ((tmpElement) && ($cms.dom.html(tmpElement).toLowerCase() == '{!chat:ACTIVE;^}'.toLowerCase())) away = false;
             }
             if (doc.getElementById('participant__' + roomId + '__' + memberId)) return; // They're already put in it
             var newParticipant = doc.createElement('div');
@@ -1098,7 +1098,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             if (avatarUrl == '') {
                 newParticipantInner = newParticipantInner.replace('style="display: block" id="avatar__', 'style="display: none" id="avatar__');
             }
-            newParticipantInner = newParticipantInner.replace(/\_\_online\_\_/g, away ? '{!INACTIVE;^}' : '{!ACTIVE;^}');
+            newParticipantInner = newParticipantInner.replace(/\_\_online\_\_/g, away ? '{!chat:INACTIVE;^}' : '{!chat:ACTIVE;^}');
             $cms.dom.html(newParticipant, newParticipantInner);
             newParticipant.setAttribute('id', 'participant__' + roomId + '__' + memberId);
             var element = doc.getElementById('participants__' + roomId);
@@ -1200,7 +1200,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                         newWindow.participants = participants;
 
                         newWindow.onbeforeunload = function () {
-                            return '{!CLOSE_VIA_END_CHAT_BUTTON;^}';
+                            return '{!chat:CLOSE_VIA_END_CHAT_BUTTON;^}';
                             //new_window.closeChatConversation(room_id);
                         };
 
@@ -1236,9 +1236,9 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
         if (div) {
             if (roomId) {
                 $cms.ui.generateQuestionUi(
-                    '{!HOW_REMOVE_CHAT_NOTIFICATION;^}',
+                    '{!chat:HOW_REMOVE_CHAT_NOTIFICATION;^}',
                     {/*buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}',*/buttons__proceed: '{!CLOSE;^}', buttons__ignore: '{!HIDE;^}'},
-                    '{!REMOVE_CHAT_NOTIFICATION;^}',
+                    '{!chat:REMOVE_CHAT_NOTIFICATION;^}',
                     null,
                     function (answer) {
                         /*if (answer.toLowerCase()=='{!INPUTSYSTEM_CANCEL;^}'.toLowerCase()) return;*/
@@ -1318,7 +1318,7 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
             return false;
         };
         aPopupOpen.href = '#';
-        $cms.dom.html(aPopupOpen, '{!OPEN_IM_POPUP;^}');
+        $cms.dom.html(aPopupOpen, '{!chat:OPEN_IM_POPUP;^}');
         var liPopupOpen = document.createElement('li');
         liPopupOpen.appendChild(aPopupOpen);
         links.appendChild(liPopupOpen);
@@ -1329,7 +1329,7 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
     aGotoLobby.href = window.lobby_link.replace('%21%21', memberId);
     aGotoLobby.onclick = closePopup;
     aGotoLobby.target = '_blank';
-    $cms.dom.html(aGotoLobby, '{!GOTO_CHAT_LOBBY;^}');
+    $cms.dom.html(aGotoLobby, '{!chat:GOTO_CHAT_LOBBY;^}');
     var liGotoLobby = document.createElement('li');
     liGotoLobby.appendChild(aGotoLobby);
     links.appendChild(liGotoLobby);
@@ -1355,7 +1355,7 @@ function startIm(people, justRefocus) {
     people = strVal(people);
     justRefocus = !!justRefocus;
 
-    var message = people.includes(',') ? '{!ALREADY_HAVE_THIS;^}' : '{!ALREADY_HAVE_THIS_SINGLE;^}';
+    var message = people.includes(',') ? '{!chat:ALREADY_HAVE_THIS;^}' : '{!chat:ALREADY_HAVE_THIS_SINGLE;^}';
 
     if (window.top_window.all_conversations[people] != null) {
         if (justRefocus) {
@@ -1403,7 +1403,7 @@ function startIm(people, justRefocus) {
 function inviteIm(people) {
     var roomId = findCurrentImRoom();
     if (!roomId) {
-        $cms.ui.alert('{!NO_IM_ACTIVE;^}');
+        $cms.ui.alert('{!chat:NO_IM_ACTIVE;^}');
     } else {
         $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), function () {
         }, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
@@ -1444,9 +1444,9 @@ function closeChatConversation(roomId) {
     var isPopup = (document.body.className.indexOf('sitewide_im_popup_body') !== -1);
     /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
     $cms.ui.generateQuestionUi(
-        '{!WANT_TO_DOWNLOAD_LOGS*;^}',
+        '{!chat:WANT_TO_DOWNLOAD_LOGS*;^}',
         {buttons__cancel: '{!INPUTSYSTEM_CANCEL*;^}', buttons__yes: '{!YES*;^}', buttons__no: '{!NO*;^}'},
-        '{!CHAT_DOWNLOAD_LOGS*;^}',
+        '{!chat:CHAT_DOWNLOAD_LOGS*;^}',
         null,
         function (logs) {
             if (logs.toLowerCase() !== '{!INPUTSYSTEM_CANCEL*;^}'.toLowerCase()) {

@@ -1,6 +1,8 @@
 /* TODO: Salman, merge this into global.js */
 
 (function ($cms) {
+    'use strict';
+
     $cms.templates.memberTooltip = function (params, container) {
         var submitter = strVal(params.submitter);
 

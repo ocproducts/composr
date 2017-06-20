@@ -541,4 +541,3 @@ class Hook_ajax_tree_choose_theme_files
         return 'screen_node_' . strval($counter) . '_' . md5(serialize($_GET));
     }
 }
-

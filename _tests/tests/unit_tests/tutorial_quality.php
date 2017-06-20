@@ -62,6 +62,21 @@ class tutorial_quality_test_set extends cms_test_case
         }
     }
 
+    public function testHasNoIncorrectLinking()
+    {
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            $c = file_get_contents($path . '/' . $f);
+
+            $c = str_replace('[page="docs:"]', '', $c);
+            $c = str_replace('[page="docs:tutorials"]', '', $c);
+
+            $this->assertTrue(strpos($c, '[page="_SELF:') === false, $f . ' uses _SELF linking, should use _SEARCH linking');
+            $this->assertTrue(strpos($c, '[page="docs:') === false, $f . ' uses docs-zone linking, should use _SEARCH linking');
+        }
+    }
+
     public function skip_tutorial($f)
     {
         // Not subject to ocProducts coding standards

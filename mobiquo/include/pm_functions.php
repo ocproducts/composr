@@ -50,4 +50,3 @@ function get_num_unread_private_topics($box_type = null)
 
     return $GLOBALS['FORUM_DB']->query_value_if_there($sql);
 }
-

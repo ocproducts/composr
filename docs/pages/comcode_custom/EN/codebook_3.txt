@@ -873,7 +873,7 @@ If you create these files it is your responsibility to make sure users cannot do
 If you change an original Composr file for a client project you must save it into the [tt]_custom[/tt] equivalent of its original directory. E.g. if you change [tt]site/pages/modules/calendar.php[/tt] you need to save into [tt]site/pages/modules_custom/calendar.php[/tt]. Otherwise if the client ever upgrades their website chances are all the customisations you've made would be lost when a newer version of the original file is placed.
 
 This said, It's best to avoid completely overriding default files if possible, so that any bug fixes from upgrades are more likely to work. Composr provides some techniques so you can override just stuff you want to change rather than a whole file.
-This is explained in the [page="docs:tut_framework"]The Composr programming framework[/page] tutorial (there are two techniques: replacing/supplementing, and programmatic alternation).
+This is explained in the [page="_SEARCH:tut_framework"]The Composr programming framework[/page] tutorial (there are two techniques: replacing/supplementing, and programmatic alternation).
 
 If you are considering overriding a file just so that you can add some new functions to it used by one of your new modules (for example, adding a new [tt]form_input_something[/tt] function), consider adding to a new file (or existing file in your module's addon) instead. There is no rule that says similar functions have to go together, and it makes no sense unless they are all core functions -- in fact it increases average memory usage to have excess functions defined in core files (each required-up function uses quite a lot of memory).
 

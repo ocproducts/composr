@@ -131,7 +131,7 @@ function build_news_sitemap()
 
     fwrite($sitemap_file, '
         </urlset>
-    ');
+');
 
     flock($sitemap_file, LOCK_UN);
     fclose($sitemap_file);

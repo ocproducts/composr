@@ -1,5 +1,0 @@
-[title]Buildr[/title]
-
-Welcome to Buildr, an addon for Composr.
-
-[page="buildr:buildr"]Enter/Return[/page] to the Buildr multi-user dungeon.

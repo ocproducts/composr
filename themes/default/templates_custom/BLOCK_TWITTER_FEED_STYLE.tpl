@@ -181,4 +181,3 @@
 	</table>
 	<br /><hr style="height:1px;" /><br />
 {+END}
-

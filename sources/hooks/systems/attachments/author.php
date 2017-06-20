@@ -35,5 +35,3 @@ class Hook_attachments_author
         return true;
     }
 }
-
-

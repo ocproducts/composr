@@ -746,7 +746,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 $_embed = '';
             }
             if ($temp_tpl->is_empty()) {
-                if (($in_semihtml) || ($is_all_semihtml)) { // HACKHACK. Yuck. We've allowed unfiltered HTML through (as code tags have no internal filtering and the whole thing is HTML so no escaping was done): we need to pass it through proper HTML security.
+                if (($in_semihtml) || ($is_all_semihtml)) { // FUDGE. Yuck. We've allowed unfiltered HTML through (as code tags have no internal filtering and the whole thing is HTML so no escaping was done): we need to pass it through proper HTML security.
                     require_code('comcode_from_html');
                     $back_to_comcode = semihtml_to_comcode($embed->evaluate()); // Undo what's happened already
                     $back_to_comcode = preg_replace('#^\[(semi)?html\]#', '', $back_to_comcode);

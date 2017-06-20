@@ -1683,7 +1683,7 @@ function step_5_write_config()
     $config_file = '_config.php';
     $config_path = get_file_base() . '/' . $config_file;
 
-    $config_contents = "<" . "?php\nglobal \$SITE_INFO;\n";
+    $config_contents = "<" . "?php\nglobal \$SITE_INFO;";
 
     $config_contents .= '
 
@@ -1788,7 +1788,7 @@ if (appengine_is_live()) {
 \$SITE_INFO['self_learning_cache'] = '1';
 \$SITE_INFO['charset'] = 'utf-8';
 ";
-        $config_contents .= preg_replace('#^\t\t\t#m', '', $gae_live_code);
+        $config_contents .= $gae_live_code;
     }
 
     // ---

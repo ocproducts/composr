@@ -36,4 +36,3 @@
 		<a class="button_screen buttons__all2" href="{USED_URL*}#used"><span>{!SHOW_OLD_TOO}</span></a>
 	</p>
 {+END}
-

@@ -417,5 +417,3 @@ class Hook_chat_bot_trickstr
         return $response;
     }
 }
-
-

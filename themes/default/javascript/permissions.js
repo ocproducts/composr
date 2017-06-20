@@ -158,15 +158,15 @@ function permissionsImgFunc1(node, id) {
         if (((window.attributes_full[id]['group_privileges_delete_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_highrange_content_' + group] == '1')) ||
             ((window.attributes_full[id]['group_privileges_delete_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_midrange_content_' + group] == '1')) ||
             ((window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group] == '1')))
-            return [$cms.img('{$IMG;,permlevels/3}'), '{!PINTERFACE_LEVEL_3;^}'];
+            return [$cms.img('{$IMG;,permlevels/3}'), '{!permissions:PINTERFACE_LEVEL_3;^}'];
         else if (((window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group] == '1')) ||
             ((window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group] == '1')) ||
             ((window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group] == '1')))
-            return [$cms.img('{$IMG;,permlevels/2}'), '{!PINTERFACE_LEVEL_2;^}'];
+            return [$cms.img('{$IMG;,permlevels/2}'), '{!permissions:PINTERFACE_LEVEL_2;^}'];
         else if (((window.attributes_full[id]['group_privileges_submit_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_highrange_content_' + group] == '1')) ||
             ((window.attributes_full[id]['group_privileges_submit_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_midrange_content_' + group] == '1')) ||
             ((window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group] == '1')))
-            return [$cms.img('{$IMG;,permlevels/1}'), '{!PINTERFACE_LEVEL_1;^}'];
+            return [$cms.img('{$IMG;,permlevels/1}'), '{!permissions:PINTERFACE_LEVEL_1;^}'];
         else if (window.attributes_full[id]['inherits_something'])
             return [$cms.img('{$IMG;,permlevels/inherit}'), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
         else if (window.attributes_full[id]['no_privileges']) return [$cms.img('{$IMG;,blank}'), ''];

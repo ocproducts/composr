@@ -45,5 +45,3 @@ require($FILE_BASE . '/sources/global.php');
 require_code('feedback');
 require_code('feedback2');
 trackback_script();
-
-

@@ -105,4 +105,3 @@ class TestOfTestDoxReporter extends UnitTestCase
         );
     }
 }
-

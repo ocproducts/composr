@@ -678,4 +678,3 @@ function arraytostring($myarray)
 	return $retstring;
 
 }
-

@@ -626,4 +626,3 @@ Here is a summary of what admins can do...
  - Hurt or heal players
  - Ban or unban players
  - Confiscate items
-

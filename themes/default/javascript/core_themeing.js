@@ -720,7 +720,7 @@
                 function (subdir) {
                     if (subdir !== null) {
                         if (subdir != 'templates' && subdir != 'css' && subdir != 'javascript' && subdir != 'text' && subdir != 'xml') {
-                            $cms.ui.alert('{!BAD_TEMPLATE_TYPE;^}');
+                            $cms.ui.alert('{!themes:BAD_TEMPLATE_TYPE;^}');
                             return;
                         }
 
@@ -771,7 +771,7 @@
                     $cms.undoStaffUnloadAction();
                     window.unloaded = false;
 
-                    var ret = '{!UNSAVED_TEMPLATE_CHANGES;^}';
+                    var ret = '{!themes:UNSAVED_TEMPLATE_CHANGES;^}';
                     event.returnValue = ret; // Fix Chrome bug (explained on https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload)
                     return ret;
                 }

@@ -20,7 +20,6 @@ class js_ssl_issues_test_set extends cms_test_case
 {
     public function testSSLIssues()
     {
-        $templates = array();
         $path = get_file_base() . '/themes/default/javascript';
         $dh = opendir($path);
         while (($f = readdir($dh)) !== false) {

@@ -31,7 +31,7 @@ New importers can be written. It costs around $1000 to develop an importer, but 
 
 [title="2"]Memory limits[/title]
 
-Importers may use a lot of memory in order to transfer large amounts of data, so you may need to raise the memory limit on your server or import on a different server then copy your site over. Information on PHP memory limits is included in our [page="docs:faq"]FAQ[/page].
+Importers may use a lot of memory in order to transfer large amounts of data, so you may need to raise the memory limit on your server or import on a different server then copy your site over. Information on PHP memory limits is included in our [page="_SEARCH:faq"]FAQ[/page].
 
 [title="2"]Using importers[/title]
 

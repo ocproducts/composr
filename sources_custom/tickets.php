@@ -90,4 +90,3 @@ function within_business_hours($hours, $time)
 
     return $time;
 }
-

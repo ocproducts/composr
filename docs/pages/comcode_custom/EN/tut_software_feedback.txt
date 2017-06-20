@@ -119,7 +119,7 @@ If you are going to run a popular CMS site, you will eventually outgrow shared h
 
 [title="3"]Disk I/O[/title]
 
-No Composr user has ever reported that a webhost has reported excessive disk I/O (input/output) to them, but it may be an issue affecting the performance of your site due to factors outside the scope of Composr. I/O can be a real performance bottleneck if the server is not well-configured, such as having a remote disk, a slow disk, a failing disk, or if other users on the server are doing something that is really making the disk 'thrash'. Composr won't thrash the disk, but it would be affected by another user doing so. Composr therefore does have some special options for limiting its need to regularly check the hard disk, discussed in the [page="docs:tut_optimisation"]Optimising performance tutorial[/page].
+No Composr user has ever reported that a webhost has reported excessive disk I/O (input/output) to them, but it may be an issue affecting the performance of your site due to factors outside the scope of Composr. I/O can be a real performance bottleneck if the server is not well-configured, such as having a remote disk, a slow disk, a failing disk, or if other users on the server are doing something that is really making the disk 'thrash'. Composr won't thrash the disk, but it would be affected by another user doing so. Composr therefore does have some special options for limiting its need to regularly check the hard disk, discussed in the [page="_SEARCH:tut_optimisation"]Optimising performance tutorial[/page].
 
 [title="3"]Memory usage[/title]
 

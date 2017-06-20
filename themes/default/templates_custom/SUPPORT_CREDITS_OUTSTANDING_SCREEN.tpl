@@ -9,5 +9,3 @@
 		<a href="{$SELF_URL*}&amp;csv=1" class="xls_link">{!EXPORT_STATS_TO_CSV}</a>
 	</p>
 {+END}
-
-

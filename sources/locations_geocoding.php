@@ -188,4 +188,3 @@ function _google_geocode($url_params, &$error_msg = null)
 
     return $result;
 }
-

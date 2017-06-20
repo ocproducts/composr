@@ -23,4 +23,3 @@ find themes/*/javascript_custom -name "*.js" -exec sh -c 'if [ -f {}.editfrom ] 
 find themes/*/xml_custom -name "*.xml" -exec sh -c 'if [ -f {}.editfrom ] ; then if [ -f themes/default/xml/`basename {}` ] ; then diff -u {}.editfrom themes/default/xml/`basename {}` ; else {}.editfrom diff -u themes/default/xml_custom/`basename {}` ; fi ; fi' \;
 
 find themes/*/text_custom -name "*.txt" -exec sh -c 'if [ -f {}.editfrom ] ; then if [ -f themes/default/text/`basename {}` ] ; then diff -u {}.editfrom themes/default/text/`basename {}` ; else {}.editfrom diff -u themes/default/text_custom/`basename {}` ; fi ; fi' \;
-

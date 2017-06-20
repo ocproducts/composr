@@ -9,4 +9,3 @@ fi
 echo "Creating $(basename `pwd`)-changes-$(date +%Y%m%d).tar with files from the last $days days"
 
 find * -mtime "-$days" -type f -print0 | xargs -0 tar rvf $(basename `pwd`)-changes-$(date +%Y%m%d).tar --exclude .git --exclude "*.tar" --exclude "caches" --exclude "*_cached"  --exclude _config.php --exclude "*.tmproj" --exclude "*~*" --exclude "Thumbs.db*" --exclude .DS_Store --exclude auto_thumbs --exclude errorlog.php --exclude permissioncheckslog.php --exclude critical_errors --exclude data_custom/latest_activity.txt --exclude uploads/galleries --exclude uploads/galleries_thumbs --exclude uploads/incoming --exclude uploads/auto_*
-

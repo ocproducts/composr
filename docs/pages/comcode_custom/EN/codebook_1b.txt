@@ -552,7 +552,7 @@ Often when a new version of a module is being written the upgrade code for that 
 [media width="150" description="The Tempcode object structure" float="right"]data_custom/images/docs/codebook_1b/tempcode_object.png[/media]
 The internals of Tempcode are enormously complex.
 
-It has to achieve a number of key design goals (these are implemented in Composr's Tempcode engine -- you don't need to worry about them, and that's part of the magic of Tempcode -- for documentation see the [page="docs:tut_tempcode"]Composr Tempcode programming tutorial[/page]):
+It has to achieve a number of key design goals (these are implemented in Composr's Tempcode engine -- you don't need to worry about them, and that's part of the magic of Tempcode -- for documentation see the [page="_SEARCH:tut_tempcode"]Composr Tempcode programming tutorial[/page]):
  - It has to be able to cache
  - When cached it must remain 'smart' -- it cannot cache statically, as things will be in cached Tempcode that need to change over time (for example the GLOBAL template might show the current server date and time -- caching must be smart so that when it comes out of the cache it still shows the correct date and time)
  - It must not use too much memory
@@ -717,7 +717,7 @@ Sometimes data in software being imported has no use in Composr, or isn't quite 
 [title="3"]eCommerce[/title]
 
 [media description="" width="250" float="right" framed="0"]data_custom/images/docs/codebook_1b/4.jpg[/media]
-For technical information about how eCommerce is achieved in Composr, including how products work, see the [page="docs:tut_ecommerce"]eCommerce tutorial[/page]. This tutorial goes into a lot of programming detail.
+For technical information about how eCommerce is achieved in Composr, including how products work, see the [page="_SEARCH:tut_ecommerce"]eCommerce tutorial[/page]. This tutorial goes into a lot of programming detail.
 
 For reference, the described eCommerce hooks have the following methods:
 [list]

@@ -537,7 +537,7 @@
             if (((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) || (ob.form.elements['branch_type_' + id] != 'page')) {
                 var choices = { buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}', menu___generic_admin__delete: '{!DELETE;^}', buttons__move: '{!menus:MOVETO_MENU;^}' };
                 $cms.ui.generateQuestionUi(
-                    '{!CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
+                    '{!menus:CONFIRM_DELETE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     choices,
                     '{!menus:DELETE_MENU_ITEM;^}',
                     null,
@@ -587,7 +587,7 @@
                 );
             } else {
                 $cms.ui.confirm(
-                    '{!CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
+                    '{!menus:CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     function (result) {
                         if (result)
                             deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));

@@ -95,4 +95,3 @@
 		<input class="button_screen buttons__proceed" type="submit" value="{!PROCEED}" />
 	</p>
 </form>
-

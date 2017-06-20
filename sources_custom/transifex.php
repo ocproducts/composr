@@ -805,6 +805,7 @@ function _pull_cms_file_from_transifex($project_slug, $tar_file, $lang, $path, $
         $data = json_decode($test[0], true);
         $c = $data['content'];
         $c = str_replace('&quot;', '"', $c); // Transifex uses non-standard escaping within JSON
+        $c .= "\n";
 
         if (is_file($default_path) && trim($c) == trim(file_get_contents($default_path))) {
             return; // Not changed
@@ -848,7 +849,7 @@ function _pull_ini_file_from_transifex($project_slug, $tar_file, $lang, $_f, &$f
             $data_b = array('content' => '');
         }
 
-        $write_out = preg_replace('#^\# .*\n#m', '', $data_a['content'] . "\n" . $data_b['content']);
+        $write_out = trim(preg_replace('#^\# .*\n#m', '', $data_a['content'] . "\n" . $data_b['content'])) . "\n";
 
         // Fix some common mistakes people make
         if ($_f == 'global') {

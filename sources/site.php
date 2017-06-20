@@ -335,6 +335,8 @@ function inform_non_canonical_parameter($param, $block_page_from_static_cache_if
 
 /**
  * Attach a message to the page output.
+ * For response-embedded messaging where the code isn't failing per-se, but it's more like a predictable messaging situation occurred.
+ * For failure-like messages call trigger_error which will in turn call attach_message itself.
  *
  * @sets_output_state
  *

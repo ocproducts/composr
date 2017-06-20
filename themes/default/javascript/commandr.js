@@ -212,7 +212,7 @@ function commandrCommandResponse(ajaxResultFrame, ajaxResult) {
         // JavaScript commands; eval() them.
         eval(stdcommand);
 
-        var stdcommandText = document.createTextNode('{!JAVASCRIPT_EXECUTED;^}');
+        var stdcommandText = document.createTextNode('{!commandr:JAVASCRIPT_EXECUTED;^}');
         var stdcommandTextP = document.createElement('p');
         stdcommandTextP.setAttribute('class', 'command_output');
         stdcommandTextP.appendChild(stdcommandText);
@@ -221,8 +221,8 @@ function commandrCommandResponse(ajaxResultFrame, ajaxResult) {
 
     if ((stdcommand == '') && (!stdhtml.childNodes) && (stdout == '')) {
         // Exit with an error.
-        if (stderr != '') var stderrText = document.createTextNode('{!PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
-        else var stderrText = document.createTextNode('{!TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
+        if (stderr != '') var stderrText = document.createTextNode('{!commandr:PROBLEM_ACCESSING_RESPONSE;^}\n' + stderr);
+        else var stderrText = document.createTextNode('{!commandr:TERMINAL_PROBLEM_ACCESSING_RESPONSE;^}');
         var stderrTextP = document.createElement('p');
         stderrTextP.setAttribute('class', 'error_output');
         stderrTextP.appendChild(stderrText);

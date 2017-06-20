@@ -1,3 +1,0 @@
-[title]{$SITE_NAME*} Mapa del sitio[/title]
-
-{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}

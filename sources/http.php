@@ -1007,7 +1007,7 @@ class HttpDownloaderCurl extends HttpDownloader
         $this->download_mime_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
         $this->download_size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         $this->download_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        $this->message = strval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
+        $this->message = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($this->message == '206') {
             $this->message = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
         }

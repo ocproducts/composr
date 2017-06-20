@@ -55,4 +55,3 @@ abstract class MobiquoServer
         echo $response;
     }
 }
-

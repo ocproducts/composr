@@ -1815,5 +1815,3 @@ class Text_Diff_Renderer_unified extends Text_Diff_Renderer
         return $this->_deleted($orig) . $this->_added($final);
     }
 }
-
-

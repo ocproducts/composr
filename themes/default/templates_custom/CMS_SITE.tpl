@@ -5,4 +5,3 @@
 	<td>{VERSION*}</td>
 	<td>{NOTE*}</td>
 </tr>
-

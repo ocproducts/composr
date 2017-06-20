@@ -27,7 +27,7 @@ class lang_spelling_test_set extends cms_test_case
 
     public function testLangMistakes()
     {
-        $verbose = false;
+        $verbose = (get_param_integer('verbose', 0) == 1);
 
         $dh = opendir(get_file_base() . '/lang/EN/');
         while (($file = readdir($dh)) !== false) {
@@ -300,8 +300,10 @@ class lang_spelling_test_set extends cms_test_case
 
         // Extra checks that give lots of false-positives
         if ($verbose) {
-            if (stripos($string, 'user') !== false) {
-                $this->assertTrue(false, 'The term \'user\' was used in ' . $file . '. This might need to be changed to \'member\', depending on the circumstances.');
+            foreach (array('user' => 'member', 'color' => 'colour', 'license' => 'licence', 'center' => 'centre') as $from => $to) {
+                if (stripos($string, $from) !== false) {
+                    $this->assertTrue(false, 'The term \'' . $from . '\' was used in ' . $file . '. This might need to be changed to \'' . $to . '\', depending on the circumstances.');
+                }
             }
 
             if (preg_match('#([A-Za-z]+)s( |-)#', $string) != 0) {

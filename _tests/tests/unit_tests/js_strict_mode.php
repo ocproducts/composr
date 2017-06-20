@@ -1,0 +1,49 @@
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    testing_platform
+ */
+
+/**
+ * Composr test case class (unit testing).
+ */
+class js_strict_mode_test_set extends cms_test_case
+{
+    public function testInStrictMode()
+    {
+        $templates = array();
+        $path = get_file_base() . '/themes/default/javascript';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (strtolower(substr($f, -3)) == '.js') {
+                if (in_array($f, array(
+                    'ATTACHMENT_UI_DEFAULTS.js',
+                    'button_realtime_rain.js',
+                    'jquery.js',
+                    'jquery_autocomplete.js',
+                    'jquery_ui.js',
+                    'jwplayer.js',
+                    'modernizr.js',
+                    'widget_date.js',
+                    'WYSIWYG_SETTINGS.js',
+                    'xsl_mopup.js',
+                ))) {
+                    continue;
+                }
+
+                $c = file_get_contents($path . '/' . $f);
+
+                $this->assertTrue(strpos($c, 'use strict') !== false, 'Strict mode not enabled for ' . $f);
+            }
+        }
+    }
+}

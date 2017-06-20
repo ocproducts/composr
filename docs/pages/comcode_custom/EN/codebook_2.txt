@@ -37,7 +37,7 @@ The syntax for Tempcode (the Composr language used for controlling template outp
  - [tt]{$X}[/tt] means "Insert symbol X". The symbols are not PHP variables (although the syntax is similar, because it is a similar concept). An example of a symbol is [tt]BASE_URL[/tt] (so to use this write [tt]{$BASE_URL}[/tt]). Symbols can also be used to perform functions, such as equality checks.
  - [tt]{+START,BLAH}...{+END}[/tt] means "Wrap (...) with a directive named BLAH". A directive can be anything that does something to the code it wraps. There are a number of directives that you may use, including output filters such as [tt]IF[/tt], loops, and boxes.
 
-A full description of the Tempcode language is available in the [page="docs:tut_tempcode"]Tempcode programming[/page] tutorial. Read the Escaping section careful because it is extremely important for security.
+A full description of the Tempcode language is available in the [page="_SEARCH:tut_tempcode"]Tempcode programming[/page] tutorial. Read the Escaping section careful because it is extremely important for security.
 
 [title="3"]WCAG notes[/title]
 

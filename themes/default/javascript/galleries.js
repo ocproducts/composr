@@ -379,7 +379,7 @@
     }
 
     function _slideshowReadInSlide(ajaxResultRaw, slide) {
-        window.slideshow_slides[slide] = ajaxResultRaw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // HACKHACK
+        window.slideshow_slides[slide] = ajaxResultRaw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
     }
 
     function slideshowShowSlide(slide) {
@@ -397,7 +397,7 @@
                     fadeElementOld.style.position = 'absolute';
                 } // else probably a video
 
-                var cleanedSlideHtml = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, ''); // HACKHACK
+                var cleanedSlideHtml = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, ''); // FUDGE
                 $cms.dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
 
                 fadeElements = document.body.querySelectorAll('.scale_down');
@@ -439,4 +439,3 @@
     window.playerStopped = playerStopped;
     window.stopSlideshowTimer = stopSlideshowTimer;
 }(window.$cms));
-

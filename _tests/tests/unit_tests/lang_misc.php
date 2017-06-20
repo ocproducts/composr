@@ -20,7 +20,7 @@ class lang_misc_test_set extends cms_test_case
 {
     private $lang_file_mapping = array();
 
-    public function testUnbalancedSmartQuotes()
+    public function testPluralisation()
     {
         require_code('lang2');
         require_code('lang_compile');

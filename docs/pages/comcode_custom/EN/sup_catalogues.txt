@@ -293,4 +293,3 @@ We put the 'Make' field in as the alt text of the image. You may wonder what [tt
  - [page="_SEARCH:tut_catalogues"]Custom structured content (via catalogues)[/page]
 
 {$SET,tutorial_tags,Catalogues,core_fields,catalogues,Content,regular}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,If you want to create your own mini-database, a Composr catalogue will allow you to do it. This tutorial steps you through with some examples.}[block]main_tutorial_rating[/block]
-

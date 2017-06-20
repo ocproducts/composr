@@ -285,5 +285,3 @@ function static_cache($mode)
         exit($SITE_INFO['failover_cache_miss_message']);
     }
 }
-
-

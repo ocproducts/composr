@@ -305,7 +305,7 @@ function db_escape_string($string)
 /**
  * Call a database function that may be different on different database drivers.
  * We are using MySQL syntax as a de-facto standard. SQL does not standardise this stuff well.
- * This is HACKHACK and should move into database drivers into the future.
+ * This is FUDGE and should move into database drivers into the future.
  * Basic arithmetic and inequality operators are assumed supported without needing a function.
  *
  * @param  string $function Function name
@@ -836,7 +836,7 @@ class DatabaseDriver
     /**
      * Call a database function that may be different on different database drivers.
      * We are using MySQL syntax as a de-facto standard. SQL does not standardise this stuff well.
-     * This is HACKHACK and should move into database drivers into the future.
+     * This is FUDGE and should move into database drivers into the future.
      * Basic arithmetic and inequality operators are assumed supported without needing a function.
      *
      * Note that AVG may return an integer or float, depending on whether the DB engine auto-converts round numbers to integers. MySQL seems to.
@@ -1872,7 +1872,7 @@ class DatabaseConnector
                     } elseif (is_float($v)) {
                         $values .= float_to_raw_string($v, 10);
                     } elseif (($key === 'begin_num') || ($key === 'end_num')) {
-                        $values .= $v; // HACKHACK: Fudge, for all our known large unsigned integers
+                        $values .= $v; // FUDGE: for all our known large unsigned integers
                     } else {
                         $values .= '\'' . $this->static_ob->escape_string($v) . '\'';
                     }

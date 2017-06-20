@@ -127,4 +127,3 @@ function amazon_sns_topic_handler_script()
             break;
     }
 }
-
