@@ -552,14 +552,14 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                     case PARSE_PARAMETER:
                         $parameter = trim($first_param, '"\'');
 
+                        if ($parameters_used !== null) {
+                            $parameters_used[$parameter] = true;
+                        }
+
                         // Optimise out as parameter is known
                         if ((isset($parameters[$parameter])) && (is_string($parameters[$parameter]))) {
                             $current_level_data[] = '"' . php_addslashes(apply_tempcode_escaping_inline($escaped, $parameters[$parameter])) . '"';
                             break;
-                        }
-
-                        if ($parameters_used !== null) {
-                            $parameters_used[$parameter] = true;
                         }
 
                         $parameter = preg_replace('#[^\w]#', '', $parameter); // security to stop PHP injection
@@ -853,15 +853,27 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $eval = '';
                                 }
                                 if (($template_name === $eval) || ($count_directive_opener_params === 3) && ($past_level_data === array('""')) && (!isset($FILE_ARRAY))) { // Simple case
-                                    $ex = isset($directive_opener_params[1 + 2]) ? eval('return ' . implode('.', $directive_opener_params[1 + 2]) . ';') : '';
+                                    $ex = isset($directive_opener_params[1 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[1 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    if (!is_string($ex)) {
+                                        $ex = '';
+                                    }
                                     if ($ex == '') {
                                         $ex = '.tpl';
                                     }
-                                    $td = isset($directive_opener_params[2 + 2]) ? eval('return ' . implode('.', $directive_opener_params[2 + 2]) . ';') : '';
-                                    if ($td == '') {
-                                        $td = 'templates';
+                                    $td = isset($directive_opener_params[2 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[2 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    if (!is_string($td)) {
+                                        $td = '';
                                     }
-                                    $_theme = isset($directive_opener_params[3 + 2]) ? eval('return ' . implode('.', $directive_opener_params[3 + 2]) . ';') : '';
+                                    if ($ex == '') {
+                                        $ex = 'templates';
+                                    }
+                                    $_theme = isset($directive_opener_params[3 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[3 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    if (!is_string($_theme)) {
+                                        $_theme = '';
+                                    }
+                                    if ($_theme == '') {
+                                        $_theme = '.tpl';
+                                    }
                                     if ($_theme == '') {
                                         $_theme = $theme;
                                     }
@@ -1243,7 +1255,8 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
         $parameters_used = array();
     }
     list($parts, $preprocessable_bits) = compile_template(substr($text, $symbol_pos), $codename, $theme, $lang, $tolerate_errors, $parameters, $parameters_used);
-    if ($parameters !== null) {
+
+    if ($parameters !== null && $parameters !== null) {
         foreach ($parameters as $key => $parameter) {
             if (!isset($parameters_used[$key])) {
                 unset($parameters[$key]);

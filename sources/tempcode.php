@@ -1933,7 +1933,6 @@ class Tempcode
             $trace = debug_backtrace();
             $parameters['_GUID'] = isset($trace[3]) ? ($trace[3]['function'] . '/' . $trace[2]['function']) : (isset($trace[2]) ? $trace[2]['function'] : $trace[1]['function']);
         }
-
         $is_all_static = isset($this->is_all_static);
 
         $out = new Tempcode();
