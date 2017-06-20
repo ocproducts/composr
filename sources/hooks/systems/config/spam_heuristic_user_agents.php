@@ -51,6 +51,6 @@ class Hook_config_spam_heuristic_user_agents
      */
     public function get_default()
     {
-        return 'Perl,Bot,jakarta,libwww,lwp-trivial,curl,PHP/,urllib,GT::WWW,Snoopy,MFC_Tear_Sample,HTTP::Lite,PHPCrawl,URI::Fetch,Zend_Http_Client,http client,PECL::HTTP,wget';
+        return 'Perl,Bot,jakarta,libwww,lwp-trivial,curl,urllib,GT::WWW,Snoopy,MFC_Tear_Sample,HTTP::Lite,PHPCrawl,URI::Fetch,Zend_Http_Client,http client,PECL::HTTP,wget';
     }
 }

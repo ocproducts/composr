@@ -853,7 +853,21 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     $eval = '';
                                 }
                                 if (($template_name === $eval) || ($count_directive_opener_params === 3) && ($past_level_data === array('""')) && (!isset($FILE_ARRAY))) { // Simple case
-                                    $found = find_template_place($eval, '', $theme, '.tpl', 'templates', $template_name === $eval);
+                                    $ex = isset($directive_opener_params[1 + 2]) ? eval('return ' . implode('.', $directive_opener_params[1 + 2]) . ';') : '';
+                                    if ($ex == '') {
+                                        $ex = '.tpl';
+                                    }
+                                    $td = isset($directive_opener_params[2 + 2]) ? eval('return ' . implode('.', $directive_opener_params[2 + 2]) . ';') : '';
+                                    if ($td == '') {
+                                        $td = 'templates';
+                                    }
+                                    $_theme = isset($directive_opener_params[3 + 2]) ? eval('return ' . implode('.', $directive_opener_params[3 + 2]) . ';') : '';
+                                    if ($_theme == '') {
+                                        $_theme = $theme;
+                                    }
+ 
+                                    $found = find_template_place($eval, '', $_theme, $ex, $td, $template_name === $eval);
+
                                     $_theme = $found[0];
                                     if ($found[1] !== null) {
                                         $full_path = get_custom_file_base() . '/themes/' . $_theme . $found[1] . $eval . $found[2];
@@ -865,6 +879,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                         } else {
                                             $filecontents = '';
                                         }
+
                                         list($_current_level_data, $_preprocessable_bits) = compile_template($filecontents, $eval, $theme, $lang, $tolerate_errors, $parameters, $parameters_used);
                                         $current_level_data = array_merge($current_level_data, $_current_level_data);
                                         if ($added_preprocessable_bits) {

@@ -95,6 +95,17 @@ function check_for_spam($username, $email, $page_level)
 }
 
 /**
+ * See if an IP address is local.
+ *
+ * @param  IP $user_ip IP address
+ * @return boolean Whether the IP address is local
+ */
+function ip_address_is_local($user_ip)
+{
+    return (($user_ip == '0000:0000:0000:0000:0000:0000:0000:0001') || ($user_ip == '127.0.0.1') || (substr($user_ip, 0, 3) == '10.') || (substr($user_ip, 0, 8) == '192.168.'));
+}
+
+/**
  * Check RBLs to see if we need to block this user.
  *
  * @param  boolean $page_level Whether this is a page level check (i.e. we won't consider blocks or approval, just ban setting)
@@ -104,6 +115,10 @@ function check_rbls($page_level = false, $user_ip = null)
 {
     if ($user_ip === null) {
         $user_ip = get_ip_address();
+    }
+
+    if (ip_address_is_local($user_ip)) {
+        return;
     }
 
     // Check Composr bans / caching
@@ -164,6 +179,10 @@ function check_rbls($page_level = false, $user_ip = null)
  */
 function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_level = false)
 {
+    if (ip_address_is_local($user_ip)) {
+        return array(ANTISPAM_RESPONSE_UNLISTED, null);
+    }
+
     // Blocking based on opm.tornevall.org settings (used by default because stopforumspam syndicates to this and ask us to check this first, for performance)
     // http://dnsbl.tornevall.org/?do=usage
     if (strpos($rbl, 'tornevall.org') !== false) {
@@ -435,6 +454,9 @@ function check_stopforumspam($username = null, $email = null)
 
     // Check exclusions
     $user_ip = get_ip_address();
+    if (ip_address_is_local($user_ip)) {
+        return;
+    }
     $exclusions = explode(',', get_option('spam_check_exclusions'));
     foreach ($exclusions as $e) {
         if (trim($e) == $user_ip) {
