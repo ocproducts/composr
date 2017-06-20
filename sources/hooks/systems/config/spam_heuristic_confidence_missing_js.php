@@ -51,6 +51,6 @@ class Hook_config_spam_heuristic_confidence_missing_js
      */
     public function get_default()
     {
-        return '40';
+        return (get_option('detect_javascript') == '0') null : '40';
     }
 }

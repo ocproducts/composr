@@ -31,6 +31,10 @@ class Hook_spam_heuristics_missing_js
      */
     public function assess_confidence($post_data)
     {
+        if (get_option('detect_javascript') == '0') {
+            return 0;
+        }
+
         $score = intval(get_option('spam_heuristic_confidence_missing_js'));
         if ($score == 0) {
             return 0;
