@@ -1,5 +1,3 @@
-/*{$,Parser hint: .innerHTML okay}*/
-
 /*{+START,IF,{$CONFIG_OPTION,complex_lists}}*/
 
 /*

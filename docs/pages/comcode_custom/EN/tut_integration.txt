@@ -231,12 +231,8 @@ If there is both a minified (compressed) and non-minified version, use the non-m
 You may wish to edit the file to include this at the top:
 [code="CSS"]
 /*{$,Parser hint: pure}*/
-/*{$,Parser hint: .innerHTML okay}*/
 [/code]
-
-This code will:
-1) turn off Tempcode parsing ("pure"), so that bits of JavaScript that look like Tempcode will not be treated as such.
-2) stop Composr complaining about use of [tt]innerHTML[/tt] (which is not valid in XHTML, but that's a minor point we only care about within our core Composr code).
+This code will turn off Tempcode parsing ("pure"), so that bits of JavaScript that look like Tempcode will not be treated as such.
 
 If you are doing a really tidy job you'll want to leave Tempcode parsing on, and ensure the file does parse as Tempcode (maybe you need to add some slashes or spaces to make that work right).
 An advantage of supporting Tempcode is then you can use language string and theme image references within the file, so that it works seamlessly to Composr's standard architecture.

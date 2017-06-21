@@ -1,4 +1,3 @@
-/*{$,Parser hint: .innerHTML okay}*/
 /*{$,Parser hint: pure}*/
 
 "undefined"==typeof jwplayer&&(jwplayer=function(d){if(jwplayer.api)return jwplayer.api.selectPlayer(d)},jwplayer.version="6.6.3896",jwplayer.vid=document.createElement("video"),jwplayer.audio=document.createElement("audio"),jwplayer.source=document.createElement("source"),function(d){function a(b){return function(){return c(b)}}function k(b){return function(){b("Error loading file")}}function f(m,a,e,g){return function(){try{var c=m.responseXML;if(c&&c.firstChild)return e(m)}catch(j){}(c=b.parseXML(m.responseText))&&

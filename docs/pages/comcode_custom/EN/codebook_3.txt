@@ -190,8 +190,6 @@ The extra strictness of XHTML is now largely historic, as no websites (including
 Never-the-less, it encourages good coding discipline -- clean, intuitive code.
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/disadvantage.png[/media]
-Composr notes:
- - Ideally do not use the [tt].innerHTML[/tt] JavaScript property. Instead you will should use the Composr  [tt]set_inner_html[/tt] and [tt]get_inner_html[/tt] functions that Composr supplies. Our functions have been carefully tuned over the years to work on all browsers to handle things like embedded JavaScript code in a consistent way.
 
 [title="3"]MySQL errors[/title]
 

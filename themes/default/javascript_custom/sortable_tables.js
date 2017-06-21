@@ -1,5 +1,3 @@
-/*{$,Parser hint: .innerHTML okay}*/
-
 (function ($cms) {
     'use strict';
 

@@ -1,5 +1,3 @@
-
-/*{$,Parser hint: .innerHTML okay}*/
 /*{$,Parser hint: pure}*/
 
 /** @license

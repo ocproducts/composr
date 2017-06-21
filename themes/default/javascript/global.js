@@ -4195,7 +4195,6 @@
      * @returns {string|Promise}
      */
     $cms.dom.html = function html(el, html) {
-        // Parser hint: .innerHTML okay
         el = elArg(el);
 
         if (html === undefined) {

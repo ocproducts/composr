@@ -1,5 +1,3 @@
-/*{$,Parser hint: .innerHTML okay}*/
-
 // Spectrum Colorpicker v1.5.1
 // https://github.com/bgrins/spectrum
 // Author: Brian Grinstead

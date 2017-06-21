@@ -1,5 +1,3 @@
-/*{$,Parser hint: .innerHTML okay}*/
-
 /*{$,NB: 1.8.3 is the latest before jQuery was heavily refactored, breaking support for common jQuery plugins}*/
 
 /*!
