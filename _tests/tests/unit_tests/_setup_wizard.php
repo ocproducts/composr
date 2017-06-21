@@ -98,6 +98,6 @@ class _setup_wizard_test_set extends cms_test_case
 
         $http = cms_http_request($url->evaluate(), array('post_params' => $post_params));
 
-        $this->assertTrue($http->message == 200);
+        $this->assertTrue($http->message == '200');
     }
 }
