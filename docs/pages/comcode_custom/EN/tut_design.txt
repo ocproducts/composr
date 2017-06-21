@@ -105,7 +105,7 @@ Web designs are implemented primarily in [abbr="Cascading Style Sheets"]CSS[/abb
 
 [title="2"]Software[/title]
 
-The de-facto standard software for making web designs is Photoshop. Photoshop is a powerful, expensive, and complex piece of software, but if you want to make really good designs that aren't visually simple it's probably what you'll want to use. (Simpler designs could be built on-the-fly using CSS, assuming the designer has a good imagination and grasp of the technology.)
+The de facto standard software for making web designs is Photoshop. Photoshop is a powerful, expensive, and complex piece of software, but if you want to make really good designs that aren't visually simple it's probably what you'll want to use. (Simpler designs could be built on-the-fly using CSS, assuming the designer has a good imagination and grasp of the technology.)
 
 Instead of Photoshop you could consider:
  - [url="Paint.net"]http://www.getpaint.net/[/url] (free, Windows-only)
@@ -194,7 +194,7 @@ What's really important is to see what matters in the market you are in and let 
 If in doubt, you could survey what is important, but chances are you won't get an accurate result using this technique (people tend to say 'yes' to most “would you like” kind of questions). A better approach is to step through some scenarios with your customers, as that will really show you what they care about, and probably also where your competitors have exploitable weak points.
 
 [concepts
- 1_key="Photoshop"                 1_value="The de-facto standard software for web designers"
+ 1_key="Photoshop"                 1_value="The de facto standard software for web designers"
  2_key="Visual hierarchy"          2_value="A good design lays out elements into a visual hierarchy, where the organisation of the hierarchy helps convey the natural structure of the information"
  3_key="Information design"        3_value="The skill and practice of preparing information so people can use it with efficiency and effectiveness"
  4_key="Brand"                     4_value="A set of principles and styles that form a virtual identity"

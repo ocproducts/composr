@@ -150,6 +150,28 @@ class lang_spelling_test_set extends cms_test_case
             $this->assertTrue(false, 'The word \'safe-mode\' was used in ' . $file . '. This should be changed to \'safe mode\'.');
         }
 
+        // Space wanted
+        if (stripos($string, 'de-facto') !== false) {
+            $this->assertTrue(false, 'The word \'de-facto\' was used in ' . $file . '. This should be changed to \'de facto\'.');
+        }
+        if (stripos($string, 'defacto') !== false) {
+            $this->assertTrue(false, 'The word \'defacto\' was used in ' . $file . '. This should be changed to \'de facto\'.');
+        }
+        if ($key !== 'WARNING_DB_OVERWRITE') {
+            if (stripos($string, 'upper-case') !== false) {
+                $this->assertTrue(false, 'The word \'upper-case\' was used in ' . $file . '. This should be changed to \'upper case\'.');
+            }
+            if (stripos($string, 'lower-case') !== false) {
+                $this->assertTrue(false, 'The word \'lower-case\' was used in ' . $file . '. This should be changed to \'lower case\'.');
+            }
+            if (stripos($string, 'uppercase') !== false) {
+                $this->assertTrue(false, 'The word \'uppercase\' was used in ' . $file . '. This should be changed to \'upper case\'.');
+            }
+            if (stripos($string, 'lowercase') !== false) {
+                $this->assertTrue(false, 'The word \'lowercase\' was used in ' . $file . '. This should be changed to \'lower case\'.');
+            }
+        }
+
         // No space or hyphen wanted (we want our canonical way)
         if (stripos($string, 'user[ -]group') !== false) {
             $this->assertTrue(false, 'The term \'user-group\' was used in ' . $file . '. This should be changed to \'usergroup\'.');

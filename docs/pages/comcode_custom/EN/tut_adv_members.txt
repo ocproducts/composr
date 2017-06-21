@@ -276,7 +276,7 @@ Boolean fields (true/false) are assumed false unless one of the following case-i
 The import process disables normal PHP memory and time limits, however some webhosts may put in restrictions regardless. If you come against problems you may need to limit import batches to a few thousand records per attempt, or temporarily copy your site to a more reliable host (such as your own development machine), then copy the database back across to the live host.
 [/box]
 
-Note that these instructions are based on using an export as a template. We do try and support de-facto standards for laying out basic fields such as Username and Password fields (with a variation of different spellings/abbreviation/synonyms/data-formats), but the template method is the best way because it is more predictable for you.
+Note that these instructions are based on using an export as a template. We do try and support de facto standards for laying out basic fields such as Username and Password fields (with a variation of different spellings/abbreviation/synonyms/data-formats), but the template method is the best way because it is more predictable for you.
 
 [title="4"]Edits[/title]
 

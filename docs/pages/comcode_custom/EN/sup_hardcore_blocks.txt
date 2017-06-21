@@ -119,7 +119,7 @@ Using a function in PHP is the same as in Maths, where we just write the functio
 imagecreatetruecolor(800, 600);
 
 // 1 text ("string") argument. Gives us the
-// lowercase text 'hello world'.
+// lower case text 'hello world'.
 strtolower('HELLO WORLD');
 
 // No arguments. Gives us the "base URL"
@@ -132,7 +132,7 @@ Since a function can "give back" some value (we say it "returns" the value) we c
 // This will call the "get_base_url" function,
 // which gives us a text string, and passes
 // that string straight to the "strtoupper"
-// function which makes it uppercase.
+// function which makes it upper case.
 strtoupper(get_base_url());
 [/code]
 
@@ -417,7 +417,7 @@ In the previous section we learned how to do interesting things by "calling" (ru
 
 We saw that functions can give us values to work with, such as the value of a Composr configuration option. We also saw that we can [i]nest[/i] function calls; that is, use the value given by a function call as an argument for another function call, such as:
 [code="PHP"]
-strtoupper(get_base_url()); // Get the site's base URL and make it uppercase
+strtoupper(get_base_url()); // Get the site's base URL and make it upper case
 [/code]
 
 We can nest as many such calls as we like, for example:

@@ -564,7 +564,7 @@ If you use cookies, use the Composr cookie API
 Don't write code that'll output PHP 'notice' errors
 | Stability
 | Composr development +
-| Composr makes all PHP errors generate stack dumps
+| Composr makes all PHP notices generate stack dumps
 | 
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -715,7 +715,7 @@ Avoid relative paths
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use the [tt]get_custom_base_url[/tt], [tt]get_custom_file_base[/tt], [tt]get_base_url[/tt] and [tt]get_file_base[/tt] distinctions properly[/color]
-| Shared installs: multiple sites with one Composr install, GAE
+| Shared installs: multiple sites with one Composr install, GAE, unreliable include paths and default execution paths
 | Product development only
 | Manually
 | Use a [tt]custom_*[/tt] function if referencing custom/user-data, otherwise don't. Core Composr files that can't be changed from inside Composr are not custom, other files are. i.e. non-custom files are those that would be shared between sites.
@@ -770,7 +770,7 @@ Be type-strict
 | Portability
 | Composr development +
 | MySQL-strict-mode and XML database driver
-| For example, do not do [tt]WHERE validated='1'[/tt] as [tt]validated[/tt] is an integer field and thus must be referred to as such. Most database are type-strict, MySQL is an exception so it's a big mistake to get things wrong here.
+| For example, do not do [tt]WHERE validated='1'[/tt] as [tt]validated[/tt] is an integer field and thus must be referred to as such. Most database are type-strict, MySQL is an exception so it's a big mistake to get things wrong here. We automatically enable MySQL strict mode, unless it is disabled with [tt]destrictify()[/tt].
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use sensible database indices[/color]
@@ -787,10 +787,10 @@ Be type-strict
 | When you define database schemas via [tt]create_table[/tt] use the closest Composr field type you can. For example, make use of [tt]AUTO_LINK[/tt] and [tt]TIME[/tt] and [tt]USER[/tt] rather than always using [tt]INTEGER[/tt]. Use [tt]URLPATH[/tt] for URLs. This will help Composr understand its own database better (which it does need to do in some situations such as broken URL scanning). If a field needs to support Comcode, define it as [tt]SHORT_TRANS__COMCODE[/tt] or [tt]LONG_TRANS__COMCODE[/tt] (never run [tt]comcode_to_tempcode[/tt] on-the-fly).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Avoid complex SQL[/color]
+Avoid complex SQL
 | Portability
 | Product development only
-| Manually
+| Automated test ([tt]_installer_xml_db.php[/tt])
 | You cannot use SQL syntax that is not widely supported such as the MySQL substring functions, unless the [tt]db_function[/tt] function supports it.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -801,11 +801,11 @@ Don't use [tt]LIMIT[/tt] manually, use the API
 | Make use of the from/max parameters to the query functions rather than hard-coding an SQL [tt]LIMIT[/tt] clause (this is required for MS Access compatibility).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Don't use ` symbols in your SQL[/color]
+]Don't use ` symbols in your SQL and don't use keywords for table/field names
 | Portability: they are MySQL-specific
 | Product development only
-| Manually
-| You will have been forced to choose field names that don't require it anyway.
+| Automated test ([tt]_installer_xml_db.php[/tt]), table creation code checks
+| You will have been forced to choose field names that don't require escaping anyway.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]In queries use [tt]<>[/tt] rather than [tt]!=[/tt][/color]
@@ -869,6 +869,27 @@ Don't use [tt]LIMIT[/tt] manually, use the API
 | Product development only
 | Manually
 | Some web hosts will restrict SQL write permission if a database size limit is exceeded, so any routine write queries should have the [tt]$fail_ok[/tt] option set so that it doesn't take the whole site down.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Stay within common denominator of limits
+| Portability
+| Product development only
+| Table creation code checks
+| There are maximum numbers of indices, fields, fields in keys and indexes, total field size in keys and indexes, length of field names, and length of table names.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+No null key fields
+| Portability
+| Product development only
+| Table creation code checks
+| You may not include a field that may be null within a key.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+No null strings
+| Portability
+| Product development only
+| Table creation code checks
+| You may not allow nullability of a string field, as some databases can't distinguish null from the empty string.
 |}
 
 [title="4"]Templates and Interfaces[/title]
@@ -2038,6 +2059,20 @@ Use official DOM (so no [tt]document.all[/tt], or [tt]window.images[/tt])
 | [tt]document.all[/tt], [tt]form.foo[/tt], etc, are all non-standard (even though they're commonplace) -- use [tt]getElementById[/tt] etc.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Code formatting[/color]
+| Consistency
+| Product development only
+| Manually
+| Generally code is formatted the same way as PSR-2 is specified and with spaces around operators, except with JavaScript we use camelCase for identifiers rather than underscores, and we place function opening braces on the same line as the function declaration. For functions assigned to a variable we put a space between the function keyword and opening bracket ([tt]function (foo)[/tt]). Rather than us prescribing all the rules we suggest looking at existing code to see how to do it.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Use of classes[/color]
+| Technical debt
+| Product development only
+| Manually
+| Generally JavaScript files should define at least one class (using the weird but de facto closure and construction mechanism). Class constructors should start with an upper case letter.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
 Don't use any deprecated methods (so no [tt]window.escape[/tt])
 | Standards compliance
 | Product development only
@@ -2120,6 +2155,13 @@ Do not reference global variables directly
 | Composr development +
 | Automated test ([tt]css_and_js.php[/tt])
 | Reference global variables and functions that are defined outside any particular [tt].js[/tt] file by explicitly prefixing them with [tt]window.[/tt]. This allows the JavaScript code scanner to detect undeclared variables because there's no longer an ambiguity.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Do not omit semicolons
+| Stability
+| Product development only
+| Automated test ([tt]css_and_js.php[/tt])
+| JavaScript allows semicolons to be omitted in certain cases, but we do not because of the potential for error.
 |}
 
 [title="4"]CSS and JavaScript[/title]

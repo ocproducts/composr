@@ -3,7 +3,7 @@ Code quality checker
 
 The code quality checker is a tool to check web documents against a number of standards, including:
  - PHP quality (including type-checking, which even PHP itself can't do at runtime)
- - De-facto JavaScript (Common implementations of DOM, ECMAScript [ECMA-262/JS-1.5], common browser library functions)
+ - de facto JavaScript (Common implementations of DOM, ECMAScript [ECMA-262/JS-1.5], common browser library functions)
  - (X)HTML5
  - XML
  - CSS with solid 2.1, and additional 3.0 properties

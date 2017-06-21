@@ -9,7 +9,7 @@
 [media width="150" description="Choose this option if you want to run each site' discussion forum from its own code and URL (optional only shows if applicable to your site)" float="right"]data_custom/images/docs/tut_msn/msn_cns_local.png[/media]
 All that needs to be done to create an M.S.N. is to install each Composr such that they all share a common forum driver and forum database. At its heart, this is all a M.S.N. is: Composr provides special features that allow this to work comfortably, but there is no specific 'M.S.N.' feature or setting in Composr, nor does Composr need such.
 
-At the time of writing this note (2016), a more normal approach to sharing member databases is to leave it to Facebook, using the Facebook addon to handle log-ins. Usage of Facebook has obvious disadvantages, but also for most people the advantages far outweigh them. Facebook is de-facto the world's standard identity service.
+At the time of writing this note (2016), a more normal approach to sharing member databases is to leave it to Facebook, using the Facebook addon to handle log-ins. Usage of Facebook has obvious disadvantages, but also for most people the advantages far outweigh them. Facebook is de facto the world's standard identity service.
 
 If you are using a third-party forum, unless the forum itself is modified to work from different URLs, the forums interface will not be integrated into each site. However, all Composr functions that work through the forum driver (e.g. comment topics, or support tickets) may be completely customised for the individual websites.
 
