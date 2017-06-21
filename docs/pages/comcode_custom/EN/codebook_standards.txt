@@ -250,7 +250,7 @@ Align functions precisely in code
 | Composr development +
 | Automated test ([tt]override_issues.php[/tt])
 | Functions must not be indented in code, and methods must be indented by exactly 4 spaces. There must be exactly one space after the [tt]function[/tt] keyword and no tabs. Braces must go on the next line with the same indentation as the function and the closing brace must match too. The contents of the function must be 4 spaces deeper.
-These rules are very standard, but if broken then code-overriding may not work correctly because Composr assumes them while doing efficient function-level overridding (there is no full PHP parser involved).
+These rules are very standard, but if broken then code-overriding may not work correctly because Composr assumes them while doing efficient function-level overriding (there is no full PHP parser involved).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use Composr APIs wherever appropriate[/color]
@@ -495,7 +495,7 @@ Functions should have proper API documentation
 | Technical debt, and it allows the Code Quality Checker to check more
 | Product development only
 | Code Quality Checker, function signatures feature
-| Use the "PHPDoc"-style syntax correctly, and never adlib on its syntax (it gets parsed). Make sure the data types specified are accurate. Where [tt]null[/tt] is allowed for a value make sure that is specified (via [tt]?[/tt] before the data type) and its meaning explained. Do not copy and paste comments from elsewhere without changing it to be fully correct for where you've added it.
+| Use the "PHPDoc"-style syntax correctly, and never ad-lib on its syntax (it gets parsed). Make sure the data types specified are accurate. Where [tt]null[/tt] is allowed for a value make sure that is specified (via [tt]?[/tt] before the data type) and its meaning explained. Do not copy and paste comments from elsewhere without changing it to be fully correct for where you've added it.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Remember that a site can have multiple themes/languages[/color]
