@@ -8,7 +8,7 @@ var is_decoding;
 var DEBUG = 0;
 
 function complaining(s) {
-    alert(s);
+    console.log(s);
     return s;
 }
 
@@ -28,7 +28,7 @@ function checkDecoding() {
     } else {
         var ampy = d.textContent;
         if (DEBUG > 1) {
-            alert("Got " + ampy);
+            console.log("Got " + ampy);
         }
 
         if (ampy == undefined) throw complaining("'cometestme' element has undefined text content?!");
@@ -50,7 +50,7 @@ function checkDecoding() {
                 : is_decoding ? "The XSL processor DOES support disable-content-encoding"
                 : "The XSL processor does NOT support disable-content-encoding"
         ;
-    if (DEBUG) alert(msg);
+    if (DEBUG) console.log(msg);
     return msg;
 }
 
@@ -59,13 +59,13 @@ function goDecoding() {
     checkDecoding();
 
     if (is_decoding) {
-        if (DEBUG) alert("No work needs doing -- already decoded!");
+        if (DEBUG) console.log("No work needs doing -- already decoded!");
         return;
     }
 
     var toDecode = document.getElementsByName('decodeable');
     if (!( toDecode && toDecode.length )) {
-        if (DEBUG) alert("No work needs doing -- no elements to decode!");
+        if (DEBUG) console.log("No work needs doing -- no elements to decode!");
         return;
     }
 

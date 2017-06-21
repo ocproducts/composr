@@ -213,7 +213,7 @@ Blank lines at the end of files
 | Product development only
 | Manually
 | You need to store dynamic files in appropriate places, often [tt]data_custom[/tt]. Then these files must be marked as ignored in the appropriate way in [tt]sources/files.php[/tt] and [tt].gitignore[/tt].
-Also third-party tools may produce files which you may want to define as ignored, such as Windows producing [tt]thumbs.db[/tt] files.
+Also third-party tools may produce files which you may want to define as ignored, such as Microsoft Windows producing [tt]thumbs.db[/tt] files.
 It's impossible to say here exactly what to do as each case varies.
 |}
 
@@ -580,6 +580,13 @@ Allow initialisation functions to run twice
 | Product development only
 | Automated test ([tt]override_issues.php[/tt])
 | If a developer overrides a [tt].php[/tt] file then the initialisation function of the original will also run. The person doing the override doesn't usually understand this and accomodate for it, so make sure you check that you are not doing anything that can't run twice. Usually this just involves guarding [tt]define[/tt] calls.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Don't assume about platforms[/color]
+| Portability
+| Product development only
+| Manually
+| Do not assume Composr is running on Linux, or Microsoft Windows, or Apache, or IIS, or MacOS, or a case-sensitive filesystem, or a case-insensitive filesystem, or anything else unless it is defined in our minimum requirements. This is an important lesson for new programmers who may be used to just making something work for the computer they are in-front of. You need to use universally accepted techniques rather than platform-specific APIs.
 |}
 
 [title="4"]Files[/title]
@@ -721,11 +728,11 @@ Avoid relative paths
 | If running a blank custom directory, none of the bundled directory structure will be initially present. You must therefore detect and auto-create missing directories, using [tt]make_missing_directory[/tt].
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Use [tt]/[/tt] as a directory separator, even on Windows[/color]
+[color="red"]Use [tt]/[/tt] as a directory separator, even on Microsoft Windows[/color]
 | Simplicity
 | Composr development +
 | Manually
-| If we use multiple directory separators it gets messy. [tt]/[/tt] will work on Windows for all PHP library functions.
+| If we use multiple directory separators it gets messy. [tt]/[/tt] will work on Microsoft nce language strings in a sa for all PHP library functions.
 |}
 
 [title="4"]Databases[/title]
@@ -1411,7 +1418,14 @@ Reinstalls must be handled correctly
 ! Notes
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Don't spell things [i]rong[/i][/color] or use incorrect grammar
+[color="red"]Don't assume English[/color]
+| Internationalisation
+| Product development only
+| Manually
+| Don't hard-code English text into your code, unless it is only designed for programmers to ever see.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Don't spell things [i]rong[/i][/color] or use incorrect grammar[/color]
 | Usability
 | Composr development +
 | Use the [tt].ini[/tt] files with Microsoft Word's checking tools, Automated test ([tt]lang_spelling.php[/tt]), Automated test ([tt]lang_grammar.php[/tt])
@@ -1567,7 +1581,7 @@ Define administrative split
 | The [tt]sources_custom/string_scan.php[/tt] lists which language strings are and are not administrative. This is done so that translation can be focused on the non-administrative strings only.
 |}
 
-Respect the Queen of England...
+Respect the Queen of England ;)...
 {|
 ! Standard
 ! Reason
@@ -2041,7 +2055,7 @@ Don't use any deprecated methods (so no [tt]window.escape[/tt])
 Do not use inline JavaScript
 | Security
 | Composr development +
-| Automated test ([tt]css_and_js.php[/tt])
+| Automated test ([tt]template_previews.php[/tt])
 | We use CSP to avoid XSS vulnerabilities, so inline JS is blocked.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -2052,10 +2066,10 @@ Fix any strict warnings
 | Ideally also don't make assumptions about [tt]undefined[/tt] and [tt]null[/tt] being the same as [tt]false[/tt], explicit code is easier to read; don't reference undefined variables without using [tt]typeof[/tt] as otherwise browsers with strong notice reporting will give out noise.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Don't use the browser [tt]alert[/tt] / [tt]prompt[/tt] / [tt]confirm[/tt] / [tt]showModalDialog[/tt] UI's -- use Composr's [tt]fauxmodal_*[/tt] APIs[/color]
+[color="red"]Don't use the browser [tt]window.alert[/tt] / [tt]window.prompt[/tt] / [tt]window.confirm[/tt] / [tt]window.showModalDialog[/tt] UIs -- use Composr's [tt]fauxmodal_*[/tt] APIs[/color]
 | Usability
 | Composr development +
-| Manually
+| Manually (although if you try and call from the global scope the [tt]css_and_js.php[/tt] test will complain)
 | Better styling, no issues with popup blockers, no issues on full-screen UIs and tablets with poor window management.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
@@ -2099,6 +2113,13 @@ Reference language strings in a safe way
 | All development
 | Automated test ([tt]js_lang_references.php[/tt])
 | Any language strings that are not in either [tt]global.ini[/tt] or [tt]critical_error.ini[/tt] must be referenced using the full [tt]{!file:CODENAME}[/tt] syntax. This is because we cannot assume what language files have already been explicitly loaded before any individual JavaScript file is evaluated.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Do not reference global variables directly
+| Stability
+| Composr development +
+| Automated test ([tt]css_and_js.php[/tt])
+| Reference global variables and functions that are defined outside any particular [tt].js[/tt] file by explicitly prefixing them with [tt]window.[/tt]. This allows the JavaScript code scanner to detect undeclared variables because there's no longer an ambiguity.
 |}
 
 [title="4"]CSS and JavaScript[/title]
@@ -2154,6 +2175,13 @@ Compress PNG images and strip gamma
 | Composr development +
 | Manually
 | If an image is referenced in the CSS and used very commonly, consider using [tt]{$IMG_INLINE,...}[/tt] so that it loads without any additional HTTP request.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Supply hi-dpi images as appropriate[/color]
+| Performance
+| Composr development +
+| Manually
+| Wherever appropriate supply both normal and hi-dpi ("retina") images. Do this using the HTML [tt]srcset[/tt] attribute.
 |}
 
 [title="3"]Miscellany[/title]

@@ -21,9 +21,9 @@ Composr is Free Software and Open Source, meaning it's completely open and custo
 
 [media width="150" description="Composr has a well documented API (code)" float="right"]data_custom/images/docs/tut_framework/framework_api.png[/media]
 [media width="150" description="Composr has a well documented API (compiled out)" float="right"]data_custom/images/docs/tut_framework/framework_devguide.png[/media]
-Every [concept]function[/concept] in Composr is documented using a system based on [concept]phpdoc[/concept] (itself based on 'javadoc'). One purpose in this documentation is that it makes it easy for a programmer to program for Composr: they have a few hundred fully documented Composr functions available to them.
+Every [concept]function[/concept] in Composr is documented using a system based on [concept]PHPDoc[/concept] (itself based on 'javadoc'). One purpose in this documentation is that it makes it easy for a programmer to program for Composr: they have a few hundred fully documented Composr functions available to them.
 
-With phpdoc and the function header-line itself, every function has the following:
+With PHPDoc and the function header-line itself, every function has the following:
  - A description
  - A list of all parameters:
   - The code-name of the parameter
@@ -221,7 +221,7 @@ If you still are not convinced that Composr is the right choice for you, conside
 
 [concepts
  1_key="API"      1_value="Application Programming Interface: functions in libraries (in Composr's case, files under sources/) intended for common use by other code."
- 2_key="phpdoc"   2_value="A system for documenting function APIs, based on Javadoc"
+ 2_key="PHPDoc"   2_value="A system for documenting function APIs, based on Javadoc"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
