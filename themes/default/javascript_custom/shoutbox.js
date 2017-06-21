@@ -38,9 +38,9 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
                     if (id > window.sb_last_message_id && window.sb_last_message_id != -1) {
                         window.sb_last_message_id = id;
                         if ($cms.dom.html(messages[i]).indexOf('((SHAKE))') != -1) {
-                            doShake();
+                            window.doShake();
                         } else {
-                            showGhost($cms.dom.html(messages[i]));
+                            window.showGhost($cms.dom.html(messages[i]));
                         }
 
                         var frames = window.parent.document.getElementsByTagName('iframe');

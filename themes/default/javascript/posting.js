@@ -23,7 +23,7 @@ function addAttachment(startNum, postingFieldName) {
 
     // Rebuild uploader button, if we have a singular button
     if (window.rebuildAttachmentButtonForNext != null) {
-        rebuildAttachmentButtonForNext(postingFieldName);
+        window.rebuildAttachmentButtonForNext(postingFieldName);
     }
 
     // Previous file input cannot be used anymore, if it exists
@@ -435,7 +435,7 @@ function do_input_thumb(fieldName, va) {
     }
 
     if ((window.start_simplified_upload !== undefined) && (document.getElementById(fieldName).name != 'message')) {
-        var test = start_simplified_upload(fieldName);
+        var test = window.start_simplified_upload(fieldName);
         if (test) return;
     }
 
@@ -898,8 +898,8 @@ function initFormSaving(formId) {
                 for (var i = 0; i < element.options.length; i++) {
                     if (element.options[i].value == value) {
                         element.selectedIndex = i;
-                        if ($(element).select2 !== undefined) {
-                            $(element).trigger('change');
+                        if (jQuery(element).select2 !== undefined) {
+                            jQuery(element).trigger('change');
                         }
                     }
                 }

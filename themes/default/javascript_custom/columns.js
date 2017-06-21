@@ -2,8 +2,8 @@
 //  But with fixes and better flexibility, and pure CSS-based activation
 
 (window.$cmsLoad || (window.$cmsLoad = [])).push(function () {
-    $('.column_wrapper').columnize({columns: 3});
-    $('.column_wrapper_2').columnize({columns: 2});
+    jQuery('.column_wrapper').columnize({columns: 3});
+    jQuery('.column_wrapper_2').columnize({columns: 2});
 });
 
 // version 1.5.0
@@ -14,7 +14,7 @@
 
     $.fn.columnize = function (options) {
 
-        var $inBox = options.target ? $(options.target) : $(this);
+        var $inBox = options.target ? jQuery(options.target) : jQuery(this);
 
         var defaults = {
             // optional # of columns instead of width
@@ -64,7 +64,7 @@
 
         return this.each(function () {
             var maxHeight = $inBox.height();
-            var $cache = $('<div></div>'); // this is where we'll put the real content
+            var $cache = jQuery('<div></div>'); // this is where we'll put the real content
             var lastWidth = 0;
             var columnizing = false;
 
@@ -102,7 +102,7 @@
             columnizeIt();
 
             if (!options.buildOnce) {
-                $(window).resize(function () {
+                jQuery(window).resize(function () {
                     if (!options.buildOnce && $.browser.msie) {
                         if ($inBox.data("timeout")) {
                             clearTimeout($inBox.data("timeout"));
@@ -129,7 +129,7 @@
                     var splitHere = false;
                     var splitUnder = false;
                     while ($pullOutHere[0].childNodes.length != 0) {
-                        var next = $($pullOutHere[0].childNodes[0]);
+                        var next = jQuery($pullOutHere[0].childNodes[0]);
                         splitHere = next.hasClass('force-break');
                         if (splitHere) break;
                         splitUnder = next.find('.force-break').length != 0;
@@ -137,7 +137,7 @@
                         $putInHere.append(next); // Because we're not cloning, jquery will actually move the element
                     }
                     if (splitHere) {
-                        $($pullOutHere[0].childNodes[0]).remove();
+                        jQuery($pullOutHere[0].childNodes[0]).remove();
                         return true; // No further splits needs
                     }
                     return false; // Will need to go down to split recursively
@@ -153,7 +153,7 @@
                 var kids = $putInHere[0].childNodes;
                 var lastKid = kids[kids.length - 1];
                 $putInHere[0].removeChild(lastKid);
-                var $item = $(lastKid);
+                var $item = jQuery(lastKid);
 
                 // and now try and put a split version of it
                 if ($item[0].nodeType == 3) {
@@ -268,7 +268,7 @@
                     }
                 }
 
-                if ($(dom).hasClass("dontend")) return true;
+                if (jQuery(dom).hasClass("dontend")) return true;
 
                 // Need to look deeper?
                 if (dom.childNodes.length == 0) return false;
@@ -286,7 +286,7 @@
                 $inBox.data("columnizing", true);
 
                 $inBox.empty();
-                $inBox.append($("<div style='float: " + options.columnFloat + ";'></div>")); //"
+                $inBox.append(jQuery("<div style='float: " + options.columnFloat + ";'></div>")); //"
                 $col = $inBox.children(":last");
                 $col.append($cache.clone());
                 maxHeight = $col.height();
@@ -322,7 +322,7 @@
                         /* create column */
                         var className = (i == 0) ? "first column" : "column";
                         var className = (i == numCols - 1) ? ("last " + className) : className;
-                        $inBox.append($("<div class='" + className + "' style='float: " + options.columnFloat + ";'></div>")); //"
+                        $inBox.append(jQuery("<div class='" + className + "' style='float: " + options.columnFloat + ";'></div>")); //"
                     }
 
                     // fill all but the last column (unless overflowing)
@@ -330,7 +330,7 @@
                     while (i < numCols - (options.overflow ? 0 : 1) || scrollHorizontally && $destroyable.contents().length != 0) {
                         if ($inBox.children().length <= i) {
                             // we ran out of columns, make another
-                            $inBox.append($("<div class='" + className + "' style='float: " + options.columnFloat + ";'></div>")); //"
+                            $inBox.append(jQuery("<div class='" + className + "' style='float: " + options.columnFloat + ";'></div>")); //"
                         }
                         var $col = $inBox.children().eq(i);
                         var needsDeepSplit = !columnize($col, $destroyable, $col, targetHeight);
@@ -371,10 +371,10 @@
                                 div.appendChild($destroyable[0].childNodes[0]);
                                 html += div.innerHTML;
                             }
-                            var overflow = $(options.overflow.id)[0];
+                            var overflow = jQuery(options.overflow.id)[0];
                             overflow.innerHTML = html;
                         } else {
-                            $(options.overflow.id).empty().append($destroyable.contents().clone(true));
+                            jQuery(options.overflow.id).empty().append($destroyable.contents().clone(true));
                         }
                     } else if (!scrollHorizontally) {
                         // it's scrolling horizontally, try and workout our average height. We know it initially but if the last column is too high we need to raise 'adjustment'. We try this over a few iterations until we're 'solid'.
@@ -452,7 +452,7 @@
                                 }
                             }
                             // Okay, strip then
-                            $(runOn[0]).remove();
+                            jQuery(runOn[0]).remove();
                         }
                     }
                     while (runOn.length != 0);
@@ -467,7 +467,7 @@
                                 }
                             }
                             // Okay, strip then
-                            $(runOn[0]).remove();
+                            jQuery(runOn[0]).remove();
                         }
                     }
                     while (runOn.length != 0);

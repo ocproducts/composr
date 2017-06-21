@@ -142,8 +142,9 @@ function toggleWysiwyg(name) {
                     textarea.disabled = false;
                     textarea.readOnly = false;
 
-                    if (window.rebuildAttachmentButtonForNext !== undefined)
-                        rebuildAttachmentButtonForNext(id, 'attachment_upload_button');
+                    if (window.rebuildAttachmentButtonForNext !== undefined) {
+                        window.rebuildAttachmentButtonForNext(id, 'attachment_upload_button');
+                    }
 
                     // Unload editor
                     var wysiwygData = window.wysiwyg_editors[id].getData();
@@ -411,7 +412,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
 
             if (window.setUpComcodeAutocomplete !== undefined) {
-                setUpComcodeAutocomplete(id);
+                window.setUpComcodeAutocomplete(id);
             }
 
             // Instant preview of Comcode

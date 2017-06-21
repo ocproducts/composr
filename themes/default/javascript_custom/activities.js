@@ -25,7 +25,7 @@ function sUpdateGetData() {
 
                     // Now grab whatever updates are available
                     var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keepStub(true)),
-                        listElements = $('li', '#activities_feed'),
+                        listElements = jQuery('li', '#activities_feed'),
                         lastId = ((typeof listElements.attr('id') == 'undefined') ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
                         postVal = 'last_id=' + lastId + '&mode=' + window.activities_mode;
 
@@ -67,9 +67,9 @@ function sUpdateShow(data, stat) {
     } else {
         var succeeded = false;
         if (stat == 'success') {
-            if ($('success', data).text() == '1') {
-                var listElements = $('li', '#activities_feed'); // Querying from current browser DOM
-                var listItems = $('listitem', data); // Querying from XML definition o new data
+            if (jQuery('success', data).text() == '1') {
+                var listElements = jQuery('li', '#activities_feed'); // Querying from current browser DOM
+                var listItems = jQuery('listitem', data); // Querying from XML definition o new data
 
                 listElements.removeAttr('toFade');
 
@@ -77,17 +77,17 @@ function sUpdateShow(data, stat) {
                 var topOfList = document.getElementById('activities_holder').firstChild;
                 jQuery.each(listItems, function () {
                     var thisLi = document.createElement('li');
-                    thisLi.id = 'activity_' + $(this).attr('id');
+                    thisLi.id = 'activity_' + jQuery(this).attr('id');
                     thisLi.className = 'activities_box box';
                     thisLi.setAttribute('toFade', 'yes');
                     topOfList.parentNode.insertBefore(thisLi, topOfList);
-                    $cms.dom.html(thisLi, window.Base64.decode($(this).text()));
+                    $cms.dom.html(thisLi, window.Base64.decode(jQuery(this).text()));
                 });
 
                 var noMessages = document.getElementById('activity_-1');
                 if (noMessages) noMessages.style.display = 'none';
 
-                listElements = $('li', '#activities_feed'); // Refresh, so as to include the new activity nodes
+                listElements = jQuery('li', '#activities_feed'); // Refresh, so as to include the new activity nodes
 
                 if ((!window.activities_feed_grow) && (listElements.length > window.activities_feed_max)) // Remove anything passed the grow length
                 {
@@ -96,18 +96,18 @@ function sUpdateShow(data, stat) {
                     }
                 }
 
-                $('#activities_general_notify').text('');
-                $('li[toFade="yes"]', '#activities_feed').hide().fadeIn(1200);
+                jQuery('#activities_general_notify').text('');
+                jQuery('li[toFade="yes"]', '#activities_feed').hide().fadeIn(1200);
                 succeeded = true;
             } else {
-                if ($('success', data).text() == '2') {
-                    $('#activities_general_notify').text('');
+                if (jQuery('success', data).text() == '2') {
+                    jQuery('#activities_general_notify').text('');
                     succeeded = true;
                 }
             }
         }
         if (!succeeded) {
-            $('#activities_general_notify').text('{!INTERNAL_ERROR;^}');
+            jQuery('#activities_general_notify').text('{!INTERNAL_ERROR;^}');
         }
         window.s_ajax_update_locking = 0;
     }
@@ -149,21 +149,21 @@ function sUpdateRemoveShow(data, stat) {
     var animationSpeed = 1600;
 
     if (stat == 'success') {
-        if ($('success', data).text() == '1') {
-            statusId = '#activity_' + $('status_id', data).text();
-            $('.activities_content', statusId, '#activities_feed').text($('feedback', data).text()).addClass('activities_content__remove_success').hide().fadeIn(animationSpeed, function () {
-                $(statusId, '#activities_feed').fadeOut(animationSpeed, function () {
-                    $(statusId, '#activities_feed').remove();
+        if (jQuery('success', data).text() == '1') {
+            statusId = '#activity_' + jQuery('status_id', data).text();
+            jQuery('.activities_content', statusId, '#activities_feed').text(jQuery('feedback', data).text()).addClass('activities_content__remove_success').hide().fadeIn(animationSpeed, function () {
+                jQuery(statusId, '#activities_feed').fadeOut(animationSpeed, function () {
+                    jQuery(statusId, '#activities_feed').remove();
                 });
             });
         } else {
-            switch ($('err', data).text()) {
+            switch (jQuery('err', data).text()) {
                 case 'perms':
-                    statusId = '#activity_' + $('status_id', data).text();
-                    var backupUpText = $('activities_content', statusId, '#activities_feed').text();
-                    $('.activities_content', statusId, '#activities_feed').text($('feedback', data).text()).addClass('activities_content__remove_failure').hide().fadeIn(animationSpeed, function () {
-                        $('.activities_content', statusId, '#activities_feed').fadeOut(animationSpeed, function () {
-                            $('.activities_content', statusId, '#activities_feed').text(backupUpText).removeClass('activities_content__remove_failure').fadeIn(animationSpeed);
+                    statusId = '#activity_' + jQuery('status_id', data).text();
+                    var backupUpText = jQuery('activities_content', statusId, '#activities_feed').text();
+                    jQuery('.activities_content', statusId, '#activities_feed').text(jQuery('feedback', data).text()).addClass('activities_content__remove_failure').hide().fadeIn(animationSpeed, function () {
+                        jQuery('.activities_content', statusId, '#activities_feed').fadeOut(animationSpeed, function () {
+                            jQuery('.activities_content', statusId, '#activities_feed').text(backupUpText).removeClass('activities_content__remove_failure').fadeIn(animationSpeed);
                         });
                     });
                     break;

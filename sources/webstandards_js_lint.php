@@ -132,6 +132,15 @@ function init__webstandards_js_lint()
 
         /* Composr-specific */
         '$cms' => array('Object', array()),
+        'strVal' => array('function', array()),
+        'objVal' => array('function', array()),
+        'arrayVal' => array('function', array()),
+        'boolVal' => array('function', array()),
+        'intVal' => array('function', array()),
+        'numVal' => array('function', array()),
+
+        /* Defacto-standard */
+        'jQuery' => array('Object', array()),
 
         // Future things coming, but not currently here (may not be added, not strictly needed as we ignore missing properties/methods, and the API scope has mushroomed since 'HTML5'):
         //  Audio, Video, Canvas, File, WebRTC, SVG, WebGL, Crypto, HTML5 DOM APIs, Device, devicePixelRatio, Web Workers, Web Sockets
@@ -240,13 +249,16 @@ function _check_js($structure)
 {
     global $JS_GLOBAL_VARIABLES, $JS_LOCAL_VARIABLES;
 
-    $JS_LOCAL_VARIABLES = $JS_GLOBAL_VARIABLES;
-
+    // Put all functions in as local variables
     foreach ($structure['functions'] as $function) {
         $JS_GLOBAL_VARIABLES[$function['name']] = array('function_return' => '!Object', 'is_global' => true, 'types' => array('function'), 'unused_value' => null, 'first_mention' => $function['offset']);
     }
+
+    // Check global commands
+    $JS_LOCAL_VARIABLES = $JS_GLOBAL_VARIABLES;
     js_check_command($structure['main'], 0);
-    // Update global variables
+
+    // Update global variables for changes within the global commands
     foreach ($JS_LOCAL_VARIABLES as $name => $v) {
         if (isset($JS_GLOBAL_VARIABLES[$name])) {
             $JS_GLOBAL_VARIABLES[$name]['types'] = array_unique(array_merge($JS_GLOBAL_VARIABLES[$name]['types'], $v['types']));
@@ -255,6 +267,8 @@ function _check_js($structure)
             $JS_GLOBAL_VARIABLES[$name]['is_global'] = true;
         }
     }
+
+    // Check all functions
     foreach ($structure['functions'] as $function) {
         $JS_LOCAL_VARIABLES = $JS_GLOBAL_VARIABLES;
         js_check_function($function);
@@ -377,6 +391,28 @@ function js_check_command($command, $depth)
     }
 
     global $JS_LOCAL_VARIABLES, $CURRENT_CLASS;
+
+    // Need to load up functions in advance
+    foreach ($command as $i => $c) {
+        if ($c == array()) {
+            continue;
+        }
+
+        if (is_integer($c[count($c) - 1])) {
+            $c_pos = $c[count($c) - 1];
+        } else {
+            $c_pos = $c[count($c) - 2];
+        }
+
+        switch ($c[0]) {
+            case 'INNER_FUNCTION':
+                js_add_variable_reference($c[1]['name'], $c_pos, true);
+                js_set_composr_type($c[1]['name'], 'function');
+                break;
+        }
+    }
+
+    // Scan rest of commands
     foreach ($command as $i => $c) {
         if ($c == array()) {
             continue;
@@ -393,8 +429,6 @@ function js_check_command($command, $depth)
         switch ($c[0]) {
             case 'INNER_FUNCTION':
                 js_check_function($c[1]);
-                js_add_variable_reference($c[1]['name'], $c_pos, true);
-                js_set_composr_type($c[1]['name'], 'function');
                 break;
             case 'RETURN':
                 $ret_type = js_check_expression($c[1]);
@@ -413,7 +447,7 @@ function js_check_command($command, $depth)
                 foreach ($c[2] as $case) {
                     /*
                     if ($case[0] !== null) {
-                        $passes = js_ensure_type(array($switch_type), js_check_expression($case[0]), $c_pos, 'Switch type inconsistency');
+                        $passes = js_ensure_type(array($switch_type), js_check_expression($case[0]), $c_pos, 'Switch type inconsistency');    We are not so type-strict in JS
                         if ($passes) {
                             js_infer_expression_type_to_variable_type($switch_type, $case[0]);
                         }
@@ -432,7 +466,7 @@ function js_check_command($command, $depth)
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
                 $t = js_check_expression($c[1]);
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-                /*$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (if) [is ' . $t . ']');
+                /*$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (if) [is ' . $t . ']');    We are not so type-strict in JS
                 if ($passes) {
                     js_infer_expression_type_to_variable_type('Boolean', $c[1]);
                 }*/
@@ -443,7 +477,7 @@ function js_check_command($command, $depth)
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
                 $t = js_check_expression($c[1]);
                 $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-                /*$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (if-else)');
+                /*$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (if-else)');    We are not so type-strict in JS
                 if ($passes) {
                     js_infer_expression_type_to_variable_type('Boolean', $c[1]);
                 }*/
@@ -451,7 +485,7 @@ function js_check_command($command, $depth)
                 js_check_command($c[3], $depth);
                 break;
             case 'FOREACH_list':
-                /*$passes = js_ensure_type(array('Array'), js_check_expression($c[1]), $c_pos, 'FOR-OF must take Array');
+                /*$passes = js_ensure_type(array('Array'), js_check_expression($c[1]), $c_pos, 'FOR-OF must take Array');    Could be any object in JS
                 if ($passes) {
                     js_infer_expression_type_to_variable_type('Array', $c[1]);
                 }*/
@@ -600,23 +634,23 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
         $GLOBALS['JS_PARSING_CONDITIONAL'] = true;
         $t = js_check_expression($e[1], false, $is_guarded);
         $GLOBALS['JS_PARSING_CONDITIONAL'] = $rem;
-        //$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (ternary)');
+        //$passes = js_ensure_type(array('Boolean'), $t, $c_pos, 'Conditionals must be Boolean (ternary)');    We are not so type-strict in JS
         //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[1]);
         $type_a = js_check_expression($e[2][0]);
         $type_b = js_check_expression($e[2][1]);
         /*if (($type_a != 'Null') && ($type_b != 'Null'))
         {
-            $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Type symettry error in ternary operator');
+            $passes = js_ensure_type(array($type_a), $type_b, $c_pos, 'Type symettry error in ternary operator');    We are not so type-strict in JS
             //if ($passes) js_infer_expression_type_to_variable_type($type_a, $e[2][1]);
         }*/
         return $type_a;
     }
     if (in_array($e[0], array('BOOLEAN_AND', 'BOOLEAN_OR'))) {
         $exp = js_check_expression($e[1], false, $is_guarded);
-        //$passes = js_ensure_type(array('Boolean'), $exp, $c_pos - 1, 'Can only use Boolean combinators with Booleans');
+        //$passes = js_ensure_type(array('Boolean'), $exp, $c_pos - 1, 'Can only use Boolean combinators with Booleans');    We are not so type-strict in JS
         //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[1]);
         $exp = js_check_expression($e[2]);
-        //$passes = js_ensure_type(array('Boolean'), $exp, $c_pos, 'Can only use Boolean combinators with Booleans');
+        //$passes = js_ensure_type(array('Boolean'), $exp, $c_pos, 'Can only use Boolean combinators with Booleans');    We are not so type-strict in JS
         //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $e[2]);
         return '!Object'; // JS is weird, ORing actually returns the first "truey" element
     }
@@ -735,7 +769,7 @@ function js_check_expression($e, $secondary = false, $is_guarded = false)
             return js_check_expression($inner[1], false, $is_guarded);
         case 'BOOLEAN_NOT':
             $expression = js_check_expression($inner[1], false, $is_guarded);
-            //$passes = js_ensure_type(array('Boolean'), $expression, $c_pos, 'Can only \'NOT\' a Boolean');
+            //$passes = js_ensure_type(array('Boolean'), $expression, $c_pos, 'Can only \'NOT\' a Boolean');    We are not so type-strict in JS
             //if ($passes) js_infer_expression_type_to_variable_type('Boolean', $inner[1]);
             return 'Boolean';
         case 'TYPEOF':
@@ -828,9 +862,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
             if (($reference) || (count($variable[2]) != 0) || (!isset($JS_LOCAL_VARIABLES[$identifier]))) {
                 js_add_variable_reference($identifier, $variable[count($variable) - 1], !$reference, ($reference) || (count($variable[2]) != 0), null, $is_call && count($variable[2]) == 0);
             } else {
-                if ((!isset($JS_LOCAL_VARIABLES[$identifier])) && ($identifier != 'this') && ($identifier != '__return')) {
-                    js_log_warning('CHECKER', 'Variable (' . $identifier . ') was used without being declared', $variable[3]);
-                }
+                js_mention_undeclared_variables($identifier, $variable[3]); // js_add_variable_reference would have itself called this, but as that was not called we must do it here instead
             }
         }
     } else {
@@ -889,16 +921,10 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
             js_scan_extractive_expressions($variable[2][2]);
         }
 
-        //js_add_variable_reference($identifier, $variable[count($variable) - 1], false, true);
-
         if ($variable[2][0] == 'ARRAY_AT') {
             js_check_expression($variable[2][1]);
             $exp_type = js_check_variable(array('VARIABLE', $identifier, array(), $variable[count($variable) - 1]), true, false, $class);
 
-            /*$passes = js_ensure_type(array('!Array'), $exp_type, $variable[3], 'Variable \'' . $identifier . '\' must be an Array due to dereferencing (is ' . $exp_type . ')');
-            if ($passes) {
-                js_infer_expression_type_to_variable_type('!Array', $variable[2][1]);
-            }*/
             $pos = strpos($exp_type, 'Array');
             if ($pos !== false) {
                 $exp_type = substr($exp_type, 0, $pos);
@@ -1014,6 +1040,20 @@ function js_set_composr_type($identifier, $type)
 }
 
 /**
+ * Put out a warning if a variable was not declared.
+ *
+ * @param  string $identifier The variable name
+ * @param  integer $c_pos Current parse position
+ */
+function js_mention_undeclared_variables($identifier, $c_pos)
+{
+    global $JS_LOCAL_VARIABLES;
+    if ((!isset($JS_LOCAL_VARIABLES[$identifier])) && ($identifier != 'this') && ($identifier != '_') && ($identifier != '__return')) {
+        js_log_warning('CHECKER', 'Variable (' . $identifier . ') was used without being declared', $c_pos);
+    }
+}
+
+/**
  * Add a reference to a named variable.
  *
  * @param  string $identifier The variable name
@@ -1025,13 +1065,13 @@ function js_set_composr_type($identifier, $type)
  */
 function js_add_variable_reference($identifier, $first_mention, $instantiation = true, $reference = false, $function_return = null, $is_call = false)
 {
+    if ((!$instantiation) && (!is_numeric($identifier))) {
+        js_mention_undeclared_variables($identifier, $first_mention);
+    }
+
     global $JS_LOCAL_VARIABLES;
     if (!isset($JS_LOCAL_VARIABLES[$identifier])) {
         $JS_LOCAL_VARIABLES[$identifier] = array('function_return' => $function_return, 'is_global' => false, 'types' => array(), 'unused_value' => !$reference && !$instantiation, 'first_mention' => $first_mention);
-
-        if ((!$instantiation) && ($identifier != 'this') && ($identifier != '__return') && ($identifier != 'jQuery') && (!is_numeric($identifier)) && (!$is_call)) {
-            js_log_warning('CHECKER', 'A variable (' . $identifier . ') was used without being declared', $first_mention);
-        }
     } else {
         $JS_LOCAL_VARIABLES[$identifier]['unused_value'] = !$reference && !$instantiation;
     }
