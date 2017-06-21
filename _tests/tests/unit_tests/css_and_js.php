@@ -98,6 +98,10 @@ class css_and_js_test_set extends cms_test_case
                     }
                 }
 
+                if (!is_file(get_file_base() . '/themes/' . $theme . '/' . $dir . '/' . $f)) {
+                    continue;
+                }
+
                 $path = javascript_enforce(basename($f, '.js'), $theme);
                 if ($path == '') {
                     continue; // Empty file, so skipped

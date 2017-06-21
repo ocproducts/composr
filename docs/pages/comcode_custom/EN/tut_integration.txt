@@ -355,7 +355,7 @@ It triggers if these post parameters are present:
  - [tt]remember[/tt] (optional, set to '1' if cookies should be saved)
  - [tt]login_invisible[/tt] (optional, set to '1' if the login should be invisible)
 
-(the [tt]login[/tt] page in Composr is mostly a front end, and doesn't handle log in itself)
+(the [tt]login[/tt] page in Composr is mostly a front-end, and doesn't handle log in itself)
 
 If posting from a different domain name then the 'Form-posting partner sites' option must be set to include the domain name you're using.
 

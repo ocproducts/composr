@@ -120,6 +120,12 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'comma separated') !== false) {
             $this->assertTrue(false, 'The phrase \'comma separated\' was used in ' . $file . '. This should be changed to \'comma-separated\'.');
         }
+        if (stripos($string, 'front end') !== false) {
+            $this->assertTrue(false, 'The phrase \'front end\' was used in ' . $file . '. This should be changed to \'front-end\'.');
+        }
+        if (stripos($string, 'back end') !== false) {
+            $this->assertTrue(false, 'The phrase \'back end\' was used in ' . $file . '. This should be changed to \'back-end\'.');
+        }
         if (stripos($string, 'meta tree') !== false) {
             $this->assertTrue(false, 'The phrase \'meta tree\' was used in ' . $file . '. This should be changed to \'meta-tree\'.');
         }
@@ -173,6 +179,12 @@ class lang_spelling_test_set extends cms_test_case
         }
         if (strpos($string, 'wiki+') !== false) {
             $this->assertTrue(false, 'The term \'wiki+\' was used in ' . $file . '. This should be changed to \'Wiki+\'.');
+        }
+        if (preg_match('#([^A-Za-z]+)(PHP-Doc|phpdoc|phpDoc)([^A-Za-z]+)#', $string) != 0) {
+            $this->assertTrue(false, 'A misspelling of \'PHPDoc\' occurred in ' . $file . '.');
+        }
+        if (preg_match('#([^A-Za-z]+)(PHP-Storm|phpStorm)([^A-Za-z]+)#', $string) != 0) {
+            $this->assertTrue(false, 'A misspelling of \'PhpStorm\' occurred in ' . $file . '.');
         }
         if (preg_match('#([^A-Za-z]+)Javascript([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The word \'Javascript\' was used in ' . $file . '. This should be changed to \'JavaScript\'.');

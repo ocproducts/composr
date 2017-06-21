@@ -130,7 +130,7 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
         }
 
         require_code('css_and_js');
-        js_compile($j, $js_cache_path, $minify);
+        js_compile($j, $js_cache_path, $minify, $theme);
     }
 
     if (@intval(filesize($js_cache_path)) == 0/*@ for race condition*/) {

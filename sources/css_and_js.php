@@ -112,8 +112,9 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
  * @param  ID_TEXT $j Name of the JS file
  * @param  PATH $js_cache_path Full path to the JS file
  * @param  boolean $minify Whether to also do minification
+ * @param  ?ID_TEXT $theme Theme to use (null: current theme)
  */
-function js_compile($j, $js_cache_path, $minify = true)
+function js_compile($j, $js_cache_path, $minify = true, $theme = null)
 {
     cms_profile_start_for('js_compile');
 
@@ -124,7 +125,7 @@ function js_compile($j, $js_cache_path, $minify = true)
     $SHOW_EDIT_LINKS = false;
     $tpl_params = array();
     require_code('tempcode');
-    $js = do_template($j, $tpl_params, null, false, null, '.js', 'javascript');
+    $js = do_template($j, $tpl_params, null, false, null, '.js', 'javascript', $theme);
     $KEEP_MARKERS = $temp_keep_markers;
     $SHOW_EDIT_LINKS = $temp_show_edit_links;
     global $ATTACHED_MESSAGES_RAW;

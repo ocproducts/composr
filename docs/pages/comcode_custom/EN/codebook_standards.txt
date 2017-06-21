@@ -219,6 +219,8 @@ It's impossible to say here exactly what to do as each case varies.
 
 [title="3"]Back-end programming[/title]
 
+You do not need to make third-party libraries meet our particular choice of standards. We trust third-party developers to have their own methods for ensuring standards are high. Exclude PHP files from automated testing by putting [tt]/*CQC: No check*/[/tt] (disables the CQC) and/or [tt]/*CQC: No API check*/[/tt] (disables the CQC's PHPDoc scanning/compilation) at the top of the file.
+
 [title="4"]General[/title]
 
 {|
@@ -1487,7 +1489,7 @@ Most lang strings support HTML, some do not: be aware
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Don't use the name "Composr", use the phrase "the software"
-| De-branding
+| Debranding
 | Product development only
 | Automated test ([tt]lang_spelling.php[/tt])
 | 
@@ -1991,7 +1993,7 @@ JavaScript has been historically a very clunky language with a messy history of 
 You do not need to:
 1) define jsdoc fully
 2) minify scripts (Composr does it for you)
-3) make third-party libraries meet our particular choice of standards (we trust third-party developers to have their own methods for ensuring standards are high)
+3) make third-party libraries meet our particular choice of standards (we trust third-party developers to have their own methods for ensuring standards are high) [exclude JavaScript libraries from automated testing by putting [tt]/*{$,Parser hint: pure}*/[/tt] at the top of the file]
 
 {|
 ! Standard
@@ -2295,6 +2297,13 @@ Provide addon screenshots
 | Composr development +
 | Automated test ([tt]addon_screenshots.php[/tt])
 | Every non-bundled addon that is non-development addon must have a screenshot in [tt]data_custom/images/addon_screenshots[/tt].
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Update these standards[/color]
+| Communication
+| Product development only
+| Manually
+| If you have introduced a new coding standard make sure to update this document too!
 |}
 
 [title="4"]General guidelines[/title]

@@ -1313,7 +1313,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
 }
 
 /**
- * Take the specified parameters, and try to find the corresponding page (caching front end).
+ * Take the specified parameters, and try to find the corresponding page (caching front-end).
  *
  * @param  ID_TEXT $codename The codename of the page to load
  * @param  ID_TEXT $zone The zone the page is being loaded in

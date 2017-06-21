@@ -42,7 +42,7 @@ class overused_globals_test_set extends cms_test_case
                     }
                 }
 
-                // Front end controller script, will have lots of globals
+                // Front-end controller script, will have lots of globals
 
                 // global $FOO
                 $num_matches = preg_match_all('#^\s*global ([^;]*);#m', $contents, $matches);
