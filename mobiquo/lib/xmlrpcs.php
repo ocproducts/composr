@@ -1,6 +1,6 @@
 <?php
 
-/*NO_API_CHECK*/
+/*CQC: No API check*/
 /*CQC: No check*/
 
 if (!defined('IN_MOBIQUO') && !function_exists('get_base_url')) exit('May not call this directly');

@@ -1,6 +1,6 @@
 <?php
 
-/*NO_API_CHECK*/
+/*CQC: No API check*/
 /*CQC: No check*/
 
 defined('IN_MOBIQUO') or exit;

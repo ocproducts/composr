@@ -1,7 +1,7 @@
 <?php
 
 /*EXTRA FUNCTIONS: openssl\_.+|recurse|array_replace_recursive*/
-/*NO_API_CHECK*/
+/*CQC: No API check*/
 
 /**
  * @package    core

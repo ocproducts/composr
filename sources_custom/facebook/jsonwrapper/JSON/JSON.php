@@ -1,6 +1,6 @@
 <?php
 
-/*NO_API_CHECK*/
+/*CQC: No API check*/
 /*CQC: No check*/
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */

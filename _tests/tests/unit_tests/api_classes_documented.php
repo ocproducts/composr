@@ -38,7 +38,7 @@ class api_classes_documented_test_set extends cms_test_case
                     if (strpos($c, 'CQC: No check') !== false) {
                         continue;
                     }
-                    if (strpos($c, 'NO_API_CHECK') !== false) {
+                    if (strpos($c, 'CQC: No API check') !== false) {
                         continue;
                     }
 

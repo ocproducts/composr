@@ -41,7 +41,7 @@ class override_notes_consistency_test_set extends cms_test_case
             if (strpos($contents, 'CQC: No check') !== false) {
                 continue;
             }
-            if (strpos($contents, 'NO_API_CHECK') !== false) {
+            if (strpos($contents, 'CQC: No API check') !== false) {
                 continue;
             }
 

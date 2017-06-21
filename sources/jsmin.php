@@ -18,7 +18,7 @@
  * @package        core
  */
 
-/*NO_API_CHECK*/
+/*CQC: No API check*/
 /*CQC: No check*/
 
 /**

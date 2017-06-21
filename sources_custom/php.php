@@ -88,7 +88,7 @@ function get_php_file_api($filename, $include_code = true, $pedantic_warnings = 
         $line = $lines[$i];
         $LINE = $i + 1;
 
-        if (strpos($line, '/' . '*NO_API_CHECK*/') !== false) {
+        if (strpos($line, '/' . '*CQC: No API check*/') !== false) {
             return array();
         }
 

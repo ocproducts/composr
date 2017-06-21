@@ -18,7 +18,7 @@
  * @package    core_adminzone_dashboard
  */
 
-/*NO_API_CHECK*/
+/*CQC: No API check*/
 
 /**
  * Block class.

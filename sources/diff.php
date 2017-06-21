@@ -1,6 +1,6 @@
 <?php
 
-/*NO_API_CHECK*/
+/*CQC: No API check*/
 /*CQC: No check*/
 
 // Based on PHP:Text_Diff, which is under the LGPL licence.

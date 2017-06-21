@@ -20,7 +20,7 @@
 
 /*EXTRA FUNCTIONS: crypt*/
 
-/*NO_API_CHECK*/
+/*CQC: No API check*/
 
 /**
  * Hook class.
