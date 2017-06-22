@@ -1788,7 +1788,7 @@
             linkEl.id = 'css-' + sheetName;
             linkEl.rel = 'stylesheet';
             linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
-            linkEl.nonce = $CSP_NONCE;
+            linkEl.nonce = $cms.$CSP_NONCE;
             document.head.appendChild(linkEl);
         }
 
@@ -1841,7 +1841,7 @@
                 scriptEl.id = 'javascript-' + script;
                 scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
             }
-            scriptEl.nonce = $CSP_NONCE;
+            scriptEl.nonce = $cms.$CSP_NONCE;
 
             document.body.appendChild(scriptEl);
             requireJavascriptPromises[script] = $cms.waitForResources(scriptEl);
@@ -7812,7 +7812,7 @@
             document.body.appendChild($cms.dom.create('script', null, {
                 src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js',
                 defer: true,
-                nonce: $CSP_NONCE
+                nonce: $cms.$CSP_NONCE
             }));
         }
 

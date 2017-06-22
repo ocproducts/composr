@@ -46,11 +46,11 @@ CONSIDERING TO HAVE FULL RESTRICTION:
 manifest-src                (application manifests)                     [we do not package as an application]
 
 NOT CONSIDERING:
-frame-src                   (frames)                                    [included in child-src, and worker-src not available yet in browsers - plus deprecated in CSP2 although back in CSP3]
-worker-src                  (webworkers)                                [only in CSP3 and included in child-src]
+frame-src                   (frames)                                    [included in child-src, and worker-src not available yet in browsers - plus deprecated in CSP 2 although back in CSP 3]
+worker-src                  (webworkers)                                [only in CSP 3 and included in child-src]
 -
 sandbox                     (heavy blanket restrictions)                [we are already doing fine-grained control]
-disown-opener               (no target windows link back by DOM)        [we are using rel="noopener" already, only in CSP3 and not properly specced out yet]
+disown-opener               (no target windows link back by DOM)        [we are using rel="noopener" already, only in CSP 3 and not properly specced out yet]
 navigation-to               (limited outbound linking)                  [impractical for real users to stick to]
 require-sri-for             (require files to define and match hashes)  [we can determine which files will be hashed or not ourselves, no need to force it]
 <X-Frame-Options header>                                                [duplicates CSP's child-src/frame-src]
@@ -195,7 +195,6 @@ function load_csp($options = null, $enable_more_open_html_for = null)
     // default-src
     $_sources_list = _csp_extract_sources_list(2);
     $clauses[] = 'default-src ' . implode(' ', $_sources_list);
-    $_sources_list[] = "'nonce-{$CSP_NONCE}'";
 
     // style-src
     $_sources_list = _csp_extract_sources_list(2);
@@ -220,9 +219,12 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     // child-src
     $_sources_list = _csp_extract_sources_list(2, $csp_allowed_iframe_descendants);
-    if ($_sources_list !== null) {
-        $clauses[] = 'child-src ' . implode(' ', $_sources_list);
+    if ($_sources_list === null) {
+        $_sources_list = array();
+        $_sources_list[] = '*';
     }
+    $_sources_list[] = "'nonce-{$CSP_NONCE}'"; // In case W3C start supporting it for iframe elements
+    $clauses[] = 'child-src ' . implode(' ', $_sources_list);
 
     // connect-src
     $_sources_list = _csp_extract_sources_list(2);
@@ -270,9 +272,11 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     // frame-ancestors
     $_sources_list = _csp_extract_sources_list(2, $csp_allowed_iframe_ancestors);
-    if ($_sources_list !== null) {
-        $clauses[] = 'frame-ancestors ' . implode(' ', $_sources_list);
+    if ($_sources_list === null) {
+        $_sources_list = array();
+        $_sources_list[] = '*';
     }
+    $clauses[] = 'frame-ancestors ' . implode(' ', $_sources_list);
 
     // block-all-mixed-content
     if (!$csp_allow_insecure_resources) {
@@ -288,7 +292,7 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     // report-uri
     if ((function_exists('get_option')) && (get_option('csp_report_issues') == '1')) {
-        $clauses[] = 'report-uri ' . find_script('csp_logging'); // Note 'report-uri' is deprecated in CSP3, which is not implemented or finished at the time of writing
+        $clauses[] = 'report-uri ' . find_script('csp_logging'); // Note 'report-uri' is deprecated in CSP 3, which is not implemented or finished at the time of writing
     }
 
     // Now build the CSP header...

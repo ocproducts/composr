@@ -198,7 +198,7 @@ Any weak point can and will be exploited by a persistent hacker who has a strong
 
 Also bear in mind there is basically no protection from government agencies who have a reason to target you or one of your users. Secret court orders may result in system implants that you have no way of detecting.
 
-The point I am trying to convey is that you should decide on an appropriate level of security for your particular organisational needs, and ensure that everything necessary for that level is maintained. If you or your users are touching on anything that security services could be interested in, you'll be exposed regardless of what you do.
+The point I am trying to convey is that you should decide on an appropriate level of security for your particular organisational needs, and ensure that everything necessary for that level is maintained. If you or your users are touching on anything that security services could be interested in, or have a motivated enemy, you'll be exposed regardless of what you do.
 
 [title="2"]Security logs[/title]
 
@@ -212,7 +212,7 @@ If you get alerts that suggest someone is actively trying to hack into your webs
 
 Most security logs are accidental (caused by mistyped URLs, or buggy software) or are caused by bots. The screen-shot shows a typical hack-attack by a bot that crawls the web looking for vulnerable scripts: in this case, the bot is trying to use a parameter of the Composr poll voting form to send an e-mail, on the basis that by trying to abuse every form it finds, it will eventually find one that does work as a spam relay: it would then latch on to this and use the victim website as a mass spam relay, for as long as it can. In this case it hit a Composr site, so was logged.
 
-[title="2"]Alert types[/title]
+[title="3"]Alert types[/title]
 
 The following types of alert are defined:
  - [tt]DODGY_GET_HACK[/tt], A suspicious URL was given that includes characters looking like they may be there to do dodgy things. As URLs are generally clean of symbols, it is safe for Composr to detect dangerous looking ones, such as file system paths, new line characters, and HTML symbols
@@ -236,7 +236,7 @@ The following types of alert are defined:
 After a number ("Hack-attack ban threshold" option) of hack-attack attempts an IP address will be banned, if the "Enable auto-banning" option is enabled.
 Similarly and more specifically there are a number of options specifically attached to the brute force login detection for automatic bans.
 
-[title="3"]The "TRY_TO_DOWNLOAD_SCRIPT" error in detail[/title]
+[title="4"]The "TRY_TO_DOWNLOAD_SCRIPT" error in detail[/title]
 
 The full error is:
 [quote]
@@ -249,7 +249,19 @@ This error could also be caused by some server configuration issue too. For exam
 1) If the server cannot download files from itself properly to check, and whatever it does manage to access is returning HTTP '200' (file found) messages. This seems unlikely but it can be surprising what weird situations happen "in the wild".
 2) If something on the server is interfering with downloads. Something like the new Apache [tt]mod_spdy[/tt] module could cause something like this. That might alter images during transfer and Composr would not receive the file it expected to be checking.
 
-[title="2"]Input filtering[/title]
+[title="3"]Failed logins[/title]
+
+[surround]
+[media width="150" description="Failed login attempts" float="right"]data_custom/images/docs/tut_security/security_logins.png[/media]
+When a user tries to login Composr, but fails, it is logged. A proportion (approximately 15%) of these failures turn out to be real attempts to gain unauthorised access to the site, as demonstrated in the screen-shot.
+
+The log can be reached from:
+Admin Zone > Audit > Security logging
+[/surround]
+
+[title="2"]Filtering[/title]
+
+[title="3"]Input filtering[/title]
 
 The "Avoid broad input filtering security layer" privilege turns off filtering that may result in some data loss. Without the privilege it adds an additional level of security in case we have an actual security hole at another layer.
 This generally protects against:
@@ -277,21 +289,145 @@ We also have standard output escaping mechanisms so that attempts to inject bad 
 
 In summary, we have defense across a number of layers, and code without making poor assumptions. This is called "defense in depth" -- programmers are fallible, so it's best to have multiple lines of defense.
 
+[title="3"]Content Security Policy (CSP)[/title]
+
+We provide a detailed implementation of CSP 2 in Composr. This is optional, however, because to maintain it it requires a higher degree of discipline when designing your website.
+
+CSP is built on the back of the "Trusted partner sites" options. These options restrict to mitigate the following possible attack vectors...
+{|
+! Inbound or Outbound
+! Vector/trust
+! Risk level
+! Mitigation via
+! Configured by
+|-
+| Inbound
+| [b]Sending HTTP POST requests to your website[/b]
+
+CSRF-risk, you trust them not to trick users into submitting malicious forms, automatically or by deception.
+| Low
+
+CSRF-token protection and referrer checking also exists.
+| PHP code
+| Trusted partner sites (level 1), Trusted partner sites (level 2)
+|-
+| Inbound
+| [b]Send calls to your website via in-browser requests [AJAX or Adobe Flash][/b]
+
+As above, but extended risk due to automation to both read and write any number of sequential pages with requests being potentially logged in as the user due to cookies.
+| [color="red"]High[/color]
+
+Allows invisible remote controlling of a logged in user.
+| CrossDomain configuration
+| Trusted partner sites (level 1)
+|-
+| Inbound
+| [b]Putting your website in a frame[/b]
+
+You trust them to not do confidence-tricks on users, like impersonating arbitrary parts of your website like login forms, or doing click-jacking.
+| Low
+
+Due to fragility of the trickery and needing gullibility.
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2), Allowed frame ancestors
+|-
+| Outbound
+| [b]Loading in a frame[/b]
+
+Risk of confidence-tricks on users, like impersonating arbitrary parts of your website like login forms.
+| Low
+
+Due to the fragility of the trickery and needing gullibility.
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2), Allowed frame descendants
+|-
+| Outbound
+| [b]Making calls to JavaScript files[/b]
+
+Risk of malicious code via XSS attack.
+| Medium
+
+XSS-protection already exists for requests and content.
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2), Nonces (*)
+|-
+| Outbound
+| [b]Making calls to CSS files[/b]
+
+Risk of malicious layout changes for trickery.
+| Low
+
+XSS-protection already exists for requests and content, and very fragile attack than needs gullibility.
+| N/A
+| No limitations implemented in Composr
+(webmasters could not realistically meet these CSP limitations)
+|-
+| Outbound
+| [b]Making calls to scripts via in-browser requests [AJAX mode][/b]
+
+Risk of your site being used used as an intermediary in attacks.
+| Low
+
+XSS-protection already exists for requests and content,  and only possible if the remote server has opened the possibility up for this.
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2)
+|-
+| Outbound
+| [b]Making calls to scripts via form posting[/b]
+
+Risk of your site forms being redirected to some kind of sophisticated attack.
+| Low
+
+It would be unlikely to find such a vulnerability.
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2)
+|-
+| Outbound
+| [b]Redirecting to third-party sites[/b]
+
+Composr passes redirect parameters around, so it knows where to return after actions, but this could be abused to redirect someone to a website impersonating your site.
+| Medium
+
+Due to needing gullibility.
+| PHP code
+| Trusted partner sites (level 1), Trusted partner sites (level 2)
+|-
+| Outbound
+| [b]Making calls to media/objects/images/fonts [AJAX mode][/b]
+
+Unclear risk.
+| Trivial
+
+There is no clear risk.
+| N/A
+| No limitations implemented in Composr
+(webmasters could not realistically meet these CSP limitations)
+|}
+* Nonces are configurable in HTML/templates via placing [tt]{$CSP_NONCE_HTML}[/tt] in the opening tag. An XSS hacker has no way to know the nonce, so can't inject script/style requiring it. At the current time nonces are only supported in CSP by script and CSS files, but the W3C is discussing changes this.
+
+Note that the "Trusted parter site" options automatically include "www." if not specified.
+The "Allowed frame ancestors"/"Allowed frame descendants" options allow wildcarding to allow any request (and do by default due to the low risk and commonality of frame use).
+
+There are many settings related to CSP in the Composr security options, including:
+ - Enabling/disabling
+ - Relaxing some of the deeper restrictions
+ - Defining pages that don't run with CSP
+ - Specifying whether CSP violations are reported to the error log
+
+Limitations:
+ - We highly advise to not use Internet Explorer because it does not have fully support for CSP 2, or even really CSP 1 (it is under a special beta header only). Microsoft Edge is fine though.
+ - Unfortunately when WYSIWYG is in use then CSP is disabled, due to limitations with CkEditor.
+ - Particular parts of Composr may have CSP restrictions relaxed based on the behaviours they need to allow.
+
+If you are a programmer and want to customise the CSP rules in more detail, override the [tt]sources/csp.php[/tt] file.
+
+A detailed technical writeup of the implementation is at the top of the [tt]sources/csp.php[/tt] file.
+
 [title="2"]Anti-spam measures[/title]
 
 [surround]
 [media width="150" description="In this config option that embeds an \"E-mail the staff\" link, the address is obfuscated so most bots won't understand it" float="right"]data_custom/images/docs/tut_security/security_antispam.png[/media]
 Throughout Composr, measures are taken to reduce the chance of e-mail addresses being harvested for use by spammers. Typically, spammers gather e-mail addresses by using bots to automatically scavenge text that looks like an e-mail address from web pages; however Composr does not display member e-mail addresses publicly at all, and instead provides a 'contact member' module. In addition, whenever the staff address, or a staff member's address , is shown, it is [concept]obfuscated[/concept], so as to make it unlikely to be picked up as an e-mail address.
-[/surround]
-
-[title="2"]Failed logins[/title]
-
-[surround]
-[media width="150" description="Failed login attempts" float="right"]data_custom/images/docs/tut_security/security_logins.png[/media]
-When a user tries to login Composr, but fails, it is logged. A proportion (approximately 15%) of these failures turn out to be real attempts to gain unauthorised access to the site, as demonstrated in the screen-shot.
-
-The log can be reached from:
-Admin Zone > Audit > Security logging
 [/surround]
 
 [title="2"]robots.txt[/title]
@@ -325,7 +461,9 @@ We recommend the 'Enforce IP addresses for sessions' option is left enabled. If 
 
 For a break-down of the risk of disabling this option, see [url="this tracker discussion"]{$BRAND_BASE_URL}/tracker/view.php?id=708[/url].
 
-[title="2"]Client-side measures[/title]
+[title="2"]Techniques for increasing security further[/title]
+
+This section details some techniques to increase the security of your site. Most of these techniques are either advanced, or unattractive for most Composr users, which is why they are not included in the default Composr configuration.
 
 [title="3"]Referrers[/title]
 
@@ -339,124 +477,6 @@ To check you have referrers enabled, go to Commandr (Admin Zone > Tools > Comman
 You should get a URL back that is a URL under your own website.
 
 If you get a blank result, or something like 'unset' or 'hidden', you need to find out why referrers are disabled and re-enable them.
-
-[title="2"]Techniques for increasing security further[/title]
-
-This section details some techniques to increase the security of your site. Most of these techniques are either advanced, or unattractive for most Composr users, which is why they are not included in the default Composr configuration.
-
-[title="3"]Content Security Policy (CSP)[/title]
-
-We provide a detailed implementation of CSP 2 in Composr. This is optional, however, because to maintain it it requires a higher degree of discipline when designing your website.
-
-CSP is built on the back of the "Trusted partner sites" options. These options restrict to mitigate the following possible attack vectors...
-{|
-! Inbound or Outbound
-! Vector/trust
-! Risk level
-! Mitigation via
-! Configured by
-|-
-| Inbound
-| Sending HTTP POST requests to your website
-(CSRF-risk, you trust them not to trick users into submitting malicious forms, automatically or by deception)
-| Low
-(CSRF-token protection and referrer checking also exists)
-| PHP code
-| Trusted partner sites (level 1), Trusted partner sites (level 2)
-|-
-| Inbound
-| Send calls to your website via in-browser requests [AJAX or Adobe Flash]
-(as above, but extended risk due to automation to both read and write any number of sequential pages with requests being potentially logged in as the user due to cookies)
-| High
-| CrossDomain configuration
-| Trusted partner sites (level 1)
-|-
-| Inbound
-| Putting your website in a frame
-(you trust them to not do confidence-tricks on users, like impersonating arbitrary parts of your website like login forms, or doing click-jacking)
-| Low
-(due to fragility of the trickery and needing gullibility)
-| CSP
-| Trusted partner sites (level 1), Trusted partner sites (level 2), Allowed frame ancestors
-|-
-| Outbound
-| Loading in a frame
-(risk of confidence-tricks on users, like impersonating arbitrary parts of your website like login forms)
-| Low
-(due to the fragility of the trickery and needing gullibility)
-| CSP
-| Trusted partner sites (level 1), Trusted partner sites (level 2), Allowed frame descendants
-|-
-| Outbound
-| Making calls to JavaScript files
-(risk of malicious code via XSS attack)
-| Medium
-(XSS-protection already exists for requests and content)
-| CSP
-| Trusted partner sites (level 1), Trusted partner sites (level 2), Nonces (*)
-|-
-| Outbound
-| Making calls to CSS files
-(risk of malicious layout changes for trickery)
-| Low
-(XSS-protection already exists for requests and content, and very fragile attack than needs gullibility)
-| N/A
-| No limitations implemented in Composr
-(webmasters could not realistically meet these CSP limitations)
-|-
-| Outbound
-| Making calls to scripts via in-browser requests [AJAX mode]
-(risk of your site being used used as an intermediary in attacks)
-| Low
-(XSS-protection already exists for requests and content,  and only possible if the remote server has opened the possibility up for this)
-| CSP
-| Trusted partner sites (level 1), Trusted partner sites (level 2)
-|-
-| Outbound
-| Making calls to scripts via form posting
-(risk of your site forms being redirected to some kind of sophisticated attack)
-| Low
-(it would be unlikely to find such a vulnerability)
-| CSP
-| Trusted partner sites (level 1), Trusted partner sites (level 2)
-|-
-| Outbound
-| Redirecting to third-party sites
-(Composr passes redirect parameters around, so it knows where to return after actions, but this could be abused to redirect someone to a website impersonating your site)
-| Medium
-(due to needing gullibility)
-| PHP code
-| Trusted partner sites (level 1), Trusted partner sites (level 2)
-|-
-| Outbound
-| Making calls to media/objects/images/fonts [AJAX mode]
-(unclear risk)
-| Trivial
-(there is no clear risk)
-| N/A
-| No limitations implemented in Composr
-(webmasters could not realistically meet these CSP limitations)
-|}
-
-Nonces are configurable in HTML/templates using the nonces feature (include [tt]{$CSP_NONCE_HTML}[/tt] in the opening tag). An XSS hacker has no way to know the nonce, so can't inject script/style requiring it. At the current time nonces are only supported in CSP by script and CSS files, but the W3C is discussing changes this.
-
-Note that the "Trusted parter site" options automatically include "www." if not specified.
-The "Allowed frame ancestors"/"Allowed frame descendants" options allow wildcarding to allow any request (and do by default due to the low risk and commonality of frame use).
-
-There are many settings related to CSP in the Composr security options, including:
- - Enabling/disabling
- - Relaxing some of the deeper restrictions
- - Defining pages that don't run with CSP
- - Specifying whether CSP violations are reported to the error log
-
-Limitations:
- - We highly advise to not use Internet Explorer because it does not have fully support for CSP 2, or even really CSP 1 (it is under a special beta header only). Microsoft Edge is fine though.
- - Unfortunately when WYSIWYG is in use then CSP is disabled, due to limitations with CkEditor.
- - Particular parts of Composr may have CSP restrictions relaxed based on the behaviours they need to allow.
-
-If you are a programmer and want to customise the CSP rules in more detail, override the [tt]sources/csp.php[/tt] file.
-
-A detailed technical writeup of the implementation is at the top of the [tt]sources/csp.php[/tt] file.
 
 [title="3"]Guest access[/title]
 
@@ -660,5 +680,6 @@ If you have sensitive material that might be in a URL moniker, you should either
  - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
  - [url="http://www.robotstxt.org/robotstxt.html"]robots.txt help[/url]
  - [url="https://internethealthreport.org"]The Internet Health Report[/url]
+ - [page="_SEARCH:codebook_standards"]Code Book, part 4 (Coding Standards)[/page]
 
 {$SET,tutorial_tags,ssl,securitylogging,rootkit_detector,Security,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details and guidance on the advanced security protections available in Composr.}[block]main_tutorial_rating[/block]

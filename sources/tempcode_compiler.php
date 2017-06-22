@@ -864,20 +864,17 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                     if (!is_string($td)) {
                                         $td = '';
                                     }
-                                    if ($ex == '') {
-                                        $ex = 'templates';
+                                    if ($td == '') {
+                                        $td = 'templates';
                                     }
                                     $_theme = isset($directive_opener_params[3 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[3 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
                                     if (!is_string($_theme)) {
                                         $_theme = '';
                                     }
                                     if ($_theme == '') {
-                                        $_theme = '.tpl';
-                                    }
-                                    if ($_theme == '') {
                                         $_theme = $theme;
                                     }
- 
+
                                     $found = find_template_place($eval, '', $_theme, $ex, $td, $template_name === $eval);
 
                                     $_theme = $found[0];
