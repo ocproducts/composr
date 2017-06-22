@@ -185,7 +185,6 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        require_code('form_templates');
         require_code('encryption');
         require_lang('fields');
 
@@ -332,7 +331,6 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
 
         // Render selection table
         $fields = new Tempcode();
-        require_code('form_templates');
         foreach ($rows as $row) {
             $name = get_translated_text($row['cf_name'], $GLOBALS['FORUM_DB']);
 
@@ -554,7 +552,6 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
 
         $rows = $GLOBALS['FORUM_DB']->query_select('f_custom_fields', array('id', 'cf_name', 'cf_type'));
 
-        require_code('form_templates');
         require_code('fields');
 
         $list = new Tempcode();

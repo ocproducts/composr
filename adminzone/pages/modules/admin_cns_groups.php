@@ -182,8 +182,6 @@ class Module_admin_cns_groups extends Standard_crud_module
             attach_message(do_lang_tempcode('EDITING_ON_WRONG_MSN'), 'warn');
         }
 
-        require_code('form_templates');
-
         $flood_control_submit_secs = take_param_int_modeavg($flood_control_submit_secs, 'g_flood_control_submit_secs', 'f_groups', 0);
         $flood_control_access_secs = take_param_int_modeavg($flood_control_access_secs, 'g_flood_control_access_secs', 'f_groups', 0);
         $max_daily_upload_mb = take_param_int_modeavg($max_daily_upload_mb, 'g_max_daily_upload_mb', 'f_groups', 70);
@@ -391,7 +389,6 @@ class Module_admin_cns_groups extends Standard_crud_module
 
         $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, ($group_count > 300) ? array('g_is_private_club' => 0) : null);
         $changed = false;
         foreach ($rows as $row) {

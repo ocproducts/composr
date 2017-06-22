@@ -186,7 +186,6 @@ class Module_cms_polls extends Standard_crud_module
 
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_polls') ? null : get_member();
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, (($only_owned === null) ? array() : array('submitter' => $only_owned)));
-        require_code('form_templates');
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
 
@@ -253,7 +252,6 @@ class Module_cms_polls extends Standard_crud_module
         list($allow_rating, $allow_comments, $allow_trackbacks) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, $allow_trackbacks);
 
         $fields = new Tempcode();
-        require_code('form_templates');
         $fields->attach(form_input_line_comcode(do_lang_tempcode('QUESTION'), do_lang_tempcode('DESCRIPTION_QUESTION'), 'question', $question, true));
         $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(1))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option1', $a1, true));
         $fields->attach(form_input_line_comcode(do_lang_tempcode('ANSWER_X', escape_html(integer_format(2))), do_lang_tempcode('DESCRIPTION_ANSWER'), 'option2', $a2, true));

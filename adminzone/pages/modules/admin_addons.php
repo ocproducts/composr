@@ -126,6 +126,8 @@ class Module_admin_addons
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('addons');
@@ -495,8 +497,6 @@ class Module_admin_addons
     public function addon_import()
     {
         appengine_live_guard();
-
-        require_code('form_templates');
 
         $fields = new Tempcode();
         $set_name = 'addon';
@@ -1024,7 +1024,6 @@ class Module_admin_addons
         }
 
         $fields = ''; /*XHTMLXHTML*/
-        require_code('form_templates');
         $field = form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true);
         $fields .= $field->evaluate();
         $field = form_input_line(do_lang_tempcode('AUTHOR'), do_lang_tempcode('DESCRIPTION_AUTHOR', do_lang_tempcode('ADDON')), 'author', $author, true);
@@ -1217,7 +1216,6 @@ class Module_admin_addons
      */
     public function modules_interface()
     {
-        require_code('form_templates');
         require_code('zones2');
         require_code('zones3');
         $list = create_selection_list_zones();

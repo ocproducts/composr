@@ -165,8 +165,6 @@ class Module_cms_iotds extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        require_code('form_templates');
-
         $fields->attach(form_input_line_comcode(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
 
         $fields->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), '', $hidden, 'image', null, true, $url));

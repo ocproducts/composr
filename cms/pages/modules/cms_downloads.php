@@ -221,7 +221,6 @@ class Module_cms_downloads extends Standard_crud_module
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import'), '_SELF');
         $submit_name = do_lang_tempcode('LOAD_FTP_FILES');
         $fields = new Tempcode();
-        require_code('form_templates');
         $fields->attach(form_input_line(do_lang_tempcode('FTP_SERVER_URL'), do_lang_tempcode('DESCRIPTION_FTP_SERVER_URL'), 'server_url', 'ftp://ftp.example.com/files/', true));
         $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION_PATH'), do_lang_tempcode('DESCRIPTION_DESTINATION_PATH'), 'destination', null, 'choose_download_category', array('addable_filter' => true), true));
         $fields->attach(form_input_tick(do_lang_tempcode('KEEP_SUBFOLDERS'), do_lang_tempcode('DESCRIPTION_KEEP_SUBFOLDERS'), 'subfolders', true));
@@ -261,7 +260,6 @@ class Module_cms_downloads extends Standard_crud_module
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import2'), '_SELF');
         $submit_name = do_lang_tempcode('LOAD_FILESYSTEM_FILES');
         $fields = new Tempcode();
-        require_code('form_templates');
         $fields->attach(form_input_line(do_lang_tempcode('DIRECTORY'), do_lang_tempcode('DIRECTORY_RELATIVE_INSTALL'), 'server_path', 'uploads/website_specific/my_downloads/', true));
         $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION_PATH'), do_lang_tempcode('DESCRIPTION_DESTINATION_PATH'), 'destination', null, 'choose_download_category', array('addable_filter' => true), true));
         $fields->attach(form_input_tick(do_lang_tempcode('KEEP_SUBFOLDERS'), do_lang_tempcode('DESCRIPTION_KEEP_SUBFOLDERS'), 'subfolders', true));
@@ -351,7 +349,6 @@ class Module_cms_downloads extends Standard_crud_module
 
         $fields = new Tempcode();
         $hidden = new Tempcode();
-        require_code('form_templates');
         require_code('images');
         handle_max_file_size($hidden);
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'name', $name, true));
@@ -775,7 +772,6 @@ class Module_cms_downloads_alt extends Standard_crud_module
     public function get_form_fields($title = '', $text = '')
     {
         $fields = new Tempcode();
-        require_code('form_templates');
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('TEXT'), do_lang_tempcode('DESCRIPTION_LICENCE_TEXT'), 'text', $text, true));
 
@@ -901,8 +897,6 @@ class Module_cms_downloads_cat extends Standard_crud_module
 
         $fields = new Tempcode();
         $hidden = new Tempcode();
-
-        require_code('form_templates');
 
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_NAME'), 'category', $category, true));
 

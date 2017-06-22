@@ -76,6 +76,8 @@ class Module_admin_orders
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('ecommerce');
@@ -543,8 +545,6 @@ class Module_admin_orders
     {
         $id = get_param_integer('id');
 
-        require_code('form_templates');
-
         $redirect_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         $last_action = get_param_string('last_act', null);
 
@@ -698,8 +698,6 @@ class Module_admin_orders
     public function order_export()
     {
         require_code('shopping');
-
-        require_code('form_templates');
 
         $fields = new Tempcode();
 

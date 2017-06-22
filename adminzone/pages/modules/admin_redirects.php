@@ -128,6 +128,8 @@ class Module_admin_redirects
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('redirects');
@@ -216,7 +218,6 @@ class Module_admin_redirects
             'NAME' => 'is_transparent_new',
         ));
 
-        require_code('form_templates');
         list($warning_details, $ping_url) = handle_conflict_resolution();
 
         $notes = get_value('notes', null, true);

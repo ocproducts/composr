@@ -285,7 +285,7 @@ function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false
     $structure_sweep = ($flags & COMCODE_STRUCTURE_SWEEP) != 0;
 
     if (has_interesting_post_fields()) {
-        disable_browser_xss_detection();
+        disable_browser_reflective_xss_detection();
     }
 
     if ($db === null) {

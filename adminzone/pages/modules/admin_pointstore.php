@@ -71,6 +71,8 @@ class Module_admin_pointstore
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('pointstore');
@@ -108,7 +110,6 @@ class Module_admin_pointstore
         require_code('input_filter_2');
         rescue_shortened_post_request();
 
-        require_code('form_templates');
         require_css('points');
 
         $type = get_param_string('type', 'browse');

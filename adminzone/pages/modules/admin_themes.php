@@ -132,6 +132,8 @@ class Module_admin_themes
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('themes');
@@ -486,7 +488,6 @@ class Module_admin_themes
             $author = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
         }
 
-        require_code('form_templates');
         require_code('permissions2');
 
         $fields = new Tempcode();
@@ -745,7 +746,6 @@ class Module_admin_themes
         require_javascript('editing');
         require_javascript('posting');
 
-        require_code('form_templates');
         require_code('lorem');
 
         $active_guid = get_param_string('active_guid', null);
@@ -812,7 +812,6 @@ class Module_admin_themes
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
-        require_code('form_templates');
         $hidden->attach(form_input_hidden('theme', $theme));
         $hidden->attach(form_input_hidden('lang', $lang));
         $fields->attach(form_input_line(do_lang_tempcode('CODENAME'), do_lang_tempcode('DESCRIPTION_THEME_IMAGE_NAME'), 'id', $id, true, null, null, 'text', 'some/path/name'));
@@ -868,8 +867,6 @@ class Module_admin_themes
         if ($theme != 'default') {
             regen_theme_images('default', array($lang => 1), $theme);
         }
-
-        require_code('form_templates');
 
         $skip = array(
             'icons', // Too many of these to show

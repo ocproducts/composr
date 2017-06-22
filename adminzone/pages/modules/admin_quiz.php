@@ -69,6 +69,8 @@ class Module_admin_quiz
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('quiz');
@@ -206,8 +208,6 @@ class Module_admin_quiz
      */
     public function create_selection_list_entries()
     {
-        require_code('form_templates');
-
         $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('id', 'q_name'), array(), 'ORDER BY q_add_date DESC', intval(get_option('general_safety_listing_limit')));
         $entries = new Tempcode();
         foreach ($_m as $m) {
@@ -253,8 +253,6 @@ class Module_admin_quiz
      */
     public function find_winner()
     {
-        require_code('form_templates');
-
         $_m = $GLOBALS['SITE_DB']->query_select('quizzes', array('*'), array('q_type' => 'COMPETITION'), 'ORDER BY q_validated DESC,q_add_date DESC', intval(get_option('general_safety_listing_limit')));
         $entries = new Tempcode();
         foreach ($_m as $m) {
@@ -380,8 +378,6 @@ class Module_admin_quiz
      */
     public function quiz_results()
     {
-        require_code('form_templates');
-
         $where = array();
         $type = get_param_string('q_type', null);
         if ($type !== null) {

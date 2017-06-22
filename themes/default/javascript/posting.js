@@ -217,9 +217,9 @@ function generateBackgroundPreview(post) {
         }
     }
     formPost = $cms.form.modSecurityWorkaroundAjax(formPost.substr(1));
-    /*FIXME: Synchronous XHR*/
+    /*TODO: Salman Synchronous XHR*/
     var previewRet = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', null, formPost);
-    /*FIXME: eval() call*/
+    /*TODO: Salman eval() call*/
     eval(previewRet.responseText.replace('<script>', '').replace('</script>', ''));
 }
 

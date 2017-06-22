@@ -71,6 +71,8 @@ class Module_admin_points
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('points');
@@ -140,8 +142,6 @@ class Module_admin_points
      */
     public function _get_between($title)
     {
-        require_code('form_templates');
-
         $fields = new Tempcode();
         $time_start = filectime(get_file_base() . '/_config.php') - 60 * 60 * 24 * 365 * 5; // 5 years before site start time, so that the default is "beginning"
 

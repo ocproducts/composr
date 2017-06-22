@@ -280,7 +280,6 @@ class Module_admin_chat extends Standard_crud_module
     public function delete_all()
     {
         $fields = new Tempcode();
-        require_code('form_templates');
         $fields->attach(form_input_tick(do_lang_tempcode('PROCEED'), do_lang_tempcode('Q_SURE'), 'continue_delete', false));
         $posting_name = do_lang_tempcode('PROCEED');
         $posting_url = build_url(array('page' => '_SELF', 'type' => '_delete_all'), '_SELF');

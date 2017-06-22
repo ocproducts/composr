@@ -51,6 +51,6 @@ class Hook_config_csp_allow_eval_js
      */
     public function get_default()
     {
-        return '1';
+        return '0';
     }
 }

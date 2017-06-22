@@ -195,7 +195,6 @@ class Module_cms_booking extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
@@ -438,7 +437,6 @@ class Module_cms_booking_supplements extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
@@ -631,7 +629,6 @@ class Module_cms_booking_blacks extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
@@ -899,7 +896,6 @@ class Module_cms_booking_bookings extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['_id']), '_SELF');

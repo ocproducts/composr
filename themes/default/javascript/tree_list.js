@@ -195,10 +195,12 @@
                 extra = ' ';
                 func = node.getAttribute('img_func_1');
                 if (func) {
+                    // TODO: Salman stop needing to use eval
                     extra = extra + eval(func + '(node)');
                 }
                 func = node.getAttribute('img_func_2');
                 if (func) {
+                    // TODO: Salman stop needing to use eval
                     extra = extra + eval(func + '(node)');
                 }
                 nodeSelfWrap = document.createElement('div');
@@ -409,6 +411,7 @@
                                 targetXmlNode.appendChild(xmlNode);
 
                                 // Ajax request
+                                // TODO: Salman stop needing to use eval
                                 eval('drag_' + xmlNode.getAttribute('draggable') + '("' + xmlNode.getAttribute('serverid') + '","' + targetXmlNode.getAttribute('serverid') + '")');
 
                                 fixupNodePositions(this.object.name);

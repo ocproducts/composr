@@ -38,7 +38,7 @@ class Hook_config_csp_whitelisted_plugins
             'explanation' => 'CONFIG_OPTION_csp_whitelisted_plugins',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 10,
+            'order_in_category_group' => 4,
 
             'addon' => 'core_configuration',
         );
@@ -51,6 +51,6 @@ class Hook_config_csp_whitelisted_plugins
      */
     public function get_default()
     {
-        return 'application/pdf,application/x-shockwave-flash,image/svg+xml,video/mpeg,video/3gpp,video/mp4,video/ogg,video/webm,video/x-ms-wmv,video/x-ms-asf,video/quicktime,audio/x-pn-realaudio,audio/x-pn-realaudio-plugin,audio/x-ms-wma,audio/x-wav,audio/mpeg,audio/ogg,audio/midi,audio/x-aiff';
+        return 'application/pdf application/x-shockwave-flash image/svg+xml video/mpeg video/3gpp video/mp4 video/ogg video/webm video/x-ms-wmv video/x-ms-asf video/quicktime audio/x-pn-realaudio audio/x-pn-realaudio-plugin audio/x-ms-wma audio/x-wav audio/mpeg audio/ogg audio/midi audio/x-aiff';
     }
 }

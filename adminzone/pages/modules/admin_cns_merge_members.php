@@ -73,6 +73,8 @@ class Module_admin_cns_merge_members
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -130,8 +132,6 @@ class Module_admin_cns_merge_members
     public function gui()
     {
         $fields = new Tempcode();
-
-        require_code('form_templates');
 
         $from = get_param_string('from', '', INPUT_FILTER_GET_COMPLEX);
         $to = get_param_string('to', '', INPUT_FILTER_GET_COMPLEX);

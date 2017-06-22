@@ -65,6 +65,8 @@ class Module_admin_debrand
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         appengine_live_guard();
 
         $type = get_param_string('type', 'browse');
@@ -109,8 +111,6 @@ class Module_admin_debrand
      */
     public function browse()
     {
-        require_code('form_templates');
-
         $rebrand_name = get_value('rebrand_name');
         if ($rebrand_name === null) {
             $rebrand_name = 'Composr';

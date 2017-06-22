@@ -320,7 +320,6 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         require_lang('ecommerce');
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, null, get_forum_type() != 'cns');
         foreach ($rows as $r) {
             $edit_url = build_url($url_map + array('id' => $r['id']), '_SELF');

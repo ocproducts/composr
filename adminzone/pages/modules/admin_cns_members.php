@@ -101,6 +101,8 @@ class Module_admin_cns_members
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cns');
@@ -261,8 +263,6 @@ class Module_admin_cns_members
      */
     public function step1()
     {
-        require_code('form_templates');
-
         url_default_parameters__enable();
         list($fields, $hidden) = cns_get_member_fields(false);
         url_default_parameters__disable();
@@ -399,8 +399,6 @@ class Module_admin_cns_members
      */
     public function delurk()
     {
-        require_code('form_templates');
-
         require_lang('cns_lurkers');
 
         check_privilege('mass_import');
@@ -606,8 +604,6 @@ class Module_admin_cns_members
      */
     public function download_csv()
     {
-        require_code('form_templates');
-
         $hidden = new Tempcode();
         $fields = new Tempcode();
 
@@ -712,8 +708,6 @@ class Module_admin_cns_members
      */
     public function import_csv()
     {
-        require_code('form_templates');
-
         check_privilege('mass_import');
 
         $hidden = new Tempcode();

@@ -211,7 +211,6 @@ class Module_admin_aggregate_types extends Standard_crud_module
             $aggregate_type = get_param_string('aggregate_type', '');
 
             if ($aggregate_type == '') {
-                require_code('form_templates');
                 $fields = new Tempcode();
                 $list = new Tempcode();
                 $types = parse_aggregate_xml();
@@ -283,7 +282,6 @@ class Module_admin_aggregate_types extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
@@ -417,8 +415,6 @@ class Module_admin_aggregate_types extends Standard_crud_module
      */
     public function sync()
     {
-        require_code('form_templates');
-
         $_type = get_param_string('sync_type', '');
 
         $fields = new Tempcode();

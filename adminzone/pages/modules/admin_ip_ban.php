@@ -103,6 +103,8 @@ class Module_admin_ip_ban
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('submitban');
@@ -236,8 +238,6 @@ class Module_admin_ip_ban
         }
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF');
-
-        require_code('form_templates');
 
         list($warning_details, $ping_url) = handle_conflict_resolution();
 

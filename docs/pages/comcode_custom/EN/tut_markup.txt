@@ -92,6 +92,11 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>You will only need to know JavaScript if doing particularly advanced themeing.</td>
 		</tr>
 		<tr>
+			<td>[url="CSP"]https://www.w3.org/TR/CSP3/[/url]</td>
+			<td>Extra security for web pages.</td>
+			<td>This imposes various constraints on how you can code, but no true limitations.</td>
+		</tr>
+		<tr>
 			<td>[abbr="Scalable Vector Graphics"][url="http://www.w3.org/Graphics/SVG/"]SVG[/url][/abbr]</td>
 			<td>Vector graphics standard, used for drawing statistics graphs.</td>
 			<td>You are unlikely to need any awareness of this.</td>

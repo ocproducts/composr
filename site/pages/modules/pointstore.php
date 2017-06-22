@@ -153,6 +153,8 @@ class Module_pointstore
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('pointstore');
@@ -195,8 +197,6 @@ class Module_pointstore
             $object = object_factory('Hook_pointstore_' . filter_naughty_harsh($hook));
             $object->init();
             if (method_exists($object, $type)) {
-                require_code('form_templates');
-
                 url_default_parameters__enable();
                 $ret = call_user_func(array($object, $type));
                 url_default_parameters__disable();

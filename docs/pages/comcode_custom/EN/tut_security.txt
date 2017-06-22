@@ -43,19 +43,20 @@ Auditing systems:
 Framework security:
  - CSRF-attack prevention (Cross-Site-Request-Forgery) via referrer checking and form security tokens
  - Click-jacking prevention via CSP implementation
+ - Parent reloading prevention via [tt]rel="noopener"[/tt]
  - Documented policies for meeting secure programming standards (in our Code Book and our standards checklist spreadsheet)
  - Scanning techniques to automatically enforce most of our security standards, such as:
   - automatic monitoring and scanning of database queries to confirm they were composed in a secure way
   - disabling of common attack vectors by default such as 'UNION' database queries (only enabling them when necessary)
   - automatic input sanitisation in standardised input-access APIs
- - Configurable levels of HTML filtering, to prevent XSS attacks (Cross-Site-Scripting attacks), including full CSP implementation
+ - Configurable levels of HTML filtering, to prevent XSS attacks (Cross-Site-Scripting attacks), including full CSP implementation (we highly advise to not use Internet Explorer due to us not enabling it's incomplete CSP implementation at all, Microsoft Edge is fine though; unfortunately when WYSIWYG is in use then CSP has to be disabled due to limitations with CkEditor)
  - Our own version of PHP used during development -- featuring strict types and a detector for XSS security holes
  - Our Code Quality Checker tool has the ability to scan for security hotspots in the code (areas that need careful quality reviews)
  - "Kid-gloves modes" that automatically impose restrictions and filters on third-party code unless the programmers of them explicitly declare that they understand key security issues
  - Prevention of attacks carried out by the upload of malicious files, via various forms of automatic filtering. Per-directory disabling of PHP code as an extra level of security (Apache-only)
  - Prevention of access-control-bypass via manually downloading privileged files via URL via automatic filename obfuscation
  - Prevention of directory listing attacks in deep directories, via empty [tt]index.html[/tt] files
- - Disabling of common insecure PHP features such as "register globals" and "allow URL fopen"
+ - Disabling of common insecure PHP features such as "allow URL fopen"
  - Automatic enabling of a number of Suhosin features designed to improve security, and coding standards that allow our code to work with them. Suhosin is an unofficial extension to PHP that adds extra security constraints
  - Prevention of "jumping-in" attacks against deep framework code via a secure code modularisation standard
  - Automatic imposition of limits, to prevent exploitation of bugs leading to the draining of computational resources

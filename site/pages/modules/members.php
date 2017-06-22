@@ -75,6 +75,8 @@ class Module_members
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         if (get_forum_type() != 'cns') {

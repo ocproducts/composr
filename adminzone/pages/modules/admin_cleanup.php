@@ -65,6 +65,8 @@ class Module_admin_cleanup
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('cleanup');
@@ -111,8 +113,6 @@ class Module_admin_cleanup
     public function choose_cache_type()
     {
         $url = build_url(array('page' => '_SELF', 'type' => 'rebuild'), '_SELF');
-
-        require_code('form_templates');
 
         $checkbox_ids = array();
         $_fields_cache = array();

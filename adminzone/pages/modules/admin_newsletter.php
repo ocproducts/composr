@@ -302,7 +302,6 @@ class Module_admin_newsletter extends Standard_crud_module
 
             $fields = new Tempcode();
             $hidden = new Tempcode();
-            require_code('form_templates');
 
             // Selection
             $newsletters = new Tempcode();
@@ -373,7 +372,6 @@ class Module_admin_newsletter extends Standard_crud_module
         }
 
         $fields = new Tempcode();
-        require_code('form_templates');
 
         url_default_parameters__enable();
 
@@ -399,8 +397,6 @@ class Module_admin_newsletter extends Standard_crud_module
     public function bounce_filter_b()
     {
         require_code('mail2');
-
-        require_code('form_templates');
 
         $username = post_param_string('username');
         $password = post_param_string('password', false, INPUT_FILTER_NONE);
@@ -436,7 +432,6 @@ class Module_admin_newsletter extends Standard_crud_module
         modsecurity_workaround_enable();
 
         require_code('mail2');
-        require_code('form_templates');
 
         $username = post_param_string('username');
         $password = post_param_string('password', false, INPUT_FILTER_NONE);
@@ -539,7 +534,6 @@ class Module_admin_newsletter extends Standard_crud_module
         // Select newsletter
         if ($id === null) {
             $fields = new Tempcode();
-            require_code('form_templates');
 
             // Selection
             $newsletters = new Tempcode();
@@ -753,8 +747,6 @@ class Module_admin_newsletter extends Standard_crud_module
             return $lang;
         }
 
-        require_code('form_templates');
-
         $fields = new Tempcode();
 
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array(
@@ -829,8 +821,6 @@ class Module_admin_newsletter extends Standard_crud_module
      */
     public function whatsnew_2()
     {
-        require_code('form_templates');
-
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(180);
         }
@@ -981,8 +971,6 @@ class Module_admin_newsletter extends Standard_crud_module
         // ================
 
         $fields = new Tempcode();
-
-        require_code('form_templates');
 
         $default_subject = get_option('newsletter_title');
         if ($defaults !== null) {
@@ -1495,8 +1483,6 @@ class Module_admin_newsletter extends Standard_crud_module
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
-        require_code('form_templates');
-
         $fields = new Tempcode();
         $fields->attach(form_input_huge_list(do_lang_tempcode('NEWSLETTER'), '', 'id', $newsletters, null, true));
 
@@ -1642,7 +1628,6 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');

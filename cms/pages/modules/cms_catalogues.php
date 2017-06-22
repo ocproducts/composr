@@ -322,7 +322,6 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_catalogues') ? null : get_member();
         $catalogue_name = get_param_string('catalogue_name');
         list($rows, $max_rows) = $this->get_entry_rows(false, ($current_ordering == 'title ASC' || $current_ordering == 'title DESC') ? 'ce_add_date ASC' : $current_ordering, ($only_owned === null) ? array('c_name' => $catalogue_name) : array('c_name' => $catalogue_name, 'ce_submitter' => $only_owned));
@@ -426,7 +425,6 @@ class Module_cms_catalogues extends Standard_crud_module
         $_GET['catalogue_name'] = $catalogue_name; // Useful for referencing in templates etc
 
         require_code('feedback');
-        require_code('form_templates');
 
         $fields = new Tempcode();
 
@@ -978,8 +976,6 @@ class Module_cms_catalogues extends Standard_crud_module
         // Build up form
         $fields = new Tempcode();
 
-        require_code('form_templates');
-
         $fields->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('CSV_UPLOAD_DESC'), 'file_anytype', true, null, null, true, 'csv,txt'));
         $hidden = new Tempcode();
         handle_max_file_size($hidden);
@@ -1159,7 +1155,6 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $catalogue_name = get_param_string('catalogue_name');
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, array('c_name' => $catalogue_name));
         $news_cat_titles = array();
         foreach ($rows as $row) {
@@ -1231,8 +1226,6 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         $fields = new Tempcode(); // Not the fields in a category (no such thing: fields are in catalogues) - the HTML form fields to input the details for a category
         $hidden = new Tempcode();
-
-        require_code('form_templates');
 
         $hidden->attach(form_input_hidden('catalogue_name', $catalogue_name));
 
@@ -1588,7 +1581,6 @@ class Module_cms_catalogues_alt extends Standard_crud_module
     {
         $fields = new Tempcode();
         $hidden = new Tempcode();
-        require_code('form_templates');
 
         if ($name == '') {
             $name = get_param_string('id', '');
@@ -1712,7 +1704,6 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        require_code('form_templates');
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_FIELD_NAME'), $prefix . 'name', $name, ($name != '') || $first_field)); // If this is gonna be a new field that might not be filled in, don't make them fill it in
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_FIELD_DESCRIPTION'), $prefix . 'description', $description, false));
 

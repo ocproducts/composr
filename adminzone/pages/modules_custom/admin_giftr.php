@@ -262,8 +262,6 @@ class Module_admin_giftr extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        require_code('form_templates');
-
         $fields->attach(form_input_line(do_lang_tempcode('GIFT'), do_lang_tempcode('DESCRIPTION_GIFT'), 'name', $name, true));
 
         $fields->attach(form_input_line(do_lang_tempcode('CATEGORY'), do_lang_tempcode('DESCRIPTION_GIFT_CATEGORY'), 'category', $category, true));

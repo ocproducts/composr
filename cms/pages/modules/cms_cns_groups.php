@@ -134,7 +134,6 @@ class Module_cms_cns_groups extends Standard_crud_module
         }
 
         $fields = new Tempcode();
-        require_code('form_templates');
         $fields->attach(form_input_line(do_lang_tempcode('NAME'), do_lang_tempcode('DESCRIPTION_USERGROUP_TITLE'), 'name', $name, true));
         $fields->attach(form_input_username(do_lang_tempcode('GROUP_LEADER'), do_lang_tempcode('DESCRIPTION_GROUP_LEADER'), 'group_leader', $group_leader, false));
         $fields->attach(form_input_tick(do_lang_tempcode('OPEN_MEMBERSHIP'), do_lang_tempcode('OPEN_MEMBERSHIP_DESCRIPTION'), 'open_membership', $open_membership == 1));
@@ -174,7 +173,6 @@ class Module_cms_cns_groups extends Standard_crud_module
         $fields = new Tempcode();
 
         $count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_private_club' => 1));
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, ($count > 300 || (!has_privilege(get_member(), 'control_usergroups'))) ? array('g_group_leader' => get_member(), 'g_is_private_club' => 1) : array('g_is_private_club' => 1));
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');

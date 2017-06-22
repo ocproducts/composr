@@ -253,8 +253,6 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function get_form_fields($id = null)
     {
-        require_code('form_templates');
-
         // These will hold our form elements, visible & hidden
         $fields = new Tempcode();
         $hidden = new Tempcode();
@@ -373,8 +371,6 @@ class Module_admin_workflow extends Standard_crud_module
      */
     public function second_screen()
     {
-        require_code('form_templates');
-
         $point_names = $this->get_points_in_edited_workflow();
 
         // Find any points which are already defined

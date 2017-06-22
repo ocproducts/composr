@@ -156,8 +156,6 @@ class Module_admin_cns_post_templates extends Standard_crud_module
      */
     public function import()
     {
-        require_code('form_templates');
-
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import', 'uploading' => 1), '_SELF');
 
         $fields = new Tempcode();
@@ -327,7 +325,6 @@ class Module_admin_cns_post_templates extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
@@ -385,7 +382,6 @@ class Module_admin_cns_post_templates extends Standard_crud_module
      */
     public function add_actualisation()
     {
-        require_code('form_templates');
         return strval(cns_make_post_template(post_param_string('title'), post_param_string('text'), read_multi_code('forum_multi_code'), post_param_integer('use_default_forums', 0)));
     }
 
@@ -396,7 +392,6 @@ class Module_admin_cns_post_templates extends Standard_crud_module
      */
     public function edit_actualisation($id)
     {
-        require_code('form_templates');
         cns_edit_post_template(intval($id), post_param_string('title'), post_param_string('text'), read_multi_code('forum_multi_code'), post_param_integer('use_default_forums', 0));
     }
 

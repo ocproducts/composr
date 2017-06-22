@@ -92,6 +92,8 @@ class Module_admin_config
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         require_code('input_filter_2');
         modsecurity_workaround_enable();
 
@@ -389,7 +391,6 @@ class Module_admin_config
 
         // Render option groups
         $groups_arr = array();
-        require_code('form_templates');
         $_groups = array();
         foreach ($all_known_groups as $group_codename) {
             if (!isset($options[$group_codename])) {

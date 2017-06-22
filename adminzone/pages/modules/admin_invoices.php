@@ -72,6 +72,8 @@ class Module_admin_invoices
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'add');
 
         require_lang('ecommerce');
@@ -191,8 +193,6 @@ class Module_admin_invoices
      */
     public function add()
     {
-        require_code('form_templates');
-
         $to = get_param_string('to', '');
 
         $products = find_all_products();

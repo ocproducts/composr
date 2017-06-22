@@ -213,6 +213,8 @@ class Module_admin_permissions
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('permissions');
@@ -364,7 +366,6 @@ class Module_admin_permissions
         $submit_name = do_lang_tempcode('ABSORB_PERMISSIONS');
         $post_url = build_url(array('page' => '_SELF', 'type' => '_absorb'), '_SELF');
 
-        require_code('form_templates');
         $fields = new Tempcode();
         $fields->attach(form_input_list(do_lang_tempcode('FROM'), do_lang_tempcode('PERMISSIONS_FROM'), 'from', $list1));
         $fields->attach(form_input_list(do_lang_tempcode('TO'), do_lang_tempcode('PERMISSIONS_TO'), 'to', $list2));
@@ -402,7 +403,6 @@ class Module_admin_permissions
     public function tree_editor()
     {
         require_javascript('tree_list');
-        require_code('form_templates');
 
         require_css('sitemap_editor');
 
@@ -482,7 +482,6 @@ class Module_admin_permissions
     public function _choose_zone($title)
     {
         $fields = new Tempcode();
-        require_code('form_templates');
         require_lang('zones');
 
         require_code('zones3');
@@ -665,8 +664,6 @@ class Module_admin_permissions
         $p_section = get_param_string('id', null);
         if (($p_section === null) || ($p_section == '')) {
             $fields = new Tempcode();
-            require_code('form_templates');
-
             $_sections = $this->_get_ordered_sections();
             $sections = new Tempcode();
             $sections_common = new Tempcode();

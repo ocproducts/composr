@@ -250,7 +250,6 @@ class Module_cms_calendar extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         $only_owned = has_privilege(get_member(), 'edit_lowrange_content', 'cms_calendar') ? null : get_member();
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, (($only_owned === null) ? array() : array('e_submitter' => $only_owned)));
         $types = array();
@@ -337,8 +336,6 @@ class Module_cms_calendar extends Standard_crud_module
         if (($timezone === null) || ($timezone == '')) {
             $timezone = get_users_timezone();
         }
-
-        require_code('form_templates');
 
         if ($type === null) { // Adding one
             $date = get_param_string('date', '');
@@ -790,7 +787,6 @@ class Module_cms_calendar extends Standard_crud_module
             $rem_groups = array();
             if ((has_privilege(get_member(), 'add_public_events')) && (array_key_exists('sign_up_reminder_groups', $_POST))) {
                 $all_groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true);
-                require_code('form_templates');
                 $multi_code = read_multi_code('sign_up_reminder_groups'); // Usergroups signed up
                 require_code('selectcode');
                 if ((substr($multi_code, 0, 1) == '-') || (substr($multi_code, 0, 1) == '*')) {
@@ -1142,7 +1138,6 @@ class Module_cms_calendar extends Standard_crud_module
 
         // Build up form
         $fields = new Tempcode();
-        require_code('form_templates');
 
         $fields->attach(form_input_upload(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ICAL'), 'file_anytype', false, null, null, true, 'ics,ical'));
 
@@ -1314,7 +1309,6 @@ class Module_cms_calendar_cat extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');

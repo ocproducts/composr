@@ -404,8 +404,6 @@ class Module_warnings extends Standard_crud_module
         $hidden = new Tempcode();
         $fields = new Tempcode();
 
-        require_code('form_templates');
-
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         $num_warnings = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_cache_warnings');
         $_rules_url = build_url(array('page' => 'rules'));
@@ -607,7 +605,6 @@ class Module_warnings extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');

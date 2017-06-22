@@ -201,7 +201,6 @@ class Module_admin_community_billboard extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
@@ -229,7 +228,6 @@ class Module_admin_community_billboard extends Standard_crud_module
     public function get_form_fields($message = '', $days = 1, $notes = '', $validated = 1)
     {
         $fields = new Tempcode();
-        require_code('form_templates');
         $fields->attach(form_input_line_comcode(do_lang_tempcode('MESSAGE'), do_lang_tempcode('DESCRIPTION_MESSAGE'), 'message', $message, true));
         $fields->attach(form_input_integer(do_lang_tempcode('NUMBER_DAYS'), do_lang_tempcode('NUMBER_DAYS_DESCRIPTION'), 'days', $days, true));
         if (get_option('enable_staff_notes') == '1') {

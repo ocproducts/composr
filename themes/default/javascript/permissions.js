@@ -107,6 +107,7 @@ function copyPermissionPresets(name, value, justTrack) {
 
             if (window.sitemap === undefined) elements[i].disabled = true;
             // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
+            // TODO: Salman remove eval somehow
             elements[i].selectedIndex = eval(elements[i].name + ';') + 1; // -1 is at index 0
         }
     }
@@ -119,10 +120,12 @@ function copyPermissionPresets(name, value, justTrack) {
 }
 
 function setupPrivilegeOverrideSelector(name, defaultAccess, privilege, title, allGlobal) {
+    // TODO: Salman remove eval somehow
     eval('window.' + name + '_privilege_' + privilege + '=' + defaultAccess);
     var selectElement = document.getElementById(name + '_privilege_' + privilege);
     if (allGlobal) {
         // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
+        // TODO: Salman remove eval somehow
         selectElement.selectedIndex = eval(name + '_privilege_' + privilege) + 1; // -1 is at index 0
         if (window.sitemap === undefined) selectElement.disabled = true;
     }

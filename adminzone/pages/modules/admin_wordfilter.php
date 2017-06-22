@@ -107,6 +107,8 @@ class Module_admin_wordfilter
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('wordfilter');
@@ -157,7 +159,6 @@ class Module_admin_wordfilter
      */
     public function wordfilter_interface()
     {
-        require_code('form_templates');
         $list = new Tempcode();
         $words = $GLOBALS['SITE_DB']->query_select('wordfilter', array('*'), array(), 'ORDER BY word');
         foreach ($words as $word) {

@@ -1000,6 +1000,17 @@ function header($string, $replace_last = true)
 }
 
 /**
+ * Remove a PHP header. This only works if headers have not yet been sent.
+ *
+ * @sets_output_state
+ *
+ * @param  string $name The header to send.
+ */
+function header_remove($name)
+{
+}
+
+/**
  * Checks if or where headers have been sent.
  *
  * @return boolean The answer.
@@ -5306,7 +5317,6 @@ ob_list_handlers
 array_intersect_uassoc
 forward_static_call
 forward_static_call_array
-header_remove
 gc_enabled
 date_create
 date_create_immutable

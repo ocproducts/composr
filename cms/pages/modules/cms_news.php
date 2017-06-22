@@ -236,7 +236,6 @@ class Module_cms_news extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         $only_owned = has_privilege(get_member(), 'edit_highrange_content', 'cms_news') ? null : get_member();
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, ($only_owned === null) ? null : array('submitter' => $only_owned));
         $news_cat_titles = array();
@@ -364,7 +363,6 @@ class Module_cms_news extends Standard_crud_module
 
         $fields = new Tempcode();
         $fields2 = new Tempcode();
-        require_code('form_templates');
         $fields->attach(form_input_line_comcode(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
         $fields->attach(form_input_list(do_lang_tempcode('MAIN_CATEGORY'), do_lang_tempcode('DESCRIPTION_MAIN_CATEGORY'), 'main_news_category', $cats1));
         if (addon_installed('authors')) {
@@ -781,8 +779,6 @@ class Module_cms_news extends Standard_crud_module
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import_news', 'old_type' => get_param_string('type', '')), '_SELF');
         $submit_name = do_lang_tempcode('IMPORT_NEWS');
 
-        require_code('form_templates');
-
         require_code('news2');
         $fields = import_rss_fields(false);
 
@@ -888,7 +884,6 @@ class Module_cms_news_cat extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $edit_url = build_url($url_map + array('id' => $row['id']), '_SELF');
@@ -933,7 +928,6 @@ class Module_cms_news_cat extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        require_code('form_templates');
         $fields->attach(form_input_line_comcode(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
 
         $fields->attach(form_input_upload_multi_source(do_lang_tempcode('IMAGE'), '', $hidden, 'image', 'newscats', false, $img));

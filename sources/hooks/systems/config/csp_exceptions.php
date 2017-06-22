@@ -38,7 +38,7 @@ class Hook_config_csp_exceptions
             'explanation' => 'CONFIG_OPTION_csp_exceptions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 2,
 
             'addon' => 'core_configuration',
         );

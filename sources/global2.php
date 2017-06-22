@@ -156,6 +156,10 @@ function init__global2()
     $BOOTSTRAPPING = true;
     $CHECKING_SAFEMODE = false;
 
+    // CSP nice and early
+    require_code('csp');
+    load_csp(array()); // We start maximally strict, then we will reduce down based on config (config system not loaded yet)
+
     // Set cross-domain headers (COR)
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         require_code('ajax');
@@ -289,10 +293,12 @@ function init__global2()
         if (($STATIC_CACHE_ENABLED) && (cms_srv('REQUEST_METHOD') != 'POST')) {
             $bot_type = get_bot_type();
             if (($bot_type !== null) && (!empty($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0')) {
+                load_csp(array('csp_enabled' => '0'));
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__FAST_SPIDER);
             }
             if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (count(array_diff_key($_COOKIE, array('__utma' => 0, '__utmc' => 0, '__utmz' => 0, 'has_cookies' => 0, 'last_visit' => 0))) == 0) && ((!isset($SITE_INFO['backdoor_ip'])) || ($SITE_INFO['backdoor_ip'] != @strval($_SERVER['REMOTE_ADDR']))) && (!isset($_GET['keep_session']))) {
+                load_csp(array('csp_enabled' => '0'));
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
             }
@@ -306,6 +312,9 @@ function init__global2()
             critical_error('BANNED');
         }
     }
+
+    // Set CSP to what is truly configured
+    load_csp();
 
     // Member startup takes some time
     if (!$MICRO_BOOTUP) {
@@ -381,19 +390,6 @@ function init__global2()
     if (substr(strftime('%M'), 0, 2) == '??') { // Windows may do this because it can't output a utf-8 character set, so gets mangled to question marks by PHP
         setlocale(LC_ALL, explode(',', 'en-GB.UTF-8,en_GB.UTF-8,en-US.UTF-8,en_US.UTF-8,en.UTF-8,en-GB,en_GB,en-US,en_US,en')); // The user will have to define locale_subst correctly
     } 
-
-    // TODO: CSP Chris: Relocate this and the CSP functions to somewhere more appropriate?
-    /**
-     * CSP Nonce
-     * @global boolean $CSP_NONCE
-     */
-    global $CSP_NONCE;
-    $CSP_NONCE = csp_generate_nonce();
-
-    // Send CSP header if enabled
-    if (get_option('csp_enabled') === '1') {
-        csp_send_header();
-    }
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');
@@ -1959,333 +1955,4 @@ function convert_data_encodings($known_utf8 = false)
 
     require_code('character_sets');
     _convert_data_encodings($known_utf8);
-}
-
-/**
- * Compiles and sends the CSP header
- */
-function csp_send_header()
-{
-    global $CSP_NONCE;
-
-    /* CSP directives */
-    $header = '';
-
-    // Check if the current page is excluded from CSP
-    $excluded_pages = get_option('csp_exceptions');
-    if (is_string($excluded_pages) && ($excluded_pages !== '')) {
-        require_code('global3');
-        $current_page_name = get_page_name();
-        $matches = array();
-        if (preg_match('/' . $excluded_pages . '/', $current_page_name, $matches)) {
-            return;
-        }
-    }
-
-    // TODO: csp_allow_insecure_resources not used
-
-    // The default policy for loading content such as JavaScript, Images, CSS, Font's, AJAX requests, Frames, HTML5 Media.
-    $default_src = csp_extract_source_list(get_option('csp_whitelisted_urls'));
-    $default_allow_insecure = true;
-    $default_allow_inline = true;
-
-    if ($default_src === null) {
-        $default_src = array();
-        if ($default_allow_insecure) {
-            $default_src[] = 'http: https:';
-        } else {
-            $default_src[] = 'https:';
-        }
-    }
-
-    if ($default_allow_inline) {
-        $default_src[] = "'unsafe-inline'";
-    }
-
-    if (count($default_src) > 0) {
-        $default_src_str = implode(' ', $default_src);
-        $header .= "default-src {$default_src_str}; ";
-    }
-
-    // Defines valid sources of JavaScript.
-    $script_src = csp_extract_source_list(get_option('csp_whitelisted_urls'));
-    $script_allow_insecure = $default_allow_insecure;
-    $script_allow_inline = (get_option('csp_allow_inline_js') == '1');
-    $script_allow_eval = (get_option('csp_allow_eval_js') == '1');
-    $script_require_nonce = (get_option('csp_require_nonce') == '1');
-
-    if ($script_src === null) {
-        $script_src = array();
-        if ($script_allow_insecure) {
-            $script_src[] = 'http: https:';
-        } else {
-            $script_src[] = 'https:';
-        }
-    }
-
-    if ($script_allow_inline) {
-        $script_src[] = "'unsafe-inline'";
-    }
-
-    if ($script_allow_eval) {
-        $script_src[] = "'unsafe-eval'";
-    }
-
-    if ($script_require_nonce) {
-        $script_src[] =  "'strict-dynamic' 'nonce-{$CSP_NONCE}'";
-    }
-
-    if ($script_src !== null) {
-        if (count($script_src) > 0) {
-            $script_src_str = implode(' ', $script_src);
-            $header .= "script-src 'self' {$script_src_str}; ";
-        } else {
-            $header .= "script-src 'self'; ";
-        }
-    }
-
-    // Defines valid sources of CSS.
-    $style_src = csp_extract_source_list('');
-    $style_allow_insecure = $default_allow_insecure;
-    $style_allow_inline = $default_allow_inline;
-    $style_require_nonce = false;
-
-    // TODO: Review all of https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy and https://scotthelme.co.uk/csp-cheat-sheet/ and https://www.html5rocks.com/en/tutorials/security/content-security-policy/ and https://w3c.github.io/webappsec-csp/
-
-    if ($style_src === null) {
-        $style_src = array();
-        if ($style_allow_insecure) {
-            $style_src[] = 'http: https:';
-        } else {
-            $style_src[] = 'https:';
-        }
-    }
-
-    if ($style_allow_inline) {
-        $style_src[] = "'unsafe-inline'";
-    }
-
-    if ($style_require_nonce) {
-        $style_src[] = "'strict-dynamic' 'nonce-{$CSP_NONCE}'";
-    }
-
-    if ($style_src !== null) {
-        if (count($style_src) > 0) {
-            $style_src_str = implode(' ', $style_src);
-            $header .= "style-src 'self' {$style_src_str}; ";
-        } else {
-            $header .= "style-src 'self'; ";
-        }
-    }
-
-    // Defines valid sources of images.
-    $img_src = csp_extract_source_list('');
-    $img_allow_insecure = $default_allow_insecure;
-    $img_allow_data_uri = true;
-
-    if ($img_src === null) {
-        $img_src = array();
-        if ($img_allow_insecure) {
-            $img_src[] = 'http: https:';
-        } else {
-            $img_src[] = 'https:';
-        }
-    }
-
-    if ($img_allow_data_uri) {
-        $img_src[] = 'data:';
-    }
-
-    if ($img_src !== null) {
-        if (count($img_src) > 0) {
-            $img_src_str = implode(' ', $img_src);
-            $header .= "img-src 'self' {$img_src_str}; ";
-        } else {
-            $header .= "img-src 'self'; ";
-        }
-    }
-
-    // Applies to XMLHttpRequest (AJAX), WebSocket or EventSource. If not allowed the browser emulates a 400 HTTP status code.
-    $connect_src = csp_extract_source_list('');
-    if ($connect_src !== null) {
-        if (count($connect_src) > 0) {
-            $connect_src_str = implode(' ', $connect_src);
-            $header .= "connect-src 'self' {$connect_src_str}; ";
-        } else {
-            $header .= "connect-src 'self'; ";
-        }
-    }
-
-    // Defines valid sources of fonts.
-    $font_src = csp_extract_source_list('');
-    if ($font_src !== null) {
-        if (count($font_src) > 0) {
-            $font_src_str = implode(' ', $font_src);
-            $header .= "font-src 'self' {$font_src_str}; ";
-        } else {
-            $header .= "font-src 'self'; ";
-        }
-    }
-
-    // Defines valid MIME types for plugins invoked via <object> and <embed>. To load an <applet> you must specify application/x-java-applet.
-    $plugin_types = trim(get_option('csp_whitelisted_plugins'));
-    if ($plugin_types === 'none') {
-        $plugin_types = null;
-    }
-
-    if ($plugin_types !== null) {
-        $_plugin_types = explode(' ', $plugin_types);
-
-        if (count($_plugin_types) > 0) {
-            $plugin_types_str = implode(' ', $_plugin_types);
-            $header .= "plugin-types {$plugin_types_str}; ";
-        }
-    } else {
-        $_plugin_types = array();
-    }
-    // Defines valid sources of plugins, eg <object>, <embed> or <applet>.
-    $object_src = csp_extract_source_list('');
-    if (($plugin_types !== null) && (count($_plugin_types) === 0)) {
-        $header .= "object-src none; ";
-    } elseif ($object_src !== null) {
-        if (count($object_src) > 0) {
-            $object_src_str = implode(' ', $object_src);
-            $header .= "object-src 'self' {$object_src_str}; ";
-        } else {
-            $header .= "object-src 'self'; ";
-        }
-    }
-
-    // Defines valid sources of audio and video, eg HTML5 <audio>, <video> elements.
-    $media_src = csp_extract_source_list('');
-    if ($media_src !== null) {
-        if (count($media_src) > 0) {
-            $media_src_str = implode(' ', $media_src);
-            $header .= "media-src 'self' {$media_src_str}; ";
-        } else {
-            $header .= "media-src 'self'; ";
-        }
-    }
-
-    // Defines valid sources for web workers and nested browsing contexts loaded using elements such as <frame> and <iframe>
-    $child_src = csp_extract_source_list('');
-    if ($child_src !== null) {
-        if (count($child_src) > 0) {
-            $child_src_str = implode(' ', $child_src);
-            $header .= "child-src 'self' {$child_src_str}; ";
-        } else {
-            $header .= "child-src 'self'; ";
-        }
-    }
-
-    // Defines valid sources that can be used as a HTML <form> action.
-    $form_action = csp_extract_source_list(get_option('csp_allowed_form_destinations'));
-    if ($form_action !== null) {
-        if (count($form_action) > 0) {
-            $form_action_str = implode(' ', $form_action);
-            $header .= "form-action 'self' {$form_action_str}; ";
-        } else {
-            $header .= "form-action 'self'; ";
-        }
-    }
-
-    // Defines who is allowed to embed our resources using <frame>, <iframe>, <object>, <embed>, or <applet>.
-    // Setting this directive to 'none' (empty array here) should be roughly equivalent to X-Frame-Options: DENY
-    $frame_ancestors = csp_extract_source_list(get_option('csp_allowed_iframe_ancestors'));
-    if ($frame_ancestors !== null) {
-        if (count($frame_ancestors) > 0) {
-            $frame_ancestors_str = implode(' ', $frame_ancestors);
-            $header .= "frame-ancestors 'self' {$frame_ancestors_str}; ";
-        } else {
-            $header .= "frame-ancestors 'self'; ";
-        }
-    }
-
-    // Instructs the browser to POST a reports of policy failures to this URI.
-    // You can also append -Report-Only to the HTTP header name to instruct the browser to only send reports (does not block anything).
-    $report_uri = null;
-    if ($report_uri !== null) {
-        $header .= "report-uri {$report_uri}; ";
-    }
-
-    $report_only = false;
-
-    if ($report_only) {
-        @header('Content-Security-Policy-Report-Only: ' . $header);
-    } else {
-        @header('Content-Security-Policy: ' . $header);
-    }
-}
-
-/**
- * Generate a CSP nonce.
- *
- * @return string The nonce.
- */
-function csp_generate_nonce()
-{
-    $nonce = uniqid('', true); // TODO: uniqid is not cryptographically secure, fixme Salman, I think we can use random_bytes now
-    return substr(base64_encode($nonce), 0, 10);
-}
-
-/**
- * Extracts CSP sources from the given string.
- *
- * @param  string $sources_csv Comma separated list of valid CSP 'sources'
- * @return ?array CSP sources (null: allow all) (empty: disallow all except local)
- */
-function csp_extract_source_list($sources_csv)
-{
-    $sources_csv = trim(strval($sources_csv));
-
-    if ($sources_csv === '') {
-        return null;
-    } elseif ($sources_csv === 'none') {
-        return array();
-    }
-
-    $sources = preg_split('/\s*\,\s*/', $sources_csv);
-    $source_list = array();
-
-    foreach ($sources as $val) {
-        $parts = parse_url(trim($val));
-
-        // parse_url returns false when the uri is seriously malformed
-        if (!is_array($parts)) {
-            continue;
-        }
-
-        if (empty($parts['host'])) {
-            // Invalid/No domain specified
-            continue;
-        }
-
-        if ($parts['scheme'] && ($parts['scheme'] !== 'http') && ($parts['scheme'] !== 'https')) {
-            // Invalid scheme
-            continue;
-        }
-
-        $source = '';
-        if ($parts['scheme']) {
-            $source .= $parts['scheme'] . '://';
-        }
-
-        $source .= $parts['host'];
-
-        if ($parts['port']) {
-            $source .= ':' . $parts['port'];
-        }
-
-        if ($parts['path']) {
-            $source .= $parts['path'];
-        }
-
-        if ($parts['query']) {
-            $source .= '?' . $parts['query'];
-        }
-
-        $source_list[] = $source;
-    }
-
-    return $source_list;
 }

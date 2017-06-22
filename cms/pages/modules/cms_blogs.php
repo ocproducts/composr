@@ -195,7 +195,6 @@ class Module_cms_blogs extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         $only_owned = has_privilege(get_member(), 'edit_midrange_content', 'cms_news') ? null : get_member();
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, ($only_owned === null) ? null : array('submitter' => $only_owned), false, ' JOIN ' . get_table_prefix() . 'news_categories c ON c.id=r.news_category AND nc_owner IS NOT NULL');
         if (count($rows) == 0) {
@@ -288,7 +287,6 @@ class Module_cms_blogs extends Standard_crud_module
         $fields = new Tempcode();
         $fields2 = new Tempcode();
         $hidden = new Tempcode();
-        require_code('form_templates');
         $fields->attach(form_input_line_comcode(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
         if ($validated == 0) {
             $validated = get_param_integer('validated', 0);
@@ -652,8 +650,6 @@ class Module_cms_blogs extends Standard_crud_module
         $lang = post_param_string('lang', user_lang());
 
         $submit_name = do_lang_tempcode('IMPORT_WORDPRESS');
-
-        require_code('form_templates');
 
         /* RSS method */
 

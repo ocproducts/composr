@@ -180,6 +180,8 @@ abstract class Standard_crud_module
      */
     public function pre_run($top_level = true, $type = null)
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         if ($this->default_type === null) {
             $this->default_type = method_exists($this, 'browse') ? 'browse' : 'add';
         }
@@ -427,7 +429,6 @@ abstract class Standard_crud_module
         require_code('input_filter_2');
         rescue_shortened_post_request();
 
-        require_code('form_templates');
         require_code('feedback');
         require_code('permissions2');
         require_code('users2');
@@ -749,7 +750,6 @@ abstract class Standard_crud_module
             return inform_screen($title, do_lang_tempcode('NO_ENTRIES', 'catalogue'));
         }
 
-        require_code('form_templates');
         $fields = form_input_huge_list(do_lang_tempcode('CATALOGUE'), '', 'catalogue_name', $tree, null, true);
         $post_url = get_self_url(false, false, array(), false, true);
         $submit_name = do_lang_tempcode('PROCEED');

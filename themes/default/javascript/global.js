@@ -4911,7 +4911,7 @@
             });
         }
 
-        /*FIXME: Synchronous XHR*/
+        /*TODO: Synchronous XHR*/
         var html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), null, post);
         return html.responseText;
     }
@@ -7398,6 +7398,7 @@
                 methodEl = ajaxResultFrame.querySelector('method');
 
             if (methodEl || ajaxCallback) {
+                // TODO: Salman remove eval, but first check that we are no longer using any <method> AJAX results [the initiating JS should define the callback] (and then all the <method> code can be removed)
                 method = methodEl ? eval('return ' + methodEl.textContent) : ajaxCallback;
             }
 

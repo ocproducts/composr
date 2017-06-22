@@ -65,10 +65,10 @@ function produce_salt()
 
     if (function_exists('random_bytes')) {
         $u = substr(md5(random_bytes(13)), 0, 13);
-    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
+    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
         $u = substr(md5(openssl_random_pseudo_bytes(13)), 0, 13);
     } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
-        $ratchet = max(10, intval(get_option('crypt_ratchet')));
+        $ratchet = max(10, function_exists('crypt_ratchet') ? intval(get_option('crypt_ratchet')) : 3);
         return substr(md5(password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => $ratchet))), 0, 13);
     } else {
         $u = substr(md5(uniqid(strval(get_secure_random_number()), true)), 0, 13);
@@ -112,7 +112,7 @@ function get_secure_random_number()
     // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.6/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
     if (function_exists('random_int')) {
         $code = random_int(0, PHP_INT_MAX);
-    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (get_value('disable_openssl') !== '1')) {
+    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
         $code = intval(2147483647 * (hexdec(bin2hex(openssl_random_pseudo_bytes(4))) / 0xffffffff));
         if ($code < 0) {
             $code = -$code;

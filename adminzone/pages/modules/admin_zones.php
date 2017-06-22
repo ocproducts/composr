@@ -104,6 +104,8 @@ class Module_admin_zones
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('zones');
@@ -272,7 +274,6 @@ class Module_admin_zones
         require_javascript('posting');
         require_javascript('editing');
         require_javascript('checking');
-        require_code('form_templates');
         require_lang('comcode');
 
         // After completion prep/relay
@@ -585,7 +586,6 @@ class Module_admin_zones
         $fields = '';
         $hidden = new Tempcode();
 
-        require_code('form_templates');
         $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TITLE'), 'title', $title, true));
         $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('DEFAULT_PAGE'), do_lang_tempcode('DESCRIPTION_DEFAULT_PAGE'), 'default_page', $default_page, true));
         $fields .= static_evaluate_tempcode(form_input_line(do_lang_tempcode('HEADER_TEXT'), do_lang_tempcode('DESCRIPTION_HEADER_TEXT'), 'header_text', $header_text, false));
@@ -695,8 +695,6 @@ class Module_admin_zones
             attach_message(do_lang_tempcode('HTM_SHORT_URLS_CARE'), 'warn');
         }
 
-        require_code('form_templates');
-
         url_default_parameters__enable();
 
         $fields = new Tempcode();
@@ -800,7 +798,6 @@ class Module_admin_zones
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('zones', 'COUNT(*)');
         foreach ($_zones as $_zone_details) {
             list($zone_name, $zone_title, $zone_default_page, $remaining_row) = $_zone_details;

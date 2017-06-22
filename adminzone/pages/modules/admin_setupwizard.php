@@ -65,6 +65,8 @@ class Module_admin_setupwizard
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('config');
@@ -145,8 +147,6 @@ class Module_admin_setupwizard
      */
     public function step1()
     {
-        require_code('form_templates');
-
         $dh = @opendir(get_custom_file_base() . '/imports/addons/');
         $addons_available = array();
         if ($dh !== false) {
@@ -189,8 +189,6 @@ class Module_admin_setupwizard
      */
     public function step2()
     {
-        require_code('form_templates');
-
         $post_url = build_url(array('page' => '_SELF', 'type' => 'step3'), '_SELF');
         $submit_name = do_lang_tempcode('PROCEED');
 
@@ -209,7 +207,6 @@ class Module_admin_setupwizard
         $text = do_lang_tempcode('SETUPWIZARD_3_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
 
-        require_code('form_templates');
         $fields = new Tempcode();
         require_lang('zones');
 
@@ -316,7 +313,6 @@ class Module_admin_setupwizard
         $text = do_lang_tempcode('SETUPWIZARD_4_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
 
-        require_code('form_templates');
         require_code('addons2');
         require_lang('addons');
 
@@ -537,7 +533,6 @@ class Module_admin_setupwizard
         $text = do_lang_tempcode('SETUPWIZARD_5_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
 
-        require_code('form_templates');
         $fields = '';
 
         $installprofile = post_param_string('installprofile', '');
@@ -642,7 +637,6 @@ class Module_admin_setupwizard
         $text = do_lang_tempcode('SETUPWIZARD_6_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
 
-        require_code('form_templates');
         $fields = '';
         require_lang('blocks');
         require_lang('zones');
@@ -757,7 +751,6 @@ class Module_admin_setupwizard
             $field_defaults = array();
         }
 
-        require_code('form_templates');
         $list = new Tempcode();
         $list->attach(form_input_list_entry('balanced', array_key_exists('rules', $field_defaults) ? ($field_defaults['rules'] == 'balanced') : true, do_lang_tempcode('SETUPWIZARD_RULES_balanced')));
         $list->attach(form_input_list_entry('liberal', array_key_exists('rules', $field_defaults) ? ($field_defaults['rules'] == 'liberal') : false, do_lang_tempcode('SETUPWIZARD_RULES_liberal')));
@@ -791,7 +784,6 @@ class Module_admin_setupwizard
         $text = do_lang_tempcode('SETUPWIZARD_8_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
 
-        require_code('form_templates');
         $fields = new Tempcode();
         $fields->attach(form_input_colour(do_lang_tempcode('SEED_COLOUR'), do_lang_tempcode('DESCRIPTION_SEED_COLOUR'), 'seed_hex', '#' . find_theme_seed('default'), true));
         $fields->attach(form_input_tick(do_lang_tempcode('DARK_THEME'), do_lang_tempcode('DESCRIPTION_DARK_THEME'), 'dark', get_param_integer('dark', 0) == 1));
@@ -822,7 +814,6 @@ class Module_admin_setupwizard
         $text = do_lang_tempcode('SETUPWIZARD_9_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
 
-        require_code('form_templates');
         $fields = new Tempcode();
         $fields->attach(form_input_tick(do_lang_tempcode('CLOSED_SITE'), do_lang_tempcode('CONFIG_OPTION_site_closed'), 'site_closed', true));
         $fields->attach(form_input_text(do_lang_tempcode('MESSAGE'), do_lang_tempcode('CONFIG_OPTION_closed'), 'closed', get_option('closed'), false));

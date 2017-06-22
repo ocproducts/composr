@@ -220,7 +220,7 @@ function simple_tracker_script()
  */
 function preview_script()
 {
-    disable_browser_xss_detection();
+    disable_browser_reflective_xss_detection();
 
     require_code('preview');
 

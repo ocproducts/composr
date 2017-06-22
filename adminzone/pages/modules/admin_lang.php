@@ -86,6 +86,8 @@ class Module_admin_lang
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         require_code('input_filter_2');
         modsecurity_workaround_enable();
 
@@ -186,7 +188,6 @@ class Module_admin_lang
      */
     public function choose_lang($title, $choose_lang_file = false, $add_lang = false, $text = '', $provide_na = true, $param_name = 'lang')
     {
-        require_code('form_templates');
         $langs = new Tempcode();
         $langs->attach(create_selection_list_langs(null, $add_lang));
 
@@ -402,7 +403,6 @@ class Module_admin_lang
         require_all_open_lang_files($lang);
 
         // Make our translation page
-        require_code('form_templates');
         $lines = '';
         $google = $this->get_google_code($lang);
         $actions = make_string_tempcode('&nbsp;');
@@ -564,7 +564,6 @@ class Module_admin_lang
         if ($search != '') {
             $search = trim($search, '" ');
 
-            require_code('form_templates');
             $fields = new Tempcode();
             global $LANGUAGE_STRINGS_CACHE;
             foreach ($LANGUAGE_STRINGS_CACHE[user_lang()] as $key => $value) {

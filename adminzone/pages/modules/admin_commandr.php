@@ -114,6 +114,8 @@ class Module_admin_commandr
 
         $this->title = get_screen_title('COMMANDR');
 
+        load_csp(array('csp_allow_eval_js' => '1')); // We need to allow dynamic JavaScript commands to execute through the Commandr interface
+
         return null;
     }
 

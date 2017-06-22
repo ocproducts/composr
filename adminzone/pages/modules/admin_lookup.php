@@ -70,6 +70,8 @@ class Module_admin_lookup
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('lookup');
@@ -119,7 +121,6 @@ class Module_admin_lookup
         $param = $this->param;
 
         if ($param == '') {
-            require_code('form_templates');
             $submit_name = do_lang_tempcode('INVESTIGATE_USER');
             $post_url = build_url(array('page' => '_SELF'), '_SELF', array(), false, true);
             $fields = form_input_line(do_lang_tempcode('DETAILS'), do_lang_tempcode('DESCRIPTION_INVESTIGATE'), 'param', '', false);

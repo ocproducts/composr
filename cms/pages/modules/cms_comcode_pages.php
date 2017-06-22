@@ -79,6 +79,8 @@ class Module_cms_comcode_pages
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         $type = get_param_string('type', 'browse');
 
         require_lang('zones');
@@ -245,7 +247,6 @@ class Module_cms_comcode_pages
      */
     public function edit()
     {
-        require_code('form_templates');
         require_code('templates_results_table');
 
         $number_pages_parsed_for_titles = 0;
@@ -712,8 +713,6 @@ class Module_cms_comcode_pages
     {
         require_code('input_filter_2');
         modsecurity_workaround_enable();
-
-        require_code('form_templates');
 
         $page_link = $this->page_link;
         $zone = $this->zone;

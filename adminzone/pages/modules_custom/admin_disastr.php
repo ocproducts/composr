@@ -243,8 +243,6 @@ class Module_admin_disastr extends Standard_crud_module
         $fields = new Tempcode();
         $hidden = new Tempcode();
 
-        require_code('form_templates');
-
         $fields->attach(form_input_line(do_lang_tempcode('DISEASE'), do_lang_tempcode('DESCRIPTION_DISEASE'), 'name', $name, true));
 
         require_code('themes2');

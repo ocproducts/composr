@@ -65,6 +65,8 @@ class Module_admin_menus
      */
     public function pre_run()
     {
+        require_code('form_templates'); // Needs to run high so that the anti-click-hacking header is sent
+
         require_code('input_filter_2');
         modsecurity_workaround_enable();
 
@@ -135,8 +137,6 @@ class Module_admin_menus
      */
     public function choose_menu_name()
     {
-        require_code('form_templates');
-
         $rows = $GLOBALS['SITE_DB']->query_select('menu_items', array('DISTINCT i_menu'), array(), 'ORDER BY i_menu');
         $rows = list_to_map('i_menu', $rows);
         $list = new Tempcode();
@@ -285,7 +285,6 @@ class Module_admin_menus
         }
         $delete_url = build_url($map, '_SELF');
 
-        require_code('form_templates');
         $fields_template = new Tempcode();
         $fields_template->attach(form_input_line(do_lang_tempcode('LINK'), do_lang_tempcode('MENU_ENTRY_URL'), 'url', '', false));
         $options = array(

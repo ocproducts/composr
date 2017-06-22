@@ -288,8 +288,6 @@ class Module_cms_galleries extends Standard_crud_module
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import'), '_SELF', array(), false, true);
 
-        require_code('form_templates');
-
         $fields = new Tempcode();
 
         $fields->attach(form_input_tree_list(do_lang_tempcode('GALLERY'), '', 'name', null, 'choose_gallery', array('must_accept_something' => true, 'purity' => false, 'addable_filter' => true, 'filter' => $condition, 'member_id' => $member_id), true, $cat));
@@ -316,7 +314,6 @@ class Module_cms_galleries extends Standard_crud_module
             }
         }
 
-        require_code('form_templates');
         require_lang('trackbacks');
 
         // To choose to batch import from multiple attached files
@@ -867,8 +864,6 @@ class Module_cms_galleries extends Standard_crud_module
 
         $fields = new Tempcode();
         $hidden = new Tempcode();
-
-        require_code('form_templates');
 
         if (strpos($cat, '?') !== false) {
             $cat = str_replace('?', strval(get_member()), $cat);
@@ -1481,7 +1476,6 @@ class Module_cms_galleries_alt extends Standard_crud_module
 
         $fields = new Tempcode();
         $hidden = new Tempcode();
-        require_code('form_templates');
         handle_max_file_size($hidden);
         if (strpos($cat, '?') !== false) {
             $cat = str_replace('?', strval(get_member()), $cat);
@@ -1955,8 +1949,6 @@ class Module_cms_galleries_cat extends Standard_crud_module
     public function get_form_fields($name = '', $fullname = '', $description = '', $notes = '', $parent_id = '', $accept_images = null, $accept_videos = null, $is_member_synched = 0, $flow_mode_interface = null, $rep_image = null, $watermark_top_left = null, $watermark_top_right = null, $watermark_bottom_left = null, $watermark_bottom_right = null, $allow_rating = null, $allow_comments = null)
     {
         list($allow_rating, $allow_comments,) = $this->choose_feedback_fields_statistically($allow_rating, $allow_comments, 1);
-
-        require_code('form_templates');
 
         $accept_images = take_param_int_modeavg($accept_images, 'accept_images', 'galleries', 1);
         $accept_videos = take_param_int_modeavg($accept_videos, 'accept_videos', 'galleries', 1);

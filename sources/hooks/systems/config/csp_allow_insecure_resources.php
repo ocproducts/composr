@@ -38,7 +38,7 @@ class Hook_config_csp_allow_insecure_resources
             'explanation' => 'CONFIG_OPTION_csp_allow_insecure_resources',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 8,
 
             'addon' => 'core_configuration',
         );
@@ -51,6 +51,10 @@ class Hook_config_csp_allow_insecure_resources
      */
     public function get_default()
     {
+        if (substr(get_base_url(), 0, 8) != 'https://') {
+            return null;
+        }
+
         return '1';
     }
 }

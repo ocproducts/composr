@@ -13334,6 +13334,7 @@ function uploadFinished(ob, file, data) {
 
     if (data.response == '') return ''; // NOT success, happens in plupload when clicking away from document (i.e. implicit cancel)
 
+    // TODO: Salman, switch to JSON decode
     var decodedData = eval('(' + data.response + ')');
 
     var id = document.getElementById(ob.settings.hidFileID);
@@ -13999,6 +14000,7 @@ function buildHtml5UploadHandler(request, fileProgress, attachmentBase, fieldNam
                     progress.setComplete();
                     progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
+                    // TODO: Salman, switch to JSON decode
                     var decodedData = eval('(' + request.responseText + ')');
                     document.getElementById('hidFileID_file' + attachmentBase).value = decodedData['upload_id'];
 

@@ -156,8 +156,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
      */
     public function import()
     {
-        require_code('form_templates');
-
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import', 'uploading' => 1), '_SELF');
 
         $fields = new Tempcode();
@@ -368,7 +366,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_code('form_templates');
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering);
         foreach ($rows as $row) {
             $pin_state = do_lang_tempcode('NA_EM');
@@ -450,7 +447,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         $pin_state = post_param_integer('pin_state', null);
         $open_state = post_param_integer('open_state', null);
 
-        require_code('form_templates');
         return strval(cns_make_multi_moderation(post_param_string('name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix')));
     }
 
@@ -464,7 +460,6 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
         $pin_state = post_param_integer('pin_state', null);
         $open_state = post_param_integer('open_state', null);
 
-        require_code('form_templates');
         cns_edit_multi_moderation(intval($id), post_param_string('name'), post_param_string('post_text'), post_param_integer('move_to', null), $pin_state, $open_state, read_multi_code('forum_multi_code'), post_param_string('title_suffix'));
     }
 
