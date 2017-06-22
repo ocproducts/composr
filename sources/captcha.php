@@ -183,8 +183,7 @@ function captcha_script()
         echo '</div>';
         if (get_option('js_captcha') === '1') {
             echo '</div>';
-            // TODO: Salman. CSP nonce needed?
-            echo '<script>document.getElementById(\'hidden_captcha\').style.display = \'block\';</script>';
+            echo '<script ' . csp_nonce_html() . '>document.getElementById(\'hidden_captcha\').style.display = \'block\';</script>';
         }
         echo '
         </body>

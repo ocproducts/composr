@@ -232,8 +232,8 @@ function _solemnly_leave(&$out = null)
  */
 function has_solemnly_declared($declaration)
 {
-    if ($declaration == I_UNDERSTAND_XSS) {
-        return true; // TODO: Salman this should return true if CSP is on for the request, otherwise it should roll onto the normal return statement
+    if (($declaration == I_UNDERSTAND_XSS) && ($GLOBALS['CSP_ENABLED'])) {
+        return true;
     }
 
     global $DECLARATIONS_STATE;

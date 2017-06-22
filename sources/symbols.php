@@ -5356,8 +5356,7 @@ function ecv_CSP_NONCE($lang, $escaped, $param) {
  * @return string The result.
  */
 function ecv_CSP_NONCE_HTML($lang, $escaped, $param) {
-    global $CSP_NONCE;
-    $value = isset($CSP_NONCE) ? ('nonce="' . escape_html($CSP_NONCE) . '"') : '';
+    $value = csp_nonce_html();
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }

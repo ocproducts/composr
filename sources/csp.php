@@ -94,6 +94,9 @@ function init__csp()
     global $CSP_NONCE;
     $CSP_NONCE = produce_salt();
 
+    global $CSP_ENABLED;
+    $CSP_ENABLED = false;
+
     define('CSP_PRETTY_STRICT', array(
         'csp_enabled' => '1',
         'csp_whitelisted_plugins' => '',
@@ -182,6 +185,9 @@ function load_csp($options = null, $enable_more_open_html_for = null)
             $csp_enabled = false;
         }
     }
+
+    global $CSP_ENABLED;
+    $CSP_ENABLED = $csp_enabled;
 
     if (!$csp_enabled) {
         @header_remove('Content-Security-Policy');
@@ -442,4 +448,15 @@ function csp_logging_script()
 function disable_browser_reflective_xss_detection()
 {
     @header('X-XSS-Protection: 0');
+}
+
+/**
+ * Get CSP nonce in HTML attribute format.
+ *
+ * @return string HTML to insert
+ */
+function csp_nonce_html()
+{
+    global $CSP_NONCE;
+    return isset($CSP_NONCE) ? ('nonce="' . escape_html($CSP_NONCE) . '"') : '';
 }

@@ -36,7 +36,6 @@ class Hook_commandr_command_clear
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {
             return array('', do_command_help('clear', array('h'), array()), '', '');
         } else {
-            // TODO: Salman, what is the implication for CSP?
             return array(/**@lang JavaScript*/'clearCl();', '', do_lang('SUCCESS'), '');
         }
     }

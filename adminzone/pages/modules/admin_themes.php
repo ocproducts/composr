@@ -1245,10 +1245,9 @@ class Module_admin_themes
     public function tempcode_tester()
     {
         if (get_option('editarea') == '1') {
-            // TODO: Salman. CSP nonce needed
             attach_to_screen_header(make_string_tempcode(/**@lang HTML*/'
-                <script src="' . get_base_url() . '/data/ace/ace.js"></script>
-                <script src="' . get_base_url() . '/data/ace/ace_composr.js"></script>
+                <script ' . csp_nonce_html() . ' src="' . get_base_url() . '/data/ace/ace.js"></script>
+                <script ' . csp_nonce_html() . ' src="' . get_base_url() . '/data/ace/ace_composr.js"></script>
                 <script>// <![CDATA[
                     aceComposrLoader(\'tempcode\',\'text\');
                 //]]></script>
