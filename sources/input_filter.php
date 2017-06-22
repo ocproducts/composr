@@ -65,8 +65,8 @@ function check_input_field_string($name, &$val, $posted, $filters)
                 'http://compo.sr/',
                 'https://compo.sr/',
             );
-            $allowed_partners = get_allowed_partner_sites();
-            foreach ($allowed_partners as $allowed) {
+            $trusted_sites = get_trusted_sites(2);
+            foreach ($trusted_sites as $allowed) {
                 $bus[] = 'http://' . $allowed . '/';
                 $bus[] = 'https://' . $allowed . '/';
             }
@@ -124,9 +124,9 @@ function check_posted_field($name, $val, $filters)
             $canonical_baseurl_domain = strip_url_to_representative_domain(get_base_url());
             if ($canonical_referer_domain != $canonical_baseurl_domain) {
                 if ((has_interesting_post_fields()) && (($filters & INPUT_FILTER_ALLOWED_POSTING_SITES) != 0)) {
-                    $allowed_partners = get_allowed_partner_sites();
+                    $trusted_sites = get_trusted_sites(2);
                     $found = false;
-                    foreach ($allowed_partners as $partner) {
+                    foreach ($trusted_sites as $partner) {
                         $partner = trim($partner);
 
                         if (($partner != '') && ($canonical_referer_domain === $partner)) {
@@ -160,37 +160,51 @@ function strip_url_to_representative_domain($url)
 }
 
 /**
- * Find partner sites allowed to do cross-domain requests to us.
+ * Find trusted sites.
  *
- * @return array Partner domain names
+ * @param  integer $level Trusted sites level
+ * @set 1 2
+ * @return array Trusted domain names
  */
-function get_allowed_partner_sites()
+function get_trusted_sites($level)
 {
     if (function_exists('get_option')) {
-        $allowed_partners = (trim(get_option('allowed_post_submitters')) === '') ? array() : explode("\n", trim(get_option('allowed_post_submitters')));
-        foreach ($allowed_partners as $allowed_partner) {
-            if (substr($allowed_partner, 0, 4) != 'www.') {
-                $allowed_partners[] = 'www.' . $allowed_partner;
+        $option = '';
+        if ($level >= 1) {
+            $option .= get_option('trusted_sites_1') . "\n";
+        }
+        if ($level >= 2) {
+            $option .= get_option('trusted_sites_2') . "\n";
+        }
+
+        $trusted_sites = array();
+        foreach (explode("\n", $option) as $allowed_partner) {
+            if (trim($allowed_partner) != '') {
+                $trusted_sites[] = $allowed_partner;
+
+                if (substr($allowed_partner, 0, 4) != 'www.') {
+                    $trusted_sites[] = 'www.' . $allowed_partner;
+                }
             }
         }
     } else {
-        $allowed_partners = array();
+        $trusted_sites = array();
     }
     $zl = strlen('ZONE_MAPPING_');
     foreach ($GLOBALS['SITE_INFO'] as $key => $_val) {
         if ($key !== '' && $key[0] === 'Z' && substr($key, 0, $zl) === 'ZONE_MAPPING_') {
-            $allowed_partners[] = $_val[0];
+            $trusted_sites[] = $_val[0];
         }
     }
-    $allowed_partners[] = parse_url(get_base_url(false), PHP_URL_HOST);
+    $trusted_sites[] = parse_url(get_base_url(false), PHP_URL_HOST);
     if (get_custom_base_url(false) != get_base_url(false)) {
-        $allowed_partners[] = parse_url(get_custom_base_url(false), PHP_URL_HOST);
+        $trusted_sites[] = parse_url(get_custom_base_url(false), PHP_URL_HOST);
     }
-    $allowed_partners[] = parse_url(get_base_url(true), PHP_URL_HOST);
+    $trusted_sites[] = parse_url(get_base_url(true), PHP_URL_HOST);
     if (get_custom_base_url(true) != get_base_url(true)) {
-        $allowed_partners[] = parse_url(get_custom_base_url(true), PHP_URL_HOST);
+        $trusted_sites[] = parse_url(get_custom_base_url(true), PHP_URL_HOST);
     }
-    return $allowed_partners;
+    return $trusted_sites;
 }
 
 /**

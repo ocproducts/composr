@@ -1548,7 +1548,7 @@ function _get_next_tag()
     global $PARENT_TAG, $POS, $LINENO, $LINESTART, $OUT, $T_POS, $ENTITIES, $LEN, $ANCESTER_BLOCK, $TAG_STACK, $WEBSTANDARDS_CHECKER_OFF, $TEXT_NO_BLOCK, $INBETWEEN_TEXT;
     global $TAG_RANGES, $VALUE_RANGES;
 
-    $status = ($PARENT_TAG == 'script') ? IN_IMPLICIT_CDATA : NO_MANS_LAND;
+    $status = ($PARENT_TAG == 'script' || $PARENT_TAG == 'style') ? IN_IMPLICIT_CDATA : NO_MANS_LAND;
 
     $current_tag = '';
     $current_attribute_name = '';

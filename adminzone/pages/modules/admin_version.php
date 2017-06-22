@@ -990,6 +990,8 @@ class Module_admin_version
 
             $GLOBALS['SITE_DB']->add_table_field('cron_caching_requests', 'c_is_ssl', '?BINARY');
             $GLOBALS['SITE_DB']->add_table_field('cache', 'is_ssl', '?BINARY');
+
+            rename_config_option('allowed_partner_sites', 'trusted_sites_2');
         }
     }
 

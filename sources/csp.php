@@ -22,26 +22,25 @@
 Our implementation of different parts of CSP...
 
 CONSIDERING:
-default-src                 (default)                                   base on list of partners, and 'self', and data:
-child-src                   (webworkers and frames)                     base on list of partners, and 'self'
-connect-src                 (outbound connections from JavaScript)      base on list of partners, and 'self'
-style-src                   (CSS files)                                 base on list of partners, and 'self', and hashes of common inline CSS
+default-src                 (default)                                   base on list of trusted sites, and 'self'
+child-src                   (frames and webworkers)                     base on list of trusted sites, and 'self', and extra configuration ["csp_allowed_iframe_descendants"]
+connect-src                 (outbound connections from JavaScript)      base on list of trusted sites, and 'self'
+script-src                  (JavaScript files)                          base on list of trusted sites, and 'self' (if not strict nonces), and 'unsafe-inline' if configured otherwise nonce
 -
 base-uri                    (<base> URL)                                'self'
 plugin-types                (embedded plugin types)                     configurable ["csp_whitelisted_plugins"]
-form-action                 (form targets)                              base on list of partners, and 'self'
-frame-ancestors             (what may embed the site)                   base on list of partners, and 'self', and extra configuration ["csp_allowed_iframe_ancestors"]
+form-action                 (form targets)                              base on list of trusted sites, and 'self'
+frame-ancestors             (what may embed the site)                   base on list of trusted sites, and 'self', and extra configuration ["csp_allowed_iframe_ancestors"]
 block-all-mixed-content     (block HTTP content when HTTPS running)     configurable ["csp_allow_insecure_resources" inverted] if HTTPS running
+upgrade-insecure-requests   (upgrade HTTP requests to HTTPS)            only if SSL on for the page
 report-uri                  (report CSP violations)                     [goes to a logger script if configured ["csp_report_issues"]]
-
-PARTIALLY CONSIDERING:
-object-src                  (embedding plugin targets)                  [impractical for real users to stick to, but very strict code may force it]
 
 CONSIDERING TO HAVE NO RESTRICTION:
 font-src                    (fonts)                                     [overcomplex and no clear security risk, impractical for themers to stick to]
-img-src                     (images)                                    [impractical for real users to stick to]
+img-src                     (images)                                    [impractical for real users to stick to]; explicitly include data:
 media-src                   (audio and video)                           [impractical for real users to stick to]
-script-src                  (JavaScript files)                          [impractical for real users to stick to, and we have nonce protection anyway]
+object-src                  (embedding plugin targets)                  [impractical for real users to stick to]
+style-src                   (CSS files)                                 base on list of trusted sites, and 'self' (if not strict nonces), and 'unsafe-inline' [which means the trusted sites etc are essentially ignored]
 
 CONSIDERING TO HAVE FULL RESTRICTION:
 manifest-src                (application manifests)                     [we do not package as an application]
@@ -51,16 +50,17 @@ frame-src                   (frames)                                    [include
 worker-src                  (webworkers)                                [only in CSP3 and included in child-src]
 -
 sandbox                     (heavy blanket restrictions)                [we are already doing fine-grained control]
-disown-opener               (no target windows link back by DOM)        [we are using rel="noopener" already, only in CSP3]
+disown-opener               (no target windows link back by DOM)        [we are using rel="noopener" already, only in CSP3 and not properly specced out yet]
 navigation-to               (limited outbound linking)                  [impractical for real users to stick to]
 require-sri-for             (require files to define and match hashes)  [we can determine which files will be hashed or not ourselves, no need to force it]
-upgrade-insecure-requests   (upgrade HTTP requests to HTTPS)            [we prefer to define our own redirect strategy at the server level not the Composr level, e.g. htaccess]
 <X-Frame-Options header>                                                [duplicates CSP's child-src/frame-src]
 
 ALLOWABLE:
-'unsafe-inline'             (allow inline JavaScript and CSS)           configurable ["csp_allow_inline_js"] but disallowed by default; some PHP code may unable explicitly; for style-src we always enable 'unsafe-inline'
-'unsafe-eval'               (allow JavaScript eval and similar)         configurable ["csp_allow_eval_js"] but disallowed by default; some PHP code may unable explicitly
-'strict-dynamic'            (allow dynamic script insertion in JS)      configurable ["csp_allow_dyn_js"] but allowed by default because common third-party libraries like GA may need this
+'unsafe-eval'               (allow JavaScript eval and similar)         configurable ["csp_allow_eval_js"] but disallowed by default; some PHP code may unable explicitly; adds to script-src
+'strict-dynamic'            (allow dynamic script insertion in JS)      configurable ["csp_allow_dyn_js"] but allowed by default because common third-party libraries like GA may need this; adds to script-src
+
+PARTIALLY ALLOWABLE:
+'unsafe-inline'             (allow inline JavaScript and CSS)           disallowed by default; some PHP code may unable explicitly; adds to script-src, for style-src we always enable 'unsafe-inline'
 
 Any of the configurability may be overridden by PHP code calling load_csp with overridden options.
 
@@ -75,6 +75,7 @@ https://blogs.windows.com/msedgedev/2017/01/10/edge-csp-2/#qVG9yQBp92ZzVcjd.97
 https://scotthelme.co.uk/csp-cheat-sheet/
 https://content-security-policy.com/
 https://w3c.github.io/webappsec-csp/
+https://csp.withgoogle.com/
 */
 
 /**
@@ -103,16 +104,16 @@ function init__csp()
     define('CSP_VERY_STRICT', array(
         'csp_enabled' => '1',
         'csp_exceptions' => '',
-        'csp_allowed_iframe_ancestors' => '',
         'csp_whitelisted_plugins' => '',
+        'csp_allowed_iframe_ancestors' => '',
+        'csp_allowed_iframe_descendants' => '',
 
-        'csp_allow_inline_js' => '0',
         'csp_allow_eval_js' => '0',
         'csp_allow_dyn_js' => '0',
         'csp_allow_insecure_resources' => '1',
 
         // Not usually configurable but may be forced
-        'object-src' => '',
+        'csp_allow_inline_js' => '0',
     ));
 }
 
@@ -137,15 +138,15 @@ function load_csp($options = null, $enable_more_open_html_for = null)
         $options = array(
             'csp_enabled' => get_option('csp_enabled'),
             'csp_exceptions' => get_option('csp_exceptions'),
-            'csp_allowed_iframe_ancestors' => get_option('csp_allowed_iframe_ancestors'),
             'csp_whitelisted_plugins' => get_option('csp_whitelisted_plugins'),
+            'csp_allowed_iframe_ancestors' => get_option('csp_allowed_iframe_ancestors'),
+            'csp_allowed_iframe_descendants' => get_option('csp_allowed_iframe_descendants'),
 
-            'csp_allow_inline_js' => get_option('csp_allow_inline_js'),
             'csp_allow_eval_js' => get_option('csp_allow_eval_js'),
             'csp_allow_dyn_js' => get_option('csp_allow_dyn_js'),
             'csp_allow_insecure_resources' => get_option('csp_allow_insecure_resources'),
 
-            'object-src' => null, // Not used
+            'csp_allow_inline_js' => '0', // Not used
         );
     } else {
         $options = $options + $previous_state; // Merge new state with previous state
@@ -153,17 +154,17 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     $previous_state = $options;
 
-    $csp_enabled = ($options['csp_enabled'] == '1');
+    $csp_enabled = ($options['csp_enabled'] != '0');
+    $report_only = ($options['csp_enabled'] == '2');
     $csp_exceptions = $options['csp_exceptions'];
-    $csp_allowed_iframe_ancestors = $options['csp_allowed_iframe_ancestors'];
     $csp_whitelisted_plugins = $options['csp_whitelisted_plugins'];
+    $csp_allowed_iframe_ancestors = $options['csp_allowed_iframe_ancestors'];
+    $csp_allowed_iframe_descendants = $options['csp_allowed_iframe_descendants'];
 
     $csp_allow_inline_js = ($options['csp_allow_inline_js'] == '1');
     $csp_allow_eval_js = ($options['csp_allow_eval_js'] == '1');
     $csp_allow_dyn_js = ($options['csp_allow_dyn_js'] == '1');
     $csp_allow_insecure_resources = ($options['csp_allow_insecure_resources'] !== '0');
-
-    $csp_object_src = $options['object-src'];
 
     if ($enable_more_open_html_for !== null) {
         global $PRIVILEGE_CACHE;
@@ -187,23 +188,27 @@ function load_csp($options = null, $enable_more_open_html_for = null)
         return;
     }
 
-    // Now build the CSP header clauses...
+    // Now build the CSP header clauses for sources...
 
     $clauses = array();
 
     // default-src
-    $_sources_list = _csp_extract_sources_list();
+    $_sources_list = _csp_extract_sources_list(2);
     $clauses[] = 'default-src ' . implode(' ', $_sources_list);
+    $_sources_list[] = "'nonce-{$CSP_NONCE}'";
 
     // style-src
-    $_sources_list = _csp_extract_sources_list();
+    $_sources_list = _csp_extract_sources_list(2);
     $_sources_list[] = "'unsafe-inline'"; // It's not feasible for us to remove all inline CSS
+    //$_sources_list[] = "'nonce-{$CSP_NONCE}'"; Incompatible with unsafe-inline
     $clauses[] = 'style-src ' . implode(' ', $_sources_list);
 
     // script-src
-    $_sources_list = _csp_extract_sources_list();
+    $_sources_list = _csp_extract_sources_list(2);
     if ($csp_allow_inline_js) {
-        $_sources_list[] = "'unsafe-inline'";
+        $_sources_list[] = "'unsafe-inline'"; // Not usually configurable but may be forced
+    } else {
+        $_sources_list[] = "'nonce-{$CSP_NONCE}'";
     }
     if ($csp_allow_eval_js) {
         $_sources_list[] = "'unsafe-eval'"; // Actually this is an option not a true source
@@ -211,64 +216,60 @@ function load_csp($options = null, $enable_more_open_html_for = null)
     if ($csp_allow_dyn_js) {
         $_sources_list[] = "'strict-dynamic'"; // Actually this is an option not a true source
     }
-    $_sources_list[] = "'nonce-{$CSP_NONCE}'"; // Actually this is a setting not a true source
     $clauses[] = 'script-src ' . implode(' ', $_sources_list);
 
     // child-src
-    $_sources_list = _csp_extract_sources_list();
-    $clauses[] = 'child-src ' . implode(' ', $_sources_list);
+    $_sources_list = _csp_extract_sources_list(2, $csp_allowed_iframe_descendants);
+    if ($_sources_list !== null) {
+        $clauses[] = 'child-src ' . implode(' ', $_sources_list);
+    }
 
     // connect-src
-    $_sources_list = _csp_extract_sources_list();
+    $_sources_list = _csp_extract_sources_list(2);
     $clauses[] = 'connect-src ' . implode(' ', $_sources_list);
 
-    // font-src
+    // font-src (unlimited)
     $_sources_list = array();
     $_sources_list[] = '*';
     $clauses[] = 'font-src ' . implode(' ', $_sources_list);
 
-    // img-src
+    // object-src (unlimited)
+    $_sources_list = array();
+    $_sources_list[] = '*';
+    $clauses[] = 'object-src ' . implode(' ', $_sources_list);
+
+    // img-src (unlimited)
     $_sources_list = array();
     $_sources_list[] = '*';
     $_sources_list[] = 'data:';
     $clauses[] = 'img-src ' . implode(' ', $_sources_list);
 
-    // media-src
+    // media-src (unlimited)
     $_sources_list = array();
     $_sources_list[] = '*';
     $clauses[] = 'media-src ' . implode(' ', $_sources_list);
 
-    // manifest-src
+    // manifest-src (disabled)
     $_sources_list = array();
     $_sources_list[] = "'none'";
     $clauses[] = 'manifest-src ' . implode(' ', $_sources_list);
 
-    // object-src
-    if ($csp_object_src !== null) {
-        $_sources_list = _csp_extract_sources_list($csp_object_src, false);
-        if ($_sources_list !== null) {
-            $clauses[] = 'object-src ' . implode(' ', $_sources_list);
-        } else {
-            $clauses[] = 'object-src *';
-        }
-    } else {
-        $clauses[] = 'object-src *';
-    }
+    // Now build the CSP header clauses for other options...
 
     // base-url
     $clauses[] = "base-uri 'self'";
 
     // plugin-types
     if (trim($csp_whitelisted_plugins) != '') {
-        $clauses[] = 'plugin-types ' . $csp_whitelisted_plugins;
+        $clauses[] = 'plugin-types ' . str_replace("\n", ' ', $csp_whitelisted_plugins);
     }
 
     // form-action
-    $_sources_list = _csp_extract_sources_list();
+    $_sources_list = _csp_extract_sources_list(2);
     $clauses[] = 'form-action ' . implode(' ', $_sources_list);
 
     // frame-ancestors
-    $_sources_list = _csp_extract_sources_list($csp_allowed_iframe_ancestors, false);
+    $_sources_list = _csp_extract_sources_list(2, $csp_allowed_iframe_ancestors);
     if ($_sources_list !== null) {
         $clauses[] = 'frame-ancestors ' . implode(' ', $_sources_list);
     }
@@ -276,6 +277,13 @@ function load_csp($options = null, $enable_more_open_html_for = null)
     // block-all-mixed-content
     if (!$csp_allow_insecure_resources) {
         $clauses[] = 'block-all-mixed-content';
+    }
+
+    // upgrade-insecure-requests
+    if (function_exists('addon_installed')) { // If not still booting
+        if (substr(get_base_url(), 0, 8) == 'https://') {
+            $clauses[] = 'upgrade-insecure-requests';
+        }
     }
 
     // report-uri
@@ -296,7 +304,6 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     // Output the CSP header...
 
-    $report_only = false;
     if ($report_only) {
         @header('Content-Security-Policy-Report-Only: ' . $header);
     } else {
@@ -305,13 +312,15 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 }
 
 /**
- * Extracts CSP sources from the given string, plus allowed partners.
+ * Extracts CSP sources from the given string, plus trusted sites.
  *
- * @param  string $sources_csv Comma-separated list of valid CSP 'sources' (blank: just allowed partners)
+ * @param  integer $level Trusted sites level
+ * @set 1 2
+ * @param  string $sources_csv Comma-separated list of valid CSP 'sources' (blank: just trusted sites)
  * @param  boolean $include_self Include a self reference
  * @return ?array CSP sources (null: allow all, only possible when $sources_csv is passed) (empty: disallow all except local)
  */
-function _csp_extract_sources_list($sources_csv = '', $include_self = true)
+function _csp_extract_sources_list($level, $sources_csv = '', $include_self = true)
 {
     $sources_csv = trim($sources_csv);
 
@@ -327,14 +336,14 @@ function _csp_extract_sources_list($sources_csv = '', $include_self = true)
     }
 
     require_code('input_filter');
-    $_partners = get_allowed_partner_sites();
-    if ($_partners == array()) {
-        foreach ($_partners as $partner) {
+    $_trusted_sites = get_trusted_sites($level);
+    if ($_trusted_sites == array()) {
+        foreach ($_trusted_sites as $partner) {
             $sources_list[] = $partner;
         }
     }
 
-    $sources = ($sources_csv == '') ? array() : preg_split('#, #', $sources_csv);
+    $sources = ($sources_csv == '') ? array() : preg_split('#[, \n]#', $sources_csv);
     foreach ($sources as $_source) {
         $source = _csp_clean_source($_source);
         if ($source !== null) {
@@ -385,7 +394,7 @@ function _csp_clean_source($_source)
     $source .= $parts['host'];
 
     if (!empty($parts['port'])) {
-        $source .= ':' . $parts['port'];
+        $source .= ':' . strval($parts['port']);
     }
 
     if (!empty($parts['path'])) {
@@ -412,11 +421,15 @@ function set_no_clickjacking_csp()
  */
 function csp_logging_script()
 {
+    if (get_option('csp_report_issues') == '0') {
+        return;
+    }
+
     $data = @file_get_contents('php://input');
 
     set_http_status_code(204);
 
-    trigger_error($data, E_USER_NOTICE);
+    trigger_error('CSP violation: ' . $data, E_USER_NOTICE);
 }
 
 /**

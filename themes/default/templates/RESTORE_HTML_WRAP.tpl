@@ -3,11 +3,11 @@
 <html lang="{$LCASE*,{$LANG}}" dir="{!dir}">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
-		<link href="restore.php?type=css" rel="stylesheet" />
+		<link {$CSP_NONCE_HTML} href="restore.php?type=css" rel="stylesheet" />
 		{+START,IF_NON_EMPTY,{CSS_NOCACHE}}
-			<style>/*<![CDATA[*/
+			<style {$CSP_NONCE_HTML}>
 				{CSS_NOCACHE*}
-			/*]]>*/</style>
+			</style>
 		{+END}
 		<title>Backup restorer</title>
 	</head>

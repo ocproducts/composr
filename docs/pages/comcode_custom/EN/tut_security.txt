@@ -49,7 +49,7 @@ Framework security:
   - automatic monitoring and scanning of database queries to confirm they were composed in a secure way
   - disabling of common attack vectors by default such as 'UNION' database queries (only enabling them when necessary)
   - automatic input sanitisation in standardised input-access APIs
- - Configurable levels of HTML filtering, to prevent XSS attacks (Cross-Site-Scripting attacks), including full CSP implementation (we highly advise to not use Internet Explorer due to us not enabling it's incomplete CSP implementation at all, Microsoft Edge is fine though; unfortunately when WYSIWYG is in use then CSP has to be disabled due to limitations with CkEditor)
+ - Configurable levels of HTML filtering, to prevent XSS attacks (Cross-Site-Scripting attacks), including full CSP implementation
  - Our own version of PHP used during development -- featuring strict types and a detector for XSS security holes
  - Our Code Quality Checker tool has the ability to scan for security hotspots in the code (areas that need careful quality reviews)
  - "Kid-gloves modes" that automatically impose restrictions and filters on third-party code unless the programmers of them explicitly declare that they understand key security issues
@@ -344,6 +344,120 @@ If you get a blank result, or something like 'unset' or 'hidden', you need to fi
 
 This section details some techniques to increase the security of your site. Most of these techniques are either advanced, or unattractive for most Composr users, which is why they are not included in the default Composr configuration.
 
+[title="3"]Content Security Policy (CSP)[/title]
+
+We provide a detailed implementation of CSP 2 in Composr. This is optional, however, because to maintain it it requires a higher degree of discipline when designing your website.
+
+CSP is built on the back of the "Trusted partner sites" options. These options restrict to mitigate the following possible attack vectors...
+{|
+! Inbound or Outbound
+! Vector/trust
+! Risk level
+! Mitigation via
+! Configured by
+|-
+| Inbound
+| Sending HTTP POST requests to your website
+(CSRF-risk, you trust them not to trick users into submitting malicious forms, automatically or by deception)
+| Low
+(CSRF-token protection and referrer checking also exists)
+| PHP code
+| Trusted partner sites (level 1), Trusted partner sites (level 2)
+|-
+| Inbound
+| Send calls to your website via in-browser requests [AJAX or Adobe Flash]
+(as above, but extended risk due to automation to both read and write any number of sequential pages with requests being potentially logged in as the user due to cookies)
+| High
+| CrossDomain configuration
+| Trusted partner sites (level 1)
+|-
+| Inbound
+| Putting your website in a frame
+(you trust them to not do confidence-tricks on users, like impersonating arbitrary parts of your website like login forms, or doing click-jacking)
+| Low
+(due to fragility of the trickery and needing gullibility)
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2), Allowed frame ancestors
+|-
+| Outbound
+| Loading in a frame
+(risk of confidence-tricks on users, like impersonating arbitrary parts of your website like login forms)
+| Low
+(due to the fragility of the trickery and needing gullibility)
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2), Allowed frame descendants
+|-
+| Outbound
+| Making calls to JavaScript files
+(risk of malicious code via XSS attack)
+| Medium
+(XSS-protection already exists for requests and content)
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2), Nonces (*)
+|-
+| Outbound
+| Making calls to CSS files
+(risk of malicious layout changes for trickery)
+| Low
+(XSS-protection already exists for requests and content, and very fragile attack than needs gullibility)
+| N/A
+| No limitations implemented in Composr
+(webmasters could not realistically meet these CSP limitations)
+|-
+| Outbound
+| Making calls to scripts via in-browser requests [AJAX mode]
+(risk of your site being used used as an intermediary in attacks)
+| Low
+(XSS-protection already exists for requests and content,  and only possible if the remote server has opened the possibility up for this)
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2)
+|-
+| Outbound
+| Making calls to scripts via form posting
+(risk of your site forms being redirected to some kind of sophisticated attack)
+| Low
+(it would be unlikely to find such a vulnerability)
+| CSP
+| Trusted partner sites (level 1), Trusted partner sites (level 2)
+|-
+| Outbound
+| Redirecting to third-party sites
+(Composr passes redirect parameters around, so it knows where to return after actions, but this could be abused to redirect someone to a website impersonating your site)
+| Medium
+(due to needing gullibility)
+| PHP code
+| Trusted partner sites (level 1), Trusted partner sites (level 2)
+|-
+| Outbound
+| Making calls to media/objects/images/fonts [AJAX mode]
+(unclear risk)
+| Trivial
+(there is no clear risk)
+| N/A
+| No limitations implemented in Composr
+(webmasters could not realistically meet these CSP limitations)
+|}
+
+Nonces are configurable in HTML/templates using the nonces feature (include [tt]{$CSP_NONCE_HTML}[/tt] in the opening tag). An XSS hacker has no way to know the nonce, so can't inject script/style requiring it. At the current time nonces are only supported in CSP by script and CSS files, but the W3C is discussing changes this.
+
+Note that the "Trusted parter site" options automatically include "www." if not specified.
+The "Allowed frame ancestors"/"Allowed frame descendants" options allow wildcarding to allow any request (and do by default due to the low risk and commonality of frame use).
+
+There are many settings related to CSP in the Composr security options, including:
+ - Enabling/disabling
+ - Relaxing some of the deeper restrictions
+ - Defining pages that don't run with CSP
+ - Specifying whether CSP violations are reported to the error log
+
+Limitations:
+ - We highly advise to not use Internet Explorer because it does not have fully support for CSP 2, or even really CSP 1 (it is under a special beta header only). Microsoft Edge is fine though.
+ - Unfortunately when WYSIWYG is in use then CSP is disabled, due to limitations with CkEditor.
+ - Particular parts of Composr may have CSP restrictions relaxed based on the behaviours they need to allow.
+
+If you are a programmer and want to customise the CSP rules in more detail, override the [tt]sources/csp.php[/tt] file.
+
+A detailed technical writeup of the implementation is at the top of the [tt]sources/csp.php[/tt] file.
+
 [title="3"]Guest access[/title]
 
 [media width="150" description="Securing the member joining process" float="right"]data_custom/images/docs/tut_security/security_cns_members.png[/media]
@@ -388,6 +502,8 @@ RewriteCond %{HTTPS} off
 RewriteCond %{REQUEST_METHOD} !POST
 RewriteRule ^.*/pg/.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
 [/code]
+
+The CSP implementation will also provide automatic redirects.
 
 [title="3"]Secured zones[/title]
 

@@ -1,1 +1,1 @@
-<link href="{URL*}" rel="stylesheet" />
+<link {$CSP_NONCE_HTML} href="{URL*}" rel="stylesheet" />

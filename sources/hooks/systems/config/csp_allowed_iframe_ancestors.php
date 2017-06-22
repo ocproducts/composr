@@ -32,13 +32,13 @@ class Hook_config_csp_allowed_iframe_ancestors
     {
         return array(
             'human_name' => 'CSP_ALLOWED_IFRAME_ANCESTORS',
-            'type' => 'line',
+            'type' => 'text',
             'category' => 'SECURITY',
             'group' => 'CSP',
             'explanation' => 'CONFIG_OPTION_csp_allowed_iframe_ancestors',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 3,
+            'order_in_category_group' => 4,
 
             'addon' => 'core_configuration',
         );

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_allowed_post_submitters
+class Hook_config_csp_allowed_iframe_descendants
 {
     /**
      * Gets the details relating to the config option.
@@ -31,14 +31,14 @@ class Hook_config_allowed_post_submitters
     public function get_details()
     {
         return array(
-            'human_name' => 'ALLOWED_POST_SUBMITTERS',
+            'human_name' => 'CSP_ALLOWED_IFRAME_DESCENDANTS',
             'type' => 'text',
             'category' => 'SECURITY',
-            'group' => 'ADVANCED',
-            'explanation' => 'CONFIG_OPTION_allowed_post_submitters',
-            'shared_hosting_restricted' => '1',
+            'group' => 'CSP',
+            'explanation' => 'CONFIG_OPTION_csp_allowed_iframe_descendants',
+            'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 0,
+            'order_in_category_group' => 4,
 
             'addon' => 'core_configuration',
         );
@@ -51,6 +51,6 @@ class Hook_config_allowed_post_submitters
      */
     public function get_default()
     {
-        return "translate.googleusercontent.com\npaypal.com\nsandbox.paypal.com\nselect.worldpay.com\nselect-test.worldpay.com";
+        return '*';
     }
 }

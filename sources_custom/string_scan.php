@@ -464,7 +464,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         AGGREGATE_TYPE_INSTANCE
         AGGREGATE_TYPE_INSTANCES
         ALLOWED_FILES
-        ALLOWED_POST_SUBMITTERS
+        TRUSTED_SITES
         ALLOWS_ANONYMOUS_POSTS
         ALLOW_ALPHA_SEARCH
         ALLOW_AUDIO_VIDEOS
@@ -2499,7 +2499,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_allow_opting_out_of_tax
         CONFIG_OPTION_allow_own_rate
         CONFIG_OPTION_allow_theme_image_selector
-        CONFIG_OPTION_allowed_post_submitters
+        CONFIG_OPTION_trusted_sites_1
+        CONFIG_OPTION_trusted_sites_2
         CONFIG_OPTION_anti_leech
         CONFIG_OPTION_attachment_cleanup
         CONFIG_OPTION_attachment_default_height
@@ -6402,15 +6403,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_error_handling_warnings_VALUE_SKIP
         CONFIG_OPTION_error_handling_warnings_VALUE_SKIP
         CONFIG_OPTION_csp_allow_eval_js
-        CONFIG_OPTION_csp_allow_inline_js
         CONFIG_OPTION_csp_allow_insecure_resources
-        CONFIG_OPTION_csp_allowed_form_destinations
         CONFIG_OPTION_csp_allowed_iframe_ancestors
         CONFIG_OPTION_csp_enabled
         CONFIG_OPTION_csp_exceptions
-        CONFIG_OPTION_csp_require_nonce
         CONFIG_OPTION_csp_whitelisted_plugins
-        CONFIG_OPTION_csp_whitelisted_urls
         CONFIG_OPTION_grow_template_meta_tree
         CONFIG_OPTION_newsletter_auto_pause
         CONFIG_OPTION_newsletter_paused
@@ -6476,18 +6473,26 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ERROR_HANDLING_NOTICES
         ERROR_HANDLING_WARNINGS
         CSP
-        CSP_ALLOWED_FORM_DESTINATIONS
         CSP_ALLOWED_IFRAME_ANCESTORS
         CSP_ALLOW_EVAL_JS
-        CSP_ALLOW_INLINE_JS
         CSP_ALLOW_INSECURE_RESOURCES
         CSP_ENABLED
         CSP_EVENT_HANDLER
         CSP_EXCEPTIONS
-        CSP_REQUIRE_NONCE
         CSP_SCRIPT_TAG
+        CSP_STYLE_TAG
         CSP_WHITELISTED_PLUGINS
-        CSP_WHITELISTED_URLS
+        CONFIG_OPTION_csp_allow_dyn_js
+        CONFIG_OPTION_csp_allowed_iframe_descendants
+        CONFIG_OPTION_csp_enabled_VALUE_0
+        CONFIG_OPTION_csp_enabled_VALUE_1
+        CONFIG_OPTION_csp_enabled_VALUE_2
+        CONFIG_OPTION_csp_report_issues
+        CSP_ALLOWED_IFRAME_DESCENDANTS
+        CSP_ALLOW_DYN_JS
+        CSP_REPORT_ISSUES
+        TRUSTED_SITES_1
+        TRUSTED_SITES_2
         FORMATTING_SYMBOL__IN_STR
         FORMATTING_SYMBOL__STRIP_TAGS
         FORMATTING_SYMBOL__TRIM

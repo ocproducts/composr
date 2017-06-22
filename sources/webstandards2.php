@@ -66,12 +66,14 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
     // CSP violation
     if ($WEBSTANDARDS_CSP) {
         if (!$close) {
-            if (
-                ($tag === 'script') &&
-                (empty($attributes['nonce'])) &&
-                ((empty($attributes['type'])) || ($attributes['type'] === 'text/javascript') || ($attributes['type'] === 'application/javascript'))
-            ) {
+            if (($tag === 'script') && (empty($attributes['nonce']))) {
                 $errors[] = array('CSP_SCRIPT_TAG');
+            }
+            if (($tag === 'style') && (empty($attributes['nonce']))) {
+                $errors[] = array('CSP_STYLE_TAG');
+            }
+            if (($tag === 'link') && (empty($attributes['nonce'])) && (isset($attributes['rel'])) && ($attributes['rel'] == 'stylesheet')) {
+                $errors[] = array('CSP_STYLE_TAG');
             }
 
             foreach (array_keys($attributes) as $attribute) {

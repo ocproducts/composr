@@ -6,9 +6,9 @@
 		<meta name="GENERATOR" content="Composr" />
 		<meta name="description" content="Composr installer" />
 		<link rel="icon" href="{$BRAND_BASE_URL*}/favicon.ico" type="image/x-icon" />
-		<link href="{CSS_URL*}" rel="stylesheet" />
-		<link href="{CSS_URL_2*}" rel="stylesheet" />
-		<style>
+		<link {$CSP_NONCE_HTML} href="{CSS_URL*}" rel="stylesheet" />
+		<link {$CSP_NONCE_HTML} href="{CSS_URL_2*}" rel="stylesheet" />
+		<style {$CSP_NONCE_HTML}>
 			{CSS_NOCACHE*}
 		</style>
 		<title>{!INSTALLER,Composr}</title>

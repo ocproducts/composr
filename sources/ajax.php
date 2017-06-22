@@ -28,8 +28,8 @@
 function cor_prepare()
 {
     require_code('input_filter');
-    $allowed_partners = get_allowed_partner_sites();
-    if (in_array(preg_replace('#^.*://([^:/]*).*$#', '${1}', $_SERVER['HTTP_ORIGIN']), $allowed_partners)) {
+    $trusted_sites = get_trusted_sites(1);
+    if (in_array(preg_replace('#^.*://([^:/]*).*$#', '${1}', $_SERVER['HTTP_ORIGIN']), $trusted_sites)) {
         header('Access-Control-Allow-Origin: ' . /*escape_header  function not needed and may not be loaded yet*/($_SERVER['HTTP_ORIGIN']));
 
         if ((isset($_SERVER['REQUEST_METHOD'])) && ($_SERVER['REQUEST_METHOD'] == 'OPTIONS')) {
@@ -67,8 +67,8 @@ function crossdomain_script()
 <!DOCTYPE cross-domain-policy SYSTEM "http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd">
 <cross-domain-policy>';
     require_code('input_filter');
-    $allowed_partners = get_allowed_partner_sites();
-    foreach ($allowed_partners as $post_submitter) {
+    $trusted_sites = get_trusted_sites(1);
+    foreach ($trusted_sites as $post_submitter) {
         $post_submitter = trim($post_submitter);
         if ($post_submitter != '') {
             echo '<allow-access-from domain="' . xmlentities($post_submitter) . '" />';

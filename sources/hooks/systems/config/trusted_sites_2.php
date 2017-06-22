@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_csp_enabled
+class Hook_config_trusted_sites_2
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,13 @@ class Hook_config_csp_enabled
     public function get_details()
     {
         return array(
-            'human_name' => 'CSP_ENABLED',
-            'type' => 'list',
+            'human_name' => 'TRUSTED_SITES_2',
+            'type' => 'text',
             'category' => 'SECURITY',
-            'group' => 'CSP',
-            'explanation' => 'CONFIG_OPTION_csp_enabled',
-            'shared_hosting_restricted' => '0',
-            'list_options' => '0|2|1',
+            'group' => 'TRUSTED_SITES',
+            'explanation' => 'CONFIG_OPTION_trusted_sites_2',
+            'shared_hosting_restricted' => '1',
+            'list_options' => '',
             'order_in_category_group' => 1,
 
             'addon' => 'core_configuration',
@@ -51,6 +51,6 @@ class Hook_config_csp_enabled
      */
     public function get_default()
     {
-        return '1';
+        return "translate.googleusercontent.com\npaypal.com\nsandbox.paypal.com\nselect.worldpay.com\nselect-test.worldpay.com";
     }
 }

@@ -1788,6 +1788,7 @@
             linkEl.id = 'css-' + sheetName;
             linkEl.rel = 'stylesheet';
             linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
+            linkEl.nonce = $CSP_NONCE;
             document.head.appendChild(linkEl);
         }
 
@@ -1840,6 +1841,7 @@
                 scriptEl.id = 'javascript-' + script;
                 scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
             }
+            scriptEl.nonce = $CSP_NONCE;
 
             document.body.appendChild(scriptEl);
             requireJavascriptPromises[script] = $cms.waitForResources(scriptEl);
@@ -5702,6 +5704,7 @@
         return false;
     };
 
+    // TODO: Salman haveLinks does not seem to be working. In admin_config the config option descriptions should be click-to-see, not hover
     /**
      * Tooltips that can work on any element with rich HTML support
      * @memberof $cms.ui
@@ -7808,7 +7811,8 @@
             };
             document.body.appendChild($cms.dom.create('script', null, {
                 src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js',
-                defer: true
+                defer: true,
+                nonce: $CSP_NONCE
             }));
         }
 
