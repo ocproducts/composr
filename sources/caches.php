@@ -855,17 +855,13 @@ function _get_cache_entries($dets, $special_cache_flags = null)
             if (isset($bits[1])) {
                 $javascripts_required = explode(':', $bits[1]);
                 foreach ($javascripts_required as $javascript) {
-                    if (($javascript != '') && (strpos($javascript, 'merged__') === false)) {
-                        require_javascript($javascript);
-                    }
+                    require_javascript($javascript);
                 }
             }
             if (isset($bits[2])) {
                 $csss_required = explode(':', $bits[2]);
                 foreach ($csss_required as $css) {
-                    if (($css != '') && (strpos($css, 'merged__') === false)) {
-                        require_css($css);
-                    }
+                    require_css($css);
                 }
             }
         }

@@ -454,18 +454,6 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
         }
     }
 
-    if (!$GLOBALS['IN_MINIKERNEL_VERSION']) {
-        $zones = find_all_zones();
-        $values = array();
-        foreach ($zones as $zone) {
-            $values[] = 'merged__' . $zone . '.css';
-            $values[] = 'merged__' . $zone . '.js';
-            $values[] = 'merged__' . $zone . '__admin.css';
-            $values[] = 'merged__' . $zone . '__admin.js';
-        }
-        delete_values($values);
-    }
-
     // Often the back button will be used to return to a form, so we need to ensure we have not broken the JavaScript
     if ((function_exists('get_member')) && (!$GLOBALS['BOOTSTRAPPING'])) {
         javascript_enforce('validation');

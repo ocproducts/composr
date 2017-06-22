@@ -52,9 +52,7 @@ function require_javascript($javascript)
 
     $JS_OUTPUT_STARTED_LIST[$javascript] = true;
 
-    if (strpos($javascript, 'merged__') === false) {
-        $SMART_CACHE->append('JAVASCRIPTS', $javascript);
-    }
+    $SMART_CACHE->append('JAVASCRIPTS', $javascript);
 }
 
 /**
@@ -172,10 +170,6 @@ function javascript_tempcode()
 
     $javascripts_to_do = $JAVASCRIPTS;
     foreach ($javascripts_to_do as $j => $do_enforce) {
-        if ($do_enforce === null) {
-            continue; // Has already been included in a merger
-        }
-
         _javascript_tempcode($j, $js, null, null, null, $do_enforce);
     }
 
@@ -252,9 +246,7 @@ function require_css($css)
 
     $CSS_OUTPUT_STARTED_LIST[$css] = true;
 
-    if (strpos($css, 'merged__') === false) {
-        $SMART_CACHE->append('CSSS', $css);
-    }
+    $SMART_CACHE->append('CSSS', $css);
 
     // Has to move into footer
     if ($CSS_OUTPUT_STARTED) {
@@ -369,10 +361,6 @@ function css_tempcode($inline = false, $only_global = false, $context = null, $t
 
     list($minify, $https, $mobile, $seed) = _get_web_resources_env();
 
-    if (!$only_global) {
-        _handle_web_resource_merging('.css', $CSSS, $minify, $https, $mobile);
-    }
-
     $css = new Tempcode();
     $css_need_inline = new Tempcode();
     if ($only_global) {
@@ -384,10 +372,6 @@ function css_tempcode($inline = false, $only_global = false, $context = null, $t
         $css_to_do = $CSSS;
     }
     foreach ($css_to_do as $c => $do_enforce) {
-        if ($do_enforce === null) {
-            continue; // Has already been included in a merger
-        }
-
         if (is_integer($c)) {
             $c = strval($c);
         }
@@ -536,196 +520,6 @@ function _get_web_resources_env($_seed = null, $_minify = null, $_https = null, 
     }
 
 	return array($minify, $https, $mobile, $seed);
-}
-
-/**
- * Get web resource grouping codename for a particular context.
- *
- * @param  ?ID_TEXT $zone_name Current zone name (null: autodetect)
- * @param  ?boolean $is_admin Is for admin (null: autodetect)
- * @return ID_TEXT Grouping codename
- * @ignore
- */
-function _get_web_resource_grouping_codename($zone_name = null, $is_admin = null)
-{
-    if ($is_admin === null) {
-        $is_admin = $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member());
-    }
-    if ($zone_name === null) {
-        $zone_name = get_zone_name();
-    }
-
-    $grouping_codename = 'merged__';
-    $grouping_codename .= $zone_name;
-    if ($is_admin) {
-        $grouping_codename .= '__admin';
-    }
-    return $grouping_codename;
-}
-
-/**
- * Handle web resource merging optimisation, for merging groups of CSS/JavaScript files that are used across the site, to reduce request quantity.
- *
- * @param  ID_TEXT $type Resource type
- * @set .css .js
- * @param  array $arr Resources (map of keys to true), passed by reference as we alter it
- * @param  boolean $minify If we are minifying
- * @param  boolean $https If we are using HTTPs
- * @param  boolean $mobile If we are using mobile
- * @return ?ID_TEXT Resource name for merged file, which we assume is compiled (as this function makes it) (null: we don't know what is required / race condition)
- * @ignore
- */
-function _handle_web_resource_merging($type, &$arr, $minify, $https, $mobile)
-{
-    return null; // We find all kinds of complex conditions happen, leading to difficult bugs. Better to just not have this, and HTTP/2 improves things anyway.
-    /*
-    if (!$minify || !running_script('index')) {
-        return null; // Optimisation disabled if no minification. Turn off minificiation when debugging JavaScript/CSS, as smart caching won't work with the merge system.
-    }
-
-    if ($type == '.js') {
-        // Fix order, so our main JavaScript, and jQuery, goes first in the merge order
-        $_arr = $arr;
-        $arr = array('global' => true);
-        global $EARLY_SCRIPT_ORDER;
-        foreach ($EARLY_SCRIPT_ORDER as $important_script) {
-            if (isset($_arr[$important_script])) {
-                $arr[$important_script] = true;
-            }
-        }
-        $arr += $_arr;
-    }
-
-    $is_admin = $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member());
-    $zone_name = get_zone_name();
-
-    $grouping_codename_welcome = _get_web_resource_grouping_codename('', $is_admin);
-
-    $grouping_codename = _get_web_resource_grouping_codename($zone_name, $is_admin);
-
-    $value = get_value_newer_than($grouping_codename . $type, time() - 60 * 60 * 24);
-
-    if ($zone_name != '') {
-        $welcome_value = get_value_newer_than($grouping_codename_welcome . $type, time() - 60 * 60 * 24);
-        if ($welcome_value === null) {
-            return null; // Don't do this if we haven't got for welcome zone yet (we try and make all same as welcome zone if possible - so we need it to compare against)
-        }
-    } else {
-        $welcome_value = $value;
-    }
-
-    // If not set yet, work out what merge situation would be and save it
-    if (($value === null) || (strpos($value, '::') === false)) {
-        $value = mixed();
-
-        $is_guest = is_guest();
-
-        // If is zone front page
-        if (get_zone_default_page($zone_name) == get_page_name()) {
-            // If in guest group or admin group
-            if (($is_guest) || ($is_admin)) {
-                $resources = array_keys($arr);
-                $value = implode(',', $resources) . '::???';
-            }
-        }
-    }
-
-    // If set, ensure merged resources file exists, and apply it
-    if ($value !== null) {
-        if ($welcome_value == $value) { // Optimisation, if same as welcome zone, use that -- so user does not need to download multiple identical merged resources
-            $grouping_codename = $grouping_codename_welcome;
-        }
-
-        $_value = explode('::', $value);
-        $resources = ($_value[0] == '') ? array() : explode(',', $_value[0]);
-        $hash = $_value[1];
-
-        // Regenerate hash if we support smart decaching, it might have changed and hence we need to do recompiling with a new hash OR this may be the first time ("???" is placeholder)
-        $support_smart_decaching = support_smart_decaching();
-        if (($support_smart_decaching) || ($hash == '???')) {
-            // Work out a hash (checksum) for cache busting on this merged file. Does it using an mtime has chain for performance (better than reading and hashing all the file contents)
-            $old_hash = $hash;
-            $hash = '';
-            foreach ($resources as $resource) {
-                if ($resource == 'no_cache') {
-                    continue;
-                }
-
-                if ($type == '.js') {
-                    $merge_from = javascript_enforce($resource);
-                } else { // .css
-                    $merge_from = css_enforce($resource);
-                }
-                if ($merge_from != '') {
-                    $hash = substr(md5($hash . @strval(filemtime($merge_from))), 0, 5);
-                }
-            }
-            if ($hash != $old_hash) {
-                $value = implode(',', $resources) . '::' . $hash;
-                set_value($grouping_codename . $type, $value);
-            }
-        }
-
-        // Find merged file path
-        $theme = filter_naughty($GLOBALS['FORUM_DRIVER']->get_theme());
-        $dir = get_custom_file_base() . '/themes/' . $theme . '/templates_cached/' . filter_naughty(user_lang());
-        $grouping_codename .= '_' . $hash; // Add cache buster component
-        $file = $grouping_codename;
-        if (!$minify) {
-            $file .= '_non_minified';
-        }
-        if ($https) {
-            $file .= '_ssl';
-        }
-        if ($mobile) {
-            $file .= '_mobile';
-        }
-        $write_path = $dir . '/' . filter_naughty($file);
-        $write_path .= $type;
-
-        if (GOOGLE_APPENGINE) {
-            gae_optimistic_cache(true);
-        }
-        $already_exists = is_file($write_path);
-        if (GOOGLE_APPENGINE) {
-            gae_optimistic_cache(false);
-        }
-        if (!$already_exists) {
-            require_code('global4');
-            $good_to_go = _save_web_resource_merging($resources, $type, $write_path);
-        } else {
-            $good_to_go = true;
-        }
-
-        if ($good_to_go) {
-            $arr_cnt = count($arr);
-
-            foreach ($resources as $resource) {
-                if ($resource == 'no_cache') {
-                    continue;
-                }
-
-                // Know we don't load up if unit already individually requested
-                $arr_cnt--;
-                $arr[$resource] = null;
-            }
-
-            if (($arr_cnt == 0) && (running_script('snippet'))) {
-                return null; // No need to load up merged, as we already have the merged one loaded; but we did successfully also skip loading was that were included in that merge
-            }
-
-            if ($resources !== array()) { // Some stuff was merged
-                $tmp = $arr;
-                $arr = array();
-                $arr[$grouping_codename] = false; // Add in merge one to load instead (first)
-                $arr += $tmp;
-            }
-
-            return $grouping_codename;
-        }
-    }
-
-    return null;*/
 }
 
 /**
