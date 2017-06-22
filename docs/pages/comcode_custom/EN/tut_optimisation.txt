@@ -93,6 +93,18 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - If you have large numbers of topics then consider deleting topics that have little value.
  - MySQL has a "slow query log" feature which is useful for debugging database performance issues. Additionally the MySQL query [tt]SHOW FULL PROCESSLIST[/tt] is very useful for showing current activity when you notice the database being slow.
 
+[title="2"]Merging JavaScript or CSS files[/title]
+
+You can do overrides and includes in a smart way to identify how to merge files together.
+
+For example, imagine you want [tt]galleries.css[/tt] to be delivered within [tt]global.css[/tt], because galleries is commonly required and therefore it has no need for a separate request.
+
+You could:
+1) override [tt]galleries.css[/tt] as blank (which will prompt Composr to not link it in via the HTML)
+2) add this to the end of [tt]global.css[/tt]: [tt]{+START,INCLUDE,galleries,.css,css,,1}{+END}[/tt]. The [tt]1[/tt] at the end indicates to include the original file (so it's not just including your blank override).
+
+Of course you may want to make changes to [tt]galleries.css[/tt] too. In which case you'd need to copy and paste the contents onto the end of [tt]global.css[/tt] and make changes there, rather than doing an include.
+
 [title="2"]Persistent cache[/title]
 
 The [b]persistent cache[/b] is a cache that aims to store regularly-accessed data in-memory between requests, so that it does not actually need to be loaded from the database or re-calculated on each page load. This cache removes about 30% of the page load time, but most importantly, takes load away from the database, allowing the database to become less of a limiting factor in high throughput situations.

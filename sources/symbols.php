@@ -352,6 +352,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                             }
                         }
                     }
+                    $template_file = $param[0]->evaluate();
                     $ex = isset($param[2]) ? $param[1]->evaluate() : '';
                     if ($ex == '') {
                         $ex = '.tpl';
@@ -364,7 +365,11 @@ function ecv($lang, $escaped, $type, $name, $param)
                     if ($theme == '') {
                         $theme = null;
                     }
-                    $_value = do_template($param[0]->evaluate(), $tpl_params, null, true, null, $ex, $td, $theme);
+                    $force_original = isset($param[4]) ? $param[3]->evaluate() : '';
+                    if ($force_original != '1') {
+                        $force_original = '0';
+                    }
+                    $_value = do_template($template_file, $tpl_params, null, true, null, $ex, $td, $theme, $force_original == '1');
                     $value = $_value->evaluate();
 
                     if ((get_charset() == 'utf-8') && (substr($value, 0, 3) == chr(hexdec('EF')) . chr(hexdec('BB')) . chr(hexdec('BF')))) {

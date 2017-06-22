@@ -823,9 +823,10 @@ function fill_template_preview_op_cache()
  * @param  string $directory Subdirectory type to look in
  * @set    templates javascript xml text css
  * @param  ?ID_TEXT $theme Theme to use (null: current theme)
+ * @param  boolean $non_custom_only Whether to only search in the default templates
  * @return Tempcode The Tempcode for this template
  */
-function do_template($codename, $parameters = null, $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates', $theme = null)
+function do_template($codename, $parameters = null, $lang = null, $light_error = false, $fallback = null, $suffix = '.tpl', $directory = 'templates', $theme = null, $non_custom_only = false)
 {
     if (empty($lang)) {
         global $USER_LANG_CACHED;
@@ -870,13 +871,9 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
     $prefix = get_custom_file_base() . '/themes/';
 
     // Is it structurally cached on disk yet?
-    if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
-        $loaded_this_once = false;
-    } else {
-        $loaded_this_once = true;
-    }
     $_data = mixed();
     $_data = false;
+    $loaded_this_once = isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory][$non_custom_only]);
 
     // Load from run-time cache?
     if (isset($LOADED_TPL_CACHE[$codename][$theme])) {
@@ -894,11 +891,11 @@ function do_template($codename, $parameters = null, $lang = null, $light_error =
         (!$RECORD_LANG_STRINGS/*Tempcode compilation embeds lang strings*/) &&
         !$inlining_mode
         ;
-    if (!isset($TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory])) {
-        $found = find_template_place($codename, $lang, $theme, $suffix, $directory);
-        $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory] = $found;
+    if (!$loaded_this_once) {
+        $found = find_template_place($codename, $lang, $theme, $suffix, $directory, $non_custom_only);
+        $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory][$non_custom_only] = $found;
     } else {
-        $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory];
+        $found = $TEMPLATE_DISK_ORIGIN_CACHE[$codename][$lang][$theme][$suffix][$directory][$non_custom_only];
     }
 
     // Load from template cache?
@@ -1191,21 +1188,29 @@ function handle_symbol_preprocessing($seq_part, &$children)
             if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                 $param = $seq_part[3];
 
-                if (!isset($param[1])) {
-                    $param[1] = make_string_tempcode('.tpl');
+                $template_file = $param[0]->evaluate();
+                $ex = isset($param[2]) ? $param[1]->evaluate() : '';
+                if ($ex == '') {
+                    $ex = '.tpl';
                 }
-                if (!isset($param[2])) {
-                    $param[2] = make_string_tempcode('templates');
+                $td = isset($param[3]) ? $param[2]->evaluate() : '';
+                if ($td == '') {
+                    $td = 'templates';
+                }
+                $theme = isset($param[4]) ? $param[3]->evaluate() : '';
+                if ($theme == '') {
+                    $theme = null;
+                }
+                $force_original = isset($param[4]) ? $param[3]->evaluate() : '';
+                if ($force_original != '1') {
+                    $force_original = '0';
                 }
 
-                $template_subdir = (is_object($param[2]) ? $param[2]->evaluate() : $param[2]);
-                $template_file = (is_object($param[0]) ? $param[0]->evaluate() : $param[0]);
-                $template_suffix = (is_object($param[1]) ? $param[1]->evaluate() : $param[1]);
-                $tpl_path_descrip = $template_subdir . '/' . $template_file . $template_suffix;
+                $tpl_path_descrip = $td . '/' . $template_file . $ex;
 
                 record_template_used($tpl_path_descrip);
 
-                $temp = @do_template($template_file, null, null, true, null, $template_suffix, $template_subdir);
+                $temp = @do_template($template_file, null, null, true, null, $ex, $td, $theme, $force_original == '1');
 
                 require_code('themes_meta_tree');
                 $children[] = create_template_tree_metadata(TEMPLATE_TREE_NODE__INCLUDE, $tpl_path_descrip, $temp);

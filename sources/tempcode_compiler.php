@@ -852,30 +852,37 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 if (!is_string($eval)) {
                                     $eval = '';
                                 }
-                                if (($template_name === $eval) || ($count_directive_opener_params === 3) && ($past_level_data === array('""')) && (!isset($FILE_ARRAY))) { // Simple case
-                                    $ex = isset($directive_opener_params[1 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[1 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
-                                    if (!is_string($ex)) {
-                                        $ex = '';
+                                if (($template_name === $eval) || ($past_level_data === array('""')) && (!isset($FILE_ARRAY))) { // Simple case where no separate binding context of variables needed
+                                    $_ex = isset($directive_opener_params[1 + 1 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[1 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    if (!is_string($_ex)) {
+                                        $_ex = '';
                                     }
-                                    if ($ex == '') {
-                                        $ex = '.tpl';
+                                    if ($_ex == '') {
+                                        $_ex = '.tpl';
                                     }
-                                    $td = isset($directive_opener_params[2 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[2 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
-                                    if (!is_string($td)) {
-                                        $td = '';
+                                    $_td = isset($directive_opener_params[1 + 2 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[2 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    if (!is_string($_td)) {
+                                        $_td = '';
                                     }
-                                    if ($td == '') {
-                                        $td = 'templates';
+                                    if ($_td == '') {
+                                        $_td = 'templates';
                                     }
-                                    $_theme = isset($directive_opener_params[3 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[3 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    $_theme = isset($directive_opener_params[1 + 3 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[3 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
                                     if (!is_string($_theme)) {
                                         $_theme = '';
                                     }
                                     if ($_theme == '') {
                                         $_theme = $theme;
                                     }
+                                    $_force_original = isset($directive_opener_params[1 + 4 + 2]) ? debug_eval('return ' . implode('.', $directive_opener_params[4 + 2]) . ';', $tpl_funcs, array(), $cl) : '';
+                                    if (!is_string($_force_original)) {
+                                        $_force_original = '';
+                                    }
+                                    if ($_force_original != '1') {
+                                        $_force_original = '0';
+                                    }
 
-                                    $found = find_template_place($eval, '', $_theme, $ex, $td, $template_name === $eval);
+                                    $found = find_template_place($eval, '', $_theme, $_ex, $_td, ($template_name === $eval) || ($_force_original == '1'));
 
                                     $_theme = $found[0];
                                     if ($found[1] !== null) {
