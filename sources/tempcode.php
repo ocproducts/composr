@@ -1188,20 +1188,20 @@ function handle_symbol_preprocessing($seq_part, &$children)
             if ($GLOBALS['RECORD_TEMPLATES_USED']) {
                 $param = $seq_part[3];
 
-                $template_file = $param[0]->evaluate();
-                $ex = isset($param[2]) ? $param[1]->evaluate() : '';
+                $template_file = is_object($param[0]) ? $param[0]->evaluate() : $param[0];
+                $ex = isset($param[2]) ? (is_object($param[1]) ? $param[1]->evaluate() : '') : '';
                 if ($ex == '') {
                     $ex = '.tpl';
                 }
-                $td = isset($param[3]) ? $param[2]->evaluate() : '';
+                $td = isset($param[3]) ? (is_object($param[2]) ? $param[2]->evaluate() : '') : '';
                 if ($td == '') {
                     $td = 'templates';
                 }
-                $theme = isset($param[4]) ? $param[3]->evaluate() : '';
+                $theme = isset($param[4]) ? (is_object($param[3]) ? $param[3]->evaluate() : '') : '';
                 if ($theme == '') {
                     $theme = null;
                 }
-                $force_original = isset($param[4]) ? $param[3]->evaluate() : '';
+                $force_original = isset($param[4]) ? (is_object($param[4]) ? $param[4]->evaluate() : '') : '';
                 if ($force_original != '1') {
                     $force_original = '0';
                 }

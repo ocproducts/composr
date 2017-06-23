@@ -3099,8 +3099,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONTENT_REVIEW_AUTO_ACTION_leave
         CONTENT_REVIEW_AUTO_ACTION_unvalidate
         CONTENT_TYPE
-        CONTEXTUAL_CSS_EDITING
-        CONTEXTUAL_CSS_EDITING_GLOBAL
         CONTEXTUAL_EDITING_SCREEN
         CONTRACTED_BRANCH
         CONTROL_FUNCTIONS

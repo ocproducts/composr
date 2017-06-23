@@ -31,6 +31,10 @@ class theme_images_test_set extends cms_test_case
     {
         $themes = find_all_themes();
         foreach ($themes as $theme) {
+            if ($theme == '_unnamed_') {
+                continue;
+            }
+
             $dirs = array(
                 get_file_base() . '/themes/' . $theme . '/images_custom',
                 get_file_base() . '/themes/' . $theme . '/images_custom/' . fallback_lang(),
@@ -57,6 +61,10 @@ class theme_images_test_set extends cms_test_case
         // Go through each theme
         $themes = find_all_themes();
         foreach (array_keys($themes) as $theme) {
+            if ($theme == '_unnamed_') {
+                continue;
+            }
+
             $directories = array(
                  get_file_base() . '/themes/default/css_custom',
                  get_file_base() . '/themes/default/css',

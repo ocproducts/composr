@@ -138,10 +138,10 @@ class Database_Static_sqlserver extends DatabaseDriver
     {
         if ($max !== null) {
             $max += $start;
+        }
 
-            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
-                $query = 'SELECT TOP ' . strval($max) . substr($query, 6);
-            }
+        if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+            $query = 'SELECT TOP ' . strval($max) . substr($query, 6);
         }
 
         push_suppress_error_death(true);

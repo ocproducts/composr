@@ -104,7 +104,7 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
         if ($max_value < $count) {
             global $MODSECURITY_WORKAROUND_ENABLED;
             if (!$MODSECURITY_WORKAROUND_ENABLED) {
-                attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn', false, true);
+                attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', escape_html($setting)), 'warn', false, true);
             }
             $failed_already = true;
         }
@@ -121,7 +121,7 @@ function check_suhosin_request_quantity($inc = 1, $name_length = 0)
     }
     foreach ($max_length_values as $setting => $max_length_value) {
         if ($max_length_value < $name_length) {
-            attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', $setting), 'warn', false, true);
+            attach_message(do_lang_tempcode('SUHOSIN_MAX_VARS_TOO_LOW', escape_html($setting)), 'warn', false, true);
             $failed_already = true;
         }
     }
@@ -136,7 +136,7 @@ function check_suhosin_request_size($size)
 {
     foreach (array('suhosin.request.max_value_length', 'suhosin.post.max_value_length') as $setting) {
         if ((@is_numeric(ini_get($setting))) && (intval(ini_get($setting)) - 500 < $size)) {
-            attach_message(do_lang_tempcode('SUHOSIN_MAX_VALUE_TOO_SHORT', $setting), 'warn', false, true);
+            attach_message(do_lang_tempcode('SUHOSIN_MAX_VALUE_TOO_SHORT', escape_html($setting)), 'warn', false, true);
         }
     }
 }
@@ -192,6 +192,8 @@ function take_param_int_modeavg($setting, $db_property, $table, $default)
  */
 function attach_wysiwyg()
 {
+    load_csp(array('csp_enabled' => '0'));
+
     global $WYSIWYG_ATTACHED;
     if (!$WYSIWYG_ATTACHED) {
         require_code('site');

@@ -116,7 +116,7 @@ class Module_admin_config
 
             $test = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
             if ($test === null) {
-                attach_message(do_lang_tempcode('CAT_NOT_FOUND', $category, 'OPTION_CATEGORY'), 'warn');
+                attach_message(do_lang_tempcode('CAT_NOT_FOUND', escape_html($category), 'OPTION_CATEGORY'), 'warn');
 
                 $this->title = get_screen_title('CONFIGURATION');
             } else {
@@ -289,7 +289,7 @@ class Module_admin_config
 
             $_category_name = do_lang('CONFIG_CATEGORY_' . $category, null, null, null, null, false);
             if ($_category_name === null) {
-                attach_message(do_lang_tempcode('CAT_NOT_FOUND', $category, 'OPTION_CATEGORY'), 'warn');
+                attach_message(do_lang_tempcode('CAT_NOT_FOUND', escape_html($category), 'OPTION_CATEGORY'), 'warn');
 
                 $category_name = make_string_tempcode($category);
             } else {

@@ -47,6 +47,10 @@ class blank_lines_test_set extends cms_test_case
                 continue;
             }
 
+            if (should_ignore_file($path, IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
+                continue;
+            }
+
             if (preg_match('#^(tracker|data/ace|data/ckeditor|sources_custom/composr_mobile_sdk/ios/ApnsPHP|sources_custom/sabredav|sources_custom/spout|sources_custom/photobucket|sources_custom/ILess|sources_custom/facebook|sources_custom/aws/Aws|docs/jsdoc)/#', $path) != 0) {
                 continue;
             }

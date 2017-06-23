@@ -380,14 +380,14 @@ function step_1()
                     $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => '515c2f26a5415224f3c09b2429a78a5f', 'FILES' => $missing, 'MESSAGE' => do_lang_tempcode('_MISSING_INSTALLATION_FILE', escape_html(integer_format(count($missing)))))));
                 } else {
                     foreach ($missing as $file) {
-                        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('MISSING_INSTALLATION_FILE', $file))));
+                        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('MISSING_INSTALLATION_FILE', escape_html($file)))));
                     }
                 }
                 if (count($corrupt) > 4) {
                     $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => 'f8958458d76bd4f6d146d3fe59132a02', 'FILES' => $corrupt, 'MESSAGE' => do_lang_tempcode('_CORRUPT_INSTALLATION_FILE', escape_html(integer_format(count($corrupt)))))));
                 } else {
                     foreach ($corrupt as $file) {
-                        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('CORRUPT_INSTALLATION_FILE', $file))));
+                        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('CORRUPT_INSTALLATION_FILE', escape_html($file)))));
                     }
                 }
             }
@@ -1106,6 +1106,13 @@ function step_5()
 {
     if (count($_POST) == 0) {
         exit(do_lang('INST_POST_ERROR'));
+    }
+
+    if (isset($_POST['table_prefix'])) {
+        $_POST['table_prefix'] = preg_replace('#[^\w]#', '', $_POST['table_prefix']);
+    }
+    if (isset($_POST['cns_table_prefix'])) {
+        $_POST['cns_table_prefix'] = preg_replace('#[^\w]#', '', $_POST['cns_table_prefix']);
     }
 
     if (php_function_allowed('set_time_limit')) {
@@ -2275,16 +2282,16 @@ function step_9()
 
     $log = new Tempcode();
 
-    $modules = find_all_modules('forum');
-    foreach ($modules as $module => $type) {
-        if (reinstall_module('forum', $module)) {
-            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'c1d95b9713006acb491b44ff6c79099c', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
+    foreach (array('forum', 'cms', 'buildr') as $zone) {
+        if (!is_file(get_file_base() . '/' . $zone . '/index.php')) {
+            continue;
         }
-    }
-    $modules = find_all_modules('cms');
-    foreach ($modules as $module => $type) {
-        if (reinstall_module('cms', $module)) {
-            $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => '8fdbc968cae73c47d9faf3b4148ac7e1', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
+
+        $modules = find_all_modules($zone);
+        foreach ($modules as $module => $type) {
+            if (reinstall_module($zone, $module)) {
+                $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'c1d95b9713006acb491b44ff6c79099c', 'SOMETHING' => do_lang_tempcode('INSTALLED_MODULE', escape_html($module)))));
+            }
         }
     }
 

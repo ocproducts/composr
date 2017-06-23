@@ -34,30 +34,28 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
         $viewing_member_id = get_member();
     }
 
-    if ($content_type[0] != '_') {
-        require_code('content');
-        $cma_ob = get_content_object($content_type);
-        $cma_info = $cma_ob->info();
+    $table = get_table_prefix() . 'content_privacy priv';
 
-        $first_id_field = (is_array($cma_info['id_field']) ? implode(',', $cma_info['id_field']) : $cma_info['id_field']);
-
-        if (!$cma_info['support_privacy']) {
-            return array('', '', '', '');
-        }
-
-        $override_page = $cma_info['cms_page'];
-        if (has_privilege($viewing_member_id, 'view_private_content', $override_page)) {
-            return array('', '', '', '');
-        }
-
-        $join = ' LEFT JOIN ' . get_table_prefix() . 'content_privacy priv ON priv.content_id=' . db_cast($table_alias . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('priv.content_type', $content_type);
-    } else {
-        if (has_privilege($viewing_member_id, 'view_private_content')) {
-            return array('', '', '', '');
-        }
-
-        $join = '';
+    if ($content_type[0] == '_') {
+        return array('', '', $table, '1=1'); // No privacy individually set on custom content catalogue entries
     }
+
+    require_code('content');
+    $cma_ob = get_content_object($content_type);
+    $cma_info = $cma_ob->info();
+
+    $first_id_field = (is_array($cma_info['id_field']) ? implode(',', $cma_info['id_field']) : $cma_info['id_field']);
+
+    if (!$cma_info['support_privacy']) {
+        return array('', '', $table, '1=1');
+    }
+
+    $override_page = $cma_info['cms_page'];
+    if (has_privilege($viewing_member_id, 'view_private_content', $override_page)) {
+        return array('', '', $table, '1=1');
+    }
+
+    $join = ' LEFT JOIN ' . get_table_prefix() . 'content_privacy priv ON priv.content_id=' . db_cast($table_alias . '.' . $first_id_field, 'CHAR') . ' AND ' . db_string_equal_to('priv.content_type', $content_type);
 
     $where = ' AND (';
     $where .= 'priv.content_id IS NULL';
@@ -74,8 +72,6 @@ function get_privacy_where_clause($content_type, $table_alias, $viewing_member_i
         }
     }
     $where .= ')';
-
-    $table = get_table_prefix() . 'content_privacy priv';
 
     $table_where = db_string_equal_to('priv.content_type', $content_type) . $where;
 

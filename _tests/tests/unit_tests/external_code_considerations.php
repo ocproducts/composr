@@ -115,6 +115,7 @@ class external_code_considerations_test_set extends cms_test_case
                 'themes/default/javascript_custom/shoutbox.js',
                 'themes/default/javascript_custom/text_ghosts.js',
                 'themes/default/javascript_custom/facebook.js',
+                'themes/default/javascript_custom/global.js',
                 'themes/default/css_custom/activities.css',
                 'themes/default/css_custom/buildr.css',
                 'themes/default/css_custom/community_billboard.css',
@@ -155,6 +156,14 @@ class external_code_considerations_test_set extends cms_test_case
 
                     if ($subdirs_only && !is_dir(get_file_base() . '/' . $dir . '/' . $f)) {
                         continue;
+                    }
+
+                    if (is_dir(get_file_base() . '/' . $dir . '/' . $f)) {
+                        $contents = scandir(get_file_base() . '/' . $dir . '/' . $f);
+                        if (($contents == array('.', '..')) || ($contents == array('.', '..', '.DS_Store'))) {
+                            // Empty directory
+                            continue;
+                        }
                     }
 
                     $this->assertTrue(in_array($dir . '/' . $f, $all_parts), 'Should be included in line_count.sh/.editorconfig or set as a skip exception in this test: ' . $dir . '/' . $f);

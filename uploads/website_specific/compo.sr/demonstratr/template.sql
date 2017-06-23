@@ -1377,8 +1377,6 @@ insert into `cms_addons_files` values('cns_thematic_avatars','themes/default/ima
  ('core','themes/default/images/icons/48x48/buttons/clear.png','1190'),
  ('core','themes/default/images/icons/24x24/buttons/closed.png','1191'),
  ('core','themes/default/images/icons/48x48/buttons/closed.png','1192'),
- ('core','themes/default/images/icons/24x24/buttons/save_and_stay.png','1193'),
- ('core','themes/default/images/icons/48x48/buttons/save_and_stay.png','1194'),
  ('core','themes/default/images/icons/24x24/buttons/filter.png','1195'),
  ('core','themes/default/images/icons/48x48/buttons/filter.png','1196'),
  ('core','themes/default/images/icons/24x24/buttons/new_comment.png','1197'),

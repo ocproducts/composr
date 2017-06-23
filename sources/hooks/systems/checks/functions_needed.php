@@ -75,7 +75,7 @@ class Hook_check_functions_needed
             gettimeofday get_cfg_var get_resource_type hypot ignore_user_abort array_intersect_assoc
             is_link is_callable debug_print_backtrace stream_context_create next usleep array_sum
             file_get_contents str_word_count html_entity_decode
-            array_combine array_walk_recursive
+            array_combine array_walk_recursive header_remove
             str_split strpbrk substr_compare file_put_contents get_headers headers_list
             http_build_query scandir str_shuffle
             ob_get_clean array_diff_assoc glob debug_backtrace date_default_timezone_set sha1

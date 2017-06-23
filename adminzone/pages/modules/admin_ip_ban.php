@@ -279,13 +279,13 @@ class Module_admin_ip_ban
             preg_match('#^([^\s]+)(.*)$#', $ban, $matches);
             $ip = $matches[1];
             if (preg_match('#^[a-f0-9\.\*:]+$#U', $ip) == 0) {
-                attach_message(do_lang_tempcode('IP_ADDRESS_NOT_VALID', $ip), 'warn');
+                attach_message(do_lang_tempcode('IP_ADDRESS_NOT_VALID', escape_html($ip)), 'warn');
             } else {
                 if (!in_array($ip, $old_bans)) {
                     if ($ip == get_ip_address()) {
-                        attach_message(do_lang_tempcode('WONT_BAN_SELF', $ip), 'warn');
+                        attach_message(do_lang_tempcode('WONT_BAN_SELF', escape_html($ip)), 'warn');
                     } elseif ($ip == cms_srv('SERVER_ADDR')) {
-                        attach_message(do_lang_tempcode('WONT_BAN_SERVER', $ip), 'warn');
+                        attach_message(do_lang_tempcode('WONT_BAN_SERVER', escape_html($ip)), 'warn');
                     } else {
                         ban_ip($ip, isset($matches[2]) ? trim($matches[2]) : '');
                         $old_bans[] = $ip;
@@ -317,7 +317,7 @@ class Module_admin_ip_ban
             $ip = $matches[1];
             if (preg_match('#^[a-f0-9\.]+$#U', $ip) == 0)
             {
-                attach_message(do_lang_tempcode('IP_ADDRESS_NOT_VALID_MAKE_UNBANNABLE', $str), 'warn');
+                attach_message(do_lang_tempcode('IP_ADDRESS_NOT_VALID_MAKE_UNBANNABLE', escape_html($str)), 'warn');
             } else
             {
                 if (!in_array($ip, $unbannable_already))

@@ -900,7 +900,7 @@ class Forum_driver_wbb22 extends Forum_driver_base
         }
 
         if (!array_key_exists(0, $rows) || $rows[0] === null) { // All hands to lifeboats
-            $out['error'] = (do_lang_tempcode('_MEMBER_NO_EXIST', $username));
+            $out['error'] = (do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
             return $out;
         }
         $row = $rows[0];

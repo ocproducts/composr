@@ -80,10 +80,10 @@ class Hook_task_import_ftp_downloads
 
         // Failsafe check
         if ((@ftp_nlist($conn_id, $directory . '/dev') !== false) && (@ftp_nlist($conn_id, $directory . '/etc') !== false) && (@ftp_nlist($conn_id, $directory . '/sbin') !== false)) {
-            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', $directory));
+            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', escape_html($directory)));
         }
         if ((@ftp_nlist($conn_id, $directory . '/Program files') !== false) && ((@ftp_nlist($conn_id, $directory . '/Users') !== false) || (@ftp_nlist($conn_id, $directory . '/Documents and settings') !== false)) && (@ftp_nlist($conn_id, $directory . '/Windows') !== false)) {
-            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', $directory));
+            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', escape_html($directory)));
         }
 
         log_it('FTP_DOWNLOADS');

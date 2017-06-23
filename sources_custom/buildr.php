@@ -38,6 +38,9 @@ function grab_new_owner($param_name)
     if ($new_owner_raw == '') {
         return null;
     }
+    if (is_numeric($new_owner_raw)) {
+        return intval($new_owner_raw);
+    }
     return $GLOBALS['FORUM_DRIVER']->get_member_from_username($param_name);
 }
 
@@ -103,6 +106,10 @@ function get_loc_details($member_id, $null_ok = false)
  */
 function merge_items($from, $to)
 {
+	if ($from == $to) {
+        warn_exit('Cannot merge item into itself.');
+    }
+
     $GLOBALS['SITE_DB']->query_delete('w_itemdef', array('name' => $from), '', 1);
 
     $rows = $GLOBALS['SITE_DB']->query_select('w_items', array('*'), array('name' => $from));
@@ -118,7 +125,7 @@ function merge_items($from, $to)
 
     $rows = $GLOBALS['SITE_DB']->query_select('w_inventory', array('*'), array('item_name' => $from));
     foreach ($rows as $myrow) {
-        $amount = $GLOBALS['SITE_DB']->query_select_value_if_there('w_inventory', 'item_count', array('item_owner' => $myrow['item_owner'], 'item_name=' => $to));
+        $amount = $GLOBALS['SITE_DB']->query_select_value_if_there('w_inventory', 'item_count', array('item_owner' => $myrow['item_owner'], 'item_name' => $to));
         if ($amount === null) {
             $GLOBALS['SITE_DB']->query_update('w_inventory', array('item_name' => $to), array('item_owner' => $myrow['item_owner'], 'item_name' => $from));
         } else {
@@ -314,8 +321,8 @@ function try_to_enter_room($member_id, $dx, $dy, $given_password)
                     'y' => $_y,
                     'realm' => $realm,
                 ));
+                buildr_refresh_with_message($room['password_fail_message'], 'warn');
             }
-            buildr_refresh_with_message($room['password_fail_message'], 'warn');
         }
     }
 

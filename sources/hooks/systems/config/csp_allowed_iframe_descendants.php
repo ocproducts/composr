@@ -38,7 +38,7 @@ class Hook_config_csp_allowed_iframe_descendants
             'explanation' => 'CONFIG_OPTION_csp_allowed_iframe_descendants',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 4,
+            'order_in_category_group' => 5,
 
             'addon' => 'core_configuration',
         );

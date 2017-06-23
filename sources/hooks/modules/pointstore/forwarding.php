@@ -272,7 +272,7 @@ class Hook_pointstore_forwarding
 
         dispatch_notification('pointstore_request_forwarding', 'forw_' . strval($sale_id), do_lang('MAIL_REQUEST_FORWARDING', null, null, null, get_site_default_lang()), $message_raw->evaluate(get_site_default_lang()), null, null, array('create_ticket' => true, 'use_real_from' => true));
 
-        $text = do_lang_tempcode('ORDER_FORWARDER_DONE', $email, escape_html($prefix . '@' . $_suffix));
+        $text = do_lang_tempcode('ORDER_FORWARDER_DONE', escape_html($email), escape_html($prefix . '@' . $_suffix));
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
         return redirect_screen($title, $url, $text);
     }

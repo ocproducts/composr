@@ -209,7 +209,7 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
         $save_bytes = $_save_bytes;
     } else {
         if ($save_bytes != $_save_bytes) {
-            warn_exit(protect_from_escaping('<kbd>$save_bytes</kbd> setting was not needed when creating table <kbd>' . escape_html($table_name) . '</kbd>'));
+            warn_exit(protect_from_escaping('<kbd>$save_bytes</kbd> setting was ' . ($save_bytes ? 'not needed' : 'needed') . ' when creating table <kbd>' . escape_html($table_name) . '</kbd>'));
         }
     }
 

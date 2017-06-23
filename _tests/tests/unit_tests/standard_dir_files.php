@@ -85,34 +85,40 @@ class standard_dir_files_test_set extends cms_test_case
     {
         foreach (array('systems', 'blocks', 'modules') as $dir) {
             $a = array();
-            $dh = opendir(get_file_base() . '/sources/hooks/' . $dir);
+            $_dir = get_file_base() . '/sources/hooks/' . $dir;
+            $dh = opendir($_dir);
             while (($f = readdir($dh)) !== false) {
                 if ($f == '.DS_Store') {
                     continue;
                 }
 
-                $a[] = $f;
+                if (is_file($_dir . '/' . $f . 'index.html')) {
+                    $a[] = $f;
+                }
             }
             closedir($dh);
             sort($a);
 
             $b = array();
-            $dh = opendir(get_file_base() . '/sources_custom/hooks/' . $dir);
+            $_dir = get_file_base() . '/sources_custom/hooks/' . $dir;
+            $dh = opendir($_dir);
             while (($f = readdir($dh)) !== false) {
                 if ($f == '.DS_Store') {
                     continue;
                 }
 
-                $b[] = $f;
+                if (is_file($_dir . '/' . $f . 'index.html')) {
+                    $b[] = $f;
+                }
             }
             closedir($dh);
             sort($b);
 
             $diff = array_diff($a, $b);
-            $this->assertTrue(count($diff) == 0, 'Missing in sources/' . $dir . ': ' . serialize($diff));
+            $this->assertTrue(count($diff) == 0, 'Missing in sources_custom/hooks/' . $dir . ': ' . serialize($diff));
 
             $diff = array_diff($b, $a);
-            $this->assertTrue(count($diff) == 0, 'Missing in sources_custom/' . $dir . ': ' . serialize($diff));
+            $this->assertTrue(count($diff) == 0, 'Missing in sources/hooks/' . $dir . ': ' . serialize($diff));
         }
     }
 }

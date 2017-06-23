@@ -78,7 +78,7 @@ class Hook_checklist_awards
                     $where = filter_naughty_harsh($details['date_field']) . '>' . strval($date);
                     $num_queue = $details['db']->query_value_if_there('SELECT COUNT(*) FROM ' . $details['db']->get_table_prefix() . str_replace('1=1', $where, $details['table']) . ' r WHERE ' . $where);
                     $_num_queue = integer_format($num_queue);
-                    $num_new_since = do_lang_tempcode('NUM_NEW_SINCE', $_num_queue);
+                    $num_new_since = do_lang_tempcode('NUM_NEW_SINCE', escape_html($_num_queue));
                 } else {
                     $num_new_since = new Tempcode();
                 }

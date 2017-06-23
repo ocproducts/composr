@@ -23,6 +23,10 @@ class themeini_images_test_set extends cms_test_case
         require_code('themes2');
         $themes = find_all_themes();
         foreach (array_keys($themes) as $theme) {
+            if ($theme == '_unnamed_') {
+                continue;
+            }
+
             $ini_file = parse_ini_file(get_file_base() . '/themes/' . $theme . '/theme.ini');
 
             if (!isset($ini_file['theme_wizard_images'])) {

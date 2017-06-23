@@ -231,9 +231,11 @@ class Database_Static_ibm extends DatabaseDriver
     public function query($query, $connection, $max = null, $start = 0, $fail_ok = false, $get_insert_id = false)
     {
         if ($max !== null) {
-            if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
-                $query .= ' FETCH FIRST ' . strval($max + $start) . ' ROWS ONLY';
-            }
+            $max += $start;
+        }
+
+        if ((strtoupper(substr(ltrim($query), 0, 7)) == 'SELECT ') || (strtoupper(substr(ltrim($query), 0, 8)) == '(SELECT ')) { // Unfortunately we can't apply to DELETE FROM and update :(. But its not too important, LIMIT'ing them was unnecessarily anyway
+            $query .= ' FETCH FIRST ' . strval($max) . ' ROWS ONLY';
         }
 
         $results = @odbc_exec($connection, $query);

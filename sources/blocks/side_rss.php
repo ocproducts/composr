@@ -132,7 +132,7 @@ class Block_side_rss
             if ($__author !== null) {
                 $_author_string = $__author->evaluate();
             }
-            $_author = do_lang_tempcode('RSS_SOURCE_FROM', $_author_string);
+            $_author = do_lang_tempcode('RSS_SOURCE_FROM', escape_html($_author_string));
         } else {
             $_author = new Tempcode();
         }

@@ -51,6 +51,10 @@ class css_and_js_test_set extends cms_test_case
 
         $themes = find_all_themes();
         foreach (array_keys($themes) as $theme) {
+            if ($theme == '_unnamed_') {
+                continue;
+            }
+
             foreach (array('javascript', 'javascript_custom') as $dir) {
                 $this->javaScriptTestForTheme($theme, $dir);
             }
@@ -137,6 +141,10 @@ class css_and_js_test_set extends cms_test_case
     {
         $themes = find_all_themes();
         foreach (array_keys($themes) as $theme) {
+            if ($theme == '_unnamed_') {
+                continue;
+            }
+
             foreach (array('css', 'css_custom') as $dir) {
                 $this->cssTestForTheme($theme, $dir);
             }

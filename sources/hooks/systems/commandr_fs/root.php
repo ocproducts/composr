@@ -206,7 +206,7 @@ class Hook_commandr_fs_root
         }
 
         if (!file_exists($path)) {
-            $ret = @mkdir($path, 0777, true) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', $path), false, true);
+            $ret = @mkdir($path, 0777, true) or warn_exit(do_lang_tempcode('WRITE_ERROR_DIRECTORY', escape_html($path)), false, true);
             fix_permissions($path);
             sync_file($path);
         }

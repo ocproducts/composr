@@ -97,27 +97,29 @@ function init__csp()
     global $CSP_ENABLED;
     $CSP_ENABLED = false;
 
-    define('CSP_PRETTY_STRICT', array(
-        'csp_enabled' => '1',
-        'csp_whitelisted_plugins' => '',
+    if (!defined('CSP_PRETTY_STRICT')) {
+        define('CSP_PRETTY_STRICT', array(
+            'csp_enabled' => '1',
+            'csp_whitelisted_plugins' => '',
 
-        'csp_allow_inline_js' => '0',
-    ));
+            'csp_allow_inline_js' => '0',
+        ));
 
-    define('CSP_VERY_STRICT', array(
-        'csp_enabled' => '1',
-        'csp_exceptions' => '',
-        'csp_whitelisted_plugins' => '',
-        'csp_allowed_iframe_ancestors' => '',
-        'csp_allowed_iframe_descendants' => '',
+        define('CSP_VERY_STRICT', array(
+            'csp_enabled' => '1',
+            'csp_exceptions' => '',
+            'csp_whitelisted_plugins' => '',
+            'csp_allowed_iframe_ancestors' => '',
+            'csp_allowed_iframe_descendants' => '',
 
-        'csp_allow_eval_js' => '0',
-        'csp_allow_dyn_js' => '0',
-        'csp_allow_insecure_resources' => '1',
+            'csp_allow_eval_js' => '0',
+            'csp_allow_dyn_js' => '0',
+            'csp_allow_insecure_resources' => '1',
 
-        // Not usually configurable but may be forced
-        'csp_allow_inline_js' => '0',
-    ));
+            // Not usually configurable but may be forced
+            'csp_allow_inline_js' => '0',
+        ));
+    }
 }
 
 /**
