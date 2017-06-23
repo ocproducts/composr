@@ -66,7 +66,7 @@ class Hook_addon_registry_sugarcrm
      */
     public function get_copyright_attribution()
     {
-        return array();
+        return array('Asa Kusuma');
     }
 
     /**
