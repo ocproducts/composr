@@ -2202,7 +2202,7 @@ class Module_topics
             if ($member_username != '') {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($member_username);
                 if (is_null($member_id)) {
-                    warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $member_username));
+                    warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($member_username)));
                 }
             }
             foreach ($_POST as $key => $_invited_member) {
@@ -2222,7 +2222,7 @@ class Module_topics
 
                 $invited_member = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_invited_member);
                 if (is_null($invited_member)) {
-                    attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', $_invited_member), 'warn');
+                    attach_message(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($_invited_member)), 'warn');
                 } else {
                     $invited_members[] = intval($invited_member);
                 }
@@ -2260,7 +2260,7 @@ class Module_topics
             } else {
                 $intended_solely_for = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_intended_solely_for);
                 if (is_null($intended_solely_for)) {
-                    warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $_intended_solely_for));
+                    warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($_intended_solely_for)));
                 }
             }
         } else {
@@ -4161,11 +4161,11 @@ END;
         $_b = post_param_string('b');
         $a = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_a);
         if (is_null($a)) {
-            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $_a));
+            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($_a)));
         }
         $b = $GLOBALS['FORUM_DRIVER']->get_member_from_username($_b);
         if (is_null($b)) {
-            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $_b));
+            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($_b)));
         }
 
         $GLOBALS['FORUM_DB']->query_update('f_topics', array('t_pt_from' => $a, 't_pt_to' => $b, 't_forum_id' => null), array('id' => $topic_id), '', 1);

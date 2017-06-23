@@ -200,7 +200,7 @@ function missing_template_parameter($origin)
     if (strtolower($template_name) != $template_name && (!is_file(get_file_base() . '/themes/default/templates/' . $template_name . '.tpl'))) {
         return ''; // Some kind of custom template, will be error prone
     }
-    attach_message(do_lang_tempcode('MISSING_TEMPLATE_PARAMETER', $parameter, ($template_name == '') ? '???' : $template_name), 'warn');
+    attach_message(do_lang_tempcode('MISSING_TEMPLATE_PARAMETER', escape_html($parameter), escape_html(($template_name == '') ? '???' : $template_name)), 'warn');
     return '';
 }
 

@@ -526,7 +526,7 @@ function test_url($url_full, $tag_type, $given_url, $source_member)
                     '_GUID' => '7bcea67226f89840394614d88020e3ac',
                     'RESTRICT_VISIBILITY' => strval($source_member),
                     //'INLINE' => true, Looks awful
-                    'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', $tag_type, escape_html($url_full)),
+                    'WARNING' => do_lang_tempcode('MISSING_URL_COMCODE', escape_html($tag_type), escape_html($url_full)),
                 ));
             }
             if (isset($COMCODE_BROKEN_URLS)) {
@@ -630,7 +630,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
 
             $xml_tag_stack = array();
             $matches = array();
-            $num_matches = preg_match_all('#<(/)?([^\s<>]*)(\s[^<>]*)?>#', $eval, $matches);
+            $num_matches = preg_match_all('#<(/)?([^\s<>]*)(\s[^<>]*)?' . '>#', $eval, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 $xml_tag = $matches[2][$i];
 
