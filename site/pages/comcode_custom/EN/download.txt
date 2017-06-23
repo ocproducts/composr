@@ -127,15 +127,15 @@
 
 				<div class="niceBoxInner">
 					<ul class="liRcol">
-						<li>Apache or IIS or nginx</li>
-						<li>50MB of disk space</li>
-						<li>MySQL 5.5.3 or higher</li>
 						<li>PHP 5.1 or higher, with the following supported:
 							<ul>
 								<li>GD2</li>
-								<li>Memory limit 32MB or higher</li>
+								<li>Memory limit 64MB+</li>
 							</ul>
 						</li>
+						<li>MySQL 5.5.3 or higher</li>
+						<li>Apache or IIS recommended</li>
+						<li>50MB of disk space</li>
 					</ul>
 
 					<!--
