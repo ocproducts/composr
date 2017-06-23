@@ -69,7 +69,7 @@ if ($ok) {
     // Save long-term access tokens if it passed through okay
     set_value($service_name . '_access_token', $token['oauth_token'], true);
     set_value($service_name . '_access_token_secret', $token['oauth_token_secret'], true);
-    $out = do_lang_tempcode('OAUTH_SUCCESS', $service_name);
+    $out = do_lang_tempcode('OAUTH_SUCCESS', escape_html($service_name));
 }
 
 $title->evaluate_echo();

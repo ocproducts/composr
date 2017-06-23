@@ -91,7 +91,7 @@ class Block_main_content
         $include_breadcrumbs = (isset($map['include_breadcrumbs']) ? $map['include_breadcrumbs'] : '0') == '1';
 
         if ((!file_exists(get_file_base() . '/sources/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/systems/content_meta_aware/' . filter_naughty_harsh($content_type, true) . '.php'))) {
-            return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', $content_type), '', 'red_alert');
+            return paragraph(do_lang_tempcode('NO_SUCH_CONTENT_TYPE', escape_html($content_type)), '', 'red_alert');
         }
 
         require_code('content');
@@ -250,7 +250,7 @@ class Block_main_content
                     '_GUID' => ($guid != '') ? $guid : '13f060922a5ab6c370f218b2ecc6fe9c',
                     'HIGH' => true,
                     'TITLE' => $title,
-                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES', $content_type),
+                    'MESSAGE' => do_lang_tempcode('NO_ENTRIES', escape_html($content_type)),
                     'ADD_NAME' => content_language_string($content_type, 'ADD'),
                     'SUBMIT_URL' => str_replace('=%21', '__ignore=1', $submit_url),
                 ));
@@ -286,7 +286,7 @@ class Block_main_content
                     '_GUID' => ($guid != '') ? $guid : '12d8cdc62cd78480b83c8daaaa68b686',
                     'HIGH' => true,
                     'TITLE' => $title,
-                    'MESSAGE' => do_lang_tempcode('MISSING_RESOURCE', $content_type),
+                    'MESSAGE' => do_lang_tempcode('MISSING_RESOURCE', escape_html($content_type)),
                     'ADD_NAME' => content_language_string($content_type, 'ADD'),
                     'SUBMIT_URL' => str_replace('=%21', '__ignore=1', $submit_url),
                 ));
@@ -295,7 +295,7 @@ class Block_main_content
         }
 
         if ($award_content_row === null) {
-            return paragraph(do_lang_tempcode('MISSING_RESOURCE', $content_type), '', 'red_alert');
+            return paragraph(do_lang_tempcode('MISSING_RESOURCE', escape_html($content_type)), '', 'red_alert');
         }
 
         $submit_url = str_replace('%21', $content_id, $submit_url);

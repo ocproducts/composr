@@ -421,8 +421,8 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
 /**
  * We have just jumped a UTC-based date (i.e. timezoneless) forward by calendar units, compensate for any DST ramifications in the target timezone.
  *
- * @param  integer $hour Current hour
- * @param  integer $minute Current minute
+ * @param  ?integer $hour Current hour (null: no start time)
+ * @param  ?integer $minute Current minute (null: no start time)
  * @param  integer $day_of_month Current day
  * @param  integer $month Current month
  * @param  integer $year Current year
@@ -437,6 +437,10 @@ function find_periods_recurrence($timezone, $do_timezone_conv, $start_year, $sta
 function _compensate_for_dst_change(&$hour, &$minute, $day_of_month, $month, $year, $timezone, $do_timezone_conv, $dif_day, $dif_month, $dif_year)
 {
     // NB: When debugging this be a little careful that the DST change for viewing timezone may not be the same as $timezone, so the hour may indeed jump about in expected output  ---  also check e_do_timezone_conv may not be set on the event, as that heavily effects what you see in the timestamp pipeline
+
+    if ($hour === null) {
+        return;
+    }
 
     $new_time_utc = mktime($hour, $minute, 0, $month, $day_of_month, $year);
     $old_time_utc = mktime($hour, $minute, 0, $month - $dif_month, $day_of_month - $dif_day, $year - $dif_year);
