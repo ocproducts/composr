@@ -1121,6 +1121,13 @@ function step_5()
         exit(do_lang('INST_POST_ERROR'));
     }
 
+    if (isset($_POST['table_prefix'])) {
+        $_POST['table_prefix'] = preg_replace('#[^\w]#', '', $_POST['table_prefix']);
+    }
+    if (isset($_POST['cns_table_prefix'])) {
+        $_POST['cns_table_prefix'] = preg_replace('#[^\w]#', '', $_POST['cns_table_prefix']);
+    }
+
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(180);
     }
