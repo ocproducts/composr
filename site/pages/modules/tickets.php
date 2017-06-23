@@ -673,7 +673,7 @@ class Module_tickets
             }
             if ($closed) {
                 $new_ticket_url = build_url(array('page' => '_SELF', 'type' => 'ticket', 'ticket_type_id' => $ticket_type_id), '_SELF');
-                attach_message(do_lang_tempcode('TICKET_IS_CLOSED', $new_ticket_url), 'notice');
+                attach_message(do_lang_tempcode('TICKET_IS_CLOSED', escape_html($new_ticket_url->evaluate())), 'notice');
             }
 
             // URL To add a new ticket

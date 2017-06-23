@@ -43,7 +43,7 @@ class Hook_task_import_filesystem_downloads
         $base_url = get_custom_base_url() . '/' . $server_path;
 
         if (!file_exists($base_path)) {
-            return array(null, do_lang_tempcode('DIRECTORY_NOT_FOUND', $server_path));
+            return array(null, do_lang_tempcode('DIRECTORY_NOT_FOUND', escape_html($server_path)));
         }
 
         log_it('FILESYSTEM_DOWNLOADS');
@@ -51,10 +51,10 @@ class Hook_task_import_filesystem_downloads
         /*  Needless because it's relative to Composr directory anyway
         // Failsafe check
         if ((file_exists($base_path . '/dev')) && (file_exists($base_path . '/etc')) && (file_exists($base_path . '/sbin'))) {
-            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', $server_path));
+            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', escape_html($server_path)));
         }
         if ((file_exists($base_path . '/Program files')) && ((file_exists($base_path . '/Users')) || (file_exists($base_path . '/Documents and settings'))) && (file_exists($base_path . '/Windows'))) {
-            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', $server_path));
+            return array(null, do_lang_tempcode('POINTS_TO_ROOT_SCARY', escape_html($server_path)));
         }
         */
 

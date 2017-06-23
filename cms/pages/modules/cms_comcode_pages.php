@@ -193,7 +193,7 @@ class Module_cms_comcode_pages
      *
      * @param  LANGUAGE_NAME $lang The language we are searching for pages of
      * @param  ?array $zone_filter List of zones to limit to (null: none)
-     * @param  boolean $check_permissions Whether to check edit permissions (null: none)
+     * @param  boolean $check_permissions Whether to check edit permissions
      * @return array The map (page name => map [path & row])
      */
     public function get_comcode_files_list_disk_search($lang, $zone_filter, $check_permissions = true)

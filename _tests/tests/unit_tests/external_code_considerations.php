@@ -140,6 +140,14 @@ class external_code_considerations_test_set extends cms_test_case
                         continue;
                     }
 
+                    if (is_dir(get_file_base() . '/' . $dir . '/' . $f)) {
+                        $contents = scandir(get_file_base() . '/' . $dir . '/' . $f);
+                        if (($contents == array('.', '..')) || ($contents == array('.', '..', '.DS_Store'))) {
+                            // Empty directory
+                            continue;
+                        }
+                    }
+
                     $this->assertTrue(in_array($dir . '/' . $f, $all_parts), 'Should be included in line_count.sh/.editorconfig or set as a skip exception in this test: ' . $dir . '/' . $f);
                 }
                 closedir($dh);
