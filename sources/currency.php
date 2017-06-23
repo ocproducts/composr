@@ -305,7 +305,6 @@ function get_currency_symbol($currency)
         'ALL' => 'L',
         'AMD' => '&#1332;&#1408;&#1377;&#1396;',
         'ANG' => '&fnof;',
-        'ANG' => '&fnof;',
         'AOA' => 'Kz',
         'ARS' => '$',
         'AUD' => 'A$',
@@ -477,9 +476,9 @@ function get_currency_symbol($currency)
         }
     }
 
-    $ret = array($ret, $has_primacy);
-    $cache[$currency] = $ret;
-    return $ret;
+    $_ret = array($ret, $has_primacy);
+    $cache[$currency] = $_ret;
+    return $_ret;
 }
 
 /**

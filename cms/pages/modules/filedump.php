@@ -1087,11 +1087,11 @@ class Module_filedump
 
             switch ($action) {
                 case 'delete':
-                    $text = do_lang_tempcode('CONFIRM_DELETE', $files_str);
+                    $text = do_lang_tempcode('CONFIRM_DELETE', escape_html($files_str));
                     break;
 
                 case 'move':
-                    $text = do_lang_tempcode('CONFIRM_MOVE', $files_str, $target);
+                    $text = do_lang_tempcode('CONFIRM_MOVE', escape_html($files_str), $target);
                     break;
             }
 

@@ -349,6 +349,7 @@ function phase_2()
                 </ul></li>
                 <li>Zip the graphics into <kbd>erd_rendered__by_addon.zip</kbd></li>
                 <li>Put <kbd>erd_rendered__by_addon.zip</kbd> and <kbd>erd_sql__by_addon.zip</kbd> into <kbd>docs</kbd>)</li>
+                <li>Get <a target="_blank" href="' . get_base_url() . '/adminzone/index.php?page=sql-show-tables-by-addon&amp;keep_devtest=1">table details</a> and update <kbd>docs/codebook_data_dictionary.docx</kbd></li>
                 <li>Git: Commit/push</li>
             </ul></li>
 

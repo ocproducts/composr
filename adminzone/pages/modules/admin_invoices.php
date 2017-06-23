@@ -236,7 +236,7 @@ class Module_admin_invoices
         $to = post_param_string('to');
         $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($to);
         if (is_null($member_id)) {
-            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $to));
+            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($to)));
         }
 
         $_amount = post_param_string('amount', '');

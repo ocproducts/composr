@@ -91,7 +91,7 @@ class Module_buildr
             $GLOBALS['SITE_DB']->alter_table_field('w_realms', 'private', 'BINARY', 'r_private');
         }
 
-        if ((!$upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->alter_table_field('w_items', 'cost', 'INTEGER', 'price');
         }
 
@@ -259,7 +259,7 @@ class Module_buildr
                 'a28' => 'SHORT_TEXT',
                 'a29' => 'SHORT_TEXT',
                 'a30' => 'SHORT_TEXT',
-            ), true);
+            ), true, false, true);
 
             require_code('buildr');
 
@@ -300,9 +300,10 @@ class Module_buildr
     {
         i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
 
-        $type = get_param_string('type', 'room');
+        $type = either_param_string('type', 'room');
 
         require_lang('buildr');
+        require_lang('metadata');
 
         if ($type == 'confirm') {
             $this->title = get_screen_title('W_CONFIRM_TITLE');
@@ -729,8 +730,7 @@ class Module_buildr
                 $tpl = do_template('W_REALM_SCREEN', array(
                     '_GUID' => '7ae26fe1766aed02233e1be84772759b',
                     'PRICE' => integer_format(get_product_price_points('mud_realm')),
-                    'TEXT' => paragraph(do_lang_tempcode('W_ADD_REALM_TEXT',
-                        integer_format($left))),
+                    'TEXT' => paragraph(do_lang_tempcode('W_ADD_REALM_TEXT', integer_format($left))),
                     'TITLE' => $this->title,
                     'PAGE_TYPE' => 'addrealm',
                     'QA' => $_qa,
@@ -811,8 +811,8 @@ class Module_buildr
             }
             if ($type == 'teleport-person') {
                 $ast = strpos($param, ':');
-                $b = strpos($param, ':', $ast + 1);
-                $realm = substr($param, 0, $ast);
+                $b = @strpos($param, ':', $ast + 1);
+                $realm = intval(substr($param, 0, $ast));
                 $x = intval(substr($param, $ast + 1, $b - $ast - 1));
                 $y = intval(substr($param, $b + 1));
                 basic_enter_room($dest_member_id, $realm, $x, $y);

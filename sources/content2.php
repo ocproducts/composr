@@ -87,9 +87,9 @@ function get_order_field($entry_type, $category_type, $current_order, $max = nul
 
     if (is_null($description)) {
         if (is_null($category_type)) {
-            $description = do_lang_tempcode('DESCRIPTION_ORDER_NO_CATS', $entry_type);
+            $description = do_lang_tempcode('DESCRIPTION_ORDER_NO_CATS', escape_html($entry_type));
         } else {
-            $description = do_lang_tempcode('DESCRIPTION_ORDER', $entry_type, $category_type);
+            $description = do_lang_tempcode('DESCRIPTION_ORDER', escape_html($entry_type), escape_html($category_type));
         }
     }
 

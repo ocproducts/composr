@@ -53,8 +53,8 @@ CREATE TABLE cms_menu_items (
     i_menu varchar(80) NOT NULL,
     i_order integer NOT NULL,
     i_parent integer NULL,
-    i_caption integer NOT NULL,
-    i_caption_long integer NOT NULL,
+    i_caption longtext NOT NULL,
+    i_caption_long longtext NOT NULL,
     i_url varchar(255) NOT NULL,
     i_check_permissions tinyint(1) NOT NULL,
     i_expanded tinyint(1) NOT NULL,
@@ -62,6 +62,10 @@ CREATE TABLE cms_menu_items (
     i_include_sitemap tinyint NOT NULL,
     i_page_only varchar(80) NOT NULL,
     i_theme_img_code varchar(80) NOT NULL,
+    i_caption__text_parsed longtext NOT NULL,
+    i_caption__source_user integer DEFAULT 1 NOT NULL,
+    i_caption_long__text_parsed longtext NOT NULL,
+    i_caption_long__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -218,9 +222,9 @@ DROP TABLE IF EXISTS cms_news;
 CREATE TABLE cms_news (
     id integer unsigned auto_increment NOT NULL,
     date_and_time integer unsigned NOT NULL,
-    title integer NOT NULL,
-    news integer NOT NULL,
-    news_article integer NOT NULL,
+    title longtext NOT NULL,
+    news longtext NOT NULL,
+    news_article longtext NOT NULL,
     allow_rating tinyint(1) NOT NULL,
     allow_comments tinyint NOT NULL,
     allow_trackbacks tinyint(1) NOT NULL,
@@ -232,6 +236,12 @@ CREATE TABLE cms_news (
     news_category integer NOT NULL,
     news_views integer NOT NULL,
     news_image varchar(255) BINARY NOT NULL,
+    title__text_parsed longtext NOT NULL,
+    title__source_user integer DEFAULT 1 NOT NULL,
+    news__text_parsed longtext NOT NULL,
+    news__source_user integer DEFAULT 1 NOT NULL,
+    news_article__text_parsed longtext NOT NULL,
+    news_article__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -265,7 +275,7 @@ DROP TABLE IF EXISTS cms_news_categories;
 
 CREATE TABLE cms_news_categories (
     id integer unsigned auto_increment NOT NULL,
-    nc_title integer unsigned NOT NULL,
+    nc_title longtext NOT NULL,
     nc_owner integer NULL,
     nc_img varchar(255) BINARY NOT NULL,
     notes longtext NOT NULL,
@@ -396,8 +406,8 @@ DROP TABLE IF EXISTS cms_newsletters;
 
 CREATE TABLE cms_newsletters (
     id integer unsigned auto_increment NOT NULL,
-    title integer unsigned NOT NULL,
-    description integer unsigned NOT NULL,
+    title longtext NOT NULL,
+    description longtext NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -436,17 +446,17 @@ DROP TABLE IF EXISTS cms_poll;
 
 CREATE TABLE cms_poll (
     id integer unsigned auto_increment NOT NULL,
-    question integer NOT NULL,
-    option1 integer NOT NULL,
-    option2 integer NOT NULL,
-    option3 integer NULL,
-    option4 integer NULL,
-    option5 integer NULL,
-    option6 integer NULL,
-    option7 integer NULL,
-    option8 integer NULL,
-    option9 integer NULL,
-    option10 integer NULL,
+    question longtext NOT NULL,
+    option1 longtext NOT NULL,
+    option2 longtext NOT NULL,
+    option3 longtext NOT NULL,
+    option4 longtext NOT NULL,
+    option5 longtext NOT NULL,
+    option6 longtext NOT NULL,
+    option7 longtext NOT NULL,
+    option8 longtext NOT NULL,
+    option9 longtext NOT NULL,
+    option10 longtext NOT NULL,
     votes1 integer NOT NULL,
     votes2 integer NOT NULL,
     votes3 integer NOT NULL,
@@ -468,6 +478,28 @@ CREATE TABLE cms_poll (
     add_time integer NOT NULL,
     poll_views integer NOT NULL,
     edit_date integer unsigned NULL,
+    question__text_parsed longtext NOT NULL,
+    question__source_user integer DEFAULT 1 NOT NULL,
+    option1__text_parsed longtext NOT NULL,
+    option1__source_user integer DEFAULT 1 NOT NULL,
+    option2__text_parsed longtext NOT NULL,
+    option2__source_user integer DEFAULT 1 NOT NULL,
+    option3__text_parsed longtext NOT NULL,
+    option3__source_user integer DEFAULT 1 NOT NULL,
+    option4__text_parsed longtext NOT NULL,
+    option4__source_user integer DEFAULT 1 NOT NULL,
+    option5__text_parsed longtext NOT NULL,
+    option5__source_user integer DEFAULT 1 NOT NULL,
+    option6__text_parsed longtext NOT NULL,
+    option6__source_user integer DEFAULT 1 NOT NULL,
+    option7__text_parsed longtext NOT NULL,
+    option7__source_user integer DEFAULT 1 NOT NULL,
+    option8__text_parsed longtext NOT NULL,
+    option8__source_user integer DEFAULT 1 NOT NULL,
+    option9__text_parsed longtext NOT NULL,
+    option9__source_user integer DEFAULT 1 NOT NULL,
+    option10__text_parsed longtext NOT NULL,
+    option10__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -773,10 +805,12 @@ DROP TABLE IF EXISTS cms_quiz_question_answers;
 CREATE TABLE cms_quiz_question_answers (
     id integer unsigned auto_increment NOT NULL,
     q_question integer NOT NULL,
-    q_answer_text integer NOT NULL,
+    q_answer_text longtext NOT NULL,
     q_is_correct tinyint(1) NOT NULL,
     q_order integer NOT NULL,
-    q_explanation integer unsigned NOT NULL,
+    q_explanation longtext NOT NULL,
+    q_answer_text__text_parsed longtext NOT NULL,
+    q_answer_text__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -790,11 +824,15 @@ CREATE TABLE cms_quiz_questions (
     id integer unsigned auto_increment NOT NULL,
     q_type varchar(80) NOT NULL,
     q_quiz integer NOT NULL,
-    q_question_text integer NOT NULL,
-    q_question_extra_text integer NOT NULL,
+    q_question_text longtext NOT NULL,
+    q_question_extra_text longtext NOT NULL,
     q_order integer NOT NULL,
     q_required tinyint(1) NOT NULL,
     q_marked tinyint(1) NOT NULL,
+    q_question_text__text_parsed longtext NOT NULL,
+    q_question_text__source_user integer DEFAULT 1 NOT NULL,
+    q_question_extra_text__text_parsed longtext NOT NULL,
+    q_question_extra_text__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -816,9 +854,9 @@ DROP TABLE IF EXISTS cms_quizzes;
 CREATE TABLE cms_quizzes (
     id integer unsigned auto_increment NOT NULL,
     q_timeout integer NULL,
-    q_name integer unsigned NOT NULL,
-    q_start_text integer NOT NULL,
-    q_end_text integer NOT NULL,
+    q_name longtext NOT NULL,
+    q_start_text longtext NOT NULL,
+    q_end_text longtext NOT NULL,
     q_notes longtext NOT NULL,
     q_percentage integer NOT NULL,
     q_open_time integer unsigned NOT NULL,
@@ -831,10 +869,16 @@ CREATE TABLE cms_quizzes (
     q_submitter integer NOT NULL,
     q_points_for_passing integer NOT NULL,
     q_tied_newsletter integer NULL,
-    q_end_text_fail integer NOT NULL,
+    q_end_text_fail longtext NOT NULL,
     q_reveal_answers tinyint(1) NOT NULL,
     q_shuffle_questions tinyint(1) NOT NULL,
     q_shuffle_answers tinyint(1) NOT NULL,
+    q_start_text__text_parsed longtext NOT NULL,
+    q_start_text__source_user integer DEFAULT 1 NOT NULL,
+    q_end_text__text_parsed longtext NOT NULL,
+    q_end_text__source_user integer DEFAULT 1 NOT NULL,
+    q_end_text_fail__text_parsed longtext NOT NULL,
+    q_end_text_fail__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -966,7 +1010,7 @@ CREATE TABLE cms_seo_meta (
     id integer unsigned auto_increment NOT NULL,
     meta_for_type varchar(80) NOT NULL,
     meta_for_id varchar(80) NOT NULL,
-    meta_description integer unsigned NOT NULL,
+    meta_description longtext NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -984,7 +1028,7 @@ CREATE TABLE cms_seo_meta_keywords (
     id integer unsigned auto_increment NOT NULL,
     meta_for_type varchar(80) NOT NULL,
     meta_for_id varchar(80) NOT NULL,
-    meta_keyword integer unsigned NOT NULL,
+    meta_keyword longtext NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -1151,17 +1195,17 @@ CREATE TABLE cms_staff_checklist_cus_tasks (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1495318784, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1495318784, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1498191720, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1498191720, 0, '', NULL);
 
 DROP TABLE IF EXISTS cms_staff_links;
 
@@ -1269,7 +1313,7 @@ CREATE TABLE cms_task_queue (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, '946c55e15ff16', 0, 0);
+INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, '5ce63c8994eaf', 0, 0);
 
 DROP TABLE IF EXISTS cms_temp_block_permissions;
 
@@ -1313,7 +1357,7 @@ DROP TABLE IF EXISTS cms_ticket_types;
 
 CREATE TABLE cms_ticket_types (
     id integer unsigned auto_increment NOT NULL,
-    ticket_type_name integer unsigned NOT NULL,
+    ticket_type_name longtext NOT NULL,
     guest_emails_mandatory tinyint(1) NOT NULL,
     search_faq tinyint(1) NOT NULL,
     cache_lead_time integer unsigned NULL,
@@ -1469,14 +1513,11 @@ CREATE TABLE cms_values (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1495318771);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1495318771);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1495318771);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.10', 1495318772);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.10', 1495318772);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('users_online', '0', 1495318780);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak', '0', 1495318780);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak_week', '0', 1495318780);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1498191701);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1498191702);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1498191702);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.10', 1498191702);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.10', 1498191702);
 
 ALTER TABLE cms101_values ADD INDEX date_and_time (date_and_time);
 
@@ -1489,7 +1530,7 @@ CREATE TABLE cms_values_elective (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1495318772);
+INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1498191703);
 
 DROP TABLE IF EXISTS cms_video_transcoding;
 
@@ -1517,7 +1558,7 @@ CREATE TABLE cms_videos (
     cat varchar(80) NOT NULL,
     url varchar(255) BINARY NOT NULL,
     thumb_url varchar(255) BINARY NOT NULL,
-    description integer NOT NULL,
+    description longtext NOT NULL,
     allow_rating tinyint(1) NOT NULL,
     allow_comments tinyint NOT NULL,
     allow_trackbacks tinyint(1) NOT NULL,
@@ -1530,7 +1571,9 @@ CREATE TABLE cms_videos (
     video_width integer NOT NULL,
     video_height integer NOT NULL,
     video_length integer NOT NULL,
-    title integer unsigned NOT NULL,
+    title longtext NOT NULL,
+    description__text_parsed longtext NOT NULL,
+    description__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -1575,18 +1618,20 @@ DROP TABLE IF EXISTS cms_wiki_pages;
 
 CREATE TABLE cms_wiki_pages (
     id integer unsigned auto_increment NOT NULL,
-    title integer unsigned NOT NULL,
+    title longtext NOT NULL,
     notes longtext NOT NULL,
-    description integer NOT NULL,
+    description longtext NOT NULL,
     add_date integer unsigned NOT NULL,
     edit_date integer unsigned NULL,
     wiki_views integer NOT NULL,
     hide_posts tinyint(1) NOT NULL,
     submitter integer NOT NULL,
+    description__text_parsed longtext NOT NULL,
+    description__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1495318784, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_5920c0fc5c49e1.66384358_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_5920c0fc5c49e1.66384358_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_5920c0fc5c49e1.66384358_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1498191719, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_594c9760af82a1.33121872_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_594c9760af82a1.33121872_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_594c9760af82a1.33121872_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
 ALTER TABLE cms101_wiki_pages ADD FULLTEXT description (description);
@@ -1610,12 +1655,14 @@ DROP TABLE IF EXISTS cms_wiki_posts;
 CREATE TABLE cms_wiki_posts (
     id integer unsigned auto_increment NOT NULL,
     page_id integer NOT NULL,
-    the_message integer NOT NULL,
+    the_message longtext NOT NULL,
     date_and_time integer unsigned NOT NULL,
     validated tinyint(1) NOT NULL,
     wiki_views integer NOT NULL,
     member_id integer NOT NULL,
     edit_date integer unsigned NULL,
+    the_message__text_parsed longtext NOT NULL,
+    the_message__source_user integer DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
@@ -1690,9 +1737,9 @@ DROP TABLE IF EXISTS cms_zones;
 
 CREATE TABLE cms_zones (
     zone_name varchar(80) NOT NULL,
-    zone_title integer unsigned NOT NULL,
+    zone_title longtext NOT NULL,
     zone_default_page varchar(80) NOT NULL,
-    zone_header_text integer unsigned NOT NULL,
+    zone_header_text longtext NOT NULL,
     zone_theme varchar(80) NOT NULL,
     zone_require_session tinyint(1) NOT NULL,
     PRIMARY KEY (zone_name)

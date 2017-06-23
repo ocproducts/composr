@@ -249,7 +249,7 @@ function get_workflow_form($workflow_content_id)
                 $approval_status[$approve_count][] = $approval_point_name;        // Pretty name
                 $approval_status[$approve_count][] = 'approval_' . strval($point);        // Name
                 $approval_status[$approve_count][] = array_key_exists($point, $statuses) ? $statuses[$point] : 0;        // The value (defaults to 0)
-                $approval_status[$approve_count][] = do_lang_tempcode('APPROVAL_TICK_DESCRIPTION', $approval_point_name);        // Description
+                $approval_status[$approve_count][] = do_lang_tempcode('APPROVAL_TICK_DESCRIPTION', escape_html($approval_point_name));        // Description
                 $approval_status[$approve_count][] = false;        // Not disabled, since we have permission
 
                 // Add the details to the uneditable, existing status values
@@ -258,10 +258,10 @@ function get_workflow_form($workflow_content_id)
                 $existing_status[$approve_count][] = 'existing_' . strval($point);        // Name
                 if (array_key_exists($point, $statuses) && ($statuses[$point] == 1)) {
                     $existing_status[$approve_count][] = 1;        // The value (1 due to our if condition)
-                    $existing_status[$approve_count][] = do_lang_tempcode('ALREADY_APPROVED', $approval_point_name);        // Description
+                    $existing_status[$approve_count][] = do_lang_tempcode('ALREADY_APPROVED', escape_html($approval_point_name));        // Description
                 } else {
                     $existing_status[$approve_count][] = 0;        // The value defaults to 0
-                    $existing_status[$approve_count][] = do_lang_tempcode('NOT_YET_APPROVED', $approval_point_name);        // Description
+                    $existing_status[$approve_count][] = do_lang_tempcode('NOT_YET_APPROVED', escape_html($approval_point_name));        // Description
                 }
                 $existing_status[$approve_count][] = true;        // Disabled, since this is for informative purposes only
 
@@ -295,7 +295,7 @@ function get_workflow_form($workflow_content_id)
             $existing_status[$approve_count][] = $approval_point_name;        // Pretty name
             $existing_status[$approve_count][] = 'approval_' . strval($point);        // Name
             $existing_status[$approve_count][] = array_key_exists($point, $statuses) ? $statuses[$point] : 0;        // Value (defaults to 0)
-            $existing_status[$approve_count][] = do_lang_tempcode('APPROVAL_TICK_DESCRIPTION', $approval_point_name);        // Description
+            $existing_status[$approve_count][] = do_lang_tempcode('APPROVAL_TICK_DESCRIPTION', escape_html($approval_point_name));        // Description
             $existing_status[$approve_count][] = true;        // Disabled, we have no permission
             // Increment the unique ID for the array elements
             $approve_count++;
@@ -412,7 +412,7 @@ function get_workflow_form($workflow_content_id)
         if (is_null($username)) {
             $username = do_lang('DELETED');
         }
-        $submitter_details[] = do_lang_tempcode('NEXT_APPROVAL_AUTHOR', $username);        // Description
+        $submitter_details[] = do_lang_tempcode('NEXT_APPROVAL_AUTHOR', escape_html($username));        // Description
         $send_to_boxes[] = $submitter_details;        // Then tack it on the end
     }
 
