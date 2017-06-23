@@ -1177,7 +1177,7 @@ class Module_admin_newsletter extends Standard_crud_module
         }
         $default_subject = post_param_string('subject', $default_subject);
 
-        $fields->attach(form_input_line_comcode(do_lang_tempcode('SUBJECT'), do_lang_tempcode('NEWSLETTER_DESCRIPTION_TITLE', $periodic_subject), 'subject', $default_subject, true));
+        $fields->attach(form_input_line_comcode(do_lang_tempcode('SUBJECT'), do_lang_tempcode('NEWSLETTER_DESCRIPTION_TITLE', escape_html($periodic_subject)), 'subject', $default_subject, true));
 
         $in_full = post_param_integer('in_full', 0);
         $chosen_categories = post_param_string('chosen_categories', '');

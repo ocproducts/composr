@@ -1562,7 +1562,7 @@ class Module_calendar
             $recurrence = do_lang_tempcode($l_code[0]);
 
             if (!is_null($event['e_recurrences'])) {
-                $recurrence = do_lang_tempcode('RECURRENCE_ITERATION', $recurrence, make_string_tempcode(integer_format($event['e_recurrences'])));
+                $recurrence = do_lang_tempcode('RECURRENCE_ITERATION', $recurrence, make_string_tempcode(escape_html(integer_format($event['e_recurrences']))));
             }
         } elseif ($day == '') {
             $day = $first_date;

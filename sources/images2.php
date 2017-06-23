@@ -187,10 +187,10 @@ function _convert_image($from, $to, $width, $height, $box_width = -1, $exit_on_e
     $red = null;
 
     if (is_null($thumb_options)) {
-        if ($width == 0) {
+        if ($width === 0) {
             $width = 1;
         }
-        if ($height == 0) {
+        if ($height === 0) {
             $height = 1;
         }
 

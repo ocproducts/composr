@@ -8,7 +8,7 @@
 			{!W_MOVEMENT_TABLE}
 		</p>
 
-		<table class="results_table">
+		<table class="results_table columned_table">
 			<thead>
 				<tr>
 					<th colspan="3" class="head">

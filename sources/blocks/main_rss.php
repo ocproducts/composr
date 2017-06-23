@@ -234,7 +234,7 @@ class Block_main_rss
             if (!is_null($__author)) {
                 $_author_string = $__author->evaluate();
             }
-            $author = do_lang_tempcode('RSS_SOURCE_FROM', $_author_string);
+            $author = do_lang_tempcode('RSS_SOURCE_FROM', escape_html($_author_string));
         } else {
             $author = new Tempcode();
         }

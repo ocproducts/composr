@@ -56,7 +56,7 @@ class Block_main_custom_gfx
         $type_id = empty($map['param']) ? 'rollover_button' : $map['param'];
 
         if ((!file_exists(get_file_base() . '/sources/hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id) . '.php')) && (!file_exists(get_file_base() . '/sources_custom/hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id) . '.php'))) {
-            return paragraph(do_lang_tempcode('NO_SUCH_RENDERER', $type_id), '', 'red_alert');
+            return paragraph(do_lang_tempcode('NO_SUCH_RENDERER', escape_html($type_id)), '', 'red_alert');
         }
 
         require_code('hooks/blocks/main_custom_gfx/' . filter_naughty_harsh($type_id), true);

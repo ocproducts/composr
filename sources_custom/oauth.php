@@ -83,7 +83,7 @@ function retrieve_oauth2_token($service_name, $service_title, $auth_url, $endpoi
         $parsed_result = json_decode($result);
         set_value($service_name . '_refresh_token', $parsed_result->refresh_token, true);
 
-        $out = do_lang_tempcode('OAUTH_SUCCESS', $service_name);
+        $out = do_lang_tempcode('OAUTH_SUCCESS', escape_html($service_name));
     } else {
         $out = do_lang_tempcode('SOME_ERRORS_OCCURRED');
     }
