@@ -449,7 +449,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
 function delete_csv_column($in_path, $column_name)
 {
     if (!is_writable_wrap($in_path)) {
-        fatal_exit(do_lang_tempcode('WRITE_ERROR', $in_path));
+        fatal_exit(do_lang_tempcode('WRITE_ERROR', escape_html($in_path)));
     }
 
     // Find which field index this named column is

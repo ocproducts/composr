@@ -113,7 +113,7 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
     $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) + $amount));
     $their_username = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id);
     if (is_null($their_username)) {
-        warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', $recipient_id));
+        warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html(strval($recipient_id))));
     }
     $their_displayname = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id, true);
     $yes = $GLOBALS['FORUM_DRIVER']->get_member_email_allowed($recipient_id);

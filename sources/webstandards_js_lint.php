@@ -240,13 +240,16 @@ function _check_js($structure)
 {
     global $JS_GLOBAL_VARIABLES, $JS_LOCAL_VARIABLES;
 
-    $JS_LOCAL_VARIABLES = $JS_GLOBAL_VARIABLES;
-
+    // Put all functions in as local variables
     foreach ($structure['functions'] as $function) {
         $JS_GLOBAL_VARIABLES[$function['name']] = array('function_return' => '!Object', 'is_global' => true, 'types' => array('function'), 'unused_value' => null, 'first_mention' => $function['offset']);
     }
+
+    // Check global commands
+    $JS_LOCAL_VARIABLES = $JS_GLOBAL_VARIABLES;
     js_check_command($structure['main'], 0);
-    // Update global variables
+
+    // Update global variables for changes within the global commands
     foreach ($JS_LOCAL_VARIABLES as $name => $v) {
         if (isset($JS_GLOBAL_VARIABLES[$name])) {
             $JS_GLOBAL_VARIABLES[$name]['types'] = array_unique(array_merge($JS_GLOBAL_VARIABLES[$name]['types'], $v['types']));
@@ -255,6 +258,8 @@ function _check_js($structure)
             $JS_GLOBAL_VARIABLES[$name]['is_global'] = true;
         }
     }
+
+    // Check all functions
     foreach ($structure['functions'] as $function) {
         $JS_LOCAL_VARIABLES = $JS_GLOBAL_VARIABLES;
         js_check_function($function);
@@ -377,6 +382,28 @@ function js_check_command($command, $depth)
     }
 
     global $JS_LOCAL_VARIABLES, $CURRENT_CLASS;
+
+    // Need to load up functions in advance
+    foreach ($command as $i => $c) {
+        if ($c == array()) {
+            continue;
+        }
+
+        if (is_integer($c[count($c) - 1])) {
+            $c_pos = $c[count($c) - 1];
+        } else {
+            $c_pos = $c[count($c) - 2];
+        }
+
+        switch ($c[0]) {
+            case 'INNER_FUNCTION':
+                js_add_variable_reference($c[1]['name'], $c_pos, true);
+                js_set_composr_type($c[1]['name'], 'function');
+                break;
+        }
+    }
+
+    // Scan rest of commands
     foreach ($command as $i => $c) {
         if ($c == array()) {
             continue;
@@ -826,9 +853,7 @@ function js_check_variable($variable, $reference = false, $function_duality = fa
             if (($reference) || (count($variable[2]) != 0) || (!isset($JS_LOCAL_VARIABLES[$identifier]))) {
                 js_add_variable_reference($identifier, $variable[count($variable) - 1], !$reference, ($reference) || (count($variable[2]) != 0), null, $is_call && count($variable[2]) == 0);
             } else {
-                if ((!isset($JS_LOCAL_VARIABLES[$identifier])) && ($identifier != 'this') && ($identifier != '__return')) {
-                    js_log_warning('CHECKER', 'Variable (' . $identifier . ') was used without being declared', $variable[3]);
-                }
+                js_mention_undeclared_variables($identifier, $variable[3]); // js_add_variable_reference would have itself called this, but as that was not called we must do it here instead
             }
         }
     } else {
@@ -1012,6 +1037,20 @@ function js_set_composr_type($identifier, $type)
 }
 
 /**
+ * Put out a warning if a variable was not declared.
+ *
+ * @param  string $identifier The variable name
+ * @param  integer $c_pos Current parse position
+ */
+function js_mention_undeclared_variables($identifier, $c_pos)
+{
+    global $JS_LOCAL_VARIABLES;
+    if ((!isset($JS_LOCAL_VARIABLES[$identifier])) && ($identifier != 'this') && ($identifier != '_') && ($identifier != '__return')) {
+        // Currently broken on v10 js_log_warning('CHECKER', 'Variable (' . $identifier . ') was used without being declared', $c_pos); TODO Fix on v11
+    }
+}
+
+/**
  * Add a reference to a named variable.
  *
  * @param  string $identifier The variable name
@@ -1023,13 +1062,13 @@ function js_set_composr_type($identifier, $type)
  */
 function js_add_variable_reference($identifier, $first_mention, $instantiation = true, $reference = false, $function_return = null, $is_call = false)
 {
+    if ((!$instantiation) && (!is_numeric($identifier))) {
+        js_mention_undeclared_variables($identifier, $first_mention);
+    }
+
     global $JS_LOCAL_VARIABLES;
     if (!isset($JS_LOCAL_VARIABLES[$identifier])) {
         $JS_LOCAL_VARIABLES[$identifier] = array('function_return' => $function_return, 'is_global' => false, 'types' => array(), 'unused_value' => !$reference && !$instantiation, 'first_mention' => $first_mention);
-
-        if ((!$instantiation) && ($identifier != 'this') && ($identifier != '__return') && ($identifier != 'jQuery') && (!is_numeric($identifier)) && (!$is_call)) {
-            js_log_warning('CHECKER', 'A variable (' . $identifier . ') was used without being declared', $first_mention);
-        }
     } else {
         $JS_LOCAL_VARIABLES[$identifier]['unused_value'] = !$reference && !$instantiation;
     }

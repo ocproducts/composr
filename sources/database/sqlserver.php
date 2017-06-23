@@ -441,7 +441,7 @@ class Database_Static_sqlserver
     public function db_query($query, $db, $max = null, $start = null, $fail_ok = false, $get_insert_id = false)
     {
         if (!is_null($max)) {
-            if (is_null($start)) {
+            if (!is_null($start)) {
                 $max += $start;
             }
 

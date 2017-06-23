@@ -786,7 +786,7 @@ class Module_admin_ecommerce_logs
         }
 
         // We need to get confirmation via POST, for security/confirmation reasons
-        $preview = do_lang_tempcode('CANCEL_MANUAL_SUBSCRIPTION_CONFIRM', $item_name, $username);
+        $preview = do_lang_tempcode('CANCEL_MANUAL_SUBSCRIPTION_CONFIRM', $item_name, escape_html($username));
         $fields = form_input_hidden('id', strval($id));
         $map = array('page' => '_SELF', 'type' => get_param_string('type'), 'subscription_id' => $id);
         $url = build_url($map, '_SELF');
