@@ -115,9 +115,9 @@ function create_selection_list_banner_types($it = null)
         $caption = ($row['id'] == '') ? do_lang('_DEFAULT') : $row['id'];
 
         if ($row['t_is_textual'] == 1) {
-            $type_line = do_lang_tempcode('BANNER_TYPE_LINE_TEXTUAL', $caption);
+            $type_line = do_lang_tempcode('BANNER_TYPE_LINE_TEXTUAL', escape_html($caption));
         } else {
-            $type_line = do_lang_tempcode('BANNER_TYPE_LINE', $caption, strval($row['t_image_width']), strval($row['t_image_height']));
+            $type_line = do_lang_tempcode('BANNER_TYPE_LINE', escape_html($caption), escape_html(strval($row['t_image_width'])), escape_html(strval($row['t_image_height'])));
         }
 
         $list->attach(form_input_list_entry($row['id'], in_array($row['id'], $it), $type_line));

@@ -47,7 +47,11 @@ function get_comcode_page_title_from_disk($path, $include_subtitle = false, $in_
     $matches = array();
     if (preg_match('#\[title([^\]]*)?[^\]]*\]#', $page_contents, $matches) == 0) {
         // No title
-        return $fallback_title;
+        if ($in_tempcode) {
+            return make_string_tempcode(escape_html($fallback_title));
+        } else {
+            return $fallback_title;
+        }
     }
 
     $tag_attribute_stuff = empty($matches[1]) ? '' : $matches[1];
