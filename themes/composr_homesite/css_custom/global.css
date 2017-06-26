@@ -780,7 +780,7 @@ iframe {
 /*{+END}*/
 
 /* Cool effect to change how text selection looks; not valid CSS, but is safe */
-::selection {
+.website_body ::selection {
 	background: {$GET,yellow_highlight_background};
 }
 comcode-{$REPLACE,\,,::selection \,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_INLINE}}}, tempcode ::selection {
@@ -1335,7 +1335,7 @@ th.metadata_title {
 
 	overflow: hidden;
 }
-td>.box, .right .box, .left .box {
+td>.box, .right .box:first-child:last-child, .left .box:first-child:last-child {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -1556,6 +1556,9 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .toggleable_tray_button img {
 	float: {!en_right};
 	margin: 0 0 0 0.3em !important;
+}
+.box .toggleable_tray_button img {
+	margin-right: 0.5em;
 }
 .toggleable_tray_title .toggleable_tray_button img {
 	margin-top: -1px !important;
@@ -1861,11 +1864,11 @@ table.scrollable_inside {
 	padding: 0.7em;
 }
 
-{+START,IF,{$MOBILE}}
+/*{+START,IF,{$MOBILE}}*/
 	.spaced_table td {
 		overflow-x: auto;
 	}
-{+END}
+/*{+END}*/
 
 /* Undo any descendant spacing for nested tables made in WYSIWYG */
 .results_table table[cellpadding="0"] td, .results_table table[cellpadding="0"] th {
@@ -2006,6 +2009,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 	color: {$GET,area_text} !important;
+	min-width: 6em;
 }
 .tooltip_ownlayout {
 	padding: 0.5em;
@@ -2014,7 +2018,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	{$BETA_CSS_PROPERTY,border-radius: 10px;}
 	color: {$GET,area_text} !important;
 }
-.tooltip_ownlayout, .tooltip_nolayout th, .tooltip_nolayout td {
+.tooltip_ownlayout, .tooltip_nolayout th.de_th, .tooltip_nolayout td {
 	background-color: {$GET,area_faded_background};
 	{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,area_faded_background}\, {$GET,area_background});}
 }
@@ -2210,6 +2214,9 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
+.compacted_subbox_stream>.raw_ajax_grow_spot>h3 {
+	margin: 1em 5px;
+}
 .compacted_subbox_stream .box {
 	border-top: 1px dotted {$GET,standard_border} !important;
 	border-left: 0;
@@ -2403,10 +2410,12 @@ div.ajax_loading, p.ajax_loading {
 /*{+START,IF,{$MOBILE}}*/
 	.lined_up_boxes .right {
 		width: 100%;
+		float: none;
 	}
 
 	.lined_up_boxes .left {
 		width: 100%;
+		float: none;
 	}
 /*{+END}*/
 
@@ -2646,17 +2655,18 @@ div .post_buttons>*, div .buttons_group_faded>* {
 		text-align: center;
 	/*{+END}*/
 	/*{+START,IF,{$NOT,{$MOBILE}}}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
-		margin: 0 0 1em 13.5em;
+		margin: 0 0 1em 0;
 	/*{+END}*//*{+END}*/
 }
 
-.comments_posting_form_end input {
-	float: left;
-	margin-right: 0.5em !important;
+.comments_posting_form_end .proceed_button input:first-child, .comments_captcha {
+	margin-left: 180px !important;
 }
 
 .comments_posting_form_end #submit_button {
-	float: right;
+	/*{+START,IF,{$CONFIG_OPTION,enable_previews}}*/
+		float: right;
+	/*{+END}*/
 	margin-right: 1em !important;
 }
 
@@ -3156,6 +3166,9 @@ ul.buttons_group, ul.associated_links_block_group {
 .fields_set_contents .constrain_field, .fields_set_contents input .wide_field {
 	display: inline;
 }
+.constrain_field + .constrain_field {
+	margin: 0.25em 0;
+}
 
 /*
 =========================
@@ -3263,6 +3276,9 @@ body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.
 .proceed_button {
 	text-align: center;
 }
+.proceed_button:last-child {
+	margin-bottom: 0;
+}
 div.proceed_button_left {
 	text-align: {!en_left};
 }
@@ -3272,6 +3288,7 @@ div.proceed_button_left_2 {
 }
 
 .shunted_button {
+	clear: {!en_right};
 	text-align: {!en_right};
 }
 
@@ -3432,14 +3449,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 .buttons__report {
 	background-image: url('{$IMG,icons/24x24/buttons/report}') !important;
 }
-{+START,IF,{$ADDON_INSTALLED,actionlog}}
+/*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
 	.buttons__undo {
 		background-image: url('{$IMG,icons/24x24/buttons/undo}') !important;
 	}
 	.buttons__revisions {
 		background-image: url('{$IMG,icons/24x24/buttons/revisions}') !important;
 	}
-{+END}
+/*{+END}*/
 .buttons__save {
 	background-image: url('{$IMG,icons/24x24/buttons/save}') !important;
 }
@@ -3619,14 +3636,14 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	.buttons__report {
 		background-image: url('{$IMG,icons/48x48/buttons/report}') !important;
 	}
-	{+START,IF,{$ADDON_INSTALLED,actionlog}}
+	/*{+START,IF,{$ADDON_INSTALLED,actionlog}}*/
 		.buttons__undo {
 			background-image: url('{$IMG,icons/48x48/buttons/undo}') !important;
 		}
 		.buttons__revisions {
 			background-image: url('{$IMG,icons/48x48/buttons/revisions}') !important;
 		}
-	{+END}
+	/*{+END}*/
 	.buttons__save {
 		background-image: url('{$IMG,icons/48x48/buttons/save}') !important;
 	}
@@ -3958,6 +3975,9 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 
 /* .comcode_quote is used where the [quote] tag is parsed. */
 /* .comcode_code is used where the [code] tag is parsed. */
+.email_body .comcode_quote, .email_body .comcode_code {
+	margin: 1em 0;
+}
 .email_body .comcode_quote, .email_body .comcode_code {
 	margin: 1em 0;
 }
@@ -4320,6 +4340,31 @@ a[rel="lightbox"] {
 	height: auto;
 }
 
+/* Wrap video code with <div class="responsive_video">...</div> if you want it responsive; jwplayer is doing this by default using its own JS though */
+.responsive_video video {
+	max-width: 100%;
+	height: auto;
+}
+
+/* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
+/*{+START,IF,{$MOBILE}}*/
+	.youtube_player {
+		overflow: hidden;
+		width: 100%;
+		position: relative;
+		padding-bottom: 56.25%;
+		padding-top: 25px;
+		height: 0;
+	}
+	.youtube_player iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+/*{+END}*/
+
 /*
 =========================
 ====Link type display====
@@ -4494,6 +4539,7 @@ a[rel="lightbox"] {
 	.print_icon {
 		background: url('{$IMG;,icons/24x24/links/print}') no-repeat left top !important;
 		padding: 0 0 5px 32px !important;
+		display: inline-block;
 	}
 
 	@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
@@ -4521,6 +4567,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 .overlay {
 	overflow: visible;
 	border: 0;
+	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
 }
 
 .website_body.overlay {
