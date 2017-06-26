@@ -1887,7 +1887,7 @@ Use reliable CSS
 | Accessibility
 | All development
 | Manually
-| If you set heights then if people increase their font size (or a translation uses longer/more words) then it's likely text will overflow and look awful. There's rarely a true reason to set a height anyway: if you need to clear floats use [tt]float_surrounder[/tt] (described elsewhere in this document).
+| If you set heights then if people increase their font size (or a translation uses longer/more words) then it's likely text will overflow and look awful. There's rarely a true reason to set a height anyway: if you need to clear floats use [tt]float_surrounder[/tt] (described elsewhere in this document). You can also sometimes make use of [tt]min-height[/tt] to meet certain constraints.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]If possible avoid setting dimensions[/color]
@@ -1936,11 +1936,15 @@ Use a [tt]float_surrounder[/tt] CSS class like Composr does (i.e. [tt]overflow: 
 | Do not use background images unless an image really is in the background. It is harder to implement (needs CSS widths/heights setting, which is inflexible) and we can't assign alt text. Use [tt]img[/tt] tags instead.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Do not use a CSS reset[/color]
+[color="red"]Do not use a CSS reset or overly-broad rules[/color]
 | Themeing
 | All development
 | Manually
-| Composr does not use a CSS reset in its default templates so you would need to re-theme all Composr screens to re-apply default spacings.
+| Do not use a CSS reset (e.g. [tt]* { margin: 0; padding: 0 }[/tt]): Composr does not use a CSS reset in its default templates so you would need to re-theme all Composr screens to re-apply default spacings if you used a CSS reset. If you must use a CSS reset then it will need adjusting to be scoped beneath a particular position(s) in the DOM tree.
+
+Similarly, don't apply overly-broad styles thinking you'll undo them for any case that does not match -- any broadly defined style must be a very general one, because you won't want to add dozens of exceptions back in to cater for the pre-coded HTML usage that Composr has in its myriad of templates.
+
+A common example broad styling you should avoid is removing all bullets and spacings from default lists.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use meaningful naming for CSS classes[/color]
