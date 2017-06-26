@@ -233,11 +233,7 @@ function closed_site()
             throw new CMSException($closed_message);
         }
 
-        if (!headers_sent()) {
-            if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
-                header('HTTP/1.0 503 Service Temporarily Unavailable');
-            }
-        }
+        set_http_status_code('503');
 
         log_stats('/closed', 0);
 

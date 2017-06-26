@@ -57,8 +57,7 @@ function init__site()
                     $non_canonical[$n] = null;
                 }
             }
-            set_http_status_code('301');
-            header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
+            set_http_status_code('301'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
             require_code('urls');
             header('Location: ' . escape_header(get_self_url(true, false, $non_canonical)));
             exit();
@@ -86,8 +85,7 @@ function init__site()
         if (($url_scheme == 'PG') || ($url_scheme == 'HTM')) {
             if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
                 require_code('permissions');
-                set_http_status_code('301');
-                header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
+                set_http_status_code('301'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
                 header('Location: ' . escape_header(get_self_url(true)));
                 exit();
             }
@@ -115,6 +113,7 @@ function init__site()
                         attach_message(do_lang_tempcode('BAD_ACCESS_DOMAIN', escape_html($parsed_base_url['host']), escape_html($access_host)), 'warn');
                     }
 
+                    set_http_status_code('301');
                     header('Location: ' . escape_header(get_self_url(true, false)));
                     exit();
                 }
@@ -750,7 +749,6 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $url_id), $zone);
                         if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && (cms_srv('REQUEST_METHOD') != 'POST')) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).
                             set_http_status_code('301');
-                            header('HTTP/1.0 301 Moved Permanently');
                             $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                             $new_url = $_new_url->evaluate();
                             header('Location: ' . escape_header($new_url));
@@ -775,7 +773,6 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                             $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $monikers[0]['m_resource_id']), $zone);
                             if ($correct_moniker != $url_id) { // Just in case database corruption means ALL are deprecated
                                 set_http_status_code('301');
-                                header('HTTP/1.0 301 Moved Permanently');
                                 $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                                 $new_url = $_new_url->evaluate();
                                 header('Location: ' . escape_header($new_url));
@@ -1263,7 +1260,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
             } else {
                 $title = get_screen_title('REDIRECTING');
                 $url = build_url($bits[1], $redirect['r_to_zone'], null, true);
-                header('HTTP/1.1 301 Moved Permanently');
+                set_http_status_code('301');
                 $ret = redirect_screen($title, $url, do_lang_tempcode('REDIRECTED_LINK'), true);
                 $REQUEST_PAGE_NEST_LEVEL--;
                 return $ret;

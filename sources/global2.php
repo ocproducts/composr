@@ -1557,12 +1557,7 @@ function get_param_string($name, $default = false, $no_security = false)
     $ret = __param($_GET, $name, $default);
     if (($ret === '') && (isset($_GET['require__' . $name])) && ($default !== $ret) && ($_GET['require__' . $name] !== '0')) {
         // We didn't give some required input
-        $GLOBALS['HTTP_STATUS_CODE'] = '400';
-        if (!headers_sent()) {
-            if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
-                header('HTTP/1.0 400 Bad Request');
-            }
-        }
+        set_http_status_code('400');
         warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
     }
 
