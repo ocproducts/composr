@@ -1592,7 +1592,7 @@ function _form_to_email($extra_boring_fields = null, $subject = null, $subject_p
 
     // Find subject...
 
-    if (is_null($subject)) {
+    if (empty($subject)) {
         $subject = post_param_string('subject', get_param_string('title', get_site_name()));
     }
 

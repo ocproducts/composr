@@ -86,7 +86,7 @@ class Hook_addon_registry_sugarcrm
      */
     public function get_description()
     {
-        return 'Sync new accounts into SugarCRM (Accounts and Contacts), and contact form messages into SugarCRM (Cases). Form messages are taken from [tt]main_contact_simple[/tt] block, [tt]main_contact_catalogues[/tt] block, and [tt]form_to_email.php[/tt].';
+        return 'Sync new accounts into SugarCRM (Accounts and Contacts), and contact form messages into SugarCRM (Cases or Leads). Form messages are taken from [tt]main_contact_simple[/tt] block, [tt]main_contact_catalogues[/tt] block, and [tt]form_to_email.php[/tt].';
     }
 
     /**
@@ -137,8 +137,9 @@ class Hook_addon_registry_sugarcrm
             'sources_custom/hooks/systems/config/sugarcrm_username.php',
             'sources_custom/hooks/systems/config/sugarcrm_password.php',
             'sources_custom/hooks/systems/config/sugarcrm_base_url.php',
-            'sources_custom/hooks/systems/config/sugarcrm_exclusive_contact.php',
+            'sources_custom/hooks/systems/config/sugarcrm_exclusive_messaging.php',
             'sources_custom/hooks/systems/config/sugarcrm_contact_mappings.php',
+            'sources_custom/hooks/systems/config/sugarcrm_sync_type.php',
             'sources_custom/hooks/systems/config/sugarcrm_case_mappings.php',
             'sources_custom/hooks/systems/config/sugarcrm_company_field.php',
             'sources_custom/hooks/systems/config/sugarcrm_default_company.php',

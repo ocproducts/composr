@@ -621,7 +621,7 @@ class SugarWrapper
      * exists. See README for example on use
      *
      * @param string $note_id the SugarCRM record ID
-     * @param string $file the file in binary format
+     * @param string $file the file in base 64 format
      * @param string $filename the name of the file
      * @return array
      */

@@ -71,7 +71,7 @@ function get_sugarcrm_contact($email_address, $account_id = null)
 
     $response = $SUGARCRM->get(
         'Contacts',
-        array('id', 'account_id'),
+        array('id', 'account_id', 'name'),
         array(
             'where' => $where,
         )
@@ -79,7 +79,7 @@ function get_sugarcrm_contact($email_address, $account_id = null)
 
     if ($account_id !== null) {
         // We have to do with filtering
-        foreach ($response     as $contact_details) {
+        foreach ($response as $contact_details) {
             if ($contact_details['account_id'] === $account_id) {
                 return $contact_details;
             }
@@ -87,7 +87,7 @@ function get_sugarcrm_contact($email_address, $account_id = null)
         return null;
     }
 
-    if (isset($response    [0])) {
+    if (isset($response[0])) {
         // Return first result
         $contact_details = $response    [0];
         return $contact_details;
@@ -103,7 +103,7 @@ function deconstruct_long_name($username)
     if (strpos($username, ' ') === false) {
         $matches = array();
         $name_parts = array();
-        $num_matches = preg_match_all('#([A-Z][^A-Z]*)#', $username, $matches);
+        $num_matches = preg_match_all('#([A-Z]+[^A-Z]*)#i', $username, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
         	$name_parts[] = $matches[1][$i];
         }

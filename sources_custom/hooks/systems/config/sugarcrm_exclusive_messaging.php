@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_config_sugarcrm_case_mappings
+class Hook_config_sugarcrm_exclusive_messaging
 {
     /**
      * Gets the details relating to the config option.
@@ -26,14 +26,14 @@ class Hook_config_sugarcrm_case_mappings
     public function get_details()
     {
         return array(
-            'human_name' => 'SUGARCRM_CASE_MAPPINGS',
-            'type' => 'text',
+            'human_name' => 'SUGARCRM_EXCLUSIVE_MESSAGING',
+            'type' => 'tick',
             'category' => 'COMPOSR_APIS',
             'group' => 'SUGARCRM',
-            'explanation' => 'CONFIG_OPTION_sugarcrm_case_mappings',
+            'explanation' => 'CONFIG_OPTION_sugarcrm_exclusive_messaging',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 9,
+            'order_in_category_group' => 4,
 
             'addon' => 'sugarcrm',
         );
@@ -46,6 +46,6 @@ class Hook_config_sugarcrm_case_mappings
      */
     public function get_default()
     {
-        return "post=description";
+        return '0';
     }
 }

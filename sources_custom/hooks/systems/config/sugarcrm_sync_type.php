@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_config_sugarcrm_exclusive_contact
+class Hook_config_sugarcrm_sync_type
 {
     /**
      * Gets the details relating to the config option.
@@ -26,14 +26,14 @@ class Hook_config_sugarcrm_exclusive_contact
     public function get_details()
     {
         return array(
-            'human_name' => 'SUGARCRM_EXCLUSIVE_CONTACT',
-            'type' => 'tick',
+            'human_name' => 'SUGARCRM_SYNC_TYPE',
+            'type' => 'list',
             'category' => 'COMPOSR_APIS',
             'group' => 'SUGARCRM',
-            'explanation' => 'CONFIG_OPTION_sugarcrm_exclusive_contact',
+            'explanation' => 'CONFIG_OPTION_sugarcrm_sync_type',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
-            'order_in_category_group' => 4,
+            'list_options' => 'Cases|Leads',
+            'order_in_category_group' => 8,
 
             'addon' => 'sugarcrm',
         );
@@ -46,6 +46,6 @@ class Hook_config_sugarcrm_exclusive_contact
      */
     public function get_default()
     {
-        return '0';
+        return 'Cases';
     }
 }
