@@ -449,6 +449,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
                                              'info.php' => '', // Pre-v10 equivalent to _config.php
                                              'persistant_cache' => '', // Old misspelling
                                              'mods' => 'imports|exports',
+
+                                             // Prep for v11
+                                             '_meta_tree' => '.*',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case
