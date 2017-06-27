@@ -284,10 +284,10 @@ function zone_black_magic_filterer($path, $relative = false)
 
         if (($stripped[0] === 'p') && (substr($stripped, 0, 6) === 'pages/')) { // Ah, need to do some checks as we are looking in the welcome zone
             $full = $relative ? (get_file_base() . '/' . $path) : $path;
-            if (!is_file($full)) {
+            if (!@is_file($full)) {
                 $site_equiv = get_file_base() . '/site/' . $stripped;
 
-                if (is_file($site_equiv)) {
+                if (@is_file($site_equiv)) {
                     $ret = $relative ? ('site/' . $stripped) : $site_equiv;
                     $zbmf_cache[$path] = $ret;
                     if (function_exists('persistent_cache_set')) {
