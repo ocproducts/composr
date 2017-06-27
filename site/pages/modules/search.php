@@ -469,6 +469,10 @@ class Module_search
             $cutoff = ($days == -1) ? null : (time() - $days * 24 * 60 * 60);
         }
 
+        if (($content === '') && ($author === '') && (get_param_integer('days', null) === -1)) {
+            $content = null;
+        }
+
         // Perform search, if we did one
         $out = null;
         $pagination = '';

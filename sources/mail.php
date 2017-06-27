@@ -1548,7 +1548,7 @@ function form_to_email($subject = null, $intro = '', $fields = null, $to_email =
  */
 function _form_to_email($extra_boring_fields = null, $subject = null, $intro = '', $fields = null, $to_email = null, $outro = '', $is_via_post = true)
 {
-    if (is_null($subject)) {
+    if (empty($subject)) {
         $subject = post_param_string('subject', get_site_name());
     }
 
