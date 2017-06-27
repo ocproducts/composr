@@ -148,11 +148,13 @@ foreach ($special_file_types as $label => $_search) {
             continue;
         }
 
+        $fpath = (($search_path == '') ? '' : ($search_path . '/')) . $file;
+
         // Don't duplicate it across sections
-        if (isset($all_files_processed[(($search_path == '') ? '' : ($search_path . '/')) . $file])) {
+        if (isset($all_files_processed[$fpath])) {
             continue;
         }
-        $all_files_processed[(($search_path == '') ? '' : ($search_path . '/')) . $file] = true;
+        $all_files_processed[$fpath] = true;
 
         // List option
         if ($search_ext === null) {
@@ -160,8 +162,8 @@ foreach ($special_file_types as $label => $_search) {
         } else {
             $_file = basename($file, '.' . $search_ext);
         }
-        $selected = in_array((($search_path == '') ? '' : ($search_path . '/')) . $file, $files_to_show);
-        echo '<option' . ($selected ? ' selected="selected"' : '') . ' value="' . escape_html($_file) . '">' . escape_html($_file) . '</option>';
+        $selected = in_array($fpath, $files_to_show);
+        echo '<option' . ($selected ? ' selected="selected"' : '') . ' value="' . escape_html($fpath) . '">' . escape_html($_file) . '</option>';
     }
 
     echo '</select>';
@@ -179,7 +181,7 @@ echo '<select name="releases[]" class="file_selector" size="8" multiple="multipl
 foreach (array_reverse($releases) as $version => $release_details) {
     $selected = in_array($version, $versions_interested_in);
 
-    echo '<option' . ($selected ? ' selected="selected"' : '') . '>' . escape_html($version . ' (' . get_timezoned_date($release_details['add_date'], false) . ')') . '</option>';
+    echo '<option value="' . escape_html($version) . '"' . ($selected ? ' selected="selected"' : '') . '>' . escape_html($version . ' (' . get_timezoned_date($release_details['add_date'], false) . ')') . '</option>';
 }
 echo '</select>';
 echo '</div>';

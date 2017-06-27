@@ -57,8 +57,7 @@ function init__site()
                     $non_canonical[$n] = null;
                 }
             }
-            set_http_status_code('301');
-            header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
+            set_http_status_code('301'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
             require_code('urls');
             header('Location: ' . escape_header(get_self_url(true, false, $non_canonical)));
             exit();
@@ -86,8 +85,7 @@ function init__site()
         if (($url_scheme == 'PG') || ($url_scheme == 'HTM')) {
             if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
                 require_code('permissions');
-                set_http_status_code('301');
-                header('HTTP/1.0 301 Moved Permanently'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
+                set_http_status_code('301'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
                 header('Location: ' . escape_header(get_self_url(true)));
                 exit();
             }
@@ -115,6 +113,7 @@ function init__site()
                         attach_message(do_lang_tempcode('BAD_ACCESS_DOMAIN', escape_html($parsed_base_url['host']), escape_html($access_host)), 'warn');
                     }
 
+                    set_http_status_code('301');
                     header('Location: ' . escape_header(get_self_url(true, false)));
                     exit();
                 }
@@ -750,7 +749,6 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $url_id), $zone);
                         if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && (cms_srv('REQUEST_METHOD') != 'POST')) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).
                             set_http_status_code('301');
-                            header('HTTP/1.0 301 Moved Permanently');
                             $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                             $new_url = $_new_url->evaluate();
                             header('Location: ' . escape_header($new_url));
@@ -775,7 +773,6 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                             $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $monikers[0]['m_resource_id']), $zone);
                             if ($correct_moniker != $url_id) { // Just in case database corruption means ALL are deprecated
                                 set_http_status_code('301');
-                                header('HTTP/1.0 301 Moved Permanently');
                                 $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', null, true);
                                 $new_url = $_new_url->evaluate();
                                 header('Location: ' . escape_header($new_url));
@@ -1185,7 +1182,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
             return $ret;
         case 'COMCODE_CUSTOM':
             $path = isset($details[4]) ? $details[4] : zone_black_magic_filterer($details[1] . (($details[1] == '') ? '' : '/') . 'pages/comcode_custom/' . $details[3] . '/' . $details[2] . '.txt', true);
-            if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1') && (get_custom_file_base() == get_file_base())) || (is_file(get_custom_file_base() . '/' . $path))) {
+            if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1') && (get_custom_file_base() == get_file_base())) || (@is_file(get_custom_file_base() . '/' . $path))) {
                 $ret = load_comcode_page($path, $details[1], $details[2], get_custom_file_base(), $being_included, $out);
                 $REQUEST_PAGE_NEST_LEVEL--;
                 return $ret;
@@ -1193,7 +1190,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
         // else roll on, as probably been deleted since persistent cache was filled
         case 'COMCODE_CUSTOM_PURE':
             $path = isset($details[4]) ? $details[4] : zone_black_magic_filterer($details[1] . (($details[1] == '') ? '' : '/') . 'pages/comcode_custom/' . $details[3] . '/' . $details[2] . '.txt', true);
-            if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1')) || (is_file(get_file_base() . '/' . $path))) {
+            if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1')) || (@is_file(get_file_base() . '/' . $path))) {
                 $ret = load_comcode_page($path, $details[1], $details[2], get_file_base(), $being_included, $out);
                 $REQUEST_PAGE_NEST_LEVEL--;
                 return $ret;
@@ -1201,7 +1198,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
         // else roll on, as probably been deleted since persistent cache was filled
         case 'COMCODE':
             $path = isset($details[4]) ? $details[4] : zone_black_magic_filterer($details[1] . (($details[1] == '') ? '' : '/') . 'pages/comcode/' . $details[3] . '/' . $details[2] . '.txt', true);
-            if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1')) || (is_file(get_file_base() . '/' . $path))) {
+            if (((isset($SITE_INFO['no_disk_sanity_checks'])) && ($SITE_INFO['no_disk_sanity_checks'] == '1')) || (@is_file(get_file_base() . '/' . $path))) {
                 $ret = load_comcode_page($path, $details[1], $details[2], null, $being_included, $out);
                 $REQUEST_PAGE_NEST_LEVEL--;
                 return $ret;
@@ -1263,7 +1260,7 @@ function request_page($codename, $required, $zone = null, $page_type = null, $be
             } else {
                 $title = get_screen_title('REDIRECTING');
                 $url = build_url($bits[1], $redirect['r_to_zone'], null, true);
-                header('HTTP/1.1 301 Moved Permanently');
+                set_http_status_code('301');
                 $ret = redirect_screen($title, $url, do_lang_tempcode('REDIRECTED_LINK'), true);
                 $REQUEST_PAGE_NEST_LEVEL--;
                 return $ret;
@@ -1314,11 +1311,11 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
     if ($codename == 'login') { // Special case
         $login_zone = get_module_zone('login');
         $path = zone_black_magic_filterer($login_zone . (($login_zone == '') ? '' : '/') . 'pages/modules_custom/' . $codename . '.php', true);
-        if (is_file(get_file_base() . '/' . $path)) {
+        if (@is_file(get_file_base() . '/' . $path)) {
             return array('MODULES_CUSTOM', $login_zone, $codename, $path);
         }
         $path = zone_black_magic_filterer($login_zone . (($login_zone == '') ? '' : '/') . 'pages/modules/' . $codename . '.php', true);
-        if (is_file(get_file_base() . '/' . $path)) {
+        if (@is_file(get_file_base() . '/' . $path)) {
             return array('MODULES', $login_zone, $codename, $path);
         }
     }
@@ -1337,14 +1334,14 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
             case 'modules_custom':
                 if (!in_safe_mode()) {
                     $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/modules_custom/' . $codename . '.php', true);
-                    if (is_file(get_file_base() . '/' . $path)) {
+                    if (@is_file(get_file_base() . '/' . $path)) {
                         return array('MODULES_CUSTOM', $zone, $codename, $path);
                     }
                 }
                 break;
             case 'modules':
                 $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/modules/' . $codename . '.php', true);
-                if (is_file(get_file_base() . '/' . $path)) {
+                if (@is_file(get_file_base() . '/' . $path)) {
                     return array('MODULES', $zone, $codename, $path);
                 }
                 break;
@@ -1352,18 +1349,18 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
                 if (!in_safe_mode()) {
                     if (get_param_integer('keep_theme_test', 0) == 1) {
                         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '__' . $codename . '.txt', true);
-                        if (is_file(get_custom_file_base() . '/' . $path)) {
+                        if (@is_file(get_custom_file_base() . '/' . $path)) {
                             return array('COMCODE_CUSTOM', $zone, $GLOBALS['FORUM_DRIVER']->get_theme() . '__' . $codename, $lang, $path);
                         }
                     }
 
                     $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $codename . '.txt', true);
-                    if (is_file(get_custom_file_base() . '/' . $path)) {
+                    if (@is_file(get_custom_file_base() . '/' . $path)) {
                         return array('COMCODE_CUSTOM', $zone, $codename, $lang, $path);
                     }
                     if (get_custom_file_base() != get_file_base()) { // For multisite installs we also will search the root site's Custom Comcode pages
                         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $codename . '.txt', true);
-                        if (is_file(get_file_base() . '/' . $path)) {
+                        if (@is_file(get_file_base() . '/' . $path)) {
                             return array('COMCODE_CUSTOM_PURE', $zone, $codename, $lang, $path);
                         }
                     }
@@ -1371,35 +1368,35 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
             //break;
             case 'comcode':
                 $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode/' . $lang . '/' . $codename . '.txt', true);
-                if (is_file(get_file_base() . '/' . $path)) {
+                if (@is_file(get_file_base() . '/' . $path)) {
                     return array('COMCODE', $zone, $codename, $lang, $path);
                 }
                 break;
             case 'html_custom':
                 if (!in_safe_mode()) {
                     $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html_custom/' . $lang . '/' . $codename . '.htm', true);
-                    if (is_file(get_custom_file_base() . '/' . $path)) {
+                    if (@is_file(get_custom_file_base() . '/' . $path)) {
                         return array('HTML_CUSTOM', $zone, $codename, $lang, $path);
                     }
                 }
                 break;
             case 'html':
                 $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html/' . $lang . '/' . $codename . '.htm', true);
-                if (is_file(get_file_base() . '/' . $path)) {
+                if (@is_file(get_file_base() . '/' . $path)) {
                     return array('HTML', $zone, $codename, $lang, $path);
                 }
                 break;
             case 'minimodules_custom':
                 if (!in_safe_mode()) {
                     $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/minimodules_custom/' . $lang . '/' . $codename . '.php', true);
-                    if (is_file(get_file_base() . '/' . $path)) {
+                    if (@is_file(get_file_base() . '/' . $path)) {
                         return array('MINIMODULES_CUSTOM', $zone, $codename, $path);
                     }
                 }
                 break;
             case 'minimodules':
                 $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/minimodules/' . $lang . '/' . $codename . '.php', true);
-                if (is_file(get_file_base() . '/' . $path)) {
+                if (@is_file(get_file_base() . '/' . $path)) {
                     return array('MINIMODULES', $zone, $codename, $path);
                 }
                 break;
@@ -1411,47 +1408,47 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
     // We have a priority list to find our page
     if (!in_safe_mode()) {
         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/minimodules_custom/' . $codename . '.php', true);
-        if (is_file(get_file_base() . '/' . $path)) {
+        if (@is_file(get_file_base() . '/' . $path)) {
             return array('MINIMODULES_CUSTOM', $zone, $codename, $path);
         }
     }
     if (!in_safe_mode()) {
         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/modules_custom/' . $codename . '.php', true);
-        if (is_file(get_file_base() . '/' . $path)) {
+        if (@is_file(get_file_base() . '/' . $path)) {
             return array('MODULES_CUSTOM', $zone, $codename, $path);
         }
     }
     $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/modules/' . $codename . '.php', true);
-    if (is_file(get_file_base() . '/' . $path)) {
+    if (@is_file(get_file_base() . '/' . $path)) {
         return array('MODULES', $zone, $codename, $path);
     }
     if (!in_safe_mode()) {
         if (get_param_integer('keep_theme_test', 0) == 1) {
             $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $GLOBALS['FORUM_DRIVER']->get_theme() . '__' . $codename . '.txt', true);
-            if (is_file(get_custom_file_base() . '/' . $path)) {
+            if (@is_file(get_custom_file_base() . '/' . $path)) {
                 return array('COMCODE_CUSTOM', $zone, $GLOBALS['FORUM_DRIVER']->get_theme() . '__' . $codename, $lang, $path);
             }
         }
 
         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $codename . '.txt', true);
-        if (is_file(get_custom_file_base() . '/' . $path)) {
+        if (@is_file(get_custom_file_base() . '/' . $path)) {
             return array('COMCODE_CUSTOM', $zone, $codename, $lang, $path);
         }
         if (get_custom_file_base() != get_file_base()) { // For multisite installs we also will search the root site's Custom Comcode pages
             $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $lang . '/' . $codename . '.txt', true);
-            if (is_file(get_file_base() . '/' . $path)) {
+            if (@is_file(get_file_base() . '/' . $path)) {
                 return array('COMCODE_CUSTOM_PURE', $zone, $codename, $lang, $path);
             }
         }
     }
     if (!in_safe_mode()) {
         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html_custom/' . $lang . '/' . $codename . '.htm', true);
-        if (is_file(get_custom_file_base() . '/' . $path)) {
+        if (@is_file(get_custom_file_base() . '/' . $path)) {
             return array('HTML_CUSTOM', $zone, $codename, $lang, $path);
         }
     }
     $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/minimodules/' . $codename . '.php', true);
-    if (is_file(get_file_base() . '/' . $path)) {
+    if (@is_file(get_file_base() . '/' . $path)) {
         return array('MINIMODULES', $zone, $codename, $path);
     }
 
@@ -1468,17 +1465,17 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
     foreach ($langs_to_try as $fallback_lang) {
         if (!in_safe_mode()) {
             $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $fallback_lang . '/' . $codename . '.txt', true);
-            if (is_file(get_custom_file_base() . '/' . $path)) {
+            if (@is_file(get_custom_file_base() . '/' . $path)) {
                 return array('COMCODE_CUSTOM', $zone, $codename, $fallback_lang, $path);
             }
             if (get_custom_file_base() != get_file_base()) { // For multisite installs we also will search the root site's Custom Comcode pages
                 $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode_custom/' . $fallback_lang . '/' . $codename . '.txt', true);
-                if (is_file(get_file_base() . '/' . $path)) {
+                if (@is_file(get_file_base() . '/' . $path)) {
                     return array('COMCODE_CUSTOM_PURE', $zone, $codename, $fallback_lang, $path);
                 }
             }
             $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html_custom/' . $fallback_lang . '/' . $codename . '.htm', true);
-            if (is_file(get_custom_file_base() . '/' . $path)) {
+            if (@is_file(get_custom_file_base() . '/' . $path)) {
                 return array('HTML_CUSTOM', $zone, $codename, $fallback_lang, $path);
             }
         }
@@ -1486,20 +1483,20 @@ function __request_page($codename, $zone, $page_type = null, $lang = null, $no_r
 
     // Or check for default pages
     $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode/' . $lang . '/' . $codename . '.txt', true);
-    if (is_file(get_file_base() . '/' . $path)) {
+    if (@is_file(get_file_base() . '/' . $path)) {
         return array('COMCODE', $zone, $codename, $lang, $path);
     }
     $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html/' . $lang . '/' . $codename . '.htm', true);
-    if (is_file(get_file_base() . '/' . $path)) {
+    if (@is_file(get_file_base() . '/' . $path)) {
         return array('HTML', $zone, $codename, $lang, $path);
     }
     foreach ($langs_to_try as $fallback_lang) {
         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/comcode/' . $fallback_lang . '/' . $codename . '.txt', true);
-        if (is_file(get_file_base() . '/' . $path)) {
+        if (@is_file(get_file_base() . '/' . $path)) {
             return array('COMCODE', $zone, $codename, $fallback_lang, $path);
         }
         $path = zone_black_magic_filterer($zone . (($zone == '') ? '' : '/') . 'pages/html/' . $fallback_lang . '/' . $codename . '.htm', true);
-        if (is_file(get_file_base() . '/' . $path)) {
+        if (@is_file(get_file_base() . '/' . $path)) {
             return array('HTML', $zone, $codename, $fallback_lang, $path);
         }
     }

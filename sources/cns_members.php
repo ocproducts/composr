@@ -243,8 +243,7 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
 
     foreach ($fields_to_show as $i => $field_to_show) {
         $key = 'field_' . strval($field_to_show['id']);
-        if (!array_key_exists($key, $member_mappings))
-        {
+        if (!array_key_exists($key, $member_mappings)) {
             continue;
         }
         $member_value = $member_mappings[$key];
@@ -459,7 +458,8 @@ function cns_get_custom_field_mappings($member_id)
                     }
                 }
             }
-            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', array('mf_member_id' => $member_id) + $row);
+            $row = array('mf_member_id' => $member_id) + $row;
+            $GLOBALS['FORUM_DB']->query_insert('f_member_custom_fields', $row);
             $query = array($row);
         }
         $MEMBER_CACHE_FIELD_MAPPINGS[$member_id] = $query[0];

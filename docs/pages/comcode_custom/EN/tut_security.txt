@@ -394,6 +394,8 @@ RewriteCond %{REQUEST_METHOD} !POST
 RewriteRule ^.*/pg/.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
 [/code]
 
+Don't just redirect HTTP traffic to the root of the domain because that could hurt your SEO.
+
 [title="3"]Secured zones[/title]
 
 [media width="150" description="Securing a zone so that an explicitly logged-in session is required" float="right"]data_custom/images/docs/tut_security/security_require_session.png[/media]
