@@ -1046,7 +1046,7 @@ function js_mention_undeclared_variables($identifier, $c_pos)
 {
     global $JS_LOCAL_VARIABLES;
     if ((!isset($JS_LOCAL_VARIABLES[$identifier])) && ($identifier != 'this') && ($identifier != '_') && ($identifier != '__return')) {
-        // Currently broken on v10 js_log_warning('CHECKER', 'Variable (' . $identifier . ') was used without being declared', $c_pos); TODO Fix on v11
+        // Currently broken on v10 js_log_warning('CHECKER', 'Variable (' . $identifier . ') was used without being declared', $c_pos); TODO Fix in v11
     }
 }
 
