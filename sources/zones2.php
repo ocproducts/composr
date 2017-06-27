@@ -65,7 +65,7 @@ function get_comcode_page_title_from_disk($path, $include_subtitle = false, $in_
     $end = strpos($page_contents, '[/title]', $start);
     $raw_title = trim(substr($page_contents, $start, $end - $start));
 
-    if ($raw_title == '') {
+    if (($raw_title == '') || ($raw_title == 'TODO')) {
         // Blank title
         return $fallback_title;
     }

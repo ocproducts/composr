@@ -153,7 +153,7 @@ class Block_main_staff_links
                         $link_desc = $link_title;
                     }
                     $GLOBALS['SITE_DB']->query_insert('staff_links', array(
-                        'link' => $link,
+                        'link' => substr($link, 0, 255),
                         'link_title' => $link_title,
                         'link_desc' => $link_desc,
                     ));
