@@ -748,10 +748,15 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
  * @param  string $default Default value
  * @param  string $parent Only get child nodes of
  * @param  string $pre Prefix for parent chain
+ * @param  boolean $depth Current recursion depth
  * @return Tempcode The list
  */
-function _prepare_tics_list($all_tics, $default, $parent, $pre = '')
+function _prepare_tics_list($all_tics, $default, $parent, $pre = '', $depth = 0)
 {
+    if ($depth > 5) {
+        return new Tempcode(); // Some kind of error, likely corrupt data (which we've seen happen with TaxCloud)
+    }
+
     $child_tics = array();
     foreach ($all_tics as $i => $_tic) {
         $tic = $_tic['tic'];
@@ -774,7 +779,7 @@ function _prepare_tics_list($all_tics, $default, $parent, $pre = '')
         $title = html_entity_decode($tic['title'], ENT_QUOTES, get_charset());
         $tics_list->attach(form_input_list_entry($tic['id'], $tic['id'] == $default, $text, false, false, $title));
 
-        $under = _prepare_tics_list($all_tics, $default, $tic['id'], $text . ' > ');
+        $under = _prepare_tics_list($all_tics, $default, $tic['id'], $text . ' > ', $depth + 1);
         $tics_list->attach($under);
     }
 
