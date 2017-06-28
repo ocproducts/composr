@@ -523,6 +523,8 @@ RewriteCond %{REQUEST_METHOD} !POST
 RewriteRule ^.*/pg/.*$ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
 [/code]
 
+Don't just redirect HTTP traffic to the root of the domain because that could hurt your SEO.
+
 The CSP implementation will also provide automatic redirects.
 
 [title="3"]Secured zones[/title]

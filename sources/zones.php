@@ -288,10 +288,10 @@ function zone_black_magic_filterer($path, $relative = false)
 
         if (($stripped[0] === 'p') && (substr($stripped, 0, 6) === 'pages/')) { // Ah, need to do some checks as we are looking in the welcome zone
             $full = $relative ? (get_file_base() . '/' . $path) : $path;
-            if (!is_file($full)) {
+            if (!@is_file($full)) {
                 $site_equiv = get_file_base() . '/site/' . $stripped;
 
-                if (is_file($site_equiv)) {
+                if (@is_file($site_equiv)) {
                     $ret = $relative ? ('site/' . $stripped) : $site_equiv;
                     $zbmf_cache[$path] = $ret;
                     if (function_exists('persistent_cache_set')) {
@@ -366,8 +366,7 @@ function get_zone_name()
                 if (($key[0] === 'Z') && (substr($key, 0, 13) === 'ZONE_MAPPING_') && (is_array($val))) {
                     if (($host === $val[0]) && (preg_match('#^' . (($val[1] === '') ? '' : ('/' . preg_quote($val[1]))) . '(/|$)#', $url_path) != 0)) {
                         require_code('urls');
-                        $GLOBALS['HTTP_STATUS_CODE'] = 301;
-                        header('HTTP/1.0 301 Moved Permanently');
+                        set_http_status_code(301);
                         header('Location: ' . escape_header(str_replace('://www.', '://', get_self_url_easy())));
                         exit();
                     }

@@ -346,19 +346,26 @@ function get_templates_list()
 {
     require_code('zones2');
 
-    $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/';
+    $templates_dirs = array(
+        get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/',
+        get_file_base() . '/data_custom/modules/cms_comcode_pages/' . fallback_lang() . '/',
+    );
     $templates = array();
-    if (($handle = @opendir($templates_dir)) !== false) {
-        while (false !== ($entry = readdir($handle))) {
-            if (substr($entry, -4) == '.txt' && $entry[0] != '.') {
-                $template_path = $templates_dir . $entry;
-                $template_title = get_comcode_page_title_from_disk($template_path);
-                $templates[basename($entry, '.txt')] = $template_title;
-            }
-        }
-        asort($templates);
+    foreach ($templates_dirs as $templates_dir) {
+        if (($handle = @opendir($templates_dir)) !== false) {
+            $unknown_count = 0;
 
-        closedir($handle);
+            while (false !== ($entry = readdir($handle))) {
+                if (substr($entry, -4) == '.txt' && $entry[0] != '.') {
+                    $template_path = $templates_dir . $entry;
+                    $template_title = get_comcode_page_title_from_disk($template_path);
+                    $templates[basename($entry, '.txt')] = $template_title;
+                }
+            }
+            asort($templates);
+
+            closedir($handle);
+        }
     }
     return $templates;
 }
@@ -377,8 +384,10 @@ function get_template_contents($name)
         $templates_dir = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . fallback_lang() . '/';
         $template_path = $templates_dir . $name . '.txt';
     }
-    $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . either_param_string('lang', user_lang()) . '/';
-    $template_path = $templates_dir . $name . '.txt';
+    if (!is_file($template_path)) {
+        $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . either_param_string('lang', user_lang()) . '/';
+        $template_path = $templates_dir . $name . '.txt';
+    }
     if (!is_file($template_path)) {
         $templates_dir = get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/';
         $template_path = $templates_dir . $name . '.txt';

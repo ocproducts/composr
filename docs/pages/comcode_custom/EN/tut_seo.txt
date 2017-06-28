@@ -8,8 +8,8 @@ It is worth noting at this point, that it is my view that search engine ranking 
  - having a URL that is given out directly or close-to directly, such as a business card, or a sign
  - Internet banner (or similar) advertising
  - 'placement' of your URL in a prime location, such as in a directory, or made available by someone who has it in their interest to 'pipe' users to you
- - On-line or off-line word-of-mouth, either by you, or by your visitors
- - Quality of content, such that your site becomes the place to go
+ - on-line or off-line word-of-mouth, either by you, or by your visitors
+ - quality of content, such that your site becomes the place to go
  - associate your site with an official cause. A site which is somehow the natural place for people following this cause, will naturally get more hits.
 
 [contents]decimal,lower-alpha[/contents]
@@ -137,7 +137,7 @@ It's important to understand that Google doesn't do a lot of negotiation about w
 
 Often access-denied errors show up. You should not think of Google being given a error as something necessarily wrong with your site. It simply means Google made a request, and received an error response. That is a normal and legitimate thing to happen, especially if it is a 401 "access denied" response. It's a normal part of the web, not a system failure. This is a subtle but important point: Google getting a 401 response is not like a police caution, it is normal and instructional. It is an error with respect to that URL not being accessible, but not an error with respect to a system failure or even implication of a bad link (it is valid to give users a link that returns a 401 response in some cases, for example, telling them to log in).
 
-An anally-retentive attitude isn't wholly bad to SEO, especially if you are tuning pages or crafting how things are linked together -- but it doesn't work well if you take Webmaster Tool warnings out of context, as something that needs to be eliminated 100%. Google Webmaster Tools provide these warnings to help you review things in general.
+An anally-retentive attitude isn't wholly bad for SEO, especially if you are tuning pages or crafting how things are linked together -- but it doesn't work well if you take Webmaster Tool warnings out of context, as something that needs to be eliminated 100%. Google Webmaster Tools provide these warnings to help you review things in general.
 
 Of course, if you are seeing an error on a particular URL and you want that URL to be crawled, you should look into it.
 
@@ -168,11 +168,11 @@ Unfortunately nobody will actually search these terms. The kinds of terms we wan
 [/list]
 It takes huge popular appeal, and often forms of incentivisation campaign, to get high on these results.
 
-So, if you are shopping for web design and someone is telling you that you'll get a top Google result, don't expect it for "London carpenter" or "best chauffeur, expect it will be something far more obscure. It may well still be a term that does get a modest stream of searches though (Google's [url="https://adwords.google.com/select/KeywordToolExternal" target="_blank"]keyword suggestion tool[/url] is great for finding 'long tail' searches that people actually do but aren't particularly competitive).
+So, if you are shopping for web design and someone is telling you that you'll get a top Google result, don't expect it for "London carpenter" or "best chauffeur", expect it will be something far more obscure. It may well still be a term that does get a modest stream of searches though (Google's [url="https://adwords.google.com/select/KeywordToolExternal" target="_blank"]keyword suggestion tool[/url] is great for finding 'long tail' searches that people actually do but aren't particularly competitive).
 
 Some companies do actually say they can get you a top Google result for any search term of your choice. Thinking logically, the only ways they could do this are:
 [list]
-[*] Doing it only if you have an infinite budget (with infinite resources, you could incentise infinite quality back-links and invest in whatever is required to make the website the most compelling one ever built)[/*]
+[*] Doing it only if you have an infinite budget (with infinite resources, you could incentivise infinite quality back-links and invest in whatever is required to make the website the most compelling one ever built)[/*]
 [*] Bribing or Hacking Google (seems very unlikely)[/*]
 [*] Calling a paid Google ad a top Google result (likely very common)[/*]
 [/list]

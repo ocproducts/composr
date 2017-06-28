@@ -66,7 +66,7 @@ When choosing a webhost, you need to make sure that they meet all the requiremen
 
 The remainder of this section details Composr's requirements. If you have trouble ascertaining a webhosts compliance, you may wish to contact them with this information. These requirements only apply to bundled functionality; non-bundled addons may have their own requirements.
 
-Composr requires:
+[staff_note]Also update download.txt in composr_homesite branch[/staff_note]Composr requires:
  - A web server that runs PHP. PHP is software which provides the environment that Composr is written for.
   - version 5.6 or higher; we have tested up to and including PHP 7.0, although newer versions usually do work or are quickly fixed to work
   - GD2 extension (including PNG and JPEG support). GD is used by PHP for image generation, e.g. to generate thumbnails.
