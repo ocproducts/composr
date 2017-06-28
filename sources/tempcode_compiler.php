@@ -904,6 +904,8 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                         $preprocessable_bits = array_merge($preprocessable_bits, $_preprocessable_bits);
                                         break;
                                     }
+                                } else {
+                                    $parameters_used = null; // We don't know what the INCLUDE directive may need
                                 }
                             // intentionally rolls on...
 
@@ -1254,7 +1256,7 @@ function template_to_tempcode($text, $symbol_pos = 0, $inside_directive = false,
     }
     list($parts, $preprocessable_bits) = compile_template(substr($text, $symbol_pos), $codename, $theme, $lang, $tolerate_errors, $parameters, $parameters_used);
 
-    if ($parameters !== null && $parameters !== null) {
+    if ($parameters !== null && $parameters_used !== null) {
         foreach ($parameters as $key => $parameter) {
             if (!isset($parameters_used[$key])) {
                 unset($parameters[$key]);

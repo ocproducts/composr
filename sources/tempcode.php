@@ -1297,7 +1297,11 @@ function handle_symbol_preprocessing($seq_part, &$children)
                     $before = memory_get_usage();
                 }
                 if (isset($block_parms['block'])) {
-                    $b_value = do_block($block_parms['block'], $block_parms);
+                    if ($GLOBALS['IN_MINIKERNEL_VERSION']) {
+                        $b_value = new Tempcode();
+                    } else {
+                        $b_value = do_block($block_parms['block'], $block_parms);
+                    }
 
                     if ((isset($_GET['keep_show_loading'])) && ($_GET['keep_show_loading'] === '1')) {
                         if (function_exists('attach_message')) {

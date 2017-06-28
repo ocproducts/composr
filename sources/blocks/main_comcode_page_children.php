@@ -128,7 +128,7 @@ class Block_main_comcode_page_children
             $child['ZONE'] = get_comcode_zone($child['the_page'], false);
             $child['ORDER'] = $child['p_order'];
 
-            if ($child['ZONE'] === null) {
+            if (($child['ZONE'] === null) || ($child['PAGE'] === null)) {
                 unset($children[$i]);
                 continue;
             }

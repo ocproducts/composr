@@ -287,7 +287,7 @@ class DatabaseRepair
                                 $this->fix_table_inconsistent_in_db__delete_field($table_name, $field_name, $field_type_raw, false);
                             } else {
                                 // It's not actually a translatable field in meta-DB, but it should be
-                                if (strpos($expected_tables[$table_name][$matches[1]], '_TRANS') !== false) {
+                                if ((isset($expected_tables[$table_name][$matches[1]])) && (strpos($expected_tables[$table_name][$matches[1]], '_TRANS') !== false)) {
                                     $expected_type = $expected_tables[$table_name][$matches[1]] . '__COMCODE';
                                 } else {
                                     $expected_type = 'SHORT_TRANS__COMCODE'; // Assumption, might be LONG_TRANS

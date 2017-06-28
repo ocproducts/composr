@@ -22,6 +22,9 @@ class blocks_test_set extends cms_test_case
     {
         require_code('zones2');
 
+        require_code('caches3');
+        erase_block_cache();
+
         require_all_lang();
 
         $standard = get_standard_block_parameters();

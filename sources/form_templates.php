@@ -53,7 +53,9 @@ function init__form_templates()
         }
     }
 
-    set_no_clickjacking_csp();
+    if (function_exists('set_no_clickjacking_csp')) {
+        set_no_clickjacking_csp();
+    }
 }
 
 /**

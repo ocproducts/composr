@@ -853,9 +853,6 @@ function _do_lang($codename, $parameter1 = null, $parameter2 = null, $parameter3
                 kid_gloves_html_escaping_singular($parameter1);
             }
 
-            if (!is_string($parameter1)) {
-                fatal_exit('!');//TODO
-            }
             $out = str_replace('{1}', $parameter1, $out);
             if ($plural_or_vowel_check) {
                 $_parameter_denum = str_replace(',', '', $parameter1);

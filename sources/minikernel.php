@@ -74,6 +74,9 @@ function init__minikernel()
     global $XSS_DETECT;
     $XSS_DETECT = false;
 
+    global $CSP_ENABLED;
+    $CSP_ENABLED = false;
+
     set_error_handler('composr_error_handler');
     register_shutdown_function('catch_fatal_errors');
     safe_ini_set('track_errors', '1');

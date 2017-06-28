@@ -5356,7 +5356,12 @@ function ecv_CSP_NONCE($lang, $escaped, $param) {
  * @return string The result.
  */
 function ecv_CSP_NONCE_HTML($lang, $escaped, $param) {
-    $value = csp_nonce_html();
+    if (function_exists('csp_nonce_html')) {
+        $value = csp_nonce_html();
+    } else {
+        $value = '';
+    }
+
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
     }
