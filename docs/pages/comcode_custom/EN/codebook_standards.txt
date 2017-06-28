@@ -756,7 +756,7 @@ When you need to write SQL, write it securely
 | Security
 | All development
 | Code Quality Checker, pedantic mode
-| Never ever write SQL without thinking about security.
+| Never ever write SQL without thinking about security, particular SQL injection vulnerabilities.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Use [tt]db_escape_string[/tt] not [tt]mysql_escape_string[/tt] / [tt]addslashes[/tt]
@@ -785,6 +785,13 @@ Be type-strict
 | All development
 | Manually
 | When you define database schemas via [tt]create_table[/tt] use the closest Composr field type you can. For example, make use of [tt]AUTO_LINK[/tt] and [tt]TIME[/tt] and [tt]USER[/tt] rather than always using [tt]INTEGER[/tt]. Use [tt]URLPATH[/tt] for URLs. This will help Composr understand its own database better (which it does need to do in some situations such as broken URL scanning). If a field needs to support Comcode, define it as [tt]SHORT_TRANS__COMCODE[/tt] or [tt]LONG_TRANS__COMCODE[/tt] (never run [tt]comcode_to_tempcode[/tt] on-the-fly).
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Be careful about key fields[/color]
+| Internationalisation, portability
+| All development
+| Manually
+| Most tables will have an [tt]AUTO[/tt] field called [tt]id[/tt] as the key field. However, there are many cases where normal field(s) make sense for use as a key. If you're sure these will be reliable keys, even into the future, then you should usually go for it. However, there is an important special case. If you have a 255-character field then this cannot be used for a [tt]utf8mb4[/tt] table, because it will exceed the 1000 bytes limit (4*255>1000). For this situation you either need to use an [tt]id[/tt] key, or you need to shorten the maximum length of the field (e.g. [tt]ID_TEXT[/tt] instead of [tt]SHORT_TEXT[/tt]), or you need to accept that Composr will automatically detect the issue and make it a [tt]utf8[/tt] table (which cannot store emojis). You probably don't need emojis for any field you'd want as a key, but be wary.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Avoid complex SQL
