@@ -59,6 +59,18 @@ class Hook_payment_gateway_ccbill
     );
 
     /**
+     * Get a standardised config map.
+     *
+     * @return array The config
+     */
+    public function get_config()
+    {
+        return array(
+            'supports_remote_memo' => false,
+        );
+    }
+
+    /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
      * @param  float $amount A transaction amount.
@@ -80,16 +92,30 @@ class Hook_payment_gateway_ccbill
     }
 
     /**
+     * Generate a transaction ID / trans-expecting ID.
+     *
+     * @return string A transaction ID.
+     */
+    public function generate_trans_id()
+    {
+        require_code('crypt');
+        return get_rand_password();
+    }
+
+    /**
      * Make a transaction (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  float $price Transaction price in money.
+     * @param  float $tax Transaction tax in money.
+     * @param  float $shipping_cost Shipping cost.
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency)
     {
         if (!isset($this->currency_alphabetic_to_numeric_code[$currency])) {
             warn_exit(do_lang_tempcode('UNRECOGNISED_CURRENCY', 'ccbill', escape_html($currency)));
@@ -108,32 +134,18 @@ class Hook_payment_gateway_ccbill
         // this will show up as a confusing "$X.XX for 99 days" message to customers on the CCBill form.
         // To fix this - you need to set up a "custom dynamic description" which removes that message, by contacting CCBill support.
         $form_period = '99';
-        $digest = md5(float_to_raw_string($amount) . $form_period . $currency . get_option('payment_gateway_vpn_password'));
-
-        // We only need this record so that we can know what member made the payment; but as we're using it we'll pass this as the custom value
-        $trans_id = $this->generate_trans_id();
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_currency' => $currency,
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
+        $digest = md5(float_to_raw_string($price + $tax + $shipping_cost) . $form_period . $currency . get_option('payment_gateway_vpn_password'));
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => '24a0560541cedd4c45898f4d19e99249',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
-            'TRANS_ID' => $trans_id,
-            'AMOUNT' => float_to_raw_string($amount),
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'SHIPPING_COST' => float_to_raw_string($shipping_cost),
+            'AMOUNT' => float_to_raw_string($price + $tax + $shipping_cost),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
@@ -149,17 +161,19 @@ class Hook_payment_gateway_ccbill
     /**
      * Make a subscription (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  float $price Transaction price in money.
+     * @param  float $tax Transaction tax in money.
+     * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
-     * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
     {
         if (!isset($this->currency_alphabetic_to_numeric_code[$currency])) {
             warn_exit(do_lang_tempcode('UNRECOGNISED_CURRENCY', 'ccbill', escape_html($currency)));
@@ -172,37 +186,22 @@ class Hook_payment_gateway_ccbill
         $account_num = $this->get_account_id();
         $subaccount_nums = explode(',', get_option('payment_gateway_vpn_username'));
         $subaccount_num = sprintf('%04d', count($subaccount_nums) === 1 ? $subaccount_nums[0] : $subaccount_nums[1]); // Second value is for subscriptions, has to be exactly 4 digits
-        $form_name = explode(',', get_option('payment_gateway_digest'));
+        $form_name = explode(',', get_option('ipn_digest'));
         $form_name = count($form_name) === 1 ? $form_name[0] : $form_name[1]; // Second value is for subscriptions
         $form_period = strval($length * $this->length_unit_to_days[$length_units]);
-        $digest = md5(float_to_raw_string($amount) . $form_period . float_to_raw_string($amount) . $form_period . '99' . $currency . get_option('payment_gateway_vpn_password')); // formPrice.formPeriod.formRecurringPrice.formRecurringPeriod.formRebills.currencyCode.salt
-
-        // We only need this record so that we can know what member made the payment; but as we're using it we'll pass this as the custom value
-        $trans_id = $this->generate_trans_id();
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_currency' => $currency,
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
+        $digest = md5(float_to_raw_string($price + $tax) . $form_period . float_to_raw_string($price + $tax) . $form_period . '99' . $currency . get_option('payment_gateway_vpn_password')); // formPrice.formPeriod.formRecurringPrice.formRecurringPeriod.formRebills.currencyCode.salt
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_CCBILL', array(
             '_GUID' => 'f8c174f38ae06536833f1510027ba233',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
-            'TRANS_ID' => $trans_id,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
-            'AMOUNT' => float_to_raw_string($amount),
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'AMOUNT' => float_to_raw_string($price + $tax),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
@@ -222,18 +221,62 @@ class Hook_payment_gateway_ccbill
      */
     protected function _build_member_address()
     {
-        $member_address = array();
-        if (!is_guest()) {
-            $member_address['customer_fname'] = get_cms_cpf('firstname');
-            $member_address['customer_lname'] = get_cms_cpf('lastname');
-            $member_address['address1'] = get_cms_cpf('street_address');
-            $member_address['email'] = $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member());
-            $member_address['city'] = get_cms_cpf('city');
-            $member_address['state'] = get_cms_cpf('state');
-            $member_address['zipcode'] = get_cms_cpf('post_code');
-            $member_address['country'] = get_cms_cpf('country');
-            $member_address['username'] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+        $shipping_email = '';
+        $shipping_phone = '';
+        $shipping_firstname = '';
+        $shipping_lastname = '';
+        $shipping_street_address = '';
+        $shipping_city = '';
+        $shipping_county = '';
+        $shipping_state = '';
+        $shipping_post_code = '';
+        $shipping_country = '';
+        $shipping_email = '';
+        $shipping_phone = '';
+        $cardholder_name = '';
+        $card_type = '';
+        $card_number = null;
+        $card_start_date_year = null;
+        $card_start_date_month = null;
+        $card_expiry_date_year = null;
+        $card_expiry_date_month = null;
+        $card_issue_number = null;
+        $card_cv2 = null;
+        $billing_street_address = '';
+        $billing_city = '';
+        $billing_county = '';
+        $billing_state = '';
+        $billing_post_code = '';
+        $billing_country = '';
+        get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, false, false);
+
+        if ($shipping_street_address == '') {
+            $street_address = $billing_street_address;
+            $city = $billing_city;
+            $county = $billing_county;
+            $state = $billing_state;
+            $post_code = $billing_post_code;
+            $country = $billing_country;
+        } else {
+            $street_address = $shipping_street_address;
+            $city = $shipping_city;
+            $county = $shipping_county;
+            $state = $shipping_state;
+            $post_code = $shipping_post_code;
+            $country = $shipping_country;
         }
+
+        $member_address = array();
+        $member_address['customer_fname'] = $shipping_firstname;
+        $member_address['customer_lname'] = $shipping_lastname;
+        $member_address['address1'] = $street_address;
+        $member_address['city'] = $city;
+        $member_address['state'] = $state;
+        $member_address['zipcode'] = $post_code;
+        $member_address['country'] = $country;
+        $member_address['email'] = $shipping_email;
+        $member_address['username'] = is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+
         return $member_address;
     }
 
@@ -251,92 +294,82 @@ class Hook_payment_gateway_ccbill
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
-     * @return ?array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response (null: no transaction; will only return null when $silent_fail is set).
+     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
      */
-    public function handle_ipn_transaction($silent_fail)
+    public function handle_ipn_transaction()
     {
-        $custom = post_param_integer('customPurchaseId');
+        $trans_expecting_id = post_param_integer('customPurchaseId');
 
-        $subscription_id = post_param_string('subscription_id', '');
-        $denial_id = post_param_string('denialId', '');
-        $response_digest = post_param_string('responseDigest');
-
-        $trans_expecting_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $custom), '', 1);
-        if (!array_key_exists(0, $trans_expecting_rows)) {
-            if ($silent_fail) {
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
+        if (!array_key_exists(0, $transaction_rows)) {
+            if (!running_script('ecommerce')) {
                 return null;
             }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
-        $trans_expecting_row = $trans_expecting_rows[0];
+        $transaction_row = $transaction_rows[0];
 
-        $purchase_id = $trans_expecting_row['e_purchase_id'];
+        $member_id = $transaction_row['e_member_id'];
+        $type_code = $transaction_row['e_type_code'];
+        $item_name = $transaction_row['e_item_name'];
+        $purchase_id = $transaction_row['e_purchase_id'];
 
-        // SECURITY: Check hash
+        $subscription_id = post_param_string('subscription_id', '');
+        $denial_id = post_param_string('denialId', '');
+        $response_digest = post_param_string('responseDigest');
         $success_response_digest = md5($subscription_id . '1' . get_option('payment_gateway_vpn_password')); // responseDigest must have this value on success
         $denial_response_digest = md5($denial_id . '0' . get_option('payment_gateway_vpn_password')); // responseDigest must have this value on failure
-        if (($response_digest !== $success_response_digest) && ($response_digest !== $denial_response_digest)) {
-            if ($silent_fail) {
-                return null;
-            }
-            fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . flatten_slashed_array($_POST, true));
-        }
-
         $success = ($success_response_digest === $response_digest);
         $is_subscription = (post_param_integer('customIsSubscription') == 1);
-        //$item_name = $is_subscription ? '' : post_param_string('customItemName');  Actually we'd rather get it from the transaction row in case we want to customise what was sent to the gateway
-        $item_name = $is_subscription ? '' : $trans_expecting_row['e_item_name'];
-        $payment_status = $success ? 'Completed' : 'Failed';
-        $reason_code = post_param_integer('reasonForDeclineCode', 0);
+        $status = $success ? 'Completed' : 'Failed';
+        $reason = post_param_integer('reasonForDeclineCode', 0);
         $pending_reason = '';
         $memo = '';
-        $mc_gross = post_param_string('initialPrice');
-        $_mc_currency = post_param_integer('baseCurrency', 0);
-        $mc_currency = ($_mc_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_mc_currency];
+        $_amount = post_param_string('initialPrice');
+        $amount = ($_amount == '') ? null : floatval($_amount);
+        $_currency = post_param_integer('baseCurrency', 0);
+        $currency = ($_currency === 0) ? get_option('currency') : $this->currency_numeric_to_alphabetic_code[$_currency];
         $txn_id = post_param_string('consumerUniqueId');
         $parent_txn_id = '';
         $period = '';
 
-        if (addon_installed('shopping')) {
-            if ($trans_expecting_row['e_type_code'] == 'cart_orders') {
-                $this->store_shipping_address(intval($purchase_id));
+        // SECURITY
+        if (($response_digest !== $success_response_digest) && ($response_digest !== $denial_response_digest)) {
+            if (!running_script('ecommerce')) {
+                return null;
             }
+            fatal_ipn_exit(do_lang('IPN_UNVERIFIED')); // Hacker?!!!
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period);
+        $this->store_shipping_address($trans_expecting_id, $txn_id);
+
+        $tax = null;
+
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**
-     * Store shipping address for orders.
+     * Store shipping address for a transaction.
      *
-     * @param  AUTO_LINK $order_id Order ID.
-     * @return ?mixed Address ID (null: No address record found).
+     * @param  ID_TEXT $trans_expecting_id Expected transaction ID.
+     * @param  ID_TEXT $txn_id Transaction ID.
+     * @return AUTO_LINK Address ID.
      */
-    protected function store_shipping_address($order_id)
+    public function store_shipping_address($trans_expecting_id, $txn_id)
     {
-        if (post_param_string('address1', null) === null) {
-            return null;
-        }
-
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
-            $shipping_address = array(
-                'a_order_id' => $order_id,
-                'a_firstname' => post_param_string('customer_fname', ''),
-                'a_lastname' => post_param_string('customer_lname', ''),
-                'a_street_address' => trim(post_param_string('address1', '') . "\n" . post_param_string('address2', '')),
-                'a_city' => post_param_string('city', ''),
-                'a_county' => '',
-                'a_state' => post_param_string('state', ''),
-                'a_post_code' => post_param_string('zipcode', ''),
-                'a_country' => post_param_string('country', ''),
-                'a_email' => post_param_string('email', ''),
-                'a_phone' => post_param_string('phone_number', ''),
-            );
-            return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
-        }
-
-        return null;
+        $shipping_address = array(
+            'a_firstname' => post_param_string('customer_fname', ''),
+            'a_lastname' => post_param_string('customer_lname', ''),
+            'a_street_address' => trim(post_param_string('address1', '') . "\n" . post_param_string('address2', '')),
+            'a_city' => post_param_string('city', ''),
+            'a_county' => '',
+            'a_state' => post_param_string('state', ''),
+            'a_post_code' => post_param_string('zipcode', ''),
+            'a_country' => post_param_string('country', ''),
+            'a_email' => post_param_string('email', ''),
+            'a_phone' => post_param_string('phone_number', ''),
+        );
+        return store_shipping_address($trans_expecting_id, $txn_id, $shipping_address);
     }
 
     /**

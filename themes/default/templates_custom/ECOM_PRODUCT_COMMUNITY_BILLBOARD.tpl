@@ -1,0 +1,15 @@
+<p>
+	{!COMMUNITY_BILLBOARD_A,{$SITE_NAME*},{DAYS*}}
+</p>
+
+<p>
+	{!COMMUNITY_BILLBOARD_B,{QUEUE}}
+</p>
+
+<p>
+	{!COMMUNITY_BILLBOARD_C}
+</p>
+
+<p>
+	{!COMMUNITY_BILLBOARD_D}
+</p>
