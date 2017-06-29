@@ -820,12 +820,12 @@ class Module_cms_calendar extends Standard_crud_module
                     $filled1 = array();
                     $filled2 = array();
                     $filled3 = array();
-                    foreach ($members as $member) {
+                    foreach ($members as $member_id) {
                         // Privacy
                         $privacy_ok = true;
                         if (addon_installed('content_privacy')) {
                             require_code('content_privacy');
-                            if (!has_privacy_access('event', strval($id), $member)) {
+                            if (!has_privacy_access('event', strval($id), $member_id)) {
                                 $privacy_ok = false;
                             }
                         }
@@ -833,7 +833,7 @@ class Module_cms_calendar extends Standard_crud_module
                         if ($privacy_ok) {
                             $filled1[] = $id;
                             $filled2[] = intval($secs_before);
-                            $filled3[] = $member;
+                            $filled3[] = $member_id;
                         }
                     }
                     $GLOBALS['SITE_DB']->query_insert('calendar_reminders', array(
@@ -855,12 +855,12 @@ class Module_cms_calendar extends Standard_crud_module
                     }
                 }
                 $members = array_diff($members, array(get_member(), $GLOBALS['FORUM_DRIVER']->get_guest_id()));
-                foreach ($members as $member) { // Now add their reminders. Can't do this as multi-insert as there may be dupes, so we need to skip over errors individually
+                foreach ($members as $member_id) { // Now add their reminders. Can't do this as multi-insert as there may be dupes, so we need to skip over errors individually
                     // Privacy
                     $privacy_ok = true;
                     if (addon_installed('content_privacy')) {
                         require_code('content_privacy');
-                        if (!has_privacy_access('event', strval($id), $member)) {
+                        if (!has_privacy_access('event', strval($id), $member_id)) {
                             $privacy_ok = false;
                         }
                     }
@@ -869,7 +869,7 @@ class Module_cms_calendar extends Standard_crud_module
                         $secs_before = float_unformat(post_param_string('hours_before', '1.0')) * 3600.0;
                         $GLOBALS['SITE_DB']->query_insert('calendar_reminders', array(
                             'e_id' => $id,
-                            'n_member_id' => $member,
+                            'n_member_id' => $member_id,
                             'n_seconds_before' => intval($secs_before),
                         ), false, true);
                     }
@@ -1271,6 +1271,10 @@ class Module_cms_calendar_cat extends Standard_crud_module
 
         // Permissions
         $fields->attach($this->get_permission_fields(($id === null) ? null : strval($id), null, ($title == '')));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('calendar_type', ($id === null) ? null : strval($id)));
+        }
 
         if (addon_installed('content_reviews')) {
             $fields->attach(content_review_get_fields('calendar_type', ($id === null) ? null : strval($id)));
@@ -1360,6 +1364,10 @@ class Module_cms_calendar_cat extends Standard_crud_module
         set_url_moniker('calendar_type', strval($id));
 
         $this->set_permissions(strval($id));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('calendar_type', strval($id));
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('calendar_type', strval($id));
@@ -1388,6 +1396,10 @@ class Module_cms_calendar_cat extends Standard_crud_module
 
         if (!fractional_edit()) {
             $this->set_permissions($id);
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('calendar_type', $id);
+            }
         }
 
         if (addon_installed('content_reviews')) {

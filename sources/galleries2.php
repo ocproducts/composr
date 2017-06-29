@@ -1639,6 +1639,11 @@ function delete_gallery($name)
 
     require_code('sitemap_xml');
     notify_sitemap_node_delete('SEARCH:galleries:browse:' . $name);
+
+    if (addon_installed('ecommerce')) {
+        require_code('ecommerce_permission_products');
+        delete_prod_permission('gallery', $name);
+    }
 }
 
 /**
@@ -1658,9 +1663,9 @@ function make_member_gallery_if_needed($cat)
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => $cat));
     if ($test === null) {
         $parts = explode('_', $cat, 3);
-        $member = intval($parts[1]);
+        $member_id = intval($parts[1]);
         $parent_id = $parts[2];
-        if (!has_privilege($member, 'have_personal_category', 'cms_galleries')) {
+        if (!has_privilege($member_id, 'have_personal_category', 'cms_galleries')) {
             return;
         }
         $_parent_info = $GLOBALS['SITE_DB']->query_select('galleries', array('accept_images', 'accept_videos', 'flow_mode_interface', 'fullname'), array('name' => $parent_id), '', 1);
@@ -1692,7 +1697,7 @@ function get_potential_gallery_title($cat)
     if (($test === null) && (substr($cat, 0, 7) == 'member_')) {
         // Does not exist but is a potential member gallery
         $parts = explode('_', $cat, 3);
-        $member = intval($parts[1]); // Almost certainly going to be same as get_member(), but we might as well be general here
+        $member_id = intval($parts[1]); // Almost certainly going to be same as get_member(), but we might as well be general here
 
         // Find about parent (new gallery inherits)
         $parent_id = $parts[2];
@@ -1703,7 +1708,7 @@ function get_potential_gallery_title($cat)
         $parent_info = $_parent_info[0];
 
         // Work out name
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member, true);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
         if ($username === null) {
             warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
         }

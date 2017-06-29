@@ -137,11 +137,8 @@ class lang_spelling_test_set extends cms_test_case
         }
 
         // No hyphen wanted (we want our canonical way)
-        if (stripos($string, 'set-up') !== false) {
+        if ((stripos($string, 'set-up') !== false) && (($key === null) || (!in_array($key, array('CONFIG_OPTION_taxcloud_api_key', 'CONFIG_OPTION_taxcloud_api_id'))))) {
             $this->assertTrue(false, 'The phrase \'set-up\' was used in ' . $file . '. This might need to be changed to \'setup\', depending on the usage.');
-        }
-        if (stripos($string, 'point-store') !== false) {
-            $this->assertTrue(false, 'The word \'point-store\' was used in ' . $file . '. This should be changed to \'Point Store\'.');
         }
         if (stripos($string, 'add-on') !== false) {
             $this->assertTrue(false, 'The word \'add-on\' was used in ' . $file . '. This should be changed to \'addon\'.');
@@ -217,7 +214,7 @@ class lang_spelling_test_set extends cms_test_case
         if (preg_match('#([^/\.A-Za-z]+)tar([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The filetype \'tar\' was used in ' . $file . '. This should be changed to \'TAR\'.');
         }
-        if (preg_match('#([^/\_\-\.A-Za-z]+)zip([^A-Za-z]+)#', $string) != 0) {
+        if ((preg_match('#([^/\_\-\.A-Za-z]+)zip([^A-Za-z]+)#', $string) != 0) && (($key === null) || (!in_array($key, array('ZIP_NEEDED_FOR_USA', 'INVALID_ZIP_FOR_USA', 'CONFIG_OPTION_business_post_code'))))) {
             $this->assertTrue(false, 'The filetype \'zip\' was used in ' . $file . '. This should be changed to \'ZIP\'.');
         }
         if (preg_match('#([^\]/A-Za-z"\_<]+)internet#', $string) != 0) {

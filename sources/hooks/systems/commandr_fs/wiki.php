@@ -98,13 +98,13 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         $description = $this->_default_property_str($properties, 'description');
         $notes = $this->_default_property_str($properties, 'notes');
         $hide_posts = $this->_default_property_int($properties, 'hide_posts');
-        $member = $this->_default_property_member($properties, 'submitter');
+        $member_id = $this->_default_property_member($properties, 'submitter');
         $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
         $meta_keywords = $this->_default_property_str($properties, 'meta_keywords');
         $meta_description = $this->_default_property_str($properties, 'meta_description');
-        $id = wiki_add_page($label, $description, $notes, $hide_posts, $member, $add_time, $views, $meta_keywords, $meta_description, $edit_date);
+        $id = wiki_add_page($label, $description, $notes, $hide_posts, $member_id, $add_time, $views, $meta_keywords, $meta_description, $edit_date);
 
         $the_order = $GLOBALS['SITE_DB']->query_select_value('wiki_children', 'MAX(the_order)', array('parent_id' => $parent_id));
         if ($the_order === null) {
@@ -254,11 +254,11 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         if ($validated === null) {
             $validated = 1;
         }
-        $member = $this->_default_property_member($properties, 'member_id');
+        $member_id = $this->_default_property_member($properties, 'member_id');
         $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_date = $this->_default_property_time_null($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
-        $id = wiki_add_post($page_id, $label, $validated, $member, true, $add_time, $views, $edit_date);
+        $id = wiki_add_post($page_id, $label, $validated, $member_id, true, $add_time, $views, $edit_date);
 
         $this->_resource_save_extend($this->file_resource_type, strval($id), $filename, $label, $properties);
 
@@ -320,12 +320,12 @@ class Hook_commandr_fs_wiki extends Resource_fs_base
         if ($validated === null) {
             $validated = 1;
         }
-        $member = $this->_default_property_member($properties, 'member_id');
+        $member_id = $this->_default_property_member($properties, 'member_id');
         $add_time = $this->_default_property_time($properties, 'add_date');
         $edit_time = $this->_default_property_time($properties, 'edit_date');
         $views = $this->_default_property_int($properties, 'views');
 
-        wiki_edit_post(intval($resource_id), $label, $validated, $member, $page_id, $edit_time, $add_time, $views, true);
+        wiki_edit_post(intval($resource_id), $label, $validated, $member_id, $page_id, $edit_time, $add_time, $views, true);
 
         $this->_resource_save_extend($this->file_resource_type, $resource_id, $filename, $label, $properties);
 

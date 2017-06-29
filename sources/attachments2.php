@@ -52,9 +52,9 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     }
 
     if ($for_member !== null) {
-        $member = $for_member;
+        $member_id = $for_member;
     } else {
-        $member = function_exists('get_member') ? get_member() : db_get_first_id();
+        $member_id = function_exists('get_member') ? get_member() : db_get_first_id();
     }
     if ($insert_as_admin === null) {
         $insert_as_admin = false;
@@ -108,7 +108,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
     if ($has_one) {
         push_lax_comcode(true); // We don't want a simple syntax error to cause us to lose our attachments
     }
-    $tempcode = comcode_to_tempcode($comcode, $member, $insert_as_admin, $id, $db, COMCODE_NORMAL, array(), $for_member);
+    $tempcode = comcode_to_tempcode($comcode, $member_id, $insert_as_admin, $id, $db, COMCODE_NORMAL, array(), $for_member);
     if ($has_one) {
         pop_lax_comcode();
     }

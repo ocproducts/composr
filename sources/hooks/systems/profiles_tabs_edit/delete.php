@@ -94,6 +94,13 @@ class Hook_profiles_tabs_edit_delete
             }
         }
 
+        if (addon_installed('ecommerce')) {
+            $subscriptions_count = $GLOBALS['SITE_DB']->query_select_value('ecom_subscriptions', 'COUNT(*)', array('s_member_id' => $member_id_of, 's_state' => 'active'));
+            if ($subscriptions_count > 0) {
+                $text->attach(paragraph(do_lang_tempcode('MEMBER_HAS_SUBSCRIPTIONS', escape_html($username))));
+            }
+        }
+
         $fields = new Tempcode();
         require_code('form_templates');
         $fields->attach(form_input_tick(do_lang_tempcode(($member_id_of != $member_id_viewing) ? 'DELETE_WITHOUT_MERGING' : 'DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));

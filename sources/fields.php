@@ -18,6 +18,8 @@
  * @package    core_fields
  */
 
+/*EXTRA FUNCTIONS: get_nested_csv_structure*/
+
 /**
  * Farm out the files for catalogue entry fields.
  */
@@ -455,7 +457,10 @@ function append_form_custom_fields($content_type, $id, &$fields, &$hidden, $fiel
             $field_groups[$field_cat] = new Tempcode();
         }
 
-        $_cf_description = escape_html(get_translated_text($field['cf_description']));
+        $__cf_description = get_translated_text($field['cf_description']);
+        global $LANG_FILTER_OB;
+        $__cf_description = $LANG_FILTER_OB->compile_time(null, $__cf_description); // So that eCommerce catalogue fields referencing config options look better
+        $_cf_description = escape_html($__cf_description);
 
         $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
         $result = $ob->get_field_inputter($_cf_name, $_cf_description, $field, $default, true, !array_key_exists($field_num + 1, $special_fields));
@@ -633,7 +638,7 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
     $orderings = array(
         do_lang_tempcode('FIELD_TYPES__TEXT'), 'short_trans', 'short_trans_multi', 'short_text', 'short_text_multi', 'long_trans', 'long_text', 'posting_field', 'codename', 'password', 'email',
         do_lang_tempcode('FIELD_TYPES__NUMBERS'), 'integer', 'float',
-        do_lang_tempcode('FIELD_TYPES__CHOICES'), 'list', 'list_multi', 'tick',
+        do_lang_tempcode('FIELD_TYPES__CHOICES'), 'list', 'list_multi', 'state', 'country', 'region', 'tick',
         do_lang_tempcode('FIELD_TYPES__UPLOADSANDURLS'), 'upload', 'upload_multi', 'picture', 'picture_multi', 'video', 'video_multi', 'url', 'url_multi', 'page_link', 'theme_image',
         do_lang_tempcode('FIELD_TYPES__MAGIC'), 'guid',
         do_lang_tempcode('FIELD_TYPES__REFERENCES'), 'isbn', 'reference', 'reference_multi', 'content_link', 'content_link_multi', 'member', 'member_multi', 'author',
@@ -705,4 +710,114 @@ function create_selection_list_field_type($type = '', $limit_to_storage_set = fa
     }
 
     return $ret;
+}
+
+/**
+ * Used by list fields to derive list data based on field options.
+ *
+ * @package    core_fields
+ */
+abstract class ListFieldHook
+{
+    /**
+     * Get field list.
+     *
+     * @param  array $field The field details
+     * @param  ?boolean $dynamic_choices Whether to put custom choices from previous data back into the main list (null: decide based on field options)
+     * @return array List
+     */
+    protected function get_input_list_map($field, $dynamic_choices = null)
+    {
+        $default = $field['cf_default'];
+
+        switch ($default) {
+            case 'CURRENCY':
+        		if (addon_installed('ecommerce')) {
+                    require_code('currency');
+                    $currencies = array_keys(get_currency_map());
+                    $list = array_combine($currencies, $currencies);
+                } else {
+                    $list = array();
+                }
+                break;
+
+            case 'REGION':
+                require_code('locations');
+                $continents_and_countries = find_continents_and_countries();
+                $list = array();
+                foreach ($continents_and_countries as $continent => $countries) {
+                    foreach ($countries as $country_code => $country_name) {
+                        $list[$country_code] = $continent . ' > ' . $country_name;
+                    }
+                }
+                break;
+
+            case 'COUNTRY':
+                require_code('locations');
+                $list = find_countries();
+                break;
+
+            case 'USA_STATE':
+                require_code('locations');
+                global $USA_STATE_LIST;
+                $list = $USA_STATE_LIST;
+                break;
+
+            default:
+                if ((addon_installed('nested_cpf_csv_lists')) && (substr(strtolower($default), -4) == '.csv')) {
+                    $csv_heading = option_value_from_field_array($field, 'csv_heading', '');
+
+                    require_code('nested_csv');
+                    $csv_structure = get_nested_csv_structure();
+
+                    $list = array();
+                    foreach ($csv_structure['csv_files'][$default]['data'] as $row) {
+                        if ($csv_heading == '') {
+                            $l = array_shift($row);
+                            $list[$l] = $l;
+                        } else {
+                            $l = $row[$csv_heading];
+                            $list[$l] = $l;
+                        }
+                    }
+                } else {
+                    if ($default == '') {
+                        $list = array();
+                    } else {
+                        if (substr_count($default, '|') + 1 == substr_count($default, '=')) {
+                            foreach (explode('|', $default) as $l) {
+                                list($l, $written) = explode('=', $l, 2);
+                                $list[$l] = $written;
+                            }
+                        } else {
+                            foreach (explode('|', $default) as $l) {
+                                $list[preg_replace('#=.*$#', '', $l)] = preg_replace('#^.*=#', '', $l);
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+
+        $custom_values = option_value_from_field_array($field, 'custom_values', 'off');
+
+        if ($custom_values != 'off') { // Only makes sense to allow dynamic choices if custom values are enterable
+            if ($dynamic_choices === null) {
+                $dynamic_choices = (option_value_from_field_array($field, 'dynamic_choices', 'off') == 'on');
+            }
+            if (isset($field['c_name'])) {
+                $existing_data = $GLOBALS['SITE_DB']->query_select('catalogue_efv_long', array('DISTINCT cv_value AS d'), array('cf_id' => $field['id']));
+            } else {
+                $existing_data = $GLOBALS['FORUM_DB']->query_select('f_member_custom_fields', array('DISTINCT field_' . strval($field['id']) . ' AS d'));
+            }
+            foreach ($existing_data as $d) {
+                if ($d['d'] != '') {
+                    $parts = explode("\n", $d['d']);
+                    $list += array_combine($parts, $parts);
+                }
+            }
+        }
+
+        return $list;
+    }
 }

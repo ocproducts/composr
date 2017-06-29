@@ -34,7 +34,7 @@ function get_table_purpose_flags()
         'booking' => TABLE_PURPOSE__NORMAL,
         'booking_supplement' => TABLE_PURPOSE__NORMAL,
         'cached_weather_codes' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__NO_BACKUPS | TABLE_PURPOSE__FLUSHABLE,
-        'classifieds_prices' => TABLE_PURPOSE__NORMAL,
+        'ecom_classifieds_prices' => TABLE_PURPOSE__NORMAL,
         'community_billboard' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE,
         'content_read' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__FLUSHABLE_AGGRESSIVE,
         'credit_charge_log' => TABLE_PURPOSE__NORMAL | TABLE_PURPOSE__SUBDATA/*under f_members*/,

@@ -147,6 +147,10 @@ class Module_admin_chat extends Standard_crud_module
 
         // Permissions
         $fields->attach($this->get_permission_fields(null, null, true));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('chat'));
+        }
 
         return array($fields, $hidden);
     }
@@ -201,6 +205,10 @@ class Module_admin_chat extends Standard_crud_module
 
         // Permissions
         $fields->attach($this->get_permission_fields($id));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('chat', $id));
+        }
 
         $delete_fields = new Tempcode();
         $logs_url = build_url(array('page' => 'chat', 'type' => 'download_logs', 'id' => $id), get_module_zone('chat'));
@@ -225,6 +233,10 @@ class Module_admin_chat extends Standard_crud_module
         set_url_moniker('chat', strval($id));
 
         $this->set_permissions(strval($id));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('chat', strval($id));
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('chat', strval($id));
@@ -256,6 +268,10 @@ class Module_admin_chat extends Standard_crud_module
         edit_chatroom(intval($id), post_param_string('c_welcome', STRING_MAGIC_NULL), post_param_string('room_name'), $room_owner, $allow2, $allow2_groups, $disallow2, $disallow2_groups, post_param_string('room_lang', STRING_MAGIC_NULL));
 
         $this->set_permissions($id);
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('chat', strval($id));
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('chat', $id);

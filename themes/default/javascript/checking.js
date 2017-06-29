@@ -478,18 +478,23 @@
         } else {
             // Standard field-type checks
             if ((theElement.className.indexOf('date') !== -1) && (theElement.name.match(/\_(day|month|year)$/)) && (myValue != '')) {
-                var day = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
-                var month = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
-                var year = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
-                var sourceDate = new Date(year, month - 1, day);
-                if (year != sourceDate.getFullYear()) {
-                    errorMsg = '{!javascript:NOT_A_DATE;^}';
-                }
-                if (month != sourceDate.getMonth() + 1) {
-                    errorMsg = '{!javascript:NOT_A_DATE;^}';
-                }
-                if (day != sourceDate.getDate()) {
-                    errorMsg = '{!javascript:NOT_A_DATE;^}';
+                var _day = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')];
+                var _month = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')];
+                var _year = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')];
+                if (_day && _month && _year) {
+                    var day = _day.options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')].selectedIndex].value;
+                    var month = _month.options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')].selectedIndex].value;
+                    var year = _year.options[theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')].selectedIndex].value;
+                    var sourceDate = new Date(year, month - 1, day);
+                    if (year != sourceDate.getFullYear()) {
+                        errorMsg = '{!javascript:NOT_A_DATE;^}';
+                    }
+                    if (month != sourceDate.getMonth() + 1) {
+                        errorMsg = '{!javascript:NOT_A_DATE;^}';
+                    }
+                    if (day != sourceDate.getDate()) {
+                        errorMsg = '{!javascript:NOT_A_DATE;^}';
+                    }
                 }
             }
             if (((theClass === 'input_email') || (theClass === 'input_email_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) {
@@ -599,11 +604,7 @@
 
         isRequired = !!isRequired;
 
-        if (radioButton) {
-            if (isRequired) {
-                radioButton.checked = true;
-            }
-        } else {
+        if (!radioButton) {
             var requiredA = $cms.dom.$('#form_table_field_name__' + fieldName),
                 requiredB = $cms.dom.$('#required_readable_marker__' + fieldName),
                 requiredC = $cms.dom.$('#required_posted__' + fieldName),

@@ -71,7 +71,7 @@ class lang_no_unused_test_set extends cms_test_case
             'ERROR_UPLOADING_',
             'NEXT_ITEM_',
             'DYNAMIC_NOTICE_',
-            'PURCHASE_STAGE_',
+            'ECOM_PURCHASE_STAGE_',
             'LENGTH_UNIT_',
             '_LENGTH_UNIT_',
             'PAYMENT_STATE_',
@@ -192,7 +192,14 @@ class lang_no_unused_test_set extends cms_test_case
             '_VIEW_IMAGE',
             '_VIEW_VIDEO',
             'EDIT_WARNING',
+            'NEWFORWARDING_DESCRIPTION',
+            'NEWPOP3_DESCRIPTION',
+            'TITLE_POP3',
             'takes_lots_of_space',
+            'TAX_SALES_NUMBER',
+            'TAX_VAT_NUMBER',
+            'TAX_SALES',
+            'TAX_VAT',
         );
 
         $dh = opendir(get_file_base() . '/lang/EN/');

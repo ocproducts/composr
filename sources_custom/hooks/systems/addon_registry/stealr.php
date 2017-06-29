@@ -98,7 +98,7 @@ You can also decide how many users/victims Stealr will steal from and how much t
 
 After stealing the points from the "unlucky" members and giving them to "lucky" members it creates a Private Topics between them to explain what happened.
 
-To configure Stealr go to Admin Zone > Setup > Configuration > Point store options, and scroll down to the Stealr options.';
+To configure Stealr go to Admin Zone > Setup > Configuration > eCommerce options, and scroll down to the Stealr options.';
     }
 
     /**
@@ -123,7 +123,7 @@ To configure Stealr go to Admin Zone > Setup > Configuration > Point store optio
                 'Cron',
                 'Conversr',
                 'points',
-                'pointstore',
+                'ecommerce',
             ),
             'recommends' => array(),
             'conflicts_with' => array()

@@ -122,7 +122,7 @@ You therefore need to either:
 [*] Create [tt]CATALOGUE_yournewcatalogue_GRID_ENTRY_WRAP.tpl[/tt] such that it references a different field sequence number (replace [tt]FIELD_1_THUMB[/tt], noting that we're counting field sequence numbers starting from zero)
 [/list]
 
-However there is an important exception to the above. The products catalogue already is bundled with a custom template set which is already referencing a different picture field. You also are not supposed to rearrange the first few fields in the products catalogue because they have a hard-coded meaning.
+However there is an important exception to the above. The shopping catalogue already is bundled with a custom template set which is already referencing a different picture field. You also are not supposed to rearrange the first few fields in the shopping catalogue because they have a hard-coded meaning.
 
 Templates:
  - [tt]CATALOGUE_*_GRID_ENTRY_WRAP.tpl[/tt]
@@ -408,29 +408,7 @@ A similar caveat holds true for custom profile fields, which share the same fiel
 
 [title="3"]eCommerce catalogues[/title]
 
-Composr can have special eCommerce catalogues, which integrate with the Composr shopping cart. These catalogues provide the following special functionality:
- - special templating for tidy product display
- - easy adding to the shopping cart
- - tax calculation
- - stock counting
- - view tracking
-
-An eCommerce catalogue always assumes it has a number of special eCommerce fields as the first fields in the catalogue. The default [tt]product[/tt] catalogue is configured like this and thus can be used as a reference for creating more product catalogues, if desired (few users will, however, require more than one product catalogue).
-
-If an eCommerce catalogue is not correctly configured errors will occur.
-
-The special eCommerce fields are:
- - title
- - code
- - price_pre_tax
- - reduction_start
- - reduction_end
- - stock_level [allows blank, meaning 'not stock counted']
- - stock_level_warn_at [allows blank, meaning 'not stock counted']
- - stock_level_maintain
- - tax_type
- - weight
- - description
+Composr can have special eCommerce catalogues, which integrate with the Composr shopping cart. This is explained in the [page="_SEARCH:tut_ecommerce"]eCommerce tutorial[/page].
 
 [title="3"]Classified ads[/title]
 
@@ -449,5 +427,6 @@ The non-bundled classified ads addon overrides the functionality of [tt]ce_last_
  - [page="_SEARCH:tut_fields"]Custom fields[/page]
  - [page="_SEARCH:sup_catalogues"]Catalogues in Composr[/page]
  - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
+ - [page="_SEARCH:tut_ecommerce"]eCommerce[/page]
 
 {$SET,tutorial_tags,Catalogues,core_fields,catalogues,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The catalogue system lets you set up your own databases on your website.}[block]main_tutorial_rating[/block]

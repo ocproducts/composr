@@ -256,7 +256,7 @@ class Module_downloads
             $category = $rows[0];
 
             // Check access
-            if (!has_category_access(get_member(), 'downloads', strval($category_id))) {
+            if (!may_enter_download_category(get_member(), $category_id)) {
                 access_denied('CATEGORY_ACCESS');
             }
 
@@ -310,7 +310,7 @@ class Module_downloads
             set_feed_url('?mode=downloads&select=' . strval($myrow['category_id']));
 
             // Permissions
-            if (!has_category_access(get_member(), 'downloads', strval($myrow['category_id']))) {
+            if (!may_enter_download_category(get_member(), $myrow['category_id'])) {
                 access_denied('CATEGORY_ACCESS');
             }
 
@@ -514,12 +514,41 @@ class Module_downloads
             $edit_cat_url = new Tempcode();
         }
 
+        // Pricing
+        $price = null;
+        if (addon_installed('ecommerce')) {
+            $product_details = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('p_module' => 'downloads', 'p_category' => strval($category_id), 'p_enabled' => 1));
+            if (array_key_exists(0, $product_details)) {
+                if ($product_details[0]['p_price'] !== null) {
+                    require_code('currency');
+                    $price = currency_convert_wrap($product_details[0]['p_price']);
+                } elseif ($product_details[0]['p_price_points'] !== null) {
+                    $price = escape_html(integer_format($product_details[0]['p_price_points'])) . ' ' . do_lang('POINTS');
+                } else {
+                    $price = do_lang('UNKNOWN');
+                }
+            }
+        }
+
+        // Warning details
+        $warning_details = new Tempcode();
+        if (!has_category_access(get_member(), 'downloads', strval($category_id))) {
+            $purchase_url = get_download_category_purchase_url($category_id);
+            if ($purchase_url !== null) {
+                $warning_details->attach(do_template('WARNING_BOX', array(
+                    '_GUID' => '8da781b8fbb1ef9b8f47693afcff02b9',
+                    'WARNING' => do_lang_tempcode('CAN_PURCHASE_DOWNLOAD_CATEGORY_ACCESS', escape_html($purchase_url->evaluate()), $price),
+                )));
+            }
+        }
+
         // Render
         return do_template('DOWNLOAD_CATEGORY_SCREEN', array(
             '_GUID' => 'ebb3c8708695f6a30dbd4a03f8632047',
             'ID' => strval($category_id),
             'TAGS' => get_loaded_tags('download_categories'),
             'TITLE' => $this->title,
+            'WARNING_DETAILS' => $warning_details,
             'SUBMIT_URL' => $submit_url,
             'ADD_CAT_URL' => $add_cat_url,
             'ADD_CAT_TITLE' => do_lang_tempcode('ADD_DOWNLOAD_CATEGORY'),
@@ -528,6 +557,7 @@ class Module_downloads
             'SUBCATEGORIES' => $subcategories,
             'DOWNLOADS' => $downloads,
             'SORTING' => $sorting,
+            'PRICE' => $price,
         ));
     }
 
@@ -561,7 +591,7 @@ class Module_downloads
             $download_name = get_translated_text($row['name']);
             $letter = strtoupper(substr($download_name, 0, 1));
 
-            if (!has_category_access(get_member(), 'downloads', strval($row['category_id']))) {
+            if (!may_enter_download_category(get_member(), $row['category_id'])) {
                 continue;
             }
 

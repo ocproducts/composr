@@ -353,8 +353,7 @@ class Module_booking
                 'BOOKABLE_MESSAGES' => $messages,
                 'BOOKABLE_TITLE' => get_translated_tempcode('bookable', $bookable, 'title'),
                 'BOOKABLE_DESCRIPTION' => $description,
-                'BOOKABLE_PRICE' => float_format($bookable['price']),
-                'BOOKABLE_PRICE_RAW' => float_to_raw_string($bookable['price']),
+                'BOOKABLE_PRICE' => float_to_raw_string($bookable['price']),
 
                 'BOOKABLE_SELECT_DATE_RANGE' => $bookable['dates_are_ranges'] == 1,
                 'BOOKABLE_MIN_DATE_DAY' => date('d', $min_date),
@@ -429,6 +428,7 @@ class Module_booking
             'DATE_TO_MONTH' => date('m', $date_to),
             'DATE_TO_YEAR' => date('Y', $date_to),
             'HIDDEN' => build_keep_post_fields(),
+            'CURRENCY' => get_option('currency'),
         ));
     }
 
@@ -519,6 +519,7 @@ class Module_booking
             'TITLE' => $this->title,
             'BOOKABLES' => $bookables,
             'PRICE' => float_format(find_booking_price($request)),
+            'CURRENCY' => get_option('currency'),
             'POST_URL' => build_url(array('page' => '_SELF', 'type' => 'account', 'usergroup' => get_param_integer('usergroup', null)), '_SELF'),
             'BACK_URL' => build_url(array('page' => '_SELF', 'type' => 'browse', 'usergroup' => get_param_integer('usergroup', null)), '_SELF'),
             'HIDDEN' => build_keep_post_fields(),

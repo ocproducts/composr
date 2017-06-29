@@ -699,13 +699,13 @@ class Hook_addon_registry_chat
         require_css('forms');
 
         $setting_blocks = new Tempcode();
-        foreach (placeholder_array() as $member => $values) {
+        foreach (placeholder_array() as $member_id => $values) {
             $effects = array();
             foreach (placeholder_array() as $k => $v) {
                 $effects[] = array(
                     'KEY' => strval($k),
                     'VALUE' => $v,
-                    'MEMBER_ID' => strval($member),
+                    'MEMBER_ID' => strval($member_id),
                     'USERNAME' => lorem_phrase(),
                     'EFFECT_TITLE' => lorem_word(),
                     'EFFECT_SHORT' => lorem_word_2(),

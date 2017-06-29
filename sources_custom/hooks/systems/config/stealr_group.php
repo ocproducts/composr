@@ -28,12 +28,11 @@ class Hook_config_stealr_group
         return array(
             'human_name' => 'STEALR_GROUP',
             'type' => 'usergroup_not_guest',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'STEALR_TITLE',
             'explanation' => 'CONFIG_OPTION_stealr_group',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'required' => true,
 
             'addon' => 'stealr',
         );

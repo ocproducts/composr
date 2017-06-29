@@ -268,7 +268,7 @@ function output_room_screen($member_id)
         $members->attach(do_template('W_MAIN_MEMBER', array('_GUID' => '83d9f930b68d4988b009b3c06ef783e9', 'HEALTH' => integer_format($health), 'ID' => strval($id), 'MEMBER_URL' => $member_url, 'STYLE' => $style, 'NAME' => $name, 'AUX' => $aux)));
     }
 
-    $rows = $GLOBALS['SITE_DB']->query_select('w_items', array('*'), array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'cost' => 0), 'ORDER BY name');
+    $rows = $GLOBALS['SITE_DB']->query_select('w_items', array('*'), array('location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'price' => 0), 'ORDER BY name');
     $items = new Tempcode();
     foreach ($rows as $myrow) {
         $rows2 = $GLOBALS['SITE_DB']->query_select('w_itemdef', array('*'), array('name' => $myrow['name']), '', 1);
@@ -304,7 +304,7 @@ function output_room_screen($member_id)
         )));
     }
 
-    $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_items WHERE location_x=' . strval($x) . ' AND location_y=' . strval($y) . ' AND location_realm=' . strval($realm) . ' AND cost>0');
+    $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'w_items WHERE location_x=' . strval($x) . ' AND location_y=' . strval($y) . ' AND location_realm=' . strval($realm) . ' AND price>0');
     $items_sale = new Tempcode();
     foreach ($rows as $myrow) {
         $rows2 = $GLOBALS['SITE_DB']->query_select('w_itemdef', array('*'), array('name' => $myrow['name']), '', 1);
@@ -338,7 +338,7 @@ function output_room_screen($member_id)
             'AUX' => $aux,
             'NAME' => $myrow['name'],
             'COUNT' => $count,
-            'COST' => integer_format($myrow['cost']),
+            'PRICE' => integer_format($myrow['price']),
         )));
     }
 

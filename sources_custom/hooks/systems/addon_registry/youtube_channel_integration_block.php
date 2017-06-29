@@ -155,7 +155,7 @@ class Hook_addon_registry_youtube_channel_integration_block
      */
     public function install($upgrade_from = null)
     {
-        //if old config option exists from older version of addon, remove it
+        // If old config option exists from older version of addon, remove it
         if (get_option('channel_update_time', true) !== null) {
             delete_config_option('channel_update_time');
         }

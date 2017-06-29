@@ -259,7 +259,7 @@ class Module_authors
                         }
                     }
 
-                    if (has_category_access(get_member(), 'downloads', strval($myrow['category_id']))) {
+                    if (may_enter_download_category(get_member(), $myrow['category_id'])) {
                         require_code('downloads');
                         $downloads_released->attach(render_download_box($myrow, true, true/*breadcrumbs?*/, null, null, false/*context?*/));
                     }

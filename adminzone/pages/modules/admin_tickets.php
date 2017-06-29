@@ -153,12 +153,16 @@ class Module_admin_tickets
             $tpl = new Tempcode();
         }
 
-        // Do a form so people can add
+        // Do a form so people can add...
+
         $post_url = build_url(array('page' => '_SELF', 'type' => 'add'), '_SELF');
+
         $submit_name = do_lang_tempcode('ADD_TICKET_TYPE');
+
         $fields = form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_TICKET_TYPE'), 'ticket_type_name_2', '', false);
         $fields->attach(form_input_tick(do_lang_tempcode('TICKET_GUEST_EMAILS_MANDATORY'), do_lang_tempcode('DESCRIPTION_TICKET_GUEST_EMAILS_MANDATORY'), 'guest_emails_mandatory', false));
         $fields->attach(form_input_tick(do_lang_tempcode('TICKET_SEARCH_FAQ'), do_lang_tempcode('DESCRIPTION_TICKET_SEARCH_FAQ'), 'search_faq', false));
+
         // Permissions
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '87ef39b0a5c3c45c1c1319c7f85d0e2a', 'TITLE' => do_lang_tempcode('PERMISSIONS'), 'SECTION_HIDDEN' => true)));
         $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
@@ -169,6 +173,11 @@ class Module_admin_tickets
             }
             $fields->attach(form_input_tick(do_lang_tempcode('ACCESS_FOR', escape_html($group_name)), do_lang_tempcode('DESCRIPTION_ACCESS_FOR', escape_html($group_name)), 'access_' . strval($id), true));
         }
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('ticket_type'));
+        }
+
         $add_form = do_template('FORM', array('_GUID' => '382f6fab6c563d81303ecb26495e76ec', 'TABINDEX' => strval(get_form_field_tabindex()), 'SECONDARY_FORM' => true, 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__add_one_category', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url, 'SUPPORT_AUTOSAVE' => true));
 
         return do_template('SUPPORT_TICKET_TYPE_SCREEN', array('_GUID' => '28645dc4a86086fa865ec7e166b84bb6', 'TITLE' => $this->title, 'TPL' => $tpl, 'ADD_FORM' => $add_form));
@@ -187,6 +196,10 @@ class Module_admin_tickets
         // Permissions
         require_code('permissions2');
         set_category_permissions_from_environment('tickets', strval($ticket_type_id));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('ticket_type', strval($ticket_type_id));
+        }
 
         // Show it worked / Refresh
         $url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
@@ -212,10 +225,18 @@ class Module_admin_tickets
         $submit_name = do_lang_tempcode('SAVE');
 
         $fields = new Tempcode();
+
         $fields->attach(form_input_line(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_TICKET_TYPE'), 'ticket_type_name', $ticket_type_name, false));
         $fields->attach(form_input_tick(do_lang_tempcode('TICKET_GUEST_EMAILS_MANDATORY'), do_lang_tempcode('DESCRIPTION_TICKET_GUEST_EMAILS_MANDATORY'), 'guest_emails_mandatory', $details['guest_emails_mandatory']));
         $fields->attach(form_input_tick(do_lang_tempcode('TICKET_SEARCH_FAQ'), do_lang_tempcode('DESCRIPTION_TICKET_SEARCH_FAQ'), 'search_faq', $details['search_faq']));
+
+        // Permissions
         $fields->attach(get_category_permissions_for_environment('tickets', strval($ticket_type_id)));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('ticket_type', ($ticket_type_id === null) ? null : strval($ticket_type_id)));
+        }
+
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '09e6f1d2276ee679f280b33a79bff089', 'TITLE' => do_lang_tempcode('ACTIONS'))));
         $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
 
@@ -239,6 +260,10 @@ class Module_admin_tickets
             $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'tickets', 'category_name' => strval($ticket_type_id)), '', 1);
             require_code('permissions2');
             set_category_permissions_from_environment('tickets', strval($ticket_type_id));
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('ticket_type', strval($ticket_type_id));
+            }
         }
 
         // Show it worked / Refresh

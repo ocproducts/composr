@@ -660,7 +660,7 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
                 $fields->attach(form_input_tick(do_lang_tempcode('VALIDATED'), do_lang_tempcode('DESCRIPTION_MEMBER_VALIDATED'), 'validated', $validated == 1));
             }
             if (get_option('enable_highlight_name') == '1') {
-                $fields->attach(form_input_tick(do_lang_tempcode('HIGHLIGHTED_NAME'), do_lang_tempcode(addon_installed('pointstore') ? 'DESCRIPTION_HIGHLIGHTED_NAME_P' : 'DESCRIPTION_HIGHLIGHTED_NAME'), 'highlighted_name', $highlighted_name == 1));
+                $fields->attach(form_input_tick(do_lang_tempcode('HIGHLIGHTED_NAME'), do_lang_tempcode(addon_installed('ecommerce') ? 'DESCRIPTION_HIGHLIGHTED_NAME_P' : 'DESCRIPTION_HIGHLIGHTED_NAME'), 'highlighted_name', $highlighted_name == 1));
             }
             if (($member_id !== null) && ($member_id != get_member())) { // Can't ban someone new, and can't ban yourself
                 $fields->attach(form_input_tick(do_lang_tempcode('BANNED'), do_lang_tempcode('DESCRIPTION_MEMBER_BANNED'), 'is_perm_banned', $is_perm_banned == 1));
@@ -1977,7 +1977,7 @@ function update_member_username_caching($member_id, $username)
  */
 function cns_delete_boiler_custom_field($field)
 {
-	require_lang('cns_special_cpf');
+    require_lang('cns_special_cpf');
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['SITE_DB']->translate_field_ref('cf_name') => do_lang('DEFAULT_CPF_' . $field . '_NAME')));
     if ($test !== null) {

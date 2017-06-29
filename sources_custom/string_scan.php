@@ -142,6 +142,57 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONTINUE_RESTORATION
         CONFIG_OPTION_news_summary_required
         OWNER
+        BANNERS_IN_TYPE_AS_SECONDARY
+        CONFIG_OPTION_tax_country_regexp
+        CONFIG_OPTION_tax_detailed
+        CONFIG_OPTION_tax_state_regexp
+        DESCRIPTION_BANNERS_IN_TYPE_AS_SECONDARY
+        DESCRIPTION_MAIL_TAX_CODE
+        DESCRIPTION_SHIPPING_COST
+        MAIL_TAX_CODE
+        TAX_COUNTRY_REGEXP
+        TAX_DETAILED
+        TAX_STATE_REGEXP
+        VIEW_CART
+        _DESCRIPTION_MAIL_TAX_CODE
+        CONFIG_OPTION_transaction_flat_fee
+        CONFIG_OPTION_transaction_percentage_fee
+        TRANSACTION_FLAT_FEE
+        TRANSACTION_PERCENTAGE_FEE
+        PAYMENT_GATEWAY_authorize
+        PAYMENT_GATEWAY_ccbill
+        CREDIT_CARD_CLEANUP_DAYS
+        CONFIG_OPTION_credit_card_cleanup_days
+        STORE_CREDIT_CARD_NUMBERS
+        CONFIG_OPTION_store_credit_card_numbers
+        PAYMENT_GATEWAY_CALLBACK_PASSWORD
+        CONFIG_OPTION_payment_gateway_callback_password
+        CONFIG_OPTION_payment_gateway_username
+        CONFIG_OPTION_payment_gateway_digest
+        CONFIG_OPTION_payment_gateway_password
+        CONFIG_OPTION_payment_gateway_test_username
+        CONFIG_OPTION_payment_gateway_vpn_username
+        CONFIG_OPTION_payment_gateway_vpn_password
+        DESCRIPTION_INVOICE_AMOUNT
+        DESCRIPTION_INVOICE_TAX_CODE
+        PURCHASE_ID
+        PAYMENT_GATEWAY_USERNAME
+        PAYMENT_GATEWAY_TEST_USERNAME
+        PAYMENT_GATEWAY_DIGEST
+        PAYMENT_GATEWAY_PASSWORD
+        DESCRIPTION_MANUAL_PURCHASE_ID
+        DESCRIPTION_MANUAL_PURCHASE_USERNAME
+        ECOM_PRODUCTS_ADD_MAIL_FORWARDER
+        ECOM_PRODUCTS_ADD_MAIL_POP3
+        ECOM_PRODUCTS_AMEND_CUSTOM_PERMISSIONS
+        ECOM_PRODUCTS_AMEND_CUSTOM_PRODUCTS
+        ECOM_PRODUCT_CHANGED_PRICES
+        ECOM_PRODUCTS_LOG_TEXT
+        ECOM_PRODUCTS_MANAGE_INVENTORY
+        ECOM_PRODUCTS_MANAGE_SALES
+        ECOM_PRODUCTS_PRICE_PAGE_TEXT
+        PAYMENT_GATEWAY_VPN_USERNAME
+        PAYMENT_GATEWAY_VPN_PASSWORD
         CONFIG_OPTION_transaction_flat_cost
         CONFIG_OPTION_transaction_percentage_cost
         TRANSACTION_FLAT_COST
@@ -221,6 +272,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INVOICE_REQUIRED_AMOUNT
         ABSORB_PERMISSIONS
         WHAT_NEXT
+        FORWARDING
+        POP3
         WHERE_NEXT
         ABSTRACTION_SYMBOL__BLOCK
         ABSTRACTION_SYMBOL__IMG
@@ -363,11 +416,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BANNER_SHARING_END
         BANNER_SHARING_START
         BANNER_MISSING_SOURCE
-        BANNERS_A
-        BANNERS_ACTIVATE
-        BANNERS_B
-        BANNERS_C
-        BANNERS_D
         BANNER_ADS
         ADDON
         ADDONS
@@ -421,6 +469,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_NEWS_CATEGORY
         ADD_NEW_CUSTOM_PRODUCT
         ADD_NEW_FORWARDING_DOMAIN
+        PERMISSION_PRODUCT_DOWNLOAD_CATEGORY
+        DOWNLOAD_CAT_BUY_MAX_EMAILED_SIZE
+        CONFIG_OPTION_download_cat_buy_max_emailed_size
+        DOWNLOAD_CAT_BUY_MAX_EMAILED_COUNT
+        CONFIG_OPTION_download_cat_buy_max_emailed_count
         ADD_NEW_PERMISSION_PRODUCT
         ADD_NEW_POP3_DOMAIN
         ADD_NOTE
@@ -475,7 +528,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ALLOW_EMAIL_FROM_STAFF_DISABLE
         ALLOW_EXT_IMAGES
         ALLOW_INTERNATIONAL
-        ALLOW_OPTING_OUT_OF_TAX
         ALLOW_OWN_RATE
         ALLOW_RATING
         ALLOW_REVIEWS
@@ -486,9 +538,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ALSO_ADMIN_ZONE_SEARCH
         ALSO_AUDIO
         ALSO_SEE_ADMIN
-        ALSO_SEE_AUDIT
         ALSO_SEE_CMS
-        ALSO_SEE_SETUP
         AMERICAN_ENGLISH
         ANOMALOUS_FORUM_ACCESS
         ANOTHER_TIP
@@ -567,7 +617,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BAD_ARCHIVE_FORMAT
         BAD_CODENAME
         BAD_IMPORT_PATH
-        BAD_INPUT
         BAD_PATH
         BAD_ZONE
         NO_PHP_EMAILING_AVAILABLE
@@ -575,13 +624,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SOURCE_MEDIA
         BANNED_ADDRESSES
         BANNERS
-        BANNERS_DESCRIPTION
-        BANNER_ALREADY
         BANNER_AUTOSIZE
         BANNER_CAMPAIGN
         BANNER_CLICKTHROUGH
         BANNER_CLICK_SCHEME
-        BANNER_DELETED_REMAKE
         BANNER_DIRECT_CODE
         BANNER_FALLBACK
         BANNER_HITS_FROM
@@ -595,7 +641,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TREE_LIST_SELECT
         GREETING
         BREADCRUMB_OVERRIDES
-        IMPORTANCE_BUY
         IMPORTANCE_MODULUS
         USER_INTERACTION
         USER_INTERACTION_COMMENTING
@@ -615,9 +660,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BANNER_TYPES
         BANNER_TYPE_LINE
         BANNER_TYPE_LINE_TEXTUAL
-        BANNER_UPGRADED
-        BANNER_UPGRADE_CONFIRM
-        BANNER_UPGRADE_LINE
         BANNER_VIEWS_FROM
         BANNER_VIEWS_TO
         BAN_IP_DESCRIPTION
@@ -2453,7 +2495,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_CATEGORY_DESCRIPTION__GALLERY
         CONFIG_CATEGORY_DESCRIPTION__PERFORMANCE
         CONFIG_CATEGORY_DESCRIPTION__POINTS
-        CONFIG_CATEGORY_DESCRIPTION__POINTSTORE
         CONFIG_CATEGORY_DESCRIPTION__PRIVACY
         CONFIG_CATEGORY_DESCRIPTION__SECURITY
         CONFIG_CATEGORY_DESCRIPTION__SERVER
@@ -2466,7 +2507,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_CATEGORY_GALLERY
         CONFIG_CATEGORY_PERFORMANCE
         CONFIG_CATEGORY_POINTS
-        CONFIG_CATEGORY_POINTSTORE
         CONFIG_CATEGORY_PRIVACY
         CONFIG_CATEGORY_SECURITY
         CONFIG_CATEGORY_SERVER
@@ -2496,7 +2536,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_allow_email_from_staff_disable
         CONFIG_OPTION_allow_ext_images
         CONFIG_OPTION_allow_international
-        CONFIG_OPTION_allow_opting_out_of_tax
         CONFIG_OPTION_allow_own_rate
         CONFIG_OPTION_allow_theme_image_selector
         CONFIG_OPTION_trusted_sites_1
@@ -2520,9 +2559,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_backup_server_user
         CONFIG_OPTION_backup_time
         CONFIG_OPTION_banner_autosize
-        CONFIG_OPTION_banner_hit
-        CONFIG_OPTION_banner_imp
-        CONFIG_OPTION_banner_setup
+        CONFIG_OPTION_banner_hit_price
+        CONFIG_OPTION_banner_imp_price
+        CONFIG_OPTION_banner_setup_price
+        CONFIG_OPTION_banner_hit_tax_code
+        CONFIG_OPTION_banner_imp_tax_code
+        CONFIG_OPTION_banner_setup_tax_code
+        CONFIG_OPTION_banner_hit_price_points
+        CONFIG_OPTION_banner_imp_price_points
+        CONFIG_OPTION_banner_setup_price_points
         CONFIG_OPTION_bcc
         CONFIG_OPTION_blog_update_time
         CONFIG_OPTION_bot_stats
@@ -2710,7 +2755,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_hack_ban_threshold
         CONFIG_OPTION_has_low_memory_limit
         CONFIG_OPTION_header_menu_call_string
-        CONFIG_OPTION_highlight_name
+        CONFIG_OPTION_highlight_name_price
+        CONFIG_OPTION_highlight_name_tax_code
+        CONFIG_OPTION_highlight_name_price_points
         CONFIG_OPTION_honeypot_phrase
         CONFIG_OPTION_honeypot_url
         CONFIG_OPTION_hot_topic_definition
@@ -2881,7 +2928,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_password_reset_process_VALUE_temporary
         CONFIG_OPTION_password_reset_process_VALUE_ultra
         CONFIG_OPTION_payment_gateway
-        CONFIG_OPTION_pd_address
         CONFIG_OPTION_pd_email
         CONFIG_OPTION_pd_number
         CONFIG_OPTION_personal_sub_links
@@ -2924,7 +2970,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_proxy_port
         CONFIG_OPTION_proxy_user
         CONFIG_OPTION_pt_notifications_as_web
-        CONFIG_OPTION_quota
+        CONFIG_OPTION_quota_price
+        CONFIG_OPTION_quota_tax_code
+        CONFIG_OPTION_quota_price_points
         CONFIG_OPTION_quota_url
         CONFIG_OPTION_random_avatars
         CONFIG_OPTION_remember_me_by_default
@@ -2942,6 +2990,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_session_expiry_time
         CONFIG_OPTION_session_prudence
         CONFIG_OPTION_shipping_cost_factor
+        CONFIG_OPTION_shipping_cost_base
         CONFIG_OPTION_show_conceded_mode_link
         CONFIG_OPTION_show_content_tagging
         CONFIG_OPTION_show_content_tagging_inline
@@ -3004,6 +3053,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_threaded_buttons
         CONFIG_OPTION_threaded_comments
         INCORRECT_PASSWORD_RESET_CODE
+        SHIPPING_ERROR
+        NO_SHIPPING_RESULT
         CONFIG_OPTION_threaded_topics_default
         CONFIG_OPTION_thumb_width
         CONFIG_OPTION_ticket_auto_assign
@@ -3017,8 +3068,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_ticket_mail_username
         CONFIG_OPTION_ticket_text
         CONFIG_OPTION_ticket_type_forums
-        CONFIG_OPTION_topic_pin
-        CONFIG_OPTION_topic_pin_max_days
+        CONFIG_OPTION_topic_pin_price
+        CONFIG_OPTION_topic_pin_tax_code
+        CONFIG_OPTION_topic_pin_price_points
         CONFIG_OPTION_tornevall_api_password
         CONFIG_OPTION_tornevall_api_username
         CONFIG_OPTION_transcoding_server
@@ -3138,12 +3190,24 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CORRUPT_FILES_LOWERCASE
         CORRUPT_INSTALLATION_FILE
         CORRUPT_TAR
-        COST_banner_hit
-        COST_banner_imp
-        COST_banner_setup
-        COST_highlight_name
-        COST_quota
-        COST_topic_pin
+        PRICE_banner_hit_price
+        PRICE_banner_imp_price
+        PRICE_banner_setup_price
+        PRICE_highlight_name_price
+        PRICE_quota_price
+        PRICE_topic_pin_price
+        PRICE_banner_hit_tax_code
+        PRICE_banner_imp_tax_code
+        PRICE_banner_setup_tax_code
+        PRICE_highlight_name_tax_code
+        PRICE_quota_tax_code
+        PRICE_topic_pin_tax_code
+        PRICE_banner_hit_price_points
+        PRICE_banner_imp_price_points
+        PRICE_banner_setup_price_points
+        PRICE_highlight_name_price_points
+        PRICE_quota_price_points
+        PRICE_topic_pin_price_points
         COULD_NOT_SAVE_FILE
         CPF_ENABLE_CITY
         CPF_ENABLE_COUNTRY
@@ -3598,7 +3662,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_INVOICE_FOR
         DESCRIPTION_INVOICE_NOTE
         DESCRIPTION_INVOICE_PAGE
-        DESCRIPTION_INVOICE_SPECIAL
+        DESCRIPTION_PURCHASE_ID_INVOICE
         DESCRIPTION_IP_ADDRESS_DISTRIBUTION
         DESCRIPTION_IS_DEFAULT_GROUP
         DESCRIPTION_IS_MEMBER_SYNCHED_GALLERY
@@ -3624,7 +3688,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_LOAD_TIMES
         DESCRIPTION_LOGOWIZARD_THEME
         DESCRIPTION_LOGO_NAME
-        DESCRIPTION_MAIL_COST
         DESCRIPTION_MAIN_CATEGORY
         DESCRIPTION_MAX_ATTACHMENTS_PER_POST
         DESCRIPTION_MAX_AVATAR_DIMENSIONS
@@ -3814,7 +3877,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_URLS_CACHE
         DESCRIPTION_URL_BANNER
         DESCRIPTION_URL_REDIRECT
-        DESCRIPTION_USERGROUP_SUBSCRIPTION_COST
+        DESCRIPTION_USERGROUP_SUBSCRIPTION_PRICE
         DESCRIPTION_USERGROUP_SUBSCRIPTION_DESCRIPTION
         DESCRIPTION_USERGROUP_SUBSCRIPTION_ENABLED
         DESCRIPTION_USERGROUP_SUBSCRIPTION_GROUP
@@ -3980,7 +4043,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DOC_PERMISSIONS_TREE
         DOC_PHPINFO
         DOC_POINTS
-        DOC_POINTSTORE
         DOC_POLLS
         DOC_POST_TEMPLATES
         DOC_PRIVILEGES
@@ -4063,27 +4125,30 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOMMERCE_TEST_MODE
         ECOM_ADDED_SUBSCRIP
         ECOM_CATD_image
-        ECOM_CATD_price_pre_tax
-        ECOM_CATD_reduction_end
-        ECOM_CATD_reduction_start
+        ECOM_CATD_price
+        ECOM_CATD_product_title
         ECOM_CATD_sku
         ECOM_CATD_stock_level
         ECOM_CATD_stock_level_maintain
         ECOM_CATD_stock_level_warn_at
-        ECOM_CATD_tax_type
+        ECOM_CATD_tax_code
         ECOM_CATD_weight
+        ECOM_CATD_length
+        ECOM_CATD_width
+        ECOM_CATD_height
         ECOM_CAT_description
         ECOM_CAT_image
-        ECOM_CAT_price_pre_tax
+        ECOM_CAT_price
         ECOM_CAT_product_title
-        ECOM_CAT_reduction_end
-        ECOM_CAT_reduction_start
         ECOM_CAT_sku
         ECOM_CAT_stock_level
         ECOM_CAT_stock_level_maintain
         ECOM_CAT_stock_level_warn_at
-        ECOM_CAT_tax_type
+        ECOM_CAT_tax_code
         ECOM_CAT_weight
+        ECOM_CAT_length
+        ECOM_CAT_width
+        ECOM_CAT_height
         ECOM_ORDER
         EDITAREA
         EDITING
@@ -4157,7 +4222,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EDIT_PRIVATE_CALENDAR_EVENT
         EDIT_PRIVATE_THIS_CALENDAR_EVENT
         EDIT_PROFILE
-        EDIT_PS_CONFIG
         EDIT_PUBLIC_CALENDAR_EVENT
         EDIT_PUBLIC_THIS_CALENDAR_EVENT
         EDIT_QUIZ
@@ -4319,6 +4383,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EXPORT_LANGUAGE
         EXPORT_ORDER_LIST
         EXPORT_ORDER_LIST_TEXT
+        EXPORT_TRANSACTIONS
+        ORDER_STATUS_FILTER_DESCRIPTION
+        TRANSACTION_STATUS_FILTER_DESCRIPTION
+        EXPORT_TRANSACTIONS_TEXT
         EXPORT_POINTS
         EXPORT_QUIZ
         EXPORT_QUIZ_TEXT
@@ -4331,11 +4399,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EXTERNALLY_BANNED_ADDRESSES
         EXTERNAL_FEED
         EXTERNAL_LINKS
+        TAX_SYSTEM
+        CONFIG_OPTION_tax_system
+        CONFIG_OPTION_tax_system_VALUE_TAX_SALES
+        CONFIG_OPTION_tax_system_VALUE_TAX_VAT
+        TAX_NUMBER
+        CONFIG_OPTION_tax_number
         EXTRACTING_MESSAGE
         EXTRA_BCC_ADDRESSES
         EXTRA_CC_ADDRESSES
-        EXTRA_HITS
-        EXTRA_HITS_DESCRIPTION
         EXTRA_SUBSCRIPTION_MAIL
         FAILED_ENTRY
         FAILED_LOGINS
@@ -4359,6 +4431,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FIELD_TYPES__REFERENCES
         FIELD_TYPES__TEXT
         FIELD_TYPES__UPLOADSANDURLS
+        FIELD_TYPE_country
+        FIELD_TYPE_region
+        FIELD_TYPE_state
+        FIELD_TYPE_tax_code
+        FIELD_TYPE_year_month
         FIELD_TYPE_author
         FIELD_TYPE_codename
         FIELD_TYPE_color
@@ -4611,6 +4688,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FU_UP_INFO_1
         FU_UP_INFO_2
         FU_WILL_MERGE
+        UNKNOWN_CURRENCY
+        CURRENCY_CONVERSION_FAILED
         FXML_FIELD_NOT_IN_SET
         FXML_FIELD_NOT_IN_SET_SECRETIVE
         FXML_FIELD_PATTERN_FAIL
@@ -4722,7 +4801,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HOT_TOPIC_DEFINITION
         HOURLY_BREAKDOWNS
         HOVER_FOR_CONTENTS
-        HOW_MUCH_THIS_COSTS
+        DESCRIPTION_PRICE
+        DESCRIPTION_TAX_CODE
+        PRICE_POINTS
+        DESCRIPTION_PRICE_POINTS
         HTACCESS_SEO_PROBLEM
         HTML_ONLY
         HTML_PAGES
@@ -4750,8 +4832,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         IMMEDIATE_USE
         IMPLIED_SPAMMER_CONFIDENCE
         IMPORT
-        IMPORTANCE
-        IMPORTANCE_UPGRADE_DESCRIPTION
         IMPORTANT_GROUPS_PER_PAGE
         IMPORTER
         IMPORT_ADDON
@@ -4804,7 +4884,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INCLUDE_SITEMAP_UNDER
         INCLUDE_SUBFOLDERS
         INCOMPATIBILITIES
-        INCOMPLETED_TRANSACTION
         INCOMPLETE_ERROR
         INCONSISTENT_BANNER_SET
         INCREMENTAL_BACKUP
@@ -4861,8 +4940,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INVITES_ENABLED
         INVITES_PER_DAY
         INVOICES
-        INVOICE_AMOUNT_TEXT
-        INVOICE_SPECIAL
         PAYMENT_GATEWAY_USERNAME
         PAYMENT_GATEWAY_TEST_USERNAME
         IPN_BAD_TRIAL
@@ -4971,7 +5048,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         LICENCES
         LINE
         LINK
-        LINKED_ID
         LINKS
         LISTING_DIRECTORIES
         LISTING_FILES
@@ -5008,7 +5084,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MAILS_PER_SEND
         MAIL_BAD_TAG
         MAIL_BODY
-        MAIL_COST
         MAIL_DOCTYPE
         MAIL_DOMAIN
         MAIL_END
@@ -5048,6 +5123,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MAIN_FORUM_NAME
         MAKE_MEMBER_GROUP_LEADER
         MAKE_PERIODIC_NEWSLETTER
+        CONFIG_OPTION_currency_auto
+        CURRENCY_AUTO
+        DESCRIPTION_TAX_EU
+        DESCRIPTION_TAX_RATE
+        DESCRIPTION_TAX_TIC
+        TAX_EU
+        TAX_RATE
+        TAX_TIC
+        MARK_AS_FULFILLED
         MANAGE_AWARDS
         MANAGE_BANNERS
         MANAGE_BLOGS
@@ -5079,13 +5163,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MANUAL_SUBSCRIPTION_NOTIFICATION_MAIL
         MANUAL_SUBSCRIPTION_NOTIFICATION_MAIL_SUBJECT
         MANUAL_TRANSACTION
-        MANUAL_TRANSACTION_IDENTIFIER
         MANUAL_TRANSACTION_TEXT
         MANUAL_WCAG_ANIMATION
         MANUAL_WCAG_SEMANTIC_BLOCKQUOTE
         MANUAL_WCAG_SEMANTIC_LIST
         MANY_PANEL_TYPES
-        MARK_AS_DELIVERED
         MARK_AS_SPAMMER
         MARK_TASK_DONE
         MASQUERADE_AS_MEMBER
@@ -5265,7 +5347,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULE_TRANS_NAME_admin_permissions
         MODULE_TRANS_NAME_admin_phpinfo
         MODULE_TRANS_NAME_admin_points
-        MODULE_TRANS_NAME_admin_pointstore
         MODULE_TRANS_NAME_admin_quiz
         MODULE_TRANS_NAME_admin_redirects
         MODULE_TRANS_NAME_admin_security
@@ -5296,7 +5377,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULE_TRANS_NAME_cms_wiki
         MODULE_TRANS_NAME_filedump
         MOD_SECURITY
-        MONEY_AMOUNT_DESCRIPTION
+        DESCRIPTION_MONEY_AMOUNT
         MONTHLY_SPEC_TYPE
         MOST_COMMON
         MOST_DEFAULT
@@ -5340,7 +5421,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NAG_FORUMS
         NAG_MONITOR_GIFTS
         NAG_OPEN_WEBSITE
-        NAG_POINTSTORE
+        NAG_ECOM_PRODUCT_SETUP
         NAG_SETUP_CRON
         NAG_SETUP_PROFILE
         NAG_VALIDATE
@@ -5459,10 +5540,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_TYPE_low_disk_space
         NOTIFICATION_TYPE_low_stock
         NOTIFICATION_TYPE_needs_validation
-        NOTIFICATION_TYPE_pointstore_request_custom
-        NOTIFICATION_TYPE_pointstore_request_forwarding
-        NOTIFICATION_TYPE_pointstore_request_pop3
-        NOTIFICATION_TYPE_pointstore_request_quota
+        NOTIFICATION_TYPE_ecom_product_request_custom
+        NOTIFICATION_TYPE_ecom_product_request_forwarding
+        NOTIFICATION_TYPE_ecom_product_request_pop3
+        NOTIFICATION_TYPE_ecom_product_request_quota
         NOTIFICATION_TYPE_receive_points_staff
         NOTIFICATION_TYPE_service_cancelled_staff
         NOTIFICATION_TYPE_service_paid_for_staff
@@ -5473,6 +5554,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_TYPE_ticket_assigned_staff
         NOTIFICATION_TYPE_ticket_new_staff
         NOTIFICATION_TYPE_ticket_reply_staff
+        EDIT_ECOMMERCE_CONFIG
+        SELL_CATEGORY_ACCESS
+        TIC__CURRENCY_NOT_USD
+        TIC__BUSINESS_COUNTRY_NOT_USA
+        TIC__TAXCLOUD_NOT_CONFIGURED
+        TIC__USA_STATE_INVALID
         NOT_ADDON
         NOT_A_DIR
         NOT_A_FILE
@@ -5524,7 +5611,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_PHP_DB
         NO_PHP_FTP
         NO_PHP_IN_TEMPLATES
-        NO_POP3
         NO_POSSIBLE_WINNERS
         NO_SANDBOX
         NO_SELECTABLE_THEME_IMAGES_MSN
@@ -5534,7 +5620,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_SHELL_ZIP_POSSIBLE2
         NO_SUCH_CONTENT_TYPE
         NO_SUCH_RENDERER
-        NO_SUCH_SUBSCRIPTION
         NO_SUCH_THEME
         NO_SUCH_THEME_IMAGE
         NO_SUCH_ZONE
@@ -5559,7 +5644,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ONE_OFF_TASKS
         ONE_PER_EMAIL_ADDRESS
         ONE_PER_MEMBER
-        ONE_PER_MEMBER_ONLY
         ONLINE_STORE
         ONLY_1000_SHOWN
         ONLY_LOCAL_HOST_FOR_TYPE
@@ -5585,7 +5669,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ORDER_PLACED_MAIL_MESSAGE
         ORDER_PLACED_MAIL_SUBJECT
         ORDER_PLACED_ON
-        ORDER_PRICE
         ORDER_STATUS
         ORDER_STATUS_FILTER_DESCRIPTION
         ORDER_STATUS_awaiting_payment
@@ -5594,8 +5677,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ORDER_STATUS_onhold
         ORDER_STATUS_payment_received
         ORDER_STATUS_returned
+        PAYMENT_STATE_smodified
         ORDER_SUB_ALPHA
-        ORDER_TAX_OPT_OUT
         ORGANISATION
         ORIGINAL
         ORIGINAL_FILENAME
@@ -5662,7 +5745,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PAYMENT_STATE_pending
         PAYPAL
         PEAK
-        PENDING_REASON
         PERFORM_MULTI_MODERATION
         PERIODIC_BIWEEKLY_ON
         PERIODIC_CREATE
@@ -5738,15 +5820,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PINTERFACE_VIEW_NO
         PIN_STATE
         PLEASE_CHOOSE_LANG
-        POINTSTORE_ADD_MAIL_FORWARDER
-        POINTSTORE_ADD_MAIL_POP3
-        POINTSTORE_AMEND_CUSTOM_PERMISSIONS
-        POINTSTORE_AMEND_CUSTOM_PRODUCTS
-        POINTSTORE_CHANGED_PRICES
-        POINTSTORE_LOG_TEXT
-        POINTSTORE_MANAGE_INVENTORY
-        POINTSTORE_MANAGE_SALES
-        POINTSTORE_PRICE_PAGE_TEXT
         POINTS_FOR_COMPLETING
         POINTS_IF_LIKED
         POINTS_PER_CURRENCY_UNIT
@@ -5759,7 +5832,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         POP3_MAINTAIN_URL
         PORT
         PORTFOLIO
-        POSTAL_ADDRESS
         POSTING_RATES
         POSTING_TICKET_AS
         POST_COUNT_INCREMENT
@@ -5971,6 +6043,41 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PRIVILEGE_vote_in_polls
         PRIVILEGE_warn_members
         PRIVILEGE_wiki_manage_tree
+        PAYMENT_MEMOS
+        CONFIG_OPTION_payment_memos
+        ECOM_PRICE_HONOUR_TIME
+        CONFIG_OPTION_ecom_price_honour_time
+        SHIPPING_SHIPPO_API_TEST
+        CONFIG_OPTION_shipping_shippo_api_test
+        SHIPPING_SHIPPO_API_LIVE
+        CONFIG_OPTION_shipping_shippo_api_live
+        SHIPPING_WEIGHT_UNITS
+        CONFIG_OPTION_shipping_weight_units
+        SHIPPING_DISTANCE_UNITS
+        CONFIG_OPTION_shipping_distance_units
+        SHIPPING_DENSITY
+        CONFIG_OPTION_shipping_density
+        SHIPPING_TAX_CODE
+        CONFIG_OPTION_shipping_tax_code
+        TAXCLOUD_API_ID
+        TAXCLOUD_API_KEY
+        CONFIG_OPTION_taxcloud_api_id
+        CONFIG_OPTION_taxcloud_api_key
+        BUSINESS_NAME
+        BUSINESS_STREET_ADDRESS
+        BUSINESS_CITY
+        BUSINESS_COUNTY
+        BUSINESS_STATE
+        BUSINESS_POST_CODE
+        BUSINESS_COUNTRY
+        CONFIG_OPTION_business_name
+        CONFIG_OPTION_business_street_address
+        CONFIG_OPTION_business_city
+        CONFIG_OPTION_business_county
+        CONFIG_OPTION_business_state
+        CONFIG_OPTION_business_post_code
+        CONFIG_OPTION_business_country
+        INVALID_REGULAR_EXPRESSION
         PROBATION_USERGROUP
         PROBLEM_ACCESSING_RESPONSE
         PROBLEM_RETRIEVING_XML
@@ -5998,7 +6105,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PUNISHMENT_UNDOING
         PUNITIVE_ACTIONS
         PUNITIVE_HISTORY_TEXT
-        PURCHASE
         PURCHASE_ORDER
         PUT_IN_CATEGORY
         PUT_IN_SEARCH
@@ -6019,6 +6125,19 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         QUIZ_WAS_ENTERED_AS_FOLLOWS
         QUOTA
         QUOTA_MAINTAIN_URL
+        SITE_MESSAGING
+        CONFIG_OPTION_site_message
+        SITE_MESSAGE_START_DATETIME
+        CONFIG_OPTION_site_message_start_datetime
+        SITE_MESSAGE_END_DATETIME
+        CONFIG_OPTION_site_message_end_datetime
+        SITE_MESSAGE_STATUS_LEVEL
+        CONFIG_OPTION_site_message_status_level
+        CONFIG_OPTION_site_message_status_level_VALUE_inform
+        CONFIG_OPTION_site_message_status_level_VALUE_notice
+        CONFIG_OPTION_site_message_status_level_VALUE_warn
+        SITE_MESSAGE_USERGROUP_SELECT
+        CONFIG_OPTION_site_message_usergroup_select
         Q_SURE_BAN
         Q_SURE_MOVE
         Q_SURE_UNBAN
@@ -6087,7 +6206,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         RESTRICTION_CELL
         RESTRICT_PAGE_VISIBILITY
         RESULT
-        RETURN_PRODUCT
+        RETURNED_PRODUCT
         REVEAL_ANSWERS
         REVERSE
         REVERSE_THUMB_ORDER
@@ -6190,6 +6309,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SET_REDIRECTS
         SHARED_INSTALL_PROHIBIT
         SHIPPING_COST_FACTOR
+        SHIPPING_COST_BASE
         SHOPPING_FORCE_DELETE
         SHOULD_HAVE_BEEN_POSTED
         SHOULD_HAVE_BEEN_POSTED_FILE_ERROR
@@ -6217,7 +6337,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SIGN_UP_REMINDER_GROUPS
         SILENCE_FROM_FORUM
         SILENCE_FROM_TOPIC
-        SILLY_INPUT
         SIMPLIFIED_ATTACHMENTS_UI
         SIMPLIFIED_DONEXT
         SIMPLIFY_WYSIWYG_BY_PERMISSIONS
@@ -6563,7 +6682,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TASK_LENGTH
         TASK_LENGTH_UNITS
         TAX_GENERAL
-        TAX_PAID
         TEMPCODE_NOT_ARRAY
         TEMPCODE_PARAMETER
         TEMPCODE_TESTER
@@ -6731,7 +6849,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TOO_MUCH_DOWNLOAD
         TOO_MUCH_FILE_DATA
         TOPIC_ORDER
-        TOPIC_PIN_MAX_DAYS
         TOP_LEFT
         TOP_LINK
         TOP_REFERRERS
@@ -6743,17 +6860,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TORNEVALL_API_USERNAME
         TOTAL_DOWNLOADS_IN_ARCHIVE
         TOTAL_NEWS_ENTRIES
-        TOTAL_TAX_PAID
         TO_COLOUR
         TO_EMAIL
         TO_NAME
         TRACKBACK_ERROR
         TRACKBACK_SPAM
-        TRANSACTION
         TRANSACTIONS
         TRANSACTION_FEES
-        TRANSACTION_ID
-        TRANSACTION_NOTES
         TRANSCODING
         TRANSCODING_ERROR
         TRANSCODING_ERROR_2
@@ -6784,7 +6897,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UNBAN_SUBMITTER_DESCRIPTION
         UNBLOCK_MEMBER
         UNCLOSED_DIRECTIVE_OR_BRACE
-        UNDELIVERED_INVOICES
+        UNFULFILLED_INVOICES
         UNDER_CONSTRUCTION
         UNDER_CONSTRUCTION_MARKERS
         UNDO
@@ -7009,7 +7122,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         WIKI_ORPHANED
         WIKI_POSTS
         WILL_BE_VALIDATED_WHEN_SAVING
-        WILL_COST_THEM
         WILL_NEED_VALIDATING
         WINNER
         WINNERS_FOUND_AS_FOLLOWS
@@ -7111,6 +7223,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ZONE_OPTIONS
         ZONE_OR_BLOCKS
         ZONE_WRITE
+        PAYMENT_RECEIVED_BODY
+        PAYMENT_RECEIVED_BODY_memo
+        PAYMENT_RECEIVED_BODY_tax_invoice
+        PAYMENT_RECEIVED_BODY_shipping_address
+        PAYMENT_RECEIVED_SUBJECT
         _ADDON_WARNING_MISSING_DEPENDENCIES
         _ADDON_WARNING_PRESENT_DEPENDENCIES
         _BAD_INPUT
@@ -7129,7 +7246,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _DELETE_MEMBER_SEARCH
         _DESCRIPTION_ANSWER
         _DESCRIPTION_BANNER_TYPE
-        _DESCRIPTION_MAIL_COST
+        _DESCRIPTION_MAIL_PRICE
+        MAIL_PRICE
+        DESCRIPTION_MAIL_PRICE
+        _DESCRIPTION_MAIL_PRICE_POINTS
+        MAIL_PRICE_POINTS
+        DESCRIPTION_MAIL_PRICE_POINTS
         _DESCRIPTION_NAME
         _DESCRIPTION_REPRESENTATIVE_IMAGE
         _DESCRIPTION_THEME
@@ -7264,6 +7386,53 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DEFAULT_CPF_about_NAME
         NO_DAYLIGHT_SAVING
         NOTIFICATION_TYPE_payment_received
+        NOTIFICATION_TYPE_payment_received_staff
+        AUTOMATIC_CATEGORY_ACCESS_BODY
+        AUTOMATIC_DOWNLOAD_CATEGORY_ACCESS_BODY
+        AUTOMATIC_DOWNLOAD_CATEGORY_ACCESS_BODY_ATTACHED
+        AUTOMATIC_DOWNLOAD_CATEGORY_ACCESS_BODY_SOME_ATTACHED
+        AUTOMATIC_CATEGORY_ACCESS_SUBJECT
+        BANNERS_INTRO
+        BANNER_ACTIVATE
+        BANNER_ACTIVATE_DESCRIPTION
+        BANNER_ADD_HITS
+        BANNER_ADD_HITS_DESCRIPTION
+        BANNER_ADD_IMPORTANCE
+        BANNER_ADD_IMPORTANCE_DESCRIPTION
+        BUYING_FOR_FREE_CONFIRMATION
+        BUYING_FOR_MONEY_CONFIRMATION
+        BUYING_FOR_POINTS_CONFIRMATION
+        TITLE_QUOTA
+        CART_ORDER_DESCRIPTION
+        CATALOGUE_ITEM
+        CATALOGUE_ITEM_DESCRIPTION
+        DESCRIPTION_ADDRESS_DESIRED_STUB
+        DESCRIPTION_SELL_CATEGORY_ACCESS
+        DISCOUNTED_ECOMMERCE_PRODUCT
+        ECOM_PRODUCTS_INTRO_BOTH
+        ECOM_PRODUCTS_INTRO_MONEY_ONLY
+        ECOM_PRODUCTS_INTRO_POINTS_ONLY
+        ECOM_PURCHASE_STAGE_cancelled
+        ECOM_PURCHASE_STAGE_category
+        EMAIL_CONTACT_MESSAGE
+        FREE
+        FREE_ECOMMERCE_PRODUCT
+        GAMBLE_THIS
+        GAMBLE_WARNING
+        GAMBLING_WINNINGS
+        NEWFORWARDING_DESCRIPTION
+        NEWPOP3_DESCRIPTION
+        PERMISSION_PRODUCT_PERMANENT_AUTOMATIC_DESCRIPTION
+        PERMISSION_PRODUCT_PERMANENT_AUTOMATIC_TITLE
+        PERMISSION_PRODUCT_TEMPORARY_AUTOMATIC_DESCRIPTION
+        PERMISSION_PRODUCT_TEMPORARY_AUTOMATIC_TITLE
+        PIN_SPECIFIC_TOPIC
+        POINTS_PURCHASE
+        PURCHASES
+        PURCHASE_QUOTA_DESCRIPTION
+        TOPIC_PINNED_FOR
+        USERGROUP_SUBSCRIPTION_DESCRIPTION
+        _SUBSCRIPTION
         TASK_COMPLETED
         TASK_COMPLETED_BODY
         TASK_COMPLETED_BODY_ATTACHMENT
@@ -7299,12 +7468,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COUNT_POSTSTODAY
         COUNT_TOPICSCOUNT
         CONTENTS
+        CAN_PURCHASE_DOWNLOAD_CATEGORY_ACCESS
         FILE
         NEWSLETTER_SUBSCRIBER_DEFAULT_NAME
         ABOUT
         ABOUT_BLOCKING
-        ABOUT_POP3
-        ABOUT_QUOTA
         ABOUT_TO_APPLY_FREE_ACCESS
         ABOUT_TO_APPLY_LEADER
         ABOUT_TO_APPLY_STAFF
@@ -7325,8 +7493,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ACCOUNT
         ACTION
         ACTIONS
-        ACTIVATE_ACCOUNT
-        ACTIVATE_POP3_ACCOUNT
         ACTIVE
         ACTIVE_TOPICS_IN
         ACTIVITY
@@ -7353,10 +7519,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADDITIONAL_INFO
         ADDITIONAL_PT_POSTS
         ADDRESS
-        ADDRESSES_ABOUT
         ADDRESS_CURRENT
         ADDRESS_DESIRED
-        ADDRESS_DESIRED_DOMAIN
         ADDRESS_DESIRED_STUB
         ADD_ATTACHMENT
         ADD_ATTACHMENTS_MEDIA_LIBRARY
@@ -7374,6 +7538,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ADD_TOPIC
         ADD_TOPIC_POLL
         ADD_TO_CART
+        CHECKOUT
         ADD_TO_DIGG
         ADD_TO_FACEBOOK
         ADD_TO_STUMBLEUPON
@@ -7405,7 +7570,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ALREADY_CONFIRMED_THIS
         ALREADY_EMAIL_ADDRESS
         ALREADY_FRIENDS
-        ALREADY_HAVE
         ALREADY_HAVE_THIS
         ALREADY_HAVE_THIS_SINGLE
         ALREADY_IN_GROUP
@@ -7562,7 +7726,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHANGING_IN
         CHARGE
         CHARGES
-        CHARGE_INFO
         CHAT
         DIGEST_ITEM_OMITTED
         INSTEAD_OF_SMS
@@ -7605,8 +7768,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHAT_TOGGLE_COMCODE_BOX
         CHAT_USERSONLINE_BOTMSG
         CHAT_WEBSITE_HELPER_BOT
-        CHECKOUT_NOTIFICATION_TEXT
-        CHECK_OUT
         CHILD_PAGES
         CHILD_PLU
         CHOOSE
@@ -7690,7 +7851,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIRM_EMAIL_SUBJECT
         CONFIRM_PASSWORD
         CONFIRM_TEXT
-        CONFIRM_TOPIC_PIN
         CONTACT
         CONTACTS
         CONTACT_CITY
@@ -7721,7 +7881,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CORRECT
         CORRECT_ANSWER
         COST
-        COST_THEM_LINK
         COULD_NOT_UNSUBSCRIBE
         COUNTDOWN_MINUS
         COUNTDOWN_PLUS
@@ -7751,9 +7910,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CURRENT
         CURRENTLY_AWARDED_TO
         CURRENT_POINTS
-        CUSTOMER_OPTING_OUT_OF_TAX
-        CUSTOMER_OPTING_OUT_OF_TAX_SHORT
-        CUSTOM_ITEM_A
         CUSTOM_PROFILE_FIELD
         CUSTOM_UPLOAD
         DAILY
@@ -7858,7 +8014,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DELETE_TOPICS_AND_POSTS
         DELETE_TOPIC_POLL
         DELETE_TOPIC_TEXT
-        DELIVER
+        FULFILL
         DESCENDING
         DESCRIPTION
         DESCRIPTION_ADDITIONAL_ACCESS
@@ -7901,7 +8057,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_EXPIRY_DATE
         DESCRIPTION_FEEDS_TO_OVERLAY
         DESCRIPTION_FRIENDS
-        DESCRIPTION_GAMBLE_AMOUNT
         DESCRIPTION_HIGHLIGHTED_NAME
         DESCRIPTION_HIGHLIGHTED_NAME_P
         DESCRIPTION_INTERESTS
@@ -7932,6 +8087,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_REASON
         DESCRIPTION_REDIRECT_TO_TOPIC
         DESCRIPTION_REVEAL_AGE
+        TRANSACTION_NOTES
+        PRICING_ADJUSTMENT
         DESCRIPTION_SET_TICKET_EXTRA_ACCESS
         DESCRIPTION_SKIP_SIGNATURE
         DESCRIPTION_SUBSCRIBE_ADDRESS
@@ -8023,6 +8180,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOMMERCE_PRODUCT_OUT_OF_STOCK
         ECOMMERCE_PRODUCT_PROHIBITED
         EDIT
+        CONFIG_OPTION_download_cat_access_late
+        DOWNLOAD_CAT_ACCESS_LATE
         EDITED
         EDITING_FIRST_TOPIC_POST
         EDITING_TOPIC_NOT_POST
@@ -8051,7 +8210,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         EMAIL_MEMBER_SUBJECT
         EMAIL_MEMBER_TEXT
         EMAIL_TAKEN
-        EMAIL_TYPES
         EMAIL_TYPES_DESCRIPTION
         EMOTICON
         EMOTICONS
@@ -8173,6 +8331,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FILTER
         FILTER_REGIONS
         FIND_ME
+        CURRENCY_APPROXIMATION
+        CURRENCY_CONVERSIONS
         FINISH_PROFILE
         FINISH_STARTED_ALREADY
         FIRST
@@ -8209,7 +8369,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         FORUM_TOPIC
         FORUM_TOPICS
         FORUM_TOPIC_NUMBERED
-        FORWARDING
         FOUND_THIS_ON
         FREE_PURCHASE
         FRIEND
@@ -8226,7 +8385,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GALLERIES_HOME
         GALLERY
         GALLERY_MOBILE_PAGE_OF
-        GAMBLE_A
         GAMBLE_COMMISERATIONS
         GAMBLE_CONGRATULATIONS
         GAMBLING
@@ -8258,6 +8416,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GROUP_MEMBERS
         GROUP_MEMBERS_SPECIFIC
         GROUP_NUM_MEMBERS
+        TRANSACTION
+        TAX_SALES
+        TAX_VAT
+        TAX_SALES_NUMBER
+        TAX_VAT_NUMBER
         GUEST
         GUESTS
         GUEST_NAME
@@ -8265,14 +8428,12 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HAS_NOT_READ
         HAS_RATING
         HAS_READ
-        HAVE_COSTED_THEM
         HEIGHT
         HELP
         HELP_OR_ADVICE
         HERE
         HIDE
         HIGHLIGHTED_NAME
-        HIGHLIGHT_NAME_A
         HOME
         HOUR
         HOURS_AGO
@@ -8301,7 +8462,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INACTIVE
         INCORRECT_CONFIRMATION
         INCORRECT_CONFIRM_CODE
-        INFO_CONFIRM
         INLINE_PERSONAL_POSTS
         INLINE_POSTS_MOVED_MESSAGE
         INPUTSYSTEM_CANCEL
@@ -8343,7 +8503,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         INVALID_FILE_TYPE
         INVALID_FILE_TYPE_GENERAL
         INVALID_FILE_TYPE_VERY_GENERAL
-        INVALID_GAMBLE_AMOUNT
         INVALID_OPERATION
         INVALID_SECURITY_CODE_ENTERED
         INVISIBLE
@@ -8582,7 +8741,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULE_TRANS_NAME_news
         MODULE_TRANS_NAME_newsletter
         MODULE_TRANS_NAME_points
-        MODULE_TRANS_NAME_pointstore
         MODULE_TRANS_NAME_polls
         MODULE_TRANS_NAME_purchase
         MODULE_TRANS_NAME_quiz
@@ -8611,7 +8769,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MUTUAL_FRIEND
         MY_INVOICES
         MY_ORDERS
-        MY_ORDER_DETAILS
+        ORDER_DETAILS
         MY_PROFILE
         MY_SUBSCRIPTIONS
         NA
@@ -8764,7 +8922,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOT_A_EMAIL
         NOT_A_URL
         NOT_CURRENTLY_FRIENDS
-        NOT_ENOUGH_POINTS
         NOT_FLOAT
         NOT_IMAGE
         NOT_IN_PREVIEW_MODE
@@ -8786,7 +8943,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOW_INVISIBLE
         NOW_ONLINE
         NO_AWARD
-        NO_BANNER
         NO_BANNERS
         NO_BLOCK_STAFF
         NO_CATEGORIES
@@ -8799,7 +8955,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_ENTRIES
         NO_ENTRIES_AWARDS
         NO_FONT_SELECTED
-        NO_FORWARDINGS
         NO_FRIEND_ENTRIES
         NO_HELP_HERE
         NO_IMAGE
@@ -8820,7 +8975,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_PAGE_OUTPUT
         NO_PASSWORD_RESET_HTTPAUTH
         NO_PERMISSION_TO_USE_POINTS
-        NO_POP3S
         NO_POSTS
         NO_POSTS_YET
         NO_PT_FROM_ALLOW
@@ -8860,11 +9014,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         OPTIONS
         OR
         ORANGE
-        ORDER_FORWARDER_DONE
-        ORDER_GENERAL_DONE
-        ORDER_POP3_DONE
-        ORDER_PRICE_AMT
-        ORDER_QUOTA_DONE
         ORIGINAL_COMCODE
         OTHER
         OTHER_ACTIONS
@@ -8903,9 +9052,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PASSWORD_TOO_SHORT
         PATTERN_NOT_MATCHED
         PAUSE
-        PAYMENT_HEADING
-        PAYMENT_RECEIVED_BODY
-        PAYMENT_RECEIVED_SUBJECT
+        PAYMENT_SENT_BODY
+        PAYMENT_SENT_BODY_automatic
+        PAYMENT_SENT_BODY_manual
+        PAYMENT_SENT_BODY_memo
+        PAYMENT_SENT_BODY_tax_invoice
+        PAYMENT_SENT_BODY_shipping_address
+        PAYMENT_SENT_SUBJECT
         PEOPLE_NOW_FRIENDS
         PERCENTAGE
         PERFORM_ACTION_ON_PREVIEW
@@ -8940,7 +9093,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PHP_CODE
         PINNED
         PIN_TOPIC
-        PIN_TOPIC_A
         PLAY_AUDIO_VERSION
         PLEASE_SELECT_SOUND
         PLEASE_WAIT
@@ -8949,16 +9101,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PLUPLOAD_FAILED
         PLUPLOAD_UPLOADING
         POINTS
-        POINTSTORE
-        POINTSTORE_INTRO
-        POINTSTORE_ITEMS
-        POINTSTORE_ONE_PER_MEMBER
         POINTS_COMPLETED_QUIZ
         POINTS_EARNED
         POINTS_GAINED_BETWEEN
         POINTS_GIFTED
         POINTS_IN_ADDITION
-        POINTS_LEFT
         POINTS_MUST_LOGIN
         POINTS_NOW
         POINTS_RECEIVED
@@ -8983,7 +9130,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         POLL_NOT_ENOUGH_ERROR_2
         POLL_REQUIRES_REPLY
         POLL_RESULTS
-        POP3
         POPULARITY
         POSSIBLE_CORRECTIONS
         POSTED_TIME_SIMPLE
@@ -9027,7 +9173,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PREVIEW_POSTS
         PREVIOUS
         PRICE
-        PRICE_GIVE
+        UNIT_PRICE
+        ITEM_NAME
         PRIMARY_GROUP
         PRIMARY_MEMBERS
         PRIMARY_PAGE_FORM
@@ -9073,23 +9220,20 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PT_RULES_TEXT_DESCRIPTION
         PUNITIVE_HISTORY
         PURCHASED_BANNER
-        PURCHASE_CUSTOM_PRODUCT
         PURCHASE_DISABLED
         PURCHASE_FINISHED
+        PURCHASE_FINISHED_SIMPLE
         PURCHASE_MAIL
         PURCHASE_MAIL_BODY
         PURCHASE_MAIL_SUBJECT
         PURCHASE_NOT_LOGGED_IN
-        PURCHASE_PERMISSION_PRODUCT
-        PURCHASE_POP3_QUOTA
         PURCHASE_QUOTA
-        PURCHASE_SOME_PRODUCT
-        PURCHASE_STAGE_browse
-        PURCHASE_STAGE_details
-        PURCHASE_STAGE_finish
-        PURCHASE_STAGE_message
-        PURCHASE_STAGE_pay
-        PURCHASE_STAGE_terms
+        ECOM_PURCHASE_STAGE_browse
+        ECOM_PURCHASE_STAGE_details
+        ECOM_PURCHASE_STAGE_finish
+        ECOM_PURCHASE_STAGE_message
+        ECOM_PURCHASE_STAGE_pay
+        ECOM_PURCHASE_STAGE_terms
         PURCHASE_STORED_DETAILS
         PURCHASING
         PURCHASING_TITLE
@@ -9106,11 +9250,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         QUIZ_THIS_WITH
         QUIZ_TWICE
         QUIZ_UNKNOWN
-        QUOTA_AMOUNT
-        QUOTA_COST
-        QUOTA_DESCRIPTION
         QUOTA_INCREASE
-        QUOTA_INTRO
         QUOTED_REPLY_MESSAGE
         QUOTES
         QUOTE_POST
@@ -9265,7 +9405,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SETTINGS
         SET_TICKET_EXTRA_ACCESS
         SHIPPING_COST
-        SHIPPING_PRICE
+        SHIPPING
         SHOPPING
         SHOUTBOX
         SHOW
@@ -9298,6 +9438,13 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPACER_POST
         SPACER_POST_MATCHER
         SPACER_TOPIC_TITLE_WRAP
+        SPECIAL_CPF__cms_billing_city
+        SPECIAL_CPF__cms_billing_country
+        SPECIAL_CPF__cms_billing_county
+        SPECIAL_CPF__cms_billing_post_code
+        SPECIAL_CPF__cms_billing_state
+        SPECIAL_CPF__cms_billing_street_address
+        TAX_INVOICE
         SPECIAL_CPF__cms_city
         SPECIAL_CPF__cms_country
         SPECIAL_CPF__cms_county
@@ -9309,7 +9456,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SPECIAL_CPF__cms_longitude
         SPECIAL_CPF__cms_mobile_phone_number
         SPECIAL_CPF__cms_mobile_phone_number_DESCRIPTION
-        CARD_CV2
         SPECIAL_CPF__cms_payment_card_expiry_date
         SPECIAL_CPF__cms_payment_card_issue_number
         SPECIAL_CPF__cms_payment_card_number
@@ -9347,7 +9493,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         STARTER
         START_IM
         START_NEW_SUBSCRIPTION
-        START_SUBSCRIPTION
         STATIC_USERS_ONLINE
         STATISTICS
         STATUS
@@ -9369,6 +9514,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         SUBMIT_AWARD
         SUBMIT_UNVALIDATED_FORUM_POSTS
         SUBMIT_UNVALIDATED_FORUM_TOPICS
+        STATE_NEEDED_FOR_USA
+        ZIP_NEEDED_FOR_USA
+        INVALID_ZIP_FOR_USA
+        INVALID_STATE_FOR_NON_USA
+        INVALID_STATE_FOR_USA
         SUBSCRIBE
         SUBSCRIBED_REMINDERS
         SUBSCRIBE_EVENT
@@ -9459,11 +9609,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TIME_RANGE_START
         TIME_REMAINING
         TITLE
-        TITLE_BANNER_UPGRADE
-        TITLE_NEWFORWARDING
-        TITLE_NEWPOP3
-        TITLE_POP3
-        TITLE_QUOTA
+        NEWFORWARDING_TITLE
+        NEWPOP3_TITLE
         TITLE_TOO_LONG
         TO
         TODAY
@@ -9490,13 +9637,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         TOPIC_NOTIFICATION_MAIL
         TOPIC_NOTIFICATION_MAIL_SUBJECT
         TOPIC_PINNED_ALREADY
-        TOPIC_PINNED_MAX_DAYS
         TOPIC_PINNING
         TOPIC_PINNING_DESCRIPTION
-        TOPIC_PIN_LACK_POINTS
-        TOPIC_PIN_NUMBER_DAYS
-        TOPIC_PIN_NUMBER_DAYS_DESCRIPTION
-        TOPIC_PIN_POSITIVE_DAYS
         TOPIC_POLLS
         TOPIC_POLL_CLOSED
         TOPIC_POLL_IS_PRIVATE
@@ -9522,7 +9664,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UNASSIGNED
         UNCASCADE_TOPIC
         UNDECLARE_EVENT_INTEREST
-        UNIT_PRICE
         UNKNOWN
         UNKNOWN_FORMAT
         UNLINK_EXISTING_UPLOAD
@@ -9543,7 +9684,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         UPDATE_CART
         _UPDATE_CART
         UPGRADE
-        UPGRADE_ACCOUNT
         UPLOAD
         UPLOAD_MUST_SYNDICATE
         UPLOAD_SYNDICATION_AUTH
@@ -9696,7 +9836,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _ADD_PRIVATE_TOPIC_UNKNOWN
         _ADD_TOPIC
         _ALL
-        _ALREADY_HAVE
         _APPLY_TO_GROUP
         _ARE_YOU_SURE_DELETE
         _ASCENDING
@@ -9710,7 +9849,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _CALENDAR_EVENT_VCAL
         _CALENDAR_SPECIFIC
         _CALENDAR_SPECIFIC_WEEK
-        _CANT_AFFORD
+        CANT_AFFORD
         _CATEGORISE_PTS
         _CHATROOM
         _COMCODE
@@ -9749,7 +9888,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _MOST_ACTIVE_FORUM
         _MOVE_TOPIC
         _MULTIPLE
-        _MY_ORDER_DETAILS
+        _ORDER_DETAILS
         _NEW
         _NEWS
         _NEWSLETTER_JOIN
@@ -9768,7 +9907,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         _POINTS_SPENT
         _POLL_REQUIRES_REPLY
         _PR_LUCKY
-        _PURCHASE_FINISHED
         _QUOTE_POST
         _RECOMMEND_SITE
         _REDIRECTING

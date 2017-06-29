@@ -21,41 +21,41 @@ class Hook_login_provider_external_db
     /**
      * Standard login provider hook.
      *
-     * @param  ?MEMBER $member Member ID already detected as logged in (null: none). May be a guest ID.
+     * @param  ?MEMBER $member_id Member ID already detected as logged in (null: none). May be a guest ID.
      * @return ?MEMBER Member ID now detected as logged in (null: none). May be a guest ID.
      */
-    public function try_login($member)
+    public function try_login($member_id)
     {
-        if (($member === null) || (is_guest($member))) {
+        if (($member_id === null) || (is_guest($member_id))) {
             require_code('external_db');
 
             $record = external_db_user_from_session();
 
             if ($record === null) {
-                return $member;
+                return $member_id;
             }
 
             // Existing Composr user?
             $username_field = get_value('external_db_login__username_field', null, true);
             $email_address_field = get_value('external_db_login__email_address_field', null, true);
-            $member = mixed();
+            $member_id = mixed();
             if (get_option('one_per_email_address') != '0') {
-                $member = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($record[$email_address_field]);
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($record[$email_address_field]);
             }
-            if (($member === null) && (get_option('one_per_email_address') != '2')) {
-                $member = $GLOBALS['FORUM_DRIVER']->get_member_from_username($record[$username_field]);
+            if (($member_id === null) && (get_option('one_per_email_address') != '2')) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($record[$username_field]);
             }
-            if ($member !== null) {
+            if ($member_id !== null) {
                 external_db_user_sync($record);
 
                 // Return existing user
-                return $member;
+                return $member_id;
             }
 
             // Create new user
             return external_db_user_add($record);
         }
 
-        return $member;
+        return $member_id;
     }
 }

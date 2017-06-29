@@ -181,20 +181,20 @@ function reconstitute_booking_requests(&$request)
 /**
  * Find the future booking(s) IDs owned by a member.
  *
- * @param  ?MEMBER $member Member ID (null: current user).
+ * @param  ?MEMBER $member_id Member ID (null: current user).
  * @return array Booking IDs.
  */
-function get_future_member_booking_ids($member = null)
+function get_future_member_booking_ids($member_id = null)
 {
-    if ($member === null) {
-        $member = get_member();
+    if ($member_id === null) {
+        $member_id = get_member();
     }
 
     $day = intval(date('d'));
     $month = intval(date('m'));
     $year = intval(date('Y'));
 
-    $booking_ids = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'booking WHERE member_id=' . strval($member) . ' AND (year>' . strval($year) . ' OR year=' . strval($year) . ' AND month>' . strval($month) . ' OR year=' . strval($year) . ' AND month=' . strval($month) . ' AND day>=' . strval($day) . ')');
+    $booking_ids = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'booking WHERE member_id=' . strval($member_id) . ' AND (year>' . strval($year) . ' OR year=' . strval($year) . ' AND month>' . strval($month) . ' OR year=' . strval($year) . ' AND month=' . strval($month) . ' AND day>=' . strval($day) . ')');
     return $booking_ids;
 }
 

@@ -384,7 +384,7 @@ class Hook_commandr_fs_members
      *
      * @param  string $file_name Filename
      * @param  boolean $missing_ok If the field may be missing
-     * @return AUTO_LINK CPF ID
+     * @return ?AUTO_LINK CPF ID (null: none)
      */
     protected function get_field_id_for($file_name, $missing_ok = false)
     {

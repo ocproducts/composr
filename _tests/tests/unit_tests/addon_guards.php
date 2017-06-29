@@ -37,6 +37,10 @@ class addon_guards_test_set extends cms_test_case
             $requires = $dependencies['requires'];
 
             foreach ($files as $file) {
+                if (!is_file(get_file_base() . '/' . $file)) {
+                    continue;
+                }
+
                 if (substr($file, -4) == '.ini') {
                     $c = file_get_contents(get_file_base() . '/' . $file);
 

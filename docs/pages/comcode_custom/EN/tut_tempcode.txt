@@ -615,11 +615,11 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 	<tbody>
 		<tr style="background: #DDFFDD">
 			<td>{$CURRENCY,123,USD}</td>
-			<td>Do a [/html]{$IS_MAINTAINED,currency,currency conversion}[html] / Get the currency (first parameter is a number for the amount in the site's default currency, second parameter is the source currency, optional third parameter is the target currency [defaults to the site currency])</td>
+			<td>Do a [/html]{$IS_MAINTAINED,currency,currency conversion}[html] / Get the currency (first parameter is a number for the amount in the site's default currency, second parameter is the source currency, optional third parameter is the target currency [defaults to the site currency], optional fourth parameter defines a display method 1-6). Requires the eCommerce addon.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$CURRENCY_SYMBOL}</td>
-			<td>Get the nice currency symbol for the site's default currency</td>
+			<td>Get the nice currency symbol for the site's default currency. Requires the eCommerce addon.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$COUNTRY}</td>
@@ -1015,7 +1015,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$STOCK_CHECK,Product id}</td>
-			<td>Get the stock count for an eCommerce product</td>
+			<td>Get the stock count for a shopping catalogue item</td>
 		</tr>
 		<tr style="background: #FFDDDD">
 			<td>{$IS_FRIEND,2,3}</td>
@@ -1128,6 +1128,18 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		<tr style="background: #DDFFDD">
 			<td>{$COPPA_ON}</td>
 			<td>Whether COPPA is configured to be on</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TAX_LABEL}</td>
+			<td>A label for identifying the tax system, in English either &ldquo;VAT&rdquo; or &ldquo;Sales tax&rdquo;</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$TAX_NUMBER_LABEL}</td>
+			<td>A label for identifying the tax system, in English either &ldquo;VAT&rdquo; or &ldquo;Sales tax&rdquo;</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$BUSINESS_ADDRESS}</td>
+			<td>The configured business address. Requires the eCommerce addon.</td>
 		</tr>
 	</tbody>
 </table>
@@ -1633,6 +1645,10 @@ Understanding of these symbols requires an understanding of basic boolean operat
 		<tr style="background: #DDFFDD">
 			<td>{$FLOAT_FORMAT,1234.5678}</td>
 			<td>Make a decimal number look nice, with commas etc, to 2 decimal places (takes a Tempcode number)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$FLOAT_UNFORMAT,1234.56}</td>
+			<td>Make a decimal number that look nice with commas etc, into a rawer representation that isn't locale-specific</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$TEMPCODE,{$MEMBER}}</td>

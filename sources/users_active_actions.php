@@ -100,15 +100,15 @@ function handle_active_login($username)
 
     $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
     $login_array = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant($password, $username), $password);
-    $member = $login_array['id'];
+    $member_id = $login_array['id'];
 
     // Run hooks, if any exist
     $hooks = find_all_hook_obs('systems', 'upon_login', 'Hook_upon_login_');
     foreach ($hooks as $ob) {
-        $ob->run(true, $username, $member); // true means "a new login attempt"
+        $ob->run(true, $username, $member_id); // true means "a new login attempt"
     }
 
-    if ($member !== null) { // Valid user
+    if ($member_id !== null) { // Valid user
         $remember = post_param_integer('remember', 0, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES);
 
         // Create invisibility cookie
@@ -129,10 +129,10 @@ function handle_active_login($username)
 
             // Create user cookie
             if (method_exists($GLOBALS['FORUM_DRIVER'], 'forum_create_cookie')) {
-                $GLOBALS['FORUM_DRIVER']->forum_create_cookie($member, null, $password);
+                $GLOBALS['FORUM_DRIVER']->forum_create_cookie($member_id, null, $password);
             } else {
                 if ($GLOBALS['FORUM_DRIVER']->is_cookie_login_name()) {
-                    $name = $GLOBALS['FORUM_DRIVER']->get_username($member);
+                    $name = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
                     if ($serialized) {
                         $result[$real_member_cookie] = $name;
                     } else {
@@ -141,10 +141,10 @@ function handle_active_login($username)
                     }
                 } else {
                     if ($serialized) {
-                        $result[$real_member_cookie] = $member;
+                        $result[$real_member_cookie] = $member_id;
                     } else {
-                        cms_setcookie(get_member_cookie(), strval($member), false, true);
-                        $_COOKIE[get_member_cookie()] = strval($member);
+                        cms_setcookie(get_member_cookie(), strval($member_id), false, true);
+                        $_COOKIE[get_member_cookie()] = strval($member_id);
                     }
                 }
 
@@ -169,11 +169,11 @@ function handle_active_login($username)
 
         // Create session
         require_code('users_inactive_occasionals');
-        create_session($member, 1, post_param_integer('login_invisible', 0, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES) == 1);
+        create_session($member_id, 1, post_param_integer('login_invisible', 0, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES) == 1);
         global $MEMBER_CACHED;
-        $MEMBER_CACHED = $member;
+        $MEMBER_CACHED = $member_id;
 
-        enforce_temporary_passwords($member);
+        enforce_temporary_passwords($member_id);
     } else {
         $GLOBALS['SITE_DB']->query_insert('failedlogins', array(
             'failed_account' => cms_mb_substr(trim(post_param_string('login_username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES)), 0, 80),
@@ -224,22 +224,22 @@ function handle_active_logout()
 /**
  * Make sure temporary passwords restrict you to the edit account page. May not return, if it needs to do a redirect.
  *
- * @param  MEMBER $member The current member
+ * @param  MEMBER $member_id The current member
  *
  * @ignore
  */
-function _enforce_temporary_passwords($member)
+function _enforce_temporary_passwords($member_id)
 {
-    if ((get_forum_type() == 'cns') && (running_script('index')) && ($member != db_get_first_id()) && (!$GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_password_compat_scheme') == 'temporary') && (get_page_name() != 'lost_password') && ((get_page_name() != 'members') || (get_param_string('type', 'browse') != 'view'))) {
+    if ((get_forum_type() == 'cns') && (running_script('index')) && ($member_id != db_get_first_id()) && (!$GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme') == 'temporary') && (get_page_name() != 'lost_password') && ((get_page_name() != 'members') || (get_param_string('type', 'browse') != 'view'))) {
         $force_change_message = mixed();
         $redirect_url = mixed();
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 
         // Expired?
         if (intval(get_option('password_expiry_days')) > 0) {
             require_code('password_rules');
-            if (member_password_expired($member)) {
+            if (member_password_expired($member_id)) {
                 require_lang('password_rules');
                 $force_change_message = do_lang_tempcode('PASSWORD_EXPIRED', escape_html($username), escape_html(integer_format(intval(get_option('password_expiry_days')))));
                 require_code('urls');
@@ -248,19 +248,19 @@ function _enforce_temporary_passwords($member)
         }
 
         // Temporary?
-        if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_password_compat_scheme') == 'temporary') {
+        if ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme') == 'temporary') {
             require_lang('cns');
             $force_change_message = do_lang_tempcode('YOU_HAVE_TEMPORARY_PASSWORD', escape_html($username));
             require_code('urls');
-            $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member), get_module_zone('members'), array(), false, false, false, 'tab__edit__settings');
+            $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab__edit__settings');
         } // Too old?
         elseif (intval(get_option('password_change_days')) > 0) {
             require_code('password_rules');
-            if (member_password_too_old($member)) {
+            if (member_password_too_old($member_id)) {
                 require_lang('password_rules');
                 $force_change_message = do_lang_tempcode('PASSWORD_TOO_OLD', escape_html($username), escape_html(integer_format(intval(get_option('password_change_days')))));
                 require_code('urls');
-                $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member), get_module_zone('members'), array(), false, false, false, 'tab__edit__settings');
+                $redirect_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab__edit__settings');
             }
         }
 

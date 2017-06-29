@@ -1313,14 +1313,14 @@ class Hook_import_vb3
             $time = $row['dateline'];
             $amount = $row['reputation'];
             $viewer_member = import_id_remap_get('member', strval($row['whoadded']), true);
-            $member = import_id_remap_get('member', strval($row['userid']), true);
+            $member_id = import_id_remap_get('member', strval($row['userid']), true);
             $reason = $row['reason'];
             $anonymous = 0;
             $map = array(
                 'date_and_time' => $time,
                 'amount' => $amount,
                 'gift_from' => $viewer_member,
-                'gift_to' => $member,
+                'gift_to' => $member_id,
                 'anonymous' => $anonymous,
             );
             $map += insert_lang_comcode('reason', $reason, 4);

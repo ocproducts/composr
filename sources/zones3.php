@@ -237,6 +237,11 @@ function actual_delete_zone_lite($zone)
         require_code('resource_fs');
         expunge_resource_fs_moniker('zone', $zone);
     }
+
+    if (addon_installed('ecommerce')) {
+        require_code('ecommerce_permission_products');
+        delete_prod_permission('zone', $zone);
+    }
 }
 
 /**

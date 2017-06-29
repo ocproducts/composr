@@ -298,9 +298,10 @@ function form_input_list_group($title, $entries)
  * @param  mixed $text The text associated with this choice (blank: just use name for text)
  * @param  boolean $red Whether this entry will be put as red (marking it as important somehow)
  * @param  boolean $disabled Whether this list entry is disabled (like a header in a list)
+ * @param  string $title The tooltip
  * @return Tempcode The input field
  */
-function form_input_list_entry($value, $selected = false, $text = '', $red = false, $disabled = false)
+function form_input_list_entry($value, $selected = false, $text = '', $red = false, $disabled = false, $title = '')
 {
     if ((!is_object($text)) && ($text == '')) {
         $text = $value;
@@ -312,7 +313,7 @@ function form_input_list_entry($value, $selected = false, $text = '', $red = fal
     }
     */
 
-    return do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('_GUID' => 'dd76a2685d0fba5f819ef160b0816d03', 'SELECTED' => $selected, 'DISABLED' => $disabled, 'CLASS' => $red ? 'criticalfield' : '', 'NAME' => is_integer($value) ? strval($value) : $value, 'TEXT' => $text));
+    return do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('_GUID' => 'dd76a2685d0fba5f819ef160b0816d03', 'SELECTED' => $selected, 'DISABLED' => $disabled, 'CLASS' => $red ? 'criticalfield' : '', 'NAME' => is_integer($value) ? strval($value) : $value, 'TEXT' => $text, 'TITLE' => ($title == '') ? null : $title));
 }
 
 /**

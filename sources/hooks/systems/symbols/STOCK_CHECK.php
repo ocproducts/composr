@@ -34,9 +34,16 @@ class Hook_symbol_STOCK_CHECK
         $value = '';
 
         if (array_key_exists(0, $param)) {
-            require_code('hooks/systems/ecommerce/catalogue_items');
-            $ob = new Hook_ecommerce_catalogue_items();
-            $available_quantity = $ob->get_available_quantity($param[0]);
+            $type_code = $param[0];
+
+            require_code('ecommerce');
+
+            list(, $product_object) = find_product_details($type_code);
+            if (method_exists($product_object, 'get_available_quantity')) {
+                $available_quantity = $product_object->get_available_quantity($type_code);
+            } else {
+                $available_quantity = 1;
+            }
             $value = ($available_quantity === null) ? '' : strval($available_quantity);
         }
 

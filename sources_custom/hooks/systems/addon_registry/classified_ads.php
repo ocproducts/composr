@@ -165,6 +165,7 @@ Users will find add links when browsing the catalogue. Their entries will be add
             'site/pages/modules_custom/classifieds.php',
             'sources_custom/classifieds.php',
             'sources_custom/hooks/modules/members/classifieds.php',
+            'sources_custom/hooks/systems/config/classifieds_tax_code.php',
             'sources_custom/hooks/systems/cron/classifieds.php',
             'sources_custom/hooks/systems/page_groupings/classifieds.php',
             'sources_custom/hooks/systems/ecommerce/classifieds.php',

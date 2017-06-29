@@ -233,7 +233,7 @@ class Block_main_multi_content
         if ($info['table'] == 'catalogue_entries') {
             $where .= ' AND r.c_name NOT LIKE \'' . db_encode_like('\_%') . '\'';
         }
-        if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (!$efficient)) {
+        if ((!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) && (!$efficient) && ((!in_array($content_type, array('download', 'download_category'))) || (get_option('download_cat_access_late') == '0'))) {
             $_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups(get_member(), false, true);
             $groups = '';
             foreach ($_groups as $group) {

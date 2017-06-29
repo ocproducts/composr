@@ -943,7 +943,12 @@ class Module_cms_news_cat extends Standard_crud_module
             $fields->attach(content_review_get_fields('news_category', ($id === null) ? null : strval($id)));
         }
 
+        // Permissions
         $fields->attach($this->get_permission_fields(($category_id === null) ? '' : strval($category_id), null, ($title == '')));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('news_category', ($category_id === null) ? null : strval($category_id)));
+        }
 
         return array($fields, $hidden);
     }
@@ -988,6 +993,10 @@ class Module_cms_news_cat extends Standard_crud_module
         set_url_moniker('news_category', strval($id));
 
         $this->set_permissions(strval($id));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('news_category', strval($id));
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('news_category', strval($id));
@@ -1023,6 +1032,10 @@ class Module_cms_news_cat extends Standard_crud_module
         edit_news_category(intval($id), $title, $img, $notes, $metadata['submitter']);
 
         $this->set_permissions(intval($id));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('news_category', $id);
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('news_category', $id);

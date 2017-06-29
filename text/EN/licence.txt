@@ -157,6 +157,7 @@ This product includes:
   - Sew, autocomplete implementation (BSD-like licence / public domain)
   - Modernizr (MIT & BSD-like licences)
   - Silktide Cookie consent (GPL licence, but remotely linked)
+  - Invoice template (MIT licence)
   - Browser detection code (http://stackoverflow.com/a/9851769/362006, public domain)
   - Camel case code (http://stackoverflow.com/a/32604073/362006, public domain)
   - Cookie management code (https://github.com/js-cookie/js-cookie, MIT licence)

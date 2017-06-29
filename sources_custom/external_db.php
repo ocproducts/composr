@@ -102,17 +102,17 @@ function external_db_user_from_session()
 /**
  * Synchronise an external user.
  *
- * @param  MEMBER $member Authorised member.
+ * @param  MEMBER $member_id Authorised member.
  * @param  array $record User record to sync.
  */
-function external_db_user_sync($member, $record)
+function external_db_user_sync($member_id, $record)
 {
     $username_field = get_value('external_db_login__username_field', null, true);
     $password_field = get_value('external_db_login__password_field', null, true);
     $email_address_field = get_value('external_db_login__email_address_field', null, true);
 
     require_code('crypt');
-    $salt = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_pass_salt');
+    $salt = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_pass_salt');
     if ($salt == '') {
         $salt = produce_salt();
     }
@@ -137,7 +137,7 @@ function external_db_user_sync($member, $record)
     //      This code has been originally written with the intent of providing a stepping stone, so we are not all that concerned about synching stuff back
     //      You could of course edit the other system to re-sync with Composr upon login
 
-    $GLOBALS['FORUM_DB']->query_update('f_members', $update_map, array('id' => $member), '', 1);
+    $GLOBALS['FORUM_DB']->query_update('f_members', $update_map, array('id' => $member_id), '', 1);
 }
 
 /**
@@ -185,7 +185,7 @@ function external_db_user_add($record)
     require_code('cns_groups');
     require_code('cns_members2');
     require_code('cns_members_action');
-    $member = cns_member_external_linker($username, $password, '', false, $email_address, $dob_day, $dob_month, $dob_year);
+    $member_id = cns_member_external_linker($username, $password, '', false, $email_address, $dob_day, $dob_month, $dob_year);
 
-    return $member;
+    return $member_id;
 }

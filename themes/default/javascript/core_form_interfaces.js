@@ -659,9 +659,15 @@
             return;
         }
 
+        function formatSelectSimple(o) {
+            if (!o.id) return o.text; // optgroup
+            return '<span title="' + escape_html(o.element[0].title) + '">' + escape_html(o.text) + '</span>';
+        }
+
         selectEl = $cms.dom.$id(params.name);
         select2Options = {
             dropdownAutoWidth: true,
+            formatResult: formatSelectSimple,
             containerCssClass: 'wide_field'
         };
 
@@ -690,7 +696,7 @@
     };
 
     $cms.templates.formScreenFieldsSet = function (params) {
-        standardAlternateFieldsWithin(params.setName, !!params.required);
+        standardAlternateFieldsWithin(params.setName, !!params.required, params.defaultSet);
     };
 
     $cms.templates.formScreenInputThemeImageEntry = function (params) {
@@ -1497,7 +1503,7 @@
         imgOb.style.outline = '1px dotted';
     }
 
-    function standardAlternateFieldsWithin(setName, somethingRequired) {
+    function standardAlternateFieldsWithin(setName, somethingRequired, defaultSet) {
         var form = document.getElementById('set_wrapper_' + setName);
 
         while (form && (form.localName !== 'form')) {
@@ -1517,10 +1523,10 @@
             }
         }
 
-        standardAlternateFields(fieldNames, somethingRequired);
+        standardAlternateFields(fieldNames, somethingRequired, defaultSet);
 
         // Do dynamic $cms.form.setLocked/$cms.form.setRequired such that one of these must be set, but only one may be
-        function standardAlternateFields(fieldNames, somethingRequired, secondRun) {
+        function standardAlternateFields(fieldNames, somethingRequired, secondRun, defaultSet) {
             secondRun = !!secondRun;
 
             // Look up field objects
@@ -1536,7 +1542,7 @@
                 field = fields[i];
                 if ((!field) || (field.alternating === undefined)) { // ... but only if not already set
                     var selfFunction = function (e) {
-                        standardAlternateFields(fieldNames, somethingRequired, true);
+                        standardAlternateFields(fieldNames, somethingRequired, true, '');
                     }; // We'll re-call ourself on change
                     _standardAlternateFieldCreateListeners(field, selfFunction);
                 }
@@ -1545,7 +1551,7 @@
             // Update things
             for (i = 0; i < fieldNames.length; i++) {
                 field = fields[i];
-                if (_standardAlternateFieldIsFilledIn(field, secondRun, false))
+                if ((default_set == '') && (_standardAlternateFieldIsFilledIn(field, secondRun, false)) || (default_set != '') && (fieldNames[i].indexOf('_' + defaultSet) != -1))
                     return _standardAlternateFieldUpdateEditability(field, fields, somethingRequired);
             }
 
@@ -1589,6 +1595,11 @@
                         $cms.form.setLocked(field, isLocked, chosenField);
                         if (somethingRequired) {
                             $cms.form.setRequired(field.name.replace(/\[\]$/, ''), isChosen);
+                        }
+
+                        var radioButton = $cms.dom.$('#choose_' + field.name);
+                        if (radioButton) {
+                            radioButton.checked = isChosen;
                         }
                     }
                 }

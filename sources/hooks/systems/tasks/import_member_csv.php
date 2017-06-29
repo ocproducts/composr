@@ -37,8 +37,8 @@ class Hook_task_import_member_csv
         require_code('cns_members_action');
         require_code('fields');
 
-        require_code('hooks/systems/tasks/download_member_csv');
-        $download_ob = new Hook_task_download_member_csv();
+        require_code('hooks/systems/tasks/export_member_csv');
+        $download_ob = new Hook_task_export_member_csv();
 
         log_it('IMPORT_MEMBER_CSV');
 

@@ -629,7 +629,18 @@ function form_input_line($pretty_name, $description, $name, $default, $required,
     if (($maxlength === null) && ($_maxlength !== null)) {
         $maxlength = strval($_maxlength);
     }
-    $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => '02789c9af25cbc971e86bfcc0ad322d5', 'PLACEHOLDER' => $placeholder, 'MAXLENGTH' => $maxlength, 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default, 'TYPE' => $type, 'PATTERN' => $pattern, 'SIZE' => strval($size)));
+    $input = do_template('FORM_SCREEN_INPUT_LINE', array(
+        '_GUID' => '02789c9af25cbc971e86bfcc0ad322d5',
+        'PLACEHOLDER' => $placeholder,
+        'MAXLENGTH' => $maxlength,
+        'TABINDEX' => strval($tabindex),
+        'REQUIRED' => $_required,
+        'NAME' => $name,
+        'DEFAULT' => $default,
+        'TYPE' => $type,
+        'PATTERN' => $pattern,
+        'SIZE' => strval($size),
+    ));
     return _form_input($name, $pretty_name, $description, $input, $required, false, $tabindex, false, false, '', (($pattern_error === null) && ($pattern !== null)) ? strip_html($description->evaluate()) : $pattern_error);
 }
 
@@ -839,7 +850,15 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
     $tabindex = get_form_field_tabindex($tabindex);
 
     $_required = ($required) ? '_required' : '';
-    $input = do_template('FORM_SCREEN_INPUT_LINE', array('_GUID' => 'b47034df1d68c1465d045fca822071a1', 'MAXLENGTH' => get_field_restrict_property('maxlength', $name), 'TABINDEX' => strval($tabindex), 'REQUIRED' => $_required, 'NAME' => $name, 'DEFAULT' => $default));
+    $input = do_template('FORM_SCREEN_INPUT_LINE', array(
+        '_GUID' => 'b47034df1d68c1465d045fca822071a1',
+        'MAXLENGTH' => get_field_restrict_property('maxlength', $name),
+        'TABINDEX' => strval($tabindex),
+        'REQUIRED' => $_required,
+        'NAME' => $name,
+        'DEFAULT' => $default,
+        'SIZE' => '40',
+    ));
     return _form_input($name, $pretty_name, $description, $input, $required, true, $tabindex);
 }
 
@@ -1248,15 +1267,17 @@ function form_input_password($pretty_name, $description, $name, $required, $tabi
  * @param  boolean $ticked Whether this is ticked by default
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ID_TEXT $value The value the checkbox passes when ticked
+ * @param  boolean $read_only Whether this box should be disabled
+ * @param  boolean $disabled Whether this box should be disabled
  * @return Tempcode The input field
  */
-function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1')
+function form_input_tick($pretty_name, $description, $name, $ticked, $tabindex = null, $value = '1', $read_only = false, $disabled = false)
 {
     $tabindex = get_form_field_tabindex($tabindex);
 
     $ticked = (filter_form_field_default($name, $ticked ? '1' : '0') == '1');
 
-    $input = do_template('FORM_SCREEN_INPUT_TICK', array('_GUID' => '340a68c271b838d327f042d101df27eb', 'VALUE' => $value, 'CHECKED' => $ticked, 'TABINDEX' => strval($tabindex), 'NAME' => $name));
+    $input = do_template('FORM_SCREEN_INPUT_TICK', array('_GUID' => '340a68c271b838d327f042d101df27eb', 'VALUE' => $value, 'CHECKED' => $ticked, 'TABINDEX' => strval($tabindex), 'NAME' => $name, 'READ_ONLY' => $read_only, 'DISABLED' => $disabled));
     return _form_input($name, $pretty_name, $description, $input, false, false, $tabindex);
 }
 
@@ -2104,6 +2125,9 @@ function _form_input_date($name, $required, $null_default, $do_time, $default_ti
     }
     // Fix if out of range
     if (($year_start !== null) && ($default_year !== null) && ($default_year < $year_start)) {
+        if (($default_year < $year_start) && ($total_years_to_show !== null)) {
+            $total_years_to_show += ($year_start - $default_year);
+        }
         $year_start = $default_year;
     }
 
@@ -2323,9 +2347,10 @@ function alternate_fields_set__start($set_name)
  * @param  boolean $required Whether it is required that this field set be filled in
  * @param  ?URLPATH $existing_image_preview_url Image URL to show, of the existing selection for this field (null: N/A) (blank: N/A)
  * @param  boolean $raw Whether we just want the raw set contents, without any wrapper field row
+ * @param  string $default_set The default set to pre-select
  * @return Tempcode The field set
  */
-function alternate_fields_set__end($set_name, $pretty_name, $description, $fields, $required, $existing_image_preview_url = null, $raw = false)
+function alternate_fields_set__end($set_name, $pretty_name, $description, $fields, $required, $existing_image_preview_url = null, $raw = false, $default_set = '')
 {
     global $DOING_ALTERNATE_FIELDS_SET;
     if ($DOING_ALTERNATE_FIELDS_SET === null) {
@@ -2338,7 +2363,15 @@ function alternate_fields_set__end($set_name, $pretty_name, $description, $field
         }
     }
 
-    $set = do_template('FORM_SCREEN_FIELDS_SET', array('_GUID' => 'ae81cf68280aef067de1e8e71b2919a7', 'FIELDS' => $fields, 'PRETTY_NAME' => $pretty_name, 'SET_NAME' => $set_name, 'REQUIRED' => $required, 'EXISTING_IMAGE_PREVIEW_URL' => $existing_image_preview_url));
+    $set = do_template('FORM_SCREEN_FIELDS_SET', array(
+        '_GUID' => 'ae81cf68280aef067de1e8e71b2919a7',
+        'FIELDS' => $fields,
+        'PRETTY_NAME' => $pretty_name,
+        'SET_NAME' => $set_name,
+        'REQUIRED' => $required,
+        'EXISTING_IMAGE_PREVIEW_URL' => $existing_image_preview_url,
+        'DEFAULT_SET' => $default_set,
+    ));
 
     if ($DOING_ALTERNATE_FIELDS_SET === null) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));

@@ -17,34 +17,34 @@
 /**
  * Get the total points in the specified member's account; some of these will probably have been spent already
  *
- * @param  MEMBER $member The member
+ * @param  MEMBER $member_id The member
  * @param  TIME $timestamp Time to get for (null: now)
  * @return integer The number of points the member has
  */
-function total_points($member, $timestamp = null)
+function total_points($member_id, $timestamp = null)
 {
     global $TOTAL_POINTS_CACHE;
 
     if ($timestamp === null) {
-        if (array_key_exists($member, $TOTAL_POINTS_CACHE)) {
-            return $TOTAL_POINTS_CACHE[$member];
+        if (array_key_exists($member_id, $TOTAL_POINTS_CACHE)) {
+            return $TOTAL_POINTS_CACHE[$member_id];
         }
     }
 
-    $points = non_overridden__total_points($member, $timestamp);
+    $points = non_overridden__total_points($member_id, $timestamp);
 
     if ($GLOBALS['SITE_DB']->table_exists('credit_purchases')) {
-        $credits = intval($GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member, 'purchase_validated' => 1)));
+        $credits = intval($GLOBALS['SITE_DB']->query_select_value('credit_purchases', 'SUM(num_credits)', array('member_id' => $member_id, 'purchase_validated' => 1)));
 
         if ($timestamp !== null) {
-            $credits -= intval($GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(num_credits) FROM ' . get_table_prefix() . 'credit_purchases WHERE date_and_time>' . strval($timestamp) . ' AND member_id=' . strval($member)));
+            $credits -= intval($GLOBALS['SITE_DB']->query_value_if_there('SELECT SUM(num_credits) FROM ' . get_table_prefix() . 'credit_purchases WHERE date_and_time>' . strval($timestamp) . ' AND member_id=' . strval($member_id)));
         }
 
         $points += $credits * 50;
     }
 
     if ($timestamp === null) {
-        $TOTAL_POINTS_CACHE[$member] = $points;
+        $TOTAL_POINTS_CACHE[$member_id] = $points;
     }
 
     return $points;

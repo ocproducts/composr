@@ -446,7 +446,7 @@ function do_work()
         gc_enable();
     }
 
-    // items in ecommerce store
+    // items in shopping catalogue
     require_code('catalogues2');
     $cat_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => 'products'));
     $fields = collapse_1d_complexity('id', $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('id'), array('c_name' => 'products')));
@@ -466,64 +466,54 @@ function do_work()
         $pid = actual_add_catalogue_entry($cat_id, 1, '', 1, 1, 1, $map);
         unset($map);
     }
-    // outstanding ecommerce orders
+    // outstanding shopping orders
     $pid = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'MIN(id)', array('c_name' => 'products'));
     if ($pid === null) {
         $pid = db_get_first_id();
     }
     require_code('shopping');
     for ($j = $GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'COUNT(*)'); $j < $num_wanted; $j++) {
-        $product_det = array(
-            'product_id' => $pid,
-            'product_name' => $fields[0],
-            'product_code' => $fields[1],
-            'price' => $fields[2],
-            'tax' => preg_replace('#[^\d\.]#', '', $fields[6]),
-            'description' => $fields[9],
-            'quantity' => mt_rand(1, 20),
-            'product_type' => 'catalogue_items',
-            'product_weight' => $fields[8]
-        );
-        $GLOBALS['SITE_DB']->query_insert('shopping_cart',
-            array(
-                'session_id' => get_rand_password(),
-                'ordered_by' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
-                'product_id' => $product_det['product_id'],
-                'product_name' => $product_det['product_name'],
-                'product_code' => $product_det['product_code'],
-                'quantity' => $product_det['quantity'],
-                'price' => round(floatval($product_det['price']), 2),
-                'price_pre_tax' => $product_det['tax'],
-                'product_description' => $product_det['description'],
-                'product_type' => $product_det['product_type'],
-                'product_weight' => $product_det['product_weight'],
-                'is_deleted' => 0,
-            )
-        );
+        $GLOBALS['SITE_DB']->query_insert('shopping_cart', array(
+            'session_id' => get_rand_password(),
+            'ordered_by' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
+            'type_code' => strval(db_get_first_id()),
+            'purchase_id' => strval(get_member()),
+            'quantity' => 1,
+        ));
     }
-    for ($j = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'COUNT(*)'); $j < $num_wanted; $j++) {
-        $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_order', array(
-            'c_member' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
+    for ($j = $GLOBALS['SITE_DB']->query_select_value('shopping_orders', 'COUNT(*)'); $j < $num_wanted; $j++) {
+        $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_orders', array(
+            'member_id' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
             'session_id' => get_rand_password(),
             'add_date' => time(),
-            'tot_price' => '123.00',
+            'total_price' => 10.00,
+            'total_tax_derivation' => '',
+            'total_tax' => 1.00,
+            'total_tax_tracking' => '',
+            'total_shipping_cost' => 2.00,
+            'total_shipping_tax' => 0.00,
+            'total_product_weight' => 0.00,
+            'total_product_length' => 0.00,
+            'total_product_width' => 0.00,
+            'total_product_height' => 0.00,
+            'order_currency' => get_option('currency'),
             'order_status' => 'ORDER_STATUS_awaiting_payment',
             'notes' => '',
             'purchase_through' => 'purchase_module',
-            'transaction_id' => '',
-            'tax_opted_out' => 0,
+            'txn_id' => '',
         ), true);
 
         $GLOBALS['SITE_DB']->query_insert('shopping_order_details', array(
-            'p_id' => 123,
+            'p_type_code' => '123',
+            'p_purchase_id' => '',
             'p_name' => random_line(),
-            'p_code' => 123,
-            'p_type' => 'catalogue_items',
+            'p_sku' => '123',
             'p_quantity' => 1,
-            'p_price' => '12.00',
-            'order_id' => $order_id,
-            'dispatch_status' => '',
-            'included_tax' => '1.00',
+            'p_price' => 10.00,
+            'p_tax_code' => '10.0',
+            'p_tax' => 1.00,
+            'p_order_id' => $order_id,
+            'p_dispatch_status' => 'ORDER_STATUS_awaiting_payment',
         ));
     }
     echo 'done store stuff' . "\n";

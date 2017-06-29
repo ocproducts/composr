@@ -26,7 +26,7 @@ A third party (ohloh) has estimated that it would cost millions of dollars to re
 Composr offers many powerful features that aren't to be found built-in to any competing products. Features such as:
  - sophisticated tools to help you build and manage your website, such as the Theme Wizard to allow you to set up your own colour scheme in just a few minutes.
  - functionality for all forms of content, includes articles, pages, downloads, banners, and your own custom forms of content.
- - the 'points' system, and the Point Store, that allow users to earn, donate and spend points in your community.
+ - the 'points' system that allow users to earn, donate and spend points in your community.
  - powerful social networking capabilities.
  - enterprise functionality for integrating third-party systems.
 
@@ -383,7 +383,7 @@ Users who need a new feature should bear in mind that Composr is Open Source and
 
 [title="3"]Will you implement per-user permissions?[/title]
 
-For reasons of simplicity we have opted to only provide per-usergroup permissions. Composr does have internal functionality for per-user permissions (used by the Point Store), but we feel that this would add unneeded complexity if it were placed in the administrative interface.
+For reasons of simplicity we have opted to only provide per-usergroup permissions. Composr does have internal functionality for per-user permissions (used by the eCommerce system), but we feel that this would add unneeded complexity if it were placed in the administrative interface.
 
 [title="3"]Will you implement a point-bank/games-arcade/auctions?[/title]
 

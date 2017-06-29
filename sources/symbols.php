@@ -3526,12 +3526,12 @@ function ecv_HAS_DELETE_PERMISSION($lang, $escaped, $param)
     if (isset($param[1])) {
         $range = strtolower($param[0]);
         $owner = intval($param[1]);
-        $member = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
+        $member_id = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
         $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
-            $value = has_delete_permission($range, $member, $owner, $cms_page, array($param[5], $param[6])) ? '1' : '0';
+            $value = has_delete_permission($range, $member_id, $owner, $cms_page, array($param[5], $param[6])) ? '1' : '0';
         } else {
-            $value = has_delete_permission($range, $member, $owner, $cms_page) ? '1' : '0';
+            $value = has_delete_permission($range, $member_id, $owner, $cms_page) ? '1' : '0';
         }
     }
 
@@ -3556,8 +3556,8 @@ function ecv_DATE_TIME($lang, $escaped, $param)
     $time = empty($param[0]) ? time() : intval($param[0]);
     $use_contextual_dates = (!isset($param[1]) || ($param[1] == '1'));
     $utc_time = (isset($param[2]) && ($param[2] == '1'));
-    $member = isset($param[3]) ? intval($param[3]) : null;
-    $value = get_timezoned_date_time($time, $use_contextual_dates, $utc_time, $member);
+    $member_id = isset($param[3]) ? intval($param[3]) : null;
+    $value = get_timezoned_date_time($time, $use_contextual_dates, $utc_time, $member_id);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -3580,8 +3580,8 @@ function ecv_DATE($lang, $escaped, $param)
     $time = empty($param[0]) ? time() : intval($param[0]);
     $use_contextual_dates = (!isset($param[1]) || ($param[1] == '1'));
     $utc_time = (isset($param[2]) && ($param[2] == '1'));
-    $member = isset($param[3]) ? intval($param[3]) : null;
-    $value = get_timezoned_date($time, $use_contextual_dates, $utc_time, $member);
+    $member_id = isset($param[3]) ? intval($param[3]) : null;
+    $value = get_timezoned_date($time, $use_contextual_dates, $utc_time, $member_id);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -3604,8 +3604,8 @@ function ecv_TIME($lang, $escaped, $param)
     $time = (!empty($param[0])) ? intval($param[0]) : time();
     $use_contextual_times = (isset($param[1]) && ($param[1] === '1'));
     $utc_time = (isset($param[2]) && ($param[2] === '1'));
-    $member = isset($param[3]) ? intval($param[3]) : null;
-    $value = get_timezoned_time($time, $use_contextual_times, $utc_time, $member);
+    $member_id = isset($param[3]) ? intval($param[3]) : null;
+    $value = get_timezoned_time($time, $use_contextual_times, $utc_time, $member_id);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

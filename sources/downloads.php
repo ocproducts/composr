@@ -19,6 +19,39 @@
  */
 
 /**
+ * See if a member may access a download category
+ *
+ * @param  MEMBER $member_id The member
+ * @param  AUTO_LINK $category_id The category
+ * @return boolean Whether they can
+ */
+function may_enter_download_category($member_id, $category_id)
+{
+    if (get_option('download_cat_access_late') == '1') {
+        return true;
+    }
+
+    return has_category_access($member_id, 'downloads', strval($category_id));
+}
+
+/**
+ * Get the URL to purchase access to a download category
+ *
+ * @param  AUTO_LINK $category_id The category
+ * @return ?Tempcode The purchase URL (null: cannot be purchased)
+ */
+function get_download_category_purchase_url($category_id)
+{
+    if (addon_installed('ecommerce')) {
+        $product_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_prods_permissions', 'id', array('p_module' => 'downloads', 'p_category' => strval($category_id), 'p_enabled' => 1));
+        if ($product_id !== null) {
+            return build_url(array('page' => 'purchase', 'type' => 'details', 'type_code' => 'PERMISSION_' . strval($product_id)), get_module_zone('purchase'));
+        }
+    }
+    return null;
+}
+
+/**
  * Show a download licence for display
  */
 function download_licence_script()
@@ -299,7 +332,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
         $category_id = db_get_first_id();
     }
 
-    if (!has_category_access(get_member(), 'downloads', strval($category_id))) {
+    if (!may_enter_download_category(get_member(), $category_id)) {
         return array();
     }
 
@@ -442,7 +475,7 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
         $breadcrumbs = '';
     }
 
-    if (!has_category_access(get_member(), 'downloads', strval($category_id))) {
+    if (!may_enter_download_category(get_member(), $category_id)) {
         return $use_compound_list ? array(array(), '') : array();
     }
 

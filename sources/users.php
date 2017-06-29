@@ -196,7 +196,7 @@ function get_member($quick_only = false)
         return $MEMBER_CACHED;
     }
 
-    $member = null;
+    $member_id = null;
 
     $cookie_bits = explode(':', str_replace('|', ':', get_member_cookie()));
     $base = $cookie_bits[0];
@@ -219,9 +219,9 @@ function get_member($quick_only = false)
             $member_row = $SESSION_CACHE[$session];
         }
         if (($member_row !== null) && ((!array_key_exists($base, $_COOKIE)) || (!is_guest($member_row['member_id'])))) {
-            $member = $member_row['member_id'];
+            $member_id = $member_row['member_id'];
 
-            if (($member !== null) && ((time() - $member_row['last_activity']) > 10)) { // Performance optimisation. Pointless re-storing the last_activity if less than 3 seconds have passed!
+            if (($member_id !== null) && ((time() - $member_row['last_activity']) > 10)) { // Performance optimisation. Pointless re-storing the last_activity if less than 3 seconds have passed!
                 if (!running_script('index')) { // For 'index' it happens in get_screen_title, as screen meta-information is used
                     $GLOBALS['SITE_DB']->query_update('sessions', array('last_activity' => time()), array('the_session' => $session), '', 1);
                 }
@@ -233,13 +233,13 @@ function get_member($quick_only = false)
             global $SESSION_CONFIRMED_CACHE;
             $SESSION_CONFIRMED_CACHE = ($member_row['session_confirmed'] == 1);
 
-            if ((!is_guest($member)) && ($GLOBALS['FORUM_DRIVER']->is_banned($member)) && (!$GLOBALS['IS_VIA_BACKDOOR'])) { // All hands to the guns
+            if ((!is_guest($member_id)) && ($GLOBALS['FORUM_DRIVER']->is_banned($member_id)) && (!$GLOBALS['IS_VIA_BACKDOOR'])) { // All hands to the guns
                 warn_exit(do_lang_tempcode('YOU_ARE_BANNED'));
             }
 
             // Test this member still exists
-            if ($GLOBALS['FORUM_DRIVER']->get_username($member) === null) {
-                $member = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+            if ($GLOBALS['FORUM_DRIVER']->get_username($member_id) === null) {
+                $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 
             if (array_key_exists($base, $_COOKIE)) {
@@ -252,21 +252,21 @@ function get_member($quick_only = false)
         }
     }
 
-    if (($member === null) && (get_session_id() == '') && (get_param_integer('keep_force_htaccess', 0) == 0)) {
+    if (($member_id === null) && (get_session_id() == '') && (get_param_integer('keep_force_htaccess', 0) == 0)) {
         // Try by cookie (will defer to forum driver to authorise against detected cookie)
         require_code('users_inactive_occasionals');
-        $member = try_cookie_login();
+        $member_id = try_cookie_login();
 
         // Can forum driver help more directly?
         if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member')) {
-            $member = $GLOBALS['FORUM_DRIVER']->get_member();
+            $member_id = $GLOBALS['FORUM_DRIVER']->get_member();
         }
     }
 
-    // Try via additional login providers. They can choose whether to respect existing $member of get_session_id() settings. Some may do an account linkage, so we need to let them decide what to do.
+    // Try via additional login providers. They can choose whether to respect existing $member_id of get_session_id() settings. Some may do an account linkage, so we need to let them decide what to do.
     $hooks = find_all_hook_obs('systems', 'login_providers', 'Hook_login_provider_');
     foreach ($hooks as $ob) {
-        $member = $ob->try_login($member);
+        $member_id = $ob->try_login($member_id);
     }
 
     // Try via GAE Console
@@ -282,25 +282,25 @@ function get_member($quick_only = false)
     }
 
     // Guest or banned
-    if ($member === null) {
-        $member = $GLOBALS['FORUM_DRIVER']->get_guest_id();
+    if ($member_id === null) {
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
         $is_guest = true;
     } else {
-        $is_guest = is_guest($member);
+        $is_guest = is_guest($member_id);
     }
 
     // If we are doing a very quick init, bomb out now - no need to establish session etc
     global $SITE_INFO;
     if ($quick_only) {
         $GETTING_MEMBER = false;
-        return $member;
+        return $member_id;
     }
 
     // If one of the try_* functions hasn't actually created the session, call it here
     $session = get_session_id();
     if ($session == '') {
         require_code('users_inactive_occasionals');
-        create_session($member);
+        create_session($member_id);
     }
 
     // If we are logged in, maybe do some further processing
@@ -309,44 +309,44 @@ function get_member($quick_only = false)
         $ks = get_param_string('keep_su', '');
         if ($ks != '') {
             require_code('users_inactive_occasionals');
-            $member = try_su_login($member);
+            $member_id = try_su_login($member_id);
         }
 
         // Run hooks, if any exist
         $hooks = find_all_hook_obs('systems', 'upon_login', 'Hook_upon_login_');
         foreach ($hooks as $ob) {
-            $ob->run(false, null, $member); // false means "not a new login attempt"
+            $ob->run(false, null, $member_id); // false means "not a new login attempt"
         }
     }
 
     // Ok we have our answer
-    $MEMBER_CACHED = $member;
+    $MEMBER_CACHED = $member_id;
     $GETTING_MEMBER = false;
 
     // We call this to ensure any HTTP-auth specific code has a chance to run
     is_httpauth_login();
 
-    if ($member !== null) {
-        enforce_temporary_passwords($member);
+    if ($member_id !== null) {
+        enforce_temporary_passwords($member_id);
 
         if (get_forum_type() == 'cns') {
-            $GLOBALS['FORUM_DRIVER']->cns_flood_control($member);
+            $GLOBALS['FORUM_DRIVER']->cns_flood_control($member_id);
         }
     }
 
-    return $member;
+    return $member_id;
 }
 
 /**
  * Make sure temporary passwords restrict you to the edit account page. May not return, if it needs to do a redirect.
  *
- * @param  MEMBER $member The current member
+ * @param  MEMBER $member_id The current member
  */
-function enforce_temporary_passwords($member)
+function enforce_temporary_passwords($member_id)
 {
-    if ((get_forum_type() == 'cns') && (running_script('index')) && ($member != db_get_first_id()) && (!$GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member, 'm_password_compat_scheme') == 'temporary') && (get_page_name() != 'lost_password') && ((get_page_name() != 'members') || (get_param_string('type', 'browse') != 'view'))) {
+    if ((get_forum_type() == 'cns') && (running_script('index')) && ($member_id != db_get_first_id()) && (!$GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_password_compat_scheme') == 'temporary') && (get_page_name() != 'lost_password') && ((get_page_name() != 'members') || (get_param_string('type', 'browse') != 'view'))) {
         require_code('users_active_actions');
-        _enforce_temporary_passwords($member);
+        _enforce_temporary_passwords($member_id);
     }
 }
 
@@ -446,12 +446,12 @@ function enforce_sessioned_url($url)
 }
 
 /**
- * Find what sessions are expired and delete them, and recover an existing one for $member if there is one.
+ * Find what sessions are expired and delete them, and recover an existing one for $member_id if there is one.
  *
- * @param  ?MEMBER $member User to get a current session for (null: do not try, which guarantees a return result of null also)
+ * @param  ?MEMBER $member_id User to get a current session for (null: do not try, which guarantees a return result of null also)
  * @return ?AUTO_LINK The session ID we rebound to (null: did not rebind)
  */
-function delete_expired_sessions_or_recover($member = null)
+function delete_expired_sessions_or_recover($member_id = null)
 {
     $new_session = null;
 
@@ -485,8 +485,8 @@ function delete_expired_sessions_or_recover($member = null)
         }
 
         // Get back to prior session if there was one (NB: we don't turn guest sessions into member sessions, as that would increase risk of there being a session fixation vulnerability)
-        if ($member !== null) {
-            if (($row['member_id'] == $member) && (((get_option('ip_strict_for_sessions') == '0') && ($member != $GLOBALS['FORUM_DRIVER']->get_guest_id())) || ($row['ip'] == $ip)) && ($row['last_activity'] > time() - intval(60.0 * 60.0 * max(0.017, floatval(get_option('session_expiry_time')))))) {
+        if ($member_id !== null) {
+            if (($row['member_id'] == $member_id) && (((get_option('ip_strict_for_sessions') == '0') && ($member_id != $GLOBALS['FORUM_DRIVER']->get_guest_id())) || ($row['ip'] == $ip)) && ($row['last_activity'] > time() - intval(60.0 * 60.0 * max(0.017, floatval(get_option('session_expiry_time')))))) {
                 $new_session = $_session;
             }
         }
@@ -562,16 +562,16 @@ function cms_admirecookie($name, $default = null)
  * Get the value of a special 'cms_' custom profile field. For Conversr it can also do it for a pure field title, e.g. "Example Field".
  *
  * @param  ID_TEXT $cpf The CPF name stem
- * @param  ?MEMBER $member Member to lookup for (null: current member)
+ * @param  ?MEMBER $member_id Member to lookup for (null: current member)
  * @return string The value (blank: has a blank value, or does not exist)
  */
-function get_cms_cpf($cpf, $member = null)
+function get_cms_cpf($cpf, $member_id = null)
 {
-    if ($member === null) {
-        $member = get_member();
+    if ($member_id === null) {
+        $member_id = get_member();
     }
 
-    $values = $GLOBALS['FORUM_DRIVER']->get_custom_fields($member);
+    $values = $GLOBALS['FORUM_DRIVER']->get_custom_fields($member_id);
     if ($values === null) {
         return '';
     }
@@ -585,7 +585,7 @@ function get_cms_cpf($cpf, $member = null)
     }
 
     if (get_forum_type() == 'cns') {
-        $values = cns_get_all_custom_fields_match_member($member);
+        $values = cns_get_all_custom_fields_match_member($member_id);
         if (array_key_exists($cpf, $values)) {
             return $values[$cpf]['RAW'];
         }

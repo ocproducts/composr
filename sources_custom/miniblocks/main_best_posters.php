@@ -21,17 +21,17 @@
         $members = $GLOBALS['FORUM_DB']->query($sql, $max);
 
         foreach ($members as $_member) {
-            $member = $_member['id'];
+            $member_id = $_member['id'];
             $av_post_length = @intval(round($_member['avg']));
 
-            $_avatar_url = escape_html($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member));
-            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true);
+            $_avatar_url = escape_html($GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id));
+            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
             if (is_object($url)) {
                 $url = $url->evaluate();
             }
             $_url = escape_html($url);
             $_avatar = ($_avatar_url != '') ? ('<img alt="Avatar" src="' . $_avatar_url . '" />') : '';
-            $_username = escape_html($GLOBALS['FORUM_DRIVER']->get_username($member, true));
+            $_username = escape_html($GLOBALS['FORUM_DRIVER']->get_username($member_id, true));
             $_av_post_length = escape_html(integer_format($av_post_length));
             $_num_posts = escape_html(integer_format($_member['cnt']));
 

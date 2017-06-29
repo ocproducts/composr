@@ -289,7 +289,7 @@ function phase_2()
             <strong>Upload</strong>: Upload all built files (in <kbd>builds/' . escape_html($version_dotted) . '</kbd>) to compo.sr server (<kbd>uploads/downloads</kbd>)
         </li>
         <li>
-            Tag the release with <kbd>git commit -a -m "New build"; git push; git tag ' . escape_html($version_dotted) . ' ; git push origin ' . escape_html($version_dotted) . '</kbd>
+            Tag the release with <kbd>git commit -a -m "New build"; git push; git tag ' . escape_html(str_replace(' ', '-', $version_dotted)) . ' ; git push origin ' . escape_html($version_dotted) . '</kbd>
         </li>
         <li>
             <strong>Add to compo.sr</strong>: Run the <form target="_blank" onclick="window.setTimeout($cms.undoStaffUnloadAction,1000);" style="display: inline" action="' . escape_html($push_url) . '" method="post">' . static_evaluate_tempcode(symbol_tempcode('INSERT_SPAMMER_BLACKHOLE')) . '<input type="hidden" name="changes" value="' . escape_html($changes) . '" /><input class="hyperlink_button" type="submit" value="compo.sr setup script" /></form>. Note if you are re-releasing, this will still work &ndash; it will update existing entries appropriately.

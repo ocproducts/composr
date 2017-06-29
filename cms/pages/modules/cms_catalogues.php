@@ -267,7 +267,7 @@ class Module_cms_catalogues extends Standard_crud_module
             ($catalogue_name != '') ? get_translated_tempcode('catalogues', $cat_rows[0], 'c_description') : comcode_lang_string('DOC_CATALOGUES'),
             array_merge(array(
                 (has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_catalogues') && ($catalogue_name == '')) ? array('menu/cms/catalogues/add_one_catalogue', array('_SELF', array_merge($extra_map, array('type' => 'add_catalogue')), '_SELF'), do_lang('ADD_CATALOGUE')) : null,
-                has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array_merge($extra_map_2, array('type' => ($catalogue_name == '') ? 'edit_catalogue' : '_edit_catalogue')), '_SELF'), do_lang('EDIT_CATALOGUE')) : null,
+                has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_catalogues') ? array('menu/cms/catalogues/edit_one_catalogue', array('_SELF', array_merge($extra_map_2, array('type' => ($catalogue_name == '') ? 'edit_catalogue' : '_edit_catalogue')), '_SELF'), do_lang(($catalogue_name == '') ? 'EDIT_CATALOGUE' : 'NEXT_ITEM_edit_this_catalogue')) : null,
                 has_privilege(get_member(), 'submit_cat_midrange_content', 'cms_catalogues') ? array('menu/_generic_admin/add_one_category', array('_SELF', array_merge($extra_map, array('type' => 'add_category')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add_one_category') : do_lang('ADD_CATALOGUE_CATEGORY')) : null,
                 has_privilege(get_member(), 'edit_cat_midrange_content', 'cms_catalogues') ? array('menu/_generic_admin/edit_one_category', array('_SELF', array_merge($extra_map, array('type' => 'edit_category')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_edit_one_category') : do_lang('EDIT_CATALOGUE_CATEGORY')) : null,
                 (!$has_categories) ? null : (has_privilege(get_member(), 'submit_midrange_content', 'cms_catalogues') ? array('menu/_generic_admin/add_one', array('_SELF', array_merge($extra_map, array('type' => 'add_entry')), '_SELF'), ($catalogue_name != '') ? do_lang('NEXT_ITEM_add_one') : do_lang('ADD_CATALOGUE_ENTRY')) : null),
@@ -497,7 +497,10 @@ class Module_cms_catalogues extends Standard_crud_module
                 $field_groups[$field_cat] = new Tempcode();
             }
 
-            $_cf_description = escape_html(get_translated_text($field['cf_description']));
+            $__cf_description = get_translated_text($field['cf_description']);
+            global $LANG_FILTER_OB;
+            $__cf_description = $LANG_FILTER_OB->compile_time(null, $__cf_description); // So that eCommerce catalogue fields referencing config options look better
+            $_cf_description = escape_html($__cf_description);
 
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
             $result = $ob->get_field_inputter($_cf_name, $_cf_description, $field, $default, ($id === null), !array_key_exists($field_num + 1, $special_fields));
@@ -839,15 +842,15 @@ class Module_cms_catalogues extends Standard_crud_module
             if ($delete_permission) {
                 $start = 0;
                 do {
-                    $details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('order_id', 'p_price'), array('p_id' => $id), '', 1000, $start);
+                    $details = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_type_code' => strval($id)), '', 1000, $start);
                     foreach ($details as $d) {
-                        $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'shopping_order SET tot_price=tot_price-' . float_to_raw_string($d['p_price']) . ' WHERE id=' . strval($d['order_id']) . ' AND ' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment'));
-                        $GLOBALS['SITE_DB']->query_delete('shopping_order', array('id' => $d['order_id'], 'tot_price' => 0.0), '', 1);
+                        $GLOBALS['SITE_DB']->query_delete('shopping_orders', array('id' => $d['p_order_id'], 'total_price' => 0.0), '', 1);
                     }
+                    recalculate_order_costs($d['p_order_id']);
                     $start += 1000;
                 } while (count($details) != 0);
-                $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_id' => $id));
-                $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('product_id' => $id));
+                $GLOBALS['SITE_DB']->query_delete('shopping_order_details', array('p_type_code' => strval($id)));
+                $GLOBALS['SITE_DB']->query_delete('shopping_cart', array('type_code' => strval($id)));
                 $this->delete_actualisation($_id);
             }
 
@@ -898,9 +901,9 @@ class Module_cms_catalogues extends Standard_crud_module
             return true;
         }
         return
-            ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_details', 'id', array('p_id' => intval($id), 'p_type' => 'catalogue_items')) === null)
+            ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_details', 'id', array('p_type_code' => $id)) === null)
             &&
-            ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'product_id', array('product_id' => intval($id), 'product_type' => 'catalogue_items')) === null);
+            ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_cart', 'product_id', array('p_type_code' => $id)) === null);
     }
 
     /**
@@ -1273,6 +1276,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         // Permissions
         if (get_value('disable_cat_cat_perms') !== '1') {
             $fields->attach($this->get_permission_fields(($id === null) ? '' : strval($id), null, ($id === null)));
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                $fields->attach(permission_product_form('catalogue_category', ($id === null) ? null : strval($id)));
+            }
         }
 
         return array($fields, $hidden);
@@ -1364,6 +1371,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
 
         if (get_value('disable_cat_cat_perms') !== '1') {
             $this->set_permissions(strval($category_id));
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('catalogue_category', strval($category_id));
+            }
         }
 
         if (addon_installed('content_reviews')) {
@@ -1419,6 +1430,10 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         if (!fractional_edit()) {
             if (get_value('disable_cat_cat_perms') !== '1') {
                 $this->set_permissions(strval($category_id));
+                if (addon_installed('ecommerce')) {
+                    require_code('ecommerce_permission_products');
+                    permission_product_save('catalogue_category', strval($category_id));
+                }
             }
         }
 
@@ -1664,6 +1679,10 @@ class Module_cms_catalogues_alt extends Standard_crud_module
 
             // Permissions
             $fields->attach($this->get_permission_fields($name, null, ($name == '')));
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                $fields->attach(permission_product_form('catalogue', ($name === '') ? null : $name));
+            }
 
             $actions = new Tempcode();
             if (($name != '') && (get_value('disable_cat_cat_perms') !== '1')) {
@@ -1827,6 +1846,10 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         $this->set_permissions($name);
         if ($category_id !== null) {
             $GLOBALS['MODULE_CMS_CATALOGUES']->cat_crud_module->set_permissions(strval($category_id));
+        }
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('catalogue', $name);
         }
 
         if (addon_installed('content_reviews')) {
@@ -2106,6 +2129,10 @@ class Module_cms_catalogues_alt extends Standard_crud_module
         // Do this last as it causes a menu decache which can cause memory errors if we do a warn_exit (i.e. we want the warn_exit's before this)
         if (!fractional_edit()) {
             $this->set_permissions($name);
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('catalogue', $name);
+            }
         }
     }
 

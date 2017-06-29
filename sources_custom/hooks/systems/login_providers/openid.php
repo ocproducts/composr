@@ -21,10 +21,10 @@ class Hook_login_provider_openid
     /**
      * Standard login provider hook.
      *
-     * @param  ?MEMBER $member Member ID already detected as logged in (null: none). May be a guest ID.
+     * @param  ?MEMBER $member_id Member ID already detected as logged in (null: none). May be a guest ID.
      * @return ?MEMBER Member ID now detected as logged in (null: none). May be a guest ID.
      */
-    public function try_login($member)
+    public function try_login($member_id)
     {
         // Some kind of OpenID provider
         try {
@@ -64,13 +64,13 @@ class Hook_login_provider_openid
                     $attributes = $openid->getAttributes();
 
                     // If member already existed, no action needed - just create a session to existing record
-                    $member = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_password_compat_scheme' => 'openid', 'm_pass_hash_salted' => $openid->identity));
-                    if ($member !== null) {
+                    $member_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_members', 'id', array('m_password_compat_scheme' => 'openid', 'm_pass_hash_salted' => $openid->identity));
+                    if ($member_id !== null) {
                         require_code('users_inactive_occasionals');
 
-                        create_session($member, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
+                        create_session($member_id, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
 
-                        return $member;
+                        return $member_id;
                     }
 
                     require_code('cns_members');
@@ -139,18 +139,18 @@ class Hook_login_provider_openid
                         // Actually add member
                         require_code('config2');
                         set_option('maximum_password_length', '1000');
-                        $member = cns_member_external_linker($username, $openid->identity, 'openid', false, $email, $dob_day, $dob_month, $dob_year, null, $language);
+                        $member_id = cns_member_external_linker($username, $openid->identity, 'openid', false, $email, $dob_day, $dob_month, $dob_year, null, $language);
 
                         $avatar = '';
                         if (array_key_exists('media/image/default', $attributes)) {
                             $avatar = $attributes['media/image/default'];
                         }
-                        cns_member_choose_avatar($avatar, $member);
+                        cns_member_choose_avatar($avatar, $member_id);
                     }
 
-                    if ($member !== null) {
+                    if ($member_id !== null) {
                         require_code('users_inactive_occasionals');
-                        create_session($member, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
+                        create_session($member_id, 1, (isset($_COOKIE[get_member_cookie() . '_invisible'])) && ($_COOKIE[get_member_cookie() . '_invisible'] == '1')); // This will mark it as confirmed
                     }
                 } else {
                     require_code('site');
@@ -164,6 +164,6 @@ class Hook_login_provider_openid
             attach_message($e->getMessage(), 'warn', false, true);
         }
 
-        return $member;
+        return $member_id;
     }
 }

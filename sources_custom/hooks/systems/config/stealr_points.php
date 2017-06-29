@@ -28,7 +28,7 @@ class Hook_config_stealr_points
         return array(
             'human_name' => 'STEALR_POINTS',
             'type' => 'integer',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'STEALR_TITLE',
             'explanation' => 'CONFIG_OPTION_stealr_points',
             'shared_hosting_restricted' => '0',

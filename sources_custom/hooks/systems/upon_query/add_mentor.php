@@ -47,6 +47,9 @@ class Hook_upon_query_add_mentor
             }
 
             $mentor_usergroup = get_option('mentor_usergroup');
+            if ($mentor_usergroup == '') {
+                return;
+            }
 
             require_code('cns_topics');
             require_code('cns_forums');

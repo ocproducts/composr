@@ -63,7 +63,7 @@
 	min-height: 20px;
 }
 
-/* Catalogue product entry screen */
+/* Shopping catalogue entry screen */
 
 .catalogue_fields_table {
 	margin: 1em 0;
@@ -90,7 +90,7 @@
 	margin-bottom: 0;
 }
 
-/* eCommerce cart link template */
+/* Shopping cart link template */
 
 .cart_info {
 	overflow: hidden;
@@ -117,7 +117,7 @@
 	float: right;
 }
 
-/* eCommerce cart button template */
+/* Shopping cart button template */
 
 .add_to_cart {
 	width: 100px;
@@ -129,11 +129,7 @@
 	margin-right: 0.5em;
 }
 
-.tax_opted_out {
-	font-size: 0.85em;
-}
-
-/* eCommerce product entry screen AND eCommerce product entries */
+/* Shopping catalogue entry screen AND eCommerce product entries */
 
 .price_box {
 	font-weight: bold;
@@ -141,9 +137,9 @@
 	font-size: 1.15em;
 }
 
-/* eCommerce product entries */
+/* Shopping catalogue entries */
 
-/* eCommerce product entry screen */
+/* Shopping catalogue entry screen */
 
 .product_view .catalogue_entry_box_thumbnail {
 	float: right;

@@ -133,21 +133,21 @@ function send_validation_request($type, $table, $non_integer_id, $id, $url, $mem
  * Give points to a member for submitting something, then returns the XHTML page to say so.
  *
  * @param  ID_TEXT $type One of this type has been submitted. By convention it is the language string ID of what was done, e.g. ADD_DOWNLOAD
- * @param  ?MEMBER $member The member to give the points to (null: give to current member)
+ * @param  ?MEMBER $member_id The member to give the points to (null: give to current member)
  * @return ?string A message about the member being given these submit points (null: no message)
  */
-function give_submit_points($type, $member = null)
+function give_submit_points($type, $member_id = null)
 {
-    if ($member === null) {
-        $member = get_member();
+    if ($member_id === null) {
+        $member_id = get_member();
     }
-    if ((!is_guest($member)) && (addon_installed('points'))) {
+    if ((!is_guest($member_id)) && (addon_installed('points'))) {
         $points = get_option('points_' . $type, true);
         if ($points === null) {
             return '';
         }
         require_code('points2');
-        system_gift_transfer(do_lang($type), intval($points), $member);
+        system_gift_transfer(do_lang($type), intval($points), $member_id);
         return do_lang('SUBMIT_AWARD', integer_format(intval($points)));
     }
     return null;

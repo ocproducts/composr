@@ -582,7 +582,6 @@ class Module_cms_wiki
 
         $child_links = post_param_string('children');
 
-        $member = get_member();
         check_privilege('wiki_manage_tree', array('wiki_page', $id));
 
         $hide_posts = $GLOBALS['SITE_DB']->query_select_value('wiki_pages', 'hide_posts', array('id' => $id));

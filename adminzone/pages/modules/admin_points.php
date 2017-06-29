@@ -295,15 +295,15 @@ class Module_admin_points
      */
     public function points_charge()
     {
-        $member = post_param_integer('member');
+        $member_id = post_param_integer('member');
         $amount = post_param_integer('amount');
         $reason = post_param_string('reason');
 
         require_code('points2');
-        charge_member($member, $amount, $reason);
-        $left = available_points($member);
+        charge_member($member_id, $amount, $reason);
+        $left = available_points($member_id);
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
@@ -312,7 +312,7 @@ class Module_admin_points
         // Show it worked / Refresh
         $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         if ($url === null) {
-            $_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member), get_module_zone('points'));
+            $_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points'));
             $url = $_url->evaluate();
         }
         return redirect_screen($this->title, $url, $text);

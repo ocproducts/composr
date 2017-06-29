@@ -595,7 +595,7 @@ class Module_cms_downloads extends Standard_crud_module
         }
 
         if (($validated == 1) || (!addon_installed('unvalidated'))) {
-            if ((has_actual_page_access(get_modal_user(), 'downloads')) && (has_category_access(get_modal_user(), 'downloads', strval($category_id)))) {
+            if ((has_actual_page_access(get_modal_user(), 'downloads')) && (may_enter_download_category(get_modal_user(), $category_id))) {
                 $privacy_ok = true;
                 if (addon_installed('content_privacy')) {
                     require_code('content_privacy');
@@ -679,7 +679,7 @@ class Module_cms_downloads extends Standard_crud_module
         if (($validated == 1) && ($GLOBALS['SITE_DB']->query_select_value_if_there('download_downloads', 'validated', array('id' => $id)) === 0)) { // Just became validated, syndicate as just added
             $submitter = $GLOBALS['SITE_DB']->query_select_value('download_downloads', 'submitter', array('id' => $id));
 
-            if ((has_actual_page_access(get_modal_user(), 'downloads')) && (has_category_access(get_modal_user(), 'downloads', strval($category_id)))) {
+            if ((has_actual_page_access(get_modal_user(), 'downloads')) && (may_enter_download_category(get_modal_user(), $category_id))) {
                 $privacy_ok = true;
                 if (addon_installed('content_privacy')) {
                     require_code('content_privacy');
@@ -922,6 +922,10 @@ class Module_cms_downloads_cat extends Standard_crud_module
 
         // Permissions
         $fields->attach($this->get_permission_fields(($category_id === null) ? null : strval($category_id), null, ($category == '')));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('download_category', ($category_id === null) ? null : strval($category_id)));
+        }
 
         return array($fields, $hidden);
     }
@@ -970,6 +974,10 @@ class Module_cms_downloads_cat extends Standard_crud_module
         set_url_moniker('download_category', strval($category_id));
 
         $this->set_permissions(strval($category_id));
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('download_category', strval($category_id));
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('download_category', strval($category_id));
@@ -1007,6 +1015,10 @@ class Module_cms_downloads_cat extends Standard_crud_module
         edit_download_category($category_id, $category, $parent_id, $description, $notes, $rep_image, post_param_string('meta_keywords', STRING_MAGIC_NULL), post_param_string('meta_description', STRING_MAGIC_NULL), $metadata['add_time']);
         if (!fractional_edit()) {
             $this->set_permissions(strval($category_id));
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('download_category', strval($category_id));
+            }
         }
 
         if (addon_installed('content_reviews')) {

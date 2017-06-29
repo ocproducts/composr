@@ -37,8 +37,8 @@ class auth_test_set extends cms_test_case
         $username = 'admin';
         $password = 'wrongpassword';
         $login_array = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant($password, $username), $password);
-        $member = $login_array['id'];
-        $this->assertTrue($member === null);
+        $member_id = $login_array['id'];
+        $this->assertTrue($member_id === null);
         $this->assertTrue(
             isset($login_array['error']) &&
             is_object($login_array['error']) &&
@@ -51,8 +51,8 @@ class auth_test_set extends cms_test_case
         $username = 'nosuchuser';
         $password = '';
         $login_array = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant($password, $username), $password);
-        $member = $login_array['id'];
-        $this->assertTrue($member === null);
+        $member_id = $login_array['id'];
+        $this->assertTrue($member_id === null);
     }
 
     public function testAccessDoesFail()

@@ -18,6 +18,8 @@
  * @package    core
  */
 
+/* Also see the cns_make_boiler_custom_field function, which makes fields that are not integrated with anything */
+
 /**
  * Remove CPF fields for GPS.
  * Assumes Conversr.
@@ -98,25 +100,18 @@ function install_address_fields()
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_street_address', 500, 0, 0, 1, 0, '', 'long_text');
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_city', 40, 0, 0, 1, 0, '', 'short_text');
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_county', 40, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_state', 100, 0, 0, 1, 0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_state', 100, 0, 0, 1, 0, '', 'state');
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_post_code', 20, 0, 0, 1, 0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('billing_country', 5, 0, 0, 1, 0, '', 'country');
 
     // Regular address (is also re-used for shipping)...
 
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('street_address', 500, 0, 0, 1, 0, '', 'long_text');
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('city', 40, 0, 0, 1, 0, '', 'short_text');
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('county', 40, 0, 0, 1, 0, '', 'short_text');
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, 0, 0, 1, 0, '', 'short_text');
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('state', 100, 0, 0, 1, 0, '', 'state');
     $GLOBALS['FORUM_DRIVER']->install_create_custom_field('post_code', 20, 0, 0, 1, 0, '', 'short_text');
-
-    require_code('locations');
-    $countries = '';
-    $_countries = find_countries();
-    foreach ($_countries as $code => $name) {
-        $countries .= '|';
-        $countries .= $code . '=' . $name;
-    }
-    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 5, 0, 0, 1, 0, '', 'list', 0, $countries);
+    $GLOBALS['FORUM_DRIVER']->install_create_custom_field('country', 5, 0, 0, 1, 0, '', 'country');
 }
 
 /**

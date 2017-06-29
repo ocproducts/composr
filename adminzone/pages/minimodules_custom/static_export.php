@@ -80,7 +80,7 @@ push_query_limiting(false);
 require_code('sitemap');
 require_code('static_export');
 if (get_param_integer('save__pages', 1) == 1) {
-    $member = get_member();
+    $member_id = get_member();
     require_code('users_inactive_occasionals');
     create_session($GLOBALS['FORUM_DRIVER']->get_guest_id());
     clear_permissions_runtime_cache();
@@ -98,7 +98,7 @@ if (get_param_integer('save__pages', 1) == 1) {
         $meta_gather
     );
 
-    create_session($member);
+    create_session($member_id);
     clear_permissions_runtime_cache();
 }
 

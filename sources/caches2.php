@@ -23,16 +23,16 @@
  *
  * @param  mixed $cached_for The type of what we are caching (e.g. block name) (ID_TEXT or an array of ID_TEXT, the array may be pairs re-specifying $identifier)
  * @param  ?array $identifier A map of identifiying characteristics (null: no identifying characteristics, decache all)
- * @param  ?MEMBER $member Member to only decache for (null: no limit)
+ * @param  ?MEMBER $member_id Member to only decache for (null: no limit)
  * @ignore
  */
-function _delete_cache_entry($cached_for, $identifier = null, $member = null)
+function _delete_cache_entry($cached_for, $identifier = null, $member_id = null)
 {
     if (!is_array($cached_for)) {
         $cached_for = array($cached_for);
     }
 
-    $cached_for_sz = serialize(array($cached_for, $identifier, $member));
+    $cached_for_sz = serialize(array($cached_for, $identifier, $member_id));
 
     static $done_already = array();
     if ($identifier === null) {
@@ -68,8 +68,8 @@ function _delete_cache_entry($cached_for, $identifier = null, $member = null)
         if ($_identifier !== null) {
             $where .= ' AND ' . db_string_equal_to('identifier', md5(serialize($_identifier)));
         }
-        if ($member !== null) {
-            $where .= ' AND the_member=' . strval($member);
+        if ($member_id !== null) {
+            $where .= ' AND the_member=' . strval($member_id);
         }
     }
 
@@ -98,14 +98,14 @@ function _delete_cache_entry($cached_for, $identifier = null, $member = null)
 function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
 {
     $staff_status = null;
-    $member = null;
+    $member_id = null;
     $groups = null;
     $is_bot = null;
     $timezone = null;
     $is_ssl = null;
     $theme = null;
     $lang = null;
-    get_cache_signature_details($special_cache_flags, $staff_status, $member, $groups, $is_bot, $timezone, $is_ssl, $theme, $lang);
+    get_cache_signature_details($special_cache_flags, $staff_status, $member_id, $groups, $is_bot, $timezone, $is_ssl, $theme, $lang);
 
     global $TEMPCODE_SETGET;
     $map = array(
@@ -113,7 +113,7 @@ function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
         'c_map' => serialize($map),
         'c_store_as_tempcode' => $tempcode ? 1 : 0,
         'c_staff_status' => $staff_status,
-        'c_member' => $member,
+        'c_member' => $member_id,
         'c_groups' => $groups,
         'c_is_bot' => $is_bot,
         'c_timezone' => $timezone,
@@ -139,7 +139,7 @@ function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
  * @param  array $_csss_required A list of the css files that need loading to use Tempcode embedded in the cache
  * @param  boolean $tempcode Whether we are caching Tempcode (needs special care)
  * @param  ?BINARY $staff_status Staff status to limit to (null: Get from environment)
- * @param  ?MEMBER $member Member to limit to (null: Get from environment)
+ * @param  ?MEMBER $member_id Member to limit to (null: Get from environment)
  * @param  ?SHORT_TEXT $groups Sorted permissive usergroup list to limit to (null: Get from environment)
  * @param  ?BINARY $is_bot Bot status to limit to (null: Get from environment)
  * @param  ?MINIID_TEXT $timezone Timezone to limit to (null: Get from environment)
@@ -147,9 +147,9 @@ function request_via_cron($codename, $map, $special_cache_flags, $tempcode)
  * @param  ?ID_TEXT $theme The theme this is being cached for (null: Get from environment)
  * @param  ?LANGUAGE_NAME $lang The language this is being cached for (null: Get from environment)
  */
-function set_cache_entry($codename, $ttl, $cache_identifier, $cache, $special_cache_flags = CACHE_AGAINST_DEFAULT, $_langs_required = array(), $_javascripts_required = array(), $_csss_required = array(), $tempcode = false, $staff_status = null, $member = null, $groups = null, $is_bot = null, $timezone = null, $is_ssl = null, $theme = null, $lang = null)
+function set_cache_entry($codename, $ttl, $cache_identifier, $cache, $special_cache_flags = CACHE_AGAINST_DEFAULT, $_langs_required = array(), $_javascripts_required = array(), $_csss_required = array(), $tempcode = false, $staff_status = null, $member_id = null, $groups = null, $is_bot = null, $timezone = null, $is_ssl = null, $theme = null, $lang = null)
 {
-    get_cache_signature_details($special_cache_flags, $staff_status, $member, $groups, $is_bot, $timezone, $is_ssl, $theme, $lang);
+    get_cache_signature_details($special_cache_flags, $staff_status, $member_id, $groups, $is_bot, $timezone, $is_ssl, $theme, $lang);
 
     global $KEEP_MARKERS, $SHOW_EDIT_LINKS, $INJECT_HIDDEN_TEMPLATE_NAMES;
     if ($KEEP_MARKERS || $SHOW_EDIT_LINKS || $INJECT_HIDDEN_TEMPLATE_NAMES) {
@@ -169,7 +169,7 @@ function set_cache_entry($codename, $ttl, $cache_identifier, $cache, $special_ca
 
     if ($GLOBALS['PERSISTENT_CACHE'] !== null) {
         $pcache = array('dependencies' => $dependencies, 'date_and_time' => time(), 'the_value' => $cache);
-        persistent_cache_set(array('CACHE', $codename, md5($cache_identifier), $lang, $theme, $staff_status, $member, $groups, $is_bot, $timezone, $is_ssl), $pcache, false, $ttl * 60);
+        persistent_cache_set(array('CACHE', $codename, md5($cache_identifier), $lang, $theme, $staff_status, $member_id, $groups, $is_bot, $timezone, $is_ssl), $pcache, false, $ttl * 60);
     } else {
         $GLOBALS['SITE_DB']->query_delete('cache', array(
             'lang' => $lang,
@@ -184,7 +184,7 @@ function set_cache_entry($codename, $ttl, $cache_identifier, $cache, $special_ca
             'identifier' => md5($cache_identifier),
             'the_theme' => $theme,
             'staff_status' => $staff_status,
-            'the_member' => $member,
+            'the_member' => $member_id,
             'groups' => $groups,
             'is_bot' => $is_bot,
             'timezone' => $timezone,

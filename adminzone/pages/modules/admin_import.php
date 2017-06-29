@@ -525,6 +525,11 @@ class Module_admin_import
      */
     public function do_import()
     {
+        if (!$GLOBALS['DEV_MODE']) {
+            require_code('developer_tools');
+            destrictify(true, true);
+        }
+
         $refresh_url = get_self_url(true, false, array('type' => 'import'), true);
         $refresh_time = either_param_integer('refresh_time', 15); // Shouldn't default, but reported on some systems to do so
         if (php_function_allowed('set_time_limit')) {

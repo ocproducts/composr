@@ -1372,12 +1372,12 @@ function ecv2_HAS_EDIT_PERMISSION($lang, $escaped, $param)
     if (isset($param[1])) {
         $range = strtolower($param[0]);
         $owner = intval($param[1]);
-        $member = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
+        $member_id = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
         $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
-            $value = has_edit_permission($range, $member, $owner, $cms_page, array($param[4], $param[5])) ? '1' : '0';
+            $value = has_edit_permission($range, $member_id, $owner, $cms_page, array($param[4], $param[5])) ? '1' : '0';
         } else {
-            $value = has_edit_permission($range, $member, $owner, $cms_page) ? '1' : '0';
+            $value = has_edit_permission($range, $member_id, $owner, $cms_page) ? '1' : '0';
         }
     }
 
@@ -1488,12 +1488,12 @@ function ecv2_HAS_SUBMIT_PERMISSION($lang, $escaped, $param)
     if (isset($param[0])) {
         $range = strtolower($param[0]);
         $ip_address = $param[1];
-        $member = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
+        $member_id = (($param !== null) && (isset($param[2]))) ? intval($param[2]) : get_member();
         $cms_page = (($param !== null) && (isset($param[3]))) ? $param[3] : get_page_name();
         if (array_key_exists(5, $param)) {
-            $value = has_submit_permission($range, $member, $ip_address, $cms_page, array($param[5], $param[6])) ? '1' : '0';
+            $value = has_submit_permission($range, $member_id, $ip_address, $cms_page, array($param[5], $param[6])) ? '1' : '0';
         } else {
-            $value = has_submit_permission($range, $member, $ip_address, $cms_page) ? '1' : '0';
+            $value = has_submit_permission($range, $member_id, $ip_address, $cms_page) ? '1' : '0';
         }
     }
 
@@ -3315,10 +3315,110 @@ function ecv2_IS_MAINTAINED($lang, $escaped, $param)
  */
 function ecv2_DECIMAL_POINT($lang, $escaped, $param)
 {
-    $value = '';
-
     $locale = localeconv();
     $value = $locale['decimal_point'];
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv2_TAX_LABEL($lang, $escaped, $param)
+{
+    $value = '';
+
+    if (addon_installed('ecommerce')) {
+        require_lang('ecommerce');
+        $value = do_lang(get_option('tax_system'));
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv2_TAX_NUMBER_LABEL($lang, $escaped, $param)
+{
+    $value = '';
+
+    if (addon_installed('ecommerce')) {
+        require_lang('ecommerce');
+        $value = do_lang(get_option('tax_system') . '_NUMBER');
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv2_BUSINESS_ADDRESS($lang, $escaped, $param)
+{
+    $value = '';
+
+    if (addon_installed('ecommerce')) {
+        require_code('ecommerce');
+        $value = get_full_business_address();
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv2_FLOAT_UNFORMAT($lang, $escaped, $param)
+{
+    $value = '';
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+
+    if (isset($param[0])) {
+        $value = float_to_raw_string(float_unformat($param[0]), 10, true);
+    }
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

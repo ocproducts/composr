@@ -437,7 +437,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
             }
 
             $entry = $entries[$i];
-            $extra_map[$i]['ADD_TO_CART'] = build_url(array('page' => 'shopping', 'type' => 'add_item', 'product_id' => $entry['id'], 'hook' => 'catalogue_items'), get_module_zone('shopping'));
+            $extra_map[$i]['ADD_TO_CART'] = build_url(array('page' => 'shopping', 'type' => 'add_item', 'type_code' => $entry['id']), get_module_zone('shopping'));
         }
     }
 
@@ -1866,9 +1866,9 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
 
     // Finding any hook exists for this product
     if (addon_installed('ecommerce')) {
-        $object = find_product(strval($id));
-        if (is_object($object) && method_exists($object, 'get_custom_product_map_fields')) {
-            $object->get_custom_product_map_fields($id, $map);
+        list(, $product_object) = find_product_details(strval($id));
+        if ((is_object($product_object)) && (method_exists($product_object, 'get_catalogue_template_parameters'))) {
+            $product_object->get_catalogue_template_parameters($id, $map);
         }
     }
 

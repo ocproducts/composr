@@ -36,8 +36,8 @@
 			{+START,IF_NON_EMPTY,{ACTIONS_contact}{$GET,messenger_fields}}
 				<div data-view="ToggleableTray">
 					<h2 class="js-tray-header">
-						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {!CONTACT}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
-						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!CONTACT}</a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {!menus:CONTACT}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract}" srcset="{$IMG*,2x/trays/contract} 2x" /></a>
+						<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!menus:CONTACT}</a>
 					</h2>
 
 					<nav class="toggleable_tray js-tray-content" style="display: block">

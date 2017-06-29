@@ -49,7 +49,7 @@
 
 					{+START,IF_NON_EMPTY,{BIRTHDAYS}}
 						<span class="field_name">{!BIRTHDAYS}:</span>
-						<ul class="horizontal_links_comma">{+START,LOOP,BIRTHDAYS}<li><span class="birthday"><a{+START,IF_PASSED,COLOUR} class="{COLOUR}"{+END} href="{PROFILE_URL*}" title="{!CREATE_BIRTHDAY_TOPIC}: {$DISPLAYED_USERNAME*,{USERNAME}}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>&nbsp;<a href="{$PAGE_LINK*,_SEARCH:pointstore:action:giftr:username={USERNAME}}" title="{!giftr:GIFT_GIFT}"><img alt="" src="{$IMG*,icons/14x14/birthday}" srcset="{$IMG*,icons/28x28/birthday} 2x" /></a></span></li>{+END}</ul>
+						<ul class="horizontal_links_comma">{+START,LOOP,BIRTHDAYS}<li><span class="birthday"><a{+START,IF_PASSED,COLOUR} class="{COLOUR}"{+END} href="{PROFILE_URL*}" title="{!CREATE_BIRTHDAY_TOPIC}: {$DISPLAYED_USERNAME*,{USERNAME}}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>&nbsp;<a href="{$PAGE_LINK*,_SEARCH:purchase:browse:category=giftr:username={USERNAME}}" title="{!giftr:GIFT_GIFT}"><img alt="" src="{$IMG*,icons/14x14/birthday}" srcset="{$IMG*,icons/28x28/birthday} 2x" /></a></span></li>{+END}</ul>
 					{+END}
 				</td>
 			</tr>

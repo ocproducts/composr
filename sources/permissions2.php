@@ -47,14 +47,14 @@ function set_global_category_access($module, $category)
 /**
  * Log permission checks to the permission_checks.log file
  *
- * @param  MEMBER $member The user checking against
+ * @param  MEMBER $member_id The user checking against
  * @param  ID_TEXT $op The function that was called to check a permission
  * @param  array $params Parameters to this permission-checking function
  * @param  boolean $result Whether the permission was held
  *
  * @ignore
  */
-function _handle_permission_check_logging($member, $op, $params, $result)
+function _handle_permission_check_logging($member_id, $op, $params, $result)
 {
     global $PERMISSION_CHECK_LOGGER;
 
@@ -78,11 +78,11 @@ function _handle_permission_check_logging($member, $op, $params, $result)
     $show_all = (get_value('permission_log_success_too') === '1');
     if (($PERMISSION_CHECK_LOGGER !== false) && (($show_all) || (!$result))) {
         fwrite($PERMISSION_CHECK_LOGGER, "\t" . ($show_all ? '' : '! ') . $str);
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
         if ($username === null) {
             $username = do_lang('UNKNOWN');
         }
-        if ($member != get_member()) {
+        if ($member_id != get_member()) {
             fwrite($PERMISSION_CHECK_LOGGER, ' -- ' . $username);
         }
         if ($show_all) {

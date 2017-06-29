@@ -57,15 +57,15 @@ class Block_main_greeting
 
         if ($forum != 'none') {
             // Standard welcome back vs into greeting
-            $member = get_member();
-            if (is_guest($member)) {
+            $member_id = get_member();
+            if (is_guest($member_id)) {
                 list($login_url, , $join_url) = get_login_url();
                 $join_bits = do_lang_tempcode('JOIN_OR_LOGIN', escape_html($join_url), escape_html(is_object($login_url) ? $login_url->evaluate() : $login_url));
 
                 $p = do_lang_tempcode('WELCOME', $join_bits);
                 $out->attach(paragraph($p, 'hhrt4dsgdsgd'));
             } else {
-                $out->attach(paragraph(do_lang_tempcode('WELCOME_BACK', escape_html($GLOBALS['FORUM_DRIVER']->get_username($member, true)), escape_html($GLOBALS['FORUM_DRIVER']->get_username($member))), 'gfgdf9gjd'));
+                $out->attach(paragraph(do_lang_tempcode('WELCOME_BACK', escape_html($GLOBALS['FORUM_DRIVER']->get_username($member_id, true)), escape_html($GLOBALS['FORUM_DRIVER']->get_username($member_id))), 'gfgdf9gjd'));
             }
         }
 

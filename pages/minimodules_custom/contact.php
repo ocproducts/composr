@@ -294,7 +294,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
             ),
             'budget' => array(
                 'label' => 'Budget',
-                'description' => 'What is your budget? You can give a range if you like, but the developer will need an indication so that the developer can assess feasibility and approach before a full professional analysis.',
+                'description' => 'What is your budget in USD? You can give a range if you like, but the developer will need an indication so that the developer can assess feasibility and approach before a full professional analysis.',
                 'type' => 'short_text',
                 'default' => '',
                 'options' => '',

@@ -118,7 +118,7 @@ Each module has a number of 'screens', identified by a URL parameter named [tt]t
 
 Example: [tt]index.php?page=moduleName&type=<screen_name>[/tt]
 
-Generally features relating to a single system (e.g. 'download' system, 'galleries' system, 'pointstore' system, ...) in Composr are contained in a single module, with the exception that content-management and administrative features are each put into separate modules (e.g. [tt]cms_downloads[/tt] and 'admin_downloads') . Content-management (CMS) and Adminisative (admin) modules are made separately so they may be placed in separate zones. Typically a website might be configured to allow certain members to manage content via the CMS zone, but only staff may access the admin modules (via the Admin Zone).
+Generally features relating to a single system (e.g. 'downloads' system, 'galleries' system, 'awards' system, ...) in Composr are contained in a single module, with the exception that content-management and administrative features are each put into separate modules (e.g. [tt]cms_downloads[/tt] and 'admin_downloads') . Content-management (CMS) and Adminisative (admin) modules are made separately so they may be placed in separate zones. Typically a website might be configured to allow certain members to manage content via the CMS zone, but only staff may access the admin modules (via the Admin Zone).
 
 Module files are either full-modules or mini-modules. All standard Composr modules are full-modules. Mini-modules are designed to simplify development or integration on individual websites, where full Composr coding quality is not important.
 Henceforth any use of the word 'module' in this tutorial will be talking about a 'full-module'.
@@ -185,7 +185,7 @@ header('Content-disposition: attachment; filename="example.csv"');
 // Some arbitrary data to output
 $example_data = array(
 	array(
-		'country' => 'UK',
+		'country' => 'GB',
 		'capital' => 'London',
 	),
 	array(
@@ -456,7 +456,7 @@ All modules must also define the default screen, which is almost always identifi
 Configuration options are created using the [tt]config[/tt] hooks. The hooks contain a [tt]get_details()[/tt] function that defines a few elements:
 1) A language string codename that identifies a human-readable name for the configuration option.
 2) The codename for the configuration option.
-3) A data type for the configuration option (this defines how the option is edited -- all options are stored and returned as strings). Valid data types are: [tt]integer[/tt], [tt]tick[/tt], [tt]line[/tt], [tt]float[/tt], [tt]transline[/tt], [tt]transtext[/tt], [tt]colour[/tt], [tt]forum[/tt], [tt]forum_grouping[/tt], [tt]usergroup[/tt], [tt]comcodeline[/tt], [tt]comcodetext[/tt].
+3) A data type for the configuration option (this defines how the option is edited -- all options are stored and returned as strings). Valid data types are: [tt]integer[/tt], [tt]tick[/tt], [tt]line[/tt], [tt]float[/tt], [tt]transline[/tt], [tt]transtext[/tt], [tt]colour[/tt], [tt]forum[/tt], [tt]forum_grouping[/tt], [tt]usergroup[/tt], [tt]comcodeline[/tt], [tt]comcodetext[/tt], [tt]date[/tt], [tt]datetime[/tt].
 4) Some PHP code that returns (in string format) what the default/initial value for the configuration option should be. Often it is just a static value, but sometimes it is calculated in an intelligent way. Alternatively, return boolean false if the config option is disabled for some reason, such as a missing dependency (disabled config options will not show in the configuration module).
 5) A language string codename that identifies a human-readable name for the configuration category which the option belongs to. Many of these are 'FEATURE', which is the conventional set for all configuration options relating to optional Composr systems. Configuration sets do not need to be individually defined -- all sets that are referenced will be automatically listed and indexed.
 6) A language string codename that identifies a human-readable name for the configuration group which the option belongs to. This often indicates the name of system that the addon is providing screens for.

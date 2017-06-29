@@ -772,6 +772,7 @@ class Hook_addon_registry_core_form_interfaces
             'PRETTY_NAME' => lorem_word(),
             'FIELDS' => $inputs,
             'REQUIRED' => true,
+            'DEFAULT_SET' => '',
         ));
         $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,
@@ -829,6 +830,8 @@ class Hook_addon_registry_core_form_interfaces
             'CHECKED' => true,
             'TABINDEX' => placeholder_number(),
             'NAME' => $name,
+            'READ_ONLY' => false,
+            'DISABLED' => false,
         ));
         $fields->attach(do_lorem_template('FORM_SCREEN_FIELD', array(
             'REQUIRED' => true,
@@ -2074,12 +2077,10 @@ class Hook_addon_registry_core_form_interfaces
     {
         require_lang('comcode');
         return array(
-            lorem_globalise(
-                do_lorem_template('BLOCK_HELPER_START', array(
-                    'TITLE' => lorem_phrase(),
-                    'LINKS' => lorem_paragraph_html(),
-                )
-            ), null, '', true),
+            lorem_globalise(do_lorem_template('BLOCK_HELPER_START', array(
+                'TITLE' => lorem_phrase(),
+                'LINKS' => lorem_paragraph_html(),
+            )), null, '', true),
         );
     }
 

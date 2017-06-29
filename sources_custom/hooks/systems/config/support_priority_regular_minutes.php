@@ -33,7 +33,7 @@ class Hook_config_support_priority_regular_minutes
             'explanation' => 'CONFIG_OPTION_support_priority_regular_minutes',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 4,
 
             'addon' => 'composr_homesite_support_credits',
         );

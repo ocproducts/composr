@@ -196,7 +196,7 @@ You must therefore budget to have upgrades done, preferably about once per quart
 
 [title="2"]Rising costs (the cost of design and branding)[/title]
 
-The price range of the mid-market has drifted higher and higher over the years, as the web has matured with much greater expectations. In the early days a great website could be perhaps bought for $3,000 -- now a great website could not even be done within the mid-market and cost $100,000.
+The price range of the mid-market has drifted higher and higher over the years, as the web has matured with much greater expectations. In the early days a great website could be perhaps purchased for $3,000 -- now a great website could not even be done within the mid-market and cost $100,000.
 
 There is a very fast pace of competition, but I would say that design really accelerated with the Apple iPhone: it didn't happen immediately, but once the inspiration got through the design cycles of other companies a whole new level of quality became expected. Also to some extent it is being driven by "HTML5" (and before that, "AJAX").
 

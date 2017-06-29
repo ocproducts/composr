@@ -141,10 +141,10 @@ class Hook_notification_comment_posted extends Hook_Notification
                 list($type_id, $id) = explode('_', $category, 2);
             }
             $members = array();
-            foreach ($_members as $member => $setting) {
+            foreach ($_members as $member_id => $setting) {
                 require_code('content');
-                if (may_view_content_behind($member, $type_id, $id, 'feedback_type_code')) {
-                    $members[$member] = $setting;
+                if (may_view_content_behind($member_id, $type_id, $id, 'feedback_type_code')) {
+                    $members[$member_id] = $setting;
                 }
             }
         } else {

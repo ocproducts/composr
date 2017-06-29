@@ -129,12 +129,12 @@ class Module_leader_board
         foreach ($weeks as $week) {
             $rows = collapse_2d_complexity('lb_member', 'lb_points', $GLOBALS['SITE_DB']->query_select('leader_board', array('lb_member', 'lb_points'), array('date_and_time' => $week)));
             $week_tpl = new Tempcode();
-            foreach ($rows as $member => $points) {
-                $points_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member), get_module_zone('points'));
+            foreach ($rows as $member_id => $points) {
+                $points_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points'));
 
-                $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member, true);
+                $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
 
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($member);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
                 if ($username === null) {
                     $username = do_lang('UNKNOWN');
                 }
@@ -145,7 +145,7 @@ class Module_leader_board
                     'PROFILE_URL' => $profile_url,
                     'POINTS' => integer_format($points),
                     'USERNAME' => $username,
-                    'ID' => strval($member),
+                    'ID' => strval($member_id),
                     'HAS_RANK_IMAGES' => $has_rank_images,
                 )));
             }

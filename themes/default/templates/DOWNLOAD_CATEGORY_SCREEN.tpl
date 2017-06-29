@@ -1,5 +1,7 @@
 {TITLE}
 
+{WARNING_DETAILS}
+
 {+START,IF_NON_EMPTY,{DESCRIPTION}}
 	<div itemprop="description">
 		{$PARAGRAPH,{DESCRIPTION}}

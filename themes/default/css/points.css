@@ -136,16 +136,6 @@ table.points_summary_table .answer {
 	display: none;
 }
 
-/* Point store */
-
-.pointstore_item_tag {
-	font-style: italic;
-}
-
-.pointstore_welcome {
-	text-align: center;
-}
-
 /*
 =========================
 =========Buttons=========
@@ -159,5 +149,15 @@ table.points_summary_table .answer {
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.buttons__points {
 		background-image: url('{$IMG,icons/48x48/buttons/points}') !important;
+	}
+}
+
+.menu__social__points {
+	background-image: url('{$IMG,icons/24x24/menu/social/points}') !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+	.menu__social__points {
+		background-image: url('{$IMG,icons/48x48/menu/social/points}') !important;
 	}
 }

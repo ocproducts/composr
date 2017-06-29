@@ -11,7 +11,7 @@ Many advanced configuration options are presented and described in the main Admi
 Advanced configuration options include (but are not limited to):
  - Enabling and disabling caching
  - Setting up details for an external SMTP server, if PHP can not itself send e-mails
- - Configuring details for various optional Composr features, such as the Point Store and galleries
+ - Configuring details for various optional Composr features, such as the eCommerce and galleries
  - Configuring details for logging
  - Configuring the Admin Zone todo-list block
 

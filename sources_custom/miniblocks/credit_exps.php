@@ -19,10 +19,7 @@ $block_id = get_block_id($map);
 
 $backburner_minutes = integer_format(intval(get_option('support_priority_backburner_minutes')));
 $regular_minutes = integer_format(intval(get_option('support_priority_regular_minutes')));
-$s_currency = get_option('currency', true);
-if ($s_currency === null) {
-    $s_currency = 'USD';
-}
+$currency = get_option('currency', true);
 
 require_lang('customers');
 
@@ -39,12 +36,13 @@ foreach ($products as $p => $v) {
         continue;
     }
 
-    $msg = do_lang('BLOCK_CREDITS_EXP_INNER_MSG', strval($num_credits), strval($s_currency), float_format($v[1]));
+    $price = $v[1];
+
+    $msg = do_lang('BLOCK_CREDITS_EXP_INNER_MSG', strval($num_credits), $currency, array(float_format($price), ecommerce_get_currency_symbol($currency)));
 
     $credit_kinds[] = array(
-        'S_CURRENCY' => $s_currency,
         'NUM_CREDITS' => $num_credits,
-        'PRICE' => float_format($v[1]),
+        'PRICE' => float_to_raw_string($price),
 
         'BACKBURNER_MINUTES' => $backburner_minutes,
         'REGULAR_MINUTES' => $regular_minutes,

@@ -687,8 +687,8 @@ class Field_restriction_loader
                         if (array_key_exists('members', $attributes)) {
                             $applies = false;
                             $members = explode(',', $attributes['members']);
-                            foreach ($members as $member) {
-                                if (intval(trim($member)) == get_member()) {
+                            foreach ($members as $member_id) {
+                                if (intval(trim($member_id)) == get_member()) {
                                     $applies = true;
                                 }
                             }

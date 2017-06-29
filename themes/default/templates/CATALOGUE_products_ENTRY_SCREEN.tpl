@@ -33,7 +33,7 @@
 
 				{+START,IF_NON_EMPTY,{FIELD_2}}
 					<div class="price_box">
-						<span class="price">{!PRICE}: <span itemprop="priceCurrency">{$CURRENCY_SYMBOL}</span><span itemprop="price">{$FLOAT_FORMAT*,{FIELD_2_PLAIN}}</span>{$,Product price}</span>
+						<span class="price">{!PRICE}: <span itemprop="price">{$CURRENCY,{FIELD_2_PLAIN},,{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}</span>{$,Product price}</span>
 					</div>
 				{+END}
 			</div>

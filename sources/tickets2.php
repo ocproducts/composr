@@ -99,6 +99,11 @@ function delete_ticket_type($ticket_type_id)
         require_code('resource_fs');
         expunge_resource_fs_moniker('ticket_type', strval($ticket_type_id));
     }
+
+    if (addon_installed('ecommerce')) {
+        require_code('ecommerce_permission_products');
+        delete_prod_permission('ticket_type', strval($ticket_type_id));
+    }
 }
 
 /**

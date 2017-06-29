@@ -2036,6 +2036,10 @@ class Module_cms_galleries_cat extends Standard_crud_module
             require_code('permissions2');
             $hidden->attach(get_category_permissions_hidden_on());
         }
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            $fields->attach(permission_product_form('gallery', ($name == '') ? null : $name));
+        }
 
         // Metadata
         require_code('seo2');
@@ -2129,6 +2133,10 @@ class Module_cms_galleries_cat extends Standard_crud_module
         set_url_moniker('gallery', $name);
 
         $this->set_permissions($name);
+        if (addon_installed('ecommerce')) {
+            require_code('ecommerce_permission_products');
+            permission_product_save('gallery', $name);
+        }
 
         if (addon_installed('content_reviews')) {
             content_review_set('gallery', $name);
@@ -2224,6 +2232,10 @@ class Module_cms_galleries_cat extends Standard_crud_module
 
         if (!fractional_edit()) {
             $this->set_permissions($name);
+            if (addon_installed('ecommerce')) {
+                require_code('ecommerce_permission_products');
+                permission_product_save('gallery', $id, $name);
+            }
         }
     }
 

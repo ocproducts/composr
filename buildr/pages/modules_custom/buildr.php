@@ -30,7 +30,7 @@ class Module_buildr
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 3;
+        $info['version'] = 4;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -59,10 +59,10 @@ class Module_buildr
 
         require_code('buildr');
 
-        if (addon_installed('pointstore')) { // If pointstore not removed yet
+        if (addon_installed('ecommerce')) { // If eCommerce not removed yet
             $prices = get_buildr_prices_default();
             foreach (array_keys($prices) as $name) {
-                $GLOBALS['SITE_DB']->query_delete('prices', array('name' => $name), '', 1);
+                $GLOBALS['SITE_DB']->query_delete('ecom_prods_prices', array('name' => $name), '', 1);
             }
         }
 
@@ -89,6 +89,10 @@ class Module_buildr
             $GLOBALS['SITE_DB']->alter_table_field('w_portals', 'text', 'ID_TEXT', 'p_text');
             $GLOBALS['SITE_DB']->alter_table_field('w_rooms', 'text', 'LONG_TEXT', 'r_text');
             $GLOBALS['SITE_DB']->alter_table_field('w_realms', 'private', 'BINARY', 'r_private');
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+            $GLOBALS['SITE_DB']->alter_table_field('w_items', 'cost', 'INTEGER', 'price');
         }
 
         if ($upgrade_from === null) {
@@ -124,7 +128,7 @@ class Module_buildr
                 'location_x' => '*INTEGER',
                 'location_y' => '*INTEGER',
                 'not_infinite' => 'BINARY',
-                'cost' => 'INTEGER',
+                'price' => 'INTEGER',
                 'i_count' => 'INTEGER',
                 'copy_owner' => '*MEMBER',
             ));
@@ -261,7 +265,7 @@ class Module_buildr
 
             $prices = get_buildr_prices_default();
             foreach ($prices as $name => $price) {
-                $GLOBALS['SITE_DB']->query_insert('prices', array('name' => $name, 'price' => $price));
+                $GLOBALS['SITE_DB']->query_insert('ecom_prods_prices', array('name' => $name, 'price' => null, 'tax_code' => '', 'price_points' => $price));
             }
 
             require_code('buildr_action');
@@ -624,7 +628,7 @@ class Module_buildr
             if ($name == '') {
                 $tpl = do_template('W_ITEM_SCREEN', array(
                     '_GUID' => '0246f7037a360996bdfb4f1dcf96bcfc',
-                    'PRICE' => integer_format(get_price('mud_item')),
+                    'PRICE' => integer_format(get_product_price_points('mud_item')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ADD_ITEM_TEXT')),
                     'TITLE' => $this->title,
                     'PAGE_TYPE' => 'additem',
@@ -640,7 +644,7 @@ class Module_buildr
             }
 
             $urls = get_url('url', 'pic', 'uploads/buildr_addon', 0, CMS_UPLOAD_IMAGE);
-            add_item_wrap($member_id, $name, post_param_integer('cost', 0), post_param_integer('not_infinite', 0), post_param_integer('bribable', 0), post_param_integer('healthy', 0), $urls[0], post_param_integer('max_per_player', -1), post_param_integer('replicateable', 0), post_param_string('description'));
+            add_item_wrap($member_id, $name, post_param_integer('price', 0), post_param_integer('not_infinite', 0), post_param_integer('bribable', 0), post_param_integer('healthy', 0), $urls[0], post_param_integer('max_per_player', -1), post_param_integer('replicateable', 0), post_param_string('description'));
         }
 
         if ($type == 'additemcopy') {
@@ -663,17 +667,17 @@ class Module_buildr
 
                 $tpl = do_template('W_ITEMCOPY_SCREEN', array(
                     '_GUID' => '15799930bca51eafdee3c0a8e197866a',
-                    'PRICE' => integer_format(get_price('mud_item_copy')),
+                    'PRICE' => integer_format(get_product_price_points('mud_item_copy')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ADD_ITEM_COPY_TEXT')),
                     'TITLE' => $this->title,
                     'PAGE_TYPE' => 'additemcopy',
                     'NOT_INFINITE' => '1',
                     'ITEMS' => $items,
-                    'COST' => '',
+                    'PRICE' => '',
                 ));
                 return $tpl;
             }
-            add_item_wrap_copy($member_id, $name, post_param_integer('cost'), post_param_integer('not_infinite', 0));
+            add_item_wrap_copy($member_id, $name, post_param_integer('price'), post_param_integer('not_infinite', 0));
         }
 
         if ($type == 'addroom') {
@@ -685,7 +689,7 @@ class Module_buildr
                 list($realm, $x, $y) = get_loc_details($member_id);
                 $tpl = do_template('W_ROOM_SCREEN', array(
                     '_GUID' => '5357a6cf8648c952cf29c2b7234cfa6c',
-                    'PRICE' => integer_format(get_price('mud_room')),
+                    'PRICE' => integer_format(get_product_price_points('mud_room')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ADD_ROOM_TEXT')),
                     'ROOM_TEXT' => '',
                     'TITLE' => $this->title,
@@ -725,7 +729,7 @@ class Module_buildr
 
                 $tpl = do_template('W_REALM_SCREEN', array(
                     '_GUID' => '7ae26fe1766aed02233e1be84772759b',
-                    'PRICE' => integer_format(get_price('mud_realm')),
+                    'PRICE' => integer_format(get_product_price_points('mud_realm')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ADD_REALM_TEXT', integer_format($left))),
                     'TITLE' => $this->title,
                     'PAGE_TYPE' => 'addrealm',
@@ -759,7 +763,7 @@ class Module_buildr
             if ($name == '') {
                 $tpl = do_template('W_PORTAL_SCREEN', array(
                     '_GUID' => '69e74a964f69721d0381a920c4a25ce5',
-                    'PRICE' => integer_format(get_price('mud_portal')),
+                    'PRICE' => integer_format(get_product_price_points('mud_portal')),
                     'TEXT' => paragraph(do_lang_tempcode('W_ABOUT_PORTALS')),
                     'TITLE' => $this->title,
                     'PORTAL_TEXT' => '',
@@ -868,13 +872,13 @@ class Module_buildr
         if ($type == 'edititemcopy') {
             require_code('buildr_action');
 
-            $cost = post_param_integer('cost', -1);
+            $price = post_param_integer('price', -1);
 
-            if ($cost == -1) {
+            if ($price == -1) {
                 $member = get_param_integer('member');
                 list($realm, $x, $y) = get_loc_details($member_id);
 
-                $cost = $GLOBALS['SITE_DB']->query_select_value('w_items', 'cost', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item', false, INPUT_FILTER_GET_COMPLEX)));
+                $price = $GLOBALS['SITE_DB']->query_select_value('w_items', 'price', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item', false, INPUT_FILTER_GET_COMPLEX)));
                 $not_infinite = $GLOBALS['SITE_DB']->query_select_value('w_items', 'not_infinite', array('copy_owner' => $member, 'location_x' => $x, 'location_y' => $y, 'location_realm' => $realm, 'name' => get_param_string('item', false, INPUT_FILTER_GET_COMPLEX)));
 
                 $tpl = do_template('W_ITEMCOPY_SCREEN', array(
@@ -887,12 +891,12 @@ class Module_buildr
                     'REALM' => strval($realm),
                     'ITEM' => get_param_string('item', false, INPUT_FILTER_GET_COMPLEX),
                     'OWNER' => strval($member),
-                    'COST' => strval($cost),
+                    'PRICE' => strval($price),
                 ));
                 return $tpl;
             }
 
-            edit_item_wrap_copy($member_id, $item, $cost, post_param_integer('not_infinite', 0), post_param_integer('new_x'), post_param_integer('new_y'), post_param_integer('new_realm'), grab_new_owner('new_owner'));
+            edit_item_wrap_copy($member_id, $item, $price, post_param_integer('not_infinite', 0), post_param_integer('new_x'), post_param_integer('new_y'), post_param_integer('new_realm'), grab_new_owner('new_owner'));
         }
 
         if ($type == 'editroom') {

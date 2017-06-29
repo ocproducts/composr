@@ -442,7 +442,7 @@ function _parse_command_actual($no_term_needed = false)
                 $command = _parse_command_actual();
                 if ($command[0] == 'CALL_DIRECT') {
                     $command[0] = 'CALL_METHOD';
-                    $command[1] = array('VARIABLE', 'this', array('DEREFERENCE', array('VARIABLE', $command[1], array(), $command[4]), array(), $command[4]), $command[4]);
+                    $command[1] = array('VARIABLE', null, array('DEREFERENCE', array('VARIABLE', $command[1], array(), $command[4]), array(), $command[4]), $command[4]);
                 } else {
                     $expression = array('REFERENCE', $command, $GLOBALS['I']);
                 }
@@ -1694,7 +1694,7 @@ function _parse_create_array($closes_with)
                 unset($expression[2]);
             }
             if (isset($seen[serialize($expression)])) {
-                parser_warning('Duplicated key in array creation,' . serialize($expression));
+                parser_warning('Duplicated key in array creation, ' . serialize($expression));
             }
             $seen[serialize($expression)] = 1;
             $next = pparse__parser_peek();
@@ -1881,17 +1881,12 @@ function _parse_parameter($for_function_definition = false)
                         log_warning('Variadic parameters may not take a default value');
                     }
 
-                    // Variable with type hint and default value. This can only be null
+                    // Variable with type hint and default value
                     pparse__parser_next(); // Consume the EQUAL
-                    if (pparse__parser_peek() == 'null') {
-                        // If the default value is null, the hint is extended to allow null
-                        pparse__parser_next(); // Consume the null
-                        // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
-                        $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $hint, $is_variadic, $GLOBALS['I']);
-                        $parameter['HINT'] = '?' . $hint;
-                    } else {
-                        parser_error('Default arguments for referenced parameters can only be null');
-                    }
+
+                    // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
+                    $parameter = array('RECEIVE_BY_VALUE', $var, _parse_literal(), $GLOBALS['I']);
+                    $parameter['HINT'] = '?' . $hint;
                 } else {
                     $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $hint, $is_variadic, $GLOBALS['I']);
                 }
@@ -1912,13 +1907,17 @@ function _parse_parameter($for_function_definition = false)
                 $parameter = array('RECEIVE_BY_VALUE', $next[1], null, $hint, $is_variadic, $GLOBALS['I']);
                 $next_2 = pparse__parser_peek();
                 if ($next_2 == 'EQUAL') {
+                    // Variable with type hint and default value
+
                     if ($is_variadic) {
                         log_warning('Variadic parameters may not take a default value');
                     }
 
                     pparse__parser_next();
-                    $value = _parse_literal();
-                    $parameter[2] = $value;
+
+                    // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
+                    $parameter = array('RECEIVE_BY_REFERENCE', $variable, _parse_literal(), $GLOBALS['I']);
+                    $parameter['HINT'] = '?' . $hint;
                 }
                 return $parameter;
 

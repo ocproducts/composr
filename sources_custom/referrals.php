@@ -412,7 +412,7 @@ function referrer_is_qualified($scheme, $member_id)
 
     if (addon_installed('shopping')) {
         if ((isset($scheme['referrer_qualified_for__misc_purchase'])) && ($scheme['referrer_qualified_for__misc_purchase'] == '1')) {
-            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'shopping_order WHERE c_member=' . strval($member_id) . ' AND ' . (db_string_equal_to('order_status', 'payment_received') . ' OR ' . db_string_equal_to('order_status', 'dispatched'))) !== null) {
+            if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'shopping_orders WHERE member_id=' . strval($member_id) . ' AND ' . (db_string_equal_to('order_status', 'payment_received') . ' OR ' . db_string_equal_to('order_status', 'dispatched'))) !== null) {
                 $positive++;
             } else {
                 $negative++;
@@ -422,8 +422,8 @@ function referrer_is_qualified($scheme, $member_id)
         foreach (array_keys($scheme) as $key) {
             $matches = array();
 
-            if (preg_match('#^referrer\_qualified\_for\_\_purchase\_(\d+)$#', $key, $matches) != 0) {
-                if ($GLOBALS['SITE_DB']->query_value_if_there('SELECT o.id FROM ' . get_table_prefix() . 'shopping_order o JOIN ' . get_table_prefix() . 'shopping_order_details d ON o.id=d.order_id WHERE p_id=' . strval(intval($matches[1])) . ' AND c_member=' . strval($member_id) . ' AND ' . (db_string_equal_to('order_status', 'payment_received') . ' OR ' . db_string_equal_to('order_status', 'dispatched'))) !== null) {
+            if (preg_match('#^referrer\_qualified\_for\_\_purchase\_(.+)$#', $key, $matches) != 0) {
+                if (($GLOBALS['SITE_DB']->query_value_if_there('SELECT o.id FROM ' . get_table_prefix() . 'shopping_orders o JOIN ' . get_table_prefix() . 'shopping_order_details d ON o.id=d.p_order_id WHERE ' . db_string_equal_to('p_type_code', $matches[1]) . ' AND member_id=' . strval($member_id) . ' AND ' . (db_string_equal_to('order_status', 'payment_received') . ' OR ' . db_string_equal_to('order_status', 'dispatched'))) !== null) {
                     $positive++;
                 } else {
                     $negative++;

@@ -15,7 +15,7 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    pointstore
+ * @package    ecommerce
  */
 
 /**
@@ -33,14 +33,14 @@ class Hook_config_max_quota
         return array(
             'human_name' => 'MAX_QUOTA',
             'type' => 'integer',
-            'category' => 'POINTSTORE',
+            'category' => 'ECOMMERCE',
             'group' => 'POP3',
             'explanation' => 'CONFIG_OPTION_max_quota',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 9,
 
-            'addon' => 'pointstore',
+            'addon' => 'ecommerce',
         );
     }
 
