@@ -112,17 +112,17 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
         if (get_option('is_on_block_cache') == '1') {
             $_notifications = get_cache_entry('_new_pp', $cache_identifier);
         }
-        if (is_null($_notifications)) {
+        if ($_notifications === null) {
             $unread_pps = cns_get_pp_rows();
             $notifications = new Tempcode();
             $num_unread_pps = 0;
             foreach ($unread_pps as $unread_pp) {
                 $by = $GLOBALS['CNS_DRIVER']->get_username($unread_pp['p_poster']);
-                if (is_null($by)) {
+                if ($by === null) {
                     $by = do_lang('UNKNOWN');
                 }
                 $u_title = $unread_pp['t_cache_first_title'];
-                if (is_null($unread_pp['t_forum_id'])) {
+                if ($unread_pp['t_forum_id'] === null) {
                     $type = do_lang(($unread_pp['t_cache_first_post_id'] == $unread_pp['id']) ? 'NEW_PT_NOTIFICATION' : 'NEW_PP_NOTIFICATION');
                     $num_unread_pps++;
                     $reply_url = build_url(array('page' => 'topics', 'type' => 'new_post', 'id' => $unread_pp['p_topic_id'], 'quote' => $unread_pp['id']), get_module_zone('topics'));
@@ -238,7 +238,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
                 $guests++;
                 continue;
             }
-            if (is_null($username)) {
+            if ($username === null) {
                 continue;
             }
             $url = $GLOBALS['CNS_DRIVER']->member_profile_url($member);

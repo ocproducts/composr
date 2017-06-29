@@ -898,13 +898,13 @@ function make_install_sql()
     // Remove caching
     require_code('database_relations');
     $table_purposes = get_table_purpose_flags();
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
     foreach ($table_purposes as $table => $purpose) {
         if ((table_has_purpose_flag($table, TABLE_PURPOSE__FLUSHABLE)) && ($db->table_exists($table))) {
             $db->query_delete($table);
         }
     }
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+    pop_db_scope_check();
 
     // Build SQL dump
     global $HAS_MULTI_LANG_CONTENT;

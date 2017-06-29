@@ -212,7 +212,7 @@ Sometimes this advice will not help: if there is an "@" (error suppression opera
 
 If you get errors about query limits consider optimising your code to use less queries. If you cannot do this, you can set:
 [code="PHP"]
-$GLOBALS['NO_QUERY_LIMIT'] = true;
+push_query_limiting(false);
 [/code]
 ...in your code.
 

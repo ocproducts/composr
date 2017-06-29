@@ -408,13 +408,13 @@ function uninstall()
  */
 function install($upgrade_from = null, $upgrade_from_hack = null)
 {
-	if (is_null($upgrade_from))
+	if ($upgrade_from === null)
 	{
 		// Code for initial install goes here
 		...
 	}
 
-	if ((!is_null($upgrade_from)) && ($upgrade_from<2))
+	if (($upgrade_from !== null) && ($upgrade_from<2))
 	{
 		// Code from upgrading from v1 goes here (1<2)
 		...
@@ -870,7 +870,7 @@ foreach (array_keys($_hooks) as $hook) {
     $object = object_factory('Hook_search_' . filter_naughty_harsh($hook),true);
 
     // Just in case the file was corrupt. We don't want corrupt hook files to completely crash us
-    if (is_null($object)) {
+    if ($object === null) {
         continue;
     }
 
@@ -1401,9 +1401,8 @@ foreach ($values as $x) {
 This is a perfect example of how nasty PHP can be in the wrong hands, as "Value is false" is written out four times (each time).
 
 For Composr we would expect the following:
- - Do not treat values as a boolean unless they are a boolean. Usually any single variable is going to have a certain type (in this example this is not the case, but usually it is and should be). To check if something is null use [tt]is_null($something)[/tt] or [tt]$something === null[/tt]. To check something is blank use [tt]$something == ''[/tt]. To check if something is false use [tt]!$something[/tt]. To check if something is zero use [tt]$something == 0[/tt].
- - Don't do [tt]$something == null[/tt]. As mentioned above, use [tt]is_null($something)[/tt] or [tt]$something === null[/tt].
- - Don't use [tt]isset[/tt] unless you really have to. Almost always use [tt]is_null($something)[/tt] or [tt]array_key_exists($element, $array)[/tt] so our tools can discern properly what your code is doing, and so the code stays portable.
+ - Do not treat values as a boolean unless they are a boolean. Usually any single variable is going to have a certain type (in this example this is not the case, but usually it is and should be). To check if something is null use [tt]$something === null[/tt]. To check something is blank use [tt]$something == ''[/tt]. To check if something is false use [tt]!$something[/tt]. To check if something is zero use [tt]$something == 0[/tt]. To check if something is defined in an array use [tt]array_key_exists[/tt]. To check if something is both defined in an array and non-null use [tt]isset[/tt]. To check something is all of non-null, defined in an array (if applicable), and non-blank, use [tt]empty[/tt].
+ - Don't do [tt]$something == null[/tt]. As mentioned above, use [tt]$something === null[/tt] (is of the null value [i]and[/i] type).
  - If you have a variable that really is mixed type (like [tt]$x[/tt] in this example) and you need to do a boolean check just for the case it is a boolean variable, do either [tt]is_bool($x) && (!$x)[/tt] or [tt]$x === false[/tt].
  - Don't use Tempcode objects as strings. These are not strings, and shouldn't be used as strings unless you do something like [tt]$string = $tempcode->evaluate();[/tt] to get the string equivalent first. It does actually work, due to [tt]__toString[/tt] being implemented on the Tempcode object, but it makes the code harder to analyse.
 

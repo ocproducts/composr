@@ -567,8 +567,8 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(0);
     }
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_db_scope_check(false);
+    push_query_limiting(false);
 
     require_code('database_helper');
 
@@ -713,5 +713,8 @@ function get_sql_dump($out_file, $include_drops = false, $output_statuses = fals
                 }
             }
         }
+
+        pop_db_scope_check();
+        pop_query_limiting();
     }
 }

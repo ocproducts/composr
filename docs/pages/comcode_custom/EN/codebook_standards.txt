@@ -257,7 +257,7 @@ These rules are very standard, but if broken then code-overriding may not work c
 | Security, stability, consistency
 | Composr development +
 | Manually
-| If is very easy to make mistakes when writing new code. Our functions have been tuned over years. For example, our [tt]http_download_file[/tt] function works on any server and supports lots of options.
+| If is very easy to make mistakes when writing new code. Our functions have been tuned over years. For example, our [tt]http_get_contents[/tt] function works on any server and supports lots of options.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use the [tt]temporal[/tt] API, not PHP date/time functions[/color]

@@ -77,13 +77,13 @@ class Hook_fields_year_month
         if ($range_search) {
             $_from = post_param_date('option_' . strval($field['id']) . '_from', true, false);
             $from = '';
-            if (!is_null($_from)) {
+            if ($_from !== null) {
                 $from = date('Y/m', $_from);
             }
 
             $_to = post_param_date('option_' . strval($field['id']) . '_to', true, false);
             $to = '';
-            if (!is_null($_to)) {
+            if ($_to !== null) {
                 $to = date('Y/m', $_to);
             }
 
@@ -91,7 +91,7 @@ class Hook_fields_year_month
         }
 
         $filter = post_param_date('option_' . strval($field['id']), true);
-        return is_null($filter) ? '' : date('Y/m', $filter);
+        return ($filter === null) ? '' : date('Y/m', $filter);
     }
 
     // ===================
@@ -180,10 +180,10 @@ class Hook_fields_year_month
 
         $year = post_param_integer($stub . '_year', null);
         $month = post_param_integer($stub . '_month', null);
-        if (is_null($year)) {
+        if ($year === null) {
             return $editing ? STRING_MAGIC_NULL : '';
         }
-        if (is_null($month)) {
+        if ($month === null) {
             return $editing ? STRING_MAGIC_NULL : '';
         }
 

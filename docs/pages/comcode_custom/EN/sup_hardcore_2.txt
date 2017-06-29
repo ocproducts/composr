@@ -53,12 +53,12 @@ foreach ($advertiser_sessions as $session) {
     }
 
     $ip = $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'ip', array('the_page' => 'site/pages/modules/join.php', 'member_id' => $user), '', 1);
-    $user = is_null($ip) ? null : $GLOBALS['SITE_DB']->query_value_if_there('SELECT member_id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE ' . db_string_equal_to('ip', $ip) . ' AND member_id>0');
-    if (!is_null($user)) {
+    $user = ($ip === null) ? null : $GLOBALS['SITE_DB']->query_value_if_there('SELECT member_id FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'stats WHERE ' . db_string_equal_to('ip', $ip) . ' AND member_id>0');
+    if ($user !== null) {
         $joining[$from]++;
     }
-    $test = is_null($user) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'id', array('the_page' => 'site/pages/modules_custom/purchase.php', 'member_id' => $user));
-    if (!is_null($test)) {
+    $test = ($user === null) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('stats', 'id', array('the_page' => 'site/pages/modules_custom/purchase.php', 'member_id' => $user));
+    if ($test !== null) {
         $success[$from]++;
     } else {
         $failure[$from]++;

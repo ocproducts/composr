@@ -101,11 +101,11 @@ class Block_side_cns_private_topics
 
             $by_poster_id = $topic['t_pt_from'];
             $by_username = $GLOBALS['FORUM_DRIVER']->get_username($by_poster_id);
-            $by_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($by_poster_id, false, true);
+            $by_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($by_poster_id, true);
 
             $to_poster_id = $topic['t_pt_to'];
             $to_username = $GLOBALS['FORUM_DRIVER']->get_username($to_poster_id);
-            $to_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($to_poster_id, false, true);
+            $to_member_url = $GLOBALS['CNS_DRIVER']->member_profile_url($to_poster_id, true);
 
             $is_unread = ($topic['t_cache_last_time'] > time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))) && (($topic['l_time'] === null) || ($topic['l_time'] < $topic['p_time']));
 

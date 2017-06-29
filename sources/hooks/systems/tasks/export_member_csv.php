@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_task_download_member_csv
+class Hook_task_export_member_csv
 {
     /**
      * Run the task hook.
@@ -226,7 +226,7 @@ class Hook_task_download_member_csv
                     $term_start_time = date('Y/m/d', tz_time($sub['term_start_time'], get_site_timezone()));
                     $term_end_time = date('Y/m/d', tz_time($sub['term_end_time'], get_site_timezone()));
                     $expiry_time = date('Y/m/d', tz_time($sub['expiry_time'], get_site_timezone()));
-                    $payment_gateway = do_lang('PAYMENT_GATEWAY_' . $sub['via']);
+                    $payment_gateway = do_lang('PAYMENT_GATEWAY_' . $sub['payment_gateway']);
                     $state = do_lang('PAYMENT_STATE_' . $sub['state']);
                 } else {
                     $start_time = '';

@@ -1638,21 +1638,17 @@ class HttpDownloaderFileWrapper extends HttpDownloader
             $php_errormsg = mixed();
             if (($this->byte_limit === null) && ($this->write_to_file === null)) {
                 if ($this->trigger_error) {
-                    global $SUPPRESS_ERROR_DEATH;
-                    $bak_sed = $SUPPRESS_ERROR_DEATH;
-                    $SUPPRESS_ERROR_DEATH = true; // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.                $read_file = file_get_contents($this->connecting_url, false, $context);
+                    push_suppress_error_death(true); // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.
                     $read_file = file_get_contents($this->connecting_url, false, $context);
-                    $SUPPRESS_ERROR_DEATH = $bak_sed;
+                    pop_suppress_error_death();
                 } else {
                     $read_file = @file_get_contents($this->connecting_url, false, $context);
                 }
             } else {
                 if ($this->trigger_error) {
-                    global $SUPPRESS_ERROR_DEATH;
-                    $bak_sed = $SUPPRESS_ERROR_DEATH;
-                    $SUPPRESS_ERROR_DEATH = true; // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.                $read_file = file_get_contents($this->connecting_url, false, $context);
+                    push_suppress_error_death(true); // Errors will be attached instead. We don't rely on only $php_errormsg because stream errors don't go into that fully.
                     $_read_file = fopen($this->connecting_url, 'rb', false, $context);
-                    $SUPPRESS_ERROR_DEATH = $bak_sed;
+                    pop_suppress_error_death();
                 } else {
                     $_read_file = @fopen($this->connecting_url, 'rb', false, $context);
                 }

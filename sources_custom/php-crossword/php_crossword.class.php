@@ -484,7 +484,7 @@ class PHP_Crossword
 	 */
 	function __initialiseWords()
 	{
-		if (is_null($this->word_pool))
+		if ($this->word_pool === null)
 		{
 			$this->word_pool=array();
 

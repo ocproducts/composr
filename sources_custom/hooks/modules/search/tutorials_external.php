@@ -82,7 +82,7 @@ class Hook_search_tutorials_external extends FieldsSearchHook
         }
 
         $sq = build_search_submitter_clauses('t_submitter', $author_id, $author, 't_author');
-        if (is_null($sq)) {
+        if ($sq === null) {
             return array();
         } else {
             $where_clause .= $sq;

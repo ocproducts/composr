@@ -36,7 +36,7 @@ class Hook_ajax_tree_choose_gallery
         require_code('galleries');
         require_lang('galleries');
 
-        $GLOBALS['NO_QUERY_LIMIT'] = true;
+        push_query_limiting(false);
 
         $must_accept_images = array_key_exists('must_accept_images', $options) ? $options['must_accept_images'] : false;
         $must_accept_videos = array_key_exists('must_accept_videos', $options) ? $options['must_accept_videos'] : false;
@@ -114,6 +114,8 @@ class Hook_ajax_tree_choose_gallery
                 $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'parent_id', array('name' => $cat));
             }
         }
+
+        pop_query_limiting();
 
         $tag = 'result'; // result
         return '<' . $tag . '>' . $out . '</' . $tag . '>';

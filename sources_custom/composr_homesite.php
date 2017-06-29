@@ -414,9 +414,9 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     $pass = md5($password);
     $salt = '';
     $compat = 'md5';
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = true;
+    push_db_scope_check(false);
     $db_conn->query_update('f_members', array('m_email_address' => $email_address, 'm_pass_hash_salted' => $pass, 'm_pass_salt' => $salt, 'm_password_compat_scheme' => $compat), array('m_username' => 'admin'), '', 1);
-    $GLOBALS['NO_DB_SCOPE_CHECK'] = false;
+    pop_db_scope_check();
 
     // Create default file structure
     $path = special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($codename);

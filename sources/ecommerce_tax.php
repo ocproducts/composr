@@ -195,7 +195,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             );
             $post_params = array(json_encode($request));
 
-            $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, null, null, 'application/json'); // TODO: Fix in v11
+            $_response = http_get_contents($url, array('post_params' => $post_params, 'timeout' => 10.0, 'raw_post' => true, 'raw_content_type' => 'application/json', 'ignore_http_status' => true));
             $response = json_decode($_response, true);
 
             if ($response['ErrNumber'] == 0) {
@@ -271,7 +271,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 
             // Do TaxCloud call...
 
-            $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, null, null, 'application/json'); // TODO: Fix in v11
+            $_response = http_get_contents($url, array('post_params' => $post_params, 'timeout' => 10.0, 'raw_post' => true, 'raw_content_type' => 'application/json', 'ignore_http_status' => true));
             $response = json_decode($_response, true);
 
             // Error handling...
@@ -321,7 +321,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
         // Europe
         if ($tax_code == 'EU') {
             require_code('files2');
-            list($__rates) = cache_and_carry('http_download_file', array('http://euvat.ga/rates.json'));
+            list($__rates) = cache_and_carry('http_get_contents', array('http://euvat.ga/rates.json'));
             $_rates = json_decode($__rates, true); // TODO: Fix in v11
 
             if (isset($_rates['rates'][$country])) {
@@ -452,7 +452,7 @@ function taxcloud_declare_completed($tracking_id, $txn_id, $member_id, $session_
     );
     $post_params = array(json_encode($request));
 
-    $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, null, null, 'application/json'); // TODO: Fix in v11
+    $_response = http_get_contents($url, array('post_params' => $post_params, 'timeout' => 10.0, 'raw_post' => true, 'raw_content_type' => 'application/json', 'ignore_http_status' => true));
     $response = json_decode($_response, true);
 
     if ($response['ResponseType'] != 3) {
@@ -706,8 +706,8 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
     if ($has_tic) {
         $default_set = 'tic';
     }
-    list($__tics) = cache_and_carry('http_download_file', array('https://taxcloud.net/tic/?format=json', null, false));
-    $_tics = @json_decode($__tics, true); // TODO: Fix in v11
+    list($__tics) = cache_and_carry('http_get_contents', array('https://taxcloud.net/tic/?format=json', array('trigger_error' => false)));
+    $_tics = @json_decode($__tics, true);
     if (($_tics !== false) && ($_tics !== null)) {
         $tics = new Tempcode();
         $tics->attach(_prepare_tics_list($_tics['tic_list'], $has_tic ? substr($default, 4) : '', 'root'));

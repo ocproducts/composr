@@ -209,8 +209,7 @@ class PHP_Crossword_Grid
 	{
 		$n = $axis == PC_AXIS_H ? $this->cols : $this->rows;
 
-		if (!is_null($word))
-		$length = strlen($word);
+		if ($word !== null) $length = strlen($word);
 
 		if ($n == $length) return 0;
 

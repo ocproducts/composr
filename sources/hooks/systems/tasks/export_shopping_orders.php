@@ -58,7 +58,7 @@ class Hook_task_export_shopping_orders
 
             $order[do_lang('ORDER_NUMBER')] = strval($_order['o_id']);
 
-            $order[do_lang('ORDERED_DATE')] = get_timezoned_date($_order['add_date'], true, false, true, true);
+            $order[do_lang('ORDERED_DATE')] = get_timezoned_date_time($order['add_date']);
 
             $order[do_lang('ORDER_STATUS')] = do_lang($_order['order_status']);
 
