@@ -1,5 +1,5 @@
 <form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{FORM_URL*}" method="post" autocomplete="off">
-	<input type="hidden" name="trans_id" value="subscr_{TRANS_ID*}" /> {$,The "subscr_" is used by us to indicate it will be a subscription}
+	<input type="hidden" name="trans_id" value="subscr_{TRANS_EXPECTING_ID*}" /> {$,The "subscr_" is used by us to indicate it will be a subscription}
 	<input type="hidden" name="merchant" value="{USERNAME*}" />
 	<input type="hidden" name="digest" value="{DIGEST*}" />
 	<input type="hidden" name="amount" value="{AMOUNT*}" />
@@ -25,6 +25,7 @@
 	<input type="hidden" name="repeat" value="{FIRST_REPEAT*}/{LENGTH_UNITS_2*}/0/{PRICE*}" />
 
 	<div>
-		<input data-disable-on-click="1" class="button_screen menu__adminzone__audit__ecommerce__subscriptions" type="submit" value="{!START_SUBSCRIPTION}" />
+		<input id="purchase_button" data-disable-on-click="1" class="button_screen menu__adminzone__audit__ecommerce__subscriptions" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>
+

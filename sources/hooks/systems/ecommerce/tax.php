@@ -24,47 +24,52 @@
 class Hook_ecommerce_tax
 {
     /**
-     * Find whether a shipping address is needed.
-     *
-     * @return boolean Whether a shipping address is needed.
-     */
-    public function needs_shipping_address()
-    {
-        return false;
-    }
-
-    /**
-     * Function for administrators to pick an identifier (only used by admins, usually the identifier would be picked via some other means in the wider Composr codebase).
-     *
-     * @param  ID_TEXT $type_code Product codename.
-     * @return ?Tempcode Input field in standard Tempcode format for fields (null: no identifier).
-     */
-    public function get_identifier_manual_field_inputter($type_code)
-    {
-        return null;
-    }
-
-    /**
      * Get the products handled by this eCommerce hook.
      *
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
+     * @param  ?ID_TEXT $search Product being searched for (null: none).
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false)
+    public function get_products($search = null)
     {
         $products = array(
-            'TAX' => array(
-                PRODUCT_OTHER,
-                '?',
-                '',
-                array(),
-                do_lang('ecommerce:CUSTOM_PRODUCT_TAX', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
-                get_option('currency'),
+            'TAX_GENERAL' => array(
+                'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_TAX'),
+                'item_description' => new Tempcode(),
+                'item_image_url' => '',
+
+                'type' => PRODUCT_OTHER,
+                'type_special_details' => array(),
+
+                'price' => null,
+                'currency' => get_option('currency'),
+                'price_points' => null,
+                'discount_points__num_points' => null,
+                'discount_points__price_reduction' => null,
+
+                'tax_code' => '0.0',
+                'shipping_cost' => 0.00,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
+                'needs_shipping_address' => false,
             ),
         );
         return $products;
+    }
+
+    /**
+     * Get fields that need to be filled in in the purchasing module.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+     */
+    public function get_needed_fields($type_code, $from_admin = false)
+    {
+        return null;
     }
 }

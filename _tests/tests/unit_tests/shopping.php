@@ -18,11 +18,33 @@
  */
 class shopping_test_set extends cms_test_case
 {
-    public $product_id;
+    public $entry_id;
 
     public function setUp()
     {
         parent::setUp();
+
+        require_code('ecommerce');
+        require_code('config2');
+
+        set_option('ecommerce_test_mode', '1');
+
+        set_option('shipping_density', '5000.0');
+        set_option('shipping_weight_units', 'Kg');
+        set_option('shipping_distance_units', 'Cm');
+        set_option('shipping_tax_code', '0%');
+        set_option('shipping_cost_base', '10.00');
+        set_option('shipping_cost_factor', '1.20');
+
+        set_option('shipping_shippo_api_test', '');
+        set_option('shipping_shippo_api_live', '');
+
+        set_option('business_street_address', '1234 Scope');
+        set_option('business_city', 'Hope');
+        set_option('business_county', '');
+        set_option('business_state', '');
+        set_option('business_post_code', 'HO1 234');
+        set_option('business_country', 'GB');
 
         require_code('ecommerce');
         require_code('catalogues');
@@ -31,16 +53,17 @@ class shopping_test_set extends cms_test_case
         require_code('lorem');
         require_lang('catalogues');
         require_lang('shopping');
-        require_lang('ecommerce');
         require_code('lang3');
+
+        $catalogue_name = 'storetesting' . strval(get_member());
 
         // Cleanup if needed...
 
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => 'storetesting' . strval(get_member()))) !== null) {
-            actual_delete_catalogue('storetesting' . strval(get_member()));
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => $catalogue_name)) !== null) {
+            actual_delete_catalogue($catalogue_name);
         }
 
-        $GLOBALS['SITE_DB']->query_delete('shopping_order');
+        $GLOBALS['SITE_DB']->query_delete('shopping_orders');
         $GLOBALS['SITE_DB']->query_delete('shopping_order_details');
         $GLOBALS['SITE_DB']->query_delete('shopping_cart');
 
@@ -49,113 +72,119 @@ class shopping_test_set extends cms_test_case
         require_code('cms/pages/modules/cms_catalogues.php');
         $cms_module = new Module_cms_catalogues();
 
-        // Create an eCommerce catalogue...
+        $category_id = create_ecommerce_catalogue($catalogue_name);
 
-        $c_name = 'storetesting' . strval(get_member());
-        actual_add_catalogue($c_name, insert_lang('c_title', do_lang('DEFAULT_CATALOGUE_PRODUCTS_TITLE'), 2), '', 0, 1, '', 0, 1);
-        $category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'id', array('c_name' => $c_name));
+        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY id');
 
-        $fields = array(
-            //     Name  Description  Type  Defines order  Required  Visible  Searchable
-            array('ECOM_CAT_product_title', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1, 1),
-            array('ECOM_CAT_sku', 'ECOM_CATD_sku', 'codename', 0, 1, 1, 1, 'RANDOM'),
-            array('ECOM_CAT_price_pre_tax', 'ECOM_CATD_price_pre_tax', 'float', 0, 1, 1, 1, 'decimal_points_behaviour=price'),
-            array('ECOM_CAT_stock_level', 'ECOM_CATD_stock_level', 'integer', 0, 0, 1, 0),
-            array('ECOM_CAT_stock_level_warn_at', 'ECOM_CATD_stock_level_warn_at', 'integer', 0, 0, 0, 0),
-            array('ECOM_CAT_stock_level_maintain', 'ECOM_CATD_stock_level_maintain', 'tick'/*will save as list*/, 0, 1, 0, 0),
-            array('ECOM_CAT_tax_type', 'ECOM_CATD_tax_type', 'list', 0, 1, 0, 0, "0%|5%|17.5%"),
-            array('ECOM_CAT_image', 'ECOM_CATD_image', 'picture', 0, 0, 1, 1),
-            array('ECOM_CAT_weight', 'ECOM_CATD_weight', 'float', 0, 1, 0, 0),
-            array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, 1, 1)
-        );
+        $fields_map = find_shopping_catalogue_fields($catalogue_name);
+        foreach ($fields_map as $key => $i) {
+            if (!isset($fields[$i])) {
+                continue;
+            }
 
-        foreach ($fields as $i => $field) {
-            actual_add_catalogue_field('storetesting' . strval(get_member()), // $c_name
-                lang_code_to_default_content('cf_name', $field[0], false, 3), // $name
-                lang_code_to_default_content('cf_description', $field[1], false, 3), // $description
-                ($field[2] == 'tick') ? 'list' : $field[2], // $type
-                $i, // $order
-                $field[3], // $defines_order
-                $field[5], // $visible
-                $field[6], // $searchable
-                array_key_exists(7, $field) ? $field[7] : '', // $default
-                $field[4], // $required
-                array_key_exists(5, $field) ? $field[5] : 0, // $put_in_category
-                array_key_exists(5, $field) ? $field[5] : 0 // $put_in_search
-            );
-        }
+            $id = $fields[$i]['id'];
 
-        $catalogue_name = 'storetesting' . strval(get_member());
-
-        $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name));
-
-        foreach ($fields as $val) {
-            $type = $val['cf_type'];
-
-            $id = $val['id'];
-
-            switch ($type) {
-                case 'integer':
-                    $_POST['field_' . strval($id)] = '500'; // Stock
-                    break;
-                case 'short_trans':
+            switch ($key) {
+                case 'product_title':
                     $_POST['field_' . strval($id)] = lorem_phrase();
                     break;
-                case 'long_trans':
+
+                case 'sku':
+                    $_POST['field_' . strval($id)] = lorem_phrase();
+                    break;
+
+                case 'price':
+                    $_POST['field_' . strval($id)] = float_format(60.00);
+                    break;
+
+                case 'stock_level':
+                    $_POST['field_' . strval($id)] = '500';
+                    break;
+
+                case 'stock_level_warn_at':
+                    $_POST['field_' . strval($id)] = '0';
+                    break;
+
+                case 'stock_level_maintain':
+                    $_POST['field_' . strval($id)] = '1';
+                    break;
+
+                case 'tax_code':
+                    $_POST['field_' . strval($id)] = '5.0';
+                    break;
+
+                case 'image':
+                    $_POST['field_' . strval($id)] = '';
+                    break;
+
+                case 'weight':
+                    $_POST['field_' . strval($id)] = float_format(2.0);
+                    break;
+
+                case 'length':
+                    $_POST['field_' . strval($id)] = float_format(10.0);
+                    break;
+
+                case 'width':
+                    $_POST['field_' . strval($id)] = float_format(10.0);
+                    break;
+
+                case 'height':
+                    $_POST['field_' . strval($id)] = float_format(10.0);
+                    break;
+
+                case 'description':
                     $_POST['field_' . strval($id)] = lorem_paragraph();
-                    break;
-                case 'float':
-                    $_POST['field_' . strval($id)] = '68.35'; // Price
-                    break;
-                case 'list':
-                    if ($val['cf_order'] == 6) { // Tax
-                        $_POST['field_' . strval($id)] = '5%';
-                    } elseif ($val['cf_order'] == 5) { // Keep Stock
-                        $_POST['field_' . strval($id)] = '1';
-                    }
                     break;
             }
         }
 
         $map = $cms_module->get_set_field_map($catalogue_name, get_member());
-        $this->product_id = actual_add_catalogue_entry($category_id, 0, 'test note', 1, 1, 1, $map);
+        $entry_id = actual_add_catalogue_entry($category_id, 0, 'test note', 1, 1, 1, $map);
+
+        // Add item to cart...
 
         require_code('site/pages/modules/shopping.php');
-        $shopping_module = new Module_shopping();
 
+        $shopping_module = new Module_shopping();
         $shopping_module->empty_cart();
 
-        $_POST['product_id'] = $this->product_id;
-        $_GET['hook'] = 'catalogue_items';
-        $shopping_module->add_item_to_cart();
+        $_POST['type_code'] = strval($entry_id);
+        $shopping_module->add_item();
+    }
 
-        $_GET['page'] = 'shopping'; // Static setting to identify the module in payment form
-        render_cart_payment_form();
+    public function testViewCart()
+    {
+        $shopping_module = new Module_shopping();
+        $shopping_module->view_shopping_cart();
+    }
 
-        $_purchase_id = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'MAX(id)', array());
-        if ($_purchase_id === null) {
-            $this->assertTrue(false, 'Order did not save');
-            return;
-        }
-        $purchase_id = strval($_purchase_id);
-        $item_name = lorem_phrase();
-        $payment_status = 'Completed';
-        $reason_code = '';
+    public function testHandleTransaction()
+    {
+        $order_id = copy_shopping_cart_to_order();
+        $type_code = 'CART_ORDER_' . strval($order_id);
+        $item_name = do_lang('CART_ORDER', strval($order_id));
+        $purchase_id = '';
+        $status = 'Completed';
+        $reason = '';
         $pending_reason = 'bar';
         $memo = 'foo';
-        $mc_gross = (get_db_type() == 'xml'/*rounding difference*/) ? '71.40' : '71.77';
-        $mc_currency = get_option('currency');
+        $amount = 65.00 + 2.40 /* shipping */;
+        $tax = 5.00;
+        $currency = get_option('currency');
         $txn_id = '0';
         $parent_txn_id = '0';
         $period = '';
-        $payment_gateway = 'paypal';
+        $payment_gateway = 'manual';
+        $is_subscription = false;
 
-        handle_confirmed_transaction($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period, $payment_gateway, get_member(), false, true);
+        handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, true, $parent_txn_id, $pending_reason, $memo, $period, get_member(), $payment_gateway);
     }
 
     public function tearDown()
     {
-        actual_delete_catalogue('storetesting' . strval(get_member()));
+        $catalogue_name = 'storetesting' . strval(get_member());
+        actual_delete_catalogue($catalogue_name);
         parent::tearDown();
     }
 }

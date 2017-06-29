@@ -51,7 +51,7 @@ class Hook_cron_manual_subscription_notification
         $max = 1000;
         $start = 0;
         do {
-            $subscribers = $GLOBALS['SITE_DB']->query_select('subscriptions', array('DISTINCT s_member_id'), array('s_state' => 'active'), '', $max, $start);
+            $subscribers = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('DISTINCT s_member_id'), array('s_state' => 'active'), '', $max, $start);
             foreach ($subscribers as $subscriber) {
                 $member_id = $subscriber['s_member_id'];
 

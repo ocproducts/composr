@@ -31,7 +31,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
 
     // Subscription expiry date
     if ((get_forum_type() == 'cns') && (addon_installed('ecommerce'))) {
-        $query = 'SELECT * FROM ' . get_table_prefix() . 'subscriptions WHERE s_member_id=' . strval($member_id) . ' AND (' . db_string_equal_to('s_state', 'active') . ' OR ' . db_string_equal_to('s_state', 'cancelled') . ') ORDER BY s_time';
+        $query = 'SELECT * FROM ' . get_table_prefix() . 'ecom_subscriptions WHERE s_member_id=' . strval($member_id) . ' AND (' . db_string_equal_to('s_state', 'active') . ' OR ' . db_string_equal_to('s_state', 'cancelled') . ') ORDER BY s_time';
         $_subscriptions = $GLOBALS['SITE_DB']->query($query);
         require_code('ecommerce');
         push_db_scope_check(false);
@@ -39,7 +39,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
         pop_db_scope_check();
         foreach ($_subscriptions_non_recurring as $sub) {
             $found_transaction = false;
-            $subs_trans = $GLOBALS['SITE_DB']->query_select('transactions', array('*'), array('t_purchase_id' => $member_id, 't_status' => 'Completed'), 'ORDER BY t_time DESC');
+            $subs_trans = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('*'), array('t_purchase_id' => $member_id, 't_status' => 'Completed'), 'ORDER BY t_time DESC');
             foreach ($subs_trans as $sub_trans) {
                 $matches = array();
                 if (preg_match('#^USERGROUP(\d+)$#', $sub_trans['t_type_code'], $matches) != 0) {
@@ -60,6 +60,7 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                     's_member_id' => $member_id,
                     's_state' => ($sub['timeout'] > time()) ? 'cancelled' : 'active',
                     's_amount' => $sub_trans['t_amount'],
+                    's_tax' => $sub_trans['t_tax'],
                     's_special' => '',
                     's_time' => $sub_trans['t_time'],
                     's_auto_fund_source' => '',
@@ -106,13 +107,12 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 $usergroup_name = mixed();
 
                 $type_code = $sub['s_type_code'];
-                $product_object = find_product($type_code);
+                list(, $product_object) = find_product_details($type_code);
                 if ($product_object === null) {
                     continue;
                 }
-                $products = $product_object->get_products(false, $type_code);
-                $product_row = $products[$type_code];
-                $item_name = $product_row[4];
+                list($details) = find_product_details($type_code);
+                $item_name = $details['item_name'];
             }
 
             $is_manual = ($sub['s_payment_gateway'] == 'manual');
@@ -162,10 +162,12 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
                 'length_units' => $length_units,
 
                 'amount' => $sub['s_amount'],
+                'tax' => $sub['s_tax'],
+                'currency' => $sub['s_currency'],
 
                 'state' => $sub['s_state'],
 
-                'via' => $sub['s_payment_gateway'],
+                'payment_gateway' => $sub['s_payment_gateway'],
                 'auto_fund_source' => $sub['s_auto_fund_source'],
                 'auto_fund_key' => $sub['s_auto_fund_key'],
 
@@ -205,19 +207,22 @@ function prepare_templated_subscription($subscription)
         'LENGTH' => strval($subscription['length']),
         'LENGTH_UNITS' => $subscription['length_units'],
         'PER' => do_lang_tempcode('_LENGTH_UNIT_' . $subscription['length_units'], integer_format($subscription['length'])),
-        'AMOUNT' => $subscription['amount'],
-        '_VIA' => $subscription['via'],
-        'VIA' => do_lang_tempcode('PAYMENT_GATEWAY_' . $subscription['via']),
+        'AMOUNT' => float_format($subscription['amount']),
+        'TAX' => float_format($subscription['tax']),
+        'TOTAL' => float_format($subscription['amount'] + $subscription['tax']),
+        'CURRENCY' => $subscription['currency'],
+        '_PAYMENT_GATEWAY' => $subscription['payment_gateway'],
+        'PAYMENT_GATEWAY' => do_lang_tempcode('PAYMENT_GATEWAY_' . $subscription['payment_gateway']),
         '_STATE' => $subscription['state'],
         'STATE' => do_lang_tempcode('PAYMENT_STATE_' . $subscription['state']),
         '_START_TIME' => strval($subscription['start_time']),
         '_TERM_START_TIME' => strval($subscription['term_start_time']),
         '_TERM_END_TIME' => strval($subscription['term_end_time']),
         '_EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : strval($subscription['expiry_time']),
-        'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time'], false),
         'START_TIME' => get_timezoned_date($subscription['start_time'], false),
         'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false),
         'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false),
-        'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['via']) : new Tempcode(),
+        'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time'], false),
+        'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['payment_gateway']) : new Tempcode(),
     );
 }

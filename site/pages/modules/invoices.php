@@ -56,7 +56,7 @@ class Module_invoices
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('invoices');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_invoices');
     }
 
     /**
@@ -68,20 +68,35 @@ class Module_invoices
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
         if ($upgrade_from === null) {
-            $GLOBALS['SITE_DB']->create_table('invoices', array(
+            $GLOBALS['SITE_DB']->create_table('ecom_invoices', array(
                 'id' => '*AUTO',
                 'i_type_code' => 'ID_TEXT',
                 'i_member_id' => 'MEMBER',
                 'i_state' => 'ID_TEXT', // new|pending|paid|delivered (pending means payment has been requested)
-                'i_amount' => 'SHORT_TEXT', // can't always find this from i_type_code
+                'i_amount' => 'REAL', // can't always find this from i_type_code
+                'i_tax_code' => 'ID_TEXT',
+                'i_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
+                'i_tax' => 'REAL', // Needs to be stored, as the product is dynamic and it's locked in time
+                'i_tax_tracking' => 'LONG_TEXT', // Needs to be stored, as the product is dynamic and it's locked in time
+                'i_currency' => 'ID_TEXT',
                 'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
                 'i_time' => 'TIME',
                 'i_note' => 'LONG_TEXT'
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
-            $GLOBALS['SITE_DB']->create_index('invoices', 'i_member_id', array('i_member_id'));
+        if (($upgrade_from < 3) && ($upgrade_from !== null)) {
+            $GLOBALS['SITE_DB']->rename_table('invoices', 'ecom_invoices');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_invoices', 'i_amount', 'REAL');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_code', 'ID_TEXT', '0%');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_derivation', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_tax_tracking', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_invoices', 'i_currency', 'ID_TEXT', get_option('currency'));
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->create_index('ecom_invoices', 'i_member_id', array('i_member_id'));
         }
     }
 
@@ -96,7 +111,7 @@ class Module_invoices
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('invoices', 'COUNT(*)', array('i_member_id' => get_member())) > 0)) {
+        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'COUNT(*)', array('i_member_id' => get_member())) > 0)) {
             return array(
                 'browse' => array('MY_INVOICES', 'menu/adminzone/audit/ecommerce/invoices'),
             );
@@ -115,7 +130,7 @@ class Module_invoices
     {
         $type = get_param_string('type', 'browse');
 
-        require_lang('ecommerce');
+        require_code('ecommerce');
 
         if ($type == 'browse') {
             $this->title = get_screen_title('MY_INVOICES');
@@ -135,7 +150,6 @@ class Module_invoices
      */
     public function run()
     {
-        require_code('ecommerce');
         require_css('ecommerce');
 
         // Kill switch
@@ -171,34 +185,46 @@ class Module_invoices
         }
 
         $invoices = array();
-        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_member_id' => $member_id), 'ORDER BY i_time');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('i_member_id' => $member_id), 'ORDER BY i_time');
         foreach ($rows as $row) {
             $type_code = $row['i_type_code'];
-            $product_object = find_product($type_code);
-            if ($product_object === null) {
+            list($details) = find_product_details($type_code);
+            if ($details === null) {
                 continue;
             }
-            $products = $product_object->get_products(false, $type_code);
 
-            $invoice_title = $products[$type_code][4];
-            $date = get_timezoned_date_time($row['i_time'], false);
+            $invoice_title = $details['item_name'];
+            $date = get_timezoned_date_time($row['i_time'], true, false, false, true);
             $payable = ($row['i_state'] == 'new');
-            $deliverable = ($row['i_state'] == 'paid');
+            $fulfillable = ($row['i_state'] == 'paid');
             $state = do_lang('PAYMENT_STATE_' . $row['i_state']);
-            $currency = get_option('currency');
+            $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
             if (perform_local_payment()) {
                 $transaction_button = hyperlink(build_url(array('page' => '_SELF', 'type' => 'pay', 'id' => $row['id']), '_SELF'), do_lang_tempcode('MAKE_PAYMENT'), false, false);
             } else {
-                $transaction_button = make_transaction_button(substr(get_class($product_object), 5), $invoice_title, strval($row['id']), floatval($row['i_amount']), $currency);
+                $transaction_button = make_transaction_button(
+                    $type_code,
+                    $invoice_title,
+                    strval($row['id']),
+                    $row['i_amount'],
+                    ($row['i_tax_derivation'] == '') ? array() : json_decode($row['i_tax_derivation'], true),
+                    $row['i_tax'],
+                    ($row['i_tax_tracking'] == '') ? array() : json_decode($row['i_tax_tracking'], true),
+                    0.00,
+                    0.00,
+                    $currency
+                );
             }
             $invoices[] = array(
                 'TRANSACTION_BUTTON' => $transaction_button,
                 'INVOICE_TITLE' => $invoice_title,
                 'INVOICE_ID' => strval($row['id']),
-                'AMOUNT' => float_format($row['i_amount']),
+                'AMOUNT' => float_to_raw_string($row['i_amount']),
+                'TAX' => float_to_raw_string($row['i_tax']),
+                'CURRENCY' => $row['i_currency'],
                 'DATE' => $date,
                 'STATE' => $state,
-                'DELIVERABLE' => $deliverable,
+                'FULFILLABLE' => $fulfillable,
                 'PAYABLE' => $payable,
                 'NOTE' => $row['i_note'],
                 'TYPE_CODE' => $row['i_type_code'],
@@ -208,7 +234,7 @@ class Module_invoices
             inform_exit(do_lang_tempcode('NO_ENTRIES'));
         }
 
-        return do_template('ECOM_INVOICES_SCREEN', array('_GUID' => '144a893d93090c105eecc48fa58921a7', 'TITLE' => $this->title, 'CURRENCY' => $currency, 'INVOICES' => $invoices));
+        return do_template('ECOM_INVOICES_SCREEN', array('_GUID' => '144a893d93090c105eecc48fa58921a7', 'TITLE' => $this->title, 'INVOICES' => $invoices));
     }
 
     /**
@@ -220,26 +246,35 @@ class Module_invoices
     {
         $id = get_param_integer('id');
 
-        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('id' => $id), '', 1);
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), array('id' => $id), '', 1);
         if (!array_key_exists(0, $rows)) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
         $row = $rows[0];
         $type_code = $row['i_type_code'];
-        $product_object = find_product($type_code);
-        $products = $product_object->get_products(false, $type_code);
-        $invoice_title = $products[$type_code][4];
+
+        list($details) = find_product_details($type_code);
+
+        $currency = isset($details['currency']) ? $details['currency'] : get_option('currency');
+
+        $invoice_title = $details['item_name'];
 
         $post_url = build_url(array('page' => 'purchase', 'type' => 'finish', 'type_code' => $type_code), get_module_zone('purchase'));
 
-        $needs_shipping_address = (method_exists($product_object, 'needs_shipping_address')) && ($product_object->needs_shipping_address());
+        $needs_shipping_address = !empty($details['needs_shipping_address']);
 
         list($fields, $hidden) = get_transaction_form_fields(
             $type_code,
             $invoice_title,
             strval($id),
-            float_to_raw_string($row['i_amount']),
-            get_option('currency'),
+            $row['i_amount'],
+            ($row['i_tax_derivation'] == '') ? array() : json_decode($row['i_tax_derivation'], true),
+            $row['i_tax'],
+            ($row['i_tax_tracking'] == '') ? array() : json_decode($row['i_tax_tracking'], true),
+            0.00,
+            0.00,
+            $currency,
+            0,
             null,
             '',
             get_option('payment_gateway'),

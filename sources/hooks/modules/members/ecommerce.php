@@ -40,12 +40,12 @@ class Hook_members_ecommerce
         $modules = array();
 
         /*  Now we provide this link under the embedded list of subscriptions
-        if ($GLOBALS['SITE_DB']->query_select_value('subscriptions', 'COUNT(*)', array('s_member_id' => $member_id)) != 0) {
+        if ($GLOBALS['SITE_DB']->query_select_value('ecom_subscriptions', 'COUNT(*)', array('s_member_id' => $member_id)) != 0) {
             $modules[] = array('views', do_lang_tempcode('MY_SUBSCRIPTIONS'), build_url(array('page' => 'subscriptions', 'type' => 'browse', 'id' => $member_id), get_module_zone('subscriptions')), 'menu/adminzone/audit/ecommerce/subscriptions');
         }
         */
 
-        if ($GLOBALS['SITE_DB']->query_select_value('invoices', 'COUNT(*)', array('i_member_id' => $member_id)) != 0) {
+        if ($GLOBALS['SITE_DB']->query_select_value('ecom_invoices', 'COUNT(*)', array('i_member_id' => $member_id)) != 0) {
             $modules[] = array('views', do_lang_tempcode('MY_INVOICES'), build_url(array('page' => 'invoices', 'type' => 'browse', 'id' => $member_id), get_module_zone('invoices')), 'menu/adminzone/audit/ecommerce/invoices');
         }
 
@@ -93,6 +93,6 @@ class Hook_members_ecommerce
 
         require_lang('ecommerce');
 
-        return array(do_template('MEMBER_SUBSCRIPTION_STATUS', array('_GUID' => '74e2193b1f31ca5c962a525d887e9ca1', 'SUBSCRIPTIONS' => $subscriptions, 'MEMBER_ID' => strval($member_id))));
+        return array(do_template('ECOM_MEMBER_SUBSCRIPTION_STATUS', array('_GUID' => '74e2193b1f31ca5c962a525d887e9ca1', 'SUBSCRIPTIONS' => $subscriptions, 'MEMBER_ID' => strval($member_id))));
     }
 }

@@ -13,6 +13,11 @@ table.cart_table td {
 	vertical-align: middle;
 }
 
+table.cart_table .associated_details {
+	display: block;
+	margin-top: 0.25em;
+}
+
 .cart_buttons {
 	overflow: hidden;
 }
@@ -25,54 +30,24 @@ table.cart_table td {
 	float: right;
 }
 
-table.cart_payment_summary {
-	width: 100%;
-	/*{+START,IF,{$EQ,{$LANG},EN}}*/
-		table-layout: fixed;
-	/*{+END}*/
+.cart_payment_line {
+	font-size: 1.1em;
+}
+
+.cart_payment_summary {
 	font-size: 1.2em;
-	margin: 2em 0;
+	padding: 0.5em 0;
 	border-top: 1px solid {$GET,pale_border};
 	border-bottom: 1px solid {$GET,pale_border};
 }
 
-table.cart_payment_summary th {
+.cart_payment_line, .cart_payment_summary {
+	margin: 1em 0;
 	text-align: right;
-	width: 100%;
 }
 
-table.cart_payment_summary td {
-	text-align: right;
-	width: 6em;
-}
-
-table.cart_payment_summary th, table.cart_payment_summary td {
-	padding: 0.5em 0;
-}
-
-table.cart_payment_summary .price {
+.cart_payment_summary .price {
 	font-weight: bold;
-}
-
-.ecommerce_button {
-	float: right;
-	padding-left: 2em;
-}
-
-.checkout_text {
-	color: {$GET,slightly_seeded_text};
-	font-size: 0.9em;
-	margin-top: 1em;
-	margin-left: 1em;
-}
-
-.checkout_text input {
-	float: left;
-	margin-right: 1em;
-	margin-bottom: 1em; /* To prevent awkward wrapping of the label */
-}
-
-.checkout_text label {
 }
 
 /* Admin order management interface */

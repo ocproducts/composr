@@ -24,25 +24,61 @@
 class Hook_ecommerce_work
 {
     /**
-     * Find whether a shipping address is needed.
+     * Get the products handled by this eCommerce hook.
      *
-     * @return boolean Whether a shipping address is needed.
+     * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
+     *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
+     *
+     * @param  ?ID_TEXT $search Product being searched for (null: none).
+     * @return array A map of product name to list of product details.
      */
-    public function needs_shipping_address()
+    public function get_products($search = null)
     {
-        return false;
+        $products = array(
+            'WORK' => array(
+                'item_name' => do_lang('ecommerce:CUSTOM_PRODUCT_WORK'),
+                'item_description' => new Tempcode(),
+                'item_image_url' => '',
+
+                'type' => PRODUCT_INVOICE,
+                'type_special_details' => array(),
+
+                'price' => null,
+                'currency' => get_option('currency'),
+                'price_points' => null,
+                'discount_points__num_points' => null,
+                'discount_points__price_reduction' => null,
+
+                'tax_code' => '0.0',
+                'shipping_cost' => 0.00,
+                'product_weight' => null,
+                'product_length' => null,
+                'product_width' => null,
+                'product_height' => null,
+                'needs_shipping_address' => false,
+            ),
+        );
+        return $products;
     }
 
     /**
-     * Function for administrators to pick an identifier (only used by admins, usually the identifier would be picked via some other means in the wider Composr codebase).
+     * Get fields that need to be filled in in the purchasing module.
      *
-     * @param  ID_TEXT $type_code Product codename.
-     * @return ?Tempcode Input field in standard Tempcode format for fields (null: no identifier).
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
      */
-    public function get_identifier_manual_field_inputter($type_code)
+    public function get_needed_fields($type_code, $from_admin = false)
     {
+        $fields = new Tempcode();
+
+        $where = array('i_type_code' => $type_code);
+        if (!$from_admin) {
+            $where['i_member_id'] = get_member();
+        }
+
         $list = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('invoices', array('*'), array('i_type_code' => $type_code), 'ORDER BY id DESC');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_invoices', array('*'), $where, 'ORDER BY id DESC');
         foreach ($rows as $row) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($row['i_member_id']);
             if ($username === null) {
@@ -50,41 +86,37 @@ class Hook_ecommerce_work
             }
             $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('INVOICE_OF', strval($row['id']), $username)));
         }
-        return form_input_list(do_lang_tempcode('INVOICE'), '', 'purchase_id', $list);
+
+        $fields->attach(form_input_list(do_lang_tempcode('INVOICE'), '', 'purchase_id', $list));
+
+        ecommerce_attach_memo_field_if_needed($fields);
+
+        return array($fields, null, null);
     }
 
     /**
-     * Find the corresponding member to a given purchase ID.
+     * Get the filled in fields and do something with them.
+     * May also be called from Admin Zone to get a default purchase ID (i.e. when there's no post context).
      *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
+     */
+    public function handle_needed_fields($type_code, $from_admin = false)
+    {
+        return array(post_param_string('purchase_id'), null);
+    }
+
+    /**
+     * Get the member who made the purchase.
+     *
+     * @param  ID_TEXT $type_code The product codename.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @return ?MEMBER The member (null: unknown / can't perform operation).
+     * @return ?MEMBER The member ID (null: none).
      */
-    public function member_for($purchase_id)
+    public function member_for($type_code, $purchase_id)
     {
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('invoices', 'i_member_id', array('id' => intval($purchase_id)));
-    }
-
-    /**
-     * Get the products handled by this eCommerce hook.
-     *
-     * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
-     *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
-     *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
-     * @return array A map of product name to list of product details.
-     */
-    public function get_products($site_lang = false)
-    {
-        $products = array(
-            'WORK' => array(
-                PRODUCT_INVOICE,
-                '?',
-                '',
-                array(),
-                do_lang('ecommerce:CUSTOM_PRODUCT_WORK', null, null, null, $site_lang ? get_site_default_lang() : user_lang()),
-                get_option('currency'),
-            ),
-        );
-        return $products;
+        $invoice_id = intval($purchase_id);
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_invoices', 'i_member_id', array('id' => $invoice_id));
     }
 }

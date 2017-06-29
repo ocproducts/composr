@@ -23,44 +23,6 @@ Orders are compound-products. They link together multiple eCommerce items into a
 */
 
 /**
- * Handling shopping orders and dispatch thereof.
- *
- * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  array $details Details of the product.
- * @param  ID_TEXT $type_code The product codename.
- * @param  ID_TEXT $payment_status The status this transaction is telling of
- * @set    Pending Completed SModified SCancelled
- * @param  SHORT_TEXT $txn_id The transaction ID
- */
-function handle_product_orders($purchase_id, $details, $type_code, $payment_status, $txn_id)
-{
-    require_code('shopping');
-
-    $old_status = $GLOBALS['SITE_DB']->query_select_value('shopping_order_details', 'dispatch_status', array('order_id' => intval($purchase_id)));
-
-    if ($old_status != $details['ORDER_STATUS']) {
-        $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('dispatch_status' => $details['ORDER_STATUS']), array('order_id' => intval($purchase_id)));
-
-        $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => $details['ORDER_STATUS'], 'transaction_id' => $details['txn_id']), array('id' => intval($purchase_id)));
-
-        // Copy in memo from transaction, as customer notes
-        $old_memo = $GLOBALS['SITE_DB']->query_select_value('shopping_order', 'notes', array('id' => intval($purchase_id)));
-        if ($old_memo == '') {
-            $memo = $GLOBALS['SITE_DB']->query_select_value('transactions', 't_memo', array('id' => $txn_id));
-            if ($memo != '') {
-                require_lang('shopping');
-                $memo = do_lang('CUSTOMER_NOTES') . "\n" . $memo;
-                $GLOBALS['SITE_DB']->query_update('shopping_order', array('notes' => $memo), array('id' => intval($purchase_id)), '', 1);
-            }
-        }
-
-        if ($details['ORDER_STATUS'] == 'ORDER_STATUS_payment_received') {
-            purchase_done_staff_mail(intval($purchase_id));
-        }
-    }
-}
-
-/**
  * eCommerce product hook.
  */
 class Hook_ecommerce_cart_orders
@@ -81,69 +43,189 @@ class Hook_ecommerce_cart_orders
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  boolean $site_lang Whether to make sure the language for item_name is the site default language (crucial for when we read/go to third-party sales systems and use the item_name as a key).
      * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @param  boolean $search_item_names Whether $search refers to the item name rather than the product codename.
      * @return array A map of product name to list of product details.
      */
-    public function get_products($site_lang = false, $search = null, $search_item_names = false)
+    public function get_products($search = null)
     {
         $products = array();
 
         require_lang('shopping');
 
-        if (php_function_allowed('set_time_limit')) {
-            @set_time_limit(0);
-        }
-
         if ($search !== null) {
-            $l = do_lang('CART_ORDER', '', null, null, $site_lang ? get_site_default_lang() : user_lang());
-            if (substr($search, 0, strlen($l)) != $l) {
+            if (preg_match('#^CART\_ORDER\_\d+$#', $search) == 0) {
                 return array();
             }
-            $where = 'id=' . strval(intval(substr($search, strlen($l))));
-            // NB: $search_item_names is ignored because codename is the same as item name for this hook
+            $where = 'id=' . strval(intval(substr($search, strlen('CART_ORDER_'))));
         } else {
             $where = '(' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' OR ' . db_string_equal_to('order_status', 'ORDER_STATUS_payment_received') . ')';
-        }
 
-        if ($search === null) {
-            $count = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where);
-            if ($count > 50) {
-                return array(); // Too many to list
+            if (get_page_name() == 'purchase') {
+                $where .= ' AND member_id=' . strval(get_member()); // HACKHACK: A bit naughty, but we only do it if $search is null and on purchase page
             }
         }
 
-        $start = 0;
-        do {
-            $orders = $GLOBALS['SITE_DB']->query('SELECT id,tot_price FROM ' . get_table_prefix() . 'shopping_order WHERE ' . $where, 500, 0, false, true);
+        $orders = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where . ' ORDER BY add_date DESC', 50, null, false, true);
 
-            foreach ($orders as $order) {
-                $products[do_lang('shopping:CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang())] = array(
-                    PRODUCT_ORDERS,
-                    $order['tot_price'],
-                    'handle_product_orders',
-                    array(),
-                    do_lang('CART_ORDER', strval($order['id']), null, null, $site_lang ? get_site_default_lang() : user_lang()),
-                    get_option('currency'),
-                );
-            }
+        foreach ($orders as $order) {
+            $products['CART_ORDER_' . strval($order['id'])] = array(
+                'item_name' => do_lang('CART_ORDER', strval($order['id'])),
+                'item_description' => do_lang_tempcode('CART_ORDER_DESCRIPTION', escape_html(strval($order['id']))),
+                'item_image_url' => find_theme_image('icons/48x48/menu/rich_content/ecommerce/shopping_cart'),
 
-            $start += 500;
-        } while (count($orders) == 500);
+                'type' => PRODUCT_ORDERS,
+                'type_special_details' => array(),
+
+                'price' => $order['total_price'],
+                'currency' => get_option('currency'),
+                'price_points' => null,
+                'discount_points__num_points' => null, // TODO (#3026) - We don't currently support point discounts for cart purchases
+                'discount_points__price_reduction' => null,
+
+                'tax_code' => float_to_raw_string($order['total_tax']),
+                'tax_derivation' => json_decode($order['total_tax_derivation'], true),
+                'tax' => $order['total_tax'],
+                'tax_tracking' => json_decode($order['total_tax_tracking'], true),
+
+                'shipping_cost' => $order['total_shipping_cost'],
+                'product_weight' => $order['total_product_weight'],
+                'product_length' => $order['total_product_length'],
+                'product_width' => $order['total_product_width'],
+                'product_height' => $order['total_product_height'],
+                'needs_shipping_address' => true,
+            );
+        }
 
         return $products;
     }
 
     /**
-     * Find the corresponding member to a given purchase ID.
+     * Check whether the product codename is available for purchase by the member.
      *
-     * @param  ID_TEXT $purchase_id The purchase ID.
-     * @return ?MEMBER The member (null: unknown / can't perform operation).
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  MEMBER $member_id The member we are checking against.
+     * @param  integer $req_quantity The number required.
+     * @param  boolean $must_be_listed Whether the product must be available for public listing.
+     * @return integer The availability code (a ECOMMERCE_PRODUCT_* constant).
      */
-    public function member_for($purchase_id)
+    public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
-        return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order', 'c_member', array('id' => intval($purchase_id)));
+        if (!has_actual_page_access($member_id, 'shopping')) {
+            if (is_guest()) {
+                return ECOMMERCE_PRODUCT_NO_GUESTS;
+            }
+
+            return ECOMMERCE_PRODUCT_PROHIBITED;
+        }
+
+        return ECOMMERCE_PRODUCT_AVAILABLE;
+    }
+
+    /**
+     * Get fields that need to be filled in in the purchasing module.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+     */
+    public function get_needed_fields($type_code, $from_admin = false)
+    {
+        $fields = mixed();
+        ecommerce_attach_memo_field_if_needed($fields);
+
+        return array(null, null, null);
+    }
+
+    /**
+     * Get the filled in fields and do something with them.
+     * May also be called from Admin Zone to get a default purchase ID (i.e. when there's no post context).
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
+     */
+    public function handle_needed_fields($type_code, $from_admin = false)
+    {
+        return array('', null);
+    }
+
+    /**
+     * Handling of a product purchase change state.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  ID_TEXT $purchase_id The purchase ID.
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
+     */
+    public function actualiser($type_code, $purchase_id, $details)
+    {
+        require_code('shopping');
+        require_lang('shopping');
+
+        $order_id = intval(preg_replace('#^CART\_ORDER\_#', '', $type_code));
+
+        if ($details['STATUS'] == 'Completed') {
+            // Insert sale
+            $member_id = $GLOBALS['SITE_DB']->query_select_value('shopping_orders', 'member_id', array('id' => $order_id));
+            $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => $details['item_name'], 'details2' => '', 'txn_id' => $details['TXN_ID']));
+
+            $ordered_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id), '', 1);
+            foreach ($ordered_items as $ordered_item) {
+                list($sub_details, $sub_product_object) = find_product_details($ordered_item['p_type_code']);
+
+                if ($sub_details === null) {
+                    continue;
+                }
+
+                // Reduce stock
+                if (method_exists($sub_product_object, 'reduce_stock')) {
+                    $sub_product_object->reduce_stock($ordered_item['p_type_code'], $ordered_item['p_quantity']);
+                }
+
+                // Call actualiser
+                $call_actualiser_from_cart = !isset($sub_details['type_special_details']['call_actualiser_from_cart']) || $sub_details['type_special_details']['call_actualiser_from_cart'];
+                if ($call_actualiser_from_cart) {
+                    $sub_product_object->actualiser($ordered_item['p_type_code'], $ordered_item['purchase_id'], $sub_details + $details/*Copy through transaction status etc, merge in this order gives precedence to $sub_details*/);
+                }
+            }
+        }
+
+        $old_status = $GLOBALS['SITE_DB']->query_select_value('shopping_order_details', 'p_dispatch_status', array('p_order_id' => $order_id));
+
+        if ($old_status != $details['ORDER_STATUS']) {
+            $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('p_dispatch_status' => $details['ORDER_STATUS']), array('p_order_id' => $order_id));
+
+            $GLOBALS['SITE_DB']->query_update('shopping_orders', array('order_status' => $details['ORDER_STATUS'], 'txn_id' => $details['TXN_ID']), array('id' => $order_id));
+
+            // Copy in memo from transaction, as customer notes
+            $old_memo = $GLOBALS['SITE_DB']->query_select_value('shopping_orders', 'notes', array('id' => $order_id));
+            if ($old_memo == '') {
+                $memo = $GLOBALS['SITE_DB']->query_select_value('ecom_transactions', 't_memo', array('id' => $details['TXN_ID']));
+                if ($memo != '') {
+                    $memo = do_lang('CUSTOMER_NOTES') . "\n" . $memo;
+                    $GLOBALS['SITE_DB']->query_update('shopping_orders', array('notes' => $memo), array('id' => $order_id), '', 1);
+                }
+            }
+
+            if ($details['ORDER_STATUS'] == 'ORDER_STATUS_payment_received') {
+                send_shopping_order_purchased_staff_mail($order_id);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the member who made the purchase.
+     *
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  ID_TEXT $purchase_id The purchase ID.
+     * @return ?MEMBER The member ID (null: none).
+     */
+    public function member_for($type_code, $purchase_id)
+    {
+        $order_id = intval($purchase_id);
+        return $GLOBALS['SITE_DB']->query_select_value_if_there('shopping_orders', 'member_id', array('id' => $order_id));
     }
 
     /**
@@ -155,16 +237,13 @@ class Hook_ecommerce_cart_orders
      */
     public function get_product_dispatch_type($order_id)
     {
-        $rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('order_id' => $order_id));
+        $ordered_items = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $order_id));
+        foreach ($ordered_items as $ordered_item) {
+            list(, $product_object) = find_product_details($ordered_item['p_type_code']);
 
-        foreach ($rows as $item) {
-            if ($item['p_type'] === null) {
+            if ($product_object === null) {
                 continue;
             }
-
-            require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($item['p_type']));
-
-            $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($item['p_type']));
 
             // If any of the product's dispatch type is manual, return type as 'manual'
             if ($product_object->get_product_dispatch_type() == 'manual') {
@@ -174,16 +253,5 @@ class Hook_ecommerce_cart_orders
 
         // If none of product items have manual dispatch, return order dispatch as automatic.
         return 'automatic';
-    }
-
-    /**
-     * Function to return order ID from formatted of order ID.
-     *
-     * @param  SHORT_TEXT $item_name Item ID.
-     * @return SHORT_TEXT Dispatch type.
-     */
-    public function set_needed_fields($item_name)
-    {
-        return str_replace('#', '', $item_name);
     }
 }

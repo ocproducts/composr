@@ -23,7 +23,8 @@
  *
  * @param  SHORT_TEXT $title The title
  * @param  LONG_TEXT $description The description
- * @param  SHORT_TEXT $cost The cost
+ * @param  REAL $price The price
+ * @param  ID_TEXT $tax_code The tax code
  * @param  integer $length The length
  * @param  SHORT_TEXT $length_units The units for the length
  * @set    y m d w
@@ -37,7 +38,7 @@
  * @param  array $mails Other e-mails to send
  * @return AUTO_LINK The ID
  */
-function add_usergroup_subscription($title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = array())
+function add_usergroup_subscription($title, $description, $price, $tax_code, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = array())
 {
     require_code('global4');
     prevent_double_submit('ADD_USERGROUP_SUBSCRIPTION', null, $title);
@@ -45,7 +46,8 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
     push_db_scope_check(false);
 
     $map = array(
-        's_cost' => $cost,
+        's_price' => $price,
+        's_tax_code' => $tax_code,
         's_length' => $length,
         's_length_units' => $length_units,
         's_auto_recur' => $auto_recur,
@@ -89,7 +91,8 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
  * @param  AUTO_LINK $id The ID
  * @param  SHORT_TEXT $title The title
  * @param  LONG_TEXT $description The description
- * @param  SHORT_TEXT $cost The cost
+ * @param  REAL $price The price
+ * @param  ID_TEXT $tax_code The tax code
  * @param  integer $length The length
  * @param  SHORT_TEXT $length_units The units for the length
  * @set    y m d w
@@ -102,7 +105,7 @@ function add_usergroup_subscription($title, $description, $cost, $length, $lengt
  * @param  ?LONG_TEXT $mail_uhoh The text of the e-mail to send out when a subscription cannot be renewed because the subproduct is gone (null: default)
  * @param  ?array $mails Other e-mails to send (null: do not change)
  */
-function edit_usergroup_subscription($id, $title, $description, $cost, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
+function edit_usergroup_subscription($id, $title, $description, $price, $tax_code, $length, $length_units, $auto_recur, $group_id, $uses_primary, $enabled, $mail_start, $mail_end, $mail_uhoh, $mails = null)
 {
     push_db_scope_check(false);
 
@@ -117,7 +120,7 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
         require_code('cns_groups_action');
         require_code('cns_groups_action2');
         $type_code = 'USERGROUP' . strval($id);
-        $subscriptions = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), array('s_type_code' => $type_code));
+        $subscriptions = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code));
         foreach ($subscriptions as $sub) {
             $member_id = $sub['s_member_id'];
             if ((get_value('unofficial_ecommerce') === '1') && (get_forum_type() != 'cns')) {
@@ -139,7 +142,8 @@ function edit_usergroup_subscription($id, $title, $description, $cost, $length, 
     $_mail_uhoh = $myrow['s_mail_uhoh'];
 
     $map = array(
-        's_cost' => $cost,
+        's_price' => $price,
+        's_tax_code' => $tax_code,
         's_length' => $length,
         's_length_units' => $length_units,
         's_auto_recur' => $auto_recur,
@@ -218,7 +222,7 @@ function delete_usergroup_subscription($id, $uhoh_mail = '')
 
     // Remove benefits
     $type_code = 'USERGROUP' . strval($id);
-    $subscriptions = $GLOBALS['SITE_DB']->query_select('subscriptions', array('*'), array('s_type_code' => $type_code));
+    $subscriptions = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code));
     $to_members = array();
     foreach ($subscriptions as $sub) {
         $member_id = $sub['s_member_id'];

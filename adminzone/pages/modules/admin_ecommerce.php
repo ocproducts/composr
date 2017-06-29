@@ -75,6 +75,11 @@ class Module_admin_ecommerce extends Standard_crud_module
         $ret = array(
             'browse' => array('CUSTOM_PRODUCT_USERGROUP', 'menu/adminzone/audit/ecommerce/subscriptions'),
         );
+        if (!$be_deferential) {
+            $ret += array(
+                'prices' => array('ECOM_PRODUCTS_MANAGE_INVENTORY', 'menu/adminzone/setup/ecommerce_products'),
+            );
+        }
         $ret += parent::get_entry_points();
         return $ret;
     }
@@ -92,21 +97,23 @@ class Module_admin_ecommerce extends Standard_crud_module
     {
         $type = get_param_string('type', 'browse');
 
-        require_lang('ecommerce');
+        require_code('ecommerce');
 
         set_helper_panel_tutorial('tut_ecommerce');
 
         if ($type == 'browse') {
-            $also_url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'browse'), get_module_zone('admin_ecommerce_logs'));
-            attach_message(do_lang_tempcode('menus:ALSO_SEE_AUDIT', escape_html($also_url->evaluate())), 'inform', true);
-
-            $this->title = get_screen_title('CUSTOM_PRODUCT_USERGROUP');
+            $this->title = get_screen_title('ECOMMERCE');
         }
 
         if (($type == 'add') || ($type == '_add') || ($type == 'edit') || ($type == '_edit') || ($type == '__edit')) {
+            set_helper_panel_text(comcode_lang_string('DOC_USERGROUP_SUBSCRIPTION'));
             if (get_forum_type() == 'cns') {
                 breadcrumb_set_parents(array(array('_SEARCH:admin_cns_members:browse', do_lang_tempcode('MEMBERS'))));
             }
+        }
+
+        if ($type == 'prices' || $type == '_prices') {
+            $this->title = get_screen_title('ECOM_PRODUCTS_MANAGE_INVENTORY');
         }
 
         return parent::pre_run($top_level);
@@ -120,7 +127,6 @@ class Module_admin_ecommerce extends Standard_crud_module
      */
     public function run_start($type)
     {
-        require_code('ecommerce');
         require_code('ecommerce2');
 
         if (get_value('unofficial_ecommerce') !== '1') {
@@ -140,6 +146,12 @@ class Module_admin_ecommerce extends Standard_crud_module
         if ($type == 'browse') {
             return $this->browse();
         }
+        if ($type == 'prices') {
+            return $this->prices();
+        }
+        if ($type == '_prices') {
+            return $this->_prices();
+        }
 
         return new Tempcode();
     }
@@ -154,10 +166,11 @@ class Module_admin_ecommerce extends Standard_crud_module
         require_code('templates_donext');
         return do_next_manager(
             $this->title,
-            comcode_lang_string('DOC_USERGROUP_SUBSCRIPTION'),
+            comcode_lang_string('DOC_ECOMMERCE'),
             array(
                 ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_USERGROUP_SUBSCRIPTION')),
                 ((get_forum_type() != 'cns') && (get_value('unofficial_ecommerce') !== '1')) ? null : array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_USERGROUP_SUBSCRIPTION')),
+                array('menu/adminzone/setup/ecommerce_products', array('_SELF', array('type' => 'prices'), '_SELF'), do_lang('ECOM_PRODUCTS_MANAGE_INVENTORY')),
             ),
             do_lang('CUSTOM_PRODUCT_USERGROUP')
         );
@@ -168,7 +181,8 @@ class Module_admin_ecommerce extends Standard_crud_module
      *
      * @param  SHORT_TEXT $title The title
      * @param  LONG_TEXT $description The description
-     * @param  SHORT_TEXT $cost The cost
+     * @param  REAL $price The price
+     * @param  ID_TEXT $tax_code The tax code
      * @param  integer $length The length
      * @param  SHORT_TEXT $length_units The units for the length
      * @set    y m d w
@@ -183,7 +197,7 @@ class Module_admin_ecommerce extends Standard_crud_module
      * @param  ?AUTO_LINK $id ID of existing subscription (null: new)
      * @return array Tuple: The input fields, The hidden fields, The delete fields
      */
-    public function get_form_fields($title = '', $description = '', $cost = '9.99', $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = array(), $id = null)
+    public function get_form_fields($title = '', $description = '', $price = 9.99, $tax_code = '0%', $length = 12, $length_units = 'm', $auto_recur = 1, $group_id = null, $uses_primary = 0, $enabled = 1, $mail_start = null, $mail_end = null, $mail_uhoh = null, $mails = array(), $id = null)
     {
         if (($title == '') && (get_forum_type() == 'cns')) {
             $add_usergroup_url = build_url(array('page' => 'admin_cns_groups', 'type' => 'add'), get_module_zone('admin_cns_groups'));
@@ -199,7 +213,7 @@ class Module_admin_ecommerce extends Standard_crud_module
             $mail_start = do_lang('_PAID_SUBSCRIPTION_STARTED', get_option('site_name'));
         }
         if ($mail_end === null) {
-            $_purchase_url = build_url(array('page' => 'purchase'), get_module_zone('purchase'), array(), false, false, true);
+            $_purchase_url = build_url(array('page' => 'purchase'), get_module_zone('purchase'), null, false, false, true);
             $purchase_url = $_purchase_url->evaluate();
             $mail_end = do_lang('_PAID_SUBSCRIPTION_ENDED', get_option('site_name'), $purchase_url);
         }
@@ -210,7 +224,8 @@ class Module_admin_ecommerce extends Standard_crud_module
         $fields = new Tempcode();
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_TITLE'), 'title', $title, true));
         $fields->attach(form_input_text_comcode(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_DESCRIPTION'), 'description', $description, true));
-        $fields->attach(form_input_float(do_lang_tempcode('COST'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_COST'), 'cost', floatval($cost), true));
+        $fields->attach(form_input_float(do_lang_tempcode('PRICE'), do_lang_tempcode('DESCRIPTION_USERGROUP_SUBSCRIPTION_PRICE'), 'price', $price, true));
+        $fields->attach(form_input_tax_code(do_lang_tempcode(get_option('tax_system')), do_lang_tempcode('DESCRIPTION_TAX_CODE'), 'tax_code', $tax_code, true));
 
         $list = new Tempcode();
         foreach (array('d', 'w', 'm', 'y') as $unit) {
@@ -273,7 +288,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         }
 
         $delete_fields = null;
-        if ($GLOBALS['SITE_DB']->query_select_value('subscriptions', 'COUNT(*)', array('s_type_code' => 'USERGROUP' . strval($id))) > 0) {
+        if ($GLOBALS['SITE_DB']->query_select_value('ecom_subscriptions', 'COUNT(*)', array('s_type_code' => 'USERGROUP' . strval($id))) > 0) {
             $delete_fields = new Tempcode();
             $delete_fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_USERGROUP_SUB_DANGER'), 'delete', false));
         }
@@ -298,7 +313,7 @@ class Module_admin_ecommerce extends Standard_crud_module
         list($sortable, $sort_order) = explode(' ', $current_ordering, 2);
         $sortables = array(
             's_title' => do_lang_tempcode('TITLE'),
-            's_cost' => do_lang_tempcode('COST'),
+            's_price' => do_lang_tempcode('PRICE'),
             's_length' => do_lang_tempcode('SUBSCRIPTION_LENGTH'),
             's_group_id' => do_lang_tempcode('USERGROUP'),
             's_enabled' => do_lang('ENABLED'),
@@ -309,7 +324,7 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $header_row = results_field_title(array(
             do_lang_tempcode('TITLE'),
-            do_lang_tempcode('COST'),
+            do_lang_tempcode('PRICE'),
             do_lang_tempcode('SUBSCRIPTION_LENGTH'),
             do_lang_tempcode('USERGROUP'),
             do_lang('ENABLED'),
@@ -318,13 +333,11 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $fields = new Tempcode();
 
-        require_lang('ecommerce');
-
         list($rows, $max_rows) = $this->get_entry_rows(false, $current_ordering, null, get_forum_type() != 'cns');
         foreach ($rows as $r) {
             $edit_url = build_url($url_map + array('id' => $r['id']), '_SELF');
 
-            $fields->attach(results_entry(array(get_translated_text($r['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']), $r['s_cost'], do_lang_tempcode('_LENGTH_UNIT_' . $r['s_length_units'], integer_format($r['s_length'])), cns_get_group_name($r['s_group_id']), ($r['s_enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, '#' . strval($r['id'])))), true));
+            $fields->attach(results_entry(array(get_translated_text($r['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']), $r['s_price'], do_lang_tempcode('_LENGTH_UNIT_' . $r['s_length_units'], integer_format($r['s_length'])), cns_get_group_name($r['s_group_id']), ($r['s_enabled'] == 1) ? do_lang_tempcode('YES') : do_lang_tempcode('NO'), protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, false, '#' . strval($r['id'])))), true));
         }
 
         return array(results_table(do_lang($this->menu_label), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order), false);
@@ -380,7 +393,8 @@ class Module_admin_ecommerce extends Standard_crud_module
         $fields = $this->get_form_fields(
             get_translated_text($r['s_title'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']),
             get_translated_text($r['s_description'], $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']),
-            $r['s_cost'],
+            $r['s_price'],
+            $r['s_tax_code'],
             $r['s_length'],
             $r['s_length_units'],
             $r['s_auto_recur'],
@@ -452,7 +466,7 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $mails = $this->_mails();
 
-        $id = add_usergroup_subscription($title, post_param_string('description'), post_param_string('cost'), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
+        $id = add_usergroup_subscription($title, post_param_string('description'), float_unformat(post_param_string('price')), post_param_tax_code('tax_code'), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
         return array(strval($id), $text);
     }
 
@@ -467,7 +481,7 @@ class Module_admin_ecommerce extends Standard_crud_module
 
         $mails = $this->_mails();
 
-        edit_usergroup_subscription(intval($id), $title, post_param_string('description'), post_param_string('cost'), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
+        edit_usergroup_subscription(intval($id), $title, post_param_string('description'), float_unformat(post_param_string('price')), post_param_tax_code('tax_code'), post_param_integer('length'), post_param_string('length_units'), post_param_integer('auto_recur', 0), post_param_integer('group_id'), post_param_integer('uses_primary', 0), post_param_integer('enabled', 0), post_param_string('mail_start'), post_param_string('mail_end'), post_param_string('mail_uhoh'), $mails);
     }
 
     /**
@@ -480,5 +494,120 @@ class Module_admin_ecommerce extends Standard_crud_module
         $uhoh_mail = post_param_string('mail_uhoh');
 
         delete_usergroup_subscription(intval($id), $uhoh_mail);
+    }
+
+    /**
+     * The UI to set eCommerce product prices.
+     *
+     * @return Tempcode The UI
+     */
+    public function prices()
+    {
+        require_code('input_filter_2');
+        rescue_shortened_post_request();
+        modsecurity_workaround_enable();
+
+        $field_groups = new Tempcode();
+        $add_forms = new Tempcode();
+
+        // Load up configuration from hooks
+        $_hooks = find_all_hooks('systems', 'ecommerce');
+        foreach (array_keys($_hooks) as $hook) {
+            require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
+            $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+            if ($object === null) {
+                continue;
+            }
+            if (method_exists($object, 'config')) {
+                $fgs = $object->config();
+                foreach ($fgs as $fg) {
+                    foreach ($fg[0] as $__fg) {
+                        $_fg = do_template('FORM_GROUP', array('_GUID' => '58a0948313f0e8e69c06ee01fb7ee48a', 'FIELDS' => $__fg[0], 'HIDDEN' => $__fg[1]));
+                        $field_groups->attach(do_template('ECOM_PRODUCTS_PRICES_FORM_WRAP', array('_GUID' => '938143162b418de982cdb6ce8d8a92ee', 'TITLE' => $__fg[2], 'FORM' => $_fg)));
+                    }
+                    if (!$fg[2]->is_empty()) {
+                        $submit_name = do_lang_tempcode('ADD');
+
+                        $post_url = build_url(array('page' => '_SELF', 'type' => '_prices'), '_SELF');
+
+                        $fg[2] = do_template('FORM', array(
+                            '_GUID' => 'e98141bc0a2a54abcca59a5c947a6738',
+                            'SECONDARY_FORM' => true,
+                            'TABINDEX' => strval(get_form_field_tabindex(null)),
+                            'HIDDEN' => '',
+                            'TEXT' => $fg[3],
+                            'FIELDS' => $fg[2],
+                            'SUBMIT_BUTTON_CLASS' => 'proceed_button_left',
+                            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+                            'SUBMIT_NAME' => $submit_name,
+                            'URL' => $post_url,
+                            'SUPPORT_AUTOSAVE' => true,
+                        ));
+                        $add_forms->attach(do_template('ECOM_PRODUCTS_PRICES_FORM_WRAP', array('_GUID' => '3956550ebff14bbb923b57c8341b0862', 'TITLE' => $fg[1], 'FORM' => $fg[2])));
+                    }
+                }
+            }
+        }
+
+        $submit_name = do_lang_tempcode('SAVE_ALL');
+
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_prices'), '_SELF');
+
+        if ($field_groups->is_empty()) {
+            $edit_form = new Tempcode();
+        } else {
+            $edit_form = do_template('FORM_GROUPED', array(
+                '_GUID' => 'bf025026dcfc86cfd0a8ef3728bbf6d8',
+                'TEXT' => '',
+                'FIELD_GROUPS' => $field_groups,
+                'SUBMIT_ICON' => 'buttons__save',
+                'SUBMIT_NAME' => $submit_name,
+                'SUBMIT_BUTTON_CLASS' => 'proceed_button_left_2',
+                'URL' => $post_url,
+                'SUPPORT_AUTOSAVE' => true,
+                'MODSECURITY_WORKAROUND' => true,
+            ));
+        }
+
+        list($warning_details, $ping_url) = handle_conflict_resolution();
+
+        return do_template('ECOM_PRODUCT_PRICE_SCREEN', array(
+            '_GUID' => '278c8244c7f1743370198dfc437b7bbf',
+            'PING_URL' => $ping_url,
+            'WARNING_DETAILS' => $warning_details,
+            'TITLE' => $this->title,
+            'EDIT_FORM' => $edit_form,
+            'ADD_FORMS' => $add_forms,
+        ));
+    }
+
+    /**
+     * The actualiser to set eCommerce product prices.
+     *
+     * @return Tempcode The UI
+     */
+    public function _prices()
+    {
+        require_code('input_filter_2');
+        modsecurity_workaround_enable();
+
+        // Save configuration for hooks
+        $_hooks = find_all_hooks('systems', 'ecommerce');
+        foreach (array_keys($_hooks) as $hook) {
+            require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
+            $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
+            if ($object === null) {
+                continue;
+            }
+            if (method_exists($object, 'save_config')) {
+                $object->save_config();
+            }
+        }
+
+        log_it('ECOM_PRODUCT_CHANGED_PRICES');
+
+        // Show it worked / Refresh
+        $url = build_url(array('page' => '_SELF', 'type' => 'prices'), '_SELF');
+        return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
     }
 }

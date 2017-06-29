@@ -35,13 +35,13 @@ class Hook_realtime_rain_ecommerce
         $drops = array();
 
         if (has_actual_page_access(get_member(), 'admin_ecommerce')) {
-            $rows = $GLOBALS['SITE_DB']->query('SELECT t_amount,t_type_code,t_time AS timestamp FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'transactions WHERE t_time BETWEEN ' . strval($from) . ' AND ' . strval($to));
+            $rows = $GLOBALS['SITE_DB']->query('SELECT t_amount,t_type_code,t_time AS timestamp FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'ecom_transactions WHERE t_time BETWEEN ' . strval($from) . ' AND ' . strval($to));
 
             foreach ($rows as $row) {
                 require_code('ecommerce');
-                list($product_row,) = find_product_row($row['t_type_code']);
-                if ($product_row !== null) {
-                    $title = $product_row[4];
+                list($details) = find_product_details($row['t_type_code']);
+                if ($details !== null) {
+                    $title = $details['item_name'];
                 } else {
                     require_lang('ecommerce');
                     $title = do_lang('SALE_MADE');
@@ -49,7 +49,7 @@ class Hook_realtime_rain_ecommerce
 
                 $timestamp = $row['t_timestamp'];
 
-                $ticker_text = do_lang('KA_CHING', ecommerce_get_currency_symbol(), $row['t_amount']);
+                $ticker_text = do_lang('KA_CHING', ecommerce_get_currency_symbol($row['t_currency']), $row['t_amount'], $row['t_currency']);
 
                 $drops[] = rain_get_special_icons(null, $timestamp, null, $ticker_text) + array(
                         'TYPE' => 'ecommerce',

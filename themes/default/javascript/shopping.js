@@ -31,11 +31,11 @@
 
     $cms.templates.ecomShoppingCartScreen = function (params) {
         var container = this,
-            productIds = strVal(params.productIds),
+            typeCodes = strVal(params.typeCodes),
             emptyCaryUrl = strVal(params.emptyCartUrl);
 
         $cms.dom.on(container, 'click', '.js-click-btn-cart-update', function (e) {
-            if (updateCart(productIds) === false) {
+            if (updateCart(typeCodes) === false) {
                 e.preventDefault();
             }
         });

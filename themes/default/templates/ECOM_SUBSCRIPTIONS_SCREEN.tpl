@@ -11,7 +11,11 @@
 				</th>
 
 				<th>
-					{!COST}
+					{!PRICE}
+				</th>
+
+				<th>
+					{$TAX_LABEL}
 				</th>
 
 				<th>
@@ -47,7 +51,7 @@
 
 						{+START,IF,{$MOBILE}}
 							<p class="assocated_details">
-								<span class="field_name">{!PAYMENT_GATEWAY}:</span> {VIA*}
+								<span class="field_name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
 							</p>
 							<p class="assocated_details">
 								<span class="field_name">{!STATUS}:</span> {STATE*}
@@ -56,7 +60,11 @@
 					</th>
 
 					<td>
-						{$CURRENCY_SYMBOL}{AMOUNT*}, {PER}
+						{$CURRENCY_SYMBOL,{CURRENCY}}{AMOUNT*}, {PER}
+					</td>
+
+					<td>
+						{$CURRENCY_SYMBOL,{CURRENCY}}{TAX*}
 					</td>
 
 					<td>
@@ -68,7 +76,7 @@
 
 					{+START,IF,{$NOT,{$MOBILE}}}
 						<td>
-							{VIA*}
+							{PAYMENT_GATEWAY*}
 						</td>
 
 						<td>

@@ -7,27 +7,74 @@
 	text-align: center;
 }
 
+.agreement_box {
+	max-height: 25em;
+	border: 1px solid {$GET,pale_border};
+	padding: 0.5em;
+	overflow: auto;
+}
+.agreement_box .lonely_label {
+	font-weight: bold;
+	margin-top: 0;
+}
 .purchase_terms {
-	width: 100%;
 	font-family: Courier, monospace;
 	white-space: pre-wrap !important;
 	margin: 1em 0;
 }
 
 .purchase_screen_contents {
-	min-height: 18em;
 }
 
 .subscriptions_cancel_button {
 	text-align: {!en_right};
 }
 
-.purchase_wizard_field_name_column {
+.purchase_field_name_column {
 	width: 16em;
 }
 
-.purchase_wizard_field_input_column {
+.purchase_field_input_column {
 	width: 100%;
+}
+
+.local_payment_merchant_details_wrap {
+	border: 1px dashed {$GET,point_of_interest_border};
+	background-color: {$GET,point_of_interest_background};
+}
+
+.local_payment_merchant_details {
+	display: table;
+	width: 100%;
+}
+
+.local_payment_merchant_details>div {
+	display: table-row;
+}
+
+.local_payment_transact_info, .payment_processor_links, .local_payment_verified_account_logo {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0.5em;
+}
+
+.local_payment_transact_info {
+}
+
+.payment_processor_links {
+	background: url('{$IMG;,ecommerce/checkmark}') no-repeat left center;
+	padding-left: 24px;
+}
+
+.local_payment_verified_account_logo {
+}
+
+.local_payment_merchant_details p {
+	margin: 0;
+}
+
+.local_payment_merchant_details_wrap + .ecommerce_button, .local_payment_merchant_details + .ecommerce_button {
+	margin-top: 1em;
 }
 
 .local_payment_merchant_details_wrap {
@@ -64,6 +111,96 @@
 .local_payment_merchant_details_wrap + .ecommerce_button, .local_payment_merchant_details + .ecommerce_button {
 	margin-top: 1em;
 }
+
+/*
+=========================
+=======Tax invoices======
+=========================
+*/
+
+/* Based on https://github.com/NextStepWebs/simple-html-invoice-template */
+
+.invoice_box {
+	max-width: 800px;
+	margin: auto;
+	padding: 30px;
+	border: 1px solid {$GET,pale_border};
+	box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+	font-size: 16px;
+	line-height: 24px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: {$GET,slightly_seeded_gray_text};
+}
+
+.invoice_box table {
+	width: 100%;
+	line-height: inherit;
+	text-align: left;
+}
+
+.invoice_box table td {
+	padding: 5px;
+	vertical-align: top;
+}
+
+.invoice_box table tr td: nth-child(2) {
+	text-align: right;
+}
+
+.invoice_box table tr.top table td {
+	padding-bottom: 20px;
+}
+
+.invoice_box table tr.top td.title {
+	font-size: 45px;
+	line-height: 45px;
+	color: {$GET,area_text};
+}
+
+.invoice_box table tr.top td.title img {
+	width: 100%;
+	max-width: 300px;
+}
+
+.invoice_box table tr.information table td {
+	padding-bottom: 40px;
+}
+
+.invoice_box table thead tr th {
+	background: {$GET,area_background};
+	border-bottom: 1px solid {$GET,area_2_background};
+	font-weight: bold;
+	color: {$GET,slightly_seeded_text};
+	text-align: left;
+}
+
+.invoice_box table tr.item td {
+	border-bottom: 1px solid {$GET,area_background};
+}
+
+.invoice_box table tr.item:last-child td {
+	border-bottom: none;
+}
+
+.invoice_box table tr.total td.total {
+	border-top: 2px solid {$GET,area_background};
+	font-weight: bold;
+}
+
+{$,TODO: Fix in v11}
+/*{+START,IF,{$MOBILE}}*/
+	.invoice_box table tr.top table td {
+		width: 100%;
+		display: block;
+		text-align: center;
+	}
+
+	.invoice_box table tr.information table td {
+		width: 100%;
+		display: block;
+		text-align: center;
+	}
+/*{+END}*/
 
 /*
 =========================

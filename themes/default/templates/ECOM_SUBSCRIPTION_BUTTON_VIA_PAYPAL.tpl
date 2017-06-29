@@ -4,11 +4,11 @@
 	<input type="hidden" name="business" value="{PAYMENT_ADDRESS*}" />
 	<input type="hidden" name="notify_url" value="{$FIND_SCRIPT*,ecommerce,1}?from=paypal&amp;type_code={TYPE_CODE*}" />
 	<input type="hidden" name="return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:type_code={TYPE_CODE}:from=paypal}" />
-	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:cancel=1:from=paypal}" />
+	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:type_code={TYPE_CODE}:cancel=1:from=paypal}" />
 	<input type="hidden" name="no_shipping" value="1" />
 	<input type="hidden" name="currency_code" value="{CURRENCY*}" />
-	<input type="hidden" name="custom" value="{TRANS_ID*}" />
-	<input type="hidden" name="item_name" value="{!SUBSCRIPTION_FOR,{$USERNAME*},{ITEM_NAME*}}" />
+	<input type="hidden" name="custom" value="{TRANS_EXPECTING_ID*}" />
+	<input type="hidden" name="item_name" value="{!SUBSCRIPTION_FOR,{$USERNAME*}} ({ITEM_NAME*})" />
 	<input type="hidden" name="rm" value="2" />
 	<input type="hidden" name="bn" value="ocproducts_SP" />
 	{+START,IF_NON_EMPTY,{MEMBER_ADDRESS}}
@@ -27,6 +27,7 @@
 	<input type="hidden" name="sra" value="1" />
 
 	<div class="purchase_button">
-		<input style="border: 0px" type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" />
+		<input id="purchase_button" data-disable-on-click="1" style="border: 0px" type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" title="{!MAKE_PAYMENT}" />
 	</div>
 </form>
+

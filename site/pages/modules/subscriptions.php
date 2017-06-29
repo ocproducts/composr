@@ -46,7 +46,7 @@ class Module_subscriptions
      */
     public function uninstall()
     {
-        $GLOBALS['SITE_DB']->drop_table_if_exists('subscriptions');
+        $GLOBALS['SITE_DB']->drop_table_if_exists('ecom_subscriptions');
 
         push_db_scope_check(false);
         $GLOBALS['SITE_DB']->drop_table_if_exists('f_usergroup_subs');
@@ -65,17 +65,22 @@ class Module_subscriptions
         push_db_scope_check(false);
 
         if ($upgrade_from === null) {
-            $GLOBALS['SITE_DB']->create_table('subscriptions', array(
+            $GLOBALS['SITE_DB']->create_table('ecom_subscriptions', array(
                 'id' => '*AUTO',
                 's_type_code' => 'ID_TEXT',
                 's_member_id' => 'MEMBER',
                 's_state' => 'ID_TEXT', // pending|new|active|cancelled (pending means payment has been requested)
-                's_amount' => 'SHORT_TEXT', // can't always find this from s_type_code
+                's_amount' => 'REAL', // can't always find this from s_type_code
+                's_tax_code' => 'ID_TEXT',
+                's_tax_derivation' => 'LONG_TEXT', // Needs to be stored, as it's locked in time
+                's_tax' => 'REAL', // Needs to be stored, as it's locked in time
+                's_tax_tracking' => 'LONG_TEXT', // Needs to be stored, as it's locked in time
+                's_currency' => 'ID_TEXT',
                 's_purchase_id' => 'ID_TEXT',
                 's_time' => 'TIME',
                 's_auto_fund_source' => 'ID_TEXT', // The payment gateway
                 's_auto_fund_key' => 'SHORT_TEXT', // Used by PayPal for nothing much, but is of real use if we need to schedule our own subscription transactions
-                's_payment_gateway' => 'ID_TEXT', // An eCommerce hook or 'manual'
+                's_payment_gateway' => 'ID_TEXT', // An eCommerce hook or 'manual' or 'points'
 
                 // Copied through from what the hook says at setup, in case the hook later changes
                 's_length' => 'INTEGER',
@@ -86,7 +91,8 @@ class Module_subscriptions
                 'id' => '*AUTO',
                 's_title' => 'SHORT_TRANS',
                 's_description' => 'LONG_TRANS__COMCODE',
-                's_cost' => 'SHORT_TEXT',
+                's_price' => 'REAL',
+                's_tax_code' => 'ID_TEXT',
                 's_length' => 'INTEGER',
                 's_length_units' => 'SHORT_TEXT',
                 's_auto_recur' => 'BINARY',
@@ -138,9 +144,22 @@ class Module_subscriptions
         }
 
         if (($upgrade_from !== null) && ($upgrade_from < 6)) {
-            $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_payment_gateway', 'ID_TEXT', 's_payment_gateway');
+            $GLOBALS['SITE_DB']->rename_table('subscriptions', 'ecom_subscriptions');
 
-            $GLOBALS['SITE_DB']->create_index('subscriptions', 's_member_id', array('s_member_id'));
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_amount', 'REAL');
+            $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_via', 'ID_TEXT', 's_payment_gateway');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_code', 'ID_TEXT', '0%');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_derivation', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax', 'REAL', 0.00);
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_tax_tracking', 'LONG_TEXT', '');
+            $GLOBALS['SITE_DB']->add_table_field('ecom_subscriptions', 's_currency', 'ID_TEXT', get_option('currency'));
+
+            $GLOBALS['SITE_DB']->alter_table_field('f_usergroup_subs', 's_cost', 'REAL', 's_price');
+            $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_tax_code', 'ID_TEXT', '0%');
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
+            $GLOBALS['SITE_DB']->create_index('ecom_subscriptions', 's_member_id', array('s_member_id'));
         }
 
         pop_db_scope_check();
@@ -157,7 +176,7 @@ class Module_subscriptions
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
-        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('subscriptions', 'COUNT(*)') > 0)) {
+        if ((!$check_perms || !is_guest($member_id)) && ($GLOBALS['SITE_DB']->query_select_value('ecom_subscriptions', 'COUNT(*)') > 0)) {
             return array(
                 'browse' => array('MY_SUBSCRIPTIONS', 'menu/adminzone/audit/ecommerce/subscriptions'),
             );
@@ -176,7 +195,7 @@ class Module_subscriptions
     {
         $type = get_param_string('type', 'browse');
 
-        require_lang('ecommerce');
+        require_code('ecommerce');
 
         if ($type == 'browse') {
             $this->title = get_screen_title('MY_SUBSCRIPTIONS');
@@ -198,7 +217,6 @@ class Module_subscriptions
      */
     public function run()
     {
-        require_code('ecommerce');
         require_css('ecommerce');
 
         // Kill switch
@@ -252,23 +270,24 @@ class Module_subscriptions
     public function cancel()
     {
         $id = get_param_integer('id');
-        $payment_gateway = $GLOBALS['SITE_DB']->query_select_value_if_there('subscriptions', 's_payment_gateway', array('id' => $id));
+        $payment_gateway = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 's_payment_gateway', array('id' => $id));
         if ($payment_gateway === null) {
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
 
-        if (($payment_gateway != 'manual') && ($payment_gateway != '')) {
+        if (!in_array($payment_gateway, array('', 'manual', 'points'))) {
             require_code('hooks/systems/payment_gateway/' . filter_naughty($payment_gateway));
             $payment_gateway_object = object_factory($payment_gateway);
             if ($payment_gateway_object->auto_cancel($id) !== true) {
                 // Because we cannot TRIGGER a REMOTE cancellation, we have it so the local user action triggers that notification, informing the staff to manually do a remote cancellation
                 require_code('notifications');
+                $trans_id = $GLOBALS['SITE_DB']->query_select_value('ecom_transactions', 'id', array('t_purchase_id' => strval($id)));
                 $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
-                dispatch_notification('subscription_cancelled_staff', null, do_lang('SUBSCRIPTION_CANCELLED_SUBJECT', null, null, null, get_site_default_lang()), do_notification_lang('SUBSCRIPTION_CANCELLED_BODY', strval($id), $username, null, get_site_default_lang()));
+                dispatch_notification('subscription_cancelled_staff', null, do_lang('SUBSCRIPTION_CANCELLED_SUBJECT', null, null, null, get_site_default_lang()), do_notification_lang('SUBSCRIPTION_CANCELLED_BODY', $trans_id, $username, null, get_site_default_lang()));
             }
         }
 
-        $GLOBALS['SITE_DB']->query_update('subscriptions', array('s_state' => 'cancelled'), array('id' => $id, 's_member_id' => get_member()), '', 1);
+        $GLOBALS['SITE_DB']->query_update('ecom_subscriptions', array('s_state' => 'cancelled'), array('id' => $id, 's_member_id' => get_member()), '', 1);
 
         $url = build_url(array('page' => '_SELF'), '_SELF');
         return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

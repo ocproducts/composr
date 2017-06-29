@@ -2,6 +2,8 @@
 
 {!ecommerce:DOC_ECOMMERCE}
 
+The eCommerce system may also be used with community points.
+
 [contents]decimal,lower-alpha[/contents]
 
 [title="2"]Payment gateways[/title]
@@ -142,83 +144,210 @@ To prevent purchases being made by real people that you don't receive real money
 For PayPal test mode goes through the [url="PayPal sandbox"]https://developer.paypal.com/[/url]. Sign up on the sandbox (this is your test account for making the sale), log in, and create a test user (this is your test account for purchasing).
 Be advised that we have found the PayPal sandbox to be buggy. If your tests fail with errors like "The link you have used to enter the PayPal system is invalid. Please review the link and try again." then you may be experiencing bugs in the PayPal sandbox. By all means, please complain to PayPal about it -- we have run tests and found the sandbox fails midway through purchases on configurations that work correctly for live payments.
 
-[title="2"]Products[/title]
+[title="2"]Monetary system[/title]
+
+[title="3"]Currencies[/title]
+
+The currency the website works in is defined in the configuration. If you use PayPal you need to make sure your account can accept this currency and is not set up to allow people to choose which currency to pay in (as it stops Composr being able to verify the payment if they use this feature).
+
+Composr can process transactions in any currency, but basically is only configured with a single currency. There are 2 reasons for this:
+1) So custom eCommerce products can be written to transact in any currency required
+2) So active invoices, active subscriptions, pending payments, and logged payments, all continue to be accurate if the main configured currency is changed
+
+Composr can automatically do currency conversions for visitors (there's a configuration option to control this).
+
+[title="3"]Points verses money[/title]
+
+Many of the products allow configurability over whether they are sold for money or for points, or some combination (a discount via using points). Products that support both money and points typically also allow a 50:50 purchase option too. Users don't choose which option, the system will calculate it for them -- but they are told the discount they will get.
+
+Gambling is only available via points.
+Usergroup subscriptions are only available via money (as there's already a points-based rank ladder system).
+Catalogue products are only available via money, although you can set up custom products that represent shippable items that can be purchased with points.
+
+[title="2"]Products overview[/title]
 
 [media width="150" description="The eCommerce layering in Composr for usergroup subscriptions" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_layer.png[/media]
 Composr has an abstract system of 'products' that may be 'purchased'. These Composr products are not the same as products that are available from shopping-cart systems, but rather, special types of purchasable product or service that have their own code to handle their purchase.
 
 In Composr by default there are the following 'kinds' of 'product':
  - [b]usergroup subscription[/b]: you may configure as many usergroup subscriptions as you wish, and these are all handled by the 'Usergroup' product kind. Each configured subscription is considered a 'product' for sale on your site.
- - [b]catalogue items[/b]: these are items for sale from the online store
+ - [b]catalogue items[/b]: these are items for sale from the shopping catalogue
  - [b]orders[/b]: these products are a collection of other products bound into a group, and generated when someone finalises an order from the shopping cart
+ - [b]e-mail addresses[/b]: these are e-mail addresses on your domain that you'd set up manually after they are purchased (may be purchased as [i]pop3[/i] or [i]forwarders[/i]). Quota upgrades for pop3 accounts may be purchased.
+ - [b]topic pinning[/b]: pinning of requested topics on the forum
+ - [b]name highlighting[/b]: highlighting of a member's name on the forum
+ - [b]banners[/b]: banner advertisements, and upgrades.
+ - [b]custom products[/b]: custom products that you give a label and description and set up manually
+ - [b]permission products[/b]: permissions that you give a label and description and are automatically assigned. This can be used for selling access to download categories, for example.
+ - [b]gambling[/b]: users may get points worth more than they pay, although on average they'll lose money/points
  - [b]work[/b]: this is a generic kind of product used to represent something that has been invoiced
  - Various kinds of [b]non-purchasable product[/b] that exist for accounting purpose -- [tt]interest[/tt], [tt]tax[/tt], [tt]wage[/tt] and [tt]other[/tt]. These aren't for sale on your site but positive or negative transaction sums can be entered against them in the Admin Zone, so your profit/loss and cash-flow charts can be accurate.
+Only the products you want will be available.
+When a member buys something, the staff are informed of it via e-mail of appropriate details.
 
+[media width="150" description="Configuring products" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products_config.png[/media]
+[media width="150" description="Configuring prices" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products_prices.png[/media]
+[media width="150" description="The purchasing module" float="right"]data_custom/images/docs/tut_ecommerce/purchasing_products.png[/media]
 Product kinds fit into the following general categories:
- - [b]Invoice[/b]: requests for payment created from the Admin Zone, paid for from the [tt]invoices[/tt] module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
+ - [b]One-off purchase[/b]: purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: e-mail addresses, topic pinning, name highlighting, banners, custom products, permission products, gambling)
  - [b]Subscription[/b]: one-off purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) and managed from the [tt]subscriptions[/tt] module ([tt]site:subscriptions[/tt] page-link, linked from member accounts) (above: usergroup subscriptions)
  - [b]Shopping cart[/b]: an item purchased from the [tt]catalogue[/tt]/[tt]shopping[/tt] modules ([tt]site:catalogues[/tt]/[tt]site:shopping[/tt] page-links, Content > Products and Content > Shopping Cart, on the default menus) (above: catalogue items)
+ - [b]Invoice[/b]: requests for payment created from the Admin Zone, paid for from the [tt]invoices[/tt] module ([tt]site:invoices[/tt] page-link, linked from member accounts) (above: work)
  - [b]Other[/b] (above: interest, tax, wage, other)
- - [b]Purchase wizard[/b]: one-off purchases made from the [tt]purchase[/tt] module ([tt]site:purchase[/tt] page-link, Content > Purchasing on the default menus) (above: [i]none available out-of-the-box[/i])
 
-[box="For programmers" width="25em" float="right"]
-In the code these are defined via a [tt]PRODUCT_*[/tt] constant from the [tt]ecommerce[/tt] code file.
-[/box]
 While the abstraction of this may be confusing, it is very beneficial as all kinds of automatically handled products may be programmed to integrate with Composr functionality.
 For example, a programmer could create the following with relative ease:
  - a product that increases the number of available hits on banners
- - a product that sends out an e-mail to a dispatch warehouse instructing them to mail out a copy of a bands latest album to the address specified in the member profile of the purchaser.
-Most useful kinds of purchase can, however, be achieved with the default usergroup product: a usergroup for which membership can be bought could be given additional permissions that reflect access to features or areas of the website that would not otherwise be available. This is how most websites will use the eCommerce system because it is simple, effective, works well with PayPal, and does not require programmers to implement.
+ - a product that sends out an e-mail to a dispatch warehouse instructing them to mail out a copy of a bands latest album to the address specified in the member profile of the buyer.
+Most useful kinds of purchase can, however, be achieved with the default usergroup product: a usergroup for which membership can be purchased could be given additional permissions that reflect access to features or areas of the website that would not otherwise be available. This is how most websites will use the eCommerce system because it is simple, effective, works well with PayPal, and does not require programmers to implement.
 
-[title="3"]In more detail[/title]
+[title="2"]Purchasing module products[/title]
 
-The eCommerce system has a central transactional framework. Each type of product is sold by putting through transactions that have three key things that correspond to that product:
-1) product name (a codename, not intended for humans to read)
-2) product ID
-3) amount
-Any transaction that goes through is matched to a product that will then verify the payment and dispatch the sale. The product is matched via the product name -- i.e. the product name in the transaction matches the name of a product for sale. The product will usually see if the amount is correct for that product, and it will use the ID to find how to dispatch the sale. For example, on our old site (when Composr was commercial software) the 'lifetime registration' product stores the site-ID in this, and thus when the transaction went through it knew what site has been registered and could go and then send out the key etc.
+Inventory management is at:
+Admin Zone > Setup > eCommerce inventory management
+Use this to set up those products which users can have multiple of (e-mail accounts, custom products, permission products).
 
-[title="4"]Actual code (for programmers)[/title]
+Other prices are set in normal configuration options.
 
-This is an abbreviated line of code from within the [tt]get_products[/tt] method defining a product in [tt]sources/hooks/systems/ecommerce/usergroup.php[/tt]:
-[code="PHP"]
-$products['USERGROUP' . strval($sub['id'])] = array(PRODUCT_SUBSCRIPTION, $sub['s_cost'], 'handle_usergroup_subscription', array(...), $item_name);
-[/code]
+If you are running Conversr then there will be a member tab showing past purchases.
 
-The 'product name' would be [tt]USERGROUP<id>[/tt]. You can see how we have created a separate product for each different kind of usergroup subscription.
+[title="3"]Banners[/title]
 
-The 'product ID' is actually specified via the [tt]set_needed_fields[/tt] function for most product hooks. In the case of usergroup subscriptions there is no [tt]set_needed_fields[/tt] method because the ID of a row in the [tt]subscriptions[/tt] table will be used in this case (subscriptions are a little different). i.e. it provides the information needed to link the purchased product back to a member's actual subscription record. Actually, the 'product ID' is always a string, so it has gone through the PHP [tt]strval[/tt] function, and gets converted back via the PHP [tt]intval[/tt] function.
+While by default any member may submit a banner, the implication is that an eCommerce-purchased banner would not have to serve the staff's interests so much as a banner they decided to validate for free.
 
-You will see we essentially have two kinds of ID here. There's an ID embedded into the product name, and the 'product ID'. Typically we generate different product names when the prices will be different in each case, while the 'product ID' typically is either the purchaser's member ID or is the ID of another table that defines the specifics about the member's customised purchase. So in this case the different configured usergroup subscriptions in Composr have different prices, so are different products -- but the ID of the actual purchased subscription is not price-determining. It is possible you won't have both -- for example, the 'product name' may fully distinguish the purchase -- in this case you probably should just use the purchaser's member ID as the 'product ID'.
+All banners purchased are added to the 'General' banner type.
 
-Custom product hooks that are selling many individually priced items related to a specific user will often have a [tt]get_products[/tt] function that lists a large number of items. There is a mechanism for [tt]get_products[/tt] to only list products matching a specific 'product name' / product title, for performance reasons. If you have 1000s of products (or more) and are linking to purchase from custom code then you should return no products unless a filter is requested, and then use that filter to determine what products to show.
+[title="3"]Topic pinning[/title]
 
-Composr basically flows like follows:
-1) User goes to the [tt]purchase[/tt] module in Composr, and selects a product. Alternatively some custom code or link may bypass this step and direct them deep into the [tt]purchase[/tt] module, i.e. to a known product.
-2) Product message is shown, if the hook defines a [tt]get_message[/tt] method.
-3) Product agreement is shown that the user must agree to, if the hook defines a [tt]get_agreement[/tt] method.
-4) User details what 'product ID' they are purchasing. This happens by them filling out a form determined by the product hook's [tt]get_needed_fields[/tt] method. Actually for manual transactions in the Admin Zone there may be a [tt]get_identifier_manual_field_inputter[/tt] method too, because admin's typically need more control when putting through a manual purchase. [tt]get_needed_fields[/tt] does not have to be defined in a hook, so this step is optional too.
-5) A 'product ID' is generated via the hooks [tt]set_needed_fields[/tt] method. If there was a [tt]get_needed_fields[/tt] method then this typically works by taking the form input from the previous step and saving it, and getting an ID. However sometimes hooks may just generate an ID via some other known mechanism, or will just return the purchaser's member ID. It very much depends on the necessary purchasing process for the particular kind of product.
-6) An availability check is performed, if the hook defines a [tt]is_available[/tt] function. This can do things such as stock checks, sanity checks, and permission checks. It returns one of a number of possible [tt]ECOMMERCE_PRODUCT_*[/tt] values, [tt]ECOMMERCE_PRODUCT_AVAILABLE[/tt] if purchase may happen.
-6) The user is directed to go pay off-site
-7) An IPN (i.e. background message) is sent back to Composr when the payment has happened, and/or when the user clicks to return back to Composr.
-8) Composr interprets the IPN to get back the 'product name' and 'purchase ID'. This is very hook-dependent. For PayPal it will look at the human item-name, find the matching 'product name' (i.e. codename), and it will already know the 'product ID'. For WorldPay and possibly other payment gateways it will have to look up a specific transaction in the [tt]trans_expecting[/tt] table that Composr used to track the purchase, because WorldPay doesn't route through full information as PayPal does.
-9) Composr looks in all the product hooks to find a matching defined product, checks the price, then dispatches a call to the specified handler function for that product (e.g. [tt]handle_usergroup_subscription[/tt]).
-10) The handler function then does what is necessary to make the purchase happen. For a usergroup subscription this means putting the purchasing member into the appropriate usergroup.
+On [concept]Conversr[/concept] sites, members can purchase to have a particular topic pinned on the forum.
 
-Subscriptions and invoices have some custom handling. Subscriptions can also end, so they are separately tracked with life-time details, and there are cancellation signals that are also fed through. Each separate invoice is not given a separate product even though each has a separate price, as it would get potentially too out-of-hand, so the handling of invoice price checking is hard-coded. Invoice products could actually be taken advantage of for this -- you could generate custom invoices for particular purchasable items, if very large quantities of potentially differently-priced items are involved.
+[title="3"]Gambling[/title]
 
-[title="3"]Manual transactions[/title]
+Members can gamble points. On average, members lose out on points when they try and gamble them though.
 
-Normally a transaction would go through via PayPal/etc. i.e. Composr sends a user off to PayPal, and then PayPal calls back saying the transaction has happened.
+[title="3"]Name highlighting[/title]
 
-However, we've designed it to be modular. In Composr another method of doing a transaction is the 'manual transaction'. The manual transaction form just allows you to simulate a transaction from the Admin Zone; the idea is that you've received a cheque (or SMS payment, or whatever) and are manually telling Composr about it so that Composr can dispatch the sale. To perform a manual transaction you need to:
-1) access the manual transaction screen (Admin Zone > Audit > eCommerce > Manual transaction).
-2) select the right product
-3) enter the correct ID number that the product will use to dispatch for this sale
-4) enter the sale amount that the product expects to be receiving (which you can leave blank for it to work this out itself).
+On [concept]Conversr[/concept] sites, highlighted usernames can be purchased. This means the buyer's name gets special highlighting within forum topics.
 
-[title="2"]Subscriptions[/title]
+[title="3"]Permission products[/title]
+
+[media width="150" description="Configuring permission products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_permissions.png[/media]
+Staff can set up what permissions may be purchased, how long they last for, and the prices.
+
+This is done via the inventory management screen at:
+Admin Zone > Setup > eCommerce inventory management
+
+The different types of permission (product) are configured with settings as follows:
+
+[title="4"]Privilege[/title]
+
+If a privilege is set globally, you will only set &ldquo;The privilege&rdquo;.
+
+If you are scoping it to a particular module page (e.g. &ldquo;downloads&rdquo;), you will also set &ldquo;The page&rdquo;.
+
+If you are scoping it to a particular category, you will also set it to &ldquo;The module codename&rdquo; and &ldquo;The category&rdquo;.
+
+[title="4"]Zone-access[/title]
+
+You will only set &ldquo;The zone&rdquo;.
+
+[title="4"]Page-access[/title]
+
+You will set &ldquo;The zone&rdquo; and &ldquo;The page&rdquo;.
+
+[title="4"]Category-access[/title]
+
+You will set &ldquo;The module codename&rdquo; and &ldquo;The category&rdquo;.
+
+Normally &ldquo;The category&rdquo; will be a numeric ID.
+
+This said, when you add or edit a category you can automatically set up the permission product on the normal form.
+
+Categories that a user does not have permission to will not be linked. So to promote sale of access to those categories you may want to either direct users directly into the Purchasing module, or link to the sale pages from the description of the parent download category.
+
+[title="5"]Download categories[/title]
+
+Download category access is implemented as a special case. The contents of the download category will be e-mailed out directly upon purchase.
+This is great for selling things like eBooks and audio files.
+You can configure the maximum file size for sent files. Files above this size will be omitted.
+Externally hosted files will also be omitted.
+
+[title="3"]Custom products[/title]
+
+[media width="150" description="Configuring custom products via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_custom.png[/media]
+Staff set up custom products by description and price, then members may buy them. Staff then must manually dispatch the custom product, whatever it is.
+This is done via the inventory management screen at:
+Admin Zone > Setup > eCommerce inventory management
+
+[title="3"]E-mail accounts (advanced)[/title]
+
+[media width="150" description="Configuring pop3 accounts via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_pop3.png[/media]
+[media width="150" description="Configuring e-mail forwarders via the inventory management screen" float="right"]data_custom/images/docs/tut_ecommerce/inventory_forwarding.png[/media]
+By selling e-mail accounts you are essentially selling a prestige address to your members. Members might love having an address like [tt]sam@yourawesomesite.com[/tt].
+
+What may be purchased:
+ - POP3 e-mail accounts, and upgrades
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
+ - e-mail Forwarding accounts, and updates
+  - staff define which e-mail domains members may purchase addresses on
+  - staff must set up the e-mail accounts manually after they are purchased/upgrades
+
+These may be configured via the inventory management screen at:
+Admin Zone > Setup > eCommerce inventory management
+
+If e-mail accounts are sold Composr cannot create them itself. Instead, it has to send out e-mail notifications to the site staff address, which includes details of how to add them. The method of addition is different for different systems, so the eCommerce configuration defines 3 URLs that can be set according to your server.
+
+Example URLs follow for different webhosting control-panel software (please note that these may not be up-to-date with newer versions of these control-panels)...
+
+[title="4"]For Plesk users[/title]
+
+The mail add address (POP3 and forwarding) is:
+[indent][tt]https://{DOMAIN}:8443/domains/mail/mail_name_preferences.php?mn_id=0&previous_page=mail_names[/tt][/indent]
+Forwarders are added through adding a mail address, and then specifying a forwarder for it.
+
+We're not sure if it is currently possible to manage POP3 quota with Plesk.
+
+[title="4"]For Ensim users[/title]
+
+The POP3 add address is:
+[indent][tt]http://{DOMAIN}/Site/email_users_add.htm[/tt][/indent]
+
+The forwarding add address is:
+[indent][tt]http://{DOMAIN}/Site/emal_forward.htm[/tt][/indent]
+We're not sure if it is currently possible to manage POP3 quota with Ensim.
+
+[title="4"]For cPanel users[/title]
+
+The POP3 add address is:
+[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addpop2.html[/tt][/indent]
+
+The forwarding add address is:
+[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/addfwd.html[/tt][/indent]
+
+The POP3 quota change address is:
+[indent][tt]http://{DOMAIN}:2082/frontend/x/mail/pops.html[/tt][/indent]
+
+[title="3"]Community billboard (non-bundled)[/title]
+
+[i]As of Composr 10, the community billboard is a non-bundled addon.[/i]
+
+[surround]
+{!community_billboard:DOC_COMMUNITY_BILLBOARD}
+
+The queue is accessed via the Staff Checklist on the Admin Zone front page. Note that the queue is not self-managed, you need to control which message is active, as they won't automatically rotate or expire. We mentioned above that the staff are automatically notified when a purchase is made, but actually this isn't the case for the community billboard.
+
+Messages may be manually added in the Admin Zone (a link is on the dashboard checklist), but regular users will be purchasing them. When that happens, you are notified of the new message have been added.
+
+For the community billboard to display, you must place the symbol code, [tt]{$COMMUNITY_BILLBOARD}[/tt] into a template or page. Commonly this would be into [tt]GLOBAL_HTML_WRAP.tpl[/tt] so that it can show somewhere in the page footer.
+
+[media width="150" description="Managing community billboard messages in the queue" float="left"]data_custom/images/docs/tut_ecommerce/community_billboard_manage.png[/media]
+[media width="150" description="Adding a community billboard message from the Admin Zone" float="left"]data_custom/images/docs/tut_ecommerce/community_billboard_add.png[/media]
+[media width="150" description="Configuring the default community billboard message" float="left"]data_custom/images/docs/tut_ecommerce/default_community_billboard.png[/media]
+[media width="150" description="The community billboard message could be shown in the footer" float="left"]data_custom/images/docs/tut_ecommerce/community_billboard_actual.png[/media]
+[/surround]
+
+[title="2"]Subscription products[/title]
 
 [surround]
 [media width="150" description="Adding a capability for a usergroup subscription" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_subscription.png[/media]
@@ -249,7 +378,7 @@ Note that for some payment gateways you need to be mindful about how subscriptio
 Be very careful when deleting users because subscriptions will be left hanging when you do and would need to be manually cleaned up.
 [/surround]
 
-[title="2"]Invoices[/title]
+[title="2"]Invoice products[/title]
 
 [surround]
 [media width="150" description="Invoicing a member" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_invoice.png[/media]
@@ -261,41 +390,66 @@ Staff may quickly locate unpaid invoices and invoices for which the work has not
 Admin Zone > Audit > eCommerce > Invoices
 [/surround]
 
-[title="2"]Online store[/title]
+[title="2"]Shopping catalogue items[/title]
 
-The Composr online store works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]). You can access this catalogue for modifications, and adding products to, from Content Management > Products.
+The Composr shopping catalogue works via the existing Composr catalogues system. Out-of-the-box there is the shopping cart catalogue (called [tt]products[/tt]), although you can have multiple.
 
-The Composr store has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of people's needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in its own way but lacking the features needed for a wider website.
+Shopping catalogues provide the following special functionality:
+ - special templating for tidy product display
+ - easy adding to the shopping cart
+ - tax calculation
+ - shipping cost calculation
+ - stock counting
+
+The Composr shopping catalogue has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of peoples' needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in its own way but lacking the features needed for a wider website.
+
+You can access the default products catalogue for modifications, and adding products to, from Content Management > Products.
 
 [title="3"]Product fields[/title]
 
-[media width="150" description="Viewing a store product" float="right"]data_custom/images/docs/tut_ecommerce/product_view.png[/media]
-[media width="150" description="Adding a store product" float="right"]data_custom/images/docs/tut_ecommerce/product_add.png[/media]
+[media width="150" description="Viewing a shopping catalogue item" float="right"]data_custom/images/docs/tut_ecommerce/product_view.png[/media]
+[media width="150" description="Adding a shopping catalogue item" float="right"]data_custom/images/docs/tut_ecommerce/product_add.png[/media]
 This catalogue has some hard-coded fields:
- - [b]Product title[/b] -- the product title / name
- - [b]Item code[/b] -- a code of your choice for the item, probably taken from your internal labelling system
- - [b]Price[/b] -- the item's price (pre-tax)
- - [b]Stock level[/b] -- the number in stock
- - [b]Stock level warning point[/b] -- the point at which you should be e-mailed if the stock level reaches
- - [b]Whether stock is being maintained[/b] -- whether you want stock control (as above)
- - [b]Tax rate[/b] -- the tax rate, a percentage chosen from a list (you may edit the catalogue to change what is shown in the list)
- - [b]Weight[/b] -- the item's weight, in units of your choosing (but all items must consistently use the same units); the weight will operate with the config option that specifies how much it costs to ship a unit of weight ("Shipping cost factor")
- - [b]Description[/b] -- a description for the item
+ - [b]Product name[/b] -- the item's name
+ - [b]Product code[/b] -- a code of your choice for the item (a SKU, stock keeping code); by default this is hidden and randomly generated (you can edit the catalogue and remove [tt]RANDOM[/tt] from the default field value if you want to enter it manually)
+ - [b]Product image[/b] -- a picture of the item
+ - [b]Product description[/b] -- a description of the item
+ - Pricing:
+  - [b]Price[/b] -- the item's price (pre-tax)
+  - [b]Tax code[/b] -- the tax code, selected using a Composr tax code selector (e.g. you can enter a percentage tax)
+ - Stock:
+  - [b]Stock level[/b] -- the number in stock
+  - [b]Stock level warn-threshold[/b] -- send out a notification to the staff if the stock goes below this level
+  - [b]Stock maintained[/b] -- whether stock will be maintained; if the stock is not maintained then users will not be able to purchase it if the stock runs out
+ - Shipping:
+  - [b]Product weight[/b] -- the item's weight, in the configured units
+  - [b]Product length[/b] -- the item's length, in the configured units
+  - [b]Product width[/b] -- the item's width, in the configured units
+  - [b]Product height[/b] -- the item's height, in the configured units
 
-By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
+The fields are semantically tied into the system via the [tt]ecommerce_tag[/tt] field option. If [tt]ecommerce_tag[/tt] is not set then it will still try and match the fields using either the field types or the field names.
 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
-You may add additional fields, such as extra product images or specifications. However do [b]not[/b] re-order the original fields (or delete, or change the field type), as the system uses the order of these fields internally to know what they refer to. If you wish to change how they are shown do it via template editing.
+You may add additional fields, such as extra product images or specifications. However do [b]not[/b] delete any of the default fields. If an eCommerce catalogue is not correctly configured errors will occur.
+
+[title="4"]Multiple shopping catalogues (advanced)[/title]
+
+If you want another shopping catalogue then add a new catalogue with the Advanced "eCommerce catalogue" option set, and all the same tagged fields.
 
 [title="4"]Product options[/title]
 
-A popular request is to be able to specify options when purchasing a product, such as size or colour.
+A [url="popular request"]https://compo.sr/tracker/view.php?id=268[/url] is to be able to specify options when purchasing a product, such as size or colour.
 This would be a major task for us to implement, and complicate the system, so we are not currently planning to add it.
-There are, however, two workarounds:
+There are, however, three workarounds:
 1) Simply add the different product options as separate products.
 2) If you are using PayPal a template edit can be used to let the PayPal buy button carry through an option selection. We have left an example in the [tt]ECOM_CART_BUTTON_VIA_PAYPAL.tpl[/tt] template. This workaround shifts the configuration burden over to being a template editing task, and shifts the administration burden onto PayPal's end.
+3) Just ask the user what they want by e-mail after they order.
 
-If you need more flexibility than this (perhaps many different product options for different kinds of product), you should consider either sponsoring extended Composr development, or using a dedicated third-party eCommerce system.
+If you need more flexibility than this (perhaps many different product options for different kinds of product, or options that affect the price), you should consider either sponsoring extended Composr development, or using a dedicated third-party eCommerce system.
+
+[title="3"]Product reviews[/title]
+
+By default the catalogue is configured to allow product reviews, but you may turn these off if you wish.
 
 [title="3"]Categories and entries (i.e. the contents of your product catalogue)[/title]
 
@@ -306,16 +460,16 @@ Once you are happy with your set of fields, you can add categories and entries t
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/dont.png[/media]
 Be aware that once ordered, a catalogue entry shouldn't usually be deleted. You can unvalidate the entries instead (unselect 'Validated'), and/or move it into an archive category and/or set the stock to zero. This is vital to your ledger integrity. There is an option to forcibly purge an item from the database and all past order history for it, but it's not usually recommended.
 
-[title="3"]Store front[/title]
+[title="3"]Shopping catalogue[/title]
 
 [media width="150" description="Viewing the shopping cart" float="right"]data_custom/images/docs/tut_ecommerce/product_cart.png[/media]
-Once you have entries, and your eCommerce configuration is configured, users can start using your store from the products catalogue (Content > Products, on the default menus). From here they will be able to navigate to the shopping cart ([tt]site:shopping[/tt] page-link, Content > Shopping cart on the default menus) and finalise and pay for their order.
+Once you have entries, and your eCommerce configuration is configured, users can start using the shopping catalogue (Content > Products, on the default menus). From here they will be able to navigate to the shopping cart ([tt]site:shopping[/tt] page-link, Content > Shopping cart on the default menus) and finalise and pay for their order.
 
-You may customise the appearance of the store in the usual way of editing catalogue templates (the [tt]products[/tt] catalogue already has most of the templates overridden with eCommerce-tuned styles, so you do not need to worry about accidentally altering the look of non-eCommerce catalogues).
+You may customise the appearance of the shopping catalogue in the usual way of editing catalogue templates (the [tt]products[/tt] catalogue already has most of the templates overridden with eCommerce-tuned styles, so you do not need to worry about accidentally altering the look of non-eCommerce catalogues).
 
 [title="4"]Guests[/title]
 
-Guests may make purchases, if they have the right Composr permissions (to the [tt]catalogues[/tt] module, the [tt]products[/tt] catalogue, and the [tt]shopping[/tt] module).
+Guests may make purchases, if they have the necessary Composr permissions (to the [tt]catalogues[/tt] module, the [tt]products[/tt] catalogue, and the [tt]shopping[/tt] module).
 
 Guest users have no member ID, so Composr will store the order against their 'session ID' instead. Session IDs work using cookies, secured against the user's IP address. The session can be lost in many circumstances:
  - if the user has their browser set to empty cookies when closed
@@ -329,29 +483,201 @@ If you think users may be making delayed purchases as guests, you may want to co
 
 [title="3"]Handling orders[/title]
 
-When orders are purchased, an e-mail is sent out to the staff so they can fulfil the order, and the stock level is adjusted.
+When orders are purchased:
+1) a notification is sent out to the staff so they can manage the order
+2) the stock level is adjusted.
 
-Orders may be reviewed by the purchaser from their [tt]shopping[/tt] module (linked from their member profile)
+The staff can follow a link in the notification to manage the order, or go manually to Audit > eCommerce > Shopping orders.
 
-Order status can be changed (e.g. marked as dispatched) from:
-Audit > eCommerce > eCommerce orders
+Options for managing the order include:
+ - Changing the order status (e.g. mark as dispatched)
+ - Adding a note to be sent to the buyer (e.g. providing a tracking URL)
 
-[title="3"]Advanced tax and shipping[/title]
+Orders may be reviewed by the [i]buyer[/i] from their [tt]shopping[/tt] module (linked from their member profile)
 
-Tax and shipping calculations have intentionally been kept very simple, but programmers may extend them. We intentionally have architected the calculations to go through some simple common functions that you can override to addon additional behaviour if you need to.
+[title="2"]Handling tax[/title]
+
+Tax calculation has been kept as simple as reasonably possible because it's impossible to create configurability to cover every scenario people will need globally. Tax rules have too many special cases.
+
+To provide a reasonable level of support we have:
+ - Architected the calculations to go through a simple common function that a programmer can override to add in additional behaviour if needed, [tt]calculate_tax_due[/tt].
+ - Included support for USA taxation across state/country/city lines by integration of the excellent free [url="TaxCloud"]https://taxcloud.net/[/url] web service.
+  - This allows support for 'nexuses'
+  - This allows support for destination taxation state rules
+ - Special support for EU digital goods taxation.
+ - Support for custom specification of which Countries and States taxation applies within.
+
+When defining tax codes ('tax code' is the term we use) you can select with either:
+a) a USA tax code (a TIC)
+b) EU digital goods (which auto-selects the appropriate tax based on the buyer's country)
+c) your own custom percentage rate.
+Tax codes are carried through the system until it is time to turn into an actual tax figure, which is then stored in the database along with a 'derivation' of what exact tax fees were levied. To convert a tax code to an actual tax figure we need to know the shipping/invoicing address of the buyer, as this has an enormous impact on what exact tax is charged.
+
+Known limitations and important considerations:
+ - You should not enable automatic tax deduction on your payment gateway as Composr handles it for you. If tax deduction was enabled then transactions would fail to go through due to mismatches in pricing.
+ - We cannot verify that a user has given their correct address when they pay, and hence know the correct tax to charge. However we believe tax authorities would generally recognise that such fraud is the fault of users rather than your own liability (this is standard practice), plus the address is also used for shipping which creates a reasonable barrier to fraud.
+ - Before a buyer's address is known taxation is calculated as if the buyer was buying from the business's own address. This is so we can provide a "best estimate" of tax as early as possible.
+ - We do not mention import duty in the software, which would often be due if shipping internationally. The buyer pays this to the shipping company before they will deliver the import. This is standard practice, and it is standard to not refer to it in eCommerce tax systems as it is outside the scope, but I thought it was worth mentioning.
+ - We have designed the tax system to be legally compliant with at least EU and USA rules, although we cannot guarantee this -- you must take your own responsibility for your legal compliance.
+ - Sales tax rates may be changed, but they would be changed at the start of a new tax accounting period. Unless you are a USA seller using TaxCloud for all the taxes then you must be aware of this, ready to switch in new rates at midnight when the new ones apply.
+ - Avoid taking and holding multiple currencies (e.g. on PayPal) unless you have a very good reason to -- it will make your accounting particularly complicated. It is better to just force the buyer's credit card to charge in your own currency.
+ - You should strongly consider setting the site timezone to that where you collect tax so that if tax rates change you can more easily tell what dates the transactions happened on.
+
+[title="3"]Regional considerations[/title]
+
+[title="4"]USA users[/title]
+
+[media width="300" framed="0" float="right"]data_custom/images/docs/tut_ecommerce/taxcloud.png[/media]
+Basically if you are selling products commercially must register with your state for sales tax. Services usually are not liable for sales tax.
+
+USA tax is extremely complex as it may be levied at the federal level, state level, county level, and city level. For most USA states the tax is charged based on where the buyer resides ("destination taxation"), not the seller ("origin taxation"). That is, unless the buyer is in a state where you don't have any operations centre (in which case no sales tax applies at all unless there's a federal tax which is rare &dagger;).
+All the taxes need to be individually tracked and paid out.
+
+As mentioned above we use the TaxCloud to handle most of the complexity.
+
+To use the TaxCloud system:
+1) Your site must have working SSL functionality (outbound)
+2) Set up an account on TaxCloud
+3) Set up required details on the TaxCloud Profile/Websites/Contacts/Locations tabs; you will need your filing details such as your Federal Tax ID (EIN)
+4) Set up your payment information in the TaxCloud Payment Information tabs
+5) Consider adding the "Sales Tax Policy" text to your Composr rules page
+6) Fill in the TaxCloud API key configuration option on your Composr site
+7) Fill in the TaxCloud API ID configuration option on your Composr site
+8) Set the Business country configuration option on your Composr site to US
+9) Set the Business state configuration option on your Composr site to the state you operate your business from (make sure you enter a 2-character state code in upper-case, not the full written state name)
+10) You may ignore the "Tax countries" and "Tax states" Composr configuration options
+11) Set the Currency configuration option on your Composr site to USD
+12) Configure tax configuration options, and shopping catalogue items, to use the appropriate TIC code(s)
+Note that TaxCloud will automatically debit the tax from you and do tax forms for you in many cases -- and in any case will keep records of all the itemised sales taxes due.
+
+Known limitations at this time which could be worked around with custom code...
+ - We don't support exemption certificates for buyers not needing to pay tax (e.g. some farmers in some cases)
+
+&dagger; Instead of sales tax charged at point of sale, most sites have something called 'use tax'. 'Use tax' should be paid by the buyer themselves when they file their taxes. Very few people do, make of that what you will.
+
+[title="4"]EU users[/title]
+
+Sales tax in the EU is known as "VAT". It is technically different from a normal sales tax, but we don't need to get into that in this tutorial. There is a configuration option to make sure that the term "VAT" is used instead of the term "Sales tax".
+
+Basically if you are selling products or services commercially must register with your government's tax office for VAT.
+In the UK and some other countries there is an income threshold after which you need to register. If you don't you can't get rebate on purchases you make, but you also benefit competitively by being able to charge buyers less money. If you are selling digital goods then there is no threshold, you must collect VAT and remit it (e.g. via the "MOSS" if you are based in UK).
+
+Known limitations at this time which could be worked around with custom code...
+ - EU VAT-registered buyers may not input a VAT number to disable VAT charging -- they must use the government rebate process when they file tax returns (https://compo.sr/tracker/view.php?id=3062)
+
+The EU system for calculating digital product taxes charges the tax rate of the buyer's country, not yours, and is then paid to the government in the buyer's country.
+It only applies to certain digital sales, not shipped products. To use digital product tax:
+1) You may ignore the "Tax countries" and "Tax states" configuration options unless you sell other products that have other tax codes
+2) Configure tax configuration options, and shopping catalogue items, to use the "EU digital goods tax" tax code
+
+[title="4"]Other users[/title]
+
+Known limitations at this time which could be worked around with custom code...
+ - No special consideration has been given for tax rules in any other particular jurisdiction -- instead we have tried to make it configurable
+
+[title="3"]Tax invoices[/title]
+
+Tax invoices are automatically created and delivered to buyers. They are also available from the Admin Zone.
+
+[title="4"]Line items[/title]
+
+Local laws may require tax invoices that show individual line items, each with their own tax rate. For example, shipping costs may be zero-rated, services may be given a service rate, and food may be given a food rate.
+
+We support line items for:
+ - shopping cart purchases: each individual item purchased is shown as a line item, as well as shipping costs.
+ - for all eCommerce products that support a defined shipping cost we support showing this as a separate line item.
+
+We do not support inputting line items individually in the Composr invoice system (separate from tax invoices). Composr invoices are designed for simple invoices with a common tax code covering the whole value of the invoice. You may workaround the limitation in 2 ways:
+1) by manually preparing your own tax invoices, using the Composr system for tracking and payment, but not for any kind of official records. The tax code produced would be custom-calculated as the effective percentage tax rate covering the overall invoice.
+2) create multiple invoices, so that you don't actually require separate line items
+
+The same limitation applies to subscriptions, although this is not likely to be an issue as usually subscriptions wouldn't contain separate taxable items within them. The tax regulators would likely consider the subscription "atomic".
+
+If you are setting up custom products it is possible these represent aggregate purchases and may suffer from this problem. However you likely could make a convincing case that it was all one "atomic" purchase also.
+
+[title="3"]Tax derivation[/title]
+
+The tax derivations will be needed for tax remittance if you are subject to EU digital goods tax, or to USA destination taxation.
+
+We generally track these and they are available when you do a CSV download of transactions.
+
+However, TaxCloud doesn't actually provide us broken-down data of the taxes. So if you are a USA user using TaxCloud you'll find this data on TaxCloud itself.
+
+[title="2"]Shipping[/title]
+
+[title="3"]Handling shipping costs[/title]
+
+[media width="300" framed="0" float="right"]data_custom/images/docs/tut_ecommerce/shippo.png[/media]
+You should not enable automatic shipping cost calculation on your payment gateway as Composr handles it for you. If shipping cost calculation was enabled then buyers would be double-charged for shipping.
+
+You have 3 possible approaches for calculating shipping costs:[list="1"]
+[*] Use the inbuilt configuration options for calculating shipping cost based on weight and dimensions. This may work reasonably if shipping costs are not going to vary by distance.
+[*] Fill in the Shippo configuration to calculate based on weight, dimensions, and presumably distance. Shippo will provide an exact shipping cost by actual communication with your choice of shipping company. This is likely your best option as Shippo is free (you pay when you print shipping labels), although it may not work for businesses in every country.
+[*] Customise the code. The shipping cost calculation in '1' has been kept very simple because it's impossible to create configurability to cover every scenario people will want globally. There are too many different special cases to cover. We have therefore architected the calculations to go through a simple common function that a programmer can override to add in additional behaviour if needed, [tt]calculate_shipping_cost[/tt].
+[/list]
+
+Known limitations at this time which could be worked around with custom code...
+ - There's no way to give a product a flat rate for shipping (https://compo.sr/tracker/view.php?id=1520)
+ - Free shipping above a certain payment amount is not supported (https://compo.sr/tracker/view.php?id=3064)
+ - Customer-selectable shipping options are not supported (https://compo.sr/tracker/view.php?id=3065)
+
+[title="4"]Shippo[/title]
+
+Shippo is free because they make money helping you print shipping labels. We don't currently provide any special integration with that feature though.
+
+1) Sign up to [url="Shippo"]https://goshippo.com/[/url]
+2) Log into your Dashboard
+3) Go to the API section
+4) Copy the Live Token and Test Token into your eCommerce configuration (Admin Zone > Setup > Configuration > eCommerce options > Shipping).
+5) Go to the Carriers section
+6) Disable all but one carrier account (as Composr does not currently support shipping option choices); make sure the carrier account you leave supports international shipping (DHL Express does not, for example)
 
 [title="3"]Shipping addresses[/title]
 
-Some custom profile fields are pre-installed to allow members to set their shipping address in their regular profile settings (instead of having to define it each time when they pay on the payment gateway). However by default these fields are not enabled, so you would need to edit them to enable 'Owner viewable' and 'Owner settable' for each field.
+Some custom profile fields are pre-installed to allow members to set their shipping address in their regular profile settings (instead of having to define it each time when they pay on the payment gateway).
 
+There are configuration options to define whether the fields are enabled, in Admin Zone > Setup > Configuration > User/usergroup options > Special CPFs to show.
+
+Additionally by default these fields are not enabled for direct editing by users, so you would need to edit them to enable 'Owner viewable' and 'Owner settable' for each field.
 You can find and edit the fields from:
 Admin Zone > Tools > Members > Custom Profile Fields > Edit Custom Profile Field
 
-[title="2"]Currencies[/title]
+The configuration options also impact what shipping/billing address fields show, but subtly:
+ - County input:
+  - If the County field is disabled then County input will not be available
+ - State input:
+  - If the State field is disabled then State input will not be available, unless the Business country is US (as it is required for tax calculation)
+  - If the Business country is US then State input will be a drop-down list, otherwise it will be a free-text input
+  - If the Country field is enabled or the Business country is not US then an 'N/A' option will be included on the list (to signify a non-USA state)
+  - If a buyer's state selection is not appropriate for the country selection then an error message will be shown
+ - Postcode/Zip input:
+  - If the Postcode/Zip field is disabled then Postcode/Zip input will not be enabled, unless the Business country is US (as required for tax calculation)
+  - If a buyer's Postcode/Zip selection is not appropriate for the country selection then an error message will be shown
+ - Country input:
+  - If the Country field is disabled the Business country will be used automatically for the buyer's shipping/billing address
 
-The currency the website works in is defined in the configuration. If you use PayPal you need to make sure your account can accept this currency and is not set up to allow people to choose which currency to pay in (as it stops Composr being able to verify the payment if they use this feature).
+[title="2"]Auditing[/title]
 
-[title="2"]Charts[/title]
+[title="3"]Handling refunds[/title]
+
+[media width="150" description="Sales list management" float="right"]data_custom/images/docs/tut_ecommerce/sales_management.png[/media]
+There is a module in the Admin Zone for sales list management at:
+Admin Zone > Audit > eCommerce sales list management
+The module should be used to cancel purchases, such as an e-mail address purchased up a user that is no longer valid. Cancelling such a purchase allows a re-purchase at a later date (only one address of each e-mail address type is allowed per-user).
+
+You may also want to cancel whatever the purchase automatically did. This is not done automatically for you (&dagger;). For example, if a user bought name highlighting you can edit their account to un-highlight their name.
+
+Cancelling does not automatically provide a refund.
+
+[b]For monetary payments[/b]:
+Refunds should be done on the payment gateway.
+
+[b]For point payments[/b]:
+Refunds must manually be given through the points system.
+
+&dagger; Usergroup subscriptions can be cancelled from the subscriptions page, or from some payment gateways. Usergroup memberships automatically are removed when a subscription is terminated.
+
+[title="3"]Charts[/title]
 
 [surround]
 [media width="150" description="A profit/loss account for a fresh install" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_pl.png[/media]
@@ -365,21 +691,29 @@ Composr can generate the following charts over a custom specified period:
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
 The developers do not accept any responsibility for the financial accounts of users of the Composr eCommerce system. Accountancy features are provided as an aid only and are not guaranteed to perform to match any legislative, tax, or accountancy conventions.
 [/box]
-[/surround][title="2"]Logs[/title]
+[/surround][title="3"]Logs[/title]
 
 Transaction logs can be viewed from:
 Admin Zone > Audit > eCommerce > Logs
 
-[title="2"]Payment system[/title]
+[title="2"]Payment gateways: advanced[/title]
+
+[title="3"]Manual transactions[/title]
 
 [surround]
 [media width="150" description="Inputting a manual transaction" float="right"]data_custom/images/docs/tut_ecommerce/ecommerce_manual.png[/media]
-Composr supports manual transactions to be entered. This is possible in the Admin Zone module. Entering a manual transaction will trigger any code associated with the purchase of a product (such as a usergroup promotion).
+Normally a transaction would go through via PayPal/etc. i.e. Composr sends a user off to PayPal, and then PayPal calls back saying the transaction has happened.
+
+However, we've designed it to be modular. In Composr another method of doing a transaction is the 'manual transaction'. The manual transaction form just allows you to simulate a transaction from the Admin Zone; the idea is that you've received a cheque (or SMS payment, or whatever) and are manually telling Composr about it so that Composr can dispatch the sale. To perform a manual transaction you need to:
+1) access the manual transaction screen (Admin Zone > Audit > eCommerce > Manual transaction).
+2) select the right product
+3) enter the correct ID number that the product will use to dispatch for this sale
+4) enter the sale amount that the product expects to be receiving (which you can leave blank for it to work this out itself).
 
 Manual transactions may also be used to input transactions that are totally external to Composr, and thus otherwise immeasurable by the charting. For example, an organisations expenditure may be recorded by manually inputting a negative transaction for the special 'Other' product.
 [/surround]
 
-[title="2"]Local payments[/title]
+[title="3"]Local payments[/title]
 
 Composr supports taking in payments 'locally' (i.e. not redirecting to a third-party site to take the payment). Not all the payment gateways within Composr allow local payments though, either due to the gateways not supporting it or just because it has not yet been implemented. At the time of writing the SecPay and Authorize.Net gateways support it.
 
@@ -522,11 +856,32 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
 |}
 
 [concepts
- 1_key="PayPal"           1_value="The most popular online payment gateway"
- 2_key="Payment gateway"  2_value="A third-party infrastructure for performing eCommerce transactions"
+ 1_key="PayPal"                        1_value="The most popular online payment gateway"
+ 2_key="Payment gateway"               2_value="A third-party infrastructure for performing eCommerce transactions"
  3_key="Instant Payment Notification"  3_value="A system, originally created by PayPal, for determining the progress of a financial transaction or ongoing subscription."
- 4_key="Product"          4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very aggrandised and dynamic"
- 5_key="PCI"              5_value="The trade body for regulating eCommerce standards. When we refer to PCI compliance we are typically referring to PCI Data Security Standard (PCI DSS)."
+ 4_key="Product"                       4_value="An item in the eCommerce system that defines everything relating to the natural view of a product or service, including handling of any actions associated with a sale being completed or retracted; these products are not like supermarket products -- they are very aggrandised and dynamic"
+ 5_key="PCI"                           5_value="The trade body for regulating eCommerce standards. When we refer to PCI compliance we are typically referring to PCI Data Security Standard (PCI DSS)."
+ 6_key="Shopping catalogue"            6_value="A special catalogue for listing items that may be purchased through the shopping cart"
+ 7_key="Shopping catalogue item"       7_value="An individual item in a shopping catalogue, another name for a catalogue entry which only applies to a shopping catalogue"
+ 8_key="Shopping cart"                 8_value="System for collecting and paying for one of more items from a shopping catalogue; typically these will be physical items that are shipped together"
+ 9_key="Purchasing module"             9_value="The [tt]purchase[/tt] module where one-off purchases are made"
+ 10_key="Subscription"                 10_value="Something purchased that has recurring payments for as long as the subscription is open"
+ 11_key="Invoice"                      11_value="An invoice created for a website member to pay"
+ 12_key="Unit price"                   12_value="The price of an item (gross, i.e. pre-tax), before quantity multiplication is applied"
+ 13_key="Price"                        13_value="The price of an item(s) (gross, i.e. pre-tax); this term is used roughly"
+ 14_key="Amount"                       14_value="The amount being paid in a transaction; this term is used roughly and may or may not include the sales tax"
+ 15_key="Grand total"                  15_value="The total cost of an order including tax and shipping costs"
+ 16_key="Fee"                          16_value="A fee levied on your website for processing a transaction"
+ 17_key="Origin taxation"              17_value="USA taxation where taxes are levied based on where the seller (you) resides"
+ 18_key="Destination taxation"         18_value="USA taxation where taxes are levied based on where the buyer resides"
+ 19_key="Sales tax"                    19_value="The system for charging tax on sales, used in the USA and other countries"
+ 20_key="Use tax"                      20_value="The system for paying tax on purchases, used in the USA; buyers are meant to report purchases from other states they paid no tax on and pay those taxes"
+ 21_key="VAT"                          21_value="Alternative to a sales tax system, used in the EU and some other countries around the world"
+ 22_key="Tax code"                     22_value="The Composr term for identifying a particular kind of taxation to apply to a product"
+ 23_key="Tax derivation"               23_value="The Composr term for tracking what exact taxes are levied for a transaction"
+ 24_key="EU digital goods taxation"    24_value="A tax system in Europe that applies to digital sales, taxes are paid to the buyer's home country using that country's own tax rate"
+ 25_key="Tax invoice"                  25_value="A formal (legally-compliant) invoice showing exactly what was paid for a transaction, broken down by line-item, with individual taxation rates shown for each line-item"
+ 26_key="TaxCloud"                     26_value="A third-party web service for handling the complexities of USA taxation"
 ]Concepts[/concepts]
 
 [title="2"]See also[/title]
@@ -534,5 +889,7 @@ We have summarised the PCI compliance rules below in a way streamlined toward Co
  - [page="_SEARCH:tut_catalogues"]Custom structured content (via catalogues)[/page]
  - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
+ - [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points[/page]
+ - http://offers.avalara.com/ebook/
 
 {$SET,tutorial_tags,eCommerce,Development,shopping,ecommerce,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Use the eCommerce system to sell things. Usergroup subscription and member invoicing are available out-of-the-box.}[block]main_tutorial_rating[/block]

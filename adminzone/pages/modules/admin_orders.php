@@ -528,9 +528,6 @@ class Module_admin_orders
         $GLOBALS['SITE_DB']->query_update('shopping_order', array('order_status' => 'ORDER_STATUS_dispatched'), array('id' => $id), '', 1);
         $GLOBALS['SITE_DB']->query_update('shopping_order_details', array('dispatch_status' => 'ORDER_STATUS_dispatched'), array('order_id' => $id)); // There may be more than one items to update status
 
-        require_code('shopping');
-        update_stock($id);
-
         $add_note_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'action' => 'add_note', 'last_act' => 'dispatched', 'id' => $id), get_module_zone('admin_orders'));
 
         return redirect_screen($this->title, $add_note_url, do_lang_tempcode('SUCCESS'));
