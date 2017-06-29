@@ -335,7 +335,7 @@ The POP3 quota change address is:
 [surround]
 {!community_billboard:DOC_COMMUNITY_BILLBOARD}
 
-The queue is accessed via the Staff Checklist on the Admin Zone front page. Note that the queue is not self-managed, you need to control which message is active, as they won't automatically rotate or expire. We mentioned above that the staff are automatically notified when a purchase is made, but actually this isn't the case for the community billboard.
+The queue is accessed via the Staff Checklist on the Admin Zone dashboard. Note that the queue is not self-managed, you need to control which message is active, as they won't automatically rotate or expire. We mentioned above that the staff are automatically notified when a purchase is made, but actually this isn't the case for the community billboard.
 
 Messages may be manually added in the Admin Zone (a link is on the dashboard checklist), but regular users will be purchasing them. When that happens, you are notified of the new message have been added.
 

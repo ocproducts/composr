@@ -1,6 +1,0 @@
-{+START,IF_NON_PASSED,MESSAGE}
-	{$PARAGRAPH,{$?,{$OR,{$_GET,keep_ecommerce_local_test},{$CONFIG_OPTION,use_local_payment}},{!PURCHASE_FINISHED_SIMPLE},{!PURCHASE_FINISHED}}}
-{+END}
-{+START,IF_PASSED,MESSAGE}
-	{$PARAGRAPH,{$REPLACE,  ,<br />,{MESSAGE*}}}
-{+END}

@@ -1060,7 +1060,7 @@ Ask us if you wanted to be listed as one of the [page=\"site:stars\"]Composr dev
                 'required' => false,
             ),
         ) + $extra_brief_details,
-        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Professional support'), '_SEARCH'),
+        'next' => build_url(array('page' => 'tickets', 'type' => 'post', 'ticket_type' => 'Professional support'), get_module_zone('tickets')),
     ),
 
     'support' => array(

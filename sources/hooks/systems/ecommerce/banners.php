@@ -293,7 +293,7 @@ class Hook_ecommerce_banners
 
                 $urls = get_url('image_url', 'file', 'uploads/banners', 0, CMS_UPLOAD_IMAGE);
                 $image_url = $urls[0];
-                $site_url = post_param_string('site_url');
+                $site_url = post_param_string('site_url', false, INPUT_FILTER_URL_GENERAL);
                 $caption = post_param_string('caption');
                 $direct_code = post_param_string('direct_code', '');
                 $notes = post_param_string('notes', '');

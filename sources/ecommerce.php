@@ -1806,7 +1806,7 @@ function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup,
                     $body = $_body->evaluate(get_site_default_lang());
 
                     require_code('mail');
-                    mail_wrap($subject, $body, array($email), $to_name);
+                    dispatch_mail($subject, $body, array($email), $to_name);
                 }
             }
         } else {

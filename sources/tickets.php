@@ -86,7 +86,7 @@ function check_ticket_access($ticket_id)
  */
 function ticket_url($ticket_id)
 {
-    $_ticket_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id), '_SEARCH', array(), false, true, true);
+    $_ticket_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id), get_module_zone('tickets'), array(), false, true, true);
     $ticket_url = $_ticket_url->evaluate();
     return $ticket_url;
 }
