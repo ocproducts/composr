@@ -354,8 +354,6 @@
 
                 /**@member {number}*/
                 thumb_width: intVal(symbols.CONFIG_OPTION.thumb_width),
-                /**@member {number}*/
-                topic_pin_max_days: intVal(symbols.CONFIG_OPTION.topic_pin_max_days),
 
                 /**@member {string}*/
                 google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics),
