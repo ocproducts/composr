@@ -10,13 +10,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    composr_homesite_support_credits
+ * @package    community_billboard
  */
 
 /**
  * Hook class.
  */
-class Hook_config_support_credit_tax_code
+class Hook_config_community_billboard_price
 {
     /**
      * Gets the details relating to the config option.
@@ -26,16 +26,17 @@ class Hook_config_support_credit_tax_code
     public function get_details()
     {
         return array(
-            'human_name' => 'SUPPORT_CREDIT_TAX_CODE',
-            'type' => 'tax_code',
-            'category' => 'FEATURE',
-            'group' => 'CUSTOMERS',
-            'explanation' => 'CONFIG_OPTION_support_credit_tax_code',
+            'human_name' => 'PRICE_community_billboard_price',
+            'type' => 'float',
+            'category' => 'ECOMMERCE',
+            'group' => 'COMMUNITY_BILLBOARD_MESSAGE',
+            'explanation' => 'CONFIG_OPTION_community_billboard_price',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'required' => false,
 
-            'addon' => 'composr_homesite_support_credits',
+            'addon' => 'community_billboard',
         );
     }
 
@@ -46,6 +47,6 @@ class Hook_config_support_credit_tax_code
      */
     public function get_default()
     {
-        return '0%';
+        return '4.00';
     }
 }

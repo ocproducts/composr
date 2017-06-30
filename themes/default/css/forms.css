@@ -690,10 +690,6 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	margin: -52px 0 0 0;
 }
 
-.form_set_indent {
-	margin-{!en_left}: 2em;
-}
-
 .fields_set_item {
 	background: {$GET,main_background};
 	padding: 0.75em 0.5em;

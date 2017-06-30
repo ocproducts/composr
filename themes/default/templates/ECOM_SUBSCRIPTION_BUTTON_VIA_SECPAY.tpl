@@ -28,4 +28,3 @@
 		<input id="purchase_button" data-disable-on-click="1" class="button_screen menu__adminzone__audit__ecommerce__subscriptions" type="submit" value="{!MAKE_PAYMENT}" />
 	</div>
 </form>
-

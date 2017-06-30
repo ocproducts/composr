@@ -90,6 +90,7 @@ class blank_lines_test_set extends cms_test_case
                     'themes/default/templates/PAGINATION_PAGE_NUMBER_LINK.tpl',
                     'themes/default/templates/PAGINATION_PREVIOUS.tpl',
                     'themes/default/templates/PAGINATION_PREVIOUS_LINK.tpl',
+                    'themes/default/templates/CURRENCY.tpl',
                 ))) {
                     $expected_breaks = 0;
                 }

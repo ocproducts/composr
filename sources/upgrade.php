@@ -1722,7 +1722,7 @@ function version_specific()
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=REPLACE(text_original,\'ocp_\',\'cms_\') WHERE text_original LIKE \'ocp\_%\'');
             $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', '*ID_TEXT', 'privilege');
             $GLOBALS['SITE_DB']->alter_table_field('gsp', 'specific_permission', '*ID_TEXT', 'privilege');
-            if (addon_installed('pointstore')) {
+            if ($GLOBALS['SITE_DB']->table_exists('pstore_permissions')) {
                 $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
             }
             $GLOBALS['SITE_DB']->rename_table('msp', 'member_privileges');

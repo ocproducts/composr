@@ -30,4 +30,3 @@
 		<input id="purchase_button" data-disable-on-click="1" style="border: 0px" type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!" title="{!MAKE_PAYMENT}" />
 	</div>
 </form>
-

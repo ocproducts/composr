@@ -2025,11 +2025,7 @@ table.scrollable_inside {
 	border-collapse: separate;
 }
 
-.results_table_simplified {
-	border-collapse: collapse;
-}
-
-.results_table, .results_table_simplified {
+.results_table {
 	border: 0 !important;
 	border-spacing: 0;
 	margin: 1em 0;
@@ -2042,10 +2038,6 @@ table.scrollable_inside {
 }
 .wide_table_wrap + .wide_table_wrap>.results_table {
 	margin-top: 1em;
-}
-
-.results_table_simplified th, .results_table_simplified td {
-	border: 1px solid {$GET,standard_border} !important;
 }
 
 .results_table>thead:first-child>tr:first-child *:first-child, .results_table>thead:nth-child(2)/*after colspan*/>tr:first-child *:first-child, .results_table>tbody>tr:first-child>*:first-child {

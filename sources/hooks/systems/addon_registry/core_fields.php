@@ -113,7 +113,6 @@ class Hook_addon_registry_core_fields
             'sources/hooks/systems/fields/url_multi.php',
             'sources/hooks/systems/fields/page_link.php',
             'sources/hooks/systems/fields/date_time.php',
-            'sources/hooks/systems/fields/year_month.php',
             'sources/hooks/systems/fields/email.php',
             'sources/hooks/systems/fields/float.php',
             'sources/hooks/systems/fields/guid.php',

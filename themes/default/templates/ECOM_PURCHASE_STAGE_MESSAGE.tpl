@@ -1,0 +1,2 @@
+{$PARAGRAPH,{TEXT}}
+

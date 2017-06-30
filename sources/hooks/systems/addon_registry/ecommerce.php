@@ -147,6 +147,8 @@ class Hook_addon_registry_ecommerce
             'sources/hooks/systems/config/payment_gateway.php',
             'sources/hooks/systems/config/pd_email.php',
             'sources/hooks/systems/config/pd_number.php',
+            'sources/hooks/systems/config/transaction_flat_cost.php',
+            'sources/hooks/systems/config/transaction_percentage_cost.php',
             'sources/hooks/systems/config/use_local_payment.php',
             'sources/hooks/systems/config/payment_gateway_vpn_username.php',
             'sources/hooks/systems/config/payment_gateway_vpn_password.php',
@@ -1508,7 +1510,6 @@ class Hook_addon_registry_ecommerce
     public function tpl_preview__administrative__ecom_products_price_screen()
     {
         //This is for getting the do_ajax_request() javascript function.
-        require_javascript('ajax');
 
         $warning_details = do_lorem_template('WARNING_BOX', array('WARNING' => lorem_phrase()));
 

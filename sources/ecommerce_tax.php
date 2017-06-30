@@ -320,7 +320,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 
         // Europe
         if ($tax_code == 'EU') {
-            require_code('files2');
+            require_code('http');
             list($__rates) = cache_and_carry('http_get_contents', array('http://euvat.ga/rates.json'));
             $_rates = json_decode($__rates, true);
 
@@ -706,6 +706,7 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
     if ($has_tic) {
         $default_set = 'tic';
     }
+    require_code('http');
     list($__tics) = cache_and_carry('http_get_contents', array('https://taxcloud.net/tic/?format=json', array('trigger_error' => false)));
     $_tics = @json_decode($__tics, true);
     if (($_tics !== false) && ($_tics !== null)) {

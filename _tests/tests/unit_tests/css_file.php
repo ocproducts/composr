@@ -445,7 +445,6 @@ class css_file_test_set extends cms_test_case
             'pic',
             'play_button',
             'plupload',
-            'pointstore_item_tag',
             'popup_spacer',
             'post',
             'ppt_link',
