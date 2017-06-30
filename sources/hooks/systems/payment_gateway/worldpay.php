@@ -295,9 +295,10 @@ class Hook_payment_gateway_worldpay
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
+     * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
+     * @return ?array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response (null: no transaction; will only return null when $silent_fail is set).
      */
-    public function handle_ipn_transaction()
+    public function handle_ipn_transaction($silent_fail)
     {
         // http://support.worldpay.com/support/kb/bg/paymentresponse/pr0000.html
 
@@ -305,7 +306,7 @@ class Hook_payment_gateway_worldpay
 
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
-            if (!running_script('ecommerce')) {
+            if ($silent_fail) {
                 return null;
             }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -319,7 +320,7 @@ class Hook_payment_gateway_worldpay
 
         $code = post_param_string('transStatus');
         if ($code == 'C') {
-            if (!running_script('ecommerce')) {
+            if ($silent_fail) {
                 return null;
             }
             exit(); // Cancellation signal, won't process
@@ -345,7 +346,7 @@ class Hook_payment_gateway_worldpay
 
         // SECURITY
         if (post_param_string('callbackPW') != get_option('payment_gateway_callback_password')) {
-            if (!running_script('ecommerce')) {
+            if ($silent_fail) {
                 return null;
             }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED'));

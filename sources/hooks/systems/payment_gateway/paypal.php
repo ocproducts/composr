@@ -24,6 +24,18 @@
 class Hook_payment_gateway_paypal
 {
     /**
+     * Get a standardised config map.
+     *
+     * @return array The config
+     */
+    public function get_config()
+    {
+        return array(
+            'supports_remote_memo' => true,
+        );
+    }
+
+    /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
      * @param  float $amount A transaction amount.
@@ -55,46 +67,46 @@ class Hook_payment_gateway_paypal
     }
 
     /**
+     * Generate a transaction ID / trans-expecting ID.
+     *
+     * @return string A transaction ID.
+     */
+    public function generate_trans_id()
+    {
+        require_code('crypt');
+        return get_rand_password();
+    }
+
+    /**
      * Make a transaction (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  float $price Transaction price in money.
+     * @param  float $tax Transaction tax in money.
+     * @param  float $shipping_cost Shipping cost.
      * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_transaction_button($type_code, $item_name, $purchase_id, $amount, $currency)
+    public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency)
     {
         // https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/formbasics/
 
         $payment_address = $this->_get_payment_address();
         $form_url = $this->_get_remote_form_url();
 
-        // We only need this record so that we can know what member made the payment; but as we're using it we'll pass this as the custom value
-        $trans_id = $this->generate_trans_id();
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_currency' => $currency,
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
-
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_PAYPAL', array(
             '_GUID' => 'b0d48992ed17325f5e2330bf90c85762',
             'TYPE_CODE' => $type_code,
             'ITEM_NAME' => $item_name,
             'PURCHASE_ID' => $purchase_id,
-            'TRANS_ID' => $trans_id,
-            'AMOUNT' => float_to_raw_string($amount),
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'SHIPPING_COST' => float_to_raw_string($shipping_cost),
+            'AMOUNT' => float_to_raw_string($price + $tax + $shipping_cost),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
@@ -106,81 +118,54 @@ class Hook_payment_gateway_paypal
      * Make a transaction (payment) button for multiple shopping cart items.
      * Optional method, provides more detail than make_transaction_button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  array $items Items array.
+     * @param  float $shipping_cost Shipping cost.
      * @param  Tempcode $currency Currency symbol.
      * @param  AUTO_LINK $order_id Order ID.
      * @return Tempcode The button.
      */
-    public function make_cart_transaction_button($items, $currency, $order_id)
+    public function make_cart_transaction_button($trans_expecting_id, $items, $shipping_cost, $currency, $order_id)
     {
+        if (!addon_installed('shopping')) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $payment_address = $this->_get_payment_address();
 
         $form_url = $this->_get_remote_form_url();
-
-        $notification_text = do_lang_tempcode('CHECKOUT_NOTIFICATION_TEXT', strval($order_id));
-
-        // We only need this record so that we can know what member made the payment; but as we're using it we'll pass this as the custom value
-        $trans_id = $this->generate_trans_id();
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => 'cart_orders',
-            'e_purchase_id' => strval($order_id),
-            'e_item_name' => '',
-            'e_member_id' => get_member(),
-            'e_amount' => '',
-            'e_currency' => $currency,
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
 
         return do_template('ECOM_CART_BUTTON_VIA_PAYPAL', array(
             '_GUID' => '89b7edf976ef0143dd8dfbabd3378c95',
             'ITEMS' => $items,
             'CURRENCY' => $currency,
+            'SHIPPING_COST' => $shipping_cost,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
             'MEMBER_ADDRESS' => $this->_build_member_address(),
             'ORDER_ID' => strval($order_id),
-            'TRANS_ID' => $trans_id,
-            'NOTIFICATION_TEXT' => $notification_text,
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
+            'TYPE_CODE' => $items[0]['TYPE_CODE'],
         ));
     }
 
     /**
      * Make a subscription (payment) button.
      *
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
      * @param  ID_TEXT $type_code The product codename.
      * @param  SHORT_TEXT $item_name The human-readable product title.
      * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $amount A transaction amount.
+     * @param  float $price Transaction price in money.
+     * @param  float $tax Transaction tax in money.
+     * @param  ID_TEXT $currency The currency to use.
      * @param  integer $length The subscription length in the units.
      * @param  ID_TEXT $length_units The length units.
      * @set    d w m y
-     * @param  ID_TEXT $currency The currency to use.
      * @return Tempcode The button.
      */
-    public function make_subscription_button($type_code, $item_name, $purchase_id, $amount, $length, $length_units, $currency)
+    public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
     {
-        // We only need this record so that we can know what member made the payment; but as we're using it we'll pass this as the custom value
-        $trans_id = $this->generate_trans_id();
-        $GLOBALS['SITE_DB']->query_insert('trans_expecting', array(
-            'id' => $trans_id,
-            'e_type_code' => $type_code,
-            'e_purchase_id' => $purchase_id,
-            'e_item_name' => $item_name,
-            'e_member_id' => get_member(),
-            'e_amount' => float_to_raw_string($amount),
-            'e_currency' => $currency,
-            'e_ip_address' => get_ip_address(),
-            'e_session_id' => get_session_id(),
-            'e_time' => time(),
-            'e_length' => null,
-            'e_length_units' => '',
-        ));
-
         $payment_address = $this->_get_payment_address();
         $form_url = $this->_get_remote_form_url();
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_PAYPAL', array(
@@ -190,8 +175,10 @@ class Hook_payment_gateway_paypal
             'LENGTH' => strval($length),
             'LENGTH_UNITS' => $length_units,
             'PURCHASE_ID' => $purchase_id,
-            'TRANS_ID' => $trans_id,
-            'AMOUNT' => float_to_raw_string($amount),
+            'TRANS_EXPECTING_ID' => $trans_expecting_id,
+            'PRICE' => float_to_raw_string($price),
+            'TAX' => float_to_raw_string($tax),
+            'AMOUNT' => float_to_raw_string($price + $tax),
             'CURRENCY' => $currency,
             'PAYMENT_ADDRESS' => $payment_address,
             'FORM_URL' => $form_url,
@@ -206,28 +193,71 @@ class Hook_payment_gateway_paypal
      */
     protected function _build_member_address()
     {
-        $member_address = array();
-        if (!is_guest()) {
-            $member_address['first_name'] = get_cms_cpf('firstname');
-            $member_address['last_name'] = get_cms_cpf('lastname');
-            $address_lines = explode("\n", get_cms_cpf('street_address'));
-            $member_address['address1'] = $address_lines[0];
-            unset($address_lines[0]);
-            $member_address['address2'] = implode(', ', $address_lines);
-            $member_address['city'] = get_cms_cpf('city');
-            $member_address['state'] = get_cms_cpf('state');
-            $member_address['zip'] = get_cms_cpf('post_code');
-            $member_address['country'] = get_cms_cpf('country');
+        $shipping_email = '';
+        $shipping_phone = '';
+        $shipping_firstname = '';
+        $shipping_lastname = '';
+        $shipping_street_address = '';
+        $shipping_city = '';
+        $shipping_county = '';
+        $shipping_state = '';
+        $shipping_post_code = '';
+        $shipping_country = '';
+        $shipping_email = '';
+        $shipping_phone = '';
+        $cardholder_name = '';
+        $card_type = '';
+        $card_number = null;
+        $card_start_date_year = null;
+        $card_start_date_month = null;
+        $card_expiry_date_year = null;
+        $card_expiry_date_month = null;
+        $card_issue_number = null;
+        $card_cv2 = null;
+        $billing_street_address = '';
+        $billing_city = '';
+        $billing_county = '';
+        $billing_state = '';
+        $billing_post_code = '';
+        $billing_country = '';
+        get_default_ecommerce_fields(null, $shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $cardholder_name, $card_type, $card_number, $card_start_date_year, $card_start_date_month, $card_expiry_date_year, $card_expiry_date_month, $card_issue_number, $card_cv2, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, false, false);
 
-            require_code('locations');
-            if (find_country_name_from_iso($member_address['country'])  === null) {
-                $member_address['country'] = ''; // PayPal only allows valid countries
-            }
-
-            if (($member_address['address1'] == '') || ($member_address['city'] == '') || ($member_address['zip'] == '') || ($member_address['country'] == '')) {
-                $member_address = array(); // Causes error on PayPal due to it crashing when trying to validate the address
-            }
+        if ($shipping_street_address == '') {
+            $street_address = $billing_street_address;
+            $city = $billing_city;
+            $county = $billing_county;
+            $state = $billing_state;
+            $post_code = $billing_post_code;
+            $country = $billing_country;
+        } else {
+            $street_address = $shipping_street_address;
+            $city = $shipping_city;
+            $county = $shipping_county;
+            $state = $shipping_state;
+            $post_code = $shipping_post_code;
+            $country = $shipping_country;
         }
+
+        $member_address = array();
+        $member_address['first_name'] = $shipping_firstname;
+        $member_address['last_name'] = $shipping_lastname;
+        list($street_address_1, $street_address_2) = split_street_address($street_address, 2);
+        $member_address['address1'] = $street_address_1;
+        $member_address['address2'] = $street_address_2;
+        $member_address['city'] = $city;
+        $member_address['state'] = $state;
+        $member_address['zip'] = $post_code;
+        $member_address['country'] = $country;
+
+        require_code('locations');
+        if (find_country_name_from_iso($member_address['country'])  === null) {
+            $member_address['country'] = ''; // PayPal only allows valid countries
+        }
+
+        if (($member_address['address1'] == '') || ($member_address['city'] == '') || ($member_address['zip'] == '') || ($member_address['country'] == '')) {
+            $member_address = array(); // Causes error on PayPal due to it crashing when trying to validate the address
+        }
+
         return $member_address;
     }
 
@@ -250,21 +280,23 @@ class Hook_payment_gateway_paypal
      */
     public function handle_ipn_transaction($silent_fail)
     {
-        $custom = post_param_string('custom', '-1');
+        $trans_expecting_id = post_param_string('custom');
 
-        $trans_expecting_rows = $GLOBALS['SITE_DB']->query_select('trans_expecting', array('*'), array('id' => $custom), '', 1);
-        if (!array_key_exists(0, $trans_expecting_rows)) {
+        $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
+        if (!array_key_exists(0, $transaction_rows)) {
             if ($silent_fail) {
                 return null;
             }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
         }
-        $trans_expecting_row = $trans_expecting_rows[0];
+        $transaction_row = $transaction_rows[0];
 
-        $purchase_id = $trans_expecting_row['e_purchase_id'];
+        $member_id = $transaction_row['e_member_id'];
+        $type_code = $transaction_row['e_type_code'];
+        $item_name = $transaction_row['e_item_name'];
+        $purchase_id = $transaction_row['e_purchase_id'];
 
-        // Read in stuff we'll just log
-        $reason_code = post_param_string('reason_code', '');
+        $reason = post_param_string('reason_code', '');
         $pending_reason = post_param_string('pending_reason', '');
         $memo = post_param_string('memo', '');
         foreach (array_keys($_POST) as $key) { // Custom product options go onto the memo
@@ -275,22 +307,15 @@ class Hook_payment_gateway_paypal
         }
         $txn_id = post_param_string('txn_id', ''); // May be blank for subscription, will be overwritten for them
         $parent_txn_id = post_param_string('parent_txn_id', '-1');
-
-        // Work out how much money was made for the hook
-        $mc_gross = post_param_string('mc_gross', ''); // May be blank for subscription
-        $tax = post_param_string('tax', '');
-        if (($tax != '') && (intval($tax) > 0) && ($mc_gross != '')) {
-            $mc_gross = float_to_raw_string(floatval($mc_gross) - floatval($tax));
+        $_amount = post_param_string('mc_gross', ''); // May be blank for subscription
+        $amount = ($_amount == '') ? null : floatval($_amount);
+        $_tax = post_param_string('tax', '');
+        if ($_tax == '') {
+            $tax = null;
+        } else {
+            $tax = floatval($_tax);
         }
-        /* Actually, the hook will have added shipping to the overall product cost
-        $shipping = post_param_string('shipping', '');
-        if (($shipping != '') && (intval($shipping) > 0) && ($mc_gross != '')) {
-            $mc_gross = float_to_raw_string(floatval($mc_gross) - floatval($shipping));
-        }
-        */
-        $mc_currency = post_param_string('mc_currency', ''); // May be blank for subscription
-
-        // More stuff that we might need
+        $currency = post_param_string('mc_currency', get_option('currency')); // May be blank for subscription
         $period = post_param_string('period3', '');
 
         // Valid transaction types / pre-processing for $item_name based on mapping rules
@@ -298,8 +323,8 @@ class Hook_payment_gateway_paypal
         switch ($txn_type) {
             // Product
             case 'web_accept':
-                //$item_name = post_param_string('item_name');  Actually we'd rather get it from the transaction row in case we want to customise what was sent to the gateway
-                $item_name = $trans_expecting_row['e_item_name'];
+            case 'cart':
+                $is_subscription = false;
                 break;
 
             // Subscription
@@ -309,13 +334,7 @@ class Hook_payment_gateway_paypal
             case 'subscr_modify':
             case 'subscr_cancel':
             case 'subscr_eot':
-                $item_name = ''; // These map through the Composr subscriptions table, based upon purchase_id; our blank item name will tell us we need to do that (blank item name --> a subscription not an item)
-                break;
-
-            // Cart
-            case 'cart':
-                require_lang('shopping');
-                $item_name = do_lang('CART_ORDER', $purchase_id); // We will detect as the correct cart-order from the re-mapped item_name. This is a specially recognised item naming, reserved for cart products.
+                $is_subscription = true;
                 break;
 
             // (Non-supported)
@@ -343,14 +362,15 @@ class Hook_payment_gateway_paypal
                 }
                 exit(); // Non-supported for IPN in Composr
         }
-        $payment_status = post_param_string('payment_status', '');
-        if (($payment_status == 'Pending') && (ecommerce_test_mode())) {
-            $payment_status = 'Completed';
+        $status = post_param_string('payment_status', '');
+        if (($status == 'Pending') && (ecommerce_test_mode())) {
+            $status = 'Completed';
         }
-        switch ($payment_status) {
+        switch ($status) {
             // Subscription
             case '': // We map certain values of txn_type for subscriptions over to payment_status, as subscriptions have no payment status but similar data in txn_type which we do not use
-                $mc_gross = post_param_string('mc_amount3');
+                $_amount = post_param_string('mc_amount3');
+                $amount = floatval($_amount);
 
                 switch ($txn_type) {
                     case 'subscr_signup':
@@ -370,7 +390,7 @@ class Hook_payment_gateway_paypal
                             fatal_ipn_exit(do_lang('IPN_BAD_TRIAL'));
                         }
 
-                        $payment_status = 'Completed';
+                        $status = 'Completed';
                         $txn_id = post_param_string('subscr_id');
 
                         // NB: subscr_date is sent by IPN, but not user-settable. For the more complex PayPal APIs we may need to validate it
@@ -390,7 +410,7 @@ class Hook_payment_gateway_paypal
                         exit(); // PayPal auto-cancels at a configured point ("To avoid unnecessary cancellations, you can specify that PayPal should reattempt failed payments before canceling subscriptions."). So, we only listen to the actual cancellation signal.
 
                     case 'subscr_modify':
-                        $payment_status = 'SModified';
+                        $status = 'SModified';
                         $txn_id = post_param_string('subscr_id') . '-m';
                         break;
 
@@ -402,7 +422,7 @@ class Hook_payment_gateway_paypal
 
                     case 'subscr_eot': // NB: An 'eot' means "end of *final* term" (i.e. if a payment fail / cancel / natural last term, has happened). PayPal's terminology is a little dodgy here.
                     case 'recurring_payment_suspended_due_to_max_failed_payment':
-                        $payment_status = 'SCancelled';
+                        $status = 'SCancelled';
                         $txn_id = post_param_string('subscr_id') . '-c';
                         break;
                 }
@@ -415,7 +435,7 @@ class Hook_payment_gateway_paypal
             // Completed
             case 'Completed':
             case 'Created':
-                $payment_status = 'Completed';
+                $status = 'Completed';
                 break;
 
             // (Non-supported)
@@ -453,8 +473,8 @@ class Hook_payment_gateway_paypal
                 $url = 'https://' . (ecommerce_test_mode() ? 'www.sandbox.paypal.com' : 'www.paypal.com') . '/cgi-bin/webscr';
                 $res = http_get_contents($url, array('trigger_error' => false, 'post_params' => $pure_post + array('cmd' => '_notify-validate')));
                 $x++;
-            } while (($res === null) && ($x < 3));
-            if ($res === null) {
+            } while ((is_null($res)) && ($x < 3));
+            if (is_null($res)) {
                 if ($silent_fail) {
                     return null;
                 }
@@ -464,7 +484,7 @@ class Hook_payment_gateway_paypal
                 if ($silent_fail) {
                     return null;
                 }
-                fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . $res . ' - ' . flatten_slashed_array($pure_post, true), stripos($res, '<html') !== false);
+                fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . $res . ' - ' . flatten_slashed_array($pure_post, true), strpos($res, '<html') !== false);
             }
         }
 
@@ -484,45 +504,37 @@ class Hook_payment_gateway_paypal
             fatal_ipn_exit(do_lang('IPN_EMAIL_ERROR', $receiver_email, $primary_paypal_email));
         }
 
-        if (addon_installed('shopping')) {
-            if ($trans_expecting_row['e_type_code'] == 'cart_orders') {
-                $this->store_shipping_address(intval($purchase_id));
-            }
+        $this->store_shipping_address($trans_expecting_id, $txn_id);
+
+        if (($amount !== null) && ($tax !== null)) {
+            $amount -= $tax; // The sent amount includes tax, but we want it without
         }
 
-        return array($purchase_id, $item_name, $payment_status, $reason_code, $pending_reason, $memo, $mc_gross, $mc_currency, $txn_id, $parent_txn_id, $period);
+        return array($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $parent_txn_id, $pending_reason, $memo, $period, $member_id);
     }
 
     /**
-     * Store shipping address for orders.
+     * Store shipping address for a transaction.
      *
-     * @param  AUTO_LINK $order_id Order ID.
-     * @return ?mixed Address ID (null: No address record found).
+     * @param  ID_TEXT $trans_expecting_id Expected transaction ID.
+     * @param  ID_TEXT $txn_id Transaction ID.
+     * @return AUTO_LINK Address ID.
      */
-    protected function store_shipping_address($order_id)
+    public function store_shipping_address($trans_expecting_id, $txn_id)
     {
-        if (post_param_string('address_name', null) === null) {
-            return null;
-        }
-
-        if ($GLOBALS['SITE_DB']->query_select_value_if_there('shopping_order_addresses', 'id', array('a_order_id' => $order_id)) === null) {
-            $shipping_address = array(
-                'a_order_id' => $order_id,
-                'a_firstname' => post_param_string('first_name', ''),
-                'a_lastname' => post_param_string('last_name', ''),
-                'a_street_address' => trim(post_param_string('address_name', '') . "\n" . post_param_string('address_street', '')),
-                'a_city' => post_param_string('address_city', ''),
-                'a_county' => '',
-                'a_state' => '',
-                'a_post_code' => post_param_string('address_zip', ''),
-                'a_country' => post_param_string('address_country', ''),
-                'a_email' => post_param_string('payer_email', ''),
-                'a_phone' => post_param_string('contact_phone', ''),
-            );
-            return $GLOBALS['SITE_DB']->query_insert('shopping_order_addresses', $shipping_address, true);
-        }
-
-        return null;
+        $shipping_address = array(
+            'a_firstname' => post_param_string('first_name', ''),
+            'a_lastname' => post_param_string('last_name', ''),
+            'a_street_address' => trim(post_param_string('address_name', '') . "\n" . post_param_string('address_street', '')),
+            'a_city' => post_param_string('address_city', ''),
+            'a_county' => '',
+            'a_state' => '',
+            'a_post_code' => post_param_string('address_zip', ''),
+            'a_country' => post_param_string('address_country', ''),
+            'a_email' => post_param_string('payer_email', ''),
+            'a_phone' => post_param_string('contact_phone', ''),
+        );
+        return store_shipping_address($trans_expecting_id, $txn_id, $shipping_address);
     }
 
     /**

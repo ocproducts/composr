@@ -3274,6 +3274,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CUTOFF_DATE
         DANGEROUS_TAG
         DARK_THEME
+        PERMISSION_PRODUCT
         DASHBOARD
         DATABASE_HOST
         DATABASE_HOST_TEXT
@@ -9808,6 +9809,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         YELLOW
         YES
         YESTERDAY
+        BILLING_ADDRESS
+        CARD_CV2
+        ECOMMERCE_PRODUCT_PRICING_FOR_FREE
+        ECOMMERCE_PRODUCT_PRICING_FOR_FREE_WITH_POINTS
+        ECOMMERCE_PRODUCT_PRICING_FULL_PRICE
+        ECOMMERCE_PRODUCT_PRICING_WITH_DISCOUNT
+        FILL_IN_PRODUCT_OPTIONS
+        INVOICING_ADDRESS
         YOURE_MY_FRIEND_BODY
         YOURE_MY_FRIEND_SUBJECT
         YOUR_ADDRESS

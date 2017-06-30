@@ -31,7 +31,7 @@ class Hook_ecommerce_permission
     public function config()
     {
         $fields = new Tempcode();
-        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), null, 'ORDER BY id');
+        $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array(), 'ORDER BY id');
         $hidden = new Tempcode();
         $out = array();
         foreach ($rows as $i => $row) {
@@ -104,7 +104,7 @@ class Hook_ecommerce_permission
         $privileges = new Tempcode();
         $temp = form_input_list_entry('', false, do_lang_tempcode('NA_EM'));
         $privileges->attach($temp);
-        $_privileges = $GLOBALS['SITE_DB']->query_select('privilege_list', array('*'), null, 'ORDER BY p_section,the_name');
+        $_privileges = $GLOBALS['SITE_DB']->query_select('privilege_list', array('*'), array(), 'ORDER BY p_section,the_name');
         $__privileges = array();
         foreach ($_privileges as $_privilege) {
             $_pt_name = do_lang('PRIVILEGE_' . $_privilege['the_name'], null, null, null, null, false);
@@ -113,7 +113,7 @@ class Hook_ecommerce_permission
             }
             $__privileges[$_privilege['the_name']] = $_pt_name;
         }
-        natsort($__privileges);
+        sort($__privileges, SORT_NATURAL);
         foreach (array_keys($__privileges) as $__privilege) {
             $pt_name = do_lang_tempcode('PRIVILEGE_' . $__privilege);
             $temp = form_input_list_entry($__privilege, $__privilege == $privilege, $pt_name);
@@ -497,7 +497,7 @@ class Hook_ecommerce_permission
                 $message_raw = str_replace('{AUTOMATIC}', $message_sub, $message_raw);
             }
 
-            mail_wrap($subject_line, $message_raw, array($email), $to_name, '', '', 3, $attachments, false, null, true);
+            dispatch_mail($subject_line, $message_raw, array($email), $to_name, '', '', array('attachments' => $attachments, 'as_admin' => true));
         }
 
         // Cleanup

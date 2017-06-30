@@ -340,14 +340,15 @@ class Hook_payment_gateway_authorize
     /**
      * Handle IPN's. The function may produce output, which would be returned to the Payment Gateway. The function may do transaction verification.
      *
-     * @return ?array A long tuple of collected data (null: no transaction; will only return null when not running the 'ecommerce' script).
+     * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
+     * @return ?array A long tuple of collected data. Emulates some of the key variables of the PayPal IPN response (null: no transaction; will only return null when $silent_fail is set).
      */
-    public function handle_ipn_transaction()
+    public function handle_ipn_transaction($silent_fail)
     {
         $trans_expecting_id = preg_replace('# .*$#', '', post_param_string('x_description'));
         $transaction_rows = $GLOBALS['SITE_DB']->query_select('ecom_trans_expecting', array('*'), array('id' => $trans_expecting_id), '', 1);
         if (!array_key_exists(0, $transaction_rows)) {
-            if (!running_script('ecommerce')) {
+            if ($silent_fail) {
                 return null;
             }
             warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -384,7 +385,7 @@ class Hook_payment_gateway_authorize
         // SECURITY: Check hash
         $hash = post_param_string('x_MD5_Hash');
         if ($hash != md5($md5_hash_value . $login_id . $_txn_id . float_to_raw_string($amount))) {
-            if (!running_script('ecommerce')) {
+            if ($silent_fail) {
                 return null;
             }
             fatal_ipn_exit(do_lang('IPN_UNVERIFIED') . ' - ' . flatten_slashed_array($_POST, true));

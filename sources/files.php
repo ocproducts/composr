@@ -442,6 +442,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         'hphp-static-cache' => '',
         'hphp.files.list' => '',
         'hphp' => '',
+
+        // LEGACY
+        'safe_mode_temp' => '',
     );
 
     $ignore_extensions = array( // Case insensitive, define in lower case

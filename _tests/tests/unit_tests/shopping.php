@@ -178,7 +178,7 @@ class shopping_test_set extends cms_test_case
         $payment_gateway = 'manual';
         $is_subscription = false;
 
-        handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, true, $parent_txn_id, $pending_reason, $memo, $period, get_member(), $payment_gateway);
+        handle_confirmed_transaction(null, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, true, $parent_txn_id, $pending_reason, $memo, $period, get_member(), $payment_gateway, false, true);
     }
 
     public function tearDown()
