@@ -376,6 +376,8 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
 {
     global $SITE_INFO;
 
+    disable_php_memory_limit();
+
     // Create database
     $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $SITE_INFO['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE `demonstratr_site_' . $codename . '`', null, null, true);

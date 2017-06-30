@@ -418,6 +418,11 @@ function do_image_thumb($url, $caption, $js_tooltip = false, $is_thumbnail_alrea
  */
 function ensure_thumbnail($full_url, $thumb_url, $thumb_dir, $table, $id, $thumb_field_name = 'thumb_url', $thumb_width = null, $only_make_smaller = false)
 {
+    if ($full_url == $thumb_url) {
+        // Special case
+        return $thumb_url;
+    }
+
     if ($thumb_width === null) {
         $thumb_width = intval(get_option('thumb_width'));
     }
