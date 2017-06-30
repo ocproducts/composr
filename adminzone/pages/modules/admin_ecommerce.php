@@ -511,13 +511,8 @@ class Module_admin_ecommerce extends Standard_crud_module
         $add_forms = new Tempcode();
 
         // Load up configuration from hooks
-        $_hooks = find_all_hooks('systems', 'ecommerce');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-            if ($object === null) {
-                continue;
-            }
+        $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');
+        foreach ($_hooks as $hook => $object) {
             if (method_exists($object, 'config')) {
                 $fgs = $object->config();
                 foreach ($fgs as $fg) {
@@ -592,13 +587,8 @@ class Module_admin_ecommerce extends Standard_crud_module
         modsecurity_workaround_enable();
 
         // Save configuration for hooks
-        $_hooks = find_all_hooks('systems', 'ecommerce');
-        foreach (array_keys($_hooks) as $hook) {
-            require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-            $object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-            if ($object === null) {
-                continue;
-            }
+        $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');
+        foreach ($_hooks as $hook => $object) {
             if (method_exists($object, 'save_config')) {
                 $object->save_config();
             }

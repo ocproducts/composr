@@ -219,10 +219,10 @@ function prepare_templated_subscription($subscription)
         '_TERM_START_TIME' => strval($subscription['term_start_time']),
         '_TERM_END_TIME' => strval($subscription['term_end_time']),
         '_EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : strval($subscription['expiry_time']),
-        'START_TIME' => get_timezoned_date($subscription['start_time'], false),
-        'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time'], false),
-        'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time'], false),
-        'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time'], false),
+        'START_TIME' => get_timezoned_date($subscription['start_time']),
+        'TERM_START_TIME' => get_timezoned_date($subscription['term_start_time']),
+        'TERM_END_TIME' => get_timezoned_date($subscription['term_end_time']),
+        'EXPIRY_TIME' => ($subscription['expiry_time'] === null) ? '' : get_timezoned_date($subscription['expiry_time']),
         'CANCEL_BUTTON' => ($subscription['state'] == 'active') ? make_cancel_button($subscription['auto_fund_key'], $subscription['payment_gateway']) : new Tempcode(),
     );
 }

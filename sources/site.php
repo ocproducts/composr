@@ -896,7 +896,6 @@ function do_site()
     if (running_script('index')) {
         $_site_message = get_option('site_message');
         if (trim($_site_message) != '') {
-            require_code('json'); // TODO: Remove in v11
             $site_messages = @json_decode($_site_message, true);
             if (isset($site_messages['messages'])) {
                 $site_messages = $site_messages['messages'];

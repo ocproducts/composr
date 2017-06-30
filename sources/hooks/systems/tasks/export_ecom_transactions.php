@@ -81,7 +81,7 @@ class Hook_task_export_ecom_transactions
 
             $transaction[do_lang('PURCHASE_ID')] = $_transaction['t_purchase_id'];
 
-            $transaction[do_lang('DATE')] = get_timezoned_date($_transaction['t_time'], true, false, true, true);
+            $transaction[do_lang('DATE')] = get_timezoned_date_time($_transaction['t_time']);
 
             $transaction[do_lang('CURRENCY')] = $_transaction['t_currency'];
 

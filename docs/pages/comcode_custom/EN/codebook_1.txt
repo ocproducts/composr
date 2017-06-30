@@ -858,22 +858,10 @@ An example of some code that uses hooks is:
 <?php
 
 // Find all hooks under sources[_custom]/hooks/modules/search
-$_hooks = find_all_hooks('modules', 'search');
+$_hooks = find_all_hook_obs('modules', 'search', 'Hook_search_');
 
-// Loop over all the hook names (we do array_keys because $_hooks is a map between names and directory name, and we only want the names)
-foreach (array_keys($_hooks) as $hook) {
-    // Load in the code for the hook.
-    // filter_naughty_harsh is just paranoid coding, in case somehow a hook name was insecure. It's not possible, but it's just good to do extra care in case of making mistakes.
-    require_code('hooks/modules/search/' . filter_naughty_harsh($hook));
-
-    // Create the object for the hook. The class name is typically Hook_<hooktype>, but it can vary between hook types
-    $object = object_factory('Hook_search_' . filter_naughty_harsh($hook),true);
-
-    // Just in case the file was corrupt. We don't want corrupt hook files to completely crash us
-    if ($object === null) {
-        continue;
-    }
-
+// Loop over all the hook names
+foreach ($_hooks as $hook => $object) {
     // Call some method on the hook. What methods are available would depend on the hook type
     $info = $object->info();
     ...
@@ -899,10 +887,8 @@ Composr needs to be able to provide a spot for addons to put links on somebody's
 
 The code that uses these hooks is as follows:
 [code="PHP"]
-$hooks = find_all_hooks('modules','members');
-foreach (array_keys($hooks) as $hook) {
-    require_code('hooks/modules/members/' . filter_naughty_harsh($hook));
-    $object = object_factory('Hook_members_' . filter_naughty_harsh($hook));
+$hooks = find_all_hook_obs('modules','members', 'Hook_members_');
+foreach ($hooks as $hook => $object) {
     $hook_result = $object->run($member_id);
     $modules = array_merge($modules, $hook_result);
 }

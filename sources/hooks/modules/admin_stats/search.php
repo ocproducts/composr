@@ -65,7 +65,7 @@ class Hook_admin_stats_search
             $time_end = time();
         }
 
-        $title = get_screen_title('SEARCH_STATISTICS_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
+        $title = get_screen_title('SEARCH_STATISTICS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
         $start = get_param_integer('start', 0);
         $max = get_param_integer('max', 20);

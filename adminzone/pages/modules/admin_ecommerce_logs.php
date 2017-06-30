@@ -624,7 +624,7 @@ class Module_admin_ecommerce_logs
             do_lang('MEMBER'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $transaction_row) {
-            $date = get_timezoned_date($transaction_row['t_time']);
+            $date = get_timezoned_date_time($transaction_row['t_time']);
 
             if ($transaction_row['t_status'] != 'Completed') {
                 $trigger_url = build_url(array('page' => '_SELF', 'type' => 'trigger', 'type_code' => $transaction_row['t_type_code'], 'id' => $transaction_row['t_purchase_id']), '_SELF');

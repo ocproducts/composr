@@ -16,9 +16,3 @@
 		</tbody>
 	</table></div>
 {+END}
-
-{+START,IF_PASSED,JAVASCRIPT}
-	<script>// <![CDATA[
-		{JAVASCRIPT/}
-	//]]></script>
-{+END}

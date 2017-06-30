@@ -209,8 +209,8 @@ function templatify_tutorial($metadata, $simple = false)
             'DIFFICULTY_LEVEL' => $metadata['difficulty_level'],
             'CORE' => $metadata['core'],
             'AUTHOR' => $metadata['author'],
-            'ADD_DATE' => get_timezoned_date($metadata['add_date']),
-            'EDIT_DATE' => get_timezoned_date($metadata['edit_date']),
+            'ADD_DATE' => get_timezoned_date($metadata['add_date'], false),
+            'EDIT_DATE' => get_timezoned_date($metadata['edit_date'], false),
         );
     }
 

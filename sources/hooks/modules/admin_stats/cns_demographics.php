@@ -78,7 +78,7 @@ class Hook_admin_stats_cns_demographics
                 $time_end = time();
             }
 
-            $title = get_screen_title('SECTION_DEMOGRAPHICS_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
+            $title = get_screen_title('SECTION_DEMOGRAPHICS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
             $rows = $GLOBALS['FORUM_DB']->query('SELECT m_dob_year,COUNT(*) AS cnt FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members WHERE m_join_time>' . strval($time_start) . ' AND m_join_time<' . strval($time_end) . ' GROUP BY m_dob_year');
         }

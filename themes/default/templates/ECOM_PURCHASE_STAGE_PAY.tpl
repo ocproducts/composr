@@ -34,6 +34,7 @@
 {TRANSACTION_BUTTON}
 
 {+START,IF,{$PREG_MATCH,^CART_ORDER_,{TYPE_CODE}}}
+	TODO: Fix JavaScript Salman, automatic link clicking of purchase button for cart orders (because button was already pressed on cart screen)
 	<script>// <![CDATA[
 		click_link(document.getElementById('purchase_button'));
 	//]]></script>

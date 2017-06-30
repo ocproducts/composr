@@ -411,7 +411,7 @@ class Module_admin_stats
         $post_url = get_self_url(false, false, array('dated' => 1), false, true);
 
         if ($message === null) {
-            $message = do_lang_tempcode($stats_table ? 'SELECT_STATS_RANGE' : '_SELECT_STATS_RANGE', escape_html(get_timezoned_date($first_stat)));
+            $message = do_lang_tempcode($stats_table ? 'SELECT_STATS_RANGE' : '_SELECT_STATS_RANGE', escape_html(get_timezoned_date($first_stat, false)));
         }
 
         return do_template('FORM_SCREEN', array('_GUID' => '3e76584f20ecfb947b00638211e63321', 'SKIP_WEBSTANDARDS' => true, 'GET' => true, 'TITLE' => $title, 'FIELDS' => $fields, 'TEXT' => $message, 'HIDDEN' => '', 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('CHOOSE')));
@@ -461,7 +461,7 @@ class Module_admin_stats
         $data = array();
 
         foreach ($rows as $value) {
-            $date = get_timezoned_date($value['date_and_time']);
+            $date = get_timezoned_date($value['date_and_time'], false);
             // If there's no data, or if this isn't the same as the last record and is more than an hour later than it
             if ((count($data) == 0) || ($data[count($data) - 1]['key'] != $date)) {
                 $data[] = array('t' => $value['date_and_time'] - $base, 'key' => $date, 'value' => $value['peak']);
@@ -484,7 +484,7 @@ class Module_admin_stats
                 do_lang('COUNT_TOTAL') => $data[$i]['value'],
             );
 
-            $fields->attach(results_entry(array(get_timezoned_date($data[$i]['t'] + $base), integer_format($data[$i]['value'])), true));
+            $fields->attach(results_entry(array(get_timezoned_date($data[$i]['t'] + $base, false), integer_format($data[$i]['value'])), true));
         }
         if ($csv) {
             make_csv($real_data, 'users_online.csv');
@@ -539,7 +539,7 @@ class Module_admin_stats
         $data = array();
         $base = $rows[0]['date_and_time'];
         foreach ($rows as $value) {
-            $date = get_timezoned_date($value['date_and_time']);
+            $date = get_timezoned_date($value['date_and_time'], false);
             $t = $value['date_and_time'] - $base;
             if ($t < 0) {
                 $t = 0 - $t;
@@ -623,7 +623,7 @@ class Module_admin_stats
             $time_end = time();*/
         }
 
-        $this->title = get_screen_title('LOAD_TIMES_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
+        $this->title = get_screen_title('LOAD_TIMES_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
         // We calculate MIN not AVG, because data can be made very dirty by slow clients or if the server is having trouble at one specfic point. It's a shame.
         $rows = $GLOBALS['SITE_DB']->query('SELECT the_page,MIN(milliseconds) AS avg FROM ' . get_table_prefix() . 'stats WHERE date_and_time>' . strval($time_start) . ' AND date_and_time<' . strval($time_end) . ' GROUP BY the_page');
@@ -738,7 +738,7 @@ class Module_admin_stats
             $time_end = time();*/
         }
 
-        $this->title = get_screen_title('TOP_REFERRERS_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
+        $this->title = get_screen_title('TOP_REFERRERS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
         $non_local_filter = 'referer NOT LIKE \'' . db_encode_like(str_replace('_', '\\_', preg_replace('#^https?://#', 'http://', get_base_url())) . '%') . '\'';
         $non_local_filter .= ' AND referer NOT LIKE \'' . db_encode_like(str_replace('_', '\\_', preg_replace('#^https?://#', 'https://', get_base_url())) . '%') . '\'';
@@ -870,7 +870,7 @@ class Module_admin_stats
             $time_end = time();*/
         }
 
-        $this->title = get_screen_title('TOP_SEARCH_KEYWORDS_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
+        $this->title = get_screen_title('TOP_SEARCH_KEYWORDS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
         $sortables = array('referer' => do_lang_tempcode('TOP_SEARCH_KEYWORDS'));
         $test = explode(' ', get_param_string('sort', 'referer DESC', INPUT_FILTER_GET_COMPLEX), 2);
@@ -1014,7 +1014,7 @@ class Module_admin_stats
             $time_end = time();*/
         }
 
-        $this->title = get_screen_title('PAGES_STATISTICS_RANGE', true, array(escape_html(get_timezoned_date($time_start)), escape_html(get_timezoned_date($time_end))));
+        $this->title = get_screen_title('PAGES_STATISTICS_RANGE', true, array(escape_html(get_timezoned_date($time_start, false)), escape_html(get_timezoned_date($time_end, false))));
 
         $rows = $GLOBALS['SITE_DB']->query_select('stats', array('the_page'), array(), 'GROUP BY the_page ORDER BY COUNT(*) DESC', 3000);
         if (count($rows) < 1) {

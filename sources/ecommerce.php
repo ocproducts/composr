@@ -628,14 +628,9 @@ function make_cancel_button($purchase_id, $payment_gateway)
  */
 function find_all_products()
 {
-    $_hooks = find_all_hooks('systems', 'ecommerce');
+    $_hooks = find_all_hook_obs('systems', 'ecommerce', 'Hook_ecommerce_');
     $products = array();
-    foreach (array_keys($_hooks) as $hook) {
-        require_code('hooks/systems/ecommerce/' . filter_naughty_harsh($hook));
-        $product_object = object_factory('Hook_ecommerce_' . filter_naughty_harsh($hook), true);
-        if ($product_object === null) {
-            continue;
-        }
+    foreach ($_hooks as $hook => $product_object) {
         $_products = $product_object->get_products();
         foreach ($_products as $type_code => $details) {
             $details['product_object'] = $product_object;

@@ -531,7 +531,7 @@ class Module_warnings extends Standard_crud_module
                     if (is_object($content_url)) {
                         $content_url = $content_url->evaluate();
                     }
-                    $content_description = do_lang_tempcode('DESCRIPTION_DELETE_THIS', escape_html($content_title), escape_html(get_timezoned_date($content_timestamp)), array(escape_html($content_url), do_lang($content_type_title)));
+                    $content_description = do_lang_tempcode('DESCRIPTION_DELETE_THIS', escape_html($content_title), escape_html(get_timezoned_date_time($content_timestamp)), array(escape_html($content_url), do_lang($content_type_title)));
 
                     $fields->attach(form_input_tick($content_title, $content_description, 'delete__' . $content_type . '_' . $content_id, $auto_selected));
                 }

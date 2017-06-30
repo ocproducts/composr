@@ -322,7 +322,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
         if ($tax_code == 'EU') {
             require_code('files2');
             list($__rates) = cache_and_carry('http_get_contents', array('http://euvat.ga/rates.json'));
-            $_rates = json_decode($__rates, true); // TODO: Fix in v11
+            $_rates = json_decode($__rates, true);
 
             if (isset($_rates['rates'][$country])) {
                 $rate = $_rates['rates'][$country]['standard_rate'];
@@ -411,19 +411,19 @@ function check_taxcloud_configured_correctly()
 {
     // Check for configuration errors
     if (get_option('business_country') != 'US') { // TODO: This line may change see #3173
-        warn_exit(do_lang_tempcode('TIC__BUSINESS_COUNTRY_NOT_USA')); // TODO: Error mail to site in v11
+        warn_exit(do_lang_tempcode('TIC__BUSINESS_COUNTRY_NOT_USA'), false, true);
     }
     if (get_option('business_country') == 'US') {
         if (get_option('currency') != 'USD') {
-            warn_exit(do_lang_tempcode('TIC__CURRENCY_NOT_USD')); // TODO: Error mail to site in v11
+            warn_exit(do_lang_tempcode('TIC__CURRENCY_NOT_USD'), false, true);
         }
         global $USA_STATE_LIST;
         if (!array_key_exists(get_option('business_state'), $USA_STATE_LIST)) {
-            warn_exit(do_lang_tempcode('TIC__USA_STATE_INVALID')); // TODO: Error mail to site in v11
+            warn_exit(do_lang_tempcode('TIC__USA_STATE_INVALID'), false, true);
         }
     }
     if ((get_option('taxcloud_api_key') == '') || (get_option('taxcloud_api_id') == '')) {
-        warn_exit(do_lang_tempcode('TIC__TAXCLOUD_NOT_CONFIGURED')); // TODO: Error mail to site in v11
+        warn_exit(do_lang_tempcode('TIC__TAXCLOUD_NOT_CONFIGURED'), false, true);
     }
 }
 
@@ -648,7 +648,7 @@ function generate_tax_invoice($txn_id)
     return do_template('ECOM_TAX_INVOICE', array(
         'TXN_ID' => $txn_id,
         '_DATE' => strval($transaction_row['t_time']),
-        'DATE' => get_timezoned_date($transaction_row['t_time'], false, false, false, true),
+        'DATE' => get_timezoned_date_time($transaction_row['t_time'], false),
         'TRANS_ADDRESS' => $trans_address,
         'ITEMS' => $invoicing_breakdown,
         'CURRENCY' => $transaction_row['t_currency'],

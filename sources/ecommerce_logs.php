@@ -101,7 +101,7 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
             $details_2 = '';
         }
 
-        $date = get_timezoned_date($row['date_and_time']);
+        $date = get_timezoned_date_time($row['date_and_time']);
 
         if ($show_delete) {
             $url = build_url(array('page' => 'admin_ecommerce_logs', 'type' => 'delete_sales_log_entry', 'id' => $row['s_id']), get_module_zone('admin_ecommerce_logs'));
@@ -265,7 +265,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
         'TEXT' => $text,
         'RESULTS_TABLE' => $results_table,
         'ORDER_NUMBER' => strval($id),
-        'ADD_DATE' => get_timezoned_date($order_row['add_date'], true, false, true, true),
+        'ADD_DATE' => get_timezoned_date_time($order_row['add_date']),
         'TOTAL_PRICE' => float_format($order_row['total_price']),
         'TOTAL_TAX' => float_format($order_row['total_tax']),
         'TOTAL_SHIPPING_COST' => float_format($order_row['total_shipping_cost']),

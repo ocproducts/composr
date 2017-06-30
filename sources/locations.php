@@ -495,10 +495,10 @@ function create_country_selection_list($selected_countries = array())
 /**
  * Get a nice, formatted XHTML list of regions
  *
- * @param  ?array $selected_regions The currently selected regions (null: none selected)
+ * @param  array $selected_regions The currently selected regions
  * @return Tempcode The list of regions
  */
-function create_region_selection_list($selected_regions = null) // TODO: In v11 make it default to array()
+function create_region_selection_list($selected_regions = array())
 {
     return create_country_selection_list($selected_regions); // The standard implementation is for a region to just be a country
 }
@@ -506,10 +506,10 @@ function create_region_selection_list($selected_regions = null) // TODO: In v11 
 /**
  * Get a nice, formatted XHTML list of USA states
  *
- * @param  ?array $selected_states The currently selected states (null: none selected)
+ * @param  array $selected_states The currently selected states
  * @return Tempcode The list of states
  */
-function create_usa_state_selection_list($selected_states = null) // TODO: In v11 make it default to array()
+function create_usa_state_selection_list($selected_states = array())
 {
     $state_list = new Tempcode();
 

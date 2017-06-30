@@ -24,6 +24,6 @@
 	{+END}
 
 	<div class="purchase_button">
-		<input id="purchase_button" onclick="disable_button_just_clicked(this);" class="button_screen menu__rich_content__ecommerce__purchase" type="submit" value="{!MAKE_PAYMENT}" alt="Authorize.net - Simple Checkout" />
+		<input id="purchase_button" data-disable-on-click="1" class="button_screen menu__rich_content__ecommerce__purchase" type="submit" value="{!MAKE_PAYMENT}" alt="Authorize.net - Simple Checkout" />
 	</div>
 </form>
