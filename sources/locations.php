@@ -474,7 +474,7 @@ function find_country_name_from_iso($iso)
 /**
  * Get a nice, formatted XHTML list of countries
  *
- * @param  array $regions The currently selected countries
+ * @param  array $selected_countries The currently selected countries
  * @return Tempcode The list of countries
  */
 function create_country_selection_list($selected_countries = array())

@@ -580,6 +580,12 @@ class Module_admin_config
                         $out .= static_evaluate_tempcode(form_input_list($human_name, $explanation, $name, $_list, null, false, $required));
                         break;
 
+                    case 'country_multi':
+                        require_code('locations');
+                        $list = static_evaluate_tempcode(create_country_selection_list(explode(',', get_option($name))));
+                        $out .= static_evaluate_tempcode(form_input_multi_list($human_name, $explanation, $name, make_string_tempcode($list)));
+                        break;
+
                     case 'forum_grouping':
                         if (get_forum_type() == 'cns') {
                             $tmp_value = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => get_option($name)));
@@ -607,12 +613,6 @@ class Module_admin_config
                         } else {
                             $out .= static_evaluate_tempcode(form_input_line($human_name, $explanation, $name, get_option($name), $required));
                         }
-                        break;
-
-                    case 'country':
-                        require_code('locations');
-                        $list = static_evaluate_tempcode(create_region_selection_list(explode(',', get_option($name))));
-                        $out .= static_evaluate_tempcode(form_input_multi_list($human_name, $explanation, $name, make_string_tempcode($list)));
                         break;
 
                     default:

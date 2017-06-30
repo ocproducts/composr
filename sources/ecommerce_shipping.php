@@ -228,7 +228,7 @@ function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$p
 /**
  * Make an ISO country code shippo-compatible.
  *
- * @param string $country ISO country code.
+ * @param  string $country ISO country code.
  * @return string Shippo-compatible code.
  */
 function _make_country_for_shippo($country)

@@ -329,7 +329,7 @@ class Module_admin_ecommerce_logs
 
                 url_default_parameters__disable();
 
-                return do_template('FORM_SCREEN', array('_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $needed_fields, 'TEXT' => $text, 'JAVASCRIPT' => $needed_javascript, 'URL' => get_self_url(), 'HIDDEN' => $extra_hidden)); // TODO
+                return do_template('FORM_SCREEN', array('_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $needed_fields, 'TEXT' => $text, 'JAVASCRIPT' => $needed_javascript, 'URL' => get_self_url(), 'HIDDEN' => $extra_hidden));
             }
         }
 
@@ -678,7 +678,7 @@ class Module_admin_ecommerce_logs
         $post_url = build_url(array('page' => '_SELF', 'type' => 'logs'/*, 'start' => $start, 'max' => $max*/, 'sort' => $sortable . ' ' . $sort_order), '_SELF');
 
         $products = new Tempcode();
-        $product_rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');
+        $product_rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('DISTINCT t_type_code'), array(), 'ORDER BY t_type_code');
         $products->attach(form_input_list_entry('', $type_code == '', do_lang_tempcode('NA_EM')));
         foreach ($product_rows as $p) {
             $products->attach(form_input_list_entry($p['t_type_code'], $p['t_type_code'] === $type_code));
@@ -712,7 +712,7 @@ class Module_admin_ecommerce_logs
         $fields->attach(form_input_list(do_lang_tempcode('STATUS'), do_lang_tempcode('TRANSACTION_STATUS_FILTER_DESCRIPTION'), 'transaction_status', $transaction_status_list, null, false, false));
 
         $products = new Tempcode();
-        $product_rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('DISTINCT t_type_code'), null, 'ORDER BY t_type_code');
+        $product_rows = $GLOBALS['SITE_DB']->query_select('ecom_transactions', array('DISTINCT t_type_code'), array(), 'ORDER BY t_type_code');
         $products->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
         foreach ($product_rows as $p) {
             $products->attach(form_input_list_entry($p['t_type_code']));

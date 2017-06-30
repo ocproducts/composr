@@ -120,7 +120,7 @@ function init__ecommerce()
 /**
  * Automatically calculates a half-price points-based discount for a product.
  *
- * @param array $details The product details.
+ * @param  array $details The product details.
  * @return array The amended product details.
  */
 function automatic_discount_calculation($details)
@@ -149,9 +149,9 @@ function automatic_discount_calculation($details)
 /**
  * Find the next step for the purchasing module.
  *
- * @param object $product_object The product object.
- * @param ID_TEXT $type_code The product type.
- * @param ID_TEXT $step_before The step prior to the next step.
+ * @param  object $product_object The product object.
+ * @param  ID_TEXT $type_code The product type.
+ * @param  ID_TEXT $step_before The step prior to the next step.
  * @return ?ID_TEXT The next step (null: error).
  */
 function get_next_purchase_step($product_object, $type_code, $step_before)
@@ -177,9 +177,9 @@ function get_next_purchase_step($product_object, $type_code, $step_before)
 /**
  * Find the purchasing module breadcrumb steps for a product.
  *
- * @param object $product_object The product object.
- * @param ID_TEXT $type_code Type code for product.
- * @param boolean $consider_categories Whether to consider a category screen.
+ * @param  object $product_object The product object.
+ * @param  ID_TEXT $type_code Type code for product.
+ * @param  boolean $consider_categories Whether to consider a category screen.
  * @return array A structure describing the steps.
  */
 function get_product_purchase_steps($product_object, $type_code, $consider_categories)
@@ -386,14 +386,14 @@ function get_transaction_fee($amount, $payment_gateway)
  * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail.
  * @return Tempcode Product URL.
  */
-function get_product_det_url($type_code, $post_purchase_access_url = false, $member_id = null, $email_safe = false)
+function get_product_details_url($type_code, $post_purchase_access_url = false, $member_id = null, $email_safe = false)
 {
     static $permission_product_rows = null;
     if ($permission_product_rows === null) {
         $permission_product_rows = list_to_map('id', $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('id', 'p_module', 'p_category')));
     }
 
-    $product_det_url = null;
+    $product_details_url = null;
 
     $matches = array();
     if (($post_purchase_access_url) && (preg_match('#^PERMISSION\_(\d+)$#', $type_code, $matches) != 0)) {
@@ -414,29 +414,29 @@ function get_product_det_url($type_code, $post_purchase_access_url = false, $mem
                     list(, , $cma_info) = content_get_details($resource_type, $category_id);
 
                     $page_link = str_replace('_WILD', $category_id, $cma_info['view_page_link_pattern']);
-                    $product_det_url = make_string_tempcode(page_link_to_url($page_link, $email_safe));
+                    $product_details_url = make_string_tempcode(page_link_to_url($page_link, $email_safe));
                 }
             }
         }
     } elseif (($post_purchase_access_url) && (preg_match('#^CART_ORDER\_(\d+)$#', $type_code, $matches) != 0)) {
         if (has_actual_page_access(get_member(), 'admin_shopping')) {
-            $product_det_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('admin_shopping'), null, false, false, $email_safe);
+            $product_details_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('admin_shopping'), array(), false, false, $email_safe);
         } else {
-            $product_det_url = build_url(array('page' => 'shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('shopping'), null, false, false, $email_safe);
+            $product_details_url = build_url(array('page' => 'shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('shopping'), array(), false, false, $email_safe);
         }
     } elseif (is_numeric($type_code)) {
-        $product_det_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $type_code), get_module_zone('catalogues'), null, false, false, $email_safe);
+        $product_details_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $type_code), get_module_zone('catalogues'), array(), false, false, $email_safe);
     } elseif (($member_id !== null) && ($post_purchase_access_url) && (preg_match('#^USERGROUP(\d+)$#', $type_code, $matches) != 0)) {
-        $product_det_url = build_url(array('page' => 'subscriptions', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('subscriptions'), null, false, false, $email_safe);
+        $product_details_url = build_url(array('page' => 'subscriptions', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('subscriptions'), array(), false, false, $email_safe);
     } elseif (($member_id !== null) && ($post_purchase_access_url) && ($type_code == 'work')) {
-        $product_det_url = build_url(array('page' => 'invoices', 'id' => ($member_id == get_member()) ? null : $member_id), get_module_zone('invoices'), null, false, false, $email_safe);
+        $product_details_url = build_url(array('page' => 'invoices', 'id' => ($member_id == get_member()) ? array() : $member_id), get_module_zone('invoices'), array(), false, false, $email_safe);
     }
 
-    if ($product_det_url === null) {
-        $product_det_url = build_url(array('page' => 'purchase', 'type' => 'message', 'product' => $type_code), get_module_zone('purchase'), null, false, false, $email_safe);
+    if ($product_details_url === null) {
+        $product_details_url = build_url(array('page' => 'purchase', 'type' => 'message', 'product' => $type_code), get_module_zone('purchase'), array(), false, false, $email_safe);
     }
 
-    return $product_det_url;
+    return $product_details_url;
 }
 
 /**
@@ -1322,7 +1322,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
     if (($success) || ($length !== null)) {
         $status = (($length !== null) && (!$success)) ? 'SCancelled' : 'Completed';
         $period = ($length === null) ? '' : strtolower(strval($length) . ' ' . $length_units);
-        list(, $member_id) = handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $message_raw, $amount, $tax, $currency, true, '', '', $memo, $period, get_member(), $payment_gateway);
+        list(, $member_id) = handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $message_raw, $amount, $tax, $currency, true, '', '', $memo, $period, get_member(), $payment_gateway, false, true);
     }
 
     // Return...
@@ -1344,7 +1344,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
  */
 function handle_ipn_transaction_script($silent_fail = false, $send_notifications = true)
 {
-    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (is_writable_wrap(get_file_base() . '/data_custom/ecommerce.log'))) {
+    if ((file_exists(get_file_base() . '/data_custom/ecommerce.log')) && (cms_is_writable(get_file_base() . '/data_custom/ecommerce.log'))) {
         $myfile = fopen(get_file_base() . '/data_custom/ecommerce.log', 'at');
         flock($myfile, LOCK_EX);
         fseek($myfile, 0, SEEK_END);
@@ -1399,7 +1399,7 @@ function handle_ipn_transaction_script($silent_fail = false, $send_notifications
  * @param  boolean $send_notifications Whether to send notifications. Set to false if this is not the primary payment handling (e.g. a POST redirect rather than the real IPN).
  * @return ?array ID_TEXT A pair: The product purchased, The purchasing member ID (or null) (null: error).
  */
-function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $check_amounts, $parent_txn_id, $pending_reason, $memo, $period, $member_id_paying, $payment_gateway)
+function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount, $tax, $currency, $check_amounts, $parent_txn_id, $pending_reason, $memo, $period, $member_id_paying, $payment_gateway, $silent_fail, $send_notifications)
 {
     // Try and locate the product
     if ($is_subscription) { // Subscription
@@ -1690,7 +1690,9 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id, $type_code, 
 
     // Notifications
     if ($status == 'Completed') {
-        send_transaction_mails($txn_id, $item_name, $found['needs_shipping_address'], $automatic_setup, $member_id, $amount, $tax, $currency, $amount_points, $memo);
+        if ($send_notifications) {
+            send_transaction_mails($txn_id, $item_name, $found['needs_shipping_address'], $automatic_setup, $member_id, $amount, $tax, $currency, $amount_points, $memo);
+        }
     }
 
     // Cleanup very old data
@@ -1784,44 +1786,42 @@ function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup,
     );
 
     // Send completed notification to user
-    if ($send_notifications) {
-        if (($member_id === null) || (is_guest($member_id))) {
-            if (array_key_exists(0, $existing)) {
-                $e = $existing[0];
-                $email = $e['a_email'];
-                if ($email != '') {
-                    $to_name = trim($e['a_firstname'] . ' ' . $e['a_lastname']);
-                    if ($to_name == '') {
-                        $to_name = null;
-                    }
-
-                    $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
-
-                    $_body = do_template('ECOM_PAYMENT_SENT_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
-                    $body = $_body->evaluate(get_site_default_lang());
-
-                    require_code('mail');
-                    dispatch_mail($subject, $body, array($email), $to_name);
+    if (($member_id === null) || (is_guest($member_id))) {
+        if (array_key_exists(0, $existing)) {
+            $e = $existing[0];
+            $email = $e['a_email'];
+            if ($email != '') {
+                $to_name = trim($e['a_firstname'] . ' ' . $e['a_lastname']);
+                if ($to_name == '') {
+                    $to_name = null;
                 }
+
+                $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
+
+                $_body = do_template('ECOM_PAYMENT_SENT_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
+                $body = $_body->evaluate(get_site_default_lang());
+
+                require_code('mail');
+                dispatch_mail($subject, $body, array($email), $to_name);
             }
-        } else {
-            $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_lang($member_id));
-
-            $_body = do_notification_template('ECOM_PAYMENT_SENT_MAIL', $parameter_map, get_lang($member_id), false, null, '.txt', 'text');
-            $body = $_body->evaluate(get_lang($member_id));
-
-            dispatch_notification('payment_received', null, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
         }
+    } else {
+        $subject = do_lang('PAYMENT_SENT_SUBJECT', $txn_id, $item_name, null, get_lang($member_id));
 
-        // Send completed notification to staff...
+        $_body = do_notification_template('ECOM_PAYMENT_SENT_MAIL', $parameter_map, get_lang($member_id), false, null, '.txt', 'text');
+        $body = $_body->evaluate(get_lang($member_id));
 
-        $subject = do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
-
-        $_body = do_notification_template('ECOM_PAYMENT_RECEIVED_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
-        $body = $_body->evaluate(get_site_default_lang());
-
-        dispatch_notification('payment_received_staff', null, $subject, $body, null, A_FROM_SYSTEM_PRIVILEGED);
+        dispatch_notification('payment_received', null, $subject, $body, array($member_id), A_FROM_SYSTEM_PRIVILEGED);
     }
+
+    // Send completed notification to staff...
+
+    $subject = do_lang('PAYMENT_RECEIVED_SUBJECT', $txn_id, $item_name, null, get_site_default_lang());
+
+    $_body = do_notification_template('ECOM_PAYMENT_RECEIVED_MAIL', $parameter_map, get_site_default_lang(), false, null, '.txt', 'text');
+    $body = $_body->evaluate(get_site_default_lang());
+
+    dispatch_notification('payment_received_staff', null, $subject, $body, null, A_FROM_SYSTEM_PRIVILEGED);
 }
 
 /**

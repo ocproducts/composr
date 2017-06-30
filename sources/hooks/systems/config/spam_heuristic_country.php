@@ -32,7 +32,7 @@ class Hook_config_spam_heuristic_country
     {
         return array(
             'human_name' => 'SPAM_HEURISTIC_COUNTRY',
-            'type' => 'country',
+            'type' => 'country_multi',
             'category' => 'SECURITY',
             'group' => 'SPAMMER_DETECTION_HEURISTICS',
             'explanation' => 'CONFIG_OPTION_spam_heuristic_country',

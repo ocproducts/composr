@@ -1123,7 +1123,7 @@ function page_link_to_url($url, $email_safe = false)
     $parts = array();
     if ((preg_match('#([' . URL_CONTENT_REGEXP . ']*):([' . URL_CONTENT_REGEXP . ']+|[^/]|$)((:(.*))*)#', $url, $parts) != 0) && ($parts[1] != 'mailto')) { // Specially encoded page-link. Complex regexp to make sure URLs do not match
         list($zone, $map, $hash) = page_link_decode($url);
-        $url = static_evaluate_tempcode(build_url($map, $zone, null, false, false, $email_safe, $hash));
+        $url = static_evaluate_tempcode(build_url($map, $zone, array(), false, false, $email_safe, $hash));
     } else {
         $url = qualify_url($url, get_base_url());
     }

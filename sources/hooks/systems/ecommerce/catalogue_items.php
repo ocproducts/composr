@@ -595,12 +595,12 @@ class Hook_ecommerce_catalogue_items
      */
     protected function _send_stock_maintain_warn_mail($product_title, $type_code)
     {
-        $product_det_url = get_product_det_url($type_code, false, get_member(), true);
+        $product_details_url = get_product_details_url($type_code, false, get_member(), true);
 
         require_code('notifications');
 
         $subject = do_lang('STOCK_LEVEL_MAIL_SUBJECT', get_site_name(), $product_title, null, get_site_default_lang());
-        $message = do_notification_lang('STOCK_MAINTENANCE_WARN_MAIL', comcode_escape(get_site_name()), comcode_escape($product_title), array($product_det_url->evaluate()), get_site_default_lang());
+        $message = do_notification_lang('STOCK_MAINTENANCE_WARN_MAIL', comcode_escape(get_site_name()), comcode_escape($product_title), array($product_details_url->evaluate()), get_site_default_lang());
 
         dispatch_notification('low_stock', null, $subject, $message, null, null, A_FROM_SYSTEM_PRIVILEGED);
     }
@@ -621,7 +621,7 @@ class Hook_ecommerce_catalogue_items
     /**
      * Function to return dispatch type of product.
      *
-     * @return  ID_TEXT    Dispatch type (manual/automatic).
+     * @return ID_TEXT Dispatch type (manual/automatic).
      */
     public function get_product_dispatch_type()
     {

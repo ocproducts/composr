@@ -373,7 +373,7 @@ class Module_shopping
                 do_lang_tempcode(get_option('tax_system')),
                 do_lang_tempcode('AMOUNT'),
                 do_lang_tempcode('REMOVE')
-            ), null);
+            ));
 
             list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax, , , , ) = derive_cart_amounts($shopping_cart_rows);
 
@@ -390,7 +390,7 @@ class Module_shopping
                 $this->show_cart_entry($shopping_cart, $details, $item, isset($shopping_cart_rows_taxes[$i]) ? $shopping_cart_rows_taxes[$i] : null);
             }
 
-            $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, null, null, null, 'sort', null, null, 'cart');
+            $results_table = results_table(do_lang_tempcode('SHOPPING'), 0, 'cart_start', $max_rows, 'cart_max', $max_rows, $fields_title, $shopping_cart, array(), null, null, 'sort', null, array(), 'cart');
 
             $update_cart_url = build_url(array('page' => '_SELF', 'type' => 'update_cart'), '_SELF');
             $empty_cart_url = build_url(array('page' => '_SELF', 'type' => 'empty_cart'), '_SELF');
@@ -485,8 +485,8 @@ class Module_shopping
 
         $amount = $price_multiple + $tax;
 
-        $product_det_url = get_product_det_url($item['type_code'], false, get_member());
-        $product_link = hyperlink($product_det_url, $details['item_name'], false, true, do_lang('INDEX'));
+        $product_details_url = get_product_details_url($item['type_code'], false, get_member());
+        $product_link = hyperlink($product_details_url, $details['item_name'], false, true, do_lang('INDEX'));
 
         require_code('templates_results_table');
         $shopping_cart->attach(results_entry(array(

@@ -194,7 +194,7 @@ class Module_invoices
             }
 
             $invoice_title = $details['item_name'];
-            $date = get_timezoned_date_time($row['i_time'], true, false, false, true);
+            $date = get_timezoned_date_time($row['i_time'], false);
             $payable = ($row['i_state'] == 'new');
             $fulfillable = ($row['i_state'] == 'paid');
             $state = do_lang('PAYMENT_STATE_' . $row['i_state']);

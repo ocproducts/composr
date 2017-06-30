@@ -435,7 +435,7 @@ class Hook_payment_gateway_authorize
 
         $this->_set_cancelation_api_parameters($authorize_subscription_id);
 
-        $response_data = http_get_contents($this->url, array('trigger_error' => false, 'post_params' => $this->api_parameters, 'timeout' => 12.0));
+        $response = http_get_contents($this->url, array('trigger_error' => false, 'post_params' => $this->api_parameters, 'timeout' => 12.0));
 
         if ($response !== null) {
             list($result_code, $code, $text, $subscription_id) = $this->_parse_arb_return($response);

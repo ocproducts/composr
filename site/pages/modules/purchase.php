@@ -629,7 +629,7 @@ class Module_purchase
                         }
                     }
 
-                    $url = build_url(array('page' => '_SELF', 'type' => 'browse', 'category' => $this_category), '_SELF', null, true);
+                    $url = build_url(array('page' => '_SELF', 'type' => 'browse', 'category' => $this_category), '_SELF', array(), true);
                     $can_purchase = false;
                     $supports_money = false;
                     $supports_points = false;
@@ -749,7 +749,7 @@ class Module_purchase
 
             if ($can_purchase) {
                 $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'browse');
-                $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', null, true);
+                $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'type_code' => $type_code), '_SELF', array(), true);
             } else {
                 $url = null;
             }
@@ -810,13 +810,13 @@ class Module_purchase
     /**
      * See if a product is filtered out.
      *
-     * @param object $product_object The product object.
-     * @param ID_TEXT $type_code The product codename.
-     * @param array $details The product details.
-     * @param string $filter Filter prefix.
-     * @param string $type_filter Filter by exact product name.
-     * @param boolean $must_support_money Filter out products that don't support money.
-     * @param boolean $must_support_points Filter out products that don't support points.
+     * @param  object $product_object The product object.
+     * @param  ID_TEXT $type_code The product codename.
+     * @param  array $details The product details.
+     * @param  string $filter Filter prefix.
+     * @param  string $type_filter Filter by exact product name.
+     * @param  boolean $must_support_money Filter out products that don't support money.
+     * @param  boolean $must_support_points Filter out products that don't support points.
      * @return boolean Is filtered.
      */
     protected function _is_filtered_out($product_object, $type_code, $details, $filter, $type_filter, $must_support_money, $must_support_points)
@@ -926,7 +926,7 @@ class Module_purchase
 
         // Work out what next step is
         $next_purchase_step = get_next_purchase_step($product_object, $type_code, 'terms');
-        $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'accepted' => 1), '_SELF', null, true);
+        $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step, 'accepted' => 1), '_SELF', array(), true);
 
         if (method_exists($product_object, 'get_terms')) {
             $terms = $product_object->get_terms($type_code);
@@ -991,7 +991,7 @@ class Module_purchase
         }
 
         if ($fields === null) {
-            $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', null, true);
+            $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array(), true);
 
             // Ah, not even any fields to show - jump ahead
             return redirect_screen($this->title, $url, '');
@@ -1004,7 +1004,7 @@ class Module_purchase
             'TYPE_CODE' => $type_code,
             'TEXT' => $text,
             'FIELDS' => $fields,
-            'JAVASCRIPT' => $javascript, // TODO
+            'JAVASCRIPT' => $javascript, // TODO: Salman convert to new JS system
         ));
         return $this->_wrap($result, $this->title, $url);
     }

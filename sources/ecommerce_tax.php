@@ -565,7 +565,7 @@ function send_invoice_notification($member_id, $id)
 {
     // Send out notification
     require_code('notifications');
-    $_url = build_url(array('page' => 'invoices', 'type' => 'browse'), get_module_zone('invoices'), null, false, false, true);
+    $_url = build_url(array('page' => 'invoices', 'type' => 'browse'), get_module_zone('invoices'), array(), false, false, true);
     $url = $_url->evaluate();
     $subject = do_lang('INVOICE_SUBJECT', strval($id), null, null, get_lang($member_id));
     $body = do_notification_lang('INVOICE_MESSAGE', $url, get_site_name(), null, get_lang($member_id));
@@ -748,7 +748,7 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
  * @param  string $default Default value
  * @param  string $parent Only get child nodes of
  * @param  string $pre Prefix for parent chain
- * @param  boolean $depth Current recursion depth
+ * @param  integer $depth Current recursion depth
  * @return Tempcode The list
  */
 function _prepare_tics_list($all_tics, $default, $parent, $pre = '', $depth = 0)

@@ -86,8 +86,8 @@ function build_sales_table($filter_member_id, $show_username = false, $show_dele
             $item_name = $transaction_row['t_type_code'];
         }
 
-        $product_det_url = get_product_det_url($transaction_row['t_type_code'], true, $filter_member_id);
-        $item_link = hyperlink($product_det_url, $item_name, false, true);
+        $product_details_url = get_product_details_url($transaction_row['t_type_code'], true, $filter_member_id);
+        $item_link = hyperlink($product_details_url, $item_name, false, true);
 
         if (strpos($item_name, $row['details']) === false) {
             $details_1 = $row['details'];
@@ -241,7 +241,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
     $product_rows = $GLOBALS['SITE_DB']->query_select('shopping_order_details', array('*'), array('p_order_id' => $id), 'ORDER BY id');
     $product_entries = new Tempcode();
     foreach ($product_rows as $product_row) {
-        $product_info_url = get_product_det_url($product_row['p_type_code'], false, $ordered_by_member_id);
+        $product_info_url = get_product_details_url($product_row['p_type_code'], false, $ordered_by_member_id);
         $product_name = $product_row['p_name'];
         $product = hyperlink($product_info_url, $product_name, false, true, do_lang('VIEW'));
 

@@ -65,7 +65,7 @@ class Hook_ecommerce_cart_orders
             }
         }
 
-        $orders = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where . ' ORDER BY add_date DESC', 50, null, false, true);
+        $orders = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . get_table_prefix() . 'shopping_orders WHERE ' . $where . ' ORDER BY add_date DESC', 50, 0, false, true);
 
         foreach ($orders as $order) {
             $products['CART_ORDER_' . strval($order['id'])] = array(

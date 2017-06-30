@@ -1885,7 +1885,7 @@ function _parse_parameter($for_function_definition = false)
                     pparse__parser_next(); // Consume the EQUAL
 
                     // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
-                    $parameter = array('RECEIVE_BY_VALUE', $var, _parse_literal(), $GLOBALS['I']);
+                    $parameter = array('RECEIVE_BY_VALUE', $variable, _parse_literal(), $hint, $is_variadic, $GLOBALS['I']);
                     $parameter['HINT'] = '?' . $hint;
                 } else {
                     $parameter = array('RECEIVE_BY_REFERENCE', $variable, null, $hint, $is_variadic, $GLOBALS['I']);
@@ -1914,10 +1914,8 @@ function _parse_parameter($for_function_definition = false)
                     }
 
                     pparse__parser_next();
-
-                    // 'RECEIVE_BY_REFERENCE' and 'RECEIVE_BY_VALUE' aren't actually used for anything specifically.
-                    $parameter = array('RECEIVE_BY_REFERENCE', $variable, _parse_literal(), $GLOBALS['I']);
-                    $parameter['HINT'] = '?' . $hint;
+                    $value = _parse_literal();
+                    $parameter[2] = $value;
                 }
                 return $parameter;
 

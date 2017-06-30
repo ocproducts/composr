@@ -27,7 +27,7 @@
 /**
  * Find products in cart.
  *
- * @param ID_TEXT $catalogue_name Catalogue name.
+ * @param  ID_TEXT $catalogue_name Catalogue name.
  * @return array Shopping catalogue fields.
  */
 function find_shopping_catalogue_fields($catalogue_name = 'products')
@@ -633,7 +633,7 @@ function send_shopping_order_purchased_staff_mail($order_id)
     $displayname = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 
-    $order_details_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_details', 'id' => $order_id), get_module_zone('admin_shopping'), null, false, false, true);
+    $order_details_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_details', 'id' => $order_id), get_module_zone('admin_shopping'), array(), false, false, true);
 
     require_code('notifications');
 
@@ -709,7 +709,7 @@ function recalculate_order_costs($order_id)
 /**
  * Return list entry of common order statuses of orders.
  *
- * @return  Tempcode Order status list entries
+ * @return Tempcode Order status list entries
  */
 function get_order_status_list()
 {
