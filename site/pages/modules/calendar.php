@@ -606,7 +606,7 @@ class Module_calendar
                 }
                 $main = $this->view_calendar_view_year($id, $date, $explode, $member_id, $filter);
                 $timestamp = mktime(0, 0, 0, 1, 1, intval($id));
-                $back_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
+                $back_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
                 $previous_timestamp = mktime(0, 0, 0, 1, 1, intval($explode[0]) - 1);
                 $previous = date('Y', $previous_timestamp);
                 $next_timestamp = mktime(0, 0, 0, 1, 1, intval($explode[0]) + 1);

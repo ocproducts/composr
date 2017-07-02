@@ -154,18 +154,7 @@ function get_stats_track($member, $ip, $start = 0, $max = 50, $sortable = 'date_
         $date = get_timezoned_date_time($myrow['date_and_time']);
         $page = $myrow['the_page'];
 
-        $page_converted = preg_replace('#/pages/[^/]*/#', '/', $page);
-        if ($page_converted[0] == '/') {
-            $page_converted = substr($page_converted, 1);
-        }
-        if ((substr($page_converted, -4) == '.php') || (substr($page_converted, -4) == '.htm') || (substr($page_converted, -4) == '.txt')) {
-            $page_converted = substr($page_converted, 0, strlen($page_converted) - 4);
-        }
-        if (multi_lang_content()) {
-            $page_converted = str_replace('/', ': ', $page_converted);
-        } else {
-            $page_converted = str_replace('/', ':', preg_replace('#((.*)/)?pages/.*/[' . URL_CONTENT_REGEXP . ']+/(.*)#', '$2/$3', $page_converted));
-        }
+        $page_converted = convert_page_string_to_page_link($myrow['the_page'], true);
 
         if ($myrow['s_get'] !== null) {
             $get = $myrow['s_get'];
@@ -238,4 +227,152 @@ function find_security_alerts($where = array())
         $fields->attach(results_entry($_row, false));
     }
     return array(results_table(do_lang_tempcode('SECURITY_ALERTS'), $start, 'alert_start', $max, 'alert_max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'alert_sort'), count($rows));
+}
+
+/**
+ * Save analytics metadata for the current user's request into a file.
+ *
+ * @param  boolean $include_referer Whether to include the referer
+ * @return PATH The path of the file
+ */
+function save_user_metadata($include_referer = false)
+{
+    $data = find_user_metadata($include_referer);
+
+    $path = get_custom_file_base() . '/safe_mode_temp/mail_' . uniqid('', true) . '.txt';
+
+    file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT));
+    fix_permissions($path);
+    sync_file($path);
+
+    return $path;
+}
+
+/**
+ * Find analytics metadata for the current user's request.
+ *
+ * @param  boolean $include_referer Whether to include the referer
+ * @return array Data
+ */
+function find_user_metadata($include_referer = true)
+{
+    $data = array();
+
+    $data[do_lang('USERNAME')] = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+
+    if (!is_guest()) {
+        $data[do_lang('MEMBER_ID')] = '#' . strval(get_member());
+    }
+
+    if (!is_guest()) {
+        $data[do_lang('cns:PROFILE')] = $GLOBALS['FORUM_DRIVER']->member_profile_url(get_member(), true);
+    }
+
+    $data[do_lang('IP_ADDRESS')] = get_ip_address();
+
+    //$data['Session ID'] = get_session_id();   Don't want to pass this out too freely, not useful anyway
+
+    if (php_function_allowed('gethostbyaddr')) {
+        $data['Reverse-DNS/WHOIS'] = gethostbyaddr(get_ip_address());
+    }
+
+    $_json = http_get_contents('http://freegeoip.net/json/' . get_ip_address(), array('trigger_error' => false));
+    $json = @json_decode($_json, true);
+    if (is_array($json)) {
+        $data['~Geo-Lookup'] = $json;
+    }
+
+    require_code('lang2');
+    $data[do_lang('LANGUAGE')] = lookup_language_full_name(user_lang());
+
+    if ($include_referer) {
+        $referer = cms_srv('HTTP_REFERER');
+        if ($referer != '') {
+            $data[do_lang('REFERER')] = $referer;
+        }
+    }
+
+    $data[do_lang('USER_AGENT')] = get_browser_string();
+
+    $data[do_lang('USER_OS')] = get_os_string();
+
+    $data['~' . do_lang('TIMEZONE')] = get_users_timezone();
+
+    require_code('locations');
+    $region = get_region();
+    if ($region != '') {
+        $data['~' . do_lang('LOCATION')] = $region;
+    }
+
+    $data[do_lang('URL')] = get_self_url_easy(true);
+
+    if (addon_installed('stats')) {
+        $history = array();
+        $sql = 'SELECT * FROM ' . get_table_prefix() . 'stats WHERE ';
+        $sql .= db_string_equal_to('ip', get_ip_address());
+        if (!is_guest()) {
+            $sql .= ' OR member_id=' . strval(get_member());
+        }
+        $sql .= ' OR ' . db_string_equal_to('session_id', get_session_id());
+        $pages = $GLOBALS['SITE_DB']->query($sql . ' ORDER BY date_and_time DESC');
+        foreach ($pages as $myrow) {
+            $h = array();
+
+            $h[do_lang('DATE_TIME')] = get_timezoned_date_time(tz_time($myrow['date_and_time'], get_server_timezone()), false);
+
+            $page_link = convert_page_string_to_page_link($myrow['the_page']);
+            list($zone, $attributes) = page_link_decode($page_link);
+            $matches = array();
+            $num_matches = preg_match_all('#<param>(\w+)=(.*)</param>#Us', $myrow['s_get'], $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                if ($matches[1][$i] != 'page') {
+                    $attributes[html_entity_decode($matches[1][$i], ENT_QUOTES, get_charset())] = html_entity_decode($matches[2][$i], ENT_QUOTES, get_charset());
+                }
+            }
+            $h[do_lang('URL')] = static_evaluate_tempcode(build_url($attributes, $zone));
+
+            $h[do_lang('MEMBER_ID')] = '#' . strval($myrow['member_id']);
+
+            $h[do_lang('IP_ADDRESS')] = $myrow['ip'];
+
+            $h['Session ID'] = $myrow['session_id'];
+
+            $h[do_lang('REFERER')] = $myrow['referer'];
+
+            $h[do_lang('USER_AGENT')] = $myrow['browser'];
+
+            $h[do_lang('USER_OS')] = $myrow['operating_system'];
+
+            $history[] = $h;
+        }
+        $data[do_lang('HISTORY')] = $history;
+    }
+
+    //$data['Cookie'] = $_COOKIE;   Don't want to pass this out too freely, not useful anyway
+
+    return $data;
+}
+
+/**
+ * Convert a stats page path to a page-link.
+ *
+ * @param  string $page The page string
+ * @param  boolean $show_lang Whether to show the language (will not be a proper page-link in this case)
+ * @return string Page-link
+ */
+function convert_page_string_to_page_link($page, $show_lang = false)
+{
+    $page_converted = preg_replace('#/pages/[^/]*/#', '/', $page);
+    if ($page_converted[0] == '/') {
+        $page_converted = substr($page_converted, 1);
+    }
+    if ((substr($page_converted, -4) == '.php') || (substr($page_converted, -4) == '.htm') || (substr($page_converted, -4) == '.txt')) {
+        $page_converted = substr($page_converted, 0, strlen($page_converted) - 4);
+    }
+    if ((multi_lang_content()) && ($show_lang)) {
+        $page_converted = str_replace('/', ': ', $page_converted);
+    } else {
+        $page_converted = str_replace('/', ':', preg_replace('#((.*)/)?pages/.*/[' . URL_CONTENT_REGEXP . ']+/(.*)#', '$2/$3', $page_converted));
+    }
+    return $page_converted;
 }

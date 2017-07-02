@@ -4960,30 +4960,58 @@
      * @param action
      * @returns {boolean}
      */
-    function gaTrack(el, category, action) {
-        if (!$cms.$CONFIG_OPTION('google_analytics') || $cms.$IS_STAFF() || $cms.$IS_ADMIN()) {
-            return;
+    function gaTrack(el, category, action, callback)
+    {
+        if ($cms.$CONFIG_OPTION('google_analytics') && !$cms.$IS_STAFF() && !$cms.$IS_ADMIN()) {
+            if (!category) {
+                category = '{!URL;^}';
+            }
+
+            if (!action) {
+                action = el ? el.href : '{!UNKNOWN;^}';
+            }
+
+            var okay = true;
+            try {
+                $cms.info('Beacon', 'send', 'event', category, action);
+
+                window.ga(
+                    'send',
+                    'event',
+                    category,
+                    action,
+                    {
+                        transport: 'beacon',
+                        hitCallback: callback
+                    }
+                );
+            }
+            catch(err) {
+                okay = false;
+            }
+
+            if (okay) {
+                if (el) { // pass as null if you don't want this
+                    setTimeout(function () {
+                        $cms.navigate(el);
+                    }, 100);
+                }
+
+                return false; // Cancel event because we'll be submitting by ourselves, either via click_link or callback
+    	    }
         }
 
-        if (category === undefined) {
-            category = '{!URL;^}';
-        }
-
-        if (action === undefined) {
-            action = el ? el.href : '{!UNKNOWN;^}';
-        }
-
-        try {
-            window.ga('send', 'event', category, action);
-        } catch (ignore) {}
-
-        if (el) {
+        if (callback) {
             setTimeout(function () {
-                $cms.navigate(el);
+                callback();
             }, 100);
+    	}
 
-            return false;
-        }
+        return null;
+    }
+
+    function googlePlusTrack() {
+        $cms.gaTrack(null, 'social__google_plus');
     }
 
     /**
@@ -7790,11 +7818,21 @@
                 m.parentNode.insertBefore(a, m)
             })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-            if ($cms.$CONFIG_OPTION('long_google_cookies')) {
-                window.ga('create', $cms.$CONFIG_OPTION('google_analytics').trim(), 'auto');
-            } else {
-                window.ga('create', $cms.$CONFIG_OPTION('google_analytics').trim(), { cookieExpires: 0 });
+            var aConfig = {};
+            if ($cms.$COOKIE_DOMAIN() != '') {
+                aConfig.cookieDomain = $cms.$COOKIE_DOMAIN();
             }
+            if (!$cms.$CONFIG_OPTION('long_google_cookies')) {
+                aConfig.cookieExpires = 0;
+            }
+            window.ga('create', $cms.$CONFIG_OPTION('google_analytics').trim(), aConfig);
+            if (!$cms.$IS_GUEST) {
+                window.ga('set', 'userId', strVal($cms.$MEMBER()));
+            }
+            if ($cms.usp.get('_t') != '') {
+                window.ga('send', 'event', 'tracking__' + $cms.usp.get('_t'), window.location.href);
+            }
+
             window.ga('send', 'pageview');
         }
 

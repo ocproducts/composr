@@ -1,8 +1,11 @@
 {$REQUIRE_JAVASCRIPT,core_feedback_features}
-{$, Template uses auto-complete}
+
+{$,Template uses auto-complete}
 {$REQUIRE_JAVASCRIPT,jquery}
 {$REQUIRE_JAVASCRIPT,jquery_autocomplete}
 {$REQUIRE_CSS,autocomplete}
+
+{$SET,GET_NAME,{$AND,{$IS_GUEST},{$CNS}}}
 
 {+START,SET,CAPTCHA}
 	{+START,IF_PASSED_AND_TRUE,USE_CAPTCHA}
@@ -26,7 +29,7 @@
 	{+END}
 {+END}
 
-<div data-view="CommentsPostingForm" data-view-params="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,EMAIL_OPTIONAL,WYSIWYG,CAPTCHA}{_*}{+END}">
+<div data-view="CommentsPostingForm" data-view-params="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,GET_NAME,GET_TITLE,EMAIL_OPTIONAL,TITLE_OPTIONAL,WYSIWYG,CAPTCHA,ANALYTIC_EVENT_CATEGORY}{_*}{+END}">
 	{+START,IF_NON_EMPTY,{COMMENT_URL}}
 	<form role="form" title="{TITLE*}" class="comments_form js-form-comments" id="comments_form" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
@@ -35,8 +38,17 @@
 
 		{+START,IF_PASSED,HIDDEN}{HIDDEN}{+END}
 		<input type="hidden" name="_validated" value="1" />
-		<input type="hidden" name="comcode__post" value="1" />
 		<input type="hidden" name="stub" value="" />
+
+		{+START,IF,{$NOT,{$GET,GET_NAME}}}
+			<input type="hidden" name="poster_name_if_guest" value="" />
+		{+END}
+		{+START,IF,{$NOT,{GET_EMAIL}}}
+			<input type="hidden" name="email" value="" />
+		{+END}
+		{+START,IF,{$NOT,{GET_TITLE}}}
+			<input type="hidden" name="title" value="" />
+		{+END}
 
 		<div class="box box___comments_posting_form"{+START,IF_PASSED,EXPAND_TYPE} data-view="ToggleableTray"{+END}>
 			{+START,IF_NON_EMPTY,{TITLE}}
@@ -63,14 +75,15 @@
 						<tbody>
 							{$GET,EXTRA_COMMENTS_FIELDS_1}
 
-							{+START,IF,{$AND,{$IS_GUEST},{$CNS}}}
+							{+START,IF,{$GET,GET_NAME}}
 								<tr>
 									<th class="de_th vertical_alignment">
-										<label for="poster_name_if_guest">{!cns:GUEST_NAME}:</label>
+										<label for="poster_name_if_guest">{!YOUR_NAME}:</label>
+										{$,Never optional; may not be requested if logged in as we already know}
 									</th>
 
 									<td>
-										<input maxlength="255" size="{$?,{$MOBILE},16,24}" type="text" tabindex="1" id="poster_name_if_guest" name="poster_name_if_guest" />
+										<input id="poster_name_if_guest" name="poster_name_if_guest" type="text" tabindex="1" maxlength="255" size="{$?,{$MOBILE},16,24}" />
 										{+START,IF_PASSED,JOIN_BITS}{+START,IF_NON_EMPTY,{JOIN_BITS}}
 											<span class="horiz_field_sep">{JOIN_BITS}</span>
 										{+END}{+END}
@@ -78,42 +91,36 @@
 								</tr>
 							{+END}
 
-							{$SET,GET_TITLE,0}
-							{+START,IF_PASSED_AND_TRUE,GET_TITLE}
-								{$SET,GET_TITLE,1}
-							{+END}
-							{+START,IF_NON_PASSED,GET_TITLE}
-								{$SET,GET_TITLE,{$CONFIG_OPTION,comment_topic_subject}}
-							{+END}
-
-							{+START,IF,{$GET,GET_TITLE}}
+							{+START,IF,{GET_EMAIL}}
 								<tr>
 									<th class="de_th vertical_alignment">
-										<label for="title">{!SUBJECT}:</label>
+										<label for="email">{!YOUR_EMAIL_ADDRESS}:</label>
+										{+START,IF,{EMAIL_OPTIONAL}}<br /><span class="associated_details">({!OPTIONAL})</span>{+END}
 									</th>
 
 									<td>
 										<div class="constrain_field">
-											<input maxlength="255" class="wide_field" type="text" tabindex="2" id="title" name="title" />
+											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="wide_field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input_text_required{+END}" />
 										</div>
 
-										<div id="error_title" style="display: none" class="input_error_here"></div>
+										<div id="error_email" style="display: none" class="input_error_here"></div>
 									</td>
 								</tr>
 							{+END}
 
-							{+START,IF,{GET_EMAIL}}
+							{+START,IF,{GET_TITLE}}
 								<tr>
 									<th class="de_th vertical_alignment">
-										<label for="email">{!EMAIL_ADDRESS}:</label>{+START,IF,{EMAIL_OPTIONAL}} <span class="associated_details">({!OPTIONAL})</span>{+END}
+										<label for="title">{!SUBJECT}:</label>
+										{+START,IF,{TITLE_OPTIONAL}}<br /><span class="associated_details">({!OPTIONAL})</span>{+END}
 									</th>
 
 									<td>
 										<div class="constrain_field">
-											<input maxlength="255" class="wide_field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input_text_required{+END}" id="email" type="text" tabindex="3" value="{$MEMBER_EMAIL*}" name="email" />
+											<input id="title" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="wide_field" />
 										</div>
 
-										<div id="error_email" style="display: none" class="input_error_here"></div>
+										<div id="error_title" style="display: none" class="input_error_here"></div>
 									</td>
 								</tr>
 							{+END}
@@ -139,11 +146,7 @@
 
 							<tr>
 								<th class="de_th">
-									{+START,IF,{$NOT,{$GET,GET_TITLE}}}
-										<input type="hidden" name="title" value="" />
-									{+END}
-
-									{$SET,needs_msg_label,{$OR,{$GET,GET_TITLE},{GET_EMAIL},{$AND,{$IS_GUEST},{$CNS}}}}
+									{$SET,needs_msg_label,{$OR,{$GET,GET_NAME},{GET_EMAIL},{GET_TITLE}}}
 									{+START,IF,{$GET,needs_msg_label}}
 										<div class="vertical_alignment">
 											<a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{$PAGE_LINK*,_SEARCH:userguide_comcode}"><img alt="" src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" /></a>
@@ -151,14 +154,14 @@
 										</div>
 									{+END}
 
-									{+START,IF_NON_EMPTY,{FIRST_POST}{COMMENT_TEXT}}
+									{+START,IF_NON_EMPTY,{FIRST_POST}{RULES_TEXT}}
 										<ul class="associated_links_block_group">
 											{+START,IF_NON_EMPTY,{FIRST_POST}}
 												<li><a class="non_link" title="{!cns:FIRST_POST} {!LINK_NEW_WINDOW}" target="_blank" href="{FIRST_POST_URL*}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{FIRST_POST*~;^}','320px',null,null,false,true]">{!cns:FIRST_POST}</a></li>
 											{+END}
 
-											{+START,IF_NON_EMPTY,{COMMENT_TEXT}}
-												<li><a class="non_link" href="{$PAGE_LINK*,:rules}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{COMMENT_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{!HOVER_MOUSE_IMPORTANT}</a></li>
+											{+START,IF_NON_EMPTY,{RULES_TEXT}}
+												<li><a class="non_link" href="{$PAGE_LINK*,:rules}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{!HOVER_MOUSE_IMPORTANT}</a></li>
 											{+END}
 										</ul>
 									{+END}
@@ -171,13 +174,13 @@
 									{+END}
 
 									{+START,IF,{$NOT,{$MOBILE}}}
-										{+START,IF_NON_EMPTY,{EM}}
+										{+START,IF_NON_EMPTY,{EMOTICONS}}
 											<div class="comments_posting_form_emoticons">
 												<div class="box box___comments_posting_form"><div class="box_inner">
-													{EM}
+													{EMOTICONS}
 
 													{+START,IF,{$CNS}}
-														<p class="associated_link associated_links_block_group"><a rel="nofollow" tabindex="5" href="#!" class="js-click-open-site-emoticon-chooser-window">{!EMOTICONS_POPUP}</a></p>
+														<p class="associated_link associated_links_block_group"><a rel="nofollow" href="#!" class="js-click-open-site-emoticon-chooser-window">{!EMOTICONS_POPUP}</a></p>
 													{+END}
 												</div>
 											</div></div>
@@ -187,7 +190,8 @@
 
 								<td>
 									<div class="constrain_field">
-										<textarea name="post" id="post" data-textarea-auto-height="" accesskey="x" class="wide_field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_TEXT}{DEFAULT_TEXT*}{+END}</textarea>
+										<textarea name="post" id="post" data-textarea-auto-height="" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true_attachment_ui,faux_attachment_ui} wide_field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
+										<input type="hidden" name="comcode__post" value="1" />
 									</div>
 
 									<div id="error_post" style="display: none" class="input_error_here"></div>
@@ -231,9 +235,12 @@
 							{+END}
 						{+END}
 
-						<div class="proceed_button buttons_group">
+						{$SET,has_preview_button,{$AND,{$NOT,{$MOBILE}},{$JS_ON},{$CONFIG_OPTION,enable_previews},{$NOT,{$VALUE_OPTION,xhtml_strict}}}}
+						{+START,IF_PASSED,SKIP_PREVIEW}{$SET,has_preview_button,0}{+END}
+
+						<div class="proceed_button buttons_group {$?,{$GET,has_preview_button},contains_preview_button,contains_no_preview_button}">
 							{+START,IF,{$NOT,{$MOBILE}}}
-								{+START,IF,{$CONFIG_OPTION,enable_previews}}
+								{+START,IF,{$GET,has_preview_button}}
 									<input id="preview_button" accesskey="p" tabindex="250" class="tabs__preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
 								{+END}
 							{+END}
@@ -243,13 +250,14 @@
 							{+END}
 
 							{+START,IF_PASSED,ATTACHMENTS}
-								{+START,IF,{$BROWSER_MATCHES,simplified_attachments_ui}}
+								{+START,IF,{$AND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
 									<input tabindex="7" id="attachment_upload_button" class="for_field_post buttons__thumbnail {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!comcode:ADD_IMAGES}" />
 								{+END}
 							{+END}
 
 							{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
-							<input tabindex="8" accesskey="u" id="submit_button" class="{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments" type="button" value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
+							{+START,SET,button_icon}{+START,IF_PASSED,SUBMIT_ICON}{SUBMIT_ICON*}{+END}{+START,IF_NON_PASSED,SUBMIT_ICON}{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END}{+END}{+END}
+							<input tabindex="8" accesskey="u" id="submit_button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near_preview_button,not_near_preview_button} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments" type="button" value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
 						</div>
 					</div>
 				</div>

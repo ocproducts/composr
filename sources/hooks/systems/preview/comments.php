@@ -71,7 +71,7 @@ class Hook_preview_comments
         $highlight = false;
         $timestamp = time();
         $time = get_timezoned_date_time(time());
-        $poster_url = $GLOBALS['FORUM_DRIVER']->member_profile_url(get_member());
+        $poster_url = $GLOBALS['FORUM_DRIVER']->member_profile_url(get_member(), true);
         $title = post_param_string('title', '');
         $tpl = do_template('POST', array(
             '_GUID' => 'fe6913829896c0f0a615ecdb11fc5271',

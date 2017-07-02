@@ -60,7 +60,7 @@ function bookables_ical_script()
         echo "DESCRIPTION:" . ical_escape($description) . "\n";
 
         if (!is_guest($event['submitter'])) {
-            echo "ORGANIZER;CN=" . ical_escape($GLOBALS['FORUM_DRIVER']->get_username($event['submitter'], true)) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($event['submitter'])) . ":MAILTO:" . ical_escape($GLOBALS['FORUM_DRIVER']->get_member_email_address($event['submitter'])) . "\n";
+            echo "ORGANIZER;CN=" . ical_escape($GLOBALS['FORUM_DRIVER']->get_username($event['submitter'], true)) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($event['submitter'], false)) . ":MAILTO:" . ical_escape($GLOBALS['FORUM_DRIVER']->get_member_email_address($event['submitter'])) . "\n";
         }
         echo "CATEGORIES:" . ical_escape(get_translated_text($event['categorisation'])) . "\n";
         echo "CLASS:" . (($event['price'] == 0.0) ? 'PUBLIC' : 'PRIVATE') . "\n";
@@ -128,7 +128,7 @@ function bookables_ical_script()
                         if (!is_guest($attendee['member_id'])) {
                             $customer_name = $GLOBALS['FORUM_DRIVER']->get_username($attendee['member_id'], true);
                             $customer_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($attendee['member_id']);
-                            echo "ATTENDEE;CN=" . ical_escape($customer_name) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($attendee['member_id'])) . ":MAILTO:" . ical_escape($customer_email) . "\n";
+                            echo "ATTENDEE;CN=" . ical_escape($customer_name) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($attendee['member_id'], false)) . ":MAILTO:" . ical_escape($customer_email) . "\n";
                         } else {
                             $customer_name = $attendee['customer_name'];
                             $customer_email = $attendee['customer_email'];
@@ -245,7 +245,7 @@ function bookings_ical_script()
                     if (!is_guest($booking['member_id'])) {
                         $customer_name = $GLOBALS['FORUM_DRIVER']->get_username($booking['member_id'], true);
                         $customer_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($booking['member_id']);
-                        echo "ORGANIZER;CN=" . ical_escape($customer_name) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($booking['member_id'])) . ":MAILTO:" . ical_escape($customer_email) . "\n";
+                        echo "ORGANIZER;CN=" . ical_escape($customer_name) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($booking['member_id'], false)) . ":MAILTO:" . ical_escape($customer_email) . "\n";
                     } else {
                         $customer_name = $booking['customer_name'];
                         $customer_email = $booking['customer_email'];

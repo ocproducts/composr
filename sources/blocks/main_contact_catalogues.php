@@ -62,6 +62,15 @@ class Block_main_contact_catalogues
      */
     public function run($map)
     {
+        require_code('fields');
+
+        require_code('mail');
+        require_code('mail_forms');
+
+        $text = new Tempcode();
+
+        // Options...
+
         if (addon_installed('captcha')) {
             require_code('captcha');
             $use_captcha = ((get_option('captcha_on_feedback') == '1') && (use_captcha()));
@@ -75,11 +84,15 @@ class Block_main_contact_catalogues
         }
 
         $special_fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue_name), 'ORDER BY cf_order,' . $GLOBALS['SITE_DB']->translate_field_ref('cf_name'));
-        require_code('fields');
 
         $subject = array_key_exists('subject', $map) ? $map['subject'] : '';
         if ($subject == '') {
             $subject = get_translated_text($GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_title'));
+        }
+
+        $to_email = array_key_exists('to', $map) ? $map['to'] : '';
+        if ($to_email == '') {
+            $to_email = null;
         }
 
         $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
@@ -89,11 +102,15 @@ class Block_main_contact_catalogues
 
         $block_id = md5(serialize($map));
 
+        // Submission...
+
         if (post_param_string('_block_id', '') == $block_id) {
+            // Check CAPTCHA
             if ($use_captcha) {
                 enforce_captcha();
             }
 
+            // Data
             $field_results = array();
             foreach ($special_fields as $field_num => $field) {
                 $ob = get_fields_hook($field['cf_type']);
@@ -106,28 +123,25 @@ class Block_main_contact_catalogues
             require_code('antispam');
             inject_action_spamcheck(null, post_param_string('email', null));
 
-            require_code('mail_forms');
-
-            $to_email = array_key_exists('to', $map) ? $map['to'] : '';
-            if ($to_email == '') {
-                $to_email = null;
-            }
-            form_to_email($subject_prefix . $subject . $subject_suffix, $body_prefix, $field_results, $to_email, $body_suffix, false);
-
-            attach_message(do_lang_tempcode('SUCCESS'));
-
+            // Send e-mail
+            form_to_email($subject, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix, $field_results, $to_email, false);
+  
+            // Redirect/messaging
             $redirect = array_key_exists('redirect', $map) ? $map['redirect'] : '';
             if ($redirect != '') {
                 $redirect = page_link_to_url($redirect);
                 require_code('site2');
                 assign_refresh($redirect, 0.0);
+            } else {
+                attach_message(do_lang_tempcode('MESSAGE_SENT'), 'inform');
             }
         }
+
+        // Form...
 
         require_code('form_templates');
 
         $fields = new Tempcode();
-        $text = new Tempcode();
 
         if ($use_captcha) {
             $fields->attach(form_input_captcha());
@@ -140,10 +154,8 @@ class Block_main_contact_catalogues
 
         url_default_parameters__enable();
 
-        $found_email = false;
         foreach ($special_fields as $field_num => $field) {
             $ob = get_fields_hook($field['cf_type']);
-            $default = $field['cf_default'];
 
             $_cf_name = get_translated_text($field['cf_name']);
             $field_cat = '';
@@ -163,7 +175,7 @@ class Block_main_contact_catalogues
             $_cf_description = escape_html(get_translated_text($field['cf_description']));
 
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = true;
-            $result = $ob->get_field_inputter($_cf_name, $_cf_description, $field, $default, true, !array_key_exists($field_num + 1, $special_fields));
+            $result = $ob->get_field_inputter($_cf_name, $_cf_description, $field, null, true, !array_key_exists($field_num + 1, $special_fields));
             $GLOBALS['NO_DEV_MODE_FULLSTOP_CHECK'] = false;
 
             if ($result === null) {
@@ -176,9 +188,14 @@ class Block_main_contact_catalogues
                 $field_groups[$field_cat]->attach($result);
             }
 
-            if (($field['cf_type'] == 'email') && (!$found_email)) {
+            if (option_value_from_field_array($field, 'tag') == 'email') {
                 $hidden->attach(form_input_hidden('field_tagged__field_' . strval($field['id']), 'email'));
-                $found_email = true;
+            }
+            if (option_value_from_field_array($field, 'tag') == 'name') {
+                $hidden->attach(form_input_hidden('field_tagged__field_' . strval($field['id']), 'name'));
+            }
+            if (option_value_from_field_array($field, 'tag') == 'subject') {
+                $hidden->attach(form_input_hidden('field_tagged__field_' . strval($field['id']), 'subject'));
             }
 
             unset($result);
@@ -219,6 +236,7 @@ class Block_main_contact_catalogues
             'URL' => $url,
             'TEXT' => $text,
             'SECONDARY_FORM' => true,
+            'ANALYTIC_EVENT_CATEGORY' => $subject,
         ));
     }
 }

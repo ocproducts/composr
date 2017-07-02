@@ -150,8 +150,27 @@
                 return;
             }
 
+            if (opts.getName && !$cms.form.checkFieldForBlankness(form.elements.poster_name_if_guest, e)) {
+                e.preventDefault();
+                return;
+            }
+
+            if (opts.getTitle && !opts.titleOptional && !$cms.form.checkFieldForBlankness(form.elements.title, e)) {
+                e.preventDefault();
+                return;
+            }
+
             if (opts.getEmail && !opts.emailOptional && !$cms.form.checkFieldForBlankness(form.elements.email, e)) {
                 e.preventDefault();
+                return;
+            }
+
+            if (analyticEventCategory) {
+                $cms.gaTrack(null, '{ANALYTIC_EVENT_CATEGORY;*}', null, function () {
+                    form.submit();
+                });
+                e.preventDefault();
+                return;
             }
         },
 

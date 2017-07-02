@@ -19,6 +19,21 @@
  */
 
 /**
+ * Get a config option, with override support.
+ *
+ * @param  ID_TEXT $option_name The config option.
+ * @param  ?array $overrides Map of config option codenames and overridden values (null: no overrides).
+ * @return ID_TEXT Config option value.
+ */
+function get_option_with_overrides($option_name, $overrides)
+{
+    if ((isset($overrides[$option_name])) && ($overrides[$option_name] != '')) {
+        return $overrides[$option_name];
+    }
+    return get_option($option_name);
+}
+
+/**
  * Find whether a member's field must be filled in.
  *
  * @param  ?MEMBER $member_id The member being edited (null: new member).
@@ -26,11 +41,12 @@
  * @set email_address dob required_cpfs
  * @param  ?string $current_value The value the field has now (null: lookup from member record; cannot do this for a CPF).
  * @param  ?MEMBER $editing_member The member doing the adding/editing operation (null: current member).
+ * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
  * @return boolean Whether the field must be filled in.
  */
-function member_field_is_required($member_id, $field_class, $current_value = null, $editing_member = null)
+function member_field_is_required($member_id, $field_class, $current_value = null, $editing_member = null, $adjusted_config_options = null)
 {
-    if (($field_class == 'dob') && (get_option('dobs') == '0')) {
+    if (($field_class == 'dob') && ((get_option_with_overrides('dobs', $adjusted_config_options) == '0') || ((get_option_with_overrides('dobs', $adjusted_config_options) == '1') && ($member_id === null)))) {
         return false;
     }
 
@@ -131,14 +147,14 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     if ($timezone === null) {
         $timezone = get_site_timezone();
     }
-    $doing_email_option = (get_option('allow_email_disable') == '1') && (addon_installed('cns_contact_member'));
+    $doing_email_option = (get_option('member_email_receipt_configurability') == '2') && (addon_installed('cns_contact_member'));
     if (!$doing_email_option) {
         $allow_emails = 1;
     }
     if ($allow_emails === null) {
         $allow_emails = 1;
     }
-    $doing_email_from_staff_option = (get_option('allow_email_from_staff_disable') == '1');
+    $doing_email_from_staff_option = (get_option('staff_email_receipt_configurability') == '2');
     if (!$doing_email_from_staff_option) {
         $allow_emails_from_staff = 1;
     }
@@ -182,6 +198,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
 
     if ($check_correctness) {
         if (!in_array($password_compatibility_scheme, array('ldap', 'httpauth'))) {
+            require_code('cns_members_action2');
             cns_check_name_valid($username, null, ($password_compatibility_scheme == '') ? $password : null);
         }
         if ((!function_exists('has_actual_page_access')) || (!has_actual_page_access(get_member(), 'admin_cns_members'))) {

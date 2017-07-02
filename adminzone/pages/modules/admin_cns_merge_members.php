@@ -262,7 +262,7 @@ class Module_admin_cns_merge_members
 
         log_it('MERGE_MEMBERS', $from_username, $to_username);
 
-        $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($to_id, '', false);
-        return inform_screen($this->title, do_lang_tempcode('MERGED_MEMBERS', $username));
+        $user_link = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($to_id, '', false);
+        return inform_screen($this->title, do_lang_tempcode('MERGED_MEMBERS', $user_link));
     }
 }

@@ -443,6 +443,9 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
         'hphp.files.list' => '',
         'hphp' => '',
 
+        // Temporary files
+        'temp' => '',
+
         // LEGACY
         'safe_mode_temp' => '',
     );
@@ -470,7 +473,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
 
         // Temporary files
         'tmp' => '.*',
-        'inc' => 'temp',
         'dat' => 'caches/http',
         'bak' => '.*',
         'old' => '.*',

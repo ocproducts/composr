@@ -40,7 +40,7 @@ function init__site()
 
     global $NON_CANONICAL_PARAMS;
     // We only bother listing ones the software itself may inject - otherwise admin responsible for their own curation of canonical settings
-    $NON_CANONICAL_PARAMS = array('wide_high' => false, 'wide' => false, 'wide_print' => false, 'filtered' => false, 'utheme' => false, 'active_filter' => true, 'redirected' => true, 'redirect_url' => true, 'redirect' => true, 'redirect_passon' => true);
+    $NON_CANONICAL_PARAMS = array('_t' => false, 'wide_high' => false, 'wide' => false, 'wide_print' => false, 'filtered' => false, 'utheme' => false, 'active_filter' => true, 'redirected' => true, 'redirect_url' => true, 'redirect' => true, 'redirect_passon' => true);
     inform_non_canonical_parameter('#^(.*_)?(max|start|sort)$#');
     if (function_exists('get_value')) {
         $is_non_canonical = false;

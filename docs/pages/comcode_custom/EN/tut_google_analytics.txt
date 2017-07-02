@@ -404,6 +404,46 @@ Composr provides a JavaScript function, [tt]$cms.gaTrack[/tt], to abstract this,
 | Open attachment overlay
 | [tt]Image[/tt]
 | [tt]<filename>[/tt]
+|-
+| Join newsletter
+| [tt]Join newsletter/Change settings[/tt]
+| [tt]<currentUrl>[/tt]
+|-
+| Create support ticket
+| [tt]Create support ticket[/tt]
+| [tt]<currentUrl>[/tt]
+|-
+| Send contact message
+| [tt]<catalogueName>[/tt]
+| [tt]<currentUrl>[/tt]
+|-
+| Send contact message
+| [tt]Contact Us[/tt]
+| [tt]<currentUrl>[/tt]
+|-
+| Join
+| [tt]Join[/tt]
+| [tt]<currentUrl>[/tt]
+|-
+| Do a social interaction (e.g. a like or a share)
+| [tt]social__facebook_like[/tt] / [tt]social__facebook[/tt] / [tt]social__google_plus[/tt] / [tt]social__twitter[/tt] / [tt]social__stumbleupon[/tt] / [tt]social__digg[/tt]
+| [tt]<currentUrl>[/tt]
+|-
+| Print the page
+| [tt]Print this[/tt]
+| [tt]<currentUrl>[/tt]
+|-
+| Bookmark the page
+| [tt]Add to favorites[/tt]
+| [tt]<currentUrl>[/tt]
+|-
+| Standard tracking via [tt]_t[/tt] URL parameter
+| [tt]tracking__<parameterValue>[/tt]
+| [tt]<currentUrl>[/tt]
+|-
+| Get whitepaper from join block
+| [tt]Download whitepaper[/tt]
+| [tt]<currentUrl>[/tt]
 |}
 
 You may easily extend this with whatever custom events you want, then configure [i]Google Analytics[/i] against those events. Just edit it into HTML within pages/templates, adding an [tt]onclick[/tt] to links like follows:
@@ -411,6 +451,10 @@ You may easily extend this with whatever custom events you want, then configure 
 onclick="return $cms.gaTrack(this,'My Event Name','My Event Parameter');"
 [/code]
 The [tt]'My Event Parameter'[/tt] bit is optional, but often you will want to define different parameter value underneath the same event name. For example, for the banner click events this is the codename of the clicked banner.
+
+[title="2"]Session unificiation[/title]
+
+Composr supports the [i]Google Analytics[/i] Session Unification feature (via User-ID). To enable this you need to follow Google's [url="User-ID instructions"]https://support.google.com/analytics/answer/3123666[/url]. The "Set up User-ID in your tracking code" bit has been done for you already by Composr.
 
 [title="2"]Alternatives to Google Analytics[/title]
 

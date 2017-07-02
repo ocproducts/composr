@@ -557,7 +557,7 @@ class Module_booking
             $form = do_template('FORM', array('_GUID' => '18e831a00ac918b06c7f761c7d7d5fb0', 'TEXT' => do_lang_tempcode('A_FEW_DETAILS'), 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
         } else {
             // Integrated signup
-            $form = cns_join_form($url, true, false, false, false);
+            $form = cns_join_form($url, true, false, false);
         }
 
         return do_template('BOOKING_JOIN_OR_LOGIN_SCREEN', array('_GUID' => 'b6e499588de8e2136122949478bac2e7', 'TITLE' => $this->title, 'FORM' => $form, 'HIDDEN' => $hidden));
@@ -572,7 +572,7 @@ class Module_booking
     {
         // Finish join operation, if applicable
         if ((is_guest()) && (get_option('member_booking_only') == '1')) {
-            list($messages) = cns_join_actual(true, false, false, true, false, false, false, true);
+            list($messages) = cns_join_actual(true, false, false, true, null, null, null, null, array('email_validation_if_enabled' => '0', 'staff_validation_if_enabled' => '0', 'coppa_if_enabled' => '0'));
             if (!$messages->is_empty()) {
                 return inform_screen($this->title, $messages);
             }

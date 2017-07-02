@@ -58,6 +58,12 @@
             }
 
             $cms.ui.disableFormButtons(form);
+
+            // Tracking
+            e.preventDefault();
+            $cms.gaTrack(null, '{!newsletter:NEWSLETTER_JOIN;}', null, function () {
+                form.submit();
+            });
         });
     };
 

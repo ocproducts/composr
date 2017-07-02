@@ -278,6 +278,8 @@ class css_file_test_set extends cms_test_case
         }
 
         $exceptions = array(
+            'contains_preview_button',
+            'near_preview_button',
             'active_item',
             'thick_border',
             'access_restricted_in_list',

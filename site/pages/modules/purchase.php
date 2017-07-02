@@ -516,7 +516,7 @@ class Module_purchase
         $new_password = post_param_string('password', null);
         if (($new_username !== null) && ($new_password !== null)) {
             require_code('cns_join');
-            list($messages) = cns_join_actual(true, false, false, true, false, false, false, true);
+            list($messages) = cns_join_actual(true, false, false, true, null, null, null, null, array('email_validation_if_enabled' => '0', 'staff_validation_if_enabled' => '0', 'coppa_if_enabled' => '0'));
             if (is_guest()) {
                 if (!$messages->is_empty()) {
                     return inform_screen($this->title, $messages);
@@ -1467,7 +1467,7 @@ class Module_purchase
 
                 $url = get_self_url();
 
-                $form = cns_join_form($url, true, false, false, false);
+                $form = cns_join_form($url, true, false, false);
 
                 $hidden = build_keep_post_fields();
 

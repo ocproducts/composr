@@ -570,15 +570,17 @@ class Hook_addon_registry_core_rich_media
         $content = do_lorem_template('ATTACHMENT', array(
             'I' => placeholder_number(),
             'POSTING_FIELD_NAME' => '',
+            'TRUE_ATTACHMENT_UI' => true,
         ));
 
         $attachments = do_lorem_template('ATTACHMENTS', array(
+            'POSTING_FIELD_NAME' => lorem_word(),
             'ATTACHMENT_TEMPLATE' => $content,
             'IMAGE_TYPES' => placeholder_types(),
             'ATTACHMENTS' => $content,
-            'POSTING_FIELD_NAME' => '',
             'MAX_ATTACHMENTS' => placeholder_number(),
             'NUM_ATTACHMENTS' => placeholder_number(),
+            'TRUE_ATTACHMENT_UI' => true,
         ));
 
         return array(

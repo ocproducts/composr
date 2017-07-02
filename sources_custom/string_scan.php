@@ -313,6 +313,27 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PGE_D
         PGE_R
         PGE_HASH
+        BLOCK_TRANS_NAME_main_join
+        BLOCK_main_join_DESCRIPTION
+        BLOCK_main_join_USE
+        BLOCK_main_join_PARAM_subject_TITLE
+        BLOCK_main_join_PARAM_dobs_TITLE
+        BLOCK_main_join_PARAM_member_email_receipt_configurability_TITLE
+        BLOCK_main_join_PARAM_staff_email_receipt_configurability_TITLE
+        BLOCK_main_join_PARAM_enable_timezones_TITLE
+        BLOCK_main_join_PARAM_enable_language_selection_TITLE
+        BLOCK_main_join_PARAM_path_TITLE
+        BLOCK_main_join_PARAM_to_TITLE
+        BLOCK_main_join_PARAM_subject
+        BLOCK_main_join_PARAM_dobs
+        BLOCK_main_join_PARAM_member_email_receipt_configurability
+        BLOCK_main_join_PARAM_staff_email_receipt_configurability
+        BLOCK_main_join_PARAM_enable_timezones
+        BLOCK_main_join_PARAM_enable_language_selection
+        BLOCK_main_join_PARAM_path
+        BLOCK_main_join_PARAM_to
+        BLOCK_main_join_PARAM_guid_TITLE
+        BLOCK_main_join_PARAM_guid
         DKIM_PRIVATE_KEY
         CONFIG_OPTION_dkim_private_key
         DKIM_SELECTOR
@@ -377,6 +398,14 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ERROR_UPLOADING_4
         ERROR_UPLOADING_6
         ERROR_UPLOADING_7
+        BLOCK_main_contact_simple_PARAM_attachments
+        BLOCK_main_contact_simple_PARAM_attachments_TITLE
+        BLOCK_main_contact_simple_PARAM_subject
+        BLOCK_main_contact_simple_PARAM_subject_TITLE
+        BLOCK_main_contact_us_PARAM_attachments
+        BLOCK_main_contact_us_PARAM_attachments_TITLE
+        BLOCK_main_contact_us_PARAM_subject
+        BLOCK_main_contact_us_PARAM_subject_TITLE
         VOTE_CHEAT
         ACCESS_FOR
         MISSING_CONFIRM_CODE
@@ -524,10 +553,11 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ALLOW_AUTO_NOTIFICATIONS
         ALLOW_COMMENTS
         ALLOW_COMMENTS_ONLY
-        ALLOW_EMAIL_DISABLE
-        ALLOW_EMAIL_FROM_STAFF_DISABLE
+        MEMBER_EMAIL_RECEIPT_CONFIGURABILITY
+        STAFF_EMAIL_RECEIPT_CONFIGURABILITY
         ALLOW_EXT_IMAGES
-        ALLOW_INTERNATIONAL
+        ENABLE_TIMEZONES
+        ENABLE_LANGUAGE_SELECTION
         ALLOW_OWN_RATE
         ALLOW_RATING
         ALLOW_REVIEWS
@@ -1780,6 +1810,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CHAT_OPTIONS_TEXT_DESCRIPTION
         CHAT_TRANSITORY_ALERT_TIME
         CHAT_UNBAN
+        BLOCK_main_join_PARAM_captcha
+        BLOCK_main_join_PARAM_captcha_TITLE
+        CONFIG_OPTION_enable_language_selection_VALUE_0
+        CONFIG_OPTION_enable_language_selection_VALUE_1
+        CONFIG_OPTION_enable_language_selection_VALUE_2
+        CONFIG_OPTION_enable_timezones_VALUE_0
+        CONFIG_OPTION_enable_timezones_VALUE_1
+        CONFIG_OPTION_enable_timezones_VALUE_2
+        CONFIG_OPTION_staff_email_receipt_configurability
         CHECKLIST_INITIAL_TASK_CONTENT
         CHECKLIST_INITIAL_TASK_FAVICON
         CHECKLIST_INITIAL_TASK_GOOGLE_WEBMASTER_TOOLS
@@ -2532,10 +2571,16 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_allow_alpha_search
         CONFIG_OPTION_allow_audio_videos
         CONFIG_OPTION_allow_auto_notifications
-        CONFIG_OPTION_allow_email_disable
-        CONFIG_OPTION_allow_email_from_staff_disable
+        CONFIG_OPTION_member_email_receipt_configurability
+        CONFIG_OPTION_member_email_receipt_configurability_VALUE_0
+        CONFIG_OPTION_member_email_receipt_configurability_VALUE_1
+        CONFIG_OPTION_member_email_receipt_configurability_VALUE_2
+        CONFIG_OPTION_staff_email_receipt_configurability_VALUE_0
+        CONFIG_OPTION_staff_email_receipt_configurability_VALUE_1
+        CONFIG_OPTION_staff_email_receipt_configurability_VALUE_2
         CONFIG_OPTION_allow_ext_images
-        CONFIG_OPTION_allow_international
+        CONFIG_OPTION_enable_timezones
+        CONFIG_OPTION_enable_language_selection
         CONFIG_OPTION_allow_own_rate
         CONFIG_OPTION_allow_theme_image_selector
         CONFIG_OPTION_trusted_sites_1
@@ -2651,6 +2696,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_display_name_generator
         CONFIG_OPTION_dload_search_index
         CONFIG_OPTION_dobs
+        CONFIG_OPTION_dobs_VALUE_0
+        CONFIG_OPTION_dobs_VALUE_1
+        CONFIG_OPTION_dobs_VALUE_2
         CONFIG_OPTION_download_entries_per_page
         CONFIG_OPTION_download_gallery_root
         CONFIG_OPTION_download_subcats_per_page
@@ -5221,6 +5269,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MEMBER_GIVEN_POINTS
         MEMBER_GIVEN_POINTS_FOR
         MEMBER_ID
+        HISTORY
         MEMBER_IMPORT_CPF_ADDED
         MEMBER_IMPORT_GROUP_ADDED
         MEMBER_NO_EXIST
@@ -7445,6 +7494,9 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ATTACHMENT_SAVED
         LOGIN_TEXT
         FILES
+        DOWNLOAD_WHITEPAPER
+        WHITEPAPER_EMAILED
+        WHITEPAPER_NOT_EMAILED
         MEMBERS_ACTIVE_THIS_MONTH
         MEMBERS_ACTIVE_THIS_WEEK
         MEMBERS_ACTIVE_TODAY
@@ -7841,7 +7893,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         COMCODE_TAGS
         COMING_SOON
         COMMENTS
-        COMMENTS_DEFAULT_TEXT
+        COMMENTS_DEFAULT_POST
         COMMENT_FORUM_NAME
         COMMUNITY
         COMPETITIONS
@@ -8826,6 +8878,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NEW_COMMENT_A
         NEW_COMMENT_B
         NEW_COMMENT_BODY
+        COMMENT_POSTED
         NEW_COMMENT_C
         NEW_COMMENT_D
         NEW_COMMENT_E

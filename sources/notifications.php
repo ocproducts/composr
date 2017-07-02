@@ -455,7 +455,6 @@ class Notification_dispatcher
                             'no_cc' => $no_cc,
                             'as' => (($from_member_id < 0) ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : $from_member_id),
                             'as_admin' => ($from_member_id == A_FROM_SYSTEM_PRIVILEGED),
-                            'bypass_queue' => true,
                             'require_recipient_valid_since' => $join_time,
                         )
                     );

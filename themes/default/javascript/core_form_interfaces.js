@@ -215,6 +215,7 @@
         FormStandardEnd.base(this, 'constructor', arguments);
 
         this.backUrl = strVal(params.backUrl);
+        this.analyticEventCategory = params.analyticEventCategory;
         this.form = $cms.dom.closest(this.el, 'form');
         this.btnSubmit = this.$('#submit_button');
 
@@ -260,7 +261,7 @@
         },
 
         doFormSubmit: function (e) {
-            if (!$cms.form.doFormSubmit(this.form, e)) {
+            if (!$cms.form.doFormSubmit(this.form, e, this.analyticEventCategory)) {
                 e.preventDefault();
             }
         },

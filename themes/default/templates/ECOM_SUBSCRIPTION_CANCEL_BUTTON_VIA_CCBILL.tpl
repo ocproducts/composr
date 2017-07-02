@@ -1,1 +1,1 @@
-<a onclick="var t=this; window.fauxmodal_confirm('{!SUBSCRIPTION_CANCEL_WARNING=;,{!PAYMENT_GATEWAY_paypal}}',function(result) { if (result) { click_link(t); } }); return false;" href="https://support.ccbill.com/">{!SUBSCRIPTION_CANCEL}</a>
+<a data-cms-confirm-click="{!SUBSCRIPTION_CANCEL_WARNING*,{!PAYMENT_GATEWAY_ccbill}}" href="https://support.ccbill.com/">{!SUBSCRIPTION_CANCEL}</a>

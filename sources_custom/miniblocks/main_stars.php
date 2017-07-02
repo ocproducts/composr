@@ -38,7 +38,7 @@ foreach ($gifts as $gift) {
     $member_id = $gift['gift_to'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
     if ($username !== null) {
-        $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
+        $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
         $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
         $just_member_row = db_map_restrict($GLOBALS['FORUM_DRIVER']->get_member_row($member_id), array('id', 'm_signature'));
         $signature = get_translated_tempcode('f_members', $just_member_row, 'm_signature', $GLOBALS['FORUM_DB']);

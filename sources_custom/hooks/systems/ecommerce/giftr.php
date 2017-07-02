@@ -201,7 +201,7 @@ class Hook_ecommerce_giftr
                 require_code('notifications');
                 $subject = do_lang('GOT_GIFT', null, null, null, get_lang($to_member_id));
                 if ($anonymous == 0) {
-                    $sender_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($from_member_id);
+                    $sender_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($from_member_id, false);
                     $sender_displayname = $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, true);
                     $sender_username = $GLOBALS['FORUM_DRIVER']->get_username($from_member_id);
                     $private_topic_url = $GLOBALS['FORUM_DRIVER']->member_pm_url($from_member_id);

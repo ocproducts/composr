@@ -218,6 +218,141 @@ foreach (array_keys($langs) as $lang) {
     $mailer_script = '
 <' . '?php
 
+function is_control_field($field_name, $include_email_metafields = false, $include_login_fields = false, $extra_boring_fields = array())
+{
+    // NB: Keep this function synced with the copy of it in static_export.php
+
+    $boring_fields = array(
+        // Passed through metadata
+        "id",
+
+        // Passed through data
+        "stub",
+
+        // Passed through context
+        "from_url",
+        "http_referer",
+        "redirect",
+        "redirect_passon",
+
+        // Image buttons send these
+        "x",
+        "y",
+
+        // Password fields
+        "password",
+        "confirm_password",
+        "edit_password",
+
+        // Relating to uploads/attachments
+        "MAX_FILE_SIZE",
+
+        // Relating to preview
+        "perform_webstandards_check",
+
+        // Relating to posting form/WYSIWYG
+        "posting_ref_id",
+        "f_face",
+        "f_colour",
+        "f_size",
+
+        // Relating to security
+        "session_id",
+        "csrf_token",
+        "js_token",
+        "y" . md5(get_site_name() . ": antispam"),
+
+        // Data relaying for Suhosin workaround
+        "post_data",
+    );
+    if ($include_email_metafields) {
+        $boring_fields = array_merge($boring_fields, array(
+            "subject",
+            "title",
+            "name",
+            "poster_name_if_guest",
+            "email",
+            "to_members_email",
+            "to_written_name",
+        ));
+    }
+    if ($include_login_fields) {
+        $boring_fields = array_merge($boring_fields, array(
+            "login_username",
+            "password",
+            "remember_me",
+            "login_invisible",
+        ));
+    }
+    if (in_array($field_name, $boring_fields)) {
+        return true;
+    }
+
+    if (in_array($field_name, $extra_boring_fields)) {
+        return true;
+    }
+
+    $prefixes = array(
+        // Standard hidden-fields convention
+        "_",
+
+        // Form metadata
+        "label_for__",
+        "description_for__",
+        "tick_on_form__",
+        "require__",
+
+        // Relating to uploads/attachments
+        "hidFileID_",
+        "hidFileName_",
+
+        // Relating to preview
+        "pre_f_",
+        "tempcodecss__",
+        "comcode__",
+
+        // Relating to permissions setting
+        "access_",
+    );
+    if ($include_email_metafields) {
+        $prefixes = array_merge($prefixes, array(
+            "field_tagged__",
+        ));
+    }
+    foreach ($prefixes as $prefix) {
+        if (substr($field_name, 0, strlen($prefix)) == $prefix) {
+            return true;
+        }
+    }
+
+    $suffixes = array(
+        // Relating to posting form/WYSIWYG
+        "_parsed",
+        "__is_wysiwyg",
+    );
+    foreach ($suffixes as $suffix) {
+        if (substr($field_name, -strlen($suffix)) == $suffix) {
+            return true;
+        }
+    }
+
+    $substrings = array(
+        // Passed through metadata
+        "confirm",
+    );
+    foreach ($substrings as $substring) {
+        if (strpos($field_name, $substring) !== false) {
+            return true;
+        }
+    }
+
+    if (($field_name[0] == "x") && (strlen($field_name) == 33)) {
+        return true;
+    }
+
+    return false;
+}
+
 function post_param_string($key, $default)
 {
     return isset($_POST[$key]) ? $_POST[$key] : $default;
@@ -242,13 +377,8 @@ $name = post_param_string("name", "' . do_lang('UNKNOWN') . '");
 $post = post_param_string("post", "");
 
 $fields = array();
-foreach (array_diff(array_keys($_POST), array("MAX_FILE_SIZE", "perform_webstandards_check", "_validated", "posting_ref_id", "f_face", "f_colour", "f_size", "x", "y", "name", "subject", "email", "to_members_email", "to_written_name", "redirect", "http_referer", "session_id")) as $key) {
-    $is_hidden = (strpos($key, "hour") !== false) || (strpos($key, "access_") !== false) || (strpos($key, "minute") !== false) || (strpos($key, "confirm") !== false) || (strpos($key, "pre_f_") !== false) || (strpos($key, "tick_on_form__") !== false) || (strpos($key, "label_for__") !== false) || (strpos($key, "description_for__") !== false) || (strpos($key, "wysiwyg_version_of_") !== false) || (strpos($key, "is_wysiwyg") !== false) || (strpos($key, "require__") !== false) || (strpos($key, "tempcodecss__") !== false) || (strpos($key, "comcode__") !== false) || (strpos($key, "_parsed") !== false) || (substr($key, 0, 1) == "_") || (substr($key, 0, 9) == "hidFileID") || (substr($key, 0, 11) == "hidFileName");
-    if ($is_hidden) {
-        continue;
-    }
-
-    if (substr($key, 0, 1) != "_") {
+foreach (array_keys($_POST) as $key) {
+    if (!is_control_field($key)) {
         $fields[$key] = post_param_string("label_for__" . $key, titleify($key));
     }
 }

@@ -13,4 +13,5 @@
 	<div>
 		{ENTRIES}
 	</div>
+
 </td>

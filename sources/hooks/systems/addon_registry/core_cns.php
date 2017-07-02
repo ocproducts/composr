@@ -166,9 +166,10 @@ class Hook_addon_registry_core_cns
             'sources/hooks/systems/sitemap/member.php',
             'sources/hooks/systems/config/page_after_join.php',
             'sources/hooks/systems/config/allow_alpha_search.php',
-            'sources/hooks/systems/config/allow_email_disable.php',
-            'sources/hooks/systems/config/allow_email_from_staff_disable.php',
-            'sources/hooks/systems/config/allow_international.php',
+            'sources/hooks/systems/config/member_email_receipt_configurability.php',
+            'sources/hooks/systems/config/staff_email_receipt_configurability.php',
+            'sources/hooks/systems/config/enable_timezones.php',
+            'sources/hooks/systems/config/enable_language_selection.php',
             'sources/hooks/systems/config/decryption_key.php',
             'sources/hooks/systems/config/encryption_key.php',
             'sources/hooks/systems/config/hot_topic_definition.php',
@@ -449,6 +450,9 @@ class Hook_addon_registry_core_cns
             'themes/default/css/cns_footer.css',
             'sources/hooks/systems/config/search_cns_members.php',
             'themes/default/javascript/core_cns.js',
+            'sources/blocks/main_join.php',
+            'themes/default/templates/BLOCK_MAIN_JOIN.tpl',
+            'themes/default/templates/BLOCK_MAIN_JOIN_DONE.tpl',
 
             // Files for post map functionality
             'themes/default/templates/CNS_POST_MAP.tpl',
@@ -492,6 +496,8 @@ class Hook_addon_registry_core_cns
             'templates/CNS_MEMBER_DIRECTORY_USERNAME.tpl' => 'cns_member_directory_username',
             'templates/CNS_POST_MAP.tpl' => 'cns_post_map',
             'templates/CNS_POST_MAP_ITEM.tpl' => 'cns_post_map',
+            'templates/BLOCK_MAIN_JOIN_DONE.tpl' => 'block_main_join_done',
+            'templates/BLOCK_MAIN_JOIN.tpl' => 'block_main_join',
         );
     }
 
@@ -1308,6 +1314,44 @@ class Hook_addon_registry_core_cns
         return array(
             lorem_globalise(do_lorem_template('CNS_POST_MAP', array(
                 'ITEMS' => $items,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__block_main_join()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('BLOCK_MAIN_JOIN', array(
+                'FORM' => placeholder_form(),
+                'HAS_EMAIL_TO_SEND' => true,
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__block_main_join_done()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('BLOCK_MAIN_JOIN_DONE', array(
+                'MESSAGE' => lorem_paragraph_html(),
+                'LOGGED_IN' => true,
+                'HAS_EMAIL_TO_SEND' => true,
+                'HAS_EMAIL_ADDRESS' => true,
+                'EMAIL_SENT' => true,
+                'EMAIL_ADDRESS' => lorem_word(),
             )), null, '', true)
         );
     }

@@ -1,4 +1,4 @@
-[title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Feedback and user interaction[/title]
+ [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Feedback and user interaction[/title]
 
 Composr allows you to create a highly interactive site if you desire, with numerous features for user feedback at your disposal.
 
@@ -81,11 +81,18 @@ The process for using this block is as follows:
 4) Add the block to it in the normal way. When adding the block you are asked which catalogue to use.
 The user will fill in the block, and it will e-mail the staff address. Nothing is stored because the block isn't tied into the catalogue saving code, just e-mail code. Its use of catalogues doesn't go any further than using the catalogue's fields.
 
+You can set field options to tag fields used for the contact message:
+ - [tt]tag=email[/tt] -- to set the 'from e-mail'. You can also pre-populate an "An e-mail address" field with the current member's e-mail address via a default value of [tt]![/tt].
+ - [tt]tag=name[/tt] -- to set the 'from name'. You can also pre-populate an "A brief line of text" field with the current member's display name via a default value of [tt]NAME[/tt].
+ - [tt]tag=subject[/tt] -- to set the 'subject'.
+
 [title="3"]Simple e-mail form[/title]
 
 There is also the [tt]main_contact_simple[/tt] block.
 
 This block relays direct to e-mail, avoiding any dealing with notifications and message management.
+
+Any POST fields that Composr does not consider a "control field" will be included within the e-mail.
 
 This block looks very similar to the [tt]main_contact_us[/tt] block.
 

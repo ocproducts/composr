@@ -91,7 +91,7 @@
      * @param event
      * @returns {boolean}
      */
-    $cms.form.doFormSubmit = function doFormSubmit(form, event) {
+    $cms.form.doFormSubmit = function doFormSubmit(form, event, analyticEventCategory) {
         if (!$cms.form.checkForm(form, false)) {
             return false;
         }
@@ -119,14 +119,22 @@
                 }
             }
         }
+
         if (form.onsubmit) {
             var ret = form.onsubmit.call(form, event);
             if (!ret) {
                 return false;
             }
         }
+
         if (!window.just_checking_requirements) {
-            form.submit();
+            if (analyticEventCategory) {
+                $cms.gaTrack(null, analyticEventCategory, null, function () {
+                    form.submit();
+                });
+            } else {
+                form.submit();
+            }
         }
 
         $cms.ui.disableSubmitAndPreviewButtons();
@@ -782,7 +790,7 @@
      * @param field
      * @returns {boolean}
      */
-    $cms.form.checkFieldForBlankness = function checkFieldForBlankness(field) {
+    $cms.form.checkFieldForBlankness = function checkFieldForBlankness(field, alreadyShownMessage) {
         if (!field) {
             // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
             return true;
@@ -797,7 +805,10 @@
                 $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
             }
 
-            $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
+            if (!already_shown_message) {
+                $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
+            }
+
             return false;
         }
 

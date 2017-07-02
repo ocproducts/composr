@@ -79,7 +79,8 @@ class Block_main_comments
 
         require_code('feedback');
 
-        $submitted = (post_param_integer('_comment_form_post', 0) == 1);
+        $block_id = md5(serialize($map));
+        $submitted = ((post_param_integer('_comment_form_post', 0) == 1) && (post_param_string('_block_id', '') == $block_id));
 
         $self_url = build_url(array('page' => '_SELF'), '_SELF', array(), true, false, true);
         $self_title = empty($map['title']) ? $map['page'] : $map['title'];
@@ -87,9 +88,9 @@ class Block_main_comments
         if ($test_changed !== null) {
             delete_cache_entry('main_comments');
         }
-        $hidden = $submitted ? actualise_post_comment(true, 'block_main_comments', $map['page'] . '_' . $map['param'] . $extra, $self_url, $self_title, array_key_exists('forum', $map) ? $map['forum'] : null, false, null, $explicit_allow) : false;
+        $is_hidden = $submitted ? actualise_post_comment(true, 'block_main_comments', $map['page'] . '_' . $map['param'] . $extra, $self_url, $self_title, array_key_exists('forum', $map) ? $map['forum'] : null, false, null, $explicit_allow) : false;
 
-        if ((array_key_exists('title', $_POST)) && ($hidden) && ($submitted)) {
+        if ((array_key_exists('title', $_POST)) && ($is_hidden) && ($submitted)) {
             attach_message(do_lang_tempcode('MESSAGE_POSTED'), 'inform');
 
             if (get_forum_type() == 'cns') {
@@ -108,6 +109,9 @@ class Block_main_comments
         $allow_reviews = ((array_key_exists('reviews', $map)) && ($map['reviews'] == '1'));
         $num_to_show_limit = ((array_key_exists('max', $map)) && ($map['max'] != '-1')) ? intval($map['max']) : null;
 
-        return get_comments('block_main_comments', true, $map['page'] . '_' . $map['param'] . $extra, $invisible_if_no_comments, array_key_exists('forum', $map) ? $map['forum'] : null, null, null, $explicit_allow, $reverse, null, $allow_reviews, $num_to_show_limit);
+        $hidden = new Tempcode();
+        $hidden->attach(form_input_hidden('_block_id', $block_id));
+
+        return get_comments('block_main_comments', true, $map['page'] . '_' . $map['param'] . $extra, $invisible_if_no_comments, array_key_exists('forum', $map) ? $map['forum'] : null, null, null, $explicit_allow, $reverse, null, $allow_reviews, $num_to_show_limit, $hidden);
     }
 }

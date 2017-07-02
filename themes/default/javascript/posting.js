@@ -48,13 +48,15 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
 
     var post = document.getElementById(fieldName);
 
+    var trueAttachmentUi = (post.className.indexOf('true_attachment_ui') != -1); // TODO: Salman, let's get all our className indexOf stuff to use a cleaner way (like hasClass or something). Grep the code
+
     var tmpForm = post.form;
     if ((tmpForm) && (tmpForm.preview)) {
         tmpForm.preview.checked = false;
         tmpForm.preview.disabled = true;
     }
 
-    var postValue = getTextbox(post);
+    var postValue = window.getTextbox(post);
     var done = attachmentPresent(post.value, number) || attachmentPresent(postValue, number);
     if (!done) {
         var filepath = filename;
@@ -85,32 +87,43 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
             defaults.description = filepath; // Default caption to local file path
         /*{+START,INCLUDE,ATTACHMENT_UI_DEFAULTS,.js,javascript}{+END}*/
 
+        if (trueAttachmentUi) {
+            // Add field for next one
+            var addAnotherField = (number == window.num_attachments) && (window.num_attachments < window.max_attachments); // Needs running late, in case something happened inbetween
+            if (addAnotherField) {
+                addAttachment(window.num_attachments + 1, fieldName);
+            }
+            return;
+        }
+
         if (!showOverlay) {
             var comcode = '[' + tag;
             for (var key in defaults) {
                 comcode += ' ' + key + '="' + (defaults[key].replace(/"/g, '\\"')) + '"';
             }
             comcode += ']new_' + number + '[/' + tag + ']';
-            if (prefix != '') insertTextbox(post, prefix);
+            if (prefix != '') {
+                window.insertTextbox(post, prefix);
+            }
             if (multi) {
                 var splitFilename = document.getElementById('txtFileName_file' + window.num_attachments).value.split(/:/);
                 for (var i = 0; i < splitFilename.length; i++) {
                     if (i != 0) window.num_attachments++;
-                    insertTextbox(
+                    window.insertTextbox(
                         post,
                         comcode.replace(']new_' + number + '[', ']new_' + window.num_attachments + '[')
                     );
                 }
                 number = '' + (window.parseInt(number) + splitFilename.length - 1);
             } else {
-                insertTextbox(
+                window.insertTextbox(
                     post,
                     comcode,
                     document.selection ? document.selection : null
                 );
             }
             if (suffix != '') {
-                insertTextbox(post, suffix);
+                window.insertTextbox(post, suffix);
             }
 
             // Add field for next one
@@ -172,7 +185,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                                 comcodeSemihtml += suffix;
                             }
 
-                            insertTextbox(post, comcode, null, true, comcodeSemihtml);
+                            window.insertTextbox(post, comcode, null, true, comcodeSemihtml);
                         }
 
                         // Add field for next one
@@ -231,14 +244,14 @@ function do_input_html(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var post = document.getElementById(fieldName);
-    insertTextboxWrapping(post, 'semihtml', '');
+    window.insertTextboxWrapping(post, 'semihtml', '');
 }
 
 function do_input_code(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var post = document.getElementById(fieldName);
-    insertTextboxWrapping(post, (post.name == 'message') ? 'tt' : 'codebox', '');
+    window.insertTextboxWrapping(post, (post.name == 'message') ? 'tt' : 'codebox', '');
 }
 
 function do_input_quote(fieldName) {
@@ -249,7 +262,9 @@ function do_input_quote(fieldName) {
         '{!javascript:ENTER_QUOTE_BY;^}',
         '',
         function (va) {
-            if (va !== null) insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]');
+            if (va !== null) {
+                window.insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]');
+            }
         },
         '{!comcode:INPUT_COMCODE_quote;^}'
     );
@@ -263,7 +278,9 @@ function do_input_box(fieldName) {
         '{!javascript:ENTER_BOX_TITLE;^}',
         '',
         function (va) {
-            if (va !== null) insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]');
+            if (va !== null) {
+                window.insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]');
+            }
         },
         '{!comcode:INPUT_COMCODE_box;^}'
     );
@@ -288,7 +305,7 @@ function do_input_menu(fieldName) {
                         var add;
                         var element = document.getElementById(fieldName);
                         add = '[block=\""+$cms.filter.comcode(va)+"\" caption=\""+$cms.filter.comcode(vb)+"\" type=\"tree\"]menu[/block]';
-                        insertTextbox(element, add);
+                        window.insertTextbox(element, add);
                     },
                     '{!comcode:INPUT_COMCODE_menu;^}'
                 );
@@ -377,7 +394,7 @@ function do_input_list(fieldName, add) {
     if (add === undefined) add = [];
 
     var post = document.getElementById(fieldName);
-    insertTextbox(post, '\n');
+    window.insertTextbox(post, '\n');
     $cms.ui.prompt(
         '{!javascript:ENTER_LIST_ENTRY;^}',
         '',
@@ -388,17 +405,19 @@ function do_input_list(fieldName, add) {
             }
             if (add.length == 0) return;
             var i;
-            if (post.value.indexOf('[semihtml') != -1)
-                insertTextbox(post, '[list]\n');
+            if (post.value.indexOf('[semihtml') != -1) {
+                window.insertTextbox(post, '[list]\n');
+            }
             for (i = 0; i < add.length; i++) {
                 if (post.value.indexOf('[semihtml') != -1) {
-                    insertTextbox(post, '[*]' + add[i] + '\n')
+                    window.insertTextbox(post, '[*]' + add[i] + '\n')
                 } else {
-                    insertTextbox(post, ' - ' + add[i] + '\n')
+                    window.insertTextbox(post, ' - ' + add[i] + '\n')
                 }
             }
-            if (post.value.indexOf('[semihtml') != -1)
-                insertTextbox(post, '[/list]\n')
+            if (post.value.indexOf('[semihtml') != -1) {
+                window.insertTextbox(post, '[/list]\n')
+            }
         },
         '{!comcode:INPUT_COMCODE_list;^}'
     );
@@ -418,7 +437,7 @@ function do_input_hide(fieldName) {
                     function (vb) {
                         var element = document.getElementById(fieldName);
                         if (vb) {
-                            insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
+                            window.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
                         }
                     },
                     '{!comcode:INPUT_COMCODE_hide;^}'
@@ -465,9 +484,9 @@ function do_input_thumb(fieldName, va) {
 
                                 var element = document.getElementById(fieldName);
                                 if (vb.toLowerCase() == '{!IMAGE;^}'.toLowerCase()) {
-                                    insertTextbox(element, '[img=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/img]');
+                                    window.insertTextbox(element, '[img=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/img]');
                                 } else {
-                                    insertTextbox(element, '[thumb caption=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/thumb]');
+                                    window.insertTextbox(element, '[thumb caption=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/thumb]');
                                 }
                             },
                             '{!comcode:INPUT_COMCODE_img;^}'
@@ -493,7 +512,7 @@ function do_input_attachment(fieldName) {
                 $cms.ui.alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
             } else {
                 var element = document.getElementById(fieldName);
-                insertTextbox(element, '[attachment]new_' + val + '[/attachment]');
+                window.insertTextbox(element, '[attachment]new_' + val + '[/attachment]');
             }
         },
         '{!comcode:INPUT_COMCODE_attachment;^}'
@@ -535,7 +554,9 @@ function do_input_url(fieldName, va) {
                     '',
                     function (vb) {
                         var element = document.getElementById(fieldName);
-                        if (vb != null) insertTextbox(element, '[url=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/url]');
+                        if (vb != null) {
+                            window.insertTextbox(element, '[url=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/url]');
+                        }
                     },
                     '{!comcode:INPUT_COMCODE_url;^}'
                 );
@@ -602,7 +623,7 @@ function do_input_page(fieldName) {
 
     function _doInputPage(fieldName, result, vc) {
         var element = document.getElementById(fieldName);
-        insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
+        window.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
     }
 }
 
@@ -626,7 +647,9 @@ function do_input_email(fieldName, va) {
                     '',
                     function (vb) {
                         var element = document.getElementById(fieldName);
-                        if (vb !== null) insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
+                        if (vb !== null) {
+                            window.insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
+                        }
                     },
                     '{!comcode:INPUT_COMCODE_email;^}'
                 );
@@ -640,14 +663,14 @@ function do_input_b(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var element = document.getElementById(fieldName);
-    insertTextboxWrapping(element, 'b', '');
+    window.insertTextboxWrapping(element, 'b', '');
 }
 
 function do_input_i(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var element = document.getElementById(fieldName);
-    insertTextboxWrapping(element, 'i', '');
+    window.insertTextboxWrapping(element, 'i', '');
 }
 
 function do_input_font(fieldName) {
@@ -664,7 +687,7 @@ function do_input_font(fieldName) {
         $cms.ui.alert('{!javascript:NO_FONT_SELECTED;^}');
         return;
     }
-    insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]');
+    window.insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]');
 }
 
 // ==================
@@ -892,7 +915,7 @@ function initFormSaving(formId) {
 
         switch (element.nodeName.toLowerCase()) {
             case 'textarea':
-                setTextbox(element, value, value);
+                window.setTextbox(element, value, value);
                 break;
             case 'select':
                 for (var i = 0; i < element.options.length; i++) {

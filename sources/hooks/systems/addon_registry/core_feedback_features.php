@@ -286,39 +286,26 @@ class Hook_addon_registry_core_feedback_features
 
         require_css('forms');
 
-        $content = do_lorem_template('ATTACHMENT', array(
-            'I' => placeholder_number(),
-            'POSTING_FIELD_NAME' => '',
-        ));
-
-        $attachments = do_lorem_template('ATTACHMENTS', array(
-            'ATTACHMENT_TEMPLATE' => $content,
-            'IMAGE_TYPES' => placeholder_types(),
-            'POSTING_FIELD_NAME' => '',
-            'ATTACHMENTS' => $content,
-            'MAX_ATTACHMENTS' => placeholder_number(),
-            'NUM_ATTACHMENTS' => placeholder_number(),
-        ));
-
         $ret = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
-            'ATTACHMENTS' => $attachments,
-            'ATTACH_SIZE_FIELD' => '',
-            'POST_WARNING' => lorem_phrase(),
-            'COMMENT_TEXT' => lorem_sentence_html(),
-            'GET_EMAIL' => lorem_word_html(),
+            'USE_CAPTCHA' => false,
+            'GET_EMAIL' => true,
             'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'ATTACHMENTS' => null,
+            'ATTACH_SIZE_FIELD' => null,
+            'TRUE_ATTACHMENT_UI' => false,
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
             'COMMENT_URL' => placeholder_url(),
-            'SUBMIT_NAME' => lorem_word(),
-            'TITLE' => lorem_word(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
-            'FIRST_POST' => lorem_paragraph_html(),
-            'FIRST_POST_URL' => placeholder_url(),
-            'NAME' => 'field',
         ));
 
         $ret->attach(do_lorem_template('COMMENT_AJAX_HANDLER', array(
@@ -389,25 +376,25 @@ class Hook_addon_registry_core_feedback_features
             $use_captcha = false;
         }
         $form = do_lorem_template('COMMENTS_POSTING_FORM', array(
-            'FIRST_POST_URL' => '',
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
-            'FIRST_POST' => lorem_paragraph_html(),
-            'TYPE' => 'downloads',
-            'ID' => placeholder_id(),
-            'REVIEW_RATING_CRITERIA' => $review_titles,
-            'USE_CAPTCHA' => $use_captcha,
-            'GET_EMAIL' => false,
+            'USE_CAPTCHA' => false,
+            'GET_EMAIL' => true,
             'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'POST_WARNING' => do_lang('POST_WARNING'),
-            'COMMENT_TEXT' => get_option('comment_text'),
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'ATTACHMENTS' => null,
+            'ATTACH_SIZE_FIELD' => null,
+            'TRUE_ATTACHMENT_UI' => false,
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
             'COMMENT_URL' => placeholder_url(),
-            'TITLE' => lorem_word(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
-            'NAME' => 'field',
         ));
 
         $out = do_lorem_template('COMMENTS_WRAPPER', array(
@@ -719,7 +706,7 @@ class Hook_addon_registry_core_feedback_features
             'COMMENT_TEXT' => '',
             'GET_EMAIL' => lorem_word(),
             'GET_TITLE' => lorem_word(),
-            'EM' => placeholder_emoticon_chooser(),
+            'EMOTICONS' => placeholder_emoticon_chooser(),
             'DISPLAY' => 'block',
             'TITLE' => lorem_phrase(),
             'COMMENT_URL' => placeholder_url(),

@@ -1,1 +1,1 @@
-<a onclick="var t=this; window.fauxmodal_confirm('{!SUBSCRIPTION_CANCEL_WARNING=;,{!PAYMENT_GATEWAY_worldpay}}',function(result) { if (result) { click_link(t); } }); return false;" href="https://futurepay.worldpay.com/fp/jsp/common/login_shopper.jsp">{!SUBSCRIPTION_CANCEL}</a>
+<a data-cms-confirm-click="{!SUBSCRIPTION_CANCEL_WARNING*,{!PAYMENT_GATEWAY_worldpay}}" href="https://futurepay.worldpay.com/fp/jsp/common/login_shopper.jsp">{!SUBSCRIPTION_CANCEL}</a>

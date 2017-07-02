@@ -1,5 +1,5 @@
 {+START,IF_PASSED,JS}
-<script {$CSP_NONCE_HTML}>{JS/}</script>
+	<script {$CSP_NONCE_HTML}>{JS/}</script>
 {+END}
 
 <form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">

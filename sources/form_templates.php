@@ -231,9 +231,10 @@ function handle_max_file_size(&$hidden, $regular_max_size_type = 'file')
  * Get what we need to get attachments in a form-field interface.
  *
  * @param  ID_TEXT $posting_field_name The name of the field attachments are for
+ * @param  boolean $true_attachment_ui Include a true attachment UI (as opposed to something say on a contact form)
  * @return array A pair: the attachments UI (Tempcode), the hidden attachment field
  */
-function get_attachments($posting_field_name)
+function get_attachments($posting_field_name, $true_attachment_ui = true)
 {
     $image_types = str_replace(',', ', ', get_option('valid_images'));
 
@@ -281,6 +282,7 @@ function get_attachments($posting_field_name)
             'SYNDICATION_JSON' => $syndication_json,
             'NO_QUOTA' => $no_quota,
             'FILTER' => $filter,
+            'TRUE_ATTACHMENT_UI' => $true_attachment_ui,
         )));
     }
 
@@ -291,6 +293,7 @@ function get_attachments($posting_field_name)
         'SYNDICATION_JSON' => $syndication_json,
         'NO_QUOTA' => $no_quota,
         'FILTER' => $filter,
+        'TRUE_ATTACHMENT_UI' => $true_attachment_ui,
     ));
     $attachments = do_template('ATTACHMENTS', array(
         '_GUID' => '054921e7c09412be479676759accf222',
@@ -300,6 +303,7 @@ function get_attachments($posting_field_name)
         'ATTACHMENTS' => $attachments,
         'MAX_ATTACHMENTS' => strval($max_attachments),
         'NUM_ATTACHMENTS' => strval($num_attachments),
+        'TRUE_ATTACHMENT_UI' => $true_attachment_ui,
         'FILTER' => $filter,
     ));
 

@@ -409,11 +409,23 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email = 
             get_site_default_lang()
         );
 
+        $attachments = array();
+        if ($new_ticket) {
+            if (addon_installed('securitylogging')) {
+                require_code('lookup');
+                $user_metadata_path = save_user_metadata();
+                $attachments[$user_metadata_path] = 'user_metadata.txt';
+            }
+        }
+
         dispatch_notification(
             $new_ticket ? 'ticket_new_staff' : 'ticket_reply_staff',
             strval($ticket_type_id),
             $subject,
-            $message
+            $message,
+            null,
+            null,
+            array('attachments' => $attachments)
         );
 
         // ALSO: Tell member that their message was received

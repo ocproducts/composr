@@ -119,6 +119,9 @@ class Hook_fields_short_text
         if ($actual_value === null) {
             $actual_value = ''; // Plug anomaly due to unusual corruption
         }
+        if (($field['cf_default'] == 'NAME') && ($actual_value == '')) {
+            $actual_value = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true);
+        }
 
         $type = 'text';
         if ($field['cf_type'] != 'short_text') {

@@ -21,7 +21,7 @@
 /**
  * Hook class.
  */
-class Hook_config_allow_email_from_staff_disable
+class Hook_config_enable_language_selection
 {
     /**
      * Gets the details relating to the config option.
@@ -31,13 +31,14 @@ class Hook_config_allow_email_from_staff_disable
     public function get_details()
     {
         return array(
-            'human_name' => 'ALLOW_EMAIL_FROM_STAFF_DISABLE',
-            'type' => 'tick',
-            'category' => 'USERS',
-            'group' => 'MEMBERS',
-            'explanation' => 'CONFIG_OPTION_allow_email_from_staff_disable',
+            'human_name' => 'ENABLE_LANGUAGE_SELECTION',
+            'type' => 'list',
+            'category' => 'SITE',
+            'group' => 'INTERNATIONALISATION',
+            'explanation' => 'CONFIG_OPTION_enable_language_selection',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
+            'list_options' => '0|1|2',
+            'order_in_category_group' => 1,
 
             'addon' => 'core_cns',
         );
@@ -50,9 +51,6 @@ class Hook_config_allow_email_from_staff_disable
      */
     public function get_default()
     {
-        if (get_forum_type() != 'cns') {
-            return null;
-        }
-        return '1';
+        return (get_forum_type() != 'cns') ? null : '1';
     }
 }

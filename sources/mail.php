@@ -915,6 +915,12 @@ abstract class Mail_dispatcher_base
             }
             $sending_message .= chunk_split(base64_encode($contents), 76, $this->line_term);
 
+            $sf_prefix = get_custom_file_base() . '/temp/';
+            if (substr($path, 0, strlen($sf_prefix)) == $sf_prefix) {
+                @unlink($path);
+                sync_file($path);
+            }
+
             $this->real_attachments[] = $real_attachment;
 
             $sending_message .= $this->line_term . '--' . $boundary . '--' . $this->line_term;

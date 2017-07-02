@@ -630,7 +630,7 @@ class Module_tickets
 
         // Posting form...
 
-        $em = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
+        $emoticons = $GLOBALS['FORUM_DRIVER']->get_emoticon_chooser();
         require_code('form_templates');
         list($attachments, $attach_size_field) = (get_forum_type() == 'cns') ? get_attachments('post') : array(null, null);
         if (addon_installed('captcha')) {
@@ -645,23 +645,26 @@ class Module_tickets
 
         $comment_form = do_template('COMMENTS_POSTING_FORM', array(
             '_GUID' => 'aaa32620f3eb68d9cc820b18265792d7',
-            'DEFAULT_TEXT' => either_param_string('post', null),
-            'JOIN_BITS' => '',
-            'FIRST_POST_URL' => '',
-            'FIRST_POST' => '',
+            'TITLE' => do_lang_tempcode($starting_new_ticket ? 'CREATE_TICKET_MAKE_POST' : 'REPLY'),
             'USE_CAPTCHA' => $use_captcha,
-            'ATTACHMENTS' => $attachments,
-            'ATTACH_SIZE_FIELD' => $attach_size_field,
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
             'GET_EMAIL' => is_guest(),
             'EMAIL_OPTIONAL' => ((is_guest()) && ($ticket_type_details['guest_emails_mandatory'] == 0)),
             'GET_TITLE' => $starting_new_ticket,
-            'EM' => $em,
+            'TITLE_OPTIONAL' => !$starting_new_ticket,
+            'DEFAULT_TITLE' => '',
+            'DEFAULT_POST' => either_param_string('post', null),
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'ATTACHMENTS' => $attachments,
+            'ATTACH_SIZE_FIELD' => $attach_size_field,
+            'TRUE_ATTACHMENT_UI' => true,
+            'EMOTICONS' => $emoticons,
             'DISPLAY' => 'block',
+            'FIRST_POST_URL' => '',
+            'FIRST_POST' => '',
             'COMMENT_URL' => '',
             'SUBMIT_NAME' => do_lang_tempcode($starting_new_ticket ? 'CREATE_SUPPORT_TICKET' : 'MAKE_POST'),
-            'TITLE' => do_lang_tempcode($starting_new_ticket ? 'CREATE_TICKET_MAKE_POST' : 'REPLY'),
+            'ANALYTIC_EVENT_CATEGORY' => do_lang('CREATE_SUPPORT_TICKET'),
         ));
 
         // Show other tickets, plus grab topic row for our ticket...

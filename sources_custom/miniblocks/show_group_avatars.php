@@ -60,7 +60,7 @@ echo '<div class="float_surrounder">';
 $query = 'SELECT m.* FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_members m WHERE ' . $where . ' ORDER BY ' . $order;
 $rows = $GLOBALS['FORUM_DB']->query($query, $limit);
 foreach ($rows as $row) {
-    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id']);
+    $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($row['id'], true);
 
     $avatar_url = $row['m_avatar_url'];
     if (url_is_local($avatar_url)) {
@@ -73,9 +73,9 @@ foreach ($rows as $row) {
 
     echo '
         <div class="box left float_separation"><div class="box_inner">
-            <a href="' . escape_html($url) . '"><img src="' . escape_html($avatar_url) . '" /></a><br />
+            <a href="' . escape_html($url->evaluate()) . '"><img src="' . escape_html($avatar_url) . '" /></a><br />
 
-            <a href="' . escape_html($url) . '" data-focus-activate-tooltip="[\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\']" data-mouseover-activate-tooltip="[\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\']" data-blur-deactivate-tooltip>' . escape_html($username) . '</a><br />
+            <a href="' . escape_html($url->evaluate()) . '" data-focus-activate-tooltip="[\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\']" data-mouseover-activate-tooltip="[\'' . escape_html(str_replace("\n", '\n', addslashes($tooltip))) . '\',\'auto\']" data-blur-deactivate-tooltip>' . escape_html($username) . '</a><br />
         </div></div>
     ';
 }

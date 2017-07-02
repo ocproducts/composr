@@ -668,22 +668,25 @@ class Hook_addon_registry_galleries
         }
 
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => true,
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
+            'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'ATTACHMENTS' => null,
+            'ATTACH_SIZE_FIELD' => null,
+            'TRUE_ATTACHMENT_UI' => false,
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
-            'COMMENT_URL' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
             'FIRST_POST_URL' => '',
             'FIRST_POST' => '',
-            'NAME' => 'field',
+            'COMMENT_URL' => placeholder_url(),
         ));
 
         return array(
@@ -785,22 +788,25 @@ class Hook_addon_registry_galleries
         }
 
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => true,
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
+            'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'ATTACHMENTS' => null,
+            'ATTACH_SIZE_FIELD' => null,
+            'TRUE_ATTACHMENT_UI' => false,
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
-            'COMMENT_URL' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
             'FIRST_POST_URL' => '',
             'FIRST_POST' => '',
-            'NAME' => 'field',
+            'COMMENT_URL' => placeholder_url(),
         ));
 
         return array(
@@ -927,22 +933,25 @@ class Hook_addon_registry_galleries
         ));
 
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => true,
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
+            'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'ATTACHMENTS' => null,
+            'ATTACH_SIZE_FIELD' => null,
+            'TRUE_ATTACHMENT_UI' => false,
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
-            'COMMENT_URL' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
             'FIRST_POST_URL' => '',
             'FIRST_POST' => '',
-            'NAME' => 'field',
+            'COMMENT_URL' => placeholder_url(),
         ));
 
         return array(
@@ -979,22 +988,25 @@ class Hook_addon_registry_galleries
         $nav = do_lorem_template('GALLERY_NAV', array('BACK_URL' => placeholder_url(), 'SLIDESHOW' => false, '_X' => placeholder_number(), '_N' => placeholder_number(), 'X' => placeholder_number(), 'N' => placeholder_number(), 'SLIDESHOW_URL' => placeholder_url(), 'SLIDESHOW_NEXT_URL' => placeholder_url(), 'PREVIOUS_URL' => placeholder_url(), 'NEXT_URL' => placeholder_url(), 'MORE_URL' => placeholder_url(), 'CATEGORY_NAME' => lorem_word()));
 
         $comment_details = do_lorem_template('COMMENTS_POSTING_FORM', array(
+            'TITLE' => lorem_phrase(),
             'JOIN_BITS' => lorem_phrase_html(),
             'USE_CAPTCHA' => false,
-            'EMAIL_OPTIONAL' => true,
-            'POST_WARNING' => '',
-            'COMMENT_TEXT' => '',
             'GET_EMAIL' => true,
+            'EMAIL_OPTIONAL' => true,
             'GET_TITLE' => true,
-            'EM' => placeholder_emoticon_chooser(),
+            'TITLE_OPTIONAL' => true,
+            'DEFAULT_TITLE' => '',
+            'POST_WARNING' => '',
+            'RULES_TEXT' => '',
+            'ATTACHMENTS' => null,
+            'ATTACH_SIZE_FIELD' => null,
+            'TRUE_ATTACHMENT_UI' => false,
+            'EMOTICONS' => placeholder_emoticon_chooser(),
+            'EXPAND_TYPE' => 'expand',
             'DISPLAY' => 'block',
-            'COMMENT_URL' => placeholder_url(),
-            'TITLE' => lorem_phrase(),
-            'MAKE_POST' => true,
-            'CREATE_TICKET_MAKE_POST' => true,
             'FIRST_POST_URL' => '',
             'FIRST_POST' => '',
-            'NAME' => 'field',
+            'COMMENT_URL' => placeholder_url(),
         ));
 
         $video = lorem_sentence_html();

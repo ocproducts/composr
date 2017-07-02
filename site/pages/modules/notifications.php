@@ -170,7 +170,7 @@ class Module_notifications
         $member_id = $row['d_from_member_id'];
         if ($member_id > $GLOBALS['FORUM_DRIVER']->get_guest_id()) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id);
+            $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
             $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
             $effective_member_id = $row['d_from_member_id'];
         } else {

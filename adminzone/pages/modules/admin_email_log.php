@@ -69,6 +69,10 @@ class Module_admin_email_log
 
         require_lang('email_log');
 
+        if ($type != 'browse') {
+            breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('EMAIL_LOG'))));
+        }
+
         if ($type == 'browse') {
             $this->title = get_screen_title('EMAIL_LOG');
         }
@@ -110,6 +114,9 @@ class Module_admin_email_log
         }
         if ($type == 'view') {
             return $this->view();
+        }
+        if ($type == 'attachment') {
+            return $this->attachment();
         }
         if ($type == 'edit') {
             return $this->edit();
@@ -163,14 +170,15 @@ class Module_admin_email_log
         foreach ($rows as $row) {
             $queued = $row['m_queued'] == 1;
 
+            $view_url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
+            $_date_time_link = hyperlink($view_url, get_timezoned_date($row['m_date_and_time']), false, true);
+
             if ($queued) {
+                // Has edit link *and* view link for queued items
                 $edit_url = build_url(array('page' => '_SELF', 'type' => 'edit', 'id' => $row['id']), '_SELF');
-                $date = hyperlink($edit_url, get_timezoned_date_time($row['m_date_and_time']), false, true);
-                $date = do_lang_tempcode('MAIL_WAS_QUEUED', $date);
+                $date_time_link = do_lang_tempcode('MAIL_WAS_QUEUED', $_date_time_link, escape_html($edit_url->evaluate()));
             } else {
-                $edit_url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => $row['id']), '_SELF');
-                $date = hyperlink($edit_url, get_timezoned_date_time($row['m_date_and_time']), false, true);
-                $date = do_lang_tempcode('MAIL_WAS_LOGGED', $date);
+                $date_time_link = do_lang_tempcode('MAIL_WAS_LOGGED', $_date_time_link);
             }
 
             $from_email = $row['m_from_email'];
@@ -204,7 +212,7 @@ class Module_admin_email_log
             }
 
             $fields->attach(results_entry(array(
-                $date,
+                $date_time_link,
                 hyperlink($from_url, $from_name, false, true),
                 hyperlink($to_url, $to_name[0], false, true),
                 escape_html($row['m_subject']),
@@ -308,7 +316,73 @@ class Module_admin_email_log
 
         $fields['_COMCODE'] = do_template('WITH_WHITESPACE', array('_GUID' => 'a141337923279a8a12646d0e29230f60', 'CONTENT' => $row['m_message']));
 
+        $attachments = @unserialize($row['m_attachments']);
+        if (!is_array($attachments)) {
+            $attachments = array();
+        }
+        require_lang('comcode');
+        if (count($attachments) == 0) {
+            $fields['ATTACHMENTS'] = do_lang_tempcode('NONE_EM');
+        } else {
+            $a = new Tempcode();
+            foreach (array_values($attachments) as $i => $filename) {
+                if ($i != 0) {
+                    $a->attach(', ');
+                }
+                $a->attach(hyperlink(build_url(array('page' => '_SELF', 'type' => 'attachment', 'id' => $id, 'i' => $i), '_SELF'), $filename, true, true));
+            }
+            $fields['ATTACHMENTS'] = $a;
+        }
+
         return map_table_screen($this->title, $fields);
+    }
+
+    /**
+     * View an attachment.
+     *
+     * @return Tempcode The result of execution.
+     */
+    public function attachment()
+    {
+        $id = get_param_integer('id');
+        $i = get_param_integer('i');
+
+        $rows = $GLOBALS['SITE_DB']->query_select('logged_mail_messages', array('*'), array('id' => $id), '', 1);
+        if (!array_key_exists(0, $rows)) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+        $row = $rows[0];
+
+        $attachments = @unserialize($row['m_attachments']);
+        if (!is_array($attachments)) {
+            $attachments = array();
+        }
+
+        $keys = array_keys($attachments);
+        $values = array_values($attachments);
+
+        if (!array_key_exists($i, $keys)) {
+            warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+        }
+
+        $path = $keys[$i];
+        $filename = $values[$i];
+
+        if (!is_file($path)) {
+            warn_exit(do_lang_tempcode('DELETED'));
+        }
+
+        require_code('mime_types');
+        $mime_type = get_mime_type(get_file_extension($filename), false);
+
+        header('Content-Type: ' . $mime_type . '; authoritative=true;');
+        header('Content-Disposition: inline; filename="' . escape_header($filename) . '"');
+
+        echo file_get_contents($path);
+
+        exit();
+
+        return new Tempcode();
     }
 
     /**

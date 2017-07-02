@@ -137,7 +137,7 @@ function output_ical()
             echo "DESCRIPTION:" . ical_escape(strip_comcode($description)) . "\n";
 
             if (!is_guest($event['e_submitter'])) {
-                echo "ORGANIZER;CN=" . ical_escape($GLOBALS['FORUM_DRIVER']->get_username($event['e_submitter'], true)) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($event['e_submitter']));
+                echo "ORGANIZER;CN=" . ical_escape($GLOBALS['FORUM_DRIVER']->get_username($event['e_submitter'], true)) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($event['e_submitter'], false));
                 $addr = $GLOBALS['FORUM_DRIVER']->get_member_email_address($event['e_submitter']);
                 if ($addr != '') {
                     echo ":MAILTO:" . ical_escape($addr);
@@ -284,7 +284,7 @@ function output_ical()
             foreach ($attendees as $attendee) {
                 if ($attendee['n_member_id'] != get_member()) {
                     if (!is_guest($event['n_member_id'])) {
-                        echo "ATTENDEE;CN=" . ical_escape($GLOBALS['FORUM_DRIVER']->get_username($attendee['n_member_id'], true)) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($attendee['n_member_id']));
+                        echo "ATTENDEE;CN=" . ical_escape($GLOBALS['FORUM_DRIVER']->get_username($attendee['n_member_id'], true)) . ";DIR=" . ical_escape($GLOBALS['FORUM_DRIVER']->member_profile_url($attendee['n_member_id'], false));
                     }
                     $addr = $GLOBALS['FORUM_DRIVER']->get_member_email_address($attendee['n_member_id']);
                     if ($addr != '') {
