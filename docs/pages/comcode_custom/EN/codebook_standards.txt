@@ -2105,6 +2105,13 @@ Do not use inline JavaScript
 | We use CSP to avoid XSS vulnerabilities, so inline JS is blocked.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
+Do not use synchronous XmlHttpRequest
+| Standards compliance
+| All development
+| Browser errors in console
+| Browsers are strongly advocating against using this for performance reasons, so we must use more sophisticated JavaScript-side form submit processing rather than traditional returning of [tt]false[/tt].
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
 Fix any strict warnings
 | Standards compliance, future proofing
 | Product development only
