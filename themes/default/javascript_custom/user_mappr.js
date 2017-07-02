@@ -49,7 +49,7 @@
                 if (google.loader.ClientLocation) {
                     map.setCenter(new google.maps.LatLng(google.loader.ClientLocation.latitude, google.loader.ClientLocation.longitude), 15);
                 } else {
-                    if (typeof navigator.geolocation !== 'undefined') {
+                    if (navigator.geolocation !== undefined) {
                         try {
                             navigator.geolocation.getCurrentPosition(function(position) {
                                 map.setCenter(new google.maps.LatLng(position.coords.latitude,position.coords.longitude));
@@ -86,7 +86,7 @@
 
             if (geolocateUser && (setCoordUrl !== '')) {
                 // Geolocation for current member to get stored onto the map
-                if (typeof navigator.geolocation !== 'undefined') {
+                if (navigator.geolocation !== undefined) {
                     try {
                         navigator.geolocation.getCurrentPosition(function(position) {
                             $cms.doAjaxRequest(setCoordUrl + position.coords.latitude + '_' + position.coords.longitude + $cms.keepStub(), function () {});

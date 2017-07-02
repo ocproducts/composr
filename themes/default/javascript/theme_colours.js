@@ -80,7 +80,7 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
         updateChooser(target.id);
     });
 
-    if (typeof jQuery("#"+name).spectrum != 'undefined') {
+    if (jQuery("#"+name).spectrum != undefined) {
         var test = document.createElement('input');
         test.type = 'color';
         if (test.type == 'text') {

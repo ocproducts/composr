@@ -50,7 +50,7 @@
         var fbButton = document.getElementById('syndicate_start__facebook');
         if (fbButton) {
             var fbInput;
-            if (typeof fbButton.form.elements['facebook_syndicate_to_page'] == 'undefined') {
+            if (fbButton.form.elements['facebook_syndicate_to_page'] == undefined) {
                 fbInput = document.createElement('input');
                 fbInput.type = 'hidden';
                 fbInput.name = 'facebook_syndicate_to_page';

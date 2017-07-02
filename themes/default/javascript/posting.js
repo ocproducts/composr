@@ -740,7 +740,7 @@ function initFormSaving(formId) {
                     key = autosaveName;
                     value = localStorage[autosaveName];
 
-                    if (typeof form.elements[j].value != 'undefined' && form.elements[j].value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
+                    if (form.elements[j].value != undefined && form.elements[j].value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
                         continue;
                     }
 
@@ -843,7 +843,7 @@ function initFormSaving(formId) {
             }
 
             if (element) {
-                if (typeof element.value != 'undefined' && element.value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
+                if (element.value != undefined && element.value.replace(/\s/g, '') == value.replace(/\s/g, '')) {
                     continue;
                 }
 

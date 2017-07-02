@@ -80,7 +80,7 @@ add_event_listener_abstract(window, 'load', function() {
 				if (billing.nodeName.toLowerCase() == 'select') {
 					if (shipping.selectedIndex == 0) {
 						shipping.selectedIndex = billing.selectedIndex;
-						if (typeof $(shipping).select2!='undefined') {
+						if ($(shipping).select2 != undefined) {
 							$(shipping).trigger('change');
 						}
 					}

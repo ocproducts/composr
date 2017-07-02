@@ -403,7 +403,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         editor.on('change', sync);
         editor.on('mode', function () {
             var ta = editor.container.$.getElementsByTagName('textarea');
-            if (typeof ta[0] != 'undefined') {
+            if (ta[0] != undefined) {
                 ta[0].onchange = sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
             }
         });
@@ -482,7 +482,7 @@ function findTagsInEditor(editor, element) {
                 if (event.pageY) eventCopy.pageY = 3000;
                 if (event.clientY) eventCopy.clientY = 3000;
 
-                if (typeof this.orig_title != 'undefined') {
+                if (this.orig_title != undefined) {
                     $cms.ui.repositionTooltip(this, eventCopy);
                     this.title = this.orig_title;
                 }

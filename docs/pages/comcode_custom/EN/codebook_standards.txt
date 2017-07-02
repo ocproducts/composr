@@ -2109,7 +2109,7 @@ Fix any strict warnings
 | Standards compliance, future proofing
 | Product development only
 | JavaScript files should have [tt]use strict;[/tt] in, automated test to ensure this ([tt]js_strict_mode.php[/tt])
-| Ideally also don't make assumptions about [tt]undefined[/tt] and [tt]null[/tt] being the same as [tt]false[/tt], explicit code is easier to read; don't reference undefined variables without using [tt]typeof[/tt] as otherwise browsers with strong notice reporting will give out noise.
+| In the past Firefox's strict mode (prior to the standardised strict mode) would complain about ever referencing undefined variables/properties, but that's not an issue now. Ideally don't check things are defined just using a raw [tt]if[/tt] because it's not very clear. However, it is acceptable to do an [tt]if[/tt] that considers [tt]undefined[/tt]/[tt]null[/tt]/[tt]false[/tt] [i]values[/i] to be the same thing (a missing function parameter will be an [tt]undefined[/tt] [i]value[/i] on an actual variable). For referencing variables that don't just hold an [tt]undefined[/tt] value but really are undefined, do check them like [tt]object.foo == undefined[/tt] or [tt]object.foo === undefined[/tt] (if null shouldn't count). It is important to include the object (which may be [tt]window[/tt]), otherwise the strict mode will complain.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Don't use the browser [tt]window.alert[/tt] / [tt]window.prompt[/tt] / [tt]window.confirm[/tt] / [tt]window.showModalDialog[/tt] UIs -- use Composr's [tt]fauxmodal_*[/tt] APIs[/color]

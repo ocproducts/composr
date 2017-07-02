@@ -123,7 +123,7 @@
             options.region = region;
         }
 
-        if (typeof window.data_map === 'undefined') {
+        if (window.data_map === undefined) {
             window.data_map = null;
         }
 

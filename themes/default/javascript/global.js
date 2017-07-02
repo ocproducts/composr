@@ -5759,7 +5759,7 @@
         win || (win = window);
         haveLinks = !!haveLinks;
 
-        if ((typeof el.deactivated_at != 'undefined') && (el.deactivated_at != null) && (Date.now() - el.deactivated_at < 200)) {
+        if ((el.deactivated_at) && (Date.now() - el.deactivated_at < 200)) {
             return;
         }
 
@@ -6959,7 +6959,7 @@
                             // Allow scrolling, if we want it
                             //iframe.scrolling=(_this.scrollbars===false)?'no':'auto';  Actually, not wanting this now
 
-                            if (typeof iframe.contentWindow.$cms != 'undefined') {
+                            if (iframe.contentWindow.$cms != undefined) {
                                 // Remove fixed width
                                 var mainWebsiteInner = iframe.contentWindow.$cms.dom.$id('main_website_inner');
                                 if (mainWebsiteInner) mainWebsiteInner.id = '';
@@ -7671,7 +7671,7 @@
                     }
 
                     // This "proves" that JS is running, which is an anti-spam heuristic (bots rarely have working JS)
-                    if (typeof form.elements['csrf_token'] != 'undefined' && typeof form.elements['jsToken'] == 'undefined') {
+                    if (form.elements['csrf_token'] != undefined && form.elements['js_token'] == undefined) {
                         var jsToken = document.createElement('input');
                         jsToken.name = 'js_token';
                         jsToken.value = form.elements['csrf_token'].value.split("").reverse().join(""); // Reverse the CSRF token for our JS token
@@ -8388,7 +8388,7 @@
 
         activateRichTooltip: function (e, el) {
             if (el.ttitle === undefined) {
-                el.ttitle = ((typeof el.attributes['data-title'] != 'undefined') ? el.getAttribute('data-title') : el.title);
+                el.ttitle = (el.attributes['data-title'] ? el.getAttribute('data-title') : el.title);
             }
 
             //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links

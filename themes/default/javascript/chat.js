@@ -927,7 +927,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     for (var r in rooms) {
                         roomId = rooms[r];
                         var doc = document;
-                        if (typeof window.opened_popups['room_' + roomId] !== undefined) {
+                        if (window.opened_popups['room_' + roomId] !== undefined) {
                             if (!window.opened_popups['room_' + roomId].document) continue;
                             doc = window.opened_popups['room_' + roomId].document;
                         }

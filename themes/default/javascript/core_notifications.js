@@ -292,7 +292,7 @@ function _pollForNotifications(rawAjaxResult) {
             sound = 'off';
         }
         var notificationCode = notification.getAttribute('notification_code');
-        if (sound === 'on' && typeof window.detect_change == 'undefined' || notificationCode != 'ticket_reply' && notificationCode != 'ticket_reply_staff') {
+        if (sound === 'on' && window.detect_change == undefined || notificationCode != 'ticket_reply' && notificationCode != 'ticket_reply_staff') {
             if (window.soundManager !== undefined) {
                 var goFunc = function () {
                     var soundUrl = 'data/sounds/message_received.mp3';

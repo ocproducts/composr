@@ -39,7 +39,7 @@
         document.getElementById('all_day_event').onclick = crf2;
 
         form.addEventListener('submit', function () {
-            if (typeof form.elements['end_day'] != 'undefined' && form.elements['end_day'].selectedIndex != 0 || typeof form.elements['end'] != 'undefined' && form.elements['end'].value != '') {
+            if (form.elements['end_day'] != undefined && form.elements['end_day'].selectedIndex != 0 || form.elements['end'] != undefined && form.elements['end'].value != '') {
                 var startDate, endDate;
                 if (startDay) {
                     startDate = new Date(window.parseInt(form.elements['startYear'].value), window.parseInt(form.elements['startMonth'].value) - 1, window.parseInt(form.elements['startDay'].value), window.parseInt(form.elements['startHour'].value), window.parseInt(form.elements['startMinute'].value));
@@ -69,7 +69,7 @@
                 hasDateSet = (start.value != '');
             }
 
-            if ((typeof event !== 'undefined') && (hasDateSet)) { // Something changed
+            if ((event !== undefined) && (hasDateSet)) { // Something changed
                 var url = 'calendar_recurrence_suggest';
                 url += '&monthly_spec_type=' + encodeURIComponent($cms.form.radioValue(form.elements['monthly_spec_type']));
                 if (startDay) {

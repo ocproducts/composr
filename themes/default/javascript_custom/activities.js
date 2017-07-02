@@ -26,7 +26,7 @@ function sUpdateGetData() {
                     // Now grab whatever updates are available
                     var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keepStub(true)),
                         listElements = jQuery('li', '#activities_feed'),
-                        lastId = ((typeof listElements.attr('id') == 'undefined') ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
+                        lastId = ((listElements.attr('id') == undefined) ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
                         postVal = 'last_id=' + lastId + '&mode=' + window.activities_mode;
 
                     if ((window.activities_member_ids != null) && (window.activities_member_ids !== '')) {
