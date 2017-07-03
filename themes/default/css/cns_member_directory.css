@@ -13,10 +13,12 @@
 	vertical-align: top;
 	margin: 0.5em 0 0 0.5em;
 	box-sizing: border-box; /* Exact percentage widths are chosen to match the per_row block parameter */
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: calc(50% - 0.5em);
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.block_main_members>div {
+		width: calc(50% - 0.5em);
+	}
+/*{+END}*/
 .block_main_members__avatars>div {
 	min-width: 0 !important;
 }

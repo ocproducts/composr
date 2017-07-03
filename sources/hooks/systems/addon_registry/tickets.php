@@ -483,10 +483,10 @@ class Hook_addon_registry_tickets
         }
 
         set_mass_import_mode(false); // Needed for $update_caching
+
         $ticket_id = uniqid('', true);
-        $_home_url = build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => $ticket_id, 'redirect' => null), get_module_zone('tickets'), null, false, true, true);
-        $home_url = $_home_url->evaluate();
-        ticket_add_post(get_member(), $ticket_id, $ticket_type_id, lorem_phrase(), lorem_chunk(), $home_url, false); // TODO: Fix in v11
+        ticket_add_post($ticket_id, $ticket_type_id, lorem_phrase(), lorem_chunk(), false, get_member());
+
         set_mass_import_mode(true);
     }
 }

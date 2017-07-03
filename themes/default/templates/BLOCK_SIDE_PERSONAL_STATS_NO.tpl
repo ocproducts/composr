@@ -10,7 +10,7 @@
 					<div class="accessibility_hidden"><label for="ps_login_username">{$LOGIN_LABEL}</label></div>
 					<input maxlength="80" class="wide_field login_block_username" type="text" placeholder="{!USERNAME}" id="ps_login_username" name="login_username" />
 				</div>
-				<div class="constrain_field">
+				<div>
 					<div class="accessibility_hidden"><label for="ps_password">{!PASSWORD}</label></div>
 					<input maxlength="255" class="wide_field" type="password" placeholder="{!PASSWORD}" name="password" id="ps_password" />
 				</div>

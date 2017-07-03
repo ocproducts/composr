@@ -44,10 +44,12 @@
 
 .display_type_GRID .box {
 	margin: 0.5em 0 0 0.5em;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: calc(25% - 0.5em - 2px);
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.display_type_GRID .box {
+		width: calc(25% - 0.5em - 2px);
+	}
+/*{+END}*/
 
 .display_type_GRID .box h3 span {
 	white-space: nowrap;

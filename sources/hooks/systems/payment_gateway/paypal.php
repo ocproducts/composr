@@ -473,8 +473,8 @@ class Hook_payment_gateway_paypal
                 $url = 'https://' . (ecommerce_test_mode() ? 'www.sandbox.paypal.com' : 'www.paypal.com') . '/cgi-bin/webscr';
                 $res = http_get_contents($url, array('trigger_error' => false, 'post_params' => $pure_post + array('cmd' => '_notify-validate')));
                 $x++;
-            } while ((is_null($res)) && ($x < 3));
-            if (is_null($res)) {
+            } while (($res === null) && ($x < 3));
+            if ($res === null) {
                 if ($silent_fail) {
                     return null;
                 }

@@ -1426,46 +1426,53 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 	cursor: inherit;
 }
 
+/* Used e.g. for "paginating" through the calendar (i.e. infinite pagination left/right) */
 .trinav_wrap {
 	overflow: hidden;
 	background-image: linear-gradient(to bottom\, {$GET,main_2_background}\, {$GET,main_background});
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-bottom: 2em;
-	/*{+END}*/
 	{$BETA_CSS_PROPERTY,border-radius: 20px;}
 	color: {$GET,heading_text};
 }
+/*{+START,CSS_MODE,desktop}*/
+	.trinav_wrap {
+		margin-bottom: 2em;
+	}
+/*{+END}*/
 .trinav_wrap.nograd {
 	background-image: none;
 }
-
-/* Used e.g. for "paginating" through the calendar (i.e. infinite pagination left/right) */
 .trinav_left, .trinav_mid, .trinav_right {
 	margin: 1em 0 2em 0;
 }
 .trinav_left {
 	float: left;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 2em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		width: 110px;
-		margin-left: 0.5em;
-	/*{+END}*/
 	text-align: left;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.trinav_left {
+		margin-left: 2em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.trinav_left {
+		width: 110px;
+		margin-left: 0.5em;
+	}
+/*{+END}*/
 .trinav_mid { /* Used for putting a button in the middle of the left/right pagination, for example */
 	text-align: center;
 }
-.trinav_mid.text {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.trinav_mid.text {
 		padding-top: 6px;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.trinav_mid.text {
 		padding-top: 1px;
-	/*{+END}*/
-}
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
 	.trinav_mid.text>span:before {
 		content: "(";
 	}
@@ -1475,16 +1482,20 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 /*{+END}*/
 .trinav_right {
 	float: right;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 1em;
-		margin-right: 2em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		width: 110px;
-		margin-right: 0.5em;
-	/*{+END}*/
 	text-align: right;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.trinav_right {
+		margin-left: 1em;
+		margin-right: 2em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.trinav_right {
+		width: 110px;
+		margin-right: 0.5em;
+	}
+/*{+END}*/
 
 /* An inline avatar */
 .embedded_mini_avatar {
@@ -3489,7 +3500,6 @@ ul.associated_links_block_group.horizontal_links>li:before,
 .horizontal_meta_details li:before,
 .horizontal_links>li:before,
 .horizontal_ticker li:before {
-	padding: {$?,{$MOBILE},0 0.2em 0 0.1em,0 0.5em 0 0.1em};
 	vertical-align: -20%;
 }
 /*{+START,CSS_MODE,desktop}*/
@@ -3497,6 +3507,7 @@ ul.associated_links_block_group.horizontal_links>li:before,
 	.horizontal_meta_details li:before,
 	.horizontal_links>li:before,
 	.horizontal_ticker li:before {
+		padding: 0 0.5em 0 0.1em;
 		content: "\00b7" !important; /* a &middot; */
 	}
 /*{+END}*/
@@ -3734,13 +3745,10 @@ ul.buttons_group, ul.associated_links_block_group {
 	margin-right: 0 !important;
 }
 
-.fields_set_contents .constrain_field, .fields_set_contents .wide_field {
+.fields_set_contents .wide_field {
 	max-width: 500px;
 }
-.fields_set_contents .constrain_field, .fields_set_contents input .wide_field {
-	display: inline;
-}
-.constrain_field + .constrain_field {
+.multi_field + .multi_field {
 	margin: 0.25em 0;
 }
 

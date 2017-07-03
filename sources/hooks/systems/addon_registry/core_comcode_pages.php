@@ -362,19 +362,17 @@ class Hook_addon_registry_core_comcode_pages
             return;
         }
 
-        // TODO: In v11 'start' is now the right constant; also update featuretray block accordingly
-
         require_code('zones2');
         require_code('zones3');
         require_code('abstract_file_manager');
 
         if ($GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => 'lorem')) === null) {
-            actual_add_zone('lorem', lorem_phrase(), 'start', lorem_phrase(), 'default', 0);
+            actual_add_zone('lorem', lorem_phrase(), DEFAULT_ZONE_PAGE_NAME, lorem_phrase(), 'default', 0);
         }
 
         $blocks = find_all_blocks();
 
-        // Page testing all main/bottom blocks ('start')
+        // Page testing all main/bottom blocks (DEFAULT_ZONE_PAGE_NAME)
         $blocks_comcode = '';
         foreach (array_keys($blocks) as $block) {
             if (substr($block, 0, 5) == 'main_') {
@@ -396,7 +394,7 @@ class Hook_addon_registry_core_comcode_pages
         }
         $_blocks_comcode = '[title]' . lorem_phrase() . '[/title]' . "\n\n";
         $_blocks_comcode .= '{+START,IF,{$IS_ADMIN}}' . "\n" . $blocks_comcode . '{+END}' . "\n";
-        save_comcode_page('lorem', 'start', fallback_lang(), $_blocks_comcode, 1);
+        save_comcode_page('lorem', DEFAULT_ZONE_PAGE_NAME, fallback_lang(), $_blocks_comcode, 1);
 
         // Page testing all side blocks ('panel_left')
         $blocks_comcode = '';
@@ -487,13 +485,13 @@ class Hook_addon_registry_core_comcode_pages
 2_key="' . lorem_phrase() . '" 2_value="' . lorem_sentence() . '"
 ][/concepts]
 ';
-        save_comcode_page('lorem', 'lorem', fallback_lang(), $lorem_comcode, 1, 'start');
+        save_comcode_page('lorem', 'lorem', fallback_lang(), $lorem_comcode, 1, DEFAULT_ZONE_PAGE_NAME);
 
         // Simple example page ('menus')
         $menus_comcode = '[title]' . lorem_phrase() . '[/title]' . "\n\n";
         $menus_comcode .= '[block type="tree"]menu[/block]' . "\n\n" . '[block type="popup"]menu[/block]' . "\n\n";
         $menus_comcode .= '[block type="select"]menu[/block]' . "\n\n";
         $menus_comcode .= '[block type="embossed"]menu[/block]' . "\n\n";
-        save_comcode_page('lorem', 'menus', fallback_lang(), $menus_comcode, 1, 'start');
+        save_comcode_page('lorem', 'menus', fallback_lang(), $menus_comcode, 1, DEFAULT_ZONE_PAGE_NAME);
     }
 }

@@ -35,7 +35,7 @@
 										{+END}
 									{+END}
 
-									<strong class="comcode_concept_inline" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,TOOLTIP}','auto');">{TITLE*}</strong>
+									<strong class="comcode_concept_inline" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}', 'auto']">{TITLE*}</strong>
 								</div>
 							{+END}
 							<div class="block_mobile">

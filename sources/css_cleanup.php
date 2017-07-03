@@ -459,11 +459,11 @@ class EmToPx extends CSSCleanup
      *
      * @param string $simple Simple selector
      * @param string $complex Complex selector
-     * @param ?array $may_be_chained_by Possible prefixes to the simple selector to make the complex selector (null: none)
+     * @param array $may_be_chained_by Possible prefixes to the simple selector to make the complex selector
      * @param boolean $just_element Just check the element part of the selector, ignore any complex selector parts of it (like attribute selector)
      * @return boolean Whether it corresponds
      */
-    protected function selector_corresponds($simple, $complex, $may_be_chained_by = null, $just_element = false)
+    protected function selector_corresponds($simple, $complex, $may_be_chained_by = array(), $just_element = false)
     {
         if ($simple == '') {
             return false;

@@ -25,7 +25,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	overflow: hidden;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.modern_tab_headers>div {
 		width: 50%;
 	}
@@ -47,13 +47,14 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 .modern_tab_headers>div>a {
 	display: inline-block;
 	padding: 1em;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		border-right: 1px solid {$GET,WB};
-	/*{+END}*/
 	cursor: pointer;
 }
-
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.modern_tab_headers>div>a {
+		border-right: 1px solid {$GET,WB};
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
 	.modern_tab_headers>div>a {
 		display: block;
 	}
@@ -63,7 +64,7 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 	border-right: 0;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	/*
 	Enable instead of the below selector if you would rather icon goes above label for short widths. In this case you also need to get equal header widths via  style="width: { $DIV_FLOAT*,100,{ TABS}}%" on the header div.
 	.modern_tab_headers>div>a>span {
@@ -85,13 +86,17 @@ It makes more assumptions than the traditional tabs, like all the tabs will fit 
 
 .modern_tab_bodies {
 	overflow: hidden;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		padding: 1em 0.5em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		padding: 3px;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.modern_tab_bodies {
+		padding: 1em 0.5em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.modern_tab_bodies {
+		padding: 3px;
+	}
+/*{+END}*/
 
 .modern_tab_bodies>div {
 }

@@ -500,10 +500,8 @@ class Module_admin_themes
 
         // Option overrides
         $show_theme_option_overrides = false;
-        $hooks = find_all_hooks('systems', 'config');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . $hook);
-            $ob = object_factory('Hook_config_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+        foreach ($hooks as $ob) {
             $details = $ob->get_details();
             if (!empty($details['theme_override'])) {
                 $current_value = get_theme_option($hook, '', $name);
@@ -800,10 +798,8 @@ class Module_admin_themes
             $contents .= $themeonly_option . '=' . str_replace("\n", '\n', post_param_string($themeonly_option, '')) . "\n";
             unset($before[$themeonly_option]);
         }
-        $hooks = find_all_hooks('systems', 'config');
-        foreach (array_keys($hooks) as $hook) {
-            require_code('hooks/systems/config/' . $hook);
-            $ob = object_factory('Hook_config_' . $hook);
+        $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
+        foreach ($hooks as $ob) {
             $details = $ob->get_details();
             if (!empty($details['theme_override'])) {
                 $val = post_param_string($hook, '');

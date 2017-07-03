@@ -717,7 +717,7 @@ class css_file_test_set extends cms_test_case
             'table-sortable',
             'table-sorted-asc',
             'table-sorted-desc',
-            'theme_wizard_use_colour',
+            'themewizard_use_colour',
             'time-spin-btn',
             'time-spin-btn-container',
             'time-spin-btn-down',

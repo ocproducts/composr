@@ -191,8 +191,7 @@
 	font-weight: bold;
 }
 
-{$,TODO: Fix in v11}
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.invoice_box table tr.top table td {
 		width: 100%;
 		display: block;

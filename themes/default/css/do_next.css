@@ -5,10 +5,12 @@
 
 .do_next_page_question {
 	font-size: 1em;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-bottom: 3em;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.do_next_page_question {
+		margin-bottom: 3em;
+	}
+/*{+END}*/
 
 .do_next_section_wrap {
 	margin: 2em auto;

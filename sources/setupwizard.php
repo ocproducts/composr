@@ -25,24 +25,23 @@ function install_test_content()
 {
     require_code('lorem');
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
     set_mass_import_mode(true);
 
     uninstall_test_content();
 
-    $hooks = find_all_hooks('systems', 'addon_registry'); // TODO: v11 use new function
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/addon_registry/' . $hook);
-        $ob = object_factory('Hook_addon_registry_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+    foreach ($hooks as $ob) {
         if (method_exists($ob, 'install_test_content')) {
             $ob->install_test_content();
         }
     }
 
+    pop_query_limiting();
     set_mass_import_mode(false);
 
-    decache('main_staff_checklist');
-    decache('menu');
+    delete_cache_entry('main_staff_checklist');
+    delete_cache_entry('menu');
 }
 
 /**
@@ -52,19 +51,21 @@ function uninstall_test_content()
 {
     require_code('lorem');
 
-    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    push_query_limiting(false);
+    set_mass_import_mode(true);
 
-    $hooks = find_all_hooks('systems', 'addon_registry'); // TODO: v11 use new function
-    foreach (array_keys($hooks) as $hook) {
-        require_code('hooks/systems/addon_registry/' . $hook);
-        $ob = object_factory('Hook_addon_registry_' . $hook);
+    $hooks = find_all_hook_obs('systems', 'addon_registry', 'Hook_addon_registry_');
+    foreach ($hooks as $ob) {
         if (method_exists($ob, 'uninstall_test_content')) {
             $ob->uninstall_test_content();
         }
     }
 
-    decache('main_staff_checklist');
-    decache('menu');
+    pop_query_limiting();
+    set_mass_import_mode(false);
+
+    delete_cache_entry('main_staff_checklist');
+    delete_cache_entry('menu');
 }
 
 /**
