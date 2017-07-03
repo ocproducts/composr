@@ -133,6 +133,11 @@ a.top_left_toggleicon:hover {
 .staff_new_versions .img_wrap {
 	text-align: center;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.staff_new_versions .img_wrap {
+		display: none;
+	}
+/*{+END}*/
 
 .staff_new_versions .img_wrap img:not([width]):not([height]) {
 	max-width: 100%;

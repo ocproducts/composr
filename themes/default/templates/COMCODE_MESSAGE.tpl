@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_rich_media}
 
-<div class="comcode_supported" data-tpl="comcodeMessage" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
+<div class="comcode_supported block_desktop" data-tpl="comcodeMessage" data-tpl-params="{+START,PARAMS_JSON,NAME}{_*}{+END}">
 	<input type="hidden" name="comcode__{NAME*}" value="1" />
 
 	<ul class="horizontal_links horiz_field_sep">

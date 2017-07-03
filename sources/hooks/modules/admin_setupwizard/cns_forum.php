@@ -70,12 +70,12 @@ class Hook_sw_cns_forum
      * Run function for features in the setup wizard.
      *
      * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return Tempcode An input field.
+     * @return array A pair: Input fields, Hidden fields.
      */
     public function get_fields($field_defaults)
     {
         if (get_forum_type() != 'cns' || post_param_integer('addon_cns_forum', null) === 0) {
-            return new Tempcode();
+            return array(new Tempcode(), new Tempcode());
         }
 
         $current_settings = $this->get_current_settings();
@@ -96,7 +96,7 @@ class Hook_sw_cns_forum
             }
         }
 
-        return $fields;
+        return array($fields, new Tempcode());
     }
 
     /**

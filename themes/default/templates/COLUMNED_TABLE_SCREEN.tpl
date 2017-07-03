@@ -17,7 +17,7 @@
 
 			{+START,IF_PASSED,FIELDS}
 				<div class="wide_table_wrap"><table class="map_table wide_table">
-					{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field_name_column" />
 							<col class="field_input_column" />

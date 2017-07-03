@@ -24,9 +24,9 @@
 		<div class="trinav_right">
 			{$,Start slideshow}
 			{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$NOT,{SLIDESHOW}}}
-						<a class="button_screen buttons__slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
+						<a class="button_screen buttons__slideshow inline_desktop" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 					{+END}
 				{+END}
 			{+END}
@@ -43,7 +43,7 @@
 		<div class="trinav_mid text">
 			<span>
 			{+START,IF,{SLIDESHOW}}
-				{!VIEWING_SLIDE,{X*},{N*}}
+				<span class="must_show_together">{!VIEWING_SLIDE,{X*},{N*}}</span>
 
 				{+START,IF_NON_EMPTY,{SLIDESHOW_NEXT_URL}}
 					<span id="changer_wrap">{!CHANGING_IN,xxx}</span>
@@ -55,7 +55,7 @@
 			{+END}
 
 			{+START,IF,{$NOT,{SLIDESHOW}}}
-				{!GALLERY_MOBILE_PAGE_OF,{X*},{N*}}
+				<span class="must_show_together">{!GALLERY_MOBILE_PAGE_OF,{X*},{N*}}</span>
 			{+END}
 			</span>
 		</div>
@@ -63,14 +63,12 @@
 
 	{$,Different positioning of slideshow button for mobiles, due to limited space}
 	{+START,IF_NON_EMPTY,{SLIDESHOW_URL}}
-		{+START,IF,{$MOBILE}}
-			{+START,IF,{$NOT,{SLIDESHOW}}}
-				<div class="float_surrounder">
-					<div class="right">
-						<a class="button_screen buttons__slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
-					</div>
+		{+START,IF,{$NOT,{SLIDESHOW}}}
+			<div class="float_surrounder block_mobile">
+				<div class="right block_mobile">
+					<a class="button_screen buttons__slideshow" rel="nofollow"{+START,IF,{$NOT,{$MOBILE}}} target="_blank" title="{!SLIDESHOW} {!LINK_NEW_WINDOW}"{+END} href="{SLIDESHOW_URL*}"><span>{!_SLIDESHOW}</span></a>
 				</div>
-			{+END}
+			</div>
 		{+END}
 	{+END}
 </div>

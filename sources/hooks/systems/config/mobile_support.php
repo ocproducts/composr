@@ -33,11 +33,13 @@ class Hook_config_mobile_support
         return array(
             'human_name' => 'MOBILE_SUPPORT',
             'type' => 'tick',
-            'category' => 'SITE',
+            'category' => 'THEME',
             'group' => 'MOBILE_VERSION',
             'explanation' => 'CONFIG_OPTION_mobile_support',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'order_in_category_group' => 1,
+            'theme_override' => true,
 
             'addon' => 'core_configuration',
         );

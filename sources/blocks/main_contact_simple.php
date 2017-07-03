@@ -73,7 +73,7 @@ class Block_main_contact_simple
         $body_prefix = array_key_exists('body_prefix', $map) ? $map['body_prefix'] : '';
         $body_suffix = array_key_exists('body_suffix', $map) ? $map['body_suffix'] : '';
 
-        $to_email = array_key_exists('param', $map) ? $map['param'] : get_option('staff_address');
+        $to_email = empty($map['param']) ? get_option('staff_address') : $map['param'];
         $box_title = array_key_exists('title', $map) ? $map['title'] : do_lang('CONTACT_US');
         $private = (array_key_exists('private', $map)) && ($map['private'] == '1');
         $email_optional = array_key_exists('email_optional', $map) ? (intval($map['email_optional']) == 1) : true;

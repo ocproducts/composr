@@ -66,7 +66,14 @@ class Block_main_cc_embed
      */
     public function run($map)
     {
-        $category_id = array_key_exists('param', $map) ? intval($map['param']) : db_get_first_id();
+        if (empty($map['param'])) {
+            $category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'cc_id', null, 'GROUP BY cc_id ORDER BY COUNT(*) DESC');
+            if ($category_id === null) {
+                $category_id = db_get_first_id();
+            }
+        } else {
+            $category_id = intval($map['param']);
+        }
         $filter = array_key_exists('filter', $map) ? $map['filter'] : '';
         $do_sorting = ((array_key_exists('sorting', $map) ? $map['sorting'] : '0') == '1');
 

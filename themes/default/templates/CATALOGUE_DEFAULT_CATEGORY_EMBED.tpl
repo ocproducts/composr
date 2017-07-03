@@ -10,7 +10,7 @@
 			{+END}
 		{+END}
 
-		{+START,IF,{$CONFIG_OPTION,infinite_scrolling}}
+		{+START,IF,{$THEME_OPTION,infinite_scrolling}}
 			{$GET,sorting}
 		{+END}
 
@@ -26,7 +26,7 @@
 			</p>
 		{+END}
 
-		{+START,IF,{$NOT,{$CONFIG_OPTION,infinite_scrolling}}}
+		{+START,IF,{$NOT,{$THEME_OPTION,infinite_scrolling}}}
 			{$GET,sorting}
 		{+END}
 

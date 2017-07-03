@@ -530,6 +530,8 @@ function make_post_request_with_attached_file($filename, $file_path, $more_post_
 
 function push_bugfix_do_dir($dir, $git_found, $seconds_since)
 {
+    require_code('files');
+
     $out = array();
     $_dir = ($dir == '') ? '.' : $dir;
     $dh = opendir($_dir);

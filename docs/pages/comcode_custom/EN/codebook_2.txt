@@ -64,7 +64,7 @@ Composr's default CSS uses equations to define colours, all defined against a se
 
 Equations look like this in the CSS...
 [code="CSS"]
-{$THEME_WIZARD_COLOR,#d91522,red_highlight_text,80% FF0000 + 20% seed}
+{$THEMEWIZARD_COLOR,#d91522,red_highlight_text,80% FF0000 + 20% seed}
 ...
 
 span.red_alert, a.red_alert, strong.red_alert, em.red_alert {

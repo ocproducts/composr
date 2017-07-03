@@ -49,13 +49,13 @@
 		{+END}
 	{+END}
 	{+START,IF_NON_EMPTY,{$TRIM,{$GET,posting_field}}}
-		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
+		<th colspan="2" class="table_heading_cell{+START,IF,{REQUIRED}} required{+END}">
 			{$GET,posting_field}
 		</th>
 	{+END}
 </tr>
 <tr class="field_input" id="field-{$GET*,id}-input">
-	<td class="{+START,IF,{REQUIRED}} required{+END} form_table_huge_field"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}>
+	<td class="{+START,IF,{REQUIRED}} required{+END} form_table_huge_field" colspan="2">
 		{+START,IF_PASSED,DEFAULT_PARSED}
 			<textarea cols="1" rows="1" style="display: none" readonly="readonly" disabled="disabled" name="{NAME*}_parsed">{DEFAULT_PARSED*}</textarea>
 		{+END}
@@ -70,7 +70,7 @@
 				</div>
 			</div>
 
-			<div id="container_for_{NAME*}" class="constrain_field container_for_wysiwyg">
+			<div id="container_for_{NAME*}" class="container_for_wysiwyg">
 				<textarea data-textarea-auto-height="" accesskey="x" class="{CLASS*}{+START,IF,{REQUIRED}} posting_required{+END} wide_field posting_field_textarea" tabindex="{TABINDEX_PF*}" id="{NAME*}" name="{NAME*}" cols="70" rows="17">{POST*}</textarea>
 
 				{+START,IF_PASSED,WORD_COUNTER}
@@ -82,8 +82,8 @@
 
 		{+START,IF_NON_EMPTY,{$TRIM,{EMOTICON_CHOOSER}}}
 			{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_news}}}
-				{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$CNS}}}
-					<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box"{+END}>
+				{+START,IF,{$DESKTOP}}{+START,IF,{$OR,{$CONFIG_OPTION,is_on_emoticon_choosers},{$CNS}}}
+					<div{+START,IF,{$CONFIG_OPTION,is_on_emoticon_choosers}} class="emoticon_chooser box block_desktop"{+END}>
 						{+START,IF,{$CNS}}
 							<span class="right horiz_field_sep associated_link"><a rel="nofollow" target="_blank" class="js-link-click-open-site-emoticon-chooser-window" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}">{$?,{$CONFIG_OPTION,is_on_emoticon_choosers},{!VIEW_ARCHIVE},{!EMOTICONS_POPUP}}</a></span>
 						{+END}
@@ -124,14 +124,14 @@
 {+START,IF,{$AND,{$NOT,{$BROWSER_MATCHES,simplified_attachments_ui}},{$IS_NON_EMPTY,{ATTACHMENTS}}}}
 	{$SET,init_drag_drop,1}
 	<tr class="form_table_field_spacer" id="field-{$GET*,id}-attachments-ui">
-		<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
+		<th colspan="2" class="table_heading_cell">
 			<a class="toggleable_tray_button js-click-toggle-subord-fields" id="fes_attachments" href="#!"><img alt="{!EXPAND}: {!ATTACHMENTS}" title="{!EXPAND}" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" /></a>
 
 			<span class="faux_h2 toggleable_tray_button js-click-toggle-subord-fields">
 				{!ATTACHMENTS}
 
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<img class="help_icon" data-cms-rich-tooltip="1" title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+				{+START,IF,{$DESKTOP}}
+					<img class="help_icon inline_desktop" data-cms-rich-tooltip="1" title="{$STRIP_TAGS,{!ATTACHMENT_HELP}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 				{+END}
 			</span>
 
@@ -143,7 +143,7 @@
 		</th>
 	</tr>
 	<tr style="display: none" class="field_input" id="field-{$GET*,id}-attachments-ui-input">
-		<td class="form_table_huge_field"{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END}>
+		<td class="form_table_huge_field" colspan="2">
 			{ATTACHMENTS}
 			<input type="hidden" name="posting_ref_id" value="{$RAND%}" />
 		</td>

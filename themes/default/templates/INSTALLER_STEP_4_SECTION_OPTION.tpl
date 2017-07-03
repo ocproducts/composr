@@ -8,7 +8,7 @@
 
 	<td class="form_table_field_input">
 		<div class="accessibility_hidden"><label for="{NAME*}">{NICE_NAME*}</label></div>
-		<div class="constrain_field">
+		<div>
 			{INPUT}
 		</div>
 	</td>

@@ -150,17 +150,17 @@ Fortunately there is a solution. If you go to [tt]http://yourbaseurl/index.php?k
 
 [title="4"]Equations[/title]
 
-Some CSS files have [tt]{$THEME_WIZARD_COLOR,#RRGGBB,name,equation}[/tt] lines near the top.
+Some CSS files have [tt]{$THEMEWIZARD_COLOR,#RRGGBB,name,equation}[/tt] lines near the top.
 
-When the Theme Wizard runs the first parameter (the colour) of the [tt]THEME_WIZARD_COLOR[/tt] line is regenerated from the third parameter (the equation) by running through the calculation logic of the Theme Wizard.
+When the Theme Wizard runs the first parameter (the colour) of the [tt]THEMEWIZARD_COLOR[/tt] line is regenerated from the third parameter (the equation) by running through the calculation logic of the Theme Wizard.
 
 For example,
 [code="Tempcode"]
-{$THEME_WIZARD_COLOR,#426aa9,box_title_background,100% seed}
+{$THEMEWIZARD_COLOR,#426aa9,box_title_background,100% seed}
 [/code]
 ... may become:
 [code="Tempcode"]
-{$THEME_WIZARD_COLOR,#ff0000,box_title_background,100% seed}
+{$THEMEWIZARD_COLOR,#ff0000,box_title_background,100% seed}
 [/code]
 (this would happen if the seed colour used in the Theme Wizard was [tt]#ff0000[/tt])
 
@@ -168,9 +168,9 @@ This is all happening only when the Theme Wizard is run.
 
 There is a special case for these particular equations in [tt]global.css[/tt] only:
 [code="Tempcode"]
-{$THEME_WIZARD_COLOR,#94979d,seed,100% 426aa9}
-{$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#000000,BW,100% 000000}
+{$THEMEWIZARD_COLOR,#94979d,seed,100% 426aa9}
+{$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
 [/code]
 The Theme Wizard actually totally replaces these equations based on the seed, and whether light or dark was specified for the theme. It is these equations that sit at the root of the Theme Wizard calculation (because they don't depend on any other equations, they are defined directly by colour). The Theme Wizard is essentially an algebra solver using colour theory (a branch of applied mathematics). It keeps working at solving the equations, using the ones from [tt]global.css[/tt] as a base, until it concludes.
 

@@ -19,6 +19,55 @@
  */
 
 /**
+ * Install test content.
+ */
+function install_test_content()
+{
+    require_code('lorem');
+
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
+    set_mass_import_mode(true);
+
+    uninstall_test_content();
+
+    $hooks = find_all_hooks('systems', 'addon_registry'); // TODO: v11 use new function
+    foreach (array_keys($hooks) as $hook) {
+        require_code('hooks/systems/addon_registry/' . $hook);
+        $ob = object_factory('Hook_addon_registry_' . $hook);
+        if (method_exists($ob, 'install_test_content')) {
+            $ob->install_test_content();
+        }
+    }
+
+    set_mass_import_mode(false);
+
+    decache('main_staff_checklist');
+    decache('menu');
+}
+
+/**
+ * Uninstall test content.
+ */
+function uninstall_test_content()
+{
+    require_code('lorem');
+
+    $GLOBALS['NO_QUERY_LIMIT'] = true;
+
+    $hooks = find_all_hooks('systems', 'addon_registry'); // TODO: v11 use new function
+    foreach (array_keys($hooks) as $hook) {
+        require_code('hooks/systems/addon_registry/' . $hook);
+        $ob = object_factory('Hook_addon_registry_' . $hook);
+        if (method_exists($ob, 'uninstall_test_content')) {
+            $ob->uninstall_test_content();
+        }
+    }
+
+    decache('main_staff_checklist');
+    decache('menu');
+}
+
+/**
  * Get Comcode for the pages in the zone.
  *
  * @param  array $installprofileblocks List of blocks in the install profile

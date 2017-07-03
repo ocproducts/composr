@@ -10,8 +10,8 @@
 		<h3>{!CATALOGUE_GENERIC,{CATALOGUE_TITLE*}}</h3>
 	{+END}
 
-	<div class="wide_table_wrap"><table class="map_table wide_table results_table spaced_table">
-		{+START,IF,{$NOT,{$MOBILE}}}
+	<div class="wide_table_wrap"><table class="map_table wide_table results_table spaced_table responsive_blocked_table">
+		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="catalogue_fieldmap_field_name_column" />
 				<col class="catalogue_fieldmap_field_value_column" />

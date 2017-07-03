@@ -828,4 +828,87 @@ class Hook_addon_registry_catalogues
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('catalogues');
+        require_code('catalogues2');
+        require_code('fields');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('catalogue_efv_short', array('DISTINCT ce_id'), array('cv_value' => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            if ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'id', array('id' => $record['ce_id'])) !== null/*in case of corrupt data*/) {
+                actual_delete_catalogue_entry($record['ce_id']);
+            }
+        }
+        $to_delete = $GLOBALS['SITE_DB']->query_select('catalogue_efv_short_trans', array('DISTINCT ce_id'), array($GLOBALS['SITE_DB']->translate_field_ref('cv_value') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            if ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'id', array('id' => $record['ce_id'])) !== null/*in case of corrupt data*/) {
+                actual_delete_catalogue_entry($record['ce_id']);
+            }
+        }
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('catalogue_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('cc_title') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            actual_delete_catalogue_category($record['id']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('catalogues');
+        require_code('catalogues2');
+        require_code('fields');
+
+        $catalogues = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('c_name', 'MIN(cf_order)', 'cf_type'), null, 'GROUP BY c_name');
+        foreach ($catalogues as $catalogue) {
+            if (($catalogue['cf_type'] == 'short_text') || ($catalogue['cf_type'] == 'short_trans')) { // Only if first field is 'short'
+                $is_tree = $GLOBALS['SITE_DB']->query_select_value('catalogues', 'c_is_tree', array('c_name' => $catalogue['c_name']));
+
+                $category_id = actual_add_catalogue_category($catalogue['c_name'], lorem_phrase(), lorem_paragraph(), '', ($is_tree == 1) ? $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => $catalogue['c_name'])) : null, placeholder_image_url());
+                require_code('permissions2');
+                set_global_category_access('catalogues_category', $category_id);
+
+                $fields = $GLOBALS['SITE_DB']->query_select('catalogue_fields', array('*'), array('c_name' => $catalogue['c_name']), 'ORDER BY cf_order');
+                $map = array();
+                foreach ($fields as $field) {
+                    switch ($field['cf_type']) {
+                        case 'picture':
+                            $map[$field['id']] = placeholder_image_url();
+                            break;
+
+                        default:
+                            $ob = get_fields_hook($field['cf_type']);
+                            list(, , $storage_type) = $ob->get_field_value_row_bits($field);
+
+                            switch ($storage_type) {
+                                case 'short':
+                                case 'short_trans':
+                                    $map[$field['id']] = lorem_phrase();
+                                    break;
+                                case 'long':
+                                case 'long_trans':
+                                    $map[$field['id']] = lorem_paragraph();
+                                    break;
+                                case 'float':
+                                    $map[$field['id']] = 0.9;
+                                    break;
+                                case 'integer':
+                                    $map[$field['id']] = 56;
+                                    break;
+                            }
+
+                            break;
+                    }
+                }
+                actual_add_catalogue_entry($category_id, 1, '', 1, 1, 1, $map);
+            }
+        }
+    }
 }

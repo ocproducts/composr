@@ -12,14 +12,21 @@
 .gallery_member_details {
 	min-width: 24em;
 }
+.gallery_entry_details table {
+	width: 100%;
+}
 
 .gallery_entry_field_name_column {
 	width: 8.5em;
 }
-
 .gallery_entry_field_value_column {
 	width: 16em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.gallery_entry_field_name_column, .gallery_entry_field_value_column {
+		width: auto;
+	}
+/*{+END}*/
 
 .delete_cross_button, .delete_cross_button div {
 	display: inline;
@@ -71,10 +78,12 @@
 
 .gallery_grid_cell {
 	margin: 0.5em 0 0 0.5em;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: calc(25% - 0.5em);
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.gallery_grid_cell {
+		width: calc(25% - 0.5em);
+	}
+/*{+END}*/
 
 .gallery_regular_thumb {
 	font-size: 0.85em;
@@ -131,14 +140,18 @@
 .flow_mode_thumb {
 	opacity: 0.7;
 	display: inline-block;
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 0.5em;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin: 0 1em;
-	/*{+END}*/
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
+/*{+START,CSS_MODE,mobile}*/
+	.flow_mode_thumb {
+		margin: 0.5em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.flow_mode_thumb {
+		margin: 0 1em;
+	}
+/*{+END}*/
 .flow_mode_thumb:hover, body.touch_enabled .flow_mode_thumb {
 	opacity: 1.0;
 	transition: opacity 0.2s linear !important;
@@ -177,7 +190,7 @@
 	max-width: 100%;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.media_box .gallery_entry_details {
 		margin-left: 1em;
 		max-width: 18em;
@@ -224,12 +237,14 @@
 }
 
 .gallery_tease_pic {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 40em;
-	/*{+END}*/
 	margin: 0 auto;
 	box-shadow: 3px 3px 10px {$GET,point_of_interest_border};
 }
+/*{+START,CSS_MODE,desktop}*/
+	.gallery_tease_pic {
+		width: 40em;
+	}
+/*{+END}*/
 
 .gallery_tease_pic_pic {
 	float: {!en_right};

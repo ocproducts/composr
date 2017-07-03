@@ -450,4 +450,102 @@ class Hook_addon_registry_downloads
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('downloads2');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('download_downloads', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('name') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_download($record['id']);
+        }
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('download_licences', array('id'), array('l_title' => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_download_licence($record['id']);
+        }
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('download_categories', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('category') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_download_category($record['id']);
+        }
+
+        // NB: Comment Topic and Image will be removed via different hooks
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('downloads2');
+
+        $category_id = add_download_category(lorem_phrase(), db_get_first_id(), lorem_paragraph(), '', placeholder_image_url());
+        require_code('permissions2');
+        set_global_category_access('download', $category_id);
+
+        $licence_id = add_download_licence(lorem_phrase(), lorem_chunk());
+
+        $download_id = add_download($category_id, lorem_phrase(), placeholder_image_url(), lorem_chunk(), $GLOBALS['FORUM_DRIVER']->get_username(get_member()), lorem_chunk(), null, 1, 1, 2/*reviews supported*/, 1, '', uniqid('', true) . '.jpg', 100, 110, 1, $licence_id, null, 0, 0, null, null, null, lorem_word() . ',' . lorem_phrase());
+
+        if (addon_installed('galleries')) {
+            require_code('galleries2');
+            add_image(lorem_phrase(), 'download_' . strval($download_id), lorem_sentence(), placeholder_image_url(), '', 1, 1, 1, 1, '', null, null, null, 0, null, lorem_word() . ',' . lorem_phrase());
+        }
+
+        if (addon_installed('awards')) {
+            if ($GLOBALS['SITE_DB']->query_select_value_if_there('award_types', 'a_content_type', array('id' => db_get_first_id())) === 'download') {
+                require_code('awards');
+                give_award(db_get_first_id(), strval($download_id));
+            }
+        }
+
+        $content_id = strval($download_id);
+        $content_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $content_id), 'site');
+        $GLOBALS['SITE_DB']->query_insert('trackbacks', array(
+            'trackback_for_type' => 'downloads',
+            'trackback_for_id' => $content_id,
+            'trackback_ip' => '',
+            'trackback_time' => time(),
+            'trackback_url' => '',
+            'trackback_title' => lorem_phrase(),
+            'trackback_excerpt' => lorem_paragraph(),
+            'trackback_name' => lorem_phrase(),
+        ));
+        $GLOBALS['SITE_DB']->query_insert('rating', array(
+            'rating_for_type' => 'downloads',
+            'rating_for_id' => $content_id,
+            'rating_member' => get_member(),
+            'rating_ip' => '',
+            'rating_time' => time(),
+            'rating' => 3,
+        ));
+        set_mass_import_mode(false); // Needed for $update_caching
+        $GLOBALS['FORUM_DRIVER']->make_post_forum_topic(
+            get_option('comments_forum_name'),
+            'downloads_' . strval($content_id),
+            get_member(),
+            lorem_phrase(),
+            lorem_paragraph(),
+            lorem_phrase(),
+            do_lang('COMMENT'),
+            $content_url->evaluate(),
+            null,
+            null,
+            1,
+            1
+        );
+        set_mass_import_mode(true);
+        $GLOBALS['SITE_DB']->query_insert('review_supplement', array(
+            'r_rating' => 3,
+            'r_rating_for_type' => 'downloads',
+            'r_rating_for_id' => $content_id,
+            'r_rating_type' => '',
+            'r_topic_id' => $GLOBALS['LAST_TOPIC_ID'],
+            'r_post_id' => $GLOBALS['LAST_POST_ID'],
+        ));
+    }
 }

@@ -2369,13 +2369,13 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                         foreach ($_rule_set as $from => $to) {
                             // Apply theme wizard to $to
                             if (addon_installed('themewizard')) {
-                                $to = theme_wizard_colours_to_css($to, $landscape, 'default', 'equations', $seed);
+                                $to = themewizard_colours_to_css($to, $landscape, 'default', 'equations', $seed);
                             }
 
                             $occurrences = substr_count($css_file_contents, $from);
                             if ($occurrences == 0) { // Try after applying theme wizard
                                 if (addon_installed('themewizard')) {
-                                    $from = theme_wizard_colours_to_css($from, $landscape, 'default', 'equations', $seed);
+                                    $from = themewizard_colours_to_css($from, $landscape, 'default', 'equations', $seed);
                                     $occurrences = substr_count($css_file_contents, $from);
                                 }
                             }
@@ -2416,12 +2416,12 @@ function upgrade_theme($theme, $from_version, $to_version, $test_run = true)
                         foreach ($_rule_set as $from_a => $to) {
                             // Apply theme wizard to $to
                             if (addon_installed('themewizard')) {
-                                $to = theme_wizard_colours_to_css($to, $landscape, 'default', 'equations', $seed);
+                                $to = themewizard_colours_to_css($to, $landscape, 'default', 'equations', $seed);
                             }
 
                             $froms = array($from_a);
                             if (addon_installed('themewizard')) {
-                                $froms[] = theme_wizard_colours_to_css($from_a, $landscape, 'default', 'equations', $seed);
+                                $froms[] = themewizard_colours_to_css($from_a, $landscape, 'default', 'equations', $seed);
                             }
                             foreach ($froms as $from) {
                                 switch ($rule_set_type) {

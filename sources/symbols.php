@@ -473,6 +473,62 @@ function ecv($lang, $escaped, $type, $name, $param)
                 }
                 break;
 
+            case 'CSS_MODE':
+                if (isset($param[1])) {
+                    $param[0] = $param[0]->evaluate();
+                    $param[1] = $param[1]->evaluate();
+
+                    global $TEMPCODE_SETGET;
+                    if (!isset($TEMPCODE_SETGET[$param[0]])) {
+                        attach_message(do_lang_tempcode('UNKNOWN_CSS_MODE', escape_html($param[0])));
+                        break;
+                    }
+
+                    $css_mode = explode(',', $TEMPCODE_SETGET[$param[0]]);
+                    if (!isset($css_mode[1]) || !in_array($css_mode[1], array('mobileModeDiscard', 'mobileModeKeep', 'mobileModeMedia'))) {
+                        $css_mode[1] = 'mobileModeDiscard';
+                    }
+
+                    $matches = array();
+                    if (preg_match('#^(\d+)-(\d+|infinity)$#', $css_mode[0], $matches) == 0) {
+                        attach_message(do_lang_tempcode('CORRUPT_CSS_MODE', escape_html($param[0])));
+                        break;
+                    }
+
+                    if ((is_mobile()) && ($css_mode[1] == 'mobileModeKeep')) {
+                        // Optimisation
+                        $value = $param[1];
+                    } elseif ((!is_mobile()) || ($css_mode[1] != 'mobileModeDiscard')) {
+                        // Media rules
+                        $from = $matches[1];
+                        $to = $matches[2];
+                        $media_rule = '';
+                        if ($from != '0') {
+                            $media_rule .= '(min-width: ' . $from . 'px)';
+                        }
+                        if ($to != 'infinity') {
+                            if ($media_rule != '') {
+                                $media_rule .= ' and ';
+                            }
+                            $media_rule .= '(max-width: ' . $to . 'px)';
+                        }
+                        $value = '@media ' . $media_rule . ' { ' . $param[1] . '}';
+                    }
+                } else {
+                    attach_message(do_lang_tempcode('CORRUPT_CSS_MODE', escape_html($param[0])));
+                }
+
+                break;
+
+            case 'MAKE_MOBILE':
+                $value = $param[count($param) - 2]->evaluate();
+                if (is_mobile()) {
+                    $value = preg_replace('#<(table|tbody|thead|tr|th|td)(\s[^<>]*)?>#', '<div$2>', $value);
+                    $value = preg_replace('#</(table|tbody|thead|tr|th|td)>#', '</div>', $value);
+                    $value = '<div class="make_mobile">' . $value . '</div>';
+                }
+                break;
+
             default:
                 trigger_error(do_lang('UNKNOWN_DIRECTIVE', escape_html($name)), E_USER_NOTICE);
         }
@@ -4612,6 +4668,46 @@ function ecv_EXTEND_URL($lang, $escaped, $param)
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  * @return string The result.
  */
+function ecv_MOBILE($lang, $escaped, $param)
+{
+    $value = is_mobile(null, isset($param[0]) ? ($param[0] == '1') : false) ? '1' : '0';
+
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_DESKTOP($lang, $escaped, $param)
+{
+    $value = !is_mobile(null, isset($param[0]) ? ($param[0] == '1') : false) ? '1' : '0';
+
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
 function ecv_ENSURE_PROTOCOL_SUITABILITY($lang, $escaped, $param)
 {
     $value = ensure_protocol_suitability(isset($param[0]) ? $param[0] : '');
@@ -4814,6 +4910,46 @@ function ecv_VALUE_OPTION($lang, $escaped, $param)
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv2_LTR($lang, $escaped, $param)
+{
+    $value = (do_lang('dir') == 'ltr') ? '1' : '0';
+
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv2_RTL($lang, $escaped, $param)
+{
+    $value = (do_lang('dir') == 'rtl') ? '1' : '0';
+
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
     }
     return $value;
 }
@@ -5285,6 +5421,74 @@ function ecv_JSON_ENCODE($lang, $escaped, $param)
 function ecv_JSON_DECODE($lang, $escaped, $param)
 {
     $value = json_decode($param[0]);
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_CONFIG_OPTION($lang, $escaped, $param)
+{
+    $value = '';
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+
+    if (isset($param[0])) {
+        if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // Installer, likely executing global.js. We need a saner default for JavaScript
+            $value = '0';
+        } else {
+            $value = get_option($param[0], array_key_exists(1, $param) && $param[1] == '1');
+            if ($value === null) {
+                $value = '';
+            }
+        }
+    }
+
+    if ($escaped !== array()) {
+        apply_tempcode_escaping($escaped, $value);
+    }
+    return $value;
+}
+
+/**
+ * Evaluate a particular Tempcode symbol.
+ *
+ * @ignore
+ *
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
+ * @param  array $escaped Array of escaping operations.
+ * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
+ * @return string The result.
+ */
+function ecv_THEME_OPTION($lang, $escaped, $param)
+{
+    $value = '';
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($value);
+    }
+
+    if (isset($param[0])) {
+        if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // Installer, likely executing global.js. We need a saner default for JavaScript
+            $value = '0';
+        } else {
+            $value = get_theme_option($param[0], array_key_exists(2, $param) ? $param[2] : null, null, array_key_exists(1, $param) && $param[1] == '1');
+            if ($value === null) {
+                $value = '';
+            }
+        }
+    }
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

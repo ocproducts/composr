@@ -177,4 +177,35 @@ class Hook_addon_registry_cns_post_templates
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
+        require_code('cns_general_action2');
+
+        $to_delete = $GLOBALS['FORUM_DB']->query_select('f_post_templates', array('id'), array('t_title' => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            cns_delete_post_template($record['id']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        if (get_forum_type() != 'cns') {
+            return;
+        }
+
+        require_code('cns_general_action');
+
+        cns_make_post_template(lorem_phrase(), lorem_chunk(), '*', 0);
+    }
 }

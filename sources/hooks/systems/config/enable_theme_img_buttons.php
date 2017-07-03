@@ -34,10 +34,11 @@ class Hook_config_enable_theme_img_buttons
             'human_name' => 'ENABLE_THEME_IMG_BUTTONS',
             'type' => 'tick',
             'category' => 'THEME',
-            'group' => 'GENERAL',
+            'group' => 'EMBEDDED_LINKS',
             'explanation' => 'CONFIG_OPTION_enable_theme_img_buttons',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'theme_override' => true,
 
             'addon' => 'core_themeing',
         );

@@ -58,15 +58,39 @@
 	border-radius: 5px;
 }
 
+/*{+START,CSS_MODE,mobile}*/
+	.chat_posting_area .left, .chat_posting_area .right {
+		float: none;
+	}
+
+	.chat_posting_area .right {
+		margin-top: 0.25em;
+	}
+/*{+END}*/
+
 .chat_posting_area textarea, .chat_posting_area input, .chat_posting_area img {
 	vertical-align: middle;
 }
 
 .chat_posting_area textarea {
 	margin-top: 0;
-	width: 20em;
 	margin-right: 1em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.chat_posting_area textarea {
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.chat_posting_area .left {
+		float: none;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.chat_posting_area textarea {
+		width: 20em;
+	}
+/*{+END}*/
 
 .below_main_chat_window {
 	margin-top: 2em;
@@ -81,7 +105,7 @@
 	margin-top: 0.5em;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.chat_room_options, .chat_room_actions {
 		float: {!en_left};
 		width: 50%;
@@ -123,7 +147,7 @@
 	margin-bottom: 0;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.chat_room_options, .chat_room_actions {
 		padding: 0.5em;
 	}
@@ -141,13 +165,22 @@
 
 .messages_window_full_chat {
 	max-height: 35em;
-	overflow: auto; /* Needed for Opera, very strange */
+	overflow: auto; /* LEGACY Needed for Opera, very strange */
 }
 
 .messages_window {
-	vertical-align: middle;
+	display: table-cell;
+	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}
+		vertical-align: top;
+	{+END}
+	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+		vertical-align: bottom;
+	{+END}
 	overflow: auto;
-	margin-top: 1em;
+}
+
+.chat_posting_area + .chat_lobby_convos_area_messages {
+	margin: 1em 0;
 }
 
 .chat_message {
@@ -233,30 +266,34 @@
 }
 
 .chat_lobby_friends {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		float: {!en_left};
-		width: 16.5em;
-	/*{+END}*/
 	box-sizing: border-box;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.chat_lobby_friends {
+		float: {!en_left};
+		width: 16.5em;
+	}
+/*{+END}*/
 
 .chat_lobby_friends input {
 	vertical-align: middle;
 }
 
 .chat_lobby_convos {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	margin-top: 1em;
+	margin-{!en_left}: 0.75em;
+	box-sizing: border-box;
+}
+/*{+START,CSS_MODE,desktop}*/
+	.chat_lobby_convos {
 		float: {!en_left};
 		width: 27em;
 		margin-{!en_right}: 1em;
 		border-{!en_right}: 1px solid {$GET,pale_border};
 		min-height: 29.5em;
 		padding-{!en_right}: 0.5em;
-	/*{+END}*/
-	margin-top: 1em;
-	margin-{!en_left}: 0.75em;
-	box-sizing: border-box;
-}
+	}
+/*{+END}*/
 
 .chat_lobby_convos_tabs {
 	border-left: 0;
@@ -310,8 +347,12 @@
 }
 
 .chat_lobby_convos_area_messages {
-	margin: 1em 0;
-	height: 20em;
+	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}
+		height: 20em;
+	{+END}
+	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+		height: 26em;
+	{+END}
 }
 
 .chat_friends_column {
@@ -327,6 +368,9 @@
 }
 
 .im_post_bits {
+	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+		margin: 1em 0;
+	{+END}
 }
 
 .im_post_bits .horiz_field_sep {
@@ -502,10 +546,12 @@ ul.icon_links_block_group {
 	margin: 0;
 	padding: 0;
 	float: right;
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 1em 0;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	ul.icon_links_block_group {
+		margin: 1em 0;
+	}
+/*{+END}*/
 
 ul.icon_links_block_group>li {
 	list-style-type: none;

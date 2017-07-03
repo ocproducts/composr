@@ -63,7 +63,7 @@ class Hook_commandr_command_themewizard_find_color
                 $matches = array();
                 $num_matches = preg_match_all('/#([A-Za-f\d]{6}).*\{\$,(.*)\}/', $c, $matches);
                 $matches2 = array();
-                $num_matches2 = preg_match_all('/\{\$THEME_WIZARD_COLOR,\#([A-Za-f\d]{6}),(.*)\}/', $c, $matches2);
+                $num_matches2 = preg_match_all('/\{\$THEMEWIZARD_COLOR,\#([A-Za-f\d]{6}),(.*)\}/', $c, $matches2);
                 for ($i = 0; $i < $num_matches2; $i++) {
                     $matches[0][$num_matches] = $matches2[0][$i];
                     $matches[1][$num_matches] = $matches2[1][$i];

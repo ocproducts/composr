@@ -39,12 +39,12 @@ class Hook_sw_stats
      * Run function for features in the setup wizard.
      *
      * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return Tempcode An input field.
+     * @return array A pair: Input fields, Hidden fields.
      */
     public function get_fields($field_defaults)
     {
         if (!addon_installed('stats') || post_param_integer('addon_stats', null) === 0) {
-            return new Tempcode();
+            return array(new Tempcode(), new Tempcode());
         }
 
         $field_defaults += $this->get_current_settings(); // $field_defaults will take precedence, due to how "+" operator works in PHP
@@ -55,7 +55,7 @@ class Hook_sw_stats
         $fields = new Tempcode();
         $fields->attach(form_input_integer(do_lang_tempcode('STORE_TIME'), do_lang_tempcode('CONFIG_OPTION_stats_store_time'), 'stats_store_time', intval($stats_store_time), true));
 
-        return $fields;
+        return array($fields, new Tempcode());
     }
 
     /**

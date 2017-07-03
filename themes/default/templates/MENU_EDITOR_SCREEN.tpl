@@ -8,7 +8,7 @@
 		{WARNING_DETAILS}
 	{+END}
 
-	<div class="menu_editor_page docked js-el-menu-editor-wrap" id="menu_editor_wrap">
+	<div class="menu_editor_page{+START,IF,{$GT,{TOTAL_ITEMS},10}} docked{+END} js-el-menu-editor-wrap" id="menu_editor_wrap">
 		<form title="" action="{URL*}" method="post" autocomplete="off">
 			<!-- In separate form due to mod_security -->
 			<textarea aria-hidden="true" cols="30" rows="3" style="display: none" name="template" id="template">{CHILD_BRANCH_TEMPLATE*}</textarea>
@@ -43,7 +43,7 @@
 
 			<div id="mini_form_hider" style="display: none" class="float_surrounder">
 				<div class="menu_editor_rh_side">
-					<img class="dock_button js-img-click-toggle-docked-field-editing js-img-keypress-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
+					<img class="dock_button js-img-click-toggle-docked-field-editing" alt="" title="{!TOGGLE_DOCKED_FIELD_EDITING}" src="{$IMG*,1x/arrow_box_hover}" srcset="{$IMG*,2x/arrow_box_hover} 2x" />
 
 					<h2>{!CHOOSE_ENTRY_POINT}</h2>
 
@@ -68,7 +68,7 @@
 					<h2>{!EDIT_SELECTED_FIELD}</h2>
 
 					<div class="wide_table_wrap"><table class="map_table form_table wide_table">
-						{+START,IF,{$NOT,{$MOBILE}}}
+						{+START,IF,{$DESKTOP}}
 							<colgroup>
 								<col class="field_name_column" />
 								<col class="field_input_column" />

@@ -1046,4 +1046,58 @@ class Hook_addon_registry_galleries
             )), null, '', true),
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('galleries2');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('images', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_image($record['id']);
+        }
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('videos', array('id'), array($GLOBALS['SITE_DB']->translate_field_ref('title') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_video($record['id']);
+        }
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('galleries', array('name'), array($GLOBALS['SITE_DB']->translate_field_ref('fullname') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_gallery($record['name']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('galleries2');
+
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => 'lorem_1')) === null) {
+            add_gallery('lorem_1', lorem_phrase(), lorem_chunk(), '', 'root', 1, 1, 0, 0);
+            require_code('permissions2');
+            set_global_category_access('gallery', 'lorem_1');
+        }
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'name', array('name' => 'lorem_2')) === null) {
+            add_gallery('lorem_2', lorem_phrase(), lorem_chunk(), '', 'root', 1, 1, 1, 1);
+            require_code('permissions2');
+            set_global_category_access('gallery', 'lorem_2');
+
+            add_gallery('member_' . strval(get_member()) . '_lorem_2', lorem_phrase(), lorem_chunk(), '', 'lorem_2', 1, 1, 1, 1);
+            require_code('permissions2');
+            set_global_category_access('gallery', 'lorem_2');
+        }
+
+        add_image(lorem_phrase(), 'lorem_1', lorem_chunk(), placeholder_image_url(), '', 1, 1, 1, 1, '');
+
+        add_video(lorem_phrase(), 'lorem_1', lorem_chunk(), placeholder_image_url(), placeholder_image_url(), 1, 1, 1, 1, '', 5, 100, 100);
+
+        add_image(lorem_phrase(), 'lorem_2', lorem_chunk(), placeholder_image_url(), '', 1, 1, 1, 1, '');
+
+        add_image(lorem_phrase(), 'member_' . strval(get_member()) . '_lorem_2', lorem_chunk(), placeholder_image_url(), '', 1, 1, 1, 1, '');
+    }
 }

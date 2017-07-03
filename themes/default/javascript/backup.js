@@ -64,6 +64,6 @@
             });
         });
 
-        maxSizeField.parentNode.appendChild(button);
+        maxSizeField.parentNode.insertBefore(button, maxSizeField.nextSibling.nextSibling);
     };
 }(window.$cms));

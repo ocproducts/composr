@@ -327,4 +327,173 @@ class Hook_addon_registry_core_comcode_pages
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        if (!is_suexec_like()) {
+            return;
+        }
+
+        require_code('zones2');
+        require_code('zones3');
+        require_code('abstract_file_manager');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_zone', 'the_page'), array('the_page' => 'lorem'));
+        foreach ($to_delete as $record) {
+            delete_cms_page($record['the_zone'], $record['the_page']);
+        }
+        $to_delete = $GLOBALS['SITE_DB']->query_select('comcode_pages', array('the_zone', 'the_page'), array('the_zone' => 'lorem'));
+        foreach ($to_delete as $record) {
+            delete_cms_page($record['the_zone'], $record['the_page']);
+        }
+
+        actual_delete_zone('lorem', true);
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        if (!is_suexec_like()) {
+            return;
+        }
+
+        // TODO: In v11 'start' is now the right constant; also update featuretray block accordingly
+
+        require_code('zones2');
+        require_code('zones3');
+        require_code('abstract_file_manager');
+
+        if ($GLOBALS['SITE_DB']->query_select_value_if_there('zones', 'zone_name', array('zone_name' => 'lorem')) === null) {
+            actual_add_zone('lorem', lorem_phrase(), 'start', lorem_phrase(), 'default', 0);
+        }
+
+        $blocks = find_all_blocks();
+
+        // Page testing all main/bottom blocks ('start')
+        $blocks_comcode = '';
+        foreach (array_keys($blocks) as $block) {
+            if (substr($block, 0, 5) == 'main_') {
+                $blocks_comcode .= '[title="2"]' . $block . '[/title]';
+                $blocks_comcode .= '[block]' . $block . '[/block]' . "\n";
+            }
+
+            // Ones with alternate modes we want to display
+            if ($block == 'side_calendar') {
+                $blocks_comcode .= '[title="2"]' . $block . '[/title]';
+                $blocks_comcode .= '[block="listing"]' . $block . '[/block]' . "\n";
+            }
+        }
+        foreach (array_keys($blocks) as $block) {
+            if (substr($block, 0, 7) == 'bottom_') {
+                $blocks_comcode .= '[title="2"]' . $block . '[/title]';
+                $blocks_comcode .= '[block]' . $block . '[/block]' . "\n";
+            }
+        }
+        $_blocks_comcode = '[title]' . lorem_phrase() . '[/title]' . "\n\n";
+        $_blocks_comcode .= '{+START,IF,{$IS_ADMIN}}' . "\n" . $blocks_comcode . '{+END}' . "\n";
+        save_comcode_page('lorem', 'start', fallback_lang(), $_blocks_comcode, 1);
+
+        // Page testing all side blocks ('panel_left')
+        $blocks_comcode = '';
+        foreach (array_keys($blocks) as $block) {
+            if (substr($block, 0, 5) == 'side_') {
+                $blocks_comcode .= '[title="2"]' . $block . '[/title]';
+                $blocks_comcode .= '[block]' . $block . '[/block]' . "\n";
+            }
+        }
+        $_blocks_comcode = '{+START,IF,{$IS_ADMIN}}' . "\n" . $blocks_comcode . '{+END}' . "\n";
+        save_comcode_page('lorem', 'panel_left', fallback_lang(), $_blocks_comcode, 1);
+
+        // Empty pages
+        $blocks_comcode = '';
+        save_comcode_page('lorem', 'panel_right', fallback_lang(), $blocks_comcode, 1);
+
+        // Simple example page ('lorem')
+        $lorem_comcode = '[title]' . lorem_phrase() . '[/title]
+
+[contents][/contents][overlay width="600" height="600"]' . lorem_chunk() . '[/overlay]
+
+[title="2"]media[/title]
+
+[media framed="1"]' . placeholder_image_url() . '[/media]
+[media framed="1"]https://www.youtube.com/watch?v=LDfzAA8fNKU[/media]
+[media_set]
+[media framed="0"]' . placeholder_image_url() . '[/media]
+[media framed="0"]' . placeholder_image_url() . '[/media]
+[media framed="0"]' . placeholder_image_url() . '[/media]
+[media framed="0"]' . placeholder_image_url() . '[/media]
+[media framed="0"]' . placeholder_image_url() . '[/media]
+[/media_set]
+
+[title="2"]quote[/title]
+
+[quote="' . lorem_phrase() . '"]
+' . lorem_chunk() . '
+[/quote]
+
+[title="2"]code[/title]
+
+[code]
+' . lorem_chunk() . '
+[/code]
+
+[title="2"]ticker[/title]
+
+[ticker]' . lorem_sentence() . '[/ticker]
+
+[title="2"]shocker[/title]
+
+[shocker left_0="' . lorem_phrase() . '" right_0="Example Text" left_1="Composr CMS" right_1="Is awesome"][/shocker]
+
+[title="2"]jumping[/title]
+
+[jumping a="Composr CMS" b="Is awesome"][/jumping]
+
+[title="2"]hide[/title]
+
+[hide="' . lorem_phrase() . '"]' . lorem_chunk() . '[/hide]
+
+[title="2"]sections[/title]
+
+[surround]
+[section="Example" default="1"]' . lorem_chunk() . '[/section]
+[section="Composr"]Composr CMS is awesome[/section]
+[section_controller]Example,Composr[/section_controller]
+[/surround]
+
+[title="2"]tabs[/title]
+
+[tabs="Example,Composr"]
+[tab="Example" default="1"]' . lorem_chunk() . '[/tab]
+[tab="Composr"]Composr CMS is awesome[/tab]
+[/tabs]
+
+[title="2"]big_tabs[/title]
+
+[surround]
+[big_tab_controller]Example,Composr[/big_tab_controller]
+[big_tab="Example"]' . lorem_chunk() . '[/big_tab]
+[big_tab="Composr"]Composr CMS is awesome[/big_tab]
+[/surround]
+
+
+[concepts
+1_key="Composr" 1_value="[pulse]Awesome[/pulse] [tooltip=\"Content Management System\"]CMS[/tooltip]"
+2_key="' . lorem_phrase() . '" 2_value="' . lorem_sentence() . '"
+][/concepts]
+';
+        save_comcode_page('lorem', 'lorem', fallback_lang(), $lorem_comcode, 1, 'start');
+
+        // Simple example page ('menus')
+        $menus_comcode = '[title]' . lorem_phrase() . '[/title]' . "\n\n";
+        $menus_comcode .= '[block type="tree"]menu[/block]' . "\n\n" . '[block type="popup"]menu[/block]' . "\n\n";
+        $menus_comcode .= '[block type="select"]menu[/block]' . "\n\n";
+        $menus_comcode .= '[block type="embossed"]menu[/block]' . "\n\n";
+        save_comcode_page('lorem', 'menus', fallback_lang(), $menus_comcode, 1, 'start');
+    }
 }

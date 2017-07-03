@@ -1,7 +1,7 @@
 {+START,IF_NON_EMPTY,{$USER_FB_CONNECT,{MEMBER_ID}}}
 	<div class="wide_table_wrap">
 		<table class="map_table wide_table cns_profile_fields">
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="cns_profile_about_field_name_column" />
 					<col class="cns_profile_about_field_value_column" />

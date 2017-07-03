@@ -69,7 +69,7 @@ class Block_side_shoutbox
 
         $block_id = get_block_id($map);
 
-        $room_id = array_key_exists('param', $map) ? intval($map['param']) : null;
+        $room_id = empty($map['param']) ? null : intval($map['param']);
         $num_messages = array_key_exists('max', $map) ? intval($map['max']) : 5;
 
         if ($room_id === null) {

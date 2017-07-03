@@ -74,10 +74,8 @@ class Block_main_top_sites
         $b_type = $map['param'];
         $myquery = banner_select_sql($b_type) . ' ORDER BY hits_from+hits_to DESC';
         $_banners = $GLOBALS['SITE_DB']->query($myquery, 200);
-        $assemble = new Tempcode();
 
         $banners = array();
-
         foreach ($_banners as $banner) {
             $description = get_translated_tempcode('banners', $banner, 'caption');
 

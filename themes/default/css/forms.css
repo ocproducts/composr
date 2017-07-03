@@ -5,17 +5,40 @@
 
 /* General form-related styles */
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
+	.form_table, .form_table>tbody, .form_table>thead, .form_table>tbody>tr, .form_table>thead>tr, .form_table>tr, .form_table>tbody>tr>th, .form_table>thead>tr>th, .form_table>tr>th, .form_table>tbody>tr>td, .form_table>thead>tr>td, .form_table>tr>td {
+		display: block;
+		width: auto;
+		overflow: hidden;
+	}
+
+	.form_table {
+		border-bottom: 0 !important;
+	}
+
+	.form_table>tbody>tr>th, .form_table>thead>tr>th, .form_table>tr>th, .form_table>tbody>tr>td, .form_table>thead>tr>td, .form_table>tr>td {
+		border-top: 0;
+		border-left: 0;
+		border-right: 0;
+	}
+
+	.form_table>tbody>tr>th label:after, .form_table>thead>tr>th label:after, .form_table>tr>th label:after,
+	.form_table>tbody>tr>th .faux_label:after, .form_table>thead>tr>th .faux_label:after, .form_table>tr>th .faux_label:after {
+		content: ":";
+	}
+/*{+END}*/
+
+/*{+START,CSS_MODE,mobile}*/
 	label {
 		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when touching inputs}
 	}
 /*{+END}*/
 
-.required_field_warning_wrap {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.required_field_warning_wrap {
 		text-align: center;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .required_field_warning {
 	border: 1px solid {$GET,standard_border};
@@ -27,12 +50,14 @@
 	font-weight: bold;
 	font-size: 0.85em;
 	margin: 1.5em 0 1em 0;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		display: inline-block;
-	/*{+END}*/
 	border-radius: 5px;
 	{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching on mobile form filling in}
 }
+/*{+START,CSS_MODE,desktop}*/
+	.required_field_warning {
+		display: inline-block;
+	}
+/*{+END}*/
 
 .required_star {
 	opacity: 0.4;
@@ -123,7 +148,7 @@ Curved borders would be cool, but it does not work well with the carefully defin
 	padding-top: 0.95em !important;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	th.form_table_field_name {
 		border-bottom: 0 !important;
 	}
@@ -180,12 +205,19 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 .form_table_field_input select, .form_table_field_input input, .form_table_field_input img {
 	vertical-align: middle;
 }
-.form_table_field_input .constrain_field {
-	display: inline;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.form_table_field_input .wide_field {
+		width: 26em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.form_table_field_input .wide_field {
+		width: 100%;
+	}
+/*{+END}*/
 .form_table_field_input .wide_field {
-	width: {$?,{$MOBILE},100%,26em};
 	max-width: 100%;
+	box-sizing: border-box;
 }
 
 /* Tone it all down for forms inside tabs */
@@ -235,9 +267,6 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	border: 1px solid {$GET,pale_border};
 	max-width: 100%;
 	max-height: 100%;
-}
-.innocuous_fieldset.has_preview .wide_field {
-	max-width: 300px;
 }
 
 /* Particular input types */
@@ -295,7 +324,7 @@ th.form_table_field_name a, /* Extra specificity to take precedence over th.de_t
 	max-width: 31em; /* Upload field HTML is complex, we need to force size down so that the help icon can align correctly */
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.input_upload, .input_upload_required {
 		max-width: 240px;
 	}
@@ -542,7 +571,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	margin: 1em 0;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.mobile.preview_box {
 		padding: 209px 36px 159px 34px;
 		width: 314px;
@@ -570,11 +599,12 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	padding: 4px;
 }
 
-@media screen and (max-width:500px) {
+/*{+START,CSS_MODE,mobile}*/
 	.post_options_wrap {
 		display: none;
 	}
 }
+/*{+END}*/
 
 .posting_form_main_comcode_button {
 	float: {!en_right};
@@ -623,14 +653,17 @@ span.validated_checkbox+input[name="validated"].input_tick {
 .attachments_field_name_column {
 	width: 18em;
 }
-
 .box .attachments_field_name_column {
 	width: 14em;
 }
-
 .attachments_field_input_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.attachments_field_name_column, .box .attachments_field_name_column, .attachments_field_input_column {
+		width: auto;
+	}
+/*{+END}*/
 
 /* Permissions */
 
@@ -690,6 +723,12 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	margin: -52px 0 0 0;
 }
 
+/*{+START,CSS_MODE,desktop}*/
+	.form_set_indent {
+		margin-{!en_left}: 2em;
+	}
+/*{+END}*/
+
 .fields_set_item {
 	background: {$GET,main_background};
 	padding: 0.75em 0.5em;
@@ -730,7 +769,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 	width: 6em;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.form_table input[type="file"] {
 		max-width: 6em;
 	}
@@ -898,6 +937,22 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 		background-image: url('{$IMG;,icons/32x32/editor/comcode}');
 	}
 }
+
+/*{+START,CSS_MODE,mobile}*/
+	.cke_toolbar, .cke_toolgroup {
+		float: none !important;
+		background: none !important;
+	}
+
+	a.cke_button, .cke_button_icon {
+		float: none !important;
+		min-height: 28px;
+	}
+
+	.cke_toolbar_break, .cke_toolbar_separator {
+		display: none !important;
+	}
+/*{+END}*/
 
 /* Other styles */
 

@@ -405,7 +405,7 @@ function placeholder_types()
  */
 function placeholder_image()
 {
-    $text = '<img src="' . escape_html(find_theme_image('logo/-logo')) . '" title="test" alt="test" />';
+    $text = '<img src="' . escape_html(placeholder_image_url()) . '" title="test" alt="test" />';
     if (function_exists('ocp_mark_as_escaped')) {
         ocp_mark_as_escaped($text);
     }
@@ -480,7 +480,7 @@ function placeholder_javascript_code()
  */
 function placeholder_image_url()
 {
-    return find_theme_image('logo/-logo');
+    return find_theme_image('no_image');
 }
 
 /**
@@ -768,9 +768,9 @@ function find_html()
 }
 
 /**
- * Find the template/screen previews
+ * Find the template/screen previews.
  *
- * @return array The map of previews (template to a tuple of preview details)
+ * @return array The map of previews (template to a tuple of preview details).
  */
 function find_all_previews__by_template()
 {
@@ -792,7 +792,7 @@ function find_all_previews__by_template()
 }
 
 /**
- * Find the template/screen previews
+ * Find the template/screen previews.
  *
  * @return array The map of previews (screen to a list of templates)
  */
@@ -817,7 +817,7 @@ function find_all_previews__by_screen()
 }
 
 /**
- * Shows the preview of a screen
+ * Shows the preview of a screen.
  *
  * @param  ID_TEXT $template The template to be previewed (e.g. templates/DOWNLOAD_BOX.tpl)
  * @param  ?ID_TEXT $hook The hook the preview is in (null: search)
@@ -926,7 +926,7 @@ function get_text_templates()
 }
 
 /**
- * Checks if the template is to be previewed as a text template
+ * Checks if the template is to be previewed as a text template.
  *
  * @param  string $temp_name Name of the template
  * @return boolean Whether it is
@@ -937,7 +937,7 @@ function is_plain_text_template($temp_name)
 }
 
 /**
- * Checks if the template is a full screen template
+ * Checks if the template is a full screen template.
  *
  * @param  ?string $temp_name Name of the template (null: do not use as criteria, use other as criteria, which must iself be non-null)
  * @param  ?Tempcode $tempcode The instantiated template (null: do not use as criteria, use other as criteria, which must iself be non-null)

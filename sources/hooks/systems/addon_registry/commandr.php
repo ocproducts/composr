@@ -157,6 +157,7 @@ class Hook_addon_registry_commandr
             'lang/EN/commandr.ini',
             'sources/hooks/systems/commandr_commands/.htaccess',
             'sources_custom/hooks/systems/commandr_commands/.htaccess',
+            'sources/hooks/systems/commandr_commands/css_cleanup.php',
             'sources/hooks/systems/commandr_commands/alien_check.php',
             'sources/hooks/systems/commandr_commands/directory_sizes.php',
             'sources/hooks/systems/commandr_commands/db_table_sizes.php',

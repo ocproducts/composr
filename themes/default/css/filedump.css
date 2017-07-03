@@ -3,12 +3,35 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.filedump_filter .button_micro {
-	margin-left: 1em !important;
+/*{+START,CSS_MODE,mobile}*/
+	.filedump_screen .tab {
+		min-width: 70px;
+	}
+
+	.tab:nth-child(3n+0) {
+		border-right: 0;
+	}
+	.tab:last-child {
+		border-right: 1px solid {$GET,tab_border};
+	}
+/*{+END}*/
+
+/*{+START,CSS_MODE,mobile}*/
+	.filedump_filter {
+		line-height: 1.8em;
+	}
+
+	.filedump_filter .type_filter_filedump, .filedump_filter .sort_filedump {
+		padding-left: 0 !important;
+	}
+/*{+END}*/
+
+.filedump_filter .type_filter_filedump select, .filedump_filter .jump_to_filedump select, .filedump_filter .sort_filedump select {
+	max-width: 8em;
 }
 
-.filedump_filter #type_filter_1, .filedump_filter #type_filter_2, .filedump_filter #jump_to_1, .filedump_filter #jump_to_2, .filedump_filter #sort_filedump_1, .filedump_filter #sort_filedump_2 {
-	max-width: 8em;
+.filedump_filter .button_micro {
+	margin-left: 1em !important;
 }
 
 .filedump_thumbnails {
@@ -30,9 +53,11 @@
 	position: relative;
 }
 
-/*.filedump_thumbnails .box .box_inner:hover .meta {
+/*
+.filedump_thumbnails .box .box_inner:hover .meta {
 	opacity: 0.3;
-}*/
+}
+*/
 
 .filedump_embed, .filedump_select {
 	position: absolute;
@@ -93,4 +118,8 @@
 .filedump_image_sizes label {
 	min-width: 13em;
 	display: inline-block;
+}
+
+.filedump_image_sizes input {
+	width: calc(100% - 5em);
 }

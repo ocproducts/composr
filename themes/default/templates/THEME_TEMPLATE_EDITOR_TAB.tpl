@@ -419,7 +419,7 @@
 							<li>
 								<a href="#!" class="js-a-editarea-search" data-ea-search="block_background">{!CHANGE_BLOCK_BACKGROUND}</a>
 							</li>
-							{+START,IF,{$CONFIG_OPTION,fixed_width}}
+							{+START,IF,{$THEME_OPTION,fixed_width}}
 								<li>
 									<a href="#!" class="js-a-editarea-search" data-ea-search="outer_background">{!CHANGE_OUTER_BACKGROUND}</a>
 								</li>
@@ -461,7 +461,7 @@
 	{$,Main editor}
 
 	<label class="accessibility_hidden" for="e_{FILE_ID*}">{!TEMPLATE}</label>
-	<div class="constrain_field">
+	<div>
 		<textarea id="e_{FILE_ID*}" name="e_{FILE_ID*}" cols="70" rows="22" class="wide_field js-ta-tpl-editor textarea_scroll">{CONTENTS*}</textarea>
 	</div>
 </div>

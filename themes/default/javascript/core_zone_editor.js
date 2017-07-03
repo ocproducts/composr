@@ -105,7 +105,7 @@
                         element.style.display = (tabs[i] === tab) ? 'block' : 'none';
                         if ((tabs[i] == tab) && (tab == 'edit')) {
                             if ($cms.form.isWysiwygField($cms.dom.$id('edit_' + id + '_textarea'))) {
-                                // Fix for Firefox
+                                // LEGACY Fix for Firefox
                                 if (window.wysiwyg_editors['edit_' + id + '_textarea'].document !== undefined) {
                                     window.wysiwyg_editors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'false';
                                     window.wysiwyg_editors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'true';

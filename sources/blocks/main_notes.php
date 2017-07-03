@@ -53,7 +53,7 @@ class Block_main_notes
 
         $block_id = get_block_id($map);
 
-        $file = array_key_exists('param', $map) ? $map['param'] : 'admin_notes';
+        $file = empty($map['param']) ? 'admin_notes' : $map['param'];
         $title = array_key_exists('title', $map) ? $map['title'] : do_lang('NOTES');
         $lang_none = array_key_exists('lang_none', $map) ? $map['lang_none'] : '0';
         $scrolls = array_key_exists('scrolls', $map) ? $map['scrolls'] : '0';

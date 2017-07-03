@@ -167,4 +167,27 @@ class Hook_addon_registry_custom_comcode
             )), null, '', true)
         );
     }
+
+    /**
+     * Uninstall default content.
+     */
+    public function uninstall_test_content()
+    {
+        require_code('custom_comcode');
+
+        $to_delete = $GLOBALS['SITE_DB']->query_select('custom_comcode', array('tag_tag'), array($GLOBALS['SITE_DB']->translate_field_ref('tag_title') => lorem_phrase()));
+        foreach ($to_delete as $record) {
+            delete_custom_comcode_tag($record['tag_tag']);
+        }
+    }
+
+    /**
+     * Install default content.
+     */
+    public function install_test_content()
+    {
+        require_code('custom_comcode');
+
+        add_custom_comcode_tag('lorem', lorem_phrase(), lorem_paragraph(), lorem_paragraph(), '[lorem][/lorem]', '', 1, 1, 1, 1, true);
+    }
 }

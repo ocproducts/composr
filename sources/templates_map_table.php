@@ -25,9 +25,10 @@
  * @param  array $fields An array of mappings between title and value (each mapping being a field)
  * @param  ?Tempcode $text Text to show (null: none)
  * @param  ?Tempcode $buttons Buttons to show (null: none)
+ * @param  boolean $responsive Use a responsive layout for the table (too much to fit in 2 columns on a small screen)
  * @return Tempcode The generated view space
  */
-function map_table_screen($title, $fields, $text = null, $buttons = null)
+function map_table_screen($title, $fields, $text = null, $buttons = null, $responsive = false)
 {
     $_fields = new Tempcode();
     foreach ($fields as $key => $val) {
@@ -39,7 +40,14 @@ function map_table_screen($title, $fields, $text = null, $buttons = null)
         $_fields->attach(map_table_field(do_lang_tempcode($key), $val, $raw));
     }
 
-    return do_template('MAP_TABLE_SCREEN', array('_GUID' => 'c8c6cbc8e7b5a47a3078fd69feb057a0', 'TITLE' => $title, 'TEXT' => $text, 'FIELDS' => $_fields, 'BUTTONS' => $buttons));
+    return do_template('MAP_TABLE_SCREEN', array(
+        '_GUID' => 'c8c6cbc8e7b5a47a3078fd69feb057a0',
+        'TITLE' => $title,
+        'TEXT' => $text,
+        'FIELDS' => $_fields,
+        'BUTTONS' => $buttons,
+        'RESPONSIVE' => $responsive,
+    ));
 }
 
 /**

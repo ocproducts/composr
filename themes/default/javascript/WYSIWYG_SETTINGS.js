@@ -40,7 +40,9 @@ var editorSettings = {
     enterMode: window.CKEDITOR.ENTER_BR,
     uiColor: wysiwygColor,
     ocpTheme: $cms.$THEME(),
-    fontSize_sizes: '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
+    {+START,IF,{$EQ,{$CONFIG_OPTION,wysiwyg_font_units},em}}
+        fontSize_sizes : '0.6em;0.85em;1em;1.1em;1.2em;1.3em;1.4em;1.5em;1.6em;1.7em;1.8em;2em',
+    {+END}
     removePlugins: '',
     extraPlugins: 'showcomcodeblocks,imagepaste,spellchecktoggle' + (useComposrToolbar ? ',composr' : ''),
     /*{+START,IF,{$NEQ,{$CKEDITOR_PATH},data_custom/ckeditor}}*/
@@ -59,7 +61,7 @@ var editorSettings = {
     language: $cms.$LANG() ? $cms.$LANG().toLowerCase() : 'en',
     emailProtection: false,
     resize_enabled: true,
-    width: (element.offsetWidth - 15),
+    width: 'auto',
     height: window.location.href.includes('cms_comcode_pages') ? 250 : 500,
     toolbar: toolbar,
     allowedContent: true,

@@ -816,15 +816,9 @@ function is_wide()
     }
 
     // Need to check it is allowed
-    $theme = $GLOBALS['FORUM_DRIVER']->get_theme();
-    $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
-    if (is_file($ini_path)) {
-        require_code('files');
-        $details = better_parse_ini_file($ini_path);
-        if ((isset($details['supports_wide'])) && ($details['supports_wide'] == '0')) {
-            $IS_WIDE_CACHE = 0;
-            return $IS_WIDE_CACHE;
-        }
+    if (get_theme_option('supports_wide') == '0') {
+        $IS_WIDE_CACHE = 0;
+        return $IS_WIDE_CACHE;
     }
 
     return $IS_WIDE_CACHE;
@@ -2504,7 +2498,7 @@ function is_mobile($user_agent = null, $truth = false)
         }
     }
 
-    if ((!function_exists('get_option')) || (get_option('mobile_support') == '0')) {
+    if ((!function_exists('get_option')) || (get_theme_option('mobile_support') == '0')) {
         if (function_exists('get_option')) {
             $is_mobile_cache = false;
             $is_mobile_truth_cache = false;
@@ -2518,21 +2512,17 @@ function is_mobile($user_agent = null, $truth = false)
 
     global $SITE_INFO;
     if (((!isset($SITE_INFO['assume_full_mobile_support'])) || ($SITE_INFO['assume_full_mobile_support'] != '1')) && (isset($GLOBALS['FORUM_DRIVER'])) && (!$truth) && (running_script('index')) && (($theme = $GLOBALS['FORUM_DRIVER']->get_theme()) != 'default')) {
-        $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . $theme . '/theme.ini';
-        if (is_file($ini_path)) {
-            require_code('files');
-            $details = better_parse_ini_file($ini_path);
-            if (!empty($details['mobile_pages'])) {
-                if (substr($details['mobile_pages'], 0, 1) == '#' && substr($details['mobile_pages'], -1) == '#') {
-                    if (preg_match($details['mobile_pages'], get_zone_name() . ':' . get_page_name()) == 0) {
-                        $is_mobile_cache = false;
-                        return false;
-                    }
-                } else {
-                    if (preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0 && preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_zone_name() . ':' . get_page_name())) . '\s*(,|$)#', $details['mobile_pages']) == 0) {
-                        $is_mobile_cache = false;
-                        return false;
-                    }
+        $mobile_pages = get_theme_option('mobile_pages');
+        if ($mobile_pages != '') {
+            if (substr($mobile_pages, 0, 1) == '#' && substr($mobile_pages, -1) == '#') {
+                if (preg_match($mobile_pages, get_zone_name() . ':' . get_page_name()) == 0) {
+                    $is_mobile_cache = false;
+                    return false;
+                }
+            } else {
+                if (preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_page_name())) . '\s*(,|$)#', $mobile_pages) == 0 && preg_match('#(^|,)\s*' . str_replace('#', '\#', preg_quote(get_zone_name() . ':' . get_page_name())) . '\s*(,|$)#', $mobile_pages) == 0) {
+                    $is_mobile_cache = false;
+                    return false;
                 }
             }
         }

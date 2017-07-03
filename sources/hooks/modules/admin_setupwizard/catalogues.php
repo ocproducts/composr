@@ -46,12 +46,12 @@ class Hook_sw_catalogues
      * Run function for features in the setup wizard.
      *
      * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return Tempcode An input field.
+     * @return array A pair: Input fields, Hidden fields.
      */
     public function get_fields($field_defaults)
     {
         if (!addon_installed('catalogues') || post_param_integer('addon_catalogues', null) === 0) {
-            return new Tempcode();
+            return array(new Tempcode(), new Tempcode());
         }
 
         $current_settings = $this->get_current_settings();
@@ -71,7 +71,7 @@ class Hook_sw_catalogues
         if ($current_settings['have_default_catalogues_contacts'] == '1') {
             $fields->attach(form_input_tick(do_lang_tempcode('HAVE_DEFAULT_CATALOGUES_CONTACTS'), do_lang_tempcode('DESCRIPTION_HAVE_DEFAULT_CATALOGUES_CONTACTS'), 'have_default_catalogues_contacts', $field_defaults['have_default_catalogues_contacts'] == '1'));
         }
-        return $fields;
+        return array($fields, new Tempcode());
     }
 
     /**

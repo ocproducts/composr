@@ -1,24 +1,22 @@
 {+START,IF,{$NAND,{TRUE_ATTACHMENT_UI},{$BROWSER_MATCHES,simplified_attachments_ui}}}
 	<div class="wide_table_wrap" data-view="Attachment" data-view-params="{+START,PARAMS_JSON,I,POSTING_FIELD_NAME,FILTER,SYNDICATION_JSON,NO_QUOTA}{_*}{+END}">
 		<table class="map_table form_table wide_table">
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				<colgroup>
-					{+START,IF,{$NOT,{$MOBILE}}}
-						<col class="attachments_field_name_column" />
-					{+END}
+					<col class="attachments_field_name_column column_desktop" />
 					<col class="attachments_field_input_column" />
 				</colgroup>
 			{+END}
 
 			<tbody>
 				<tr>
-					{+START,IF,{$NOT,{$MOBILE}}}
-						<th class="form_table_field_name vertical_alignment">
+					{+START,IF,{$DESKTOP}}
+						<th class="form_table_field_name vertical_alignment cell_desktop">
 							{!ATTACHMENT,{I*}}
 
-							{+START,IF,{TRUE_ATTACHMENT_UI}}{+START,IF,{$NOT,{$MOBILE}}}
+							{+START,IF,{TRUE_ATTACHMENT_UI}}
 								<img class="help_icon" data-cms-rich-tooltip="1" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
-							{+END}{+END}
+							{+END}
 						</th>
 					{+END}
 					<td class="form_table_field_input">

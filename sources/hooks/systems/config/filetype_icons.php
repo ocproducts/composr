@@ -39,6 +39,7 @@ class Hook_config_filetype_icons
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 4,
+            'theme_override' => true,
 
             'addon' => 'core_configuration',
         );

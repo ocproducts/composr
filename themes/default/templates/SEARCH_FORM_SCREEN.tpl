@@ -55,7 +55,7 @@
 				<input type="hidden" name="all_defaults" value="0" />
 
 				<div class="wide_table_wrap"><table class="map_table form_table wide_table">
-					{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field_name_column" />
 							<col class="field_input_column" />
@@ -68,7 +68,7 @@
 							<th class="form_table_field_name">{!SEARCH_FOR}</th>
 							<td class="form_table_field_input" colspan="2">
 								<div class="accessibility_hidden"><label for="search_content">{!SEARCH_FOR}</label></div>
-								<div class="constrain_field">
+								<div>
 									<input maxlength="255"{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" class="search_content wide_field js-keyup-update-ajax-search-list js-keypress-enter-submit-primary-form" type="search" size="{$?,{$MOBILE},30,48}" id="search_content" name="content" value="{+START,IF_PASSED,CONTENT}{CONTENT*}{+END}" />
 								</div>
 
@@ -103,7 +103,7 @@
 							<th class="form_table_field_name">{USER_LABEL*}</th>
 							<td class="form_table_field_input" colspan="2">
 								<div class="accessibility_hidden"><label for="search_author">{USER_LABEL*}</label></div>
-								<div class="constrain_field">
+								<div>
 									<span class="invisible_ref_point"></span>
 									<input autocomplete="off" maxlength="80" class="wide_field js-keyup-update-author-list" type="text" value="{AUTHOR*}" id="search_author" name="author"{+START,IF,{$MOBILE}} autocorrect="off"{+END} />
 								</div>
@@ -173,7 +173,7 @@
 							<td class="form_table_field_input" colspan="2">
 								<div class="accessibility_hidden"><label for="search_direction">{!DIRECTION}</label></div>
 								<div class="accessibility_hidden"><label for="search_sort">{!SORT_BY}</label></div>
-								<select class="search_sort" id="search_sort" name="sort">
+								<select id="search_sort" name="sort">
 									<option{+START,IF,{$EQ,{SORT},relevance}} selected="selected"{+END} value="relevance">{!RELEVANCE_SORT}</option>
 									<option{+START,IF,{$EQ,{SORT},add_date}} selected="selected"{+END} value="add_date">{!DATE}</option>
 									<option{+START,IF,{$EQ,{SORT},title}} selected="selected"{+END} value="title">{!TITLE}</option>

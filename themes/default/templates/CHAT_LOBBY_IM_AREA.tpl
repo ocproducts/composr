@@ -4,16 +4,22 @@
 	<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post" method="post" autocomplete="off">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
-		<div class="im_post_bits">
-			<label class="accessibility_hidden" for="post_{CHATROOM_ID*}">{!MESSAGE}</label>
-			<textarea class="input_required im_post_field js-keypress-eat-enter js-keyup-textarea-chat-post" id="post_{CHATROOM_ID*}" name="post_{CHATROOM_ID*}" cols="30" rows="1"></textarea>
+		{+START,SET,posting_box}
+			<div class="im_post_bits">
+				<label class="accessibility_hidden" for="post_{CHATROOM_ID*}">{!MESSAGE}</label>
+				<textarea class="input_required im_post_field js-keypress-eat-enter js-keyup-textarea-chat-post" id="post_{CHATROOM_ID*}" name="post_{CHATROOM_ID*}" cols="30" rows="1"></textarea>
 
-			{+START,IF,{$CNS}}
-				<a rel="nofollow" class="horiz_field_sep js-click-open-chat-emoticons-popup" href="#!" title="{!EMOTICONS} {!LINK_NEW_WINDOW}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
-			{+END}
+				{+START,IF,{$CNS}}
+					<a rel="nofollow" class="horiz_field_sep js-click-open-chat-emoticons-popup" href="#!" title="{!EMOTICONS} {!LINK_NEW_WINDOW}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
+				{+END}
 
-			<input class="button_micro buttons__send js-click-chatroom-chat-post" type="button" value="{!MAKE_POST_SHORT}" />
-		</div>
+				<input class="button_micro buttons__send js-click-chatroom-chat-post" type="button" value="{!MAKE_POST_SHORT}" />
+			</div>
+		{+END}
+
+		{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}
+			{$GET,posting_box}
+		{+END}
 
 		<div class="chat_lobby_convos_area_bar">
 			<h3>{!PARTICIPANTS}</h3>
@@ -29,5 +35,9 @@
 		<div class="chat_lobby_convos_area_main">
 			<div class="chat_lobby_convos_area_messages messages_window" id="messages_window_{CHATROOM_ID*}"></div>
 		</div>
+
+		{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+			{$GET,posting_box}
+		{+END}
 	</form>
 </div>

@@ -370,11 +370,13 @@
         function toggleDockedFieldEditing(e, img) {
             if (!menuEditorWrapEl.classList.contains('docked')) {
                 menuEditorWrapEl.classList.add('docked');
+                menuEditorWrapEl.classList.remove('docked');
                 img.src = '{$IMG;*,1x/arrow_box_hover}';
                 if (img.srcset !== undefined) {
                     img.srcset = '{$IMG;*,2x/arrow_box_hover} 2x';
                 }
             } else {
+                menuEditorWrapEl.classList.add('non_docked');
                 menuEditorWrapEl.classList.remove('docked');
                 img.src = '{$IMG;*,1x/arrow_box}';
                 if (img.srcset !== undefined) {
@@ -459,7 +461,7 @@
                 // Find previous branch with same parent (if exists)
                 for (i = 0; i < form.elements.length; i++) {
                     if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parentNum)) {
-                        bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
+                        bindex = form.elements[i].name.substr('parent_'.length, form.elements[i].name.length);
                         b = window.parseInt(form.elements['order_' + bindex].value) || 0;
                         if ((b < num) && (b > best)) {
                             best = b;
@@ -471,7 +473,7 @@
                 // Find next branch with same parent (if exists)
                 for (i = 0; i < form.elements.length; i++) {
                     if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value === parentNum)) {
-                        bindex = form.elements[i].name.substr(7, form.elements[i].name.length);
+                        bindex = form.elements[i].name.substr('parent_'.length, form.elements[i].name.length);
                         b = window.parseInt(form.elements['order_' + bindex].value);
                         if ((b > num) && ((b < best) || (best === -1))) {
                             best = b;
@@ -486,7 +488,7 @@
                 if (elements[i].name === 'parent_' + index) { // Found our spot
                     var el = elements[i];
                     for (b = upwards ? (i - 1) : (i + 1); upwards ? (b > 0) : (b < elements.length); upwards ? b-- : b++) {
-                        if ((!isChild(elements, index, elements[b].name.substr(7))) && (elements[b].name.startsWith('parent_') && ((upwards) || (document.getElementById('branch_type_' + elements[b].name.substr(7)).selectedIndex === 0) || (!existsChild(elements, elements[b].name.substr(7)))))) {
+                        if ((!isChild(elements, index, elements[b].name.substr('parent_'.length))) && (elements[b].name.startsWith('parent_') && ((upwards) || (document.getElementById('branch_type_' + elements[b].name.substr('parent_'.length)).selectedIndex === 0) || (!existsChild(elements, elements[b].name.substr('parent_'.length)))))) {
                             var target = elements[b];
                             var main = el.parentNode.parentNode;
                             var place = target.parentNode.parentNode;
@@ -510,7 +512,7 @@
 
             function isChild(elements, possibleParent, possibleChild) {
                 for (var i = 0; i < elements.length; i++) {
-                    if ((elements[i].name.substr(7) == possibleChild) && (elements[i].name.substr(0, 7) == 'parent_')) {
+                    if ((elements[i].name.substr('parent_'.length) == possibleChild) && (elements[i].name.substr(0, 'parent_'.length) == 'parent_')) {
                         if (elements[i].value == possibleParent) {
                             return true;
                         }
@@ -589,8 +591,9 @@
                 $cms.ui.confirm(
                     '{!menus:CONFIRM_DELETE_LINK;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
                     function (result) {
-                        if (result)
+                        if (result) {
                             deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
+                        }
                     }
                 );
             }

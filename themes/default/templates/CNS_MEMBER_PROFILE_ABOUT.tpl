@@ -110,8 +110,8 @@
 			<h2>{!ABOUT}</h2>
 
 			<div class="wide_table_wrap">
-				<table class="map_table wide_table cns_profile_fields cns_profile_about_section">
-					{+START,IF,{$NOT,{$MOBILE}}}
+				<table class="map_table wide_table cns_profile_fields cns_profile_about_section responsive_blocked_table">
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="cns_profile_about_field_name_column" />
 							<col class="cns_profile_about_field_value_column" />
@@ -174,8 +174,8 @@
 					<h2>{_loop_key*}</h2>
 
 					<div class="wide_table_wrap">
-						<table class="map_table wide_table cns_profile_fields cns_profile_about_section">
-							{+START,IF,{$NOT,{$MOBILE}}}
+						<table class="map_table wide_table cns_profile_fields cns_profile_about_section responsive_blocked_table">
+							{+START,IF,{$DESKTOP}}
 								<colgroup>
 									<col class="cns_profile_about_field_name_column" />
 									<col class="cns_profile_about_field_value_column" />
@@ -227,8 +227,8 @@
 			<meta class="fn given-name" itemprop="name" content="{$DISPLAYED_USERNAME*,{USERNAME}}" />
 
 			<div class="wide_table_wrap">
-				<table class="map_table wide_table cns_profile_details cns_profile_about_section">
-					{+START,IF,{$NOT,{$MOBILE}}}
+				<table class="map_table wide_table cns_profile_details cns_profile_about_section responsive_blocked_table">
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="cns_profile_about_field_name_column" />
 							<col class="cns_profile_about_field_value_column" />
@@ -323,8 +323,8 @@
 				<h2>{!TRACKING}</h2>
 
 				<div class="wide_table_wrap">
-					<table class="map_table wide_table cns_profile_tracking cns_profile_about_section">
-						{+START,IF,{$NOT,{$MOBILE}}}
+					<table class="map_table wide_table cns_profile_tracking cns_profile_about_section responsive_blocked_table">
+						{+START,IF,{$DESKTOP}}
 							<colgroup>
 								<col class="cns_profile_about_field_name_column" />
 								<col class="cns_profile_about_field_value_column" />

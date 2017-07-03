@@ -237,7 +237,14 @@ class Module_admin_notifications
             );
         }
 
-        $interface = do_template('NOTIFICATIONS_MANAGE', array('_GUID' => '55dc192d339b570b060d61039c43b96d', 'SHOW_PRIVILEGES' => true, 'COLOR' => $color, 'NOTIFICATION_TYPES_TITLES' => $notification_types_titles, 'NOTIFICATION_SECTIONS' => $notification_sections));
+        $interface = do_template('NOTIFICATIONS_MANAGE', array(
+            '_GUID' => '55dc192d339b570b060d61039c43b96d',
+            'SHOW_PRIVILEGES' => true,
+            'COLOR' => $color,
+            'NOTIFICATION_TYPES_TITLES' => $notification_types_titles,
+            'NOTIFICATION_SECTIONS' => $notification_sections,
+            'ADVANCED_COLUMN' => false,
+        ));
 
         return do_template('NOTIFICATIONS_MANAGE_SCREEN', array(
             '_GUID' => '4f6af291a40c519377879555e24c2c81',

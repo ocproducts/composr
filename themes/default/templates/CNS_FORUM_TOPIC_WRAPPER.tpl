@@ -1,40 +1,40 @@
 <div data-view="CnsForumTopicWrapper">
 	<div class="wide_table_wrap"><table class="columned_table wide_table cns_topic_list">
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
-					<col class="cns_forum_topic_wrapper_column_column1" />
+					<col class="cns_forum_topic_wrapper_column_column1 column_desktop" />
 				{+END}
 				<col class="cns_forum_topic_wrapper_column_column2" />
-				<col class="cns_forum_topic_wrapper_column_column3" />
-				<col class="cns_forum_topic_wrapper_column_column4" />
-				<col class="cns_forum_topic_wrapper_column_column5" />
+				<col class="cns_forum_topic_wrapper_column_column3 column_desktop" />
+				<col class="cns_forum_topic_wrapper_column_column4 column_desktop" />
+				<col class="cns_forum_topic_wrapper_column_column5 column_desktop" />
 				{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
 					<col class="cns_forum_topic_wrapper_column_column6{$?,{$MATCH_KEY_MATCH,_WILD:members},_shorter}" />
 				{+END}
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
-					<col class="cns_forum_topic_wrapper_column_column7" />
+					<col class="cns_forum_topic_wrapper_column_column7 column_desktop" />
 				{+END}{+END}
 			</colgroup>
 		{+END}
 
 		<thead>
 			<tr>
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
-						<th class="cns_forum_box_left"></th>
+						<th class="cns_forum_box_left column_desktop"></th>
 					{+END}
 				{+END}
 				<th>{!TITLE}</th>
-				<th>{!STARTER}{STARTER_TITLE*}</th>
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<th>{!COUNT_POSTS}</th>
+				{+START,IF,{$DESKTOP}}
+					<th class="column_desktop">{!STARTER}{STARTER_TITLE*}</th>
+					<th class="column_desktop">{!COUNT_POSTS}</th>
 					{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
-						<th>{!COUNT_VIEWS}</th>
+						<th class="cell_desktop">{!COUNT_VIEWS}</th>
 					{+END}
 				{+END}
 				<th{+START,IF_EMPTY,{MODERATOR_ACTIONS}} class="cns_forum_box_right"{+END}>{!LAST_POST}</th>
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
 						<th class="cns_forum_box_right">
 							<a href="#!" class="js-click-mark-all-topics"><img src="{$IMG*,icons/14x14/cns_topic_modifiers/unvalidated}" srcset="{$IMG*,icons/28x28/cns_topic_modifiers/unvalidated} 2x" alt="{!TOGGLE_SELECTION}" title="{!TOGGLE_SELECTION}" /></a>
@@ -48,23 +48,23 @@
 			{TOPICS}
 
 			<tr class="cns_table_footer">
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{+START,IF,{$CONFIG_OPTION,is_on_topic_emoticons}}
-						<td class="cns_column1 cns_forum_box_bleft"></td>
+						<td class="cns_column1 cns_forum_box_bleft cell_desktop"></td>
 					{+END}
 				{+END}
 				<td class="cns_column1{+START,IF,{$MOBILE}} cns_forum_box_bleft{+END}"></td>
 				<td class="cns_column1"></td>
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<td class="cns_column1"></td>
+				{+START,IF,{$DESKTOP}}
+					<td class="cns_column1 cell_desktop"></td>
 					{+START,IF,{$OR,{$EQ,{$LANG},EN},{$LT,{$LENGTH,{!COUNT_POSTS}{!COUNT_VIEWS}},12}}}
-						<td class="cns_column1"></td>
+						<td class="cns_column1 cell_desktop"></td>
 					{+END}
 				{+END}
 				<td class="cns_column1{+START,IF,{$OR,{$MOBILE},{$IS_EMPTY,{MODERATOR_ACTIONS}}}} cns_forum_box_bright{+END}"></td>
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}{+START,IF,{$NOT,{$_GET,overlay}}}
-						<td class="cns_column1 cns_forum_box_bright"></td>
+						<td class="cns_column1 cns_forum_box_bright cell_desktop"></td>
 					{+END}{+END}
 				{+END}
 			</tr>
@@ -79,8 +79,8 @@
 
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
 	{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
-		{+START,IF,{$NOT,{$MOBILE}}}
-			<div class="box cns_topic_actions"><div class="box_inner">
+		{+START,IF,{$DESKTOP}}
+			<div class="box cns_topic_actions block_desktop"><div class="box_inner">
 				<span class="field_name">
 					<label for="fma_type">{!TOPIC_ACTIONS}: </label>
 				</span>

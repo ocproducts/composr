@@ -4478,7 +4478,7 @@
                         } catch (ignore) {}
 
                         return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
-                    }; // Needed for Opera
+                    }; // LEGACY Needed for Opera
                 }
             }
         }
@@ -5851,7 +5851,7 @@
                 } else {
                     tooltipEl.style.maxWidth = width;
                 }
-                tooltipEl.style.width = 'auto'; // Needed for Opera, else it uses maxWidth for width too
+                tooltipEl.style.width = 'auto'; // LEGACY Needed for Opera, else it uses maxWidth for width too
             }
             if (height && (height !== 'auto')) {
                 tooltipEl.style.maxHeight = height;
@@ -7093,9 +7093,7 @@
                         'class': 'wide_field',
                         'value': (this.defaultValue === null) ? '' : this.defaultValue
                     });
-                    var inputWrap = this.element('div', {
-                        'class': 'constrain_field'
-                    });
+                    var inputWrap = this.element('div', {});
                     inputWrap.appendChild(this.input);
                     container.appendChild(inputWrap);
 
@@ -7935,42 +7933,6 @@
 
         window.page_loaded = true;
 
-        var view = this;
-        /* Tidying up after the page is rendered */
-        window.$cmsLoad.push(function () {
-            // When images etc have loaded
-            // Move the help panel if needed
-            if ($cms.$CONFIG_OPTION('fixed_width') || ($cms.dom.getWindowWidth() > 990)) {
-                return;
-            }
-
-            var panelRight = view.$('#panel_right');
-            if (!panelRight) {
-                return;
-            }
-
-            var helperPanel = panelRight.querySelector('.global_helper_panel');
-            if (!helperPanel) {
-                return;
-            }
-
-            var middle = panelRight.parentNode.querySelector('.global_middle');
-            if (!middle) {
-                return;
-            }
-
-            middle.style.marginRight = '0';
-            var boxes = panelRight.querySelectorAll('.standardbox_curved'), i;
-            for (i = 0; i < boxes.length; i++) {
-                boxes[i].style.width = 'auto';
-            }
-            panelRight.classList.add('horiz_helper_panel');
-            panelRight.parentNode.removeChild(panelRight);
-            middle.parentNode.appendChild(panelRight);
-            $cms.dom.$('#helper_panel_toggle').style.display = 'none';
-            helperPanel.style.minHeight = '0';
-        });
-
         if ($cms.$IS_STAFF()) {
             this.loadStuffStaff()
         }
@@ -8069,7 +8031,7 @@
         },
 
         stuckNavs: function () {
-            // Pinning to top if scroll out
+            // Pinning to top if scroll out (LEGACY: CSS is going to have a better solution to this soon)
             var stuckNavs = $cms.dom.$$('.stuck_nav');
 
             if (!stuckNavs.length) {
@@ -9312,6 +9274,10 @@
             el: null
         }, options);
 
+        if (width.match(/^\d+$/)) { // Restrain width to viewport width
+            width = Math.min(window.parseInt(width), $cms.dom.getWindowWidth() - 60) + '';
+        }
+
         var el = options.el,
             url = (el.href === undefined) ? el.action : el.href,
             urlStripped = url.replace(/#.*/, ''),
@@ -9738,3 +9704,49 @@
         }
     }
 }());
+
+/*
+TODO, Salman, this needs integrating (came from feature__hybrid_responsive branch and facilitates responsive tables)
+
+--- 70,80 ----
+  	{
+  		new_html__initialise(document.images[i]);
+  	}
++ 	var tables=document.getElementsByTagName('table');
++ 	for (i=0;i<tables.length;i++)
++ 	{
++ 		new_html__initialise(tables[i]);
++ 	}
+  
+  	// Column height balancing
+  	var cols=document.getElementsByClassName('col_balance_height');
+--- 269,295 ----
+  {
+  	switch (element.nodeName.toLowerCase())
+  	{
++ 		case 'table':
++ 			// Responsive table prep work
++ 			if (element.className.indexOf('responsive_table')!=-1)
++ 			{
++ 				var trs=element.getElementsByTagName('tr');
++ 				var ths_first_row=trs[0].cells;
++ 				for (var i=0;i<trs.length;i++)
++ 				{
++ 					var tds=trs[i].cells;
++ 					for (var j=0;j<tds.length;j++)
++ 					{
++ 						if (tds[j].className.indexOf('responsive_table_no_prefix')==-1)
++ 						{
++ 							var data=(typeof ths_first_row[j]=='undefined')?'':ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,'');
++ 							if (data!='') tds[j].setAttribute('data-th',data);
++ 						}
++ 					}
++ 				}
++ 			}
++ 			break;
++ 
+  		case 'img':
+  			/* GD text maybe can do with transforms */
+  			if (element.className=='gd_text')
+
+*/

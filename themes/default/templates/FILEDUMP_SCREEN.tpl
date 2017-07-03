@@ -8,7 +8,7 @@
 <div data-tpl="filedumpScreen" data-tpl-params="{+START,PARAMS_JSON,file_link}{_*}{+END}">
 	{TITLE}
 
-	<div>
+	<div class="filedump_screen">
 		<div class="float_surrounder"><div class="tabs" role="tablist">
 			<a aria-controls="g_thumbnails" role="tab" href="#!" id="t_thumbnails" class="tab tab_active tab_first js-click-select-tab-g" data-tp-tab="thumbnails"><span>{!VIEW_THUMBNAILS}</span></a>
 

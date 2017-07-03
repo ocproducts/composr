@@ -1,6 +1,6 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
-<div class="constrain_field" data-tpl="formScreenInputPassword" data-tpl-params="{+START,PARAMS_JSON,VALUE,NAME}{_*}{+END}">
+<div data-tpl="formScreenInputPassword" data-tpl-params="{+START,PARAMS_JSON,VALUE,NAME}{_*}{+END}">
 	{+START,IF,{$MATCH_KEY_MATCH,:join}}
 		<div style="display: none" id="password_strength_{NAME*}" class="password_strength js-mouseover-activate-password-strength-tooltip">
 			<div class="password_strength_inner"></div>

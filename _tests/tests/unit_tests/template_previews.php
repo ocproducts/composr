@@ -158,7 +158,6 @@ class template_previews_test_set extends cms_test_case
                     if (in_array($template_2, array(
                         'templates/NEWSLETTER_PREVIEW.tpl',
                         'templates/GLOBAL_HELPER_PANEL.tpl',
-                        'templates/GLOBAL_HTML_WRAP_mobile.tpl',
                         'templates/HTML_HEAD.tpl',
                         'templates/MEMBER_TOOLTIP.tpl',
                         'templates/FORM_STANDARD_END.tpl',

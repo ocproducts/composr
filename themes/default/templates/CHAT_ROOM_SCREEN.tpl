@@ -10,55 +10,69 @@
 
 	{CHAT_SOUND}
 
-	<div class="chat_posting_area">
-		<div class="float_surrounder">
-			<div class="left">
-				<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
+	{+START,SET,posting_box}
+		<div class="chat_posting_area">
+			<div class="float_surrounder">
+				<div class="left">
+					<form title="{!MESSAGE}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
+						{$INSERT_SPAMMER_BLACKHOLE}
 
-					<div style="display: inline;">
-						<p class="accessibility_hidden"><label for="post">{!MESSAGE}</label></p>
-						<textarea style="font-family: '{FONT_NAME_DEFAULT;*}'" class="input_text_required js-keypress-enter-post-chat" data-textarea-auto-height="" id="post" name="message" cols="{$?,{$MOBILE},37,39}" rows="1"></textarea>
-						<input type="hidden" name="font" id="font" value="{FONT_NAME_DEFAULT*}" />
-						<input type="hidden" name="colour" id="colour" value="{TEXT_COLOUR_DEFAULT*}" />
-					</div>
-				</form>
-			</div>
-			<div class="left">
-				<form title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
-					{$INSERT_SPAMMER_BLACKHOLE}
+						<div style="display: inline;">
+							<p class="accessibility_hidden"><label for="post">{!MESSAGE}</label></p>
+							<textarea style="font-family: '{FONT_NAME_DEFAULT;*}'" class="input_text_required js-keypress-enter-post-chat" data-textarea-auto-height="" id="post" name="message" cols="37" rows="1"></textarea>
+							<input type="hidden" name="font" id="font" value="{FONT_NAME_DEFAULT*}" />
+							<input type="hidden" name="colour" id="colour" value="{TEXT_COLOUR_DEFAULT*}" />
+						</div>
+					</form>
+				</div>
 
-					<input type="button" class="button_micro buttons__send js-click-post-chat-message" value="{SUBMIT_VALUE*}" />
-				</form>
-				{+START,IF,{$NOT,{$MOBILE}}}
-					{MICRO_BUTTONS}
-					{+START,IF,{$CNS}}
-						<a rel="nofollow" class="horiz_field_sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
+				<div class="right">
+					<a class="toggleable_tray_button js-btn-toggle-chat-comcode-panel" href="#!"><img id="e_chat_comcode_panel" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" /></a>
+				</div>
+
+				<div class="left">
+					<form title="{SUBMIT_VALUE*}" action="{MESSAGES_PHP*}?action=post&amp;room_id={CHATROOM_ID*}" method="post" class="inline" autocomplete="off">
+						{$INSERT_SPAMMER_BLACKHOLE}
+
+						<input type="button" class="button_micro buttons__send js-click-post-chat-message" value="{SUBMIT_VALUE*}" />
+					</form>
+					{+START,IF,{$DESKTOP}}
+						<span class="inline_desktop">
+							{MICRO_BUTTONS}
+							{+START,IF,{$CNS}}
+								<a rel="nofollow" class="horiz_field_sep js-click-open-emoticon-chooser-window" tabindex="6" href="#!" title="{!EMOTICONS_POPUP}"><img alt="" src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" /></a>
+							{+END}
+						</span>
 					{+END}
+				</div>
+			</div>
+
+			<div style="display: none" id="chat_comcode_panel">
+				{BUTTONS}
+
+				{+START,IF_NON_EMPTY,{COMCODE_HELP}{CHATCODE_HELP}}
+					<ul class="horizontal_links horiz_field_sep associated_links_block_group">
+						{+START,IF_NON_EMPTY,{COMCODE_HELP}}
+							<li><a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="" /></a></li>
+						{+END}
+						{+START,IF_NON_EMPTY,{CHATCODE_HELP}}
+							<li><a data-open-as-overlay="1" class="link_exempt" title="{$STRIP_TAGS,{!CHATCODE_HELP}} {!LINK_NEW_WINDOW}" target="_blank" href="{CHATCODE_HELP*}">{!CHATCODE_HELP}</a></li>
+						{+END}
+					</ul>
 				{+END}
 			</div>
-			<div class="right">
-				<a class="toggleable_tray_button js-btn-toggle-chat-comcode-panel" href="#!"><img id="e_chat_comcode_panel" src="{$IMG*,1x/trays/expand}" srcset="{$IMG*,2x/trays/expand} 2x" alt="{!CHAT_TOGGLE_COMCODE_BOX}" title="{!CHAT_TOGGLE_COMCODE_BOX}" /></a>
-			</div>
 		</div>
+	{+END}
 
-		<div style="display: none" id="chat_comcode_panel">
-			{BUTTONS}
-
-			{+START,IF_NON_EMPTY,{COMCODE_HELP}{CHATCODE_HELP}}
-				<ul class="horizontal_links horiz_field_sep associated_links_block_group">
-					{+START,IF_NON_EMPTY,{COMCODE_HELP}}
-						<li><a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_HELP*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="" /></a></li>
-					{+END}
-					{+START,IF_NON_EMPTY,{CHATCODE_HELP}}
-						<li><a data-open-as-overlay="1" class="link_exempt" title="{$STRIP_TAGS,{!CHATCODE_HELP}} {!LINK_NEW_WINDOW}" target="_blank" href="{CHATCODE_HELP*}">{!CHATCODE_HELP}</a></li>
-					{+END}
-				</ul>
-			{+END}
-		</div>
-	</div>
+	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}
+		{$GET,posting_box}
+	{+END}
 
 	<div class="messages_window"><div role="marquee" class="messages_window_full_chat" id="messages_window"></div></div>
+
+	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+		{$GET,posting_box}
+	{+END}
 
 	<div class="box box___chat_screen_chatters"><p class="box_inner">
 		{!USERS_IN_CHATROOM} <span id="chat_members_update">{CHATTERS}</span>

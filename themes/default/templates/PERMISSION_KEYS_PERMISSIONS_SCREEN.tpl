@@ -11,7 +11,7 @@
 				{!PAGE_MATCH_KEY_ACCESS_TEXT}
 			</p>
 
-			<div class="wide_table_wrap"><table class="columned_table wide_table results_table privileges">
+			<div class="wide_table_wrap"><table class="columned_table wide_table results_table privileges responsive_table">
 				<colgroup>
 					<col class="match_key_name_column" />
 					{COLS}
@@ -20,7 +20,7 @@
 
 				<thead>
 				<tr>
-					<th></th>
+					<th class="permission_header_cell">{!MATCH_KEY}</th>
 					{HEADER_CELLS}
 				</tr>
 				</thead>
@@ -36,7 +36,7 @@
 				{!PAGE_MATCH_KEY_MESSAGES_TEXT}
 			</p>
 
-			<div class="wide_table_wrap"><table class="columned_table wide_table results_table">
+			<div class="wide_table_wrap"><table class="columned_table wide_table results_table responsive_table">
 				<colgroup>
 					<col class="match_key_name_column" />
 					<col class="permission_match_key_message_column" />

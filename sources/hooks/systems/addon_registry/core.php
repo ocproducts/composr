@@ -2028,17 +2028,15 @@ class Hook_addon_registry_core
     {
         require_code('comcode_renderer');
 
-        $emoticons = placeholder_emoticons();
+        $_emoticons = placeholder_emoticons();
+        $emoticons = array();
 
-        $rows = array();
         global $EMOTICON_LEVELS;
-        foreach ($emoticons as $code => $imgcode) {
+        foreach ($_emoticons as $code => $imgcode) {
             if (($EMOTICON_LEVELS === null) || ($EMOTICON_LEVELS[$code] < 3)) {
-                $rows[] = array(
-                    'COLUMNS' => array(array(
-                       'CODE' => $code,
-                       'TPL' => do_emoticon($imgcode),
-                   )),
+                $emoticons[] = array(
+                    'CODE' => $code,
+                    'TPL' => do_emoticon($imgcode),
                 );
             }
         }
@@ -2046,7 +2044,7 @@ class Hook_addon_registry_core
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_EMOTICON_CODES', array(
                 'BLOCK_ID' => lorem_word(),
-                'ROWS' => $rows,
+                'EMOTICONS' => $emoticons,
                 'NUM_COLUMNS' => '1',
             )), null, '', true)
         );

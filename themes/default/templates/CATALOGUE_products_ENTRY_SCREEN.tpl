@@ -41,7 +41,7 @@
 			{+START,IF_NON_EMPTY,{$TRIM,{FIELDS}}}
 				<div class="wide_table_wrap">
 					<table id="product-attribute-specs-table" class="map_table catalogue_fields_table wide_table results_table">
-						{+START,IF,{$NOT,{$MOBILE}}}
+						{+START,IF,{$DESKTOP}}
 							<colgroup>
 								<col class="catalogue_fieldmap_field_name_column" />
 								<col class="catalogue_fieldmap_field_value_column" />
@@ -91,5 +91,5 @@
 		</div>
 	</div>
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
+	{+START,IF,{$THEME_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 </div>

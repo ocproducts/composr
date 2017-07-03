@@ -804,7 +804,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
     if ($cms.form.isWysiwygField(element)) {
         var editor = window.wysiwyg_editors[element.id];
 
-        editor.focus(); // Needed on some browsers, but on Opera will defocus our selection
+        editor.focus();
         var selectedHtml = getSelectedHtml(editor);
 
         if (selectedHtml == '') {

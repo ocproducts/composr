@@ -429,6 +429,9 @@ class Module_admin_config
                 } else {
                     $explanation = do_lang_tempcode($option['explanation'], isset($option['explanation_param_a']) ? $option['explanation_param_a'] : null, isset($option['explanation_param_b']) ? $option['explanation_param_b'] : null, isset($option['explanation_param_c']) ? $option['explanation_param_c'] : null);
                 }
+                if (!empty($option['theme_override'])) {
+                    $explanation = do_lang_tempcode('IS_ALSO_THEME_SETTING', $explanation);
+                }
                 $default = get_default_option($name);
 
                 if (!empty($option['maintenance_code'])) {

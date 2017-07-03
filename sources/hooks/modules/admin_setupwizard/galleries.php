@@ -40,18 +40,20 @@ class Hook_sw_galleries
      * Run function for features in the setup wizard.
      *
      * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return Tempcode An input field.
+     * @return array A pair: Input fields, Hidden fields.
      */
     public function get_fields($field_defaults)
     {
         if (!addon_installed('galleries') || post_param_integer('addon_galleries', null) === 0) {
-            return new Tempcode();
+            return array(new Tempcode(), new Tempcode());
         }
 
         $field_defaults += $this->get_current_settings(); // $field_defaults will take precedence, due to how "+" operator works in PHP
 
         require_lang('galleries');
-        return form_input_tick(do_lang_tempcode('KEEP_PERSONAL_GALLERIES'), do_lang_tempcode('DESCRIPTION_KEEP_PERSONAL_GALLERIES'), 'keep_personal_galleries', $field_defaults['keep_personal_galleries'] == '1');
+        $fields = form_input_tick(do_lang_tempcode('KEEP_PERSONAL_GALLERIES'), do_lang_tempcode('DESCRIPTION_KEEP_PERSONAL_GALLERIES'), 'keep_personal_galleries', $field_defaults['keep_personal_galleries'] == '1');
+
+        return array($fields, new Tempcode());
     }
 
     /**

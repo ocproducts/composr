@@ -5,12 +5,6 @@
 
 <tr class="field_input">
 	<th id="form_table_field_name__{$GET,randomised_id}" class="form_table_field_name{+START,IF,{REQUIRED}} required{+END}">
-		{+START,IF,{$MOBILE}}
-			{COMCODE}
-
-			{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
-		{+END}
-
 		<span class="form_field_name field_name">
 			{$SET,show_label,{$AND,{$IS_NON_EMPTY,{NAME}},{$NOT,{SKIP_LABEL}}}}
 			{+START,IF,{$GET,show_label}}
@@ -19,7 +13,7 @@
 				<input type="hidden" name="label_for__{NAME*}" value="{$STRIP_HTML,{PRETTY_NAME*}}" />
 			{+END}
 			{+START,IF,{$NOT,{$GET,show_label}}}
-				{PRETTY_NAME*}
+				<span class="faux_label">{PRETTY_NAME*}</span>
 			{+END}
 		</span>
 
@@ -32,31 +26,21 @@
 		{+END}{+END}
 	</th>
 
-	{+START,IF,{$MOBILE}}
-		</tr>
-
-		<tr class="field_input">
-	{+END}
-
 	<td id="form_table_field_input__{$GET,randomised_id}" class="form_table_field_input{+START,IF,{REQUIRED}} required{+END}" data-tpl="formScreenField_input" data-tpl-params="{+START,PARAMS_JSON,randomised_id}{_*}{+END}">
-		{+START,IF,{$NOT,{$MOBILE}}}{+START,IF,{$NOT,{$_GET,overlay}}}
+		{+START,IF,{$NOT,{$_GET,overlay}}}
 			{COMCODE}
-		{+END}{+END}
+		{+END}
 
 		{$SET,input,{INPUT}}
 
 		{+START,IF,{$GET,early_description}}
-			{+START,IF,{$NOT,{$MOBILE}}}
-				{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}RIGHT=1{+END}
-			{+END}
+			{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}RIGHT=1{+END}
 		{+END}
 
 		{$GET,input}
 
 		{+START,IF,{$NOT,{$GET,early_description}}}
-			{+START,IF,{$NOT,{$MOBILE}}}
-				{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
-			{+END}
+			{+START,INCLUDE,FORM_SCREEN_FIELD_DESCRIPTION}{+END}
 		{+END}
 		{$SET,early_description,0}
 

@@ -27,11 +27,11 @@
 		<meta name="viewport" content="width=280, initial-scale=1, user-scalable=yes" />
 	{+END}
 {+END}
-{+START,IF,{$NOT,{$MOBILE}}}
-	{+START,IF,{$CONFIG_OPTION,fixed_width}}
+{+START,IF,{$DESKTOP}}
+	{+START,IF,{$THEME_OPTION,fixed_width}}
 		<meta name="viewport" content="width=982, user-scalable=yes" />
 	{+END}
-	{+START,IF,{$NOT,{$CONFIG_OPTION,fixed_width}}}
+	{+START,IF,{$NOT,{$THEME_OPTION,fixed_width}}}
 		<meta name="viewport" content="width=device-width, user-scalable=yes" />
 	{+END}
 {+END}

@@ -33,10 +33,14 @@
 .purchase_field_name_column {
 	width: 16em;
 }
-
 .purchase_field_input_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.purchase_field_name_column, .purchase_field_input_column {
+		width: auto;
+	}
+/*{+END}*/
 
 .local_payment_merchant_details_wrap {
 	border: 1px dashed {$GET,point_of_interest_border};

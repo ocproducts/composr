@@ -53,6 +53,8 @@ class Module_admin_setupwizard
     {
         return array(
             'browse' => array('SETUPWIZARD', 'menu/adminzone/setup/setupwizard'),
+            'install_test_content' => array('INSTALL_TEST_CONTENT', 'menu/_generic_admin/add_one_category'),
+            'uninstall_test_content' => array('UNINSTALL_TEST_CONTENT', 'menu/_generic_admin/delete'),
         );
     }
 
@@ -85,7 +87,14 @@ class Module_admin_setupwizard
             $step = min(10, intval(substr($type, 4)));
         }
 
-        $this->title = get_screen_title('SETUPWIZARD');
+        if ($type == 'install_test_content') {
+            $this->title = get_screen_title('INSTALL_TEST_CONTENT');
+        }
+        elseif ($type == 'uninstall_test_content') {
+            $this->title = get_screen_title('UNINSTALL_TEST_CONTENT');
+        } else {
+            $this->title = get_screen_title('SETUPWIZARD');
+        }
 
         return null;
     }
@@ -104,37 +113,43 @@ class Module_admin_setupwizard
         $type = get_param_string('type', 'browse');
 
         if ($type == 'browse') {
-            return $this->step1();
+            return $this->step1(); // welcome
         }
         if ($type == 'step2') {
-            return $this->step2();
+            return $this->step2(); // information
         }
         if ($type == 'step3') {
-            return $this->step3();
+            return $this->step3(); // config
         }
         if ($type == 'step4') {
-            return $this->step4();
+            return $this->step4(); // addons
         }
         if ($type == 'step5') {
-            return $this->step5();
+            return $this->step5(); // zone/feature configuration
         }
         if ($type == 'step6') {
-            return $this->step6();
+            return $this->step6(); // block choice
         }
         if ($type == 'step7') {
-            return $this->step7();
+            return $this->step7(); // rules
         }
         if ($type == 'step8') {
-            return $this->step8();
+            return $this->step8(); // Theme Wizard
         }
         if ($type == 'step9') {
-            return $this->step9();
+            return $this->step9(); // close-status
         }
         if ($type == 'step10') {
-            return $this->step10();
+            return $this->step10(); // actualisation (redirects to step11 automatically)
         }
         if ($type == 'step11') {
-            return $this->step11();
+            return $this->step11(); // do-next
+        }
+        if ($type == 'install_test_content') {
+            return $this->install_test_content();
+        }
+        if ($type == 'uninstall_test_content') {
+            return $this->uninstall_test_content();
         }
 
         return new Tempcode();
@@ -174,12 +189,12 @@ class Module_admin_setupwizard
         $text->attach(paragraph(do_lang_tempcode($done_once ? 'SETUPWIZARD_1_DESCRIBE_ALT' : 'SETUPWIZARD_1_DESCRIBE', escape_html($addons_url->evaluate()))));
         $rescue_url = build_url(array('page' => '', 'keep_safe_mode' => '1'), '');
         $text->attach(paragraph(do_lang_tempcode('SETUPWIZARD_SAFE_MODE', escape_html($rescue_url->evaluate()), escape_html(find_theme_image('icons/24x24/tool_buttons/software_chat')), escape_html(find_theme_image('icons/48x48/tool_buttons/software_chat')))));
-        $submit_name = do_lang_tempcode('PROCEED');
+        $submit_name = do_lang_tempcode('START');
 
         $fields = new Tempcode();
 
         $inner = do_template('FORM', array('_GUID' => '71316d91703e3549301f57182405c997', 'SKIP_WEBSTANDARDS' => true, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => ''));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '38a02343903542f8bbe1fb49a7b21eb7', 'TITLE' => $this->title, 'STEP' => '1', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '38a02343903542f8bbe1fb49a7b21eb7', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(1)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
     /**
@@ -191,9 +206,54 @@ class Module_admin_setupwizard
     {
         $post_url = build_url(array('page' => '_SELF', 'type' => 'step3'), '_SELF');
         $submit_name = do_lang_tempcode('PROCEED');
+        $hidden = static_evaluate_tempcode(build_keep_post_fields());
 
-        $inner = do_template('SETUPWIZARD_2', array('_GUID' => '2042f3786d10c7c5be5d38ea28942b47', 'SKIP_WEBSTANDARDS' => true, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'e04bc40dfc4047b62b586711d15ad875', 'TITLE' => $this->title, 'STEP' => '2', 'INNER' => $inner));
+        // Choice of install profile...
+
+        $installprofiles = new Tempcode();
+        $installprofiles->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
+
+        // Install-profiles of installed themes
+        require_code('themes2');
+        $themes = find_all_themes();
+        foreach ($themes as $theme => $theme_title) {
+            $hook = get_theme_option('setupwizard__install_profile', null, $theme);
+            if ($hook != '') {
+                $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
+                if (!file_exists($path)) {
+                    $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
+                }
+                if (file_exists($path)) {
+                    $_hook_bits = extract_module_functions($path, array('info'));
+                    $installprofile = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
+                    $installprofiles->attach(form_input_list_entry($hook . '__' . $theme, get_param_string('id', '') == $hook . '__' . $theme, do_lang('INSTALLPROFILE_WITH_THEME', $installprofile['title'], $theme_title)));
+                }
+            }
+        }
+
+        // Pure install profiles
+        $hooks = find_all_hooks('modules', 'admin_setupwizard_installprofiles');
+        require_code('zones2');
+        foreach (array_keys($hooks) as $hook) {
+            $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
+            if (!file_exists($path)) {
+                $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
+            }
+            $_hook_bits = extract_module_functions($path, array('info'));
+            $installprofile = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
+            $installprofiles->attach(form_input_list_entry($hook, get_param_string('id', '') == $hook, $installprofile['title']));
+        }
+
+        $fields = new Tempcode();
+        $fields->attach(form_input_huge_list(do_lang_tempcode('INSTALLPROFILE'), do_lang_tempcode('DESCRIPTION_INSTALLPROFILE'), 'installprofile', $installprofiles, null, true, false));
+
+        // --
+
+        $text = do_template('SETUPWIZARD_2', array('_GUID' => '2042f3786d10c7c5be5d38ea28942b47', 'SKIP_WEBSTANDARDS' => true, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+
+        $inner = do_template('FORM', array('SKIP_WEBSTANDARDS' => true, 'SKIP_REQUIRED' => true, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
+
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'e04bc40dfc4047b62b586711d15ad875', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(2)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
     /**
@@ -208,6 +268,17 @@ class Module_admin_setupwizard
         $submit_name = do_lang_tempcode('PROCEED');
 
         $fields = new Tempcode();
+        $hidden = static_evaluate_tempcode(build_keep_post_fields(array('installprofile')));
+
+        $installprofile = post_param_string('installprofile', '');
+        if (strpos($installprofile, '__') !== false) {
+            list($installprofile, $theme) = explode('__', $installprofile);
+            $hidden .= static_evaluate_tempcode(form_input_hidden('source_theme', $theme));
+        } else {
+            $hidden .= static_evaluate_tempcode(form_input_hidden('source_theme', 'default'));
+        }
+        $hidden .= static_evaluate_tempcode(form_input_hidden('installprofile', $installprofile));
+
         require_lang('zones');
 
         $site_name = get_option('site_name');
@@ -239,21 +310,6 @@ class Module_admin_setupwizard
             $keywords = do_lang('EXAMPLE_KEYWORDS');
         }
 
-        $installprofiles = new Tempcode();
-        $hooks = find_all_hooks('modules', 'admin_setupwizard_installprofiles');
-        $installprofiles->attach(form_input_list_entry('', true, do_lang_tempcode('NA_EM')));
-        require_code('zones2');
-        foreach (array_keys($hooks) as $hook) {
-            $path = get_file_base() . '/sources_custom/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
-            if (!file_exists($path)) {
-                $path = get_file_base() . '/sources/hooks/modules/admin_setupwizard_installprofiles/' . filter_naughty_harsh($hook) . '.php';
-            }
-            $_hook_bits = extract_module_functions($path, array('info'));
-            $installprofile = is_array($_hook_bits[0]) ? call_user_func_array($_hook_bits[0][0], $_hook_bits[0][1]) : @eval($_hook_bits[0]);
-            $installprofiles->attach(form_input_list_entry($hook, false, $installprofile['title']));
-        }
-        $fields->attach(form_input_list(do_lang_tempcode('INSTALLPROFILE'), do_lang_tempcode('DESCRIPTION_INSTALLPROFILE'), 'installprofile', $installprofiles, null, true, false));
-
         $fields->attach(form_input_line(do_lang_tempcode('SITE_NAME'), do_lang_tempcode('CONFIG_OPTION_site_name'), 'site_name', $site_name, true));
 
         $fields->attach(form_input_line(do_lang_tempcode('DESCRIPTION'), do_lang_tempcode('CONFIG_OPTION_description'), 'description', $description, false));
@@ -270,15 +326,23 @@ class Module_admin_setupwizard
 
         $fields->attach(form_input_line(do_lang_tempcode('GOOGLE_ANALYTICS'), do_lang_tempcode('CONFIG_OPTION_google_analytics'), 'google_analytics', $google_analytics, false));
 
-        $fields->attach(form_input_tick(do_lang_tempcode('FIXED_WIDTH'), do_lang_tempcode('CONFIG_OPTION_fixed_width'), 'fixed_width', get_option('fixed_width') == '1'));
-
-        $panel_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
-        if (file_exists($panel_path)) {
-            $include_cms_advert = strpos(file_get_contents($panel_path), 'logos/') !== false;
+        if (get_theme_option('setupwizard__lock_fixed_width_choice', null, post_param_string('source_theme', 'default')) == '1') {
+            $fields->attach(form_input_tick(do_lang_tempcode('FIXED_WIDTH'), do_lang_tempcode('CONFIG_OPTION_fixed_width'), 'fixed_width', get_option('fixed_width') == '1'));
         } else {
-            $include_cms_advert = false;
+            $hidden .= static_evaluate_tempcode(form_input_hidden('fixed_width', get_theme_option('fixed_width', null, post_param_string('source_theme', 'default'))));
         }
-        $fields->attach(form_input_tick(do_lang_tempcode('INCLUDE_CMS_ADVERT'), do_lang_tempcode('DESCRIPTION_INCLUDE_CMS_ADVERT'), 'include_cms_advert', $include_cms_advert));
+
+        if (get_theme_option('setupwizard__provide_cms_advert_choice', null, post_param_string('source_theme', 'default')) == '1') {
+            $panel_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/panel_left.txt';
+            if (file_exists($panel_path)) {
+                $include_cms_advert = strpos(file_get_contents($panel_path), 'logos/') !== false;
+            } else {
+                $include_cms_advert = false;
+            }
+            $fields->attach(form_input_tick(do_lang_tempcode('INCLUDE_CMS_ADVERT'), do_lang_tempcode('DESCRIPTION_INCLUDE_CMS_ADVERT'), 'include_cms_advert', $include_cms_advert));
+        } else {
+            $hidden .= static_evaluate_tempcode(form_input_hidden('include_cms_advert', '0'));
+        }
 
         switch (get_option('minimum_password_length')) {
             case '8':
@@ -299,7 +363,7 @@ class Module_admin_setupwizard
         $fields->attach(form_input_list(do_lang_tempcode('SECURITY_LEVEL'), do_lang_tempcode('DESCRIPTION_SECURITY_LEVEL'), 'security_level', $security_levels));
 
         $inner = do_template('FORM', array('_GUID' => '3126441524b51cba6a1e0de336c8a9d5', 'SKIP_WEBSTANDARDS' => true, 'SKIPPABLE' => 'skip_3', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => ''));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '6bdae2f0aa24b5dbe81fd0fc72e87feb', 'TITLE' => $this->title, 'STEP' => '3', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '6bdae2f0aa24b5dbe81fd0fc72e87feb', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(3)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
     /**
@@ -309,19 +373,19 @@ class Module_admin_setupwizard
      */
     public function step4()
     {
+        require_code('addons2');
+        require_lang('addons');
+
         $post_url = build_url(array('page' => '_SELF', 'type' => 'step5'), '_SELF');
         $text = do_lang_tempcode('SETUPWIZARD_4_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
-
-        require_code('addons2');
-        require_lang('addons');
+        $hidden = static_evaluate_tempcode(build_keep_post_fields());
 
         $addons_installed = find_installed_addons();
         $addons_not_installed = list_to_map('name', find_available_addons(false));
 
         $fields = '';
         $fields_advanced = '';
-        $hidden = static_evaluate_tempcode(build_keep_post_fields());
 
         $installprofile = post_param_string('installprofile', '');
         $addon_list_override_to_off_by_default = array();
@@ -482,9 +546,11 @@ class Module_admin_setupwizard
             }
         }
         sort_maps_by($all_addons, 'name');
+        $_lock_addons_on = get_theme_option('setupwizard__lock_addons_on', null, post_param_string('source_theme', 'default'));
+        $lock_addons_on = ($_lock_addons_on == '') ? array() : explode(',', $_lock_addons_on);
         require_code('addons');
         foreach ($all_addons as $addon_name => $row) {
-            $is_core = ($addon_name == 'core') || (substr($addon_name, 0, 5) == 'core_');
+            $is_core = ($addon_name == 'core') || (substr($addon_name, 0, 5) == 'core_') || (in_array($addon_name, $lock_addons_on));
             if ((!$is_core) && (substr($addon_name, -7) != '_shared') && ($addon_name != 'setupwizard')) {
                 $is_advanced_on_by_default = in_array($addon_name, $addon_list_advanced_on_by_default);
                 $is_advanced_off_by_default = in_array($addon_name, $addon_list_advanced_off_by_default);
@@ -516,11 +582,11 @@ class Module_admin_setupwizard
         $fields .= $fields_advanced;
 
         $inner = do_template('FORM', array('_GUID' => '0f361a3ac0e020ba71f3a7a900eca0e4', 'NO_SIZING' => true, 'SKIP_WEBSTANDARDS' => true, 'SKIPPABLE' => 'skip_4', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'ca91a76aa418d5c9ae956247ebc70652', 'TITLE' => $this->title, 'STEP' => '4', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'ca91a76aa418d5c9ae956247ebc70652', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(4)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
     /**
-     * UI for a setup wizard step (the zone/feature configuration).
+     * UI for a setup wizard step (zone/feature configuration).
      *
      * @return Tempcode The UI
      */
@@ -528,9 +594,10 @@ class Module_admin_setupwizard
     {
         require_lang('menus');
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'step6'), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => $this->has_block_step() ? 'step6' : 'step7'), '_SELF');
         $text = do_lang_tempcode('SETUPWIZARD_5_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
+        $hidden = static_evaluate_tempcode(build_keep_post_fields());
 
         $fields = '';
 
@@ -562,7 +629,8 @@ class Module_admin_setupwizard
                         continue;
                     }
                     if (method_exists($hook, 'get_fields')) {
-                        $hook_fields = $hook->get_fields($field_defaults);
+                        list($hook_fields, $hook_hidden) = $hook->get_fields($field_defaults);
+                        $hidden .= $hook_hidden->evaluate();
                         $fields .= static_evaluate_tempcode($hook_fields);
                     }
                 }
@@ -571,9 +639,12 @@ class Module_admin_setupwizard
         require_code('hooks/modules/admin_setupwizard/core'); // Core one explicitly goes last
         $hook = object_factory('Hook_sw_core', true);
         if (method_exists($hook, 'get_fields')) {
-            $hook_fields = $hook->get_fields($field_defaults);
+            list($hook_fields, $hook_hidden) = $hook->get_fields($field_defaults);
+            $hidden .= $hook_hidden->evaluate();
             $fields .= static_evaluate_tempcode($hook_fields);
         }
+
+        $fields .= static_evaluate_tempcode(form_input_tick(do_lang_tempcode('INSTALL_TEST_CONTENT'), do_lang_tempcode('DESCRIPTION_INSTALL_TEST_CONTENT'), 'install_test_content', true));
 
         require_code('setupwizard');
         require_javascript('setupwizard');
@@ -587,9 +658,9 @@ class Module_admin_setupwizard
             'TEXT' => $text,
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => $submit_name,
-            'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()),
+            'HIDDEN' => $hidden,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '8dfd885199d3d1416c044fad7a97d953', 'TITLE' => $this->title, 'STEP' => '5', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '8dfd885199d3d1416c044fad7a97d953', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(5)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
     /**
@@ -637,6 +708,8 @@ class Module_admin_setupwizard
         $submit_name = do_lang_tempcode('PROCEED');
 
         $fields = '';
+        $hidden = static_evaluate_tempcode(build_keep_post_fields());
+
         require_lang('blocks');
         require_lang('zones');
         require_code('zones2');
@@ -713,9 +786,9 @@ class Module_admin_setupwizard
             'PREVIEW' => true,
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => $submit_name,
-            'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()),
+            'HIDDEN' => $hidden,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '7c2cbc9577974b210e196b92158b4bb8', 'TITLE' => $this->title, 'STEP' => '6', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '7c2cbc9577974b210e196b92158b4bb8', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(6)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
     /**
@@ -724,7 +797,7 @@ class Module_admin_setupwizard
      * @param  ID_TEXT $code A code relating to which rules set to get
      * @return string The Comcode
      */
-    public function get_rules_file($code)
+    protected function get_rules_file($code)
     {
         require_code('zones3');
         return get_template_contents('rules_' . $code);
@@ -737,9 +810,10 @@ class Module_admin_setupwizard
      */
     public function step7()
     {
-        $post_url = build_url(array('page' => '_SELF', 'type' => (addon_installed('themewizard') && (function_exists('imagepng'))) ? 'step8' : 'step9'), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => $this->has_themewizard_step() ? 'step8' : 'step9'), '_SELF');
         $text = do_lang_tempcode('SETUPWIZARD_7_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
+        $hidden = static_evaluate_tempcode(build_keep_post_fields());
 
         $installprofile = post_param_string('installprofile', '');
         if ($installprofile != '') {
@@ -759,18 +833,18 @@ class Module_admin_setupwizard
         require_code('setupwizard');
         require_javascript('setupwizard');
         $js_function_calls = array('adminSetupWizardStep7');
-        $form = do_template('FORM', array('_GUID' => 'bf01a2b90967e86213ae0672c36a4b4e', 'SKIPPABLE' => 'skip_7', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()), 'JS_FUNCTION_CALLS' => $js_function_calls));
+        $form = do_template('FORM', array('_GUID' => 'bf01a2b90967e86213ae0672c36a4b4e', 'SKIPPABLE' => 'skip_7', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden, 'JS_FUNCTION_CALLS' => $js_function_calls));
 
         $balanced = comcode_to_tempcode($this->get_rules_file('balanced'), null, true);
         $liberal = comcode_to_tempcode($this->get_rules_file('liberal'), null, true);
         $corporate = comcode_to_tempcode($this->get_rules_file('corporate'), null, true);
 
         $inner = do_template('SETUPWIZARD_7', array('_GUID' => '5e46c3a989e42fa6eec5a017e8c644c2', 'FORM' => $form, 'BALANCED' => $balanced, 'LIBERAL' => $liberal, 'CORPORATE' => $corporate));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '04f24f8c44267d2ad315aa34243e9712', 'TITLE' => $this->title, 'STEP' => '7', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '04f24f8c44267d2ad315aa34243e9712', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(7)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
     /**
-     * UI for a setup wizard step (theme).
+     * UI for a setup wizard step (Theme Wizard).
      *
      * @return Tempcode The UI
      */
@@ -782,6 +856,7 @@ class Module_admin_setupwizard
         $post_url = build_url(array('page' => '_SELF', 'type' => 'step9'), '_SELF');
         $text = do_lang_tempcode('SETUPWIZARD_8_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
+        $hidden = static_evaluate_tempcode(build_keep_post_fields());
 
         $fields = new Tempcode();
         $fields->attach(form_input_colour(do_lang_tempcode('SEED_COLOUR'), do_lang_tempcode('DESCRIPTION_SEED_COLOUR'), 'seed_hex', '#' . find_theme_seed('default'), true));
@@ -797,9 +872,9 @@ class Module_admin_setupwizard
             'TEXT' => $text,
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => $submit_name,
-            'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()),
+            'HIDDEN' => $hidden,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'e67abf478cea7aed5cda64189549677a', 'TITLE' => $this->title, 'STEP' => '8', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'e67abf478cea7aed5cda64189549677a', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(8)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
     /**
@@ -812,6 +887,7 @@ class Module_admin_setupwizard
         $post_url = build_url(array('page' => '_SELF', 'type' => 'step10'), '_SELF');
         $text = do_lang_tempcode('SETUPWIZARD_9_DESCRIBE');
         $submit_name = do_lang_tempcode('PROCEED');
+        $hidden = static_evaluate_tempcode(build_keep_post_fields());
 
         $fields = new Tempcode();
         $fields->attach(form_input_tick(do_lang_tempcode('CLOSED_SITE'), do_lang_tempcode('CONFIG_OPTION_site_closed'), 'site_closed', true));
@@ -829,14 +905,14 @@ class Module_admin_setupwizard
             'TEXT' => $text,
             'SUBMIT_ICON' => 'buttons__proceed',
             'SUBMIT_NAME' => $submit_name,
-            'HIDDEN' => static_evaluate_tempcode(build_keep_post_fields()),
+            'HIDDEN' => $hidden,
             'JS_FUNCTION_CALLS' => $js_function_calls,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'de13f131460e7f342c8beb6ba5ae3f42', 'TITLE' => $this->title, 'STEP' => '9', 'INNER' => $inner));
+        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'de13f131460e7f342c8beb6ba5ae3f42', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(9)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
     /**
-     * UI for a setup wizard step (done).
+     * UI for a setup wizard step (actualisation).
      *
      * @return Tempcode The UI
      */
@@ -868,8 +944,8 @@ class Module_admin_setupwizard
         $header_text = post_param_string('header_text');
         $name = post_param_string('site_name');
         $font = post_param_string('font', 'Vera');
-        $theme = substr(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $name), 0, 40);
         $installprofile = post_param_string('installprofile', '');
+        $source_theme = post_param_string('source_theme', '');
 
         $default_logos = get_all_image_ids_type('logo/default_logos');
         shuffle($default_logos);
@@ -895,42 +971,60 @@ class Module_admin_setupwizard
             $installprofileblocks = array();
         }
 
-        if ((post_param_integer('skip_8', 0) == 0) && (function_exists('imagepng')) && (addon_installed('themewizard'))) {
+        $doing_themewizard = $this->has_themewizard_step();
+        $doing_logowizard = (function_exists('imagepng')) && (addon_installed('themewizard')) && (get_theme_option('enable_logowizard', null, $source_theme) == '1');
+
+        if ((post_param_integer('skip_8', 0) == 0) && ($doing_themewizard || $doing_logowizard)) {
             require_code('themewizard');
 
-            // Make theme
-            global $THEME_IMAGES_CACHE;
-            $old_img_codes_site = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'lang' => user_lang()));
-            if (!file_exists(get_custom_file_base() . '/themes/' . $theme)) {
-                make_theme($theme, 'default', 'equations', post_param_string('seed_hex'), true, post_param_integer('dark', 0) == 1);
-            }
-            foreach (array($theme, 'default') as $logo_save_theme) {
-                $logo = generate_logo($name, $font, $logo_theme_image, $background_theme_image, false, $logo_save_theme);
-                $path = 'themes/' . $logo_save_theme . '/images_custom/-logo.png';
-                if (!file_exists(dirname($path))) {
-                    require_code('files2');
-                    make_missing_directory(dirname($path));
+            // Make/set theme and logos
+            if ($doing_themewizard) {
+                $new_theme_name = substr(preg_replace('#[^' . URL_CONTENT_REGEXP . ']#', '_', $name), 0, 40);
+
+                global $THEME_IMAGES_CACHE;
+                $old_img_codes_site = $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $GLOBALS['FORUM_DRIVER']->get_theme(), 'lang' => user_lang()));
+                if (!file_exists(get_custom_file_base() . '/themes/' . $new_theme_name)) {
+                    make_theme($new_theme_name, 'default', 'equations', post_param_string('seed_hex'), /*$use=*/true, post_param_integer('dark', 0) == 1);
                 }
-                @imagepng($logo, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
-                require_code('images_png');
-                png_compress(get_custom_file_base() . '/' . $path);
-                actual_edit_theme_image('logo/-logo', $logo_save_theme, get_site_default_lang(), 'logo/-logo', $path, true);
-                imagedestroy($logo);
-                $logo = generate_logo($name, $font, $logo_theme_image, $background_theme_image, false, $logo_save_theme, true);
-                $path = 'themes/' . $logo_save_theme . '/images_custom/standalone_logo.png';
-                @imagepng($logo, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
-                require_code('images_png');
-                png_compress(get_custom_file_base() . '/' . $path);
-                actual_edit_theme_image('logo/standalone_logo', $logo_save_theme, get_site_default_lang(), 'logo/standalone_logo', $path, true);
-                imagedestroy($logo);
+
+                $live_theme = $new_theme_name;
+            } else {
+                $live_theme = $source_theme;
+
+                require_code('themes3');
+                set_live_theme($live_theme);
             }
-            $contents = '';
-            $contents .= 'title=' . $name . "\n";
-            $contents .= 'description=' . do_lang('NA') . "\n";
-            $contents .= 'seed=' . post_param_string('seed_hex') . "\n";
-            $contents .= 'author=Composr' . "\n";
-            cms_file_put_contents_safe(get_custom_file_base() . '/themes/' . filter_naughty($theme) . '/theme.ini', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
-            $THEME_IMAGES_CACHE['site'] = $old_img_codes_site; // Just so it renders with the old theme
+            if ($doing_logowizard) {
+                foreach (array($live_theme, 'default') as $logo_save_theme) {
+                    $logo = generate_logo($name, $font, $logo_theme_image, $background_theme_image, false, $logo_save_theme);
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/-logo.png';
+                    if (!file_exists(dirname($path))) {
+                        require_code('files2');
+                        make_missing_directory(dirname($path));
+                    }
+                    @imagepng($logo, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
+                    require_code('images_png');
+                    png_compress(get_custom_file_base() . '/' . $path);
+                    actual_edit_theme_image('logo/-logo', $logo_save_theme, get_site_default_lang(), 'logo/-logo', $path, true);
+                    imagedestroy($logo);
+                    $logo = generate_logo($name, $font, $logo_theme_image, $background_theme_image, false, $logo_save_theme, true);
+                    $path = 'themes/' . $logo_save_theme . '/images_custom/standalone_logo.png';
+                    @imagepng($logo, get_custom_file_base() . '/' . $path, 9) or intelligent_write_error($path);
+                    require_code('images_png');
+                    png_compress(get_custom_file_base() . '/' . $path);
+                    actual_edit_theme_image('logo/standalone_logo', $logo_save_theme, get_site_default_lang(), 'logo/standalone_logo', $path, true);
+                    imagedestroy($logo);
+                }
+            }
+            if ($doing_themewizard) {
+                $contents = '';
+                $contents .= 'title=' . $name . "\n";
+                $contents .= 'description=' . do_lang('NA') . "\n";
+                $contents .= 'seed=' . post_param_string('seed_hex') . "\n";
+                $contents .= 'author=Composr' . "\n";
+                cms_file_put_contents_safe(get_custom_file_base() . '/themes/' . filter_naughty($new_theme_name) . '/theme.ini', $contents, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                $THEME_IMAGES_CACHE['site'] = $old_img_codes_site; // Just so it renders with the old theme
+            }
         }
 
         // Set options
@@ -1061,7 +1155,6 @@ class Module_admin_setupwizard
                 }
             }
         }
-
         if (post_param_integer('skip_9', 0) == 0) {
             set_option('site_closed', strval(post_param_integer('site_closed', 0)));
             set_option('closed', post_param_string('closed', ''));
@@ -1175,6 +1268,11 @@ class Module_admin_setupwizard
 
         $collapse_zones = post_param_integer('collapse_user_zones', 0) == 1;
 
+        // Install test content
+        if (post_param_integer('install_test_content', 0) == 1) {
+            install_test_content();
+        }
+
         // Rules
         if (post_param_integer('skip_7', 0) == 0) {
             $full_path = get_custom_file_base() . '/pages/comcode_custom/' . get_site_default_lang() . '/_rules.txt';
@@ -1193,7 +1291,7 @@ class Module_admin_setupwizard
         }
 
         // Blocks
-        if (post_param_integer('skip_6', 0) == 0) {
+        if ((post_param_integer('skip_6', 0) == 0) && ($this->has_block_step())) {
             require_code('setupwizard');
             $page_structure = _get_zone_pages($installprofileblocks, $block_options, $collapse_zones, $installprofile);
 
@@ -1225,6 +1323,20 @@ class Module_admin_setupwizard
                 }
                 cms_file_put_contents_safe($full_path, $zone_pages['right'], FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
             }
+        } elseif (!$this->has_block_step()) {
+            require_code('files2');
+            foreach (find_all_zones() as $zone) {
+                $dir = get_custom_file_base() . '/' . (($zone == '') ? '' : ($zone . '/')) . 'pages/comcode_custom/' . fallback_lang();
+                $files = get_directory_contents($dir);
+                foreach ($files as $file) {
+                    $matches = array();
+                    $regexp = '#^\_' . preg_quote($source_theme, '#') . '\_\_([\w\_]+)\.txt$#';
+                    if (preg_match($regexp, $file, $matches) != 0) {
+                        $page_name = $matches[1];
+                        cms_file_put_contents_safe($dir . '/' . $page_name . '.txt', cms_file_get_contents_safe($dir . '/' . $file));
+                    }
+                }
+            }
         }
 
         // We're done
@@ -1240,7 +1352,7 @@ class Module_admin_setupwizard
     /**
      * Clear caches we want to clear to clean up.
      */
-    private function clear_caching()
+    protected function clear_caching()
     {
         require_code('caches3');
         erase_comcode_page_cache();
@@ -1287,5 +1399,101 @@ class Module_admin_setupwizard
             null,
             paragraph(do_lang_tempcode('SETUPWIZARD_10_DESCRIBE'))
         );
+    }
+
+    /**
+     * Install test content.
+     *
+     * @return Tempcode The UI
+     */
+    public function install_test_content()
+    {
+        if (cms_srv('REQUEST_METHOD') != 'POST') {
+            $post_url = build_url(array('page' => '_SELF', 'type' => 'install_test_content'), '_SELF');
+
+            return do_template('CONFIRM_SCREEN', array('TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => '', 'FIELDS' => ''));
+        }
+
+        require_code('setupwizard');
+        install_test_content();
+
+        return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
+    }
+
+    /**
+     * Uninstall test content.
+     *
+     * @return Tempcode The UI
+     */
+    public function uninstall_test_content()
+    {
+        if (cms_srv('REQUEST_METHOD') != 'POST') {
+            $post_url = build_url(array('page' => '_SELF', 'type' => 'uninstall_test_content'), '_SELF');
+
+            return do_template('CONFIRM_SCREEN', array('TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => '', 'FIELDS' => ''));
+        }
+
+        require_code('setupwizard');
+        uninstall_test_content();
+
+        return inform_screen($this->title, do_lang_tempcode('SUCCESS'));
+    }
+
+    /**
+     * Get the number of steps that the user will see.
+     *
+     * @return integer The number of steps
+     */
+    protected function get_num_steps_enumerable()
+    {
+        $steps = 10;
+        if (!$this->has_block_step()) {
+            $steps--;
+        }
+        if (!$this->has_themewizard_step()) {
+            $steps--;
+        }
+        return $steps;
+    }
+
+    /**
+     * Get the effective step number, when missing steps are considered.
+     *
+     * @param integer $step System step number
+     * @return integer Effective step number
+     */
+    protected function get_effective_step($step)
+    {
+        if ($step > 6) {
+            if (!$this->has_block_step()) {
+                $step--;
+            }
+        }
+        if ($step > 8) {
+            if (!$this->has_themewizard_step()) {
+                $step--;
+            }
+        }
+        return $step;
+    }
+
+    /**
+     * Find if the block selection step will run.
+     *
+     * @return boolean Whether it will
+     */
+    protected function has_block_step()
+    {
+        return (get_theme_option('setupwizard__provide_block_choice', null, post_param_string('source_theme', 'default')) == '1');
+    }
+
+    /**
+     * Find if the Theme Wizard step will run.
+     *
+     * @return boolean Whether it will
+     */
+    protected function has_themewizard_step()
+    {
+        return (function_exists('imagepng')) && (addon_installed('themewizard')) && (get_theme_option('enable_themewizard', null, post_param_string('source_theme', 'default')) == '1');
     }
 }

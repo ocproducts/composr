@@ -1,23 +1,23 @@
 <section id="tray_{!MEMBER|}" data-view="ToggleableTray" data-tray-cookie="{!MEMBER|}" class="box cns_information_bar_outer">
 	<h2 class="toggleable_tray_title js-tray-header">
-		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
+		<a class="toggleable_tray_button js-btn-tray-toggle inline_desktop" href="#!"><img alt="{!CONTRACT}: {$STRIP_TAGS,{!MEMBER}}" title="{!CONTRACT}" src="{$IMG*,1x/trays/contract2}" srcset="{$IMG*,2x/trays/contract2} 2x" /></a>
 		<a class="toggleable_tray_button js-btn-tray-toggle" href="#!">{!MEMBER_INFORMATION,{$USERNAME*,{$MEMBER},1}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}} / {!SEARCH}{+END}</a>
 	</h2>
 
 	<div class="toggleable_tray js-tray-content">
 		<div class="cns_information_bar float_surrounder">
 			{+START,IF_NON_EMPTY,{AVATAR_URL}}
-				<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_a">
+				<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_a">
 					<img alt="{!AVATAR}" title="{!AVATAR}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{AVATAR_URL}}" />
 				</div>
 			{+END}
 
-			<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_b">
+			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_b">
 				<p class="cns_member_column_title">{!WELCOME_BACK,<a href="{PROFILE_URL*}">{$DISPLAYED_USERNAME*,{USERNAME}}</a>}</p>
 				{+START,IF,{$NOT,{$IS_HTTPAUTH_LOGIN}}}
-					{+START,IF,{$NOT,{$MOBILE}}}
-						<form class="inline horiz_field_sep associated_link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
-					{+END}
+					<div class="inline_desktop">
+						<form class="inline associated_link" title="{!LOGOUT}" method="post" action="{LOGOUT_URL*}" autocomplete="off"><input class="button_hyperlink" type="submit" value="{!LOGOUT}" /></form>
+					</div>
 				{+END}
 
 				<dl class="meta_details_list">
@@ -29,7 +29,7 @@
 				</dl>
 			</div>
 
-			<div{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_c">
+			<div style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_c">
 				{+START,IF,{$ADDON_INSTALLED,search}}{+START,IF,{$HAS_ACTUAL_PAGE_ACCESS,search}}
 					<div class="box nested"><div class="box_inner">{+START,INCLUDE,MEMBER_BAR_SEARCH}{+END}</div></div>
 				{+END}{+END}
@@ -42,16 +42,16 @@
 				</div>
 			</div>
 
-			<nav{+START,IF,{$NOT,{$MOBILE}}} style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px"{+END} class="cns_member_column cns_member_column_d">
+			<nav style="min-height: {$MAX,100,{MAX_AVATAR_HEIGHT|}}px" class="cns_member_column cns_member_column_d">
 				{$,<p class="cns_member_column_title">{!VIEW}:</p>}
 				<ul class="actions_list">
 					<!--<li><a href="{PRIVATE_TOPIC_URL*}">{!PRIVATE_TOPICS}{+START,IF_NON_EMPTY,{PT_EXTRA}} <span class="cns_member_column_pts">{PT_EXTRA}</span>{+END}</a></li>-->
-					<li><a{+START,IF,{$NOT,{$MOBILE}}} data-open-as-overlay="1"{+END} href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
-					<li><a{+START,IF,{$NOT,{$MOBILE}}} data-open-as-overlay="1"{+END} href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>
-					<li><a{+START,IF,{$NOT,{$MOBILE}}} data-open-as-overlay="1"{+END} href="{RECENTLY_READ_URL*}">{!RECENTLY_READ}</a></li>
-					<li><a{+START,IF,{$NOT,{$MOBILE}}} data-open-as-overlay="1"{+END} href="{INLINE_PERSONAL_POSTS_URL*}">{!INLINE_PERSONAL_POSTS}</a></li>
-					<li><a{+START,IF,{$NOT,{$MOBILE}}} data-open-as-overlay="1"{+END} href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
-					<li><a{+START,IF,{$NOT,{$MOBILE}}} data-open-as-overlay="1"{+END} href="{INVOLVED_TOPICS_URL*}">{!INVOLVED_TOPICS}</a></li>
+					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{NEW_POSTS_URL*}">{!POSTS_SINCE}</a></li>
+					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{UNREAD_TOPICS_URL*}">{!TOPICS_UNREAD}</a></li>
+					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{RECENTLY_READ_URL*}">{!RECENTLY_READ}</a></li>
+					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{INLINE_PERSONAL_POSTS_URL*}">{!INLINE_PERSONAL_POSTS}</a></li>
+					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{UNANSWERED_TOPICS_URL*}">{!UNANSWERED_TOPICS}</a></li>
+					<li><a{+START,IF,{$DESKTOP}} data-open-as-overlay="1"{+END} href="{INVOLVED_TOPICS_URL*}">{!INVOLVED_TOPICS}</a></li>
 				</ul>
 			</nav>
 		</div>

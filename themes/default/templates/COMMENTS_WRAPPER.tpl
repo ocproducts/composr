@@ -25,12 +25,10 @@
 
 	<div class="boxless_space">
 		<div class="box box___comments_wrapper"><div class="box_inner">
-			{+START,IF,{$MOBILE}}
-				<h2>{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
-			{+END}
+			<h2 class="comments_header">{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
 
 			<div class="float_surrounder">
-				<div class="{+START,IF,{$NOT,{$MOBILE}}}right {+END}float_separation">
+				<div class="comments_notification_buttons">
 					{+START,INCLUDE,NOTIFICATION_BUTTONS}
 						NOTIFICATIONS_TYPE=comment_posted
 						NOTIFICATIONS_ID={TYPE}_{ID}
@@ -40,7 +38,7 @@
 					{+END}
 				</div>
 
-				<div class="comments_sorting_box inline{+START,IF,{$NOT,{$MOBILE}}} right{+END}">
+				<div class="comments_sorting_box">
 					<form title="{!SORT}" class="inline" action="{$SELF_URL*}" method="post" autocomplete="off">
 						{$INSERT_SPAMMER_BLACKHOLE}
 
@@ -54,10 +52,6 @@
 						</select>
 					</form>
 				</div>
-
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<h2>{$?,{$IS_NON_EMPTY,{REVIEW_RATING_CRITERIA}},{$GET,REVIEWS_TITLE},{!COMMENTS}}</h2>
-				{+END}
 			</div>
 
 			{+START,LOOP,REVIEW_RATING_CRITERIA}

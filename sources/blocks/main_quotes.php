@@ -67,7 +67,7 @@ class Block_main_quotes
 
         $block_id = get_block_id($map);
 
-        $file = array_key_exists('param', $map) ? $map['param'] : 'quotes';
+        $file = empty($map['param']) ? 'quotes' : $map['param'];
         $title = array_key_exists('title', $map) ? $map['title'] : do_lang('QUOTES');
 
         require_css('random_quotes');

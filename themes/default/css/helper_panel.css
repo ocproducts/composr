@@ -3,31 +3,48 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-.helper_panel ~ .global_middle {
-	margin-right: 265px !important;
-}
-.helper_panel_hidden ~ .global_middle {
-	margin-right: 16px !important;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.helper_panel_visible ~ .global_middle {
+		margin-right: 265px !important;
+	}
+	.helper_panel_hidden ~ .global_middle {
+		margin-right: 16px !important;
+	}
+/*{+END}*/
 
-.helper_panel {
-	width: 265px;
+.global_helper_panel {
+	position: relative;
+}
+/*{+START,CSS_MODE,desktop}*/
+	.global_helper_panel {
+		padding: 1em;
+		min-height: 450px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.global_helper_panel {
+		padding: 0 1em;
+		clear: both;
+	}
+/*{+END}*/
+
+.helper_panel_visible {
 	transition: width 0.2s linear !important;
 }
-.helper_panel_hidden {
-	width: 30px !important;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.helper_panel_visible {
+		width: 265px;
+	}
+	.helper_panel_hidden {
+		width: 30px !important;
+	}
 
-#helper_panel_toggle {
-	outline: 0;
-	float: {!en_right};
-	text-align: {!en_right};
-	margin: 12px 6px;
-}
-
-#helper_panel_toggle img {
-	vertical-align: middle;
-}
+	.page_running_admin_phpinfo .helper_panel {
+		position: absolute;
+		right: 0;
+		margin-top: 3em;
+	}
+/*{+END}*/
 
 .global_helper_panel_wrap {
 	border: 1px solid {$GET,pale_border};
@@ -39,12 +56,52 @@
 	border-top-left-radius: 15px;
 	border-bottom-left-radius: 15px;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.global_helper_panel_wrap {
+		{$BETA_CSS_PROPERTY,border-top-right-radius: 15px;}
+		{$BETA_CSS_PROPERTY,border-bottom-right-radius: 15px;}
+		margin-top: 3em;
+	}
+/*{+END}*/
 
-.global_helper_panel {
-	padding: 1em;
-	position: relative;
-	min-height: 450px;
+#helper_panel_toggle {
+	outline: 0;
+	float: {!en_right};
+	text-align: {!en_right};
 }
+/*{+START,CSS_MODE,desktop}*/
+	#helper_panel_toggle {
+		margin: 12px 6px;
+	}
+
+	#helper_panel_toggle img {
+		vertical-align: middle;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#helper_panel_toggle {
+		margin: 15px 6px;
+		width: 40px;
+		height: 20px;
+		background-position: 20px 0 !important;
+	}
+	#helper_panel_toggle img {
+		display: none;
+	}
+	.helper_panel_hidden #helper_panel_toggle {
+		background: url('{$IMG;,1x/trays/expand}') no-repeat;
+	}
+	.helper_panel_visible #helper_panel_toggle {
+		background: url('{$IMG;,1x/trays/contract}') no-repeat;
+	}
+/*{+END}*/
+
+/*{+START,CSS_MODE,mobile}*/
+	.global_helper_panel_wrap h2 {
+		border: 0 !important;
+		padding: 0 !important;
+	}
+/*{+END}*/
 
 .global_side_panel .global_helper_panel .box {
 	font-size: 1em;
@@ -57,3 +114,14 @@
 
 .global_helper_panel_text_over {
 }
+
+.global_helper_panel_html {
+	position: absolute;
+	/*bottom: -270px;*/
+	z-index: 2;
+}
+/*{+START,CSS_MODE,desktop}*/
+	.global_helper_panel_html {
+		width: 390px;
+	}
+/*{+END}*/

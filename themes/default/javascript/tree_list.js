@@ -205,7 +205,7 @@
                 }
                 nodeSelfWrap = document.createElement('div');
                 nodeSelf = document.createElement('div');
-                nodeSelf.style.display = 'inline-block';
+                nodeSelf.className = 'tree_list_node';
                 nodeSelfWrap.appendChild(nodeSelf);
                 nodeSelf.object = that;
                 colour = (node.getAttribute('selectable') == 'true' || that.all_nodes_selectable) ? 'native_ui_foreground' : 'locked_input_field';
@@ -287,7 +287,7 @@
                     newHtml.role = 'treeitem';
                     newHtml.id = that.name + 'tree_list_c_' + node.getAttribute('id');
                     newHtml.style.display = ((!initiallyExpanded) || (node.getAttribute('has_children') != 'true')) ? 'none' : 'block';
-                    newHtml.style.padding/*{$?,{$EQ,{!en_left},left},Left,Right}*/ = '15px';
+                    newHtml.style.padding/*{$?,{$LTR},Left,Right}*/ = '15px';
                     var selected = ((that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value && element.value != '') || node.getAttribute('selected') == 'yes';
                     if (selectable) {
                         that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_c_' + node.getAttribute('id')), selected);

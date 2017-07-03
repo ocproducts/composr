@@ -4,82 +4,128 @@
 */
 
 .menu_editor_page {
-	min-height: 400px;
+	{$BETA_CSS_PROPERTY,user-select: none;}
 }
 
-.menu_editor_page.docked #mini_form_hider {
-	margin-top: 1em;
-	border-top: 3px dotted {$GET,divider_line} !important;
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	background: {$GET,floating_section_background};
-	font-size: 0.9em;
-	width: 100%;
-	z-index: 100; /* Needed for Opera, else footer icons with 'transform' CSS property overlay (bug in Opera) */
-	padding: 0 0.5em;
-	box-sizing: border-box;
+/*{+START,CSS_MODE,desktop}*/
+	.menu_editor_page.non_docked {
+		min-height: 400px;
+	}
+
+	.menu_editor_page.docked {
+		overflow-y: auto;
+		max-height: 380px;
+		margin-right: 1em;
+		padding-right: 0.5em;
+	}
+
+	.menu_editor_page::-webkit-scrollbar {
+		width: 0.5em;
+	}
+	.menu_editor_page::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	}
+	.menu_editor_page::-webkit-scrollbar-thumb {
+		background-color: darkgrey;
+		outline: 1px solid slategrey;
+	}
+
+	.menu_editor_page.docked #mini_form_hider {
+		margin-top: 1em;
+		border-top: 3px dotted {$GET,divider_line} !important;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		background: {$GET,floating_section_background};
+		font-size: 0.9em;
+		width: 100%;
+		z-index: 100; /* LEGACY Needed for Opera, else footer icons with 'transform' CSS property overlay (bug in Opera) */
+		padding: 0 0.5em;
+		box-sizing: border-box;
+	}
+
+	.docked .menu_edit_main {
+		padding-bottom: 2em;
+	}
+
+	.dock_button {
+		float: right;
+		margin-right: 0.5em;
+		padding: 0.5em;
+		cursor: pointer;
+	}
+
+	.menu_editor_lh_side {
+		margin-{!en_right}: 470px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.dock_button {
+		display: none;
+	}
+/*{+END}*/
+
+.menu_editor_lh_side .field_name_column {
+	width: 11em;
 }
 
-.docked .menu_edit_main {
-	padding-bottom: 10em;
+.menu_editor_lh_side select {
+	max-width: 100%;
 }
 
-.dock_button {
-	float: right;
-	margin-right: 0.5em;
-	padding: 0.5em;
-	cursor: pointer;
-}
-
-.menu_editor_lh_side {
-	margin-{!en_right}: 340px;
-}
-
-.menu_editor_page.docked {
-	overflow-y: scroll;
-	max-height: 380px;
-	margin-right: 1em;
-}
-
-.docked #tree_list__root_tree_list {
-	overflow-y: scroll;
-	max-height: 200px;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.docked #tree_list__root_tree_list {
+		overflow-y: scroll;
+		max-height: 200px;
+	}
+/*{+END}*/
 
 .menu_editor_rh_side {
-	float: {!en_right};
-	margin-{!en_left}: 20px;
-	width: 320px;
 	font-size: 0.9em;
 	line-height: 1.5em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.menu_editor_rh_side {
+		float: {!en_right};
+		margin-{!en_left}: 20px;
+		width: 450px;
+	}
+/*{+END}*/
 
-.menu_editor_selected_field {
-	background-color: {$GET,native_ui_active_background};
+/*
+=============
+Branch layout
+=============
+*/
+
+.menu_editor_root {
+	margin-right: 1px;
 }
 
-.menu_editor_branch_indent {
-	padding-{!en_left}: 20px;
+.menu_editor_branch_wrap {
+	margin-{!en_right}: -1px; /* To make nested rhs borders align; this is why menu_editor_root has 1px extra margin */
 }
 
-.menu_editor_branch {
+ .menu_editor_branch {
 	border: 1px solid {$GET,standard_border};
 	margin-top: -1px;
-	padding: 0.5em 0 0.5em 0.5em;
+	background: {$GET,area_3_background};
+}
+
+.menu_editor_branch_inner {
+	padding: 0.5em;
 }
 
 .menu_editor_branch * {
 	vertical-align: middle;
 }
 
-.menu_editor_branch_wrap {
-	padding: 1em 0 0 0;
-	margin-{!en_right}: -1px;
+.menu_editor_branch_indent {
+	padding-{!en_left}: 1em;
 }
 
-.menu_editor_branch_wrap .menu_editor_branch_wrap {
-	padding-left: 1em;
+.menu_editor_branch_indent>div {
+	margin-top: 1em;
 }
 
 /* Undoes main actions_list style */
@@ -88,15 +134,29 @@
 }
 .menu_editor_branch_wrap .actions_list li {
 	background: none;
-	padding-left: 0;
-	margin-left: 0;
+	padding-left: 0 !important;
+	margin-left: 0 !important;
+}
+
+/*
+=====================
+Branch layout (inner)
+=====================
+*/
+
+.menu_editor_selected_field {
+	background-color: {$GET,native_ui_active_background};
+}
+
+.menu_editor_branch_wrap .move_button {
+	cursor: move;
 }
 
 .menu_editor_branch input[type="text"] {
 	background: url('{$IMG;,icons/14x14/action_small}') right center no-repeat white;
 	background-size: 20px 20px;
 	cursor: pointer;
-	width: 15em;
+	width: 14em;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
 	.menu_editor_branch input[type="text"] {
@@ -106,4 +166,8 @@
 
 .menu_editor_branch input[type="text"]:focus {
 	cursor: text !important;
+}
+
+.menu_editor_branch .menu___generic_admin__delete {
+	float: right;
 }

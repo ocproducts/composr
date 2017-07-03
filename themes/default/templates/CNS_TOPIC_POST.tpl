@@ -18,7 +18,7 @@
 		<div class="cns_forum_box_right cns_post_details" role="note">
 			<div class="cns_post_details_date">
 				{$SET,post_date,<time datetime="{$FROM_TIMESTAMP*,Y-m-d\TH:i:s\Z,{POST_DATE_RAW}}">{POST_DATE*}</time>}
-				{$?,{$MOBILE},{$GET,post_date},{!POSTED_TIME_SIMPLE,{$GET,post_date}}}
+				{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!POSTED_TIME_SIMPLE,{$GET,post_date}}</span>{+END}<span class="inline_mobile">{$GET,post_date}</span>
 			</div>
 
 			{+START,IF_NON_EMPTY,{POSTER}}
@@ -36,17 +36,19 @@
 				{+END}
 			{+END}
 
-			<div class="cns_post_details_grapple">
-				{+START,IF_NON_EMPTY,{URL}}
-					{+START,IF_NON_EMPTY,{POST_ID*}}
-						<a href="{URL*}" rel="nofollow">#{POST_ID*}</a>
+			{+START,IF,{$DESKTOP}}
+				<div class="cns_post_details_grapple block_desktop">
+					{+START,IF_NON_EMPTY,{URL}}
+						{+START,IF_NON_EMPTY,{POST_ID*}}
+							<a href="{URL*}" rel="nofollow">#{POST_ID*}</a>
+						{+END}
 					{+END}
-				{+END}
-				{+START,IF,{$EQ,{ID},{TOPIC_FIRST_POST_ID},}}{+START,IF_NON_EMPTY,{TOPIC_ID}}
-					{+START,IF_NON_EMPTY,{POST_ID}}({!IN,{!FORUM_TOPIC_NUMBERED,{TOPIC_ID*}}}){+END}
-					{+START,IF_EMPTY,{POST_ID}}{!FORUM_TOPIC_NUMBERED,{TOPIC_ID*}}{+END}
-				{+END}{+END}
-			</div>
+					{+START,IF,{$EQ,{ID},{TOPIC_FIRST_POST_ID},}}{+START,IF_NON_EMPTY,{TOPIC_ID}}
+						{+START,IF_NON_EMPTY,{POST_ID}}({!IN,{!FORUM_TOPIC_NUMBERED,{TOPIC_ID*}}}){+END}
+						{+START,IF_EMPTY,{POST_ID}}{!FORUM_TOPIC_NUMBERED,{TOPIC_ID*}}{+END}
+					{+END}{+END}
+				</div>
+			{+END}
 		</div>
 	</div>
 
@@ -67,9 +69,9 @@
 
 		<div class="cns_topic_post_area cns_post_main_column">
 			<div class="float_surrounder">
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{ID}}{+START,IF_NON_PASSED_OR_FALSE,PREVIEWING}
-						<div id="cell_mark_{ID*}" class="cns_off mass_select_marker">
+						<div id="cell_mark_{ID*}" class="cns_off mass_select_marker block_desktop">
 							<form class="webstandards_checker_off" title="{!FORUM_POST} {!MARKER} #{ID*}" method="post" action="index.php" id="form_mark_{ID*}" autocomplete="off">
 								{$INSERT_SPAMMER_BLACKHOLE}
 

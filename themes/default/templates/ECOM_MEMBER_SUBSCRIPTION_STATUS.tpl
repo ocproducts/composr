@@ -5,7 +5,7 @@
 	</h2>
 
 	<div class="toggleable_tray js-tray-content" style="display: block" aria-expanded="true">
-		<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table" itemprop="significantLinks">
+		<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive_table" itemprop="significantLinks">
 			<thead>
 				<tr>
 					<th>
@@ -24,8 +24,8 @@
 						{!DATE}
 					</th>
 
-					{+START,IF,{$NOT,{$MOBILE}}}
-						<th>
+					{+START,IF,{$DESKTOP}}
+						<th class="cell_desktop">
 							{!PAYMENT_GATEWAY}
 						</th>
 					{+END}
@@ -43,11 +43,9 @@
 								{ITEM_NAME*}
 							{+END}
 
-							{+START,IF,{$MOBILE}}
-								<p class="assocated_details">
-									<span class="field_name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
-								</p>
-							{+END}
+							<p class="assocated_details block_mobile">
+								<span class="field_name">{!PAYMENT_GATEWAY}:</span> {PAYMENT_GATEWAY*}
+							</p>
 						</th>
 
 						<td>
@@ -62,8 +60,8 @@
 							{START_TIME*}
 						</td>
 
-						{+START,IF,{$NOT,{$MOBILE}}}
-							<td>
+						{+START,IF,{$DESKTOP}}
+							<td class="cell_desktop">
 								{PAYMENT_GATEWAY*}
 							</td>
 						{+END}

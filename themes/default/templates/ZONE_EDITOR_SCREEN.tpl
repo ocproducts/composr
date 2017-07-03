@@ -28,7 +28,7 @@
 
 	<hr class="spaced_rule" />
 
-	<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" class="js-form-ze-save">
+	<form title="{!SAVE}" action="{URL*}" method="post" target="_self" autocomplete="off" class="js-form-ze-save zone_editor_form">
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<div id="edit_field_store" style="display: none">

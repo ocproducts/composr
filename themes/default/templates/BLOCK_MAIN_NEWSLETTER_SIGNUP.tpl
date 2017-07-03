@@ -13,7 +13,7 @@
 
 		<p class="accessibility_hidden"><label for="baddress">{!EMAIL_ADDRESS}</label></p>
 
-		<div class="constrain_field">
+		<div>
 			<input class="wide_field" id="baddress" name="address{NID*}" placeholder="{!EMAIL_ADDRESS}" />
 		</div>
 

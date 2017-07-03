@@ -3,7 +3,7 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.cns_information_bar { /* either CNS_GUEST_BAR.tpl or CNS_MEMBER_BAR.tpl */
 		font-size: 0.9em;
 	}
@@ -29,29 +29,38 @@
 }
 
 .cns_member_column, .cns_guest_column {
-	padding: 0.8em;
 	vertical-align: top;
 	margin-{!en_left}: -1px;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	.cns_member_column, .cns_guest_column {
+		padding: 0.8em;
 		float: {!en_left};
 		border-{!en_left}: 1px solid {$GET,pale_border};
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		display: inline-block;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.cns_member_column, .cns_guest_column {
+		margin: 0.5em;
+	}
+/*{+END}*/
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.cns_member_column {
 		height: 9em; /* 8em seems okay on Mac, 9em needed on Windows */
 	}
 /*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.cns_member_column {
+		min-height: auto;
+	}
+/*{+END}*/
 
-.cns_guest_column {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.cns_guest_column {
 		height: 3em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .cns_guest_column_a * {
 	vertical-align: middle;
@@ -67,21 +76,29 @@
 }
 
 .cns_guest_column_b {
-	float: {!en_right};
 	text-align: {!en_right};
 }
+/*{+START,CSS_MODE,mobile}*/
+	.cns_guest_column_b {
+		float: {!en_right};
+	}
+/*{+END}*/
 
 .cns_member_column_a {
 	text-align: center;
 	vertical-align: middle;
 	border-{!en_left}: 0;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 112px;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		float: right;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.cns_member_column_a {
+		width: 112px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.cns_member_column_a {
+		display: none;
+	}
+/*{+END}*/
 
 .cns_member_column_a img {
 	max-width: 100px;
@@ -89,27 +106,29 @@
 
 .cns_member_column_b {
 	border-{!en_left}: 0;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 20em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		max-width: 13em;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.cns_member_column_b {
+		width: 20em;
+	}
+/*{+END}*/
 
 .cns_member_column_c {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 25.3em; /* The extra 0.3em needed for iPad */
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	.cns_member_column_c {
+		width: 17.3em; /* The extra 0.3em needed for iPad */
+	}
+/*{+END}*/
 
 .cns_member_column_d {
 	white-space: nowrap;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.cns_member_column_d li {
-		width: 45%;
+		width: calc(50% - 5px);
+		box-sizing: border-box;
 		float: left;
 	}
 /*{+END}*/
@@ -169,7 +188,7 @@
 
 .cns_search_box input[type="text"] {
 	margin: 0;
-	width: 14em;
+	width: calc(100% - 8em);
 }
 
 .cns_member_column_last_visit {
@@ -187,12 +206,16 @@
 
 .cns_member_column_last_visit li {
 	white-space: nowrap;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin: 0 0 0 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 0.5em 0 0.5em 1em;
-	/*{+END}*/
 	padding: 0;
 	list-style-type: none;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.cns_member_column_last_visit li {
+		margin: 0 0 0 1em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.cns_member_column_last_visit li {
+		margin: 0.5em 0 0.5em 1em;
+	}
+/*{+END}*/

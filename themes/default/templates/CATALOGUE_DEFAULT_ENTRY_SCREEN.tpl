@@ -62,5 +62,5 @@
 
 	{$,Uncomment and modify to create a reply link <a href="\{$PAGE_LINK*,site:contact_member:browse:\{SUBMITTER\}:subject=Response to listing, \{FIELD_1\}:message=\}">Respond</a>}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
+	{+START,IF,{$THEME_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 </div>

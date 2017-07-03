@@ -359,7 +359,7 @@
                         editareaDoSearch(
                             'e_' + fileId,
                             '^[ \t]*' + selector.replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\{/g, '\\{').replace(/\}/g, '\\}').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\s/g, '[ \t]+') + '\\s*\\{'
-                        ); // Opera does not support \s
+                        );
                         return false;
                     }
                 }(selector));

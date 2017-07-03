@@ -19,7 +19,7 @@
 
 	<p>{!SELECT_TO_IMPORT}</p>
 	<div class="wide_table_wrap"><table class="map_table form_table wide_table import_actions">
-		{+START,IF,{$NOT,{$MOBILE}}}
+		{+START,IF,{$DESKTOP}}
 			<colgroup>
 				<col class="field_name_column" />
 				<col class="field_input_column" />

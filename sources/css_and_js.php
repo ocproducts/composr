@@ -69,17 +69,17 @@ function css_inherit($css_file, $theme, $destination_theme, $seed, $dark, $algor
     if (addon_installed('themewizard')) {
         if ($seed !== null) {
             // Not actually needed
-            $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},seed,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',seed,100% ' . $seed . '}', $sheet);
-            $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},WB,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',WB,100% ' . ($dark ? '000000' : 'FFFFFF') . '}', $sheet);
-            $sheet = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[A-Fa-f0-9]{6},BW,100% [A-Fa-f0-9]{6}\}#', '{$THEME_WIZARD_COLOR,#' . $seed . ',BW,100% ' . ($dark ? 'FFFFFF' : '000000') . '}', $sheet);
+            $sheet = preg_replace('#\{\$THEMEWIZARD_COLOR,\#[A-Fa-f0-9]{6},seed,100% [A-Fa-f0-9]{6}\}#', '{$THEMEWIZARD_COLOR,#' . $seed . ',seed,100% ' . $seed . '}', $sheet);
+            $sheet = preg_replace('#\{\$THEMEWIZARD_COLOR,\#[A-Fa-f0-9]{6},WB,100% [A-Fa-f0-9]{6}\}#', '{$THEMEWIZARD_COLOR,#' . $seed . ',WB,100% ' . ($dark ? '000000' : 'FFFFFF') . '}', $sheet);
+            $sheet = preg_replace('#\{\$THEMEWIZARD_COLOR,\#[A-Fa-f0-9]{6},BW,100% [A-Fa-f0-9]{6}\}#', '{$THEMEWIZARD_COLOR,#' . $seed . ',BW,100% ' . ($dark ? 'FFFFFF' : '000000') . '}', $sheet);
 
             require_code('themewizard');
             list($colours, $landscape) = calculate_theme($seed, $theme, $algorithm, 'colours', $dark);
 
-            // The main thing (THEME_WIZARD_COLOR is not executed in full by Tempcode, so we need to sub it according to our theme wizard landscape)
+            // The main thing (THEMEWIZARD_COLOR is not executed in full by Tempcode, so we need to sub it according to our theme wizard landscape)
             foreach ($landscape as $peak) {
                 $from = $peak[2];
-                $to = preg_replace('#\{\$THEME_WIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEME_WIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
+                $to = preg_replace('#\{\$THEMEWIZARD_COLOR,\#[\da-fA-F]{6},#', '{$THEMEWIZARD_COLOR,#' . $peak[3] . ',', $peak[2]);
                 $sheet = str_replace($from, $to, $sheet);
             }
         }
@@ -186,11 +186,11 @@ function css_compile($active_theme, $theme, $c, $full_path, $css_cache_path, $mi
 {
     cms_profile_start_for('css_compile');
 
-    if ($c != 'global') { // We need to make sure the global.css file is parsed, as it contains some shared THEME_WIZARD_COLOR variables that Tempcode will pick up on
+    if ($c != 'global') { // We need to make sure the global.css file is parsed, as it contains some shared THEMEWIZARD_COLOR variables that Tempcode will pick up on
         require_code('themes2');
         $global_full_path = find_template_path('global.css', 'css', $active_theme);
 
-        if (strpos(cms_file_get_contents_safe($global_full_path), '{$THEME_WIZARD_COLOR,') !== false) {
+        if (strpos(cms_file_get_contents_safe($global_full_path), '{$THEMEWIZARD_COLOR,') !== false) {
             require_code('tempcode_compiler');
             $temp = template_to_tempcode(cms_file_get_contents_safe($global_full_path), 0, false, $c, $active_theme, user_lang());
             $temp->evaluate(); // We just need it to evaluate, not do anything with it

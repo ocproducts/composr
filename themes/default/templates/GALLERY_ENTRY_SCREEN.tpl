@@ -12,7 +12,7 @@
 	{+START,SET,boxes}
 		<div class="gallery_entry_details right">
 			<table class="columned_table map_table results_table" role="note">
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					<colgroup>
 						<col class="gallery_entry_field_name_column" />
 						<col class="gallery_entry_field_value_column" />
@@ -179,5 +179,5 @@
 		</div>
 	{+END}
 
-	{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
+	{+START,IF,{$THEME_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={$METADATA,title}}{+END}
 <!--DO_NOT_REMOVE_THIS_COMMENT--></div>

@@ -28,6 +28,7 @@
 
             if (show) {
                 panelRight.classList.remove('helper_panel_hidden');
+                panelRight.classList.add('helper_panel_visible');
                 helperPanelContents.setAttribute('aria-expanded', 'true');
                 helperPanelContents.style.display = 'block';
                 $cms.dom.clearTransitionAndSetOpacity(helperPanelContents, 0.0);
@@ -56,6 +57,7 @@
             }
 
             function _hideHelperPanel(panelRight, helperPanelContents, helperPanelToggle) {
+                panelRight.classList.remove('helper_panel_visible');
                 panelRight.classList.add('helper_panel_hidden');
                 helperPanelContents.setAttribute('aria-expanded', 'false');
                 helperPanelContents.style.display = 'none';

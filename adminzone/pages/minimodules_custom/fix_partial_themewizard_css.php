@@ -118,13 +118,13 @@ echo '<p>Making missing theme images</p><ul>';
 
 load_themewizard_params_from_theme('default');
 
-global $THEME_WIZARD_IMAGES, $THEME_WIZARD_IMAGES_NO_WILD, $THEME_IMAGES_CACHE;
+global $THEMEWIZARD_IMAGES, $THEMEWIZARD_IMAGES_NO_WILD, $THEME_IMAGES_CACHE;
 if (function_exists('imagecolorallocatealpha')) {
     require_code('themes2');
     require_code('themes3');
     require_code('abstract_file_manager');
     $full_img_set = array();
-    foreach ($THEME_WIZARD_IMAGES as $expression) {
+    foreach ($THEMEWIZARD_IMAGES as $expression) {
         if (substr($expression, -1) == '*') {
             $expression = substr($expression, 0, strlen($expression) - 2); // remove "/*"
             $full_img_set = array_merge($full_img_set, array_keys(get_all_image_codes(get_file_base() . '/' . filter_naughty('default') . '/default/images', $expression)));
@@ -137,7 +137,7 @@ if (function_exists('imagecolorallocatealpha')) {
     $temp_all_ids = collapse_2d_complexity('id', 'path', $GLOBALS['SITE_DB']->query_select('theme_images', array('id', 'path'), array('theme' => $theme)));
 
     foreach ($full_img_set as $image_code) {
-        if (!in_array($image_code, $THEME_WIZARD_IMAGES_NO_WILD)) {
+        if (!in_array($image_code, $THEMEWIZARD_IMAGES_NO_WILD)) {
             if ((array_key_exists($image_code, $temp_all_ids)) && (strpos($temp_all_ids[$image_code], $theme . '/images_custom/') !== false) && ((!url_is_local($temp_all_ids[$image_code])) || (file_exists(get_custom_file_base() . '/' . $temp_all_ids[$image_code])))) {
                 continue;
             }

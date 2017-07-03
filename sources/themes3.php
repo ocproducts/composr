@@ -289,6 +289,16 @@ function actual_delete_theme($theme)
 }
 
 /**
+ * Set the live theme.
+ *
+ * @param  SHORT_TEXT $theme_name The theme to make live
+ */
+function set_live_theme($theme_name)
+{
+    $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'zones SET zone_theme=\'' . db_escape_string($theme_name) . '\' WHERE ' . db_string_not_equal_to('zone_name', 'cms') . ' AND ' . db_string_not_equal_to('zone_name', 'adminzone'));
+}
+
+/**
  * AJAX script for rendering some Tempcode.
  */
 function tempcode_tester_script()

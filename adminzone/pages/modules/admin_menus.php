@@ -339,6 +339,7 @@ class Module_admin_menus
             'CHILD_BRANCH_TEMPLATE' => $child_branch_template,
             'ROOT_BRANCH' => $root_branch,
             'TITLE' => $this->title,
+            'TOTAL_ITEMS' => strval(count($menu_items)),
         ));
     }
 

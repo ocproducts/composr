@@ -72,7 +72,7 @@ class Block_side_news
 
         $block_id = get_block_id($map);
 
-        $max = array_key_exists('param', $map) ? intval($map['param']) : 5;
+        $max = empty($map['param']) ? 5 : intval($map['param']);
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('news');
         $blogs = array_key_exists('blogs', $map) ? intval($map['blogs']) : -1;
         $historic = array_key_exists('historic', $map) ? $map['historic'] : '';

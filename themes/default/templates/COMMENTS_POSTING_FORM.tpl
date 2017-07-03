@@ -7,28 +7,6 @@
 
 {$SET,GET_NAME,{$AND,{$IS_GUEST},{$CNS}}}
 
-{+START,SET,CAPTCHA}
-	{+START,IF_PASSED_AND_TRUE,USE_CAPTCHA}
-		<div class="comments_captcha">
-			<div class="box box___comments_posting_form__captcha"><div class="box_inner">
-				{+START,IF,{$CONFIG_OPTION,audio_captcha}}
-					<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a class="js-click-play-self-audio-link" title="{!captcha:AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}&amp;cache_break={$RAND}">{!captcha:AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
-				{+END}
-				{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha}}}
-					<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
-				{+END}
-				{+START,IF,{$CONFIG_OPTION,css_captcha}}
-					<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
-				{+END}
-				{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
-					<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}" />
-				{+END}
-				<input maxlength="6" size="8" class="input_text_required" type="text" id="captcha" name="captcha" />
-			</div></div>
-		</div>
-	{+END}
-{+END}
-
 <div data-view="CommentsPostingForm" data-view-params="{+START,PARAMS_JSON,MORE_URL,GET_EMAIL,GET_NAME,GET_TITLE,EMAIL_OPTIONAL,TITLE_OPTIONAL,WYSIWYG,CAPTCHA,ANALYTIC_EVENT_CATEGORY}{_*}{+END}">
 	{+START,IF_NON_EMPTY,{COMMENT_URL}}
 	<form role="form" title="{TITLE*}" class="comments_form js-form-comments" id="comments_form" action="{COMMENT_URL*}{+START,IF_NON_EMPTY,{$GET,current_anchor}}#{$GET,current_anchor}{+END}{+START,IF_EMPTY,{$GET,current_anchor}}{+START,IF_PASSED_AND_TRUE,COMMENTS}#last_comment{+END}{+END}" method="post" enctype="multipart/form-data" autocomplete="off">
@@ -65,7 +43,7 @@
 			<div class="comments_posting_form_outer {+START,IF_PASSED,EXPAND_TYPE} toggleable_tray js-tray-content{+END}"{+START,IF_PASSED,EXPAND_TYPE} aria-expanded="false"{+END} id="comments_posting_form_outer" style="display: {DISPLAY*}">
 				<div class="comments_posting_form_inner">
 					<div class="wide_table_wrap"><table class="map_table wide_table">
-						{+START,IF,{$NOT,{$MOBILE}}}
+						{+START,IF,{$DESKTOP}}
 							<colgroup>
 								<col class="comments_field_name_column" />
 								<col class="comments_field_input_column" />
@@ -83,7 +61,7 @@
 									</th>
 
 									<td>
-										<input id="poster_name_if_guest" name="poster_name_if_guest" type="text" tabindex="1" maxlength="255" size="{$?,{$MOBILE},16,24}" />
+										<input id="poster_name_if_guest" name="poster_name_if_guest" type="text" tabindex="1" maxlength="255" size="24" />
 										{+START,IF_PASSED,JOIN_BITS}{+START,IF_NON_EMPTY,{JOIN_BITS}}
 											<span class="horiz_field_sep">{JOIN_BITS}</span>
 										{+END}{+END}
@@ -99,7 +77,7 @@
 									</th>
 
 									<td>
-										<div class="constrain_field">
+										<div>
 											<input id="email" name="email" value="{$MEMBER_EMAIL*}" type="text" tabindex="2" maxlength="255" class="wide_field{+START,IF,{$NOT,{EMAIL_OPTIONAL}}} input_text_required{+END}" />
 										</div>
 
@@ -116,7 +94,7 @@
 									</th>
 
 									<td>
-										<div class="constrain_field">
+										<div>
 											<input id="title" name="title" value="{DEFAULT_TITLE*}" type="text" tabindex="3" maxlength="255" class="wide_field" />
 										</div>
 
@@ -161,7 +139,7 @@
 											{+END}
 
 											{+START,IF_NON_EMPTY,{RULES_TEXT}}
-												<li><a class="non_link" href="{$PAGE_LINK*,:rules}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{!HOVER_MOUSE_IMPORTANT}</a></li>
+												<li><a class="non_link" href="{$PAGE_LINK*,:rules}" data-blur-deactivate-tooltip="" data-focus-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]" data-mouseover-activate-tooltip="['{$TRUNCATE_LEFT,{RULES_TEXT*~;^},1000,0,1}','320px',null,null,false,true]">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!HOVER_MOUSE_IMPORTANT}</span>{+END}<span class="inline_mobile">{!TAP_MOUSE_IMPORTANT}</span></a></li>
 											{+END}
 										</ul>
 									{+END}
@@ -173,9 +151,9 @@
 										</div>
 									{+END}
 
-									{+START,IF,{$NOT,{$MOBILE}}}
+									{+START,IF,{$DESKTOP}}
 										{+START,IF_NON_EMPTY,{EMOTICONS}}
-											<div class="comments_posting_form_emoticons">
+											<div class="comments_posting_form_emoticons block_desktop">
 												<div class="box box___comments_posting_form"><div class="box_inner">
 													{EMOTICONS}
 
@@ -189,7 +167,7 @@
 								</th>
 
 								<td>
-									<div class="constrain_field">
+									<div>
 										<textarea name="post" id="post" data-textarea-auto-height="" accesskey="x" class="{$?,{TRUE_ATTACHMENT_UI},true_attachment_ui,faux_attachment_ui} wide_field js-focus-textarea-post" cols="42" rows="{$?,{$IS_NON_EMPTY,{$GET,COMMENT_POSTING_ROWS}},{$GET,COMMENT_POSTING_ROWS},11}">{POST_WARNING*}{+START,IF_PASSED,DEFAULT_POST}{DEFAULT_POST*}{+END}</textarea>
 										<input type="hidden" name="comcode__post" value="1" />
 									</div>
@@ -205,17 +183,6 @@
 											{ATTACHMENTS}
 										</div>
 									{+END}
-
-									{+START,IF,{$MOBILE}}
-										{+START,IF,{$CONFIG_OPTION,js_captcha}}
-											{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
-												<div id="captcha_spot"></div>
-											{+END}
-										{+END}
-										{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
-											{$GET,CAPTCHA}
-										{+END}
-									{+END}
 								</td>
 							</tr>
 
@@ -224,29 +191,49 @@
 					</table></div>
 
 					<div class="comments_posting_form_end">
-						{+START,IF,{$NOT,{$MOBILE}}}
-							{+START,IF,{$CONFIG_OPTION,js_captcha}}
-								{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
-									<div id="captcha_spot"></div>
-								{+END}
-							{+END}
-							{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
-								{$GET,CAPTCHA}
+						{+START,SET,CAPTCHA}
+							{+START,IF_PASSED_AND_TRUE,USE_CAPTCHA}
+								<div class="comments_captcha">
+									<div class="box box___comments_posting_form__captcha"><div class="box_inner">
+										{+START,IF,{$CONFIG_OPTION,audio_captcha}}
+											<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_2,<a class="js-click-play-self-audio-link" title="{!captcha:AUDIO_VERSION}" href="{$FIND_SCRIPT*,captcha,1}?mode=audio{$KEEP*,0,1}&amp;cache_break={$RAND}">{!captcha:AUDIO_VERSION}</a>}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+										{+END}
+										{+START,IF,{$NOT,{$CONFIG_OPTION,audio_captcha}}}
+											<p>{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}<label for="captcha">{+END}{!DESCRIPTION_CAPTCHA_3}{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}</label>{+END}</p>
+										{+END}
+										{+START,IF,{$CONFIG_OPTION,css_captcha}}
+											<iframe {$?,{$BROWSER_MATCHES,ie}, frameBorder="0" scrolling="no"} id="captcha_frame" class="captcha_frame" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}">{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}</iframe>
+										{+END}
+										{+START,IF,{$NOT,{$CONFIG_OPTION,css_captcha}}}
+											<img id="captcha_image" title="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" alt="{!CONTACT_STAFF_TO_JOIN_IF_IMPAIRED}" src="{$FIND_SCRIPT*,captcha}{$KEEP*,1,1}&amp;cache_break={$RAND}" />
+										{+END}
+										<input maxlength="6" size="8" class="input_text_required" type="text" id="captcha" name="captcha" />
+									</div></div>
+								</div>
 							{+END}
 						{+END}
 
-						{$SET,has_preview_button,{$AND,{$NOT,{$MOBILE}},{$JS_ON},{$CONFIG_OPTION,enable_previews},{$NOT,{$VALUE_OPTION,xhtml_strict}}}}
+						{+START,IF,{$CONFIG_OPTION,js_captcha}}
+							{+START,IF_NON_EMPTY,{$TRIM,{$GET,CAPTCHA}}}
+								<div id="captcha_spot"></div>
+							{+END}
+						{+END}
+						{+START,IF,{$NOT,{$CONFIG_OPTION,js_captcha}}}
+							{$GET,CAPTCHA}
+						{+END}
+
+						{$SET,has_preview_button,{$AND,{$DESKTOP},{$JS_ON},{$CONFIG_OPTION,enable_previews},{$NOT,{$VALUE_OPTION,xhtml_strict}}}}
 						{+START,IF_PASSED,SKIP_PREVIEW}{$SET,has_preview_button,0}{+END}
 
 						<div class="proceed_button buttons_group {$?,{$GET,has_preview_button},contains_preview_button,contains_no_preview_button}">
-							{+START,IF,{$NOT,{$MOBILE}}}
+							{+START,IF,{$DESKTOP}}
 								{+START,IF,{$GET,has_preview_button}}
-									<input id="preview_button" accesskey="p" tabindex="250" class="tabs__preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item}" type="button" value="{!PREVIEW}" />
+									<input id="preview_button" accesskey="p" tabindex="250" class="tabs__preview js-click-do-form-preview {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} desktop_inline" type="button" value="{!PREVIEW}" />
 								{+END}
 							{+END}
 
 							{+START,IF_PASSED,MORE_URL}
-								<input tabindex="6" accesskey="y" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-full-editor" type="button" value="{$?,{$MOBILE},{!MORE},{!FULL_EDITOR}}" />
+								<button tabindex="6" accesskey="y" class="buttons__new_post_full {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-full-editor" type="button">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!FULL_EDITOR}</span>{+END}<span class="inline_mobile">{!MORE}</span></button>
 							{+END}
 
 							{+START,IF_PASSED,ATTACHMENTS}
@@ -257,7 +244,7 @@
 
 							{+START,SET,button_title}{+START,IF_PASSED,SUBMIT_NAME}{SUBMIT_NAME*}{+END}{+START,IF_NON_PASSED,SUBMIT_NAME}{+START,IF_NON_EMPTY,{TITLE}}{TITLE*}{+END}{+START,IF_EMPTY,{TITLE}}{!SEND}{+END}{+END}{+END}
 							{+START,SET,button_icon}{+START,IF_PASSED,SUBMIT_ICON}{SUBMIT_ICON*}{+END}{+START,IF_NON_PASSED,SUBMIT_ICON}{+START,IF_NON_PASSED,MORE_URL}buttons__new_comment{+END}{+START,IF_PASSED,MORE_URL}buttons__new_reply{+END}{+END}{+END}
-							<input tabindex="8" accesskey="u" id="submit_button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near_preview_button,not_near_preview_button} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments" type="button" value="{$?,{$MOBILE},{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}},{$GET,button_title}}" />
+							<button tabindex="8" accesskey="u" id="submit_button" class="{$GET,button_icon} {$?,{$GET,has_preview_button},near_preview_button,not_near_preview_button} {$?,{$IS_EMPTY,{COMMENT_URL}},button_screen,button_screen_item} js-btn-submit-comments" type="button">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{$GET,button_title}</span>{+END}<span class="inline_mobile">{$REPLACE,{!cns:REPLY},{!_REPLY},{$GET,button_title}}</span></button>
 						</div>
 					</div>
 				</div>

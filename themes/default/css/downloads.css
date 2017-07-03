@@ -10,7 +10,7 @@
 	padding-{!en_left}: 1em;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.download_box_description.pic {
 		margin-right: 180px;
 	}
@@ -25,12 +25,16 @@
 .download_field_name_column {
 	width: 45%;
 }
-
 .download_field_value_column {
 	width: 55%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.download_field_name_column, .download_field_value_column {
+		width: auto;
+	}
+/*{+END}*/
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.download_description {
 		margin-{!en_right}: 18em;
 	}
@@ -52,10 +56,16 @@
 
 /* Floated Right */
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.download_metadata {
 		float: {!en_right};
 		width: 17em;
+	}
+/*{+END}*/
+
+/*{+START,CSS_MODE,mobile}*/
+	.download_metadata .right {
+		float: none;
 	}
 /*{+END}*/
 
@@ -91,6 +101,11 @@
 .download_stats_wrapper {
 	margin-top: 1em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.download_stats_wrapper {
+		margin-bottom: 1em;
+	}
+/*{+END}*/
 
 .download_stats th, .download_stats td {
 	background-color: {$GET,area_background};

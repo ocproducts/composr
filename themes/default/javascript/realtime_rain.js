@@ -211,7 +211,7 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
             'html': $cms.dom.html(_clonedMessage)
         });
 
-        leftPos += 200;
+        leftPos += (windowWidth > 900) ? 200 : 20;
         if (leftPos >= windowWidth) {
             // Too much!
             return true; // (break)

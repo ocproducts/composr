@@ -15,17 +15,17 @@
 		{$INSERT_SPAMMER_BLACKHOLE}
 
 		<p class="lonely_label"><label for="bans">{!BANNED_ADDRESSES}:</label></p>
-		<div class="constrain_field">
+		<div>
 			<textarea cols="30" rows="14" class="wide_field textarea_scroll" id="bans" name="bans">{BANS*}</textarea>
 		</div>
 
 		<p class="lonely_label"><label for="locked_bans">{!EXTERNALLY_BANNED_ADDRESSES}:</label></p>
-		<div class="constrain_field">
+		<div>
 			<textarea readonly="readonly" cols="30" rows="14" class="wide_field textarea_scroll" id="locked_bans" name="locked_bans">{LOCKED_BANS*}</textarea>
 		</div>
 
 		<p class="lonely_label"><label for="unbannable">{!UNBANNABLE_IP_ADDRESSES}:</label></p>
-		<div class="constrain_field">
+		<div>
 			<textarea cols="30" rows="14" class="wide_field textarea_scroll" id="unbannable" name="unbannable">{UNBANNABLE*}</textarea>
 		</div>
 

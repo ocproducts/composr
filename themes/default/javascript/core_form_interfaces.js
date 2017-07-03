@@ -297,7 +297,7 @@
             name = strVal(params.name);
 
         if ((value === '') && (name === 'edit_password')) {
-            // Work around annoying Firefox bug. It ignores autocomplete="off" if a password was already saved somehow
+            // LEGACY Work around annoying Firefox bug. It ignores autocomplete="off" if a password was already saved somehow
             window.setTimeout(function () {
                 $cms.dom.$('#' + name).value = '';
             }, 300);
@@ -402,14 +402,16 @@
     };
 
     $cms.templates.formScreenFieldDescription = function formScreenFieldDescription(params, img) {
-        $cms.dom.one(img, 'mouseover', function () {
+        var activateTooltip = function () {
             if (img.ttitle === undefined) {
                 img.ttitle = img.title;
             }
             img.title = '';
             //img.have_links = true;
             img.setAttribute('data-cms-rich-tooltip', '1');
-        });
+        };
+        $cms.dom.one(img, 'mouseover', activateTooltip);
+        $cms.dom.one(img, 'click', activateTooltip);
     };
 
     $cms.templates.formScreenInputLine = function formScreenInputLine(params) {
@@ -488,7 +490,10 @@
             $cms.form.setUpChangeMonitor(input.parentElement);
         }
 
-        $cms.manageScrollHeight(textarea);
+        if (!$cms.$MOBILE()) {
+            $cms.manageScrollHeight(textarea);
+        }
+
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
             setUpComcodeAutocomplete(params.name, required.includes('wysiwyg'));
         });
@@ -763,9 +768,9 @@
             $cms.form.setUpChangeMonitor(el.parentElement);
         }
 
-        $cms.manageScrollHeight(textArea);
-
         if (!$cms.$MOBILE()) {
+            $cms.manageScrollHeight(textArea);
+
             $cms.dom.on(textArea, 'change keyup', function () {
                 $cms.manageScrollHeight(textArea);
             });
@@ -835,7 +840,10 @@
             }
         }
 
-        $cms.manageScrollHeight(postEl);
+        if (!$cms.$MOBILE()) {
+            $cms.manageScrollHeight(postEl);
+        }
+
         $cms.requireJavascript(['jquery', 'jquery_autocomplete']).then(function () {
             setUpComcodeAutocomplete(name, true);
         });
@@ -1190,7 +1198,9 @@
             }
         }
 
-        $cms.manageScrollHeight(document.getElementById(params.name));
+        if (!$cms.$MOBILE()) {
+            $cms.manageScrollHeight(document.getElementById(params.name));
+        }
     };
 
     $cms.templates.formScreenInputTime = function formScreenInputTime(params) {
@@ -1418,8 +1428,8 @@
             }
             pic.alt = '{!CONTRACT;^}';
             pic.title = '{!CONTRACT;^}';
-            newDisplayState = (fieldInput.localName === 'tr') ? 'table-row' : 'block';
-            newDisplayState2 = 'block';
+            newDisplayState = ''; // default state from CSS
+            newDisplayState2 = ''; // default state from CSS
         } else { /* Contracting now */
             pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('contract', 'expand') : $cms.img('{$IMG;,1x/trays/expand}');
             if (pic.srcset !== undefined) {

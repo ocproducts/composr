@@ -99,7 +99,7 @@
             }
             setTimeout(function () {
                 list.style.zIndex++;
-            }, 100); // Fixes Opera by causing a refresh
+            }, 100); // LEGACY Fixes Opera by causing a refresh
 
             if (listContents.children.length === 0) {
                 return;

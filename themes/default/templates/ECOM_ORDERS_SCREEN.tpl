@@ -1,6 +1,6 @@
 {TITLE}
 
-<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table" itemprop="significantLinks">
+<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive_table" itemprop="significantLinks">
 	<thead>
 		<tr>
 			<th>{!ECOM_ORDER}</th>
@@ -8,8 +8,8 @@
 			<th>{$TAX_LABEL}</th>
 			<th>{!SHIPPING_COST}</th>
 			<th>{!ORDERED_DATE}</th>
-			{+START,IF,{$NOT,{$MOBILE}}}
-				<th>{!STATUS}</th>
+			{+START,IF,{$DESKTOP}}
+				<th class="cell_desktop">{!STATUS}</th>
 			{+END}
 			<th>{!TRANSACTION}</th>
 		</tr>
@@ -28,11 +28,9 @@
 						<strong>{ORDER_TITLE*}</strong>
 					{+END}
 
-					{+START,IF,{$MOBILE}}
-						<p class="assocated_details">
-							<span class="field_name">{!STATUS}:</span> {STATUS*}
-						</p>
-					{+END}
+					<p class="assocated_details block_mobile">
+						<span class="field_name">{!STATUS}:</span> {STATUS*}
+					</p>
 				</td>
 				<td>
 					{$CURRENCY_SYMBOL,{CURRENCY}}{TOTAL_PRICE*}
@@ -46,8 +44,8 @@
 				<td>
 					{DATE*}
 				</td>
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<td>
+				{+START,IF,{$DESKTOP}}
+					<td class="cell_desktop">
 						{STATUS*}
 					</td>
 				{+END}
@@ -57,7 +55,7 @@
 			</tr>
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr>
-					<td colspan="{$?,{$MOBILE},4,5}">
+					<td class="responsive_table_no_prefix" colspan="7">
 						{NOTE*}
 					</td>
 				</tr>

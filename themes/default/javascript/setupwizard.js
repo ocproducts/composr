@@ -9,8 +9,10 @@
 
     $cms.functions.adminSetupWizardStep5 = function () {
         var cuz = document.getElementById('collapse_user_zones');
-        cuz.addEventListener('change', cuzFunc);
-        cuzFunc();
+        if (cuz) {
+            cuz.addEventListener('change', cuzFunc);
+            cuzFunc();
+        }
 
         function cuzFunc() {
             var gza = document.getElementById('guest_zone_access');

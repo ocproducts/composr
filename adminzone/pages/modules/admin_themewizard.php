@@ -226,7 +226,16 @@ class Module_admin_themewizard
     public function step2()
     {
         $source_theme = get_param_string('source_theme');
+        if (get_theme_option('enable_themewizard', null, $source_theme) == '0') {
+            warn_exit(do_lang_tempcode('THEME_NOT_SUPPORTING_THEMEWIZARD', escape_html(get_theme_option('title', null, $source_theme)), escape_html($source_theme)));
+        }
+
         $algorithm = get_param_string('algorithm');
+        if (get_theme_option('supports_themewizard_equations', null, $source_theme) == '0') {
+            $algorithm = 'hsv';
+            attach_message(do_lang_tempcode('EQUATIONS_NOT_SUPPORTED'), 'notice');
+        }
+
         $seed = preg_replace('/^\#/', '', get_param_string('seed'));
         $dark = get_param_integer('dark', 0);
         $inherit_css = get_param_integer('inherit_css', 0);
@@ -454,7 +463,20 @@ class Module_admin_themewizard
      */
     public function _make_logo()
     {
-        $preview = do_template('LOGOWIZARD_2', array('_GUID' => '6e5a442860e5b7644b50c2345c3c8dee', 'NAME' => post_param_string('name'), 'FONT' => post_param_string('font'), 'LOGO_THEME_IMAGE' => post_param_string('logo_theme_image'), 'BACKGROUND_THEME_IMAGE' => post_param_string('background_theme_image'), 'THEME' => post_param_string('theme')));
+        $theme = post_param_string('theme');
+
+        if (get_theme_option('enable_logowizard', null, $theme) == '0') {
+            warn_exit(do_lang_tempcode('THEME_NOT_SUPPORTING_LOGOWIZARD', escape_html(get_theme_option('title', null, $theme)), escape_html($theme)));
+        }
+
+        $preview = do_template('LOGOWIZARD_2', array(
+            '_GUID' => '6e5a442860e5b7644b50c2345c3c8dee',
+            'NAME' => post_param_string('name'),
+            'FONT' => post_param_string('font'),
+            'LOGO_THEME_IMAGE' => post_param_string('logo_theme_image'),
+            'BACKGROUND_THEME_IMAGE' => post_param_string('background_theme_image'),
+            'THEME' => $theme,
+        ));
 
         require_code('templates_confirm_screen');
         return confirm_screen($this->title, $preview, '__make_logo', 'make_logo');

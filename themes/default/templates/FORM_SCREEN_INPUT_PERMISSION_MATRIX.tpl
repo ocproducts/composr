@@ -1,11 +1,11 @@
 {$REQUIRE_JAVASCRIPT,core_form_interfaces}
 
 <div class="permissions_matrix_wrap" id="enter_the_matrix" data-tpl="formScreenInputPermissionMatrix" data-tpl-params="{+START,PARAMS_JSON,SERVER_ID}{_*}{+END}">
-	<table class="columned_table autosized_table results_table">
+	<table class="columned_table autosized_table results_table responsive_table">
 		<thead>
 			<tr>
 				<th class="group_header">
-					<span class="heading_group">{!USERGROUP}</span> <span class="heading_presets">{!PINTERFACE_PRESETS}</span>
+					<span class="heading_group">{!USERGROUP}</span> <span class="heading_presets"><span class="inline_mobile"> &amp; </span>{!PINTERFACE_PRESETS}</span>
 				</th>
 
 				<th class="view_header">
@@ -19,8 +19,7 @@
 				{+END}
 
 				{+START,IF,{$IS_NON_EMPTY,{OVERRIDES}}}
-					<th>
-					</th>
+					<th></th>
 				{+END}
 			</tr>
 		</thead>
@@ -28,17 +27,19 @@
 		<tbody>
 			{PERMISSION_ROWS}
 
+			{$,Mass-set}
 			<tr>
 				<td class="form_table_field_name">
+					<span class="inline_mobile"><em>{!MASS_PERMISSION_SETTING}</em></span>
 				</td>
 
 				<td class="form_table_field_input">
-					<input class="button_micro js-click-permissions-toggle" type="button" value="+/-" />
+					<input class="button_micro js-click-permissions-toggle" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" />
 				</td>
 
 				{+START,LOOP,OVERRIDES}
 					<td class="form_table_field_input">
-						<input class="button_micro js-click-permissions-toggle" type="button" value="+/-" />
+						<input class="button_micro js-click-permissions-toggle" type="button" value="+/-" title="{!MASS_PERMISSION_SETTING}" />
 					</td>
 				{+END}
 

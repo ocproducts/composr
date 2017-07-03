@@ -767,7 +767,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             // Find out about our message
             id = messages[i].getAttribute('id');
             timestamp = messages[i].getAttribute('timestamp');
-            if (!id) id = messages[i].id; // Weird fix for Opera
+            if (!id) id = messages[i].id; // LEGACY Weird fix for Opera
             if (((window.top_window.last_message_id) && (parseInt(id) <= window.top_window.last_message_id)) && ((window.top_window.last_timestamp) && (parseInt(timestamp) <= window.top_window.last_timestamp))) {
                 continue;
             }
@@ -831,7 +831,14 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
             // Non-first message
             if (messageContainer.children.length > 0) {
-                messageContainer.insertBefore(clonedMessage, messageContainer.firstElementChild);
+                // TODO: Salman, map config option
+                {+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}
+                    messageContainer.insertBefore(clonedMessage, messageContainer.firstElementChild);
+                {+END}
+                {+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+                    messageContainer.appendChild(clonedMessage);
+                    messageContainer.scrollTop = 1000000;
+                {+END}
 
                 if (!firstSet) // Only if no other message sound already for this event update
                 {

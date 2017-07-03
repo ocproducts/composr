@@ -14,7 +14,7 @@
 
 	<h2>{!EXISTING_REDIRECTS}</h2>
 
-	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table">
+	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table responsive_table">
 		<colgroup>
 			<col class="redirect_table_input_column" />
 			<col class="redirect_table_input_column" />
@@ -52,7 +52,7 @@
 
 	<h2>{!NEW_REDIRECT}</h2>
 
-	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table">
+	<div class="wide_table_wrap"><table class="columned_table wide_table redirect_table results_table responsive_table">
 		<colgroup>
 			<col class="redirect_table_input_column" />
 			<col class="redirect_table_input_column" />
@@ -101,7 +101,7 @@
 			<label for="m_notes">{!NOTES_ABOUT_REDIRECTS}</label>
 		</p>
 
-		<div class="constrain_field">
+		<div>
 			<textarea class="wide_field" id="m_notes" name="notes" cols="50" rows="10">{NOTES*}</textarea>
 		</div>
 	</div></div>

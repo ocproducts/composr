@@ -222,6 +222,7 @@ function notifications_ui($member_id_of)
         'NOTIFICATION_SECTIONS' => $notification_sections,
         'SMART_TOPIC_NOTIFICATION_CONTENT' => $smart_topic_notification_content,
         'MEMBER_ID' => strval($member_id_of),
+        'ADVANCED_COLUMN' => true,
     ));
 }
 

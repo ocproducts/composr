@@ -10,7 +10,7 @@
 
 	<div class="toggleable_tray js-tray-content"{+START,IF_PASSED,MEMBER_ID} id="user_{MEMBER_ID*}"{+END}{+START,IF,{$NOT,{HAS_SOME}}} style="display: none"{+END} aria-expanded="false">
 		<div class="wide_table_wrap"><table class="map_table form_table wide_table scrollable_inside">
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				<colgroup>
 					<col class="field_name_column" />
 					<col class="field_input_column" />
@@ -20,7 +20,7 @@
 			<tbody>
 				{+START,LOOP,EFFECTS}
 					<tr class="form_table_field_spacer">
-						<th{+START,IF,{$NOT,{$MOBILE}}} colspan="2"{+END} class="table_heading_cell">
+						<th colspan="2" class="table_heading_cell">
 							<span class="faux_h2">{EFFECT_TITLE*}</span>
 						</th>
 					</tr>
@@ -29,12 +29,6 @@
 						<th id="form_table_field_name__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_name">
 							<label for="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}"><span class="form_field_name field_name">{!BROWSE}</span></label>
 						</th>
-
-						{+START,IF,{$MOBILE}}
-							</tr>
-
-							<tr class="field_input">
-						{+END}
 
 						<td id="form_table_field_input__select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_input">
 							<select name="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" id="select_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}">
@@ -58,12 +52,6 @@
 						<th id="form_table_field_name__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_name">
 							<span class="form_field_name field_name">{!ALT_FIELD,{!UPLOAD}}</span>
 						</th>
-
-						{+START,IF,{$MOBILE}}
-							</tr>
-
-							<tr class="field_input">
-						{+END}
 
 						<td id="form_table_field_input__upload_{KEY*}{+START,IF_PASSED,MEMBER_ID}_{MEMBER_ID*}{+END}" class="form_table_field_input">
 							<div class="upload_field">

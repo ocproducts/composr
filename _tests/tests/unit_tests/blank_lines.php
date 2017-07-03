@@ -91,6 +91,8 @@ class blank_lines_test_set extends cms_test_case
                     'themes/default/templates/PAGINATION_PREVIOUS.tpl',
                     'themes/default/templates/PAGINATION_PREVIOUS_LINK.tpl',
                     'themes/default/templates/CURRENCY.tpl',
+                    'themes/default/templates/CROP_TEXT_MOUSE_OVER_INLINE.tpl',
+                    'themes/default/templates/CROP_TEXT_MOUSE_OVER.tpl',
                 ))) {
                     $expected_breaks = 0;
                 }

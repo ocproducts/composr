@@ -2,9 +2,9 @@
 
 [surround]
 [media width="150" description="A fixed-width Composr site" float="right"]data_custom/images/docs/tut_fixed_width/fixed_width.png[/media]
-Fixed width is available as a theme option in Composr, and is on by default. This tutorial explains the implementation and pros & cons of it.
+Fixed-width is available as a theme option in Composr, and is off by default. This tutorial explains the implementation and pros & cons of it.
 
-A topic of regular disagreement in web design is whether 'fixed-width' designs or 'fluid' designs are better. A fixed-width design is one where the horizontal width of the website is fixed, so that it doesn't change when different resolutions are selected.
+Traditionally a topic of regular disagreement in web design is whether 'fixed-width' designs or 'fluid' designs are better. A fixed-width design is one where the horizontal width of the website is fixed, so that it doesn't change when different resolutions are selected.
 
 Proponents of fixed-width argue:
  - that fluid designs (non fixed-width designs) can not function well, because things will always break down when the width significantly exceeds what was tested
@@ -22,7 +22,7 @@ Opponents of fixed-width argue:
  - that using fixed-width is done by those that are applying traditional design skills to the new online medium without adjusting them properly for that medium
 [/surround]
 
-Most modern designs are fixed width on desktop computers, and have "responsive design" adjustments to make them look good on different devices.
+Most modern designs are fluid and use responsive design techniques to make it look good on different widths. This is the default within Composr.
 
 [title="2"]See Also[/title]
 

@@ -20,6 +20,8 @@ class privilege_existence_test_set extends cms_test_case
 {
     public function testCode()
     {
+        require_code('files');
+
         $matches = array();
         $done_privileges = array();
         $done_pages = array();
@@ -36,9 +38,9 @@ class privilege_existence_test_set extends cms_test_case
         $contents = get_directory_contents(get_file_base());
 
         foreach ($contents as $f) {
-            $file_type = substr($f, -4);
+            $file_type = get_file_extension($f);
 
-            if ($file_type == '.php') {
+            if ($file_type == 'php') {
                 $c = file_get_contents(get_file_base() . '/' . $f);
 
                 $num_matches = preg_match_all('#add\_privilege\(\'[^\']+\', \'([^\']+)\'#', $c, $matches);
@@ -51,9 +53,13 @@ class privilege_existence_test_set extends cms_test_case
         }
 
         foreach ($contents as $f) {
-            $file_type = substr($f, -4);
+            if (should_ignore_file($f, IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
+                continue;
+            }
 
-            if ($file_type == '.php') {
+            $file_type = get_file_extension($f);
+
+            if ($file_type == 'php') {
                 $c = file_get_contents(get_file_base() . '/' . $f);
 
                 $num_matches = preg_match_all('#has\_privilege\((get_member\(\)|\$\w+), \'([^\']+)\'\)#', $c, $matches);
@@ -96,7 +102,7 @@ class privilege_existence_test_set extends cms_test_case
                 }
             }
 
-            if ($file_type == '.tpl' || $file_type == '.txt') {
+            if ($file_type == 'tpl' || $file_type == 'txt') {
                 $c = file_get_contents(get_file_base() . '/' . $f);
 
                 $num_matches = preg_match_all('#\{\$HAS\_PRIVILEGE,(\w+)\}#', $c, $matches);

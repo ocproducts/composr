@@ -14,29 +14,29 @@
 	<div class="toggleable_tray js-tray-content" id="c_{GROUPING_ID*}"{+START,IF,{$NEQ,{DISPLAY},block}} style="display: {DISPLAY*}"{+END}>
 		<div class="wide_table_wrap">
 			<table class="columned_table wide_table cns_forum_grouping" itemprop="significantLinks">
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					<colgroup>
-						<col class="cns_forum_grouping_column1" />
+						<col class="cns_forum_grouping_column1 column_desktop" />
 						<col class="cns_forum_grouping_column2" />
-						<col class="cns_forum_grouping_column3" />
-						<col class="cns_forum_grouping_column4" />
+						<col class="cns_forum_grouping_column3 column_desktop" />
+						<col class="cns_forum_grouping_column4 column_desktop" />
 						<col class="cns_forum_grouping_column5" />
 					</colgroup>
 				{+END}
 
 				<thead>
 					<tr>
-						{+START,IF,{$NOT,{$MOBILE}}}
-							<th class="cns_forum_box_left"></th>
+						{+START,IF,{$DESKTOP}}
+							<th class="ocf_forum_box_left cell_desktop"></th>
 						{+END}
 						<th{+START,IF,{$MOBILE}} class="cns_forum_box_left"{+END}>
 							{!FORUM_NAME}
 						</th>
-						{+START,IF,{$NOT,{$MOBILE}}}
-							<th class="cns_forum_grouping_centered_header">
+						{+START,IF,{$DESKTOP}}
+							<th class="cns_forum_grouping_centered_header cell_desktop">
 								{!COUNT_TOPICS}
 							</th>
-							<th class="cns_forum_grouping_centered_header">
+							<th class="cns_forum_grouping_centered_header cell_desktop">
 								{!COUNT_POSTS}
 							</th>
 						{+END}
@@ -51,13 +51,13 @@
 				</tbody>
 			</table>
 			<div class="cns_table_footer"><div><div>
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					<div class="cns_column1 cns_forum_box_bleft"></div>
 				{+END}
 				<div class="cns_column1{+START,IF,{$MOBILE}} cns_forum_box_bleft{+END}"></div>
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<div class="cns_column1"></div>
-					<div class="cns_column1"></div>
+				{+START,IF,{$DESKTOP}}
+					<div class="cns_column1 block_desktop"></div>
+					<div class="cns_column1 block_desktop"></div>
 				{+END}
 				<div class="cns_column1 cns_forum_box_bright"></div>
 			</div></div></div>

@@ -18,28 +18,42 @@
 				<tr>
 					<th>{!THEME}</th>
 					<th>{!TOOLS}</th>
-					<th class="theme_manage_table_icon_column" colspan="3">{!EDIT}</th>
+					<th>{!EDIT}</th>
 				</tr>
 			</thead>
 			<tbody>
 				{$SET,done_one_theme,0}
 				{+START,LOOP,THEMES}
 					<tr class="{+START,IF,{$GET,done_one_theme}}thick_border{+END}{+START,IF,{IS_MAIN_THEME}} active_item{+END}">
-						<td role="note">
-							{+START,SET,TOOLTIP}
-								<kbd>{NAME*}</kbd>, {!BY_SIMPLE,<em>{AUTHOR`}</em>}
-								{+START,IF,{$NEQ,{DATE},{!NA_EM}}}
-									{DATE*}
-								{+END}
-							{+END}
+						<td role="note" class="theme_details">
+							{+START,IF,{$DESKTOP}}
+								<div class="block_desktop">
+									{+START,SET,TOOLTIP}
+										<kbd>{NAME*}</kbd>, {!BY_SIMPLE,<em>{AUTHOR`}</em>}
+										{+START,IF,{$NEQ,{DATE},{!NA_EM}}}
+											{DATE*}
+										{+END}
+									{+END}
 
-							<strong class="comcode_concept_inline" data-mouseover-activate-tooltip="['{$GET;^*,TOOLTIP}', 'auto']">{TITLE*}</strong>
+									<strong class="comcode_concept_inline" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'{$GET;^*,TOOLTIP}','auto');">{TITLE*}</strong>
+								</div>
+							{+END}
+							<div class="block_mobile">
+								<p><strong>{TITLE*}</strong></p>
+								<p><kbd>{NAME*}</kbd></p>
+								<p>{!BY_SIMPLE,<em>{AUTHOR`}</em></p>
+								{+START,IF,{$NEQ,{DATE},{!NA_EM}}}
+									<p>{DATE*}</p>
+								{+END}
+							</div>
 							<dl>
 								{+START,IF_PASSED,SEED}
-									<dt>{!SEED_COLOUR}:</dt><dd><strong style="background: white; color: #{SEED*}">{SEED*}</strong></dd>
+									<dt>{!SEED_COLOUR}:</dt>
+									<dd class="seed"><strong style="background: white; color: #{SEED*}">{SEED*}</strong></dd>
 								{+END}
 							</dl>
 						</td>
+
 						<td class="manage_theme_export">
 							{+START,IF,{$NEQ,{NAME},default}}
 								<p><img alt="" src="{$IMG*,icons/24x24/menu/_generic_admin/export}" srcset="{$IMG*,icons/48x48/menu/_generic_admin/export} 2x" /> <a data-cms-confirm-click="{!SWITCH_MODULE_WARNING*}" href="{$PAGE_LINK*,adminzone:admin_addons:_addon_export:exp=theme:theme={NAME}}">{!addons:EXPORT_THEME}</a></p>
@@ -47,21 +61,27 @@
 							<p><img alt="" src="{$IMG*,icons/24x24/menu/home}" srcset="{$IMG*,icons/48x48/menu/home} 2x" /> <a id="theme_preview__{NAME*}" target="_blank" title="{!PREVIEW_THEME} {!LINK_NEW_WINDOW}" href="{$PAGE_LINK*,::keep_theme={NAME}}">{!PREVIEW_THEME}</a></p>
 							<p><img alt="" src="{$IMG*,icons/24x24/tabs/preview}" srcset="{$IMG*,icons/48x48/tabs/preview} 2x" /> <a href="{SCREEN_PREVIEW_URL*}">{!_SCREEN_PREVIEWS}</a></p>
 						</td>
-						<td class="do_theme_item">
-							<div><a rel="edit" title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}"><img alt="" src="{$IMG*,icons/48x48/menu/_generic_admin/edit_this}" /></a></div>
-							<div><a title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}">{$?,{$IS_EMPTY,{THEME_USAGE}},{!_EDIT_THEME},{!SETTINGS}}</a></div>
-						</td>
-						<td class="do_theme_item" data-cms-href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>
-							<div><a rel="edit" title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}><img alt="" src="{$IMG*,icons/48x48/menu/adminzone/style/themes/templates}" /></a></div>
-							<div><a title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>{!EDIT_TEMPLATES}</a></div>
-						</td>
-						<td class="do_theme_item" data-cms-href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>
-							<div><a rel="edit" title="{!EDIT_THEME_IMAGES}: {NAME*}" href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}><img alt="" src="{$IMG*,icons/48x48/menu/adminzone/style/themes/theme_images}" /></a></div>
-							<div><a title="{!EDIT_THEME_IMAGES}: {NAME*}" href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>{!EDIT_THEME_IMAGES}</a></div>
+
+						<td class="do_theme_items">
+							<div>
+								<div><a rel="edit" title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}"><img alt="" src="{$IMG*,icons/48x48/menu/_generic_admin/edit_this}" /></a></div>
+								<div><a title="{!EDIT_THEME}: {NAME*}" href="{EDIT_URL*}">{$?,{$IS_EMPTY,{THEME_USAGE}},{!_EDIT_THEME},{!SETTINGS}}</a></div>
+							</div>
+
+							<div data-cms-href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>
+								<div><a rel="edit" title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}><img alt="" src="{$IMG*,icons/48x48/menu/adminzone/style/themes/templates}" /></a></div>
+								<div><a title="{!EDIT_TEMPLATES}: {NAME*}" href="{TEMPLATES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>{!EDIT_TEMPLATES}</a></div>
+							</div>
+
+							<div data-cms-href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>
+								<div><a rel="edit" title="{!EDIT_THEME_IMAGES}: {NAME*}" href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}><img alt="" src="{$IMG*,icons/48x48/menu/adminzone/style/themes/theme_images}" /></a></div>
+								<div><a title="{!EDIT_THEME_IMAGES}: {NAME*}" href="{IMAGES_URL*}"{+START,IF,{$EQ,{NAME},default}} data-cms-confirm-click="{!EDIT_DEFAULT_THEME_WARNING*}"{+END}>{!EDIT_THEME_IMAGES}</a></div>
+							</div>
 						</td>
 					</tr>
+
 					<tr>
-						<td colspan="5" class="manage_theme_theme_usage">
+						<td colspan="3" class="manage_theme_theme_usage">
 							{+START,IF_NON_EMPTY,{THEME_USAGE}}{THEME_USAGE*}{+END}
 							{+START,IF,{$EQ,{NAME},default}}
 								<p>{!DEFAULT_THEME_INHERITANCE}</p>

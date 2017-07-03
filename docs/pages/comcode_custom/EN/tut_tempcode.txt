@@ -715,7 +715,19 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$MOBILE}</td>
-			<td>Whether a Smartphone (for example) is being used. Composr is designed to be pretty good at detecting this, but if you need to specify additional user agent strings you can make a <kbd>text_custom/mobile_devices.txt</kbd> file with <kbd>mobileuseragentsubstring=0|1</kbd> lines in it (e.g. <kbd>iphone=1</kbd> for iPhone to be detected as mobile, and <kbd>ipad=0</kbd> for iPad to not be detected as mobile). If you want to detect smartphones in CSS we suggest you either use this symbol (which the default theme uses) or if you prefer use <a target="_blank" title="CSS media queries (this link will open in a new window)" href="http://css-tricks.com/css-media-queries/">CSS media queries</a> inside your CSS files to create override rules</td>
+			<td>Whether a Smartphone (for example) is being used. Composr is designed to be pretty good at detecting this, but if you need to specify additional user agent strings you can make a <kbd>text_custom/mobile_devices.txt</kbd> file with <kbd>mobileuseragentsubstring=0|1</kbd> lines in it (e.g. <kbd>iphone=1</kbd> for iPhone to be detected as mobile, and <kbd>ipad=0</kbd> for iPad to not be detected as mobile). If you want to detect smartphones in CSS we have a separate <kbd>CSS_MODE</kbd> directive</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$DESKTOP}</td>
+			<td>The inverse of <kbd>{$MOBILE}</kbd></td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$LTR}</td>
+			<td>If the current language pack is left-to-right (most packs are)</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$RTL}</td>
+			<td>If the current language pack is right-to-left (Arabic etc)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$THEME}</td>
@@ -1104,6 +1116,10 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 		<tr style="background: #DDFFDD">
 			<td>{$CONFIG_OPTION,optionname}</td>
 			<td>Get the value of a config option</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$THEME_OPTION,optionname}</td>
+			<td>Get the value of a config option that can be overridden in a theme</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$VALUE_OPTION,optionname}</td>
@@ -1697,8 +1713,12 @@ You can store and retrieve values in Tempcode variables. These work across templ
 			<td>Get the value of a Tempcode variable (give it the name of a variable, returns the value). If you set the 2nd parameter to "1" then the Tempcode cache will be reset for the value being received (allowing it to re-evaluate the value, i.e. operate fully dynamically). This must be set on all GET calls to the same value, otherwise the Tempcode may be flattened prematurely. The <kbd>-</kbd> must be used to do the initial SET.</td>
 		</tr>
 		<tr style="background: #DDFFDD">
-			<td>{$THEME_WIZARD_COLOR,#RRGGBB,name,equation}</td>
+			<td>{$THEMEWIZARD_COLOR,#RRGGBB,name,equation}</td>
 			<td>Sets a theme wizard colour that can be retrieved from <kbd>name</kbd> as a Tempcode variable. The equation is actually ignored during Tempcode evaluation but is picked up by the Theme Wizard.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>{$CSS_MODE,name,from-to,mobileModeBehaviour}</td>
+			<td>Creates a CSS mode for the <kbd>CSS_MODE</kbd> directive. They work both as responsive design breakpoints, and rule output control for mobile mode. <kbd>from</kbd> and <kbd>to</kbd> are numeric, or <kbd>to</kbd> can also be <kbd>infinity</kbd>. <kbd>mobileModeBehaviour</kbd> is either <kbd>mobileModeMedia</kbd> (use <kbd>@media</kbd> rules) or <kbd>mobileModeKeep</kbd> (use <kbd>@media</kbd> rules on desktop mode, output on mobile mode) or <kbd>mobileModeDiscard</kbd> (use <kbd>@media</kbd> rules on desktop mode, discard on mobile mode)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>{$INC,test}</td>
@@ -1840,8 +1860,16 @@ Note that you cannot use directives for symbol parameters because directives con
 			<td>A comment (i.e. does nothing)</td>
 		</tr>
 		<tr style="background: #DDFFDD">
+			<td>CSS_MODE</td>
+			<td>Takes a parameter which will usually be either <kbd>mobile</kbd> or <kbd>desktop</kbd>. Basically on mobile mode it only outputs the directive content for [tt]mobile[/tt], while on desktop mode it will output using media rules (i.e. responsive design). That said, the codes are actually configurable/extendable in <kbd<global.css</kbd>.</td>
+		</tr>
+		<tr style="background: #DDFFDD">
 			<td>NO_PREPROCESSING</td>
 			<td>Avoid preprocessing of anything inside the directive. This is needed for complex cases such as when you need to do heavy optimisation of unusual code paths, or unusual GET/SET situations with shared variables which may not always exist (and need to be evaluated therefore in a strictly linear way).</td>
+		</tr>
+		<tr style="background: #DDFFDD">
+			<td>MAKE_MOBILE</td>
+			<td>On mobile mode perform some basic conversions on the enclosed HTML to make it mobile-friendly. Covered in the [page="_SEARCH:tut_mobile"]Mobile design tutorial[/page].</td>
 		</tr>
 	</tbody>
 </table>

@@ -1,4 +1,8 @@
 <div data-view="ZoneEditorPanel" data-view-params="{+START,PARAMS_JSON,COMCODE,CLASS,ID,CURRENT_ZONE}{_*}{+END}">
+	<div class="block_mobile">
+		 <h2>{ID*}</h2>
+	</div>
+
 	{$,Tab buttons}
 	<div class="float_surrounder">
 		<div class="ze_tabs tabs" role="tablist">
@@ -48,7 +52,7 @@
 						</div>
 					</div>
 				{+END}
-				<div class="constrain_field">
+				<div>
 					<textarea rows="50" cols="20" class="{$?,{IS_PANEL},ze_textarea,ze_textarea_middle} {CLASS*} js-ta-ze-comcode textarea_scroll" id="edit_{ID*}_textarea" name="{ID*}">{COMCODE*}</textarea>
 
 					{+START,IF_PASSED,DEFAULT_PARSED}
@@ -108,7 +112,7 @@
 				{$INSERT_SPAMMER_BLACKHOLE}
 
 				<div class="wide_table_wrap"><table class="map_table form_table wide_table">
-					{+START,IF,{$NOT,{$MOBILE}}}
+					{+START,IF,{$DESKTOP}}
 						<colgroup>
 							<col class="field_name_column" />
 							<col class="field_input_column" />

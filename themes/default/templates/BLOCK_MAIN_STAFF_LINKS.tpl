@@ -23,7 +23,7 @@
 			<form id="staff_links_list_{$GET%,RAND_STAFF_LINKS}_form" title="{!EDIT}: {!LINKS}" action="{URL*}" method="post" style="display: none" aria-hidden="true" autocomplete="off">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
-				<div class="constrain_field"><label for="staff_links_edit" class="accessibility_hidden">{!EDIT}</label><textarea cols="100" rows="30" id="staff_links_edit" name="staff_links_edit" class="wide_field">{+START,LOOP,UNFORMATTED_LINKS}{LINKS*}&#10;&#10;{+END}</textarea></div>
+				<div><label for="staff_links_edit" class="accessibility_hidden">{!EDIT}</label><textarea cols="100" rows="30" id="staff_links_edit" name="staff_links_edit" class="wide_field">{+START,LOOP,UNFORMATTED_LINKS}{LINKS*}&#10;&#10;{+END}</textarea></div>
 
 				<div class="buttons_group">
 					<input data-disable-on-click="1" class="button_screen_item buttons__save {+START,IF,{$HAS_PRIVILEGE,comcode_dangerous}}js-click-form-submit-headless{+END}" type="submit" value="{!SAVE}" />

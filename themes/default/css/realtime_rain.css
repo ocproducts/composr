@@ -3,15 +3,15 @@
  Copyright (c) ocProducts, 2004-2016
 */
 
-{$THEME_WIZARD_COLOR,#ffffff,bubble_hover_link,100% #FFFFFF}
-{$THEME_WIZARD_COLOR,#000000,bubble_link,100% #000000}
-{$THEME_WIZARD_COLOR,#ffffff,bubble_link_inverted,100% #FFFFFF}
-{$THEME_WIZARD_COLOR,#000000,bubble_hover_link_inverted,100% #000000}
-{$THEME_WIZARD_COLOR,#ffffff,bubble_text,100% #FFFFFF}
-{$THEME_WIZARD_COLOR,#333333,bubblescape,100% #333333}
-{$THEME_WIZARD_COLOR,#444444,bubblescape_background,100% #444444}
-{$THEME_WIZARD_COLOR,#777777,bubblescape_island,100% #777777}
-{$THEME_WIZARD_COLOR,#3a3a3a,bubblescape_outside,100% #3A3A3A}
+{$THEMEWIZARD_COLOR,#ffffff,bubble_hover_link,100% #FFFFFF}
+{$THEMEWIZARD_COLOR,#000000,bubble_link,100% #000000}
+{$THEMEWIZARD_COLOR,#ffffff,bubble_link_inverted,100% #FFFFFF}
+{$THEMEWIZARD_COLOR,#000000,bubble_hover_link_inverted,100% #000000}
+{$THEMEWIZARD_COLOR,#ffffff,bubble_text,100% #FFFFFF}
+{$THEMEWIZARD_COLOR,#333333,bubblescape,100% #333333}
+{$THEMEWIZARD_COLOR,#444444,bubblescape_background,100% #444444}
+{$THEMEWIZARD_COLOR,#777777,bubblescape_island,100% #777777}
+{$THEMEWIZARD_COLOR,#3a3a3a,bubblescape_outside,100% #3A3A3A}
 
 .page_running_admin_realtime_rain {
 	background: {$GET,bubblescape_outside};
@@ -43,13 +43,22 @@
 }
 
 #news_ticker {
-	position: absolute;
 	z-index: 100;
-	width: 446px;
 	height: auto;
 	overflow: hidden;
 	min-height: 116px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker {
+		position: absolute;
+		width: 446px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker {
+		width: 100%;
+	}
+/*{+END}*/
 #news_ticker h1 {
 	color: {$GET,bubble_text};
 	font-weight: bold;
@@ -58,35 +67,75 @@
 	padding: 11px 15px;
 	margin: 0;
 	background: url('{$IMG;,realtime_rain/news-header}') no-repeat 0 0;
-	width: 416px;
 	border: 0;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker h1 {
+		width: 416px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker h1 {
+		width: 100%;
+		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		background-size: 100% 100%;
+	}
+/*{+END}*/
 #news_ticker .news_inside {
 	background: url('{$IMG;,realtime_rain/news-bg}') repeat-y center top;
 	overflow: hidden;
-	width: 446px;
 	margin: 0 auto;
 	padding: 0;
-	float: left;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker .news_inside {
+		float: left;
+		width: 446px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker .news_inside {
+		width: 100%;
+		background-position: left top;
+		background-size: 100% 100%;
+	}
+/*{+END}*/
 #news_ticker .news_content {
 	overflow: hidden;
 	height: auto;
-	width: 401px;
 	color: {$GET,bubble_text};
 	font-size: 0.75em;
-	padding: 0 10px;
-	margin: 0 auto;
+	padding: 0 20px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker .news_content {
+		width: 401px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker .news_content {
+		width: 100%;
+	}
+/*{+END}*/
 #news_ticker .news_content p {
 	font-size: 0.95em;
 }
 #news_ticker .news_footer {
 	background: url('{$IMG;,realtime_rain/news-bot}') no-repeat;
 	height: 21px;
-	width: 446px;
 	float: left;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#news_ticker .news_footer {
+		width: 446px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#news_ticker .news_footer {
+		width: 100%;
+		background-size: 100% 100%;
+	}
+/*{+END}*/
 
 #news_ticker, #time_line:hover {
 	opacity: 0.5;
@@ -104,11 +153,13 @@
 	bottom: 10px;
 	z-index: 100;
 }
-#timer_inner {
-	width: 962px;
-	margin: 0 auto;
-}
-#real_time_indicator {
+/*{+START,CSS_MODE,desktop}*/
+	#timer_inner {
+		width: 962px;
+		margin: 0 auto;
+	}
+/*{+END}*/
+	#real_time_indicator {
 	background: url('{$IMG;,realtime_rain/realtime-bubble}') no-repeat 0 0;
 	overflow: hidden;
 	font-size: 0.75em;
@@ -122,12 +173,24 @@
 	text-align: center;
 }
 #timer {
-	width: 952px;
 	height: 38px;
 	background: url('{$IMG;,realtime_rain/timer-bg}') no-repeat;
 	margin-top: 5px;
-	padding: 8px 0 0 10px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	#timer {
+		width: 952px;
+		padding: 8px 0 0 10px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#timer {
+		padding: 4px 0 0 10px;
+		{$BETA_CSS_PROPERTY,box-sizing: border-box;}
+		width: 100%;
+		background-size: 100% 100%;
+	}
+/*{+END}*/
 #pause_but {
 	float: left;
 	margin-right: 50px;
@@ -144,6 +207,11 @@
 	display: block;
 	margin-top: 7px;
 }
+/*{+START,CSS_MODE,mobile}*/
+	#time_line img {
+		width: 200px;
+	}
+/*{+END}*/
 #next_but {
 	float: left;
 	padding: 5px 0 0 5px;

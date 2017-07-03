@@ -76,16 +76,16 @@
 			</p>
 		{+END}
 
-		{+START,IF,{$OR,{$IS_NON_EMPTY,{MODERATOR_ACTIONS}},{$AND,{$NOT,{$MOBILE}},{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}}},{THREADED}}}
-			<div class="box cns_topic_control_functions"><div class="box_inner">
-				{+START,IF,{$NOT,{$MOBILE}}}<span class="field_name">{!CONTROL_FUNCTIONS}:</span>{+END}
+		{+START,IF,{$OR,{$IS_NON_EMPTY,{MODERATOR_ACTIONS}},{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}}
+			<div class="box cns_topic_control_functions{+START,IF,{$NOR,{$IS_NON_EMPTY,{MARKED_POST_ACTIONS}},{THREADED}}} block_desktop{+END}"><div class="box_inner">
+				{+START,IF,{$DESKTOP}}<span class="field_name inline_desktop">{!CONTROL_FUNCTIONS}:</span>{+END}
 
 				{+START,IF_NON_EMPTY,{MODERATOR_ACTIONS}}
 					<form title="{!TOPIC_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward" autocomplete="off">
 						{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 						<div class="inline">
-							<label for="tma_type" class="accessibility_hidden">{!TOPIC_ACTIONS}:</label>
+							<label for="tma_type">{!TOPIC_ACTIONS}:</label>
 							<select class="dropdown_actions" id="tma_type" name="type">
 								<option value="browse">-</option>
 								{MODERATOR_ACTIONS}
@@ -94,9 +94,9 @@
 					</form>
 				{+END}
 
-				{+START,IF,{$NOT,{$MOBILE}}}
+				{+START,IF,{$DESKTOP}}
 					{+START,IF_NON_EMPTY,{MARKED_POST_ACTIONS}}
-						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward js-form-marked-post-actions" autocomplete="off">
+						<form title="{!MARKED_POST_ACTIONS}" action="{$URL_FOR_GET_FORM*,{ACTION_URL}}" method="get" class="inline horiz_field_sep_rightward block_desktop js-form-marked-post-actions" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{ACTION_URL}}
 
 							<div class="inline">
@@ -182,7 +182,7 @@
 		{$REVIEW_STATUS,topic,{ID}}
 
 		{+START,IF_NON_EMPTY,{FORUM_ID}}
-			{+START,IF,{$CONFIG_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
+			{+START,IF,{$THEME_OPTION,show_screen_actions}}{+START,IF_PASSED,_TITLE}{$BLOCK,failsafe=1,block=main_screen_actions,title={_TITLE}}{+END}{+END}
 		{+END}
 	</div>
 </div>

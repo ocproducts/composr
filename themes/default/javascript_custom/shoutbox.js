@@ -34,7 +34,7 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
             for (var i = 0; i < messages.length; i++) {
                 if (messages[i].localName === 'div') {
                     var id = messages[i].getAttribute("id");
-                    if (!id) id = messages[i].id; // Weird fix for Opera
+                    if (!id) id = messages[i].id; // LEGACY Weird fix for Opera
                     if (id > window.sb_last_message_id && window.sb_last_message_id != -1) {
                         window.sb_last_message_id = id;
                         if ($cms.dom.html(messages[i]).indexOf('((SHAKE))') != -1) {

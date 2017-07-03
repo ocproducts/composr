@@ -92,7 +92,7 @@ class Block_side_calendar
         $as_guest = array_key_exists('as_guest', $map) ? ($map['as_guest'] == '1') : false;
         $member_id = $as_guest ? $GLOBALS['FORUM_DRIVER']->get_guest_id() : get_member();
 
-        $type = array_key_exists('param', $map) ? $map['param'] : 'year';
+        $type = empty($map['param']) ? 'year' : $map['param'];
 
         if ($type != 'listing') {
             $period_start = mktime(0, 0, 0, $month, 1, $year);

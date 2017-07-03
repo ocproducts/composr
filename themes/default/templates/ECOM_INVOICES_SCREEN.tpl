@@ -1,13 +1,13 @@
 {TITLE}
 
-<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table" itemprop="significantLinks">
+<div class="wide_table_wrap"><table class="columned_table wide_table results_table autosized_table responsive_table" itemprop="significantLinks">
 	<thead>
 		<tr>
 			<th>{!NAME}</th>
 			<th>{!AMOUNT}</th>
 			<th>{$TAX_LABEL}</th>
 			<th>{!DATE_TIME}</th>
-			{+START,IF,{$NOT,{$MOBILE}}}
+			{+START,IF,{$DESKTOP}}
 				<th>{!STATUS}</th>
 			{+END}
 			<th>{!ACTIONS}</th>
@@ -22,11 +22,9 @@
 				<td>
 					<strong>{INVOICE_TITLE*}</strong>
 
-					{+START,IF,{$MOBILE}}
-						<p class="assocated_details">
-							<span class="field_name">{!STATUS}:</span> {STATE*}
-						</p>
-					{+END}
+					<p class="assocated_details block_mobile">
+						<span class="field_name">{!STATUS}:</span> {STATE*}
+					</p>
 				</td>
 				<td>
 					{$CURRENCY,{AMOUNT},{CURRENCY},{$?,{$CONFIG_OPTION,currency_auto},{$CURRENCY_USER},{$CURRENCY}}}
@@ -37,8 +35,8 @@
 				<td>
 					{DATE*}
 				</td>
-				{+START,IF,{$NOT,{$MOBILE}}}
-					<td>
+				{+START,IF,{$DESKTOP}}
+					<td class="cell_desktop">
 						{STATE*}
 					</td>
 				{+END}
@@ -58,7 +56,7 @@
 			</tr>
 			{+START,IF_NON_EMPTY,{NOTE}}
 				<tr class="{$GET,cycle}">
-					<td colspan="6">
+					<td class="responsive_table_no_prefix" colspan="6">
 						{NOTE*}
 					</td>
 				</tr>

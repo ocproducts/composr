@@ -212,7 +212,7 @@
 		<p class="nothing_here">{!NONE}</p>
 	{+END}
 	{+START,IF_NON_EMPTY,{OTHER_TICKETS}}
-		<div class="wide_table_wrap"><table class="columned_table results_table wide_table support_tickets autosized_table">
+		<div class="wide_table_wrap"><table class="columned_table results_table wide_table support_tickets autosized_table responsive_table">
 			<thead>
 				<tr>
 					<th>
@@ -221,8 +221,8 @@
 					<th>
 						{!TICKET_TYPE}
 					</th>
-					{+START,IF,{$NOT,{$MOBILE}}}
-						<th>
+					{+START,IF,{$DESKTOP}}
+						<th class="cell_desktop">
 							{!COUNT_POSTS}
 						</th>
 					{+END}

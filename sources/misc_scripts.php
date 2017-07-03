@@ -125,14 +125,7 @@ function gd_text_script()
             require_code('themewizard');
             $fg_color = find_theme_seed($theme);
         } else {
-            $ini_path = (($theme == 'default' || $theme == 'admin') ? get_file_base() : get_custom_file_base()) . '/themes/' . filter_naughty($theme) . '/theme.ini';
-            if (is_file($ini_path)) {
-                require_code('files');
-                $map = better_parse_ini_file($ini_path);
-            } else {
-                $map = array();
-            }
-            $fg_color = isset($map['seed']) ? $map['seed'] : '000000';
+            $fg_color = get_theme_option('seed');
         }
     }
     $color = imagecolorallocate($img, hexdec(substr($fg_color, 0, 2)), hexdec(substr($fg_color, 2, 2)), hexdec(substr($fg_color, 4, 2)));

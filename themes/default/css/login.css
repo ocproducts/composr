@@ -7,16 +7,16 @@
 	background-image: linear-gradient(to top right, {$GET,main_background}, {$GET,main_2_background});
 }
 
-.login_page {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.login_page {
+		background: url('{$IMG;,background_image}') no-repeat 20px 44px;
 		text-align: center;
 		width: 80%;
 		padding: 0.5em;
 		margin: 0 auto;
 		min-height: 300px;
-	/*{+END}*/
-	background: url('{$IMG;,background_image}') no-repeat 20px 44px;
-}
+	}
+/*{+END}*/
 
 .login_page input[type="text"], .login_page input[type="password"] {
 	background: rgba(255,255,255,0.5);
@@ -26,19 +26,33 @@
 	margin-top: 0;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
+	.login_page_form, .login_page_form>tbody, .login_page_form>thead, .login_page_form>tbody>tr, .login_page_form>thead>tr, .login_page_form>tr, .login_page_form>tbody>tr>th, .login_page_form>thead>tr>th, .login_page_form>tr>th, .login_page_form>tbody>tr>td, .login_page_form>thead>tr>td, .login_page_form>tr>td {
+		display: block;
+		width: auto;
+		overflow: hidden;
+		text-align: left;
+	}
+
 	.login_page_form label {
-		width: 7em;
 		display: inline-block;
+	}
+
+	.login_page_form label .must_show_together {
+		white-space: normal !important;
 	}
 /*{+END}*/
 
 table.login_page_form {
-	width: 45%;
-	float: left;
-	padding-right: 1em;
 	margin-top: 1em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	table.login_page_form {
+		width: 45%;
+		float: left;
+		padding-right: 1em;
+	}
+/*{+END}*/
 
 .login_page_form th {
 	text-align: {!en_right};
@@ -54,28 +68,40 @@ table.login_page_form {
 
 .login_page_options {
 	text-align: left;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 278px; /* On Firefox Windows it needs more space than Chrome Windows which needs more space than Chrome Mac */
-		float: left;
-	/*{+END}*/
 	margin-top: 0.5em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.login_page_options {
+		width: 278px; /* On Firefox Windows it needs more space than Chrome Windows which needs more space than Chrome Mac */
+		float: left;
+	}
+/*{+END}*/
 
 .login_page_options label {
 	display: block;
 }
 
 .login_page_options .associated_details {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		padding-left: 2em;
-	/*{+END}*/
 	display: inline-block;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.login_page_options .associated_details {
+		padding-left: 2em;
+	}
+/*{+END}*/
 
 .login_note {
 	font-size: 0.85em;
 	opacity: 0.9;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.login_note a {
+		padding-right: 0.5em;
+	}
+	.login_note br {
+		display: none;
+	}
+/*{+END}*/
 
 .login_note a {
 	font-size: 1.1em;

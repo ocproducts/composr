@@ -14,7 +14,7 @@
 
 				<div>
 					<p class="accessibility_hidden"><label for="shoutbox_message">{!MESSAGE}</label></p>
-					<p class="constrain_field"><input autocomplete="off" type="text" id="shoutbox_message" name="shoutbox_message" alt="{!MESSAGE}" class="wide_field" /></p>
+					<p><input autocomplete="off" type="text" id="shoutbox_message" name="shoutbox_message" alt="{!MESSAGE}" class="wide_field" /></p>
 				</div>
 
 				<div class="float_surrounder">

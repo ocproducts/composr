@@ -14,8 +14,28 @@ header {
 	border-bottom: 3px solid #cacaca;
 }
 
-/*{+START,IF,{$MOBILE}}*/
-	.global_navigation_inner span {
+/*{+START,CSS_MODE,desktop}*/
+	.admin_navigation_inner {
+		display: none;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.admin_navigation {
+		border-top: 1px solid {$GET,standard_border};
+		border-bottom: 1px solid {$GET,standard_border};
+		background-color: {$GET,lgrad};
+		{$BETA_CSS_PROPERTY,background-image: linear-gradient(to bottom\, {$GET,lgrad}\, {$GET,dgrad}) !important;}
+		color: {$GET,WB};
+		min-height: 3.4em;
+		position: relative;
+	}
+
+	.admin_navigation_inner {
+		overflow: hidden;
+		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
+	}
+
+	.admin_navigation_inner span {
 		float: right;
 		margin: 0.75em;
 		font-size: 1.2em;
@@ -34,11 +54,13 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 .global_messages {
 	margin: 0;
-	/*{+START,IF,{$MOBILE}}*/
+}
+/*{+START,CSS_MODE,mobile}*/
+	.global_messages {
 		padding-left: 2px;
 		padding-right: 2px;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .global_messages .box___message {
 	background-image: none !important;
@@ -56,19 +78,12 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 }
 
 /*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
-.global_breadcrumbs {
-	padding: 4px 0 7px 0;
-}
-
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
-	.global_middle {
-		padding-left: 0;
-		padding-right: 0;
+	.global_breadcrumbs {
+		padding: 4px 0 7px 0;
 	}
 /*{+END}*/
-/*{+END}*/
 
-#panel_left{
+#panel_left {
 	margin-left: 0;
 }
 
@@ -116,6 +131,12 @@ footer .global_minilinks {
 	vertical-align: middle;
 }
 
+/*{+START,CSS_MODE,mobile}*/
+	.adminzone_search .buttons__menu__pages__help {
+		display: none !important;
+	}
+/*{+END}*/
+
 /*
 =========================
 ========Revisions========
@@ -123,10 +144,20 @@ footer .global_minilinks {
 */
 
 .revisions_filter_item {
-	width: 15%;
 	margin: 0 5% 0.5em 0;
 	float: left;
+	min-height: 4em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.revisions_filter_item {
+		width: 15%;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.revisions_filter_item {
+		width: 40%;
+	}
+/*{+END}*/
 
 .revisions_filter_item_button {
 	margin: 0.75em 0.5em 0 0;

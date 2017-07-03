@@ -14,11 +14,25 @@
 	padding: 1em 0;
 }
 
-.search_tabular_header {
-	padding: 1em 0;
+.google_search_box {
+	margin-top: 3em;
+	text-align: center;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+.google_search_button {
+	white-space: nowrap;
+}
+
+.google_search_descrip {
+	font-size: 0.8em;
+}
+
+.google_search_descrip img {
+	float: {!en_left};
+	margin-{!en_right}: 5px;
+}
+
+/*{+START,CSS_MODE,desktop}*/
 	.main_search_form .search_content {
 		width: 300px;
 		max-width: 100%;
@@ -31,7 +45,11 @@
 }
 
 .search_for_search_domain_more {
-	text-align: {!en_right};
+	float: {!en_right};
+}
+
+.search_for_search_domain, .search_for_search_domain_checkbox {
+	vertical-align: middle;
 }
 
 .boolean_options {
@@ -50,13 +68,7 @@
 	max-width: 40em;
 }
 
-/*{+START,IF,{$MOBILE}}*/
-	.search_option label {
-		float: {!en_left};
-	}
-/*{+END}*/
-
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.search_option label {
 		float: {!en_left};
 		width: 250px;
@@ -79,6 +91,21 @@
 	overflow: hidden;
 }
 
+.search_field_table th {
+	vertical-align: middle;
+}
+
 .search_sort {
 	max-width: 100%;
 }
+
+/*{+START,CSS_MODE,desktop}*/
+	#search_sort, #search_direction {
+		max-width: 100%;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	#search_sort, #search_direction {
+		max-width: 140px !important;
+	}
+/*{+END}*/

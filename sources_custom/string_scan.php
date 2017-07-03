@@ -112,6 +112,33 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
     );
 
     $lang_strings_admin_initial = array_map('trim', explode("\n", trim('
+        THEME_NOT_SUPPORTING_THEMEWIZARD
+        THEME_NOT_SUPPORTING_LOGOWIZARD
+        EQUATIONS_NOT_SUPPORTED
+        INSTALLPROFILE_WITH_THEME
+        SUPPORTS_WIDE
+        CONFIG_OPTION_supports_wide
+        MOBILE_PAGES
+        CONFIG_OPTION_mobile_pages
+        ZONE_EDITOR_ENABLED
+        CONFIG_OPTION_zone_editor_enabled
+        ENABLE_EDIT_PAGE_INCLUDE_BUTTONS
+        CONFIG_OPTION_enable_edit_page_include_buttons
+        ENABLE_EDIT_PAGE_PANEL_BUTTONS
+        CONFIG_OPTION_enable_edit_page_panel_buttons
+        ENABLE_MENU_EDITOR_BUTTONS
+        CONFIG_OPTION_enable_menu_editor_buttons
+        EMBEDDED_LINKS
+        ENABLE_EDIT_BANNER_BUTTONS
+        CONFIG_OPTION_enable_edit_banner_buttons
+        CHAT_MESSAGE_DIRECTION
+        CONFIG_OPTION_chat_message_direction
+        CONFIG_OPTION_chat_message_direction_VALUE_upwards
+        CONFIG_OPTION_chat_message_direction_VALUE_downwards
+        UNKNOWN_CSS_MODE
+        CORRUPT_CSS_MODE
+        INSTALL_TEST_CONTENT
+        DESCRIPTION_INSTALL_TEST_CONTENT
         WARNING_SERVER_SOFTWARE
         WARNING_NON_MAINTAINED
         CONFIG_OPTION_reported_times
@@ -446,6 +473,10 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BANNER_SHARING_START
         BANNER_MISSING_SOURCE
         BANNER_ADS
+        WYSIWYG_FONT_UNITS
+        CONFIG_OPTION_wysiwyg_font_units
+        CONFIG_OPTION_wysiwyg_font_units_VALUE_px
+        CONFIG_OPTION_wysiwyg_font_units_VALUE_em
         ADDON
         ADDONS
         ADDONS_NOT_INSTALLED_IN_SETUPWIZARD
@@ -672,6 +703,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         GREETING
         BREADCRUMB_OVERRIDES
         IMPORTANCE_MODULUS
+        MASS_PERMISSION_SETTING
         USER_INTERACTION
         USER_INTERACTION_COMMENTING
         USER_INTERACTION_RATING
@@ -8492,6 +8524,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         HOURS_AGO
         HOVER_FOR_FULL
         HOVER_MOUSE_IMPORTANT
+        TAP_MOUSE_IMPORTANT
         HOW_REMOVE_CHAT_NOTIFICATION
         IDENTIFIER
         ID_NUM

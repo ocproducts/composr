@@ -33,7 +33,7 @@ function copyFieldsIntoBottom(i, changed) {
     }
     if (s == form.elements['theme_img_code'].options.length) {
         s = 0;
-        $cms.ui.alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, $cms.dom.$id('theme_img_code_' + i).value));
+        $cms.ui.alert('{!menus:MISSING_THEME_IMAGE_FOR_MENU;^}'.replace(/\\{1\\}/, $cms.filter.html($cms.dom.$id('theme_img_code_' + i).value)));
     }
     form.elements['theme_img_code'].selectedIndex = s;
     form.elements['theme_img_code'].addEventListener('change', function () {
@@ -91,7 +91,7 @@ function copyFieldsIntoBottom(i, changed) {
 
 function existsChild(elements, parent) {
     for (var i = 0; i < elements.length; i++) {
-        if ((elements[i].name.substr(0, 7) === 'parent_') && (elements[i].value == parent)) {
+        if ((elements[i].name.substr(0, 'parent_'.length) === 'parent_') && (elements[i].value == parent)) {
             return true;
         }
     }
@@ -108,10 +108,10 @@ function checkMenu() {
     var form = $cms.dom.$('#edit_form');
     var i, id, name, theParent, ignore, caption, url, branchType;
     for (i = 0; i < form.elements.length; i++) {
-        name = form.elements[i].name.substr(0, 7);
+        name = form.elements[i].name.substr(0, 'parent_'.length);
         if (name === 'parent_') { // We don't care about this, but it does tell us we have found a menu branch ID
 
-            id = form.elements[i].name.substring(7, form.elements[i].name.length);
+            id = form.elements[i].name.substring('parent_'.length, form.elements[i].name.length);
 
             // Is this visible? (if it is we need to check the IDs
             theParent = form.elements[i];

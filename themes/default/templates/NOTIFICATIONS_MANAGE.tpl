@@ -2,7 +2,7 @@
 	{$?,{$MATCH_KEY_MATCH,_SEARCH:admin_notifications},{!NOTIFICATIONS_DEFINE_LOCKDOWN},{!NOTIFICATIONS_INTRO}}
 </p>
 
-<div class="wide_table_wrap"><table class="columned_table wide_table results_table notifications_form">
+<div class="wide_table_wrap"><table class="columned_table wide_table results_table notifications_form responsive_table responsive_table_bolded_first_column">
 	<colgroup>
 		<col class="notifications_field_name_column" />
 		{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}
@@ -11,7 +11,9 @@
 		{+START,LOOP,NOTIFICATION_TYPES_TITLES}
 			<col class="notifications_tick_column" />
 		{+END}
-		<col class="notifications_advanced_column" />
+		{+START,IF,{ADVANCED_COLUMN}}
+			<col class="notifications_advanced_column" />
+		{+END}
 	</colgroup>
 
 	<thead>
@@ -29,14 +31,16 @@
 					<img class="gd_text" data-gd-text="{}" src="{$GET*,url}" title="" alt="{LABEL*}" />
 				</th>
 			{+END}
-			<th></th>
+			{+START,IF,{ADVANCED_COLUMN}}
+				<th></th>
+			{+END}
 		</tr>
 	</thead>
 
 	<tbody>
 		{+START,LOOP,NOTIFICATION_SECTIONS}
 			<tr class="form_table_field_spacer">
-				<th class="table_heading_cell" colspan="{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},3}{+END}{+START,IF_NON_PASSED_OR_FALSE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},2}{+END}">
+				<th class="responsive_table_no_prefix table_heading_cell" colspan="{+START,IF_PASSED_AND_TRUE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},3}{+END}{+START,IF_NON_PASSED_OR_FALSE,SHOW_PRIVILEGES}{$ADD*,{NOTIFICATION_TYPES_TITLES},2}{+END}">
 					<span class="faux_h2">{NOTIFICATION_SECTION*}</span>
 				</th>
 			</tr>
@@ -51,11 +55,14 @@
 
 					{+START,INCLUDE,NOTIFICATION_TYPES}{+END}
 
-					<td class="associated_details">
-						{+START,IF,{SUPPORTS_CATEGORIES}}
-							<span class="associated_link"><a data-open-as-overlay="{'target': '_self'}" href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{$?,{$MOBILE},{!MORE},{!ADVANCED}}</a></span>
+					{+START,IF,{ADVANCED_COLUMN}}
+						{+START,SET,advanced_link}
+							{+START,IF,{SUPPORTS_CATEGORIES}}
+								<span class="associated_link"><a data-open-as-overlay="{'target': '_self'}" href="{$PAGE_LINK*,_SEARCH:notifications:advanced:notification_code={NOTIFICATION_CODE}{$?,{$NEQ,{MEMBER_ID},{$MEMBER}},:keep_su={$USERNAME&,{MEMBER_ID}}}}">{+START,IF,{$DESKTOP}}<span class="inline_desktop">{!ADVANCED}</span>{+END}<span class="inline_mobile">{!MORE}</span></a></span>
+							{+END}
 						{+END}
-					</td>
+					{+END}
+					<td class="associated_details">{$TRIM,{$GET,advanced_link}}</td>
 				</tr>
 			{+END}
 		{+END}

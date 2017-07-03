@@ -18,156 +18,186 @@ When editing theme CSS we recommend you comment out code you're removing and hea
 
 /*
 =========================
+====Responsive modes=====
+=========================
+*/
+
+/*
+These define CSS_MODEs. They work both as responsive design breakpoints, and rule output control for mobile mode.
+
+In desktop mode:
+ mode directives are turned into corresponding @media rules (i.e. responsive design)
+
+In mobile mode:
+ anything marked with "mobileModeMedia" will be turned into @media rules
+ anything marked with "mobileModeKeep" will be output directly
+ anything marked with "mobileModeDiscard" skipped (to save on file-size)
+*/
+
+/* The basic ones */
+{$CSS_MODE,mobile,0-982,mobileModeKeep}
+{$CSS_MODE,desktop,983-infinity,mobileModeDiscard}
+
+/* Extra ones; useful if you are providing better specificity for particular tested ranges (make sure the base-line of each range works for the rules you set; assuming we are using retina/hi-dpi properly rather than to cram more onto the screen) */
+{$CSS_MODE,smartphone_fixed_viewport,320-320,mobileModeMedia}/*This would only be used if you set a fixed (non-responsive) viewport of 320 (QVGA, portrait mode); not used by default*/
+{$CSS_MODE,smartphone_portrait,320-666,mobileModeMedia}/*Based on up to what iPhone6 can do; higher-res phones like phablets may fall under the smartphone_landscape range even in portrait mode which is fine*/
+{$CSS_MODE,smartphone_landscape,667-982,mobileModeMedia}/*Based on from iPhone6 landscape up to our tablet size; also good for small tablets in portrait mode*/
+{$CSS_MODE,tablet_fixed_viewport,982-982,mobileModeDiscard}/*This corresponds to the fixed width tablet mode viewport defined in HTML_HEAD.tpl optimised for landscape mode; fixed width is not on by default, so tablet is the same as desktop in that case*/
+{$CSS_MODE,desktop,982-infinity,mobileModeMedia}/*1024 is considered the industry-standard, which is 982 with scrollbar; also good for small tablets in landscape mode and large tablets in portrait mode*/
+{$CSS_MODE,large_desktop,1200-infinity,mobileModeMedia}/*Also good for tablets in landscape mode*/
+
+/*
+=========================
 ========Colours==========
 =========================
 */
 
 /* Used to initiate equations (although running the Theme Wizard replaces these with what the user chooses - which is how it works) */
-{$THEME_WIZARD_COLOR,#426aa9,seed,100% 426aa9}
-{$THEME_WIZARD_COLOR,#ffffff,WB,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#000000,BW,100% 000000}
+{$THEMEWIZARD_COLOR,#426aa9,seed,100% 426aa9}
+{$THEMEWIZARD_COLOR,#ffffff,WB,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#000000,BW,100% 000000}
 /*Theme seed is: 426aa9*/
 
 /* The fundamental website */
-{$THEME_WIZARD_COLOR,#e3eaf6,fixed_width_background,11% (seed sat_to 100) + 89% WB}
-{$THEME_WIZARD_COLOR,#8ba4ca,fixed_width_border,61% seed + 39% WB}
-{$THEME_WIZARD_COLOR,#ffffff,main_background,100% WB}
-{$THEME_WIZARD_COLOR,#ebebeb,main_2_background,92% WB + 8% BW}
+{$THEMEWIZARD_COLOR,#e3eaf6,fixed_width_background,11% (seed sat_to 100) + 89% WB}
+{$THEMEWIZARD_COLOR,#8ba4ca,fixed_width_border,61% seed + 39% WB}
+{$THEMEWIZARD_COLOR,#ffffff,main_background,100% WB}
+{$THEMEWIZARD_COLOR,#ebebeb,main_2_background,92% WB + 8% BW}
 
 /* Colours to mirror UI conventions (i.e. non-thematic) */
-{$THEME_WIZARD_COLOR,#000000,native_ui_foreground,100% 000000}
-{$THEME_WIZARD_COLOR,#ffffff,native_ui_background,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#feffcb,native_ui_active_background,100% FEFFCB}
-{$THEME_WIZARD_COLOR,#316AC5,native_ui_selected_background,100% 316AC5}
-{$THEME_WIZARD_COLOR,#ffffff,native_ui_selected_foreground,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#ffffff,native_ui_button_foreground,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#ff0000,native_ui_alertfield_background,100% FF0000}
-{$THEME_WIZARD_COLOR,#ffffff,native_ui_alertfield_foreground,100% FFFFFF}
-{$THEME_WIZARD_COLOR,#A9A9A9,unfilled_input_text,100% A9A9A9}
-{$THEME_WIZARD_COLOR,#888888,locked_input_field,100% 888888}
-{$THEME_WIZARD_COLOR,#3d434c,comfortable_input_field_text,20% WB + 65% BW + 15% seed}
-{$THEME_WIZARD_COLOR,#b5b5b5,tab_border,100% b5b5b5}
-{$THEME_WIZARD_COLOR,#008000,adwords_style_text,100% 008000} /* Google adwords style */
-{$THEME_WIZARD_COLOR,#ffffff,floating_section_background,100% WB}
-{$THEME_WIZARD_COLOR,#fffcc4,floating_alert_background,100% fffcc4}
+{$THEMEWIZARD_COLOR,#000000,native_ui_foreground,100% 000000}
+{$THEMEWIZARD_COLOR,#ffffff,native_ui_background,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#feffcb,native_ui_active_background,100% FEFFCB}
+{$THEMEWIZARD_COLOR,#316AC5,native_ui_selected_background,100% 316AC5}
+{$THEMEWIZARD_COLOR,#ffffff,native_ui_selected_foreground,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#ffffff,native_ui_button_foreground,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#ff0000,native_ui_alertfield_background,100% FF0000}
+{$THEMEWIZARD_COLOR,#ffffff,native_ui_alertfield_foreground,100% FFFFFF}
+{$THEMEWIZARD_COLOR,#A9A9A9,unfilled_input_text,100% A9A9A9}
+{$THEMEWIZARD_COLOR,#888888,locked_input_field,100% 888888}
+{$THEMEWIZARD_COLOR,#3d434c,comfortable_input_field_text,20% WB + 65% BW + 15% seed}
+{$THEMEWIZARD_COLOR,#b5b5b5,tab_border,100% b5b5b5}
+{$THEMEWIZARD_COLOR,#008000,adwords_style_text,100% 008000} /* Google adwords style */
+{$THEMEWIZARD_COLOR,#ffffff,floating_section_background,100% WB}
+{$THEMEWIZARD_COLOR,#fffcc4,floating_alert_background,100% fffcc4}
 
 /* Colours to mirror human understandings (i.e. non-thematic) */
-{$THEME_WIZARD_COLOR,#ffffc9,yellow_highlight_background,100% #FFFFC9}
-{$THEME_WIZARD_COLOR,#ff8888,red_highlight_background,100% FF8888}
-{$THEME_WIZARD_COLOR,#e7981e,orange_highlight_text,100% E7981E}
-{$THEME_WIZARD_COLOR,#ff8888,light_error_border,100% FF8888}
-{$THEME_WIZARD_COLOR,#fff2f2,light_error_background,95% WB + 5% FF0000}
-{$THEME_WIZARD_COLOR,#d91522,red_highlight_text,80% FF0000 + 20% seed}
-{$THEME_WIZARD_COLOR,#009900,green_highlight_text,100% 009900}
-{$THEME_WIZARD_COLOR,#ede2e4,required_background,60% (area_4_background hue_to 0) + 40% area_background}
-{$THEME_WIZARD_COLOR,#ebe6eb,required_2_background,40% (area_4_background hue_to 0) + 60% area_background}
-{$THEME_WIZARD_COLOR,#000000,dark_shadow,100% BW}
+{$THEMEWIZARD_COLOR,#ffffc9,yellow_highlight_background,100% #FFFFC9}
+{$THEMEWIZARD_COLOR,#ff8888,red_highlight_background,100% FF8888}
+{$THEMEWIZARD_COLOR,#e7981e,orange_highlight_text,100% E7981E}
+{$THEMEWIZARD_COLOR,#ff8888,light_error_border,100% FF8888}
+{$THEMEWIZARD_COLOR,#fff2f2,light_error_background,95% WB + 5% FF0000}
+{$THEMEWIZARD_COLOR,#d91522,red_highlight_text,80% FF0000 + 20% seed}
+{$THEMEWIZARD_COLOR,#009900,green_highlight_text,100% 009900}
+{$THEMEWIZARD_COLOR,#ede2e4,required_background,60% (area_4_background hue_to 0) + 40% area_background}
+{$THEMEWIZARD_COLOR,#ebe6eb,required_2_background,40% (area_4_background hue_to 0) + 60% area_background}
+{$THEMEWIZARD_COLOR,#000000,dark_shadow,100% BW}
 
 /* For standard elements */
-{$THEME_WIZARD_COLOR,#325180,heading_text,76% seed + 24% BW}
-{$THEME_WIZARD_COLOR,#051225,a.hover,30% a.link + 70% BW}
-{$THEME_WIZARD_COLOR,#113871,a.visited,67% (seed sat_to 85) + 33% BW}
-{$THEME_WIZARD_COLOR,#123d7b,a.link,73% (seed sat_to 85) + 27% BW}
-{$THEME_WIZARD_COLOR,#bdcbe1,th_secondary_text,35% seed + 65% WB}
-{$THEME_WIZARD_COLOR,#a2b6d5,hr,60% area_background + 40% seed}
-{$THEME_WIZARD_COLOR,#325180,divider_line,76% seed + 24% BW}
+{$THEMEWIZARD_COLOR,#325180,heading_text,76% seed + 24% BW}
+{$THEMEWIZARD_COLOR,#051225,a.hover,30% a.link + 70% BW}
+{$THEMEWIZARD_COLOR,#113871,a.visited,67% (seed sat_to 85) + 33% BW}
+{$THEMEWIZARD_COLOR,#123d7b,a.link,73% (seed sat_to 85) + 27% BW}
+{$THEMEWIZARD_COLOR,#bdcbe1,th_secondary_text,35% seed + 65% WB}
+{$THEMEWIZARD_COLOR,#a2b6d5,hr,60% area_background + 40% seed}
+{$THEMEWIZARD_COLOR,#325180,divider_line,76% seed + 24% BW}
 
 /* Borders */
-{$THEME_WIZARD_COLOR,#6b81a1,standard_border,95% (seed sat_to 33) + 5% BW}
-{$THEME_WIZARD_COLOR,#4b5a71,dark_border,70% standard_border + 30% BW}
-{$THEME_WIZARD_COLOR,#c1cee3,pale_border,33% seed + 67% WB}
-{$THEME_WIZARD_COLOR,#8497b3,point_of_interest_border,50% dark_border + 50% WB}
+{$THEMEWIZARD_COLOR,#6b81a1,standard_border,95% (seed sat_to 33) + 5% BW}
+{$THEMEWIZARD_COLOR,#4b5a71,dark_border,70% standard_border + 30% BW}
+{$THEMEWIZARD_COLOR,#c1cee3,pale_border,33% seed + 67% WB}
+{$THEMEWIZARD_COLOR,#8497b3,point_of_interest_border,50% dark_border + 50% WB}
 
 /* Backgrounds (quiet a variety, as we need to be able to stack them, to have both hover and active effects, to have zebra striping, and various other levels of perceived focus) */
-{$THEME_WIZARD_COLOR,#eaeff6,area_background,11% seed + 89% WB}
-{$THEME_WIZARD_COLOR,#e3e9f2,area_2_background,15% seed + 85% WB}
-{$THEME_WIZARD_COLOR,#eef2f7,area_3_background,60% area_2_background + 40% WB}
-{$THEME_WIZARD_COLOR,#d9e1ee,area_4_background,20% seed + 80% WB}
-{$THEME_WIZARD_COLOR,#f4f4f4,area_5_background,3% seed + 97% WB}
-{$THEME_WIZARD_COLOR,#8daede,area_6_background,65% (seed val_to 80) + 35% WB}
-{$THEME_WIZARD_COLOR,#f2f5f9,area_faded_background,80% area_background + 20% WB}
-{$THEME_WIZARD_COLOR,#d9e1ee,area_zebra_background,20% seed + 80% WB}
-{$THEME_WIZARD_COLOR,#e6d8df,area_hover_background,92% (area_background hue_to 92) + 8% BW}
-{$THEME_WIZARD_COLOR,#c2d1e5,area_hover_2_background,20% seed + 80% WB}
-{$THEME_WIZARD_COLOR,#d9e1ee,area_current_background,93% (area_background sat_to 15) + 7% BW}
-{$THEME_WIZARD_COLOR,#dce2eb,point_of_interest_background,97% area_2_background + 2% BW}
-{$THEME_WIZARD_COLOR,#6b81a1,footer_background,95% (seed sat_to 33) + 5% BW}
-{$THEME_WIZARD_COLOR,#607490,footer_2_background,85% (seed sat_to 33) + 15% BW}
+{$THEMEWIZARD_COLOR,#eaeff6,area_background,11% seed + 89% WB}
+{$THEMEWIZARD_COLOR,#e3e9f2,area_2_background,15% seed + 85% WB}
+{$THEMEWIZARD_COLOR,#eef2f7,area_3_background,60% area_2_background + 40% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,area_4_background,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#f4f4f4,area_5_background,3% seed + 97% WB}
+{$THEMEWIZARD_COLOR,#8daede,area_6_background,65% (seed val_to 80) + 35% WB}
+{$THEMEWIZARD_COLOR,#f2f5f9,area_faded_background,80% area_background + 20% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,area_zebra_background,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#e6d8df,area_hover_background,92% (area_background hue_to 92) + 8% BW}
+{$THEMEWIZARD_COLOR,#c2d1e5,area_hover_2_background,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,area_current_background,93% (area_background sat_to 15) + 7% BW}
+{$THEMEWIZARD_COLOR,#dce2eb,point_of_interest_background,97% area_2_background + 2% BW}
+{$THEMEWIZARD_COLOR,#6b81a1,footer_background,95% (seed sat_to 33) + 5% BW}
+{$THEMEWIZARD_COLOR,#607490,footer_2_background,85% (seed sat_to 33) + 15% BW}
 /* Backgrounds, employing color wheel theory */
-{$THEME_WIZARD_COLOR,#d9e1ee,area_highlight_background,20% seed + 80% WB}
-{$THEME_WIZARD_COLOR,#d9ecee,area_highlight_left_complement_background,20% (seed hue_add -21) + 80% WB}
-{$THEME_WIZARD_COLOR,#dbd9ee,area_highlight_right_complement_background,20% (seed hue_add +21) + 80% WB}
-{$THEME_WIZARD_COLOR,#eee6d9,area_highlight_complement_background,20% (seed hue_add 128) + 80% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,area_highlight_background,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#d9ecee,area_highlight_left_complement_background,20% (seed hue_add -21) + 80% WB}
+{$THEMEWIZARD_COLOR,#dbd9ee,area_highlight_right_complement_background,20% (seed hue_add +21) + 80% WB}
+{$THEMEWIZARD_COLOR,#eee6d9,area_highlight_complement_background,20% (seed hue_add 128) + 80% WB}
 
 /* Text */
-{$THEME_WIZARD_COLOR,#0d1522,slightly_seeded_text,20% seed + 80% BW}
-{$THEME_WIZARD_COLOR,#3d434c,slightly_seeded_gray_text,20% WB + 65% BW + 15% seed}
-{$THEME_WIZARD_COLOR,#325180,area_text,76% seed + 24% BW}
-{$THEME_WIZARD_COLOR,#2a3d5a,area_key_text,53% (seed sat_to 53) + 47% BW}
-{$THEME_WIZARD_COLOR,#0d2d5d,area_link,55% (seed sat_to 86) + 45% BW}
-{$THEME_WIZARD_COLOR,#0a1019,area_2_link,15% seed + 85% BW}
-{$THEME_WIZARD_COLOR,#1a2a44,area_2_link_hover,40% seed + 60% BW}
+{$THEMEWIZARD_COLOR,#0d1522,slightly_seeded_text,20% seed + 80% BW}
+{$THEMEWIZARD_COLOR,#3d434c,slightly_seeded_gray_text,20% WB + 65% BW + 15% seed}
+{$THEMEWIZARD_COLOR,#325180,area_text,76% seed + 24% BW}
+{$THEMEWIZARD_COLOR,#2a3d5a,area_key_text,53% (seed sat_to 53) + 47% BW}
+{$THEMEWIZARD_COLOR,#0d2d5d,area_link,55% (seed sat_to 86) + 45% BW}
+{$THEMEWIZARD_COLOR,#0a1019,area_2_link,15% seed + 85% BW}
+{$THEMEWIZARD_COLOR,#1a2a44,area_2_link_hover,40% seed + 60% BW}
 /* Text, employing color wheel theory */
-{$THEME_WIZARD_COLOR,#214f55,slightly_seeded_left_complement_text,50% (seed hue_add -21) + 50% BW}
-{$THEME_WIZARD_COLOR,#262155,slightly_seeded_right_complement_text,50% (seed hue_add +21) + 50% BW}
-{$THEME_WIZARD_COLOR,#554121,slightly_seeded_complement_text,50% (seed hue_add 128) + 50% BW}
+{$THEMEWIZARD_COLOR,#214f55,slightly_seeded_left_complement_text,50% (seed hue_add -21) + 50% BW}
+{$THEMEWIZARD_COLOR,#262155,slightly_seeded_right_complement_text,50% (seed hue_add +21) + 50% BW}
+{$THEMEWIZARD_COLOR,#554121,slightly_seeded_complement_text,50% (seed hue_add 128) + 50% BW}
 
 /* Special colour for box titles */
-{$THEME_WIZARD_COLOR,#ffffff,box_title_text,100% WB}
-{$THEME_WIZARD_COLOR,#cccccc,box_title_text_hover,80% WB + 20% BW}
-{$THEME_WIZARD_COLOR,#426aa9,box_title_background,100% seed}
-{$THEME_WIZARD_COLOR,#7f9ac5,box_title_background_2,68% seed + 32% WB}
+{$THEMEWIZARD_COLOR,#ffffff,box_title_text,100% WB}
+{$THEMEWIZARD_COLOR,#cccccc,box_title_text_hover,80% WB + 20% BW}
+{$THEMEWIZARD_COLOR,#426aa9,box_title_background,100% seed}
+{$THEMEWIZARD_COLOR,#7f9ac5,box_title_background_2,68% seed + 32% WB}
 
 /* Special colour for code/quote boxes */
-{$THEME_WIZARD_COLOR,#8ea6cb,code_title_background,60% seed + 40% WB}
-{$THEME_WIZARD_COLOR,#3f3f3f,code_text,25% code_background + 85% BW}
-{$THEME_WIZARD_COLOR,#fafbfd,code_background,25% area_background + 75% WB}
-{$THEME_WIZARD_COLOR,#7f9ac5,code_border,68% seed + 32% WB}
+{$THEMEWIZARD_COLOR,#8ea6cb,code_title_background,60% seed + 40% WB}
+{$THEMEWIZARD_COLOR,#3f3f3f,code_text,25% code_background + 85% BW}
+{$THEMEWIZARD_COLOR,#fafbfd,code_background,25% area_background + 75% WB}
+{$THEMEWIZARD_COLOR,#7f9ac5,code_border,68% seed + 32% WB}
 
 /* Drop down menus should look 'above' the site */
-{$THEME_WIZARD_COLOR,#c1cee3,dropdown_menu_background,33% seed + 67% WB}
-{$THEME_WIZARD_COLOR,#d9e1ee,dropdown_menu_text,20% seed + 80% WB}
+{$THEMEWIZARD_COLOR,#c1cee3,dropdown_menu_background,33% seed + 67% WB}
+{$THEMEWIZARD_COLOR,#d9e1ee,dropdown_menu_text,20% seed + 80% WB}
 
 /* Global-level messages should stand out compared to other styling */
-{$THEME_WIZARD_COLOR,#ebe773,message_border,100% EBE773} /* Intentionally coloured on all themes */
-{$THEME_WIZARD_COLOR,#c4cdd9,message_highlighted_part,40% standard_border + 60% WB}
+{$THEMEWIZARD_COLOR,#ebe773,message_border,100% EBE773} /* Intentionally coloured on all themes */
+{$THEMEWIZARD_COLOR,#c4cdd9,message_highlighted_part,40% standard_border + 60% WB}
 
 /* Footer */
-{$THEME_WIZARD_COLOR,#8ba4ca,footer_tinting,61% seed + 39% WB}
-{$THEME_WIZARD_COLOR,#ffffff,footer_text,100% WB}
-{$THEME_WIZARD_COLOR,#dbe6f7,inverted_text,35% footer_tinting + 65% WB}
+{$THEMEWIZARD_COLOR,#8ba4ca,footer_tinting,61% seed + 39% WB}
+{$THEMEWIZARD_COLOR,#ffffff,footer_text,100% WB}
+{$THEMEWIZARD_COLOR,#dbe6f7,inverted_text,35% footer_tinting + 65% WB}
 
 /* Used for image generation */
-{$THEME_WIZARD_COLOR,#e8edf6,washed_out,10% (seed sat_to 85) + 90% WB}
-{$THEME_WIZARD_COLOR,#5a85c5,lgrad,67% (seed sat_to 95) + 33% FFFFFF} /* We always want the light source coming from the top */
-{$THEME_WIZARD_COLOR,#345495,dgrad,95% (seed sat_to 65) + 5% 000000} /* We always want the light source coming from the top */
-{$THEME_WIZARD_COLOR,#5477bd,ltgrad,67% (seed sat_to 135) + 33% FFFFFF}  /* We always want the light source coming from the top */
-{$THEME_WIZARD_COLOR,#707c95,dtgrad,95% (seed sat_to 25) + 5% 000000} /* We always want the shadows at the bottom */
-{$THEME_WIZARD_COLOR,#e1e2e3,comcode_quote_left,48% comcode_quote_right + 52% WB}
-{$THEME_WIZARD_COLOR,#bfc1c4,comcode_quote_right,100% code_title_background}
-{$THEME_WIZARD_COLOR,#0e2a63,a.link__dark,63% (seed sat_to 85) + 37% BW}
-{$THEME_WIZARD_COLOR,#030a17,a.hover__dark,20% a.link + 80% BW}
-{$THEME_WIZARD_COLOR,#707377,special_borderer,76% seed + 24% BW}
-{$THEME_WIZARD_COLOR,#0a1e47,special_middle,45% (seed sat_to 85) + 65% BW}
-{$THEME_WIZARD_COLOR,#597bbf,cnspostindicator,65% (seed sat_to 100) + 35% WB}
-{$THEME_WIZARD_COLOR,#597bf7,cnsredirectindicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
+{$THEMEWIZARD_COLOR,#e8edf6,washed_out,10% (seed sat_to 85) + 90% WB}
+{$THEMEWIZARD_COLOR,#5a85c5,lgrad,67% (seed sat_to 95) + 33% FFFFFF} /* We always want the light source coming from the top */
+{$THEMEWIZARD_COLOR,#345495,dgrad,95% (seed sat_to 65) + 5% 000000} /* We always want the light source coming from the top */
+{$THEMEWIZARD_COLOR,#5477bd,ltgrad,67% (seed sat_to 135) + 33% FFFFFF}  /* We always want the light source coming from the top */
+{$THEMEWIZARD_COLOR,#707c95,dtgrad,95% (seed sat_to 25) + 5% 000000} /* We always want the shadows at the bottom */
+{$THEMEWIZARD_COLOR,#e1e2e3,comcode_quote_left,48% comcode_quote_right + 52% WB}
+{$THEMEWIZARD_COLOR,#bfc1c4,comcode_quote_right,100% code_title_background}
+{$THEMEWIZARD_COLOR,#0e2a63,a.link__dark,63% (seed sat_to 85) + 37% BW}
+{$THEMEWIZARD_COLOR,#030a17,a.hover__dark,20% a.link + 80% BW}
+{$THEMEWIZARD_COLOR,#707377,special_borderer,76% seed + 24% BW}
+{$THEMEWIZARD_COLOR,#0a1e47,special_middle,45% (seed sat_to 85) + 65% BW}
+{$THEMEWIZARD_COLOR,#597bbf,cnspostindicator,65% (seed sat_to 100) + 35% WB}
+{$THEMEWIZARD_COLOR,#597bf7,cnsredirectindicator,65% (seed sat_to 100) + 35% WB + 000038 - 061600}
 
 /* Range of bright varying colours */
-{$THEME_WIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
-{$THEME_WIZARD_COLOR,#fa0c00,gcol_2,100% #FA0C00}
-{$THEME_WIZARD_COLOR,#aa6a04,gcol_3,100% #AA6A04}
-{$THEME_WIZARD_COLOR,#5800fa,gcol_4,100% #5800FA}
-{$THEME_WIZARD_COLOR,#0099fa,gcol_5,100% #0099FA}
-{$THEME_WIZARD_COLOR,#859638,gcol_6,100% #859638}
-{$THEME_WIZARD_COLOR,#2bab03,gcol_7,100% #2BAB03}
-{$THEME_WIZARD_COLOR,#7d7e04,gcol_8,100% #7D7E04}
-{$THEME_WIZARD_COLOR,#966038,gcol_9,100% #966038}
-{$THEME_WIZARD_COLOR,#96384a,gcol_10,100% #96384A}
-{$THEME_WIZARD_COLOR,#963895,gcol_11,100% #963895}
-{$THEME_WIZARD_COLOR,#4e3896,gcol_12,100% #4E3896}
-{$THEME_WIZARD_COLOR,#386296,gcol_13,100% #386296}
-{$THEME_WIZARD_COLOR,#389596,gcol_14,100% #389596}
-{$THEME_WIZARD_COLOR,#389653,gcol_15,100% #389653}
+{$THEMEWIZARD_COLOR,#9c029a,gcol_1,100% #9C029A}
+{$THEMEWIZARD_COLOR,#fa0c00,gcol_2,100% #FA0C00}
+{$THEMEWIZARD_COLOR,#aa6a04,gcol_3,100% #AA6A04}
+{$THEMEWIZARD_COLOR,#5800fa,gcol_4,100% #5800FA}
+{$THEMEWIZARD_COLOR,#0099fa,gcol_5,100% #0099FA}
+{$THEMEWIZARD_COLOR,#859638,gcol_6,100% #859638}
+{$THEMEWIZARD_COLOR,#2bab03,gcol_7,100% #2BAB03}
+{$THEMEWIZARD_COLOR,#7d7e04,gcol_8,100% #7D7E04}
+{$THEMEWIZARD_COLOR,#966038,gcol_9,100% #966038}
+{$THEMEWIZARD_COLOR,#96384a,gcol_10,100% #96384A}
+{$THEMEWIZARD_COLOR,#963895,gcol_11,100% #963895}
+{$THEMEWIZARD_COLOR,#4e3896,gcol_12,100% #4E3896}
+{$THEMEWIZARD_COLOR,#386296,gcol_13,100% #386296}
+{$THEMEWIZARD_COLOR,#389596,gcol_14,100% #389596}
+{$THEMEWIZARD_COLOR,#389653,gcol_15,100% #389653}
 
 /*
 =========================
@@ -337,7 +367,7 @@ hr {
 	height: 0;
 	border: 0;
 	border-bottom: 2px dotted {$GET,hr};
-	text-align: left; /* Fixes difference with Opera */
+	text-align: left; /* LEGACY Fixes difference with Opera */
 }
 
 img {
@@ -363,11 +393,13 @@ iframe {
 	direction: {!dir};
 }
 
-
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	select {
 		max-width: 100px;
 		white-space: nowrap !important;
+	}
+	select[size]/* Not a drop-down */, .form_table_field_input select {
+		max-width: 100%;
 	}
 
 	/* This prevents automatic zooming when selecting inputs */
@@ -383,16 +415,91 @@ iframe {
 		overflow-x: visible !important;
 		overflow-y: visible !important;
 	}
-	.field_name_column, .field_input_column {
+	.field_name_column, .field_name_column_shorter, .field_input_column, .field_input_column, .field_sup_column, .results_table col {
 		width: auto !important;
 	}
 	* {
 		white-space: normal !important;
 		word-wrap: break-word !important;
 	}
+
+	.inline_desktop {
+		display: none !important;
+	}
+	.inline_mobile {
+		display: inline !important;
+	}
+
+	.inlineblock_desktop {
+		display: none !important;
+	}
+	.inlineblock_mobile {
+		display: inline-block !important;
+	}
+
+	.block_desktop {
+		display: none !important;
+	}
+	.block_mobile {
+		display: block !important;
+	}
+
+	.column_desktop {
+		visibility: collapse !important;
+		display: none !important;
+	}
+	.column_mobile {
+		visibility: visible !important;
+	}
+
+	.cell_desktop {
+		display: none !important;
+	}
+	.cell_mobile {
+		display: table-cell !important;
+	}
+
 	/* Exceptions */
 	.ace_layer * {
 		white-space: pre !important;
+	}
+/*{+END}*/
+
+/*{+START,CSS_MODE,desktop}*/
+	.inline_desktop {
+		display: inline !important;
+	}
+	.inline_mobile {
+		display: none !important;
+	}
+
+	.inlineblock_desktop {
+		display: inline-block !important;
+	}
+	.inlineblock_mobile {
+		display: none !important;
+	}
+
+	.block_desktop {
+		display: block !important;
+	}
+	.block_mobile {
+		display: none !important;
+	}
+
+	.column_desktop {
+		visibility: visible !important;
+	}
+	.column_mobile {
+		visibility: collapse !important;
+		display: none !important;
+	}
+
+	.cell_desktop {
+		display: table-cell !important;
+	}
+	.cell_mobile {
+		display: none !important;
 	}
 /*{+END}*/
 
@@ -426,25 +533,30 @@ body.website_body.frame {
 	background: transparent; /* Don't assume too much for a frame, it may be nested inside a box for example */
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
-/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-	html>body#main_website { /* #main_website targets only the main site screen, avoiding frames etc */
-		/* Want to change the tiled background?
-			Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
-			Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
-		*/
-		background: url('{$IMG_INLINE;,outer_background}');
-	}
-	#main_website #main_website_inner {
-		width: 980px;
-		position: relative;
-		margin: 15px auto 15px auto;
-		border: 1px solid {$GET,fixed_width_border};
-		box-shadow: 0 0 20px {$GET,standard_border};
-	}
+/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+	/*{+START,CSS_MODE,desktop}*/
+		html>body#main_website { /* #main_website targets only the main site screen, avoiding frames etc */
+			/* Want to change the tiled background?
+				Try this Google search to get image ideas http://www.google.co.uk/search?tbm=isch&q=tile+background
+				Find how to edit the referenced "outer_background" theme image by doing an Admin Zone search for "outer_background"
+			*/
+			background: url('{$IMG_INLINE;,outer_background}');
+		}
+		#main_website #main_website_inner {
+			width: 980px;
+			position: relative;
+			margin: 15px auto 15px auto;
+			border: 1px solid {$GET,fixed_width_border};
+			box-shadow: 0 0 20px {$GET,standard_border};
+		}
+		/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+			#main_website #main_website_inner {
+				margin: 15px;
+			}
+		/*{+END}*/
+	/*{+END}*/
 
-	/* Responsive design for tablets etc */
-	@media screen and (max-width:1024px) {
+	/*{+START,CSS_MODE,tablet_fixed_viewport}*/
 		#main_website #main_website_inner {
 			margin: 0 0 0 0.5em;
 			border: 0;
@@ -454,13 +566,7 @@ body.website_body.frame {
 		.global_banner {
 			top: 0 !important;
 		}
-	}
-/*{+END}*/
-/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-	#main_website #main_website_inner {
-		margin: 15px;
-	}
-/*{+END}*/
+	/*{+END}*/
 /*{+END}*/
 
 body.website_body, #wysiwyg_editor {
@@ -475,12 +581,16 @@ body.website_body, #wysiwyg_editor {
 
 body#main_website {
 	margin: 0;
-
-	/* To stop it scaling down if we are applying "width=device-width" and forcing a page to displaying non-mobile */
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		min-width: 1000px;
-	/*{+END}*/
 }
+
+/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
+	/* To stop it scaling down if we are applying "width=device-width" and forcing a page to displaying non-mobile */
+	/*{+START,CSS_MODE,desktop}*/
+		body#main_website {
+			min-width: 1000px;
+		}
+	/*{+END}*/
+/*{+END}*/
 
 body#main_website #main_website_inner .global_middle_outer {
 	min-height: 450px;
@@ -494,24 +604,33 @@ body#standalone_html_wrap {
 	margin: 0;
 }
 
+body.popup_spacer {
+	padding: 1em !important;
+}
+body.popup_spacer h2 {
+	margin-top: 0;
+}
+
 header {
 	background-color: {$GET,main_background};
 }
 
 header h1 {
 	margin: 0;
-	/*{+START,IF,{$MOBILE}}*/
-		width: 100%;
-		text-align: center;
-	/*{+END}*/
 	border: 0;
 }
+/*{+START,CSS_MODE,mobile}*/
+	header h1 {
+		width: 100%;
+		text-align: center;
+	}
+/*{+END}*/
 
 .global_banner {
 	text-align: center;
 	background: url('{$IMG;,banner_frame}') center top no-repeat;
 	position: relative;
-	/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+	/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 		top: -16px;
 	/*{+END}*/
 	padding-top: 6px;
@@ -557,18 +676,22 @@ header h1 {
 	background-color: {$GET,lgrad};
 	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad}) !important;
 	color: {$GET,WB};
-	/*{+START,IF,{$MOBILE}}*/
-		position: relative;
-	/*{+END}*/
 	min-height: 3.4em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.global_navigation {
+		position: relative;
+	}
+/*{+END}*/
 
 .global_navigation_inner {
 	overflow: hidden;
-	/*{+START,IF,{$MOBILE}}*/
-		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.global_navigation_inner {
+		margin-left: 8em !important; /* Space for the menu button, which is position:absolute */
+	}
+/*{+END}*/
 
 .global_navigation .top_buttons, .global_navigation .top_form {
 	padding: 0.5em 0;
@@ -577,11 +700,14 @@ header h1 {
 }
 
 .global_navigation .top_buttons {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 1.5em;
-	/*{+END}*/
 	margin-top: 1px; /* To force it align correctly with the form in a different block (which is taller) */
 }
+/*{+START,CSS_MODE,desktop}*/
+	.global_navigation .top_buttons {
+		margin-left: 1.5em;
+	}
+/*{+END}*/
+
 .global_navigation .top_buttons>div {
 	display: inline-block;
 }
@@ -613,6 +739,9 @@ header h1 {
 	margin-bottom: 0.8em;
 	min-width: 300px;
 	padding-bottom: 6px; /* For better alignment with breadcrumbs to the right */
+}
+.screen_title img {
+	vertical-align: middle;
 }
 .screen_title li span {
 	display: block;
@@ -654,20 +783,22 @@ header h1 {
 
 .global_breadcrumbs {
 	padding: 7px 0 7px 0;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		/*{+START,IF,{$AND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	.global_breadcrumbs {
+		/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 			text-align: {!en_right}; /* Goes on own line in fixed width mode, due to lack of space */
 		/*{+END}*/
-		/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+		/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 			float: {!en_right}; /* Sits beside title on non-fixed width */
 		/*{+END}*/
 		margin-left: 0.5em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 .global_breadcrumbs abbr, .global_breadcrumbs a, .global_breadcrumbs span {
 	white-space: nowrap !important;
 }
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.global_breadcrumbs {
 		margin-bottom: 1em;
 	}
@@ -724,39 +855,17 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	background-color: {$GET,fixed_width_background} !important;
 }
 
-.global_middle_outer {
-	margin-top: 0.8em;
-	overflow: visible !important;
-}
-/* We normally hide stuff with overflow:hidden, but some share buttons use absolute positioned layers that need to escape our box */
-.global_middle_outer:after {
-	content: "";
-	display: table;
-	clear: both;
-}
-/*{+START,IF,{$NOT,{$CONFIG_OPTION,collapse_user_zones}}}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		.zone_running_ .global_middle_outer {
-			margin-top: 0; /* Splash page style design, tighter spacing */
-		}
-
-		.zone_running_ .global_side_panel {
-			margin-top: 0.8em;
-		}
-	/*{+END}*/
+/* Should not be flush with site borders (but the menu above it will be, so don't do the whole panel */
+/*{+START,CSS_MODE,desktop}*/
+	#panel_top .cns_member_bar_etc {
+		margin: 0 1em;
+	}
 /*{+END}*/
-
-.global_middle {
-	/*overflow: hidden; Breaks Safari so we'll let the surrounding element contain floats*/
-
-	margin-bottom: 1em;
-
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		/* Add some spacing. This will be overwritten to 1.5em in rules below if we have panels */
-		padding-{!en_left}: 1em;
-		padding-{!en_right}: 1em;
-	/*{+END}*/
-}
+/*{+START,CSS_MODE,mobile}*/
+	#panel_top .cns_member_bar_etc {
+		margin: 0 2px;
+	}
+/*{+END}*/
 
 .zone_running_docs .comcode_page {
 	line-height: 1.35em;
@@ -766,7 +875,68 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	height: auto;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+.global_middle_outer {
+	margin-top: 0.8em;
+}
+
+.global_middle img {
+	max-width: 100%;
+	height: auto;
+}
+
+.global_side_panel h2 {
+	border-bottom: 1px solid;
+	text-transform: lowercase;
+	font-weight: normal;
+	width: 50%;
+	padding-{!en_left}: 10px;
+	margin-{!en_left}: 10px;
+}
+
+.global_side_panel {
+	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	color: {$GET,slightly_seeded_gray_text};
+}
+
+.global_middle_faux>.global_side_panel {
+	width: auto;
+}
+
+/*{+START,CSS_MODE,desktop}*/
+	.global_middle_outer {
+		{$BETA_CSS_PROPERTY,display: flex;}
+	}
+
+	.global_middle {
+		/* Add some spacing. This will be overwritten to 1.5em in rules below if we have panels */
+		padding-{!en_left}: 1em;
+		padding-{!en_right}: 1em;
+		margin-bottom: 1em;
+		box-sizing: border-box;
+		order: 1;
+		flex: 1;
+	}
+
+	#panel_left {
+		order: 0;
+		margin-{!en_left}: 1em;
+	}
+
+	#panel_right {
+		order: 2;
+		margin-{!en_right}: 1em;
+	}
+
+	.global_side_panel {
+		margin-top: -1em;
+		width: 13em;
+	}
+
+	#panel_bottom {
+		margin: 0 1em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
 	.global_middle, .panel_solo {
 		padding-{!en_left}: 2px;
 		padding-{!en_right}: 2px;
@@ -787,110 +957,46 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	.overlay.alert .box_inner div, .overlay.confirm .box_inner div {
 		{$BETA_CSS_PROPERTY,user-select: none;} {$,To stop accidental touching when dismissing}
 	}
-/*{+END}*/
 
-body.popup_spacer {
-	padding: 1em !important;
-}
-body.popup_spacer h2 {
-	margin-top: 0;
-}
-
-#panel_bottom {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin: 0 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 0 2px;
-	/*{+END}*/
-}
-
-#panel_top .cns_member_bar_etc { /* Should not be flush with site borders (but the menu above it will be, so don't do the whole panel */
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin: 0 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 0 2px;
-	/*{+END}*/
-}
-
-#panel_left {
-	float: {!en_left};
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-{!en_left}: 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	#panel_left {
+		float: {!en_left};
 		padding-{!en_left}: 2px;
 		padding-{!en_right}: 1px;
 		box-sizing: border-box;
-	/*{+END}*/
-}
-
-#panel_right {
-	float: {$?,{$MOBILE},{!en_left},{!en_right}};
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-{!en_right}: 1em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+	#panel_right {
+		float: {!en_left};
 		padding-{!en_right}: 2px;
 		padding-{!en_left}: 1px;
 		box-sizing: border-box;
-	/*{+END}*/
-}
+	}
 
-.global_side_panel {
-	word-wrap: break-word;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 13em;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	.global_side_panel .stuck_nav { /* overrides possibility from the inline style the stuck_nav JS puts there */
+		position: static !important;
+		width: 100% !important;
+	}
+	.global_side_panel {
+		width: 100% !important;
+	}
+	.global_side_panel.with_both_panels {
 		width: 50%;
-	/*{+END}*/
-	color: {$GET,slightly_seeded_gray_text};
-}
-.global_middle_faux>.global_side_panel {
-	width: auto;
-}
+	}
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
-	/* Spacing around middle column if it adjoins panels */
-	#panel_left ~ .global_middle {
-		margin-{!en_left}: 13em;
-		padding-{!en_left}: 3.5em;
+	#panel_bottom {
+		margin: 0 2px;
 	}
-	#panel_right ~ .global_middle {
-		margin-{!en_right}: 13em;
-		padding-{!en_right}: 3.5em;
-	}
-	/*{+START,IF,{$CONFIG_OPTION,collapse_user_zones}}*/
-		.zone_running_ #panel_right:first-child ~ .global_middle { /* If no left panel on welcome zone, lets give some extra space */
-			margin-{!en_right}: 16em;
-		}
-	/*{+END}*/
 /*{+END}*/
 
-.global_side_panel h2 {
-	border-bottom: 1px solid;
-	text-transform: lowercase;
-	font-weight: normal;
-	width: 50%;
-	padding-{!en_left}: 10px;
-	margin-{!en_left}: 10px;
-}
-
-.global_side_panel .hide_if_in_panel {
-	display: none;
-}
-.hide_if_not_in_panel {
-	display: none;
-}
-.global_side_panel .hide_if_not_in_panel {
-	display: block;
-}
-
-.global_messages {
-	margin: 0 1em;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.global_messages {
+		margin: 0 1em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.global_messages {
+		margin: 0 2px;
+	}
+/*{+END}*/
 .global_middle_faux .global_messages {
 	margin: 0; /* Probably inside a frame, hence already indented outside said frame */
 }
@@ -924,18 +1030,21 @@ body.popup_spacer h2 {
 }
 
 footer {
+	clear: both;
 	background-color: {$GET,footer_background};
 	margin-top: 2em;
 	background-image: linear-gradient(to bottom, {$GET,footer_background}, {$GET,footer_2_background});
 
 	color: {$GET,footer_text};
-	/*{+START,IF,{$NAND,{$CONFIG_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
+	/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
 		box-shadow: 0 0 2px 2px {$GET,footer_tinting};
 	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		padding: 1.5em;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*/
+	footer {
+		padding: 1.5em;
+	}
+/*{+END}*/
 
 footer .button_hyperlink, footer a, footer a:visited, footer .horizontal_links {
 	color: {$GET,footer_text};
@@ -945,18 +1054,18 @@ footer a:hover, footer .button_hyperlink:hover {
 	color: {$GET,footer_tinting};
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	footer .global_footer_left, footer .global_footer_right {
 		padding-left: 0.5em;
 		padding-right: 0.5em;
 	}
 /*{+END}*/
 
-footer .global_footer_left {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	footer .global_footer_left {
 		float: {!en_left};
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 footer .footer_button_loading {
 	opacity: 0.4; display: inline-block;/*Needed for IE8*/
@@ -967,12 +1076,14 @@ footer .global_footer_left .horizontal_buttons {
 	white-space: nowrap;
 	margin-top: 0;
 	font-size: 0; /* Fixes wrapping problem */
-	/*{+START,IF,{$MOBILE}}*/
-		float: left;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	footer .global_footer_left .horizontal_buttons {
+		float: left;
+	}
+/*{+END}*/
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	footer .global_footer_left .su_form {
 		float: right;
 	}
@@ -1001,12 +1112,12 @@ footer .special_page_type_form select option {
 	color: {$GET,native_ui_foreground};
 }
 
-footer .global_footer_left .horizontal_buttons, footer .su_form, footer .special_page_type_form {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	footer .global_footer_left .horizontal_buttons, footer .su_form, footer .special_page_type_form {
 		float: left;
 		padding-right: 14px;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 footer .global_footer_left .horizontal_buttons {
 	margin-top: 5px;
 }
@@ -1030,38 +1141,58 @@ footer .invisible_ref_point {
 	width: 0;
 }
 
-footer .global_copyright {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	footer .global_copyright {
 		text-align: center;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	footer .global_copyright {
 		margin: 0.5em 0;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 footer .global_minilinks {
 	padding-bottom: 0.3em;
 	font-size: 0.9em;
-	white-space: nowrap; /* Stops logout link wrapping around in Firefox 3.6 */
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		text-align: center;
-	/*{+END}*/
+	white-space: nowrap; /* LEGACY Stops logout link wrapping around in Firefox 3.6 */
 	margin-right: 3em; /* Make tidy gap away from the font sizer */
 }
+/*{+START,CSS_MODE,desktop}*/
+	footer .global_minilinks {
+		text-align: center;
+	}
+/*{+END}*/
 
 footer .global_minilinks .footer_links {
 	width: auto;
 	font-size: 1.1em;
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 0;
-		padding: 0;
-		list-style-type: none;
-	/*{+END}*/
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,desktop}*/
+	.footer_links>li:before {
+		vertical-align: -20%;
+		padding: 0 0.5em 0 0.1em;
+		content: "\00b7" !important; /* a &middot; */
+	}
+	.footer_links li:first-child:before {
+		/* Undoes the middot/comma separator */
+		content: "" !important;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+	.footer_links>li {
+		display: inline;
+		margin: 0;
+		padding: 0;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
 	footer .global_minilinks .footer_links li {
-		min-width: 6em;
+		min-width: 7em;
 		margin-right: 1em;
 		display: inline-block;
 		list-style-type: none;
@@ -1104,11 +1235,11 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 	display: block; /* stops browser bugs where it interacts with the layout flow incorrectly */
 }
 
-.non_accessibility_redundancy { /* Contents should be skipped by screen readers */
-	/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
+	.non_accessibility_redundancy { /* Contents should be skipped by screen readers */
 		display: none;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 /*
 =========================
@@ -1141,9 +1272,18 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 /* Used for styling the 'last edited' information */
 .edited {
 	font-size: 0.85em;
-	padding-{!en_left}: {$?,{$MOBILE},0.7,2}em;
 	font-style: italic;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.edited {
+		padding-{!en_left}: 2em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.edited {
+		padding-{!en_left}: 0.7em;
+	}
+/*{+END}*/
 div.edited {
 	margin: 2em 0;
 }
@@ -1171,9 +1311,18 @@ div.edited {
 
 /* Makes an item of media (e.g. an image) get framed nicely. NB: We do not use this for galleries (which are more elaborate), although that has similar styling with .gallery_grid_cell */
 .media_box {
-	margin: {$?,{$MOBILE},1,1.5}em 0;
 	text-align: center;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.media_box {
+		margin: 1.5em 0;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.media_box {
+		margin: 1em 0;
+	}
+/*{+END}*/
 .media_box a {
 	outline: 0;
 }
@@ -1248,8 +1397,25 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 
 .help_icon {
 	cursor: pointer;
-	margin-left: 0.5em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.help_icon {
+		margin-left: 0.5em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.help_icon {
+		display: block;
+		margin-top: 0.5em;
+	}
+	.lonely_label + span + .help_icon {
+		margin-left: 0.5em;
+	}
+	input[type="checkbox"] + input[type="hidden"] + .help_icon {
+		display: inline;
+		margin-top: 0;
+	}
+/*{+END}*/
 
 /* Makes a link tag (a) look like it's not anything special (we use these tags as tab points sometimes) */
 .non_link,
@@ -1262,11 +1428,11 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 
 .trinav_wrap {
 	overflow: hidden;
-	background-image: linear-gradient(to bottom, {$GET,main_2_background}, {$GET,main_background});
+	background-image: linear-gradient(to bottom\, {$GET,main_2_background}\, {$GET,main_background});
 	/*{+START,IF,{$NOT,{$MOBILE}}}*/
 		margin-bottom: 2em;
 	/*{+END}*/
-	border-radius: 20px;
+	{$BETA_CSS_PROPERTY,border-radius: 20px;}
 	color: {$GET,heading_text};
 }
 .trinav_wrap.nograd {
@@ -1470,7 +1636,9 @@ th.metadata_title {
 
 	overflow: hidden;
 }
-td>.box, .right .box:first-child:last-child, .left .box:first-child:last-child {
+td>.box:first-child, .fake_table_cell>.box:first-child, .fake_table_cell>div:first-child>.box:first-child, .fake_table_cell>div:first-child>div:first-child>.box:first-child, .left .box:first-child:last-child, .right .box:first-child:last-child,
+td>.comcode_code:first-child, .fake_table_cell>.comcode_code:first-child, .fake_table_cell>div:first-child>.comcode_code:first-child, .fake_table_cell>div:first-child>div:first-child>.comcode_code:first-child, .left .comcode_code, .right .comcode_code,
+td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fake_table_cell>div:first-child>.comcode_quote:first-child, .fake_table_cell>div:first-child>div:first-child>.comcode_quote:first-child, .left .comcode_quote, .right .comcode_quote {
 	margin: 0;
 }
 /* Accordion boxes don't have margins */
@@ -1735,15 +1903,19 @@ h3 .toggleable_tray_button img {
 }
 
 .fp_col_block {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 50%;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 1em 0;
-		max-width: 100%;
-	/*{+END}*/
 	box-sizing: border-box;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.fp_col_block {
+		width: 50%;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.fp_col_block {
+		margin: 1em 0;
+		max-width: 100%;
+	}
+/*{+END}*/
 
 .fp_col_block .pagination {
 	float: none;
@@ -1772,14 +1944,16 @@ h3 .toggleable_tray_button img {
 	font-size: 0.9em;
 	color: {$GET,area_text};
 	border-bottom: 1px dotted {$GET,pale_border};
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		width: 25em;
-	/*{+END}*/
 	max-width: 100%;
 	padding-{!en_left}: 0.5em;
 	padding-bottom: 0.5em;
 	margin-bottom: 1em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.meta_details {
+		width: 25em;
+	}
+/*{+END}*/
 .boxless_space .meta_details {
 	padding-{!en_left}: 0;
 	margin-top: -0.5em !important;
@@ -1787,7 +1961,6 @@ h3 .toggleable_tray_button img {
 
 .compacted_subbox_stream h3+.meta_details, .compacted_subbox_stream .newscat_img+.meta_details {
 	border-bottom: 0;
-	margin-top: -0.8em;
 	margin-bottom: 0.5em;
 }
 .box_inner>h3+.meta_details {
@@ -1878,9 +2051,16 @@ h3 .toggleable_tray_button img {
 	padding-{!en_left}: 4em;
 }
 
-.mini_indent {
-	padding-{!en_left}: 2em;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.mini_indent {
+		padding-{!en_left}: 2em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.mini_indent {
+		padding-{!en_left}: 0.75em;
+	}
+/*{+END}*/
 
 hr.spaced_rule {
 	margin: 2em 0;
@@ -1896,7 +2076,7 @@ hr.spaced_rule {
 	display: inline-block;
 }
 
-.inline_block .wide_table_wrap { /* Fixes Firefox bug */
+.inline_block .wide_table_wrap { /* LEGACY Fixes Firefox bug */
 	overflow-x: visible;
 	overflow-y: visible;
 }
@@ -1916,7 +2096,7 @@ hr.spaced_rule {
 .right.float_separation, .inline.spaced {
 	margin-{!en_left}: 1em;
 }
-@media screen and (max-width:800px) {
+/*{+START,CSS_MODE,mobile}*/
 	.left.responsive {
 		float: none;
 	}
@@ -1933,6 +2113,7 @@ hr.spaced_rule {
 		width: auto !important;
 	}
 }
+/*{+END}*/
 
 .inline_lined_up {
 	white-space: nowrap;
@@ -1963,8 +2144,8 @@ ul.horizontal_links.horiz_field_sep {
 }
 
 /* Used e.g. on links that should not get split between lines */
-.must_show_together {
-	white-space: nowrap;
+.must_show_together, .must_show_together * {
+	white-space: nowrap !important;
 }
 
 /*
@@ -1999,11 +2180,39 @@ table.scrollable_inside {
 	/*{+END}*/
 }
 
+/*{+START,CSS_MODE,mobile}*/
+	/* Deconstructs map table to blocks, for easy layout fit */
+
+	.map_table.responsive_blocked_table, .map_table.responsive_blocked_table tbody, .map_table.responsive_blocked_table tfoot, .map_table.responsive_blocked_table tr, .map_table.responsive_blocked_table th, .map_table.responsive_blocked_table td {
+		display: block;
+	}
+
+	.results_table.responsive_blocked_table tr {
+		margin-bottom: 0.5em;
+	}
+
+	.results_table.responsive_blocked_table th, .results_table.responsive_blocked_table td {
+		border-radius: 0 !important;
+		border-left: 1px solid {$GET,standard_border} !important;
+		border-right: 1px solid {$GET,standard_border} !important;
+		border-top: 0 !important;
+		border-bottom: 0 !important;
+		text-align: left !important;
+	}
+
+	.map_table.responsive_blocked_table th:first-child, .map_table.responsive_blocked_table td:first-child {
+		border-top: 1px solid {$GET,standard_border} !important;
+	}
+
+	.map_table.responsive_blocked_table th:last-child, .map_table.responsive_blocked_table td:last-child {
+		border-bottom: 1px solid {$GET,standard_border} !important;
+	}
+/*{+END}*/
+
 .spaced_table th, .spaced_table td {
 	padding: 0.7em;
 }
-
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.spaced_table td {
 		overflow-x: auto;
 	}
@@ -2134,6 +2343,66 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	width: 10em;
 }
 
+/* This relies on some JavaScript running too, to set the data attributes; works great though for properly marked up thead'd tables*/
+/*{+START,CSS_MODE,mobile}*/
+	.responsive_table, .responsive_table>caption, .responsive_table>tbody, .responsive_table>tbody>tr, .responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tfoot, .responsive_table>tfoot>tr, .responsive_table>tfoot>tr>th, .responsive_table>tfoot>tr>td, .responsive_table>tr, .responsive_table>tr>th, .responsive_table>tr>td {
+		display: block;
+		width: auto;
+		overflow: hidden;
+		text-align: left !important;
+	}
+	.responsive_table>thead {
+		display: none !important;
+	}
+	.responsive_table>tbody>tr, .responsive_table>tfoot>tr, .responsive_table>tr {
+		border-bottom: 1px solid {$GET,standard_border};
+		margin-bottom: 1em;
+	}
+	.responsive_table>tbody>tr>th[data-th]::before, .responsive_table>tbody>tr>td[data-th]::before, .responsive_table>tfoot>tr>th[data-th]::before, .responsive_table>tfoot>tr>td[data-th]::before, .responsive_table>tr>th[data-th]::before, .responsive_table>tr>td[data-th]::before {
+		content: attr(data-th) ":";
+		font-weight: bold;
+		width: 7em;
+		word-wrap: normal !important;
+		display: inline-block;
+		vertical-align: top;
+	}
+	.responsive_table>tbody>tr>th, .responsive_table>tbody>tr>td, .responsive_table>tfoot>tr>th, .responsive_table>tfoot>tr>td, .responsive_table>tr>th, .responsive_table>tr>td {
+		border-left: 1px solid {$GET,standard_border};
+		border-radius: 0 !important;
+	}
+	.responsive_table>tbody>tr>th .field_name, .responsive_table>tbody>tr>td .field_name, .responsive_table>tr>th .field_name, .responsive_table>tr>td .field_name {
+		font-weight: normal;
+		font-style: italic;
+	}
+	.responsive_table>tbody>tr>th:empty, .responsive_table>tbody>tr>td:empty, .responsive_table>tfoot>tr>th:empty, .responsive_table>tfoot>tr>td:empty, .responsive_table>tr>th:empty, .responsive_table>tr>td:empty {
+		display: none;
+	}
+	.responsive_table>tbody>tr:last-child>td, .responsive_table>tbody>tr.last>td, .responsive_table>tfoot>tr:last-child>td, .responsive_table>tfoot>tr.last>td, .responsive_table>tbody>tr:last-child>th {
+		border-bottom: 0;
+	}
+
+	.responsive_table .form_table_field_spacer {
+		border: 0 !important;
+	}
+	.responsive_table .form_table_field_spacer .table_heading_cell {
+		border: 0 !important;
+		padding: 0 !important;
+	}
+
+	.responsive_table_bolded_first_column>tbody>tr>th:first-child, .responsive_table_bolded_first_column>tbody>tr>td:first-child, .responsive_table_bolded_first_column>tfoot>tr>th:first-child, .responsive_table_bolded_first_column>tfoot>tr>td:first-child, .responsive_table_bolded_first_column>tr>th:first-child, .responsive_table_bolded_first_column>tr>td:first-child {
+		font-weight: bold;
+	}
+	.responsive_table_bolded_first_column>tbody>tr>th[data-th]::before, .responsive_table_bolded_first_column>tbody>tr>td[data-th]::before, .responsive_table_bolded_first_column>tfoot>tr>th[data-th]::before, .responsive_table_bolded_first_column>tfoot>tr>td[data-th]::before, .responsive_table_bolded_first_column>tr>th[data-th]::before, .responsive_table_bolded_first_column>tr>td[data-th]::before {
+		font-weight: normal; /* Overridden from above */
+	}
+
+	.responsive_table_separate_lines>tbody>tr>th[data-th]::before, .responsive_table_separate_lines>tbody>tr>td[data-th]::before, .responsive_table_separate_lines>tfoot>tr>th[data-th]::before, .responsive_table_separate_lines>tfoot>tr>td[data-th]::before, .responsive_table_separate_lines>tr>th[data-th]::before, .responsive_table_separate_lines>tr>td[data-th]::before {
+		width: auto;
+		display: block;
+		margin-bottom: 0.5em;
+	}
+/*{+END}*/
+
 /*
 =========================
 =====Core Interfaces=====
@@ -2235,10 +2504,19 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 }
 
 .results_table_sorter {
-	max-width: {$?,{$MOBILE},315,400}px;
 	float: {!en_left};
 	margin-{!en_right}: 0.75em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.results_table_sorter {
+		max-width: 400px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.results_table_sorter {
+		max-width: 315px;
+	}
+/*{+END}*/
 
 .pagination_spacing {
 	margin: 1em 0;
@@ -2253,23 +2531,23 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	/*	max-width: 540px; Looks bad on forumview */
 }
 
-.pagination * {
+.pagination nav>* {
 	vertical-align: middle;
 }
 .pagination .inline, .pagination nav {
 	display: inline-block;
 }
 
-.pagination a,
-.pagination span,
+.pagination nav>a,
+.pagination nav>span,
 .results_launcher a,
 .results_launcher span {
 	border: 1px solid {$GET,standard_border};
 	border-left: 0;
 	background-color: {$GET,area_background};
 }
-.pagination a:first-child,
-.pagination span:first-child,
+.pagination nav>a:first-child,
+.pagination nav>span:first-child,
 .results_launcher a:first-child,
 .results_launcher span:first-child,
 .pagination .first-child,
@@ -2312,10 +2590,10 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	display: inline;
 }
 
-.pagination a,
-.pagination a:visited,
-.pagination a:hover,
-.pagination span,
+.pagination nav>a,
+.pagination nav>a:visited,
+.pagination nav>a:hover,
+.pagination nav>span,
 .results_launcher a,
 .results_launcher a:visited,
 .results_launcher a:hover,
@@ -2324,20 +2602,34 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	text-decoration: none;
 	margin-top: 0;
 }
-.pagination a:hover,
+.pagination nav>a:hover,
 .results_launcher a:hover {
 	background-color: {$GET,area_hover_2_background};
 }
-.pagination a,
-.pagination a:visited,
-.pagination a:hover,
-.pagination span,
-.results_launcher a,
-.results_launcher a:visited,
-.results_launcher a:hover,
-.results_launcher span {
-	padding: 2px {$?,{$MOBILE},10,6}px !important;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.pagination nav>a,
+	.pagination nav>a:visited,
+	.pagination nav>a:hover,
+	.pagination nav>span,
+	.results_launcher a,
+	.results_launcher a:visited,
+	.results_launcher a:hover,
+	.results_launcher span {
+		padding: 2px 6px !important;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.pagination nav>a,
+	.pagination nav>a:visited,
+	.pagination nav>a:hover,
+	.pagination nav>span,
+	.results_launcher a,
+	.results_launcher a:visited,
+	.results_launcher a:hover,
+	.results_launcher span {
+		padding: 2px 10px !important;
+	}
+/*{+END}*/
 
 .results_launcher {
 	font-size: 0.8em;
@@ -2408,7 +2700,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin-top: 1.5em;
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.index_screen_fancier_screen_entries {
 		margin-{!en_left}: 1em;
 	}
@@ -2417,6 +2709,15 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	margin: 0.5em;
 	padding: 0.5em;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.index_screen_fancier_entry.box {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0;
+		background: none;
+	}
+/*{+END}*/
 .index_screen_fancier_entry_link {
 	font-weight: bold;
 	margin-bottom: 0.3em;
@@ -2508,6 +2809,15 @@ div.ajax_loading, p.ajax_loading {
 .tree_list_nonhighlighted a {
 }
 
+.tree_list_node {
+	display: inline-block;
+}
+/*{+START,CSS_MODE,mobile}*/
+	.tree_list_node, .tree_list_nonhighlighted, .tree_list_highlighted {
+		margin: 1em 0;
+	}
+/*{+END}*/
+
 .software_chat {
 	margin: 20px;
 	font-size: 0.9em;
@@ -2539,7 +2849,7 @@ div.ajax_loading, p.ajax_loading {
 =========================
 */
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.lined_up_boxes .right {
 		margin-left: 1em;
 	}
@@ -2549,7 +2859,7 @@ div.ajax_loading, p.ajax_loading {
 	}
 /*{+END}*/
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.lined_up_boxes .right {
 		width: 100%;
 		float: none;
@@ -2561,9 +2871,16 @@ div.ajax_loading, p.ajax_loading {
 	}
 /*{+END}*/
 
-.ratings {
-	width: {$?,{$MOBILE},100%,10em};
-}
+/*{+START,CSS_MODE,desktop}*/
+	.ratings {
+		width: 10em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.ratings {
+		width: 100%;
+	}
+/*{+END}*/
 
 .RATING_BOX .rating_inner {
 	text-align: center;
@@ -2612,17 +2929,51 @@ div.ajax_loading, p.ajax_loading {
 	padding-left: 2px;
 }
 
-.trackbacks {
-	width: {$?,{$MOBILE},100%,14em};
-}
+/*{+START,CSS_MODE,desktop}*/
+	.trackbacks {
+		width: 14em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.trackbacks {
+		width: 100%;
+	}
+/*{+END}*/
 
 .box___trackback label {
 	display: block;
 }
 
+.comments_header {
+	margin: 0.4em 0 0 0;
+}
+/*{+START,CSS_MODE,desktop}*/
+	.comments_header {
+		float: left;
+	}
+/*{+END}*/
+
 .comments_sorting_box {
 	margin-top: 0.45em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.comments_sorting_box {
+		float: right;
+		margin-left: 1em;
+	}
+/*{+END}*/
+
+/*{+START,CSS_MODE,desktop}*/
+	.comments_notification_buttons {
+		float: right;
+		margin-left: 1em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.comments_notification_buttons {
+		margin-top: 0.5em;
+	}
+/*{+END}*/
 
 .content_screen_comments .comments_wrapper {
 	margin-top: 2em;
@@ -2652,13 +3003,17 @@ div.ajax_loading, p.ajax_loading {
 
 .post .post_thread_children {
 	margin-top: 1em;
-	/*{+START,IF,{$MOBILE}}*/
-		margin-left: 7px;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		margin-left: 20px;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.post .post_thread_children {
+		margin-left: 7px;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.post .post_thread_children {
+		margin-left: 20px;
+	}
+/*{+END}*/
 
 .post_buttons {
 	text-align: left !important; /* Overrides buttons_group */
@@ -2719,39 +3074,62 @@ div .post_buttons>*, div .buttons_group_faded>* {
 .comments_field_name_column {
 	width: 13em;
 }
-
 .comments_field_input_column {
 	width: 100%;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.comments_field_name_column, .comments_field_input_column {
+		width: auto;
+	}
+/*{+END}*/
 
 .comments_posting_form_inner {
 	text-align: {!en_left};
 	padding: 1em 0 0 0;
-	/*{+START,IF,{$MOBILE}}*/
+}
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_inner {
 		overflow: hidden;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
-.comments_posting_form_inner th, .comments_posting_form_inner td.one_line {
-	padding: {$?,{$MOBILE},0.5em 0.5em 0.5em 0,0.5em 1.5em 0.5em 0.5em};
-}
+/*{+START,CSS_MODE,desktop}*/
+	.comments_posting_form_inner th, .comments_posting_form_inner td.one_line {
+		padding: 0.5em 1.5em 0.5em 0.5em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_inner th, .comments_posting_form_inner td.one_line {
+		padding: 0.5em 1em 0.5em 0;
+	}
+/*{+END}*/
 
 .comments_posting_form_inner th {
 	font-weight: bold !important;
 	border-right: 1px solid {$GET,pale_border};
 	text-align: right;
-	/*{+START,IF,{$MOBILE}}*/
-		min-width: 4.5em;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_inner th {
+		min-width: 4.5em;
+	}
+/*{+END}*/
 .comments_posting_form_inner th>* {
 	text-align: right !important;
 }
 
-.comments_posting_form_inner td {
-	padding-left: {$?,{$MOBILE},0.5em,1.5em};
-	padding-right: {$?,{$MOBILE},0,1em};
-}
+/*{+START,CSS_MODE,desktop}*/
+	.comments_posting_form_inner td {
+		padding-left: 1.5em;
+		padding-right: 1em;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.comments_posting_form_inner td {
+		padding-left: 1em;
+		padding-right: 0.5em;
+	}
+/*{+END}*/
 
 .comments_posting_form_inner textarea {
 	color: {$GET,comfortable_input_field_text};
@@ -2789,15 +3167,12 @@ div .post_buttons>*, div .buttons_group_faded>* {
 
 .comments_posting_form_end {
 	overflow: hidden;
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 0;
-		padding: 0;
-		text-align: center;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
-		margin: 0 0 1em 0;
-	/*{+END}*//*{+END}*/
 }
+/*{+START,CSS_MODE,desktop}*//*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
+	.comments_posting_form_end {
+		margin: 0 0 1em 13.5em;
+	}
+/*{+END}*//*{+END}*/
 
 .comments_posting_form_end .proceed_button.contains_preview_button {
 	text-align: left;
@@ -2815,6 +3190,11 @@ div .post_buttons>*, div .buttons_group_faded>* {
 	font-size: 0.85em;
 	text-align: center;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.comments_captcha {
+		margin: 0 auto;
+	}
+/*{+END}*/
 
 .comments_captcha img, .comments_captcha iframe, .comments_captcha input {
 	margin: 0 5px 2px 5px;
@@ -3015,6 +3395,7 @@ dl.meta_details_list>dt, dl.meta_details_list>dd {
 .staff_actions ul.horizontal_links {
 	width: auto;
 	font-size: 1em;
+	display: block !important;
 }
 .global_middle .staff_actions li {
 	white-space: nowrap !important;
@@ -3061,28 +3442,34 @@ There is 'actions_list' too (defined elsewhere). These are for links that are gi
 */
 
 ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+	opacity: 0.7;
+	font-size: 0.8em;
+}
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group.horizontal_links>li:first-child:before, p.associated_link:before, div.associated_link:before {
 		content: "( " !important;
-	/*{+END}*/
-	opacity: 0.7;
-	font-size: 0.8em;
-}
+	}
+/*{+END}*/
 ul.associated_links_block_group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		content: " )" !important;
-	/*{+END}*/
 	opacity: 0.7;
 	font-size: 0.8em;
 }
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group.horizontal_links>li:last-child:after, p.associated_link:after, div.associated_link:after {
+		content: " )" !important;
+	}
+/*{+END}*/
 span.associated_link, a.associated_link, form.associated_link {
 	white-space: nowrap;
 }
 ul.associated_links_block_group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		content: "(" !important;
-	/*{+END}*/
 	opacity: 0.7;
 }
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group>li:before, span.associated_link:before, a.associated_link:before, form.associated_link:before {
+		content: "(" !important;
+	}
+/*{+END}*/
 ul.associated_links_block_group>li:first-child:before, span.associated_link:first-child:before, a.associated_link:first-child:before, form.associated_link:first-child:before {
 	vertical-align: baseline !important;
 }
@@ -3090,22 +3477,47 @@ ul.associated_links_block_group.horizontal_links>li:after { /* Undoes the above 
 	content: "" !important;
 }
 ul.associated_links_block_group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		content: ")" !important;
-	/*{+END}*/
 	opacity: 0.7;
 }
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group>li:after, span.associated_link:after, a.associated_link:after, form.associated_link:after {
+		content: ")" !important;
+	}
+/*{+END}*/
 
 ul.associated_links_block_group.horizontal_links>li:before,
 .horizontal_meta_details li:before,
 .horizontal_links>li:before,
 .horizontal_ticker li:before {
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		content: "\00b7" !important; /* a &middot; */
-	/*{+END}*/
 	padding: {$?,{$MOBILE},0 0.2em 0 0.1em,0 0.5em 0 0.1em};
 	vertical-align: -20%;
 }
+/*{+START,CSS_MODE,desktop}*/
+	ul.associated_links_block_group.horizontal_links>li:before,
+	.horizontal_meta_details li:before,
+	.horizontal_links>li:before,
+	.horizontal_ticker li:before {
+		content: "\00b7" !important; /* a &middot; */
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	ul.associated_links_block_group.horizontal_links>li:before,
+	.horizontal_meta_details li:before,
+	.horizontal_links>li:before,
+	.horizontal_ticker li:before {
+		padding: 0 0.2em 0 0;
+		margin-left: -0.2em;
+		content: "|" !important;
+		font-size: 0.8em;
+	}
+	.with_images ul.associated_links_block_group.horizontal_links>li:before,
+	.with_images .horizontal_meta_details li:before,
+	.with_images .horizontal_links>li:before,
+	.with_images .horizontal_ticker li:before {
+		margin-left: 0.5em;
+		content: "" !important;
+	}
+/*{+END}*/
 .horizontal_meta_details li:before {
 	vertical-align: middle;
 }
@@ -3165,10 +3577,12 @@ ul.associated_link li img {
 }
 ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul.horizontal_links form {
 	vertical-align: middle;
-	/*{+START,IF,{$MOBILE}}*/
-		white-space: nowrap !important;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	ul.horizontal_links li img, ul.associated_link li img, ul.horizontal_links a, ul.horizontal_links form {
+		white-space: nowrap !important;
+	}
+/*{+END}*/
 
 .associated_links_block_group>li{
 	margin: 0.5em 0 !important;
@@ -3293,14 +3707,15 @@ ul.buttons_group, ul.associated_links_block_group {
 	margin: 10px 0 0 5px;
 }
 
-.quite_wide_field {
-	width: 88%;
-}
+/*{+START,CSS_MODE,desktop}*/
+	.quite_wide_field {
+		width: 88%;
+	}
+/*{+END}*/
 
 .box___confirm_screen {
 	margin-bottom: 2em;
 }
-
 .box___confirm_screen img:not([width]):not([height]) {
 	max-width: 100%;
 	height: auto;
@@ -3318,6 +3733,7 @@ ul.buttons_group, ul.associated_links_block_group {
 	margin-left: 0 !important;
 	margin-right: 0 !important;
 }
+
 .fields_set_contents .constrain_field, .fields_set_contents .wide_field {
 	max-width: 500px;
 }
@@ -3390,19 +3806,23 @@ div>.button_micro:first-child, div>.button_screen:first-child, div>.button_scree
 	padding: 3px 30px 4px 5px;
 	background-size: 18px 18px;
 	font-size: 13px;
-	/*{+START,IF,{$MOBILE}}*/
-		margin: 0.25em 0.1em !important;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.button_screen_item {
+		margin: 0.25em 0.1em !important;
+	}
+/*{+END}*/
 .button_micro {
 	padding: 4px 6px;
 	font-size: 12px;
 	margin: 1px 0.2em 0 0.4em; /* Push it up a bit due to confined space */
 	text-shadow: 1px 1px 1px {$GET,dark_shadow};
-	/*{+START,IF,{$MOBILE}}*/
-		line-height: 0.9em;
-	/*{+END}*/
 }
+/*{+START,CSS_MODE,mobile}*/
+	.button_micro {
+		line-height: 0.9em;
+	}
+/*{+END}*/
 div .button_micro {
 	background-image: none !important; /* Too loud for such a small space */
 	border-radius: 1px;
@@ -3422,7 +3842,7 @@ div .button_micro {
 }
 .button_screen:hover, .button_screen_item:hover, .button_micro:hover, .toggleable_tray_button:hover img,
 body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.touch_enabled .button_micro, body.touch_enabled .toggleable_tray_button img {
-	opacity: 1.0; /* Needed for Opera */
+	opacity: 1.0; /* LEGACY Needed for Opera */
 }
 .button_micro:disabled, .button_screen:disabled, .button_screen_item:disabled {
 	opacity: 0.4 !important;
@@ -3920,19 +4340,21 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	border-left: 0;
 	border-right: 0;
 	border-top: 0;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		border-bottom: 1px solid;
-		border-color: {$GET,tab_border};
-	/*{+END}*/
 	height: 25px;
 }
+/*{+START,CSS_MODE,desktop}*/
+	.tabs {
+		border-bottom: 1px solid;
+		border-color: {$GET,tab_border};
+	}
+/*{+END}*/
 
 .spaced_out_tabs.tabs {
 	overflow: hidden;
 	height: auto;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.tabs {
 		border-bottom: 1px solid {$GET,tab_border};
 		overflow: hidden;
@@ -3952,15 +4374,19 @@ a.tab, a.tab:visited, a.tab:hover {
 	cursor: pointer;
 	line-height: 18px;
 	opacity: 0.6;
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+}
+/*{+START,CSS_MODE,desktop}*/
+	.tab {
 		background-image: url('{$IMG;,tabs/tab}') !important;
-	/*{+END}*/
-	/*{+START,IF,{$MOBILE}}*/
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	.tab {
 		min-width: 107px; /* Allows 3 per row, neat alignment */
 		border-left: 1px solid {$GET,tab_border};
 		border-top: 1px solid {$GET,tab_border};
-	/*{+END}*/
-}
+	}
+/*{+END}*/
 
 .spaced_out_tabs .tab {
 	margin-right: 1px;
@@ -3973,7 +4399,7 @@ a.tab>span {
 	padding-top: 3px;
 }
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.tab_surround .tab {
 		min-width: 100px; /* Allows 3 per row, neat alignment (for nested tabs) */
 	}
@@ -4005,30 +4431,31 @@ a.tab>span {
 .tab_first, a.tab:first-child {
 }
 
-/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
 	.tab_last, a.tab:last-child, .spaced_out_tabs .tab {
 		border-right: 1px solid;
 		border-color: {$GET,tab_border};
 	}
 /*{+END}*/
 
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.tab:nth-child(3n+0) {
 		border-right: 1px solid {$GET,tab_border};
 	}
 /*{+END}*/
 
-div[role="tabpanel"] {
-	/*{+START,IF,{$MOBILE}}*/
-		padding-left: 2px;
-		padding-right: 2px;
-	/*{+END}*/
-
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
+/*{+START,CSS_MODE,desktop}*/
+	div[role="tabpanel"] {
 		padding-left: 1em;
 		padding-right: 1em;
-	/*{+END}*/
-}
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,mobile}*/
+	div[role="tabpanel"] {
+		padding-left: 2px;
+		padding-right: 2px;
+	}
+/*{+END}*/
 div[role="tabpanel"]>:first-child {
 	margin-top: 1em;
 }
@@ -4380,10 +4807,6 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 .attachment {
 	margin: 1em 0;
 	margin-bottom: 1px !important; /* Overrides 0 on .left>figure, .right>figure */
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		border: 1px solid {$GET,standard_border};
-		padding: 0.5em !important;
-	/*{+END}*/
 	font-size: 0.9em;
 	/*display: inline-block; Actually table works better, shows margins even when not floated*/
 	display: table;
@@ -4391,6 +4814,12 @@ body div.comcode_table_of_contents>div.box_inner>ol>li {
 	max-width: 100%;
 	background: {$GET,WB};
 }
+/*{+START,CSS_MODE,desktop}*/
+	.attachment {
+		border: 1px solid {$GET,standard_border};
+		padding: 0.5em !important;
+	}
+/*{+END}*/
 figure {
 	margin: 1em 0;
 }
@@ -4496,6 +4925,21 @@ a[rel="lightbox"] {
 	height: auto;
 }
 
+.fake_table_cell {
+	display: inline-block;
+}
+/*{+START,CSS_MODE,mobile}*/
+	.fake_table_cell {
+		display: block !important;
+		padding: 0 !important;
+		width: auto !important;
+		float: none !important;
+	}
+	.fake_table_cell + .fake_table_cell {
+		margin: 1em 0;
+	}
+/*{+END}*/
+
 /* Wrap video code with <div class="responsive_video">...</div> if you want it responsive; jwplayer is doing this by default using its own JS though */
 .responsive_video video {
 	max-width: 100%;
@@ -4503,7 +4947,7 @@ a[rel="lightbox"] {
 }
 
 /* We normally expect a standard-sized YouTube embed, but for mobile we will lock the size to the browser window */
-/*{+START,IF,{$MOBILE}}*/
+/*{+START,CSS_MODE,mobile}*/
 	.youtube_player {
 		overflow: hidden;
 		width: 100%;
@@ -4546,7 +4990,7 @@ a[rel="lightbox"] {
 =========================
 */
 
-/*{+START,IF,{$CONFIG_OPTION,filetype_icons}}*/
+/*{+START,IF,{$THEME_OPTION,filetype_icons}}*/
 	/* Higher than media links for lower CSS precedence */
 	a[target="_blank"].user_link { /* Detected external links have styling */
 		background: url('{$IMG;,icons/16x16/filetypes/external_link}') no-repeat right top;
@@ -4745,16 +5189,20 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 
 .overlay_close_button {
 	position: absolute;
-	/*{+START,IF,{$MOBILE}}*/
-		top: 0;
-		right: 0;
-	/*{+END}*/
-	/*{+START,IF,{$NOT,{$MOBILE}}}*/
-		top: -16px;
-		right: -16px;
-	/*{+END}*/
 	cursor: pointer;
 }
+/*{+START,CSS_MODE,mobile}*/
+	.overlay_close_button {
+		top: 0;
+		right: 0;
+	}
+/*{+END}*/
+/*{+START,CSS_MODE,desktop}*/
+	.overlay_close_button {
+		top: -16px;
+		right: -16px;
+	}
+/*{+END}*/
 
 .overlay img.lightbox_image {
 	display: block;
