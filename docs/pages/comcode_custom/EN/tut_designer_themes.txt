@@ -77,7 +77,7 @@ This is what will happen with the elements of your static design (roughly):
 
 [list="1"]
 [*] Using the Theme Wizard (in Admin Zone > Style > Themes), create a base theme that matches the colour of the theme that needs to be build as closely as possible (if your theme has many colours, choose the one used most). Tell it to make the theme active.
-[*] You will also want to make sure the 'Block cache' is disabled in the configuration (Admin Zone > Setup > Configuration > Site options > Caches). This will allow you to make block template changes without having to worry about emptying the block cache each time. It is advisable to leave the other caches as they are; Composr is smart enough to detect if files have been changed in most cases.
+[*] You will also want to make sure the 'Block cache' is disabled in the configuration (Admin Zone > Setup > Configuration > Performance options > Caches). This will allow you to make block template changes without having to worry about emptying the block cache each time. It is advisable to leave the other caches as they are; Composr is smart enough to detect if files have been changed in most cases.
 [/list]
 
 [semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/1ZvECzgtcEM">video</a>.[/b][/semihtml]
