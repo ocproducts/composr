@@ -785,8 +785,7 @@ class Services_JSON
   */
 class Services_JSON_Error
 {
-   function __construct($message = 'unknown error', $code = null,
-										 $mode = null, $options = null, $userinfo = null)
+   function __construct($message = 'unknown error', $code = null, $mode = null, $options = null, $userinfo = null)
    {
       warn_exit($message);
    }

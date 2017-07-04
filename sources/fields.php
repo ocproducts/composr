@@ -732,7 +732,7 @@ abstract class ListFieldHook
 
         switch ($default) {
             case 'CURRENCY':
-        		if (addon_installed('ecommerce')) {
+                if (addon_installed('ecommerce')) {
                     require_code('currency');
                     $currencies = array_keys(get_currency_map());
                     $list = array_combine($currencies, $currencies);

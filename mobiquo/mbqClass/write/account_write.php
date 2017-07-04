@@ -25,7 +25,7 @@ class CMSAccountWrite
     const SIGN_IN_REGISTER_USERNAME_OCCUPIED = '1';
     const SIGN_IN_USERNAME_NEEDED_NOT_EMAIL = '2';
     const SIGN_IN_EMAIL_WRONG = '3';
-    //const SIGN_IN_USERNAME_NO_EXIST='2';	Defined in Tapatalk API but cannot happen as we would register in this case
+    //const SIGN_IN_USERNAME_NO_EXIST='2'; Defined in Tapatalk API but cannot happen as we would register in this case
     const SIGN_IN_SSO_FAILED = '4';
     const SIGN_IN_REGISTER_NEEDS_PASSWORD = '6';
     const SIGN_IN_USERNAME_NEEDED = '7';

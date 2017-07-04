@@ -131,7 +131,7 @@ class JSMin
                             break;
                         }
 
-                        /*if (ord($this->a) <= $chr_lf)		We don't need to find this error
+                        /*if (ord($this->a) <= $chr_lf)     We don't need to find this error
                         {
                             return array('Unterminated string literal.');
                         }*/
@@ -170,7 +170,7 @@ class JSMin
                                 $this->output .= $this->a;
                                 $this->a = $this->get();
                             } elseif (ord($this->a) <= $chr_lf) {
-                                //return array('Unterminated regular expression literal.');	We don't need to handle errors
+                                //return array('Unterminated regular expression literal.'); We don't need to handle errors
                                 break;
                             }
 
@@ -380,7 +380,7 @@ class JSMin
 
                             case null:
                                 return '';
-                            //return array('Unterminated comment.');	We don't need to handle errors
+                            //return array('Unterminated comment.');    We don't need to handle errors
                         }
                     }
 

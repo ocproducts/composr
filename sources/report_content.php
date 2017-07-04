@@ -245,7 +245,7 @@ function report_content_form_fields()
         $types = build_types_list(db_get_first_id());
         $list_entries = new Tempcode();
         foreach ($types as $type) {
-        	$list_entries->attach(form_input_list_entry($type['TICKET_TYPE_ID'], $type['SELECTED'], $type['NAME']));
+            $list_entries->attach(form_input_list_entry($type['TICKET_TYPE_ID'], $type['SELECTED'], $type['NAME']));
         }
         $field = form_input_list(do_lang('TICKET_TYPE'), '', 'ticket_type_id', $list_entries);
         $specialisation->attach($field);

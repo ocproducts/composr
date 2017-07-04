@@ -647,7 +647,7 @@ function sql_region_filter($content_type, $field_name_to_join, $region = null)
         $region = get_region();
     }
     if ($region === null) {
-    	return '';
+        return '';
     }
     $ret = ' AND (';
     $ret .= 'NOT EXISTS(SELECT * FROM ' . get_table_prefix() . 'content_regions cr WHERE ' . db_cast($field_name_to_join, 'CHAR') . '=cr.content_id AND ' . db_string_equal_to('content_type', $content_type) . ')';

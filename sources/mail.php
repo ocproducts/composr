@@ -967,7 +967,7 @@ abstract class Mail_dispatcher_base
 
         $full_mime_message .= $this->line_term . $sending_message;
 
-    	return $full_mime_message;
+        return $full_mime_message;
     }
 
     /**

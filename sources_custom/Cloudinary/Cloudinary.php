@@ -623,7 +623,7 @@ class Cloudinary {
             }
         }
         ksort($params);
-	      $join_pair = function($key, $value) { return $key . "=" . $value; };
+        $join_pair = function($key, $value) { return $key . "=" . $value; };
         $to_sign = implode("&", array_map($join_pair, array_keys($params), array_values($params)));
         return sha1($to_sign . $api_secret);
     }

@@ -103,7 +103,7 @@ class Hook_cron_newsletter_periodic
         require_lang('newsletter');
         $lang = $periodic_row['np_lang'];
 
-		// We need to build the content, based on the chosen categories.
+        // We need to build the content, based on the chosen categories.
         $message = generate_whatsnew_comcode($periodic_row['np_message'], $periodic_row['np_in_full'], $lang, $cutoff_time);
         if ($message === null) {
             return null;

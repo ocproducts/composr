@@ -302,6 +302,7 @@ function lex($text = null)
         switch ($lex_state) {
             case PLEXER_FREE:
                 // Jump over any white space in our way
+                $has_tab = false;
                 do {
                     $previous_char = $char;
                     list($reached_end, $i, $char) = plex__get_next_char($i);
@@ -309,7 +310,6 @@ function lex($text = null)
                         break 3;
                     }
 
-                    $has_tab = false;
                     if ($new_line) {
                         if ($char == ' ') {
                             $indentation++;

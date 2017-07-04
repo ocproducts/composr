@@ -86,10 +86,10 @@ foreach ($allowed_image_ext as $mime_type => $ext) {
 }
 
 
-##########################################################################################################
-# IMAGE FUNCTIONS																						 #
-# You do not need to alter these functions																 #
-##########################################################################################################
+#########################################################################################################
+# IMAGE FUNCTIONS                                                                                       #
+# You do not need to alter these functions                                                              #
+#########################################################################################################
 function resizeImage($image, $width, $height, $scale)
 {
     list($imagewidth, $imageheight, $imageType) = getimagesize($image);
@@ -345,7 +345,7 @@ if (strlen($large_photo_exists) > 0) {
 <h1>Thumbnail generator</h1>
 <?php
 /*if(strlen($large_photo_exists)>0 && strlen($thumb_photo_exists)>0){
-	echo $large_photo_exists."&nbsp;".$thumb_photo_exists;
+    echo $large_photo_exists."&nbsp;".$thumb_photo_exists;
 }else*/
 {
     if (strlen($large_photo_exists) > 0) {

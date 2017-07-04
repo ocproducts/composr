@@ -205,20 +205,20 @@ function get_trusted_sites($level)
 
     if (isset($SITE_INFO['base_url'])) {
         $base_url = $SITE_INFO['base_url'];
-        $allowed_partners[] = parse_url($base_url, PHP_URL_HOST);
+        $trusted_sites[] = parse_url($base_url, PHP_URL_HOST);
     } else {
         $host = cms_srv('HTTP_HOST');
         if ($host != '') {
-            $allowed_partners[] = $host;
+            $trusted_sites[] = $host;
         }
     }
 
     if (isset($SITE_INFO['custom_base_url'])) {
         $base_url = $SITE_INFO['custom_base_url'];
-        $allowed_partners[] = parse_url($base_url, PHP_URL_HOST);
+        $trusted_sites[] = parse_url($base_url, PHP_URL_HOST);
     }
 
-    return $allowed_partners;
+    return $trusted_sites;
 }
 
 /**

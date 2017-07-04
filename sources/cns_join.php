@@ -158,12 +158,12 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     // Read in data
 
-    if ($username === null)	{
+    if ($username === null) {
         $username = trim(post_param_string('username'));
     }
     cns_check_name_valid($username, null, null, true); // Adjusts username if needed
 
-    if ($password === null)	{
+    if ($password === null) {
         $password = trim(post_param_string('password', false, INPUT_FILTER_NONE));
         $password_confirm = trim(post_param_string('password_confirm', false, INPUT_FILTER_NONE));
         if ($password != $password_confirm) {
@@ -171,7 +171,7 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
         }
     }
 
-    if ($email_address === null)	{
+    if ($email_address === null) {
         $confirm_email_address = post_param_string('email_address_confirm', null);
         $email_address = trim(post_param_string('email_address', member_field_is_required(null, 'email_address', null, null, $adjusted_config_options) ? false : ''));
         if ($confirm_email_address !== null) {

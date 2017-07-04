@@ -561,7 +561,7 @@ class phpVimeo
             if (!is_string($input)) {
                 if (is_bool($input)) {
                     $input=$input?'1':'0';
-                }	else {
+                } else {
                     $input=strval($input);
                 }
             }

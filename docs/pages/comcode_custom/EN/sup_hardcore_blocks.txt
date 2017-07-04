@@ -528,7 +528,7 @@ Now that we've learned about variables, let's see how we can use them to make a 
    user's points availability. */
 
 // First we get the current user ID
-$userid = get_member();
+$member_id = get_member();
 
 // Now we get information about their points usage
 
@@ -536,8 +536,8 @@ $userid = get_member();
 require_code('points');
 
 // Call the functions and store their values in some variables
-$available = available_points($userid);
-$used = points_used($userid);
+$available = available_points($member_id);
+$used = points_used($member_id);
 
 // Now we create a pie chart of these results. The way we do this
 // is to send the user an HTML image with the URL containing the

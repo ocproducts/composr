@@ -35,7 +35,7 @@ class Hook_sw_core
         $settings['show_content_tagging'] = (get_theme_option('show_content_tagging', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
         $settings['show_content_tagging_inline'] = (get_theme_option('show_content_tagging_inline', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
         $settings['show_screen_actions'] = (get_theme_option('show_screen_actions', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
-        $settings['collapse_user_zones'] = (get_option('collapse_user_zones', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
+        $settings['collapse_user_zones'] = (get_option('collapse_user_zones') == '1') ? '1' : '0';
 
         $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('group_zone_access', 'zone_name', array('zone_name' => 'site', 'group_id' => $guest_groups[0]));

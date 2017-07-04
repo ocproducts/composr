@@ -105,7 +105,7 @@ function deconstruct_long_name($username)
         $name_parts = array();
         $num_matches = preg_match_all('#([A-Z]+[^A-Z]*)#i', $username, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
-        	$name_parts[] = $matches[1][$i];
+            $name_parts[] = $matches[1][$i];
         }
     } else {
         $name_parts = explode(' ', $username);

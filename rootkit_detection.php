@@ -52,31 +52,31 @@ if (!function_exists('mysqli_connect')) {
 
 if ($type == '') {
     echo <<<END
-		<p>Be warned that this is a tool for experts, who wish to take active extra measures to make sure their website is not hacked against their knowledge. This is the most ominous security problem for many, because it means that their own website could be spreading customer information or compromised software downloads. When we say this script is for experts, we mean it &ndash; this script is strictly separated from any other Composr file and thus stands alone without access to our quality and standards frameworks.</p>
-		<p>This detector will provide you with a portion of text that identifies the state of the most critical areas of Composr. You can then take the text, and save it in a file on your computer. You then run this tool again at a later date and use a tool such as <a href="http://winmerge.sourceforge.net/">WinMerge</a> to compare the results &ndash; seeing what has changed.</p>
-		<p>This tool will not find out if areas of your site have been vandalised, because there is way too much information to scan and present for that to be viable. Instead, it focuses on compromised file systems, Composr permissions, and database-stored PHP/Commandr-Code. It only checks staff settings on the local Conversr, not on any other third-party forum.</p>
-		<p>It is important that you upload a new copy of this script before you run it, in case this script itself has been compromised.</p>
-		<p>This script may take some time to run, as it computes hashes over a large number of files. It requires the 'mysqli' extension for usage on a MySQL database. If a different database is being used, then custom changes will be required to this script.</p>
-		<p>This script cannot extract database access details from your config file because the config file itself (which is an executable file for Composr) may have been configured to give out fake details to this script. Therefore you will need to enter them here, and the config file will only be used for accessing the Composr password (which will be extracted using a non-executive method).</p>
+        <p>Be warned that this is a tool for experts, who wish to take active extra measures to make sure their website is not hacked against their knowledge. This is the most ominous security problem for many, because it means that their own website could be spreading customer information or compromised software downloads. When we say this script is for experts, we mean it &ndash; this script is strictly separated from any other Composr file and thus stands alone without access to our quality and standards frameworks.</p>
+        <p>This detector will provide you with a portion of text that identifies the state of the most critical areas of Composr. You can then take the text, and save it in a file on your computer. You then run this tool again at a later date and use a tool such as <a href="http://winmerge.sourceforge.net/">WinMerge</a> to compare the results &ndash; seeing what has changed.</p>
+        <p>This tool will not find out if areas of your site have been vandalised, because there is way too much information to scan and present for that to be viable. Instead, it focuses on compromised file systems, Composr permissions, and database-stored PHP/Commandr-Code. It only checks staff settings on the local Conversr, not on any other third-party forum.</p>
+        <p>It is important that you upload a new copy of this script before you run it, in case this script itself has been compromised.</p>
+        <p>This script may take some time to run, as it computes hashes over a large number of files. It requires the 'mysqli' extension for usage on a MySQL database. If a different database is being used, then custom changes will be required to this script.</p>
+        <p>This script cannot extract database access details from your config file because the config file itself (which is an executable file for Composr) may have been configured to give out fake details to this script. Therefore you will need to enter them here, and the config file will only be used for accessing the Composr password (which will be extracted using a non-executive method).</p>
 
-		<div>
-			<p>Composr master password: <input type="password" name="password" /></p>
-			<p>Database host: <input type="text" name="db_host" value="localhost" /></p>
-			<p>Database name: <input type="text" name="db_name" value="cms" /></p>
-			<p>Database table prefix: <input type="text" name="db_prefix" value="cms_" /></p>
-			<p>Database username: <input type="text" name="db_user" value="root" /></p>
-			<p>Database password: <input type="password" name="db_password" /></p>
+        <div>
+            <p>Composr master password: <input type="password" name="password" /></p>
+            <p>Database host: <input type="text" name="db_host" value="localhost" /></p>
+            <p>Database name: <input type="text" name="db_name" value="cms" /></p>
+            <p>Database table prefix: <input type="text" name="db_prefix" value="cms_" /></p>
+            <p>Database username: <input type="text" name="db_user" value="root" /></p>
+            <p>Database password: <input type="password" name="db_password" /></p>
 END;
 
     if (isset($_SERVER['APPLICATION_ID'])) { // Google App Engine
         echo <<<END
-			<p>E-mail results to (required): <input type="text" name="email" /></p>
+            <p>E-mail results to (required): <input type="text" name="email" /></p>
 END;
     }
 
     echo <<<END
-			<input class="buttons__proceed button_screen" type="submit" value="Begin" />
-		</div>
+            <input class="buttons__proceed button_screen" type="submit" value="Begin" />
+        </div>
 END;
 } else {
     // Load POSTed settings
@@ -229,8 +229,8 @@ END;
 
     $results = nl2br(htmlentities($results));
     echo <<<END
-		<p>This is the result of the scan. Please save this to your own computer somewhere secure, and if you have run this tool previously, run a diff between those results and these. It is up to you to interpret the results &ndash; basically the diff will tell you what has been added and changed, and if you see anything you cannot fully explain, you may wish to investigate. This tool has been designed to empower, and to some extent promote secure practice, but it is only really useful in expert hands (there's no point ocProducts making it easier, as the security principles and analysis involved require expert knowledge in themself).</p>
-		<div style="font-family: Courier; white-space: pre">{$results}</div>
+        <p>This is the result of the scan. Please save this to your own computer somewhere secure, and if you have run this tool previously, run a diff between those results and these. It is up to you to interpret the results &ndash; basically the diff will tell you what has been added and changed, and if you see anything you cannot fully explain, you may wish to investigate. This tool has been designed to empower, and to some extent promote secure practice, but it is only really useful in expert hands (there's no point ocProducts making it easier, as the security principles and analysis involved require expert knowledge in themself).</p>
+        <div style="font-family: Courier; white-space: pre">{$results}</div>
 END;
 }
 
@@ -271,22 +271,22 @@ function rd_do_header()
 {
     echo <<<END
 <!DOCTYPE html>
-	<html lang="EN">
-	<head>
-		<title>Composr rootkit detector</title>
-		<link rel="icon" href="http://compo.sr/favicon.ico" type="image/x-icon" />
-		<style>/*<![CDATA[*/
+    <html lang="EN">
+    <head>
+        <title>Composr rootkit detector</title>
+        <link rel="icon" href="http://compo.sr/favicon.ico" type="image/x-icon" />
+        <style>/*<![CDATA[*/
 END;
     @print(preg_replace('#/\*\s*\*/\s*#', '', str_replace('url(\'\')', 'none', str_replace('url("")', 'none', preg_replace('#\{\$[^\}]*\}#', '', preg_replace('#\{\$\?,\{\$MOBILE\},([^,]+),([^,]+)\}#', '$2', file_get_contents($GLOBALS['FILE_BASE'] . '/themes/default/css/global.css')))))));
     echo <<<END
-			.screen_title { text-decoration: underline; display: block; background: url('themes/default/images/icons/48x48/menu/_generic_admin/tool.png') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
-			.button_screen { padding: 0.5em 0.3em !important; }
-			a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
-		/*]]>*/</style>
-	</head>
-	<body class="website_body" style="margin: 1em"><div class="global_middle">
-		<h1 class="screen_title">Composr rootkit detector</h1>
-		<form title="Proceed" action="rootkit_detection.php?type=go" method="post">
+            .screen_title { text-decoration: underline; display: block; background: url('themes/default/images/icons/48x48/menu/_generic_admin/tool.png') top left no-repeat; min-height: 42px; padding: 10px 0 0 60px; }
+            .button_screen { padding: 0.5em 0.3em !important; }
+            a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
+        /*]]>*/</style>
+    </head>
+    <body class="website_body" style="margin: 1em"><div class="global_middle">
+        <h1 class="screen_title">Composr rootkit detector</h1>
+        <form title="Proceed" action="rootkit_detection.php?type=go" method="post">
 END;
 }
 
@@ -296,8 +296,8 @@ END;
 function rd_do_footer()
 {
     echo <<<END
-		</form>
-	</div></body>
+        </form>
+    </div></body>
 </html>
 END;
 }
