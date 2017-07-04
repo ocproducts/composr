@@ -29,7 +29,7 @@
 
 {$REVIEW_STATUS,catalogue_category,{ID}}
 
-{+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
+{+START,IF,{$THEME_OPTION,show_content_tagging}}{TAGS}{+END}
 
 {+START,INCLUDE,NOTIFICATION_BUTTONS}
 	NOTIFICATIONS_TYPE=catalogue_entry__{CATALOGUE}

@@ -29,7 +29,7 @@
 
 			{$REVIEW_STATUS,comcode_page,{NATIVE_ZONE}:{NAME}}
 
-			{+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
+			{+START,IF,{$THEME_OPTION,show_content_tagging}}{TAGS}{+END}
 		{+END}
 
 		{+START,IF_NON_EMPTY,{EDIT_URL}}

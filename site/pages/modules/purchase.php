@@ -261,9 +261,6 @@ class Module_purchase
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_member_id', 'MEMBER', $GLOBALS['FORUM_DRIVER']->get_guest_id());
             $GLOBALS['SITE_DB']->add_table_field('ecom_transactions', 't_session_id', 'ID_TEXT', '');
 
-            rename_config_option('transaction_flat_cost', 'transaction_flat_fee');
-            rename_config_option('transaction_percentage_cost', 'transaction_percentage_fee');
-
             if ($GLOBALS['SITE_DB']->table_exists('prices')) {
                 $GLOBALS['SITE_DB']->rename_table('prices', 'ecom_prods_prices');
                 $GLOBALS['SITE_DB']->alter_table_field('ecom_prods_prices', 'price', '?INTEGER', 'price_points');

@@ -168,7 +168,7 @@
 
 	{+START,IF,{$THEME_OPTION,show_screen_actions}}{$BLOCK,failsafe=1,block=main_screen_actions,title={NAME}}{+END}
 
-	{+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
+	{+START,IF,{$THEME_OPTION,show_content_tagging}}{TAGS}{+END}
 
 	{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 	{+START,INCLUDE,STAFF_ACTIONS}

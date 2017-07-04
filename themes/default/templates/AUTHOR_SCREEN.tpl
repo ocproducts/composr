@@ -76,7 +76,7 @@
 		</div>
 	{+END}
 
-	{+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
+	{+START,IF,{$THEME_OPTION,show_content_tagging}}{TAGS}{+END}
 
 	{$REVIEW_STATUS,author,{AUTHOR}}
 

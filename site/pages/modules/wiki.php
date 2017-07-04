@@ -151,7 +151,6 @@ class Module_wiki
 
             $GLOBALS['SITE_DB']->add_table_field('wiki_pages', 'edit_date', '?TIME');
 
-            rename_config_option('is_on_seedy', 'is_on_wiki');
             rename_config_option('points_cedi', 'points_wiki');
             rename_config_option('cedi_show_stats_count_pages', 'wiki_show_stats_count_pages');
             rename_config_option('cedi_show_stats_count_posts', 'wiki_show_stats_count_posts');

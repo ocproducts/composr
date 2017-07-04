@@ -158,7 +158,7 @@
 		{$SET,bound_catalogue_entry,{$CATALOGUE_ENTRY_FOR,{MEDIA_TYPE},{ID}}}
 		{+START,IF_NON_EMPTY,{$GET,bound_catalogue_entry}}{$CATALOGUE_ENTRY_ALL_FIELD_VALUES,{$GET,bound_catalogue_entry}}{+END}
 
-		{+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
+		{+START,IF,{$THEME_OPTION,show_content_tagging}}{TAGS}{+END}
 
 		{$,Load up the staff actions template to display staff actions uniformly (we relay our parameters to it)...}
 		{+START,INCLUDE,STAFF_ACTIONS}

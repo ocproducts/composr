@@ -37,7 +37,7 @@
 
 	{$REVIEW_STATUS,gallery,{CAT}}
 
-	{+START,IF,{$CONFIG_OPTION,show_content_tagging}}{TAGS}{+END}
+	{+START,IF,{$THEME_OPTION,show_content_tagging}}{TAGS}{+END}
 
 	{+START,INCLUDE,NOTIFICATION_BUTTONS}
 		NOTIFICATIONS_TYPE=gallery_entry

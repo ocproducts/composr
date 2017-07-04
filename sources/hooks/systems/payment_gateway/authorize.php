@@ -65,7 +65,7 @@ class Hook_payment_gateway_authorize
     protected function _get_access_details()
     {
         $api_login = ecommerce_test_mode() ? get_option('payment_gateway_test_username') : get_option('payment_gateway_username');
-        $gateway_password_bits = explode(';', get_option('gateway_password'));
+        $gateway_password_bits = explode(';', get_option('payment_gateway_password'));
         if (!isset($gateway_password_bits[1])) {
             $gateway_password_bits[1] = $gateway_password_bits[0];
         }

@@ -91,6 +91,9 @@ class config_test_set extends cms_test_case
             'theme_override' => 'boolean',
             'order_in_category_group' => 'integer',
             'required' => 'boolean',
+            'maintenance_code' => 'string',
+            'explanation_param_a' => 'string',
+            'explanation_param_b' => 'string',
         );
 
         $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
@@ -155,17 +158,17 @@ class config_test_set extends cms_test_case
 
                     if ($file_type == 'php') {
                         if (!empty($details['theme_override'])) {
-                            $this->assertTrue(strpos($c, 'get_option(\'' . $hook . '\'') === false, $hook . ' must be accessed as a theme option (.php): ' . $f);
+                            $this->assertTrue((strpos($c, 'get_option(\'' . $hook . '\'') === false), $hook . ' must be accessed as a theme option (.php): ' . $f);
                         } else {
-                            $this->assertTrue(strpos($c, 'get_theme_option(\'' . $hook . '\'') === false, $hook . ' must not be accessed as a theme option (.php): ' . $f);
+                            $this->assertTrue((strpos($c, 'get_theme_option(\'' . $hook . '\'') === false) || ($hook == 'description'), $hook . ' must not be accessed as a theme option (.php): ' . $f);
                         }
                     }
 
                     elseif ($file_type == 'tpl' || $file_type == 'txt' || $file_type == 'css' || $file_type == 'js') {
                         if (!empty($details['theme_override'])) {
-                            $this->assertTrue(preg_match('#\{\$CONFIG_OPTION[^\w,]*,' . $hook . '\}#', $c) == 0, $hook . ' must be accessed as a theme option: ' . $f);
+                            $this->assertTrue((preg_match('#\{\$CONFIG_OPTION[^\w,]*,' . $hook . '\}#', $c) == 0), $hook . ' must be accessed as a theme option: ' . $f);
                         } else {
-                            $this->assertTrue(preg_match('#\{\$THEME_OPTION[^\w,]*,' . $hook . '\}#', $c) == 0, $hook . ' must not be accessed as a theme option: ' . $f);
+                            $this->assertTrue((preg_match('#\{\$THEME_OPTION[^\w,]*,' . $hook . '\}#', $c) == 0) || ($hook == 'description'), $hook . ' must not be accessed as a theme option: ' . $f);
                         }
                     }
                 }

@@ -32,10 +32,10 @@ class Hook_sw_core
     {
         $settings = array();
 
-        $settings['show_content_tagging'] = (get_option('show_content_tagging') == '1') ? '1' : '0';
-        $settings['show_content_tagging_inline'] = (get_option('show_content_tagging_inline') == '1') ? '1' : '0';
-        $settings['show_screen_actions'] = (get_theme_option('show_screen_actions') == '1') ? '1' : '0';
-        $settings['collapse_user_zones'] = (get_option('collapse_user_zones') == '1') ? '1' : '0';
+        $settings['show_content_tagging'] = (get_theme_option('show_content_tagging', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
+        $settings['show_content_tagging_inline'] = (get_theme_option('show_content_tagging_inline', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
+        $settings['show_screen_actions'] = (get_theme_option('show_screen_actions', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
+        $settings['collapse_user_zones'] = (get_option('collapse_user_zones', null, post_param_string('source_theme', 'default')) == '1') ? '1' : '0';
 
         $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('group_zone_access', 'zone_name', array('zone_name' => 'site', 'group_id' => $guest_groups[0]));
@@ -78,7 +78,7 @@ class Hook_sw_core
         if (get_theme_option('setupwizard__lock_collapse_user_zones', null, post_param_string('source_theme', 'default')) == '1') {
             $fields->attach(form_input_tick(do_lang_tempcode('COLLAPSE_USER_ZONES'), do_lang_tempcode('CONFIG_OPTION_collapse_user_zones'), 'collapse_user_zones', $field_defaults['collapse_user_zones'] == '1'));
         } else {
-            $hidden->attach(form_input_hidden('collapse_user_zones', get_theme_option('collapse_user_zones', null, post_param_string('source_theme', 'default'))));
+            $hidden->attach(form_input_hidden('collapse_user_zones', get_option('collapse_user_zones')));
         }
         $fields->attach(form_input_tick(do_lang_tempcode('GUEST_ZONE_ACCESS'), do_lang_tempcode('DESCRIPTION_GUEST_ZONE_ACCESS'), 'guest_zone_access', $field_defaults['guest_zone_access'] == '1'));
 

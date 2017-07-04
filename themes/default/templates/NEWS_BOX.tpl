@@ -78,7 +78,7 @@
 	{+END}
 
 	{+START,IF_PASSED,TAGS}
-		{+START,IF,{$CONFIG_OPTION,show_content_tagging_inline}}{TAGS}{+END}
+		{+START,IF,{$THEME_OPTION,show_content_tagging_inline}}{TAGS}{+END}
 	{+END}
 
 	<ul class="horizontal_links associated_links_block_group">

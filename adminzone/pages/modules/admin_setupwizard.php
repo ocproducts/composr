@@ -326,10 +326,11 @@ class Module_admin_setupwizard
 
         $fields->attach(form_input_line(do_lang_tempcode('GOOGLE_ANALYTICS'), do_lang_tempcode('CONFIG_OPTION_google_analytics'), 'google_analytics', $google_analytics, false));
 
+        $fixed_width = get_theme_option('fixed_width', null, post_param_string('source_theme', 'default'));
         if (get_theme_option('setupwizard__lock_fixed_width_choice', null, post_param_string('source_theme', 'default')) == '1') {
-            $fields->attach(form_input_tick(do_lang_tempcode('FIXED_WIDTH'), do_lang_tempcode('CONFIG_OPTION_fixed_width'), 'fixed_width', get_option('fixed_width') == '1'));
+            $fields->attach(form_input_tick(do_lang_tempcode('FIXED_WIDTH'), do_lang_tempcode('CONFIG_OPTION_fixed_width'), 'fixed_width', $fixed_width == '1'));
         } else {
-            $hidden .= static_evaluate_tempcode(form_input_hidden('fixed_width', get_theme_option('fixed_width', null, post_param_string('source_theme', 'default'))));
+            $hidden .= static_evaluate_tempcode(form_input_hidden('fixed_width', $fixed_width));
         }
 
         if (get_theme_option('setupwizard__provide_cms_advert_choice', null, post_param_string('source_theme', 'default')) == '1') {

@@ -39,6 +39,7 @@ class Hook_config_show_content_tagging_inline
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'theme_override' => true,
 
             'addon' => 'core_configuration',
         );

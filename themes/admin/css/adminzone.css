@@ -77,7 +77,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	padding-top: 0;
 }
 
-/*{+START,IF,{$CONFIG_OPTION,fixed_width}}*/
+/*{+START,IF,{$THEME_OPTION,fixed_width}}*/
 	.global_breadcrumbs {
 		padding: 4px 0 7px 0;
 	}

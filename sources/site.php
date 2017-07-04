@@ -1937,7 +1937,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
         'IS_PANEL' => $is_panel,
         'BEING_INCLUDED' => $being_included,
         'SUBMITTER' => strval($comcode_page_row['p_submitter']),
-        'TAGS' => (get_option('show_content_tagging') == '0') ? /*optimisation, can be intensive with many page includes*/new Tempcode() : get_loaded_tags('comcode_pages'),
+        'TAGS' => (get_theme_option('show_content_tagging') == '0') ? /*optimisation, can be intensive with many page includes*/new Tempcode() : get_loaded_tags('comcode_pages'),
         'WARNING_DETAILS' => $warning_details,
         'EDIT_DATE_RAW' => ($comcode_page_row['p_edit_date'] === null) ? '' : strval($comcode_page_row['p_edit_date']),
         'SHOW_AS_EDIT' => $comcode_page_row['p_show_as_edit'] == 1,

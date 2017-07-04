@@ -118,7 +118,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
     $map = array(
         '_GUID' => ($guid != '') ? $guid : 'jd89f893jlkj9832gr3uyg2u',
         'GIVE_CONTEXT' => $give_context,
-        'TAGS' => (get_option('show_content_tagging_inline') == '1') ? get_loaded_tags('news', explode(',', $seo_bits[0])) : null,
+        'TAGS' => (get_theme_option('show_content_tagging_inline') == '1') ? get_loaded_tags('news', explode(',', $seo_bits[0])) : null,
         'TRUNCATE' => $truncate,
         'AUTHOR' => $author,
         'BLOG' => false,
