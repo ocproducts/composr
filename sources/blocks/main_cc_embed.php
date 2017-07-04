@@ -67,7 +67,7 @@ class Block_main_cc_embed
     public function run($map)
     {
         if (empty($map['param'])) {
-            $category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'cc_id', null, 'GROUP BY cc_id ORDER BY COUNT(*) DESC');
+            $category_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'cc_id', array(), 'GROUP BY cc_id ORDER BY COUNT(*) DESC');
             if ($category_id === null) {
                 $category_id = db_get_first_id();
             }

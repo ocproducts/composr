@@ -92,10 +92,7 @@ class config_test_set extends cms_test_case
             'order_in_category_group' => 'integer',
             'required' => 'boolean',
         );
-    }
 
-    public function testAddonCategorisationConsistency()
-    {
         $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
         foreach ($hooks as $hook => $ob) {
             $details = $ob->get_details();

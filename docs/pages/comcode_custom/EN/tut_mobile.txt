@@ -6,7 +6,7 @@ Composr has great support for mobile. You can design for mobile in two ways:
 1) {$IS_MAINTAINED,theme_mobile_mode,Mobile mode}
 2) Responsive Design
 
-In-fact, the default Composr theme is a hybrid theme that does both. Desktop mode uses responsive design so that it also looks good on tablets and phones. Mobile mode is auto-detected on mobiles and uses less bandwidth, and other differences that make it better tuned than a typical responsive-design site would be.
+In fact, the default Composr theme is a hybrid theme that does both. Desktop mode uses responsive design so that it also looks good on tablets and phones. Mobile mode is auto-detected on mobiles and uses less bandwidth, and other differences that make it better tuned than a typical responsive-design site would be.
 
 This tutorial explains the advantages of the different techniques, and provides some guidance.
 

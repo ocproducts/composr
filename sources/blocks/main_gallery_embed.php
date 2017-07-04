@@ -82,7 +82,7 @@ class Block_main_gallery_embed
         $guid = array_key_exists('guid', $map) ? $map['guid'] : '';
 
         if (empty($map['param'])) {
-            $cat = $GLOBALS['SITE_DB']->query_select_value('images', 'cat', null, 'GROUP BY cat ORDER BY COUNT(*) DESC');
+            $cat = $GLOBALS['SITE_DB']->query_select_value('images', 'cat', array(), 'GROUP BY cat ORDER BY COUNT(*) DESC');
             if ($cat === null) {
                 $cat = 'root';
             }

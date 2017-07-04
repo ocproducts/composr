@@ -34,7 +34,15 @@ function init__forum__cns()
     global $SENT_OUT_VALIDATE_NOTICE;
     $SENT_OUT_VALIDATE_NOTICE = false;
     global $LAST_POST_ID, $LAST_TOPIC_ID;
+    /** The ID of the last post inserted.
+     *
+     * @global ?integer $LAST_POST_ID
+     */
     $LAST_POST_ID = null;
+    /** The ID of the last topic inserted.
+     *
+     * @global ?integer $LAST_TOPIC_ID
+     */
     $LAST_TOPIC_ID = null;
     global $TOPIC_IDENTIFIERS_TO_IDS_CACHE, $TOPIC_IS_THREADED_CACHE;
     $TOPIC_IDENTIFIERS_TO_IDS_CACHE = array();

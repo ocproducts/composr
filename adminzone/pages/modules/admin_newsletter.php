@@ -1581,7 +1581,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $text = do_lang_tempcode('NEWSLETTER_WITH_SAMPLE_NAME');
 
         require_code('templates_map_table');
-        return map_table_screen(get_screen_title('NEWSLETTER'), $display_map, $text, $buttons, null, null, true);
+        return map_table_screen(get_screen_title('NEWSLETTER'), $display_map, $text, $buttons, true);
     }
 
     /**

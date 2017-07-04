@@ -34,9 +34,9 @@ abstract class CSSCleanup
     /**
      * Constructor.
      *
-     * @param string $theme Theme to operate on
-     * @param boolean $do_as_overrides Whether to save as overrides
-     * @param boolean $carry_from_default Whether to copy files from the default theme that are not in the $theme theme already
+     * @param  string $theme Theme to operate on
+     * @param  boolean $do_as_overrides Whether to save as overrides
+     * @param  boolean $carry_from_default Whether to copy files from the default theme that are not in the $theme theme already
      */
     public function __construct($theme = 'default', $do_as_overrides = true, $carry_from_default = true)
     {
@@ -294,7 +294,7 @@ class EmToPx extends CSSCleanup
     /**
      * Convert font units. We only want em/rem/px font sizes, so do conversions from the other possible unit types.
      *
-     * @param string $font_size Font size
+     * @param  string $font_size Font size
      * @return string Normalised font size
      */
     protected function normalise_font_size($font_size)
@@ -353,9 +353,9 @@ class EmToPx extends CSSCleanup
     /**
      * Convert em to px units for a given selector.
      *
-     * @param float $amount_em Size in em units
-     * @param string $selector Selector
-     * @param boolean $is_for_font_size It is for a font size property
+     * @param  float $amount_em Size in em units
+     * @param  string $selector Selector
+     * @param  boolean $is_for_font_size It is for a font size property
      * @return float Size in px units
      */
     protected function convert_em_to_px($amount_em, $selector, $is_for_font_size = false)
@@ -397,8 +397,8 @@ class EmToPx extends CSSCleanup
     /**
      * Find the font size given a chain of possible parent selectors.
      *
-     * @param array $chain Possible parent selectors
-     * @param string $context_selector The selector this is for (useful for debugging, not used for calculation)
+     * @param  array $chain Possible parent selectors
+     * @param  string $context_selector The selector this is for (useful for debugging, not used for calculation)
      * @return integer Font size in px units
      */
     protected function find_font_size_from_chain($chain, $context_selector)
@@ -457,10 +457,10 @@ class EmToPx extends CSSCleanup
     /**
      * Whether the $complex selector corresponds to the $simple selector.
      *
-     * @param string $simple Simple selector
-     * @param string $complex Complex selector
-     * @param array $may_be_chained_by Possible prefixes to the simple selector to make the complex selector
-     * @param boolean $just_element Just check the element part of the selector, ignore any complex selector parts of it (like attribute selector)
+     * @param  string $simple Simple selector
+     * @param  string $complex Complex selector
+     * @param  array $may_be_chained_by Possible prefixes to the simple selector to make the complex selector
+     * @param  boolean $just_element Just check the element part of the selector, ignore any complex selector parts of it (like attribute selector)
      * @return boolean Whether it corresponds
      */
     protected function selector_corresponds($simple, $complex, $may_be_chained_by = array(), $just_element = false)

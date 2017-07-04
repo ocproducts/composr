@@ -501,7 +501,7 @@ class Module_admin_themes
         // Option overrides
         $show_theme_option_overrides = false;
         $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
-        foreach ($hooks as $ob) {
+        foreach ($hooks as $hook => $ob) {
             $details = $ob->get_details();
             if (!empty($details['theme_override'])) {
                 $current_value = get_theme_option($hook, '', $name);
@@ -712,7 +712,7 @@ class Module_admin_themes
     /**
      * Find a theme date.
      *
-     * @param ID_TEXT $theme The theme codename
+     * @param  ID_TEXT $theme The theme codename
      * @return Tempcode The theme date
      */
     protected function _get_theme_date($theme)
@@ -799,7 +799,7 @@ class Module_admin_themes
             unset($before[$themeonly_option]);
         }
         $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
-        foreach ($hooks as $ob) {
+        foreach ($hooks as $hook => $ob) {
             $details = $ob->get_details();
             if (!empty($details['theme_override'])) {
                 $val = post_param_string($hook, '');

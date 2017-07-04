@@ -21,7 +21,7 @@ $intended_db_type = get_param_string('type', get_db_type());
 
 // Where to save dump
 $out_filename = 'dump_' . uniqid('', true) . '.sql';
-$out_file_path = get_custom_file_base() . '/safe_mode_temp/' . $out_filename;
+$out_file_path = cms_tempnam('sql');
 
 // Generate dump
 $done = false;

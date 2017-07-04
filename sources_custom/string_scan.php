@@ -982,6 +982,15 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BLOCK_main_comments_PARAM_title
         BLOCK_main_comments_PARAM_title_TITLE
         BLOCK_main_comments_USE
+        CMD_CSS_CLEANUP_HELP
+        CMD_CSS_CLEANUP_HELP_PARAM_0
+        CMD_CSS_CLEANUP_HELP_PARAM_1
+        DESCRIPTION__THEME__OPTION_OVERRIDES
+        IS_ALSO_THEME_SETTING
+        NAG_UNINSTALL_TEST_CONTENT
+        THEME_SETTING_SECTION
+        THEME__OPTION_OVERRIDES
+        UNINSTALL_TEST_CONTENT
         BLOCK_main_contact_catalogues_DESCRIPTION
         BLOCK_main_contact_catalogues_PARAM_body_prefix
         BLOCK_main_contact_catalogues_PARAM_body_prefix_TITLE
@@ -3795,7 +3804,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_META_URL_MONIKER
         DESCRIPTION_META_VIEWS
         DESCRIPTION_MM_POST_TEXT
-        DESCRIPTION_MOBILE_PAGES
         DESCRIPTION_MONTHLY_SPEC_TYPE
         DESCRIPTION_MULTI_MODERATION_POST
         DESCRIPTION_MYSQL_OPTIMISE
@@ -3929,7 +3937,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         DESCRIPTION_SUBSCRIPTION_REF_POINT_OFFSET
         DESCRIPTION_SUBSCRIPTION_SUBJECT
         DESCRIPTION_SUPER_MODERATORS
-        DESCRIPTION_SUPPORTS_WIDE
         DESCRIPTION_SYNDICATE_TO_STOPFORUMSPAM
         DESCRIPTION_SYSTEM_AVATAR
         DESCRIPTION_TAG_TITLE

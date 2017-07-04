@@ -239,7 +239,7 @@ function save_user_metadata($include_referer = false)
 {
     $data = find_user_metadata($include_referer);
 
-    $path = get_custom_file_base() . '/safe_mode_temp/mail_' . uniqid('', true) . '.txt';
+    $path = get_custom_file_base() . '/temp/mail_' . uniqid('', true) . '.txt';
 
     file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT));
     fix_permissions($path);

@@ -1459,7 +1459,7 @@ class Module_admin_setupwizard
     /**
      * Get the effective step number, when missing steps are considered.
      *
-     * @param integer $step System step number
+     * @param  integer $step System step number
      * @return integer Effective step number
      */
     protected function get_effective_step($step)

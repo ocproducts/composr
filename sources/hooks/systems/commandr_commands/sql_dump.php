@@ -49,7 +49,7 @@ class Hook_commandr_command_sql_dump
 
             // Where to save dump
             $out_filename = 'dump_' . uniqid('', true) . '.sql';
-            $out_file_path = get_custom_file_base() . '/safe_mode_temp/' . $out_filename;
+            $out_file_path = get_custom_file_base() . '/temp/' . $out_filename;
 
             // Generate dump
             require_code('database_relations');
@@ -57,7 +57,7 @@ class Hook_commandr_command_sql_dump
             get_sql_dump($out_file, true, false, array(), $only, null, $intended_db_type);
             fclose($out_file);
 
-            $out = do_lang('SQL_DUMP_SAVED_TO', escape_html('safe_mode_temp/' . $out_filename));
+            $out = do_lang('SQL_DUMP_SAVED_TO', escape_html('temp/' . $out_filename));
 
             return array('', $out, '', '');
         }

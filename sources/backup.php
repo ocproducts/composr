@@ -363,7 +363,7 @@ function directories_to_backup()
     }
 
     // We don't want these
-    unset($root_only_dirs['safe_mode_temp']);
+    unset($root_only_dirs['temp']);
     unset($root_only_dirs['caches']);
 
     return array_keys($root_only_dirs);

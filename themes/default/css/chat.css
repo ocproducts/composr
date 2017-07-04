@@ -170,12 +170,12 @@
 
 .messages_window {
 	display: table-cell;
-	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}
+	/*{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}*/
 		vertical-align: top;
-	{+END}
-	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+	/*{+END}*/
+	/*{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}*/
 		vertical-align: bottom;
-	{+END}
+	/*{+END}*/
 	overflow: auto;
 }
 
@@ -347,12 +347,12 @@
 }
 
 .chat_lobby_convos_area_messages {
-	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}
+	/*{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}*/
 		height: 20em;
-	{+END}
-	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+	/*{+END}*/
+	/*{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}*/
 		height: 26em;
-	{+END}
+	/*{+END}*/
 }
 
 .chat_friends_column {
@@ -368,9 +368,9 @@
 }
 
 .im_post_bits {
-	{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}
+	/*{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}*/
 		margin: 1em 0;
-	{+END}
+	/*{+END}*/
 }
 
 .im_post_bits .horiz_field_sep {
