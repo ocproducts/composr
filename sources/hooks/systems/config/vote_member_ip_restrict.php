@@ -33,8 +33,8 @@ class Hook_config_vote_member_ip_restrict
         return array(
             'human_name' => 'VOTE_MEMBER_IP_RESTRICT',
             'type' => 'tick',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_RATING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'RATING',
             'explanation' => 'CONFIG_OPTION_vote_member_ip_restrict',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

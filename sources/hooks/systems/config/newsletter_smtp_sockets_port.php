@@ -33,7 +33,7 @@ class Hook_config_newsletter_smtp_sockets_port
         return array(
             'human_name' => 'PORT',
             'type' => 'line',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER_SMTP',
             'explanation' => 'CONFIG_OPTION_smtp_sockets_port',
             'shared_hosting_restricted' => '1',

@@ -33,7 +33,7 @@ class Hook_config_newsletter_auto_pause
         return array(
             'human_name' => 'NEWSLETTER_AUTO_PAUSE',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_newsletter_auto_pause',
             'shared_hosting_restricted' => '0',

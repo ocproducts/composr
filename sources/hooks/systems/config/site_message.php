@@ -33,7 +33,7 @@ class Hook_config_site_message
         return array(
             'human_name' => 'MESSAGE',
             'type' => 'comcodetext',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => 'SITE_MESSAGING',
             'explanation' => 'CONFIG_OPTION_site_message',
             'explanation_param_a' => escape_html(get_tutorial_url('tut_news')),

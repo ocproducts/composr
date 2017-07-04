@@ -33,7 +33,7 @@ class Hook_config_allow_auto_notifications
         return array(
             'human_name' => 'ALLOW_AUTO_NOTIFICATIONS',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NOTIFICATIONS',
             'explanation' => 'CONFIG_OPTION_allow_auto_notifications',
             'shared_hosting_restricted' => '0',

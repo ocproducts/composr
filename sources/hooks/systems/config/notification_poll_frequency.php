@@ -33,7 +33,7 @@ class Hook_config_notification_poll_frequency
         return array(
             'human_name' => 'NOTIFICATION_POLL_FREQUENCY',
             'type' => 'integer',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NOTIFICATIONS',
             'explanation' => 'CONFIG_OPTION_notification_poll_frequency',
             'shared_hosting_restricted' => '0',

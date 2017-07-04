@@ -33,7 +33,7 @@ class Hook_config_newsletter_paused
         return array(
             'human_name' => 'NEWSLETTER_PAUSED',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_newsletter_paused',
             'shared_hosting_restricted' => '0',

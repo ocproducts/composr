@@ -33,7 +33,7 @@ class Hook_config_allow_ext_images
         return array(
             'human_name' => 'ALLOW_EXT_IMAGES',
             'type' => 'tick',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_allow_ext_images',
             'shared_hosting_restricted' => '0',

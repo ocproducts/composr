@@ -33,7 +33,7 @@ class Hook_config_bcc
         return array(
             'human_name' => 'BCC',
             'type' => 'tick',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_bcc',
             'shared_hosting_restricted' => '0',

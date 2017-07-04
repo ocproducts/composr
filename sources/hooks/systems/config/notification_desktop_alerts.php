@@ -33,7 +33,7 @@ class Hook_config_notification_desktop_alerts
         return array(
             'human_name' => 'NOTIFICATION_DESKTOP_ALERTS',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NOTIFICATIONS',
             'explanation' => 'CONFIG_OPTION_notification_desktop_alerts',
             'shared_hosting_restricted' => '0',

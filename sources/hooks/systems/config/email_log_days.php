@@ -33,7 +33,7 @@ class Hook_config_email_log_days
         return array(
             'human_name' => 'EMAIL_LOG_DAYS',
             'type' => 'integer',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_email_log_days',
             'shared_hosting_restricted' => '0',

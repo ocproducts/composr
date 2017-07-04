@@ -33,7 +33,7 @@ class Hook_config_site_message_end_datetime
         return array(
             'human_name' => 'SITE_MESSAGE_END_DATETIME',
             'type' => 'datetime',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => 'SITE_MESSAGING',
             'explanation' => 'CONFIG_OPTION_site_message_end_datetime',
             'shared_hosting_restricted' => '0',

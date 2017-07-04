@@ -33,7 +33,7 @@ class Hook_config_ticket_auto_assign
         return array(
             'human_name' => 'TICKET_AUTO_ASSIGN',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_ticket_auto_assign',
             'shared_hosting_restricted' => '0',

@@ -33,7 +33,7 @@ class Hook_config_newsletter_text
         return array(
             'human_name' => 'PAGE_TEXT',
             'type' => 'comcodetext',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_newsletter_text',
             'shared_hosting_restricted' => '0',

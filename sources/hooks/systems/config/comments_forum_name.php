@@ -33,8 +33,8 @@ class Hook_config_comments_forum_name
         return array(
             'human_name' => 'COMMENTS_FORUM_NAME',
             'type' => 'forum',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_COMMENTING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'COMMENTS',
             'explanation' => 'CONFIG_OPTION_comments_forum_name',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

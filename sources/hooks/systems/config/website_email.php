@@ -33,7 +33,7 @@ class Hook_config_website_email
         return array(
             'human_name' => 'WEBSITE_EMAIL',
             'type' => 'line',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_website_email',
             'shared_hosting_restricted' => '0',

@@ -33,7 +33,7 @@ class Hook_config_message_received_emails
         return array(
             'human_name' => 'MESSAGE_RECEIVED_EMAILS',
             'type' => 'tick',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_message_received_emails',
             'shared_hosting_restricted' => '0',

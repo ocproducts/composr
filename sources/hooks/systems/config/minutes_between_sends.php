@@ -33,7 +33,7 @@ class Hook_config_minutes_between_sends
         return array(
             'human_name' => 'MINUTES_BETWEEN_SENDS',
             'type' => 'integer',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_minutes_between_sends',
             'shared_hosting_restricted' => '0',

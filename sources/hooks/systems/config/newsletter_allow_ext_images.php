@@ -33,7 +33,7 @@ class Hook_config_newsletter_allow_ext_images
         return array(
             'human_name' => 'ALLOW_EXT_IMAGES',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_allow_ext_images',
             'shared_hosting_restricted' => '0',

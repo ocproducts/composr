@@ -33,7 +33,7 @@ class Hook_config_newsletter_website_email
         return array(
             'human_name' => 'WEBSITE_EMAIL',
             'type' => 'line',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_website_email',
             'shared_hosting_restricted' => '0',

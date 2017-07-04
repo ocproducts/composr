@@ -33,7 +33,7 @@ class Hook_config_dkim_selector
         return array(
             'human_name' => 'DKIM_SELECTOR',
             'type' => 'line',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_dkim_selector',
             'shared_hosting_restricted' => '0',

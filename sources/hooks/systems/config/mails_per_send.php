@@ -33,7 +33,7 @@ class Hook_config_mails_per_send
         return array(
             'human_name' => 'MAILS_PER_SEND',
             'type' => 'integer',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_mails_per_send',
             'shared_hosting_restricted' => '0',

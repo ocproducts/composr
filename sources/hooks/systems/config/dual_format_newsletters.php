@@ -33,7 +33,7 @@ class Hook_config_dual_format_newsletters
         return array(
             'human_name' => 'DUAL_FORMAT_NEWSLETTERS',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_dual_format_newsletters',
             'shared_hosting_restricted' => '0',

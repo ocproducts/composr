@@ -33,8 +33,8 @@ class Hook_config_enable_feedback
         return array(
             'human_name' => 'ENABLE_FEEDBACK',
             'type' => 'tick',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION',
+            'category' => 'USER_INTERACTION',
+            'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_enable_feedback',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

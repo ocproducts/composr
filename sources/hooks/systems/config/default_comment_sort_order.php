@@ -33,8 +33,8 @@ class Hook_config_default_comment_sort_order
         return array(
             'human_name' => 'DEFAULT_COMMENT_SORT_ORDER',
             'type' => 'list',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_COMMENTING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'COMMENTS',
             'explanation' => 'CONFIG_OPTION_default_comment_sort_order',
             'shared_hosting_restricted' => '0',
             'list_options' => 'newest|oldest|relevance',

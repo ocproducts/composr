@@ -33,7 +33,7 @@ class Hook_config_max_newsletter_whatsnew
         return array(
             'human_name' => 'MAX_NEWSLETTER_WHATSNEW',
             'type' => 'integer',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_max_newsletter_whatsnew',
             'shared_hosting_restricted' => '0',

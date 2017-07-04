@@ -33,7 +33,7 @@ class Hook_config_mail_queue_debug
         return array(
             'human_name' => 'MAIL_QUEUE_DEBUG',
             'type' => 'tick',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_mail_queue_debug',
             'shared_hosting_restricted' => '0',

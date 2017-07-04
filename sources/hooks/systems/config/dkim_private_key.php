@@ -33,7 +33,7 @@ class Hook_config_dkim_private_key
         return array(
             'human_name' => 'DKIM_PRIVATE_KEY',
             'type' => 'text',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_dkim_private_key',
             'shared_hosting_restricted' => '0',

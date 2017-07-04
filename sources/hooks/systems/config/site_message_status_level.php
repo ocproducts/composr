@@ -33,7 +33,7 @@ class Hook_config_site_message_status_level
         return array(
             'human_name' => 'SITE_MESSAGE_STATUS_LEVEL',
             'type' => 'list',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => 'SITE_MESSAGING',
             'explanation' => 'CONFIG_OPTION_site_message_status_level',
             'shared_hosting_restricted' => '0',

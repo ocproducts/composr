@@ -33,8 +33,8 @@ class Hook_config_comment_text
         return array(
             'human_name' => 'COMMENT_FORM_TEXT',
             'type' => 'comcodetext',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_COMMENTING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'COMMENTS',
             'explanation' => 'CONFIG_OPTION_comment_text',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

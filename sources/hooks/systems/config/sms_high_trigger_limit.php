@@ -33,7 +33,7 @@ class Hook_config_sms_high_trigger_limit
         return array(
             'human_name' => 'SMS_HIGH_TRIGGER_LIMIT',
             'type' => 'integer',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'sms:SMS',
             'explanation' => 'CONFIG_OPTION_sms_high_trigger_limit',
             'shared_hosting_restricted' => '0',

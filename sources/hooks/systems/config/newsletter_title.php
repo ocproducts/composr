@@ -33,7 +33,7 @@ class Hook_config_newsletter_title
         return array(
             'human_name' => 'TITLE',
             'type' => 'line',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_newsletter_title',
             'shared_hosting_restricted' => '0',

@@ -704,9 +704,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         BREADCRUMB_OVERRIDES
         IMPORTANCE_MODULUS
         MASS_PERMISSION_SETTING
-        USER_INTERACTION
-        USER_INTERACTION_COMMENTING
-        USER_INTERACTION_RATING
         IDEAL_DENSITY
         BANNER_INFORMATION
         BANNER_IS_TEXTUAL

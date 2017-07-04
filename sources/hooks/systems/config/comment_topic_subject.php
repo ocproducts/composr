@@ -33,8 +33,8 @@ class Hook_config_comment_topic_subject
         return array(
             'human_name' => 'COMMENT_TOPIC_SUBJECT',
             'type' => 'tick',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_COMMENTING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'COMMENTS',
             'explanation' => 'CONFIG_OPTION_comment_topic_subject',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

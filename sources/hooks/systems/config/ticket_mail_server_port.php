@@ -33,7 +33,7 @@ class Hook_config_ticket_mail_server_port
         return array(
             'human_name' => 'TICKET_MAIL_SERVER_PORT',
             'type' => 'integer',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_ticket_mail_server_port',
             'shared_hosting_restricted' => '0',

@@ -33,7 +33,7 @@ class Hook_config_support_operator
         return array(
             'human_name' => 'SUPPORT_OPERATOR',
             'type' => 'username',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_support_operator',
             'shared_hosting_restricted' => '0',

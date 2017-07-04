@@ -33,7 +33,7 @@ class Hook_config_cc_address
         return array(
             'human_name' => 'CC_ADDRESS',
             'type' => 'line',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_cc_address',
             'shared_hosting_restricted' => '0',

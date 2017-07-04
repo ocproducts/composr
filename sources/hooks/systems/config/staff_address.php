@@ -33,7 +33,7 @@ class Hook_config_staff_address
         return array(
             'human_name' => 'EMAIL_ADDRESS',
             'type' => 'line',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_staff_address',
             'shared_hosting_restricted' => '0',

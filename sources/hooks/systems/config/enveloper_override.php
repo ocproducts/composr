@@ -33,7 +33,7 @@ class Hook_config_enveloper_override
         return array(
             'human_name' => 'ENVELOPER_OVERRIDE',
             'type' => 'tick',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => '_EMAIL',
             'explanation' => 'CONFIG_OPTION_enveloper_override',
             'shared_hosting_restricted' => '1',

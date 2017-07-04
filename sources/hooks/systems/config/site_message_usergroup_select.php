@@ -36,7 +36,7 @@ class Hook_config_site_message_usergroup_select
         return array(
             'human_name' => 'SITE_MESSAGE_USERGROUP_SELECT',
             'type' => 'line',
-            'category' => 'SITE',
+            'category' => 'MESSAGES',
             'group' => 'SITE_MESSAGING',
             'explanation' => 'CONFIG_OPTION_site_message_usergroup_select',
             'explanation_param_a' => escape_html(strval($guest_group_id)),

@@ -33,7 +33,7 @@ class Hook_config_pt_notifications_as_web
         return array(
             'human_name' => 'PT_NOTIFICATIONS_AS_WEB',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NOTIFICATIONS',
             'explanation' => 'CONFIG_OPTION_pt_notifications_as_web',
             'shared_hosting_restricted' => '0',

@@ -207,7 +207,7 @@ class config_test_set extends cms_test_case
             }
 
             $this->assertTrue($count > 3, $category . ' only has ' . integer_format($count));
-            $this->assertTrue($count < 160, $category . ' has as much as ' . integer_format($count)); // max_input_vars would not like a high number
+            $this->assertTrue($count < 105, $category . ' has as much as ' . integer_format($count)); // max_input_vars would not like a high number
         }
     }
 

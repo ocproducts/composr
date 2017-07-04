@@ -33,7 +33,7 @@ class Hook_config_newsletter_smtp_sockets_password
         return array(
             'human_name' => 'PASSWORD',
             'type' => 'line',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER_SMTP',
             'explanation' => 'CONFIG_OPTION_smtp_sockets_password',
             'shared_hosting_restricted' => '1',

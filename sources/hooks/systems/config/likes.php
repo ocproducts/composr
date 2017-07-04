@@ -33,8 +33,8 @@ class Hook_config_likes
         return array(
             'human_name' => 'ENABLE_LIKES',
             'type' => 'tick',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_RATING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'RATING',
             'explanation' => 'CONFIG_OPTION_likes',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

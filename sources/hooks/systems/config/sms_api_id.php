@@ -33,7 +33,7 @@ class Hook_config_sms_api_id
         return array(
             'human_name' => 'API_ID',
             'type' => 'line',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'sms:SMS',
             'explanation' => 'CONFIG_OPTION_sms_api_id',
             'shared_hosting_restricted' => '0',

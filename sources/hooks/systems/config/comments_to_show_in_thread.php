@@ -33,8 +33,8 @@ class Hook_config_comments_to_show_in_thread
         return array(
             'human_name' => 'COMMENTS_TO_SHOW_IN_THREAD',
             'type' => 'integer',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_COMMENTING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'COMMENTS',
             'explanation' => 'CONFIG_OPTION_comments_to_show_in_thread',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

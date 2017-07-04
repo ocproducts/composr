@@ -33,8 +33,8 @@ class Hook_config_is_on_comments
         return array(
             'human_name' => 'COMMENTS',
             'type' => 'tick',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_COMMENTING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'COMMENTS',
             'explanation' => 'CONFIG_OPTION_is_on_comments',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

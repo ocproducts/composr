@@ -33,7 +33,7 @@ class Hook_config_newsletter_smtp_sockets_use
         return array(
             'human_name' => 'ENABLED',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER_SMTP',
             'explanation' => 'CONFIG_OPTION_smtp_sockets_use',
             'shared_hosting_restricted' => '1',

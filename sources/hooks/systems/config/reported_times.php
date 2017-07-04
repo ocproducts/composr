@@ -33,7 +33,7 @@ class Hook_config_reported_times
         return array(
             'human_name' => 'REPORTED_TIMES',
             'type' => 'integer',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'REPORT_CONTENT',
             'explanation' => 'CONFIG_OPTION_reported_times',
             'shared_hosting_restricted' => '0',

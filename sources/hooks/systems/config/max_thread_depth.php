@@ -33,8 +33,8 @@ class Hook_config_max_thread_depth
         return array(
             'human_name' => 'MAX_THREAD_DEPTH',
             'type' => 'integer',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_COMMENTING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'COMMENTS',
             'explanation' => 'CONFIG_OPTION_max_thread_depth',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

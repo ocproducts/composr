@@ -33,7 +33,7 @@ class Hook_config_ticket_text
         return array(
             'human_name' => 'PAGE_TEXT',
             'type' => 'comcodetext',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'SUPPORT_TICKETS',
             'explanation' => 'CONFIG_OPTION_ticket_text',
             'shared_hosting_restricted' => '0',

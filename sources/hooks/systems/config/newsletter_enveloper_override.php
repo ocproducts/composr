@@ -33,7 +33,7 @@ class Hook_config_newsletter_enveloper_override
         return array(
             'human_name' => 'ENVELOPER_OVERRIDE',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NEWSLETTER',
             'explanation' => 'CONFIG_OPTION_enveloper_override',
             'shared_hosting_restricted' => '0',

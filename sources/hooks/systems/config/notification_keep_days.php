@@ -33,7 +33,7 @@ class Hook_config_notification_keep_days
         return array(
             'human_name' => 'NOTIFICATION_KEEP_DAYS',
             'type' => 'integer',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NOTIFICATIONS',
             'explanation' => 'CONFIG_OPTION_notification_keep_days',
             'shared_hosting_restricted' => '0',

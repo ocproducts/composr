@@ -33,7 +33,7 @@ class Hook_config_ticket_email_from
         return array(
             'human_name' => 'TICKET_EMAIL_FROM',
             'type' => 'line',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_ticket_email_from',
             'shared_hosting_restricted' => '0',

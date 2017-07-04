@@ -33,8 +33,8 @@ class Hook_config_allow_own_rate
         return array(
             'human_name' => 'ALLOW_OWN_RATE',
             'type' => 'tick',
-            'category' => 'FEATURE',
-            'group' => 'USER_INTERACTION_RATING',
+            'category' => 'USER_INTERACTION',
+            'group' => 'RATING',
             'explanation' => 'CONFIG_OPTION_allow_own_rate',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

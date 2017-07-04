@@ -33,7 +33,7 @@ class Hook_config_ticket_mail_password
         return array(
             'human_name' => 'TICKET_MAIL_PASSWORD',
             'type' => 'line',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'SUPPORT_TICKETS_MAIL',
             'explanation' => 'CONFIG_OPTION_ticket_mail_password',
             'shared_hosting_restricted' => '0',

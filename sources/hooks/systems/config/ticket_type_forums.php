@@ -33,7 +33,7 @@ class Hook_config_ticket_type_forums
         return array(
             'human_name' => 'TICKET_TYPE_FORUMS',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'SUPPORT_TICKETS',
             'explanation' => 'CONFIG_OPTION_ticket_type_forums',
             'shared_hosting_restricted' => '0',

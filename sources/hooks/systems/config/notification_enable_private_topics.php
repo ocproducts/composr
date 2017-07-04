@@ -33,7 +33,7 @@ class Hook_config_notification_enable_private_topics
         return array(
             'human_name' => 'NOTIFICATION_ENABLE_PRIVATE_TOPICS',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NOTIFICATIONS',
             'explanation' => 'CONFIG_OPTION_notification_enable_private_topics',
             'shared_hosting_restricted' => '0',

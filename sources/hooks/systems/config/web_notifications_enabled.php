@@ -33,7 +33,7 @@ class Hook_config_web_notifications_enabled
         return array(
             'human_name' => 'WEB_NOTIFICATIONS_ENABLED',
             'type' => 'tick',
-            'category' => 'FEATURE',
+            'category' => 'MESSAGES',
             'group' => 'NOTIFICATIONS',
             'explanation' => 'CONFIG_OPTION_web_notifications_enabled',
             'shared_hosting_restricted' => '0',
