@@ -914,7 +914,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 		margin-bottom: 1em;
 		box-sizing: border-box;
 		order: 1;
-		flex: 1;
+		flex-grow: 1;
 	}
 
 	#panel_left {
@@ -2123,7 +2123,6 @@ hr.spaced_rule {
 	.responsive>.box {
 		width: auto !important;
 	}
-}
 /*{+END}*/
 
 .inline_lined_up {

@@ -9746,7 +9746,7 @@ TODO, Salman, this needs integrating (came from feature__hybrid_responsive branc
 + 			break;
 + 
   		case 'img':
-  			/* GD text maybe can do with transforms */
+  			// GD text maybe can do with transforms
   			if (element.className=='gd_text')
 
 */
