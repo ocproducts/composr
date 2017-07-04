@@ -115,6 +115,9 @@ function check_posted_field($name, $val, $filters)
     $evil = false;
 
     $referer = cms_srv('HTTP_REFERER');
+    if ($referer == '') {
+        $referer = cms_srv('HTTP_ORIGIN');
+    }
 
     $is_true_referer = (substr($referer, 0, 7) === 'http://') || (substr($referer, 0, 8) === 'https://');
 
@@ -168,6 +171,8 @@ function strip_url_to_representative_domain($url)
  */
 function get_trusted_sites($level)
 {
+    global $SITE_INFO;
+
     if (function_exists('get_option')) {
         $option = '';
         if ($level >= 1) {
@@ -190,21 +195,30 @@ function get_trusted_sites($level)
     } else {
         $trusted_sites = array();
     }
+
     $zl = strlen('ZONE_MAPPING_');
-    foreach ($GLOBALS['SITE_INFO'] as $key => $_val) {
+    foreach ($SITE_INFO as $key => $_val) {
         if ($key !== '' && $key[0] === 'Z' && substr($key, 0, $zl) === 'ZONE_MAPPING_') {
             $trusted_sites[] = $_val[0];
         }
     }
-    $trusted_sites[] = parse_url(get_base_url(false), PHP_URL_HOST);
-    if (get_custom_base_url(false) != get_base_url(false)) {
-        $trusted_sites[] = parse_url(get_custom_base_url(false), PHP_URL_HOST);
+
+    if (isset($SITE_INFO['base_url'])) {
+        $base_url = $SITE_INFO['base_url'];
+        $allowed_partners[] = parse_url($base_url, PHP_URL_HOST);
+    } else {
+        $host = cms_srv('HTTP_HOST');
+        if ($host != '') {
+            $allowed_partners[] = $host;
+        }
     }
-    $trusted_sites[] = parse_url(get_base_url(true), PHP_URL_HOST);
-    if (get_custom_base_url(true) != get_base_url(true)) {
-        $trusted_sites[] = parse_url(get_custom_base_url(true), PHP_URL_HOST);
+
+    if (isset($SITE_INFO['custom_base_url'])) {
+        $base_url = $SITE_INFO['custom_base_url'];
+        $allowed_partners[] = parse_url($base_url, PHP_URL_HOST);
     }
-    return $trusted_sites;
+
+    return $allowed_partners;
 }
 
 /**

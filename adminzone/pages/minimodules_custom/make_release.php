@@ -326,13 +326,15 @@ function phase_2()
     if ($is_substantial && !$is_bleeding_edge) {
         echo '
             <li><strong>Transifex</strong>: Import language strings into Transifex<ul>
-                <li>Make sure translations are updated for the previous version, by calling <kbd>data_custom/transifex_pull.php?version=&lt;oldversion&gt;</kbd></li>
                 <li>Push new language data by calling <kbd>data_custom/transifex_push.php</kbd></li>
             </ul></li>
         ';
     } else {
         echo '
-            <li><strong>Transifex</strong>: <a target="_blank" href="' . find_script('transifex_pull') . '">Pull in translations</a></li>
+            <li><strong>Transifex</strong> (<em>Optional</em>): Import language strings into Transifex<ul>
+                <li><a target="_blank" href="' . find_script('transifex_push') . '">Push up language strings</a></li>
+                <li><a target="_blank" href="' . find_script('transifex_pull') . '">Pull in translations</a></li>
+            </ul></li>
         ';
     }
 
