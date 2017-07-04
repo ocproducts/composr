@@ -24,7 +24,8 @@
  *
  * @param  ?MEMBER $member_id Member ID to do for (null: all)
  */
-function autofill_geo_cpfs($member_id = null) {
+function autofill_geo_cpfs($member_id = null)
+{
     $where = mixed();
     if ($member_id !== null) {
         $where['mf_member_id'] = $member_id;
@@ -50,7 +51,8 @@ function autofill_geo_cpfs($member_id = null) {
  *
  * @ignore
  */
-function _autofill_geo_cpfs($row) {
+function _autofill_geo_cpfs($row)
+{
     require_code('cns_members');
     require_code('locations');
     require_code('locations_geocoding');

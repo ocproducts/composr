@@ -558,6 +558,13 @@ function _read_php_function_line($_line)
                     $arg_name = '';
                     $_line = substr($_line, 0, $k) . substr(str_replace(' ', '', $_line), $k); // Make parsing easier
                 }
+                break;
+
+            case 'done':
+                if ($char == '{') {
+                    attach_message(do_lang_tempcode('UNEXPECTED_TEXT_AFTER_FUNCTION', rtrim($_line)), 'warn');
+                }
+                break;
         }
     }
 

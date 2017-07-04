@@ -135,10 +135,13 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
     }
 
     /**
+     * Find URL patterns staff tooltips can be added on.
+     *
      * @param  boolean $is_staff If the current user is a staff member
      * @return array
      */
-    private function staff_tooltips_url_patterns($is_staff) {
+    private function staff_tooltips_url_patterns($is_staff)
+    {
         $url_patterns = array();
         if (!$is_staff) {
             return $url_patterns;
@@ -174,10 +177,13 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
     }
 
     /**
+     * Turn a page-link pattern into a regexp.
+     *
      * @param  string $pattern Pattern
      * @return string
      */
-    public function _escape_url_pattern_for_js_regex($pattern) {
+    public function _escape_url_pattern_for_js_regex($pattern)
+    {
         $pattern = str_replace('/', '\\/', $pattern);
         $pattern = str_replace('?', '\\?', $pattern);
         $pattern = str_replace('_WILD\\/', '([^&]*)\\/?', $pattern);

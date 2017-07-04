@@ -2964,8 +2964,10 @@ function ecv2_DISPLAY_CONCEPT($lang, $escaped, $param)
  * @param  array $escaped Array of escaping operations.
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
-function ecv2_CSS_INHERIT(&$value, $lang, $escaped, $param) // e.g. {+START,CSS_INHERIT,global,default,0,#886aa9}{+END}
+function ecv2_CSS_INHERIT(&$value, $lang, $escaped, $param)
 {
+    // e.g. {+START,CSS_INHERIT,global,default,0,#886aa9}{+END}
+
     if (isset($param[0])) {
         require_code('css_and_js');
 
