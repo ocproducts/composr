@@ -114,14 +114,3 @@
 
 .global_helper_panel_text_over {
 }
-
-.global_helper_panel_html {
-	position: absolute;
-	/*bottom: -270px;*/
-	z-index: 2;
-}
-/*{+START,CSS_MODE,desktop}*/
-	.global_helper_panel_html {
-		width: 390px;
-	}
-/*{+END}*/

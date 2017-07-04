@@ -148,10 +148,6 @@ Branch layout (inner)
 	background-color: {$GET,native_ui_active_background};
 }
 
-.menu_editor_branch_wrap .move_button {
-	cursor: move;
-}
-
 .menu_editor_branch input[type="text"] {
 	background: url('{$IMG;,icons/14x14/action_small}') right center no-repeat white;
 	background-size: 20px 20px;

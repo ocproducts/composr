@@ -937,7 +937,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
-	.global_middle, .panel_solo {
+	.global_middle {
 		padding-{!en_left}: 2px;
 		padding-{!en_right}: 2px;
 		{$BETA_CSS_PROPERTY,text-size-adjust: none;}

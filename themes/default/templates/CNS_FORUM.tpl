@@ -35,7 +35,7 @@
 {+START,IF_NON_EMPTY,{TOPIC_WRAPPER}}{$,Does not show if no topics as that would double it up}
 	{+START,IF_PASSED,ID}{$,Does not show on PT/virtual-forum view as those are less actiony places}
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}
-			<div class="non_accessibility_redundancy">
+			<div class="non_accessibility_redundancy cns_forum_buttons">
 				<div class="float_surrounder">
 					<div class="buttons_group cns_buttons_screen">
 						{+START,IF_PASSED,ID}
@@ -56,7 +56,7 @@
 {TOPIC_WRAPPER}
 
 {+START,IF,{$NOT,{$WIDE_HIGH}}}
-	<div class="float_surrounder">
+	<div class="float_surrounder cns_forum_buttons">
 		<div class="buttons_group cns_buttons_screen">
 			{+START,IF_PASSED,ID}
 				{+START,INCLUDE,NOTIFICATION_BUTTONS}

@@ -7,7 +7,7 @@
 
 	<div class="cns_topic_{THREADED*}">
 		{+START,IF,{$CONFIG_OPTION,enable_forum_dupe_buttons}}{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
-			<div class="non_accessibility_redundancy">
+			<div class="non_accessibility_redundancy cns_topic_buttons">
 				<div class="float_surrounder">
 					<div class="buttons_group cns_buttons_screen">
 						{+START,IF,{$NOT,{TICKET_FORUM}}}
@@ -139,7 +139,7 @@
 		{+END}
 
 		{+START,IF_NON_EMPTY,{POSTS}}
-			<div class="float_surrounder">
+			<div class="float_surrounder cns_topic_buttons">
 				{+START,IF_NON_EMPTY,{BUTTON_SCREENS}{ID}}
 					<div class="buttons_group cns_buttons_screen">
 						{+START,IF,{$NOT,{TICKET_FORUM}}}

@@ -26,7 +26,7 @@
 					</select>
 				</label>
 
-				<label class="jump_to horiz_field_sep" for="jump_to_filedump_{I*}">
+				<label class="jump_to_filedump horiz_field_sep" for="jump_to_filedump_{I*}">
 					{!JUMP_TO_FOLDER}
 					<select id="jump_to_filedump_{I*}" name="place">
 						{+START,IF_NON_EMPTY,{FILTERED_DIRECTORIES_MISSES}}
