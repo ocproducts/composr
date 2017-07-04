@@ -15,7 +15,7 @@
 }
 
 .buildr_navigation tbody>tr:first-child>td {
-	{$BETA_CSS_PROPERTY,border-radius: 0 !important;}
+	border-radius: 0 !important;
 }
 
 .buildr_navigation table {

@@ -894,7 +894,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 }
 
 .global_side_panel {
-	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	word-wrap: break-word;
 	color: {$GET,slightly_seeded_gray_text};
 }
 
@@ -913,17 +913,17 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 		padding-{!en_right}: 1em;
 		margin-bottom: 1em;
 		box-sizing: border-box;
-		order: 1;
-		flex-grow: 1;
+		{$BETA_CSS_PROPERTY,order: 1;}
+		{$BETA_CSS_PROPERTY,flex-grow: 1;}
 	}
 
 	#panel_left {
-		order: 0;
+		{$BETA_CSS_PROPERTY,order: 0;}
 		margin-{!en_left}: 1em;
 	}
 
 	#panel_right {
-		order: 2;
+		{$BETA_CSS_PROPERTY,order: 2;}
 		margin-{!en_right}: 1em;
 	}
 
@@ -1430,7 +1430,7 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 .trinav_wrap {
 	overflow: hidden;
 	background-image: linear-gradient(to bottom\, {$GET,main_2_background}\, {$GET,main_background});
-	{$BETA_CSS_PROPERTY,border-radius: 20px;}
+	border-radius: 20px;
 	color: {$GET,heading_text};
 }
 /*{+START,CSS_MODE,desktop}*/
@@ -3786,7 +3786,7 @@ input.magic_image_edit_link {
 	/*background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad}); If you want a CSS gradient instead of the above image, do something like this*/
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
-	-webkit-appearance: none;
+	{$BETA_CSS_PROPERTY,appearance: none;}
 	vertical-align: middle;
 	cursor: pointer;
 }
@@ -5191,7 +5191,7 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 .overlay {
 	overflow: visible;
 	border: 0;
-	{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+	word-wrap: break-word;
 }
 
 .overlay_close_button {

@@ -11,18 +11,10 @@ button.date-datepicker-button:after {
   vertical-align: middle; }
 
 .csstransitions div.date-calendar-dialog.date-closed {
-  -moz-transition: opacity 0.4s linear;
-  -webkit-transition: opacity 0.4s linear;
-  -o-transition: opacity 0.4s linear;
-  -ms-transition: opacity 0.4s linear;
   transition: opacity 0.4s linear;
   opacity: 0; }
 .csstransitions div.date-calendar-dialog.date-open {
   z-index: 1000;
-  -moz-transition: opacity 0.4s linear;
-  -webkit-transition: opacity 0.4s linear;
-  -o-transition: opacity 0.4s linear;
-  -ms-transition: opacity 0.4s linear;
   transition: opacity 0.4s linear;
   opacity: 1; }
 
@@ -39,8 +31,6 @@ div.time-spin-btn-container {
   padding: 0; }
 
 div.time-spin-btn {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   border: 2px outset #CCCCCC;
   background-color: #CCCCCC;
@@ -48,8 +38,6 @@ div.time-spin-btn {
 
 div.time-spin-btn-up {
   border-bottom-width: 1px;
-  -moz-border-radius: 3px 3px 0px 0px;
-  -webkit-border-radius: 3px 3px 0px 0px;
   border-radius: 3px 3px 0px 0px; }
 
 div.time-spin-btn-up:before,
@@ -70,8 +58,6 @@ div.time-spin-btn-up:before {
 
 div.time-spin-btn-down {
   border-top-width: 1px;
-  -moz-border-radius: 0px 0px 3px 3px;
-  -webkit-border-radius: 0px 0px 3px 3px;
   border-radius: 0px 0px 3px 3px; }
 
 div.time-spin-btn-down:before {

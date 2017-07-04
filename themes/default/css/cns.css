@@ -416,7 +416,7 @@ div.cns_table_footer>div>div {
 }
 /*{+START,CSS_MODE,desktop}*/
 	.cns_topic_poster_name {
-		{$BETA_CSS_PROPERTY,word-wrap: break-word;}
+		word-wrap: break-word;
 	}
 /*{+END}*/
 

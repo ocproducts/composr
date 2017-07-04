@@ -33,13 +33,21 @@ class Hook_symbol_BETA_CSS_PROPERTY
     {
         /*
         Properties currently used:
+         filter
          flex-wrap
+         flex-grow
+         order
          user-select
+         text-size-adjust
+         text-overflow
+         touch-action
+         appearance
 
         Property settings currently used:
          display
           flex
         */
+        // ^ Also keep in sync with css_beta.php code
 
         $value = '';
 

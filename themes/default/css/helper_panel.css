@@ -58,8 +58,8 @@
 }
 /*{+START,CSS_MODE,mobile}*/
 	.global_helper_panel_wrap {
-		{$BETA_CSS_PROPERTY,border-top-right-radius: 15px;}
-		{$BETA_CSS_PROPERTY,border-bottom-right-radius: 15px;}
+		border-top-right-radius: 15px;
+		border-bottom-right-radius: 15px;
 		margin-top: 3em;
 	}
 /*{+END}*/
