@@ -25,7 +25,7 @@ function search_topic_test()
         array(
             '%Ggfd',
             0,
-            5
+            5,
         )
     );
     print_mobiquo_result($result);
@@ -43,7 +43,7 @@ function search_post_test()
         array(
             '%fgddf',
             0,
-            8
+            8,
         )
     );
     print_mobiquo_result($result);

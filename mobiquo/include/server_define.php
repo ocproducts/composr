@@ -392,13 +392,13 @@ $SERVER_DEFINE = array(
     'report_post' => array(
         'function' => 'report_post_func',
         'signature' => array(array($xmlrpcStruct, $xmlrpcString),
-                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64)
+                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64),
         ),
     ),
     'report_pm' => array(
         'function' => 'report_pm_func',
         'signature' => array(array($xmlrpcStruct, $xmlrpcString),
-                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64)
+                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64),
         ),
     ),
 
@@ -460,13 +460,13 @@ $SERVER_DEFINE = array(
     'm_undelete_topic' => array(
         'function' => 'm_undelete_topic_func',
         'signature' => array(array($xmlrpcStruct, $xmlrpcString),
-                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64)
+                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64),
         ),
     ),
     'm_undelete_post' => array(
         'function' => 'm_undelete_post_func',
         'signature' => array(array($xmlrpcStruct, $xmlrpcString),
-                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64)
+                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcBase64),
         ),
     ),
 
@@ -478,7 +478,7 @@ $SERVER_DEFINE = array(
     'm_move_topic' => array(
         'function' => 'm_move_topic_func',
         'signature' => array(array($xmlrpcStruct, $xmlrpcString, $xmlrpcString),
-                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBoolean)
+                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBoolean),
         ),
     ),
 
@@ -493,7 +493,7 @@ $SERVER_DEFINE = array(
         'signature' => array(array($xmlrpcStruct, $xmlrpcString),
                              array($xmlrpcStruct, $xmlrpcString, $xmlrpcString),
                              array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64),
-                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64, $xmlrpcString)
+                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcBase64, $xmlrpcString),
         ),
     ),
 
@@ -675,7 +675,7 @@ $SERVER_DEFINE = array(
     'get_box' => array(
         'function' => 'get_box_func',
         'signature' => array(array($xmlrpcStruct, $xmlrpcString),
-                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcInt, $xmlrpcInt)
+                             array($xmlrpcStruct, $xmlrpcString, $xmlrpcInt, $xmlrpcInt),
         ),
     ),
 
@@ -733,14 +733,14 @@ $SERVER_DEFINE = array(
     'get_dashboard' => array(
         'function' => 'get_dashboard_func',
         'signature' => array(array($xmlrpcStruct),
-                             array($xmlrpcStruct, $xmlrpcBoolean)
+                             array($xmlrpcStruct, $xmlrpcBoolean),
         ),
     ),
 
     'get_feed' => array(
         'function' => 'get_feed_func',
         'signature' => array(array($xmlrpcStruct),
-                             array($xmlrpcStruct, $xmlrpcString)
+                             array($xmlrpcStruct, $xmlrpcString),
         ),
     ),
 
@@ -761,7 +761,7 @@ $SERVER_DEFINE = array(
     'get_activity' => array(
         'function' => 'get_activity_func',
         'signature' => array(array($xmlrpcStruct),
-                             array($xmlrpcStruct, $xmlrpcInt, $xmlrpcInt)
+                             array($xmlrpcStruct, $xmlrpcInt, $xmlrpcInt),
         ),
     ),
 

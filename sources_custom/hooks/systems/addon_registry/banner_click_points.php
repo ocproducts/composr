@@ -112,7 +112,7 @@ class Hook_addon_registry_banner_click_points
                 'points',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

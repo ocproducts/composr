@@ -908,11 +908,11 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
             $personal_gallery_breadcrumb_parts = array(
                 array(
                     '_SEARCH:members:browse',
-                    do_lang_tempcode('MEMBERS')
+                    do_lang_tempcode('MEMBERS'),
                 ),
                 array(
                     '_SEARCH:members:view:' . strval($owner) . '#tab__galleries',
-                    do_lang_tempcode('cns:MEMBER_ACCOUNT', escape_html($GLOBALS['FORUM_DRIVER']->get_username($owner, true)))
+                    do_lang_tempcode('cns:MEMBER_ACCOUNT', escape_html($GLOBALS['FORUM_DRIVER']->get_username($owner, true))),
                 ),
             );
             foreach ($personal_gallery_breadcrumb_parts as $bits) {

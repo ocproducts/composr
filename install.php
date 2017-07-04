@@ -82,10 +82,10 @@ if (!array_key_exists('type', $_GET)) {
 
     echo '<!DOCTYPE html>' . "\n";
     if (count($_GET) == 0) { // Special code to skip checks if need-be. The XHTML here is invalid but unfortunately it does need to be.
-        echo '<script>// <![CDATA[
+        echo '<script>
             window.setTimeout(function () { if (!document.getElementsByTagName("div")[0]) window.location+="?skip_disk_checks=1"; }, 30000);
             window.setInterval(function () { if ((!document.getElementsByTagName("div")[0]) && (document.body) && (document.body.innerHTML) && (document.body.innerHTML.indexOf("Maximum execution time")!=-1)) window.location+="?skip_disk_checks=1"; }, 500);
-        //]]></script>';
+        </script>';
     }
 }
 
@@ -1913,7 +1913,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_table('db_meta', array(
         'm_table' => '*ID_TEXT',
         'm_name' => '*ID_TEXT',
-        'm_type' => 'ID_TEXT'
+        'm_type' => 'ID_TEXT',
     ));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('db_meta_indices');
@@ -1933,7 +1933,7 @@ function step_5_core()
         'text_original' => 'LONG_TEXT',
         'text_parsed' => 'LONG_TEXT',
         'broken' => 'BINARY',
-        'source_user' => 'MEMBER'
+        'source_user' => 'MEMBER',
     ));
     $GLOBALS['SITE_DB']->create_index('translate', '#tsearch', array('text_original'));
     $GLOBALS['SITE_DB']->create_index('translate', 'importance_level', array('importance_level'));
@@ -1946,7 +1946,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_table('values', array(
         'the_name' => '*ID_TEXT',
         'the_value' => 'SHORT_TEXT',
-        'date_and_time' => 'TIME'
+        'date_and_time' => 'TIME',
     ));
     $GLOBALS['SITE_DB']->create_index('values', 'date_and_time', array('date_and_time'));
 
@@ -1956,7 +1956,7 @@ function step_5_core()
         'c_set' => 'BINARY',
         'c_value' => 'LONG_TEXT',
         'c_value_trans' => '?LONG_TRANS', // If it's a translatable/Comcode one, we store the language ID in here (or just a string if we don't have multi-lang-content enabled)
-        'c_needs_dereference' => 'BINARY'
+        'c_needs_dereference' => 'BINARY',
     ));
 
     // Privileges
@@ -1967,7 +1967,7 @@ function step_5_core()
         'the_page' => '*ID_TEXT',
         'module_the_name' => '*ID_TEXT',
         'category_name' => '*ID_TEXT',
-        'the_value' => 'BINARY'
+        'the_value' => 'BINARY',
     ), false, false, true);
     $GLOBALS['SITE_DB']->create_index('group_privileges', 'group_id', array('group_id'));
 
@@ -1975,7 +1975,7 @@ function step_5_core()
     $GLOBALS['SITE_DB']->create_table('privilege_list', array( // Why does this table exist? It could be done cleanly in hooks (which are easier to version) like config is, but when we add a privilege we do need to carefully define who gets it (as an immediate-op with potential complex code) -- it is cleaner to just handle definition in same place as that code).
         'p_section' => 'ID_TEXT',
         'the_name' => '*ID_TEXT',
-        'the_default' => '*BINARY'
+        'the_default' => '*BINARY',
     ));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('attachments');
@@ -1989,7 +1989,7 @@ function step_5_core()
         'a_original_filename' => 'SHORT_TEXT',
         'a_num_downloads' => 'INTEGER',
         'a_last_downloaded_time' => '?INTEGER',
-        'a_add_time' => 'INTEGER'
+        'a_add_time' => 'INTEGER',
     ));
     $GLOBALS['SITE_DB']->create_index('attachments', 'ownedattachments', array('a_member_id'));
     $GLOBALS['SITE_DB']->create_index('attachments', 'attachmentlimitcheck', array('a_add_time'));
@@ -1999,7 +1999,7 @@ function step_5_core()
         'id' => '*AUTO',
         'r_referer_type' => 'ID_TEXT',
         'r_referer_id' => 'ID_TEXT',
-        'a_id' => 'AUTO_LINK'
+        'a_id' => 'AUTO_LINK',
     ));
 
     return do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'c6b6d92c670b7f1b223798ace54102f9', 'SOMETHING' => do_lang_tempcode('PRIMARY_CORE_INSTALLED')));
@@ -2021,7 +2021,7 @@ function step_5_core_2()
         'zone_default_page' => 'ID_TEXT',
         'zone_header_text' => 'SHORT_TRANS',
         'zone_theme' => 'ID_TEXT',
-        'zone_require_session' => 'BINARY'
+        'zone_require_session' => 'BINARY',
     ));
 
     // Create default zones
@@ -2059,7 +2059,7 @@ function step_5_core_2()
         'module_organisation' => 'ID_TEXT',
         'module_hacked_by' => 'ID_TEXT',
         'module_hack_version' => '?INTEGER',
-        'module_version' => 'INTEGER'
+        'module_version' => 'INTEGER',
     ));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('blocks');
@@ -2069,7 +2069,7 @@ function step_5_core_2()
         'block_organisation' => 'ID_TEXT',
         'block_hacked_by' => 'ID_TEXT',
         'block_hack_version' => '?INTEGER',
-        'block_version' => 'INTEGER'
+        'block_version' => 'INTEGER',
     ));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('sessions');
@@ -2085,7 +2085,7 @@ function step_5_core_2()
         'the_page' => 'ID_TEXT',
         'the_type' => 'ID_TEXT',
         'the_id' => 'ID_TEXT',
-        'the_title' => 'SHORT_TEXT'
+        'the_title' => 'SHORT_TEXT',
     ));
     $GLOBALS['SITE_DB']->create_index('sessions', 'delete_old', array('last_activity'));
     $GLOBALS['SITE_DB']->create_index('sessions', 'member_id', array('member_id'));
@@ -2093,7 +2093,7 @@ function step_5_core_2()
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('https_pages');
     $GLOBALS['SITE_DB']->create_table('https_pages', array(
-        'https_page_name' => '*ID_TEXT'
+        'https_page_name' => '*ID_TEXT',
     ));
 
     // What usergroups may view this category
@@ -2101,7 +2101,7 @@ function step_5_core_2()
     $GLOBALS['SITE_DB']->create_table('group_category_access', array(
         'module_the_name' => '*ID_TEXT',
         'category_name' => '*ID_TEXT',
-        'group_id' => '*GROUP'
+        'group_id' => '*GROUP',
     ));
 
     $GLOBALS['SITE_DB']->drop_table_if_exists('seo_meta');
@@ -2109,7 +2109,7 @@ function step_5_core_2()
         'id' => '*AUTO',
         'meta_for_type' => 'ID_TEXT',
         'meta_for_id' => 'ID_TEXT',
-        'meta_description' => 'LONG_TRANS'
+        'meta_description' => 'LONG_TRANS',
     ));
     $GLOBALS['SITE_DB']->create_index('seo_meta', 'alt_key', array('meta_for_type', 'meta_for_id'));
     $GLOBALS['SITE_DB']->create_index('seo_meta', 'ftjoin_dmeta_description', array('meta_description'));

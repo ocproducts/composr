@@ -111,7 +111,7 @@ class Hook_addon_registry_challengr
                 'quizzes',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

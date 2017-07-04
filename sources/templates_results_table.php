@@ -83,7 +83,7 @@ function results_table($text_id, $start, $start_name, $max, $max_name, $max_rows
             'MESSAGE' => $message,
             'SORT' => $skip_sortables_form ? new Tempcode() : $sort,
             'PAGINATION' => $pagination,
-            'WIDTHS' => $widths
+            'WIDTHS' => $widths,
         ),
         null,
         false,

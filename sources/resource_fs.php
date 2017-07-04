@@ -983,7 +983,7 @@ function remap_resource_id_as_portable($resource_type, $resource_id)
         'label' => $label,
         'subpath' => $subpath,
         //'moniker' => $moniker,   Given more effectively with label
-        'id' => $resource_id // Not used, but useful to have anyway for debugging/manual-reflection
+        'id' => $resource_id, // Not used, but useful to have anyway for debugging/manual-reflection
     );
 }
 

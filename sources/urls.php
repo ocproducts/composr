@@ -416,7 +416,7 @@ function build_url($vars, $zone_name = '_SEARCH', $skip = array(), $keep_all = f
         $page_link,
         $avoid_remap ? '1' : '0',
         $skip_keep ? '1' : '0',
-        $keep_all ? '1' : '0'
+        $keep_all ? '1' : '0',
     );
     if ($skip != array()) {
         $arr[] = implode('|', array_keys($skip));

@@ -506,19 +506,20 @@ class Module_admin_setupwizard
             }
         }
 
-        $addon_list_advanced_off_by_default = array( // Hint that these must go under advanced (as they default as visible). Note that presence of an addon in an 'on' list gives it precedence.
-                                                     'installer',
-                                                     'rootkit_detector',
-                                                     'failover',
-                                                     'msn',
-                                                     'backup',
-                                                     'ldap',
-                                                     'sms',
-                                                     'printer_friendly_block',
-                                                     'data_mappr', // this will be downloaded as it is not bundled
-                                                     'user_mappr', // this will be downloaded as it is not bundled
-                                                     'facebook_support', // this will be downloaded as it is not bundled
-                                                     'twitter_support', // this will be downloaded as it is not bundled
+        $addon_list_advanced_off_by_default = array(
+            // Hint that these must go under advanced (as they default as visible). Note that presence of an addon in an 'on' list gives it precedence.
+            'installer',
+            'rootkit_detector',
+            'failover',
+            'msn',
+            'backup',
+            'ldap',
+            'sms',
+            'printer_friendly_block',
+            'data_mappr', // this will be downloaded as it is not bundled
+            'user_mappr', // this will be downloaded as it is not bundled
+            'facebook_support', // this will be downloaded as it is not bundled
+            'twitter_support', // this will be downloaded as it is not bundled
         );
         if (GOOGLE_APPENGINE) {
             $addon_list_advanced_off_by_default[] = 'google_appengine';

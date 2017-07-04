@@ -183,7 +183,7 @@ class Module_admin_errorlog
             $fields->attach(results_entry(array(
                 $stuff[$i][1] . ' ' . $stuff[$i][2],
                 $stuff[$i][3],
-                $message
+                $message,
             ), true));
         }
         $error = results_table(do_lang_tempcode('ERROR_LOG'), $start, 'start', $max, 'max', $i, $fields_title, $fields, $sortables, $sortable, $sort_order, 'sort', new Tempcode());

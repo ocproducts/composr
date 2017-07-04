@@ -545,23 +545,22 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
                             $sort_desc_selected = false;
                         }
                         $head->attach(do_template(
-                                'CATALOGUE_' . $tpl_set . '_TABULAR_HEADCELL',
-                                array(
-                                    'SORT_ASC_SELECTED' => $sort_asc_selected,
-                                    'SORT_DESC_SELECTED' => $sort_desc_selected,
-                                    'SORT_URL_ASC' => $sort_url_asc,
-                                    'SORT_URL_DESC' => $sort_url_desc,
-                                    'CATALOGUE' => $catalogue_name,
-                                    'FIELDID' => strval($i),
-                                    '_FIELDID' => strval($field['id']),
-                                    'FIELD' => get_translated_text($field['cf_name']),
-                                    'FIELDTYPE' => $field['cf_type']
-                                ),
-                                null,
-                                false,
-                                'CATALOGUE_DEFAULT_TABULAR_HEADCELL'
-                            )
-                        );
+                            'CATALOGUE_' . $tpl_set . '_TABULAR_HEADCELL',
+                            array(
+                                'SORT_ASC_SELECTED' => $sort_asc_selected,
+                                'SORT_DESC_SELECTED' => $sort_desc_selected,
+                                'SORT_URL_ASC' => $sort_url_asc,
+                                'SORT_URL_DESC' => $sort_url_desc,
+                                'CATALOGUE' => $catalogue_name,
+                                'FIELDID' => strval($i),
+                                '_FIELDID' => strval($field['id']),
+                                'FIELD' => get_translated_text($field['cf_name']),
+                                'FIELDTYPE' => $field['cf_type'],
+                            ),
+                            null,
+                            false,
+                            'CATALOGUE_DEFAULT_TABULAR_HEADCELL'
+                        ));
                         $field_count++;
                     }
                 }

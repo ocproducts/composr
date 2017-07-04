@@ -69,7 +69,7 @@ class Hook_import_vb3
             'wordfilter',
             'config',
             'calendar',
-            //                      'logs'
+            //'logs',
         );
         $info['dependencies'] = array(
             // This dependency tree is overdefined, but I wanted to make it clear what depends on what, rather than having a simplified version
@@ -149,7 +149,7 @@ class Hook_import_vb3
             //'reputationenable' => 'is_on_points',
             'gzipoutput' => 'gzip_output',
             'regimagecheck' => 'use_captchas',
-            'moderatenewmembers' => 'require_new_member_validation'
+            'moderatenewmembers' => 'require_new_member_validation',
         );
 
         $rows = $db->query_select('setting', array('*'));

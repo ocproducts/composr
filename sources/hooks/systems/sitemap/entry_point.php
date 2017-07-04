@@ -50,7 +50,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                         false, // $check_perms
                         null, // $member_id
                         true, // $support_crosslinks
-                        true // $be_deferential
+                        true, // $be_deferential
                     ));
                     if ($functions[0] !== null) {
                         $entry_points = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
@@ -139,7 +139,7 @@ class Hook_sitemap_entry_point extends Hook_sitemap_base
                     true, // $check_perms
                     null, // $member_id
                     false, //$support_crosslinks   Must be false so that things known to be cross-linked from elsewhere are not skipped
-                    false //$be_deferential
+                    false, //$be_deferential
 
                 ));
 

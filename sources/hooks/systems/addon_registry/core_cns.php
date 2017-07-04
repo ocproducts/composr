@@ -523,7 +523,7 @@ class Hook_addon_registry_core_cns
                         'ID' => '2',
                         'USERNAME' => lorem_word_2(),
                         'PROFILE_URL' => placeholder_url(),
-                    )
+                    ),
                 ),
                 'URL' => placeholder_url(),
             )), null, '', true)
@@ -867,7 +867,7 @@ class Hook_addon_registry_core_cns
             'JOIN_DATE' => placeholder_date(),
             'PRIMARY_GROUP_NAME' => lorem_phrase(),
             'SECONDARY_GROUPS' => array(
-                lorem_word_html()
+                lorem_word_html(),
             ),
             'CUSTOM_FIELDS' => lorem_phrase(),
             'ONLINE' => false,
@@ -998,7 +998,7 @@ class Hook_addon_registry_core_cns
                     'NAME' => lorem_phrase(),
                     'VALUE' => lorem_phrase(),
                     'ENCRYPTED_VALUE' => '',
-                )
+                ),
             ),
             'ACTIONS_contact' => $actions['contact'],
             'ACTIONS_profile' => $actions['profile'],
@@ -1121,7 +1121,7 @@ class Hook_addon_registry_core_cns
                 'TITLE' => lorem_title(),
                 'STAFF' => lorem_phrase(),
                 'OTHERS' => lorem_phrase(),
-                'RANKS' => array(placeholder_table(), placeholder_table())
+                'RANKS' => array(placeholder_table(), placeholder_table()),
             )), null, '', true)
         );
     }
@@ -1148,14 +1148,12 @@ class Hook_addon_registry_core_cns
                 'URL' => placeholder_url(),
             ));
 
-            //results_entry starts
             $cells = do_lorem_template('RESULTS_TABLE_FIELD', array(
                 'VALUE' => $temp,
             ), null, false);
             $entries = do_lorem_template('RESULTS_TABLE_ENTRY', array(
                 'VALUES' => $cells,
             ), null, false);
-            //results_entry ends
 
             $primary_members->attach($entries);
         }
@@ -1164,7 +1162,6 @@ class Hook_addon_registry_core_cns
             'VALUE' => lorem_word(),
         ));
 
-        //results_table
         $primary_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
             'TEXT_ID' => placeholder_random_id(),
@@ -1196,7 +1193,6 @@ class Hook_addon_registry_core_cns
             'VALUE' => lorem_word(),
         ));
 
-        //results_table
         $secondary_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
             'TEXT_ID' => placeholder_random_id(),
@@ -1228,7 +1224,6 @@ class Hook_addon_registry_core_cns
             'VALUE' => lorem_word(),
         ));
 
-        //results_table
         $prospective_members = do_lorem_template('RESULTS_TABLE', array(
             'WIDTHS' => array(),
             'TEXT_ID' => placeholder_random_id(),

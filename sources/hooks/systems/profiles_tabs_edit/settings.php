@@ -160,7 +160,7 @@ class Hook_profiles_tabs_edit_settings
             } else {
                 $theme = post_param_string('theme', null);
                 $preview_posts = post_param_integer('preview_posts', 0);
-                $auto_monitor_contrib_content = null;//post_param_integer('auto_monitor_contrib_content',0);   Moved to notifications tab
+                $auto_monitor_contrib_content = null;//post_param_integer('auto_monitor_contrib_content', 0);   Moved to notifications tab
                 $views_signatures = post_param_integer('views_signatures', 0);
                 $timezone = post_param_string('timezone', get_site_timezone());
                 $auto_mark_read = post_param_integer('auto_mark_read', 0);

@@ -116,7 +116,7 @@ For a demo, see this video tutorial: https://www.youtube.com/watch?v=IFIl_z4K0gE
                 'galleries',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

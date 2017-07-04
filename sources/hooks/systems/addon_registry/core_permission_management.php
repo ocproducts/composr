@@ -282,7 +282,6 @@ class Hook_addon_registry_core_permission_management
         $rows = new Tempcode();
         $header_cells = new Tempcode();
         $cols = new Tempcode();
-        //permission rows
         $k = 0;
         foreach (placeholder_array() as $permission) {
             $cells = new Tempcode();

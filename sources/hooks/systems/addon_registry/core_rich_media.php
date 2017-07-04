@@ -538,7 +538,7 @@ class Hook_addon_registry_core_rich_media
         }
         $_emt = do_lorem_template('EMOTICON_IMG_CODE_DIR', array(
             'EMOTICON' => lorem_word(),
-            'SRC' => get_base_url() . '/themes/default/images//cns_emoticons/constipated.png',
+            'SRC' => get_base_url() . '/themes/default/images/cns_emoticons/constipated.png',
         ));
         $emt->attach(do_lorem_template('EMOTICON_CLICK_CODE', array(
             'FIELD_NAME' => lorem_word(),
@@ -1162,7 +1162,7 @@ class Hook_addon_registry_core_rich_media
                 'CONTENT' => lorem_phrase(),
                 'SIZE' => 'font-size:2em;',
                 'COLOR' => 'color:red;',
-                'FACE' => 'font-family:Arial;'
+                'FACE' => 'font-family:Arial;',
             )), null, '', true)
         );
     }

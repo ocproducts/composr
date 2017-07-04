@@ -116,7 +116,7 @@ Ever wished it was quicker to navigate around your site? If you\'re anything lik
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

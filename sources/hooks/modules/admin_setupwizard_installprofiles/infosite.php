@@ -108,7 +108,7 @@ class Hook_admin_setupwizard_installprofiles_infosite
             ),
             'main_rss' => array(
                 'param' => 'http://news.google.com/news?ned=us&topic=h&output=rss',
-            )
+            ),
         );
     }
 

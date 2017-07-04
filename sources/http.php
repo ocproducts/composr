@@ -422,7 +422,7 @@ abstract class HttpDownloader
             if ($this->raw_post) {
                 $_postdetails_params = $this->post_params[0];
             } else {
-                $_postdetails_params = '';//$this->url_parts['scheme'].'://'.$this->url_parts['host'].$url2.'?';
+                $_postdetails_params = '';//$this->url_parts['scheme'] . '://' . $this->url_parts['host'] . $url2 . '?';
                 if (array_keys($this->post_params) == array('_')) {
                     $_postdetails_params = $this->post_params['_'];
                 } else {

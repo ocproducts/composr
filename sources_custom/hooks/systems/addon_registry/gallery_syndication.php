@@ -118,7 +118,7 @@ Unfortunately YouTube support is currently not functional (https://compo.sr/trac
                 'galleries',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

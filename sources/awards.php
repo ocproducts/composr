@@ -34,7 +34,7 @@ function find_awards_for($content_type, $id)
         require_lang('awards');
         $awards[] = array(
             'AWARD_TYPE' => get_translated_text($GLOBALS['SITE_DB']->query_select_value('award_types', 'a_title', array('id' => $row['a_type_id']))),
-            'AWARD_TIMESTAMP' => strval($row['date_and_time'])
+            'AWARD_TIMESTAMP' => strval($row['date_and_time']),
         );
     }
 

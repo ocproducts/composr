@@ -111,7 +111,7 @@ class Hook_addon_registry_free_article_import
                 'news',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

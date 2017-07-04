@@ -96,7 +96,7 @@ class Module_chat
                 'disallow_list_groups' => 'LONG_TEXT',
                 'room_language' => 'LANGUAGE_NAME',
                 'c_welcome' => 'LONG_TRANS',
-                'is_im' => 'BINARY'
+                'is_im' => 'BINARY',
             ));
 
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'room_name', array('room_name'));
@@ -126,7 +126,7 @@ class Module_chat
                 'date_and_time' => 'TIME',
                 'the_message' => 'LONG_TRANS__COMCODE',
                 'text_colour' => 'SHORT_TEXT',
-                'font_name' => 'SHORT_TEXT'
+                'font_name' => 'SHORT_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_index('chat_messages', 'ordering', array('date_and_time'));
@@ -145,13 +145,13 @@ class Module_chat
             $GLOBALS['SITE_DB']->create_table('chat_blocking', array(
                 'member_blocker' => '*MEMBER',
                 'member_blocked' => '*MEMBER',
-                'date_and_time' => 'TIME'
+                'date_and_time' => 'TIME',
             ));
 
             $GLOBALS['SITE_DB']->create_table('chat_friends', array(
                 'member_likes' => '*MEMBER',
                 'member_liked' => '*MEMBER',
-                'date_and_time' => 'TIME'
+                'date_and_time' => 'TIME',
             ));
 
             $GLOBALS['SITE_DB']->create_table('chat_events', array(
@@ -159,7 +159,7 @@ class Module_chat
                 'e_type_code' => 'ID_TEXT', // BECOME_ACTIVE, BECOME_INACTIVE, PREINVITED_TO_IM, JOIN_IM, DEINVOLVE_IM, INVITED_TO_IM
                 'e_member_id' => 'MEMBER',
                 'e_room_id' => '?AUTO_LINK',
-                'e_date_and_time' => 'TIME'
+                'e_date_and_time' => 'TIME',
             ));
 
             $GLOBALS['SITE_DB']->create_index('chat_events', 'event_ordering', array('e_date_and_time'));
@@ -177,7 +177,7 @@ class Module_chat
             $GLOBALS['SITE_DB']->create_table('chat_sound_effects', array(
                 's_member' => '*MEMBER',
                 's_effect_id' => '*ID_TEXT',
-                's_url' => 'URLPATH'
+                's_url' => 'URLPATH',
             ));
 
             $rooms = $GLOBALS['SITE_DB']->query_select('chat_rooms', array('id'));
@@ -621,7 +621,7 @@ class Module_chat
             //'email', Bloat
             'quote',
             'code',
-            'hide'
+            'hide',
         );
         if (has_privilege(get_member(), 'comcode_dangerous')) {
             //$_buttons[] = 'html'; Bloat
@@ -633,7 +633,7 @@ class Module_chat
         if (!is_guest()) {
             $_buttons = array(
                 'private_message',
-                'invite'
+                'invite',
             );
             if (has_privilege(get_member(), 'create_private_room')) {
                 $_buttons[] = 'new_room';
@@ -1271,7 +1271,7 @@ class Module_chat
                     $GLOBALS['SITE_DB']->query_insert('chat_sound_effects', array(
                         's_member' => get_member(),
                         's_effect_id' => $effect . $suffix,
-                        's_url' => $url
+                        's_url' => $url,
                     ));
                 }
             }

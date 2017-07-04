@@ -293,8 +293,8 @@ class Hook_addon_registry_news
                                 'MONTH' => '1',
                                 'MONTH_STRING' => do_lang('JANUARY'),
                                 'URL' => placeholder_url(),
-                            )
-                        )
+                            ),
+                        ),
                     ),
                     array(
                         'YEAR' => '2009',
@@ -308,10 +308,10 @@ class Hook_addon_registry_news
                                 'MONTH' => '11',
                                 'MONTH_STRING' => do_lang('NOVEMBER'),
                                 'URL' => placeholder_url(),
-                            )
-                        )
-                    )
-                )
+                            ),
+                        ),
+                    ),
+                ),
             )), null, '', true)
         );
     }

@@ -115,7 +115,7 @@ class Hook_addon_registry_composr_release_build
                 'composr_homesite_support_credits',
                 'composr_tutorials',
             ),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

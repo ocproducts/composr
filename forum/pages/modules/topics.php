@@ -83,7 +83,7 @@ class Module_topics
             'edit_own_midrange_content' => array(1, 'EDIT_OWN_TOPIC'),
             'edit_midrange_content' => array(1, 'EDIT_TOPIC'),
             'delete_own_midrange_content' => array(1, 'DELETE_OWN_TOPIC'),
-            'delete_midrange_content' => array(1, 'DELETE_TOPIC')
+            'delete_midrange_content' => array(1, 'DELETE_TOPIC'),
         );
     }
 
@@ -1271,7 +1271,7 @@ class Module_topics
             'TEXT' => '',
             'SUBMIT_ICON' => 'buttons__save',
             'SUBMIT_NAME' => $submit_name,
-            'URL' => $post_url
+            'URL' => $post_url,
         ));
     }
 
@@ -1364,7 +1364,7 @@ class Module_topics
             'CODE' => '',
             'URL' => find_theme_image('cns_emoticons/none'),
             'CHECKED' => $selected_path == '',
-            'NAME' => 'emoticon'
+            'NAME' => 'emoticon',
         )));
 
         if (count($rows) == 0) {
@@ -1385,7 +1385,7 @@ class Module_topics
             'CODE' => $selected_path,
             'TABINDEX' => strval($tabindex),
             'CONTENT' => $content,
-            'IMAGES' => true
+            'IMAGES' => true,
         ));
 
         return _form_input('', do_lang_tempcode('TOPIC_EMOTICON'), '', $input, false);
@@ -1414,14 +1414,10 @@ class Module_topics
                 }
                 if ((is_guest()) && ($_postdetails[0]['p_intended_solely_for'] !== null)) {
                     access_denied('I_ERROR');
-                } elseif ((!has_privilege(get_member(),
-                        'view_other_pt')) && ($_postdetails[0]['p_intended_solely_for'] != get_member()) && ($_postdetails[0]['p_poster'] != get_member()) && ($_postdetails[0]['p_intended_solely_for'] !== null)
-                ) {
+                } elseif ((!has_privilege(get_member(), 'view_other_pt')) && ($_postdetails[0]['p_intended_solely_for'] != get_member()) && ($_postdetails[0]['p_poster'] != get_member()) && ($_postdetails[0]['p_intended_solely_for'] !== null)) {
                     access_denied('I_ERROR');
                 }
-                if ((!has_privilege(get_member(),
-                        'see_unvalidated')) && (addon_installed('unvalidated')) && ($_postdetails[0]['p_validated'] == 0) && (($_postdetails[0]['p_poster'] != get_member()) || ((is_guest($_postdetails[0]['p_poster'])) && ($_postdetails[0]['p_ip_address'] != get_ip_address())))
-                ) {
+                if ((!has_privilege(get_member(), 'see_unvalidated')) && (addon_installed('unvalidated')) && ($_postdetails[0]['p_validated'] == 0) && (($_postdetails[0]['p_poster'] != get_member()) || ((is_guest($_postdetails[0]['p_poster'])) && ($_postdetails[0]['p_ip_address'] != get_ip_address())))) {
                     access_denied('I_ERROR');
                 }
 
@@ -1643,7 +1639,7 @@ class Module_topics
                     do_lang_tempcode('VALIDATED'),
                     'validated',
                     true,
-                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic')
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic'),
                 );
             }
             if (!$private_topic) {
@@ -1789,7 +1785,7 @@ class Module_topics
                     'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id),
                     'MEMBER_ID' => strval($member_id),
                     'URL' => $url,
-                    'RULES' => $rules
+                    'RULES' => $rules,
                 ));
             }
         }
@@ -1915,14 +1911,14 @@ class Module_topics
         }
         if (cns_may_moderate_forum($forum_id, get_member())) {
             $moderation_options = array(
-                array(do_lang_tempcode('EMPHASISED'), 'is_emphasised', false, do_lang_tempcode('DESCRIPTION_EMPHASISED'))
+                array(do_lang_tempcode('EMPHASISED'), 'is_emphasised', false, do_lang_tempcode('DESCRIPTION_EMPHASISED')),
             );
             if (addon_installed('unvalidated')) {
                 $moderation_options[] = array(
                     do_lang_tempcode('VALIDATED'),
                     'validated',
                     true,
-                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'post')
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'post'),
                 );
             }
             //if ($intended_solely_for === null) $moderation_options[] = array(do_lang_tempcode('CASCADING'), 'cascading', false, do_lang_tempcode('DESCRIPTION_CASCADING'));     Too much to offer this too
@@ -2033,7 +2029,7 @@ class Module_topics
                     do_lang_tempcode('VALIDATED'),
                     'topic_validated',
                     $topic_info['t_validated'] == 1,
-                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic')
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic'),
                 );
             }
             if ($forum_id !== null) {
@@ -2692,7 +2688,7 @@ END;
                     'TEXT' => do_lang_tempcode('CONFIRM_DELETE', $stuff),
                     'URL' => $post_url,
                     'HIDDEN' => $hidden,
-                    'FIELDS' => ''
+                    'FIELDS' => '',
                 ));
             }
 
@@ -2877,7 +2873,7 @@ END;
             'SUBMIT_ICON' => 'menu___generic_admin__add_to_category',
             'SUBMIT_NAME' => $submit_name,
             'URL' => $post_url,
-            'JS_FUNCTION_CALLS' => $js_function_calls
+            'JS_FUNCTION_CALLS' => $js_function_calls,
         ));
     }
 
@@ -3050,7 +3046,7 @@ END;
                     do_lang_tempcode('VALIDATED'),
                     'validated',
                     $post_details[0]['p_validated'] == 1,
-                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'post')
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'post'),
                 );
             }
         } else {
@@ -3245,9 +3241,7 @@ END;
         $forum_id = $topic_info['t_forum_id'];
         $private_topic = ($forum_id === null);
 
-        if (($private_topic) && ($topic_info['t_pt_from'] != get_member()) && ($topic_info['t_pt_to'] != get_member()) && (!cns_has_special_pt_access($topic_id)) && (!has_privilege(get_member(),
-                'view_other_pt'))
-        ) {
+        if (($private_topic) && ($topic_info['t_pt_from'] != get_member()) && ($topic_info['t_pt_to'] != get_member()) && (!cns_has_special_pt_access($topic_id)) && (!has_privilege(get_member(), 'view_other_pt'))) {
             access_denied('I_ERROR');
         }
 
@@ -3313,7 +3307,7 @@ END;
                     do_lang_tempcode('VALIDATED'),
                     'validated',
                     $topic_info['t_validated'] == 1,
-                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic')
+                    do_lang_tempcode($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()) ? 'DESCRIPTION_VALIDATED_SIMPLE' : 'DESCRIPTION_VALIDATED', 'topic'),
                 );
             }
             if (!$private_topic) {

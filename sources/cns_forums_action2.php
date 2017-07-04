@@ -33,7 +33,7 @@ function cns_edit_forum_grouping($forum_grouping_id, $title, $description, $expa
     $GLOBALS['FORUM_DB']->query_update('f_forum_groupings', array(
         'c_title' => $title,
         'c_description' => $description,
-        'c_expanded_by_default' => $expanded_by_default
+        'c_expanded_by_default' => $expanded_by_default,
     ), array('id' => $forum_grouping_id), '', 1);
 
     if ($old_title != $title) {

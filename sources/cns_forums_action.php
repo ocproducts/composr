@@ -34,7 +34,7 @@ function cns_make_forum_grouping($title, $description, $expanded_by_default = 1)
     $forum_grouping_id = $GLOBALS['FORUM_DB']->query_insert('f_forum_groupings', array(
         'c_title' => $title,
         'c_description' => $description,
-        'c_expanded_by_default' => $expanded_by_default
+        'c_expanded_by_default' => $expanded_by_default,
     ), true);
 
     log_it('ADD_FORUM_GROUPING', strval($forum_grouping_id), $title);
@@ -169,7 +169,7 @@ function cns_make_forum($name, $description, $forum_grouping_id, $access_mapping
         $GLOBALS['FORUM_DB']->query_insert('group_category_access', array(
             'module_the_name' => $cat_ins_module_the_name,
             'category_name' => $cat_ins_category_name,
-            'group_id' => $cat_ins_group_id
+            'group_id' => $cat_ins_group_id,
         ));
 
         $GLOBALS['SITE_DB']->query_insert('group_privileges', array(

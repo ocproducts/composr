@@ -114,7 +114,7 @@ function trackback_script()
     }
 
     if ($mode == 'rss') {
-        //List all the trackbacks to the specified page
+        // List all the trackbacks to the specified page
         $xml = get_trackbacks($page, strval($id), $allow_trackbacks, 'xml');
     } else {
         $time = get_param_integer('time');
@@ -122,7 +122,7 @@ function trackback_script()
             exit(); // Trackback link intentionally goes stale after 5 minutes, so it can't be statically stored and spam hammered
         }
 
-        //Add a trackback for the specified page
+        // Add a trackback for the specified page
         $output = actualise_post_trackback($allow_trackbacks, $page, strval($id));
 
         if ($output) {

@@ -116,7 +116,7 @@ You need to add this code into your [tt]HTML_HEAD.tpl[/tt]:
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

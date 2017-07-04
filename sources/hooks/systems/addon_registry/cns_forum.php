@@ -1015,7 +1015,6 @@ class Hook_addon_registry_cns_forum
 
         require_lang('cns');
 
-        //buttons
         $buttons = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $buttons->attach(do_lorem_template('BUTTON_SCREEN', array(
@@ -1027,7 +1026,6 @@ class Hook_addon_registry_cns_forum
             )));
         }
 
-        //topics
         $topics = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $marker = do_lorem_template('CNS_TOPIC_MARKER', array(
@@ -1094,7 +1092,6 @@ class Hook_addon_registry_cns_forum
             )));
         }
 
-        //forum groupings
         $forum_groupings = new Tempcode();
         foreach (placeholder_array(1) as $k => $v) {
             $forums = new Tempcode();
@@ -1657,7 +1654,7 @@ class Hook_addon_registry_cns_forum
                 'JOIN_DATE' => placeholder_date(),
                 'PRIMARY_GROUP_NAME' => lorem_phrase(),
                 'SECONDARY_GROUPS' => array(
-                    lorem_word_html()
+                    lorem_word_html(),
                 ),
                 'CUSTOM_FIELDS' => lorem_phrase(),
                 'ONLINE' => false,

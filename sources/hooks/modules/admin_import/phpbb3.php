@@ -1261,7 +1261,7 @@ class Hook_import_phpbb3
                 'tag_enabled' => 1,
                 'tag_dangerous_tag' => 0,
                 'tag_block_tag' => 0,
-                'tag_textual_tag' => 0
+                'tag_textual_tag' => 0,
             );
             $map += insert_lang('tag_title', $row['bbcode_tag'], 3);
             $map += insert_lang('tag_description', $row['bbcode_helpline'], 3);

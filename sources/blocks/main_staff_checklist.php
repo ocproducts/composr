@@ -79,7 +79,7 @@ class Block_main_staff_checklist
                 'add_date' => 'TIME',
                 'recur_interval' => 'INTEGER',
                 'recur_every' => 'ID_TEXT',
-                'task_is_done' => '?TIME'
+                'task_is_done' => '?TIME',
             ));
 
             require_lang('staff_checklist');

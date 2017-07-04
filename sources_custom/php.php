@@ -629,7 +629,7 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
         'Tempcode',
         'object',
         'resource',
-        'mixed'
+        'mixed',
     );
 
     $_type = ltrim($type, '?~');
@@ -649,7 +649,7 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
             'SHORT_INTEGER',
             'REAL',
             'integer',
-            'float'
+            'float',
         );
         $allowed_string = array(
             'LONG_TEXT',

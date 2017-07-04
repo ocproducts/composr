@@ -117,7 +117,7 @@ First set up an app on Twitter, then use Comcode like:
                 'PHP CuRL Extension',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

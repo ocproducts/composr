@@ -113,7 +113,7 @@ After installing this addon your shout box will essentially be treated as an emb
                 'chat',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

@@ -70,7 +70,7 @@ class Hook_members_quiz
             'q_name ASC' => 'ALPHABETICAL_FORWARD',
             'q_name DESC' => 'ALPHABETICAL_BACKWARD',
             'q_time ASC' => 'OLDEST_RESULTS_FIRST',
-            'q_time DESC' => 'NEWEST_RESULTS_FIRST'
+            'q_time DESC' => 'NEWEST_RESULTS_FIRST',
         );
         if (!array_key_exists($order, $_selectors)) {
             log_hack_attack_and_exit('ORDERBY_HACK');

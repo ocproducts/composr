@@ -129,7 +129,7 @@ class Hook_commandr_fs_multi_moderations extends Resource_fs_base
             'pin_state' => $row['mm_pin_state'],
             'open_state' => $row['mm_open_state'],
             'forum_multi_code' => $row['mm_forum_multi_code'],
-            'title_suffix' => $row['mm_title_suffix']
+            'title_suffix' => $row['mm_title_suffix'],
         );
         $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
         return $properties;

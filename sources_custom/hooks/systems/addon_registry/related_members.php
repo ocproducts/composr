@@ -115,7 +115,7 @@ The particular CPF used is defined by the [tt]RELATED_CPF[/tt] language string (
                 'member_directory_boxes',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

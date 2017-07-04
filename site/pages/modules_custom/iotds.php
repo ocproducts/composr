@@ -78,7 +78,7 @@ class Module_iotds
                 'iotd_views' => 'INTEGER',
                 'submitter' => 'MEMBER',
                 'add_date' => 'TIME',
-                'edit_date' => '?TIME'
+                'edit_date' => '?TIME',
             ));
 
             $GLOBALS['SITE_DB']->create_index('iotd', 'iotd_views', array('iotd_views'));

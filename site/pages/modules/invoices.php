@@ -81,7 +81,7 @@ class Module_invoices
                 'i_currency' => 'ID_TEXT',
                 'i_special' => 'SHORT_TEXT', // depending on i_type_code, would trigger something special such as a key upgrade
                 'i_time' => 'TIME',
-                'i_note' => 'LONG_TEXT'
+                'i_note' => 'LONG_TEXT',
             ));
         }
 

@@ -110,7 +110,7 @@ class Module_admin_import
                 'id_old' => '*ID_TEXT',
                 'id_new' => 'AUTO_LINK',
                 'id_type' => '*ID_TEXT',
-                'id_session' => '*ID_TEXT'
+                'id_session' => '*ID_TEXT',
             ));
         }
     }
@@ -425,7 +425,7 @@ class Module_admin_import
             'imp_db_table_prefix' => ($db_table_prefix === null) ? '' : $db_table_prefix,
             'imp_db_host' => ($db_host === null) ? '' : $db_host,
             'imp_refresh_time' => $refresh_time,
-            'imp_session' => get_session_id()
+            'imp_session' => get_session_id(),
         ));
 
         $lang_array = array();
@@ -495,7 +495,7 @@ class Module_admin_import
                     'CHECKED' => $checked,
                     'NAME' => 'import_' . $import,
                     'TEXT' => $text,
-                    'ADVANCED_URL' => $info['supports_advanced_import'] ? build_url(array('page' => '_SELF', 'type' => 'advanced_hook', 'session' => $session, 'content_type' => $import, 'importer' => $importer), '_SELF') : new Tempcode()
+                    'ADVANCED_URL' => $info['supports_advanced_import'] ? build_url(array('page' => '_SELF', 'type' => 'advanced_hook', 'session' => $session, 'content_type' => $import, 'importer' => $importer), '_SELF') : new Tempcode(),
                 )));
             }
             if ($just == $import) {
@@ -594,7 +594,7 @@ class Module_admin_import
             'imp_db_table_prefix' => ($db_table_prefix === null) ? '' : $db_table_prefix,
             'imp_db_host' => ($db_host === null) ? '' : $db_host,
             'imp_refresh_time' => $refresh_time,
-            'imp_session' => get_session_id()
+            'imp_session' => get_session_id(),
         ));
 
         $info = $object->info();

@@ -1540,7 +1540,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
             $fields->attach($temp);
         }
 
-        $thumbnail_required = false;//(!$no_thumb_needed) && (get_option('allow_audio_videos')=='0') && (find_theme_image('video_thumb',true)==''); YouTube won't require one for example
+        $thumbnail_required = false;//(!$no_thumb_needed) && (get_option('allow_audio_videos') == '0') && (find_theme_image('video_thumb', true) == ''); YouTube won't require one for example
         $fields->attach(form_input_upload_multi_source(do_lang_tempcode('THUMBNAIL'), do_lang_tempcode('_DESCRIPTION_THUMBNAIL', escape_html($thumb_width)), $hidden, 'video__thumb', null, $thumbnail_required, $thumb_url));
 
         if (!$no_thumb_needed) {
@@ -2364,7 +2364,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
                 array($video ? 'menu/cms/galleries/add_one_image' : 'menu/cms/galleries/add_one_video', array('_SELF', array('type' => $video ? 'add' : 'add_other', 'cat' => (($video && !$support_images) || (!$video && !$support_videos) || ($cat === null)) ? null : $cat), '_SELF'), do_lang($video ? 'ADD_IMAGE' : 'ADD_VIDEO')),
                 (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_video' : 'menu/cms/galleries/edit_one_image', array('_SELF', array('type' => $video ? 'edit_other' : 'edit'), '_SELF'), do_lang($video ? 'EDIT_VIDEO' : 'EDIT_IMAGE')) : null), // Edit one
                 (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries') ? array($video ? 'menu/cms/galleries/edit_one_image' : 'menu/cms/galleries/edit_one_video', array('_SELF', array('type' => $video ? 'edit' : 'edit_other'), '_SELF'), do_lang($video ? 'EDIT_IMAGE' : 'EDIT_VIDEO')) : null), // Edit one
-                has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('menu/_generic_admin/import', array('_SELF', array('type' => '_import', 'name' => $cat), '_SELF'), do_lang('GALLERY_IMPORT')) : null
+                has_privilege(get_member(), 'mass_import', 'cms_galleries') ? array('menu/_generic_admin/import', array('_SELF', array('type' => '_import', 'name' => $cat), '_SELF'), do_lang('GALLERY_IMPORT')) : null,
             )),
             array(),
             array(),

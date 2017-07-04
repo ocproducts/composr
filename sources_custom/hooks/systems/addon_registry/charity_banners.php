@@ -132,7 +132,7 @@ You can add more banners through this section, just make sure they are 120px &ti
                 'banners',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

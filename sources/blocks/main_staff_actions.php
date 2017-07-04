@@ -77,7 +77,7 @@ class Block_main_staff_actions
             'param_b' => 'SHORT_TEXT',
             'member_id' => 'MEMBER',
             'ip' => 'IP',
-            'date_and_time' => 'TIME'
+            'date_and_time' => 'TIME',
         ));
 
         $GLOBALS['SITE_DB']->create_index('actionlogs', 'xas', array('member_id'));
@@ -126,10 +126,10 @@ class Block_main_staff_actions
             do_lang_tempcode('DATE_TIME'),
             do_lang_tempcode('ACTION'),
             do_lang_tempcode('PARAMETER_A'),
-            do_lang_tempcode('PARAMETER_B')
+            do_lang_tempcode('PARAMETER_B'),
         ), $sortables, 'sa_sort', $sortable . ' ' . $sort_order);
 
-        $max_rows = $max;//Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
+        $max_rows = $max; // Don't want to encourage pagination (there's a better module they can go to) $GLOBALS['SITE_DB']->query_select_value('actionlogs','COUNT(*)');
         $rows = $GLOBALS['SITE_DB']->query_select('actionlogs', array('the_type', 'param_a', 'param_b', 'member_id', 'ip', 'date_and_time'), array(), 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
         $fields = new Tempcode();
         foreach ($rows as $myrow) {

@@ -407,7 +407,6 @@ class Hook_addon_registry_shopping
     {
         require_css('catalogues');
 
-        //results_entry starts
         $array = placeholder_array();
         $cells = new Tempcode();
         foreach ($array as $k => $v) {
@@ -442,7 +441,6 @@ class Hook_addon_registry_shopping
                 'VALUES' => $cells,
             )));
         }
-        //results_entry ends
 
         $selectors = new Tempcode();
         $sortable = null;
@@ -469,8 +467,8 @@ class Hook_addon_registry_shopping
                 'PAGINATION' => placeholder_pagination(),
                 'MESSAGE' => lorem_phrase(),
                 'WIDTHS' => array(
-                    placeholder_number()
-                )
+                    placeholder_number(),
+                ),
             )), null, '', true)
         );
     }
@@ -533,8 +531,8 @@ class Hook_addon_registry_shopping
             'SORT' => $sort,
             'PAGINATION' => placeholder_pagination(),
             'WIDTHS' => array(
-                placeholder_number()
-            )
+                placeholder_number(),
+            ),
         ));
     }
 
@@ -613,7 +611,7 @@ class Hook_addon_registry_shopping
                 $currency . (string)placeholder_number(),
                 $currency . (string)placeholder_number(),
                 $currency . placeholder_number(),
-                $del_item
+                $del_item,
             );
             $cells = new Tempcode();
             foreach ($values as $value) {

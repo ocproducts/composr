@@ -372,7 +372,7 @@ class Module_booking
                 'BOOKABLE_DATE_TO_MONTH' => date('m', $date_to),
                 'BOOKABLE_DATE_TO_YEAR' => date('Y', $date_to),
             );
-            //Wrong - we're sorting by sort_order  sort_maps_by($categories[$category]['BOOKABLES'], 'BOOKABLE_TITLE');
+            // Wrong - we're sorting by sort_order  sort_maps_by($categories[$category]['BOOKABLES'], 'BOOKABLE_TITLE');
         }
 
         ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);

@@ -536,7 +536,7 @@ class Hook_addon_registry_downloads
             null,
             null,
             1,
-            1
+            1,
         );
         set_mass_import_mode(true);
         $GLOBALS['SITE_DB']->query_insert('review_supplement', array(

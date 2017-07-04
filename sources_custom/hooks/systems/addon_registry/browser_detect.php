@@ -115,7 +115,7 @@ If you would like to show the message as a Composr warning (at the top of the sc
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

@@ -126,7 +126,7 @@ To configure Stealr go to Admin Zone > Setup > Configuration > eCommerce options
                 'ecommerce',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

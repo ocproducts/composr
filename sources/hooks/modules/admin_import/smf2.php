@@ -70,7 +70,7 @@ class Hook_import_smf2
             'notifications',
             'wordfilter',
             'calendar',
-            'news_and_categories'
+            'news_and_categories',
         );
 
         $info['dependencies'] = array(
@@ -85,7 +85,7 @@ class Hook_import_smf2
            'cns_posts' => array('cns_topics', 'cns_members'),
            'cns_post_files' => array('cns_posts', 'cns_personal_topics'),
            'notifications' => array('cns_topics', 'cns_members', 'cns_polls_and_votes'),
-           'cns_personal_topics' => array('cns_members')
+           'cns_personal_topics' => array('cns_members'),
         );
         $_cleanup_url = build_url(array('page' => 'admin_cleanup'), get_module_zone('admin_cleanup'));
         $cleanup_url = $_cleanup_url->evaluate();
@@ -431,7 +431,7 @@ class Hook_import_smf2
                 }
                 $id_new = cns_make_member($row['member_name'], $password, $row['email_address'], null, $bday_day, $bday_month, $bday_year, $custom_fields, ($row['time_offset'] == 0) ? '' : strval($row['time_offset']), $primary_group, $validated, $row['date_registered'], $row['last_login'], '', $avatar_url, $signature, 0, $preview_posts, $reveal_age, $title, $photo_url, $photo_thumb_url, $views_signatures, $track_posts, $language, $allow_emails, 1, '', '', false, $type, $salt, 1);
 
-                //cpf stuff
+                // CPF stuff
                 $cpf_rows = $db->query_select('custom_fields', array('id_field', 'col_name'));
                 foreach ($cpf_rows as $cpf_row) {
                     $cpf_id = import_id_remap_get('cpf', strval($cpf_row['id_field']));
@@ -667,12 +667,12 @@ class Hook_import_smf2
                     }
                 } else {
                     if (preg_match('#http\:#', $row['avatar']) != 0) {
-                        //Remote file is set as avatar
+                        // Remote file is set as avatar
                         $avatar_url = $row['avatar'];
                     } elseif (strlen($row['avatar']) > 0) {
                         // Gallery
                         $filename_with_subdir = $row['avatar'];
-                        $filename = preg_replace('#.*\/#', '', $filename_with_subdir); //we need just a filename
+                        $filename = preg_replace('#.*\/#', '', $filename_with_subdir); // We need just a filename
 
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($avatar_gallery_path . '/' . $filename_with_subdir, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . substr($filename, strrpos($filename, '/'));
@@ -717,8 +717,8 @@ class Hook_import_smf2
         $rows = $db->query_select('ban_groups u LEFT JOIN ' . $table_prefix . 'ban_items b ON u.id_ban_group=b.id_ban_group', array('*'));
 
         foreach ($rows as $row) {
-            $ban_time = $row['ban_time']; //when is banned user
-            $ban_till = $row['expire_time']; //member is banned until
+            $ban_time = $row['ban_time']; // When is banned user
+            $ban_till = $row['expire_time']; // Member is banned until
 
             if (($ban_till > time()) || empty($ban_till)) {
                 $uid = $GLOBALS['CNS_DRIVER']->get_member_from_username($row['name']);
@@ -832,9 +832,9 @@ class Hook_import_smf2
                 foreach ($permissions_on_groups as $gid) {
                     // Let's deal with Guest group
                     if ((integer)$gid === -1) {
-                        //Yup its Guests so let's get value
+                        // Yup its Guests so let's get value
                         $v = $this->get_role_value(-1, $profile_id, $db, $table_prefix);
-                        //Now set Forum view access
+                        // Now set Forum view access
                         $this->set_forum_view_accesss(1, $id_new);
                         // Now Set the static permissions array
                         $this->static_perm_arr(1, $profile_id, $v);
@@ -848,9 +848,9 @@ class Hook_import_smf2
                     }
                     // Check for SMF Global Moderators Group and map to cms SuperModerators
                     if ((integer)$gid === 2) {
-                        //Yup its Moderators so let's get value
+                        // Yup its Moderators so let's get value
                         $v = $this->get_role_value(2, $profile_id, $db, $table_prefix);
-                        //Now set Forum view access
+                        // Now set Forum view access
                         if (!$done_all_groups) {
                             $this->set_forum_view_accesss(3, $id_new);
                         }
@@ -861,9 +861,9 @@ class Hook_import_smf2
                     // Ok now it's regular groups so lets deal with them
                     // First let's get value
                     $v = $this->get_role_value((integer)$gid, $profile_id, $db, $table_prefix);
-                    //get the mapped group id
+                    // Get the mapped group id
                     $new_gid = import_id_remap_get('group', strval($gid), true);
-                    //Now set Forum view access
+                    // Now set Forum view access
                     if (!$done_all_groups && $new_gid !== null) {
                         $this->set_forum_view_accesss((integer)$new_gid, $id_new);
                     }
@@ -919,7 +919,7 @@ class Hook_import_smf2
                 $gid = (integer)$row['id'];
                 // Set them to view
                 $this->set_forum_view_accesss($gid, $fid);
-                //fill the static profile array map
+                // Fill the static profile array map
                 $this->static_perm_arr($gid, $pid, $v);
             }
         }
@@ -1120,9 +1120,9 @@ class Hook_import_smf2
         require($file_base . '/Settings.php');
         $homeurl = $boardurl;
 
-        $forum_dir = preg_replace('#\\\\#', '/', $boarddir); //full path to the forum folder
+        $forum_dir = preg_replace('#\\\\#', '/', $boarddir); // Full path to the forum folder
 
-        $attachments_dir = $forum_dir . '/attachments/'; //forum attachments directory
+        $attachments_dir = $forum_dir . '/attachments/'; // Forum attachments directory
         $filename_fixed = $filename . $ext;
         $file_path = $attachments_dir . $filename;
         $data = ($data == '') ? @file_get_contents($file_path) : $data;
@@ -1476,11 +1476,11 @@ class Hook_import_smf2
                     $st[$gid][$pid] = $v;
                 }
             } else {
-                //No the Forum ID wasn't set yet so we can set it with the Value
+                // No the Forum ID wasn't set yet so we can set it with the Value
                 $st[$gid][$pid] = $v;
             }
         } else {
-            //No the Group ID wasn't set yet so we can set it with the Forum ID and Value
+            // No the Group ID wasn't set yet so we can set it with the Forum ID and Value
             $st[$gid] = array($pid => $v);
         }
         return $st;
@@ -1502,7 +1502,7 @@ class Hook_import_smf2
             $GLOBALS['FORUM_DB']->query_insert('group_category_access', array(
                 'module_the_name' => 'forums',
                 'category_name' => strval($fid),
-                'group_id' => $gid
+                'group_id' => $gid,
             ));
             // Now we put the remap in so we know it is imported.
             import_id_remap_put('forum_view', $check_import_id, 1);
@@ -1517,16 +1517,16 @@ class Hook_import_smf2
      */
     public function sort_set_forum_perms_array($arr, $forum_id)
     {
-        //Let's start the cycle
+        // Let's start the cycle
         foreach ($arr as $key => $val) {
             if ((integer)$key === 0) {
                 continue; // That's the one we set for return so skip!
             }
-            //Set default value of 0 lowest so we can sort to highest
+            // Set default value of 0 lowest so we can sort to highest
             $v = 0;
-            //So it should be!
+            // So it should be!
             if (is_array($val)) {
-                //and it is so let's loop it!
+                // And it is so let's loop it!
                 foreach ($val as $key2 => $val2) {
                     // ok check what's highest and set if needed
                     if ($val2 > $v) {
@@ -1538,7 +1538,7 @@ class Hook_import_smf2
                     $v = $val;
                 }
             }
-            //Now set the permissions!
+            // Now set the permissions!
             $this->set_forums_perms($key, $forum_id, $v);
         }
     }
@@ -1557,7 +1557,7 @@ class Hook_import_smf2
         // Now Check we didn't import this already?
         if (!import_check_if_imported('forum_perms', $check_import_id)) {
             switch ($role) {
-                //read only
+                // Read only
                 case 0:
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_lowrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_midrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
@@ -1572,7 +1572,7 @@ class Hook_import_smf2
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'delete_lowrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'delete_midrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
                     break;
-                //post
+                // Post
                 case 1:
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_lowrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 1));
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_midrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 1));
@@ -1587,7 +1587,7 @@ class Hook_import_smf2
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'delete_lowrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'delete_midrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
                     break;
-                //unvetted
+                // Unvetted
                 case 2:
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_lowrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 1));
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_midrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 1));
@@ -1602,7 +1602,7 @@ class Hook_import_smf2
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'delete_lowrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'delete_midrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 0));
                     break;
-                //moderate
+                // Moderate
                 case 3:
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_lowrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 1));
                     $GLOBALS['FORUM_DB']->query_insert('group_privileges', array('privilege' => 'submit_midrange_content', 'group_id' => $group_id, 'the_page' => '', 'module_the_name' => 'forums', 'category_name' => strval($forum_id), 'the_value' => 1));
@@ -1648,7 +1648,7 @@ class Hook_import_smf2
             $recurrence = 'none';
             $recurrences = null;
 
-            $days = intval(floor((strtotime($row['end_date']) - strtotime($row['start_date'])) / (60 * 60 * 24))); //Max 7 days in SMF
+            $days = intval(floor((strtotime($row['end_date']) - strtotime($row['start_date'])) / (60 * 60 * 24))); // Max 7 days in SMF
             if ($days == 0) {
                 $recurrence = 'none';
             } else {

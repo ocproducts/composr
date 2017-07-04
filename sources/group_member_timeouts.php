@@ -72,7 +72,7 @@ function set_member_group_timeout($member_id, $group_id, $timestamp, $prefer_for
                 $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
                     'member_id' => $member_id,
                     'usergroup_id' => $group_id,
-                    'join_time' => time()
+                    'join_time' => time(),
                 ));
             } else {
                 cns_add_member_to_group($member_id, $group_id);

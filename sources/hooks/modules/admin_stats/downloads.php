@@ -53,7 +53,7 @@ class Hook_admin_stats_downloads
     {
         require_lang('downloads');
 
-        //This will show a plain bar chart with all the downloads listed
+        // This will show a plain bar chart with all the downloads listed
         $title = get_screen_title('SECTION_DOWNLOADS');
 
         // Handle time range

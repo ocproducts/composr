@@ -251,7 +251,7 @@ function _get_timezone_list()
         'Pacific/Tongatapu' => '(UTC+13:00) Nuku Alofa, Tongatapu',
         'Pacific/Apia' => '(UTC+13:00) Apia',
         'Pacific/Fakaofo' => '(UTC+13:00) Fakaofo, Johnston, Rarotonga',
-        'Pacific/Kiritimati' => '(UTC+14:00) Kiritimati'
+        'Pacific/Kiritimati' => '(UTC+14:00) Kiritimati',
     );
 
     // Make shown times dynamic to consider DST etc

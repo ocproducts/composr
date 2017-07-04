@@ -206,7 +206,7 @@ class Module_classifieds
                     'T_ITEM_TITLE' => $item_title,
                     'T_PENDING_REASON' => $t['t_pending_reason'],
                     'T_MEMO' => $t['t_memo'],
-                    'T_PAYMENT_GATEWAY' => $t['t_payment_gateway']
+                    'T_PAYMENT_GATEWAY' => $t['t_payment_gateway'],
                 );
             }
             $url_map = array('page' => 'catalogues', 'type' => 'entry', 'id' => $row['id']);

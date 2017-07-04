@@ -361,7 +361,7 @@ class Module_admin_themewizard
                 array('menu/_generic_admin/edit_this', array('admin_themes', array('type' => 'edit_theme', 'theme' => $themename), get_module_zone('admin_themes')), do_lang_tempcode('EDIT_THEME')),
                 array('menu/adminzone/style/themes/templates', array('admin_themes', array('type' => 'edit_templates', 'theme' => $themename), get_module_zone('admin_themes')), do_lang('EDIT_TEMPLATES')),
                 array('menu/adminzone/style/themes/theme_images', array('admin_themes', array('type' => 'manage_images', 'theme' => $themename), get_module_zone('admin_themes')), do_lang('EDIT_THEME_IMAGES')),
-                array('menu/adminzone/style/themes/themes', array('admin_themes', array('type' => 'browse'), get_module_zone('admin_themes')), do_lang('MANAGE_THEMES'))
+                array('menu/adminzone/style/themes/themes', array('admin_themes', array('type' => 'browse'), get_module_zone('admin_themes')), do_lang('MANAGE_THEMES')),
             ),
             do_lang('THEME')
         );

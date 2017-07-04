@@ -70,7 +70,7 @@ function _record_templates_used()
                 if (!isset($has_currently_flipped[$rel_b])) {
                     $insert_map = array(
                         'rel_a' => $rel_a,
-                        'rel_b' => $rel_b
+                        'rel_b' => $rel_b,
                     );
                     $GLOBALS['SITE_DB']->query_insert('theme_template_relations', $insert_map, false, true);
                 }

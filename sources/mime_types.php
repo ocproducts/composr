@@ -92,7 +92,7 @@ function get_mime_types($as_admin)
         'ico' => 'image/vnd.microsoft.icon',
 
         // Movies
-        'avi' => 'video/mpeg',//'video/x-ms-asf' works with the plugin on Windows Firefox but nothing else,//'video/x-msvideo' is correct but does not get recognised by Microsoft Firefox WMV plugin and confuses RealMedia Player if it sees data transferred under that mime type,
+        'avi' => 'video/mpeg', //'video/x-ms-asf' works with the plugin on Windows Firefox but nothing else, //'video/x-msvideo' is correct but does not get recognised by Microsoft Firefox WMV plugin and confuses RealMedia Player if it sees data transferred under that mime type,
         'mp2' => 'video/mpeg',
         'mpv2' => 'video/mpeg',
         'm2v' => 'video/mpeg',
@@ -112,7 +112,7 @@ function get_mime_types($as_admin)
         'webm' => 'video/webm',
 
         // Proprietary movie formats
-        'mov' => 'video/mp4',//in the past may have been 'video/quicktime',
+        'mov' => 'video/mp4', // in the past may have been 'video/quicktime',
         'qt' => 'video/quicktime',
         'wmv' => 'video/x-ms-wmv',
         'ram' => 'audio/x-pn-realaudio',

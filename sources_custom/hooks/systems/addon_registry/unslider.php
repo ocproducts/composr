@@ -122,7 +122,7 @@ If the [tt]delay[/tt] is set to blank or 0, it will disable automatic (timed) tr
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

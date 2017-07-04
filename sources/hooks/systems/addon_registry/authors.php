@@ -185,23 +185,23 @@ class Hook_addon_registry_authors
         }
 
         $staff_details = do_lorem_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array(
-            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('DEFINE_AUTHOR'), false, true)
+            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('DEFINE_AUTHOR'), false, true),
         ));
 
         $point_details = do_lorem_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array(
-            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('AUTHOR_POINTS'), false, true)
+            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('AUTHOR_POINTS'), false, true),
         ));
 
         $url_details = do_lorem_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array(
-            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('AUTHOR_HOMEPAGE'), false, true)
+            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('AUTHOR_HOMEPAGE'), false, true),
         ));
 
         $search_details = do_lorem_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array(
-            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('SEARCH'), false, true)
+            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('SEARCH'), false, true),
         ));
 
         $forum_details = do_lorem_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array(
-            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('AUTHOR_PROFILE'), false, true)
+            'ACTION' => hyperlink(placeholder_url(), do_lang_tempcode('AUTHOR_PROFILE'), false, true),
         ));
 
         $skills = new Tempcode();

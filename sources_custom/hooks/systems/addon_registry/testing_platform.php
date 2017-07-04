@@ -113,7 +113,7 @@ class Hook_addon_registry_testing_platform
                 'meta_toolkit',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

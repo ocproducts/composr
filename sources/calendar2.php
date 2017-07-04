@@ -114,7 +114,7 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
         'allow_rating' => $allow_rating,
         'allow_comments' => $allow_comments,
         'allow_trackbacks' => $allow_trackbacks,
-        'notes' => $notes
+        'notes' => $notes,
     );
     $map += insert_lang_comcode('e_title', $title, 2);
     if (multi_lang_content()) {
@@ -300,7 +300,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
         'allow_comments' => $allow_comments,
         'allow_trackbacks' => $allow_trackbacks,
         'e_member_calendar' => $member_calendar,
-        'notes' => $notes
+        'notes' => $notes,
     );
     $update_map += $scheduling_map;
     $update_map += lang_remap_comcode('e_title', $myrow['e_title'], $title);

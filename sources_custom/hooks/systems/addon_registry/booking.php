@@ -114,7 +114,7 @@ You may wish to deny access to the usergroup and member directories when using t
                 'ecommerce',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

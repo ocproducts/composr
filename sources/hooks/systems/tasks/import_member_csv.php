@@ -397,7 +397,7 @@ class Hook_task_import_member_csv
                         $GLOBALS['FORUM_DB']->query_insert('f_group_members', array(
                             'gm_group_id' => $g_id,
                             'gm_member_id' => $linked_id,
-                            'gm_validated' => 1
+                            'gm_validated' => 1,
                         ), false, true);
                     }
                 }

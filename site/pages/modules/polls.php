@@ -101,7 +101,7 @@ class Module_polls
                 'submitter' => 'MEMBER',
                 'add_time' => 'INTEGER',
                 'poll_views' => 'INTEGER',
-                'edit_date' => '?TIME'
+                'edit_date' => '?TIME',
             ));
 
             $GLOBALS['SITE_DB']->create_index('poll', 'poll_views', array('poll_views'));

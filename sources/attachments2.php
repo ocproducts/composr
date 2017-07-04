@@ -170,7 +170,7 @@ function do_comcode_attachments($comcode, $type, $id, $previewing_only = false, 
 
     return array(
         'comcode' => $comcode,
-        'tempcode' => $tempcode
+        'tempcode' => $tempcode,
     );
 }
 
@@ -232,7 +232,7 @@ function _handle_data_url_attachments(&$comcode, $type, $id, $db)
                             'a_num_downloads' => 0,
                             'a_last_downloaded_time' => time(),
                             'a_description' => '',
-                            'a_add_time' => time()
+                            'a_add_time' => time(),
                         ), true);
                         $GLOBALS['SITE_DB']->query_insert('attachment_refs', array('r_referer_type' => $type, 'r_referer_id' => $id, 'a_id' => $attachment_id));
 

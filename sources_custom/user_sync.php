@@ -530,7 +530,7 @@ function user_sync__outbound($member_id)
         foreach ($username_fields as $i => $uf) {
             $insert_map[$uf] = array(
                 array_key_exists($i, $username_parts) ? $username_parts[$i] : '',
-                $username_fields_types[$i]
+                $username_fields_types[$i],
             );
         }
 
@@ -560,7 +560,7 @@ function user_sync__outbound($member_id)
             // Ready for insertion
             $insert_map[$remap_scheme[1]] = array(
                 $data,
-                array_key_exists(4, $remap_scheme) ? $remap_scheme[4] : (is_integer($data) ? 'INTEGER' : 'VARCHAR')
+                array_key_exists(4, $remap_scheme) ? $remap_scheme[4] : (is_integer($data) ? 'INTEGER' : 'VARCHAR'),
             );
         }
 

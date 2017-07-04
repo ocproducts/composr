@@ -88,7 +88,7 @@ function init__global2()
     $JAVASCRIPTS_DEFAULT = array(
         'global' => true,
         'modalwindow' => true,
-        'custom_globals' => true
+        'custom_globals' => true,
     );
     $RUNNING_SCRIPT_CACHE = array();
     $WHAT_IS_RUNNING_CACHE = current_script();

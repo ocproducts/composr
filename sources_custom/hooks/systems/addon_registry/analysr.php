@@ -115,7 +115,7 @@ The new stats include: Google PageRank, Alexa rank, Back links and Speed results
                 'stats_block',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

@@ -1187,7 +1187,7 @@ class Module_cms_calendar extends Standard_crud_module
         $fields = new Tempcode();
         $type_list = create_selection_list_event_types();
 
-        //Add all cal option
+        // Add all cal option
         $type_list->attach(form_input_list_entry('0', true, 'All types'));
 
         $fields->attach(form_input_list(do_lang_tempcode('TYPE'), do_lang_tempcode('DESCRIPTION_EVENT_TYPE'), 'type_filter', $type_list));

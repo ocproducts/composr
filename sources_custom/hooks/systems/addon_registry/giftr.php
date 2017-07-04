@@ -125,7 +125,7 @@ When creating new gifts please only use images which are free to use, we suggest
                 'ecommerce',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

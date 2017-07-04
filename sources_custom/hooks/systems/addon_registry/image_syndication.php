@@ -114,7 +114,7 @@ class Hook_addon_registry_image_syndication
                 'PHP5.2',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

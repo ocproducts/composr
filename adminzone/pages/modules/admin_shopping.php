@@ -293,7 +293,7 @@ class Module_admin_shopping
             do_lang_tempcode('ORDERED_BY'),
             do_lang_tempcode('TRANSACTION'),
             do_lang_tempcode('STATUS'),
-            do_lang_tempcode('ACTIONS')
+            do_lang_tempcode('ACTIONS'),
         ), $sortables, 'sort', $sortable . ' ' . $sort_order);
 
         push_db_scope_check(false);
@@ -335,7 +335,7 @@ class Module_admin_shopping
                 $member_link,
                 $transaction_linker,
                 $order_status,
-                $actions
+                $actions,
             ), false));
         }
         if ($order_entries->is_empty()) {

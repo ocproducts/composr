@@ -1455,19 +1455,19 @@ class Hook_addon_registry_core_form_interfaces
                 'option1',
                 'opt1',
                 true,
-                ''
+                '',
             ),
             array(
                 'option2',
                 'opt2',
                 true,
-                ''
+                '',
             ),
             array(
                 'option3',
                 'opt3',
                 true,
-                ''
+                '',
             )
         );
         if (count($options[0]) != 3) {
@@ -1475,8 +1475,8 @@ class Hook_addon_registry_core_form_interfaces
                 array(
                     $options,
                     null,
-                    new Tempcode()
-                )
+                    new Tempcode(),
+                ),
             );
         }
 
@@ -1630,8 +1630,8 @@ class Hook_addon_registry_core_form_interfaces
                     array(
                         'WORD' => 'caat',
                         'CORRECTIONS' => 'cat',
-                    )
-                )
+                    ),
+                ),
             )), null, '', true)
         );
     }

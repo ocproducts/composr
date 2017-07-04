@@ -135,7 +135,7 @@ Users will find add links when browsing the catalogue. Their entries will be add
                 'ecommerce',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

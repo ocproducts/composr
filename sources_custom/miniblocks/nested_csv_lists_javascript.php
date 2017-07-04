@@ -86,7 +86,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
 
         var changesMadeAlready = true;
 
-        if (cpfField.csv_parent_heading !== null)  {// We need to look at parent to filter possibilities, if we have one
+        if (cpfField.csv_parent_heading !== null)  { // We need to look at parent to filter possibilities, if we have one
             var currentValue = $cms.dom.val(element);
 
             element.innerHTML = ''; // Wipe list contents
@@ -94,17 +94,17 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
 
             var parentCpfFieldElement = findCpfFieldElement(element.form, cpfFields[cpfField.csv_parent_heading]);
             var currentParentValue = $cms.dom.val(parentCpfFieldElement);
-            if (currentParentValue.length == 0) {// Parent unset, so this is
+            if (currentParentValue.length == 0) { // Parent unset, so this is
 
                 option = document.createElement('option');
                 element.add(option, null);
                 $cms.dom.html(option, <?= json_encode(strval(do_lang('SELECT_OTHER_FIRST', 'xxx'))) ?> +''.replace(/xxx/g, cpfFields[cpfField.csv_parent_heading].label));
                 option.value = '';
-            } else {// Parent is set, so we need to filter possibilities
+            } else { // Parent is set, so we need to filter possibilities
                 // Work out available (filtered) possibilities
                 var csvData = window.nested_csv_structure.csv_files[cpfField.csv_parent_filename].data;
                 var possibilities = [];
-                for (var i = 0; i < csvData.length; i++) {// This is going through parent table. Note that the parent table must contain both the child and parent IDs, as essentially it is a linker table. Field names are defined as unique across all CSV files, so you don't need to use the same actual CSV file as the parent field was drawn from.
+                for (var i = 0; i < csvData.length; i++) { // This is going through parent table. Note that the parent table must contain both the child and parent IDs, as essentially it is a linker table. Field names are defined as unique across all CSV files, so you don't need to use the same actual CSV file as the parent field was drawn from.
 
                     for (var j = 0; j < currentParentValue.length; j++) {
 
@@ -173,7 +173,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
             changesMadeAlready = false;
         }
 
-        if (initialRun) {// This may effectively be called on non-initial runs, but it would be due to the list filter changes causing a selection change that propagates
+        if (initialRun) { // This may effectively be called on non-initial runs, but it would be due to the list filter changes causing a selection change that propagates
             var allRefreshFunctions = [];
 
             $cms.log('Looking for children of ' + cpfField.csv_heading + '...');

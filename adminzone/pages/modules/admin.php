@@ -1156,7 +1156,7 @@ class Module_admin
             'CONTENT' => $found_some ? $content : array(),
             'PRE' => $pre,
             'POST' => $post,
-            'RAW_SEARCH_STRING' => $raw_search_string
+            'RAW_SEARCH_STRING' => $raw_search_string,
         ));
     }
 }

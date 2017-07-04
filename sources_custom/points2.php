@@ -55,11 +55,11 @@ if (!function_exists('system_gift_transfer')) {
             $POINT_INFO_CACHE[$member_id]['points_gained_given'] += $amount;
         }
 
-        //start add to mentor points if needed
+        // Start add to mentor points if needed
         $mentor_id = $GLOBALS['SITE_DB']->query_select_value_if_there('members_mentors', 'mentor_id', array('member_id' => $member_id), '', true);
 
         if (isset($mentor_id) && $mentor_id !== null && (intval($mentor_id) != 0)) {
-            //give points to mentor too
+            // Give points to mentor too
             $map = array(
                 'date_and_time' => time(),
                 'amount' => $amount,

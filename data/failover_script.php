@@ -91,7 +91,7 @@ function handle_failover_auto_switching($iteration = 0)
             'http' => array(
                 'user_agent' => 'ocportal_failover_test',
                 'timeout' => floatval(isset($SITE_INFO['failover_loadtime_threshold']) ? $SITE_INFO['failover_loadtime_threshold'] : 5) + 1.0,
-            )
+            ),
         ));
         $urls = explode(';', $SITE_INFO['failover_check_urls']);
         foreach ($urls as $url) {

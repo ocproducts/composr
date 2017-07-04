@@ -79,7 +79,7 @@ function member_get_csv_headings()
         'ID' => 'id',
         'Username' => 'm_username',
         'E-mail address' => 'm_email_address',
-        'Password' => 'm_pass_hash_salted/m_pass_salt/m_password_compat_scheme'
+        'Password' => 'm_pass_hash_salted/m_pass_salt/m_password_compat_scheme',
     );
     if (addon_installed('cns_member_avatars')) {
         $headings += array(
@@ -1092,7 +1092,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
             $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
                 'member_id' => $member_id,
                 'usergroup_id' => $primary_group,
-                'join_time' => time()
+                'join_time' => time(),
             ));
 
             log_it('MEMBER_PRIMARY_GROUP_CHANGED', strval($member_id), strval($primary_group));

@@ -92,7 +92,7 @@ class Block_main_bottom_bar
                 if (!array_key_exists('m_primary_group', $bits)) {
                     $bits['m_primary_group'] = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
                 }
-                $pgid = $bits['m_primary_group'];//$GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id,'m_primary_group');
+                $pgid = $bits['m_primary_group'];//$GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_primary_group');
                 if ($pgid === null) {
                     continue; // Deleted member
                 }

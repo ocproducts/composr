@@ -437,7 +437,7 @@ function init__webstandards()
         'area' => array(),
         'link' => array('link'),
         'basefont' => array(),
-        'col' => array()
+        'col' => array(),
     );
     $ONLY_CHILDREN += array(
         'details' => array('summary'),

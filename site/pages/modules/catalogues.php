@@ -101,7 +101,7 @@ class Module_catalogues
                 'c_submit_points' => 'INTEGER',
                 'c_ecommerce' => 'BINARY',
                 'c_default_review_freq' => '?INTEGER',
-                'c_send_view_reports' => 'ID_TEXT' // never,daily,weekly,monthly,quarterly
+                'c_send_view_reports' => 'ID_TEXT', // never,daily,weekly,monthly,quarterly
             ));
 
             $GLOBALS['SITE_DB']->create_table('catalogue_categories', array(
@@ -251,7 +251,7 @@ class Module_catalogues
                 array('NAME', 'DESCRIPTION_NAME', 'short_trans', 1, 1, ''),
                 array('MAINTAINER', 'DESCRIPTION_MAINTAINER', 'member', 0, 1, '!'),
                 array('DESCRIPTION', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 1, ''),
-                array('PROJECT_PROGRESS', 'DESCRIPTION_PROJECT_PROGRESS', 'integer', 0, 1, '0')
+                array('PROJECT_PROGRESS', 'DESCRIPTION_PROJECT_PROGRESS', 'integer', 0, 1, '0'),
             );
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field(
@@ -277,7 +277,7 @@ class Module_catalogues
                 // Name, Description, Type, Defines order, Required, Put in category
                 array('TITLE', 'DESCRIPTION_TITLE', 'short_trans', 1, 1, 1),
                 array('URL', 'DESCRIPTION_URL', 'url', 0, 1, 0),
-                array('DESCRIPTION', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 0, 1)
+                array('DESCRIPTION', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 0, 1),
             );
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field(
@@ -303,7 +303,7 @@ class Module_catalogues
             $fields = array(
                 array('QUESTION', 'DESCRIPTON_QUESTION', 'short_trans', 0, 1, 1, ''),
                 array('ANSWER', '_DESCRIPTION_ANSWER', 'long_trans', 0, 1, 1, ''),
-                array('ORDER', 'DESCRIPTION_ORDER', 'integer', 1, 0, 0, 'AUTO_INCREMENT')
+                array('ORDER', 'DESCRIPTION_ORDER', 'integer', 1, 0, 0, 'AUTO_INCREMENT'),
             );
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field(
@@ -340,7 +340,7 @@ class Module_catalogues
                 array('CONTACT_HOMEPAGE', '', 'short_text', 0, 0),
                 array('CONTACT_IM', '', 'short_text', 0, 0),
                 array('NOTES', '', 'long_text', 0, 0),
-                array('CONTACT_PHOTO', '', 'picture', 0, 0)
+                array('CONTACT_PHOTO', '', 'picture', 0, 0),
             );
             foreach ($fields as $i => $field) {
                 actual_add_catalogue_field(

@@ -56,7 +56,7 @@ class Hook_cron_cns_birthdays
                     array(
                         $member_url->evaluate(),
                         $birthday_url->evaluate(),
-                        comcode_escape($displayname)
+                        comcode_escape($displayname),
                     )
                 );
 
@@ -67,7 +67,7 @@ class Hook_cron_cns_birthdays
                     array(
                         $member_url->evaluate(),
                         $birthday_url->evaluate(),
-                        comcode_escape($displayname)
+                        comcode_escape($displayname),
                     )
                 );
 

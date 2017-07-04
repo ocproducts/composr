@@ -199,7 +199,7 @@ class Module_admin_chat extends Standard_crud_module
         $username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner']);
         if ($username === null) {
             $username = '';
-        }//do_lang('UNKNOWN');
+        }
 
         list($fields, $hidden) = get_chatroom_fields(intval($id), false, $row['room_name'], get_translated_text($row['c_welcome']), $username, $allow2, $allow2_groups, $disallow2, $disallow2_groups);
 

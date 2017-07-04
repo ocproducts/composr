@@ -112,7 +112,7 @@ This is a scheduler script that regularly censors anything looking like a passwo
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

@@ -1881,7 +1881,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
             null,
             $details['tax_code'],
             null,
-            false
+            false,
         );
     }
 
@@ -1896,7 +1896,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
                 0.00,
                 0.00,
                 $details['price_points'],
-                false
+                false,
             );
         }
     }
@@ -1909,7 +1909,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
                 $discounted_price,
                 tax_multiplier($details['tax_code'], ($discounted_price / $details['price'])),
                 $details['discount_points__num_points'],
-                true
+                true,
             );
         }
     }
@@ -1918,7 +1918,7 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
         null,
         $details['tax_code'],
         null,
-        false
+        false,
     );
 }
 

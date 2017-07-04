@@ -112,7 +112,7 @@ This is coded as a "mini block", and serves as a good example of how you can use
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

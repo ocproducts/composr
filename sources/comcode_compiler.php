@@ -514,7 +514,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
             'S' => '5',
             'U' => '0',
             'V' => '\/',
-            'Z' => '2'
+            'Z' => '2',
         );
     }
 

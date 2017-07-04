@@ -129,7 +129,7 @@ class Module_admin_customers
             'num_credits' => 'INTEGER',
             'date_and_time' => 'TIME',
             'purchase_validated' => 'BINARY',
-            'is_manual' => 'BINARY'
+            'is_manual' => 'BINARY',
         ));
 
         $GLOBALS['SITE_DB']->create_table('credit_charge_log', array(

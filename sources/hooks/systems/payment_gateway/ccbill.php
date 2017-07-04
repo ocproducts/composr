@@ -35,7 +35,7 @@ class Hook_payment_gateway_ccbill
         'd' => 1,
         'w' => 7,
         'm' => 30,
-        'y' => 365
+        'y' => 365,
     );
 
     private $currency_numeric_to_alphabetic_code = array(

@@ -104,7 +104,7 @@ function str_to_num($str, $check, $magic)
     $length = strlen($str);
     for ($i = 0; $i < $length; $i++) {
         $check *= $magic;
-        //If the float is beyond the boundaries of integer (usually +/- 2.15e+9=2^31),
+        // If the float is beyond the boundaries of integer (usually +/- 2.15e+9=2^31),
         //  the result of converting to integer is undefined
         //  refer to http://www.php.net/manual/en/language.types.integer.php
         if ($check >= $int_32_unit) {

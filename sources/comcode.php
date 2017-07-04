@@ -123,7 +123,7 @@ function init_potential_js_naughty_array()
         'd' => true, /*'a' => true, 't' => true, 'a' => true,*/
         'j' => true, 'a' => true, 'v' => true, 's' => true, 'c' => true, 'r' => true, 'i' => true, 'p' => true, 't' => true,
         'J' => true, 'A' => true, 'V' => true, 'S' => true, 'C' => true, 'R' => true, 'I' => true, 'P' => true, 'T' => true,
-        ' ' => true, "\t" => true, "\n" => true, "\r" => true, ':' => true, '/' => true, '*' => true, '\\' => true
+        ' ' => true, "\t" => true, "\n" => true, "\r" => true, ':' => true, '/' => true, '*' => true, '\\' => true,
     );
     $POTENTIAL_JS_NAUGHTY_ARRAY[chr(0)] = true;
 }

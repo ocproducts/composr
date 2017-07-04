@@ -113,7 +113,7 @@ class Hook_addon_registry_purrrr
                 'iotds',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

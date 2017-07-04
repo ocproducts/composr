@@ -72,7 +72,7 @@ class Module_filedump
                 'name' => 'ID_TEXT',
                 'path' => 'URLPATH',
                 'description' => 'SHORT_TRANS',
-                'the_member' => 'MEMBER'
+                'the_member' => 'MEMBER',
             ));
 
             add_privilege('FILEDUMP', 'upload_anything_filedump', false);
@@ -525,7 +525,7 @@ class Module_filedump
                     $owner,
                     ($file['date'] === null) ? do_lang_tempcode('NA') : make_string_tempcode(escape_html($file['date'])),
                     ($embed_url === null) ? ($file['is_directory'] ? do_lang_tempcode('IS_DIRECTORY') : new Tempcode()) : hyperlink($embed_url, do_lang_tempcode('_FILEDUMP_EMBED'), false, false),
-                    $choose_action
+                    $choose_action,
                 ), false));
             }
 

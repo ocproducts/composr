@@ -115,7 +115,7 @@ The normal Composr block construction assistant will help you set up the block o
                 'recommend',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

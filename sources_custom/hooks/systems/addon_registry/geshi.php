@@ -116,7 +116,7 @@ Based off of GeSHI 1.0 (https://github.com/GeSHi/geshi-1.0). GeSHI 1.1 is still 
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

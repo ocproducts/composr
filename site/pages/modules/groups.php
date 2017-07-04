@@ -467,7 +467,7 @@ class Module_groups
                     do_lang_tempcode('NAME'),
                     do_lang_tempcode('IMAGE'),
                     do_lang_tempcode('COUNT_MEMBERS'),
-                    do_lang_tempcode('PROMOTION_THRESHOLD')
+                    do_lang_tempcode('PROMOTION_THRESHOLD'),
                 );
             } else {
                 $col_widths = array('314', '157', '77');
@@ -485,7 +485,7 @@ class Module_groups
                 $titles = array(
                     do_lang_tempcode('NAME'),
                     do_lang_tempcode('COUNT_MEMBERS'),
-                    do_lang_tempcode('PROMOTION_THRESHOLD')
+                    do_lang_tempcode('PROMOTION_THRESHOLD'),
                 );
             } else {
                 $col_widths = array('471', '77');

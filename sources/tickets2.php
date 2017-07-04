@@ -367,7 +367,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email = 
                         $post,
                         comcode_escape($ticket_type_name),
                         strval($new_poster),
-                        comcode_escape($staff_username)
+                        comcode_escape($staff_username),
                     ),
                     $uid_lang
                 );
@@ -404,7 +404,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email = 
                 $post,
                 comcode_escape($ticket_type_name),
                 strval($new_poster),
-                comcode_escape($uid_username)
+                comcode_escape($uid_username),
             ),
             get_site_default_lang()
         );
@@ -458,7 +458,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email = 
             array(
                 $post,
                 comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($new_poster_real, true)),
-                comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($new_poster_real))
+                comcode_escape($GLOBALS['FORUM_DRIVER']->get_username($new_poster_real)),
             ),
             get_site_default_lang()
         );

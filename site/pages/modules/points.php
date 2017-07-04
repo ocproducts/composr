@@ -78,7 +78,7 @@ class Module_points
                 'member_id' => 'MEMBER',
                 'amount' => 'INTEGER',
                 'reason' => 'SHORT_TRANS__COMCODE',
-                'date_and_time' => 'TIME'
+                'date_and_time' => 'TIME',
             ));
 
             $GLOBALS['SITE_DB']->create_table('gifts', array(
@@ -88,7 +88,7 @@ class Module_points
                 'gift_from' => 'MEMBER',
                 'gift_to' => 'MEMBER',
                 'reason' => 'SHORT_TRANS__COMCODE',
-                'anonymous' => 'BINARY'
+                'anonymous' => 'BINARY',
             ));
             $GLOBALS['SITE_DB']->create_index('gifts', 'giftsgiven', array('gift_from'));
             $GLOBALS['SITE_DB']->create_index('gifts', 'giftsreceived', array('gift_to'));

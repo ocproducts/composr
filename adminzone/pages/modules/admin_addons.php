@@ -93,20 +93,20 @@ class Module_admin_addons
                 'addon_copyright_attribution' => 'SHORT_TEXT',
                 'addon_licence' => 'SHORT_TEXT',
                 'addon_description' => 'LONG_TEXT',
-                'addon_install_time' => 'TIME'
+                'addon_install_time' => 'TIME',
             ), false, false, true);
 
             $GLOBALS['SITE_DB']->create_table('addons_files', array(
                 'id' => '*AUTO', // Because two SHORT_TEXT's as keys exceeds the 500 mysql key limit
                 'addon_name' => 'SHORT_TEXT',
-                'filename' => 'SHORT_TEXT'
+                'filename' => 'SHORT_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_table('addons_dependencies', array(
                 'id' => '*AUTO', // Because two SHORT_TEXT's as keys exceeds the 500 mysql key limit
                 'addon_name' => 'SHORT_TEXT',
                 'addon_name_dependant_upon' => 'SHORT_TEXT',
-                'addon_name_incompatibility' => 'BINARY' // 0=dependency,1=incompatibility
+                'addon_name_incompatibility' => 'BINARY', // 0=dependency,1=incompatibility
             ));
         }
 

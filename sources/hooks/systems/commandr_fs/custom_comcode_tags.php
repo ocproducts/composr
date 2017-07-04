@@ -121,7 +121,7 @@ class Hook_commandr_fs_custom_comcode_tags extends Resource_fs_base
             'enabled' => $row['tag_enabled'],
             'dangerous_tag' => $row['tag_dangerous_tag'],
             'block_tag' => $row['tag_block_tag'],
-            'textual_tag' => $row['tag_textual_tag']
+            'textual_tag' => $row['tag_textual_tag'],
         );
         $this->_resource_load_extend($resource_type, $resource_id, $properties, $filename, $path);
         return $properties;

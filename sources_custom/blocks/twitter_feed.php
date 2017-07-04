@@ -125,7 +125,7 @@ class Block_twitter_feed
         } else {
             $twitter_size = '16';
         }
-        //twitter_logo_img_code is set with the code needed for the $IMG Tempcode
+        // twitter_logo_img_code is set with the code needed for the $IMG Tempcode
         $twitter_logo_img_code = 'twitter_feed/bird_' . $twitter_color . '_' . $twitter_size;
 
         // Create template object
@@ -140,7 +140,7 @@ class Block_twitter_feed
                 'CONTENT' => $content,
                 'STYLE' => strval($twitter_style),
                 'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
-                'USER_SCREEN_NAME' => $twitter_name
+                'USER_SCREEN_NAME' => $twitter_name,
             ));
         }
 
@@ -162,7 +162,7 @@ class Block_twitter_feed
                 'CONTENT' => $content,
                 'STYLE' => strval($twitter_style),
                 'TWITTER_LOGO_IMG_CODE' => $twitter_logo_img_code,
-                'USER_SCREEN_NAME' => $twitter_name
+                'USER_SCREEN_NAME' => $twitter_name,
             ));
         }
 
@@ -225,7 +225,7 @@ class Block_twitter_feed
             $week = $day * 7;
 
             if (is_numeric($time_ago_timestamp) && $time_ago_timestamp > 0) {
-                //if less then 3 seconds
+                // if less then 3 seconds
                 if ($time_ago_timestamp < 3) {
                     $time_ago = 'right now'; // if less then minute
                 } elseif ($time_ago_timestamp < $minute) {
@@ -276,7 +276,7 @@ class Block_twitter_feed
                 'USER_FAVOURITES_COUNT' => strval($status['user']['favourites_count']),
                 'USER_STATUS_COUNT' => strval($status['user']['statuses_count']),
                 'USER_VERIFIED' => $status['user']['verified'],
-                'USER_PROFILE_IMG_URL' => $status['user']['profile_image_url']
+                'USER_PROFILE_IMG_URL' => $status['user']['profile_image_url'],
             )));
         }
 

@@ -156,7 +156,7 @@ class LightOpenID
                         'method' => 'GET',
                         'header' => 'Accept: application/xrds+xml, */*',
                         'ignore_errors' => true,
-                    )
+                    ),
                 );
                 $url = $url . ($params ? '?' . $params : '');
                 break;
@@ -168,7 +168,7 @@ class LightOpenID
                         'header' => 'Content-type: application/x-www-form-urlencoded',
                         'content' => $params,
                         'ignore_errors' => true,
-                    )
+                    ),
                 );
                 break;
 

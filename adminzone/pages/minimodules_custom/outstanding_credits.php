@@ -102,7 +102,7 @@ if ($field_id !== null) {
                 $sname => $member_name,
                 $scredits => $credits,
                 $sjoin => $member_join_date,
-                $slast => $member_visit_date
+                $slast => $member_visit_date,
             );
         }
 

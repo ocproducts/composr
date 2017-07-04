@@ -274,7 +274,7 @@ class Hook_import_ipb2
             'smtp_pass' => 'smtp_sockets_password',
             'home_name' => 'site_name',
             'reg_auth_type' => 'require_new_member_validation',
-            //'show_max_msg_list' => 'forum_posts_per_page'
+            //'show_max_msg_list' => 'forum_posts_per_page',
         );
 
         $rows = $db->query_select('conf_settings', array('*'));

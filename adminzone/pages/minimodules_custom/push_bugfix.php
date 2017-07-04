@@ -446,7 +446,7 @@ function make_call($call, $params, $file = null)
             'method' => 'POST',
             'header' => $header,
             'content' => $data_url,
-        )
+        ),
     );
 
     $context = stream_context_create($opts);

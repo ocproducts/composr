@@ -152,7 +152,7 @@ function messages_script()
             'e_type_code' => 'JOIN_IM',
             'e_member_id' => get_member(),
             'e_room_id' => $room_id,
-            'e_date_and_time' => time()
+            'e_date_and_time' => time(),
         ), true);
         require_code('files');
         cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
@@ -189,7 +189,7 @@ function messages_script()
                     'e_type_code' => 'DEINVOLVE_IM',
                     'e_member_id' => get_member(),
                     'e_room_id' => $room_id,
-                    'e_date_and_time' => time()
+                    'e_date_and_time' => time(),
                 ), true);
                 require_code('files');
                 cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
@@ -221,7 +221,7 @@ function messages_script()
                 'e_type_code' => 'PREINVITED_TO_IM',
                 'e_member_id' => intval($person),
                 'e_room_id' => $room_id,
-                'e_date_and_time' => time()
+                'e_date_and_time' => time(),
             ), true);
             require_code('files');
             cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
@@ -331,7 +331,7 @@ function chat_room_prune($room_id)
                         'e_type_code' => 'BECOME_INACTIVE',
                         'e_member_id' => $p['member_id'],
                         'e_room_id' => null,
-                        'e_date_and_time' => time()
+                        'e_date_and_time' => time(),
                     ), true);
 
                     require_code('files');
@@ -770,7 +770,7 @@ function _chat_post_message_ajax($room_id, $message, $font, $colour, $first_mess
                             'e_type_code' => 'INVITED_TO_IM',
                             'e_member_id' => $allow,
                             'e_room_id' => $room_id,
-                            'e_date_and_time' => time()
+                            'e_date_and_time' => time(),
                         ), true);
                         require_code('files');
                         cms_file_put_contents_safe(get_custom_file_base() . '/data_custom/modules/chat/chat_last_event.dat', strval($event_id), FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);

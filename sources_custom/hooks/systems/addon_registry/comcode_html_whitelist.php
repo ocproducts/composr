@@ -113,7 +113,7 @@ Alternatively you can also use regular expressions (explained here: http://php.n
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

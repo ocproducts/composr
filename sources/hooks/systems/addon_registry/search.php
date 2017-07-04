@@ -253,7 +253,7 @@ class Hook_addon_registry_search
         $tpl_tags = array();
         $tags = array(
             lorem_word() => 3,
-            lorem_word_2() => 5
+            lorem_word_2() => 5,
         );
         foreach ($tags as $tag => $count) {
             $em = 1.0;
@@ -293,7 +293,7 @@ class Hook_addon_registry_search
                     array(
                         'LINK_FULLSCOPE' => placeholder_url(),
                         'TAG' => lorem_word(),
-                    )
+                    ),
                 ),
                 'TYPE' => lorem_phrase(),
             )), null, '', true)
@@ -350,7 +350,7 @@ class Hook_addon_registry_search
             'NAME' => placeholder_random(),
             'DISPLAY' => lorem_word(),
             'SPECIAL' => placeholder_options(),
-            'CHECKED' => false
+            'CHECKED' => false,
         )));
 
         $options->attach(do_lorem_template('SEARCH_FOR_SEARCH_DOMAIN_OPTION_TEXT', array(

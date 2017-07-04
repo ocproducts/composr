@@ -352,7 +352,7 @@ class Hook_addon_registry_core_feedback_features
                 'POST_COMCODE' => lorem_phrase(),
                 'CHILDREN' => lorem_phrase(),
                 'OTHER_IDS' => array(
-                    placeholder_id()
+                    placeholder_id(),
                 ),
                 'RATING' => new Tempcode(),
                 'EMPHASIS' => new Tempcode(),

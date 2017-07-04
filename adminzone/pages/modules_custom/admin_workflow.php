@@ -69,48 +69,48 @@ class Module_admin_workflow extends Standard_crud_module
         require_lang('workflows');
 
         $GLOBALS['SITE_DB']->create_table('workflows', array(
-            'id' => '*AUTO',        // ID
-            'workflow_name' => 'SHORT_TRANS',        // The name (and ID) of this approval point
+            'id' => '*AUTO',                            // ID
+            'workflow_name' => 'SHORT_TRANS',           // The name (and ID) of this approval point
             'is_default' => 'BINARY',
         ));
 
         // The workflow_approval_points table records which workflows require which points to approve
         $GLOBALS['SITE_DB']->create_table('workflow_approval_points', array(
-            'id' => '*AUTO',        // ID for reference
-            'workflow_id' => 'AUTO_LINK',        // The name (and ID) of this workflow
-            'workflow_approval_name' => 'SHORT_TRANS',        // The name (and ID) of the approval point to require in this workflow
-            'the_position' => 'INTEGER',        // The position of this approval point in the workflow (ie. any approval can be given at any time, but encourage users into a prespecified order)
+            'id' => '*AUTO',                            // ID for reference
+            'workflow_id' => 'AUTO_LINK',               // The name (and ID) of this workflow
+            'workflow_approval_name' => 'SHORT_TRANS',  // The name (and ID) of the approval point to require in this workflow
+            'the_position' => 'INTEGER',                // The position of this approval point in the workflow (ie. any approval can be given at any time, but encourage users into a prespecified order)
         ));
 
         // The workflow_permissions table stores which usergroups are
         // allowed to approve which points
         $GLOBALS['SITE_DB']->create_table('workflow_permissions', array(
-            'id' => '*AUTO',        // ID for reference
+            'id' => '*AUTO',                                    // ID for reference
             'workflow_approval_point_id' => 'AUTO_LINK',        // The ID of the approval point
-            'usergroup' => 'GROUP',        // The usergroup to give permission to
+            'usergroup' => 'GROUP',                             // The usergroup to give permission to
         ));
 
         // The workflow_content table records which site resources are in
         // which workflows, along with any notes made during the approval
         // process
         $GLOBALS['SITE_DB']->create_table('workflow_content', array(
-            'id' => '*AUTO',        // ID for reference
+            'id' => '*AUTO',                    // ID for reference
             'content_type' => 'ID_TEXT',        // The content-meta-aware type we'd find this content in
-            'content_id' => 'ID_TEXT',        // The ID of the content, wherever it happens to be
-            'workflow_id' => 'AUTO_LINK',        // The ID of the workflow this content is in
-            'notes' => 'LONG_TEXT',        // No point translating the notes, since they're transient
-            'original_submitter' => 'MEMBER'        // Save this here since there's no standard way to discover it later (eg. through content-meta-aware hooks)
+            'content_id' => 'ID_TEXT',          // The ID of the content, wherever it happens to be
+            'workflow_id' => 'AUTO_LINK',       // The ID of the workflow this content is in
+            'notes' => 'LONG_TEXT',             // No point translating the notes, since they're transient
+            'original_submitter' => 'MEMBER',   // Save this here since there's no standard way to discover it later (eg. through content-meta-aware hooks)
         ));
 
         // The workflow_content_status table records the status of each
         // approval point for a piece of content and the member who
         // approved the point (if any)
         $GLOBALS['SITE_DB']->create_table('workflow_content_status', array(
-            'id' => '*AUTO',        // ID for reference. Larger IDs will override smaller ones if they report a different status (nondeterministic for non-incremental IDs!)
-            'workflow_content_id' => 'INTEGER',        // The ID of this content in the workflow_content table
-            'workflow_approval_point_id' => 'AUTO_LINK',        // The ID of the approval point
-            'status_code' => 'SHORT_INTEGER',        // A code indicating the status
-            'approved_by' => 'MEMBER'        // Remember who set this status, if the need arises to investigate this later
+            'id' => '*AUTO',                                // ID for reference. Larger IDs will override smaller ones if they report a different status (nondeterministic for non-incremental IDs!)
+            'workflow_content_id' => 'INTEGER',             // The ID of this content in the workflow_content table
+            'workflow_approval_point_id' => 'AUTO_LINK',    // The ID of the approval point
+            'status_code' => 'SHORT_INTEGER',               // A code indicating the status
+            'approved_by' => 'MEMBER',                      // Remember who set this status, if the need arises to investigate this later
         ));
     }
 

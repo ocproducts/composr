@@ -509,7 +509,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                 '_GUID' => 'ab88e1e92609136229ad920c30647647',
                 'TIME' => float_format($query['time'], 3),
                 'ROWS' => ($query['rows'] === null) ? '' : integer_format($query['rows']),
-                'TEXT' => $query['text']
+                'TEXT' => $query['text'],
             )));
             $total_time += $query['time'];
         }

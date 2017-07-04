@@ -91,7 +91,7 @@ class Module_downloads
                 'add_date' => 'TIME',
                 'notes' => 'LONG_TEXT',
                 'description' => 'LONG_TRANS__COMCODE',
-                'rep_image' => 'URLPATH'
+                'rep_image' => 'URLPATH',
             ));
 
             $map = array(
@@ -136,7 +136,7 @@ class Module_downloads
                 'rep_image' => 'URLPATH',
                 'download_licence' => '?AUTO_LINK',
                 'download_data_mash' => 'LONG_TEXT',
-                'url_redirect' => 'URLPATH'
+                'url_redirect' => 'URLPATH',
             ));
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'download_views', array('download_views'));
             $GLOBALS['SITE_DB']->create_index('download_downloads', 'category_list', array('category_id'));
@@ -159,14 +159,14 @@ class Module_downloads
                 'id' => '*AUTO_LINK',
                 'member_id' => '*MEMBER',
                 'ip' => 'IP',
-                'date_and_time' => 'TIME'
+                'date_and_time' => 'TIME',
             ));
             $GLOBALS['SITE_DB']->create_index('download_logging', 'calculate_bandwidth', array('date_and_time'));
 
             $GLOBALS['SITE_DB']->create_table('download_licences', array(
                 'id' => '*AUTO',
                 'l_title' => 'SHORT_TEXT',
-                'l_text' => 'LONG_TEXT'
+                'l_text' => 'LONG_TEXT',
             ));
         }
 

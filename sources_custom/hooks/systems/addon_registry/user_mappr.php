@@ -124,7 +124,7 @@ Parameters:
                 'Conversr',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

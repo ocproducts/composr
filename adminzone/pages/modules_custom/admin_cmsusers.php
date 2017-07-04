@@ -56,7 +56,7 @@ class Module_admin_cmsusers
         if ($upgrade_from === null) {
             $GLOBALS['SITE_DB']->create_table('may_feature', array(
                 'id' => '*AUTO',
-                'url' => 'URLPATH'
+                'url' => 'URLPATH',
             ));
 
             $GLOBALS['SITE_DB']->create_table('logged', array(
@@ -67,7 +67,7 @@ class Module_admin_cmsusers
                 'log_key' => 'INTEGER',    // NOT CURRENTLY USED
                 'expire' => 'INTEGER', // 0 means never   // NOT CURRENTLY USED
                 'l_version' => 'ID_TEXT',
-                'hittime' => 'TIME'
+                'hittime' => 'TIME',
             ));
         }
 

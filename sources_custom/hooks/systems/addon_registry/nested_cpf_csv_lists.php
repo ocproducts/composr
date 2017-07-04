@@ -113,7 +113,7 @@ Set Custom Profile Field list fields to have a default value like [tt]countries.
                 'PHP5.2',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

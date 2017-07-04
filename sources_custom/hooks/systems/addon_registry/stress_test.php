@@ -113,7 +113,7 @@ This script takes days to run properly.';
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

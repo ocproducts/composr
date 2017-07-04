@@ -117,7 +117,7 @@ This is based on the work of Martin Conte Mac Donell (OpenID-realselector) and M
                 'PHP OpenSSL extension',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

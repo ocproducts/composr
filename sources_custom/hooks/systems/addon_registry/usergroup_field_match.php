@@ -109,7 +109,7 @@ class Hook_addon_registry_usergroup_field_match
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

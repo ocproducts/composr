@@ -69,7 +69,7 @@ class Hook_import_mybb
             'notifications',
             'wordfilter',
             'calendar',
-            'cns_multi_moderations'
+            'cns_multi_moderations',
         );
 
         $info['dependencies'] = array(
@@ -345,7 +345,6 @@ class Hook_import_mybb
                         $secondary_groups[] = $sec_group;
                     }
                 }
-                //array_map('intval',);
 
                 $primary_group = import_id_remap_get('group', strval($row['usergroup']));
 
@@ -457,7 +456,7 @@ class Hook_import_mybb
                 switch ($row['avatartype']) {
                     case 'gallery': // Gallery
                         $filename = $row['avatar'];
-                        $filename = preg_replace('#images\/avatars\/#', '', $filename); //we need just a filename
+                        $filename = preg_replace('#images\/avatars\/#', '', $filename); // We need just a filename
 
                         if ((file_exists(get_custom_file_base() . '/uploads/cns_avatars/' . $filename)) || (@rename($avatar_gallery_path . '/' . $filename, get_custom_file_base() . '/uploads/cns_avatars/' . $filename))) {
                             $avatar_url = 'uploads/cns_avatars/' . substr($filename, strrpos($filename, '/'));
@@ -518,29 +517,29 @@ class Hook_import_mybb
         require_code('failure');
 
         foreach ($rows as $row) {
-            $ban_time = $row['dateline']; //when is banned user
-            $ban_period = $row['bantime']; //how many days/months/years is banned
+            $ban_time = $row['dateline']; // When is banned user
+            $ban_period = $row['bantime']; // How many days/months/years is banned
             $perm_banned = false;
 
             if ($ban_period == '---') {
-                //permanantly banned
+                // Permanantly banned
                 $perm_banned = true;
             } else {
-                //calculate the ban period
+                // Calculate the ban period
                 $period_array = array_map('intval', explode('-', $ban_period));
                 if (isset($period_array[0]) && ($period_array[0] > 0)) {
-                    $ban_till = $ban_time + strtotime("+ " . $period_array[0] . " day", strtotime($ban_time)); //the user is banned till this date/time
+                    $ban_till = $ban_time + strtotime("+ " . $period_array[0] . " day", strtotime($ban_time)); // The user is banned till this date/time
                 } elseif (isset($period_array[1]) && ($period_array[1] > 0)) {
-                    $ban_till = $ban_time + strtotime("+ " . $period_array[1] . " month", strtotime($ban_time)); //the user is banned till this date/time
+                    $ban_till = $ban_time + strtotime("+ " . $period_array[1] . " month", strtotime($ban_time)); // The user is banned till this date/time
                 } elseif (isset($period_array[2]) && ($period_array[2] > 0)) {
-                    $ban_till = $ban_time + strtotime("+ " . $period_array[2] . " year", strtotime($ban_time)); //the user is banned till this date/time
+                    $ban_till = $ban_time + strtotime("+ " . $period_array[2] . " year", strtotime($ban_time)); // The user is banned till this date/time
                 }
             }
 
-            $ban_till = $ban_time + $ban_period; //the user is banned till this date/time
+            $ban_till = $ban_time + $ban_period; // The user is banned till this date/time
 
             if (!$perm_banned) {
-                continue; // add just IPs of permanently banned users
+                continue; // Add just IPs of permanently banned users
             }
 
             if (import_check_if_imported('ip_ban', strval($row['uid']))) {
@@ -832,7 +831,7 @@ class Hook_import_mybb
         $home_dir_parts = parse_url($homeurl);
         $forum_dir = cms_srv('DOCUMENT_ROOT') . urldecode($home_dir_parts['path']);
 
-        $attachments_dir = $forum_dir . '/uploads/'; //forum attachments directory
+        $attachments_dir = $forum_dir . '/uploads/'; // Forum attachments directory
         $file_path = $attachments_dir . $filename;
         if ($data == '') {
             if (file_exists($file_path)) {
@@ -1144,13 +1143,13 @@ class Hook_import_mybb
 
             $matches = array();
             preg_match('#\[(.*?)\\\]#', $row['regex'], $matches);
-            $custom_tag = empty($matches[1]) ? '' : $matches[1]; //'tag_tag'
-            $title = $row['title'];//'tag_title'
-            $description = $row['description'];//'tag_description'
+            $custom_tag = empty($matches[1]) ? '' : $matches[1];
+            $title = $row['title'];
+            $description = $row['description'];
 
-            $parameter = '';//'tag_parameters'
-            $tag_replace = preg_replace('#\$1#', '{content}', $row['replacement']);//'tag_replace'
-            $tag_enabled = $row['active'];//'tag_enabled'
+            $parameter = '';
+            $tag_replace = preg_replace('#\$1#', '{content}', $row['replacement']);
+            $tag_enabled = $row['active'];
 
             global $VALID_COMCODE_TAGS;
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('custom_comcode', 'tag_tag', array('tag_tag' => $custom_tag));

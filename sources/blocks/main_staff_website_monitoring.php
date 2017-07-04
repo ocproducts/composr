@@ -125,7 +125,7 @@ class Block_main_staff_website_monitoring
         return array($rank, $links, $speed);
     }
 
-    //convert a string to a 32-bit integer
+    // Convert a string to a 32-bit integer
     public function StrToNum($str, $check, $magic)
     {
         $int_32_unit = 4294967296.0;  // 2^32
@@ -133,14 +133,12 @@ class Block_main_staff_website_monitoring
         $length = strlen($str);
         for ($i = 0; $i < $length; $i++) {
             $check *= $magic;
-            //If the float is beyond the boundaries of integer (usually +/- 2.15e+9=2^31),
+            // If the float is beyond the boundaries of integer (usually +/- 2.15e+9=2^31),
             //  the result of converting to integer is undefined
             //  refer to http://php.net/manual/en/language.types.integer.php
-            if ((is_integer($check) && floatval($check) >= $int_32_unit) ||
-                (is_float($check) && $check >= $int_32_unit)
-            ) {
+            if ((is_integer($check) && floatval($check) >= $int_32_unit) || (is_float($check) && $check >= $int_32_unit)) {
                 $check = ($check - $int_32_unit * intval($check / $int_32_unit));
-                //if the check less than -2^31
+                // If the check less than -2^31
                 $check = ($check < -2147483648.0) ? ($check + $int_32_unit) : $check;
                 if (is_float($check)) {
                     $check = intval($check);
@@ -151,7 +149,7 @@ class Block_main_staff_website_monitoring
         return is_integer($check) ? $check : intval($check);
     }
 
-    //genearate a hash for a url
+    // Genearate a hash for a url
     public function HashURL($string)
     {
         $check1 = $this->StrToNum($string, 0x1505, 0x21);
@@ -168,7 +166,7 @@ class Block_main_staff_website_monitoring
         return ($t1 | $t2);
     }
 
-    //generate a checksum for the hash string
+    // Generate a checksum for the hash string
     public function CheckHash($hashnum)
     {
         $check_byte = 0;
@@ -202,13 +200,13 @@ class Block_main_staff_website_monitoring
         return '7' . strval($check_byte) . $hashstr;
     }
 
-    //return the pagerank checksum hash
+    // Return the pagerank checksum hash
     public function getch($url)
     {
         return $this->CheckHash($this->HashURL($url));
     }
 
-    //return the pagerank figure
+    // Return the pagerank figure
     public function getpr($url)
     {
         $ch = $this->getch($url);
@@ -229,7 +227,7 @@ class Block_main_staff_website_monitoring
         return null;
     }
 
-    //return the pagerank figure
+    // Return the pagerank figure
     public function getPageRank($url)
     {
         if (preg_match('/^(https?:\/\/)?([^\/]+)/i', $url) == 0) {

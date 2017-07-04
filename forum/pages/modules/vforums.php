@@ -61,7 +61,7 @@ class Module_vforums
         if ($check_perms && is_guest($member_id)) {
             return array(
                 'browse' => array('POSTS_SINCE', 'menu/social/forum/vforums/posts_since_last_visit'),
-                'unanswered' => array('UNANSWERED_TOPICS', 'menu/social/forum/vforums/unanswered_topics')
+                'unanswered' => array('UNANSWERED_TOPICS', 'menu/social/forum/vforums/unanswered_topics'),
             );
         }
 

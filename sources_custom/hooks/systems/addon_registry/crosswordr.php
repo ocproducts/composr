@@ -123,7 +123,7 @@ Usage example: [code="Comcode"][block]main_crossword[/block][/code]';
                 'Conversr',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

@@ -346,7 +346,7 @@ function _insert_lang($field_name, $text, $level, $db = null, $comcode = false, 
     }
 
     return array(
-        $field_name => $id
+        $field_name => $id,
     );
 }
 
@@ -374,7 +374,7 @@ function _lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pas
 
     if ($text === STRING_MAGIC_NULL) {
         return array(
-            $field_name => $id
+            $field_name => $id,
         );
     }
 
@@ -450,7 +450,7 @@ function _lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pas
     $db->text_lookup_original_cache[$id] = $text;
 
     return array(
-        $field_name => $id
+        $field_name => $id,
     );
 }
 

@@ -234,8 +234,11 @@ You do not need to make third-party libraries meet our particular choice of stan
 Use PSR-2 coding standard
 | Consistency
 | Composr development +
-| Code Quality Checker
-| Use PSR-2, e.g. the bracing style, 4-spaces not tabs. Our only exceptions are relating to class and namespace structure, as we are not an OOP-heavy codebase.
+| Code Quality Checker, Autoformatting in PhpStorm
+| Use PSR-2, e.g. the bracing style, 4-spaces not tabs. Our only exceptions are relating to:
+ - class and namespace structure, as we are not an OOP-heavy codebase
+ - we allow long lines
+ - don't split function/method declarations across multiple lines
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Spaces around operators
@@ -243,6 +246,13 @@ Spaces around operators
 | Product development only
 | Code Quality Checker
 | Do like [tt]$a + $b[/tt] not [tt]$a+$b[/tt]. This makes the code easier to read and understand for some programmers, and largely consistent with what other projects do.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Trailing commas for multi-line arrays[/color]
+| Revision control
+| Product development only
+| Code Quality Checker
+| If you have split an array across multi-lines, use a trailing comma. This means every array element has a comma after it. The advantages are it looks more symmetrical and it is less likely to conflict in revision control should the array be extended with further elements.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Align functions precisely in code

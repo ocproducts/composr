@@ -63,7 +63,7 @@ function syndicate_spammer_report($ip_addr, $username, $email, $reason, $trigger
             'uri' => $torn_url,
             'trace' => 0,
             'exceptions' => 0,
-            'connection_timeout' => 0
+            'connection_timeout' => 0,
         );
 
         $userinfo = new TornUserinfoClass();

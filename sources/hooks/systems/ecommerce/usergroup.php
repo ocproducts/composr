@@ -289,10 +289,10 @@ class Hook_ecommerce_usergroup
                             $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
                                 'member_id' => $member_id,
                                 'usergroup_id' => get_first_default_group(),
-                                'join_time' => time()
+                                'join_time' => time(),
                             ));
                         } else {
-                            $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_members', array('gm_group_id' => $new_group, 'gm_member_id' => $member_id));// ,'',1
+                            $GLOBALS[(get_forum_type() == 'cns') ? 'FORUM_DB' : 'SITE_DB']->query_delete('f_group_members', array('gm_group_id' => $new_group, 'gm_member_id' => $member_id));// , '', 1
                         }
                     }
 
@@ -321,7 +321,7 @@ class Hook_ecommerce_usergroup
                         $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
                             'member_id' => $member_id,
                             'usergroup_id' => $new_group,
-                            'join_time' => time()
+                            'join_time' => time(),
                         ));
                     } else {
                         cns_add_member_to_group($member_id, $new_group);

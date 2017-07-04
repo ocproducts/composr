@@ -153,7 +153,7 @@ class CMSTopicRead
             $forum_name,
             $unread_sticky_count,
             $unread_announce_count,
-            $action_details
+            $action_details,
         );
     }
 

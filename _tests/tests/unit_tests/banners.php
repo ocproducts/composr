@@ -51,7 +51,7 @@ class banners_test_set extends cms_test_case
         // Test the banner type details modification
         edit_banner_type($this->banner_type, $this->banner_type, 0, 200, 100, 100, 0);
 
-        //Test the width is updated to 200 for the banner "Welcome"
+        // Test the width is updated to 200 for the banner "Welcome"
         $this->assertTrue(200 == $GLOBALS['SITE_DB']->query_select_value('banner_types', 't_image_width', array('id' => $this->banner_type)));
     }
 

@@ -113,7 +113,7 @@ class Hook_addon_registry_tag_cloud
                 'search',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

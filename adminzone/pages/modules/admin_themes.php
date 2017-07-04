@@ -75,7 +75,7 @@ class Module_admin_themes
                 'id' => '*SHORT_TEXT',
                 'theme' => '*MINIID_TEXT',
                 'path' => 'URLPATH',
-                'lang' => '*LANGUAGE_NAME'
+                'lang' => '*LANGUAGE_NAME',
             ), false, false, true);
             $GLOBALS['SITE_DB']->create_index('theme_images', 'theme', array('theme', 'lang'));
         }
@@ -83,13 +83,13 @@ class Module_admin_themes
         if (($upgrade_from === null) || ($upgrade_from < 5)) {
             $GLOBALS['SITE_DB']->create_table('theme_template_relations', array(
                 'rel_a' => '*ID_TEXT',
-                'rel_b' => '*ID_TEXT'
+                'rel_b' => '*ID_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_table('theme_screen_tree', array(
                 'id' => '*AUTO',
                 'page_link' => 'SHORT_TEXT',
-                'json_tree' => 'LONG_TEXT'
+                'json_tree' => 'LONG_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('theme_screen_tree', 'page_link', array('page_link'));
         }
@@ -1359,9 +1359,9 @@ class Module_admin_themes
             attach_to_screen_header(make_string_tempcode(/**@lang HTML*/'
                 <script ' . csp_nonce_html() . ' src="' . get_base_url() . '/data/ace/ace.js"></script>
                 <script ' . csp_nonce_html() . ' src="' . get_base_url() . '/data/ace/ace_composr.js"></script>
-                <script>// <![CDATA[
+                <script>
                     aceComposrLoader(\'tempcode\',\'text\');
-                //]]></script>
+                </script>
             ')); // XHTMLXHTML
         }
 
@@ -1432,7 +1432,7 @@ class Module_admin_themes
                 ($theme === null) ? null : array('menu/_generic_admin/edit_this', array('_SELF', array('type' => 'edit_theme', 'theme' => $theme), '_SELF'), do_lang_tempcode('EDIT_THEME')),
                 ($theme === null) ? null : array('menu/adminzone/style/themes/templates', array('_SELF', array('type' => 'edit_templates', 'theme' => $theme), '_SELF'), do_lang('EDIT_TEMPLATES')),
                 ($theme === null) ? null : array('menu/adminzone/style/themes/theme_images', array('_SELF', array('type' => 'manage_images', 'theme' => $theme, 'lang' => $lang), '_SELF'), do_lang('EDIT_THEME_IMAGES')),
-                array('menu/adminzone/style/themes/themes', array('_SELF', array('type' => 'browse'), '_SELF'), do_lang('MANAGE_THEMES'))
+                array('menu/adminzone/style/themes/themes', array('_SELF', array('type' => 'browse'), '_SELF'), do_lang('MANAGE_THEMES')),
             ),
             do_lang('MANAGE_THEMES'),
             null,

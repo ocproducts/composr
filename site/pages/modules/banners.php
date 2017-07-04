@@ -98,7 +98,7 @@ class Module_banners
                 'validated' => 'BINARY',
                 'add_date' => 'TIME',
                 'edit_date' => '?TIME',
-                'b_type' => 'ID_TEXT'
+                'b_type' => 'ID_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_index('banners', 'banner_child_find', array('b_type'));
@@ -172,7 +172,7 @@ class Module_banners
                 't_image_width' => 'INTEGER',
                 't_image_height' => 'INTEGER',
                 't_max_file_size' => 'INTEGER',
-                't_comcode_inline' => 'BINARY'
+                't_comcode_inline' => 'BINARY',
             ));
 
             $GLOBALS['SITE_DB']->create_index('banner_types', 'hottext', array('t_comcode_inline'));
@@ -183,7 +183,7 @@ class Module_banners
                 't_image_width' => 728,
                 't_image_height' => 90,
                 't_max_file_size' => 150,
-                't_comcode_inline' => 0
+                't_comcode_inline' => 0,
             ));
 
             $GLOBALS['SITE_DB']->create_table('banner_clicks', array(
@@ -192,7 +192,7 @@ class Module_banners
                 'c_member_id' => 'MEMBER',
                 'c_ip_address' => 'IP',
                 'c_source' => 'ID_TEXT',
-                'c_banner_id' => 'ID_TEXT'
+                'c_banner_id' => 'ID_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('banner_clicks', 'clicker_ip', array('c_ip_address'));
 

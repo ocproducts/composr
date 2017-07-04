@@ -116,7 +116,7 @@ We will automatically detect what columns can be filtered, how to sort each colu
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

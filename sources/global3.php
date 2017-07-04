@@ -2252,7 +2252,7 @@ function member_tracking_update($page, $type, $id)
         'mt_time' => time(),
         'mt_page' => $page,
         'mt_type' => $type,
-        'mt_id' => $id
+        'mt_id' => $id,
     ), false, true); // Ignore errors for race conditions
 }
 

@@ -201,7 +201,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
                     'm_manually_chosen' => 1,
                     'm_resource_page' => ($content_type == 'comcode_page') ? $_content_id : $attributes['page'],
                     'm_resource_type' => ($content_type == 'comcode_page') ? '' : (isset($attributes['type']) ? $attributes['type'] : ''),
-                    'm_resource_id' => ($content_type == 'comcode_page') ? $zone : $_content_id
+                    'm_resource_id' => ($content_type == 'comcode_page') ? $zone : $_content_id,
                 );
                 $manually_chosen = ($GLOBALS['SITE_DB']->query_select_value_if_there('url_id_monikers', 'm_moniker', $moniker_where) !== null);
             } else {
@@ -425,7 +425,7 @@ function set_url_moniker($content_type, $content_id, $fields_to_skip = array(), 
                 // Test for conflicts
                 $conflict_test_map = array(
                     'm_moniker' => $url_moniker,
-                    'm_deprecated' => 0
+                    'm_deprecated' => 0,
                 );
                 if (substr($url_moniker, 0, 1) != '/') { // Can narrow the conflict-check scope if it's relative to a module rather than a zone ('/' prefix)
                     $conflict_test_map += array(

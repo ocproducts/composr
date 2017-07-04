@@ -78,7 +78,7 @@ class Module_admin_disastr extends Standard_crud_module
                 'spread_rate' => 'INTEGER',
                 'points_per_spread' => 'INTEGER',
                 'last_spread_time' => 'INTEGER',
-                'enabled' => 'BINARY'
+                'enabled' => 'BINARY',
             ));
 
             $GLOBALS['SITE_DB']->create_table('members_diseases', array(

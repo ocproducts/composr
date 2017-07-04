@@ -252,7 +252,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
             ecommerce_get_currency_symbol() . escape_html(float_format($product_row['p_price'])),
             ecommerce_get_currency_symbol() . escape_html(float_format($product_row['p_tax'])),
             escape_html(integer_format($product_row['p_quantity'])),
-            do_lang($product_row['p_dispatch_status'])
+            do_lang($product_row['p_dispatch_status']),
         ), false, null));
     }
     $results_table = results_table(do_lang_tempcode('catalogues:DEFAULT_CATALOGUE_PRODUCTS_TITLE'), 0, 'start', count($product_rows), 'max', count($product_rows), $fields_title, $product_entries);

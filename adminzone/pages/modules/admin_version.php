@@ -148,7 +148,7 @@ class Module_admin_version
                 'trackback_url' => 'SHORT_TEXT',
                 'trackback_title' => 'SHORT_TEXT',
                 'trackback_excerpt' => 'LONG_TEXT',
-                'trackback_name' => 'SHORT_TEXT'
+                'trackback_name' => 'SHORT_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('trackbacks', 'trackback_for_type', array('trackback_for_type'));
             $GLOBALS['SITE_DB']->create_index('trackbacks', 'trackback_for_id', array('trackback_for_id'));
@@ -157,7 +157,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_table('captchas', array(
                 'si_session_id' => '*ID_TEXT',
                 'si_time' => 'TIME',
-                'si_code' => 'ID_TEXT'
+                'si_code' => 'ID_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('captchas', 'si_time', array('si_time'));
 
@@ -167,7 +167,7 @@ class Module_admin_version
                 'mt_time' => '*TIME',
                 'mt_page' => '*ID_TEXT',
                 'mt_type' => '*ID_TEXT',
-                'mt_id' => '*ID_TEXT'
+                'mt_id' => '*ID_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('member_tracking', 'mt_page', array('mt_page'));
             $GLOBALS['SITE_DB']->create_index('member_tracking', 'mt_id', array('mt_page', 'mt_id', 'mt_type'));
@@ -180,7 +180,7 @@ class Module_admin_version
             ));
 
             $GLOBALS['SITE_DB']->create_table('webstandards_checked_once', array(
-                'hash' => '*SHORT_TEXT'
+                'hash' => '*SHORT_TEXT',
             ), false, false, true);
 
             $GLOBALS['SITE_DB']->create_table('edit_pings', array(
@@ -189,7 +189,7 @@ class Module_admin_version
                 'the_type' => 'ID_TEXT',
                 'the_id' => 'ID_TEXT',
                 'the_time' => 'TIME',
-                'the_member' => 'MEMBER'
+                'the_member' => 'MEMBER',
             ));
 
             $GLOBALS['SITE_DB']->create_table('values_elective', array(
@@ -280,7 +280,7 @@ class Module_admin_version
                 'rating_member' => 'MEMBER',
                 'rating_ip' => 'IP',
                 'rating_time' => 'TIME',
-                'rating' => 'SHORT_INTEGER'
+                'rating' => 'SHORT_INTEGER',
             ));
             $GLOBALS['SITE_DB']->create_index('rating', 'alt_key', array('rating_for_type', 'rating_for_id'));
             $GLOBALS['SITE_DB']->create_index('rating', 'rating_for_id', array('rating_for_id'));
@@ -305,7 +305,7 @@ class Module_admin_version
                 'the_page' => '*ID_TEXT',
                 'string_index' => 'LONG_TRANS__COMCODE',
                 'the_theme' => '*ID_TEXT',
-                'cc_page_title' => '?SHORT_TRANS'
+                'cc_page_title' => '?SHORT_TRANS',
             ));
 
             $GLOBALS['SITE_DB']->create_index('cached_comcode_pages', 'ftjoin_ccpt', array('cc_page_title'));
@@ -379,7 +379,7 @@ class Module_admin_version
                 'i_submitter' => 'MEMBER',
                 'i_date_and_time' => 'TIME',
                 'i_orig_filename' => 'URLPATH',
-                'i_save_url' => 'SHORT_TEXT'
+                'i_save_url' => 'SHORT_TEXT',
             ));
         }
 
@@ -530,7 +530,7 @@ class Module_admin_version
                 ),
                 'authors' => array(
                     'description',
-                    'skills'
+                    'skills',
                 ),
                 'banners' => array(
                     'caption',
@@ -865,7 +865,7 @@ class Module_admin_version
                 'content_id' => '*ID_TEXT',
                 'guest_view' => 'BINARY',
                 'member_view' => 'BINARY',
-                'friend_view' => 'BINARY'
+                'friend_view' => 'BINARY',
             ));
             $GLOBALS['SITE_DB']->create_index('content_privacy', 'guest_view', array('guest_view'));
             $GLOBALS['SITE_DB']->create_index('content_privacy', 'member_view', array('member_view'));

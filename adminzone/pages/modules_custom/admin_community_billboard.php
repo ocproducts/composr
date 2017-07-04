@@ -72,7 +72,7 @@ class Module_admin_community_billboard extends Standard_crud_module
                 'order_time' => 'TIME',
                 'activation_time' => '?TIME',
                 'active_now' => 'BINARY',
-                'notes' => 'LONG_TEXT'
+                'notes' => 'LONG_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_index('community_billboard', 'find_active_billboard_msg', array('active_now'));

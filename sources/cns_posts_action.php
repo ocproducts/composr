@@ -253,7 +253,7 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
         'p_last_edit_by' => $last_edit_by,
         'p_intended_solely_for' => $intended_solely_for,
         'p_skip_sig' => $skip_sig,
-        'p_parent_id' => $parent_id
+        'p_parent_id' => $parent_id,
     );
     if ($id !== null) {
         $map['id'] = $id;

@@ -178,9 +178,7 @@ function check_has_page_access()
         access_denied((($real_zone == 'data') || (has_zone_access(get_member(), $ZONE['zone_name']))) ? 'ZONE_ACCESS_SESSION' : 'ZONE_ACCESS', $ZONE['zone_name'], true);
     } else {
         if (($real_zone == 'data') || (has_zone_access(get_member(), $ZONE['zone_name']))) {
-            if ((running_script('index')) && /*Actually we will allow Guest denying to the front page even though that is a bit weird ((get_page_name()!=$ZONE['zone_default_page']) || ($real_zone!='')) && */
-                (!has_page_access(get_member(), get_page_name(), $ZONE['zone_name'], true))
-            ) {
+            if ((running_script('index')) && /*Actually we will allow Guest denying to the front page even though that is a bit weird ((get_page_name()!=$ZONE['zone_default_page']) || ($real_zone!='')) && */(!has_page_access(get_member(), get_page_name(), $ZONE['zone_name'], true))) {
                 access_denied('PAGE_ACCESS');
             }
         } else {
@@ -423,7 +421,7 @@ function attach_message($message, $type = 'inform', $put_in_helper_panel = false
     $message_tpl = do_template('MESSAGE', array(
         '_GUID' => 'ec843c8619d21fbeeb512686ea300a17',
         'TYPE' => $type,
-        'MESSAGE' => is_string($message) ? escape_html($message) : $message
+        'MESSAGE' => is_string($message) ? escape_html($message) : $message,
     ));
 
     if ($put_in_helper_panel) {
@@ -2102,7 +2100,7 @@ function log_stats($string, $pg_time)
         'referer' => $referer,
         's_get' => $get,
         'post' => $post,
-        'milliseconds' => intval($pg_time * 1000)
+        'milliseconds' => intval($pg_time * 1000),
     ), false, true);
     if (mt_rand(0, 100) == 1) {
         if (!$GLOBALS['SITE_DB']->table_is_locked('stats')) {

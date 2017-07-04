@@ -33,13 +33,13 @@ function blocking_add($blocker, $blocked, $time = null)
 
     $GLOBALS['SITE_DB']->query_delete('chat_blocking', array(
         'member_blocker' => $blocker,
-        'member_blocked' => $blocked
+        'member_blocked' => $blocked,
     ), '', 1); // Just in case page refreshed
 
     $GLOBALS['SITE_DB']->query_insert('chat_blocking', array(
         'member_blocker' => $blocker,
         'member_blocked' => $blocked,
-        'date_and_time' => $time
+        'date_and_time' => $time,
     ));
 
     log_it('BLOCK_MEMBER', strval($blocker), strval($blocked));
@@ -55,7 +55,7 @@ function blocking_remove($blocker, $blocked)
 {
     $GLOBALS['SITE_DB']->query_delete('chat_blocking', array(
         'member_blocker' => $blocker,
-        'member_blocked' => $blocked
+        'member_blocked' => $blocked,
     ), '', 1); // Just in case page refreshed
 
     log_it('UNBLOCK_MEMBER', strval($blocker), strval($blocked));
@@ -76,13 +76,13 @@ function friend_add($likes, $liked, $time = null)
 
     $GLOBALS['SITE_DB']->query_delete('chat_friends', array(
         'member_likes' => $likes,
-        'member_liked' => $liked
+        'member_liked' => $liked,
     ), '', 1); // Just in case page refreshed
 
     $GLOBALS['SITE_DB']->query_insert('chat_friends', array(
         'member_likes' => $likes,
         'member_liked' => $liked,
-        'date_and_time' => $time
+        'date_and_time' => $time,
     ));
 
     // Send a notification
@@ -120,7 +120,7 @@ function friend_remove($likes, $liked)
 {
     $GLOBALS['SITE_DB']->query_delete('chat_friends', array(
         'member_likes' => $likes,
-        'member_liked' => $liked
+        'member_liked' => $liked,
     ), '', 1); // Just in case page refreshed
 
     log_it('DUMP_FRIEND', strval($likes), strval($liked));

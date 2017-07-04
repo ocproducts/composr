@@ -188,7 +188,7 @@ class Hook_addon_registry_core_fields
                     array(
                         'HAS' => false,
                         'OPTION' => lorem_phrase(),
-                    )
+                    ),
                 ),
                 'FIELD_ID' => placeholder_id(),
             )), null, '', true)

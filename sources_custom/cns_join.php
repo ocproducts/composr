@@ -75,7 +75,7 @@ function set_from_referrer_field()
             'i_inviter' => $referrer_member,
             'i_email_address' => post_param_string('email_address'),
             'i_time' => time(),
-            'i_taken' => 0
+            'i_taken' => 0,
         ));
     }
 }

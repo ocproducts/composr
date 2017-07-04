@@ -70,7 +70,7 @@ class Module_admin_security
                 'ip' => 'IP',
                 'reason' => 'ID_TEXT',
                 'reason_param_a' => 'SHORT_TEXT',
-                'reason_param_b' => 'SHORT_TEXT'
+                'reason_param_b' => 'SHORT_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('hackattack', 'otherhacksby', array('ip'));
             $GLOBALS['SITE_DB']->create_index('hackattack', 'h_date_and_time', array('date_and_time'));

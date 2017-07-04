@@ -47,7 +47,7 @@ function enter_chat_lobby()
             'e_type_code' => 'BECOME_ACTIVE',
             'e_member_id' => get_member(),
             'e_room_id' => null,
-            'e_date_and_time' => time()
+            'e_date_and_time' => time(),
         ));
     }
 }

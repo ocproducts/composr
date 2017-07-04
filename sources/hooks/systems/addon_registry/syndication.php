@@ -188,8 +188,7 @@ class Hook_addon_registry_syndication
                 'LOGO_URL' => placeholder_image_url(),
                 'DATE' => placeholder_date(),
                 'CONTENT' => $content,
-            ), null, false, null, '.xml', 'xml'
-            ),
+            ), null, false, null, '.xml', 'xml'),
         );
     }
 
@@ -226,8 +225,7 @@ class Hook_addon_registry_syndication
                 'ABOUT' => lorem_paragraph(),
                 'VERSION' => lorem_word(),
                 'COPYRIGHT' => lorem_phrase(),
-            ), null, false, null, '.xml', 'xml'
-            ),
+            ), null, false, null, '.xml', 'xml'),
         );
     }
 
@@ -245,8 +243,7 @@ class Hook_addon_registry_syndication
         return array(
             do_lorem_template('RSS_XSLT', array(
                 'JAVASCRIPT_XSL_MOPUP' => '',
-            ), null, false, null, '.xml', 'xml'
-            ),
+            ), null, false, null, '.xml', 'xml'),
         );
     }
 
@@ -264,8 +261,7 @@ class Hook_addon_registry_syndication
         return array(
             do_lorem_template('ATOM_XSLT', array(
                 'JAVASCRIPT_XSL_MOPUP' => '',
-            ), null, false, null, '.xml', 'xml'
-            ),
+            ), null, false, null, '.xml', 'xml'),
         );
     }
 
@@ -283,8 +279,7 @@ class Hook_addon_registry_syndication
         return array(
             do_lorem_template('OPML_XSLT', array(
                 'JAVASCRIPT_XSL_MOPUP' => '',
-            ), null, false, null, '.xml', 'xml'
-            ),
+            ), null, false, null, '.xml', 'xml'),
         );
     }
 
@@ -306,8 +301,7 @@ class Hook_addon_registry_syndication
                 'DATE' => placeholder_date(),
                 'TITLE' => lorem_phrase(),
                 'MODE' => lorem_word(),
-            ), null, false, null, '.xml', 'xml'
-            ),
+            ), null, false, null, '.xml', 'xml'),
         );
     }
 
@@ -322,9 +316,8 @@ class Hook_addon_registry_syndication
     {
         return array(
             do_lorem_template('RSS_HEADER', array(
-                    'FEED_URL' => placeholder_url(),
-                )
-            ),
+                'FEED_URL' => placeholder_url(),
+            )),
         );
     }
 }

@@ -87,7 +87,7 @@ class Module_news
                 'edit_date' => '?TIME',
                 'news_category' => 'AUTO_LINK',
                 'news_views' => 'INTEGER',
-                'news_image' => 'URLPATH'
+                'news_image' => 'URLPATH',
             ));
             $GLOBALS['SITE_DB']->create_index('news', 'news_views', array('news_views'));
             $GLOBALS['SITE_DB']->create_index('news', 'findnewscat', array('news_category'));
@@ -101,7 +101,7 @@ class Module_news
                 'nc_title' => 'SHORT_TRANS',
                 'nc_owner' => '?MEMBER',
                 'nc_img' => 'URLPATH',
-                'notes' => 'LONG_TEXT'
+                'notes' => 'LONG_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('news_categories', 'ncs', array('nc_owner'));
 
@@ -126,12 +126,12 @@ class Module_news
                 'rem_protocol' => 'ID_TEXT',
                 'rem_ip' => 'IP',
                 'watching_channel' => 'URLPATH',
-                'register_time' => 'TIME'
+                'register_time' => 'TIME',
             ));
 
             $GLOBALS['SITE_DB']->create_table('news_category_entries', array(
                 'news_entry' => '*AUTO_LINK',
-                'news_entry_category' => '*AUTO_LINK'
+                'news_entry_category' => '*AUTO_LINK',
             ));
             $GLOBALS['SITE_DB']->create_index('news_category_entries', 'news_entry_category', array('news_entry_category'));
 

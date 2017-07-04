@@ -117,7 +117,7 @@ The insulted member has to try and make the right reply, if they succeed then th
                 'points',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

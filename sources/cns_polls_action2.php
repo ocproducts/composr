@@ -171,9 +171,7 @@ function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = nul
     if (!array_key_exists(0, $rows)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
     }
-    if ((count($votes) < $rows[0]['po_minimum_selections'])
-        || (count($votes) > $rows[0]['po_maximum_selections']) || ($rows[0]['po_is_open'] == 0)
-    ) {
+    if ((count($votes) < $rows[0]['po_minimum_selections']) || (count($votes) > $rows[0]['po_maximum_selections']) || ($rows[0]['po_is_open'] == 0)) {
         warn_exit(do_lang_tempcode('VOTE_CHEAT'));
     }
     $answers = collapse_1d_complexity('id', $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('id'), array('pa_poll_id' => $poll_id)));

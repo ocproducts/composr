@@ -697,7 +697,7 @@ class Module_recommend
                     'i_inviter' => get_member(),
                     'i_email_address' => $email_address,
                     'i_time' => time(),
-                    'i_taken' => 0
+                    'i_taken' => 0,
                 ));
 
                 $invite = true;
@@ -706,7 +706,7 @@ class Module_recommend
                     'i_inviter' => get_member(),
                     'i_email_address' => $email_address,
                     'i_time' => time(),
-                    'i_taken' => 0
+                    'i_taken' => 0,
                 ));
             }
 

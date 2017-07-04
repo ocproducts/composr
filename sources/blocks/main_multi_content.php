@@ -99,7 +99,7 @@ class Block_main_multi_content
                 array_key_exists(\'select\',$map)?$map[\'select\']:\'\',
                 array_key_exists(\'select_b\',$map)?$map[\'select_b\']:\'\',
                 array_key_exists(\'zone\',$map)?$map[\'zone\']:\'_SEARCH\',
-                array_key_exists(\'sort\',$map)?$map[\'sort\']:\'recent\'
+                array_key_exists(\'sort\',$map)?$map[\'sort\']:\'recent\',
             )';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT;
         if (addon_installed('content_privacy')) {

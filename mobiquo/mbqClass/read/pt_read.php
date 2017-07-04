@@ -127,7 +127,7 @@ class CMSPtRead
 
         $extra = ' AND p_time>' . db_function('GREATEST', array(
             strval(time() - 60 * 60 * 24 * intval(get_option('post_read_history_days'))),
-            $last_read_sql
+            $last_read_sql,
         ));
         $unread_num = $GLOBALS['FORUM_DB']->query_select_value('f_posts p', 'COUNT(*)', array('p.p_topic_id' => $topic_id), $extra);
 

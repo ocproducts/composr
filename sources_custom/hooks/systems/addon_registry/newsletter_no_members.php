@@ -112,7 +112,7 @@ class Hook_addon_registry_newsletter_no_members
                 'newsletters',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

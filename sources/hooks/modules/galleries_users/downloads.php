@@ -41,7 +41,7 @@ class Hook_gu_downloads
 
         $id = intval(substr($cat, 9));
         return array(
-            array('menu/rich_content/downloads', array('downloads', array('type' => 'entry', 'id' => $id), get_module_zone('downloads')), do_lang('VIEW'))
+            array('menu/rich_content/downloads', array('downloads', array('type' => 'entry', 'id' => $id), get_module_zone('downloads')), do_lang('VIEW')),
         );
     }
 }

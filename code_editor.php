@@ -110,12 +110,12 @@ function code_editor_do_footer()
     echo <<<END
 </form>
 
-<script>// <![CDATA[
+<script>
 if (document.getElementById('file'))
 {
     aceComposrLoader('file','php');
 }
-//]]></script>
+</script>
 
 </div></body>
 </html>
@@ -409,10 +409,10 @@ END;
 END;
         echo code_editor_escape_html($contents) . '</textarea>';
         echo <<<END
-<script>// <![CDATA[
+<script>
     var file=document.getElementById('file');
     file.scrollTop=Math.round((file.scrollHeight/{$lines})*{$line});
-//]]></script>
+</script>
 <p>
     Jump to (line number or search phrase): <input name="jmp" type="text" value="" /> <input onclick="var val=form.elements['jmp'].value; if (!(window.parseInt(val)>0)) val=file.value.substr(0,file.value.indexOf(val)).split('\\n').length-1; file.scrollTop=Math.round((file.scrollHeight/{$lines})*window.parseInt(val)); return false;" type="submit" value="Jump" />
 </p>

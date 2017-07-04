@@ -549,7 +549,7 @@ class Module_admin_lang
                 array(
                     get_base_url() . '/code_editor.php',
                     escape_html(user_lang()),
-                    escape_html(lookup_language_full_name(user_lang()))
+                    escape_html(lookup_language_full_name(user_lang())),
                 )
             );
             return $this->choose_lang($this->title, true, true, $choose_message);

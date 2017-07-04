@@ -169,7 +169,7 @@ function _assign_referral_awards(
                             comcode_escape(integer_format($num_total_by_referrer)),
                             comcode_escape($scheme_title),
                             comcode_escape($referee_displayname),
-                            comcode_escape($referrer_displayname)
+                            comcode_escape($referrer_displayname),
                         )
                     );
                     dispatch_notification(
@@ -194,7 +194,7 @@ function _assign_referral_awards(
                         array(
                             $scheme_title,
                             $referee_displayname,
-                            $referrer_displayname
+                            $referrer_displayname,
                         )
                     );
                     $body_lang_string = $referrer_is_qualified ? 'MAIL_REFERRALS__QUALIFIEDREFERRER_QUALIFIEDREFERRAL__TOSTAFF_BODY' : 'MAIL_REFERRALS__NONQUALIFIEDREFERRER_QUALIFIEDREFERRAL__TOSTAFF_BODY';
@@ -211,7 +211,7 @@ function _assign_referral_awards(
                             comcode_escape(integer_format($num_total_by_referrer)),
                             comcode_escape($scheme_title),
                             comcode_escape($referee_displayname),
-                            comcode_escape($referrer_displayname)
+                            comcode_escape($referrer_displayname),
                         )
                     );
                     dispatch_notification(
@@ -238,7 +238,7 @@ function _assign_referral_awards(
                     array(
                         $referee_displayname,
                         $referrer_username,
-                        $referrer_displayname
+                        $referrer_displayname,
                     )
                 );
                 $body_lang_string = $referrer_is_qualified ? 'MAIL_REFERRALS__QUALIFIEDREFERRER_QUALIFIEDREFERRAL__TOREFERRER_BODY' : 'MAIL_REFERRALS__NONQUALIFIEDREFERRER_QUALIFIEDREFERRAL__TOREFERRER_BODY';
@@ -254,7 +254,7 @@ function _assign_referral_awards(
                         comcode_escape(integer_format($num_total_by_referrer)),
                         comcode_escape($scheme_title),
                         comcode_escape($referee_displayname),
-                        comcode_escape($referrer_displayname)
+                        comcode_escape($referrer_displayname),
                     )
                 );
                 dispatch_notification(
@@ -282,7 +282,7 @@ function _assign_referral_awards(
                     array(
                         $scheme_title,
                         $referee_displayname,
-                        $referrer_displayname
+                        $referrer_displayname,
                     )
                 );
                 $body_lang_string = $referrer_is_qualified ? 'MAIL_REFERRALS__QUALIFIEDREFERRER_NONQUALIFIEDREFERRAL__TOSTAFF_BODY' : 'MAIL_REFERRALS__NONQUALIFIEDREFERRER_NONQUALIFIEDREFERRAL__TOSTAFF_BODY';
@@ -299,7 +299,7 @@ function _assign_referral_awards(
                         comcode_escape(integer_format($num_total_by_referrer)),
                         comcode_escape($scheme_title),
                         comcode_escape($referee_displayname),
-                        comcode_escape($referrer_displayname)
+                        comcode_escape($referrer_displayname),
                     )
                 );
                 dispatch_notification(
@@ -323,7 +323,7 @@ function _assign_referral_awards(
                     array(
                         $referee_displayname,
                         $referrer_username,
-                        $referrer_displayname
+                        $referrer_displayname,
                     )
                 );
                 $body_lang_string = $referrer_is_qualified ? 'MAIL_REFERRALS__QUALIFIEDREFERRER_NONQUALIFIEDREFERRAL__TOREFERRER_BODY' : 'MAIL_REFERRALS__NONQUALIFIEDREFERRER_NONQUALIFIEDREFERRAL__TOREFERRER_BODY';
@@ -339,7 +339,7 @@ function _assign_referral_awards(
                         comcode_escape(integer_format($num_total_by_referrer)),
                         comcode_escape($scheme_title),
                         comcode_escape($referee_displayname),
-                        comcode_escape($referrer_displayname)
+                        comcode_escape($referrer_displayname),
                     )
                 );
                 dispatch_notification(

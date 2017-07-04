@@ -127,7 +127,7 @@ This addon does not contain the compo.sr install code and the overall site and t
                 'composr_release_build',
                 'composr_tutorials',
             ),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

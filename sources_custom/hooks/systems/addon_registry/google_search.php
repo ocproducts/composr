@@ -119,7 +119,7 @@ Note that it is a requirement that your [tt]_google_search[/tt] page is in a zon
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

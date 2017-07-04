@@ -111,7 +111,7 @@ class Hook_addon_registry_group_points
                 'points',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

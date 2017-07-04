@@ -93,7 +93,7 @@ function tr_get_mime_type($extension)
  */
 function transcode($path)
 {
-    //if there is a locally uploaded file, that is not in flv/m4v/mp3 format go transcode it
+    // If there is a locally uploaded file, that is not in flv/m4v/mp3 format go transcode it
     if ((preg_match('#http\:\/\/#i', $path) == 0) && (preg_match('#\.(m4v|mp4|flv|mp3)$#i', $path) == 0)) {
         //mencoder path
         $mencoder_path = MENCODER_PATH;//'C:/Program Files/MPlayer/';
@@ -187,7 +187,7 @@ function transcode($path)
             $output_path = preg_replace('#' . preg_quote($file_ext, '#') . '$#', '', $file_path) . 'mp3';
             $output_path = str_replace('/queue/', '/done/', $output_path);
 
-            //it is audio
+            // It is audio
             $shell_command = '"' . $mencoder_path . 'ffmpeg" -y -i ' . escapeshellarg($file_path) . ' -ab ' . escapeshellcmd($audio_bitrate) . 'K ' . escapeshellarg($output_path);
 
             echo '[' . date('d/m/Y h:i:s') . '] DOING SHELL COMMAND: ' . $shell_command . "\n";

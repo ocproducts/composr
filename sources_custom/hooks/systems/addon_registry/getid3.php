@@ -114,7 +114,7 @@ class Hook_addon_registry_getid3
                 'galleries',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

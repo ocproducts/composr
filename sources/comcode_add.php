@@ -576,8 +576,7 @@ function comcode_helper_script_step2()
                                 $field = form_input_line($parameter_name, protect_from_escaping($descriptiont), $param, $default, false);
                             }
                         }
-                        if ((($tag == 'attachment') || ($tag == 'attachment_safe')) && (($param == 'type' || $param == 'float' || $param == 'width' || $param == 'height')) && (/*Assumed needs routine heavy control*/!has_privilege(get_member(), 'use_very_dangerous_comcode'))
-                        ) {
+                        if ((($tag == 'attachment') || ($tag == 'attachment_safe')) && (($param == 'type' || $param == 'float' || $param == 'width' || $param == 'height')) && (/*Assumed needs routine heavy control*/!has_privilege(get_member(), 'use_very_dangerous_comcode'))) {
                             $is_advanced = true;
                         }
                         if ($is_advanced) {

@@ -72,7 +72,7 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
     }
 
     $_info = do_comcode_attachments($text, $type, $id, false, $db, null, $source_user);
-    $text_parsed = ''; //Actually we'll let it regenerate with the correct permissions ($member_id, not $for_member) $_info['tempcode']->to_assembly();
+    $text_parsed = ''; // Actually we'll let it regenerate with the correct permissions ($member_id, not $for_member) $_info['tempcode']->to_assembly();
 
     if (multi_lang_content()) {
         $remap = array(

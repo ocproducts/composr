@@ -419,7 +419,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
                         if ((!$preserve_some) && (!isset($rebuilt[$file_template_name]))) {
                             if (/*filter what we'll do due to memory limitation*/in_array($file_template_name, array('global.css', 'cns.css', 'forms.css', 'menu__dropdown.css', 'ajax.js', 'editing.js', 'global.js', 'modalwindow.js', 'posting.js'))) {
                                 if ((isset($GLOBALS['SITE_DB'])) && (function_exists('find_theme_image')) && (!$GLOBALS['IN_MINIKERNEL_VERSION']) && ($GLOBALS['FORUM_DRIVER'] !== null)) {
-                                    @unlink($path . $file . '.tcp'); /// To stop it just coming back from the .tcp
+                                    @unlink($path . $file . '.tcp'); // To stop it just coming back from the .tcp
 
                                     if (substr($file_template_name, -3) == '.js') {
                                         require_code('web_resources');

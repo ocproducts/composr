@@ -449,7 +449,7 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
             $GLOBALS['FORUM_DB']->query_insert('f_group_members', array(
                 'gm_group_id' => $group_id,
                 'gm_member_id' => $member_id,
-                'gm_validated' => 1
+                'gm_validated' => 1,
             ));
         }
     }

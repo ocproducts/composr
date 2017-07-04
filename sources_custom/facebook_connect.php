@@ -252,7 +252,7 @@ function handle_facebook_connection_login($current_logged_in_member)
                 check_for_spam(post_param_string('username', $username), $email_address, false);
             }
 
-            $username = post_param_string('username', $username);//user may have customised username
+            $username = post_param_string('username', $username); // User may have customised username
             if ((count($_custom_fields) != 0) && (get_value('no_finish_profile') !== '1')) { // Was not auto-generated, so needs to be checked
                 cns_check_name_valid($username, null, null);
             }

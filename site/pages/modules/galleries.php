@@ -604,7 +604,7 @@ class Module_galleries
             'url ASC' => 'FILENAME',
             'add_date ASC' => 'OLDEST_FIRST',
             'add_date DESC' => 'NEWEST_FIRST',
-            'title ASC' => 'TITLE'
+            'title ASC' => 'TITLE',
         ));
         $selectors = new Tempcode();
         foreach ($_selectors as $selector_value => $selector_name) {

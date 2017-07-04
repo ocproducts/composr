@@ -458,10 +458,10 @@ class Hook_payment_gateway_authorize
         list($login_id, $transaction_key) = $this->_get_access_details();
 
         if (ecommerce_test_mode()) {
-            //URL for test account
+            // URL for test account
             $this->url = 'https://apitest.authorize.net/xml/v1/request.api';
         } else {
-            //URL for live account
+            // URL for live account
             $this->url = 'https://api.authorize.net/xml/v1/request.api';
         }
 
@@ -734,10 +734,10 @@ class Hook_payment_gateway_authorize
         list($login_id, $transaction_key) = $this->_get_access_details();
 
         if (ecommerce_test_mode()) {
-            //URL for test account
+            // URL for test account
             $this->url = 'https://apitest.authorize.net/xml/v1/request.api';
         } else {
-            //URL for live account
+            // URL for live account
             $this->url = 'https://api.authorize.net/xml/v1/request.api';
         }
 

@@ -812,7 +812,7 @@ function calculate_dynamic_css_colours($colours, $source_theme)
                 $key, // Colour name
                 null, // Parsed expression
                 null, // Full match string
-                $val // Final colour
+                $val, // Final colour
             );
         }
     }
@@ -839,7 +839,7 @@ function calculate_dynamic_css_colours($colours, $source_theme)
                         $matches[2][$i], // Colour name
                         $parsed, // Parsed expression
                         $matches[0][$i], // Full match string
-                        null // Final colour
+                        null, // Final colour
                     );
                 }
             }

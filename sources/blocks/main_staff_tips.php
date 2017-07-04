@@ -59,7 +59,7 @@ class Block_main_staff_tips
     {
         $GLOBALS['SITE_DB']->create_table('staff_tips_dismissed', array(
             't_member' => '*MEMBER',
-            't_tip' => '*ID_TEXT'
+            't_tip' => '*ID_TEXT',
         ));
     }
 

@@ -199,7 +199,7 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
                             'I' => strval($i + 1),
                             'TITLE' => $temp[1],
                             'CONTENT' => $temp[0],
-                            'THUMBNAIL' => array_key_exists(2, $temp) ? $temp[2] : ''
+                            'THUMBNAIL' => array_key_exists(2, $temp) ? $temp[2] : '',
                         ), null, false, null, '.txt', 'text');
                         $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGE*/
                         $i++;
@@ -237,7 +237,7 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
                     '_GUID' => '64c8870e7c75354c07b2e94f299cd38c',
                     'I' => strval($i + 1),
                     'TITLE' => $temp[1],
-                    'CONTENT' => $temp[0]
+                    'CONTENT' => $temp[0],
                 ), null, false, null, '.txt', 'text');
                 $automatic[$find_id] = $tmp->evaluate($lang); /*FUDGE*/
                 $i++;
@@ -252,7 +252,7 @@ function generate_whatsnew_comcode($chosen_categories, $in_full, $lang, $cutoff_
                     '_GUID' => '8d1e7f448d11853b675a0949b8a0c2c9',
                     'I' => strval($i + 1),
                     'TITLE' => $temp[1],
-                    'CONTENT' => $temp[0]
+                    'CONTENT' => $temp[0],
                 ), null, false, null, '.txt', 'text');
                 $automatic[$last_find_id] = $tmp->evaluate($lang); /*FUDGE*/
                 $i++;
@@ -725,7 +725,7 @@ function newsletter_preview($message, $subject, $html_only, $forename = null, $s
                 'CSS' => css_tempcode(true, true, $comcode_version->evaluate()),
                 'LANG' => get_site_default_lang(),
                 'LOGOURL' => get_logo_url(''),
-                'CONTENT' => $comcode_version
+                'CONTENT' => $comcode_version,
             ),
             null,
             false,

@@ -24,7 +24,7 @@ function login_mod_test()
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
             'admin',
-            ''
+            '',
         )
     );
     print_mobiquo_result($result);
@@ -112,7 +112,7 @@ function m_move_topic_test()
         array(
             '3',
             '1',
-            true
+            true,
         )
     );
     print_mobiquo_result($result);
@@ -184,7 +184,7 @@ function m_merge_post_test()
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
             '10,11',
-            '12'
+            '12',
         )
     );
     print_mobiquo_result($result);

@@ -323,7 +323,7 @@ function demonstratr_add_site($codename, $name, $email_address, $password, $desc
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('sites', 's_server', array('s_codename' => $codename));
     if ($test !== null) {
         // Did it fail adding before? It's useful to not have to fiddle around manually cleaning up when debugging
-        $definitely_failed = false;//(strpos(file_get_contents(special_demonstratr_dir().'/rcpthosts'),"\n".$codename.'.composr.info'."\n")===false);
+        $definitely_failed = false;//(strpos(file_get_contents(special_demonstratr_dir() . '/rcpthosts'), "\n" . $codename . '.composr.info' . "\n") === false);
         $probably_failed = !file_exists(special_demonstratr_dir() . '/alias/.qmail-demonstratr_' . $codename . '_staff');
         if (($definitely_failed) || ((($probably_failed) || (get_param_integer('keep_force', 0) == 1)) && ($GLOBALS['FORUM_DRIVER']->is_staff(get_member())))) {
             demonstratr_delete_site($test, $codename);

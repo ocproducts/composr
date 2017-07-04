@@ -69,7 +69,7 @@ class galleries_test_set extends cms_test_case
             delete_gallery('a_test_gallery_for_ut');
         }
 
-        //Setting sample data to POST
+        // Setting sample data to POST
         $_POST = array(
             'fullname' => 'A test gallery for UT',
             'require__fullname' => 1,
@@ -148,7 +148,7 @@ class galleries_test_set extends cms_test_case
 
     public function testEditGalleryActualiser()
     {
-        //Setting sample data to POST
+        // Setting sample data to POST
         $_POST = array(
             'fullname' => 'A test gallery for UT- Edited',
             'require__fullname' => 1,
@@ -224,7 +224,7 @@ class galleries_test_set extends cms_test_case
 
     public function testAddImageUI()
     {
-        //Checking gallery image adding UI
+        // Checking gallery image adding UI
         $_GET['type'] = 'add';
         $this->cms_gal->pre_run();
         $this->cms_gal->add();
@@ -232,7 +232,7 @@ class galleries_test_set extends cms_test_case
 
     public function testAddImageActualiser()
     {
-        //Test data add to POST
+        // Test data add to POST
         $_POST = array(
             'title' => 'A test image',
             'require__title' => 0,

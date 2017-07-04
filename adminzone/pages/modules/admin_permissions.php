@@ -78,13 +78,13 @@ class Module_admin_permissions
             $GLOBALS['SITE_DB']->create_table('match_key_messages', array(
                 'id' => '*AUTO',
                 'k_message' => 'LONG_TRANS__COMCODE',
-                'k_match_key' => 'SHORT_TEXT'
+                'k_match_key' => 'SHORT_TEXT',
             ));
 
             // What usergroups may enter this zone
             $GLOBALS['SITE_DB']->create_table('group_zone_access', array(
                 'zone_name' => '*ID_TEXT',
-                'group_id' => '*GROUP'
+                'group_id' => '*GROUP',
             ));
             $GLOBALS['SITE_DB']->create_index('group_zone_access', 'group_id', array('group_id'));
 
@@ -111,7 +111,7 @@ class Module_admin_permissions
             $GLOBALS['SITE_DB']->create_table('group_page_access', array(
                 'page_name' => '*ID_TEXT',
                 'zone_name' => '*ID_TEXT',
-                'group_id' => '*GROUP'
+                'group_id' => '*GROUP',
             ));
             foreach (array_keys($usergroups) as $id) {
                 if ((get_forum_type() == 'cns') && (!is_guest($id))) {
@@ -597,11 +597,11 @@ class Module_admin_permissions
                 $id = substr($key, 5);
                 if ((substr($id, 0, 4) == 'new_') || (!array_key_exists(intval($id), $mkeylang))) {
                     $GLOBALS['SITE_DB']->query_insert('match_key_messages', array(
-                        'k_match_key' => $val
+                        'k_match_key' => $val,
                     ) + insert_lang_comcode('k_message', post_param_string('msg_' . $id), 2));
                 } else {
                     $map = array(
-                        'k_match_key' => $val
+                        'k_match_key' => $val,
                     );
                     $map += lang_remap_comcode('k_message', $mkeylang[intval($id)], post_param_string('msg_' . $id));
                     $GLOBALS['SITE_DB']->query_insert('match_key_messages', $map);

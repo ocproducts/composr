@@ -274,7 +274,7 @@ class Module_admin_redirects
                     'r_from_zone' => post_param_string('from_zone_' . $i),
                     'r_to_page' => post_param_string('to_page_' . $i),
                     'r_to_zone' => post_param_string('to_zone_' . $i),
-                    'r_is_transparent' => post_param_integer('is_transparent_' . $i, 0)
+                    'r_is_transparent' => post_param_integer('is_transparent_' . $i, 0),
                 ), false, true); // Avoid problem when same key entered twice
             }
         }

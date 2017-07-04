@@ -31,7 +31,7 @@ function init__feedback()
             RATING_TYPE_like_dislike,
             array(
                 '' => '',
-            )
+            ),
         ),
         'images' => array(
             RATING_TYPE_star_choice,
@@ -40,7 +40,7 @@ function init__feedback()
                 'scenery' => 'Scenery',
                 'quality' => 'Quality',
                 'art' => 'Artiness',
-            )
+            ),
         ),
     );
 

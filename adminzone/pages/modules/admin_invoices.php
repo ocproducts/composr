@@ -267,7 +267,7 @@ class Module_admin_invoices
             'i_currency' => $currency,
             'i_special' => post_param_string('special'),
             'i_time' => time(),
-            'i_note' => post_param_string('note')
+            'i_note' => post_param_string('note'),
         ), true);
 
         log_it('CREATE_INVOICE', strval($id), $type_code);

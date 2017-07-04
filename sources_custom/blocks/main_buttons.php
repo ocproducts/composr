@@ -73,7 +73,7 @@ class Block_main_buttons
                 't_image_width' => $image_width,
                 't_image_height' => $image_height,
                 't_max_file_size' => $max_file_size,
-                't_comcode_inline' => $comcode_inline
+                't_comcode_inline' => $comcode_inline,
             ));
 
             log_it('ADD_BANNER_TYPE', $id);

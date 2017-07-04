@@ -122,7 +122,7 @@ RewriteRule (.*) - [L]
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

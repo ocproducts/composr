@@ -63,7 +63,7 @@ class Module_forumview
             $ret += array(
                 '_SEARCH:topicview' => array('INLINE_PERSONAL_POSTS', 'menu/social/forum/inline_personal_posts'),
                 '_SEARCH:vforums:browse' => array('POSTS_SINCE', 'menu/social/forum/vforums/posts_since_last_visit'),
-                '_SEARCH:vforums:unanswered' => array('UNANSWERED_TOPICS', 'menu/social/forum/vforums/unanswered_topics')
+                '_SEARCH:vforums:unanswered' => array('UNANSWERED_TOPICS', 'menu/social/forum/vforums/unanswered_topics'),
             );
             if (!$check_perms || !is_guest($member_id)) {
                 $ret += array(

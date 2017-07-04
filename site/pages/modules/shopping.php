@@ -117,7 +117,7 @@ class Module_shopping
                 'p_price' => 'REAL',
                 'p_tax_code' => 'ID_TEXT',
                 'p_tax' => 'REAL', // We need this for accurate logging (we can't have it changing while looking at a past order); we use it for tax invoices
-                'p_dispatch_status' => 'SHORT_TEXT'
+                'p_dispatch_status' => 'SHORT_TEXT',
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'type_code', array('p_type_code'));
             $GLOBALS['SITE_DB']->create_index('shopping_order_details', 'order_id', array('p_order_id'));
@@ -128,7 +128,7 @@ class Module_shopping
                 'l_session_id' => 'ID_TEXT',
                 'l_ip' => 'IP',
                 'l_last_action' => 'SHORT_TEXT',
-                'l_date_and_time' => 'TIME'
+                'l_date_and_time' => 'TIME',
             ));
             $GLOBALS['SITE_DB']->create_index('shopping_logging', 'cart_log', array('l_date_and_time'));
         }
@@ -372,7 +372,7 @@ class Module_shopping
                 do_lang_tempcode('PRICE'),
                 do_lang_tempcode(get_option('tax_system')),
                 do_lang_tempcode('AMOUNT'),
-                do_lang_tempcode('REMOVE')
+                do_lang_tempcode('REMOVE'),
             ));
 
             list($total_price, $total_tax_derivation, $total_tax, $total_tax_tracking, $shopping_cart_rows_taxes, $total_shipping_cost, $total_shipping_tax, , , , ) = derive_cart_amounts($shopping_cart_rows);
@@ -464,7 +464,7 @@ class Module_shopping
 
         $edit_quantity_link = do_template('ECOM_SHOPPING_ITEM_QUANTITY_FIELD', array(
             'TYPE_CODE' => $item['type_code'],
-            'QUANTITY' => strval($item['quantity'])
+            'QUANTITY' => strval($item['quantity']),
         ));
 
         $delete_item_link = do_template('ECOM_SHOPPING_ITEM_REMOVE_FIELD', array(

@@ -166,7 +166,7 @@ function cns_poll_get_results($poll_id, $request_results = true)
         'requires_reply' => $poll_info[0]['po_requires_reply'],
         'is_open' => $poll_info[0]['po_is_open'],
         'answers' => $answers,
-        'total_votes' => $poll_info[0]['po_cache_total_votes']
+        'total_votes' => $poll_info[0]['po_cache_total_votes'],
     );
 
     return $out;

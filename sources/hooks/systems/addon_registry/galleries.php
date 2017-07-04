@@ -503,7 +503,7 @@ class Hook_addon_registry_galleries
      */
     public function tpl_preview__block_main_gallery_embed()
     {
-        //Create the 'GALLERY_ENTRY_WRAP' template
+        // Create the 'GALLERY_ENTRY_WRAP' template
         $entries = new Tempcode();
         foreach (placeholder_array() as $k => $v) {
             $map = array(
@@ -527,7 +527,7 @@ class Hook_addon_registry_galleries
             $entries->attach(do_lorem_template('GALLERY_ENTRY_WRAP', array('ENTRY' => $entry) + $map));
         }
 
-        //Create 'BLOCK_MAIN_GALLERY_EMBED' with 'GALLERY_ENTRY_WRAP' as sub-template
+        // Create 'BLOCK_MAIN_GALLERY_EMBED' with 'GALLERY_ENTRY_WRAP' as sub-template
         return array(
             lorem_globalise(do_lorem_template('BLOCK_MAIN_GALLERY_EMBED', array(
                 'BLOCK_ID' => lorem_word(),

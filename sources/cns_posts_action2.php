@@ -118,7 +118,7 @@ function cns_member_handle_promotion($member_id = null)
             $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
                 'member_id' => $member_id,
                 'usergroup_id' => $_p,
-                'join_time' => time()
+                'join_time' => time(),
             ));
 
             // Notify the member

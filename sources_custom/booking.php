@@ -506,7 +506,7 @@ function send_booking_emails($request)
             'MEMBER_ID' => strval(get_member()),
             'USERNAME' => $customer_name,
             'PRICE' => float_format(find_booking_price($request)),
-            'DETAILS' => make_booking_request_printable($request)
+            'DETAILS' => make_booking_request_printable($request),
         ),
         get_site_default_lang()
     );

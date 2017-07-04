@@ -109,7 +109,7 @@ class Hook_addon_registry_user_sync
         return array(
             'requires' => array('commandr'),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

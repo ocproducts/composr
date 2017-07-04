@@ -669,7 +669,7 @@ class Module_admin_ecommerce_logs
                 $status,
                 escape_html(trim($transaction_row['t_reason'] . '; ' . $transaction_row['t_pending_reason'], '; ')),
                 escape_html($transaction_row['t_memo']),
-                $member_link
+                $member_link,
             ), false));
         }
 

@@ -345,7 +345,7 @@ class Module_cms_chat
             $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
             if ($username === null) {
                 $username = '';
-            }//do_lang('UNKNOWN');
+            }
 
             $message = get_translated_tempcode('chat_messages', $myrow, 'the_message');
 

@@ -571,7 +571,7 @@ class Module_quiz
                 $GLOBALS['SITE_DB']->query_insert('quiz_entry_answer', array(
                     'q_entry' => $entry_id,
                     'q_question' => $question['id'],
-                    'q_answer' => post_param_string('q_' . strval($question['id']), '')
+                    'q_answer' => post_param_string('q_' . strval($question['id']), ''),
                 ));
             } elseif ($question['q_type'] == 'MULTIMULTIPLE') { // Check boxes
                 $accum = new Tempcode();
@@ -580,7 +580,7 @@ class Module_quiz
                         $GLOBALS['SITE_DB']->query_insert('quiz_entry_answer', array(
                             'q_entry' => $entry_id,
                             'q_question' => $question['id'],
-                            'q_answer' => strval($a['id'])
+                            'q_answer' => strval($a['id']),
                         ));
                     }
                 }
@@ -588,7 +588,7 @@ class Module_quiz
                 $GLOBALS['SITE_DB']->query_insert('quiz_entry_answer', array(
                     'q_entry' => $entry_id,
                     'q_question' => $question['id'],
-                    'q_answer' => post_param_string('q_' . strval($question['id']), '')
+                    'q_answer' => post_param_string('q_' . strval($question['id']), ''),
                 ));
             }
         }

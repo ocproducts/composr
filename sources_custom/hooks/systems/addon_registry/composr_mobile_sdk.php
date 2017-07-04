@@ -116,7 +116,7 @@ The documentation for this addon is covered in a dedicated tutorial (' . get_bra
                 'Conversr',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

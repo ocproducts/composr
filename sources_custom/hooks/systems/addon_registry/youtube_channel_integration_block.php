@@ -111,7 +111,7 @@ class Hook_addon_registry_youtube_channel_integration_block
                 'PHP JSON Extension',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

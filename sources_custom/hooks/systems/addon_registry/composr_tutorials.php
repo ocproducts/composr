@@ -121,7 +121,7 @@ The documentation is primarily maintained on our website, and this archive is on
                 'composr_homesite_support_credits',
                 'composr_release_build',
             ),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

@@ -315,7 +315,7 @@ class Hook_addon_registry_quizzes
      */
     public function tpl_preview__quiz_screen()
     {
-        //This is for getting the $cms.doAjaxRequest() javascript function.
+        // This is for getting the $cms.doAjaxRequest() javascript function.
         $warning_details = do_lorem_template('WARNING_BOX', array(
             'WARNING' => lorem_phrase(),
         ));

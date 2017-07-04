@@ -97,7 +97,7 @@ class Module_admin_custom_comcode extends Standard_crud_module
             'tag_enabled' => 'BINARY',
             'tag_dangerous_tag' => 'BINARY',
             'tag_block_tag' => 'BINARY',
-            'tag_textual_tag' => 'BINARY'
+            'tag_textual_tag' => 'BINARY',
         ));
     }
 

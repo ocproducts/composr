@@ -83,7 +83,7 @@ class Module_wiki
                 'parent_id' => '*AUTO_LINK',
                 'child_id' => '*AUTO_LINK',
                 'the_order' => 'INTEGER',
-                'title' => 'SHORT_TEXT'
+                'title' => 'SHORT_TEXT',
             ));
 
             $GLOBALS['SITE_DB']->create_table('wiki_pages', array(
@@ -95,7 +95,7 @@ class Module_wiki
                 'edit_date' => '?TIME',
                 'wiki_views' => 'INTEGER',
                 'hide_posts' => 'BINARY',
-                'submitter' => 'MEMBER'
+                'submitter' => 'MEMBER',
             ));
 
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'sps', array('submitter'));
@@ -125,7 +125,7 @@ class Module_wiki
                 'validated' => 'BINARY',
                 'wiki_views' => 'INTEGER',
                 'member_id' => 'MEMBER',
-                'edit_date' => '?TIME'
+                'edit_date' => '?TIME',
             ));
 
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'posts_on_page', array('page_id'));

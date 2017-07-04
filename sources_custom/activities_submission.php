@@ -52,7 +52,7 @@ function activities_addon_syndicate_described_activity($a_language_string_code =
         'a_label_1' => $a_label_1,
         'a_label_2' => $a_label_2,
         'a_label_3' => $a_label_3,
-        'a_is_public' => $a_is_public
+        'a_is_public' => $a_is_public,
     );
 
     $stored_id = mixed();

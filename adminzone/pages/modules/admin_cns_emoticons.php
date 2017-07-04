@@ -239,7 +239,7 @@ class Module_admin_cns_emoticons extends Standard_crud_module
             'e_theme_img_code' => $image_code,
             'e_relevance_level' => 2,
             'e_use_topics' => 0,
-            'e_is_special' => 0
+            'e_is_special' => 0,
         ));
 
         Self_learning_cache::erase_smart_cache();

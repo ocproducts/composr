@@ -187,13 +187,13 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
     // http://dnsbl.tornevall.org/?do=usage
     if (strpos($rbl, 'tornevall.org') !== false) {
         $block = array(
-            'tornevall_abuse' => true,            // TornevallRBL: Block on 'abuse'
-            'tornevall_anonymous' => true,        // TornevallRBL: Block on anonymous access (anonymizers, TOR, etc)
-            'tornevall_blitzed' => false,        // TornevallRBL: Block if host are found in the Blitzed RBL (R.I.P)
-            'tornevall_checked' => false,        // TornevallRBL: Block anything that has been checked
-            'tornevall_elite' => true,            // TornevallRBL: Block elite proxies (proxies with high anonymity)
-            'tornevall_error' => false,            // TornevallRBL: Block proxies that has been tested but failed
-            'tornevall_timeout' => false,        // TornevallRBL: Block proxies that has been tested but timed out
+            'tornevall_abuse' => true,              // TornevallRBL: Block on 'abuse'
+            'tornevall_anonymous' => true,          // TornevallRBL: Block on anonymous access (anonymizers, TOR, etc)
+            'tornevall_blitzed' => false,           // TornevallRBL: Block if host are found in the Blitzed RBL (R.I.P)
+            'tornevall_checked' => false,           // TornevallRBL: Block anything that has been checked
+            'tornevall_elite' => true,              // TornevallRBL: Block elite proxies (proxies with high anonymity)
+            'tornevall_error' => false,             // TornevallRBL: Block proxies that has been tested but failed
+            'tornevall_timeout' => false,           // TornevallRBL: Block proxies that has been tested but timed out
             'tornevall_working' => true,            // TornevallRBL: Block proxies that has been tested and works
         );
         $rtornevall = array(
@@ -204,7 +204,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
             'tornevall_error' => 16,
             'tornevall_elite' => 32,
             'tornevall_abuse' => 64,
-            'tornevall_anonymous' => 128
+            'tornevall_anonymous' => 128,
         );
 
         if ($we_have_a_result_already) {
@@ -227,13 +227,13 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
     // http://njabl.org/use.html
     if (strpos($rbl, 'njabl.org') !== false) {
         $block = array(
-            'njabl_dialup' => false,                // Njabl: Block dialups/dynamic ip-ranges (Be careful!)
-            'njabl_formmail' => true,                // Njabl: Block systems with insecure scripts that make them into open relays
-            'njabl_multi' => false,                // Njabl: Block multi-stage open relays (Don't know what this is? Leave it alone)
-            'njabl_openproxy' => true,            // Njabl: Block open proxy servers
-            'njabl_passive' => false,                // Njabl: Block passively detected 'bad hosts' (Don't know what this is? Leave it alone)
-            'njabl_relay' => false,                // Njabl: Block open relays (as in e-mail-open-relays - be careful)
-            'njabl_spam' => false                    // Njabl: lock spam sources (Again, as in e-mail
+            'njabl_dialup' => false,                    // Njabl: Block dialups/dynamic ip-ranges (Be careful!)
+            'njabl_formmail' => true,                   // Njabl: Block systems with insecure scripts that make them into open relays
+            'njabl_multi' => false,                     // Njabl: Block multi-stage open relays (Don't know what this is? Leave it alone)
+            'njabl_openproxy' => true,                  // Njabl: Block open proxy servers
+            'njabl_passive' => false,                   // Njabl: Block passively detected 'bad hosts' (Don't know what this is? Leave it alone)
+            'njabl_relay' => false,                     // Njabl: Block open relays (as in e-mail-open-relays - be careful)
+            'njabl_spam' => false ,                     // Njabl: lock spam sources (Again, as in e-mail
         );
         $rnjabl = array(
             'njabl_relay' => 2,
@@ -242,7 +242,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
             'njabl_multi' => 5,
             'njabl_passive' => 6,
             'njabl_formmail' => 8,
-            'njabl_openproxy' => 9
+            'njabl_openproxy' => 9,
         );
 
         if ($we_have_a_result_already) {
@@ -265,9 +265,9 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
     // http://efnetrbl.org/
     if (strpos($rbl, 'efnet.org') !== false) {
         $block = array(
-            'efnet_openproxy' => true,            // EFNet: Block open proxies registered at rbl.efnet.org
+            'efnet_openproxy' => true,              // EFNet: Block open proxies registered at rbl.efnet.org
             'efnet_spamtrap50' => false,            // EFNet: Block trojan spreading client (IRC-based)
-            'efnet_spamtrap666' => false,        // EFNet: Block known trojan infected/spreading client (IRC-based)
+            'efnet_spamtrap666' => false,           // EFNet: Block known trojan infected/spreading client (IRC-based)
             'efnet_tor' => true,                    // EFNet: Block TOR Proxies
             'efnet_drones' => false,                // EFNet: Drones/Flooding (IRC-based)
         );
@@ -276,7 +276,7 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
             'efnet_spamtrap666' => 2,
             'efnet_spamtrap50' => 3,
             'efnet_tor' => 4,
-            'efnet_drones' => 5
+            'efnet_drones' => 5,
         );
 
         if ($we_have_a_result_already) {

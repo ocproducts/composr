@@ -130,7 +130,7 @@ You need to:
         return array(
             'requires' => array('PHP5.5', 'curl'),
             'recommends' => array('better_mail'),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

@@ -136,7 +136,7 @@ When you add the block you see various block parameters to be filled in includin
                 'catalogues',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

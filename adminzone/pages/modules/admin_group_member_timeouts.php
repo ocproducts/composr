@@ -227,7 +227,7 @@ class Module_admin_group_member_timeouts
      */
     public function _save_group_member_timeout($old_group_id, $group_id, $username, $time)
     {
-        $prefer_for_primary_group = false;//(post_param_integer('prefer_for_primary_group',0)==1); Don't promote this bad choice
+        $prefer_for_primary_group = false;//(post_param_integer('prefer_for_primary_group', 0) == 1); Don't promote this bad choice
 
         if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) { // Security issue, don't allow privilege elevation
             $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();

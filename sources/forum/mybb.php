@@ -184,7 +184,7 @@ class Forum_driver_mybb extends Forum_driver_base
             14 => '../uploads',
             15 => '../themes',
             16 => '../theme',
-            17 => '../main'
+            17 => '../main',
         );
     }
 
@@ -354,7 +354,7 @@ class Forum_driver_mybb extends Forum_driver_base
         $filename = $this->get_member_row_field($member, 'avatar');
 
         switch ($type) {
-            //Type could be: 'gallery', 'upload','remote'
+            // Type could be: 'gallery', 'upload','remote'
             case 'gallery': // Avatar from Avatars Gallery
                 return get_forum_base_url() . '/' . $filename;
             case 'remote': // URL of Remote image Avatar
@@ -362,7 +362,7 @@ class Forum_driver_mybb extends Forum_driver_base
             case 'upload': // Uploaded Avatar
                 return get_forum_base_url() . preg_replace('/\.\//', '/', $filename);
         }
-        return ''; //the avatar is not set
+        return ''; // The avatar is not set
     }
 
     /**
@@ -492,7 +492,7 @@ class Forum_driver_mybb extends Forum_driver_base
             warn_exit(do_lang_tempcode('MISSING_FORUM', escape_html($forum_name)), false, true);
         }
 
-        $username = $this->_get_username($member);//needed for the mybb_theads DB table
+        $username = $this->_get_username($member); // needed for the mybb_theads DB table
 
         $test = $this->db->query_select('forums', array('*'), array(), '', 1);
         $fm = array_key_exists('status', $test[0]);
@@ -896,17 +896,17 @@ class Forum_driver_mybb extends Forum_driver_base
     {
         $rows = $this->db->query('SELECT * FROM ' . $this->db->get_table_prefix() . 'banned WHERE uid=' . strval($member));
         if (empty($rows[0])) {
-            return false; //the member is never banned
+            return false; // The member is never banned
         } else {
-            $ban_till = $rows[0]['lifted']; //the user is banned till this date/time
+            $ban_till = $rows[0]['lifted']; // The user is banned till this date/time
         }
 
         if ($ban_till === 0) {
-            return true; //the member is permanently banned
+            return true; // The member is permanently banned
         } elseif ($ban_till < time()) {
-            return false; //the ban time is over
+            return false; // The ban time is over
         } else {
-            return true; //the member is still banned (not permanently banned)
+            return true; // The member is still banned (not permanently banned)
         }
     }
 
@@ -1019,7 +1019,7 @@ class Forum_driver_mybb extends Forum_driver_base
         if (in_array($user_level, array(3, 4, 6))) {
             return true; // return all administrators + all moderators
         }
-        //if ($user_level == 4) return true; //this returns only administrators
+        //if ($user_level == 4) return true; // This returns only administrators
         return false;
     }
 
@@ -1192,8 +1192,8 @@ class Forum_driver_mybb extends Forum_driver_base
         unset($password);
 
         $row = $this->get_member_row($id);
-        $loginkey = $row['loginkey']; //used for 'mybbuser' memberid.'_'.'loginkey'
-        $loguid = $row['uid']; //member ID
+        $loginkey = $row['loginkey']; // Used for 'mybbuser' memberid.'_'.'loginkey'
+        $loguid = $row['uid']; // Member ID
 
         // Set a User COOKIE
         $member_cookie_name = get_member_cookie();
@@ -1213,7 +1213,7 @@ class Forum_driver_mybb extends Forum_driver_base
                 $this->db->query_insert('sessions', array('sid' => $session_id, 'uid' => $id, 'time' => time(), 'ip' => $current_ip));
             }
 
-            //Now lets try and set a COOKIE of MyBB Session ID
+            // Now lets try and set a COOKIE of MyBB Session ID
             cms_setcookie('sid', $session_id);
         }
     }
@@ -1350,7 +1350,7 @@ class Forum_driver_mybb extends Forum_driver_base
      */
     public function get_member()
     {
-        //get cookie information if available
+        // Get cookie information if available
         $cookie_raw_info = (array_key_exists(get_member_cookie(), $_COOKIE)) ? $_COOKIE[get_member_cookie()] : '';
 
         $cookie_info = array();
@@ -1360,16 +1360,16 @@ class Forum_driver_mybb extends Forum_driver_base
 
         if ($cookie_member != '') {
             $row = $this->get_member_row(intval($cookie_member));
-            //is the cookie info correct
+            // Is the cookie info correct
             if ($cookie_loginkey == $row['loginkey']) {
-                //if it is correct then return the cookie member
+                // If it is correct then return the cookie member
                 return $cookie_member;
             } else {
-                //return the default guest ID, because the login key is not correct
+                // Return the default guest ID, because the login key is not correct
                 return $this->get_guest_id();
             }
         } else {
-            //return the default guest ID, because there is no member cookie information
+            // Return the default guest ID, because there is no member cookie information
             return $this->get_guest_id();
         }
     }

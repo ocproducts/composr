@@ -118,7 +118,7 @@ $TABLE_FIELDS['db_meta'] = array(
     'fields' => array(
         'm_table' => '*ID_TEXT',
         'm_name' => '*ID_TEXT',
-        'm_type' => 'ID_TEXT'
+        'm_type' => 'ID_TEXT',
     )
 );
 $TABLE_FIELDS['db_meta_indices'] = array(

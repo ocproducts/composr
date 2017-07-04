@@ -92,7 +92,7 @@ function do_work()
         $GLOBALS['SITE_DB']->query_insert('chat_friends', array(
             'member_likes' => $member_id,
             'member_liked' => db_get_first_id() + 1,
-            'date_and_time' => time()
+            'date_and_time' => time(),
         ), false, true);
     }
     $member_id = db_get_first_id() + 2;
@@ -107,7 +107,7 @@ function do_work()
         $GLOBALS['SITE_DB']->query_insert('chat_friends', array(
             'member_likes' => $member_id,
             'member_liked' => $j + db_get_first_id(),
-            'date_and_time' => time()
+            'date_and_time' => time(),
         ), false, true);
     }
     echo 'done member/authors/points/notifications/friends stuff' . "\n";
@@ -387,7 +387,7 @@ function do_work()
             'ip' => uniqid('', true),
             'reason' => 'ASCII_ENTITY_URL_HACK',
             'reason_param_a' => '',
-            'reason_param_b' => ''
+            'reason_param_b' => '',
         ));
     }
     // logged hits in one day

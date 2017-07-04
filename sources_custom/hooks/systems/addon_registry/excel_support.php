@@ -116,7 +116,7 @@ class Hook_addon_registry_excel_support
                 'PHP5.3',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

@@ -24,7 +24,7 @@ function report_pm_test()
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
             '14',
-            '%report_reason'
+            '%report_reason',
         )
     );
     print_mobiquo_result($result);
@@ -44,7 +44,7 @@ function create_message_test()
             '%test_subject',
             '%test_text_body',
             1, // Reply
-            '14'
+            '14',
         )
     );
     print_mobiquo_result($result);
@@ -76,7 +76,7 @@ function get_box_test()
         array(
             '2',
             1,
-            5
+            5,
         )
     );
     print_mobiquo_result($result);
@@ -94,7 +94,7 @@ function get_message_test()
         array(
             '15',
             '5',
-            true
+            true,
         )
     );
     print_mobiquo_result($result);
@@ -110,7 +110,7 @@ function get_quote_pm_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '15'
+            '15',
         )
     );
     print_mobiquo_result($result);
@@ -127,7 +127,7 @@ function delete_message_test()
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
             '73',
-            '5'
+            '5',
         )
     );
     print_mobiquo_result($result);
@@ -143,7 +143,7 @@ function mark_pm_unread_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '72'
+            '72',
         )
     );
     print_mobiquo_result($result);
@@ -159,7 +159,7 @@ function mark_pm_read_test()
     $result = mobiquo_xmlrpc_simple_call(
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
-            '72'
+            '72',
         )
     );
     print_mobiquo_result($result);

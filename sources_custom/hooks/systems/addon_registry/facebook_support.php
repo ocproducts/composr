@@ -131,7 +131,7 @@ For a demo, see this video tutorial: https://www.youtube.com/watch?v=HUZ_O5io0F0
                 'PHP CuRL extension',
             ),
             'recommends' => array('activity_feed'),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

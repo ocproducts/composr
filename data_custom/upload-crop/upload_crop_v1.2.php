@@ -239,14 +239,14 @@ if ($width > $max_width) {
 $message = '';
 
 if (isset($_POST["upload_thumbnail"]) && strlen($large_photo_exists) > 0) {
-    //Get the new coordinates to crop the image.
+    // Get the new coordinates to crop the image.
     $x1 = $_POST["x1"];
     $y1 = $_POST["y1"];
     $x2 = $_POST["x2"];
     $y2 = $_POST["y2"];
     $w = $_POST["w"];
     $h = $_POST["h"];
-    //Scale the image to the thumb_width set above
+    // Scale the image to the thumb_width set above
     $scale = $thumb_width / $w;
     $cropped = resizeThumbnailImage($thumb_image_location, $large_image_location, $w, $h, $x1, $y1, $scale);
 

@@ -56,7 +56,7 @@ function set_coordinates()
     $_coords = get_param_string('coord', '');
     $member_id = get_param_integer('mid', get_member());
 
-    //prevent hack attepts
+    // Prevent hack attepts
     if ($member_id != get_member()) {
         return;
     }
@@ -67,12 +67,12 @@ function set_coordinates()
 
     $longitude_cpf_id = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_custom_fields', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('cf_name') => 'cms_longitude'));
 
-    //are there latitude and longtitude custom profile fields ?
+    // Are there latitude and longtitude custom profile fields ?
     if (($longitude_cpf_id === null) || ($latitude_cpf_id === null)) {
         return;
     }
 
-    //check for inputed coordinates
+    // Check for inputed coordinates
     if (!is_array($coords) || !isset($coords[0]) || !isset($coords[1])) {
         return;
     }

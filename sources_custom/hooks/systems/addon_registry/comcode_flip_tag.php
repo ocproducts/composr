@@ -115,7 +115,7 @@ The above example creates a flip between text A and text B, taking 400ms. This i
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

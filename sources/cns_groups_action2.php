@@ -297,13 +297,13 @@ function cns_member_ask_join_group($group_id, $member_id = null)
     $GLOBALS['FORUM_DB']->query_insert('f_group_members', array(
         'gm_group_id' => $group_id,
         'gm_member_id' => $member_id,
-        'gm_validated' => $validated
+        'gm_validated' => $validated,
     ));
     if ($validated == 1) {
         $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
             'member_id' => $member_id,
             'usergroup_id' => $group_id,
-            'join_time' => time()
+            'join_time' => time(),
         ));
     }
 
@@ -382,13 +382,13 @@ function cns_add_member_to_group($member_id, $id, $validated = 1)
         $GLOBALS['FORUM_DB']->query_delete('f_group_members', array(
             'gm_group_id' => $id,
             'gm_member_id' => $member_id,
-            'gm_validated' => 0
+            'gm_validated' => 0,
         ), '', 1);
     }
     $GLOBALS['FORUM_DB']->query_insert('f_group_members', array(
         'gm_group_id' => $id,
         'gm_member_id' => $member_id,
-        'gm_validated' => $validated
+        'gm_validated' => $validated,
     ), false, true);
 
     log_it('MEMBER_ADDED_TO_GROUP', strval($member_id), strval($id));
@@ -409,7 +409,7 @@ function cns_add_member_to_group($member_id, $id, $validated = 1)
         $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
             'member_id' => $member_id,
             'usergroup_id' => $id,
-            'join_time' => time()
+            'join_time' => time(),
         ));
     }
 }
@@ -438,13 +438,13 @@ function cns_member_validate_into_group($group_id, $prospective_member_id, $decl
         $GLOBALS['FORUM_DB']->query_insert('f_group_members', array(
             'gm_group_id' => $group_id,
             'gm_member_id' => $prospective_member_id,
-            'gm_validated' => 1
+            'gm_validated' => 1,
         ));
 
         $GLOBALS['FORUM_DB']->query_insert('f_group_join_log', array(
             'member_id' => $prospective_member_id,
             'usergroup_id' => $group_id,
-            'join_time' => time()
+            'join_time' => time(),
         ));
 
         log_it('MEMBER_ADDED_TO_GROUP', strval($prospective_member_id), strval($group_id));

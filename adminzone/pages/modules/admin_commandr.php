@@ -146,7 +146,7 @@ class Module_admin_commandr
 
         $command = post_param_string('commandr_command', '');
         if ($command != '') {
-            //We've had a normal form submission
+            // We've had a normal form submission
             $temp = new Virtual_shell($command);
             $commands = $temp->output_html();
         } else {

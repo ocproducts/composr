@@ -127,7 +127,7 @@ The blocks provided are [tt]main_activities[/tt] and the status entry box is cal
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

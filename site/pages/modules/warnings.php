@@ -480,8 +480,8 @@ class Module_warnings extends Standard_crud_module
                     $forum_id = $GLOBALS['FORUM_DB']->query_select_value('f_topics', 't_forum_id', array('id' => $topic_id));
                     $hidden->attach(form_input_hidden('topic_id', strval($topic_id)));
                     $hidden->attach(form_input_hidden('forum_id', strval($forum_id)));
-                    $silence_topic_time = null;//time()+60*60*24*7;
-                    $silence_forum_time = null;//time()+60*60*24*7;
+                    $silence_topic_time = null;//time() + 60 * 60 * 24 * 7;
+                    $silence_forum_time = null;//time() + 60 * 60 * 24 * 7;
                     $active_until = $GLOBALS['SITE_DB']->query_select_value_if_there('member_privileges', 'active_until', array(
                         'member_id' => $member_id,
                         'privilege' => 'submit_lowrange_content',
@@ -707,7 +707,7 @@ class Module_warnings extends Standard_crud_module
                         $content_title,
                         $content_url,
                         $row['p_time'],
-                        true
+                        true,
                     );
 
                     if ($row['t_cache_first_post_id'] == $post_id) {
@@ -720,7 +720,7 @@ class Module_warnings extends Standard_crud_module
                             $content_title,
                             $content_url,
                             $row['t_cache_first_time'],
-                            true
+                            true,
                         );
                     }
                 }
@@ -847,7 +847,7 @@ class Module_warnings extends Standard_crud_module
                 'the_page' => '',
                 'module_the_name' => 'topics',
                 'category_name' => strval($silence_from_topic),
-                'the_value' => '0'
+                'the_value' => '0',
             ));
         } else {
             $silence_from_topic = null;
@@ -885,7 +885,7 @@ class Module_warnings extends Standard_crud_module
                 'the_page' => '',
                 'module_the_name' => 'forums',
                 'category_name' => strval($silence_from_forum),
-                'the_value' => '0'
+                'the_value' => '0',
             ));
             $GLOBALS['SITE_DB']->query_insert('member_privileges', array(
                 'active_until' => $_silence_from_forum,
@@ -894,7 +894,7 @@ class Module_warnings extends Standard_crud_module
                 'the_page' => '',
                 'module_the_name' => 'forums',
                 'category_name' => strval($silence_from_forum),
-                'the_value' => '0'
+                'the_value' => '0',
             ));
         } else {
             $silence_from_forum = null;

@@ -281,7 +281,7 @@ class Module_admin_lookup
                 'AUTHOR_URL' => $author_url,
                 'POINTS_URL' => $points_url,
                 'PROFILE_URL' => $profile_url,
-                'ACTIONLOG_URL' => $actionlog_url
+                'ACTIONLOG_URL' => $actionlog_url,
             ));
 
             require_code('templates_internalise_screen');

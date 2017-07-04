@@ -118,7 +118,7 @@ function get_participated_topic_test()
             0,
             2,
             '2',
-            '2'
+            '2',
         )
     );
     print_mobiquo_result($result);
@@ -153,7 +153,7 @@ function get_topic_participants_test()
         preg_replace('#_test$#', '', __FUNCTION__),
         array(
             '20',
-            15
+            15,
         )
     );
     print_mobiquo_result($result);

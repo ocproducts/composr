@@ -104,7 +104,7 @@ class Block_main_member_bar
                 'MAX_AVATAR_HEIGHT' => strval($max_avatar_height),
                 'LINKS' => $links,
                 'LINKS_ECOMMERCE' => $links_ecommerce,
-                'DETAILS' => $details
+                'DETAILS' => $details,
             ));
         } else { // Guest
             list($full_url, $login_url, $join_url) = get_login_url();

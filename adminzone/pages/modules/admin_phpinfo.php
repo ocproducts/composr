@@ -73,7 +73,7 @@ class Module_admin_phpinfo
         $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
         $found_issues = false;
         foreach ($hooks as $ob) {
-            $warning = array();//$ob->run();
+            $warning = $ob->run();
             foreach ($warning as $_warning) {
                 attach_message($_warning, 'warn');
                 $found_issues = true;

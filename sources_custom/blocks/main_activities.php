@@ -69,7 +69,7 @@ class Block_main_activities
                 'a_page_link_3' => 'SHORT_TEXT',
                 'a_time' => 'TIME',
                 'a_addon' => 'ID_TEXT',
-                'a_is_public' => 'BINARY'
+                'a_is_public' => 'BINARY',
             ));
 
             $GLOBALS['SITE_DB']->create_index('activities', 'a_member_id', array('a_member_id'));

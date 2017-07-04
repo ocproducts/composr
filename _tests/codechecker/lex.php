@@ -609,7 +609,7 @@ function lex($text = null)
                         $heredoc_buildup = array();
                         break;
                     } elseif (($char == '\\') || ($char == '{')) {
-                        $actual_char = '';// Technically we should only allow "$whatever" if whatever exists, but this future proofs checked code
+                        $actual_char = ''; // Technically we should only allow "$whatever" if whatever exists, but this future proofs checked code
                     }
                 }
 

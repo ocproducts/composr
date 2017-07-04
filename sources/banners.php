@@ -176,7 +176,7 @@ function banners_script($ret = false, $type = null, $dest = null, $b_type = null
             'c_member_id' => get_member(),
             'c_ip_address' => get_ip_address(),
             'c_source' => $source,
-            'c_banner_id' => $dest
+            'c_banner_id' => $dest,
         ));
 
         if ((strpos($url, "\n") !== false) || (strpos($url, "\r") !== false)) {

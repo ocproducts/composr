@@ -113,7 +113,7 @@ class Hook_addon_registry_community_billboard
                 'ecommerce',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 
@@ -212,7 +212,7 @@ class Hook_addon_registry_community_billboard
         foreach (placeholder_array() as $key => $value) {
             $text = do_lorem_template('COMMUNITY_BILLBOARD_STORE_LIST_LINE', array(
                 'MESSAGE' => $value,
-                'STATUS' => do_lang('NEW')
+                'STATUS' => do_lang('NEW'),
             ));
             $out->attach(do_lorem_template('FORM_SCREEN_INPUT_LIST_ENTRY', array(
                 'SELECTED' => false,

@@ -342,7 +342,7 @@ class Module_purchase
                 'name' => '*ID_TEXT',
                 'price' => '?REAL',
                 'tax_code' => 'ID_TEXT',
-                'price_points' => '?INTEGER'
+                'price_points' => '?INTEGER',
             ));
 
             $GLOBALS['SITE_DB']->create_table('ecom_sales', array(
@@ -1081,7 +1081,7 @@ class Module_purchase
             $_purchase_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_subscriptions', 'id', array(
                 's_type_code' => $type_code,
                 's_member_id' => get_member(),
-                's_state' => 'new'
+                's_state' => 'new',
             ));
             if ($_purchase_id === null) {
                 $purchase_id = strval($GLOBALS['SITE_DB']->query_insert('ecom_subscriptions', array(

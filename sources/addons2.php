@@ -574,7 +574,7 @@ function has_feature($dependency)
     // Normalise
     $dependency = str_replace(' ', '', strtolower(preg_replace('# (enabled|needed|required)$#', '', $dependency)));
 
-    $remapping = array(// Useful for carrying legacy remappings, currently there are none
+    $remapping = array( // Useful for carrying legacy remappings, currently there are none
     );
     if (array_key_exists($dependency, $remapping)) {
         $dependency = $remapping[$dependency];
@@ -851,28 +851,28 @@ function reinstall_addon_soft($addon, $ini_info = null)
         'addon_copyright_attribution' => implode("\n", $addon_info['copyright_attribution']),
         'addon_licence' => $addon_info['licence'],
         'addon_description' => $addon_info['description'],
-        'addon_install_time' => time()
+        'addon_install_time' => time(),
     ));
 
     foreach ($addon_info['dependencies'] as $dependency) {
         $GLOBALS['SITE_DB']->query_insert('addons_dependencies', array(
             'addon_name' => $addon,
             'addon_name_dependant_upon' => trim($dependency),
-            'addon_name_incompatibility' => 0
+            'addon_name_incompatibility' => 0,
         ));
     }
     foreach ($addon_info['incompatibilities'] as $incompatibility) {
         $GLOBALS['SITE_DB']->query_insert('addons_dependencies', array(
             'addon_name' => $addon,
             'addon_name_dependant_upon' => trim($incompatibility),
-            'addon_name_incompatibility' => 1
+            'addon_name_incompatibility' => 1,
         ));
     }
 
     foreach ($addon_info['files'] as $addon_file) {
         $GLOBALS['SITE_DB']->query_insert('addons_files', array(
             'addon_name' => $addon,
-            'filename' => $addon_file
+            'filename' => $addon_file,
         ));
     }
 }

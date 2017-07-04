@@ -85,7 +85,7 @@ function external_db_user_from_session()
             'method' => "GET",
             'header' =>
                 "Accept-language: en\r\n" .
-                "Cookie: ASP.NET_SessionId=" . $cookie . "\r\n"
+                "Cookie: ASP.NET_SessionId=" . $cookie . "\r\n",
         )
     );
     $context = stream_context_create($opts);

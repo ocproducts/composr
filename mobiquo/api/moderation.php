@@ -72,7 +72,7 @@ function m_stick_topic_func($raw_params)
         $response = mobiquo_val(array(
             'result' => mobiquo_val(false, 'boolean'),
             'result_text' => mobiquo_val(do_lang('permissions:ACCESS_DENIED__NOT_AS_GUEST'), 'base64'),
-            'is_login_mod' => mobiquo_val(is_guest(), 'boolean')
+            'is_login_mod' => mobiquo_val(is_guest(), 'boolean'),
         ), 'struct');
     }
     return mobiquo_response($response);

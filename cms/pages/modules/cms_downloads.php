@@ -1090,7 +1090,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
                 array(),
                 array(
                     has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_downloads') ? array('menu/cms/downloads/add_one_licence', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_DOWNLOAD_LICENCE')) : null,
-                    has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_downloads') ? array('menu/cms/downloads/edit_one_licence', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_DOWNLOAD_LICENCE')) : null
+                    has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_downloads') ? array('menu/cms/downloads/edit_one_licence', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_DOWNLOAD_LICENCE')) : null,
                 ),
                 do_lang('LICENCES'),
                 null,
@@ -1128,7 +1128,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
             array(),
             array(
                 has_privilege(get_member(), 'submit_cat_highrange_content', 'cms_downloads') ? array('menu/cms/downloads/add_one_licence', array('_SELF', array('type' => 'add_other'), '_SELF'), do_lang('ADD_DOWNLOAD_LICENCE')) : null,
-                has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_downloads') ? array('menu/cms/downloads/edit_one_licence', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_DOWNLOAD_LICENCE')) : null
+                has_privilege(get_member(), 'edit_cat_highrange_content', 'cms_downloads') ? array('menu/cms/downloads/edit_one_licence', array('_SELF', array('type' => 'edit_other'), '_SELF'), do_lang('EDIT_DOWNLOAD_LICENCE')) : null,
             ),
             do_lang('LICENCES'),
             null,

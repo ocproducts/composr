@@ -1509,7 +1509,7 @@ class Hook_addon_registry_ecommerce
      */
     public function tpl_preview__administrative__ecom_products_price_screen()
     {
-        //This is for getting the do_ajax_request() javascript function.
+        // This is for getting the do_ajax_request() javascript function.
 
         $warning_details = do_lorem_template('WARNING_BOX', array('WARNING' => lorem_phrase()));
 
@@ -1595,8 +1595,7 @@ class Hook_addon_registry_ecommerce
                 'EMAIL' => lorem_word(),
                 'QUOTA_URL' => placeholder_url(),
                 'PRICE' => placeholder_number(),
-            ), null, false, null, '.txt', 'text'
-            ),
+            ), null, false, null, '.txt', 'text'),
         );
     }
 

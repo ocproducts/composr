@@ -161,7 +161,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member_id = null, $s
         'date_and_time' => $add_time,
         'page_id' => $page_id,
         'wiki_views' => $views,
-        'edit_date' => $edit_date
+        'edit_date' => $edit_date,
     );
     if (multi_lang_content()) {
         $map['the_message'] = 0;

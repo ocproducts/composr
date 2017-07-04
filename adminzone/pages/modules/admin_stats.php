@@ -73,7 +73,7 @@ class Module_admin_stats
                 'browser' => 'SHORT_TEXT',
                 'milliseconds' => 'INTEGER',
                 'operating_system' => 'SHORT_TEXT',
-                'access_denied_counter' => 'INTEGER'
+                'access_denied_counter' => 'INTEGER',
             ));
 
             // Note: We have chosen not to create many indices because we want insertion to be very fast
@@ -87,7 +87,7 @@ class Module_admin_stats
 
             $GLOBALS['SITE_DB']->create_table('usersonline_track', array(
                 'date_and_time' => '*TIME',
-                'peak' => 'INTEGER'
+                'peak' => 'INTEGER',
             ));
 
             $GLOBALS['SITE_DB']->create_index('usersonline_track', 'peak_track', array('peak'));
@@ -96,7 +96,7 @@ class Module_admin_stats
                 'id' => '*AUTO',
                 'begin_num' => 'UINTEGER',
                 'end_num' => 'UINTEGER',
-                'country' => 'SHORT_TEXT'
+                'country' => 'SHORT_TEXT',
             ));
 
             require_lang('stats');

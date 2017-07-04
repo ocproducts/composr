@@ -113,7 +113,7 @@ function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated
         't_cache_last_member_id' => null,
         't_cache_num_posts' => 0,
         't_pt_from_category' => '',
-        't_pt_to_category' => ''
+        't_pt_to_category' => '',
     );
     if (multi_lang_content()) {
         $map['t_cache_first_post'] = null;

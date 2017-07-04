@@ -43,7 +43,7 @@ function create_ecommerce_catalogue($catalogue_name)
         array('ECOM_CAT_length', 'ECOM_CATD_length', 'float', 0, 0, 0, 0, '', 'ecommerce_tag=length'),
         array('ECOM_CAT_width', 'ECOM_CATD_width', 'float', 0, 0, 0, 0, '', 'ecommerce_tag=width'),
         array('ECOM_CAT_height', 'ECOM_CATD_height', 'float', 0, 0, 0, 0, '', 'ecommerce_tag=height'),
-        array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 0, 1, 1, '', 'ecommerce_tag=description')
+        array('ECOM_CAT_description', 'DESCRIPTION_DESCRIPTION', 'long_trans', 0, 0, 1, 1, '', 'ecommerce_tag=description'),
     );
 
     foreach ($fields as $i => $field) {

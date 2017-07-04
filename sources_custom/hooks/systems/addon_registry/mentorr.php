@@ -118,7 +118,7 @@ New users should then be assigned a mentor/buddy who will receive an equal amoun
                 'chat',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

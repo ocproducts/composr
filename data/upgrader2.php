@@ -154,11 +154,11 @@ if ($next_offset_url == '') {
 } else {
     echo '<p><img alt="" src="../themes/default/images/loading.gif" /></p>';
 }
-echo '<script>// <![CDATA[
+echo '<script>
     window.setTimeout(function() {
         window.scrollTo(0,document.getElementById("file_' . strval(min(count($todo) - 1, $file_offset + $per_cycle)) . '").offsetTop-50);
     },200);
-//]]></script>';
+</script>';
 if ($next_offset_url != '') {
     echo '<hr /><p>Continuing in 3 seconds. If you have meta-refresh disabled, <a href="' . htmlentities($next_offset_url) . '">force continue</a>.</p>';
 }

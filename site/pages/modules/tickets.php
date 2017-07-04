@@ -1236,7 +1236,7 @@ class Module_tickets
             $to_title,
             array(
                 $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true),
-                $GLOBALS['FORUM_DRIVER']->get_username(get_member())
+                $GLOBALS['FORUM_DRIVER']->get_username(get_member()),
             ),
             get_site_default_lang()
         );
@@ -1247,7 +1247,7 @@ class Module_tickets
             array(
                 comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true)),
                 $ticket_url,
-                comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member()))
+                comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member())),
             ),
             get_site_default_lang()
         );
@@ -1308,7 +1308,7 @@ class Module_tickets
             $ticket_title,
             $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true),
             array(
-                $GLOBALS['FORUM_DRIVER']->get_username(get_member())
+                $GLOBALS['FORUM_DRIVER']->get_username(get_member()),
             ),
             get_site_default_lang()
         );
@@ -1318,7 +1318,7 @@ class Module_tickets
             comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true)),
             array(
                 $ticket_url,
-                $GLOBALS['FORUM_DRIVER']->get_username(get_member())
+                $GLOBALS['FORUM_DRIVER']->get_username(get_member()),
             ),
             get_site_default_lang()
         );
@@ -1363,7 +1363,7 @@ class Module_tickets
             $ticket_title,
             $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true),
             array(
-                $GLOBALS['FORUM_DRIVER']->get_username(get_member())
+                $GLOBALS['FORUM_DRIVER']->get_username(get_member()),
             ),
             get_site_default_lang()
         );
@@ -1373,7 +1373,7 @@ class Module_tickets
             comcode_escape($GLOBALS['FORUM_DRIVER']->get_username(get_member(), true)),
             array(
                 $ticket_url,
-                $GLOBALS['FORUM_DRIVER']->get_username(get_member())
+                $GLOBALS['FORUM_DRIVER']->get_username(get_member()),
             ),
             get_site_default_lang()
         );
@@ -1385,7 +1385,7 @@ class Module_tickets
             array($member_id),
             null,
             array(
-                'use_real_from' => true
+                'use_real_from' => true,
             )
         );
 

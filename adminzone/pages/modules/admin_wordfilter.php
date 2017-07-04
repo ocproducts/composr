@@ -62,7 +62,7 @@ class Module_admin_wordfilter
                 'id' => '*AUTO',
                 'word' => 'SHORT_TEXT',
                 'w_replacement' => 'SHORT_TEXT',
-                'w_substr' => 'BINARY'
+                'w_substr' => 'BINARY',
             ));
 
             $naughties = array(

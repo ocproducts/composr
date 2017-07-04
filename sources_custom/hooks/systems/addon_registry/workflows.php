@@ -116,7 +116,7 @@ Note that this addon only affects galleries at the moment, and it requires the "
                 'galleries',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

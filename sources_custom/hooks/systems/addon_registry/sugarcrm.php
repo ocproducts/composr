@@ -109,7 +109,7 @@ class Hook_addon_registry_sugarcrm
         return array(
             'requires' => array('cURL'),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

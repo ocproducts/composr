@@ -1598,7 +1598,7 @@ class Hook_addon_registry_core
                 'RAW_AWARD_DATE' => placeholder_date(),
                 'AWARD_DATE' => placeholder_date(),
                 'CONTENT' => array(
-                    lorem_phrase_html()
+                    lorem_phrase_html(),
                 ),
                 'SUBMIT_URL' => placeholder_url(),
                 'ARCHIVE_URL' => placeholder_url(),
@@ -1839,7 +1839,7 @@ class Hook_addon_registry_core
                 'MAP' => array(
                     'A' => 'a',
                     'B' => 'b',
-                )
+                ),
             )), null, '', true)
         );
     }
@@ -2226,8 +2226,8 @@ class Hook_addon_registry_core
                         'A' => '',
                         'B' => '',
                         'C' => '',
-                    )
-                )
+                    ),
+                ),
             ), null, false, null, '.txt', 'text'), null, '', true)
         );
     }
@@ -2326,8 +2326,8 @@ class Hook_addon_registry_core
                         'ACTIVE' => true,
                         'TITLE' => lorem_phrase(),
                         'URL' => placeholder_url(),
-                    )
-                )
+                    ),
+                ),
             )), null, '', true)
         );
     }

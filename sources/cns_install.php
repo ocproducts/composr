@@ -201,7 +201,7 @@ function install_cns($upgrade_from = null)
             'id' => '*AUTO',
             'member_id' => 'MEMBER',
             'usergroup_id' => '?AUTO_LINK',
-            'join_time' => 'TIME'
+            'join_time' => 'TIME',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_group_join_log', 'member_id', array('member_id'));
         $GLOBALS['FORUM_DB']->create_index('f_group_join_log', 'usergroup_id', array('usergroup_id'));
@@ -354,7 +354,7 @@ function install_cns($upgrade_from = null)
             'guest_view' => 'BINARY',
             'member_view' => 'BINARY',
             'friend_view' => 'BINARY',
-            'group_view' => 'SHORT_TEXT'
+            'group_view' => 'SHORT_TEXT',
         ));
 
         $GLOBALS['FORUM_DB']->create_table('f_emoticons', array(
@@ -362,7 +362,7 @@ function install_cns($upgrade_from = null)
             'e_theme_img_code' => 'SHORT_TEXT',
             'e_relevance_level' => 'INTEGER', // 0=core,1=supported,2=unsupported,3=poor,4=unused
             'e_use_topics' => 'BINARY', // Whether to use it to show a topics emotion
-            'e_is_special' => 'BINARY'
+            'e_is_special' => 'BINARY',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_emoticons', 'relevantemoticons', array('e_relevance_level'));
         $GLOBALS['FORUM_DB']->create_index('f_emoticons', 'topicemos', array('e_use_topics'));
@@ -389,7 +389,7 @@ function install_cns($upgrade_from = null)
 
         // These don't need to be filled in. We just use default from custom field if they aren't
         $GLOBALS['FORUM_DB']->create_table('f_member_custom_fields', array(
-            'mf_member_id' => '*MEMBER'
+            'mf_member_id' => '*MEMBER',
         ));
 
         cns_make_boiler_custom_field('about');
@@ -410,13 +410,13 @@ function install_cns($upgrade_from = null)
             'i_inviter' => 'MEMBER',
             'i_email_address' => 'SHORT_TEXT',
             'i_time' => 'TIME',
-            'i_taken' => 'BINARY'
+            'i_taken' => 'BINARY',
         ));
 
         $GLOBALS['FORUM_DB']->create_table('f_group_members', array(
             'gm_group_id' => '*GROUP',
             'gm_member_id' => '*MEMBER',
-            'gm_validated' => 'BINARY'
+            'gm_validated' => 'BINARY',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_group_members', 'gm_validated', array('gm_validated'));
         $GLOBALS['FORUM_DB']->create_index('f_group_members', 'gm_member_id', array('gm_member_id'));
@@ -516,7 +516,7 @@ function install_cns($upgrade_from = null)
             ':thumbs:' => 'thumbs',
             ':|' => 'mellow',
             ':ninja:' => 'ph34r',
-            ':o' => 'shocked'
+            ':o' => 'shocked',
         );
         $supported_emoticons = array(
             ':offtopic:' => 'offtopic', // Larger than normal, so don't put in core set
@@ -563,7 +563,7 @@ function install_cns($upgrade_from = null)
             ':whew:' => 'whew',
         );
         $unused_emoticons = array(
-            ':christmas:' => 'christmas'
+            ':christmas:' => 'christmas',
         );
         foreach ($core_emoticons as $a => $b) {
             cns_make_emoticon($a, 'cns_emoticons/' . $b, 0, array_key_exists($b, $no_use_topics) ? 0 : 1);
@@ -637,7 +637,7 @@ function install_cns($upgrade_from = null)
             'id' => '*AUTO',
             'c_title' => 'SHORT_TEXT',
             'c_description' => 'LONG_TEXT',
-            'c_expanded_by_default' => 'BINARY'
+            'c_expanded_by_default' => 'BINARY',
         ));
         $forum_grouping_id = cns_make_forum_grouping(do_lang('DEFAULT_GROUPING_TITLE'), '');
         $forum_grouping_id_staff = cns_make_forum_grouping(do_lang('STAFF'), '');
@@ -748,7 +748,7 @@ function install_cns($upgrade_from = null)
             'p_last_edit_by' => '?MEMBER',
             'p_is_emphasised' => 'BINARY',
             'p_skip_sig' => 'BINARY',
-            'p_parent_id' => '?AUTO_LINK'
+            'p_parent_id' => '?AUTO_LINK',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'p_validated', array('p_validated'));
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'in_topic', array('p_topic_id', 'p_time', 'id'));
@@ -773,12 +773,12 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->create_table('f_forum_intro_ip', array(
             'i_forum_id' => '*AUTO_LINK',
-            'i_ip' => '*IP'
+            'i_ip' => '*IP',
         ));
 
         $GLOBALS['FORUM_DB']->create_table('f_forum_intro_member', array(
             'i_forum_id' => '*AUTO_LINK',
-            'i_member_id' => '*MEMBER'
+            'i_member_id' => '*MEMBER',
         ));
 
         $GLOBALS['FORUM_DB']->create_table('f_post_templates', array(
@@ -786,7 +786,7 @@ function install_cns($upgrade_from = null)
             't_title' => 'SHORT_TEXT',
             't_text' => 'LONG_TEXT',
             't_forum_multi_code' => 'SHORT_TEXT',
-            't_use_default_forums' => 'BINARY'
+            't_use_default_forums' => 'BINARY',
         ));
         if (addon_installed('cns_post_templates')) {
             require_lang('cns_post_templates');
@@ -805,14 +805,14 @@ function install_cns($upgrade_from = null)
             'po_is_open' => 'BINARY',
             'po_minimum_selections' => 'INTEGER',
             'po_maximum_selections' => 'INTEGER',
-            'po_requires_reply' => 'BINARY'
+            'po_requires_reply' => 'BINARY',
         ));
 
         $GLOBALS['FORUM_DB']->create_table('f_poll_answers', array(
             'id' => '*AUTO',
             'pa_poll_id' => 'AUTO_LINK',
             'pa_answer' => 'SHORT_TEXT',
-            'pa_cache_num_votes' => 'INTEGER'
+            'pa_cache_num_votes' => 'INTEGER',
         ));
 
         $GLOBALS['FORUM_DB']->create_table('f_poll_votes', array(
@@ -820,7 +820,7 @@ function install_cns($upgrade_from = null)
             'pv_poll_id' => 'AUTO_LINK',
             'pv_member_id' => 'MEMBER',
             'pv_answer_id' => 'AUTO_LINK', // -1 means "forfeited". We'd use null, but we aren't allowed null fragments in keys
-            'pv_ip' => 'IP'
+            'pv_ip' => 'IP',
         ));
 
         $GLOBALS['FORUM_DB']->create_table('f_multi_moderations', array(
@@ -831,7 +831,7 @@ function install_cns($upgrade_from = null)
             'mm_pin_state' => '?BINARY',
             'mm_open_state' => '?BINARY',
             'mm_forum_multi_code' => 'SHORT_TEXT',
-            'mm_title_suffix' => 'SHORT_TEXT'
+            'mm_title_suffix' => 'SHORT_TEXT',
         ));
         cns_make_multi_moderation(do_lang('TRASH_VERB'), '', $trash_forum_id, 0, 0);
 
@@ -859,13 +859,13 @@ function install_cns($upgrade_from = null)
             'l_param_b' => 'SHORT_TEXT',
             'l_date_and_time' => 'TIME',
             'l_reason' => 'LONG_TEXT',
-            'l_by' => 'MEMBER'
+            'l_by' => 'MEMBER',
         ));
 
         $GLOBALS['FORUM_DB']->create_table('f_member_known_login_ips', array(
             'i_member_id' => '*MEMBER',
             'i_ip' => '*IP',
-            'i_val_code' => 'SHORT_TEXT'
+            'i_val_code' => 'SHORT_TEXT',
         ));
 
         // NB: post_param_string's will return default's if Conversr is being installed but not used yet (e.g. IPB forum driver chosen at installation)
@@ -879,7 +879,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_table('f_read_logs', array(
             'l_member_id' => '*MEMBER',
             'l_topic_id' => '*AUTO_LINK',
-            'l_time' => 'TIME'
+            'l_time' => 'TIME',
         ));
         $GLOBALS['FORUM_DB']->create_index('f_read_logs', 'erase_old_read_logs', array('l_time'));
 

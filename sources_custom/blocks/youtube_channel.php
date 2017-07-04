@@ -202,7 +202,7 @@ class Block_youtube_channel
                     //generate video url
                     $video_url = 'https://www.youtube.com/watch?v=' . $video_id;
 
-                    // Generate shortened description
+                    //generate shortened description
                     $description_shortened = 0;
                     if (strlen($description_long) <= 250) {
                         $description_short = $description_long;
@@ -211,10 +211,10 @@ class Block_youtube_channel
                         $description_shortened = 1;
                     }
 
-                    // Get more detailed metadata for each individual video from 'videos' YouTube API v3 call
+                    //get more detailed metadata for each individual video from 'videos' YouTube API v3 call
                     $video_metadata = json_decode(@file_get_contents("https://www.googleapis.com/youtube/v3/videos?part=contentDetails%2Cstatistics%2Cstatus&id=$video_id&fields=items(contentDetails(duration)%2Cstatistics(viewCount%2CfavoriteCount%2ClikeCount%2CdislikeCount)%2Cstatus(embeddable))&key=$youtube_api_key"));
 
-                    // Check if we got a result. If not, set error and move on.
+                    //check if we got a result. If not, set error and move on.
                     if (!isset($video_metadata->items[0]->contentDetails->duration)) {
                         $channel_error .= 'Error: Failed to get data for video #' . strval($i) . '<br />';
                         continue;
@@ -285,25 +285,25 @@ class Block_youtube_channel
                     $parts = array();
                     preg_match_all('/(\d+)/', $video_duration, $parts);
 
-                    // YouTube duration may not include all parts, i.e. may send hours, minutes, and seconds, may send minutes and seconds, or possibly only send seconds.
-                    // We will 0 out the duration parts that aren't sent
+                    //youTube duration may not include all parts, i.e. may send hours, minutes, and seconds, may send minutes and seconds, or possibly only send seconds.
+                    //we will 0 out the duration parts that aren't sent
                     if (count($parts[0]) == 1) {
                         array_unshift($parts[0], '0', '0');
                     } elseif (count($parts[0]) == 2) {
                         array_unshift($parts[0], '0');
                     }
 
-                    // Get seconds
+                    //get seconds
                     $sec_init = $parts[0][2];
                     $seconds = ($sec_init) % 60;
                     $seconds_overflow = floor($sec_init / 60);
 
-                    // Get minutes
+                    //get minutes
                     $min_init = $parts[0][1] + $seconds_overflow;
                     $minutes = ($min_init) % 60;
                     $minutes_overflow = floor(($min_init) / 60);
 
-                    // Get hours
+                    //get hours
                     $hours = $parts[0][0] + $minutes_overflow;
 
                     if ($seconds == 0 || $seconds > 1) {
@@ -363,7 +363,7 @@ class Block_youtube_channel
                         $duration_numeric = sprintf('%02d', $hours) . ':' . $numeric->format('i:s:');
                     }
 
-                    //generate embedded video player url
+                    // Generate embedded video player url
                     $embedvideo = 'https://www.youtube.com/embed/' . $video_id;
 
                     // Generate the iframe YouTube Player embed code
@@ -378,7 +378,7 @@ class Block_youtube_channel
                     //  5 => low res, last frame - "2"
                     //  6 => default image, standard res 640x480 - "sddefault"
                     //  7 => middle of vid, max res - 1280x720 - "maxresdefault"
-                    //set base URL for thumbnails to use for thumbnails that are no longer returned by API call
+                    // Set base URL for thumbnails to use for thumbnails that are no longer returned by API call
                     $base_thumb_url = dirname($thumbnails->default->url) . '/';
                     // Pre-define thumbimg array first, then set elements and ignore errors for thumbnails that don't exist
                     $thumbimg = array(array('url' => '', 'width' => '120', 'height' => '90'),
@@ -496,13 +496,13 @@ class Block_youtube_channel
                         'NOTHUMBPLAYER' => $channel_nothumbplayer,
                         'FOR_MORE_LEAD' => $channel_formorelead,
                         'FOR_MORE_TEXT' => $channel_formoretext,
-                        'FOR_MORE_URL' => $channel_formoreurl
+                        'FOR_MORE_URL' => $channel_formoreurl,
                     )));
                 }
                 $i++;
             }
         } else {
-            //set error if channel request doesn't return a channel result
+            // Set error if channel request doesn't return a channel result
             $channel_error .= 'Error: Invalid playlist ID, no data returned, or possibly the YouTube API request limit is exceeded.<br />';
         }
 

@@ -62,7 +62,7 @@ class Module_login
                 'id' => '*AUTO',
                 'failed_account' => 'ID_TEXT',
                 'date_and_time' => 'TIME',
-                'ip' => 'IP'
+                'ip' => 'IP',
             ));
         }
 

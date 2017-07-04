@@ -553,7 +553,7 @@ function regenerate_event_reminder_jobs($id, $force = false)
                 'j_time' => usertime_to_utctime($recurrences[0][0]),
                 'j_reminder_id' => null,
                 'j_member_id' => null,
-                'j_event_id' => $id
+                'j_event_id' => $id,
             ));
         } else {
             if (php_function_allowed('set_time_limit')) {
@@ -569,7 +569,7 @@ function regenerate_event_reminder_jobs($id, $force = false)
                         'j_time' => usertime_to_utctime($recurrences[0][0], $reminder['n_member_id']) - $reminder['n_seconds_before'],
                         'j_reminder_id' => $reminder['id'],
                         'j_member_id' => $reminder['n_member_id'],
-                        'j_event_id' => $event['id']
+                        'j_event_id' => $event['id'],
                     ));
                 }
                 $start += 500;

@@ -176,7 +176,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                                     'FIRST' => true,
                                     'USERNAME' => $subforum['last_username'],
                                     'PROFILE_URL' => $GLOBALS['FORUM_DRIVER']->member_profile_url($subforum['last_member_id'], true),
-                                    'MEMBER_ID' => strval($subforum['last_member_id'])
+                                    'MEMBER_ID' => strval($subforum['last_member_id']),
                                 ));
                             } else {
                                 $poster = protect_from_escaping(escape_html($subforum['last_username']));
@@ -196,7 +196,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                             'TOPIC_TITLE' => ($subforum['last_title'] == '') ? do_lang_tempcode('NA') : $subforum['last_title'],
                             'POSTER' => $poster,
                             'MEMBER_ID' => ($subforum['last_member_id'] === null) ? '' : strval($subforum['last_member_id']),
-                            'ID' => strval($subforum['last_topic_id'])
+                            'ID' => strval($subforum['last_topic_id']),
                         ));
                     } elseif (array_key_exists('protected_last_post', $subforum)) {
                         $latest = do_lang_tempcode('PROTECTED_LAST_POST');
@@ -279,7 +279,7 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                         'SUBFORUMS' => $subforums,
                         'EDIT_URL' => $edit_url,
                         'FORUM_RULES_URL' => $forum_rules_url,
-                        'INTRO_QUESTION_URL' => $intro_question_url
+                        'INTRO_QUESTION_URL' => $intro_question_url,
                     )));
                 }
 
@@ -385,9 +385,9 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         $new_topic_url = build_url(array('page' => 'topics', 'type' => 'new_pt', 'id' => get_member()), get_module_zone('topics'));
     }
     if ($type == 'pt') {
-        //There has been debate in the past whether to have a link from PTs to the forum or not! Currently using the Social menu is considered canon - templating could add a button in though.
-        //$archive_url = $GLOBALS['FORUM_DRIVER']->forum_url(db_get_first_id(), true);
-        //$button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('ROOT_FORUM'), 'url' => $archive_url, 'img' => 'buttons__forum');
+        // There has been debate in the past whether to have a link from PTs to the forum or not! Currently using the Social menu is considered canon - templating could add a button in though.
+        // $archive_url = $GLOBALS['FORUM_DRIVER']->forum_url(db_get_first_id(), true);
+        // $button_array[] = array('immediate' => false, 'title' => do_lang_tempcode('ROOT_FORUM'), 'url' => $archive_url, 'img' => 'buttons__forum');
     }
     if (array_key_exists('may_post_topic', $details)) {
         if ($type == 'pt') {
@@ -604,7 +604,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
                     'FIRST' => true,
                     'USERNAME' => $topic['last_username'],
                     'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($topic['last_member_id'], true),
-                    'MEMBER_ID' => strval($topic['last_member_id'])
+                    'MEMBER_ID' => strval($topic['last_member_id']),
                 ));
             } else {
                 $poster = protect_from_escaping(escape_html(($topic['last_username'] == '') ? do_lang('SYSTEM') : $topic['last_username']));
@@ -648,7 +648,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
             'FIRST' => true,
             'PROFILE_URL' => $poster_profile_url,
             'USERNAME' => $topic['first_username'],
-            'MEMBER_ID' => ($topic['first_member_id'] === null) ? '' : strval($topic['first_member_id'])
+            'MEMBER_ID' => ($topic['first_member_id'] === null) ? '' : strval($topic['first_member_id']),
         ));
     } else {
         $poster = make_string_tempcode(escape_html(($topic['first_username'] == '') ? do_lang('SYSTEM') : $topic['first_username']));
@@ -666,7 +666,7 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
             'COLOUR' => $colour,
             'PROFILE_URL' => $GLOBALS['CNS_DRIVER']->member_profile_url($with, true),
             'USERNAME' => $with_username,
-            'MEMBER_ID' => strval($with)
+            'MEMBER_ID' => strval($with),
         ));
         $poster = do_template('CNS_PT_BETWEEN', array('_GUID' => '619cd7076c4baf7b26cb3149694af929', 'A' => $poster, 'B' => $b));
     }
@@ -956,7 +956,7 @@ function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0,
         'topics' => $topics,
         'max_rows' => $max_rows,
         'order' => $sort,
-        'parent_forum' => $forum_info['f_parent_forum']
+        'parent_forum' => $forum_info['f_parent_forum'],
     );
 
     // Is there a question/answer situation?

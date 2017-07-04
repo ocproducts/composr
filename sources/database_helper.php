@@ -94,7 +94,7 @@ function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_c
         'unicode_IP' => $take_unicode_into_account * 15 + 1,
         'unicode_LANGUAGE_NAME' => $take_unicode_into_account * 5 + 1,
         'unicode_URLPATH' => $take_unicode_into_account * 255 + 1,
-        'unicode_MD5' => $take_unicode_into_account * 33 + 1
+        'unicode_MD5' => $take_unicode_into_account * 33 + 1,
     );
     $keywords = get_db_keywords();
     //if (in_array(strtoupper($table_name), $keywords)) fatal_exit($table_name . ' is a keyword'); // No point, as we have table prefixes

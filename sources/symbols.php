@@ -4421,7 +4421,7 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
             $value .= '<' . $tag . ' id="' . escape_html($field_name) . '_wrap" style="display:none"><label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input autocomplete="off" id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></' . $tag . '>';
             if (!$GLOBALS['SEMI_DEV_MODE']) {
                 // TODO: Salman. CSP splitup needed
-                $value .= '<script>// <' . '![CDATA[' . "\n" . 'var wrap=document.getElementById(\'' . escape_html($field_name) . '_wrap\'); wrap.parentNode.removeChild(wrap);' . "\n" . '//]]></script>';
+                $value .= '<script>var wrap=document.getElementById(\'' . escape_html($field_name) . '_wrap\'); wrap.parentNode.removeChild(wrap);</script>';
             }
 
             $done_once = true;

@@ -246,7 +246,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
                 'p_edit_date' => null,
                 'p_add_date' => time(),
                 'p_submitter' => $submitter_id,
-                'p_show_as_edit' => 0
+                'p_show_as_edit' => 0,
             );
 
             $content_url = build_url(array('page' => $page), $zone, array(), false, false, false);

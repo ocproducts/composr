@@ -561,7 +561,7 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
             'a_num_downloads' => 0,
             'a_last_downloaded_time' => time(),
             'a_description' => '',
-            'a_add_time' => time()
+            'a_add_time' => time(),
         ), true);
 
         $body .= "\n\n" . '[attachment framed="1" thumb="1"]' . strval($attachment_id) . '[/attachment]';

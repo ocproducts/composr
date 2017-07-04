@@ -121,7 +121,7 @@ The jokes you can play are:
                 'Conversr',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

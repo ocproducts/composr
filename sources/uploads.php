@@ -174,7 +174,7 @@ function is_plupload($fake_prepopulation = false)
                             'type' => 'plupload',
                             'name' => $filename,
                             'tmp_name' => get_custom_file_base() . '/' . $path,
-                            'size' => filesize(get_custom_file_base() . '/' . $path)
+                            'size' => filesize(get_custom_file_base() . '/' . $path),
                         );
                     }
                 }
@@ -198,7 +198,7 @@ function is_plupload($fake_prepopulation = false)
                                         'type' => 'plupload',
                                         'name' => $incoming_uploads_row[0]['i_orig_filename'],
                                         'tmp_name' => get_custom_file_base() . '/' . $incoming_uploads_row[0]['i_save_url'],
-                                        'size' => filesize(get_custom_file_base() . '/' . $incoming_uploads_row[0]['i_save_url'])
+                                        'size' => filesize(get_custom_file_base() . '/' . $incoming_uploads_row[0]['i_save_url']),
                                     );
                                     $_POST['hidFileID_' . $new_key] = strval($incoming_uploads_id);
 

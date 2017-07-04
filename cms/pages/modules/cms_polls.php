@@ -203,7 +203,7 @@ class Module_cms_polls extends Standard_crud_module
                 $username,
                 integer_format($row['poll_views']),
                 do_lang_tempcode('VOTES', escape_html(integer_format($total_votes))),
-                protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id'])))
+                protect_from_escaping(hyperlink($edit_url, do_lang_tempcode('EDIT'), false, true, do_lang('EDIT') . ' #' . strval($row['id']))),
             ), true));
         }
 

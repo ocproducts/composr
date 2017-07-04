@@ -232,7 +232,7 @@ function render_activity($row, $use_inside_cms = true)
         $label[3],
         symbol_tempcode('ESCAPE', array($link[1])),
         symbol_tempcode('ESCAPE', array($link[2])),
-        symbol_tempcode('ESCAPE', array($link[3]))
+        symbol_tempcode('ESCAPE', array($link[3])),
     );
     if ($row['a_also_involving'] !== null) {
         $_username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_also_involving'], true);

@@ -654,14 +654,14 @@ function placeholder_pagination()
         $selectors->attach(do_lorem_template('PAGINATION_PER_PAGE_OPTION', array(
             'SELECTED' => true,
             'VALUE' => strval($k),
-            'NAME' => $v
+            'NAME' => $v,
         )));
     }
     $per_page = do_lorem_template('PAGINATION_PER_PAGE', array(
         'HIDDEN' => '',
         'URL' => placeholder_url(),
         'MAX_NAME' => 'max',
-        'SELECTORS' => $selectors
+        'SELECTORS' => $selectors,
     ));
 
     $parts = new Tempcode();
@@ -669,25 +669,25 @@ function placeholder_pagination()
         $j = $k + 1;
         if ($k == 0) {
             $parts->attach(do_lorem_template('PAGINATION_PAGE_NUMBER', array(
-                'P' => strval($j)
+                'P' => strval($j),
             )));
         } else {
             $parts->attach(do_lorem_template('PAGINATION_PAGE_NUMBER_LINK', array(
                 'P' => strval($j),
                 'URL' => placeholder_url(),
-                'TITLE' => lorem_phrase()
+                'TITLE' => lorem_phrase(),
             )));
         }
     }
     $first = do_lorem_template('PAGINATION_CONTINUE_FIRST', array(
         'TITLE' => lorem_phrase(),
         'P' => placeholder_number(),
-        'FIRST_URL' => placeholder_url()
+        'FIRST_URL' => placeholder_url(),
     ));
     $previous = do_lorem_template('PAGINATION_PREVIOUS_LINK', array(
         'TITLE' => lorem_phrase(),
         'P' => placeholder_date_raw(),
-        'URL' => placeholder_url()
+        'URL' => placeholder_url(),
     ));
     $previous->attach(do_lorem_template('PAGINATION_PREVIOUS', array(
         'TITLE' => lorem_phrase(),
@@ -698,7 +698,7 @@ function placeholder_pagination()
         'TITLE' => lorem_phrase(),
         'NUM_PAGES' => placeholder_number(),
         'P' => placeholder_number(),
-        'URL' => placeholder_url()
+        'URL' => placeholder_url(),
     ));
     $next->attach(do_lorem_template('PAGINATION_NEXT', array(
         'TITLE' => lorem_phrase(),
@@ -708,13 +708,13 @@ function placeholder_pagination()
     $last = do_lorem_template('PAGINATION_CONTINUE_LAST', array(
         'TITLE' => lorem_phrase(),
         'P' => placeholder_number(),
-        'LAST_URL' => placeholder_url()
+        'LAST_URL' => placeholder_url(),
     ));
     $pages_list = do_lorem_template('PAGINATION_LIST_PAGES', array(
         'URL' => placeholder_url(),
         'HIDDEN' => '',
         'START_NAME' => 'start',
-        'LIST' => placeholder_options()
+        'LIST' => placeholder_options(),
     ));
 
     return do_lorem_template('PAGINATION_WRAP', array(

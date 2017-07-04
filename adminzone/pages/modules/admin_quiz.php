@@ -338,7 +338,7 @@ class Module_admin_quiz
                     $GLOBALS['SITE_DB']->query_insert('quiz_winner', array(
                         'q_quiz' => $id,
                         'q_entry' => $_entry['id'],
-                        'q_winner_level' => $i
+                        'q_winner_level' => $i,
                     ));
                 } else {
                     break;

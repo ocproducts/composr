@@ -109,7 +109,7 @@ class Hook_addon_registry_custom_ratings
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

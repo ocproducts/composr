@@ -79,7 +79,7 @@ class Module_admin_awards extends Standard_crud_module
                 'a_type_id' => '*AUTO_LINK',
                 'date_and_time' => '*TIME',
                 'content_id' => 'ID_TEXT',
-                'member_id' => 'MEMBER'
+                'member_id' => 'MEMBER',
             ));
 
             $GLOBALS['SITE_DB']->create_index('award_archive', 'awardquicksearch', array('content_id'));
@@ -99,7 +99,7 @@ class Module_admin_awards extends Standard_crud_module
                 'a_points' => 0,
                 'a_content_type' => 'download',
                 'a_hide_awardee' => 1,
-                'a_update_time_hours' => 168
+                'a_update_time_hours' => 168,
             );
             $map += lang_code_to_default_content('a_title', 'DOTW');
             $map += lang_code_to_default_content('a_description', 'DESCRIPTION_DOTW', true);

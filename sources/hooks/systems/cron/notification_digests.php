@@ -36,7 +36,7 @@ class Hook_cron_notification_digests
         foreach (array(
                      A_DAILY_EMAIL_DIGEST => 60 * 60 * 24,
                      A_WEEKLY_EMAIL_DIGEST => 60 * 60 * 24 * 7,
-                     A_MONTHLY_EMAIL_DIGEST => 60 * 60 * 24 * 31
+                     A_MONTHLY_EMAIL_DIGEST => 60 * 60 * 24 * 31,
                  ) as $frequency => $timespan) {
             $start = 0;
             do {

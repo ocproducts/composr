@@ -678,24 +678,24 @@ class Hook_addon_registry_core_abstract_interfaces
                 array(
                     null,
                     array(),
-                    ''
-                )
+                    '',
+                ),
             ),
             array(
                 'menu/cms/cms',
                 array(
                     null,
                     array(),
-                    ''
-                )
+                    '',
+                ),
             ),
             array(
                 'menu/adminzone/adminzone',
                 array(
                     null,
                     array(),
-                    ''
-                )
+                    '',
+                ),
             )
         );
 
@@ -849,7 +849,7 @@ class Hook_addon_registry_core_abstract_interfaces
                 $line,
                 $select,
                 $tick,
-                $actions
+                $actions,
             );
             $cells = new Tempcode();
             foreach ($values as $value) {
@@ -912,8 +912,6 @@ class Hook_addon_registry_core_abstract_interfaces
      */
     public function tpl_preview__result_table_screen()
     {
-        //results_table starts
-        //results_entry starts
         $array = placeholder_array();
         $cells = new Tempcode();
         foreach ($array as $k => $v) {
@@ -948,7 +946,6 @@ class Hook_addon_registry_core_abstract_interfaces
                 'VALUES' => $cells,
             )));
         }
-        //results_entry ends
 
         $selectors = new Tempcode();
         $sortable = null;
@@ -975,7 +972,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'SORT' => $sort,
             'PAGINATION' => placeholder_pagination(),
         ));
-        //results_table ends
 
         $table = do_lorem_template('RESULTS_TABLE_SCREEN', array(
             'TITLE' => lorem_title(),
@@ -996,8 +992,6 @@ class Hook_addon_registry_core_abstract_interfaces
      */
     public function tpl_preview__result_table_screen_2()
     {
-        //results_table starts
-        //results_entry starts
         $array = placeholder_array();
         $cells = new Tempcode();
         foreach ($array as $k => $v) {
@@ -1032,7 +1026,6 @@ class Hook_addon_registry_core_abstract_interfaces
                 'VALUES' => $cells,
             )));
         }
-        //results_entry ends
 
         $selectors = new Tempcode();
         $sortable = null;
@@ -1059,7 +1052,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'SORT' => $sort,
             'PAGINATION' => placeholder_pagination(),
         ));
-        //results_table ends
 
         $table = do_lorem_template('RESULTS_TABLE_SCREEN', array(
             'TITLE' => lorem_title(),

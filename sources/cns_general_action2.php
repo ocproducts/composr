@@ -33,7 +33,7 @@ function cns_edit_post_template($id, $title, $text, $forum_multi_code, $use_defa
         't_title' => $title,
         't_text' => $text,
         't_forum_multi_code' => $forum_multi_code,
-        't_use_default_forums' => $use_default_forums
+        't_use_default_forums' => $use_default_forums,
     ), array('id' => $id), '', 1);
 
     log_it('EDIT_POST_TEMPLATE', strval($id), $title);
@@ -131,7 +131,7 @@ function cns_edit_emoticon($old_code, $code, $theme_img_code, $relevance_level, 
         'e_theme_img_code' => $theme_img_code,
         'e_relevance_level' => $relevance_level,
         'e_use_topics' => $use_topics,
-        'e_is_special' => $is_special
+        'e_is_special' => $is_special,
     ), array('e_code' => $old_code), '', 1);
 
     require_code('themes2');
@@ -289,6 +289,6 @@ function cns_mod_log_it($the_type, $param_a = '', $param_b = '', $reason = '', $
         'l_param_b' => $param_b,
         'l_date_and_time' => $timestamp,
         'l_reason' => $reason,
-        'l_by' => $by
+        'l_by' => $by,
     ), true);
 }

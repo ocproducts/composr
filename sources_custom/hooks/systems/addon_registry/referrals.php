@@ -119,7 +119,7 @@ Allows people to specify who referred them when they join your site or other con
         return array(
             'requires' => array('cns'),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

@@ -53,7 +53,7 @@ class Hook_admin_stats_cns_demographics
     {
         require_lang('cns');
 
-        //This will show a plain bar chart with all the downloads listed
+        // This will show a plain bar chart with all the downloads listed
         $title = get_screen_title('DEMOGRAPHICS');
 
         // Handle time range

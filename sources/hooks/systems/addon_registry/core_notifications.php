@@ -418,8 +418,8 @@ class Hook_addon_registry_core_notifications
         $notification_sections[lorem_phrase()] = array(
             'NOTIFICATION_SECTION' => lorem_phrase(),
             'NOTIFICATION_CODES' => array(
-                $notification_code_map
-            )
+                $notification_code_map,
+            ),
         );
         $interface = do_lorem_template('NOTIFICATIONS_MANAGE', array(
             'COLOR' => 'FFFFFF',

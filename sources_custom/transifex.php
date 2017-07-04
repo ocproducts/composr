@@ -720,7 +720,7 @@ class Hook_addon_registry_language_{$lang}
         return array(
             'requires' => array(),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

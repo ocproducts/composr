@@ -117,7 +117,7 @@ To configure the diseases go to Admin Zone > Setup > Manage Diseases.';
                 'points',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

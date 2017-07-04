@@ -111,7 +111,7 @@ class Hook_addon_registry_calendar_from_6am
                 'calendar',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

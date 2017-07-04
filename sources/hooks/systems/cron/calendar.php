@@ -108,7 +108,7 @@ class Hook_cron_calendar
                         'j_time' => usertime_to_utctime($recurrences[1][0]) - $job['n_seconds_before'],
                         'j_reminder_id' => $job['j_reminder_id'],
                         'j_member_id' => $job['j_member_id'],
-                        'j_event_id' => $job['j_event_id']
+                        'j_event_id' => $job['j_event_id'],
                     ));
                 }
             }

@@ -117,7 +117,7 @@ Admins can force the follow-up emails and/or private topics and prevent the memb
                 'downloads',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

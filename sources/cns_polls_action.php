@@ -47,7 +47,7 @@ function cns_make_poll($topic_id, $question, $is_private, $is_open, $minimum_sel
         'po_is_open' => $is_open,
         'po_minimum_selections' => $minimum_selections,
         'po_maximum_selections' => $maximum_selections,
-        'po_requires_reply' => $requires_reply
+        'po_requires_reply' => $requires_reply,
     ), true);
 
     foreach ($answers as $answer) {
@@ -60,7 +60,7 @@ function cns_make_poll($topic_id, $question, $is_private, $is_open, $minimum_sel
         $GLOBALS['FORUM_DB']->query_insert('f_poll_answers', array(
             'pa_poll_id' => $poll_id,
             'pa_answer' => $answer,
-            'pa_cache_num_votes' => $num_votes
+            'pa_cache_num_votes' => $num_votes,
         ));
     }
 

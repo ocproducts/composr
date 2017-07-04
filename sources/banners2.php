@@ -454,7 +454,7 @@ function add_banner($name, $imgurl, $title_text, $caption, $direct_code, $campai
         'hits_from' => $hits_from,
         'hits_to' => $hits_to,
         'views_from' => $views_from,
-        'views_to' => $views_to
+        'views_to' => $views_to,
     );
     $map += insert_lang_comcode('caption', $caption, 2);
     $GLOBALS['SITE_DB']->query_insert('banners', $map);
@@ -569,7 +569,7 @@ function edit_banner($old_name, $name, $imgurl, $title_text, $caption, $direct_c
         'importance_modulus' => $importancemodulus,
         'notes' => $notes,
         'validated' => $validated,
-        'b_type' => $b_type
+        'b_type' => $b_type,
     );
     $update_map += lang_remap_comcode('caption', $_caption, $caption);
 
@@ -668,7 +668,7 @@ function add_banner_type($id, $is_textual, $image_width, $image_height, $max_fil
         't_image_width' => $image_width,
         't_image_height' => $image_height,
         't_max_file_size' => $max_file_size,
-        't_comcode_inline' => $comcode_inline
+        't_comcode_inline' => $comcode_inline,
     ));
 
     log_it('ADD_BANNER_TYPE', $id);
@@ -721,7 +721,7 @@ function edit_banner_type($old_id, $id, $is_textual, $image_width, $image_height
         't_image_width' => $image_width,
         't_image_height' => $image_height,
         't_max_file_size' => $max_file_size,
-        't_comcode_inline' => $comcode_inline
+        't_comcode_inline' => $comcode_inline,
     ), array('id' => $old_id), '', 1);
 
     log_it('EDIT_BANNER_TYPE', $old_id, $id);

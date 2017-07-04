@@ -366,9 +366,7 @@ function upgrade_module($zone, $module)
 
     $ret = 0;
     if (($functions[1] !== null) && (!empty($info['update_require_upgrade']))) {
-        if ((($upgrade_from < $info['version']) && (!empty($info['update_require_upgrade'])))
-            || (($upgrade_from_hack < $info['hack_version']) && (!empty($info['hack_require_upgrade'])))
-        ) {
+        if ((($upgrade_from < $info['version']) && (!empty($info['update_require_upgrade']))) || (($upgrade_from_hack < $info['hack_version']) && (!empty($info['hack_require_upgrade'])))) {
             require_code('database_action');
             require_code('config2');
             require_code('files2');
@@ -612,9 +610,7 @@ function upgrade_block($block)
 
     $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
     if (($functions[1] !== null) && (array_key_exists('update_require_upgrade', $info))) {
-        if ((($upgrade_from < $info['version']) && (array_key_exists('update_require_upgrade', $info)))
-            || (($upgrade_from_hack < $info['hack_version']) && (array_key_exists('hack_require_upgrade', $info)))
-        ) {
+        if ((($upgrade_from < $info['version']) && (array_key_exists('update_require_upgrade', $info))) || (($upgrade_from_hack < $info['hack_version']) && (array_key_exists('hack_require_upgrade', $info)))) {
             require_code('database_action');
             require_code('config2');
             require_code('files2');

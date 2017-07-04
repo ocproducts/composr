@@ -200,8 +200,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
 
                 if ($in_word) {
                     // Exiting word
-                    if (($i == $len - 1) || ((!$is_word_char) && ((!$word_is_caps) || ($at != ' ') || (/*continuation of Proper Noun*/cms_mb_strtolower(cms_mb_substr($source, $i + 1, 1)) == cms_mb_substr($source, $i + 1, 1))))
-                    ) {
+                    if (($i == $len - 1) || ((!$is_word_char) && ((!$word_is_caps) || ($at != ' ') || (/*continuation of Proper Noun*/cms_mb_strtolower(cms_mb_substr($source, $i + 1, 1)) == cms_mb_substr($source, $i + 1, 1))))) {
                         while ((cms_mb_strlen($this_word) != 0) && (cms_mb_substr($this_word, -1) == '\'' || cms_mb_substr($this_word, -1) == '-' || cms_mb_substr($this_word, -1) == '.')) {
                             $this_word = cms_mb_substr($this_word, 0, cms_mb_strlen($this_word) - 1);
                         }
@@ -236,8 +235,7 @@ function _seo_meta_find_data($keyword_sources, $description = '')
 
                 if ($in_word) {
                     // Exiting word
-                    if (($i == $len - 1) || ((!$is_word_char) && ((!$word_is_caps) || ($at != ' ') || (/*continuation of Proper Noun*/strtolower(substr($source, $i + 1, 1)) == substr($source, $i + 1, 1))))
-                    ) {
+                    if (($i == $len - 1) || ((!$is_word_char) && ((!$word_is_caps) || ($at != ' ') || (/*continuation of Proper Noun*/strtolower(substr($source, $i + 1, 1)) == substr($source, $i + 1, 1))))) {
                         $this_word = substr($source, $from, $i - $from);
                         while ((strlen($this_word) != 0) && (substr($this_word, -1) == '\'' || substr($this_word, -1) == '-' || substr($this_word, -1) == '.')) {
                             $this_word = substr($this_word, 0, strlen($this_word) - 1);

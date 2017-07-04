@@ -310,7 +310,7 @@ class Hook_search_comcode_pages extends FieldsSearchHook
                     if (function_exists('ocp_mark_as_escaped')) {
                         ocp_mark_as_escaped($entity);
                     }
-                    $pos = false;//strpos($_temp_summary,'<span class="comcode_highlight">');
+                    $pos = false;//strpos($_temp_summary, '<span class="comcode_highlight">');
                     if ($pos === false) {
                         $pos = 0;
                     }

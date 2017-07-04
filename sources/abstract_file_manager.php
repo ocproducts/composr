@@ -65,8 +65,7 @@ function force_have_afm_details()
         $ftp_password = '';
     }
     //$uses_ftp = get_value('uses_ftp');    We can't use this because there's no reliable way to trust this is always going to be right (permissions change/differ, and we can't accurately run a test and trust the result going forward for everything)
-    if (/*($uses_ftp === '0') || */(strlen($ftp_password) > 0)
-    ) { // Permanently stored
+    if (/*($uses_ftp === '0') || */(strlen($ftp_password) > 0)) { // Permanently stored
         return;
     }
     if ($got_ftp_details == 0) { // Get FTP details

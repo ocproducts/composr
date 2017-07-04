@@ -53,7 +53,7 @@ class Hook_admin_stats_cns_posting_rates
     {
         require_lang('cns');
 
-        //This will show a plain bar chart with all the downloads listed
+        // This will show a plain bar chart with all the downloads listed
         $title = get_screen_title('POSTING_RATES');
 
         // Handle time range
@@ -103,7 +103,7 @@ class Hook_admin_stats_cns_posting_rates
             return warn_screen($title, do_lang_tempcode('NO_DATA'));
         }
 
-        $hourly = get_param_integer('hourly', 0) == 1;//($time_end-$time_start)<=60*60*24*2;
+        $hourly = get_param_integer('hourly', 0) == 1;//($time_end - $time_start) <= 60 * 60 * 24 * 2;
 
         $iterate_months = ((floatval($time_end - $time_start) / (60.0 * 60.0 * 24.0)) > 100.0);
 

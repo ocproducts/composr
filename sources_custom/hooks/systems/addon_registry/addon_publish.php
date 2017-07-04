@@ -114,7 +114,7 @@ Includes the code for pulling translations from {$IS_MAINTAINED,transifex,Transi
                 'galleries',
             ),
             'recommends' => array(),
-            'conflicts_with' => array()
+            'conflicts_with' => array(),
         );
     }
 

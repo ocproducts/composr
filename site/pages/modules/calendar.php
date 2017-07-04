@@ -154,12 +154,12 @@ class Module_calendar
                 'id' => '*AUTO',
                 'e_id' => 'AUTO_LINK',
                 'n_member_id' => 'MEMBER',
-                'n_seconds_before' => 'INTEGER'
+                'n_seconds_before' => 'INTEGER',
             ));
 
             $GLOBALS['SITE_DB']->create_table('calendar_interests', array(
                 'i_member_id' => '*MEMBER',
-                't_type' => '*AUTO_LINK'
+                't_type' => '*AUTO_LINK',
             ));
 
             $GLOBALS['SITE_DB']->create_table('calendar_jobs', array(
@@ -167,7 +167,7 @@ class Module_calendar
                 'j_time' => 'TIME',
                 'j_reminder_id' => '?AUTO_LINK',
                 'j_member_id' => '?MEMBER',
-                'j_event_id' => 'AUTO_LINK'
+                'j_event_id' => 'AUTO_LINK',
             ));
             $GLOBALS['SITE_DB']->create_index('calendar_jobs', 'applicablejobs', array('j_time'));
         }
@@ -1671,7 +1671,7 @@ class Module_calendar
         $rem_id = $GLOBALS['SITE_DB']->query_insert('calendar_reminders', array(
             'e_id' => $id,
             'n_member_id' => get_member(),
-            'n_seconds_before' => $seconds_before
+            'n_seconds_before' => $seconds_before,
         ), true);
 
         $privacy_ok = true;
@@ -1701,7 +1701,7 @@ class Module_calendar
                 'j_time' => usertime_to_utctime($recurrences[0][0]) - $seconds_before,
                 'j_reminder_id' => $rem_id,
                 'j_member_id' => get_member(),
-                'j_event_id' => get_param_integer('id')
+                'j_event_id' => get_param_integer('id'),
             ));
         }
 
@@ -1722,7 +1722,7 @@ class Module_calendar
 
         $GLOBALS['SITE_DB']->query_delete('calendar_jobs', array(
             'j_reminder_id' => get_param_integer('reminder_id'),
-            'j_member_id' => get_member()
+            'j_member_id' => get_member(),
         ));
 
         $url = build_url(array('page' => '_SELF', 'type' => 'view', 'id' => get_param_integer('id')), '_SELF'); // id being the event ID
