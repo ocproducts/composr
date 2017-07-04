@@ -166,7 +166,7 @@
             }
 
             if (analyticEventCategory) {
-                $cms.gaTrack(null, '{ANALYTIC_EVENT_CATEGORY;*}', null, function () {
+                $cms.gaTrack(null, analyticEventCategory, null, function () {
                     form.submit();
                 });
                 e.preventDefault();

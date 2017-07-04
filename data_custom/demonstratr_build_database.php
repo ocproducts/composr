@@ -61,6 +61,11 @@ require_code('config2');
 set_option('closed', "This is a Composr demo.\n\nLog in using the details you put in when you set up the demo, or if this is the shared demo use the username 'admin' and the password 'demo123'.");
 set_option('site_closed', '1');
 
+// Checks
+if (!addon_installed('setupwizard')) {
+    warn_exit('Setup Wixzard addon must be installed');
+}
+
 // Install test content
 require_code('setupwizard');
 install_test_content();

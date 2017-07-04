@@ -68,7 +68,7 @@
     };
 }(window.$cms));
 
-TODO Salman: This is from the v10.1 branch and needs merging into new JS framework...
+/*TODO Salman: This is from the v10.1 branch and needs merging into new JS framework...
 
 add_event_listener_abstract(window, 'load', function() {
 	var address_fields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
@@ -93,3 +93,4 @@ add_event_listener_abstract(window, 'load', function() {
 		}
 	}
 });
+*/
