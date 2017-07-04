@@ -469,13 +469,14 @@ class Module_cms_catalogues extends Standard_crud_module
 
         $field_groups = array();
 
-        $field_defaults = array( // We load up these into a map to allow custom add/edit form templating
-                                 'CATEGORY_ID' => ($category_id === null) ? '' : strval($category_id),
-                                 'VALIDATED' => strval($validated),
-                                 'NOTES' => $notes,
-                                 'ALLOW_RATING' => strval($allow_rating),
-                                 'ALLOW_COMMENTS' => strval($allow_comments),
-                                 'ALLOW_TRACKBACKS' => strval($allow_trackbacks),
+        $field_defaults = array(
+            // We load up these into a map to allow custom add/edit form templating
+            'CATEGORY_ID' => ($category_id === null) ? '' : strval($category_id),
+            'VALIDATED' => strval($validated),
+            'NOTES' => $notes,
+            'ALLOW_RATING' => strval($allow_rating),
+            'ALLOW_COMMENTS' => strval($allow_comments),
+            'ALLOW_TRACKBACKS' => strval($allow_trackbacks),
         );
 
         require_code('fields');

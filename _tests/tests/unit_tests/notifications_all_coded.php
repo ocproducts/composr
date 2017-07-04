@@ -41,19 +41,20 @@ class notifications_all_coded_test_set extends cms_test_case
             }
         }
 
-        $allowed = array( // Adjust this to account for cases of notifications coded up in non-direct ways
-                          'error_occurred_cron',
-                          'error_occurred_missing_page',
-                          'error_occurred_missing_reference',
-                          'error_occurred_missing_reference_important',
-                          'error_occurred_missing_resource',
-                          'error_occurred_weather',
-                          'error_occurred_rss',
-                          'ticket_new_staff',
-                          'ticket_reply_staff',
-                          'catalogue_view_reports',
-                          'catalogue_entry',
-                          'classifieds',
+        $allowed = array(
+            // Adjust this to account for cases of notifications coded up in non-direct ways
+            'error_occurred_cron',
+            'error_occurred_missing_page',
+            'error_occurred_missing_reference',
+            'error_occurred_missing_reference_important',
+            'error_occurred_missing_resource',
+            'error_occurred_weather',
+            'error_occurred_rss',
+            'ticket_new_staff',
+            'ticket_reply_staff',
+            'catalogue_view_reports',
+            'catalogue_entry',
+            'classifieds',
         );
         foreach (array_keys($hooks) as $hook) {
             $this->assertTrue(in_array($hook, $allowed), $hook . ' is unused');

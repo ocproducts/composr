@@ -42,17 +42,18 @@ function init__zones()
     $hardcoded = (isset($SITE_INFO['hardcode_common_module_zones'])) && ($SITE_INFO['hardcode_common_module_zones'] == '1');
     if (get_forum_type() == 'cns') {
         if ($hardcoded) {
-            $MODULES_ZONES_CACHE_DEFAULT = array( // Breaks redirects etc, but handy optimisation if you have a vanilla layout
-                                                  'forumview' => 'forum',
-                                                  'topicview' => 'forum',
-                                                  'topics' => 'forum',
-                                                  'vforums' => 'forum',
-                                                  'points' => (get_option('collapse_user_zones') == '1') ? '' : 'site',
-                                                  'members' => (get_option('collapse_user_zones') == '1') ? '' : 'site',
-                                                  'catalogues' => (get_option('collapse_user_zones') == '1') ? '' : 'site',
-                                                  'join' => '',
-                                                  'login' => '',
-                                                  'recommend' => '',
+            $MODULES_ZONES_CACHE_DEFAULT = array(
+                // Breaks redirects etc, but handy optimisation if you have a vanilla layout
+                'forumview' => 'forum',
+                'topicview' => 'forum',
+                'topics' => 'forum',
+                'vforums' => 'forum',
+                'points' => (get_option('collapse_user_zones') == '1') ? '' : 'site',
+                'members' => (get_option('collapse_user_zones') == '1') ? '' : 'site',
+                'catalogues' => (get_option('collapse_user_zones') == '1') ? '' : 'site',
+                'join' => '',
+                'login' => '',
+                'recommend' => '',
             );
         } else {
             $MODULES_ZONES_CACHE_DEFAULT = array(

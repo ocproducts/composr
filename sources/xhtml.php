@@ -614,9 +614,10 @@ function _smart_grammar_says_continue($nieve_end_pos, $grammar_completeness_tole
     // NOTE: This algorithm isn't perfect. Grammar is exceptionally complex and it does not do a parse as such.
 
     // Work out "paragraph" end (paragraph end determined by next block/table tag, our block/table tag ending, or the end of $html)
-    $look_out = array( // We will assume there are no HTML tags that start with these, like dtango. There aren't, and if there are, it's very unlikely to cause a problem. We will also assume it's valid XHTML- no upper case tags.
-                       'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'pre', 'br', 'hr', 'fieldset', 'iframe', 'table',
-                       'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'dd', 'dt', 'dl', 'li', 'ol', 'ul',
+    $look_out = array(
+        // We will assume there are no HTML tags that start with these, like dtango. There aren't, and if there are, it's very unlikely to cause a problem. We will also assume it's valid XHTML- no upper case tags.
+        'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'blockquote', 'pre', 'br', 'hr', 'fieldset', 'iframe', 'table',
+        'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'dd', 'dt', 'dl', 'li', 'ol', 'ul',
     );
     $best_pos = mixed();
     foreach ($look_out as $l) {
