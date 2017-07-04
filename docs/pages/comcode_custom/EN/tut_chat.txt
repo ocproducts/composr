@@ -90,7 +90,7 @@ Set the "Private room deletion time" option to "0" if you wish to disable room p
 
 [title="2"]Moderation[/title]
 
-The moderation screen for the chat system (in Content Management > Chat moderation) allows the editing/deletion of chat messages.
+The moderation screen for the chat system (in Admin Zone > Content > Chat moderation) allows the editing/deletion of chat messages.
 
 [title="3"]Inline moderation[/title]
 
@@ -104,7 +104,7 @@ Each post in a chatroom is displayed with a few potent links, which allow users 
 [media width="150" description="Moderating a message" float="right"]data_custom/images/docs/tut_chat/chat_moderation_panel_edit_message.png[/media]
 [media width="150" description="Messages to moderate" float="right"]data_custom/images/docs/tut_chat/chat_moderation_panel_messages.png[/media]
 [media width="150" description="Choosing a room to moderate" float="right"]data_custom/images/docs/tut_chat/chat_moderation_panel_rooms.png[/media]
-To edit messages, you have to use the chat system moderation page (Content Management > Chat moderation), which can also be accessed using one of the several moderation links peppered around the main chat screen. The main moderation screen lists all the chatrooms on the system, as well as pertinent information such as how many messages have been posted in each room. Clicking on a room name takes you to a more specific screen for that room.
+To edit messages, you have to use the chat system moderation page (Admin Zone > Content > Chat moderation), which can also be accessed using one of the several moderation links peppered around the main chat screen. The main moderation screen lists all the chatrooms on the system, as well as pertinent information such as how many messages have been posted in each room. Clicking on a room name takes you to a more specific screen for that room.
 
 This screen lists all messages in the room (with chatcode unparsed), with some useful information and a link to the member profile view screen of the submitter. Clicking on the message post date takes you to a message-edit page. On this page, you can edit the message details, and submit them. The changes won't immediately be reflected in the views of anybody using the relevant chatroom, but if a new user joins, or if somebody refreshes the room, they'll see the changes.
 

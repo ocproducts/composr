@@ -69,7 +69,7 @@ Another example is a community based upon subscription: points could be purchase
 [title="2"]Moving download galleries[/title]
 
 If you don't like that download galleries are placed underneath the root gallery, you can move them under a different gallery. Follow these steps:
-1) Create a new container gallery from Content Management > Galleries > Add Gallery. Let's say you've given it a codename of [tt]downloads[/tt].
+1) Create a new container gallery from Admin Zone > Content > Galleries > Add Gallery. Let's say you've given it a codename of [tt]downloads[/tt].
 2) Change the "Create download galleries under" option from Admin Zone > Setup > Configuration > Feature options > Downloads, to [tt]downloads[/tt]
 3) From Commandr, Admin Zone > Tools > Commandr, run this command to mass-move your existing galleries:[code="Commandr"]:$GLOBALS['SITE_DB']->query('UPDATE '.get_table_prefix().'galleries SET parent_id=\'downloads\' WHERE parent_id=\'root\' AND name LIKE \'download\_%\'');[/code]
 

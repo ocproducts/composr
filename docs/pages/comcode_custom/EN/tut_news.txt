@@ -14,7 +14,7 @@ When you first install your website, you may notice that there are no news posts
 
 From the front page, you'll notice the news block (assuming you didn't disable it in the Setup Wizard). At the bottom of that block is a link: 'Add News'. This link is only visible to members with sufficient permission to add news.
 
-You can manage news from Content Management > News. You'll find an add icon under here.
+You can manage news from Admin Zone > Content > News. You'll find an add icon under here.
 
 The add icon brings up the add screen, which is a standard form in Composr. It contains these fields:
  - [b]Title[/b]: this is the title (headline) that your news post will have
@@ -38,7 +38,7 @@ Don't create a primary header in the article content because the title of the ne
 
 [title="2"]Editing and deleting news[/title]
 
-You can easily edit a news post from Content Management > News > Edit news.
+You can easily edit a news post from Admin Zone > Content > News > Edit news.
 Or, from the edit link shown underneath when viewing it.
 
 You can delete a news post from the bottom of its edit form.
@@ -47,10 +47,10 @@ You can delete a news post from the bottom of its edit form.
 
 [surround]
 [media width="150" description="Adding a category" float="right"]data_custom/images/docs/tut_news/news_add_category.png[/media]
-News categories are very easy to manage from Content Management > News.
+News categories are very easy to manage from Admin Zone > Content > News.
 
 For example, lets say you want a "Political news" category...
-1) Go to Content Management > News > Add news category
+1) Go to Admin Zone > Content > News > Add news category
 2) Fill in the Title as "Political news"
 3) Choose or upload an Image
 4) Click the "Add news category" button
@@ -58,7 +58,7 @@ For example, lets say you want a "Political news" category...
 Now the category is added you will find it listed as a category option when adding news.
 
 If you wish to edit the category you can go to:
-Content Management > News > Add news category
+Admin Zone > Content > News > Add news category
 and choose the category to edit.
 You can delete a news category from the bottom of its edit form.
 [/surround][title="2"]Viewing news[/title]
@@ -98,7 +98,7 @@ News entries may be in multiple news categories, but a user needs access to the 
 
 [title="3"]Site messaging[/title]
 
-You may pin messages at the top of your site. Do this from Admin Zone > Setup > Configuration > Site options > Site messaging.
+You may pin messages at the top of your site. Do this from Admin Zone > Setup > Configuration > Messages > Site messaging.
 This is particularly useful in coordination with the news feature -- you'd add a news article then you'd link to it by placing a Comcode link in the Message, e.g.:
 [code="Comcode"]
 We have some scheduled down-time on Monday, see [url="our announcement"]http://example.com/site/news/view/3.htm[/url].

@@ -197,7 +197,7 @@ If you are going to go down the SEO route, make sure that you have someone who w
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
+ - [page="_SEARCH:tut_url_schemes"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page]
  - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
  - [page="_SEARCH:tut_metadata"]Metadata[/page]

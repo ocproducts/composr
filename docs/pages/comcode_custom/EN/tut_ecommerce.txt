@@ -403,7 +403,7 @@ Shopping catalogues provide the following special functionality:
 
 The Composr shopping catalogue has intentionally been kept lightweight. We're not trying to compete with the dedicated eCommerce systems on features, we're trying to provide something with fantastic Composr integration and extendibility that meets the majority of peoples' needs. This way we are able to compete by providing eCommerce as a part of the full Composr package, rather than a standalone eCommerce system that is bloated in its own way but lacking the features needed for a wider website.
 
-You can access the default products catalogue for modifications, and adding products to, from Content Management > Products.
+You can access the default products catalogue for modifications, and adding products to, from Admin Zone > Content > Products.
 
 [title="3"]Product fields[/title]
 

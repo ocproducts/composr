@@ -25,7 +25,7 @@ Event types are used to categorise events. There is a good selection of default 
  - System command.
 System commands are a special type, as events added to this define code to be executed (and permissions protect members adding to it by default).
 
-You may wish to add new event types for your website; for example, a business website might wish to add an 'Appraisal session' event type. This is done from under Content Management > Calendar.
+You may wish to add new event types for your website; for example, a business website might wish to add an 'Appraisal session' event type. This is done from under Admin Zone > Content > Calendar.
 You can delete an event type from the bottom of its edit form.
 [/surround]
 
@@ -35,7 +35,7 @@ You can delete an event type from the bottom of its edit form.
 [media width="150" description="Viewing a calendar event" float="right"]data_custom/images/docs/tut_calendar/calendar_view_event.png[/media]
 [media width="150" description="Adding an event to the calendar" float="right"]data_custom/images/docs/tut_calendar/calendar_add_event.png[/media]
 Adding and editing events is done from either:
-1) Under Content Management > Calendar
+1) Under Admin Zone > Content > Calendar
 2) Simply clicking in one of the boxes on the calendar view; this will fill in the date and time automatically for you (although you may wish to adjust that)
 3) Clicking the 'Add Event' button from a calendar view
 

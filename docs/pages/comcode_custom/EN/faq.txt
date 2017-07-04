@@ -316,7 +316,7 @@ Often webmasters are surprised that by default users allowed into the CMS zone. 
 
 [title="3"]I broke my panel layout. How do I restore it?[/title]
 
-Panels are just Comcode pages. Whenever you save a change, a revision is saved. However, the Zone editor doesn't have any user interface for restoring past revisions, so you'll need to do this via editing the individual Comcode page. From the admin menus find Content > Pages (Comcode pages), then select the panel page to edit. You will see revision restore functionality at the bottom.
+Panels are just Comcode pages. Whenever you save a change, a revision is saved. However, the Zone editor doesn't have any user interface for restoring past revisions, so you'll need to do this via editing the individual Comcode page. Go to Admin Zone > Content > Pages (Comcode pages), then select the panel page to edit. You will see revision restore functionality at the bottom.
 
 [title="3"]How do I open my site?[/title]
 

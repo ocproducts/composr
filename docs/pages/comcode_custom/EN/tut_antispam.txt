@@ -3,7 +3,7 @@
 Attack by spam-bots can be a major problem for a website. Fortunately Composr provides a number of tools to help you.
 
 This tutorial will go through the tools available, and our philosophy regarding them.
-The actual configuration options are under Admin Zone > Setup > Configuration > Security, and should be reasonably intuitive.
+The actual configuration options are under Admin Zone > Setup > Configuration > Security options, and should be reasonably intuitive.
 
 This tutorial does not cover validation, which is covered in the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
 

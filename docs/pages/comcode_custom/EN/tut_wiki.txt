@@ -46,7 +46,7 @@ There is an obvious 'Edit tree' button to edit the tree structure visible when y
 
 When on a page you can then easily edit that page from the obvious button. You can delete a page from the bottom of its edit form.
 
-The 'Edit Wiki+ page' selection list (Content Management > Wiki+) may be used to find/select pages which have been orphaned from the Wiki+ tree.
+The 'Edit Wiki+ page' selection list (Admin Zone > Content > Wiki+) may be used to find/select pages which have been orphaned from the Wiki+ tree.
 
 In a typical setup, staff are given access to modify the Wiki+ tree, while ordinary users rely on the Comcode syntax to create new inline links. Whether ordinary users are given access to add new pages can vary substantially between deployments, depending heavily on what role Wiki+ is being used for.
 

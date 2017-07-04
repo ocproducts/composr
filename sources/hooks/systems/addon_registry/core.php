@@ -66,7 +66,7 @@ class Hook_addon_registry_core
             'tut_drinking',
             'tut_metadata',
             'tut_sql',
-            'tut_short_urls',
+            'tut_url_schemes',
             'tut_seo',
             'tut_selectcode',
             'tut_filtercode',

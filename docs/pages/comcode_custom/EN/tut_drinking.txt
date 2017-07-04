@@ -292,9 +292,9 @@ There are two ways to make an article:
 
 News articles are best used if you do not consider your article to be a long-term part of your website itself, but merely a long-term resource which is archived. You are in the driving seat, however, and you can add as many new pages as you wish, without having to have each linked to from your menu if you do not wish them to be.
 
-You can create a new page and add it to your menus really easily by heading along to Content Management > Pages (Comcode Pages).
+You can create a new page and add it to your menus really easily by heading along to Admin Zone > Content > Pages (Comcode Pages).
 
-To add as a news article, head along to Content Management > News. Once added, it will appear in any news blocks you have (there is one on your front page, by default) and in the news archive. As mentioned, there is nothing stopping you adding a link to anything within Composr to your menus -- you can just visit the resource, grab the URL that your browser displays for it, and edit one of your menus with the caption of your choice.
+To add as a news article, head along to Admin Zone > Content > News. Once added, it will appear in any news blocks you have (there is one on your front page, by default) and in the news archive. As mentioned, there is nothing stopping you adding a link to anything within Composr to your menus -- you can just visit the resource, grab the URL that your browser displays for it, and edit one of your menus with the caption of your choice.
 
 [title="3"]Making databases[/title]
 
@@ -305,7 +305,7 @@ There are a number of different features in Composr which can be used for databa
  - Comcode pages (static documents) may also be used, with each 'record' being created by creating a new page; consistent structure may be created using 'Custom Comcode tags'.
  - [i]By integrating an existing system.[/i]
 
-If you would like to create a formal catalogue, head over to Content Management > Catalogues.
+If you would like to create a formal catalogue, head over to Admin Zone > Content > Catalogues.
 
 If you'd like to add to Wiki+, you can choose it from your menus of your main website and begin to edit the tree structure to create new pages, and then edit them and post within them, as required. You should read the [page="_SEARCH:tut_wiki"]Wiki+ tutorial[/page] for more information.
 
@@ -319,7 +319,7 @@ There are four distinct ways for adding images in Composr:
 3) Images that are presented in galleries.
 4) Images that are uploaded manually and referenced in Comcode using the [tt]img[/tt] tag
 
-If you are wishing to add an image to a gallery, head over to Content Management > Galleries. The gallery system supports a tree structure of galleries, or you may simply add things to the root of the tree making them show right-away when the user visits the 'Galleries' link (which is on one of your website menus by default).
+If you are wishing to add an image to a gallery, head over to Admin Zone > Content > Galleries. The gallery system supports a tree structure of galleries, or you may simply add things to the root of the tree making them show right-away when the user visits the 'Galleries' link (which is on one of your website menus by default).
 
 [title="3"]Adding files[/title]
 
@@ -327,7 +327,7 @@ There are two distinct ways of making downloadable files (as opposed to online a
 1) You may add the file as an attachment to some other content, such as a press release (news article). This is performed on the 'add' screen for any content that supports them.
 2) By adding it to the download system.
 
-To add to the download system, head over to Content Management > Downloads. The download system supports a tree structure of download categories, or you may simply add things to the root of the tree, making them show right-away when the user visits the 'Downloads' link (which is on one of your website menus by default).
+To add to the download system, head over to Admin Zone > Content > Downloads. The download system supports a tree structure of download categories, or you may simply add things to the root of the tree, making them show right-away when the user visits the 'Downloads' link (which is on one of your website menus by default).
 
 [title="2"]See also[/title]
 

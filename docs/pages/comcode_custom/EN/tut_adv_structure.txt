@@ -39,7 +39,7 @@ We could change it to:
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
+ - [page="_SEARCH:tut_url_schemes"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
 
 {$SET,tutorial_tags,page_management,core_zone_editor,breadcrumbs,Structure and navigation,expert}{$SET,tutorial_add_date,May 2015}{$SET,tutorial_summary,Some advanced information about managing the structure and flow of a Composr website.}[block]main_tutorial_rating[/block]

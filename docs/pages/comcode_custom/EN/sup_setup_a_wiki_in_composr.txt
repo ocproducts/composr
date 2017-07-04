@@ -7,7 +7,7 @@ Wiki+ (Composr's wiki) also offers you the usual permission controls you would e
 
 [title="2"]Setting up a Composr Wiki[/title]
 
-Within the "Content Management > Wiki+" section there are four options which are: add a new Wiki+ page, edit an existing page, and choosing and editing custom Wiki+ post and page fields. The last two of these options are if you want the pages to have specific information boxes for each post and pages. This allows you to add specific information to be framed within the page.
+Within the "Admin Zone > Content > Wiki+" section there are four options which are: add a new Wiki+ page, edit an existing page, and choosing and editing custom Wiki+ post and page fields. The last two of these options are if you want the pages to have specific information boxes for each post and pages. This allows you to add specific information to be framed within the page.
 
 The Wiki is made up of posts which sit on pages. You can create as many pages as you require on as many subjects as needed. When you first install the Wiki+ there will only be one page which will be titled Wiki home. In this section you can create as many pages as you like but until they are linked to another page within the Wiki which is already live they will be known as orphaned pages. This means they can still be used and edited but can only be found by the direct URL or a link placed elsewhere.
 

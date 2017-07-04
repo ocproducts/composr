@@ -163,6 +163,6 @@ The final step is to configure Composr to use the key pair to encrypt data. In t
  - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_msn"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_permissions"]Access Control and Privileges[/page]
- - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
+ - [page="_SEARCH:tut_url_schemes"]URL Schemes in Composr[/page]
 
 {$SET,tutorial_tags,core_configuration,apache_config_files,Configuration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Setting permissions. Search-Engine-Friendly URLs. Addons. Changing Installation Options.}[block]main_tutorial_rating[/block]

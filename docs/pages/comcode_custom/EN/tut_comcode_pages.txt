@@ -17,7 +17,7 @@ This tutorial covers some basic information relating to Comcode pages.
 [media width="150" description="The list of Comcode pages to be edited/deleted" float="right"]data_custom/images/docs/tut_comcode_pages/comcode_pages.png[/media]
 Comcode pages may be selected for editing either:
 [list="a"]
-[*] From Content Management > Pages (Comcode pages), which gives you a table to choose from.
+[*] From Admin Zone > Content > Pages (Comcode pages), which gives you a table to choose from.
 [*] By clicking the edit link underneath a page being viewed.
 [/list]
 
@@ -128,7 +128,7 @@ The default Comcode pages are...
 Like any page in Composr, a Comcode page is accessed by using:
 [tt]http://yourbaseurl/<zone>/index.php?page=<page-name>[/tt]
 
-Actually If you are using a URL Scheme, then it may be something else (depending on which [page="_SEARCH:tut_short_urls"]URL Scheme[/page] you use):
+Actually If you are using a URL Scheme, then it may be something else (depending on which [page="_SEARCH:tut_url_schemes"]URL Scheme[/page] you use):
  - [tt]http://yourbaseurl/<zone>/pg/<page-name>[/tt]
  - [tt]http://yourbaseurl/<zone>/<page-name>.htm[/tt]
  - [tt]http://yourbaseurl/<zone>/<page-name>[/tt]
@@ -152,7 +152,7 @@ Method 1:
 [media width="150" description="Choosing to add a page" float="right"]data_custom/images/docs/tut_comcode_pages/add_page_box.png[/media]
 Method 2:
 [list="a"]
-[*] Go to Content Management > Pages (Comcode pages)
+[*] Go to Admin Zone > Content > Pages (Comcode pages)
 [*] Scroll down
 [*] Give a new page name in the [tt]<zone>:<page-name>[/tt] format Composr uses in the list of pages that already exist (where a page in the Welcome Zone would just be [tt]:<page-name>[/tt])
 
@@ -192,7 +192,7 @@ You can delete a Comcode page from the bottom of its edit form.
 [title="2"]Page templates[/title]
 
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/advantage.png[/media]
-There are a number of built-in page templates available. These are shown when you add a new page from Content Management > Pages.
+There are a number of built-in page templates available. These are shown when you add a new page from Admin Zone > Content > Pages.
 
 The templates are designed to help you in the following ways:
  - So you don't need to think too hard about what kind of pages your site would benefit from
@@ -214,7 +214,7 @@ There may be cases where you don't want a Comcode page to appear in your Sitemap
  - [page="_SEARCH:tut_wysiwyg"]WYSIWYG editing[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
  - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
- - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
+ - [page="_SEARCH:tut_url_schemes"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page]
  - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
 

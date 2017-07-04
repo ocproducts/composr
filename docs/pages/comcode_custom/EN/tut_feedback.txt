@@ -20,7 +20,7 @@ This tutorial covers:
 
 [title="3"]Enabling[/title]
 
-We recognise that many websites owners will not wish to allow users to affect the state of their website: because of this, commenting and rating may be enabled/disabled on a site-wide basis. They are, however, enabled by default. To disable the elements of the feedback, check-boxes are given in Admin Zone > Setup > Configuration > Feature options > User interaction.
+We recognise that many websites owners will not wish to allow users to affect the state of their website: because of this, commenting and rating may be enabled/disabled on a site-wide basis. They are, however, enabled by default. To disable the elements of the feedback, check-boxes are given in Admin Zone > Setup > Configuration > User interaction.
 
 In addition to site-wide control of feedback, feedback may also be enabled/disabled on a content entry level. For a piece of content to support rating, for example, that content must be configured for rating, and Composr must have rating enabled site-wide. Composr is quite smart: if most of the content entries for a content type don't have ratings/comments enabled then the default for new entries will match that.
 
@@ -39,7 +39,7 @@ Trackbacks are described in the [page="_SEARCH:tut_adv_news"]Advanced news tutor
 
 [title="3"]Comments[/title]
 
-Feedback commenting is very similar to, and actually implemented as, a forum topic being attached to a piece of content, and displayed beneath it. To allow users to comment on Composr content, in addition to site-wide commenting any commenting for the content entry being enabled, the named comment forum must exist; the default comment forum name is 'Website comment topics', but this is configurable in Admin Zone > Setup > Configuration > Feature options > User interaction.
+Feedback commenting is very similar to, and actually implemented as, a forum topic being attached to a piece of content, and displayed beneath it. To allow users to comment on Composr content, in addition to site-wide commenting any commenting for the content entry being enabled, the named comment forum must exist; the default comment forum name is 'Website comment topics', but this is configurable in Admin Zone > Setup > Configuration > User interaction.
 
 Note that any commenting scenario requires a forum installed. Using the 'No forums or members' forum driver (chosen at installation), or using the in-built forum but with the [tt]cns_forum[/tt] addon not installed, will not work.
 
@@ -75,7 +75,7 @@ If the [tt]tickets[/tt] addon is installed, Composr includes a contact block, [t
 The [tt]main_contact_catalogues[/tt] block shows a form of custom fields coded into a catalogue. This is great for creating complex contact forms.
 
 The process for using this block is as follows:
-1) Add a new catalogue, via Content Management > Catalogues > Add catalogue. Include whatever fields on the catalogue that you want on the contact form. You'll probably also want to disable View access on all the usergroups.
+1) Add a new catalogue, via Admin Zone > Content > Catalogues > Add catalogue. Include whatever fields on the catalogue that you want on the contact form. You'll probably also want to disable View access on all the usergroups.
 2) (Don't add any entries or categories to the catalogue, that wouldn't serve any purpose)
 3) Go to add/edit the page where the block should go.
 4) Add the block to it in the normal way. When adding the block you are asked which catalogue to use.
@@ -192,7 +192,7 @@ As you can see, that's complex, so unless you have a spam problem here that your
 [media width="150" description="Adding a poll" float="right"]data_custom/images/docs/tut_feedback/feedback_add_poll.png[/media]
 [media width="150" description="Initially there is no poll, so the poll block displays like this" float="right"]data_custom/images/docs/tut_feedback/feedback_no_poll.png[/media]
 {!polls:DOC_POLLS}
-Polls are managed from Content Management > Polls.
+Polls are managed from Admin Zone > Content > Polls.
 You can delete a poll from the bottom of its edit form.
 
 By default, the poll block is displayed on the front page (unless this was changed in the Setup Wizard), and set up to display whatever poll is currently selected from those that were added. On a fresh install, there is of course no poll yet, so a message about this is shown. When you add or edit a poll, you have the choice to select it as the current poll: the selection date is stored, and this allows Composr to display an archive of past polls.

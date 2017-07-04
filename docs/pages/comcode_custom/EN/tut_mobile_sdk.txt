@@ -2149,7 +2149,7 @@ PhotoUpload *photoView = [[PhotoUpload alloc] initWithFrame:<frame>];[photoView 
 [media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_mobile_sdk/android.png[/media]
 Composr can support sending native iOS/Android push notifications.
 
-There are many configuration options located in Admin Zone > Setup > Configuration > Composr APIs.
+There are many configuration options located in Admin Zone > Setup > Configuration > Composr API options.
 
 For iOS notifications to work, put your Apple-provided server certificate over [tt]data_custom/modules/composr_mobile_sdk/ios/server_certificates.pem[/tt] (follow the usual CSR signing process against your Apple developer account).
 

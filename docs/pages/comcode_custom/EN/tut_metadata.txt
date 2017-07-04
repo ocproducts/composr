@@ -28,7 +28,7 @@ The title is used for the browser window/tab, and often used by external linkers
 
 It is generally devised by combining your Site Name, with the screen title of the page being viewed.
 
-The Site Name is set at Admin Zone > Setup > Configuration > Site Options.
+The Site Name is set at Admin Zone > Setup > Configuration > Site options.
 
 For a Comcode Page, the title may be edited via editing that page. The title is the same as the actual h1 heading of the page. For other content (e.g. a news post), the title is usually specified in its own field.
 
@@ -43,7 +43,7 @@ In your HTML the title tag looks similar to:
 
 The Meta Keywords and Description are not used by many wide-stream services nowadays (Google doesn't really use them), but are still considered a primary standard for information exchange, so most people do maintain them.
 
-The site-wide keywords and description can be set at Admin Zone > Setup > Configuration > Site Options.
+The site-wide keywords and description can be set at Admin Zone > Setup > Configuration > Site options.
 
 If some content (e.g. a Comcode page) defines its own description, it will be used instead.
 
@@ -116,7 +116,7 @@ Here are the step by step instructions for selecting an appropriate image:
 
  - [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page]
  - [page="_SEARCH:tut_seo"]Improving your search engine ranking[/page]
- - [page="_SEARCH:tut_short_urls"]URL Schemes in Composr[/page]
+ - [page="_SEARCH:tut_url_schemes"]URL Schemes in Composr[/page]
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
  - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
 

@@ -26,7 +26,7 @@ Services you could easily offer using Composr features include:
 [surround]
 [media width="150" description="The File/Media library" float="right"]data_custom/images/docs/tut_collaboration/collaboration_filedump.png[/media]
 The File/Media library is a tool to allow sharing of files, located at:
-Content Management > File/Media library
+Admin Zone > Content > File/Media library
 
 The library provides the ability to upload, download, and delete files, and organise files into folders.
 

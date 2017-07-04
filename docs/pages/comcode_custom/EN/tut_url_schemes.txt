@@ -70,11 +70,11 @@ Composr can do URL Schemes on the following web-servers:
 
 [title="3"]Apache[/title]
 
-[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_short_urls/apache.png[/media]
+[media thumb="0" framed="0" float="right"]data_custom/images/docs/tut_url_schemes/apache.png[/media]
 Perform the following steps:
 1) If you haven't already got a working Composr [tt].htaccess[/tt] file (the quick installer may have made it for you automatically), rename [tt]recommended.htaccess[/tt] to [tt].htaccess[/tt].
 2) If things go wrong, you can disable URL Schemes via an emergency shut off option in the [tt]http://yourbaseurl/config_editor.php[/tt] script. Make sure you see where it is before proceeding to the next step.
-3) Enable a URL Scheme from your site options (Admin Zone > Setup > Configuration > Site options > SEO).
+3) Enable a URL Scheme from your site options (Admin Zone > Setup > Configuration > Site options > Search Engine Optimisation / Tagging).
 
 [title="4"]If it won't save[/title]
 

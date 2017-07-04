@@ -2387,6 +2387,13 @@ Provide addon screenshots
 | Every non-bundled addon that is non-development addon must have a screenshot in [tt]data_custom/images/addon_screenshots[/tt].
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Use standardised navigation paths[/color]
+| Communication: consistency
+| Product development only
+| Manually, automated test to catch some mistakes ([tt]tutorial_nav_paths.php[/tt])
+| Navigation paths should be a bit like breadcrumbs starting from the Admin Zone, e.g. "Admin Zone > Setup > Configuration" or "Admin Zone > Content > Downloads"; or breadcrumbs on the default menu written like "Content > Quizzes on the default menus". Don't describe the navigation paths using prose.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Update these standards[/color]
 | Communication
 | Product development only

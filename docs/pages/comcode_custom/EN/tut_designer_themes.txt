@@ -75,7 +75,7 @@ This is what will happen with the elements of your static design (roughly):
 
 [list="1"]
 [*] Using the Theme Wizard (in Admin Zone > Style > Themes), create a base theme that matches the colour of the theme that needs to be build as closely as possible (if your theme has many colours, choose the one used most). Tell it to make the theme active.
-[*] You will also want to make sure the 'Block cache' is disabled in the configuration (Admin Zone > Setup > Configuration > Site options > Caches). This will allow you to make block template changes without having to worry about emptying the block cache each time. It is advisable to leave the other caches as they are; Composr is smart enough to detect if files have been changed in most cases.
+[*] You will also want to make sure the 'Block cache' is disabled in the configuration (Admin Zone > Setup > Configuration > Performance options > Caches). This will allow you to make block template changes without having to worry about emptying the block cache each time. It is advisable to leave the other caches as they are; Composr is smart enough to detect if files have been changed in most cases.
 [/list]
 
 [semihtml][b]This section is accompanied by a <a class="user_link force_filetype_icon" target="_blank" href="https://youtu.be/1ZvECzgtcEM">video</a>.[/b][/semihtml]
@@ -127,7 +127,7 @@ Comcode is explained in more detail further down.
 [*] Once things look fairly good it is time to start linking in all the individual blocks onto the site (via Comcode), as identified in the 'Research into Composr' stage.
 
 Mostly this is done by editing individual Comcode pages.
-For example, the left panel is a page called [tt]:panel_left[/tt] that you can edit from Content Management > Pages (Comcode pages). Or, you can edit it by copying [tt]pages/comcode/EN/panel_left.txt[/tt] to [tt]pages/comcode_custom/EN/panel_left.txt[/tt] and using any text editor.
+For example, the left panel is a page called [tt]:panel_left[/tt] that you can edit from Admin Zone > Content > Pages (Comcode pages). Or, you can edit it by copying [tt]pages/comcode/EN/panel_left.txt[/tt] to [tt]pages/comcode_custom/EN/panel_left.txt[/tt] and using any text editor.
 
 You will probably want to blank out what is already in the files and start them from scratch. At this stage we are not considering style, only content/structure, so consider your block decisions from the first stage but forget about design for now.
 
@@ -336,7 +336,7 @@ To include a page named [tt]otherpagename[/tt] into another Comcode page you can
 [/code]
 
 Obviously the pages you reference must exist to show. To create them...
-1) Go to Content Management > Pages (Comcode pages)
+1) Go to Admin Zone > Content > Pages (Comcode pages)
 2) Type in the new page-link beneath the list of existing pages. For example, for these examples (assuming we are working in the welcome zone) we would type [tt]:otherpagename[/tt].
 3) You will then be in the page editor and can define the page contents there.
 

@@ -37,7 +37,7 @@ A member's blog is displayed in a tab on their member profile (Conversr-only). D
 
 To create a 'blog', a member only needs to choose to add news, and select their own personal category; if the category does not yet exist, it will be displayed as 'new', and created automatically upon submission.
 
-There is also a blogs CMS module separate to the news CMS module, under Content Management > Blogs. It is a stripped down version of the main news posting module, designed to make blog posting simpler. This is provided for two reasons:
+There is also a blogs CMS module separate to the news CMS module, under Admin Zone > Content > Blogs. It is a stripped down version of the main news posting module, designed to make blog posting simpler. This is provided for two reasons:
 1) as a nicety so that you don't need to explain 'blogs are news' to your users
 2) so you can lock down access, so that members may submit to blogs but not website news
 The presence of the blogs CMS module does not stop you using the regular news CMS module to submit blog posts.
