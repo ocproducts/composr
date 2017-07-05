@@ -435,9 +435,52 @@ Throughout Composr, measures are taken to reduce the chance of e-mail addresses 
 To remove the possibility of search engines indexing the login screens of your Admin Zone you can create a [tt]robots.txt[/tt] file on the root of your domain name:
 [code="robots"]
 User-agent: *
+# Set Security/Performance rules for all bots
 Disallow: /adminzone/
+#Disallow: /cms/
+Disallow: /config_editor.php
+Disallow: /code_editor.php
+Disallow: /upgrader.php
+Disallow: /uninstall.php
+Disallow: /rootkit_detection.php
+Disallow: /data/comcode_convert.php
+Disallow: /data/comcode_helper.php
+Disallow: /data/cron_bridge.php
+Disallow: /data/block_helper.php
+Disallow: /data/upgrader2.php
+Disallow: /data/trackback.php
+Disallow: /data/captcha.php
+Disallow: /install.php
+Disallow: /temp/
+Disallow: /caches/
+Disallow: /cgi-bin/
+Disallow: /sources
+Disallow: /data/ace/
+Disallow: /data/ckeditor/
+Disallow: /lang
+Disallow: /text
+Disallow: /themes/default/
+Disallow: /imports/
+Disallow: /exports/
+
+# Set Sitemap
 Sitemap: http://yourbaseurl/data_custom/sitemaps/index.xml
 Sitemap: http://yourbaseurl/data_custom/sitemaps/news_sitemap.xml
+
+# Block some Spammy bots
+User-agent: SurdotlyBot
+Disallow: /
+User-agent: SemrushBot
+Disallow: /
+User-agent: DotBot
+Disallow: /
+User-agent: BLEXBot
+Disallow: /
+User-agent: AhrefsBot
+Disallow: /
+
+# Set reasonable Crawl Delay to stop over-enthusiastic bots
+Crawl-Delay: 10
 [/code]
 
 I also added a line there to say where your XML Sitemap is.
