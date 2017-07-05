@@ -2039,6 +2039,13 @@ Use relative font sizes
 | Composr development +
 | Manually
 | 
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Use [tt]BETA_CSS_PROPERTY[/tt] instead of vendor prefixing
+| Future proofing
+| Composr development +
+| Automated test ([tt]css_beta.php[/tt])
+| Rather than setting up multiple vendor prefixes for CSS properties that need them, use the [tt]{$BETA_CSS_PROPERTY,...}[/tt] symbol around just one normal call to the CSS property as it would ideally be written in the future. This allows PHP code to automatically add vendor prefixing and make dynamic modifications should there be some kind of standards change in the future. Don't mark stuff beta if it works unprefixed on all supported browsers.
 |}
 
 [title="4"]JavaScript[/title]
@@ -2190,6 +2197,13 @@ Do not omit semicolons
 | Product development only
 | Automated test ([tt]css_and_js.php[/tt])
 | JavaScript allows semicolons to be omitted in certain cases, but we do not because of the potential for error.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Use [tt]href="#!"[/tt] for JS-controlled links[/color]
+| Stability
+| Product development only
+| Manually
+| This is a special value used by Composr to indicate "prevent default" that you can make use of. There's a global listener for all clicks which finds such links and calls [tt]e.preventDefault()[/tt] so to not make the screen jump. [tt]href="#!"[/tt] is used because [tt]href="#"[/tt] could have valid uses like "jump to top".
 |}
 
 [title="4"]CSS and JavaScript[/title]
