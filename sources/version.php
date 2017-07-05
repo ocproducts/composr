@@ -23,13 +23,25 @@ The version numbers here are not for interchange. sources/version2.php provides 
 */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__version()
+{
+    if (!defined('COMPOSR_REPOS_URL')) {
+        define('COMPOSR_REPOS_URL', 'https://github.com/ocproducts/composr');
+    }
+}
+
+/**
  * Get the minor/patch version of your installation. This changes with each release, including bug fix releases. It generally consists of 'a' or 'a.b', where 'a' increments represent major changes and 'b' increments represent tiny changes or alpha/beta/RC numbering.
  *
  * @return string The minor/patch version number of your installation (e.g. 0.1 or 1.1 or RC1 or 1.RC1)
  */
 function cms_version_minor()
 {
-    return '0.5';
+    return '0.6';
 }
 
 /**
