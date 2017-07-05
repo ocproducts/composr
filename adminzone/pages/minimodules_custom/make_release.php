@@ -157,6 +157,7 @@ function phase_1_pre()
     }
     echo '
         <li>Run all the <kbd>_</kbd> prefixed unit tests individually</li>
+        <li>Do profiling (usually mainly xdebug) to make sure there are no serious performance regressions, particularly around unneeded code files being loaded, excessively used function calls, expensive function calls, excessive queries, expensive queries, excessive IO operations, expected caching not activating</li>
         <li>Install test content then view the <kbd>lorem:start</kbd>, <kbd>lorem:lorem</kbd> and <kbd>lorem:menus</kbd> pages to ensure blocks are working</li>
         <li>Test doing an upgrade from the prior version</li>
         <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
