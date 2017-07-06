@@ -2174,7 +2174,7 @@ class Tempcode
                 //}
 
                 if ((($first_of_long) || ($MEMORY_OVER_SPEED)) && (ob_get_length() > 0)) { // We only quick exit on the first iteration, as we know we likely didn't spend much time getting to it- anything more and we finish so that we can cache for later use by evaluate/evaluate_echo
-                    @ob_end_clean();
+                    ob_end_clean();
                     if (!$no_eval_cache_before) {
                         $NO_EVAL_CACHE = $no_eval_cache_before;
                     }
@@ -2474,7 +2474,7 @@ function debug_eval($code, &$tpl_funcs = null, $parameters = null, $cl = null)
     if ($result === false) {
         if ($GLOBALS['DEV_MODE']) {
             $message = (isset($php_errormsg) ? ($php_errormsg . ' - ') : '') . $code;
-            //@ob_end_clean(); @exit('!' . $message . '!');
+            //cms_ob_end_clean(); @exit('!' . $message . '!');
             fatal_exit($message);
         }
         $result = '';

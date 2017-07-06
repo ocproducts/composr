@@ -94,4 +94,5 @@ if ($tar_path === null) {
 header('Content-Type: application/octet-stream; authoritative=true;');
 header('Content-Disposition: inline; filename="' . escape_header(basename($tar_path), true) . '.tar"');
 
+cms_ob_end_clean();
 readfile($tar_path);

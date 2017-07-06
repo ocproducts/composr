@@ -183,7 +183,7 @@ function push_to_transifex($core_only, $push_cms, $push_ini, $push_translations,
         'description' => 'Community translation for Composr CMS ' . strval(cms_version()),
         'private' => false,
         'license' => 'permissive_open_source',
-        'repository_url' => 'https://github.com/ocproducts/composr',
+        'repository_url' => COMPOSR_REPOS_URL,
         'organization' => 'ocproducts',
         'team'=> 39268, // This is a hard-coded known value for the ocProducts organisation
         'fill_up_resources' => true,

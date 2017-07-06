@@ -1511,7 +1511,7 @@ class DatabaseConnector
             $QUERY_COUNT++;
             /*
             if ($QUERY_COUNT > 10) {
-                @ob_end_clean();
+                cms_ob_end_clean();
             }
             @header('Query: ' . $query . "\n");
             */

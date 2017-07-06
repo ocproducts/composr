@@ -242,7 +242,7 @@ function php_function_allowed($function)
 function get_html_trace()
 {
     $x = @ob_get_contents();
-    @ob_end_clean();
+    cms_ob_end_clean();
     if (is_string($x)) {
         @print($x);
     }
@@ -451,7 +451,7 @@ function composr_error_handler($errno, $errstr, $errfile, $errline)
         case E_ERROR:
         case E_WARNING:
         case E_NOTICE:
-            @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+            cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
             fatal_exit('PHP [' . strval($errno) . '] ' . $errstr);
     }
 
@@ -1025,4 +1025,14 @@ function persistent_cache_set($key, $data, $server_wide = false, $expire_secs = 
  */
 function persistent_cache_delete($key, $substring = false)
 {
+}
+
+/**
+ * Recursively clean (erase) the output buffer and turn off output buffering.
+ */
+function cms_ob_end_clean()
+{
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
 }

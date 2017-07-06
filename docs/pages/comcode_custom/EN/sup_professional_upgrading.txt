@@ -154,19 +154,8 @@ echo '/*';
 echo shell_exec($sql_cmd);
 echo '*/';
 
-$file_size = filesize($filename);
-$myfile = fopen($filename, 'rb');
-$i = 0;
-while ($i < $file_size) {
-    $content = fread($myfile, min($file_size - $i, 1048576));
-    echo $content;
-    $len = strlen($content);
-    if ($len == 0) {
-        break;
-    }
-    $i += $len;
-}
-fclose($myfile);
+@ob_end_clean();
+readfile($filename);
 
 unlink($filename);
 
@@ -481,19 +470,8 @@ if (!empty($_GET['zip'])) {
     }
     shell_exec($cmd);
 
-    $file_size = filesize('new_files.zip');
-    $myfile = fopen('new_files.zip', 'rb');
-    $i = 0;
-    while ($i < $file_size) {
-        $content = fread($myfile, min($file_size - $i, 1048576));
-        echo $content;
-        $len = strlen($content);
-        if ($len == 0) {
-            break;
-        }
-        $i += $len;
-    }
-    fclose($myfile);
+    @ob_end_clean();
+    readfile('new_files.zip');
 
     unlink('new_files.zip');
 

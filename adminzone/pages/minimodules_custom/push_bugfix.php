@@ -121,7 +121,7 @@ if (cms_srv('REQUEST_METHOD') == 'POST') {
         }
     }
     if ($git_commit_id !== null) {
-        $git_url = 'https://github.com/ocproducts/composr/commit/' . $git_commit_id;
+        $git_url = COMPOSR_REPOS_URL . '/commit/' . $git_commit_id;
         if (post_param_string('git_commit_id', '') == '') {
             $done['Committed to git'] = $git_url;
         }

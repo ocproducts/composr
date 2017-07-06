@@ -840,6 +840,7 @@ function fopen($filename, $mode, $use_include_path = false, $context = null)
 
 /**
  * Output all remaining data on a file pointer.
+ * Call cms_ob_end_clean() first, else too much memory will be used.
  *
  * @param  resource $handle The file handle.
  * @return ~integer The number of characters that got read (false: error).
@@ -2199,6 +2200,16 @@ function ob_gzhandler($buffer, $mode)
  * @return ~integer Output buffer length (false: error).
  */
 function ob_get_length()
+{
+    return 0;
+}
+
+/**
+ * Return the nesting level of the output buffering mechanism.
+ *
+ * @return integer Nesting level.
+ */
+function ob_get_level()
 {
     return 0;
 }
@@ -3624,6 +3635,7 @@ function range($from, $to, $step = 1)
 
 /**
  * Outputs a file.
+ * Call cms_ob_end_clean() first, else too much memory will be used.
  *
  * @param  PATH $filename The filename.
  * @param  boolean $use_include_path Whether to search within the include path.
@@ -5311,7 +5323,6 @@ getopt
 settype
 dir
 ob_get_flush
-ob_get_level
 ob_get_status
 ob_list_handlers
 array_intersect_uassoc

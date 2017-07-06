@@ -63,7 +63,9 @@ if (!function_exists('critical_error')) {
     {
         error_reporting(0);
 
-        @ob_end_clean(); // Emergency output so kill off any active buffer
+        while (ob_get_level() > 0) { // Emergency output, potentially, so kill off any active buffer
+            ob_end_clean();
+        }
         ob_start();
 
         if (($relay !== null) && (function_exists('_sanitise_error_msg'))) {

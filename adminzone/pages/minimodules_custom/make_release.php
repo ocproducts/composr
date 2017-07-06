@@ -81,7 +81,7 @@ function phase_0()
 
     $changes .= ' For a list of the more important fixes, see the [url="tracker"]' . $tracker_url . '[/url].
 
-For all changes, see the [url="git history"]http://github.com/ocproducts/composr/commits/[/url].';
+For all changes, see the [url="git history"]' . COMPOSR_REPOS_URL . '/commits/[/url].';
 
     $post_url = static_evaluate_tempcode(get_self_url(false, false, array('type' => '1')));
 
@@ -171,6 +171,7 @@ function phase_1_pre()
     }
     echo '
         <li>Consider updating the $discontinued array in <kbd>uploads/website_specific/compo.sr/scripts/version.php</kbd>.</li>
+        <li>Consider moving Composr to a fresh repository, so you can have a clean history and a clean set of branches; update the COMPOSR_REPOS_URL constant if you do this</li>
     </ul>
     <p>Ideally do these at least on some major versions:</p>
     <ul>

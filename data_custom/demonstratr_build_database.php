@@ -89,20 +89,8 @@ $out_file_path = cms_tempnam('sql');
 get_sql_dump($out_file_path);
 
 // Output
-$out_file = fopen($out_file_path, 'rb');
-$new_length = filesize($out_file_path);
-$i = 0;
-flush(); // Works around weird PHP bug that sends data before headers, on some PHP versions
-while ($i < $new_length) {
-    $content = fread($out_file, min($new_length - $i, 1048576));
-    echo $content;
-    $len = strlen($content);
-    if ($len == 0) {
-        break;
-    }
-    $i += $len;
-}
-fclose($out_file);
+cms_ob_end_clean();
+readfile($out_file_path);
 
 // Delete
 @unlink($out_file_path);

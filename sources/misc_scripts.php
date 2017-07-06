@@ -640,6 +640,7 @@ function external_url_proxy_script()
         header('Content-Type: ' . $content_type);
     }
     if ($f !== false) {
+        cms_ob_end_clean();
         fpassthru($f);
         @fclose($f);
     }

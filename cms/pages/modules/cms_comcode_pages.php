@@ -228,7 +228,7 @@ class Module_cms_comcode_pages
                 }
 
                 $located = _request_page($page, $zone, null, $lang);
-                if ($located !== false) {
+                if ($located !== false && $located[0] != 'REDIRECT') {
                     $out[$zone . ':' . $page] = array(
                         $located[count($located) - 1], // page path
                         null, // row
@@ -446,14 +446,12 @@ class Module_cms_comcode_pages
                     if (is_file($page_path)) {
                         $page_path = get_file_base() . '/' . $located[count($located) - 1];
                     }
-                } else {
-                    $page_path = null;
-                }
 
-                $files_list[$row['the_zone'] . ':' . $row['the_page']] = array(
-                    $page_path, // page_path
-                    $row, // row
-                );
+                    $files_list[$row['the_zone'] . ':' . $row['the_page']] = array(
+                        $page_path, // page_path
+                        $row, // row
+                    );
+                }
             }
         }
         if (!$found_via_query) {

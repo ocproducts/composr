@@ -172,7 +172,7 @@ function cns_member_external_linker_ask($username, $type, $email_address = '', $
     // If somehow, we're not fully started up, or in a messy state
     require_code('urls');
 
-    @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+    cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
     $title = get_screen_title('FINISH_PROFILE');
 
@@ -303,7 +303,7 @@ function cns_read_in_custom_fields($custom_fields, $member_id = null)
 
         $value = $ob->inputted_to_field_value(true, $custom_field, 'uploads/cns_cpf_upload', ($old_value === null) ? null : array('cv_value' => $old_value));
         if ((fractional_edit()) && ($value != STRING_MAGIC_NULL)) {
-            $rendered = $ob->render_field_value($custom_field, $value, 0, null, 'f_members', $member_id, 'ce_id', 'cf_id', 'field_' . strval($custom_field['id']), $member_id);
+            $rendered = $ob->render_field_value($custom_field, $value, 0, null, 'f_member_custom_fields', $member_id, 'ce_id', 'cf_id', 'field_' . strval($custom_field['id']), $member_id);
             $_POST['field_' . strval($custom_field['id']) . '__altered_rendered_output'] = is_object($rendered) ? $rendered->evaluate() : $rendered;
         }
         $actual_custom_fields[$custom_field['id']] = $value;

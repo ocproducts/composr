@@ -1951,3 +1951,13 @@ function convert_data_encodings($known_utf8 = false)
     require_code('character_sets');
     _convert_data_encodings($known_utf8);
 }
+
+/**
+ * Recursively clean (erase) the output buffer and turn off output buffering.
+ */
+function cms_ob_end_clean()
+{
+    while (ob_get_level() > 0) {
+        ob_end_clean();
+    }
+}

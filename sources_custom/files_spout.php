@@ -119,7 +119,9 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
 
     if ($output_and_exit) {
         if ($outfile_path !== null) {
+            cms_ob_end_clean();
             readfile($outfile_path);
+
             @unlink($outfile_path);
         }
 

@@ -380,7 +380,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
         throw new CMSException($text);
     }
 
-    @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+    cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
     if ($template == 'FATAL_SCREEN') {
         set_http_status_code(500);
@@ -1401,7 +1401,7 @@ function _access_denied($class, $param, $force_login)
         // Otherwise we want flat access denied due to a flat request/response model
         // NB: Also see similar running_script lines in globalise function
 
-        @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+        cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
         $redirect = get_self_url(true, false, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
         $_GET['redirect'] = $redirect;

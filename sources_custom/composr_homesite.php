@@ -377,8 +377,6 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
 {
     global $SITE_INFO;
 
-    disable_php_memory_limit();
-
     // Create database
     $master_conn = new DatabaseConnector(get_db_site(), 'localhost'/*$server*/, 'root', $SITE_INFO['mysql_root_password'], 'cms_');
     $master_conn->query('DROP DATABASE `demonstratr_site_' . $codename . '`', null, 0, true);
@@ -423,12 +421,11 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
     // Create default file structure
     $path = special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($codename);
     if (file_exists($path)) {
-        require_code('files');
-        @deldir_contents($path);
-    } else {
-        @mkdir(dirname($path), 0777);
-        mkdir($path, 0777);
+        //require_code('files'); @deldir_contents($path);
+        exec('rm -rf ' . $path); // More efficient
     }
+    @mkdir(dirname($path), 0777);
+    @mkdir($path, 0777);
     @chmod($path, 0777);
     require_code('tar');
     $tar = tar_open(special_demonstratr_dir() . '/template.tar', 'rb');
@@ -842,9 +839,8 @@ function demonstratr_delete_site($server, $codename, $bulk = false)
     if ($codename != '') {
         $path = special_demonstratr_dir() . '/servers/' . filter_naughty($server) . '/sites/' . filter_naughty($codename);
         if (file_exists($path)) {
-            require_code('files');
-            deldir_contents($path);
-            @rmdir($path);
+            //require_code('files'); deldir_contents($path); @rmdir($path);
+            exec('rm -rf ' . $path); // More efficient
         }
     }
 
