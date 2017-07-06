@@ -370,7 +370,7 @@ class Module_admin_cns_members
             do_lang_tempcode('SUCCESS'),
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             array('_SELF', array('type' => 'step1'), '_SELF'), // Add one
             null, // Edit this
             null, // Edit one

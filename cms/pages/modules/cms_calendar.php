@@ -1465,7 +1465,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
                 $description,
                 array(),
                 null,
-                /* TYPED-ORDERED LIST OF 'LINKS'    */
+                /* TYPED-ORDERED LIST OF 'LINKS' */
                 array('_SELF', array('type' => 'add'), '_SELF', do_lang_tempcode('ADD_CALENDAR_EVENT')), // Add one
                 null, // Edit this
                 has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit'), '_SELF', do_lang_tempcode('EDIT_CALENDAR_EVENT')) : null, // Edit one
@@ -1492,7 +1492,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             array('_SELF', array('type' => 'add', 'e_type' => $type) + $extra, '_SELF', do_lang_tempcode('ADD_CALENDAR_EVENT')), // Add one
             (($id === null) || (!has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar', array('calendar', 'type')))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id) + $extra, '_SELF', do_lang_tempcode('EDIT_THIS_CALENDAR_EVENT')), // Edit this
             has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_calendar') ? array('_SELF', array('type' => 'edit') + $extra, '_SELF', do_lang_tempcode('EDIT_CALENDAR_EVENT')) : null, // Edit one

@@ -110,7 +110,8 @@ function _get_details_comcode_tags()
 
     ksort($tag_list);
 
-    /* // Helps find missing tags
+    /*
+    // Helps find missing tags
     init_valid_comcode_tags();
     unset($VALID_COMCODE_TAGS['section']);
     unset($VALID_COMCODE_TAGS['section_controller']);
@@ -125,7 +126,8 @@ function _get_details_comcode_tags()
         global $VALID_COMCODE_TAGS;
         unset($VALID_COMCODE_TAGS[$tag]);
     }
-    @var_dump($VALID_COMCODE_TAGS);exit();*/
+    @var_dump($VALID_COMCODE_TAGS);exit();
+    */
     $custom_tag_list = array();
 
     global $DANGEROUS_TAGS, $TEXTUAL_TAGS;

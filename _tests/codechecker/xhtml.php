@@ -126,8 +126,7 @@ if ($javascript) {
 } elseif (substr($to_use, -4) == '.css') {
     $results = check_css($contents);
 } else {
-    $is_fragment = (substr($to_use, -5) != '.html') && (substr($to_use, -4) != '.htm')/* && (substr($to_use,-4)!='.php')*/
-    ;
+    $is_fragment = (substr($to_use, -5) != '.html') && (substr($to_use, -4) != '.htm')/* && (substr($to_use,-4)!='.php')*/;
     $manual = (in_array('checks', $_SERVER['argv'])) || ((array_key_exists('checks', $_SERVER['argv']) && ($_SERVER['argv']['checks'] == '1')));
     $ext = false;
     if ((strpos($to_use, '/_mail.html') !== false) || (strpos($to_use, '_mail.htm') !== false) || ($to_use == '_mail.html') || ($to_use == '_mail.htm')) {

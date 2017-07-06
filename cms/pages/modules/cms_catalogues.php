@@ -928,7 +928,7 @@ class Module_cms_catalogues extends Standard_crud_module
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $c_name, 'category_id' => $category_id), '_SELF'), // Add one
             (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues', array('catalogues_category', $category_id)))) ? null : array('_SELF', array('type' => '_edit_entry', 'id' => $id, 'catalogue_name' => $c_name), '_SELF'), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $c_name), '_SELF') : null, // Edit one
@@ -1485,7 +1485,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             array('_SELF', array('type' => 'add_entry', 'category_id' => $id, 'catalogue_name' => $catalogue_name), '_SELF'), // Add one
             null, // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $catalogue_name), '_SELF') : null, // Edit one
@@ -2180,7 +2180,7 @@ class Module_cms_catalogues_alt extends Standard_crud_module
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             (($name === null) || (!$has_categories)) ? null : array('_SELF', array('type' => 'add_entry', 'catalogue_name' => $name), '_SELF'), // Add one
             null, // Edit this
             (($name === null) || (!$has_categories)) ? null : (has_privilege(get_member(), 'edit_own_midrange_content', 'cms_catalogues') ? array('_SELF', array('type' => 'edit_entry', 'catalogue_name' => $name), '_SELF') : null), // Edit one

@@ -389,8 +389,7 @@ function closure_eval($code, $parameters)
         return do_lang('NO_PHP_IN_TEMPLATES');
     }
 
-    $ret = /*$GLOBALS['DEV_MODE']?debug_eval($code):*/
-        eval($code);
+    $ret = /*$GLOBALS['DEV_MODE']?debug_eval($code):*/eval($code);
     if (!is_string($ret)) {
         $ret = @strval($ret);
     }
@@ -606,8 +605,7 @@ function make_string_tempcode($string)
     }
     $generator_num++;
 
-    $myfunc = 'string_attach_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/
-    ;
+    $myfunc = 'string_attach_' . $generator_base . '_' . strval($generator_num)/*We'll inline it actually rather than calling, for performance   fast_uniqid()*/;
     $code_to_preexecute = array($myfunc => "\$tpl_funcs['$myfunc']=\"echo \\\"" . php_addslashes_twice($string) . "\\\";\";\n");
     $seq_parts = array(array(array($myfunc, array(), TC_KNOWN, '', '')));
     $ret = new Tempcode(array($code_to_preexecute, $seq_parts));

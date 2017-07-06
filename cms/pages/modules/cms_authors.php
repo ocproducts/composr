@@ -377,7 +377,7 @@ class Module_cms_authors
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             has_privilege(get_member(), 'edit_midrange_content', 'cms_authors') ? array('_SELF', array('type' => '_add'), '_SELF') : null, // Add one
             ($author === null) ? null : array('_SELF', array('type' => '_add', 'id' => $author), '_SELF'), // Edit this
             has_privilege(get_member(), 'edit_midrange_content', 'cms_authors') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one

@@ -254,8 +254,15 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
                         }
                         */
                         $perms = fileperms($full);
-                        $info[] = array('path' => $full, 'size' => filesize($full),/* 'owner' => $owner, 'group' => $group,*/
-                                        'perms' => $perms, 'ctime' => $ctime, 'mtime' => $mtime);
+                        $info[] = array(
+                            'path' => $full,
+                            'size' => filesize($full),
+                            /*'owner' => $owner,
+                            'group' => $group,*/
+                            'perms' => $perms,
+                            'ctime' => $ctime,
+                            'mtime' => $mtime,
+                        );
                     }
                 }
             }

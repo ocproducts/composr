@@ -190,12 +190,11 @@ class Hook_import_smf2
                 continue;
             }
             /*
-                        // Disabled due to possible problems on some systems.
-                        if (isset($row['variable'])&&$row['variable']=='enableCompressedOutput')
-                        {
-                                $config_remapping['gzip_output']=$row['value'];
-                                continue;
-                        }
+            // Disabled due to possible problems on some systems.
+            if (isset($row['variable']) && $row['variable'] == 'enableCompressedOutput') {
+                $config_remapping['gzip_output'] = $row['value'];
+                continue;
+            }
             */
             if (isset($row['variable']) && $row['variable'] == 'default_timezone') {
                 $config_remapping['timezone'] = $row['value'];
@@ -216,9 +215,6 @@ class Hook_import_smf2
                 $ADDITIONAL_DATA['avatar_max_height'] = (integer)$row['value'];
                 continue;
             }
-            /*
-             * Todo Add for SMF2 signature_settings parse first value for enabled/disable and second value for max characters
-             */
         }
 
         foreach ($config_remapping as $key => $value) {

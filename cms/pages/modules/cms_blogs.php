@@ -616,7 +616,7 @@ class Module_cms_blogs extends Standard_crud_module
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             array('_SELF', array('type' => 'add', 'cat' => $cat), '_SELF'), // Add one
             (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_news', array('news', $cat)))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF'), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_news') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one

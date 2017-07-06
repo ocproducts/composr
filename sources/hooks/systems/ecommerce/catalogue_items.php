@@ -147,7 +147,7 @@ class Hook_ecommerce_catalogue_items
                     }
                 }
 
-                /* For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience */
+                // For catalogue items we make the numeric product ID the raw ID for the eCommerce item. This is unique to catalogue items (necessarily so, to avoid conflicts), and we do it for convenience
                 $products[strval($entry_row['id'])/*We use numeric indices for shopping catalogue items*/] = array(
                     'item_name' => $product_title,
                     'item_description' => empty($field_rows[$shopping_catalogue__description]['effective_value']) ? $field_rows[$shopping_catalogue__description]['effective_value'] : '',

@@ -964,7 +964,7 @@ function detect_conflicts($member_id, $skip_id, $start_year, $start_month, $star
                     break;
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE:
                     if ($type != $event['e_type']) {
-                        /*we know it's not going to be same member, as event is not for a member*/
+                        // We know it's not going to be same member, as event is not for a member
                         continue 2;
                     }
                     break;
@@ -977,11 +977,11 @@ function detect_conflicts($member_id, $skip_id, $start_year, $start_month, $star
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER:
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE_IF_GLOBAL:
                     if ($member_calendar !== $event['e_member_calendar']) {
-                        continue 2; // we know one is not global, so we can do a direct compare, knowing null will not equal any member value
+                        continue 2; // We know one is not global, so we can do a direct compare, knowing null will not equal any member value
                     }
                     break;
                 case DETECT_CONFLICT_SCOPE_SAME_MEMBER_OR_SAME_TYPE:
-                    if (($type != $event['e_type']) && ($member_calendar !== $event['e_member_calendar']/*we know we don't need to consider a null to null match separately as it can't happen in this branch*/)) {
+                    if (($type != $event['e_type']) && ($member_calendar !== $event['e_member_calendar']/* We know we don't need to consider a null to null match separately as it can't happen in this branch */)) {
                         continue 2;
                     }
                     break;

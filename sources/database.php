@@ -1509,10 +1509,12 @@ class DatabaseConnector
 
         if (peek_query_limiting()) {
             $QUERY_COUNT++;
-            /*if ($QUERY_COUNT > 10) {
+            /*
+            if ($QUERY_COUNT > 10) {
                 @ob_end_clean();
             }
-            @header('Query: ' . $query . "\n");*/
+            @header('Query: ' . $query . "\n");
+            */
         }
         if ((!headers_sent()) && (function_exists('fb')) && (get_param_integer('keep_firephp_queries', 0) === 1)) {
             fb('Query: ' . $query);

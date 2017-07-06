@@ -282,7 +282,7 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
         $completion_text,
         $special,
         do_lang('PAGES'),
-        /* TYPED-ORDERED LIST OF 'LINKS'   */
+        /* TYPED-ORDERED LIST OF 'LINKS' */
         null, // Add one
         null, // Edit this
         null, // Edit one

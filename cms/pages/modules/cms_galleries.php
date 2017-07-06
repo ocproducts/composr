@@ -2301,7 +2301,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
                 $description,
                 array(),
                 null,
-                /* TYPED-ORDERED LIST OF 'LINKS'    */
+                /* TYPED-ORDERED LIST OF 'LINKS' */
                 null, // Add one
                 null, // Edit this
                 null, // Edit one
@@ -2348,7 +2348,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             null, // Add one
             (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_galleries', array('galleries', $cat)))) ? null : array('_SELF', array('type' => $video ? '_edit_other' : '_edit', 'id' => $id), '_SELF'), // Edit this
             null, // Edit one

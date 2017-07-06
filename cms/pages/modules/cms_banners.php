@@ -868,7 +868,7 @@ class Module_cms_banners_cat extends Standard_crud_module
                 $description,
                 array(),
                 null,
-                /* TYPED-ORDERED LIST OF 'LINKS'    */
+                /* TYPED-ORDERED LIST OF 'LINKS' */
                 array('_SELF', array('type' => 'add'), '_SELF', do_lang_tempcode('ADD_BANNER')), // Add one
                 null, // Edit this
                 has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit'), '_SELF', do_lang_tempcode('EDIT_BANNER')) : null, // Edit one
@@ -895,7 +895,7 @@ class Module_cms_banners_cat extends Standard_crud_module
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             array('_SELF', array('type' => 'add', 'b_type' => $type), '_SELF', do_lang_tempcode('ADD_BANNER')), // Add one
             (($id === null) || (!has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners'))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF', do_lang_tempcode('EDIT_THIS_BANNER')), // Edit this
             has_privilege(get_member(), 'edit_own_lowrange_content', 'cms_banners') ? array('_SELF', array('type' => 'edit'), '_SELF', do_lang_tempcode('EDIT_BANNER')) : null, // Edit one

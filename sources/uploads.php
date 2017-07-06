@@ -584,8 +584,7 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
 {
     // Security check against naughty url's
     $url = array();
-    $url[0] = /*filter_naughty*/
-        (post_param_string($specify_name));
+    $url[0] = /*filter_naughty*/(post_param_string($specify_name));
     $url[1] = rawurldecode(basename($url[0]));
 
     // If this is a relative URL then it may be downloaded through a PHP script.

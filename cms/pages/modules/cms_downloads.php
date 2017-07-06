@@ -1073,7 +1073,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
                 $description,
                 array(),
                 null,
-                /* TYPED-ORDERED LIST OF 'LINKS'    */
+                /* TYPED-ORDERED LIST OF 'LINKS' */
                 array('_SELF', array('type' => 'add'), '_SELF'), // Add one
                 null, // Edit this
                 has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one
@@ -1113,7 +1113,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             array('_SELF', array('type' => 'add', 'cat' => $category_id), '_SELF'), // Add one
             (($id === null) || (!has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads', array('downloads', $category_id)))) ? null : array('_SELF', array('type' => '_edit', 'id' => $id), '_SELF'), // Edit this
             has_privilege(get_member(), 'edit_own_midrange_content', 'cms_downloads') ? array('_SELF', array('type' => 'edit'), '_SELF') : null, // Edit one

@@ -557,7 +557,7 @@ class Module_cms_chat
                 do_lang_tempcode('SUCCESS'),
                 array(),
                 null,
-                /* TYPED-ORDERED LIST OF 'LINKS'    */
+                /* TYPED-ORDERED LIST OF 'LINKS' */
                 null, // Add one
                 array('_SELF', array('type' => 'edit', 'id' => $message_id, 'room_id' => $room_id), '_SELF'), // Edit this
                 array('_SELF', array('type' => 'room', 'id' => $room_id), '_SELF'), // Edit one
@@ -621,7 +621,7 @@ class Module_cms_chat
             do_lang_tempcode('SUCCESS'),
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             null, // Add one
             null, // Edit this
             array('_SELF', array('type' => 'room', 'id' => $room_id), '_SELF'), // Edit one

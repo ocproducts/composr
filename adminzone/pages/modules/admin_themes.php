@@ -1414,7 +1414,7 @@ class Module_admin_themes
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             $add_one, // Add one
             $edit_this, // Edit this
             $edit_one, // Edit one

@@ -681,7 +681,7 @@ abstract class Standard_crud_module
             $description,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             $this->do_next_editing_categories ? null : array('_SELF', array('type' => $this->get_screen_type_for('add', $this->type_code)), '_SELF', ($this->add_one_label !== null) ? $this->add_one_label : null), // Add one
             $this->do_next_editing_categories ? null : ((($id === null) || (($this->permissions_require !== null) && (!has_privilege(get_member(), 'edit_own_' . $this->permissions_require . 'range_content', ($this->privilege_page_name === null) ? get_page_name() : $this->privilege_page_name)))) ? null : array('_SELF', array('type' => $this->get_screen_type_for('_edit', $this->type_code), 'id' => $id), '_SELF', ($this->edit_this_label !== null) ? $this->edit_this_label : null)), // Edit this
             $this->do_next_editing_categories ? null : ((($this->permissions_require !== null) && (!has_privilege(get_member(), 'edit_own_' . $this->permissions_require . 'range_content', ($this->privilege_page_name === null) ? get_page_name() : $this->privilege_page_name))) ? null : array('_SELF', array('type' => $this->get_screen_type_for('edit', $this->type_code)), '_SELF', ($this->edit_one_label !== null) ? $this->edit_one_label : null)), // Edit one

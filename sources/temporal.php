@@ -48,7 +48,7 @@ function display_seconds_period($seconds)
     if ($hours != 0) {
         $out .= str_pad(strval($hours), 2, '0', STR_PAD_LEFT) . ':';
     }
-    /*Expected if (($hours!=0) || ($minutes!=0)) */
+    /*Expected if (($hours != 0) || ($minutes != 0)) */
     $out .= str_pad(strval($minutes), 2, '0', STR_PAD_LEFT) . ':';
     $out .= str_pad(strval($seconds), 2, '0', STR_PAD_LEFT);
     return $out;

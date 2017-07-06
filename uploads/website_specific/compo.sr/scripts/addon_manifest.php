@@ -43,8 +43,7 @@ $version = get_param_string('version'); // This is a 'pretty' version number, ra
 
 $id_float = floatval($version);
 do {
-    $str = 'Version ' . /*preg_replace('#\.0$#', '', */float_to_raw_string($id_float, 1)/*)*/
-    ;
+    $str = 'Version ' . /*preg_replace('#\.0$#', '', */float_to_raw_string($id_float, 1)/*)*/;
     $_id = $GLOBALS['SITE_DB']->query_select_value_if_there('download_categories', 'id', array('parent_id' => 3, $GLOBALS['SITE_DB']->translate_field_ref('category') => $str));
     if ($_id === null) {
         $id_float -= 0.1;

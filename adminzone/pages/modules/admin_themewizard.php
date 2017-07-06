@@ -344,7 +344,7 @@ class Module_admin_themewizard
             $message,
             array(),
             null,
-            /* TYPED-ORDERED LIST OF 'LINKS'  */
+            /* TYPED-ORDERED LIST OF 'LINKS' */
             null, // Add one
             null, // Edit this
             null, // Edit one

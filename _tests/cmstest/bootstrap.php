@@ -76,8 +76,7 @@ function run_testset($testset)
     $suite = $loader->createSuiteFromClasses(
         $testset,
         array(basename($testset) . '_test_set'));
-    /*$result=*/
-    $suite->run(new DefaultReporter());
+    /*$result=*/$suite->run(new DefaultReporter());
 }
 
 function testset_do_header($title)

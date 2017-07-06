@@ -208,7 +208,6 @@ class Module_admin_workflow extends Standard_crud_module
             get_screen_title('MANAGE_WORKFLOWS'),
             comcode_to_tempcode(do_lang('DOC_WORKFLOWS'), null, true),
             array(
-                /*  type                     page    params                                       zone   */
                 array('menu/_generic_admin/add_one', array('_SELF', array('type' => 'add'), '_SELF'), do_lang('ADD_WORKFLOW')),
                 array('menu/_generic_admin/edit_one', array('_SELF', array('type' => 'edit'), '_SELF'), do_lang('EDIT_WORKFLOW')),
             ),

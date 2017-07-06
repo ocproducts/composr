@@ -65,8 +65,7 @@ function sync_video_syndication($local_id = null, $new_upload = false, $reupload
 
         if ($ob->is_active()) {
             // What is already on remote server
-            $remote_videos = $new_upload ?/*no remote search needed*/
-                array() : $ob->get_remote_videos($local_id);
+            $remote_videos = $new_upload ? /*no remote search needed*/array() : $ob->get_remote_videos($local_id);
 
             foreach ($remote_videos as $video) {
                 if (!$GLOBALS['DEV_MODE']) {
