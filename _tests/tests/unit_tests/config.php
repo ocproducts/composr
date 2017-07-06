@@ -18,6 +18,32 @@
  */
 class config_test_set extends cms_test_case
 {
+    public function testSaneDefaults()
+    {
+        $hooks = find_all_hooks('systems', 'config');
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/config/' . $hook);
+            $ob = object_factory('Hook_config_' . $hook);
+            $details = $ob->get_details();
+
+            $default = $ob->get_default();
+
+            switch ($details['type']) {
+                case 'integer':
+                    $this->assertTrue((empty($default)) || (strval(intval($default)) == $default), 'Integer fields expect integer values');
+                    break;
+
+                case 'float':
+                    $this->assertTrue((empty($default)) || (is_numeric($default)), 'Float fields expect numeric values');
+                    break;
+
+                case 'tick':
+                    $this->assertTrue((empty($default)) || (in_array($default, array('0', '1'))), 'Tick fields expect boolean values');
+                    break;
+            }
+        }
+    }
+
     public function testAddonCategorisationConsistency()
     {
         $hooks = find_all_hooks('systems', 'config');
