@@ -98,6 +98,10 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
 {
     // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
 
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
+
     $taxcloud_item_details = array();
     $non_taxcloud_item_details = array();
     $free_item_details = array();
