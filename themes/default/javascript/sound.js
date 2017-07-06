@@ -1,4 +1,4 @@
-/*{$,Parser hint: pure}*/
+/*{$,parser hint: pure}*/
 
 /** @license
  *

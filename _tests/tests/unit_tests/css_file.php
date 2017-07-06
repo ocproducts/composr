@@ -202,7 +202,7 @@ class css_file_test_set extends cms_test_case
                         }
 
                         // Let's do a few simple CSS checks, less than a proper validator would do
-                        if (($is_css_file) && (strpos($contents, '{$,Parser hint: pure}') === false)) {
+                        if (($is_css_file) && (strpos($contents, '{$,parser hint: pure}') === false)) {
                             // Test comment/brace balancing
                             $a = substr_count($contents, '{');
                             $b = substr_count($contents, '}');

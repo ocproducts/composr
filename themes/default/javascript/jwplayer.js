@@ -1,4 +1,4 @@
-/*{$,Parser hint: pure}*/
+/*{$,parser hint: pure}*/
 
 "undefined"==typeof jwplayer&&(jwplayer=function(d){if(jwplayer.api)return jwplayer.api.selectPlayer(d)},jwplayer.version="6.6.3896",jwplayer.vid=document.createElement("video"),jwplayer.audio=document.createElement("audio"),jwplayer.source=document.createElement("source"),function(d){function a(b){return function(){return c(b)}}function k(b){return function(){b("Error loading file")}}function f(m,a,e,g){return function(){try{var c=m.responseXML;if(c&&c.firstChild)return e(m)}catch(j){}(c=b.parseXML(m.responseText))&&
 c.firstChild?(m=b.extend({},m,{responseXML:c}),e(m)):g&&g(m.responseText?"Invalid XML":a)}}var h=document,e=window,j=navigator,b=d.utils=function(){};b.exists=function(b){switch(typeof b){case "string":return 0<b.length;case "object":return null!==b;case "undefined":return!1}return!0};b.styleDimension=function(b){return b+(0<b.toString().indexOf("%")?"":"px")};b.getAbsolutePath=function(a,e){b.exists(e)||(e=h.location.href);if(b.exists(a)){var c;if(b.exists(a)){c=a.indexOf("://");var g=a.indexOf("?");

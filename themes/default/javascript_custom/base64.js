@@ -1,4 +1,4 @@
-/*{$,Parser hint: pure}*/
+/*{$,parser hint: pure}*/
 
 // Simple Base64 encoder/decoder
 // Public Domain

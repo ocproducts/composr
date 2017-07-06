@@ -105,7 +105,7 @@ foreach (array_keys($themes) as $theme) {
                     }
 
                     // Let's do a few simple CSS checks, less than a proper validator would do
-                    if (substr($f, -4) == '.css' && strpos($contents, '{$,Parser hint: external}') === false) {
+                    if (substr($f, -4) == '.css' && strpos($contents, '{$,parser hint: external}') === false) {
                         // Test comment/brace balancing
                         if (substr_count($contents, '{') != substr_count($contents, '}')) {
                             echo '<br />Mismatched braces in ' . escape_html($f);

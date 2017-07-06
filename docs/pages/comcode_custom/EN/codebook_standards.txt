@@ -2056,7 +2056,7 @@ JavaScript has been historically a very clunky language with a messy history of 
 You do not need to:
 1) define jsdoc fully
 2) minify scripts (Composr does it for you)
-3) make third-party libraries meet our particular choice of standards (we trust third-party developers to have their own methods for ensuring standards are high) [exclude JavaScript libraries from automated testing by putting [tt]/*{$,Parser hint: pure}*/[/tt] at the top of the file]
+3) make third-party libraries meet our particular choice of standards (we trust third-party developers to have their own methods for ensuring standards are high) [exclude JavaScript libraries from automated testing by putting [tt]/*{$,parser hint: pure}*/[/tt] at the top of the file]
 
 {|
 ! Standard

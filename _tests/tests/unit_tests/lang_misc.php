@@ -62,7 +62,7 @@ class lang_misc_test_set extends cms_test_case
         $files = $this->do_dir(get_file_base() . '/themes', 'themes', 'js');
         foreach ($files as $file) {
             $c = file_get_contents($file);
-            if (strpos($c, '/*{$,Parser hint: pure}*/') === false) {
+            if (strpos($c, '/*{$,parser hint: pure}*/') === false) {
                 $this->process_file_for_references($c, $file);
             }
         }
