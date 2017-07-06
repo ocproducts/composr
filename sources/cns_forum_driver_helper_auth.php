@@ -101,7 +101,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
                     throw new CMSException(do_lang('ENTER_PROFILE_DETAILS_FINISH'));
                 }
 
-                @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+                cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
                 $middle = cns_member_external_linker_ask($username, 'ldap', cns_ldap_guess_email($username));
                 $tpl = globalise($middle, null, '', true);
                 $tpl->evaluate_echo();

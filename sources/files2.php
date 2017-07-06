@@ -423,6 +423,8 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
         safe_ini_set('ocproducts.xss_detect', '0');
 
         if (!is_null($outfile)) {
+            cms_ob_end_clean();
+
             rewind($outfile);
             fpassthru($outfile);
             flock($outfile, LOCK_UN);

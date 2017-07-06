@@ -345,7 +345,7 @@ function try_httpauth_login()
                 throw new CMSException(do_lang('ENTER_PROFILE_DETAILS_FINISH'));
             }
 
-            @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+            cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
             $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
             $tpl = globalise($middle, null, '', true);
             $tpl->evaluate_echo();

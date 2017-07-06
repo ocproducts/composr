@@ -211,7 +211,7 @@ function cns_member_external_linker_ask($username, $type, $email_address = '', $
     // If somehow, we're not fully started up, or in a messy state
     require_code('urls');
 
-    @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+    cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
     $title = get_screen_title('FINISH_PROFILE');
 
