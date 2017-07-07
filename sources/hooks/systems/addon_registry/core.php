@@ -1029,7 +1029,6 @@ class Hook_addon_registry_core
             'themes/default/images/results/sortablefield_desc.png',
             'themes/default/images/results/sortablefield_asc_nonselected.png',
             'themes/default/images/results/sortablefield_desc_nonselected.png',
-            'themes/default/images/gradient.png',
             'themes/default/images/icons/14x14/index.html',
             'themes/default/images/icons/14x14/delete.png',
             'themes/default/images/icons/14x14/download.png',

@@ -114,11 +114,11 @@ a.progressCancel {
 	height: 14px;
 	width: 14px;
 	background-image: url('{$IMG;,uploader/cancelbutton}');
+	opacity: 0.8;
 	background-repeat: no-repeat;
-	background-position: -14px 0;
 	float: right;
 }
 
 a.progressCancel:hover {
-	background-position: 0 0;
+	opacity: 1.0;
 }
