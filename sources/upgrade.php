@@ -507,11 +507,28 @@ function upgrade_script()
 
                 case 'db_upgrade':
                     $something_done = false;
+
                     clear_caches_2();
+
+                    $version_files = cms_version_number();
+                    $_version_database_cns = get_value('cns_version');
+                    if ($_version_database_cns === null) { // LEGACY
+                        $_version_database_cns = get_value('ocf_version');
+                    }
+                    if ($_version_database_cns === null) {
+                        $_version_database_cns = get_value('version');
+                    }
+                    if ($_version_database_cns === null) {
+                        $version_database_cns = $version_files;
+                    } else {
+                        $version_database_cns = floatval($_version_database_cns);
+                    }
+
                     if (version_specific()) {
                         echo do_lang('FU_UPGRADED_CORE_TABLES');
                         $something_done = true;
                     }
+
                     $done = upgrade_modules();
                     if ($done != '') {
                         echo do_lang('FU_UPGRADE_MODULES', $done);
@@ -521,17 +538,7 @@ function upgrade_script()
                         echo do_lang('NO_UPGRADE_DONE');
                     }
 
-                    $version_files = cms_version_number();
-                    $_version_database = get_value('cns_version');
-                    if (is_null($_version_database)) { // LEGACY
-                        $_version_database = get_value('ocf_version');
-                    }
-                    if ($_version_database === null) {
-                        $version_database = $version_files;
-                    } else {
-                        $version_database = floatval($_version_database);
-                    }
-                    if ($version_database < $version_files) {
+                    if ($version_database_cns < $version_files) {
                         echo do_lang('FU_MUST_UPGRADE_CNS', fu_link('upgrader.php?type=cns', do_lang('FU_UPGRADE_CNS')));
                     }
                     break;
@@ -771,7 +778,7 @@ function up_do_header()
     $lang = user_lang();
     $dir = do_lang('dir');
 
-    @ob_end_clean();
+    cms_ob_end_clean();
     echo <<<END
 <!DOCTYPE html>
     <html lang="{$lang}" dir="{$dir}">
@@ -1735,7 +1742,7 @@ function version_specific()
             $GLOBALS['SITE_DB']->query('UPDATE ' . get_table_prefix() . 'f_custom_fields f JOIN ' . get_table_prefix() . 'translate t ON t.id=f.cf_name SET text_original=REPLACE(text_original,\'ocp_\',\'cms_\') WHERE text_original LIKE \'ocp\_%\'');
             $GLOBALS['SITE_DB']->alter_table_field('msp', 'specific_permission', '*ID_TEXT', 'privilege');
             $GLOBALS['SITE_DB']->alter_table_field('gsp', 'specific_permission', '*ID_TEXT', 'privilege');
-            if (addon_installed('pointstore')) {
+            if ($GLOBALS['SITE_DB']->table_exists('pstore_permissions')) {
                 $GLOBALS['SITE_DB']->alter_table_field('pstore_permissions', 'p_specific_permission', 'ID_TEXT', 'p_privilege');
             }
             $GLOBALS['SITE_DB']->rename_table('msp', 'member_privileges');
@@ -1776,10 +1783,6 @@ function version_specific()
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => 'SHORT_TEXT'), array('m_type' => 'MD5'));
             $GLOBALS['SITE_DB']->query_update('db_meta', array('m_type' => '*SHORT_TEXT'), array('m_type' => '*MD5'));
             rename_config_option('ocf_show_profile_link', 'cns_show_profile_link');
-            if ((strpos(get_db_type(), 'mysql') !== false) && (get_charset() == 'utf-8')) {
-                $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'import_parts_done CONVERT TO CHARACTER SET utf8mb4');
-                $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'wordfilter CONVERT TO CHARACTER SET utf8mb4');
-            }
 
             delete_value('last_implicit_sync');
             delete_value('last_newsletter_drip_send');
@@ -1845,12 +1848,12 @@ function version_specific()
                 '#\[block\]main_sitemap\[/block\]#' => '{$BLOCK,block=menu,param={$_GET,under},use_page_groupings=1,type=sitemap,quick_cache=1}',
                 '#\[attachment([^\[\]]*)\]url_([^\[\]]*)\[/attachment[^\[\]]*\]#' => '[media$1]$2[/media]',
                 '#\{\$OCF#' => '{$CNS',
-                ':misc' => ':browse',
-                'type=misc' => 'type=browse',
-                ':product=' => ':type_code=',
-                '&product=' => '&type_code=',
-                '&amp;product=' => '&amp;type_code=',
-                'solidborder' => 'results_table',
+                '#:misc#' => ':browse',
+                '#type=misc#' => 'type=browse',
+                '#:product=#' => ':type_code=',
+                '#&product=#' => '&type_code=',
+                '#&amp;product=#' => '&amp;type_code=',
+                '#solidborder#' => 'results_table',
             );
             perform_search_replace($reps);
         }
@@ -2090,18 +2093,23 @@ function upgrade_modules()
 function cns_upgrade()
 {
     $version_files = cms_version_number();
-    $_version_database = get_value('cns_version');
-    if (is_null($_version_database)) { // LEGACY
-        $_version_database = get_value('ocf_version');
+    $_version_database_cns = get_value('cns_version');
+    if ($_version_database_cns === null) { // LEGACY
+        $_version_database_cns = get_value('ocf_version');
+        set_value('cns_version', $_version_database_cns);
         delete_value('ocf_version');
     }
-    if ($_version_database === null) {
-        $version_database = $version_files;
+    if ($_version_database_cns === null) {
+        $_version_database_cns = get_value('version');
+    }
+    if ($_version_database_cns === null) {
+        $version_database_cns = $version_files;
     } else {
-        $version_database = floatval($_version_database);
+        $version_database_cns = floatval($_version_database_cns);
     }
 
-    if ($version_files != $version_database) {
+
+    if ($version_files != $version_database_cns) {
         global $SITE_INFO;
         $SITE_INFO['db_forums'] = $SITE_INFO['db_site'];
         $SITE_INFO['db_forums_host'] = (!empty($SITE_INFO['db_site_host'])) ? $SITE_INFO['db_site_host'] : 'localhost';
@@ -2114,7 +2122,7 @@ function cns_upgrade()
         $GLOBALS['FORUM_DRIVER']->connection = $GLOBALS['SITE_DB'];
 
         require_code('cns_install');
-        install_cns($version_database);
+        install_cns($version_database_cns);
 
         set_value('cns_version', float_to_raw_string($version_files));
 
@@ -2144,7 +2152,7 @@ function fix_mysql_database_charset()
  */
 function change_mysql_database_charset($new_charset, $db, $reencode = false)
 {
-    @ob_end_clean();
+    cms_ob_end_clean();
 
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(0);

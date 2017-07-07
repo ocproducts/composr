@@ -274,23 +274,23 @@ function dload_script()
     // Send actual data
     $myfile = fopen($_full, 'rb');
     fseek($myfile, $from);
-    /*if ($size == $new_length)    Uses a lot of memory :S
-    {
+    if ($size == $new_length) {
+        cms_ob_end_clean();
         fpassthru($myfile);
-    } else {*/
-    $i = 0;
-    flush(); // Works around weird PHP bug that sends data before headers, on some PHP versions
-    while ($i < $new_length) {
-        $content = fread($myfile, min($new_length - $i, 1048576));
-        echo $content;
-        $len = strlen($content);
-        if ($len == 0) {
-            break;
+    } else {
+        $i = 0;
+        flush(); // LEGACY Works around weird PHP bug that sends data before headers, on some PHP versions
+        while ($i < $new_length) {
+            $content = fread($myfile, min($new_length - $i, 1048576));
+            echo $content;
+            $len = strlen($content);
+            if ($len == 0) {
+                break;
+            }
+            $i += $len;
         }
-        $i += $len;
+        fclose($myfile);
     }
-    fclose($myfile);
-    //}
     /*
 
     Security note... at the download adding/editing stage, we ensured that

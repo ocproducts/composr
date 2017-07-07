@@ -1242,7 +1242,7 @@ function mail_wrap($subject_line, $message_raw, $to_email = null, $to_name = nul
                 require_code('mail2');
                 $worked = manualproc_mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers, $additional);
             } else {
-                if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), strtolower(ini_get('safe_mode'))) == '1') || ($additional == '')) {
+                if ((str_replace(array('on', 'true', 'yes'), array('1', '1', '1'), @strtolower(ini_get('safe_mode'))) == '1') || ($additional == '')) {
                     $worked = mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers);
                 } else {
                     $worked = mail($to_line, $tightened_subject, $sending_message, $signed_headers . $headers, $additional);

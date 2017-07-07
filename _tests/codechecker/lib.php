@@ -231,7 +231,9 @@ function die_html_trace($message)
 {
     echo $message . '<br /><br />';
 
-    @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+    while (ob_get_level() > 0) { // Emergency output, potentially, so kill off any active buffer
+        ob_end_clean();
+    }
     $_trace = debug_backtrace();
     $trace = '';
     foreach ($_trace as $stage) {

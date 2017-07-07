@@ -83,9 +83,10 @@ function _enforce_sessioned_url($url)
  * @param  MEMBER $member_id Logged in member
  * @param  BINARY $session_confirmed Whether the session should be considered confirmed
  * @param  boolean $invisible Whether the session should be invisible
+ * @param  boolean $create_cookie Whether to create the cookie for the session
  * @return ID_TEXT New session ID
  */
-function create_session($member_id, $session_confirmed = 0, $invisible = false)
+function create_session($member_id, $session_confirmed = 0, $invisible = false, $create_cookie = true)
 {
     global $SESSION_CACHE, $MEMBER_CACHED;
     $MEMBER_CACHED = $member_id;
@@ -153,7 +154,9 @@ function create_session($member_id, $session_confirmed = 0, $invisible = false)
         }
     }
 
-    set_session_id($new_session, is_guest($member_id));
+    if (($create_cookie) || (empty($_COOKIE[get_session_cookie()]))) {
+        set_session_id($new_session, is_guest($member_id));
+    }
 
     // New sessions=Login points
     if ((!is_null($member_id)) && (!is_guest($member_id)) && (addon_installed('points')) && (addon_installed('stats'))) {
@@ -345,7 +348,7 @@ function try_httpauth_login()
                 throw new CMSException(do_lang('ENTER_PROFILE_DETAILS_FINISH'));
             }
 
-            @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+            cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
             $middle = cns_member_external_linker_ask($_SERVER['PHP_AUTH_USER'], ((get_value('windows_auth_is_enabled') !== '1') || is_null($LDAP_CONNECTION)) ? 'httpauth' : 'ldap');
             $tpl = globalise($middle, null, '', true);
             $tpl->evaluate_echo();

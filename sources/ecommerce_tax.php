@@ -202,7 +202,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             $_response = http_download_file($url, null, true, false, 'Composr', $post_params, null, null, null, null, null, null, null, 10.0, true, null, null, null, 'application/json'); // TODO: Fix in v11
             $response = json_decode($_response, true);
 
-            if ($response['ErrNumber'] == 0) {
+            if ($response['ErrNumber'] == '0') {
                 $street_address = trim($response['Address1'] . (isset($response['Address2']) ? ("\n" . $response['Address2']) : ''));
                 $city = $response['City'];
                 $state = $response['State'];
@@ -752,7 +752,7 @@ function form_input_tax_code($set_title, $description, $set_name, $default, $req
  * @param  string $default Default value
  * @param  string $parent Only get child nodes of
  * @param  string $pre Prefix for parent chain
- * @param  boolean $depth Current recursion depth
+ * @param  integer $depth Current recursion depth
  * @return Tempcode The list
  */
 function _prepare_tics_list($all_tics, $default, $parent, $pre = '', $depth = 0)

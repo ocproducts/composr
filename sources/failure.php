@@ -354,7 +354,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         throw new CMSException($text);
     }
 
-    @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+    cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
     if (is_object($text)) {
         $text = $text->evaluate();
@@ -399,8 +399,6 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
 
     @header('Content-type: text/html; charset=' . get_charset());
     @header('Content-Disposition: inline');
-
-    //$x = @ob_get_contents(); @ob_end_clean(); //if (is_string($x)) @print($x);      Disabled as causes weird crashes
 
     if ($GLOBALS['HTTP_STATUS_CODE'] == '200') {
         if (($text_eval == do_lang('cns:NO_MARKERS_SELECTED')) || ($text_eval == do_lang('NOTHING_SELECTED'))) {
@@ -1431,7 +1429,7 @@ function _access_denied($class, $param, $force_login)
             exit();
         }
 
-        @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+        cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
         $redirect = get_self_url(true, false, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
         $_GET['redirect'] = $redirect;

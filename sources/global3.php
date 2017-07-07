@@ -1278,7 +1278,7 @@ function integer_format($val)
             $locale['thousands_sep'] = ',';
         }
     }
-    return number_format($val, 0, $locale['decimal_point'], $locale['thousands_sep']);
+    return number_format(floatval($val), 0, $locale['decimal_point'], $locale['thousands_sep']);
 }
 
 /**

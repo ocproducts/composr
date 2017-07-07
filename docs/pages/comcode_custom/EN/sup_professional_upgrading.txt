@@ -154,19 +154,8 @@ echo '/*';
 echo shell_exec($sql_cmd);
 echo '*/';
 
-$file_size = filesize($filename);
-$myfile = fopen($filename, 'rb');
-$i = 0;
-while ($i < $file_size) {
-    $content = fread($myfile, min($file_size - $i, 1048576));
-    echo $content;
-    $len = strlen($content);
-    if ($len == 0) {
-        break;
-    }
-    $i += $len;
-}
-fclose($myfile);
+@ob_end_clean();
+readfile($filename);
 
 unlink($filename);
 
@@ -195,7 +184,7 @@ sudo chmod -R 777 .
 | If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis or install any new addons (as that will try and use [tt]utf8mb4[/tt] for new tables).
 |-
 ! &dagger; {$INC,step_num}{$GET,step_num}
-| (Following directly from the above) Change [tt]utf8mb4[/tt] to [tt]utf8[/tt] for just the following tables: [tt]cms_addons[/tt], [tt]cms_f_saved_warnings[/tt], [tt]cms_gsp[/tt], [tt]cms_import_parts_done[/tt], [tt]cms_msp[/tt], [tt]cms_newsletter_subscribe[/tt], [tt]cms_theme_images[/tt], and [tt]cms_tickets[/tt]
+| (Following directly from the above) Change [tt]utf8mb4[/tt] to [tt]utf8[/tt] for just the following tables: [tt]cms_addons[/tt], [tt]cms_f_saved_warnings[/tt], [tt]cms_gsp[/tt], [tt]cms_wordfilter[/tt], [tt]cms_import_parts_done[/tt], [tt]cms_msp[/tt], [tt]cms_newsletter_subscribe[/tt], [tt]cms_theme_images[/tt], and [tt]cms_tickets[/tt]
 | If you are having to fudge a server running an old version of MySQL, use [tt]utf8[/tt] instead and be ready to tell the website owner they cannot use emojis.
 |-
 ! {$INC,step_num}{$GET,step_num}
@@ -481,19 +470,8 @@ if (!empty($_GET['zip'])) {
     }
     shell_exec($cmd);
 
-    $file_size = filesize('new_files.zip');
-    $myfile = fopen('new_files.zip', 'rb');
-    $i = 0;
-    while ($i < $file_size) {
-        $content = fread($myfile, min($file_size - $i, 1048576));
-        echo $content;
-        $len = strlen($content);
-        if ($len == 0) {
-            break;
-        }
-        $i += $len;
-    }
-    fclose($myfile);
+    @ob_end_clean();
+    readfile('new_files.zip');
 
     unlink('new_files.zip');
 

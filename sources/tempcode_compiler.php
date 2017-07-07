@@ -416,9 +416,9 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                             $name = 'TERNARY';
                         }
                         if (function_exists('ecv_' . $name)) {
-                            $new_line = 'ecv_' . $name . '($cl,array(' . implode(',', $escaped) . '),array(' . $_opener_params . '))';
+                            $new_line = 'ecv_' . $name . '($cl,array(' . implode(',', array_map('strval', $escaped)) . '),array(' . $_opener_params . '))';
                         } else {
-                            $new_line = 'ecv($cl,array(' . implode(',', $escaped) . '),' . strval(TC_SYMBOL) . ',' . $first_param . ',array(' . $_opener_params . '))';
+                            $new_line = 'ecv($cl,array(' . implode(',', array_map('strval', $escaped)) . '),' . strval(TC_SYMBOL) . ',' . $first_param . ',array(' . $_opener_params . '))';
                         }
                         if ((isset($COMPILABLE_SYMBOLS[$first_param])) && (preg_match('#^[^\(\)]*$#', $_opener_params) !== 0)) { // Can optimise out?
                             $tpl_funcs = array();
@@ -436,7 +436,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                                 $new_line = '"' . php_addslashes(debug_eval('return ' . $new_line . ';', $tpl_funcs, array(), $cl)) . '"';
                                 $_GET = $tmp;
                                 $current_level_data[] = $new_line;
-                                $current_level_data[] = 'ecv_KEEP($cl,array(' . implode(',', $escaped) . '),array("' . ((strpos($new_line, '?') === false) ? '1' : '0') . '"))';
+                                $current_level_data[] = 'ecv_KEEP($cl,array(' . implode(',', array_map('strval', $escaped)) . '),array("' . ((strpos($new_line, '?') === false) ? '1' : '0') . '"))';
                                 $GLOBALS['HAS_KEEP_IN_URL_CACHE'] = null; // The temporary $_GET change can cause this to go wrong
                                 break;
                             }
@@ -445,7 +445,7 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         break;
 
                     case PARSE_LANGUAGE_REFERENCE:
-                        $new_line = 'ecv($cl,array(' . implode(',', $escaped) . '),' . strval(TC_LANGUAGE_REFERENCE) . ',' . $first_param . ',array(' . $_opener_params . '))';
+                        $new_line = 'ecv($cl,array(' . implode(',', array_map('strval', $escaped)) . '),' . strval(TC_LANGUAGE_REFERENCE) . ',' . $first_param . ',array(' . $_opener_params . '))';
                         if (($_opener_params === '') && ($escaped === array())) { // Optimise it out for simple case?
                             $tpl_funcs = array();
                             $looked_up = do_lang(debug_eval('return ' . $first_param . ';', $tpl_funcs, array(), $cl), null, null, null, $lang, false);
@@ -734,9 +734,9 @@ function compile_template($data, $template_name, $theme, $lang, $tolerate_errors
                         }
                         $directive_name = $eval;
                         if (isset($GLOBALS['DIRECTIVES_NEEDING_VARS'][$directive_name])) {
-                            $current_level_data[] = 'ecv($cl,array(' . implode(',', $escaped) . '),' . strval(TC_DIRECTIVE) . ',' . $first_param . ',array(' . $_opener_params . ',\'vars\'=>$parameters))';
+                            $current_level_data[] = 'ecv($cl,array(' . implode(',', array_map('strval', $escaped)) . '),' . strval(TC_DIRECTIVE) . ',' . $first_param . ',array(' . $_opener_params . ',\'vars\'=>$parameters))';
                         } else {
-                            $current_level_data[] = 'ecv($cl,array(' . implode(',', $escaped) . '),' . strval(TC_DIRECTIVE) . ',' . $first_param . ',array(' . $_opener_params . '))';
+                            $current_level_data[] = 'ecv($cl,array(' . implode(',', array_map('strval', $escaped)) . '),' . strval(TC_DIRECTIVE) . ',' . $first_param . ',array(' . $_opener_params . '))';
                         }
                     }
                 }

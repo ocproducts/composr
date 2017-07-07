@@ -1382,7 +1382,7 @@ function handle_ipn_transaction_script()
  * @param  ?ID_TEXT $trans_expecting_id Our internal temporary transaction ID (null: an immediate transaction that didn't require this table). For a live payment you should always pass a $trans_expecting_id in case tax rates or price changes over the interim, which can cause a mismatch or tax filing errors.
  * @param  ?ID_TEXT $txn_id The transaction ID (null: randomised - for debugging only).
  * @param  ?ID_TEXT $type_code The product codename (null: lookup from $trans_expecting_id - for debugging only).
- * @param  SHORT_TEXT $item_name The human-readable product title (blank: doing a subscription cancellation, unknown item name; but can get from $found) (null: lookup from $trans_expecting_id - for debugging only).
+ * @param  ?SHORT_TEXT $item_name The human-readable product title (blank: doing a subscription cancellation, unknown item name; but can get from $found) (null: lookup from $trans_expecting_id - for debugging only).
  * @param  ?ID_TEXT $purchase_id The ID of the purchase-type (meaning depends on item_name) (null: lookup from $trans_expecting_id - for debugging only).
  * @param  boolean $is_subscription Whether this is a subscription.
  * @param  ID_TEXT $status The status this transaction is telling of.
