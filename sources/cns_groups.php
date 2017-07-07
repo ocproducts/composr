@@ -108,6 +108,9 @@ function cns_create_selection_list_usergroups($it = null, $allow_guest_group = t
 function get_first_default_group()
 {
     $default_groups = cns_get_all_default_groups(true);
+    if (count($default_groups) == 0) {
+        $default_groups = array(db_get_first_id() + 8);
+    }
     return array_pop($default_groups);
 }
 

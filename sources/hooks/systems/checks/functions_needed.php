@@ -44,7 +44,7 @@ class Hook_check_functions_needed
             file_get_contents filectime filegroup filemtime fileowner fileperms filesize floatval floor
             get_defined_vars get_declared_classes get_defined_functions fopen fread fseek ftell
             function_exists fwrite get_class get_html_translation_table getcwd
-            getdate getenv gmdate header headers_sent hexdec htmlentities is_float
+            getdate getenv gmdate header headers_sent hexdec htmlentities is_float ob_get_level
             implode in_array include include_once ini_get ini_set intval is_a is_array is_bool
             is_integer is_null is_numeric is_object is_readable is_resource is_string is_uploaded_file
             isset krsort ksort localeconv ltrim mail max md5 method_exists microtime min is_writable

@@ -83,9 +83,10 @@ function _enforce_sessioned_url($url)
  * @param  MEMBER $member_id Logged in member
  * @param  BINARY $session_confirmed Whether the session should be considered confirmed
  * @param  boolean $invisible Whether the session should be invisible
+ * @param  boolean $create_cookie Whether to create the cookie for the session
  * @return ID_TEXT New session ID
  */
-function create_session($member_id, $session_confirmed = 0, $invisible = false)
+function create_session($member_id, $session_confirmed = 0, $invisible = false, $create_cookie = true)
 {
     global $SESSION_CACHE, $MEMBER_CACHED;
     $MEMBER_CACHED = $member_id;
@@ -153,7 +154,9 @@ function create_session($member_id, $session_confirmed = 0, $invisible = false)
         }
     }
 
-    set_session_id($new_session, is_guest($member_id));
+    if (($create_cookie) || (empty($_COOKIE[get_session_cookie()]))) {
+        set_session_id($new_session, is_guest($member_id));
+    }
 
     // New sessions=Login points
     if (($member_id !== null) && (!is_guest($member_id)) && (addon_installed('points')) && (addon_installed('stats'))) {

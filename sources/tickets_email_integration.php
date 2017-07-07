@@ -160,13 +160,23 @@ function ticket_incoming_scan()
             }
             _imap_get_part($resource, $l, 'APPLICATION/OCTET-STREAM', $attachments, $attachment_size_total);
 
-            $email_from = (strlen($header->reply_toaddress) > 0) ? $header->reply_toaddress : $header->fromaddress;
+            if (strlen($header->reply_toaddress) > 0) {
+                $from_email = get_ticket_email_from_header($header->reply_toaddress);
+                if (find_ticket_member_from_email($from_email) === null) {
+                    $from_email_alt = get_ticket_email_from_header($header->fromaddress);
+                    if (find_ticket_member_from_email($from_email_alt) !== null) {
+                        $from_email = $from_email_alt;
+                    }
+                }
+            } else {
+                $from_email = get_ticket_email_from_header($header->fromaddress);
+            }
 
-            if (!is_non_human_email($subject, $body, $full_header, $email_from)) {
+            if (!is_non_human_email($subject, $body, $full_header, $from_email)) {
                 imap_clearflag_full($resource, $l, '\\Seen'); // Clear this, as otherwise it is a real pain to debug (have to keep manually marking unread)
 
                 ticket_incoming_message(
-                    $email_from,
+                    $from_email,
                     $subject,
                     $body,
                     $attachments
@@ -285,12 +295,12 @@ function email_comcode_from_text($body)
  * @param  string $subject Subject line
  * @param  string $body Message body
  * @param  string $full_header Message headers
- * @param  EMAIL $email_from From address
+ * @param  EMAIL $from_email From address
  * @return boolean Whether it should not be processed
  */
-function is_non_human_email($subject, $body, $full_header, $email_from)
+function is_non_human_email($subject, $body, $full_header, $from_email)
 {
-    if ($email_from == get_option('ticket_email_from') || $email_from == get_option('staff_address') || $email_from == get_option('website_email')) {
+    if ($from_email == get_option('ticket_email_from') || $from_email == get_option('staff_address') || $from_email == get_option('website_email')) {
         return true;
     }
 
@@ -493,14 +503,14 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
         }
     }
     if ($forwarded) {
-        if (preg_match('#From:(.*)#s', $body, $matches) != 0) {
-            $from_email = $matches[1];
+        if (find_ticket_member_from_email($from_email) === null) {
+            if (preg_match('#From:(.*)#s', $body, $matches) != 0) {
+                $from_email_alt = get_ticket_email_from_header($matches[1]);
+                if (find_ticket_member_from_email($from_email_alt) !== null) {
+                    $from_email = $from_email_alt;
+                }
+            }
         }
-    }
-
-    // Clean up e-mail address
-    if (preg_match('#([\w\.\-\+]+@[\w\.\-]+)#', $from_email, $matches) != 0) {
-        $from_email = $matches[1];
     }
 
     // Try to bind to a from member
@@ -616,4 +626,36 @@ function ticket_incoming_message($from_email, $subject, $body, $attachments)
     }
 
     pop_lax_comcode();
+}
+
+/**
+ * Try and get an e-mail address from an embedded part of an e-mail header.
+ *
+ * @param  string $from_email E-mail header
+ * @return string E-mail address (hopefully)
+ */
+function get_ticket_email_from_header($from_email)
+{
+    $matches = array();
+    if (preg_match('#([\w\.\-\+]+@[\w\.\-]+)#', $from_email, $matches) != 0) {
+        $from_email = $matches[1];
+    }
+    return $from_email;
+}
+
+/**
+ * Find the ticket member for an e-mail address.
+ *
+ * @param  string $from_email E-mail address
+ * @return ?MEMBER Member ID (null: none)
+ */
+function find_ticket_member_from_email($from_email)
+{
+    $member_id = $GLOBALS['SITE_DB']->query_select_value_if_there('ticket_known_emailers', 'member_id', array(
+        'email_address' => $from_email,
+    ));
+    if ($member_id === null) {
+        $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($from_email);
+    }
+    return $member_id;
 }
