@@ -222,7 +222,7 @@ class Hook_profiles_tabs_edit_settings
                     handle_award_setting('member', strval($member_id_of));
                 }
 
-                $redirect = get_param_string('redirect', null);
+                $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_GENERAL);
                 if ($redirect !== null) {
                     require_code('site2');
                     assign_refresh($redirect, 0.0);

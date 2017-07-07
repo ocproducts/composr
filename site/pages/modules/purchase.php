@@ -1391,7 +1391,7 @@ class Module_purchase
             handle_ipn_transaction_script(); // This is just in case the IPN doesn't arrive somehow, we still know success because the gateway sent us here on success
         }
 
-        $redirect = get_param_string('redirect', null);
+        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_GENERAL);
 
         if ($redirect === null) {
             list(, $product_object) = find_product_details($type_code);
