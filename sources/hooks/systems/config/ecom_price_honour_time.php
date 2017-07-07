@@ -32,7 +32,7 @@ class Hook_config_ecom_price_honour_time
     {
         return array(
             'human_name' => 'ECOM_PRICE_HONOUR_TIME',
-            'type' => 'tick',
+            'type' => 'integer',
             'category' => 'ECOMMERCE',
             'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_ecom_price_honour_time',

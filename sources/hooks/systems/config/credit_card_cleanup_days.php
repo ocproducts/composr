@@ -32,7 +32,7 @@ class Hook_config_credit_card_cleanup_days
     {
         return array(
             'human_name' => 'CREDIT_CARD_CLEANUP_DAYS',
-            'type' => 'tick',
+            'type' => 'integer',
             'category' => 'ECOMMERCE',
             'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_credit_card_cleanup_days',

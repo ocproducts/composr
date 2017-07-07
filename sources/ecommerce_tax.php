@@ -54,6 +54,10 @@ function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, 
 {
     // ADD CUSTOM CODE HERE BY OVERRIDING THIS FUNCTION
 
+    if ($member_id === null) {
+        $member_id = get_member();
+    }
+
     // We will lookup via a single item going through our main get_tax_using_tax_codes worker function
     $item_details = array();
     $item = array(
@@ -198,7 +202,7 @@ function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipp
             $_response = http_get_contents($url, array('post_params' => $post_params, 'timeout' => 10.0, 'raw_post' => true, 'raw_content_type' => 'application/json', 'ignore_http_status' => true));
             $response = json_decode($_response, true);
 
-            if ($response['ErrNumber'] == 0) {
+            if ($response['ErrNumber'] == '0') {
                 $street_address = trim($response['Address1'] . (isset($response['Address2']) ? ("\n" . $response['Address2']) : ''));
                 $city = $response['City'];
                 $state = $response['State'];

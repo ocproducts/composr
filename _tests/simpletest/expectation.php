@@ -65,7 +65,7 @@ class SimpleExpectation {
      */
     function overlayMessage($compare, $dumper) {
         $this->_dumper = $dumper;
-        return sprintf($this->_message, $this->testMessage($compare));
+        return @sprintf($this->_message, $this->testMessage($compare));
     }
 
     /**
