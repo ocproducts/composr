@@ -38,6 +38,7 @@ class Hook_config_wysiwyg
             'explanation' => 'CONFIG_OPTION_wysiwyg',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

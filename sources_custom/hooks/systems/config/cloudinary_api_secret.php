@@ -33,6 +33,7 @@ class Hook_config_cloudinary_api_secret
             'explanation' => 'CONFIG_OPTION_cloudinary_api_secret',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'cloudinary',
         );

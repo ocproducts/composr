@@ -38,6 +38,7 @@ class Hook_config_force_meta_refresh
             'explanation' => 'CONFIG_OPTION_force_meta_refresh',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

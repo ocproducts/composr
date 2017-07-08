@@ -40,6 +40,7 @@ class Hook_config_newsletter_allow_ext_images
             'list_options' => '',
             'order_in_category_group' => 10,
 
+            'required' => true,
             'addon' => 'newsletter',
         );
     }

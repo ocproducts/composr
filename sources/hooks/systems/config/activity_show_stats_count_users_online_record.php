@@ -38,6 +38,7 @@ class Hook_config_activity_show_stats_count_users_online_record
             'explanation' => 'CONFIG_OPTION_activity_show_stats_count_users_online_record',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'stats_block',
         );

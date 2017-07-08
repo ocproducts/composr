@@ -38,6 +38,7 @@ class Hook_config_session_prudence
             'explanation' => 'CONFIG_OPTION_session_prudence',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

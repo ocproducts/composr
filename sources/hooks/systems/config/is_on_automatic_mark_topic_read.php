@@ -38,6 +38,7 @@ class Hook_config_is_on_automatic_mark_topic_read
             'explanation' => 'CONFIG_OPTION_is_on_automatic_mark_topic_read',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

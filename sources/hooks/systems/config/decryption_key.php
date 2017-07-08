@@ -38,6 +38,7 @@ class Hook_config_decryption_key
             'explanation' => 'CONFIG_OPTION_decryption_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'core_cns',
         );

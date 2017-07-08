@@ -34,6 +34,7 @@ class Hook_config_video_sync_transcoding
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 3,
+            'required' => false,
 
             'addon' => 'gallery_syndication',
         );

@@ -38,6 +38,7 @@ class Hook_config_enable_privacy_tab
             'explanation' => 'CONFIG_OPTION_enable_privacy_tab',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

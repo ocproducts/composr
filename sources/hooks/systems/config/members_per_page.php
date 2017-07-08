@@ -38,6 +38,7 @@ class Hook_config_members_per_page
             'explanation' => 'CONFIG_OPTION_members_per_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

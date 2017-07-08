@@ -39,6 +39,7 @@ class Hook_config_initial_banner_hits
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

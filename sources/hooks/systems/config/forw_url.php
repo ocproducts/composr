@@ -39,6 +39,7 @@ class Hook_config_forw_url
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );

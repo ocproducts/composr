@@ -40,6 +40,7 @@ class Hook_config_require_new_member_validation
             'list_options' => '',
             'order_in_category_group' => 5,
 
+            'required' => true,
             'addon' => 'core_cns',
         );
     }

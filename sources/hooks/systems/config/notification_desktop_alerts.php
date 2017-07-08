@@ -38,6 +38,7 @@ class Hook_config_notification_desktop_alerts
             'explanation' => 'CONFIG_OPTION_notification_desktop_alerts',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_notifications',
         );

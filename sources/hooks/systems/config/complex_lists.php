@@ -38,6 +38,7 @@ class Hook_config_complex_lists
             'explanation' => 'CONFIG_OPTION_complex_lists',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

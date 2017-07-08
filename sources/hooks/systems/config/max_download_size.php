@@ -38,6 +38,7 @@ class Hook_config_max_download_size
             'explanation' => 'CONFIG_OPTION_max_download_size',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

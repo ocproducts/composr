@@ -38,6 +38,7 @@ class Hook_config_gallery_feedback_fields
             'explanation' => 'CONFIG_OPTION_gallery_feedback_fields',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

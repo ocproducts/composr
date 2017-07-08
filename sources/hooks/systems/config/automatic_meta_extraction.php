@@ -40,6 +40,7 @@ class Hook_config_automatic_meta_extraction
             'list_options' => '',
             'order_in_category_group' => 8,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

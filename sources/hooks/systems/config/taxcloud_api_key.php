@@ -39,6 +39,7 @@ class Hook_config_taxcloud_api_key
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 6,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );

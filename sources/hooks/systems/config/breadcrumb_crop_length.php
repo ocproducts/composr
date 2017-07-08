@@ -38,6 +38,7 @@ class Hook_config_breadcrumb_crop_length
             'explanation' => 'CONFIG_OPTION_breadcrumb_crop_length',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

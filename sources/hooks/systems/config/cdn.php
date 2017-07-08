@@ -38,6 +38,7 @@ class Hook_config_cdn
             'explanation' => 'CONFIG_OPTION_cdn',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'core_configuration',
 

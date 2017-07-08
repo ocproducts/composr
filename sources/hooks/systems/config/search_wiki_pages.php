@@ -38,6 +38,7 @@ class Hook_config_search_wiki_pages
             'explanation' => 'CONFIG_OPTION_search_wiki_pages',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'wiki',
         );

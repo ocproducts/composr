@@ -38,6 +38,7 @@ class Hook_config_points_chat
             'explanation' => 'CONFIG_OPTION_points_chat',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'chat',
         );

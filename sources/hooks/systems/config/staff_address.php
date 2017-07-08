@@ -39,6 +39,7 @@ class Hook_config_staff_address
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 1,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

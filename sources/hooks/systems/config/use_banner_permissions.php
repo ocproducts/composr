@@ -38,6 +38,7 @@ class Hook_config_use_banner_permissions
             'explanation' => 'CONFIG_OPTION_use_banner_permissions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'banners',
         );

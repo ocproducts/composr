@@ -39,6 +39,7 @@ class Hook_config_spam_heuristic_join_closeness
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 13,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

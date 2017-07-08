@@ -39,6 +39,7 @@ class Hook_config_mail_server
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

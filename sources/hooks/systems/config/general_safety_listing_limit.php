@@ -38,6 +38,7 @@ class Hook_config_general_safety_listing_limit
             'explanation' => 'CONFIG_OPTION_general_safety_listing_limit',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

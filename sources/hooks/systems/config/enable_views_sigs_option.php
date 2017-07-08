@@ -38,6 +38,7 @@ class Hook_config_enable_views_sigs_option
             'explanation' => 'CONFIG_OPTION_enable_views_sigs_option',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_signatures',
         );

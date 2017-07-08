@@ -38,6 +38,7 @@ class Hook_config_points_COMCODE_PAGE_ADD
             'explanation' => 'CONFIG_OPTION_points_COMCODE_PAGE_ADD',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_comcode_pages',
         );

@@ -38,6 +38,7 @@ class Hook_config_search_images
             'explanation' => 'CONFIG_OPTION_search_images',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

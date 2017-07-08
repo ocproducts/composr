@@ -35,6 +35,7 @@ class Hook_config_facebook_auto_syndicate
             'list_options' => '',
             'order_in_category_group' => 10,
 
+            'required' => true,
             'addon' => 'facebook_support',
         );
     }

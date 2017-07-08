@@ -38,6 +38,7 @@ class Hook_config_allow_auto_notifications
             'explanation' => 'CONFIG_OPTION_allow_auto_notifications',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_notifications',
         );

@@ -40,6 +40,7 @@ class Hook_config_newsletter_paused
             'list_options' => '',
             'order_in_category_group' => 13,
 
+            'required' => true,
             'addon' => 'newsletter',
         );
     }

@@ -38,6 +38,7 @@ class Hook_config_enable_skip_sig
             'explanation' => 'CONFIG_OPTION_enable_skip_sig',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_signatures',
         );

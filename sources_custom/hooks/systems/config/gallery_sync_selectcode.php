@@ -34,6 +34,7 @@ class Hook_config_gallery_sync_selectcode
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 1,
+            'required' => false,
 
             'addon' => 'gallery_syndication',
         );

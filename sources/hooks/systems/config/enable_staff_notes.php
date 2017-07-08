@@ -38,6 +38,7 @@ class Hook_config_enable_staff_notes
             'explanation' => 'CONFIG_OPTION_enable_staff_notes',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

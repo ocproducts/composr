@@ -38,6 +38,7 @@ class Hook_config_gallery_name_order
             'explanation' => 'CONFIG_OPTION_gallery_name_order',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

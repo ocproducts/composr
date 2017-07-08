@@ -40,6 +40,7 @@ class Hook_config_captcha_single_guess
             'list_options' => '',
             'order_in_category_group' => 2,
 
+            'required' => true,
             'addon' => 'captcha',
         );
     }

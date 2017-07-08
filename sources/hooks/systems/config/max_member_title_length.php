@@ -38,6 +38,7 @@ class Hook_config_max_member_title_length
             'explanation' => 'CONFIG_OPTION_max_member_title_length',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_member_titles',
         );

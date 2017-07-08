@@ -38,6 +38,7 @@ class Hook_config_grow_template_meta_tree
             'explanation' => 'CONFIG_OPTION_grow_template_meta_tree',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

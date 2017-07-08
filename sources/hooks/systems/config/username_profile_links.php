@@ -38,6 +38,7 @@ class Hook_config_username_profile_links
             'explanation' => 'CONFIG_OPTION_username_profile_links',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

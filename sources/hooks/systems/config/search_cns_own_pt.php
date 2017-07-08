@@ -38,6 +38,7 @@ class Hook_config_search_cns_own_pt
             'explanation' => 'CONFIG_OPTION_search_cns_own_pt',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

@@ -38,6 +38,7 @@ class Hook_config_forum_show_personal_stats_topics
             'explanation' => 'CONFIG_OPTION_forum_show_personal_stats_topics',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

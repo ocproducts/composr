@@ -32,13 +32,14 @@ class Hook_config_smtp_sockets_port
     {
         return array(
             'human_name' => 'PORT',
-            'type' => 'line',
+            'type' => 'integer',
             'category' => 'SERVER',
             'group' => 'SMTP',
             'explanation' => 'CONFIG_OPTION_smtp_sockets_port',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 3,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

@@ -38,6 +38,7 @@ class Hook_config_gzip_output
             'explanation' => 'CONFIG_OPTION_gzip_output',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

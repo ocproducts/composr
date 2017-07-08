@@ -38,6 +38,7 @@ class Hook_config_post_read_history_days
             'explanation' => 'CONFIG_OPTION_post_read_history_days',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

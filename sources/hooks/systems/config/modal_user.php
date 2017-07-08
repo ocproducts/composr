@@ -38,6 +38,7 @@ class Hook_config_modal_user
             'explanation' => 'CONFIG_OPTION_modal_user',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'core_configuration',
         );

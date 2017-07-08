@@ -38,6 +38,7 @@ class Hook_config_deeper_admin_breadcrumbs
             'explanation' => 'CONFIG_OPTION_deeper_admin_breadcrumbs',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

@@ -38,6 +38,7 @@ class Hook_config_search_cns_members
             'explanation' => 'CONFIG_OPTION_search_cns_members',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

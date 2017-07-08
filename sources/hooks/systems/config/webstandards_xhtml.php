@@ -38,6 +38,7 @@ class Hook_config_webstandards_xhtml
             'explanation' => 'CONFIG_OPTION_webstandards_xhtml',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_webstandards',
         );

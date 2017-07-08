@@ -38,6 +38,7 @@ class Hook_config_dload_search_index
             'explanation' => 'CONFIG_OPTION_dload_search_index',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'downloads',
         );

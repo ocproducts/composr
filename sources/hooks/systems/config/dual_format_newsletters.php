@@ -40,6 +40,7 @@ class Hook_config_dual_format_newsletters
             'list_options' => '',
             'order_in_category_group' => 3,
 
+            'required' => true,
             'addon' => 'newsletter',
         );
     }

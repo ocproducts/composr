@@ -38,6 +38,7 @@ class Hook_config_forum_in_portal
             'explanation' => (get_forum_type() == 'cns') ? 'CONFIG_OPTION_forum_in_portal__cns' : 'CONFIG_OPTION_forum_in_portal',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
 

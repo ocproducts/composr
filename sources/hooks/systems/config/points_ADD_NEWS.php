@@ -38,6 +38,7 @@ class Hook_config_points_ADD_NEWS
             'explanation' => 'CONFIG_OPTION_points_ADD_NEWS',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'news',
         );

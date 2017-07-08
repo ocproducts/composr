@@ -38,6 +38,7 @@ class Hook_config_maximum_autocomplete_suggestions
             'explanation' => 'CONFIG_OPTION_maximum_autocomplete_suggestions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'search',
         );

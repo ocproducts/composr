@@ -38,6 +38,7 @@ class Hook_config_show_su
             'explanation' => 'CONFIG_OPTION_show_su',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

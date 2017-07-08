@@ -38,6 +38,7 @@ class Hook_config_call_home
             'explanation' => 'CONFIG_OPTION_call_home',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

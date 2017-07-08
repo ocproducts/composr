@@ -38,6 +38,7 @@ class Hook_config_admin_banners
             'explanation' => 'CONFIG_OPTION_admin_banners',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'banners',
         );

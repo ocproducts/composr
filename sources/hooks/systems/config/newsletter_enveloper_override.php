@@ -40,6 +40,7 @@ class Hook_config_newsletter_enveloper_override
             'list_options' => '',
             'order_in_category_group' => 12,
 
+            'required' => true,
             'addon' => 'newsletter',
         );
     }

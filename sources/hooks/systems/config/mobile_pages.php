@@ -40,6 +40,7 @@ class Hook_config_mobile_pages
             'list_options' => '',
             'order_in_category_group' => 2,
             'theme_override' => true,
+            'required' => false,
 
             'addon' => 'core_configuration',
         );

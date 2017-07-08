@@ -40,6 +40,7 @@ class Hook_config_allow_own_rate
             'list_options' => '',
             'order_in_category_group' => 2,
 
+            'required' => true,
             'addon' => 'core_feedback_features',
         );
     }

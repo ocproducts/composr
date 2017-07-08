@@ -38,6 +38,7 @@ class Hook_config_force_guest_names
             'explanation' => 'CONFIG_OPTION_force_guest_names',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

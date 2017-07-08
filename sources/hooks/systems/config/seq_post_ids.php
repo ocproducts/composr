@@ -38,6 +38,7 @@ class Hook_config_seq_post_ids
             'explanation' => 'CONFIG_OPTION_seq_post_ids',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

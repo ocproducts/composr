@@ -38,6 +38,7 @@ class Hook_config_block_top_login
             'explanation' => 'CONFIG_OPTION_block_top_login',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

@@ -38,6 +38,7 @@ class Hook_config_low_space_check
             'explanation' => 'CONFIG_OPTION_low_space_check',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

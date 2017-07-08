@@ -39,6 +39,7 @@ class Hook_config_page_after_join
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 8,
+            'required' => false,
 
             'addon' => 'core_cns',
         );

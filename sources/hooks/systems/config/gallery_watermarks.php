@@ -38,6 +38,7 @@ class Hook_config_gallery_watermarks
             'explanation' => 'CONFIG_OPTION_gallery_watermarks',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

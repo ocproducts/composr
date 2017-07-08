@@ -40,6 +40,7 @@ class Hook_config_store_credit_card_numbers
             'list_options' => '',
             'order_in_category_group' => 6,
 
+            'required' => true,
             'addon' => 'ecommerce',
         );
     }

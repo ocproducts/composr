@@ -38,6 +38,7 @@ class Hook_config_tasks_background
             'explanation' => 'CONFIG_OPTION_tasks_background',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

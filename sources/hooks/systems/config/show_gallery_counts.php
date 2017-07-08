@@ -38,6 +38,7 @@ class Hook_config_show_gallery_counts
             'explanation' => 'CONFIG_OPTION_show_gallery_counts',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

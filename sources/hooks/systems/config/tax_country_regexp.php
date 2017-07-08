@@ -39,6 +39,7 @@ class Hook_config_tax_country_regexp
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 4,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );

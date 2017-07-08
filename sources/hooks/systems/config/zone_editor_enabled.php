@@ -40,6 +40,7 @@ class Hook_config_zone_editor_enabled
             'list_options' => '',
             'theme_override' => true,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

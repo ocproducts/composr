@@ -38,6 +38,7 @@ class Hook_config_complex_privacy_options
             'explanation' => 'CONFIG_OPTION_complex_privacy_options',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

@@ -38,6 +38,7 @@ class Hook_config_forum_show_stats_count_members_active_today
             'explanation' => 'CONFIG_OPTION_forum_show_stats_count_members_active_today',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'stats_block',
         );

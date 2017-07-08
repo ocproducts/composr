@@ -34,6 +34,7 @@ class Hook_config_sugarcrm_sync_type
             'shared_hosting_restricted' => '0',
             'list_options' => 'Cases|Leads',
             'order_in_category_group' => 8,
+            'required' => true,
 
             'addon' => 'sugarcrm',
         );

@@ -39,6 +39,7 @@ class Hook_config_spam_heuristic_confidence_user_agents
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 23,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

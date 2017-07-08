@@ -38,6 +38,7 @@ class Hook_config_is_on_comcode_page_children
             'explanation' => 'CONFIG_OPTION_is_on_comcode_page_children',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_comcode_pages',
         );

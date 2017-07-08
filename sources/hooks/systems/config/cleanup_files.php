@@ -38,6 +38,7 @@ class Hook_config_cleanup_files
             'explanation' => 'CONFIG_OPTION_cleanup_files',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

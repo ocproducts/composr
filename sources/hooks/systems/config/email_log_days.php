@@ -39,6 +39,7 @@ class Hook_config_email_log_days
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 14,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

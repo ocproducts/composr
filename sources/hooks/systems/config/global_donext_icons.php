@@ -38,6 +38,7 @@ class Hook_config_global_donext_icons
             'explanation' => 'CONFIG_OPTION_global_donext_icons',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

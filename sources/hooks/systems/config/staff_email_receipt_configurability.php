@@ -38,6 +38,7 @@ class Hook_config_staff_email_receipt_configurability
             'explanation' => 'CONFIG_OPTION_staff_email_receipt_configurability',
             'shared_hosting_restricted' => '0',
             'list_options' => '0|1|2',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

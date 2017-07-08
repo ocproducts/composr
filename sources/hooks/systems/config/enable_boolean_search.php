@@ -38,6 +38,7 @@ class Hook_config_enable_boolean_search
             'explanation' => 'CONFIG_OPTION_enable_boolean_search',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'search',
         );

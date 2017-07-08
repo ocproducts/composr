@@ -38,6 +38,7 @@ class Hook_config_enable_highlight_name
             'explanation' => 'CONFIG_OPTION_enable_highlight_name',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

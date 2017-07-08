@@ -38,6 +38,7 @@ class Hook_config_delete_time_limit
             'explanation' => 'CONFIG_OPTION_delete_time_limit',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

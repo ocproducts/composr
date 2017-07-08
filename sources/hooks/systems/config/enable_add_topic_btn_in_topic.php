@@ -38,6 +38,7 @@ class Hook_config_enable_add_topic_btn_in_topic
             'explanation' => 'CONFIG_OPTION_enable_add_topic_btn_in_topic',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

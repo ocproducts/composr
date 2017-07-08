@@ -39,6 +39,7 @@ class Hook_config_password_expiry_days
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 7,
+            'required' => true,
 
             'addon' => 'core_cns',
         );

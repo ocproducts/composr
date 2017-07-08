@@ -38,6 +38,7 @@ class Hook_config_hot_topic_definition
             'explanation' => 'CONFIG_OPTION_hot_topic_definition',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

@@ -33,6 +33,7 @@ class Hook_config_points_ADD_IOTD
             'explanation' => 'CONFIG_OPTION_points_ADD_IOTD',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'iotds',
         );

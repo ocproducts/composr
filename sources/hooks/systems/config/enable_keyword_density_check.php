@@ -40,6 +40,7 @@ class Hook_config_enable_keyword_density_check
             'list_options' => '',
             'order_in_category_group' => 6,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

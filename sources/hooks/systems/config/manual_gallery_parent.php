@@ -38,6 +38,7 @@ class Hook_config_manual_gallery_parent
             'explanation' => 'CONFIG_OPTION_manual_gallery_parent',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

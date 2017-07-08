@@ -34,6 +34,7 @@ class Hook_config_sugarcrm_username
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'required' => true,
 
             'addon' => 'sugarcrm',
         );

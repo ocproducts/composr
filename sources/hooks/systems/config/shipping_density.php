@@ -39,6 +39,7 @@ class Hook_config_shipping_density
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 7,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

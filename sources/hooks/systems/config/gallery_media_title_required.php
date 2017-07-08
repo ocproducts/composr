@@ -38,6 +38,7 @@ class Hook_config_gallery_media_title_required
             'explanation' => 'CONFIG_OPTION_gallery_media_title_required',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

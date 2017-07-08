@@ -39,6 +39,7 @@ class Hook_config_sms_low_limit
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 4,
+            'required' => true,
 
             'addon' => 'sms',
         );

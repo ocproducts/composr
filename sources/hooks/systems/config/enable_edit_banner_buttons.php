@@ -40,6 +40,7 @@ class Hook_config_enable_edit_banner_buttons
             'list_options' => '',
             'theme_override' => true,
 
+            'required' => true,
             'addon' => 'banners',
         );
     }

@@ -38,6 +38,7 @@ class Hook_config_user_postsize_errors
             'explanation' => 'CONFIG_OPTION_user_postsize_errors',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

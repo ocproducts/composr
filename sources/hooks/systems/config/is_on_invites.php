@@ -40,6 +40,7 @@ class Hook_config_is_on_invites
             'list_options' => '',
             'order_in_category_group' => 200,
 
+            'required' => true,
             'addon' => 'core_cns',
         );
     }

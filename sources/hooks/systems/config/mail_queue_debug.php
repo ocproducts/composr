@@ -40,6 +40,7 @@ class Hook_config_mail_queue_debug
             'list_options' => '',
             'order_in_category_group' => 8,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

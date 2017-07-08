@@ -38,6 +38,7 @@ class Hook_config_chat_flood_timelimit
             'explanation' => 'CONFIG_OPTION_chat_flood_timelimit',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'chat',
         );

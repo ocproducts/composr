@@ -38,6 +38,7 @@ class Hook_config_complex_uploader
             'explanation' => 'CONFIG_OPTION_complex_uploader',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

@@ -38,6 +38,7 @@ class Hook_config_minimum_autocomplete_length
             'explanation' => 'CONFIG_OPTION_minimum_autocomplete_length',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'search',
         );

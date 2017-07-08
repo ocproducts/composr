@@ -38,6 +38,7 @@ class Hook_config_is_on_show_online
             'explanation' => 'CONFIG_OPTION_is_on_show_online',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

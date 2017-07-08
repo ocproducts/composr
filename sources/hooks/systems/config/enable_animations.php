@@ -40,6 +40,7 @@ class Hook_config_enable_animations
             'list_options' => '',
             'theme_override' => true,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

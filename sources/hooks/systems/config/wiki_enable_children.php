@@ -38,6 +38,7 @@ class Hook_config_wiki_enable_children
             'explanation' => 'CONFIG_OPTION_wiki_enable_children',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'wiki',
         );

@@ -38,6 +38,7 @@ class Hook_config_simplified_donext
             'explanation' => 'CONFIG_OPTION_simplified_donext',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

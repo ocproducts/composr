@@ -38,6 +38,7 @@ class Hook_config_points_show_personal_stats_total_points
             'explanation' => 'CONFIG_OPTION_points_show_personal_stats_total_points',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'points',
         );

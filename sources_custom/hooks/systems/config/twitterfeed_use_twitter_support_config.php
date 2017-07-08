@@ -33,6 +33,7 @@ class Hook_config_twitterfeed_use_twitter_support_config
             'explanation' => 'CONFIG_OPTION_twitterfeed_use_twitter_support_config',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'twitter_feed_integration_block',
         );

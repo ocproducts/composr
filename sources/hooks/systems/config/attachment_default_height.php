@@ -39,6 +39,7 @@ class Hook_config_attachment_default_height
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'required' => true,
 
             'addon' => 'core_rich_media',
         );

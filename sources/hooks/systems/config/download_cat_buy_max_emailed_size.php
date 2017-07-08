@@ -38,6 +38,7 @@ class Hook_config_download_cat_buy_max_emailed_size
             'explanation' => 'CONFIG_OPTION_download_cat_buy_max_emailed_size',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

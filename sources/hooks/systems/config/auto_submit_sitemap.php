@@ -40,6 +40,7 @@ class Hook_config_auto_submit_sitemap
             'list_options' => '',
             'order_in_category_group' => 9,
 
+            'required' => true,
             'addon' => 'core_configuration',
 
             'maintenance_code' => 'sitemap_submit',

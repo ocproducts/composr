@@ -33,6 +33,7 @@ class Hook_config_cloudinary_test_mode
             'explanation' => 'CONFIG_OPTION_cloudinary_test_mode',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cloudinary',
         );

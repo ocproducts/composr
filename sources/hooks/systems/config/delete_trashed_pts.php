@@ -38,6 +38,7 @@ class Hook_config_delete_trashed_pts
             'explanation' => 'CONFIG_OPTION_delete_trashed_pts',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

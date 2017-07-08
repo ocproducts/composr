@@ -38,6 +38,7 @@ class Hook_config_search_filedump
             'explanation' => 'CONFIG_OPTION_search_filedump',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'filedump',
         );

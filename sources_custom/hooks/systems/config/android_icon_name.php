@@ -33,6 +33,7 @@ class Hook_config_android_icon_name
             'explanation' => 'CONFIG_OPTION_android_icon_name',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'composr_mobile_sdk',
         );

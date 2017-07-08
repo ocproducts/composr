@@ -38,6 +38,7 @@ class Hook_config_gallery_mode_is
             'explanation' => 'CONFIG_OPTION_gallery_mode_is',
             'shared_hosting_restricted' => '0',
             'list_options' => 'choice|flow|regular',
+            'required' => true,
 
             'addon' => 'galleries',
         );

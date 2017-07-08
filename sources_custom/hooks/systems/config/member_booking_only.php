@@ -33,6 +33,7 @@ class Hook_config_member_booking_only
             'explanation' => 'CONFIG_OPTION_member_booking_only',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'booking',
         );

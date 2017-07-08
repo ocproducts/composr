@@ -38,6 +38,7 @@ class Hook_config_points_ADD_DOWNLOAD
             'explanation' => 'CONFIG_OPTION_points_ADD_DOWNLOAD',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'downloads',
         );

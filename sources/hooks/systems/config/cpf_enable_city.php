@@ -38,6 +38,7 @@ class Hook_config_cpf_enable_city
             'explanation' => 'CONFIG_OPTION_cpf_enable_city',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

@@ -38,6 +38,7 @@ class Hook_config_unzip_dir
             'explanation' => 'CONFIG_OPTION_unzip_dir',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

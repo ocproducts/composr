@@ -38,6 +38,7 @@ class Hook_config_max_chat_lobby_friends
             'explanation' => 'CONFIG_OPTION_max_chat_lobby_friends',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'chat',
         );

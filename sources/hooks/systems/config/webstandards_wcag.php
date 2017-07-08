@@ -38,6 +38,7 @@ class Hook_config_webstandards_wcag
             'explanation' => 'CONFIG_OPTION_webstandards_wcag',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_webstandards',
         );

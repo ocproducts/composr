@@ -38,6 +38,7 @@ class Hook_config_points_if_liked
             'explanation' => 'CONFIG_OPTION_points_if_liked',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'points',
         );

@@ -38,6 +38,7 @@ class Hook_config_network_links
             'explanation' => 'CONFIG_OPTION_network_links',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'msn',
         );

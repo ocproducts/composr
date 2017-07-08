@@ -30,15 +30,37 @@ class config_test_set extends cms_test_case
 
             switch ($details['type']) {
                 case 'integer':
-                    $this->assertTrue((empty($default)) || (strval(intval($default)) == $default), 'Integer fields expect integer values');
+                    $this->assertTrue((empty($default)) || (strval(intval($default)) == $default), 'Integer fields expect integer values, for ' . $hook);
                     break;
 
                 case 'float':
-                    $this->assertTrue((empty($default)) || (is_numeric($default)), 'Float fields expect numeric values');
+                    $this->assertTrue((empty($default)) || (is_numeric($default)), 'Float fields expect numeric values, for ' . $hook);
                     break;
 
                 case 'tick':
-                    $this->assertTrue((empty($default)) || (in_array($default, array('0', '1'))), 'Tick fields expect boolean values');
+                    $this->assertTrue((empty($default)) || (in_array($default, array('0', '1'))), 'Tick fields expect boolean values, for ' . $hook);
+                    break;
+            }
+        }
+    }
+
+    public function testNoBadLists()
+    {
+        $hooks = find_all_hooks('systems', 'config');
+        foreach (array_keys($hooks) as $hook) {
+            require_code('hooks/systems/config/' . $hook);
+            $ob = object_factory('Hook_config_' . $hook);
+            $details = $ob->get_details();
+
+            $default = $ob->get_default();
+
+            switch ($details['type']) {
+                case 'list':
+                    $this->assertTrue(!empty($details['list_options']), 'List options expected, for ' . $hook);
+                    break;
+
+                default:
+                    $this->assertTrue(empty($details['list_options']), 'No list options expected, for ' . $hook);
                     break;
             }
         }
@@ -112,11 +134,11 @@ class config_test_set extends cms_test_case
             'shared_hosting_restricted' => 'string',
             'list_options' => 'string',
             'addon' => 'string',
+            'required' => 'boolean',
         );
         $settings_optional = array(
             'theme_override' => 'boolean',
             'order_in_category_group' => 'integer',
-            'required' => 'boolean',
             'maintenance_code' => 'string',
             'explanation_param_a' => 'string',
             'explanation_param_b' => 'string',

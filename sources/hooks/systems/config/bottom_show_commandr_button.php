@@ -38,6 +38,7 @@ class Hook_config_bottom_show_commandr_button
             'explanation' => 'CONFIG_OPTION_bottom_show_commandr_button',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'commandr',
         );

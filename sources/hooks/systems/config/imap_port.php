@@ -32,13 +32,14 @@ class Hook_config_imap_port
     {
         return array(
             'human_name' => 'PORT',
-            'type' => 'line',
+            'type' => 'integer',
             'category' => 'SERVER',
             'group' => 'IMAP',
             'explanation' => 'CONFIG_OPTION_imap_port',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

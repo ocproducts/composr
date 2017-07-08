@@ -40,6 +40,7 @@ class Hook_config_maintenance_script_htaccess
             'list_options' => '',
             'order_in_category_group' => 9,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

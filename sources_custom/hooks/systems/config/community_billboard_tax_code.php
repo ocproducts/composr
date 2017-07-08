@@ -34,6 +34,7 @@ class Hook_config_community_billboard_tax_code
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 4,
+            'required' => true,
 
             'addon' => 'community_billboard',
         );

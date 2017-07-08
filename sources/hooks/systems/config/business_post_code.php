@@ -39,6 +39,7 @@ class Hook_config_business_post_code
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 6,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );

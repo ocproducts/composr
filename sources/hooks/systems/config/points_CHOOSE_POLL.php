@@ -38,6 +38,7 @@ class Hook_config_points_CHOOSE_POLL
             'explanation' => 'CONFIG_OPTION_points_CHOOSE_POLL',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'polls',
         );

@@ -111,7 +111,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
                 break;
 
             case A_INSTANT_ANDROID:
-                if (get_option('enable_notifications_instant_android') === '1') {
+                if (get_option('enable_notifications_instant_android') != '') {
                     $system_wide = true;
                     $token = $GLOBALS['SITE_DB']->query_select_value_if_there('device_token_details', 'device_token', array('member_id' => $member_id, 'token_type' => 'android'));
                     if ($system_wide && $token !== null) {

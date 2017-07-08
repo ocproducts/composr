@@ -41,6 +41,7 @@ class Hook_config_filetype_icons
             'order_in_category_group' => 4,
             'theme_override' => true,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

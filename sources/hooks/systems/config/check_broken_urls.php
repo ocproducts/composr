@@ -40,6 +40,7 @@ class Hook_config_check_broken_urls
             'list_options' => '',
             'order_in_category_group' => 4,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

@@ -40,6 +40,7 @@ class Hook_config_enable_ecards
             'list_options' => '',
             'order_in_category_group' => 3,
 
+            'required' => true,
             'addon' => 'galleries',
         );
     }

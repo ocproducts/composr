@@ -40,6 +40,7 @@ class Hook_config_random_avatars
             'list_options' => '',
             'order_in_category_group' => 7,
 
+            'required' => true,
             'addon' => 'cns_member_avatars',
         );
     }

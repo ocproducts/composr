@@ -39,6 +39,7 @@ class Hook_config_enable_timezones
             'shared_hosting_restricted' => '0',
             'list_options' => '0|1|2',
             'order_in_category_group' => 5,
+            'required' => true,
 
             'addon' => 'core_cns',
         );

@@ -38,6 +38,7 @@ class Hook_config_output_streaming
             'explanation' => 'CONFIG_OPTION_output_streaming',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

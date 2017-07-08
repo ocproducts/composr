@@ -38,6 +38,7 @@ class Hook_config_chat_message_check_interval
             'explanation' => 'CONFIG_OPTION_chat_message_check_interval',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'chat',
         );

@@ -39,6 +39,7 @@ class Hook_config_trusted_sites_1
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 0,
+            'required' => false,
 
             'addon' => 'core_configuration',
         );

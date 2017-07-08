@@ -39,6 +39,7 @@ class Hook_config_tax_system
             'shared_hosting_restricted' => '0',
             'list_options' => 'TAX_SALES|TAX_VAT',
             'order_in_category_group' => 2,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

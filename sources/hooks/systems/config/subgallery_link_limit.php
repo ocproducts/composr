@@ -38,6 +38,7 @@ class Hook_config_subgallery_link_limit
             'explanation' => 'CONFIG_OPTION_subgallery_link_limit',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

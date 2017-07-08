@@ -34,6 +34,7 @@ class Hook_config_syndicate_site_activity_default
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 3,
+            'required' => false,
 
             'addon' => 'activity_feed',
         );

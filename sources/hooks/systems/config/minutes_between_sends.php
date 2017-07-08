@@ -39,6 +39,7 @@ class Hook_config_minutes_between_sends
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 4,
+            'required' => true,
 
             'addon' => 'newsletter',
         );

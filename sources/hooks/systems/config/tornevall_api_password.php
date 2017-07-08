@@ -39,6 +39,7 @@ class Hook_config_tornevall_api_password
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 16,
+            'required' => false,
 
             'addon' => 'core_configuration',
         );

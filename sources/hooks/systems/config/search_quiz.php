@@ -38,6 +38,7 @@ class Hook_config_search_quiz
             'explanation' => 'CONFIG_OPTION_search_quiz',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'quizzes',
         );

@@ -38,6 +38,7 @@ class Hook_config_download_gallery_root
             'explanation' => 'CONFIG_OPTION_download_gallery_root',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'downloads',
         );

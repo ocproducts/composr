@@ -38,6 +38,7 @@ class Hook_config_super_logging
             'explanation' => 'CONFIG_OPTION_super_logging',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'stats',
         );

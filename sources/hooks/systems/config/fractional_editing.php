@@ -38,6 +38,7 @@ class Hook_config_fractional_editing
             'explanation' => 'CONFIG_OPTION_fractional_editing',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

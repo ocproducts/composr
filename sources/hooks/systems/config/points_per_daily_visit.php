@@ -38,6 +38,7 @@ class Hook_config_points_per_daily_visit
             'explanation' => 'CONFIG_OPTION_points_per_daily_visit',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'points',
         );

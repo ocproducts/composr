@@ -38,6 +38,7 @@ class Hook_config_allow_alpha_search
             'explanation' => 'CONFIG_OPTION_allow_alpha_search',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

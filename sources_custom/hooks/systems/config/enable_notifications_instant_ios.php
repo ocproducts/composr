@@ -33,6 +33,7 @@ class Hook_config_enable_notifications_instant_ios
             'explanation' => 'CONFIG_OPTION_enable_notifications_instant_ios',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'composr_mobile_sdk',
         );

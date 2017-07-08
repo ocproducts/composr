@@ -38,6 +38,7 @@ class Hook_config_enable_multi_quote
             'explanation' => 'CONFIG_OPTION_enable_multi_quote',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

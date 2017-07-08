@@ -40,6 +40,7 @@ class Hook_config_news_summary_required
             'list_options' => '',
             'order_in_category_group' => 5,
 
+            'required' => true,
             'addon' => 'news',
         );
     }

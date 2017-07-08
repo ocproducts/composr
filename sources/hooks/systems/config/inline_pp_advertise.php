@@ -38,6 +38,7 @@ class Hook_config_inline_pp_advertise
             'explanation' => 'CONFIG_OPTION_inline_pp_advertise',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

@@ -41,6 +41,7 @@ class Hook_config_show_screen_actions
             'order_in_category_group' => 5,
             'theme_override' => true,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

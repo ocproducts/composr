@@ -38,6 +38,7 @@ class Hook_config_minimum_autocomplete_past_search
             'explanation' => 'CONFIG_OPTION_minimum_autocomplete_past_search',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'search',
         );

@@ -38,6 +38,7 @@ class Hook_config_bottom_show_realtime_rain_button
             'explanation' => 'CONFIG_OPTION_bottom_show_realtime_rain_button',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'realtime_rain',
         );

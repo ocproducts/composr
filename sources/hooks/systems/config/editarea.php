@@ -38,6 +38,7 @@ class Hook_config_editarea
             'explanation' => 'CONFIG_OPTION_editarea',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

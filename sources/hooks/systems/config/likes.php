@@ -40,6 +40,7 @@ class Hook_config_likes
             'list_options' => '',
             'order_in_category_group' => 3,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

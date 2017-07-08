@@ -38,6 +38,7 @@ class Hook_config_classifieds_tax_code
             'explanation' => 'CONFIG_OPTION_classifieds_tax_code',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'classified_ads',
         );

@@ -38,6 +38,7 @@ class Hook_config_downloads_show_stats_count_bandwidth
             'explanation' => 'CONFIG_OPTION_downloads_show_stats_count_bandwidth',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'downloads',
         );

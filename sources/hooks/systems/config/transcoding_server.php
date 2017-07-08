@@ -39,6 +39,7 @@ class Hook_config_transcoding_server
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 8,
+            'required' => false,
 
             'addon' => 'galleries',
         );

@@ -38,6 +38,7 @@ class Hook_config_cart_hold_hours
             'explanation' => 'CONFIG_OPTION_cart_hold_hours',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'shopping',
         );

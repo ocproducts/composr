@@ -38,6 +38,7 @@ class Hook_config_galleries_default_sort_order
             'explanation' => 'CONFIG_OPTION_galleries_default_sort_order',
             'shared_hosting_restricted' => '0',
             'list_options' => 'add_date DESC|add_date ASC|average_rating DESC|compound_rating DESC|url DESC|url ASC|fixed_random ASC',
+            'required' => true,
 
             'addon' => 'galleries',
         );

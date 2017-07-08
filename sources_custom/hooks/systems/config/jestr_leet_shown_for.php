@@ -33,6 +33,7 @@ class Hook_config_jestr_leet_shown_for
             'explanation' => 'CONFIG_OPTION_jestr_leet_shown_for',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'jestr',
         );

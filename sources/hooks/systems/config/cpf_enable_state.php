@@ -38,6 +38,7 @@ class Hook_config_cpf_enable_state
             'explanation' => 'CONFIG_OPTION_cpf_enable_state',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

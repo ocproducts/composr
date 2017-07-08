@@ -38,6 +38,7 @@ class Hook_config_edit_under
             'explanation' => 'CONFIG_OPTION_edit_under',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

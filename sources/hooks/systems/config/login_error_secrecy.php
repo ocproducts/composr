@@ -40,6 +40,7 @@ class Hook_config_login_error_secrecy
             'list_options' => '',
             'order_in_category_group' => 1,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

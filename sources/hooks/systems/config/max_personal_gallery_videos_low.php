@@ -39,6 +39,7 @@ class Hook_config_max_personal_gallery_videos_low
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 3,
+            'required' => true,
 
             'addon' => 'galleries',
         );

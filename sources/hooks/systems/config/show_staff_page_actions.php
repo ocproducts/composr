@@ -38,6 +38,7 @@ class Hook_config_show_staff_page_actions
             'explanation' => 'CONFIG_OPTION_show_staff_page_actions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

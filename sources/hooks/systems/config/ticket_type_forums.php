@@ -40,6 +40,7 @@ class Hook_config_ticket_type_forums
             'list_options' => '',
             'order_in_category_group' => 4,
 
+            'required' => true,
             'addon' => 'tickets',
         );
     }

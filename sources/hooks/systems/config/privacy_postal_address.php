@@ -39,6 +39,7 @@ class Hook_config_privacy_postal_address
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 3,
+            'required' => false,
 
             'addon' => 'core_cns',
         );

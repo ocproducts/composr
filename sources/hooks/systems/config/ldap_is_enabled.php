@@ -40,6 +40,7 @@ class Hook_config_ldap_is_enabled
             'list_options' => '',
             'order_in_category_group' => 1,
 
+            'required' => true,
             'addon' => 'ldap',
         );
     }

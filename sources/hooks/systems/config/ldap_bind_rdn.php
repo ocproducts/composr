@@ -39,6 +39,7 @@ class Hook_config_ldap_bind_rdn
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 2,
+            'required' => true,
 
             'addon' => 'ldap',
         );

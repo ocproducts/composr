@@ -38,6 +38,7 @@ class Hook_config_stats_store_time
             'explanation' => 'CONFIG_OPTION_stats_store_time',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'stats',
         );

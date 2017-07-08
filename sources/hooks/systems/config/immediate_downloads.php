@@ -38,6 +38,7 @@ class Hook_config_immediate_downloads
             'explanation' => 'CONFIG_OPTION_immediate_downloads',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'downloads',
         );

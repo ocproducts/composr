@@ -40,6 +40,7 @@ class Hook_config_show_first_join_page
             'list_options' => '',
             'order_in_category_group' => 1,
 
+            'required' => true,
             'addon' => 'core_cns',
         );
     }

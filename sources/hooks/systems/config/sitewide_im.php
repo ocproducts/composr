@@ -38,6 +38,7 @@ class Hook_config_sitewide_im
             'explanation' => 'CONFIG_OPTION_sitewide_im',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'chat',
         );

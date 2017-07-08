@@ -39,6 +39,7 @@ class Hook_config_use_true_from
             'shared_hosting_restricted' => '0',
             'list_options' => '1|2|0',
             'order_in_category_group' => 9,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

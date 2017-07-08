@@ -38,6 +38,7 @@ class Hook_config_allow_theme_image_selector
             'explanation' => 'CONFIG_OPTION_allow_theme_image_selector',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

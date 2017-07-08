@@ -39,6 +39,7 @@ class Hook_config_maximum_gamble_amount
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 3,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

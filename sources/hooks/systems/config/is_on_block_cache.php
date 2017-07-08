@@ -38,6 +38,7 @@ class Hook_config_is_on_block_cache
             'explanation' => 'CONFIG_OPTION_is_on_block_cache',
             'shared_hosting_restricted' => '1',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_cleanup_tools',
         );

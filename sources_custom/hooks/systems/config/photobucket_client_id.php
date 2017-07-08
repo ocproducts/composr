@@ -33,6 +33,7 @@ class Hook_config_photobucket_client_id
             'explanation' => 'CONFIG_OPTION_photobucket_client_id',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'image_syndication',
         );

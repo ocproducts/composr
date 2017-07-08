@@ -39,6 +39,7 @@ class Hook_config_intro_forum_id
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 9,
+            'required' => false,
 
             'addon' => 'cns_forum',
         );

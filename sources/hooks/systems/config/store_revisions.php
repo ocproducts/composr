@@ -38,6 +38,7 @@ class Hook_config_store_revisions
             'explanation' => 'CONFIG_OPTION_store_revisions',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'actionlog',
         );

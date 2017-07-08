@@ -38,6 +38,7 @@ class Hook_config_block_top_search
             'explanation' => 'CONFIG_OPTION_block_top_search',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'search',
         );

@@ -33,6 +33,7 @@ class Hook_config_enable_guest_access
             'explanation' => 'CONFIG_OPTION_enable_guest_access',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_tapatalk',
         );

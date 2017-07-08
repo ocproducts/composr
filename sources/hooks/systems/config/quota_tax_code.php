@@ -39,6 +39,7 @@ class Hook_config_quota_tax_code
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 7,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

@@ -39,6 +39,7 @@ class Hook_config_newsletter_website_email
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 11,
+            'required' => true,
 
             'addon' => 'newsletter',
         );

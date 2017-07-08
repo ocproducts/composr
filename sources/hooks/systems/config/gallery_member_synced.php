@@ -38,6 +38,7 @@ class Hook_config_gallery_member_synced
             'explanation' => 'CONFIG_OPTION_gallery_member_synced',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

@@ -40,6 +40,7 @@ class Hook_config_moniker_transliteration
             'list_options' => '',
             'order_in_category_group' => 6,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

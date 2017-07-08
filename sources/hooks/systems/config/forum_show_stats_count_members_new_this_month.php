@@ -38,6 +38,7 @@ class Hook_config_forum_show_stats_count_members_new_this_month
             'explanation' => 'CONFIG_OPTION_forum_show_stats_count_members_new_this_month',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'stats_block',
         );

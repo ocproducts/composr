@@ -39,6 +39,7 @@ class Hook_config_spam_heuristic_frequency
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 7,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

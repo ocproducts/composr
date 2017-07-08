@@ -38,6 +38,7 @@ class Hook_config_welcome_message
             'explanation' => 'CONFIG_OPTION_welcome_message',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'core_configuration',
         );

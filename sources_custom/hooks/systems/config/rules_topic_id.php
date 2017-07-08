@@ -33,6 +33,7 @@ class Hook_config_rules_topic_id
             'explanation' => 'CONFIG_OPTION_rules_topic_id',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_tapatalk',
         );

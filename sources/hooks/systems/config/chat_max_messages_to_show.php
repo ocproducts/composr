@@ -38,6 +38,7 @@ class Hook_config_chat_max_messages_to_show
             'explanation' => 'CONFIG_OPTION_chat_max_messages_to_show',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'chat',
         );

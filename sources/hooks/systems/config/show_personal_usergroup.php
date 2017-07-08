@@ -38,6 +38,7 @@ class Hook_config_show_personal_usergroup
             'explanation' => 'CONFIG_OPTION_show_personal_usergroup',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

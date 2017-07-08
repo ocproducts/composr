@@ -40,6 +40,7 @@ class Hook_config_captcha_on_feedback
             'list_options' => '',
             'order_in_category_group' => 7,
 
+            'required' => true,
             'addon' => 'captcha',
         );
     }

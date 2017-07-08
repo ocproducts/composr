@@ -38,6 +38,7 @@ class Hook_config_forum_show_stats_count_topics
             'explanation' => 'CONFIG_OPTION_forum_show_stats_count_topics',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'stats_block',
         );

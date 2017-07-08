@@ -38,6 +38,7 @@ class Hook_config_usersonline_show_birthdays
             'explanation' => 'CONFIG_OPTION_usersonline_show_birthdays',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'users_online_block',
         );

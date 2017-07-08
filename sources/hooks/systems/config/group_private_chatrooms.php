@@ -38,6 +38,7 @@ class Hook_config_group_private_chatrooms
             'explanation' => 'CONFIG_OPTION_group_private_chatrooms',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'chat',
         );

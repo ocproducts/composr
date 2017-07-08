@@ -33,6 +33,7 @@ class Hook_config_google_map_key
             'explanation' => 'CONFIG_OPTION_google_map_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'data_mappr',
         );

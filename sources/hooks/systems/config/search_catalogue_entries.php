@@ -38,6 +38,7 @@ class Hook_config_search_catalogue_entries
             'explanation' => 'CONFIG_OPTION_search_catalogue_entries',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'catalogues',
         );

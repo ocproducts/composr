@@ -33,6 +33,7 @@ class Hook_config_stealr_group
             'explanation' => 'CONFIG_OPTION_stealr_group',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'stealr',
         );

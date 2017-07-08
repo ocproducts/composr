@@ -38,6 +38,7 @@ class Hook_config_tree_lists
             'explanation' => 'CONFIG_OPTION_tree_lists',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

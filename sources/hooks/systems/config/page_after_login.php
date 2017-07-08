@@ -38,6 +38,7 @@ class Hook_config_page_after_login
             'explanation' => 'CONFIG_OPTION_page_after_login',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'core_configuration',
         );

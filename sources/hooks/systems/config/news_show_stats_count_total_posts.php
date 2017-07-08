@@ -38,6 +38,7 @@ class Hook_config_news_show_stats_count_total_posts
             'explanation' => 'CONFIG_OPTION_news_show_stats_count_total_posts',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'news',
         );

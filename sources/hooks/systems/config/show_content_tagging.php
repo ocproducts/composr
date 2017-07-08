@@ -41,6 +41,7 @@ class Hook_config_show_content_tagging
             'order_in_category_group' => 1,
             'theme_override' => true,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

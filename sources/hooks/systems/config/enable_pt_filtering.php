@@ -38,6 +38,7 @@ class Hook_config_enable_pt_filtering
             'explanation' => 'CONFIG_OPTION_enable_pt_filtering',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

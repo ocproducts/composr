@@ -34,6 +34,7 @@ class Hook_config_youtube_client_secret
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 5,
+            'required' => false,
 
             'addon' => 'gallery_syndication',
         );

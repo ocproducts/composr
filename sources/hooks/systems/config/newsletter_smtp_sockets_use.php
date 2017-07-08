@@ -40,6 +40,7 @@ class Hook_config_newsletter_smtp_sockets_use
             'list_options' => '',
             'order_in_category_group' => 1,
 
+            'required' => true,
             'addon' => 'newsletter',
         );
     }

@@ -40,6 +40,7 @@ class Hook_config_currency_auto
             'list_options' => '',
             'order_in_category_group' => 2,
 
+            'required' => true,
             'addon' => 'ecommerce',
         );
     }

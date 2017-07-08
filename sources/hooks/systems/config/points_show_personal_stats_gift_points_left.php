@@ -38,6 +38,7 @@ class Hook_config_points_show_personal_stats_gift_points_left
             'explanation' => 'CONFIG_OPTION_points_show_personal_stats_gift_points_left',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'points',
         );

@@ -38,6 +38,7 @@ class Hook_config_pt_notifications_as_web
             'explanation' => 'CONFIG_OPTION_pt_notifications_as_web',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_notifications',
         );

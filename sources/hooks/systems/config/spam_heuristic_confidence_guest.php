@@ -39,6 +39,7 @@ class Hook_config_spam_heuristic_confidence_guest
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 9,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

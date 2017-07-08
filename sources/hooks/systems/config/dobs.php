@@ -39,6 +39,7 @@ class Hook_config_dobs
             'shared_hosting_restricted' => '0',
             'list_options' => '0|1|2',
             'order_in_category_group' => 3,
+            'required' => true,
 
             'addon' => 'core_cns',
         );

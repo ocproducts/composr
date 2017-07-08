@@ -40,6 +40,7 @@ class Hook_config_message_received_emails
             'list_options' => '',
             'order_in_category_group' => 11,
 
+            'required' => true,
             'addon' => 'core_configuration',
         );
     }

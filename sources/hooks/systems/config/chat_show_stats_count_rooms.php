@@ -38,6 +38,7 @@ class Hook_config_chat_show_stats_count_rooms
             'explanation' => 'CONFIG_OPTION_chat_show_stats_count_rooms',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'chat',
         );

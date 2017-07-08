@@ -39,6 +39,7 @@ class Hook_config_shipping_shippo_api_test
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 4,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );

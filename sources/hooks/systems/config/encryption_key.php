@@ -38,6 +38,7 @@ class Hook_config_encryption_key
             'explanation' => 'CONFIG_OPTION_encryption_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'core_cns',
 

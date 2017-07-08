@@ -38,6 +38,7 @@ class Hook_config_enable_post_emphasis
             'explanation' => 'CONFIG_OPTION_enable_post_emphasis',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

@@ -38,6 +38,7 @@ class Hook_config_points_wiki
             'explanation' => 'CONFIG_OPTION_points_wiki',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'wiki',
         );

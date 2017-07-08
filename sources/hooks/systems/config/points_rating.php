@@ -38,6 +38,7 @@ class Hook_config_points_rating
             'explanation' => 'CONFIG_OPTION_points_rating',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'points',
         );

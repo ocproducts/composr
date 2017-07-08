@@ -38,6 +38,7 @@ class Hook_config_primary_paypal_email
             'explanation' => 'CONFIG_OPTION_primary_paypal_email',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'ecommerce',
         );

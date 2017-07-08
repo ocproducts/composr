@@ -38,6 +38,7 @@ class Hook_config_reverse_thumb_order
             'explanation' => 'CONFIG_OPTION_reverse_thumb_order',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

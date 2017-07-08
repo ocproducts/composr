@@ -38,6 +38,7 @@ class Hook_config_point_logs_per_page
             'explanation' => 'CONFIG_OPTION_point_logs_per_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'points',
         );

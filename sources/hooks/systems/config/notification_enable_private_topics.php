@@ -38,6 +38,7 @@ class Hook_config_notification_enable_private_topics
             'explanation' => 'CONFIG_OPTION_notification_enable_private_topics',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_notifications',
         );

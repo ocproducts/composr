@@ -38,6 +38,7 @@ class Hook_config_js_overlays
             'explanation' => 'CONFIG_OPTION_js_overlays',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

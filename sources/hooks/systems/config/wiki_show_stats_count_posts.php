@@ -38,6 +38,7 @@ class Hook_config_wiki_show_stats_count_posts
             'explanation' => 'CONFIG_OPTION_wiki_show_stats_count_posts',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'wiki',
         );

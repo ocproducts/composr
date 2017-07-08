@@ -33,6 +33,7 @@ class Hook_config_bank_dividend
             'explanation' => 'CONFIG_OPTION_bank_dividend',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'bankr',
         );

@@ -38,6 +38,7 @@ class Hook_config_banner_autosize
             'explanation' => 'CONFIG_OPTION_banner_autosize',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'banners',
         );

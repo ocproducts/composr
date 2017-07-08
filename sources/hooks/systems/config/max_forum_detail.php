@@ -38,6 +38,7 @@ class Hook_config_max_forum_detail
             'explanation' => 'CONFIG_OPTION_max_forum_detail',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_forum',
         );

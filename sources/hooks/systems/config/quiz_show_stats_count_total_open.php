@@ -38,6 +38,7 @@ class Hook_config_quiz_show_stats_count_total_open
             'explanation' => 'CONFIG_OPTION_quiz_show_stats_count_total_open',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'quizzes',
         );

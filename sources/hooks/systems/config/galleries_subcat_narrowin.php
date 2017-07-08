@@ -38,6 +38,7 @@ class Hook_config_galleries_subcat_narrowin
             'explanation' => 'CONFIG_OPTION_galleries_subcat_narrowin',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

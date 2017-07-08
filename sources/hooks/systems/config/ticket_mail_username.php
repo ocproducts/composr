@@ -39,6 +39,7 @@ class Hook_config_ticket_mail_username
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 8,
+            'required' => true,
 
             'addon' => 'tickets',
         );

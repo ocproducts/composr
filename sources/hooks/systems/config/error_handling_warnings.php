@@ -39,6 +39,7 @@ class Hook_config_error_handling_warnings
             'shared_hosting_restricted' => '0',
             'list_options' => 'SKIP|LOG|ATTACH|FATAL',
             'order_in_category_group' => 5,
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

@@ -33,6 +33,7 @@ class Hook_config_tapatalk_api_key
             'explanation' => 'CONFIG_OPTION_tapatalk_api_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => false,
 
             'addon' => 'cns_tapatalk',
         );

@@ -33,6 +33,7 @@ class Hook_config_points_for_thanking
             'explanation' => 'CONFIG_OPTION_points_for_thanking',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'cns_tapatalk',
         );

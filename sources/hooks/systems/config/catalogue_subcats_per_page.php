@@ -38,6 +38,7 @@ class Hook_config_catalogue_subcats_per_page
             'explanation' => 'CONFIG_OPTION_catalogue_subcats_per_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'catalogues',
         );

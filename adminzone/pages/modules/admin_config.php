@@ -438,19 +438,7 @@ class Module_admin_config
                     $explanation = is_maintained_description($option['maintenance_code'], $explanation);
                 }
 
-                if (isset($option['required'])) {
-                    $required = $option['required'];
-                } else {
-                    if ($option['type'] == 'integer') {
-                        $required = true;
-                    } elseif ($option['type'] == 'float') {
-                        $required = true;
-                    } elseif ($option['type'] == 'list') {
-                        $required = true;
-                    } else {
-                        $required = false;
-                    }
-                }
+                $required = $option['required'];
 
                 // Render field inputter
                 switch ($option['type']) {

@@ -38,6 +38,7 @@ class Hook_config_gallery_entries_flow_per_page
             'explanation' => 'CONFIG_OPTION_gallery_entries_flow_per_page',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'galleries',
         );

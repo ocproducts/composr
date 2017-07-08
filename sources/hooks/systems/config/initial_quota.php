@@ -39,6 +39,7 @@ class Hook_config_initial_quota
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 5,
+            'required' => true,
 
             'addon' => 'ecommerce',
         );

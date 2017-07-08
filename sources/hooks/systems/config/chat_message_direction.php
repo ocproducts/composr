@@ -38,6 +38,7 @@ class Hook_config_chat_message_direction
             'explanation' => 'CONFIG_OPTION_chat_message_direction',
             'shared_hosting_restricted' => '0',
             'list_options' => 'upwards|downwards',
+            'required' => true,
 
             'addon' => 'chat',
         );

@@ -40,6 +40,7 @@ class Hook_config_ldap_allow_joining
             'list_options' => '',
             'order_in_category_group' => 15,
 
+            'required' => true,
             'addon' => 'ldap',
         );
     }

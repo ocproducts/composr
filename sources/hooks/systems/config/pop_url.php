@@ -39,6 +39,7 @@ class Hook_config_pop_url
             'shared_hosting_restricted' => '1',
             'list_options' => '',
             'order_in_category_group' => 3,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );

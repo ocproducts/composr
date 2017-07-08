@@ -38,6 +38,7 @@ class Hook_config_wysiwyg_font_units
             'explanation' => 'CONFIG_OPTION_wysiwyg_font_units',
             'shared_hosting_restricted' => '0',
             'list_options' => 'px|em',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

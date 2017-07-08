@@ -38,6 +38,7 @@ class Hook_config_cns_show_profile_link
             'explanation' => 'CONFIG_OPTION_cns_show_profile_link',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );

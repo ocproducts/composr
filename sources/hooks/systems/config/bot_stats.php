@@ -38,6 +38,7 @@ class Hook_config_bot_stats
             'explanation' => 'CONFIG_OPTION_bot_stats',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'stats',
         );

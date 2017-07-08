@@ -32,12 +32,13 @@ class Hook_config_member_email_receipt_configurability
     {
         return array(
             'human_name' => 'MEMBER_EMAIL_RECEIPT_CONFIGURABILITY',
-            'type' => 'line',
+            'type' => 'list',
             'category' => 'USERS',
             'group' => 'MEMBERS',
             'explanation' => 'CONFIG_OPTION_member_email_receipt_configurability',
             'shared_hosting_restricted' => '0',
             'list_options' => '0|1|2',
+            'required' => true,
 
             'addon' => 'core_cns',
         );

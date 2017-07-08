@@ -38,6 +38,7 @@ class Hook_config_cookie_notice
             'explanation' => 'CONFIG_OPTION_cookie_notice',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
+            'required' => true,
 
             'addon' => 'core_configuration',
         );
