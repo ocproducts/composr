@@ -35,7 +35,7 @@ class Module_points
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 8;
+        $info['version'] = 9;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -107,12 +107,16 @@ class Module_points
 
         if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('chargelog', 'user_id', 'MEMBER', 'member_id');
+
+            rename_config_option('leaderboard_start_date', 'leader_board_start_date');
         }
 
         if (($upgrade_from === null) || ($upgrade_from < 8)) {
-            rename_config_option('leaderboard_start_date', 'leader_board_start_date');
-
             $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_visiting', 20, 1, 0, 0, 0, '', 'integer');
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 9)) {
+            $GLOBALS['SITE_DB']->create_index('chargelog', 'member_id', array('member_id'));
         }
     }
 

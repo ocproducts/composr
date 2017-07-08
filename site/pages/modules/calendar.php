@@ -42,7 +42,7 @@ class Module_calendar
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 8;
+        $info['version'] = 9;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -230,6 +230,12 @@ class Module_calendar
             $GLOBALS['SITE_DB']->delete_table_field('calendar_events', 'e_is_public');
 
             delete_privilege('view_personal_events');
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 9)) {
+            $GLOBALS['SITE_DB']->create_index('calendar_events', 'member_calendar', array('e_member_calendar'));
+            $GLOBALS['SITE_DB']->create_index('calendar_jobs', 'member_id', array('j_member_id'));
+            $GLOBALS['SITE_DB']->create_index('calendar_reminders', 'member_id', array('n_member_id'));
         }
     }
 

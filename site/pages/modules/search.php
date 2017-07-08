@@ -85,6 +85,10 @@ class Module_search
         if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             $GLOBALS['SITE_DB']->drop_table_if_exists('searches_saved');
         }
+
+        if (($upgrade_from === null) || ($upgrade_from < 6)) {
+            $GLOBALS['SITE_DB']->create_index('searches_logged', 'member_id', array('s_member_id'));
+        }
     }
 
     /**

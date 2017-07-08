@@ -35,7 +35,7 @@ class Module_tickets
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 6;
+        $info['version'] = 7;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -88,6 +88,10 @@ class Module_tickets
 
         if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $GLOBALS['SITE_DB']->delete_table_field('ticket_types', 'send_sms_to');
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 7)) {
+            $GLOBALS['SITE_DB']->create_index('ticket_known_emailers', 'member_id', array('member_id'));
         }
 
         if ($upgrade_from === null) {

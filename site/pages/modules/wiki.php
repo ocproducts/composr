@@ -35,7 +35,7 @@ class Module_wiki
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 9;
+        $info['version'] = 10;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -195,6 +195,10 @@ class Module_wiki
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'wiki_views', array('wiki_views'));
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'wiki_views', array('wiki_views'));
             $GLOBALS['SITE_DB']->create_index('wiki_posts', 'spos', array('member_id'));
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 10)) {
+            $GLOBALS['SITE_DB']->create_index('wiki_posts', 'member_id', array('member_id'));
         }
     }
 

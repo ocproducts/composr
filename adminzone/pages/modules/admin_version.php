@@ -992,13 +992,19 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->add_table_field('cache', 'is_ssl', '?BINARY');
 
             rename_config_option('allowed_partner_sites', 'trusted_sites_2');
-        }
 
-        if (($upgrade_from === null) || ($upgrade_from < 18)) {
             rename_config_option('allow_international', 'enable_timezones');
             rename_config_option('allow_email_disable', 'member_email_receipt_configurability');
             rename_config_option('allow_email_from_staff_disable', 'staff_email_receipt_configurability');
             $GLOBALS['SITE_DB']->query_update('config', array('c_value' => '2'), array('c_value' => '1', 'c_name' => 'dobs'));
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 18)) {
+            $GLOBALS['SITE_DB']->create_index('digestives_tin', 'from_member_id', array('d_from_member_id'));
+            $GLOBALS['SITE_DB']->create_index('cache', 'the_member', array('the_member'));
+            $GLOBALS['SITE_DB']->create_index('link_tracker', 'member_id', array('c_member_id'));
+            $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'm_as', array('m_as'));
+            $GLOBALS['SITE_DB']->create_index('rating', 'rating_member', array('rating_member'));
         }
     }
 

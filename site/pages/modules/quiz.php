@@ -35,7 +35,7 @@ class Module_quiz
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 6;
+        $info['version'] = 7;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -182,6 +182,11 @@ class Module_quiz
 
             add_privilege('SEARCH', 'autocomplete_keyword_quiz', false);
             add_privilege('SEARCH', 'autocomplete_title_quiz', false);
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 7)) {
+            $GLOBALS['SITE_DB']->create_index('quiz_entries', 'member', array('q_member'));
+            $GLOBALS['SITE_DB']->create_index('quiz_member_last_visit', 'member_id', array('v_member_id'));
         }
     }
 

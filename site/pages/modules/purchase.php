@@ -392,6 +392,7 @@ class Module_purchase
         if (($upgrade_from === null) || ($upgrade_from < 7)) {
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_time', array('t_time'));
             $GLOBALS['SITE_DB']->create_index('ecom_transactions', 't_type_code', array('t_type_code'));
+            $GLOBALS['SITE_DB']->create_index('ecom_sales', 'member_id', array('member_id'));
         }
     }
 

@@ -30,7 +30,7 @@ class Module_booking
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 2;
+        $info['version'] = 3;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -157,6 +157,10 @@ class Module_booking
             $GLOBALS['SITE_DB']->add_table_field('booking', 'customer_email', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('booking', 'customer_mobile', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('booking', 'customer_phone', 'SHORT_TEXT');
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 3)) {
+            $GLOBALS['SITE_DB']->create_index('booking', 'member_id', array('member_id'));
         }
     }
 

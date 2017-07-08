@@ -30,7 +30,7 @@ class Module_buildr
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 4;
+        $info['version'] = 5;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -270,6 +270,11 @@ class Module_buildr
 
             require_code('buildr_action');
             add_realm_wrap(null, do_lang('W_DEFAULT_REALM'), do_lang('W_DEFAULT_TROLL'), do_lang('W_DEFAULT_JAIL'), do_lang('W_DEFAULT_IN_JAIL'), '', do_lang('W_DEFAULT_JAIL_HOUSE'), do_lang('W_DEFAULT_IN_JAIL_HOUSE'), '', do_lang('W_DEFAULT_LOBBY'), do_lang('W_DEFAULT_LOBBY_TEXT'), '', array(), 0, false);
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 5)) {
+            $GLOBALS['SITE_DB']->create_index('w_messages', 'destination', array('destination'));
+            $GLOBALS['SITE_DB']->create_index('w_messages', 'originator_id', array('originator_id'));
         }
     }
 

@@ -35,7 +35,7 @@ class Module_chat
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 12;
+        $info['version'] = 13;
         $info['update_require_upgrade'] = true;
         $info['locked'] = false;
         return $info;
@@ -239,6 +239,10 @@ class Module_chat
             ));
 
             $GLOBALS['SITE_DB']->create_index('chat_rooms', 'is_im', array('is_im'/*, 'room_name' makes key too long*/));
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 13)) {
+            $GLOBALS['SITE_DB']->create_index('chat_messages', 'member_id', array('member_id'));
         }
     }
 

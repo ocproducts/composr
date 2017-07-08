@@ -344,6 +344,10 @@ function install_cns($upgrade_from = null)
     }
     if (($upgrade_from !== null) && ($upgrade_from < 11.0)) { // LEGACY
         add_privilege('FORUMS_AND_MEMBERS', 'appear_under_birthdays', true);
+
+        $GLOBALS['FORUM_DB']->create_index('f_posts', 'last_edit_by', array('p_last_edit_by'));
+        $GLOBALS['FORUM_DB']->create_index('f_invites', 'inviter', array('i_inviter'));
+        $GLOBALS['FORUM_DB']->create_index('f_poll_votes', 'member_id', array('pv_member_id'));
     }
 
     // If we have the forum installed to this db already, leave

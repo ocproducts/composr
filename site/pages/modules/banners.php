@@ -35,7 +35,7 @@ class Module_banners
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 7;
+        $info['version'] = 8;
         $info['locked'] = true;
         $info['update_require_upgrade'] = true;
         return $info;
@@ -218,6 +218,10 @@ class Module_banners
             ));
 
             $GLOBALS['SITE_DB']->create_index('banner_clicks', 'c_banner_id', array('c_banner_id'));
+        }
+
+        if (($upgrade_from === null) || ($upgrade_from < 8)) {
+            $GLOBALS['SITE_DB']->create_index('banner_clicks', 'member_id', array('c_member_id'));
         }
     }
 
