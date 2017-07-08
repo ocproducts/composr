@@ -45,6 +45,6 @@ class Hook_config_enable_notifications_instant_android
      */
     public function get_default()
     {
-        return '0';
+        return '';
     }
 }
