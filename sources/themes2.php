@@ -752,7 +752,7 @@ function _get_all_image_ids_type(&$ids, $dir, $type, $recurse, $dirs_only, $skip
  * Get Tempcode for a radio list to choose an image from the image FILES in the theme.
  *
  * @param  string $selected_path The currently selected image path (blank for none)
- * @param  URLPATH $base_url The base-URL to where we are searching for images
+ * @param  URLPATH $base_url The base URL to where we are searching for images
  * @param  PATH $base_path The base-path to where we are searching for images
  * @return Tempcode The generated Tempcode
  */
@@ -774,7 +774,7 @@ function combo_get_image_paths($selected_path, $base_url, $base_path)
 /**
  * Search under a base path for image FILE URLs.
  *
- * @param  URLPATH $base_url The base-URL to where we are searching for images
+ * @param  URLPATH $base_url The base URL to where we are searching for images
  * @param  PATH $base_path The base-path to where we are searching for images
  * @return array path->url map of found images
  */

@@ -266,7 +266,7 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     // Now build the CSP header clauses for other options...
 
-    // base-url
+    // base URL
     $clauses[] = "base-uri 'self'";
 
     // plugin-types

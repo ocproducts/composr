@@ -723,7 +723,7 @@ function get_site_name()
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @param  string $zone_for What zone this is running in
- * @return URLPATH The base-url
+ * @return URLPATH The base URL
  */
 function get_base_url($https = null, $zone_for = '')
 {
@@ -742,10 +742,10 @@ function get_base_url($https = null, $zone_for = '')
 }
 
 /**
- * Get the base URL (the minimum fully qualified URL to our personal data installation). For a shared install only, this is different to the base-url.
+ * Get the base URL (the minimum fully qualified URL to our personal data installation). For a shared install only, this is different to the base URL.
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
- * @return URLPATH The base-url
+ * @return URLPATH The base URL
  */
 function get_custom_base_url($https = null)
 {
@@ -902,7 +902,7 @@ function get_file_base()
 }
 
 /**
- * Get the file base for your installation of Composr.  For a shared install only, this is different to the base-url.
+ * Get the file base for your installation of Composr.  For a shared install only, this is different to the base URL.
  *
  * @return PATH The file base, without a trailing slash
  */

@@ -1413,7 +1413,7 @@ function find_script($name, $append_keep = false, $base_url_code = 0)
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
  * @param  ?ID_TEXT $zone_for The zone the link is for (null: root zone)
- * @return URLPATH The base-url
+ * @return URLPATH The base URL
  */
 function get_base_url($https = null, $zone_for = null)
 {
@@ -1508,10 +1508,10 @@ function get_base_url($https = null, $zone_for = null)
 }
 
 /**
- * Get the base URL (the minimum fully qualified URL to our personal data installation). For a shared install, or a GAE-install, this is different to the base-url.
+ * Get the base URL (the minimum fully qualified URL to our personal data installation). For a shared install, or a GAE-install, this is different to the base URL.
  *
  * @param  ?boolean $https Whether to get the HTTPS base URL (null: do so only if the current page uses the HTTPS base URL)
- * @return URLPATH The base-url
+ * @return URLPATH The base URL
  */
 function get_custom_base_url($https = null)
 {
@@ -1535,7 +1535,7 @@ function get_custom_base_url($https = null)
  * Function to get a base URL for an Conversr relative-URL. The situation is complex as it needs to take into account Conversr multi-site-network's, locally defined theme images, and shared-installs (Demonstratr style).
  *
  * @param  URLPATH $at Short base URL we need to probe
- * @return URLPATH The appropriate base-url
+ * @return URLPATH The appropriate base URL
  */
 function get_complex_base_url($at)
 {

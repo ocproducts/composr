@@ -233,10 +233,10 @@ function _url_to_filename($url_full)
 }
 
 /**
- * Take a URL and base-URL, and fully qualify the URL according to it.
+ * Take a URL and base URL, and fully qualify the URL according to it.
  *
  * @param  URLPATH $url The URL to fully qualified
- * @param  URLPATH $url_base The base-URL
+ * @param  URLPATH $url_base The base URL
  * @return URLPATH Fully qualified URL
  *
  * @ignore

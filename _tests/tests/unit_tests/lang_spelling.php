@@ -146,6 +146,9 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'safe-mode') !== false) {
             $this->assertTrue(false, 'The word \'safe-mode\' was used in ' . $file . '. This should be changed to \'safe mode\'.');
         }
+        if (stripos($string, 'base-URL') !== false) {
+            $this->assertTrue(false, 'The word \'base-URL\' was used in ' . $file . '. This should be changed to \'base URL\'.');
+        }
 
         // Space wanted
         if (stripos($string, 'de-facto') !== false) {
