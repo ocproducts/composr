@@ -1126,18 +1126,18 @@ class Forum_driver_smf2 extends Forum_driver_base
      * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
      *
      * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
-     * @param  MEMBER $userid The member ID
+     * @param  MEMBER $user_id The member ID
      * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $from_cookie Whether this is a cookie login
      * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
      */
-    public function forum_authorise_login($username, $userid, $password_hashed, $password_raw, $from_cookie = false)
+    public function forum_authorise_login($username, $user_id, $password_hashed, $password_raw, $from_cookie = false)
     {
         $out = array();
         $out['id'] = null;
 
-        if ($userid === null) {
+        if ($user_id === null) {
             $rows = $this->db->query_select('members', array('*'), array('member_name' => $username), '', 1);
             if (array_key_exists(0, $rows)) {
                 $this->MEMBER_ROWS_CACHED[$rows[0]['id_member']] = $rows[0];
@@ -1149,7 +1149,7 @@ class Forum_driver_smf2 extends Forum_driver_base
             }
         } else {
             $rows = array();
-            $rows[0] = $this->get_member_row($userid);
+            $rows[0] = $this->get_member_row($user_id);
         }
 
         if (!array_key_exists(0, $rows) || $rows[0] === null) { // All hands to lifeboats

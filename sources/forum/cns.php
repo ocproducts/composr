@@ -1558,16 +1558,16 @@ class Forum_driver_cns extends Forum_driver_base
      * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
      *
      * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
-     * @param  ?MEMBER $userid The member ID (null: use member name)
+     * @param  ?MEMBER $user_id The member ID (null: use member name)
      * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login, determines how the hashed password is treated for the value passed in
      * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
      */
-    public function forum_authorise_login($username, $userid, $password_hashed, $password_raw, $cookie_login = false)
+    public function forum_authorise_login($username, $user_id, $password_hashed, $password_raw, $cookie_login = false)
     {
         require_code('cns_forum_driver_helper_auth');
-        return _forum_authorise_login($this, $username, $userid, $password_hashed, $password_raw, $cookie_login);
+        return _forum_authorise_login($this, $username, $user_id, $password_hashed, $password_raw, $cookie_login);
     }
 
     /**

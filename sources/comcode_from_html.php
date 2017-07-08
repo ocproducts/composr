@@ -487,7 +487,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         return $decoded;
     }
 
-    require_code('obfuscate');
+    require_code('crypt');
 
     safe_ini_set('pcre.backtrack_limit', '10000000');
 
@@ -747,7 +747,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $semihtml = array_html_preg_replace('font', $array_html_preg_replace, $semihtml);
     $semihtml = preg_replace_callback('#(\[font [^\]]*color=")rgb\((\s*\d+\s*),(\s*\d+\s*),(\s*\d+\s*)\)("[^\]]*\])#', '_css_color_fixup', $semihtml);
     $semihtml = preg_replace_callback('#<a ([^>]*)href="([^"]*)"([^>]*)>#', '_a_tag_link_fixup', $semihtml);
-    require_code('obfuscate');
+    require_code('crypt');
     if (stripos($semihtml, '<a') !== false) {
         $array_html_preg_replace = array();
         $array_html_preg_replace[] = array('#^<a ([^>]*)href="mailto:(?-U) ?(?U)([^"]+)"([^>]*)>(.*)</a>$#siU', '[email="${2}"]${4}[/email]');

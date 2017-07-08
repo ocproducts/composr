@@ -183,7 +183,8 @@ class Hook_payment_gateway_authorize
         $form_url = $this->_get_remote_form_url();
 
         $timestamp = time();
-        $sequence = mt_rand(1, mt_getrandmax()); // Any random number
+        require_code('crypt');
+        $sequence = get_secure_random_number();
         $fingerprint = $this->_get_finger_print($login_id, $transaction_key, $price + $tax + $shipping_cost, $sequence, $timestamp, $currency);
 
         return do_template('ECOM_TRANSACTION_BUTTON_VIA_AUTHORIZE', array(
@@ -231,7 +232,8 @@ class Hook_payment_gateway_authorize
         $form_url = $this->_get_remote_form_url();
 
         $timestamp = time();
-        $sequence = mt_rand(1, mt_getrandmax());
+        require_code('crypt');
+        $sequence = get_secure_random_number();
         $fingerprint = $this->_get_finger_print($login_id, $transaction_key, $price + $tax, $sequence, $timestamp, $currency);
 
         return do_template('ECOM_SUBSCRIPTION_BUTTON_VIA_AUTHORIZE', array(

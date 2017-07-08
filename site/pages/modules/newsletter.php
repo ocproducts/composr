@@ -418,7 +418,7 @@ class Module_newsletter
                 warn_exit(do_lang_tempcode('NOT_NEWSLETTER_SUBSCRIBER'));
             }
 
-            $code_confirm = ($old_confirm === null) ? mt_rand(1, mt_getrandmax()) : $old_confirm;
+            $code_confirm = ($old_confirm === null) ? get_secure_random_number() : $old_confirm;
             if ($password == '') {
                 $password = get_rand_password();
             }

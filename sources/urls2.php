@@ -243,7 +243,7 @@ function _url_to_filename($url_full)
  */
 function _qualify_url($url, $url_base)
 {
-    require_code('obfuscate');
+    require_code('crypt');
     $mto = mailto_obfuscated();
     if (($url != '') && ($url[0] != '#') && (substr($url, 0, 5) != 'data:') && (substr($url, 0, 7) != 'mailto:') && (substr($url, 0, strlen($mto)) != $mto)) {
         if (url_is_local($url)) {
@@ -949,7 +949,8 @@ function find_id_via_url_moniker($content_type, $url_moniker)
 function find_unique_path($subdir, $filename = null, $lock_in = false)
 {
     if ($filename === null) {
-        $filename = uniqid('', true) . '.dat';
+        require_code('crypt');
+        $filename = get_rand_password() . '.dat';
     }
 
     $ext = get_file_extension($filename);

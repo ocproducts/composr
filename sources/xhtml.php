@@ -50,7 +50,7 @@ function xhtmlise_html($html, $definitely_want = false, $snippet = false)
 
     $html = preg_replace('#<\!--.*($|-->)#Us', '', $html); // Strip comments
 
-    require_code('obfuscate');
+    require_code('crypt');
     require_code('webstandards');
 
     global $XML_CONSTRAIN, $LAST_TAG_ATTRIBUTES, $POS, $OUT, $TAG_STACK, $INBETWEEN_TEXT, $LEN, $WELL_FORMED_ONLY, $MUST_SELFCLOSE_TAGS, $LINENO, $LINESTART;

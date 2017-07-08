@@ -41,7 +41,7 @@ function ratchet_hash($password, $salt)
  * @param  integer $legacy_style Legacy hashing style to fallback to
  * @return boolean Whether the password if verified
  */
-function ratchet_hash_verify($password, $salt, $pass_hash_salted, $legacy_style = 0)
+function ratchet_hash_verify($password, $salt, $pass_hash_salted, $legacy_style = PASSWORD_SALT)
 {
     if (strpos($pass_hash_salted, '$') !== false) {
         return password_verify($salt . md5($password), $pass_hash_salted);
@@ -67,14 +67,18 @@ function produce_salt()
 
     if (function_exists('random_bytes')) {
         $u = substr(md5(random_bytes(13)), 0, 13);
+
     } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
         $u = substr(md5(openssl_random_pseudo_bytes(13)), 0, 13);
+
     } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
         $ratchet = max(10, function_exists('crypt_ratchet') ? intval(get_option('crypt_ratchet')) : 3);
         return substr(md5(password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => $ratchet))), 0, 13);
+
     } else {
         $u = substr(md5(uniqid(strval(get_secure_random_number()), true)), 0, 13);
     }
+
     return $u;
 }
 
@@ -112,21 +116,141 @@ function get_secure_random_number()
 {
     // LEGACY
 
-    // TODO: #3046 in tracker
-    // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.6/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
-    if (function_exists('random_int')) {
-        $code = random_int(0, PHP_INT_MAX);
-    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
-        $code = intval(2147483647 * (hexdec(bin2hex(openssl_random_pseudo_bytes(4))) / 0xffffffff));
-        if ($code < 0) {
-            $code = -$code;
+    do {
+        // TODO: #3046 in tracker
+        // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.6/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
+        if (function_exists('random_int')) {
+            $code = random_int(1, 2147483647);
+
+        } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
+            $code = intval(2147483647 * (hexdec(bin2hex(openssl_random_pseudo_bytes(4))) / 0xffffffff));
+            if ($code < 0) {
+                $code = -$code;
+            }
+
+        } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
+            $ratchet = max(10, intval(get_option('crypt_ratchet')));
+            $hash = password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => $ratchet));
+            return crc32($hash);
+
+        } else {
+            $code = mt_rand(1, min(2147483647, mt_getrandmax()));
         }
-    } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
-        $ratchet = max(10, intval(get_option('crypt_ratchet')));
-        $hash = password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => $ratchet));
-        return crc32($hash);
-    } else {
-        $code = mt_rand(0, min(2147483647, mt_getrandmax()));
     }
+    while ($code <= 0);
+
     return $code;
+}
+
+/**
+ * Get obfuscate version of 'mailto:' (which'll hopefully fool e-mail scavengers to not pick up these e-mail addresses).
+ *
+ * @return string The obfuscated 'mailto:' string
+ */
+function mailto_obfuscated()
+{
+    static $ret = null;
+    if ($ret === null) {
+        $ret = 'm' . obfuscate_entities('ailto:');
+    }
+    return $ret;
+}
+
+/**
+ * Obfuscate the given text using HTML entity encoding.
+ *
+ * @param  string $val The text to obfuscate
+ * @return string The obfuscated version
+ */
+function obfuscate_entities($val)
+{
+    if (strpos($val, '&') !== false) {
+        return $val; // Prevent double encoding
+    }
+
+    $out = '';
+    for ($i = 0; $i < strlen($val); $i++) {
+        $char = $val[$i];
+        if ($char == '<') {
+            $_char = '&lt;';
+        } elseif ($char == '>') {
+            $_char = '&gt;';
+        } elseif ($char == '&') {
+            $_char = '&amp;';
+        } elseif ($i % 2 == 0) {
+            $_char = '&#' . strval(ord($char)) . ';';
+        } else {
+            $_char = '&#x' . dechex(ord($char)) . ';';
+        }
+
+        $out .= $_char;
+    }
+    if ($GLOBALS['XSS_DETECT']) {
+        ocp_mark_as_escaped($out);
+    }
+    return $out;
+}
+
+/**
+ * Obfuscate the given e-mail address.
+ * This function may want to be modified on a per-site basis, to stop spammers triggering onto Composr's default method (possible some already do, although I think it unlikely they would go to this much effort/computation unless it was more widespread to do this).
+ *
+ * @param  string $email The e-mail address to obfuscate
+ * @return string The obfuscated version
+ */
+function obfuscate_email_address($email)
+{
+    /* One possibility (conventional, but annoying)...
+    $i = mt_rand(0, strlen($email));
+    $rep = '^remove_me^';
+    return substr($email, 0, $i) . $rep . substr($email, $i);
+    */
+
+    /* One possibility (conventional, but annoying)...
+    $at_pos = strpos($email, '@');
+    return substr($email, 0, $at_pos) . 'AT' . substr($email, $at_pos + 1);
+    */
+
+    /* Randomly mutated e-mail addresses, so that we can block e-mail address mutations that have become spammed. This would be for webmasters who have default mail for the domain forwarded to themselves.
+    $at_pos = strpos($email, '@');
+    return substr($email, 0, $at_pos) . mt_rand(0, mt_getrandmax()) . substr($email, $at_pos);
+    */
+
+    /* Another possibility would be to write some JavaScript that scans the page after loading, and re-write algorithmically mangled addresses. (You'd need to write some JavaScript to match this, we haven't)
+    $remap = array('a' => 'alpha',
+                   'b' => 'beta',
+                   'c' => 'no',
+                   'd' => 'delta',
+                   'e' => 'epsilon',
+                   'f' => 'more',
+                   'g' => 'gamma',
+                   'h' => 'eta',
+                   'i' => 'iota',
+                   'j' => 'letters',
+                   'k' => 'kappa',
+                   'l' => 'lambda',
+                   'm' => 'mu',
+                   'n' => 'nu',
+                   'o' => 'omicron',
+                   'p' => 'pi',
+                   'q' => 'xi',
+                   'r' => 'rho',
+                   's' => 'psi',
+                   't' => 'tau',
+                   'u' => 'theta',
+                   'v' => 'sigma',
+                   'w' => 'phi',
+                   'x' => 'chi',
+                   'y' => 'upsilon',
+                   'z' => 'zeta',
+    );
+    $out = '';
+    for ($i = 0; $i < strlen($email)) {
+        $at = $email[$i];
+        $out .= (array_key_exists($at, $remap)) ? ('{' . $remap[$at] . '}') : $at;
+    }
+    return $out;
+    */
+
+    return obfuscate_entities($email);
 }

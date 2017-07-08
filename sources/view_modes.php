@@ -557,7 +557,7 @@ function check_xhtml_webstandards($out, $display_regardless = false, $preview_mo
 
     require_lang('webstandards');
     require_css('webstandards');
-    require_code('obfuscate');
+    require_code('crypt');
     require_code('webstandards');
 
     global $EXTRA_CHECK;

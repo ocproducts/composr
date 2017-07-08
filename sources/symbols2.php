@@ -183,7 +183,7 @@ function ecv2_VALID_FILE_TYPES($lang, $escaped, $param)
  */
 function ecv2_MAILTO($lang, $escaped, $param)
 {
-    require_code('obfuscate');
+    require_code('crypt');
 
     $value = mailto_obfuscated();
 
@@ -1930,7 +1930,7 @@ function ecv2_OBFUSCATE($lang, $escaped, $param)
     }
 
     if (isset($param[0])) {
-        require_code('obfuscate');
+        require_code('crypt');
         $value = obfuscate_entities($param[0]);
     }
 
@@ -2343,7 +2343,7 @@ function ecv2_SSW($lang, $escaped, $param)
  */
 function ecv2_STAFF_ADDRESS($lang, $escaped, $param)
 {
-    require_code('obfuscate');
+    require_code('crypt');
     $value = obfuscate_email_address(get_option('staff_address'));
 
     if ($escaped !== array()) {

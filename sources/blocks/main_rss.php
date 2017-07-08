@@ -69,7 +69,7 @@ class Block_main_rss
         require_lang('news');
         require_lang('rss');
         require_css('news');
-        require_code('obfuscate');
+        require_code('crypt');
 
         $block_id = get_block_id($map);
 

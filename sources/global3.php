@@ -2404,7 +2404,7 @@ function browser_matches($code, $comcode = null)
 
     switch ($code) {
         case 'simplified_attachments_ui':
-            $browser_matches_cache[$code] = !$is_ie8 && !$is_ie9 && (get_option('simplified_attachments_ui') == '1') && (get_option('complex_uploader') == '1');
+            $browser_matches_cache[$code] = (get_option('simplified_attachments_ui') == '1') && (get_option('complex_uploader') == '1');
             return $browser_matches_cache[$code];
         case 'itunes':
             $browser_matches_cache[$code] = (get_param_integer('itunes', 0) == 1) || (strpos($browser, 'itunes') !== false);

@@ -178,7 +178,7 @@ function init__webstandards()
     $enforce_id = '[a-zA-Z][\w\-\:\.]*';
     $enforce_name = '[\w\-\:\.]+(\[\])?';
     if (function_exists('get_forum_type')) {
-        require_code('obfuscate');
+        require_code('crypt');
         $enforce_link = ((get_forum_type() == 'none') ? '(mailto:.*)?' : '') . '(mailto:.*|' . preg_quote(mailto_obfuscated(), '#') . '.*)?[^\s\#]*(\#[^\s\#]*)?';
     } else {
         $enforce_link = '.*';

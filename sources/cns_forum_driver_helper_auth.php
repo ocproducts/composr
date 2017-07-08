@@ -25,7 +25,7 @@
  *
  * @param  object $this_ref Link to the real forum driver
  * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
- * @param  ?MEMBER $userid The member ID (null: use member name)
+ * @param  ?MEMBER $user_id The member ID (null: use member name)
  * @param  SHORT_TEXT $password_hashed The md5-hashed password
  * @param  string $password_raw The raw password
  * @param  boolean $cookie_login Whether this is a cookie login, determines how the hashed password is treated for the value passed in
@@ -33,7 +33,7 @@
  *
  * @ignore
  */
-function _forum_authorise_login($this_ref, $username, $userid, $password_hashed, $password_raw, $cookie_login = false)
+function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed, $password_raw, $cookie_login = false)
 {
     require_code('cns_forum_driver_helper_auth');
 
@@ -58,7 +58,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
 
     $skip_auth = false;
 
-    if ($userid === null) {
+    if ($user_id === null) {
         if (get_option('one_per_email_address') == '2') {
             $rows = array();
         } else {
@@ -69,15 +69,15 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         }
         if (array_key_exists(0, $rows)) {
             $this_ref->MEMBER_ROWS_CACHED[$rows[0]['id']] = $rows[0];
-            $userid = $rows[0]['id'];
+            $user_id = $rows[0]['id'];
         }
     } else {
-        $rows[0] = $this_ref->get_member_row($userid);
+        $rows[0] = $this_ref->get_member_row($user_id);
     }
 
     // LDAP to the rescue if we couldn't get a row
     global $LDAP_CONNECTION;
-    if ((!array_key_exists(0, $rows)) && ($LDAP_CONNECTION !== null) && ($userid === null)) {
+    if ((!array_key_exists(0, $rows)) && ($LDAP_CONNECTION !== null) && ($user_id === null)) {
         // See if LDAP has it -- if so, we can add
         $test = cns_is_on_ldap($username);
         if (!$test) {
@@ -107,8 +107,9 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
                 $tpl->evaluate_echo();
                 exit();
             } else {
-                $userid = cns_member_external_linker($username, uniqid('', true), 'ldap');
-                $row = $this_ref->get_member_row($userid);
+                require_code('crypt');
+                $user_id = cns_member_external_linker($username, get_rand_password(), 'ldap');
+                $row = $this_ref->get_member_row($user_id);
             }
         }
     }
@@ -117,7 +118,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
         // Run hooks for other interactive login possibilities, if any exist
         $hooks = find_all_hook_obs('systems', 'login_providers_direct_auth', 'Hook_login_providers_direct_auth_');
         foreach ($hooks as $ob) {
-            $try_login = $ob->try_login($username, $userid, $password_hashed, $password_raw, $cookie_login);
+            $try_login = $ob->try_login($username, $user_id, $password_hashed, $password_raw, $cookie_login);
             if ($try_login !== null) {
                 return $try_login;
             }
@@ -129,8 +130,8 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
     $row = $rows[0];
 
     // Now LDAP can kick in and get the correct hash
-    if (cns_is_ldap_member($userid)) {
-        //$rows[0]['m_pass_hash_salted'] = cns_get_ldap_hash($userid);
+    if (cns_is_ldap_member($user_id)) {
+        //$rows[0]['m_pass_hash_salted'] = cns_get_ldap_hash($user_id);
 
         // Doesn't exist any more? This is a special case - the 'LDAP member' exists in our DB, but not LDAP. It has been deleted from LDAP or LDAP server has jumped
         /*if ($rows[0]['m_pass_hash_salted'] === null)
@@ -220,7 +221,7 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
                 }
                 require_code('hooks/systems/cns_auth/' . $password_compatibility_scheme);
                 $ob = object_factory('Hook_cns_auth_' . $password_compatibility_scheme);
-                $error = $ob->auth($username, $userid, $password_hashed, $password_raw, $cookie_login, $row);
+                $error = $ob->auth($username, $user_id, $password_hashed, $password_raw, $cookie_login, $row);
                 if ($error !== null) {
                     $out['error'] = $error;
                     return $out;
@@ -240,7 +241,8 @@ function _forum_authorise_login($this_ref, $username, $userid, $password_hashed,
                     $this_ref->db->query_delete('f_member_known_login_ips', array('i_member_id' => $row['id'], 'i_ip' => $ip), '', 1);
                 }
 
-                $code = ($test2 !== null) ? $test2 : uniqid('', true);
+                require_code('crypt');
+                $code = ($test2 !== null) ? $test2 : get_rand_password();
                 $this_ref->db->query_insert('f_member_known_login_ips', array('i_val_code' => $code, 'i_member_id' => $row['id'], 'i_ip' => $ip));
                 $url = find_script('approve_ip') . '?code=' . urlencode($code);
                 $url_simple = find_script('approve_ip');

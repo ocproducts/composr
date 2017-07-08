@@ -1287,7 +1287,6 @@ class Hook_addon_registry_core
             'sources/global3.php',
             'sources/global4.php',
             'sources/mime_types.php',
-            'sources/obfuscate.php',
             'sources/xhtml.php',
             'sources/xmlrpc.php',
             'sources/textfiles.php',

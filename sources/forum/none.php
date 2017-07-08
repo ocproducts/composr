@@ -840,18 +840,18 @@ class Forum_driver_none extends Forum_driver_base
      * Some forums do cookie logins differently, so a Boolean is passed in to indicate whether it is a cookie login.
      *
      * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
-     * @param  MEMBER $userid The member ID
+     * @param  MEMBER $user_id The member ID
      * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login
      * @return array A map of 'id' and 'error'. If 'id' is null, an error occurred and 'error' is set
      */
-    public function forum_authorise_login($username, $userid, $password_hashed, $password_raw, $cookie_login = false)
+    public function forum_authorise_login($username, $user_id, $password_hashed, $password_raw, $cookie_login = false)
     {
         $out = array();
         $out['id'] = null;
 
-        if (($username != $this->get_admin_username()) && ($userid != 1)) { // All hands to lifeboats
+        if (($username != $this->get_admin_username()) && ($user_id != 1)) { // All hands to lifeboats
             $out['error'] = do_lang_tempcode((get_option('login_error_secrecy') == '1') ? 'MEMBER_INVALID_LOGIN' : '_MEMBER_NO_EXIST', $username);
             return $out;
         }

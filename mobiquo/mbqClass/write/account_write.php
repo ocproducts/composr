@@ -350,7 +350,8 @@ class CMSAccountWrite
         }
 
         // Start the reset process by generating a reset code
-        $code = mt_rand(0, mt_getrandmax());
+        require_code('crypt');
+        $code = get_secure_random_number();
         $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_change_code' => strval($code)), array('id' => $member_id), '', 1);
         log_it('RESET_PASSWORD', strval($member_id), strval($code));
 

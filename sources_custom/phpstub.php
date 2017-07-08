@@ -2083,6 +2083,7 @@ function mt_getrandmax()
 
 /**
  * Generate a better random value.
+ * NOT CRYPTOGRAPHICALLY SECURE: USE get_secure_random_number() instead.
  *
  * @param  integer $min Minimum value
  * @param  integer $max Maximum value
@@ -3034,6 +3035,7 @@ function ucwords($str)
 
 /**
  * Generate a unique ID.
+ * NOT CRYPTOGRAPHICALLY SECURE: USE get_rand_password() instead.
  *
  * @param  string $prefix Prefix for unique ID
  * @param  boolean $lcg Whether to add additional "combined LCG" entropy at the end of the return value. Always pass as true, because on some IIS systems the timer resolution will be in seconds.

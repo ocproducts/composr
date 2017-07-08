@@ -910,7 +910,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             return $temp_tpl;
 
         case 'section':
-            $name = (array_key_exists('param', $attributes)) ? $attributes['param'] : ('section' . strval(mt_rand(0, 100)));
+            $name = (array_key_exists('param', $attributes)) ? $attributes['param'] : ('section' . strval(mt_rand(0, mt_getrandmax())));
             $default = (array_key_exists('default', $attributes)) ? $attributes['default'] : '0';
             $temp_tpl = do_template('COMCODE_SECTION', array('_GUID' => 'a902962ccdc80046c999d6fed907d105', 'PASS_ID' => 'x' . $pass_id, 'DEFAULT' => $default == '1', 'NAME' => $name, 'CONTENT' => $embed));
             break;
@@ -921,7 +921,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'big_tab':
-            $name = (array_key_exists('param', $attributes)) ? $attributes['param'] : ('big_tab' . strval(mt_rand(0, 100)));
+            $name = (array_key_exists('param', $attributes)) ? $attributes['param'] : ('big_tab' . strval(mt_rand(0, mt_getrandmax())));
             $default = (array_key_exists('default', $attributes)) ? $attributes['default'] : '0';
             $temp_tpl = do_template('COMCODE_BIG_TABS_TAB', array('_GUID' => 'f6219b1acd6999acae770da20b95fb99', 'PASS_ID' => 'x' . $pass_id, 'DEFAULT' => $default == '1', 'NAME' => $name, 'CONTENT' => $embed));
             break;
@@ -969,7 +969,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
             break;
 
         case 'menu':
-            $name = (array_key_exists('param', $attributes)) ? $attributes['param'] : ('mnu' . strval(mt_rand(0, 100)));
+            $name = (array_key_exists('param', $attributes)) ? $attributes['param'] : ('mnu' . strval(mt_rand(0, mt_getrandmax())));
             $type = (array_key_exists('type', $attributes)) ? $attributes['type'] : 'tree';
             require_code('menus');
             require_code('menus_comcode');
@@ -1812,7 +1812,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
         case 'email':
             $_embed = $embed->evaluate();
             require_code('type_sanitisation');
-            require_code('obfuscate');
+            require_code('crypt');
 
             // If we need to switch
             if ((!is_email_address($_embed)) && (is_email_address($attributes['param']))) {

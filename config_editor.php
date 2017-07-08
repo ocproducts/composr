@@ -416,7 +416,12 @@ function do_set()
     // _config.php
     global $FILE_BASE;
     $config_file = '_config.php';
-    $backup_path = $FILE_BASE . '/exports/file_backups/' . $config_file . '.' . strval(time()) . '_' . strval(mt_rand(0, mt_getrandmax()));
+    $backup_path = $FILE_BASE . '/exports/file_backups/' . $config_file . '.' . strval(time()) . '_';
+    if (function_exists('random_bytes')) {
+        $backup_path .= substr(md5(random_bytes(13)), 0, 13);
+    } else {
+        $backup_path .= strval(mt_rand(0, mt_getrandmax()));
+    }
     $copied_ok = @copy($FILE_BASE . '/' . $config_file, $backup_path);
     if ($copied_ok !== false) {
         co_sync_file($backup_path);

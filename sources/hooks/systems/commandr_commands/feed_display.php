@@ -33,7 +33,7 @@ class Hook_commandr_command_feed_display
      */
     public function run($options, $parameters, &$commandr_fs)
     {
-        require_code('obfuscate');
+        require_code('crypt');
 
         if ((array_key_exists('h', $options)) || (array_key_exists('help', $options))) {
             return array('', do_command_help('feed_display', array('h', 'm'), array(true)), '', '');

@@ -27,14 +27,14 @@ class Hook_cns_auth_phpbb3
      * Try and authenticate for our password compatibility scheme.
      *
      * @param  ?SHORT_TEXT $username The member username (null: don't use this in the authentication - but look it up using the ID if needed)
-     * @param  ?MEMBER $userid The member ID (null: use member name)
+     * @param  ?MEMBER $user_id The member ID (null: use member name)
      * @param  SHORT_TEXT $password_hashed The md5-hashed password
      * @param  string $password_raw The raw password
      * @param  boolean $cookie_login Whether this is a cookie login
      * @param  array $row Row of Conversr account
      * @return ?Tempcode Error message (null: none)
      */
-    public function auth($username, $userid, $password_hashed, $password_raw, $cookie_login, $row)
+    public function auth($username, $user_id, $password_hashed, $password_raw, $cookie_login, $row)
     {
         if ($cookie_login) {
             if ($row['m_pass_hash_salted'] != $password_hashed) {

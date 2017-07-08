@@ -73,7 +73,7 @@ function basic_newsletter_join($email, $language = null, $get_confirm_mail = fal
         require_code('crypt');
         $password = get_rand_password();
         $salt = produce_salt();
-        $code_confirm = $get_confirm_mail ? mt_rand(1, 9999999) : 0;
+        $code_confirm = $get_confirm_mail ? get_secure_random_number() : 0;
         add_newsletter_subscriber($email, time(), $code_confirm, ratchet_hash($password, $salt), $salt, $language, $forename, $surname);
     } else {
         if ($code_confirm > 0) {

@@ -94,13 +94,13 @@ function build_preview($multi_return = false)
                 $_FILES = $temp;
 
                 require_code('view_modes');
-                require_code('obfuscate');
+                require_code('crypt');
                 require_code('webstandards');
                 $webstandards->attach(check_xhtml_webstandards($valt->evaluate(), false, post_param_integer('perform_webstandards_check', 0), true));
             } elseif ($tempcodecss) {
                 require_lang('webstandards');
                 require_code('view_modes');
-                require_code('obfuscate');
+                require_code('crypt');
                 require_code('webstandards');
                 require_code('webstandards2');
                 $error = check_css($val);

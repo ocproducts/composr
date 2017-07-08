@@ -302,7 +302,8 @@ function cns_join_actual($captcha_if_enabled = true, $intro_message_if_enabled =
 
     // Add member
     $email_validation = (get_option_with_overrides('email_confirm_join', $adjusted_config_options) == '1');
-    $validated_email_confirm_code = $email_validation ? strval(mt_rand(1, mt_getrandmax())) : '';
+    require_code('crypt');
+    $validated_email_confirm_code = $email_validation ? strval(get_secure_random_number()) : '';
     $staff_validation = (get_option_with_overrides('require_new_member_validation', $adjusted_config_options) == '1');
     $coppa = (get_option_with_overrides('is_on_coppa', $adjusted_config_options) == '1') && (utctime_to_usertime(time() - mktime(0, 0, 0, $dob_month, $dob_day, $dob_year)) / 31536000.0 < 13.0);
     $validated = ($staff_validation || $coppa) ? 0 : 1;
