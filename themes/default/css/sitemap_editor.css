@@ -32,7 +32,7 @@
 	}
 
 	.sitemap_right {
-		float: {!en_right};
+		float: right;
 		width: 50%;
 	}
 /*{+END}*/
@@ -59,7 +59,7 @@
 .pte_icon_box {
 	width: 15em;
 	position: absolute;
-	{!en_right}: 1em;
+	right: 1em;
 	top: 0;
 }
 
@@ -73,9 +73,9 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.pte_help_box {
-		float: {!en_right};
+		float: right;
 		width: 24em;
-		margin-{!en_left}: 1em;
+		margin-left: 1em;
 	}
 /*{+END}*/
 

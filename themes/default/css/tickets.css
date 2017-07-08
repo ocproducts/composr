@@ -24,7 +24,7 @@
 .closed_ticket {
 	font-style: italic;
 	float: right;
-	padding-{!en_left}: 3em;
+	padding-left: 3em;
 	white-space: nowrap;
 }
 

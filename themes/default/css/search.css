@@ -23,11 +23,11 @@
 
 .search_for_search_domain {
 	font-style: italic;
-	padding-{!en_left}: 30px;
+	padding-left: 30px;
 }
 
 .search_for_search_domain_more {
-	float: {!en_right};
+	float: right;
 }
 
 .search_for_search_domain, .search_for_search_domain_checkbox {
@@ -35,7 +35,7 @@
 }
 
 .boolean_options {
-	margin-{!en_left}: 40px;
+	margin-left: 40px;
 }
 
 .boolean_options label {
@@ -52,7 +52,7 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.search_option label {
-		float: {!en_left};
+		float: left;
 		width: 250px;
 		max-width: 100%;
 	}

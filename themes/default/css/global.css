@@ -11,7 +11,7 @@ The CSS is written to CSS3/HTML5 standards. Parts that are still considered expe
 Most sizes are defined in 'em' units. 1em is roughly 10px, depending on font size. If a size is not defined in 'em' then it is probably due to it being dependent on the size of some related image.
 'em' units are great because they scale very well. If you reduce the font size, the spacings will reduce as well, in proportion.
 
-{!en_left} and {!en_right} usually resolve to left and right respectively. Right-to-left languages (commonly Arabic and Hebrew) will be the opposite. We only test with Left-to-right, but are likely to accept patches to fix any little glitches that may have developed over time.
+left and right usually resolve to left and right respectively. Right-to-left languages (commonly Arabic and Hebrew) will be the opposite. We only test with Left-to-right, but are likely to accept patches to fix any little glitches that may have developed over time.
 
 When editing theme CSS we recommend you comment out code you're removing and heavily comment your own changes - this will make it much easier for you to upgrade your theme to new versions. Composr minifies outputted CSS, so there is no performance penalty for doing this.
 */
@@ -348,7 +348,7 @@ thead>tr>th, .boxless_space .box>table>thead>tr>th, .pte_set_box .box>table>thea
 td, th.de_th {
 	color: {$GET,slightly_seeded_text};
 	font-weight: normal;
-	text-align: {!en_left};
+	text-align: left;
 	font-weight: normal;
 	border: 0;
 }
@@ -389,7 +389,7 @@ iframe {
 }*/
 #wysiwyg_editor input[type="text"], #wysiwyg_editor textarea {
 	unicode-bidi: normal;
-	direction: {!dir};
+	direction: ltr;
 }
 
 /*{+START,CSS_MODE,mobile}*/
@@ -786,10 +786,10 @@ header h1 {
 /*{+START,CSS_MODE,desktop}*/
 	.global_breadcrumbs {
 		/*{+START,IF,{$AND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-			text-align: {!en_right}; /* Goes on own line in fixed width mode, due to lack of space */
+			text-align: right; /* Goes on own line in fixed width mode, due to lack of space */
 		/*{+END}*/
 		/*{+START,IF,{$NAND,{$THEME_OPTION,fixed_width},{$NEQ,{$THEME},admin}}}*/
-			float: {!en_right}; /* Sits beside title on non-fixed width */
+			float: right; /* Sits beside title on non-fixed width */
 		/*{+END}*/
 		margin-left: 0.5em;
 	}
@@ -822,7 +822,7 @@ header h1 {
 }
 
 .breadcrumbs_img {
-	margin-{!en_right}: 4px;
+	margin-right: 4px;
 }
 
 .breadcrumbs_img, .breadcrumbs span .breadcrumbs_img a {
@@ -888,8 +888,8 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	text-transform: lowercase;
 	font-weight: normal;
 	width: 50%;
-	padding-{!en_left}: 10px;
-	margin-{!en_left}: 10px;
+	padding-left: 10px;
+	margin-left: 10px;
 }
 
 .global_side_panel {
@@ -908,8 +908,8 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 	.global_middle {
 		/* Add some spacing. This will be overwritten to 1.5em in rules below if we have panels */
-		padding-{!en_left}: 1em;
-		padding-{!en_right}: 1em;
+		padding-left: 1em;
+		padding-right: 1em;
 		margin-bottom: 1em;
 		box-sizing: border-box;
 		{$BETA_CSS_PROPERTY,order: 1;}
@@ -918,12 +918,12 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 
 	#panel_left {
 		{$BETA_CSS_PROPERTY,order: 0;}
-		margin-{!en_left}: 1em;
+		margin-left: 1em;
 	}
 
 	#panel_right {
 		{$BETA_CSS_PROPERTY,order: 2;}
-		margin-{!en_right}: 1em;
+		margin-right: 1em;
 	}
 
 	.global_side_panel {
@@ -937,8 +937,8 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	.global_middle {
-		padding-{!en_left}: 2px;
-		padding-{!en_right}: 2px;
+		padding-left: 2px;
+		padding-right: 2px;
 		{$BETA_CSS_PROPERTY,text-size-adjust: none;}
 		width: 100% !important; /* Remove this line for 50:50 display of panels */
 		box-sizing: border-box;
@@ -958,15 +958,15 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	}
 
 	#panel_left {
-		float: {!en_left};
-		padding-{!en_left}: 2px;
-		padding-{!en_right}: 1px;
+		float: left;
+		padding-left: 2px;
+		padding-right: 1px;
 		box-sizing: border-box;
 	}
 	#panel_right {
-		float: {!en_left};
-		padding-{!en_right}: 2px;
-		padding-{!en_left}: 1px;
+		float: left;
+		padding-right: 2px;
+		padding-left: 1px;
 		box-sizing: border-box;
 	}
 
@@ -1014,7 +1014,7 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	font-weight: normal;
 }
 .global_message img {
-	margin-{!en_right}: 0.5em;
+	margin-right: 0.5em;
 	float: left;
 }
 .global_message>span, .global_message>p {
@@ -1062,7 +1062,7 @@ footer a:hover, footer .button_hyperlink:hover {
 
 /*{+START,CSS_MODE,desktop}*/
 	footer .global_footer_left {
-		float: {!en_left};
+		float: left;
 	}
 /*{+END}*/
 
@@ -1253,11 +1253,11 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 /* Commonly used to indicate there is no content to display */
 .nothing_here, .more_here {
 	font-size: 13px !important; /* px not em due to careful background positioning */
-	padding-{!en_left}: 15px;
+	padding-left: 15px;
 	margin: 1.5em;
-	margin-{!en_left}: 10px;
+	margin-left: 10px;
 	background-image: url('{$IMG_INLINE;,1x/cannot_show}');
-	background-position: {!en_left} 5px;
+	background-position: left 5px;
 	background-repeat: no-repeat;
 }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
@@ -1274,12 +1274,12 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 }
 /*{+START,CSS_MODE,desktop}*/
 	.edited {
-		padding-{!en_left}: 2em;
+		padding-left: 2em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	.edited {
-		padding-{!en_left}: 0.7em;
+		padding-left: 0.7em;
 	}
 /*{+END}*/
 div.edited {
@@ -1380,7 +1380,7 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 	margin: 0 !important;
 	padding: 0 !important;
 	cursor: pointer !important;
-	text-align: {!en_left} !important;
+	text-align: left !important;
 	vertical-align: baseline !important;
 	/*color: inherit !important;*/
 	text-decoration: underline;
@@ -1765,7 +1765,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 .boxless_space .box>.box_inner>h1, .boxless_space .box>.box_inner>h2, .boxless_space .box>.box_inner>h3, .boxless_space .box>.box_inner>h4, .boxless_space .box>.box_inner>h5, .boxless_space .box>.box_inner>h6, .boxless_space .box>.toggleable_tray_title {
 	background: url('{$IMG_INLINE;,1x/boxless_title_leadin_rightcomp}') no-repeat !important;
 	color: {$GET,slightly_seeded_right_complement_text} !important;
-	text-align: {!en_left};
+	text-align: left;
 	font-size: 15px;
 	margin: 0.5em 0 !important;
 	font-family: Arial;
@@ -1870,7 +1870,7 @@ a.toggleable_tray_button { /* Override above for toggleable_tray_button */
 }
 
 .toggleable_tray_button img {
-	float: {!en_right};
+	float: right;
 	margin: 0 0 0 0.3em !important;
 }
 .box .toggleable_tray_button img {
@@ -1889,8 +1889,8 @@ h3 .toggleable_tray_button img {
 	margin-top: 0.3em;
 }
 .toggleable_tray_button.ttb_left img {
-	float: {!en_left};
-	padding-{!en_left}: 0 !important;
+	float: left;
+	padding-left: 0 !important;
 }
 .toggleable_tray_button.ttb_light {
 	font-weight: normal;
@@ -1938,13 +1938,13 @@ h3 .toggleable_tray_button img {
 }
 
 .fp_col_block.left {
-	padding-{!en_right}: 0.5em;
+	padding-right: 0.5em;
 }
 .fp_col_block.right {
-	padding-{!en_left}: 0.5em;
+	padding-left: 0.5em;
 }
 .fp_col_block.left:last-child {
-	padding-{!en_right}: 0; /* Undo padding if actually there is nothing to the right of this */
+	padding-right: 0; /* Undo padding if actually there is nothing to the right of this */
 }
 
 /* Box/title-attached meta details */
@@ -1954,7 +1954,7 @@ h3 .toggleable_tray_button img {
 	color: {$GET,area_text};
 	border-bottom: 1px dotted {$GET,pale_border};
 	max-width: 100%;
-	padding-{!en_left}: 0.5em;
+	padding-left: 0.5em;
 	padding-bottom: 0.5em;
 	margin-bottom: 1em;
 }
@@ -1964,7 +1964,7 @@ h3 .toggleable_tray_button img {
 	}
 /*{+END}*/
 .boxless_space .meta_details {
-	padding-{!en_left}: 0;
+	padding-left: 0;
 	margin-top: -0.5em !important;
 }
 
@@ -2057,17 +2057,17 @@ h3 .toggleable_tray_button img {
 }
 
 .standard_indent {
-	padding-{!en_left}: 4em;
+	padding-left: 4em;
 }
 
 /*{+START,CSS_MODE,desktop}*/
 	.mini_indent {
-		padding-{!en_left}: 2em;
+		padding-left: 2em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	.mini_indent {
-		padding-{!en_left}: 0.75em;
+		padding-left: 0.75em;
 	}
 /*{+END}*/
 
@@ -2081,7 +2081,7 @@ hr.spaced_rule {
 }
 
 .inline_block {
-	text-align: {!en_left};
+	text-align: left;
 	display: inline-block;
 }
 
@@ -2089,29 +2089,29 @@ hr.spaced_rule {
 	display: inline;
 }
 .left {
-	float: {!en_left};
+	float: left;
 }
 .left.float_separation {
-	margin-{!en_right}: 1em;
+	margin-right: 1em;
 }
 .right {
-	float: {!en_right};
+	float: right;
 }
 .right.float_separation, .inline.spaced {
-	margin-{!en_left}: 1em;
+	margin-left: 1em;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.left.responsive {
 		float: none;
 	}
 	.left.responsive.float_separation {
-		margin-{!en_right}: 0;
+		margin-right: 0;
 	}
 	.right.responsive {
 		float: none;
 	}
 	.right.responsive.float_separation {
-		margin-{!en_left}: 0;
+		margin-left: 0;
 	}
 	.responsive>.box {
 		width: auto !important;
@@ -2134,13 +2134,13 @@ hr.spaced_rule {
 
 /* Used to align stuff horizontally, i.e. force a gap between separate bits */
 .horiz_field_sep, ul.horizontal_links.horiz_field_sep {
-	padding-{!en_left}: 0.8em;
+	padding-left: 0.8em;
 }
 .horiz_field_sep, .horiz_field_sep_rightward {
 	display: inline-block !important; /* Side-effect: stops internal wrapping */
 }
 .horiz_field_sep_rightward {
-	padding-{!en_right}: 0.8em; /* Useful so subsequent wrapped text doesn't get indented */
+	padding-right: 0.8em; /* Useful so subsequent wrapped text doesn't get indented */
 }
 ul.horizontal_links.horiz_field_sep {
 	display: inline !important;
@@ -2318,7 +2318,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 .table_heading_cell {
 	padding: 1em 0.5em !important;
-	text-align: {!en_left} !important;
+	text-align: left !important;
 	background-color: {$GET,area_background} !important; /*  !important so precedence over th.dh */
 	font-weight: normal;
 }
@@ -2507,8 +2507,8 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 }
 
 .results_table_sorter {
-	float: {!en_left};
-	margin-{!en_right}: 0.75em;
+	float: left;
+	margin-right: 0.75em;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.results_table_sorter {
@@ -2530,7 +2530,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 }
 
 .pagination {
-	float: {!en_left};
+	float: left;
 	/*	max-width: 540px; Looks bad on forumview */
 }
 
@@ -2582,7 +2582,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 }
 
 .results_continue, .results_page_num {
-	border-{!en_left}: 0;
+	border-left: 0;
 }
 
 .results_page_num {
@@ -2637,7 +2637,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 .results_launcher {
 	font-size: 0.8em;
 	display: inline;
-	padding-{!en_left}: 2em;
+	padding-left: 2em;
 }
 .results_launcher a,
 .results_launcher a:visited,
@@ -2705,7 +2705,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 
 /*{+START,CSS_MODE,desktop}*/
 	.index_screen_fancier_screen_entries {
-		margin-{!en_left}: 1em;
+		margin-left: 1em;
 	}
 /*{+END}*/
 .index_screen_fancier_entry {
@@ -2739,7 +2739,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 }
 .index_screen_fancier_entry_description {
 	font-size: 0.9em;
-	margin-{!en_left}: 18px; /* Due to action_link image */
+	margin-left: 18px; /* Due to action_link image */
 }
 
 div.wysiwyg_toolbar_color_finder {
@@ -3087,7 +3087,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 /*{+END}*/
 
 .comments_posting_form_inner {
-	text-align: {!en_left};
+	text-align: left;
 	padding: 1em 0 0 0;
 }
 /*{+START,CSS_MODE,mobile}*/
@@ -3325,9 +3325,9 @@ ul.meta_details_list>li {
 }
 
 dl.meta_details_list>dt {
-	float: {!en_left};
-	clear: {!en_left};
-	padding-{!en_right}: 0.4em !important;
+	float: left;
+	clear: left;
+	padding-right: 0.4em !important;
 }
 dl.meta_details_list>dt, dl.meta_details_list>dd {
 	margin: 0;
@@ -3682,11 +3682,11 @@ ul.buttons_group, ul.associated_links_block_group {
 	overflow: hidden;
 }
 .simple_neat_checkbox input {
-	float: {!en_left};
+	float: left;
 }
 .simple_neat_checkbox span {
-	float: {!en_right};
-	padding-{!en_left}: 2em;
+	float: right;
+	padding-left: 2em;
 	margin-top: -1.5em;
 	width: 100%;
 	box-sizing: border-box;
@@ -3703,7 +3703,7 @@ ul.buttons_group, ul.associated_links_block_group {
 }
 
 .captcha a {
-	float: {!en_right};
+	float: right;
 	margin: 10px 0 0 5px;
 }
 
@@ -3851,16 +3851,16 @@ body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.
 	margin-bottom: 0;
 }
 div.proceed_button_left {
-	text-align: {!en_left};
+	text-align: left;
 }
 div.proceed_button_left_2 {
-	text-align: {!en_left};
-	margin-{!en_left}: -2em;
+	text-align: left;
+	margin-left: -2em;
 }
 
 .shunted_button {
-	clear: {!en_right};
-	text-align: {!en_right};
+	clear: right;
+	text-align: right;
 }
 
 .innocuous_fieldset {
@@ -3876,9 +3876,9 @@ div.proceed_button_left_2 {
 
 .mass_select_marker {
 	padding: 0.2em;
-	float: {!en_right};
+	float: right;
 	border: 1px solid {$GET,standard_border};
-	margin-{!en_left}: 2em;
+	margin-left: 2em;
 	margin-top: 1px; /* To get it past a possible overflow:hidden (may be a browser bug) */
 }
 
@@ -4489,20 +4489,20 @@ div[role="tabpanel"]>:last-child {
 ul.nl, .nl ul {
 	display: block;
 	margin: 0;
-	padding-{!en_left}: 0;
+	padding-left: 0;
 }
 
 .nl ul>li, ul.nl>li {
 	display: block;
-	margin-{!en_left}: 0;
-	padding-{!en_left}: 0;
+	margin-left: 0;
+	padding-left: 0;
 	list-style-type: none;
 	list-style-image: none;
 }
 
 .has_img>a {
 	background: none !important;
-	padding-{!en_left}: 0 !important;
+	padding-left: 0 !important;
 	vertical-align: middle;
 }
 
@@ -4538,7 +4538,7 @@ div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
 */
 
 .comcode_snapback {
-	text-align: {!en_right};
+	text-align: right;
 	font-size: 0.75em;
 }
 
@@ -4588,7 +4588,7 @@ td>.comcode_code_wrap>.comcode_quote, td>.comcode_code_wrap>.comcode_code {
 	border: 1px solid {$GET,code_border};
 	display: block;
 	padding: 5px;
-	margin-{!en_left}: 8px;
+	margin-left: 8px;
 	background-color: {$GET,code_background};
 	color: {$GET,code_text};
 	overflow: hidden;
@@ -4662,12 +4662,12 @@ pre .comcode_code_inner {
 }
 
 .comcode_concept a, .wiki_link a {
-	padding-{!en_right}: 17px !important;
+	padding-right: 17px !important;
 	background-repeat: no-repeat !important;
 	background-position: 100% 30% !important;
 }
 .comcode_concept a:hover, .wiki_link a:hover {
-	padding-{!en_right}: 17px !important;
+	padding-right: 17px !important;
 	background-repeat: no-repeat !important;
 	background-position: 100% 30% !important;
 }
@@ -4710,7 +4710,7 @@ pre .comcode_code_inner {
 body div.comcode_table_of_contents>div.box_inner>ol {
 	padding: 0 !important;
 	margin: 0 !important;
-	margin-{!en_left}: 20px !important;
+	margin-left: 20px !important;
 }
 body div.comcode_table_of_contents>div.box_inner>ol>li {
 	margin: 0.2em 0 !important;

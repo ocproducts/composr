@@ -4,7 +4,7 @@
 */
 
 footer .global_community_message {
-	float: {!en_right};
+	float: right;
 	font-size: 0.9em;
 	padding-top: 1px;
 	font-weight: bold;

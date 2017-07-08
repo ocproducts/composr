@@ -12,11 +12,11 @@
 }
 
 .privileges th {
-	text-align: {!en_left};
+	text-align: left;
 }
 
 .privileges td {
-	text-align: {!en_right};
+	text-align: right;
 	vertical-align: middle;
 }
 

@@ -30,13 +30,13 @@
 
 .cns_member_column, .cns_guest_column {
 	vertical-align: top;
-	margin-{!en_left}: -1px;
+	margin-left: -1px;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.cns_member_column, .cns_guest_column {
 		padding: 0.8em;
-		float: {!en_left};
-		border-{!en_left}: 1px solid {$GET,pale_border};
+		float: left;
+		border-left: 1px solid {$GET,pale_border};
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -76,18 +76,18 @@
 }
 
 .cns_guest_column_b {
-	text-align: {!en_right};
+	text-align: right;
 }
 /*{+START,CSS_MODE,mobile}*/
 	.cns_guest_column_b {
-		float: {!en_right};
+		float: right;
 	}
 /*{+END}*/
 
 .cns_member_column_a {
 	text-align: center;
 	vertical-align: middle;
-	border-{!en_left}: 0;
+	border-left: 0;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.cns_member_column_a {
@@ -105,7 +105,7 @@
 }
 
 .cns_member_column_b {
-	border-{!en_left}: 0;
+	border-left: 0;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.cns_member_column_b {

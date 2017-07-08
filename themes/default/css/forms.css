@@ -390,18 +390,18 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 .syndication_options span {
 	white-space: nowrap;
-	border-{!en_right}: 1px solid {$GET,pale_border};
+	border-right: 1px solid {$GET,pale_border};
 	font-size: 0.9em;
 	padding-right: 0.5em;
 	margin-right: 0.3em;
 }
 .syndication_options span:last-child {
-	border-{!en_right}: 0;
+	border-right: 0;
 }
 
 .various_ticks .input_individual_tick, .various_ticks .input_other_tick {
 	padding: 1em 1em 1em 0.5em; /* Designed to make it fill whole box, i.e. equalise against the th's (to the left) height */
-	float: {!en_left};
+	float: left;
 	font-size: 0.9em;
 	vertical-align: middle;
 }
@@ -606,7 +606,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 /*{+END}*/
 
 .posting_form_main_comcode_button {
-	float: {!en_right};
+	float: right;
 	margin-top: 1em;
 }
 
@@ -619,7 +619,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 }
 
 .posting_form_wrap_buttons, .posting_form_insert_buttons {
-	float: {!en_right};
+	float: right;
 	border: 1px solid {$GET,standard_border};
 	padding: 0.5em;
 	margin-top: 0.5em;
@@ -714,7 +714,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 }
 
 .skip_step_button_wrap div {
-	float: {!en_right};
+	float: right;
 }
 
 .skip_step_button_wrap_with_req_note {
@@ -723,7 +723,7 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 /*{+START,CSS_MODE,desktop}*/
 	.form_set_indent {
-		margin-{!en_left}: 2em;
+		margin-left: 2em;
 	}
 /*{+END}*/
 

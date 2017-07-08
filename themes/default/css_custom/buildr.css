@@ -5,7 +5,7 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.buildr_navigation {
-		float: {!en_left};
+		float: left;
 		width: 400px;
 	}
 /*{+END}*/
@@ -43,11 +43,11 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.buildr_room_info {
-		margin-{!en_left}: 400px;
+		margin-left: 400px;
 	}
 
 	.buildr_room_chat {
-		float: {!en_right};
+		float: right;
 		width: 500px;
 		margin-top: 0;
 	}
@@ -60,7 +60,7 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.buildr_in_room {
-		margin-{!en_right}: 510px;
+		margin-right: 510px;
 	}
 /*{+END}*/
 
@@ -70,7 +70,7 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.buildr_icon {
-		float: {!en_left};
+		float: left;
 	}
 
 	.buildr_icons_wrap .buildr_icon {
@@ -96,7 +96,7 @@
 
 .buildr_avatar {
 	margin-bottom: 1em;
-	float: {!en_right};
+	float: right;
 }
 
 .buildr_avatar img {

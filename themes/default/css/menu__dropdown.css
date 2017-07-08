@@ -18,9 +18,9 @@ For example:
 }
 
 .menu_type__dropdown li.toplevel {
-	float: {!en_left};
-	border-{!en_left}: 1px solid {$GET,standard_border};
-	margin-{!en_right}: -1px;
+	float: left;
+	border-left: 1px solid {$GET,standard_border};
+	margin-right: -1px;
 	margin-bottom: 0;
 	transition: color,background-color 0.5s linear;
 	/*{+START,IF,{$NOT,{!takes_lots_of_space}}}*/
@@ -38,16 +38,16 @@ For example:
 
 .menu_type__dropdown li.toplevel.last {
 	overflow: hidden; /* so it is shunted against its left-hand neighbours without overlapping */
-	margin-{!en_right}: 0 !important; /* as would cause wrapping with the overflow hidden */
+	margin-right: 0 !important; /* as would cause wrapping with the overflow hidden */
 	position: relative;
-	{!en_left}: -1px; /* In place of margin-right */
+	left: -1px; /* In place of margin-right */
 }
 
 .menu_type__dropdown li.toplevel.menu_spacer {
 	height: 2.5em;
 	width: 1em;
 	padding: 0.5em;
-	float: {!en_left};
+	float: left;
 }
 
 .menu_type__dropdown a.toplevel_link {
@@ -114,11 +114,11 @@ For example:
 
 .menu_type__dropdown .nlevel .menu_spacer {
 	display: block;
-	padding-{!en_right}: 0;
+	padding-right: 0;
 }
 
 .menu_type__dropdown ul.nlevel li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
-	padding-{!en_left}: 14px;
+	padding-left: 14px;
 	background-size: 6px 6px;
 }
 

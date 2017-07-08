@@ -148,9 +148,9 @@ table.cns_profile_about_section .associated_details {
 /*{+END}*/
 
 .cns_avatar_page_old_avatar {
-	float: {!en_right};
+	float: right;
 	padding: 1em 0.5em 1em 1em;
-	text-align: {!en_right};
+	text-align: right;
 }
 
 .cns_current_sig_wrap {

@@ -84,7 +84,7 @@ abbr.dtstart, abbr.dtend {
 }
 
 .calendar_year_month_day img {
-	float: {!en_right};
+	float: right;
 	display: block;
 }
 
@@ -119,7 +119,7 @@ abbr.dtstart, abbr.dtend {
 
 .calendar_month_day div {
 	z-index: 10;
-	float: {!en_right};
+	float: right;
 }
 
 .calendar_month_column_heading {
@@ -181,13 +181,13 @@ abbr.dtstart, abbr.dtend {
 }
 
 .calendar_day_icon {
-	float: {!en_left};
-	margin-{!en_right}: 0.5em;
+	float: left;
+	margin-right: 0.5em;
 }
 
 .calendar_day_priority {
-	float: {!en_right};
-	margin-{!en_right}: 0.5em;
+	float: right;
+	margin-right: 0.5em;
 }
 
 .calendar_day_entry_title {
@@ -212,7 +212,7 @@ abbr.dtstart, abbr.dtend {
 }
 
 .calendar_date_span_link {
-	float: {!en_left};
+	float: left;
 	width: 25%;
 	text-align: center;
 }
@@ -421,14 +421,14 @@ td.day_spacer:hover {
 	.event_subscriptions>li {
 		font-size: 0.95em;
 		vertical-align: middle;
-		margin-{!en_right}: 6px;
-		float: {!en_left};
+		margin-right: 6px;
+		float: left;
 	}
 /*{+END}*/
 
 .event_type_image {
-	float: {!en_left};
-	margin-{!en_right}: 0.5em;
+	float: left;
+	margin-right: 0.5em;
 }
 
 /*

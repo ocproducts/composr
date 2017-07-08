@@ -23,11 +23,11 @@
 }
 
 .cns_edit_forum_type {
-	float: {!en_right};
+	float: right;
 }
 
 .cns_edit_forum_title {
-	float: {!en_left};
+	float: left;
 	width: 40%;
 }
 
@@ -41,16 +41,16 @@
 }
 
 .cns_edit_forum_orderings_f {
-	padding-{!en_left}: 25px;
+	padding-left: 25px;
 }
 
 /*{+START,CSS_MODE,desktop}*/
 	.cns_edit_forum_under {
-		padding-{!en_left}: 50px;
+		padding-left: 50px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	.cns_edit_forum_under {
-		padding-{!en_left}: 10px;
+		padding-left: 10px;
 	}
 /*{+END}*/

@@ -24,12 +24,12 @@
 }
 
 .screen_actions div {
-	margin-{!en_right}: 1.25em;
+	margin-right: 1.25em;
 	background-repeat: no-repeat;
 	background-size: 20px 20px;
 	width: 20px;
 	height: 20px;
-	float: {!en_left};
+	float: left;
 }
 
 .screen_actions div:last-child {

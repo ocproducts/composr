@@ -6,8 +6,8 @@
 /* Download boxes */
 
 .download_box_pic {
-	float: {!en_right};
-	padding-{!en_left}: 1em;
+	float: right;
+	padding-left: 1em;
 }
 
 /*{+START,CSS_MODE,desktop}*/
@@ -36,7 +36,7 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.download_description {
-		margin-{!en_right}: 18em;
+		margin-right: 18em;
 	}
 /*{+END}*/
 
@@ -58,7 +58,7 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.download_metadata {
-		float: {!en_right};
+		float: right;
 		width: 17em;
 	}
 /*{+END}*/

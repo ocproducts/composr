@@ -5,7 +5,7 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.comcode_error_help_div {
-		float: {!en_right};
+		float: right;
 		width: 35%;
 		box-sizing: border-box;
 		margin-bottom: 1em;
@@ -16,7 +16,7 @@
 	.comcode_error_details_div {
 		width: 65%;
 		box-sizing: border-box;
-		padding-{!en_right}: 1em;
+		padding-right: 1em;
 		margin-bottom: 1em;
 	}
 /*{+END}*/

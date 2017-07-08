@@ -14,8 +14,8 @@ For example:
 
 
 .menu_type__dropdown li.toplevel {
-	float: {!en_left};
-	border-{!en_left}: 1px solid #cacaca;
+	float: left;
+	border-left: 1px solid #cacaca;
 	margin-bottom: 0;
 	transition: color, background-color 0.5s linear;
 	font-size: 0.9em;
@@ -25,10 +25,10 @@ For example:
 }
 
 .menu_type__dropdown li.toplevel.last {
-	border-{!en_right}: 1px solid #cacaca;
+	border-right: 1px solid #cacaca;
 	float: none !important; /* so it eats all space remaining */
 	overflow: hidden; /* so it is shunted against its left-hand neighbours without overlapping */
-	margin-{!en_right}: 0 !important; /* as would cause wrapping with the overflow hidden */
+	margin-right: 0 !important; /* as would cause wrapping with the overflow hidden */
 	width: auto;
 }
 
@@ -36,7 +36,7 @@ For example:
 	height: 1.15em;
 	width: 4em;
 	padding: 0.5em;
-	float: {!en_left};
+	float: left;
 }
 
 .menu_type__dropdown li.toplevel.current, .menu_type__dropdown li.toplevel:hover {
@@ -101,11 +101,11 @@ For example:
 
 .menu_type__dropdown .nlevel .menu_spacer {
 	display: block;
-	padding-{!en_right}: 0;
+	padding-right: 0;
 }
 
 .menu_type__dropdown ul.nlevel li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
-	padding-{!en_left}: 14px;
+	padding-left: 14px;
 	background-size: 6px 6px;
 }
 

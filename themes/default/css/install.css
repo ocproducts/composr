@@ -126,7 +126,7 @@
 }
 
 .radio_horiz_spacer {
-	padding-{!en_left}: 2em;
+	padding-left: 2em;
 }
 
 .actions_list_strong {
@@ -152,7 +152,7 @@ textarea.mono_textbox {
 	border: 1px dotted {$GET,standard_border};
 	border-radius: 5px;
 	width: 22em;
-	float: {!en_right};
+	float: right;
 	margin-left: 15px;
 	background-color: {$GET,area_background};
 	padding: 0.5em;
@@ -175,7 +175,7 @@ textarea.mono_textbox {
 /* Step 3 */
 
 .installer_forums {
-	text-align: {!en_left};
+	text-align: left;
 	border: 1px solid {$GET,standard_border};
 	border-collapse: collapse;
 }
@@ -191,7 +191,7 @@ textarea.mono_textbox {
 }
 
 .installer_forums th>div {
-	text-align: {!en_left};
+	text-align: left;
 	font-weight: bold;
 	padding: 0.5em;
 }
@@ -238,7 +238,7 @@ textarea.mono_textbox {
 /* Step 4 */
 
 .installer_section {
-	text-align: {!en_left};
+	text-align: left;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.installer_section {

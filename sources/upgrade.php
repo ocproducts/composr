@@ -1628,6 +1628,8 @@ function version_specific()
         $version_database = $version_files;
     }
     if ($version_database < $version_files) {
+        // LEGACY
+
         if ($version_database < 9.0) {
             $dh = @opendir(get_custom_file_base() . '/imports/mods');
             if ($dh !== false) {

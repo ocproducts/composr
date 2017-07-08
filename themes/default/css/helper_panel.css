@@ -66,8 +66,8 @@
 
 #helper_panel_toggle {
 	outline: 0;
-	float: {!en_right};
-	text-align: {!en_right};
+	float: right;
+	text-align: right;
 }
 /*{+START,CSS_MODE,desktop}*/
 	#helper_panel_toggle {

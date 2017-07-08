@@ -46,7 +46,7 @@
 }
 
 .menu_type__popup ul li a { /* ul li added to ensure precedence over ".nl li" selector, whilst not forcing us to use up our only !important */
-	padding-{!en_left}: 14px;
+	padding-left: 14px;
 	display: inline-block; /* This says that we want to encourage greedy space consumption rather than wrapping */
 }
 

@@ -15,16 +15,16 @@
 }
 
 .box___block_side_news_archive .toggleable_tray_button {
-	float: {!en_left};
+	float: left;
 }
 
 .box___block_side_news_archive .toggleable_tray_button img {
-	padding-{!en_left}: 0em !important;
-	padding-{!en_right}: 0.5em !important;
+	padding-left: 0em !important;
+	padding-right: 0.5em !important;
 }
 
 .box___block_side_news_archive .box_inner>.compact_list>li ul {
-	margin-{!en_left}: 0.5em;
+	margin-left: 0.5em;
 }
 
 .compacted_subbox_stream .box.box___news_brief {
@@ -42,9 +42,9 @@
 }
 
 .newscat_img {
-	margin-{!en_left}: 1.5em;
+	margin-left: 1.5em;
 	margin-bottom: 1.5em;
-	float: {!en_right};
+	float: right;
 	width: 100px;
 }
 
@@ -109,9 +109,9 @@
 }
 
 .image_fader_news_pic {
-	float: {!en_right};
-	margin-{!en_left}: 0.5em;
-	text-align: {!en_right};
+	float: right;
+	margin-left: 0.5em;
+	text-align: right;
 }
 
 .image_fader_news_pic .img_thumb_wrap {

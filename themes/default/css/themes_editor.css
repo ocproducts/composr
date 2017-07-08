@@ -148,8 +148,8 @@
 /* Theme images */
 
 .theme_image_preview {
-	float: {!en_left};
-	margin-{!en_right}: 0.5em;
+	float: left;
+	margin-right: 0.5em;
 	margin-top: 1em;
 	max-width: 100%;
 	height: auto;
@@ -182,7 +182,7 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.themewizard_info_box {
-		float: {!en_right};
+		float: right;
 		text-align: center;
 	}
 /*{+END}*/

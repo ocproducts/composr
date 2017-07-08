@@ -27,10 +27,10 @@
 /* Posts */
 
 .wiki_topic_poster_name {
-	float: {!en_left};
-	margin-{!en_left}: 0.5em;
-	padding-{!en_right}: 0.5em;
-	border-{!en_right}: 1px solid {$GET,standard_border};
+	float: left;
+	margin-left: 0.5em;
+	padding-right: 0.5em;
+	border-right: 1px solid {$GET,standard_border};
 }
 
 .wiki_rating_inside {

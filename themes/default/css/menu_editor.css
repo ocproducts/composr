@@ -55,7 +55,7 @@
 	}
 
 	.menu_editor_lh_side {
-		margin-{!en_right}: 470px;
+		margin-right: 470px;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
@@ -85,8 +85,8 @@
 }
 /*{+START,CSS_MODE,desktop}*/
 	.menu_editor_rh_side {
-		float: {!en_right};
-		margin-{!en_left}: 20px;
+		float: right;
+		margin-left: 20px;
 		width: 450px;
 	}
 /*{+END}*/
@@ -102,7 +102,7 @@ Branch layout
 }
 
 .menu_editor_branch_wrap {
-	margin-{!en_right}: -1px; /* To make nested rhs borders align; this is why menu_editor_root has 1px extra margin */
+	margin-right: -1px; /* To make nested rhs borders align; this is why menu_editor_root has 1px extra margin */
 }
 
  .menu_editor_branch {
@@ -120,7 +120,7 @@ Branch layout
 }
 
 .menu_editor_branch_indent {
-	padding-{!en_left}: 1em;
+	padding-left: 1em;
 }
 
 .menu_editor_branch_indent>div {

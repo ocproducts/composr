@@ -24,7 +24,7 @@
 }
 
 .chat_actions {
-	float: {!en_right};
+	float: right;
 	width: 50%;
 	padding-left: 1em;
 	border-left: 1px solid {$GET,pale_border};
@@ -38,7 +38,7 @@
 
 .chat_multi_tab {
 	background: url('{$IMG;,icons/16x16/help}') no-repeat;
-	padding-{!en_left}: 20px;
+	padding-left: 20px;
 	margin: 21px 0 8px 4px;
 	font-size: 0.9em;
 	width: 70%;
@@ -107,7 +107,7 @@
 
 /*{+START,CSS_MODE,desktop}*/
 	.chat_room_options, .chat_room_actions {
-		float: {!en_left};
+		float: left;
 		width: 50%;
 		min-height: 16em;
 	}
@@ -124,13 +124,13 @@
 	}
 
 	.chat_colour_option, .chat_font_option {
-		float: {!en_left};
+		float: left;
 		width: 50%;
 		box-sizing: border-box;
 	}
 
 	.chat_colour_option {
-		padding-{!en_right}: 0.5em;
+		padding-right: 0.5em;
 	}
 /*{+END}*/
 
@@ -209,9 +209,9 @@
 }
 
 .chat_avatar {
-	float: {!en_right};
+	float: right;
 	width: 50px;
-	margin-{!en_left}: 0.5em;
+	margin-left: 0.5em;
 }
 .chat_lobby_convos_area_messages .chat_avatar {
 	width: 30px;
@@ -269,7 +269,7 @@
 }
 /*{+START,CSS_MODE,desktop}*/
 	.chat_lobby_friends {
-		float: {!en_left};
+		float: left;
 		width: 16.5em;
 	}
 /*{+END}*/
@@ -280,17 +280,17 @@
 
 .chat_lobby_convos {
 	margin-top: 1em;
-	margin-{!en_left}: 0.75em;
+	margin-left: 0.75em;
 	box-sizing: border-box;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.chat_lobby_convos {
-		float: {!en_left};
+		float: left;
 		width: 27em;
-		margin-{!en_right}: 1em;
-		border-{!en_right}: 1px solid {$GET,pale_border};
+		margin-right: 1em;
+		border-right: 1px solid {$GET,pale_border};
 		min-height: 29.5em;
-		padding-{!en_right}: 0.5em;
+		padding-right: 0.5em;
 	}
 /*{+END}*/
 
@@ -318,7 +318,7 @@
 .chat_lobby_convos_tab_uptodate, .chat_lobby_convos_tab_new_messages {
 	background: url('{$IMG;,tabs/tab}');
 	background-repeat: no-repeat;
-	float: {!en_left};
+	float: left;
 	padding: 3px 5px 0 5px;
 	height: 20px;
 	border-right: 1px solid {$GET,pale_border};
@@ -331,8 +331,8 @@
 .chat_participant_avatar {
 	display: block;
 	width: 45px;
-	float: {!en_left};
-	margin-{!en_right}: 3px;
+	float: left;
+	margin-right: 3px;
 }
 
 .chat_lobby_convos_area {
@@ -383,7 +383,7 @@
 }
 
 .im_post_bits span {
-	float: {!en_right};
+	float: right;
 }
 
 .im_post_field {
@@ -393,7 +393,7 @@
 }
 
 .im_close_button {
-	text-align: {!en_right};
+	text-align: right;
 	margin-bottom: 1em;
 }
 
@@ -420,7 +420,7 @@
 }
 
 .chat_lobby_convos_area_bar {
-	float: {!en_right};
+	float: right;
 	margin-left: 1em;
 	width: 8.2em;
 	overflow: hidden;
@@ -472,16 +472,16 @@
 }
 
 .im_event .im_popup_close_button {
-	float: {!en_right};
+	float: right;
 	margin: 0 0 0.5em 0.5em;
 	cursor: pointer;
 }
 
 .im_event .im_popup_avatar {
-	float: {!en_left};
+	float: left;
 	width: 25px;
 	height: 25px;
-	margin-{!en_right}: 0.5em;
+	margin-right: 0.5em;
 }
 
 .im_event .actions_list {

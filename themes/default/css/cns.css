@@ -171,7 +171,7 @@ div.cns_table_footer>div>div {
 /*{+START,CSS_MODE,desktop}*/
 	.cns_buttons_screen {
 		text-align: right;
-		float: {!en_right};
+		float: right;
 		margin: 1.5em 0 1.5em 1em !important;
 	}
 /*{+END}*/
@@ -319,7 +319,7 @@ div.cns_table_footer>div>div {
 }
 
 .cns_topic_poll_radio, .cns_topic_poll_result {
-	text-align: {!en_right};
+	text-align: right;
 	width: 50%;
 	box-sizing: border-box;
 	padding: 0.5em;
@@ -351,38 +351,38 @@ div.cns_table_footer>div>div {
 }
 
 .cns_post_details {
-	text-align: {!en_left};
+	text-align: left;
 	padding: 0.6em 0.2em !important;
 }
 
 .cns_post_details_date {
-	float: {!en_left};
-	padding-{!en_left}: 0.5em;
+	float: left;
+	padding-left: 0.5em;
 }
 
 .cns_post_details_rating {
-	float: {!en_left};
+	float: left;
 	white-space: nowrap;
 }
 /*{+START,CSS_MODE,desktop}*/
 	.cns_post_details_rating {
-		padding-{!en_left}: 2em;
+		padding-left: 2em;
 	}
 /*{+END}*/
 /*{+START,CSS_MODE,mobile}*/
 	.cns_post_details_rating {
-		padding-{!en_left}: 0.5em;
+		padding-left: 0.5em;
 	}
 /*{+END}*/
 
 .cns_post_details_unvalidated {
-	float: {!en_left};
-	padding-{!en_left}: 1em;
+	float: left;
+	padding-left: 1em;
 }
 
 .cns_post_details_grapple {
-	float: {!en_right};
-	padding-{!en_right}: 1em;
+	float: right;
+	padding-right: 1em;
 }
 
 /*{+START,CSS_MODE,desktop}*/
@@ -488,7 +488,7 @@ hr.cns_sig_barrier {
 
 .cns_post_back_to_top {
 	padding: 0.5em;
-	text-align: {!en_right};
+	text-align: right;
 }
 
 .cns_post_back_to_top img {
@@ -585,9 +585,9 @@ hr.cns_sig_barrier {
 }
 
 .cns_forum_grouping_toggleable_tray_button {
-	float: {!en_right};
+	float: right;
 	border-bottom: 0;
-	margin-{!en_left}: 0.5em;
+	margin-left: 0.5em;
 }
 
 .cns_forum_grouping_toggleable_tray_button .toggleable_tray_button img {
@@ -633,7 +633,7 @@ hr.cns_sig_barrier {
 
 .cns_forum_grouping td {
 	padding: 0.5em;
-	text-align: {!en_left};
+	text-align: left;
 }
 
 /*{+START,CSS_MODE,mobile}*/
@@ -710,7 +710,7 @@ hr.cns_sig_barrier {
 	background-image: linear-gradient(to bottom, {$GET,area_background}, {$GET,area_4_background});
 	font-size: 0.85em;
 	padding: 0.5em !important;
-	float: {!en_right};
+	float: right;
 	margin: 0 0 0 0.5em;
 	text-decoration: none;
 }
@@ -769,7 +769,7 @@ hr.cns_sig_barrier {
 }
 
 .cns_emoticon_cell {
-	float: {!en_left};
+	float: left;
 	text-align: center;
 	padding: 0.5em 0;
 }

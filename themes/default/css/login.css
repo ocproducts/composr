@@ -55,14 +55,14 @@ table.login_page_form {
 /*{+END}*/
 
 .login_page_form th {
-	text-align: {!en_right};
-	padding-{!en_right}: 6px;
+	text-align: right;
+	padding-right: 6px;
 	font-weight: bold !important;
 	vertical-align: middle !important;
 }
 
 .login_page_form td {
-	text-align: {!en_left};
+	text-align: left;
 	vertical-align: middle !important;
 }
 

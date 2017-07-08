@@ -139,7 +139,7 @@ You can delete a banner from the bottom of its edit form.
 [code="HTML"]
    {$SET,BANNER,{$BANNER}} {$,This is to avoid evaluating the banner parameter twice}
    {+START,IF_NON_EMPTY,{$GET,BANNER}}
-      <div class="global_banner" style="text-align: {!en_right}">{$GET,BANNER}</div>
+      <div class="global_banner" style="text-align: right">{$GET,BANNER}</div>
    {+END}
 [/code]
 
