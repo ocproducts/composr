@@ -38,7 +38,6 @@ class Hook_config_leader_board_show_staff
             'explanation' => 'CONFIG_OPTION_leader_board_show_staff',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'required' => true,
 
             'addon' => 'points',
         );

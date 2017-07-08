@@ -38,8 +38,8 @@ class Hook_config_manual_subscription_expiry_notice
             'explanation' => 'CONFIG_OPTION_manual_subscription_expiry_notice',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'required' => false,
             'order_in_category_group' => 8,
+            'required' => false,
 
             'addon' => 'ecommerce',
         );

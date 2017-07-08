@@ -220,10 +220,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         ECOM_PRODUCTS_PRICE_PAGE_TEXT
         PAYMENT_GATEWAY_VPN_USERNAME
         PAYMENT_GATEWAY_VPN_PASSWORD
-        CONFIG_OPTION_transaction_flat_cost
-        CONFIG_OPTION_transaction_percentage_cost
-        TRANSACTION_FLAT_COST
-        TRANSACTION_PERCENTAGE_COST
         CONFIG_CATEGORY_TRANSACTION_FEES
         PAYMENT_GATEWAY_authorize
         PAYMENT_GATEWAY_ccbill
