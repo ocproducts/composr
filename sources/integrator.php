@@ -117,7 +117,7 @@ function reprocess_url($url, $operation_base_url)
     // Sort out title
     $matches = array();
     if (preg_match('#<\s*title[^>]*>(.*)<\s*/\s*title\s*>#is', $document, $matches) != 0) {
-        $title = str_replace('&bull;', '-', str_replace('&ndash;', '-', str_replace('&mdash;', '-', @html_entity_decode($matches[1], ENT_QUOTES, get_charset()))));
+        $title = str_replace('&bull;', '-', str_replace('&ndash;', '-', str_replace('&mdash;', '-', @html_entity_decode($matches[1], ENT_QUOTES))));
         set_short_title(trim($title));
         get_screen_title(trim($title), false);
     }
@@ -125,7 +125,7 @@ function reprocess_url($url, $operation_base_url)
     // Better base?
     $matches = array();
     if (preg_match('#<\s*base\s+href\s*=\s*["\']?(.*)["\']?\s*/?\s*>#is', $document, $matches) != 0) {
-        $url_base = trim(@html_entity_decode($matches[1], ENT_QUOTES, get_charset()));
+        $url_base = trim(@html_entity_decode($matches[1], ENT_QUOTES));
     }
 
     // Sort out body
@@ -152,8 +152,8 @@ function reprocess_url($url, $operation_base_url)
             $offset = $all_matches[0][$i][1];
             $offset_end = $offset + strlen($m_to_replace);
 
-            $m_type = trim(@html_entity_decode($all_matches[2][$i][0], ENT_QUOTES, get_charset()));
-            $m_url = trim(@html_entity_decode($all_matches[3][$i][0], ENT_QUOTES, get_charset()));
+            $m_type = trim(@html_entity_decode($all_matches[2][$i][0], ENT_QUOTES));
+            $m_url = trim(@html_entity_decode($all_matches[3][$i][0], ENT_QUOTES));
             if (url_is_local($m_url)) {
                 $m_url = qualify_url($m_url, $url_base);
             }
@@ -195,8 +195,8 @@ function reprocess_url($url, $operation_base_url)
         }
         if ($count != 0) {
             for ($i = 0; $i < count($all_matches[0]); $i++) {
-                $m_name = trim(@html_entity_decode($all_matches[1][$i], ENT_QUOTES, get_charset()));
-                $m_content = trim(@html_entity_decode($all_matches[2][$i], ENT_QUOTES, get_charset()));
+                $m_name = trim(@html_entity_decode($all_matches[1][$i], ENT_QUOTES));
+                $m_content = trim(@html_entity_decode($all_matches[2][$i], ENT_QUOTES));
                 if ($m_name == 'description') {
                     $SEO_DESCRIPTION = $m_content;
                 } elseif ($m_name == 'keywords') {

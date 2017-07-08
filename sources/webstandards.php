@@ -1380,7 +1380,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
                 $stripped = str_replace($matches[0][$i], str_repeat(' ', strlen($matches[0][$i])), $stripped);
             }
         }
-        $stripped = @html_entity_decode(strip_tags($stripped), ENT_QUOTES, get_charset());
+        $stripped = @html_entity_decode(strip_tags($stripped), ENT_QUOTES);
         require_code('webstandards2');
         $new_errors = check_spelling($stripped);
         $misspellings = array();

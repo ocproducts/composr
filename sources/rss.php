@@ -28,7 +28,7 @@
  */
 function extract_plain_links($matches)
 {
-    return '<a href="' . @html_entity_decode($matches[0], ENT_QUOTES, get_charset()) . '">' . $matches[0] . '</a>';
+    return '<a href="' . @html_entity_decode($matches[0], ENT_QUOTES) . '">' . $matches[0] . '</a>';
 }
 
 /**
@@ -109,9 +109,9 @@ class CMS_RSS
             }
 
             // Our internal charset
-            $parser_charset = get_charset();
-            if (!in_array(strtoupper($parser_charset), array('ISO-8859-1', 'US-ASCII', 'utf-8'))) {
-                $parser_charset = 'utf-8';
+            $target_charset = get_charset();
+            if (!in_array(strtoupper($target_charset), array('ISO-8859-1', 'US-ASCII', 'UTF-8'))) {
+                $target_charset = 'utf-8';
             }
 
             // Create and setup our parser
@@ -124,7 +124,7 @@ class CMS_RSS
                 return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error
             }
             xml_set_object($xml_parser, $this);
-            @xml_parser_set_option($xml_parser, XML_OPTION_TARGET_ENCODING, $parser_charset);
+            @xml_parser_set_option($xml_parser, XML_OPTION_TARGET_ENCODING, $target_charset);
             xml_set_element_handler($xml_parser, 'startElement', 'endElement');
             xml_set_character_data_handler($xml_parser, 'startText');
             //xml_set_external_entity_ref_handler($xml_parser, 'extEntity');

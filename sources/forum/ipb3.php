@@ -126,7 +126,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
      */
     public function ipb_unescape($val)
     {
-        $val = @html_entity_decode($val, ENT_QUOTES, get_charset());
+        $val = @html_entity_decode($val, ENT_QUOTES);
 
         $val = preg_replace_callback('/&#x([0-9a-f]+);/i', array($this, 'unentity_1'), $val);
         $val = preg_replace_callback('/&#([0-9]+);/', array($this, 'unentity_2'), $val);
@@ -1007,7 +1007,7 @@ class Forum_driver_ipb3 extends Forum_driver_base
                     if ($fp_rows[0]['post_htmlstate'] == 1) {
                         $post = str_replace('<br />', '', $post);
                     }
-                    $post = @html_entity_decode($post, ENT_QUOTES, get_charset());
+                    $post = @html_entity_decode($post, ENT_QUOTES);
                 }
                 $post = preg_replace('#public/style_emoticons/<\#EMO_DIR\#>(.+?)\'#is', $emoticons_set_dir . '\\1\'', $post);
 

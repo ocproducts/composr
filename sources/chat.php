@@ -1379,13 +1379,13 @@ function _deal_with_chatcode_invite($pm_user, $pm_message, $username, $text, $zo
     foreach ($quoted_users as $quoted_user) {
         $real_member = (($GLOBALS['FORUM_DRIVER']->get_member_from_username($quoted_user) == get_member()) && (!is_guest($GLOBALS['FORUM_DRIVER']->get_member_from_username($quoted_user))) && ($GLOBALS['FORUM_DRIVER']->get_member_from_username($quoted_user) !== null)) || ($username == $GLOBALS['FORUM_DRIVER']->get_username(get_member()));
         if ($real_member) {
-            $room_id = get_chatroom_id(html_entity_decode($pm_message, ENT_QUOTES, get_charset()), true);
+            $room_id = get_chatroom_id(html_entity_decode($pm_message, ENT_QUOTES), true);
             if ($room_id !== null) {
                 // Display the invite
                 $invite_code = do_template('CHAT_INVITE', array(
                     '_GUID' => '493ac2dcabc763fe03e7eee072dd9629',
                     'USERNAME' => $username,
-                    'CHATROOM' => html_entity_decode($pm_message, ENT_QUOTES, get_charset()),
+                    'CHATROOM' => html_entity_decode($pm_message, ENT_QUOTES),
                     'LINK' => hyperlink(build_url(array('page' => 'chat', 'type' => 'room', 'room_id' => strval($room_id)), $zone), do_lang_tempcode('CHAT_INVITE_TEXT_REPLY'), false, false),
                 ));
                 $text = preg_replace('#\[invite=&quot;([^&]*)&quot;\]([^\[]*)\[/invite\]#', $invite_code->evaluate(), $text, 1);

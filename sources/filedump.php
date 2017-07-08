@@ -198,7 +198,7 @@ function extract_filedump_links($comcode, $identifier, $focus, &$paths_used)
         $matches = array();
         $num_matches = preg_match_all($pattern, $comcode, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
-            $decoded = urldecode(html_entity_decode($matches[1][$i], ENT_QUOTES, get_charset())); // This is imperfect (raw naming that coincidentally matches entity encoding will break), but good enough
+            $decoded = urldecode(html_entity_decode($matches[1][$i], ENT_QUOTES)); // This is imperfect (raw naming that coincidentally matches entity encoding will break), but good enough
 
             if (strpos($decoded, '*') !== false) { // False positive, some kind of exemplar test
                 continue;

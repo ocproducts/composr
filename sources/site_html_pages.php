@@ -110,13 +110,13 @@ function load_html_page($string, $file_base = null, &$out = null)
         // Extra meta keywords and description, and title
         global $SEO_KEYWORDS, $SEO_DESCRIPTION;
         if (preg_match('#<\s*meta\s+name\s*=\s*"keywords"\s+content="([^"]*)"#mi', $html, $matches) != 0) {
-            $SEO_KEYWORDS = explode(',', @html_entity_decode(trim($matches[1]), ENT_QUOTES, get_charset()));
+            $SEO_KEYWORDS = explode(',', @html_entity_decode(trim($matches[1]), ENT_QUOTES));
         }
         if (preg_match('#<\s*meta\s+name\s*=\s*"description"\s+content="([^"]*)"#mi', $html, $matches) != 0) {
-            $SEO_DESCRIPTION = @html_entity_decode(trim($matches[1]), ENT_QUOTES, get_charset());
+            $SEO_DESCRIPTION = @html_entity_decode(trim($matches[1]), ENT_QUOTES);
         }
         if (preg_match('#<\s*title\s*>([^<>]*)<\s*/\s*title\s*>#mis', $html, $matches) != 0) {
-            set_short_title(@html_entity_decode(trim($matches[1]), ENT_QUOTES, get_charset()));
+            set_short_title(@html_entity_decode(trim($matches[1]), ENT_QUOTES));
         }
 
         // Extract body

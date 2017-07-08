@@ -375,7 +375,7 @@ class Hook_import_mybb
                 $preview_posts = 1;
                 $track_posts = $row['allownotices'];
                 $title = $row['usertitle'];
-                $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
+                $title = @html_entity_decode($title, ENT_QUOTES);
 
                 // These are done in the members-files stage
                 $avatar_url = '';
@@ -584,7 +584,7 @@ class Hook_import_mybb
             }
 
             $title = $row['name'];
-            $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
+            $title = @html_entity_decode($title, ENT_QUOTES);
 
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
             if ($test !== null) {
@@ -728,7 +728,7 @@ class Hook_import_mybb
                     $title = $row['subject'];
                 }
 
-                $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
+                $title = @html_entity_decode($title, ENT_QUOTES);
 
                 $post = $this->fix_links($row['message'], $db, $table_prefix);
 
@@ -1009,7 +1009,7 @@ class Hook_import_mybb
                     $title = '';
                 }
 
-                $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
+                $title = @html_entity_decode($title, ENT_QUOTES);
 
                 $post = $this->fix_links($_post['message'], $db, $table_prefix);
                 $validated = 1;

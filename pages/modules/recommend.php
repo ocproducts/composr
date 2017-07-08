@@ -295,7 +295,7 @@ class Module_recommend
                         if (is_string($downloaded_at_link)) {
                             $matches = array();
                             if (preg_match('#\s*<title[^>]*\s*>\s*(.*)\s*\s*<\s*/title\s*>#mi', $downloaded_at_link, $matches) != 0) {
-                                $resource_title = trim(str_replace('&ndash;', '-', str_replace('&mdash;', '-', @html_entity_decode($matches[1], ENT_QUOTES, get_charset()))));
+                                $resource_title = trim(str_replace('&ndash;', '-', str_replace('&mdash;', '-', @html_entity_decode($matches[1], ENT_QUOTES))));
                                 $resource_title = preg_replace('#^' . preg_quote(get_site_name(), '#') . ' - #', '', $resource_title);
                                 $resource_title = preg_replace('#\s+[^\d\s][^\d\s]?[^\d\s]?\s+' . preg_quote(get_site_name(), '#') . '$#i', '', $resource_title);
                             }
@@ -475,9 +475,8 @@ class Module_recommend
 
                     if (!$skip_next_process) {
                         // There is a strange symbol that appears at start of the Windows Mail file, so we need to convert the first file line to catch these
-                        if ((function_exists('mb_check_encoding')) && (mb_check_encoding($csv_header_line_fields[0], 'UTF-8'))) {
-                            $csv_header_line_fields[0] = utf8_decode($csv_header_line_fields[0]);
-                        }
+                        require_code('character_sets');
+                        $csv_header_line_fields[0] = convert_to_internal_encoding($csv_header_line_fields[0], get_charset(), 'ISO-8859-1');
 
                         // This means that we need to import from Windows mail (also for Outlook Express) export file, which is different from others csv export formats
                         if (array_key_exists(0, $csv_header_line_fields) && (preg_match('#\?Name#', $csv_header_line_fields[0]) != 0 || preg_match('#Name\;E\-mail\sAddress#', $csv_header_line_fields[0]) != 0)) {

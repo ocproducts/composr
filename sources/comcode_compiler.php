@@ -219,7 +219,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
     switch ($method) {
         case WYSIWYG_COMCODE__BUTTON:
             if ($semihtml) {
-                $_embed_visual = html_entity_decode(strip_tags($embed->evaluate()), ENT_QUOTES, get_charset());
+                $_embed_visual = html_entity_decode(strip_tags($embed->evaluate()), ENT_QUOTES);
                 $_embed_inner = $embed->evaluate();
             } else {
                 $_embed_visual = $embed->evaluate();
@@ -256,7 +256,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
             switch ($method) {
                 case WYSIWYG_COMCODE__XML_BLOCK_ANTIESCAPED:
                     if ($semihtml) {
-                        $_embed = html_entity_decode($embed->evaluate(), ENT_QUOTES, get_charset());
+                        $_embed = html_entity_decode($embed->evaluate(), ENT_QUOTES);
                     } else {
                         $_embed = $embed->evaluate();
                     }
@@ -1754,7 +1754,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                         // Do the comcode for this tag
                         if ($in_semihtml) { // We need to perform some work to clean up the Comcode tag's attributes, as they generally do not support Comcode/HTML themselves (are plain text)
                             foreach ($_last[1] as $index => $conv) {
-                                $_last[1][$index] = @html_entity_decode(str_replace('<br />', "\n", $conv), ENT_QUOTES, get_charset());
+                                $_last[1][$index] = @html_entity_decode(str_replace('<br />', "\n", $conv), ENT_QUOTES);
                             }
                         }
 

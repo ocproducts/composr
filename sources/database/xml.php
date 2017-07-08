@@ -1040,7 +1040,7 @@ class Database_Static_xml extends DatabaseDriver
             if (trim($bits[$i]) == '') {
                 $i++; // Whitespace between tags
             }
-            $_record[$field] = html_entity_decode($data, ENT_QUOTES, get_charset());
+            $_record[$field] = html_entity_decode($data, ENT_QUOTES);
         }
 
         // Even if we did serialize with type information (we don't) we would still need to do type checking, because when we do add_table_field/alter_table_field we can't assume it will alter all non-committed records on other people's systems

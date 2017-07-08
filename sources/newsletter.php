@@ -137,7 +137,7 @@ function newsletter_get_category_choices($cutoff_time, $lang)
                     }
                     list($hook_content, $_title) = $hook_result;
                     if (!$hook_content->is_empty()) {
-                        $decoded = @html_entity_decode($matches[2][$i], ENT_QUOTES, get_charset());
+                        $decoded = @html_entity_decode($matches[2][$i], ENT_QUOTES);
                         $chosen_categories .= $_title . ': ' . trim($decoded) . ' [' . $hook . '/' . $matches[1][$i] . "]\n";
                     }
                 }

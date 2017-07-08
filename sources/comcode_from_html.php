@@ -80,7 +80,7 @@ function _img_tag_fixup_raw($matches)
     /*$referer = post_param_string('http_referer', cms_srv('HTTP_REFERER'));*/ // CKEditor allows us to specify the base, so we know get_base_url() is right
     $caller_url = /*looks_like_url($referer) ? preg_replace('#/[^/]*$#', '', $referer) : */get_base_url();
 
-    $matches[2] = html_entity_decode($matches[2], ENT_QUOTES, get_charset());
+    $matches[2] = html_entity_decode($matches[2], ENT_QUOTES);
 
     if ((strpos($matches[2], '{$FIND_SCRIPT') === false) && (strpos($matches[2], '{$IMG') === false)) {
         $new_url = qualify_url($matches[2], $caller_url);
@@ -290,7 +290,7 @@ function _semihtml_to_comcode_wrap($matches)
  */
 function _debuttonise($matches)
 {
-    return html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    return html_entity_decode($matches[1], ENT_QUOTES);
 }
 
 /**
@@ -304,7 +304,7 @@ function _debuttonise($matches)
 function _detagonise($matches)
 {
     $tag = $matches[1];
-    $attributes = html_entity_decode(str_replace('&quot;', '\"', isset($matches[2]) ? $matches[2] : ''), ENT_QUOTES, get_charset());
+    $attributes = html_entity_decode(str_replace('&quot;', '\"', isset($matches[2]) ? $matches[2] : ''), ENT_QUOTES);
     $attributes = preg_replace('# id="[^"]*"#', '', $attributes); // IDs aren't a real Comcode attribute
     return '[' . $tag . $attributes . ']';
 }
@@ -329,7 +329,7 @@ function _dedirectiveise($matches)
 
     $attributes = '';
     if (!empty($attributes_arr['params'])) {
-        $attributes = html_entity_decode($attributes_arr['params'], ENT_QUOTES, get_charset());
+        $attributes = html_entity_decode($attributes_arr['params'], ENT_QUOTES);
     }
 
     return $attributes;
@@ -482,7 +482,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         return '';
     }
 
-    $decoded = html_entity_decode($semihtml, ENT_QUOTES, get_charset());
+    $decoded = html_entity_decode($semihtml, ENT_QUOTES);
     if (strpos($semihtml, '<') === false && strpos($semihtml, '[') === false && strpos($semihtml, '{') === false && strpos($decoded, '&') === false) {
         return $decoded;
     }
@@ -1067,7 +1067,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     // Then, if there is no HTML left, we can avoid the 'semihtml' tag
     if (strpos($semihtml2, '<') === false) {
         //$semihtml2 = str_replace(array('&lt;', '&gt;', '&amp;'), array('___lt___', '___gt___', '___amp___'), $semihtml2);
-        $semihtml2 = @html_entity_decode($semihtml2, ENT_QUOTES, get_charset());
+        $semihtml2 = @html_entity_decode($semihtml2, ENT_QUOTES);
         //$semihtml2 = str_replace(array('___lt___', '___gt___', '___amp___'), array('&lt;', '&gt;', '&amp;'), $semihtml2);
         return $semihtml2;
     }

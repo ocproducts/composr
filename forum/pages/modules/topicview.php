@@ -219,7 +219,7 @@ class Module_topicview
                         $matches = array();
                         if (preg_match('#<img\s[^<>]*src="([^"]*)"#', is_object($_postdetails['post']) ? $_postdetails['post']->evaluate() : $_postdetails['post'], $matches) != 0) {
                             set_extra_request_metadata(array(
-                                'image' => html_entity_decode($matches[1], ENT_QUOTES, get_charset()),
+                                'image' => html_entity_decode($matches[1], ENT_QUOTES),
                             ));
                         }
                     }

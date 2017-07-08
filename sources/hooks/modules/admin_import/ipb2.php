@@ -153,7 +153,7 @@ class Hook_import_ipb2
                 continue;
             }
 
-            $title = @html_entity_decode($row['name'], ENT_QUOTES, get_charset());
+            $title = @html_entity_decode($row['name'], ENT_QUOTES);
 
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
             if ($test !== null) {
@@ -195,7 +195,7 @@ class Hook_import_ipb2
                 continue;
             }
 
-            $name = @html_entity_decode($row['name'], ENT_QUOTES, get_charset());
+            $name = @html_entity_decode($row['name'], ENT_QUOTES);
             $description = strip_html($row['description']);
 
             // To determine whether parent_id specifies category or parent, we must check status of what it is pointing at
@@ -342,7 +342,7 @@ class Hook_import_ipb2
             $title = str_replace('RE: ', '', $title);
             $title = str_replace('Re:', '', $title);
             $title = str_replace('RE:', '', $title);
-            $groups[strval($a) . ':' . strval($b) . ':' . @html_entity_decode($title, ENT_QUOTES, get_charset())][] = $row;
+            $groups[strval($a) . ':' . strval($b) . ':' . @html_entity_decode($title, ENT_QUOTES)][] = $row;
         }
 
         // Import topics
@@ -367,7 +367,7 @@ class Hook_import_ipb2
             $first_post = true;
             foreach ($group as $_postdetails) {
                 if ($first_post) {
-                    $title = @html_entity_decode($row['mt_title'], ENT_QUOTES, get_charset());
+                    $title = @html_entity_decode($row['mt_title'], ENT_QUOTES);
                 } else {
                     $title = '';
                 }
@@ -403,7 +403,7 @@ class Hook_import_ipb2
     {
         $post = str_replace('<br />', "\n", str_replace('<br>', "\n", $post));
         $post = preg_replace('#\[size="?(\d+)"?\]#', '[size="${1}of"]', $post);
-        return @html_entity_decode($post, ENT_QUOTES, get_charset());
+        return @html_entity_decode($post, ENT_QUOTES);
     }
 
     /**
@@ -475,7 +475,7 @@ class Hook_import_ipb2
 
             $id_new = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_groups', 'id', array($GLOBALS['FORUM_DB']->translate_field_ref('g_name') => $row['g_title']));
             if ($id_new === null) {
-                $id_new = cns_make_group(@html_entity_decode($row['g_title'], ENT_QUOTES, get_charset()), 0, $row['g_access_cp'], $row['g_is_supmod'], '', '', $promotion_target, $promotion_threshold, null, $row['g_avoid_flood'] ? 0 : $row['g_search_flood'], 0, 5, 5, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode);
+                $id_new = cns_make_group(@html_entity_decode($row['g_title'], ENT_QUOTES), 0, $row['g_access_cp'], $row['g_is_supmod'], '', '', $promotion_target, $promotion_threshold, null, $row['g_avoid_flood'] ? 0 : $row['g_search_flood'], 0, 5, 5, $max_avatar_width, $max_avatar_height, $max_post_length_comcode, $max_sig_length_comcode);
             }
 
             // Zone permissions
@@ -610,7 +610,7 @@ class Hook_import_ipb2
             $query = 'SELECT * FROM ' . $table_prefix . 'members m LEFT JOIN ' . $table_prefix . 'members_converge c ON c.converge_id=m.id ORDER BY id';
             $rows = $db->query($query, 200, $row_start);
             foreach ($rows as $row) {
-                $row['name'] = @html_entity_decode($row['name'], ENT_QUOTES, get_charset());
+                $row['name'] = @html_entity_decode($row['name'], ENT_QUOTES);
 
                 if (import_check_if_imported('member', strval($row['id']))) {
                     continue;
@@ -643,7 +643,7 @@ class Hook_import_ipb2
                 if (array_key_exists(0, $rows2)) {
                     $row2 = $rows2[0];
 
-                    $custom_fields[cns_make_boiler_custom_field('about')] = @html_entity_decode($row2['bio'], ENT_QUOTES, get_charset());
+                    $custom_fields[cns_make_boiler_custom_field('about')] = @html_entity_decode($row2['bio'], ENT_QUOTES);
                     $notes = $row2['notes'];
 
                     cns_over_msn();
@@ -828,7 +828,7 @@ class Hook_import_ipb2
             }
 
             foreach ($members as $member) {
-                cns_set_custom_field($member['member_id'], $id_new, @html_entity_decode($member['field_' . strval($row['fid'])], ENT_QUOTES, get_charset()));
+                cns_set_custom_field($member['member_id'], $id_new, @html_entity_decode($member['field_' . strval($row['fid'])], ENT_QUOTES));
             }
 
             import_id_remap_put('cpf', strval($row['fid']), $id_new);
@@ -905,7 +905,7 @@ class Hook_import_ipb2
                         break;
                 }
 
-                $id_new = cns_make_topic($forum_id, @html_entity_decode($row['description'], ENT_QUOTES, get_charset()), $emoticon, $row['approved'], $row['state'] == 'open' ? 1 : 0, $row['pinned'], 0, null, null, false, $row['views']);
+                $id_new = cns_make_topic($forum_id, @html_entity_decode($row['description'], ENT_QUOTES), $emoticon, $row['approved'], $row['state'] == 'open' ? 1 : 0, $row['pinned'], 0, null, null, false, $row['views']);
 
                 import_id_remap_put('topic', strval($row['tid']), $id_new);
             }
@@ -961,7 +961,7 @@ class Hook_import_ipb2
                     $topics = $db->query_select('topics', array('*'), array('tid' => $row['topic_id']));
                     $title = strip_html($topics[0]['title']);
                 } elseif ($row['post_title'] !== null) {
-                    $title = @html_entity_decode($row['post_title'], ENT_QUOTES, get_charset());
+                    $title = @html_entity_decode($row['post_title'], ENT_QUOTES);
                 }
 
                 cns_over_msn();
@@ -970,7 +970,7 @@ class Hook_import_ipb2
 
                 $last_edit_by = null;
                 if ($row['edit_name'] !== null) {
-                    $last_edit_by = $GLOBALS['CNS_DRIVER']->get_member_from_username(@html_entity_decode($row['edit_name'], ENT_QUOTES, get_charset()));
+                    $last_edit_by = $GLOBALS['CNS_DRIVER']->get_member_from_username(@html_entity_decode($row['edit_name'], ENT_QUOTES));
                 }
 
                 $post = str_replace('style_emoticons/<#EMO_DIR#>', '[/html]{$BASE_URL}[html]/data/legacy_emoticons', $post);
@@ -991,7 +991,7 @@ class Hook_import_ipb2
                     $post = substr($post, 0, $pos) . $comcode . substr($post, $end);
                 }
 
-                $id_new = cns_make_post($topic_id, $title, $post, 0, $row['new_topic'] == 1, 1 - $row['queued'], 0, @html_entity_decode($row['author_name'], ENT_QUOTES, get_charset()), $row['ip_address'], $row['post_date'], $member_id, null, $row['edit_time'], $last_edit_by, false, false, $forum_id, false);
+                $id_new = cns_make_post($topic_id, $title, $post, 0, $row['new_topic'] == 1, 1 - $row['queued'], 0, @html_entity_decode($row['author_name'], ENT_QUOTES), $row['ip_address'], $row['post_date'], $member_id, null, $row['edit_time'], $last_edit_by, false, false, $forum_id, false);
 
                 import_id_remap_put('post', strval($row['pid']), $id_new);
             }
@@ -1105,12 +1105,12 @@ class Hook_import_ipb2
             $_answers = unserialize($row['choices']);
             $answers = array(); // An array of answers
             foreach ($_answers as $answer) {
-                $answers[] = array(@html_entity_decode($answer[1], ENT_QUOTES, get_charset()), $answer[2]);
+                $answers[] = array(@html_entity_decode($answer[1], ENT_QUOTES), $answer[2]);
             }
 
             $rows2 = $db->query_select('voters', array('*'), array('tid' => $row['tid']));
 
-            $id_new = cns_make_poll($topic_id, @html_entity_decode($row['poll_question'], ENT_QUOTES, get_charset()), 0, $is_open, 1, 1, 0, $answers, false);
+            $id_new = cns_make_poll($topic_id, @html_entity_decode($row['poll_question'], ENT_QUOTES), 0, $is_open, 1, 1, 0, $answers, false);
 
             $answers = collapse_1d_complexity('id', $GLOBALS['FORUM_DB']->query_select('f_poll_answers', array('id'), array('pa_poll_id' => $id_new))); // Effectively, a remapping from IPB vote number to Composr vote number
             $vote_list = array();
@@ -1173,7 +1173,7 @@ class Hook_import_ipb2
             } elseif ($row['topic_state'] == 'open') {
                 $open_state = 1;
             }
-            $id_new = cns_make_multi_moderation(@html_entity_decode($row['mm_title'], ENT_QUOTES, get_charset()), '[html]' . $row['topic_reply_content'] . '[/html]', $move_to, $pin_state, $open_state);
+            $id_new = cns_make_multi_moderation(@html_entity_decode($row['mm_title'], ENT_QUOTES), '[html]' . $row['topic_reply_content'] . '[/html]', $move_to, $pin_state, $open_state);
 
             import_id_remap_put('multi_moderation', strval($row['mm_id']), $id_new);
         }
@@ -1260,7 +1260,7 @@ class Hook_import_ipb2
                 continue;
             }
             $by = import_id_remap_get('member', strval($row['wlog_addedby']));
-            $id_new = cns_make_warning($member_id, @html_entity_decode($row['wlog_contact_content'], ENT_QUOTES, get_charset()), $by, $row['wlog_date']);
+            $id_new = cns_make_warning($member_id, @html_entity_decode($row['wlog_contact_content'], ENT_QUOTES), $by, $row['wlog_date']);
 
             import_id_remap_put('warning', strval($row['id']), $id_new);
         }

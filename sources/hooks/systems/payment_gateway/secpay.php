@@ -599,7 +599,7 @@ class Hook_payment_gateway_secpay
             fatal_exit(do_lang('INTERNAL_ERROR'));
         }
         $pos_2 = strpos($result, '</value>');
-        $value = @html_entity_decode(trim(substr($result, $pos_1 + 7, $pos_2 - $pos_1 - 7)), ENT_QUOTES, get_charset());
+        $value = @html_entity_decode(trim(substr($result, $pos_1 + 7, $pos_2 - $pos_1 - 7)), ENT_QUOTES);
         if (substr($value, 0, 1) == '?') {
             $value = substr($value, 1);
         }

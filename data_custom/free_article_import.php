@@ -154,15 +154,15 @@ function parse_ezinearticles($r)
 
     $matches = array();
     preg_match('#Submitted On (.*)\.#Us', $f, $matches);
-    $date = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $date = html_entity_decode($matches[1], ENT_QUOTES);
 
     $matches = array();
     preg_match('#<a href="[^"]*" rel="author" class="author-name" title="[^"]*">\s*(.*)\s*</a>#Us', $f, $matches);
-    $author = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $author = html_entity_decode($matches[1], ENT_QUOTES);
 
     $matches = array();
     preg_match('#<h1>(.*)</h1>#Us', $f, $matches);
-    $title = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $title = html_entity_decode($matches[1], ENT_QUOTES);
 
     $f = http_get_contents_cached('http://ezinearticles.com/ezinepublisher/?id=' . urlencode($id), $r[1]);
 
@@ -176,11 +176,11 @@ function parse_ezinearticles($r)
 
     $matches = array();
     preg_match('#<textarea rows="5" id="article-summary" cols="50" wrap="physical" readonly>(.*)</textarea>#Us', $f, $matches);
-    $summary = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $summary = html_entity_decode($matches[1], ENT_QUOTES);
 
     $matches = array();
     preg_match('#<input type="text" id="article-keywords" size="75" value="([^"]*)" readonly>#Us', $f, $matches);
-    $keywords = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $keywords = html_entity_decode($matches[1], ENT_QUOTES);
 
     return array(
         $r[0], // Category
@@ -208,19 +208,19 @@ function parse_articlesbase($r)
 
     $matches = array();
     preg_match('#<span class="date">(.*)</span>#Us', $f, $matches);
-    $date = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $date = html_entity_decode($matches[1], ENT_QUOTES);
 
     $matches = array();
     if ((preg_match('#rel="author" itemprop="author">.*</a>\s*</strong>\s*<p>(.*) is #Us', $f, $matches) != 0) && (strlen($matches[1]) < 20)) {
-        $author = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+        $author = html_entity_decode($matches[1], ENT_QUOTES);
     } else {
         preg_match('#rel="author" itemprop="author">(.*)</a>#Us', $f, $matches);
-        $author = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+        $author = html_entity_decode($matches[1], ENT_QUOTES);
     }
 
     $matches = array();
     preg_match('#<h1 class="atitle" itemprop="name">(.*)</h1>#Us', $f, $matches);
-    $title = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $title = html_entity_decode($matches[1], ENT_QUOTES);
 
     $f = http_get_contents_cached('http://www.articlesbase.com/ezine/' . $id, $r[1], $cookies);
 
@@ -232,11 +232,11 @@ function parse_articlesbase($r)
 
     $matches = array();
     preg_match('#<textarea class="summary" id="ezine_summary">(.*)</textarea>#Us', $f, $matches);
-    $summary = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $summary = html_entity_decode($matches[1], ENT_QUOTES);
 
     $matches = array();
     preg_match('#<input type="text" value="([^"]*)" />#Us', $f, $matches);
-    $keywords = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $keywords = html_entity_decode($matches[1], ENT_QUOTES);
 
     return array(
         $r[0], // Category
@@ -260,18 +260,18 @@ function parse_articletrader($r)
 
     $matches = array();
     preg_match("#<div style='font-size:80%;margin-top:0px'>Submitted by <a href='[^']*'>(.*)</a><br>\s*(.*)</div>#Us", $f, $matches);
-    $author = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
-    $date = html_entity_decode($matches[2], ENT_QUOTES, get_charset());
+    $author = html_entity_decode($matches[1], ENT_QUOTES);
+    $date = html_entity_decode($matches[2], ENT_QUOTES);
 
     $matches = array();
     preg_match('#<h1 style="margin-bottom:3px">(.*)</h1>#Us', $f, $matches);
-    $title = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $title = html_entity_decode($matches[1], ENT_QUOTES);
 
     $f = http_get_contents_cached('http://www.articletrader.com' . $synd_url, $r[1]);
 
     $matches = array();
     preg_match('#<textarea style="width:99%" rows=30>(.*)</textarea>#Us', $f, $matches);
-    $body = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+    $body = html_entity_decode($matches[1], ENT_QUOTES);
     $body = str_replace("\n", '<br />', $body);
 
     $summary = '';

@@ -714,7 +714,7 @@ function prepare_post_for_tapatalk($post, $return_html = false)
         */
 
         $content = tapatalk_strip_comcode($content);
-        $content = nl2br(htmlspecialchars($content, ENT_NOQUOTES, get_charset()));
+        $content = nl2br(htmlspecialchars($content, ENT_NOQUOTES));
         $content = preg_replace('#\[color="[^"\[\]]"\](.*)\[/color\]#is', '<font color="\1">\2</font>', $content);
 
         $comcode_remap = array(

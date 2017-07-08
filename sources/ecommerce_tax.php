@@ -780,8 +780,8 @@ function _prepare_tics_list($all_tics, $default, $parent, $pre = '', $depth = 0)
 
     $tics_list = new Tempcode();
     foreach ($child_tics as $tic) {
-        $text = $pre . html_entity_decode($tic['label'], ENT_QUOTES, get_charset());
-        $title = html_entity_decode($tic['title'], ENT_QUOTES, get_charset());
+        $text = $pre . html_entity_decode($tic['label'], ENT_QUOTES);
+        $title = html_entity_decode($tic['title'], ENT_QUOTES);
         $tics_list->attach(form_input_list_entry($tic['id'], $tic['id'] == $default, $text, false, false, $title));
 
         $under = _prepare_tics_list($all_tics, $default, $tic['id'], $text . ' > ', $depth + 1);

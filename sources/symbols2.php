@@ -583,7 +583,7 @@ function ecv2_COMMA_LIST_NICIFY($lang, $escaped, $param)
     }
 
     if (isset($param[0])) {
-        $value = html_entity_decode(str_replace(',', ', ', preg_replace('#[^,=]*=#', '', $param[0])), ENT_QUOTES, get_charset());
+        $value = html_entity_decode(str_replace(',', ', ', preg_replace('#[^,=]*=#', '', $param[0])), ENT_QUOTES);
     }
 
     if ($escaped !== array()) {

@@ -355,7 +355,7 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
         if (get_charset() != 'utf-8') {
             $text = str_replace(array('&ndash;', '&mdash;', '&hellip;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '...', '|', '"', '"', "'", "'"), $text);
         }
-        $text = @html_entity_decode($text, ENT_QUOTES, get_charset());
+        $text = @html_entity_decode($text, ENT_QUOTES);
     }
 
     return trim($text);

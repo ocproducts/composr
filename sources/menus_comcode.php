@@ -173,7 +173,7 @@ function build_comcode_menu($comcode, $menu, $source_member, $type)
                 'modifiers' => $modifiers,
                 'only_on_page' => '',
                 'page_link' => null,
-                'url' => @html_entity_decode($url, ENT_QUOTES, get_charset()),
+                'url' => @html_entity_decode($url, ENT_QUOTES),
                 'extra_meta' => array(
                     'description' => null,
                     'image' => null,

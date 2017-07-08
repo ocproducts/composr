@@ -257,7 +257,7 @@ function tapatalk_strip_comcode($data)
     $data = strip_attachments_from_comcode($data, true);
 
     // Shortcuts
-    $data = html_entity_decode($data, ENT_QUOTES, get_charset());
+    $data = html_entity_decode($data, ENT_QUOTES);
     $shortcuts = array('(EUR-)' => '&euro;', '{f.}' => '&fnof;', '-|-' => '&dagger;', '=|=' => '&Dagger;', '{%o}' => '&permil;', '{~S}' => '&Scaron;', '{~Z}' => '&#x17D;', '(TM)' => '&trade;', '{~s}' => '&scaron;', '{~z}' => '&#x17E;', '{.Y.}' => '&Yuml;', '(c)' => '&copy;', '(r)' => '&reg;', '---' => '&mdash;', '--' => '&ndash;', '...' => '&hellip;', '-->' => '&rarr;', '<--' => '&larr;');
     $data = strtr($data, array_flip($shortcuts));
 

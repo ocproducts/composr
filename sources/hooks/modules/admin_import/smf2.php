@@ -765,7 +765,7 @@ class Hook_import_smf2
             }
 
             $title = $row['name'];
-            $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
+            $title = @html_entity_decode($title, ENT_QUOTES);
 
             $test = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forum_groupings', 'id', array('c_title' => $title));
             if ($test !== null) {
@@ -799,7 +799,7 @@ class Hook_import_smf2
                 continue;
             }
 
-            $name = html_entity_decode($row['name'], ENT_QUOTES, get_charset());
+            $name = html_entity_decode($row['name'], ENT_QUOTES);
 
             $description = str_replace(array('[html]', '[/html]'), array('', ''), html_to_comcode($row['description']));
 
@@ -1018,7 +1018,7 @@ class Hook_import_smf2
                 $forum_id = import_id_remap_get('forum', strval($row['id_board']), true);
 
                 $title = $row['subject'];
-                $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
+                $title = @html_entity_decode($title, ENT_QUOTES);
 
                 $post_description = str_replace(array('[html]', '[/html]'), array('', ''), html_to_comcode($row['body']));
 
@@ -1314,7 +1314,7 @@ class Hook_import_smf2
                         $title = '';
                     }
 
-                    $title = @html_entity_decode($title, ENT_QUOTES, get_charset());
+                    $title = @html_entity_decode($title, ENT_QUOTES);
 
                     $post_description = str_replace(array('[html]', '[/html]'), array('', ''), html_to_comcode($_post['body']));
 

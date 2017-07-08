@@ -260,14 +260,14 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
             case 'area':
                 global $AREA_LINKS;
                 if (isset($attributes['href'])) {
-                    $AREA_LINKS[@html_entity_decode($attributes['href'], ENT_QUOTES, get_charset())] = 1;
+                    $AREA_LINKS[@html_entity_decode($attributes['href'], ENT_QUOTES)] = 1;
                 }
                 break;
 
             case 'base':
                 global $URL_BASE;
                 if (isset($attributes['href'])) {
-                    $URL_BASE = @html_entity_decode($attributes['href'], ENT_QUOTES, get_charset());
+                    $URL_BASE = @html_entity_decode($attributes['href'], ENT_QUOTES);
                 }
                 break;
 
@@ -381,7 +381,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 /* We used to enforce th length for accessibility, but this is impractical since 'abbr' attribute was dropped in HTML5
                 if (!isset($attributes['abbr'])) {
                     $content = trim(substr($OUT, $POS, strpos($OUT, '</th>', $POS) - $POS)); // This isn't perfect - In theory a th could contain a table itself: but it's not very semantic if it does
-                    if (strlen(trim(@html_entity_decode(strip_tags($content), ENT_QUOTES, get_charset()))) > 40) {
+                    if (strlen(trim(@html_entity_decode(strip_tags($content), ENT_QUOTES))) > 40) {
                         $errors[] = array('WCAG_TH_TOO_LONG');
                     }
                 }
@@ -560,20 +560,20 @@ function _check_attributes($tag, $attributes, $self_close, $close)
         }
 
         if ((($attribute == 'alt') || ($attribute == 'title') || (($attribute == 'content') && (array_key_exists('http-equiv', $attributes)) && ((strtolower($attributes['http-equiv']) == 'description') || (strtolower($attributes['http-equiv']) == 'keywords')))) && (function_exists('pspell_new')) && (!empty($GLOBALS['SPELLING'])) && ($value != '')) {
-            $_value = @html_entity_decode($value, ENT_QUOTES, get_charset());
+            $_value = @html_entity_decode($value, ENT_QUOTES);
             $errors = array_merge($errors, check_spelling($_value));
         }
 
         //if (($attribute == 'alt') && ($tag != 'input') && (strlen(strip_tags($value)) > 150)) $errors[] = array('WCAG_ATTRIBUTE_TOO_LONG', $attribute);
 
         if (($attribute == 'href') || ($attribute == 'src') || (($attribute == 'data') && ($tag == 'object'))) {
-            $CRAWLED_URLS[] = @html_entity_decode($value, ENT_QUOTES, get_charset());
+            $CRAWLED_URLS[] = @html_entity_decode($value, ENT_QUOTES);
             if ($tag == 'a') {
-                $HYPERLINK_URLS[] = @html_entity_decode($value, ENT_QUOTES, get_charset());
+                $HYPERLINK_URLS[] = @html_entity_decode($value, ENT_QUOTES);
             }
         }
         if ((($attribute == 'src') && ($tag == 'embed')) || (($attribute == 'src') && ($tag == 'script')) || (($attribute == 'src') && ($tag == 'iframe')) || (($attribute == 'src') && ($tag == 'img')) || (($attribute == 'href') && ($tag == 'link') && (isset($attributes['rel'])) && ($attributes['rel'] == 'stylesheet')) || (($attribute == 'data') && ($tag == 'object')) || (($attribute == 'code') && ($tag == 'applet'))) {
-            $EMBED_URLS[] = @html_entity_decode($value, ENT_QUOTES, get_charset());
+            $EMBED_URLS[] = @html_entity_decode($value, ENT_QUOTES);
         }
 
         if (($attribute == 'href') && (@strtolower(@$value[0]) == 'j') && (strtolower(substr($value, 0, 11)) == 'javascript:')) {

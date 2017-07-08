@@ -647,7 +647,7 @@ class Hook_import_vb3
             $cascading = $sticky;
 
             $id_new = cns_make_topic($forum_id, '', $emoticon, 1, 0, $sticky, $cascading, null, null, false, $row['views']);
-            cns_make_post($id_new, @html_entity_decode($row['title'], ENT_QUOTES, get_charset()), $this->fix_links($row['pagetext'], $db, $table_prefix), 0, true, 1, 1, null, null, $row['startdate'], $row['userid'], null, null, null, false, false, $forum_id, false, $row['title']);
+            cns_make_post($id_new, @html_entity_decode($row['title'], ENT_QUOTES), $this->fix_links($row['pagetext'], $db, $table_prefix), 0, true, 1, 1, null, null, $row['startdate'], $row['userid'], null, null, null, false, false, $forum_id, false, $row['title']);
 
             import_id_remap_put('announcement', strval($row['announcementid']), $id_new);
         }
@@ -725,7 +725,7 @@ class Hook_import_vb3
 
                 $last_edit_by = null;
 
-                $id_new = cns_make_post($topic_id, @html_entity_decode($title, ENT_QUOTES, get_charset()), $post, 0, $row['parentid'] == 0, $row['visible'], 0, $row['username'], $row['ipaddress'], $row['dateline'], $member_id, null, null, $last_edit_by, false, false, $forum_id, false);
+                $id_new = cns_make_post($topic_id, @html_entity_decode($title, ENT_QUOTES), $post, 0, $row['parentid'] == 0, $row['visible'], 0, $row['username'], $row['ipaddress'], $row['dateline'], $member_id, null, null, $last_edit_by, false, false, $forum_id, false);
 
                 import_id_remap_put('post', strval($row['postid']), $id_new);
             }

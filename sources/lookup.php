@@ -320,7 +320,7 @@ function find_user_metadata($include_referer = true)
             $num_matches = preg_match_all('#<param>(\w+)=(.*)</param>#Us', $myrow['s_get'], $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 if ($matches[1][$i] != 'page') {
-                    $attributes[html_entity_decode($matches[1][$i], ENT_QUOTES, get_charset())] = html_entity_decode($matches[2][$i], ENT_QUOTES, get_charset());
+                    $attributes[html_entity_decode($matches[1][$i], ENT_QUOTES)] = html_entity_decode($matches[2][$i], ENT_QUOTES);
                 }
             }
             $h[do_lang('URL')] = static_evaluate_tempcode(build_url($attributes, $zone));

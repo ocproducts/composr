@@ -364,7 +364,7 @@ class Module_news
                 $news_full_eval = $news_full->evaluate();
                 $matches = array();
                 if (preg_match('#<img\s[^<>]*src="([^"]*)"#', $news_full_eval, $matches) != 0) {
-                    $og_img = html_entity_decode($matches[1], ENT_QUOTES, get_charset());
+                    $og_img = html_entity_decode($matches[1], ENT_QUOTES);
                 }
             }
 

@@ -1745,14 +1745,14 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                 // Shorten the URL if it is too long
                 $max_link_length = 50;
                 if (strlen($_caption) > $max_link_length) {
-                    $_caption = escape_html(substr(@html_entity_decode($_caption, ENT_QUOTES, get_charset()), 0, intval($max_link_length / 2 - 3))) . '&hellip;' . escape_html(substr(@html_entity_decode($_caption, ENT_QUOTES, get_charset()), intval(-$max_link_length / 2)));
+                    $_caption = escape_html(substr(@html_entity_decode($_caption, ENT_QUOTES), 0, intval($max_link_length / 2 - 3))) . '&hellip;' . escape_html(substr(@html_entity_decode($_caption, ENT_QUOTES), intval(-$max_link_length / 2)));
                 }
 
                 $caption = make_string_tempcode($_caption);
             }
 
             // Tidy up the URL now
-            $url = @html_entity_decode($url, ENT_QUOTES, get_charset());
+            $url = @html_entity_decode($url, ENT_QUOTES);
             $url = fixup_protocolless_urls($url);
 
             // Integrity and security

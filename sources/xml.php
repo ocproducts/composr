@@ -152,30 +152,24 @@ class CMS_simple_xml_reader
             return;
         }
 
-        // Our internal charset
-        $parser_charset = get_charset();
-        if (!in_array(strtoupper($parser_charset), array('ISO-8859-1', 'US-ASCII', 'utf-8'))) {
-            $parser_charset = 'utf-8';
-        }
-
         // Create and setup our parser
         if (function_exists('libxml_disable_entity_loader')) {
             libxml_disable_entity_loader();
         }
-        $xml_parser = @xml_parser_create_ns($parser_charset);
+        $xml_parser = @xml_parser_create_ns();
         if ($xml_parser === false) {
             $this->error = do_lang_tempcode('XML_PARSING_NOT_SUPPORTED');
             return; // PHP5 default build on windows comes with this function disabled, so we need to be able to escape on error
         }
         xml_set_object($xml_parser, $this);
-        @xml_parser_set_option($xml_parser, XML_OPTION_TARGET_ENCODING, $parser_charset);
+        @xml_parser_set_option($xml_parser, XML_OPTION_TARGET_ENCODING, get_charset());
         xml_set_element_handler($xml_parser, 'startElement', 'endElement');
         xml_set_character_data_handler($xml_parser, 'startText');
 
         if (strpos($xml_data, '<' . '?xml') === false) {
-            $xml_data = '<' . '?xml version="1.0" encoding="' . xmlentities($parser_charset) . '"?' . '>' . $xml_data;
+            $xml_data = '<' . '?xml version="1.0" encoding="' . xmlentities(get_charset()) . '"?' . '>' . $xml_data;
         }
-        $xml_data = unixify_line_format($xml_data, $parser_charset); // Fixes Windows characters
+        $xml_data = unixify_line_format($xml_data); // Fixes Windows characters
 
         if (xml_parse($xml_parser, $xml_data, true) == 0) {
             warn_exit(xml_error_string(xml_get_error_code($xml_parser)), false, true);

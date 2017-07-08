@@ -147,7 +147,7 @@ function get_webpage_meta_details($url)
 
                     if ($header == 't_title' || $header == 't_image_url') { // Non-HTML
                         $value = str_replace(array('&ndash;', '&mdash;'), array('-', '-'), $value);
-                        $value = @html_entity_decode($value, ENT_QUOTES, get_charset());
+                        $value = @html_entity_decode($value, ENT_QUOTES);
                         $value = trim($value);
                         $value = substr($value, 0, 255);
                     }
@@ -181,13 +181,13 @@ function get_webpage_meta_details($url)
             $matches2 = array();
             if ((preg_match('#\srel=["\']?alternate["\']?#i', $line) != 0) && (preg_match('#\shref=["\']?([^"\']+)["\']?#i', $line, $matches2) != 0)) {
                 if (preg_match('#\stype=["\']?application/json\+oembed["\']?#i', $line) != 0) {
-                    $meta_details['t_json_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES, get_charset());
+                    $meta_details['t_json_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES);
                     if (strlen($meta_details['t_json_discovery']) > 255) {
                         $meta_details['t_json_discovery'] = ''; // We can't deal with really long URLs here
                     }
                 }
                 if (preg_match('#\stype=["\']?text/xml\+oembed["\']?#i', $line) != 0) {
-                    $meta_details['t_xml_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES, get_charset());
+                    $meta_details['t_xml_discovery'] = @html_entity_decode($matches2[1], ENT_QUOTES);
                     if (strlen($meta_details['t_xml_discovery']) > 255) {
                         $meta_details['t_xml_discovery'] = ''; // We can't deal with really long URLs here
                     }

@@ -931,7 +931,7 @@ class CMS_Topic
                     $matches = array();
                     if (preg_match('#<img\s[^<>]*src="([^"]*)"#', $message_eval, $matches) != 0) {
                         set_extra_request_metadata(array(
-                            'image' => html_entity_decode($matches[1], ENT_QUOTES, get_charset()),
+                            'image' => html_entity_decode($matches[1], ENT_QUOTES),
                         ));
                     }
                 }

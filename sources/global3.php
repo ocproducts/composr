@@ -935,7 +935,7 @@ function cms_mb_ucwords($in)
     }
 
     if (function_exists('mb_convert_case')) {
-        return @mb_convert_case($in, MB_CASE_TITLE, get_charset());
+        return @mb_convert_case($in, MB_CASE_TITLE);
     }
 
     return is_ascii_string($in) ? ucwords($in) : $in;
@@ -954,7 +954,7 @@ function cms_mb_strtolower($in)
     }
 
     if (function_exists('mb_strtolower')) {
-        return @mb_strtolower($in, get_charset());
+        return @mb_strtolower($in);
     }
 
     return is_ascii_string($in) ? strtolower($in) : $in;
@@ -973,7 +973,7 @@ function cms_mb_strtoupper($in)
     }
 
     if (function_exists('mb_strtoupper')) {
-        return @mb_strtoupper($in, get_charset());
+        return @mb_strtoupper($in);
     }
 
     return is_ascii_string($in) ? strtoupper($in) : $in;
@@ -2367,7 +2367,7 @@ function escape_html($string)
 
     global $XSS_DETECT, $ESCAPE_HTML_OUTPUT, $DECLARATIONS_STATE;
 
-    $ret = @htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE, get_charset());
+    $ret = @htmlspecialchars($string, ENT_QUOTES | ENT_SUBSTITUTE);
 
     if (defined('I_UNDERSTAND_XSS') && !$DECLARATIONS_STATE[I_UNDERSTAND_XSS]) {
         $ESCAPE_HTML_OUTPUT[$ret] = true;
@@ -3077,7 +3077,7 @@ function strip_html($in)
         $text = str_replace(array('&ndash;', '&mdash;', '&hellip;', '&middot;', '&ldquo;', '&rdquo;', '&lsquo;', '&rsquo;'), array('-', '-', '...', '|', '"', '"', "'", "'"), $text);
     }
     $text = strip_tags($text);
-    return @html_entity_decode($text, ENT_QUOTES, get_charset());
+    return @html_entity_decode($text, ENT_QUOTES);
 }
 
 /**

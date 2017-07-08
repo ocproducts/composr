@@ -105,7 +105,7 @@ class _broken_links_test_set extends cms_test_case
         $matches = array();
         $num_matches = preg_match_all('#\shref=["\']([^"\']+)["\']#', $html, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
-            $this->checkLink(html_entity_decode($matches[1][$i], ENT_QUOTES, get_charset()));
+            $this->checkLink(html_entity_decode($matches[1][$i], ENT_QUOTES));
         }
     }
 

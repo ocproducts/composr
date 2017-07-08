@@ -417,7 +417,7 @@ class Forum_driver_vb3 extends Forum_driver_base
             $temp = array();
             $temp['title'] = $myrow['title'];
             push_lax_comcode(true);
-            $temp['message'] = comcode_to_tempcode(@html_entity_decode($myrow['pagetext'], ENT_QUOTES, get_charset()), $myrow['userid']);
+            $temp['message'] = comcode_to_tempcode(@html_entity_decode($myrow['pagetext'], ENT_QUOTES), $myrow['userid']);
             pop_lax_comcode();
             $temp['member'] = $myrow['userid'];
             $temp['date'] = $myrow['dateline'];
@@ -521,7 +521,7 @@ class Forum_driver_vb3 extends Forum_driver_base
             $out[$i]['firsttitle'] = $fp_rows[0]['title'];
             if ($show_first_posts) {
                 push_lax_comcode(true);
-                $out[$i]['firstpost'] = comcode_to_tempcode(@html_entity_decode($fp_rows[0]['pagetext'], ENT_QUOTES, get_charset()), $fp_rows[0]['userid']);
+                $out[$i]['firstpost'] = comcode_to_tempcode(@html_entity_decode($fp_rows[0]['pagetext'], ENT_QUOTES), $fp_rows[0]['userid']);
                 pop_lax_comcode();
             }
             $fp_rows = $this->db->query('SELECT title,pagetext,userid FROM ' . $this->db->get_table_prefix() . 'post WHERE pagetext NOT LIKE \'' . db_encode_like(do_lang('SPACER_POST', '', '', '', get_site_default_lang()) . '%') . '\' AND threadid=' . strval($out[$i]['id']) . ' ORDER BY dateline DESC', 1);
