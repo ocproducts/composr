@@ -1172,7 +1172,8 @@ function form_input_text_comcode($pretty_name, $description, $name, $default, $r
 }
 
 /**
- * Get the Tempcode for a huge comcode-enabled text input (textarea). These need extra space to fit. This function is also used as an automatic replacement for form_input_text_comcode if WYSIWYG is available (as WYSIWYG needs more space too)
+ * Get the Tempcode for a huge comcode-enabled text input (textarea). These need extra space to fit.
+ * This function is also used as an automatic replacement for form_input_text_comcode if WYSIWYG is available (as WYSIWYG needs more space too).
  *
  * @param  mixed $pretty_name A human intelligible name for this input field
  * @param  mixed $description A description for this input field

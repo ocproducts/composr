@@ -52,7 +52,7 @@ class Hook_check_gd
     }
 
     /**
-     * Get the version number of GD on the system. It should only be called if GD is known to be on the system, and in use
+     * Get the version number of GD on the system. It should only be called if GD is known to be on the system, and in use.
      *
      * @return float The version of GD installed
      */

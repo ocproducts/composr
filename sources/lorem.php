@@ -508,7 +508,7 @@ function placeholder_breadcrumbs()
 }
 
 /**
- * Lorem version of do_template. It will reprocess the template into something that is "stable XHTML" and thus can work inside an XHTML editor
+ * Lorem version of do_template. It will reprocess the template into something that is "stable XHTML" and thus can work inside an XHTML editor.
  *
  * @param  ID_TEXT $codename The codename of the template being loaded
  * @param  array $parameters A map of parameters for the template (key to value)

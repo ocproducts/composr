@@ -576,7 +576,7 @@ function _inet_pton($ip)
 }
 
 /**
- * Find if an IP address is within a CIDR range. Based on comment in PHP manual: http://php.net/manual/en/ref.network.php
+ * Find if an IP address is within a CIDR range. Based on comment in PHP manual: http://php.net/manual/en/ref.network.php.
  *
  * @param  IP $ip IP address
  * @param  SHORT_TEXT $cidr CIDR range (e.g. 204.93.240.0/24)

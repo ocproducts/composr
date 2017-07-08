@@ -297,7 +297,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Update Promotion Thresholds for Imported Groups
+     * Update Promotion Thresholds for Imported Groups.
      *
      * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
@@ -566,7 +566,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Used with cns_custom_profile_fields
+     * Used with cns_custom_profile_fields.
      *
      * @param  string $default Default value
      * @param  string $options List of coma seperated options
@@ -888,7 +888,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Fills the static_perm_arr with profile permissions for all Composr groups
+     * Fills the static_perm_arr with profile permissions for all Composr groups.
      *
      * @param  integer $pid Profile ID to use
      * @param  integer $fid Forum ID to use
@@ -922,7 +922,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Gets the role value for permissions of group
+     * Gets the role value for permissions of group.
      *
      * @param  integer $gid Group ID to use
      * @param  integer $pid Profile ID to use
@@ -1441,7 +1441,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Used to build privilege permission access to Forums
+     * Used to build privilege permission access to Forums.
      *
      * @param  string $gid Group ID to map
      * @param  string $pid Profile ID to map
@@ -1483,7 +1483,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Used to set view access to Forums
+     * Used to set view access to Forums.
      *
      * @param  integer $gid The Group ID to set
      * @param  string $fid The Forum ID to set
@@ -1506,7 +1506,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Used to set view access to Forums
+     * Used to set view access to Forums.
      *
      * @param  array $arr The static array map built from static_perm_arr
      * @param  integer $forum_id The Forum ID to set
@@ -1540,7 +1540,7 @@ class Hook_import_smf2
     }
 
     /**
-     * Used to Set Forum Permissions
+     * Used to Set Forum Permissions.
      *
      * @param  integer $group_id The Group ID to set
      * @param  string $forum_id The Forum ID to set

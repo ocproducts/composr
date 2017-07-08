@@ -151,7 +151,7 @@ function is_guest($member_id = null, $quick_only = false)
 
 /**
  * Get the ID of the currently active member.
- * It see's if the session exists / cookie is valid -- and gets the member ID accordingly
+ * It see's if the session exists / cookie is valid -- and gets the member ID accordingly.
  *
  * @param  boolean $quick_only Whether to just do a quick check, don't establish new sessions
  * @return MEMBER The member requesting this web page (possibly the guest member - which strictly speaking, is not a member)

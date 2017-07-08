@@ -219,7 +219,7 @@ class Module_admin_cns_members
     }
 
     /**
-     * The do-next manager for choosing what to do
+     * The do-next manager for choosing what to do.
      *
      * @return Tempcode The UI
      */

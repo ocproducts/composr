@@ -997,8 +997,8 @@ class CMS_Topic
     }
 
     /**
-     * Sets a level_has_adjacent_sibling property on posts, which is a single-dimensional array
-     * with a boolean value for every parent post and the post itself containing whether it has an adjacent sibling
+     * Sets a level_has_adjacent_sibling property on posts, which is a single-dimensional array.
+     * with a boolean value for every parent post and the post itself containing whether it has an adjacent sibling.
      *
      * @param  array $posts An array of posts
      * @param  array $level_has_adjacent_sibling For internal use only
@@ -1014,7 +1014,7 @@ class CMS_Topic
     }
 
     /**
-     * Renders the post map items to a tempcode object
+     * Renders the post map items to a tempcode object.
      *
      * @param  array $post A post
      * @return Tempcode

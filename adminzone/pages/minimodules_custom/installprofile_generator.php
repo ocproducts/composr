@@ -64,7 +64,7 @@ $profile = <<<END
 class Hook_admin_setupwizard_installprofiles_mycustomprofile
 {
     /**
-     * Get info about the installprofile
+     * Get info about the installprofile.
      *
      * @return array Map of installprofile details
      */
@@ -76,7 +76,7 @@ class Hook_admin_setupwizard_installprofiles_mycustomprofile
     }
 
     /**
-     * Get a list of addons that are kept with this installation profile (added to the list of addons always kept)
+     * Get a list of addons that are kept with this installation profile (added to the list of addons always kept).
      *
      * @return array Triple: List of addons in the profile, Separated list of ones to show under advanced, Ones we really are shunning
      */
@@ -109,7 +109,7 @@ $profile .= <<<END
     }
 
     /**
-     * Get a map of default settings associated with this installation profile
+     * Get a map of default settings associated with this installation profile.
      *
      * @return array Map of default settings
      */
@@ -141,7 +141,7 @@ $profile .= <<<END
     }
 
     /**
-     * Find details of desired blocks
+     * Find details of desired blocks.
      *
      * @return array Details of what blocks are wanted
      */
@@ -181,7 +181,7 @@ $profile .= <<<END
     }
 
     /**
-     * Get options for blocks in this profile
+     * Get options for blocks in this profile.
      *
      * @return array Details of what block options are wanted
      */
@@ -208,7 +208,7 @@ $profile .= <<<END
     }
 
     /**
-     * Execute any special code needed to put this install profile into play
+     * Execute any special code needed to put this install profile into play.
      */
     function install_code()
     {

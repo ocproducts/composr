@@ -784,7 +784,7 @@ class Virtual_shell
     }
 
     /**
-     * Is the current block a valid redirection instruction?
+     * Is the current block a valid redirection instruction?.
      *
      * @return boolean Redirection instruction?
      */

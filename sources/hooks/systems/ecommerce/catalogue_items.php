@@ -321,7 +321,7 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Get the message for use in the purchasing module
+     * Get the message for use in the purchasing module.
      *
      * @param  ID_TEXT $type_code The product in question
      * @return ?Tempcode The message (null: no message)
@@ -588,7 +588,7 @@ class Hook_ecommerce_catalogue_items
     }
 
     /**
-     * Stock maintain warning mail
+     * Stock maintain warning mail.
      *
      * @param  SHORT_TEXT $product_title Product title
      * @param  ID_TEXT $type_code Product codename

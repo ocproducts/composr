@@ -86,7 +86,7 @@ class JSMin
     // -- Public Instance Methods ------------------------------------------------
 
     /**
-     * Constructor function
+     * Constructor function.
      *
      * @param    string $input Javascript to minimise
      */
@@ -99,7 +99,7 @@ class JSMin
     // -- Protected Instance Methods ---------------------------------------------
 
     /**
-     * Handle internal parse situation
+     * Handle internal parse situation.
      *
      * @param    integer $d Action type
      * @return    ?array        Error (null: no error)
@@ -190,7 +190,7 @@ class JSMin
     }
 
     /**
-     * Get the next stream token
+     * Get the next stream token.
      *
      * @return    ?string        Next stream token (null: no next token)
      */
@@ -228,7 +228,7 @@ class JSMin
     }
 
     /**
-     * Find whether a character is alphanumeric
+     * Find whether a character is alphanumeric.
      *
      * @param    string $c Character
      * @return    boolean        Whether it is
@@ -243,7 +243,7 @@ class JSMin
     }
 
     /**
-     * Do minification process
+     * Do minification process.
      *
      * @return    string        Minified Javascript
      */
@@ -343,7 +343,7 @@ class JSMin
     }
 
     /**
-     * Get the next item in the stream (complex cases)
+     * Get the next item in the stream (complex cases).
      *
      * @param    string $c Next item needing further processing
      * @return    mixed            Next item or error (array)
@@ -393,7 +393,7 @@ class JSMin
     }
 
     /**
-     * Find what's next in the stream
+     * Find what's next in the stream.
      *
      * @return    string        What's next
      */

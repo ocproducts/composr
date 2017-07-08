@@ -17,7 +17,7 @@
 
 namespace webdav_commandr_fs {
     /**
-     * Base node-class
+     * Base node-class.
      *
      * The node class implements the method used by both the File and the Directory classes
      *
@@ -145,7 +145,7 @@ namespace webdav_commandr_fs {
     }
 
     /**
-     * Directory class
+     * Directory class.
      *
      * @copyright Copyright (C) 2007-2013 Rooftop Solutions. All rights reserved.
      * @author Evert Pot (http://www.rooftopsolutions.nl/)
@@ -299,7 +299,7 @@ namespace webdav_commandr_fs {
     }
 
     /**
-     * File class
+     * File class.
      *
      * @copyright Copyright (C) 2007-2013 Rooftop Solutions. All rights reserved.
      * @author Evert Pot (http://www.rooftopsolutions.nl/)

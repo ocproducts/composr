@@ -599,7 +599,7 @@ class Module_shopping
     }
 
     /**
-     * Show all my orders
+     * Show all my orders.
      *
      * @return Tempcode The interface
      */
@@ -653,7 +653,7 @@ class Module_shopping
     }
 
     /**
-     * Show an order details
+     * Show an order details.
      *
      * @return Tempcode The interface
      */

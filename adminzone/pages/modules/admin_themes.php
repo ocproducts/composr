@@ -1259,7 +1259,7 @@ class Module_admin_themes
     }
 
     /**
-     * Shows the list of templates
+     * Shows the list of templates.
      *
      * @return Tempcode The UI
      */
@@ -1370,7 +1370,7 @@ class Module_admin_themes
     }
 
     /**
-     * Shows the preview of a screen
+     * Shows the preview of a screen.
      *
      * @return Tempcode The UI
      */

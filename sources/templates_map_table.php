@@ -19,7 +19,7 @@
  */
 
 /**
- * Get the Tempcode for a view space page. (a view space shows a single entry, with the field name for each field to the left of the value)
+ * Get the Tempcode for a view space page. (a view space shows a single entry, with the field name for each field to the left of the value).
  *
  * @param  Tempcode $title The title of the view space; should be out of get_screen_title
  * @param  array $fields An array of mappings between title and value (each mapping being a field)

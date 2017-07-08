@@ -1121,7 +1121,7 @@ class Module_cms_calendar extends Standard_crud_module
     }
 
     /**
-     * The UI to import ical for calendar
+     * The UI to import ical for calendar.
      *
      * @return Tempcode The UI
      */
@@ -1158,7 +1158,7 @@ class Module_cms_calendar extends Standard_crud_module
     }
 
     /**
-     * The actualiser to import ical for calendar
+     * The actualiser to import ical for calendar.
      *
      * @return Tempcode The UI
      */
@@ -1187,7 +1187,7 @@ class Module_cms_calendar extends Standard_crud_module
     }
 
     /**
-     * UI to display export screen fields
+     * UI to display export screen fields.
      *
      * @return Tempcode The UI
      */
@@ -1217,7 +1217,7 @@ class Module_cms_calendar extends Standard_crud_module
     }
 
     /**
-     * The actualiser to export ical
+     * The actualiser to export ical.
      */
     public function _export_ical()
     {

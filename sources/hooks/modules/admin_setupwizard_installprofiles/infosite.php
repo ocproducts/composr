@@ -24,7 +24,7 @@
 class Hook_admin_setupwizard_installprofiles_infosite
 {
     /**
-     * Get info about the installprofile
+     * Get info about the installprofile.
      *
      * @return array Map of installprofile details
      */
@@ -36,7 +36,7 @@ class Hook_admin_setupwizard_installprofiles_infosite
     }
 
     /**
-     * Get a list of addons that are kept with this installation profile (added to the list of addons always kept)
+     * Get a list of addons that are kept with this installation profile (added to the list of addons always kept).
      *
      * @return array Pair: List of addons in the profile, Separated list of ones to show under advanced
      */
@@ -48,7 +48,7 @@ class Hook_admin_setupwizard_installprofiles_infosite
     }
 
     /**
-     * Get a map of default settings associated with this installation profile
+     * Get a map of default settings associated with this installation profile.
      *
      * @return array Map of default settings
      */
@@ -73,7 +73,7 @@ class Hook_admin_setupwizard_installprofiles_infosite
     }
 
     /**
-     * Find details of desired blocks
+     * Find details of desired blocks.
      *
      * @return array Details of what blocks are wanted
      */
@@ -96,7 +96,7 @@ class Hook_admin_setupwizard_installprofiles_infosite
     }
 
     /**
-     * Get options for blocks in this profile
+     * Get options for blocks in this profile.
      *
      * @return array Details of what block options are wanted
      */
@@ -113,7 +113,7 @@ class Hook_admin_setupwizard_installprofiles_infosite
     }
 
     /**
-     * Execute any special code needed to put this install profile into play
+     * Execute any special code needed to put this install profile into play.
      */
     public function install_code()
     {

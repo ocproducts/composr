@@ -542,7 +542,7 @@ function running_script($is_this_running)
 }
 
 /**
- * Get the character set to use. We try and be clever to allow AJAX scripts to avoid loading up language
+ * Get the character set to use. We try and be clever to allow AJAX scripts to avoid loading up language.
  *
  * @return string The character set
  */

@@ -34,7 +34,7 @@ function init__php()
 }
 
 /**
- * Get a complex API information structure from a PHP file. It assumes the file has reasonably properly layed out class and function whitespace
+ * Get a complex API information structure from a PHP file. It assumes the file has reasonably properly layed out class and function whitespace.
  * The return structure is...
  *  list of classes
  * each entry is a map containing 'functions' (list of functions) and 'name'
@@ -198,7 +198,11 @@ function get_php_file_api($filename, $include_code = true, $pedantic_warnings = 
 
                         if ($pedantic_warnings) {
                             if (preg_match('#^@param  [^\s]+ \$\w+ #s', $ltrim) == 0) {
-                                attach_message('The spacing alignment for a phpdoc parameter definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'warn');
+                                attach_message('The spacing alignment for a phpdoc parameter definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'inform');
+                            }
+
+                            if ((substr($ltrim, -1) == '.') && (substr_count($ltrim, '.') == 1)) {
+                                attach_message('Do not need trailing full stop for parameter definitions', 'inform');
                             }
                         }
 
@@ -243,7 +247,11 @@ function get_php_file_api($filename, $include_code = true, $pedantic_warnings = 
 
                         if ($pedantic_warnings) {
                             if (preg_match('#^@return [^ ]#s', $ltrim) == 0) {
-                                attach_message('The spacing alignment for a phpdoc return definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'warn');
+                                attach_message('The spacing alignment for a phpdoc return definition on ' . $function_name . ' was not as expected; maybe too few or too many spaces. This is a pedantic error, but we like consistent code layout.', 'inform');
+                            }
+
+                            if ((substr($ltrim, -1) == '.') && (substr_count($ltrim, '.') == 1)) {
+                                attach_message('Do not need trailing full stop for return definitions', 'inform');
                             }
                         }
 
@@ -269,6 +277,12 @@ function get_php_file_api($filename, $include_code = true, $pedantic_warnings = 
                         }
                     }
                 } else { // Part of the description
+                    if ($pedantic_warnings) {
+                        if ((!in_array(substr($ltrim, -1), array('.', ':', '!', '?', '}', ';', ','))) && (substr($ltrim, 0, 2) != '- ') && (preg_match('#^\d+\) #', $ltrim) == 0)) {
+                            attach_message('Expects trailing full stop for function description', 'inform');
+                        }
+                    }
+
                     $description .= function_exists('unixify_line_format') ? unixify_line_format($ltrim) : $ltrim;
                 }
             }

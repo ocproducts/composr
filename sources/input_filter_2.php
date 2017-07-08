@@ -21,7 +21,7 @@
 /**
  * Enable the ModSecurity workaround on the PHP-side.
  * It also needs enabling on the HTML-side.
- * Doesn't support more than one level of list nesting, or associative arrays
+ * Doesn't support more than one level of list nesting, or associative arrays.
  */
 function modsecurity_workaround_enable()
 {
@@ -113,8 +113,8 @@ function array_count_recursive($arr)
 
 /**
  * Parse raw HTTP request data.
- * Based on https://gist.github.com/chlab/4283560
- * Doesn't support more than one level of list nesting, or associative arrays
+ * Based on https://gist.github.com/chlab/4283560.
+ * Doesn't support more than one level of list nesting, or associative arrays.
  *
  * @return ?array Associative array of request data (null: could not rescue)
  */
@@ -145,8 +145,8 @@ function parse_raw_http_request()
 
 /**
  * Parse raw HTTP request data in URL encoding format (application/x-www-form-urlencoded).
- * Based on https://gist.github.com/chlab/4283560
- * Doesn't support more than one level of list nesting, or associative arrays
+ * Based on https://gist.github.com/chlab/4283560.
+ * Doesn't support more than one level of list nesting, or associative arrays.
  *
  * @param  string $input Data
  * @return ?array Associative array of request data (null: could not rescue)
@@ -179,8 +179,8 @@ function _parse_raw_http_request_urlencoded($input)
 
 /**
  * Parse raw HTTP request data in multipart format (multipart/form-data).
- * Based on https://gist.github.com/chlab/4283560
- * Doesn't support more than one level of list nesting, or associative arrays
+ * Based on https://gist.github.com/chlab/4283560.
+ * Doesn't support more than one level of list nesting, or associative arrays.
  *
  * @param  string $input Data
  * @param  string $boundary Multi-part boundary

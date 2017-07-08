@@ -29,7 +29,7 @@ function init__comcode_from_html()
 }
 
 /**
- * Used by semihtml_to_comcode to turn <img> to \[img\]. preg_replace_callback callback
+ * Used by semihtml_to_comcode to turn <img> to \[img\]. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -68,7 +68,7 @@ function _img_tag_fixup($matches)
 }
 
 /**
- * Used by semihtml_to_comcode to turn fix URLs in <img> to be absolute. preg_replace_callback callback
+ * Used by semihtml_to_comcode to turn fix URLs in <img> to be absolute. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -94,7 +94,7 @@ function _img_tag_fixup_raw($matches)
 }
 
 /**
- * Used by semihtml_to_comcode to fix <a> tag links. preg_replace_callback callback
+ * Used by semihtml_to_comcode to fix <a> tag links. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -110,7 +110,7 @@ function _a_tag_link_fixup($matches)
 }
 
 /**
- * Used by semihtml_to_comcode to fix CSS colours aways from RGB notation. preg_replace_callback callback
+ * Used by semihtml_to_comcode to fix CSS colours aways from RGB notation. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -136,7 +136,7 @@ function _css_color_fixup($matches)
 }
 
 /**
- * Used by semihtml_to_comcode to make it so inline CSS with quotes uses single quotes. preg_replace_callback callback
+ * Used by semihtml_to_comcode to make it so inline CSS with quotes uses single quotes. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -149,7 +149,7 @@ function _css_quot_fixup($matches)
 }
 
 /**
- * Apply temporary ad hoc-escaping to a CDATA area (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a CDATA area (we'll reverse convert later). preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -169,7 +169,7 @@ function _cdata_protect($matches)
 }
 
 /**
- * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -185,7 +185,7 @@ function _codetag_protect($matches)
 }
 
 /**
- * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback
+ * Apply temporary ad hoc-escaping to a code tags (we'll reverse convert later). preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -201,7 +201,7 @@ function _codetag_unprotect($matches)
 }
 
 /**
- * Reorder XHTML attributes alphabetically, so our regexp's match better. preg_replace_callback callback
+ * Reorder XHTML attributes alphabetically, so our regexp's match better. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -238,7 +238,7 @@ function _reorder_xhtml_attributes($matches)
 }
 
 /**
- * Reorder style properties alphabetically, so our regexp's match better. preg_replace_callback callback
+ * Reorder style properties alphabetically, so our regexp's match better. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -264,7 +264,7 @@ function _reorder_css_properties($matches)
 }
 
 /**
- * Convert Semi-HTML into Comcode. Cleanup where possible. preg_replace_callback callback
+ * Convert Semi-HTML into Comcode. Cleanup where possible. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -281,7 +281,7 @@ function _semihtml_to_comcode_wrap($matches)
 }
 
 /**
- * Extract underlying Comcode from an editor Comcode-management button. preg_replace_callback callback
+ * Extract underlying Comcode from an editor Comcode-management button. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -294,7 +294,7 @@ function _debuttonise($matches)
 }
 
 /**
- * Extract underlying Comcode from an editor XML tag. preg_replace_callback callback
+ * Extract underlying Comcode from an editor XML tag. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -310,7 +310,7 @@ function _detagonise($matches)
 }
 
 /**
- * Extract underlying Tempcode directive from an editor XML tag. preg_replace_callback callback
+ * Extract underlying Tempcode directive from an editor XML tag. preg_replace_callback callback.
  *
  * @param  array $matches Array of matches
  * @return string Substituted text
@@ -454,7 +454,7 @@ function wysiwygify_media_set($semihtml)
 }
 
 /**
- * Convert Semi-HTML into comcode. Cleanup where possible
+ * Convert Semi-HTML into comcode. Cleanup where possible.
  *
  * @param  LONG_TEXT $semihtml The Semi-HTML to be converted
  * @param  boolean $force Whether to force full conversion regardless of settings

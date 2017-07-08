@@ -149,7 +149,7 @@ function lang_load_runtime_processing()
 
 /**
  * Get the human-readable form of a language string ID.
- * Further documentation: https://www.youtube.com/watch?v=rinz9Avvq6A
+ * Further documentation: https://www.youtube.com/watch?v=rinz9Avvq6A.
  *
  * @param  ID_TEXT $codename The language string ID
  * @param  ?mixed $parameter1 The first parameter [string or Tempcode] (replaces {1}) (null: none)

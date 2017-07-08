@@ -21,7 +21,7 @@
 /**
  * Get the contents of an HTML page.
  * HTML isn't great... no dynamicness/reconfigurability at all.
- * We prefer Comcode with [html]HTML goes here[/html] usage
+ * We prefer Comcode with [html]HTML goes here[/html] usage.
  *
  * @param  PATH $string The relative (to Composrs base directory) path to the HTML page
  * @param  ?PATH $file_base The file base to load from (null: standard)

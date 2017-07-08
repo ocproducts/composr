@@ -1558,7 +1558,7 @@ class Tempcode
     public $codename; // The name of the template it came from
 
     /**
-     * Constructor of Tempcode
+     * Constructor of Tempcode.
      *
      * @param  ?array $details Pair: Code to preexecute, Initialisation seq-parts (null: start as empty)
      */
@@ -1926,7 +1926,7 @@ class Tempcode
     }
 
     /**
-     * Bind the parameter bits, or recursively bind children (doesn't change self, returns a bound Tempcode object)
+     * Bind the parameter bits, or recursively bind children (doesn't change self, returns a bound Tempcode object).
      *
      * @param  array $parameters Map of parameters to bind parameter bits to
      * @param  ID_TEXT $codename The codename of the template this Tempcode is from
@@ -2063,7 +2063,7 @@ class Tempcode
     }
 
     /**
-     * Scan this Tempcode for anything that needs to be symbol-preprocessed
+     * Scan this Tempcode for anything that needs to be symbol-preprocessed.
      */
     public function handle_symbol_preprocessing()
     {
@@ -2210,7 +2210,7 @@ class Tempcode
     }
 
     /**
-     * Parses the current Tempcode object, then return the parsed string
+     * Parses the current Tempcode object, then return the parsed string.
      *
      * @return string The evaluated thing
      */
@@ -2220,7 +2220,7 @@ class Tempcode
     }
 
     /**
-     * Parses the current Tempcode object, then return the parsed string
+     * Parses the current Tempcode object, then return the parsed string.
      *
      * @param  ?LANGUAGE_NAME $current_lang The language to evaluate with (null: current user's language)
      * @return string The evaluated thing. Voila, it's all over!

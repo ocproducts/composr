@@ -412,7 +412,7 @@ function get_timezoned_time($timestamp, $use_contextual_times = true, $utc_time 
 
 /**
  * Format a local time/date according to locale settings. Combines best features of 'strftime' and 'date'.
- * %o is 'S' in date
+ * %o is 'S' in date.
  *
  * @param  string $format The formatting string
  * @param  ?TIME $timestamp The timestamp (null: now). Assumed to already be timezone-shifted as required

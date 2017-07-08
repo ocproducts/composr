@@ -364,7 +364,7 @@ function _imap_get_mime_type($structure)
 
 /**
  * Find a message part of an e-mail that matches a mime-type.
- * Taken from http://php.net/manual/en/function.imap-fetchbody.php
+ * Taken from http://php.net/manual/en/function.imap-fetchbody.php.
  *
  * @param  resource $stream IMAP connection object
  * @param  integer $msg_number Message number

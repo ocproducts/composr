@@ -148,7 +148,7 @@ class Hook_task_import_catalogue
     }
 
     /**
-     * Create an entry-id=>value map of uploaded csv data and it's importing
+     * Create an entry-id=>value map of uploaded csv data and it's importing.
      *
      * @param  ID_TEXT $catalogue_name The name of the catalogue that was used
      * @param  array $csv_data Data array of CSV imported file's lines

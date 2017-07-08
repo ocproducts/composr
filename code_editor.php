@@ -289,7 +289,7 @@ END;
 }
 
 /**
- * Ensure that the specified file/folder is writeable for the FTP user (so that it can be deleted by the system), and should be called whenever a file is uploaded/created, or a folder is made. We call this function assuming we are giving world permissions
+ * Ensure that the specified file/folder is writeable for the FTP user (so that it can be deleted by the system), and should be called whenever a file is uploaded/created, or a folder is made. We call this function assuming we are giving world permissions.
  *
  * @param  PATH $path The full pathname to the file/directory
  * @param  integer $perms The permissions to make (not the permissions are reduced if the function finds that the file is owned by the web user [doesn't need world permissions then])

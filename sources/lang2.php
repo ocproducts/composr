@@ -246,7 +246,7 @@ function create_selection_list_lang_files($lang = null)
 }
 
 /**
- * Get the full name of a language. e.g. 'EN' would become 'English'
+ * Get the full name of a language. e.g. 'EN' would become 'English'.
  *
  * @param  LANGUAGE_NAME $code The language
  * @return string The full name of the language

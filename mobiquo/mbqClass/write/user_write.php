@@ -40,7 +40,7 @@ class CMSUserWrite
     }
 
     /**
-     * Make current member ignore another member
+     * Make current member ignore another member.
      *
      * @param  MEMBER $user_id Member to ignore
      * @param  boolean $adding If the block is being added

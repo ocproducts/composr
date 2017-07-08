@@ -506,8 +506,7 @@ function get_ticket_meta_details($ticket_id, $hard_error = true)
 }
 
 /**
- * Get the posts from a given ticket, and also return the IDs of the forum and topic containing it. The return value is the same as
- * that of get_forum_topic_posts(), except in error conditions
+ * Get the posts from a given ticket, and also return the IDs of the forum and topic containing it. The return value is the same as that of get_forum_topic_posts(), except in error conditions.
  *
  * @param  string $ticket_id The ticket ID
  * @param  ?AUTO_LINK $forum Return location for the forum ID (null: don't collect)

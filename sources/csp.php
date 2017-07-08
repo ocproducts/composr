@@ -88,7 +88,7 @@ function init__csp()
     require_code('crypt');
 
     /**
-     * CSP Nonce
+     * CSP Nonce.
      * @global boolean $CSP_NONCE
      */
     global $CSP_NONCE;

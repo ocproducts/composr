@@ -182,7 +182,7 @@ class Forum_driver_cns extends Forum_driver_base
 
     /**
      * Get an array of attributes to take in from the installer. Almost all forums require a table prefix, which the requirement there-of is defined through this function.
-     * The attributes have 4 values in an array
+     * The attributes have 4 values in an array:
      * - name, the name of the attribute for _config.php
      * - default, the default value (perhaps obtained through autodetection from forum config)
      * - description, a textual description of the attributes
@@ -908,7 +908,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Try to find a member with the given IP address
+     * Try to find a member with the given IP address.
      *
      * @param  IP $ip The IP address
      * @return array The distinct rows found
@@ -1092,7 +1092,7 @@ class Forum_driver_cns extends Forum_driver_base
     }
 
     /**
-     * Find if this member may have e-mails sent to them
+     * Find if this member may have e-mails sent to them.
      *
      * @param  MEMBER $member The member ID
      * @return boolean Whether the member may have e-mails sent to them

@@ -80,7 +80,7 @@ function peek_lax_comcode()
 }
 
 /**
- * Set up the VALID_COMCODE_TAGS global. It uses a bit of memory, so for performance we do it on-demand
+ * Set up the VALID_COMCODE_TAGS global. It uses a bit of memory, so for performance we do it on-demand.
  */
 function init_valid_comcode_tags()
 {
@@ -113,7 +113,7 @@ function init_valid_comcode_tags()
 }
 
 /**
- * Set up the POTENTIAL_JS_NAUGHTY_ARRAY global. It uses a bit of memory, so for performance we do it on-demand
+ * Set up the POTENTIAL_JS_NAUGHTY_ARRAY global. It uses a bit of memory, so for performance we do it on-demand.
  */
 function init_potential_js_naughty_array()
 {
@@ -158,7 +158,7 @@ function html_to_comcode($html, $force = true)
 
 /**
  * Get the text with all the emoticon codes replaced with the correct XHTML. Emoticons are determined by your forum system.
- * This is not used in the normal Comcode chain - it's for non-Comcode things that require emoticons (actually in reality it is used in the Comcode chain if the optimiser sees that a full parse is not needed)
+ * This is not used in the normal Comcode chain - it's for non-Comcode things that require emoticons (actually in reality it is used in the Comcode chain if the optimiser sees that a full parse is not needed).
  *
  * @param  string $text The text to add emoticons to (assumption: that this is XHTML)
  * @return string The XHTML with the image-substitution of emoticons

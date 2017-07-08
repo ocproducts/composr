@@ -211,7 +211,7 @@ class Module_lost_password
     }
 
     /**
-     * The UI and actualisation for: accepting code if it is correct (and not ''), and setting password to something random, emailing it
+     * The UI and actualisation for: accepting code if it is correct (and not ''), and setting password to something random, emailing it.
      *
      * @return Tempcode The UI
      */

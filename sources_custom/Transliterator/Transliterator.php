@@ -40,7 +40,7 @@ class BehatTransliterator
     }
 
     /**
-     * Tests a string as to whether it's valid UTF-8 and supported by the
+     * Tests a string as to whether it's valid UTF-8 and supported by the.
      * Unicode standard.
      *
      * Note: this function has been modified to simple return true or false

@@ -218,7 +218,7 @@ class Module_admin_quiz
     }
 
     /**
-     * UI to export quiz CSV
+     * UI to export quiz CSV.
      *
      * @return Tempcode The UI
      */
@@ -246,7 +246,7 @@ class Module_admin_quiz
     }
 
     /**
-     * Actualiser to export quiz CSV
+     * Actualiser to export quiz CSV.
      */
     public function _export_quiz()
     {

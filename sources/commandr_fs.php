@@ -253,7 +253,7 @@ class Commandr_fs
     }
 
     /**
-     * Is it a directory?
+     * Is it a directory?.
      *
      * @param  ?array $dir Path to check (null: current dir is used)
      * @return boolean Directory?
@@ -288,7 +288,7 @@ class Commandr_fs
     }
 
     /**
-     * Is it a file?
+     * Is it a file?.
      *
      * @param  array $dir Path (with filename) to use
      * @return boolean Directory?

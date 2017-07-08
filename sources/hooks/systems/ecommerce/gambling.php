@@ -125,7 +125,7 @@ class Hook_ecommerce_gambling
     }
 
     /**
-     * Get the message for use in the purchasing module
+     * Get the message for use in the purchasing module.
      *
      * @param  ID_TEXT $type_code The product in question
      * @return ?Tempcode The message (null: no message)

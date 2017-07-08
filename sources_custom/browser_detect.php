@@ -219,7 +219,7 @@ class Browser
     }
 
     /**
-     * Reset all properties
+     * Reset all properties.
      */
     public function reset()
     {
@@ -235,7 +235,7 @@ class Browser
     }
 
     /**
-     * Check to see if the specific browser is valid
+     * Check to see if the specific browser is valid.
      *
      * @param string $browserName
      * @return True if the browser is the specified browser
@@ -256,7 +256,7 @@ class Browser
     }
 
     /**
-     * Set the name of the browser
+     * Set the name of the browser.
      *
      * @param $browser $browser The name of the Browser
      */
@@ -276,7 +276,7 @@ class Browser
     }
 
     /**
-     * Set the name of the platform
+     * Set the name of the platform.
      *
      * @param $platform $platform The name of the Platform
      */
@@ -296,7 +296,7 @@ class Browser
     }
 
     /**
-     * Set the version of the browser
+     * Set the version of the browser.
      *
      * @param $version $version The version of the Browser
      */
@@ -316,7 +316,7 @@ class Browser
     }
 
     /**
-     * Set the version of AOL
+     * Set the version of AOL.
      *
      * @param $version $version The version of AOL
      */
@@ -326,7 +326,7 @@ class Browser
     }
 
     /**
-     * Is the browser from AOL?
+     * Is the browser from AOL?.
      *
      * @return boolean True if the browser is from AOL otherwise false
      */
@@ -336,7 +336,7 @@ class Browser
     }
 
     /**
-     * Is the browser from a mobile device?
+     * Is the browser from a mobile device?.
      *
      * @return boolean True if the browser is from a mobile device otherwise false
      */
@@ -346,7 +346,7 @@ class Browser
     }
 
     /**
-     * Is the browser from a robot (ex Slurp,GoogleBot)?
+     * Is the browser from a robot (ex Slurp,GoogleBot)?.
      *
      * @return boolean True if the browser is from a robot otherwise false
      */
@@ -356,7 +356,7 @@ class Browser
     }
 
     /**
-     * Set the browser to be from AOL
+     * Set the browser to be from AOL.
      *
      * @param $isAol
      */
@@ -366,7 +366,7 @@ class Browser
     }
 
     /**
-     * Set the Browser to be mobile
+     * Set the Browser to be mobile.
      *
      * @param boolean $value is the browser a mobile brower or not
      */
@@ -376,7 +376,7 @@ class Browser
     }
 
     /**
-     * Set the Browser to be a robot
+     * Set the Browser to be a robot.
      *
      * @param boolean $value is the browser a robot or not
      */
@@ -386,7 +386,7 @@ class Browser
     }
 
     /**
-     * Get the user agent value in use to determine the browser
+     * Get the user agent value in use to determine the browser.
      *
      * @return string The user agent from the HTTP header
      */
@@ -396,7 +396,7 @@ class Browser
     }
 
     /**
-     * Set the user agent value (the construction will use the HTTP header value - this will overwrite it)
+     * Set the user agent value (the construction will use the HTTP header value - this will overwrite it).
      *
      * @param $agent_string $agent_string The value for the User Agent
      */
@@ -408,7 +408,7 @@ class Browser
     }
 
     /**
-     * Used to determine if the browser is actually "chromeframe"
+     * Used to determine if the browser is actually "chromeframe".
      *
      * @since 1.7
      * @return boolean True if the browser is using chromeframe
@@ -432,7 +432,7 @@ class Browser
     }
 
     /**
-     * Protected routine to calculate and determine what the browser is in use (including platform)
+     * Protected routine to calculate and determine what the browser is in use (including platform).
      */
     protected function determine()
     {
@@ -442,7 +442,7 @@ class Browser
     }
 
     /**
-     * Protected routine to determine the browser type
+     * Protected routine to determine the browser type.
      *
      * @return boolean True if the browser was detected otherwise false
      */

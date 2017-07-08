@@ -639,7 +639,7 @@ class Module_cms_blogs extends Standard_crud_module
     }
 
     /**
-     * The UI to import news
+     * The UI to import news.
      *
      * @return Tempcode The UI
      */
@@ -719,7 +719,7 @@ class Module_cms_blogs extends Standard_crud_module
     }
 
     /**
-     * The actualiser to import a wordpress blog
+     * The actualiser to import a wordpress blog.
      *
      * @return Tempcode The UI
      */

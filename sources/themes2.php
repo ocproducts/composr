@@ -807,7 +807,7 @@ function get_image_paths($base_url, $base_path)
 }
 
 /**
- * Get all the themes image codes. THIS DOES NOT SEARCH THE DB - DO NOT USE UNLESS IT'S ON A PURE PACKAGED THEME
+ * Get all the themes image codes. THIS DOES NOT SEARCH THE DB - DO NOT USE UNLESS IT'S ON A PURE PACKAGED THEME.
  *
  * @param  PATH $base_path The base-path to where we are searching for images
  * @param  PATH $search_under The path to search under, relative to the base-path. This is not the same as the base-path, as we are cropping paths to the base-path

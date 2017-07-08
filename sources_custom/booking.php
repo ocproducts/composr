@@ -319,7 +319,7 @@ function find_booking_under($member_id, $id)
 }
 
 /**
- * Find the price for a booking. This may involve multiple bookables, as at this point we don't care about that or not (once in the DB, it will actually be considered many separate bookings)
+ * Find the price for a booking. This may involve multiple bookables, as at this point we don't care about that or not (once in the DB, it will actually be considered many separate bookings).
  *
  * @param  array $request Booking details structure to check
  * @return REAL The price

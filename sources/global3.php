@@ -1294,7 +1294,7 @@ function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
 }
 
 /**
- * Do a user sort, preserving order where reordering not needed. Based on a PHP manual comment at http://php.net/manual/en/function.usort.php
+ * Do a user sort, preserving order where reordering not needed. Based on a PHP manual comment at http://php.net/manual/en/function.usort.php.
  *
  * @param  array $array Sort array
  * @param  mixed $cmp_function Comparison function
@@ -2025,7 +2025,7 @@ function compare_ip_address($wild, $full)
 }
 
 /**
- * Compare two IP addresses for potential correlation. Not as simple as equality due to '*' syntax. IP4-only variant
+ * Compare two IP addresses for potential correlation. Not as simple as equality due to '*' syntax. IP4-only variant.
  *
  * @param  string $wild The general IP address that is potentially wildcarded
  * @param  array $full_parts The exploded parts of the specific IP address we are checking
@@ -2043,7 +2043,7 @@ function compare_ip_address_ip4($wild, $full_parts)
 }
 
 /**
- * Compare two IP addresses for potential correlation. Not as simple as equality due to '*' syntax. IP6-only variant
+ * Compare two IP addresses for potential correlation. Not as simple as equality due to '*' syntax. IP6-only variant.
  *
  * @param  string $wild The general IP address that is potentially wildcarded
  * @param  array $full_parts The exploded parts of the specific IP address we are checking
@@ -2382,7 +2382,7 @@ function escape_html($string)
 }
 
 /**
- * See's if the current browser matches some special property code. Assumes users are keeping up on newish browsers (except for IE users, who are 6+)
+ * See's if the current browser matches some special property code. Assumes users are keeping up on newish browsers (except for IE users, who are 6+).
  *
  * @param  string $code The property code
  * @set    android ios wysiwyg windows mac linux odd_os mobile ie ie8 ie8+ ie9 ie9+ gecko safari odd_browser chrome bot simplified_attachments_ui itunes

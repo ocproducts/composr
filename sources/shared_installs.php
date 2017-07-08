@@ -19,7 +19,7 @@
  */
 
 /**
- * Find the user-ID of the current shared-site install from the accessing URL. This should only ever be called when it is known a shared-site is in operation
+ * Find the user-ID of the current shared-site install from the accessing URL. This should only ever be called when it is known a shared-site is in operation.
  *
  * @return ?ID_TEXT The shared-site install (null: not on one)
  */

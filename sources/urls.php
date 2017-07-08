@@ -364,7 +364,7 @@ function has_keep_parameters()
 
 /**
  * Build and return a proper URL, from the $vars array.
- * Note: URL parameters should always be in lower case (one of the coding standards)
+ * Note: URL parameters should always be in lower case (one of the coding standards).
  *
  * @param  array $vars A map of parameter names to parameter values. E.g. array('page'=>'example','type'=>'foo','id'=>2). Values may be strings or integers, or Tempcode, or null. null indicates "skip this". 'page' cannot be null.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS: USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
@@ -430,7 +430,7 @@ function build_url($vars, $zone_name = '_SEARCH', $skip = array(), $keep_all = f
 
 /**
  * Build and return a proper page-link, from the $vars array.
- * Note: URL parameters should always be in lower case (one of the coding standards)
+ * Note: URL parameters should always be in lower case (one of the coding standards).
  *
  * @param  array $vars A map of parameter names to parameter values. E.g. array('page'=>'example','type'=>'foo','id'=>2). Values may be strings or integers, or Tempcode, or null. null indicates "skip this". 'page' cannot be null.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
@@ -520,7 +520,7 @@ function url_monikers_enabled()
 
 /**
  * Build and return a proper URL, from the $vars array.
- * Note: URL parameters should always be in lower case (one of the coding standards)
+ * Note: URL parameters should always be in lower case (one of the coding standards).
  *
  * @param  array $vars A map of parameter names to parameter values. Values may be strings or integers, or null. null indicates "skip this". 'page' cannot be null.
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
@@ -870,7 +870,7 @@ function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
 }
 
 /**
- * Find if the specified URL is local or not (actually, if it is relative). This is often used by code that wishes to use file system functions on URLs (Composr will store such relative local URLs for uploads, etc)
+ * Find if the specified URL is local or not (actually, if it is relative). This is often used by code that wishes to use file system functions on URLs (Composr will store such relative local URLs for uploads, etc).
  *
  * @param  URLPATH $url The URL to check
  * @return boolean Whether the URL is local

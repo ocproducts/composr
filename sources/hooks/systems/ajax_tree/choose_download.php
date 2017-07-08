@@ -168,7 +168,7 @@ class Hook_ajax_tree_choose_download
     }
 
     /**
-     * Generate a simple selection list for the ajax-tree hook. Returns a normal <select> style <option>-list, for fallback purposes
+     * Generate a simple selection list for the ajax-tree hook. Returns a normal <select> style <option>-list, for fallback purposes.
      *
      * @param  ?ID_TEXT $id The ID to do under (null: root) - not always supported
      * @param  array $options Options being passed through

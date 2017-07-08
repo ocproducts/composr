@@ -360,7 +360,7 @@ class Module_recommend
     }
 
     /**
-     * The UI for the second stage of recommending the site - when CSV file is posted
+     * The UI for the second stage of recommending the site - when CSV file is posted.
      *
      * @return Tempcode The UI
      */

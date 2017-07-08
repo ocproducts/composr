@@ -1692,7 +1692,7 @@ class Module_admin_stats
     }
 
     /**
-     * Create a pie chart of the ratios of the specified statistic for the specified page. The chart is saved as an SVG image in /data_custom/admin_stats/, and the Tempcode for display of the graph and results table is returned
+     * Create a pie chart of the ratios of the specified statistic for the specified page. The chart is saved as an SVG image in /data_custom/admin_stats/, and the Tempcode for display of the graph and results table is returned.
      *
      * @param  PATH $page The page path
      * @param  string $type The statistic to use

@@ -147,7 +147,7 @@ function _get_sql_keywords()
 class Database_Static_xml extends DatabaseDriver
 {
     /**
-     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
+     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions.
      *
      * @return boolean Whether it can
      */
@@ -356,7 +356,7 @@ class Database_Static_xml extends DatabaseDriver
     }
 
     /**
-     * Find whether full-text-search is present
+     * Find whether full-text-search is present.
      *
      * @param  array $db The DB connection
      * @return boolean Whether it is
@@ -367,7 +367,7 @@ class Database_Static_xml extends DatabaseDriver
     }
 
     /**
-     * Assemble part of a WHERE clause for doing full-text search
+     * Assemble part of a WHERE clause for doing full-text search.
      *
      * @param  string $content Our match string (assumes "?" has been stripped already)
      * @param  boolean $boolean Whether to do a boolean full text search
@@ -379,7 +379,7 @@ class Database_Static_xml extends DatabaseDriver
     }
 
     /**
-     * Find whether full-text-boolean-search is present
+     * Find whether full-text-boolean-search is present.
      *
      * @return boolean Whether it is
      */

@@ -186,8 +186,8 @@ function is_ticket_forum($forum_id)
 }
 
 /**
- * Get an array of tickets for the given member and ticket type. If the member has permission to see others' tickets, it will be a list of all tickets
- * in the system, restricted by ticket type as appropriate. Otherwise, it will be a list of that member's tickets, as restricted by ticket type.
+ * Get an array of tickets for the given member and ticket type.
+ * If the member has permission to see others' tickets, it will be a list of all tickets in the system, restricted by ticket type as appropriate. Otherwise, it will be a list of that member's tickets, as restricted by ticket type.
  *
  * @param  array $filters A map of filters; supports: ticket_type_id (AUTO_LINK), only_owner_id (MEMBER), only_assigned_id (MEMBER), only_open (boolean)
  * @param  boolean $include_first_posts Whether to include first posts

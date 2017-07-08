@@ -301,7 +301,7 @@ class Database_Static_postgresql extends DatabaseDriver
     }
 
     /**
-     * Find whether table truncation support is present
+     * Find whether table truncation support is present.
      *
      * @return boolean Whether it is
      */
@@ -409,7 +409,7 @@ class Database_Static_postgresql extends DatabaseDriver
     }
 
     /**
-     * Find whether full-text-search is present
+     * Find whether full-text-search is present.
      *
      * @param  mixed $connection The DB connection
      * @return boolean Whether it is
@@ -420,7 +420,7 @@ class Database_Static_postgresql extends DatabaseDriver
     }
 
     /**
-     * Find whether full-text-boolean-search is present
+     * Find whether full-text-boolean-search is present.
      *
      * @return boolean Whether it is
      */
@@ -430,7 +430,7 @@ class Database_Static_postgresql extends DatabaseDriver
     }
 
     /**
-     * Assemble part of a WHERE clause for doing full-text search
+     * Assemble part of a WHERE clause for doing full-text search.
      *
      * @param  string $content Our match string (assumes "?" has been stripped already)
      * @param  boolean $boolean Whether to do a boolean full text search

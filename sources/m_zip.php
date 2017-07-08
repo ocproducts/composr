@@ -371,7 +371,7 @@ function init__m_zip()
 
         /**
          * Delete a directory of files.
-         * From "User Contributed Notes" at http://php.net/manual/en/function.rmdir.php. Thanks flexer at cutephp dot com
+         * From "User Contributed Notes" at http://php.net/manual/en/function.rmdir.php. Thanks flexer at cutephp dot com.
          *
          * @param  PATH $a_dir The path to the directory
          */

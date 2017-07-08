@@ -82,7 +82,7 @@ class Hook_payment_gateway_ccbill
     }
 
     /**
-     * Get the CCBill account ID
+     * Get the CCBill account ID.
      *
      * @return string The answer
      */

@@ -388,7 +388,8 @@ function get_use_persistent()
 }
 
 /**
- * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums. The default table prefix is 'cms_'. Note that anything that might write to an arbitrary db, must ask that db for it's table prefix (if it needs it of course... the db abstracts away most needs for it)
+ * Get the table prefixes used for all Composr tables, commonly used when you are installing Composr in the same database as your forums.
+ * The default table prefix is 'cms_'. Note that anything that might write to an arbitrary db, must ask that db for it's table prefix (if it needs it of course... the db abstracts away most needs for it).
  *
  * @return string The table prefix
  */
@@ -531,7 +532,7 @@ class DatabaseDriver
     }
 
     /**
-     * Find whether full-text-search is present
+     * Find whether full-text-search is present.
      *
      * @param  mixed $connection The DB connection
      * @return boolean Whether it is
@@ -542,7 +543,7 @@ class DatabaseDriver
     }
 
     /**
-     * Find whether full-text-boolean-search is present
+     * Find whether full-text-boolean-search is present.
      *
      * @return boolean Whether it is
      */
@@ -564,7 +565,7 @@ class DatabaseDriver
     }
 
     /**
-     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
+     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions.
      *
      * @return boolean Whether it can
      */
@@ -574,7 +575,7 @@ class DatabaseDriver
     }
 
     /**
-     * Find whether expression ordering support is present
+     * Find whether expression ordering support is present.
      *
      * @return boolean Whether it is
      */
@@ -584,7 +585,7 @@ class DatabaseDriver
     }
 
     /**
-     * Find whether collate support is present
+     * Find whether collate support is present.
      *
      * @return boolean Whether it is
      */
@@ -594,7 +595,7 @@ class DatabaseDriver
     }
 
     /**
-     * Find whether update queries may have joins
+     * Find whether update queries may have joins.
      *
      * @return boolean Whether it is
      */
@@ -1753,7 +1754,7 @@ class DatabaseConnector
     }
 
     /**
-     * Find whether full-text-search is present
+     * Find whether full-text-search is present.
      *
      * @return boolean Whether it is
      */
@@ -1763,7 +1764,7 @@ class DatabaseConnector
     }
 
     /**
-     * Find whether full-text-boolean-search is present
+     * Find whether full-text-boolean-search is present.
      *
      * @return boolean Whether it is
      */
@@ -1773,7 +1774,7 @@ class DatabaseConnector
     }
 
     /**
-     * Assemble part of a WHERE clause for doing full-text search
+     * Assemble part of a WHERE clause for doing full-text search.
      *
      * @param  string $content Our match string (assumes "?" has been stripped already)
      * @param  boolean $boolean Whether to do a boolean full text search
@@ -2121,7 +2122,7 @@ class DatabaseConnector
     }
 
     /**
-     * Change the type of a DB field in a table. Note: this function does not support ascession/decession of translatability
+     * Change the type of a DB field in a table. Note: this function does not support ascession/decession of translatability.
      *
      * @param  ID_TEXT $table_name The table name
      * @param  ID_TEXT $name The field name

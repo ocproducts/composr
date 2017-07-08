@@ -25,7 +25,7 @@ class Hook_notification_ticket_reply_staff extends Hook_Notification
 {
     /**
      * Get a list of all the notification codes this hook can handle.
-     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority)
+     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority).
      *
      * @return array List of codes (mapping between code names, and a pair: section and labelling for those codes)
      */
@@ -69,7 +69,7 @@ class Hook_notification_ticket_reply_staff extends Hook_Notification
 
     /**
      * Find whether a member has enabled this notification (i.e. have permission to AND have chosen to or are defaulted to).
-     * (Separate implementation to list_members_who_have_enabled, for performance reasons.)
+     * (Separate implementation to list_members_who_have_enabled, for performance reasons).
      *
      * @param  ID_TEXT $notification_code Notification code
      * @param  MEMBER $member_id Member to check against

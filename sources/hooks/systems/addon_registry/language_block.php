@@ -24,7 +24,7 @@
 class Hook_addon_registry_language_block
 {
     /**
-     * Get a list of file permissions to set
+     * Get a list of file permissions to set.
      *
      * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
@@ -35,7 +35,7 @@ class Hook_addon_registry_language_block
     }
 
     /**
-     * Get the version of Composr this addon is for
+     * Get the version of Composr this addon is for.
      *
      * @return float Version number
      */
@@ -45,7 +45,7 @@ class Hook_addon_registry_language_block
     }
 
     /**
-     * Get the description of the addon
+     * Get the description of the addon.
      *
      * @return string Description of the addon
      */
@@ -55,7 +55,7 @@ class Hook_addon_registry_language_block
     }
 
     /**
-     * Get a list of tutorials that apply to this addon
+     * Get a list of tutorials that apply to this addon.
      *
      * @return array List of tutorials
      */
@@ -69,7 +69,7 @@ class Hook_addon_registry_language_block
     }
 
     /**
-     * Get a mapping of dependency types
+     * Get a mapping of dependency types.
      *
      * @return array File permissions to set
      */
@@ -83,7 +83,7 @@ class Hook_addon_registry_language_block
     }
 
     /**
-     * Explicitly say which icon should be used
+     * Explicitly say which icon should be used.
      *
      * @return URLPATH Icon
      */
@@ -93,7 +93,7 @@ class Hook_addon_registry_language_block
     }
 
     /**
-     * Get a list of files that belong to this addon
+     * Get a list of files that belong to this addon.
      *
      * @return array List of files
      */
@@ -107,7 +107,7 @@ class Hook_addon_registry_language_block
     }
 
     /**
-     * Get mapping between template names and the method of this class that can render a preview of them
+     * Get mapping between template names and the method of this class that can render a preview of them.
      *
      * @return array The mapping
      */

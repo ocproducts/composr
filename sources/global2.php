@@ -536,7 +536,7 @@ function init__global2()
 /**
  * PHP's environment can be a real mess across servers. Cleanup the best we can.
  * See phpstub.php for info on what environmental data we can rely on.
- * See Chris's own comments on http://php.net/manual/en/reserved.variables.server.php also
+ * See Chris's own comments on http://php.net/manual/en/reserved.variables.server.php also.
  */
 function fixup_bad_php_env_vars()
 {
@@ -689,7 +689,7 @@ function disable_php_memory_limit()
 }
 
 /**
- * Get the character set to use. We try and be clever to allow AJAX scripts to avoid loading up language
+ * Get the character set to use. We try and be clever to allow AJAX scripts to avoid loading up language.
  *
  * @return string The character set
  */
@@ -1113,7 +1113,7 @@ function cms_version()
 
 /**
  * Get the full string version of Composr that you are running, in 'pretty' format.
- * This is (and must be kept) equivalent to get_version_pretty__from_dotted(get_version_dotted())
+ * This is (and must be kept) equivalent to get_version_pretty__from_dotted(get_version_dotted()).
  *
  * @return string The string saying the full Composr version number
  */

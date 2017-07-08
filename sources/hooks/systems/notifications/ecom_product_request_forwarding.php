@@ -25,7 +25,7 @@ class Hook_notification_ecom_product_request_forwarding extends Hook_notificatio
 {
     /**
      * Get a list of all the notification codes this hook can handle.
-     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority)
+     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority).
      *
      * @return array List of codes (mapping between code names, and a pair: section and labelling for those codes)
      */

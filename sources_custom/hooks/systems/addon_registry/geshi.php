@@ -19,7 +19,7 @@
 class Hook_addon_registry_geshi
 {
     /**
-     * Get a list of file permissions to set
+     * Get a list of file permissions to set.
      *
      * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
@@ -30,7 +30,7 @@ class Hook_addon_registry_geshi
     }
 
     /**
-     * Get the version of Composr this addon is for
+     * Get the version of Composr this addon is for.
      *
      * @return float Version number
      */
@@ -40,7 +40,7 @@ class Hook_addon_registry_geshi
     }
 
     /**
-     * Get the addon category
+     * Get the addon category.
      *
      * @return string The category
      */
@@ -50,7 +50,7 @@ class Hook_addon_registry_geshi
     }
 
     /**
-     * Get the addon author
+     * Get the addon author.
      *
      * @return string The author
      */
@@ -60,7 +60,7 @@ class Hook_addon_registry_geshi
     }
 
     /**
-     * Find other authors
+     * Find other authors.
      *
      * @return array A list of co-authors that should be attributed
      */
@@ -72,7 +72,7 @@ class Hook_addon_registry_geshi
     }
 
     /**
-     * Get the addon licence (one-line summary only)
+     * Get the addon licence (one-line summary only).
      *
      * @return string The licence
      */
@@ -82,7 +82,7 @@ class Hook_addon_registry_geshi
     }
 
     /**
-     * Get the description of the addon
+     * Get the description of the addon.
      *
      * @return string Description of the addon
      */
@@ -97,7 +97,7 @@ Based off of GeSHI 1.0 (https://github.com/GeSHi/geshi-1.0). GeSHI 1.1 is still 
     }
 
     /**
-     * Get a list of tutorials that apply to this addon
+     * Get a list of tutorials that apply to this addon.
      *
      * @return array List of tutorials
      */
@@ -107,7 +107,7 @@ Based off of GeSHI 1.0 (https://github.com/GeSHi/geshi-1.0). GeSHI 1.1 is still 
     }
 
     /**
-     * Get a mapping of dependency types
+     * Get a mapping of dependency types.
      *
      * @return array File permissions to set
      */
@@ -121,7 +121,7 @@ Based off of GeSHI 1.0 (https://github.com/GeSHi/geshi-1.0). GeSHI 1.1 is still 
     }
 
     /**
-     * Explicitly say which icon should be used
+     * Explicitly say which icon should be used.
      *
      * @return URLPATH Icon
      */
@@ -131,7 +131,7 @@ Based off of GeSHI 1.0 (https://github.com/GeSHi/geshi-1.0). GeSHI 1.1 is still 
     }
 
     /**
-     * Get a list of files that belong to this addon
+     * Get a list of files that belong to this addon.
      *
      * @return array List of files
      */

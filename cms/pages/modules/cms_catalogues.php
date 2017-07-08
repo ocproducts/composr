@@ -664,7 +664,7 @@ class Module_cms_catalogues extends Standard_crud_module
     }
 
     /**
-     * Get a entry-id=>value map of what a submitted catalogue entry form has set
+     * Get a entry-id=>value map of what a submitted catalogue entry form has set.
      *
      * @param  ID_TEXT $catalogue_name The name of the catalogue that was used
      * @param  MEMBER $submitter The entry submitter
@@ -957,7 +957,7 @@ class Module_cms_catalogues extends Standard_crud_module
     }
 
     /**
-     * The UI to choose a catalogue to import catalogue entries
+     * The UI to choose a catalogue to import catalogue entries.
      *
      * @return Tempcode The UI
      */
@@ -1027,7 +1027,7 @@ class Module_cms_catalogues extends Standard_crud_module
     }
 
     /**
-     * Standard actualiser to import catalogue entries
+     * Standard actualiser to import catalogue entries.
      *
      * @return Tempcode The UI
      */
@@ -1079,7 +1079,7 @@ class Module_cms_catalogues extends Standard_crud_module
     }
 
     /**
-     * The UI to choose a catalogue to export catalogue entries
+     * The UI to choose a catalogue to export catalogue entries.
      *
      * @return Tempcode The UI
      */

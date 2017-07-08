@@ -54,7 +54,7 @@ function init__svg()
 }
 
 /**
- * Get the SVG markup for a segment of a circle. It is designed to be used in the construction of a pie chart
+ * Get the SVG markup for a segment of a circle. It is designed to be used in the construction of a pie chart.
  *
  * @param  string $colour The hexadecimal-formatted colour for the shape
  * @param  integer $angle The angle of the segment
@@ -190,7 +190,7 @@ function _finish_svg($plot = '')
 }
 
 /**
- * Take the SVG and make all the styles inline. Disabled as not needed for native SVG implementations
+ * Take the SVG and make all the styles inline. Disabled as not needed for native SVG implementations.
  *
  * @param  string $plot The SVG
  * @return string ... made to have inline styles

@@ -45,7 +45,7 @@ function set_global_category_access($module, $category)
 }
 
 /**
- * Log permission checks to the permission_checks.log file
+ * Log permission checks to the permission_checks.log file.
  *
  * @param  MEMBER $member_id The user checking against
  * @param  ID_TEXT $op The function that was called to check a permission

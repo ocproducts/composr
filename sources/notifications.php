@@ -943,7 +943,7 @@ class Hook_Notification
 {
     /**
      * Get a list of all the notification codes this hook can handle.
-     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority)
+     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority).
      *
      * @return array List of codes (mapping between code names, and a pair: section and labelling for those codes)
      */
@@ -957,7 +957,7 @@ class Hook_Notification
 
     /**
      * Find whether a handled notification code supports categories.
-     * (Content types, for example, will define notifications on specific categories, not just in general. The categories are interpreted by the hook and may be complex. E.g. it might be like a regexp match, or like FORUM:3 or TOPIC:100)
+     * (Content types, for example, will define notifications on specific categories, not just in general. The categories are interpreted by the hook and may be complex. E.g. it might be like a regexp match, or like FORUM:3 or TOPIC:100).
      *
      * @param  ID_TEXT $notification_code Notification code
      * @return boolean Whether it does
@@ -1187,7 +1187,7 @@ class Hook_Notification
 
     /**
      * Find whether a member has enabled this notification (i.e. have permission to AND have chosen to or are defaulted to).
-     * (Separate implementation to list_members_who_have_enabled, for performance reasons.)
+     * (Separate implementation to list_members_who_have_enabled, for performance reasons).
      *
      * @param  ID_TEXT $notification_code Notification code
      * @param  MEMBER $member_id Member to check against
@@ -1201,7 +1201,7 @@ class Hook_Notification
 
     /**
      * Get a list of members who have enabled this notification (i.e. have chosen to or are defaulted to).
-     * (No pagination supported, as assumed there are only a small set of members here.)
+     * (No pagination supported, as assumed there are only a small set of members here).
      *
      * @param  ID_TEXT $only_if_enabled_on__notification_code Notification code
      * @param  ?SHORT_TEXT $only_if_enabled_on__category The category within the notification code (null: none)
@@ -1304,7 +1304,7 @@ class Hook_notification__Staff extends Hook_Notification
 {
     /**
      * Get a list of all the notification codes this hook can handle.
-     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority)
+     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority).
      *
      * @return array List of codes (mapping between code names, and a pair: section and labelling for those codes)
      */
@@ -1346,7 +1346,7 @@ class Hook_notification__Staff extends Hook_Notification
 
     /**
      * Find whether a member has enabled this notification (i.e. have permission to AND have chosen to or are defaulted to).
-     * (Separate implementation to list_members_who_have_enabled, for performance reasons.)
+     * (Separate implementation to list_members_who_have_enabled, for performance reasons).
      *
      * @param  ID_TEXT $notification_code Notification code
      * @param  MEMBER $member_id Member to check against

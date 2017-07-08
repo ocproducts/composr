@@ -58,7 +58,7 @@ class Hook_payment_gateway_authorize
     }
 
     /**
-     * Get authorize access detail
+     * Get authorize access detail.
      *
      * @return array A pair: login username, transaction key, MD5 hash key, MD5 hash value
      */

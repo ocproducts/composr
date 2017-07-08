@@ -19,7 +19,7 @@
 class Hook_addon_registry_tag_cloud
 {
     /**
-     * Get a list of file permissions to set
+     * Get a list of file permissions to set.
      *
      * @param  boolean $runtime Whether to include wildcards represented runtime-created chmoddable files
      * @return array File permissions to set
@@ -30,7 +30,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Get the version of Composr this addon is for
+     * Get the version of Composr this addon is for.
      *
      * @return float Version number
      */
@@ -40,7 +40,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Get the addon category
+     * Get the addon category.
      *
      * @return string The category
      */
@@ -50,7 +50,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Get the addon author
+     * Get the addon author.
      *
      * @return string The author
      */
@@ -60,7 +60,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Find other authors
+     * Find other authors.
      *
      * @return array A list of co-authors that should be attributed
      */
@@ -72,7 +72,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Get the addon licence (one-line summary only)
+     * Get the addon licence (one-line summary only).
      *
      * @return string The licence
      */
@@ -82,7 +82,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Get the description of the addon
+     * Get the description of the addon.
      *
      * @return string Description of the addon
      */
@@ -92,7 +92,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Get a list of tutorials that apply to this addon
+     * Get a list of tutorials that apply to this addon.
      *
      * @return array List of tutorials
      */
@@ -102,7 +102,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Get a mapping of dependency types
+     * Get a mapping of dependency types.
      *
      * @return array File permissions to set
      */
@@ -118,7 +118,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Explicitly say which icon should be used
+     * Explicitly say which icon should be used.
      *
      * @return URLPATH Icon
      */
@@ -128,7 +128,7 @@ class Hook_addon_registry_tag_cloud
     }
 
     /**
-     * Get a list of files that belong to this addon
+     * Get a list of files that belong to this addon.
      *
      * @return array List of files
      */

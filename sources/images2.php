@@ -763,7 +763,7 @@ function find_imagemagick()
  * Adjust an image to take into account EXIF rotation.
  *
  * Based on a comment in:
- * http://stackoverflow.com/questions/3657023/how-to-detect-shot-angle-of-photo-and-auto-rotate-for-website-display-like-desk
+ * http://stackoverflow.com/questions/3657023/how-to-detect-shot-angle-of-photo-and-auto-rotate-for-website-display-like-desk.
  *
  * @param  resource $source GD image resource
  * @param  ~array $exif EXIF details (false: could not load)

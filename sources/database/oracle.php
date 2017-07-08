@@ -348,7 +348,7 @@ class Database_Static_oracle extends DatabaseDriver
     }
 
     /**
-     * Find whether table truncation support is present
+     * Find whether table truncation support is present.
      *
      * @return boolean Whether it is
      */
@@ -449,7 +449,7 @@ class Database_Static_oracle extends DatabaseDriver
     }
 
     /**
-     * Assemble part of a WHERE clause for doing full-text search
+     * Assemble part of a WHERE clause for doing full-text search.
      *
      * @param  string $content Our match string (assumes "?" has been stripped already)
      * @param  boolean $boolean Whether to do a boolean full text search

@@ -34,7 +34,7 @@ function init__templates()
 }
 
 /**
- * Get the Tempcode for a standard box (CSS driven), with the specified content entered. Please rarely use this function; it is not good to assume people want anythings in one of these boxes... use templates instead
+ * Get the Tempcode for a standard box (CSS driven), with the specified content entered. Please rarely use this function; it is not good to assume people want anythings in one of these boxes... use templates instead.
  *
  * @param  Tempcode $content The content being put inside the box
  * @param  mixed $title The title of the standard box, string or Tempcode (blank: titleless standard box)
@@ -89,7 +89,7 @@ function put_in_standard_box($content, $title = '', $type = 'default', $width = 
 }
 
 /**
- * Get the Tempcode for a page title. (Ones below the page header, not in the browser title bar.)
+ * Get the Tempcode for a page title. (Ones below the page header, not in the browser title bar).
  *
  * @sets_output_state
  *
@@ -184,7 +184,7 @@ function hyperlink($url, $caption, $external, $escape, $title = '', $accesskey =
 }
 
 /**
- * Get the Tempcode for a div. Similar to paragraph, but may contain more formatting (such as <br />'s)
+ * Get the Tempcode for a div. Similar to paragraph, but may contain more formatting (such as <br />'s).
  *
  * @param  Tempcode $tempcode The Tempcode to put into a div
  * @param  string $guid GUID for call

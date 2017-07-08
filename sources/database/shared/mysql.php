@@ -46,7 +46,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions
+     * Find whether the database may run GROUP BY unfettered with restrictions on the SELECT'd fields having to be represented in it or aggregate functions.
      *
      * @return boolean Whether it can
      */
@@ -56,7 +56,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find whether expression ordering support is present
+     * Find whether expression ordering support is present.
      *
      * @return boolean Whether it is
      */
@@ -66,7 +66,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find whether collate support is present
+     * Find whether collate support is present.
      *
      * @return boolean Whether it is
      */
@@ -76,7 +76,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find whether update queries may have joins
+     * Find whether update queries may have joins.
      *
      * @return boolean Whether it is
      */
@@ -174,7 +174,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find if a database query may run, showing errors if it cannot
+     * Find if a database query may run, showing errors if it cannot.
      *
      * @param  string $query The complete SQL query
      * @param  mixed $connection The DB connection
@@ -358,7 +358,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find whether drop table "if exists" is present
+     * Find whether drop table "if exists" is present.
      *
      * @return boolean Whether it is
      */
@@ -446,7 +446,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find whether table truncation support is present
+     * Find whether table truncation support is present.
      *
      * @return boolean Whether it is
      */
@@ -456,7 +456,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find whether full-text-search is present
+     * Find whether full-text-search is present.
      *
      * @param  mixed $connection The DB connection
      * @return boolean Whether it is
@@ -467,7 +467,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Find whether full-text-boolean-search is present
+     * Find whether full-text-boolean-search is present.
      *
      * @return boolean Whether it is
      */
@@ -477,7 +477,7 @@ class Database_super_mysql extends DatabaseDriver
     }
 
     /**
-     * Assemble part of a WHERE clause for doing full-text search
+     * Assemble part of a WHERE clause for doing full-text search.
      *
      * @param  string $content Our match string (assumes "?" has been stripped already)
      * @param  boolean $boolean Whether to do a boolean full text search

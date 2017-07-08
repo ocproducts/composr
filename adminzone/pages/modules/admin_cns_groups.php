@@ -578,7 +578,7 @@ class Module_admin_cns_groups extends Standard_crud_module
     }
 
     /**
-     * Read in data posted by an add/edit form
+     * Read in data posted by an add/edit form.
      *
      * @return array A triplet of integers: (group leader, promotion target, promotion threshold)
      */

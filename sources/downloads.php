@@ -424,7 +424,8 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
 }
 
 /**
- * Get a nice, formatted XHTML list extending from the root, and showing all subcategories, and their subcategories (ad infinitum). The tree bit is because each entry in the list is shown to include the path through the tree that gets to it
+ * Get a nice, formatted XHTML list extending from the root, and showing all subcategories, and their subcategories (ad infinitum).
+ * The tree bit is because each entry in the list is shown to include the path through the tree that gets to it.
  *
  * @param  ?AUTO_LINK $it The currently selected category (null: none selected)
  * @param  boolean $use_compound_list Whether to make the list elements store comma-separated child lists instead of IDs

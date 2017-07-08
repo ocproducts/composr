@@ -37,7 +37,7 @@ class Hook_notification_error_occurred_missing_reference extends Hook_notificati
 
     /**
      * Get a list of all the notification codes this hook can handle.
-     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority)
+     * (Addons can define hooks that handle whole sets of codes, so hooks are written so they can take wide authority).
      *
      * @return array List of codes (mapping between code names, and a pair: section and labelling for those codes)
      */

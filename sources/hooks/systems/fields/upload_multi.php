@@ -165,7 +165,7 @@ class Hook_fields_upload_multi
     }
 
     /**
-     * Find the posted value from the get_field_inputter field
+     * Find the posted value from the get_field_inputter field.
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
@@ -235,7 +235,7 @@ class Hook_fields_upload_multi
     }
 
     /**
-     * The field is being deleted, so delete any necessary data
+     * The field is being deleted, so delete any necessary data.
      *
      * @param  mixed $value Current field value
      */

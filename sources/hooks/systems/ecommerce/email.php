@@ -119,7 +119,7 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Add e-mail addresss from what was chosen in an interface
+     * Add e-mail addresss from what was chosen in an interface.
      */
     protected function _add_config_forw()
     {
@@ -144,7 +144,7 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Update e-mail addresss from what was chosen in an interface; update or delete each price/product
+     * Update e-mail addresss from what was chosen in an interface; update or delete each price/product.
      */
     protected function _edit_config_forw()
     {
@@ -175,7 +175,7 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Add e-mail addresses from what was chosen in an interface
+     * Add e-mail addresses from what was chosen in an interface.
      */
     protected function _add_config_pop3()
     {
@@ -200,7 +200,7 @@ class Hook_ecommerce_email
     }
 
     /**
-     * Update e-mail addresses from what was chosen in an interface; update or delete each price/product
+     * Update e-mail addresses from what was chosen in an interface; update or delete each price/product.
      */
     protected function _edit_config_pop3()
     {

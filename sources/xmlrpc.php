@@ -27,10 +27,10 @@ However in some cases legacy APIs may force us to use XML-RPC.
  * Do a highly-simplified XML-RPC request (no actual calling supported - just messaging).
  *
  * @param  URLPATH $url The XML-RPC call URL
- * @param  string $method The method name to call.
- * @param  array $params An array of parameters.
- * @param  boolean $accept_failure Whether to accept failure.
- * @return ?string The result (null: failed).
+ * @param  string $method The method name to call
+ * @param  array $params An array of parameters
+ * @param  boolean $accept_failure Whether to accept failure
+ * @return ?string The result (null: failed)
  */
 function xml_rpc($url, $method, $params, $accept_failure = false)
 {

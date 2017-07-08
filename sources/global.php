@@ -370,7 +370,7 @@ function object_factory($class, $failure_ok = false)
  * Find whether a particular PHP function is blocked.
  *
  * Note that you still need to put "@" before set_time_limit, as some web host(s) have their own non-detectable block:
- *  "Cannot set max execution time limit due to system policy"
+ *  "Cannot set max execution time limit due to system policy".
  *
  * @param  string $function Function name
  * @return boolean Whether it is
@@ -442,7 +442,7 @@ function get_custom_file_base()
 
 /**
  * Get the parameter put into it, with no changes. If it detects that the parameter is naughty (i.e malicious, and probably from a hacker), it will log the hack-attack and output an error message.
- * This function is designed to be called on parameters that will be embedded in a path, and defines malicious as trying to reach a parent directory using '..'. All file paths in Composr should be absolute
+ * This function is designed to be called on parameters that will be embedded in a path, and defines malicious as trying to reach a parent directory using '..'. All file paths in Composr should be absolute.
  *
  * @param  string $in String to test
  * @param  boolean $preg Whether to just filter out the naughtyness

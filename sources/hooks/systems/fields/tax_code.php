@@ -163,7 +163,7 @@ class Hook_fields_tax_code
     }
 
     /**
-     * Find the posted value from the get_field_inputter field
+     * Find the posted value from the get_field_inputter field.
      *
      * @param  boolean $editing Whether we were editing (because on edit, it could be a fractional edit)
      * @param  array $field The field details
