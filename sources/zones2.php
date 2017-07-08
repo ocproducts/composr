@@ -519,7 +519,7 @@ function find_all_blocks()
 }
 
 /**
- * Make a block codename look nice
+ * Make a block codename look nice.
  *
  * @param  ID_TEXT $block The raw block codename
  * @return string A nice human readable version of the name
@@ -537,7 +537,7 @@ function cleanup_block_name($block)
 }
 
 /**
- * Gets parameters for a block
+ * Gets parameters for a block.
  *
  * @param  ID_TEXT $block The name of the block to get parameters for
  * @param  boolean $include_standard_parameters Include parameters that apply to all blocks
@@ -570,7 +570,7 @@ function get_block_parameters($block, $include_standard_parameters = false)
 }
 
 /**
- * Gets standard parameters for any block
+ * Gets standard parameters for any block.
  *
  * @return array A list of standard parameters
  */

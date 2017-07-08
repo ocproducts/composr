@@ -15,7 +15,7 @@
  */
 
 /**
- * Get the total points in the specified member's account; some of these will probably have been spent already
+ * Get the total points in the specified member's account; some of these will probably have been spent already.
  *
  * @param  MEMBER $member_id The member
  * @param  TIME $timestamp Time to get for (null: now)

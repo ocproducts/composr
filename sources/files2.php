@@ -550,7 +550,7 @@ function get_directory_size($path, $recurse = true)
 }
 
 /**
- * Get the URL to the config option group for editing limits
+ * Get the URL to the config option group for editing limits.
  *
  * @return ?URLPATH The URL to the config option group for editing limits (null: no access)
  */
@@ -566,7 +566,7 @@ function get_upload_limit_config_url()
 }
 
 /**
- * Get the maximum allowed upload filesize, as specified in the configuration
+ * Get the maximum allowed upload filesize, as specified in the configuration.
  *
  * @param  ?MEMBER $source_member Member we consider quota for (null: do not consider quota)
  * @param  ?object $db Database connector to get quota from (null: site DB)

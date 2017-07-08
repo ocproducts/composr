@@ -144,7 +144,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
 }
 
 /**
- * Get Tempcode for a news category 'feature box' for the given row
+ * Get Tempcode for a news category 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use

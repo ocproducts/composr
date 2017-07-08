@@ -19,7 +19,7 @@
  */
 
 /**
- * Allow all usergroups to access a category
+ * Allow all usergroups to access a category.
  *
  * @param  string $module The module
  * @param  mixed $category The category (integer or string)
@@ -95,7 +95,7 @@ function _handle_permission_check_logging($member_id, $op, $params, $result)
 }
 
 /**
- * Find if a group has a specified privilege
+ * Find if a group has a specified privilege.
  *
  * @param  GROUP $group_id The being checked whether to have the privilege
  * @param  ID_TEXT $privilege The ID code for the privilege being checked for
@@ -413,7 +413,7 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
 }
 
 /**
- * Assuming that permission details are POSTed, set the permissions for the specified category, in the current page
+ * Assuming that permission details are POSTed, set the permissions for the specified category, in the current page.
  *
  * @param  ID_TEXT $module The ID code for the module being checked for category access
  * @param  ID_TEXT $category The ID code for the category being checked for access (often, a number cast to a string)
@@ -533,7 +533,7 @@ function get_page_permissions_for_environment($zone, $page, $help = null)
 }
 
 /**
- * Assuming that permission details are POSTed, set the permissions for the specified category, in the current page
+ * Assuming that permission details are POSTed, set the permissions for the specified category, in the current page.
  *
  * @param  ID_TEXT $zone The ID code for the zone
  * @param  ID_TEXT $page The ID code for the page

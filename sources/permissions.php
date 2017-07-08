@@ -128,7 +128,7 @@ function access_denied($class = 'ACCESS_DENIED', $param = '', $force_login = fal
 }
 
 /**
- * Find if a member has access to a specified zone
+ * Find if a member has access to a specified zone.
  *
  * @param  MEMBER $member_id The member being checked whether to have the access
  * @param  ID_TEXT $zone The ID code for the zone being checked
@@ -440,7 +440,7 @@ function load_up_all_module_category_permissions($member_id, $module = null)
 }
 
 /**
- * Find if a member has access to a specified category
+ * Find if a member has access to a specified category.
  *
  * @param  MEMBER $member_id The member being checked whether to have the access
  * @param  ID_TEXT $module The ID code for the module being checked for category access
@@ -638,7 +638,7 @@ function check_privilege($privilege, $cats = null, $member_id = null, $page_name
 }
 
 /**
- * Find if a member has a specified privilege in any category
+ * Find if a member has a specified privilege in any category.
  *
  * @param  MEMBER $member_id The member being checked whether to have the privilege
  * @param  ID_TEXT $privilege The ID code for the privilege being checked for
@@ -666,7 +666,7 @@ function has_some_cat_privilege($member_id, $privilege, $page, $permission_modul
 }
 
 /**
- * Find if a member has a specified privilege
+ * Find if a member has a specified privilege.
  *
  * @param  MEMBER $member_id The member being checked whether to have the privilege
  * @param  ID_TEXT $privilege The ID code for the privilege being checked for
@@ -813,7 +813,7 @@ function check_submit_permission($range, $cats = null, $page = null)
 }
 
 /**
- * Find if a member has permission to submit
+ * Find if a member has permission to submit.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
  * @set    low mid high cat_low cat_mid cat_high
@@ -903,7 +903,7 @@ function check_edit_permission($range, $resource_owner, $cats = null, $page = nu
 }
 
 /**
- * Find if a member has permission to edit
+ * Find if a member has permission to edit.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
  * @set    low mid high cat_low cat_mid cat_high
@@ -948,7 +948,7 @@ function check_delete_permission($range, $resource_owner, $cats = null, $page = 
 }
 
 /**
- * Check to see if a member has permission to delete a specific resource
+ * Check to see if a member has permission to delete a specific resource.
  *
  * @param  string $range The range of privilege we are checking to see if they have; these ranges are like trust levels
  * @set    low mid high cat_low cat_mid cat_high
@@ -973,7 +973,7 @@ function has_delete_permission($range, $member_id, $resource_owner, $page, $cats
 }
 
 /**
- * Check to see if a member has add permission for Comcode pages
+ * Check to see if a member has add permission for Comcode pages.
  *
  * @param  ?ID_TEXT $zone The zone of Comcode pages we need it in (null: ANY zone, we are doing a vague check if the user could possibly)
  * @param  ?MEMBER $member_id The member being checked for access (null: current member)
@@ -1003,7 +1003,7 @@ function has_add_comcode_page_permission($zone = null, $member_id = null)
 }
 
 /**
- * Check to see if a member has bypass-validation permission for Comcode pages
+ * Check to see if a member has bypass-validation permission for Comcode pages.
  *
  * @param  ?ID_TEXT $zone The zone of Comcode pages we need it in (null: ANY zone, we are doing a vague check if the user could possibly)
  * @param  ?MEMBER $member_id The member being checked for access (null: current member)
@@ -1033,7 +1033,7 @@ function has_bypass_validation_comcode_page_permission($zone = null, $member_id 
 }
 
 /**
- * Check to see if a member has permission to edit a Comcode page
+ * Check to see if a member has permission to edit a Comcode page.
  *
  * @param  integer $scope A bitmask of COMCODE_EDIT_* constants, identifying what kind of editing privilege we are looking for
  * @param  ?ID_TEXT $zone Zone to check for (null: check against global privileges, ignoring all per-zone overrides). Note how this is different to how a null zone works for checking add/bypass-validation privileges because if we get a false we have the get_comcode_page_editability_per_zone function to get more specific details, while for adding we either want a very specific or very vague answer.
@@ -1104,7 +1104,7 @@ function get_comcode_page_editability_per_zone($member_id = null)
 }
 
 /**
- * Check to see if a member has permission to edit a specific Comcode page
+ * Check to see if a member has permission to edit a specific Comcode page.
  *
  * @param  ID_TEXT $zone The zone of the page
  * @param  ID_TEXT $page The name of the page

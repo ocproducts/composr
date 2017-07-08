@@ -107,7 +107,7 @@ function render_catalogue_entry_box($row, $zone = '_SEARCH', $give_context = tru
 }
 
 /**
- * Get Tempcode for a catalogue category 'feature box' for the given row
+ * Get Tempcode for a catalogue category 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -590,7 +590,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
 }
 
 /**
- * Make sure we are doing necessary join to be able to access the given field
+ * Make sure we are doing necessary join to be able to access the given field.
  *
  * @param  object $db Database connector
  * @param  array $info Content type info
@@ -1536,7 +1536,7 @@ function get_catalogue_category_tree($catalogue_name, $category_id, $breadcrumbs
 }
 
 /**
- * Get a nice, formatted XHTML list of entries, in catalogue category tree structure
+ * Get a nice, formatted XHTML list of entries, in catalogue category tree structure.
  *
  * @param  ID_TEXT $catalogue_name The catalogue name
  * @param  ?AUTO_LINK $it The currently selected entry (null: none selected)
@@ -1742,7 +1742,7 @@ function catalogue_category_breadcrumbs($category_id, $root = null, $no_link_for
 }
 
 /**
- * Check the current catalogue is an ecommerce catalogue
+ * Check the current catalogue is an ecommerce catalogue.
  *
  * @param  SHORT_TEXT $catalogue_name Catalogue name
  * @param  ?array $catalogue Catalogue row (null: look up)
@@ -1768,7 +1768,7 @@ function is_ecommerce_catalogue($catalogue_name, $catalogue = null)
 }
 
 /**
- * Check selected entry is an ecommerce catalogue entry
+ * Check selected entry is an ecommerce catalogue entry.
  *
  * @param  AUTO_LINK $entry_id Entry ID
  * @return boolean Status of entry type check
@@ -1781,7 +1781,7 @@ function is_ecommerce_catalogue_entry($entry_id)
 }
 
 /**
- * Display a catalogue entry
+ * Display a catalogue entry.
  *
  * @param  AUTO_LINK $id Entry ID
  * @param  boolean $no_title Whether to skip rendering a title

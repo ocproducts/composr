@@ -123,7 +123,7 @@ function get_author_id_from_name($author)
 }
 
 /**
- * Adds an author (re-creating them if they already exist - thus it also serves to edit; the reason for this is the fluidity of authors - members are automatically authors even before an author profile is made)
+ * Adds an author (re-creating them if they already exist - thus it also serves to edit; the reason for this is the fluidity of authors - members are automatically authors even before an author profile is made).
  *
  * @param  ID_TEXT $author The name of an author
  * @param  URLPATH $url The URL to the authors home page
@@ -183,7 +183,7 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
 }
 
 /**
- * Delete an author
+ * Delete an author.
  *
  * @param  ID_TEXT $author The name of an author
  */
@@ -218,7 +218,7 @@ function delete_author($author)
 }
 
 /**
- * Find if a member's usergroup has permission to edit an author
+ * Find if a member's usergroup has permission to edit an author.
  *
  * @param  MEMBER $member_id The member being checked whether to have the access
  * @param  ID_TEXT $author An author
@@ -239,7 +239,7 @@ function has_edit_author_permission($member_id, $author)
 }
 
 /**
- * Find if a member's usergroup has permission to delete an author
+ * Find if a member's usergroup has permission to delete an author.
  *
  * @param  MEMBER $member_id The member being checked whether to have the access
  * @param  ID_TEXT $author An author

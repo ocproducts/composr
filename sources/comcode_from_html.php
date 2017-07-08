@@ -336,7 +336,7 @@ function _dedirectiveise($matches)
 }
 
 /**
- * Cleanup HTML coming out of the WYSIWYG editor, converting represented Comcode back to proper Comcode
+ * Cleanup HTML coming out of the WYSIWYG editor, converting represented Comcode back to proper Comcode.
  *
  * @param  string $semihtml Semi-HTML
  */
@@ -379,7 +379,7 @@ function remove_wysiwyg_comcode_markup(&$semihtml)
 }
 
 /**
- * Convert HTML headers to Comcode titles
+ * Convert HTML headers to Comcode titles.
  *
  * @param  string $semihtml Semi-HTML
  * @return string Semi-HTML, with headers converted to titles
@@ -430,7 +430,7 @@ function force_clean_comcode($comcode)
 }
 
 /**
- * Strip down the contents of the media_set tag for easier WYSIWYG-editing
+ * Strip down the contents of the media_set tag for easier WYSIWYG-editing.
  *
  * @param  LONG_TEXT $semihtml The Semi-HTML to be converted
  * @return LONG_TEXT The equivalent Comcode

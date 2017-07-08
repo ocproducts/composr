@@ -267,7 +267,7 @@ function convert_image($from, &$to, $width, $height, $box_width = null, $exit_on
 }
 
 /**
- * Find whether the image specified is actually an image, based on file extension
+ * Find whether the image specified is actually an image, based on file extension.
  *
  * @param  string $name A URL or file path to the image
  * @param  integer $criteria A bitmask of IMAGE_CRITERIA_* constants that the image must match
@@ -392,7 +392,7 @@ What follows are other media types, not images. However, we define them here to 
 */
 
 /**
- * Find whether the video specified is actually a 'video', based on file extension
+ * Find whether the video specified is actually a 'video', based on file extension.
  *
  * @param  string $name A URL or file path to the video
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
@@ -424,7 +424,7 @@ function is_video($name, $as_admin, $must_be_true_video = false)
 }
 
 /**
- * Find whether the video specified is actually a 'video', based on file extension
+ * Find whether the video specified is actually a 'video', based on file extension.
  *
  * @param  string $name A URL or file path to the video
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)
@@ -439,7 +439,7 @@ function is_audio($name, $as_admin)
 }
 
 /**
- * Find whether the video specified is actually a 'video', based on file extension
+ * Find whether the video specified is actually a 'video', based on file extension.
  *
  * @param  string $name A URL or file path to the video
  * @param  boolean $as_admin Whether there are admin privileges, to render dangerous media types (client-side risk only)

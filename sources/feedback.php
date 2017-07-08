@@ -180,7 +180,7 @@ function embed_feedback_systems($page_name, $content_id, $allow_rating, $allow_c
 }
 
 /**
- * Do an AJAX comment post
+ * Do an AJAX comment post.
  */
 function post_comment_script()
 {
@@ -223,7 +223,7 @@ function post_comment_script()
 }
 
 /**
- * Get Tempcode for doing ratings (sits above get_rating_simple_array)
+ * Get Tempcode for doing ratings (sits above get_rating_simple_array).
  *
  * @param  mixed $content_url The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)
  * @param  ?string $content_title The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)
@@ -243,7 +243,7 @@ function get_rating_box($content_url, $content_title, $content_type, $content_id
 }
 
 /**
- * Display rating using images
+ * Display rating using images.
  *
  * @param  mixed $content_url The URL to where the commenting will pass back to (to put into the comment topic header) (URLPATH or Tempcode)
  * @param  ?string $content_title The title to where the commenting will pass back to (to put into the comment topic header) (null: don't know, but not first post so not important)
@@ -662,7 +662,7 @@ function get_comments($content_type, $allow_comments, $content_id, $invisible_if
 }
 
 /**
- * Topic titles/descriptions (depending on forum driver) are encoded for both human readable data, and a special ID code: this will extract just the ID code, or return the whole thing if no specific pattern match
+ * Topic titles/descriptions (depending on forum driver) are encoded for both human readable data, and a special ID code: this will extract just the ID code, or return the whole thing if no specific pattern match.
  *
  * @param  string $full_text Potentially complex topic title
  * @return string Simplified topic title

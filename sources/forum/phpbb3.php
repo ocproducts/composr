@@ -21,7 +21,7 @@
 /*EXTRA FUNCTIONS: crypt*/
 
 /**
- * phpBB: Encode hash
+ * phpBB: Encode hash.
  *
  * @param  string $input To encode
  * @param  integer $count How many chars to encode
@@ -71,7 +71,7 @@ function _hash_encode64($input, $count, &$itoa64)
 }
 
 /**
- * phpBB: The crypt function/replacement
+ * phpBB: The crypt function/replacement.
  * Get the rows for the top given number of posters on the forum.
  *
  * @param  string $password To encode

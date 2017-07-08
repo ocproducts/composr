@@ -83,7 +83,7 @@ function init__cns_install()
 }
 
 /**
- * Uninstall Conversr
+ * Uninstall Conversr.
  */
 function uninstall_cns()
 {

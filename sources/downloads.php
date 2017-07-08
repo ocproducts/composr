@@ -19,7 +19,7 @@
  */
 
 /**
- * See if a member may access a download category
+ * See if a member may access a download category.
  *
  * @param  MEMBER $member_id The member
  * @param  AUTO_LINK $category_id The category
@@ -35,7 +35,7 @@ function may_enter_download_category($member_id, $category_id)
 }
 
 /**
- * Get the URL to purchase access to a download category
+ * Get the URL to purchase access to a download category.
  *
  * @param  AUTO_LINK $category_id The category
  * @return ?Tempcode The purchase URL (null: cannot be purchased)
@@ -52,7 +52,7 @@ function get_download_category_purchase_url($category_id)
 }
 
 /**
- * Show a download licence for display
+ * Show a download licence for display.
  */
 function download_licence_script()
 {
@@ -74,7 +74,7 @@ function download_licence_script()
 }
 
 /**
- * Get Tempcode for a download 'feature box' for the given row
+ * Get Tempcode for a download 'feature box' for the given row.
  *
  * @param  array $row The database field row of this download
  * @param  boolean $pic Whether to show a picture
@@ -220,7 +220,7 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
 }
 
 /**
- * Get Tempcode for a download category 'feature box' for the given row
+ * Get Tempcode for a download category 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -293,7 +293,7 @@ function render_download_category_box($row, $zone = '_SEARCH', $give_context = t
 }
 
 /**
- * Get a nice, formatted XHTML list of downloads, in download tree structure
+ * Get a nice, formatted XHTML list of downloads, in download tree structure.
  *
  * @param  ?AUTO_LINK $it The currently selected entry (null: none selected)
  * @param  ?AUTO_LINK $submitter Only show entries submitted by this member (null: no filter)
@@ -545,7 +545,7 @@ function get_download_category_tree($category_id = null, $breadcrumbs = null, $c
 }
 
 /**
- * Get a nice, formatted XHTML list to select a download licence
+ * Get a nice, formatted XHTML list to select a download licence.
  *
  * @param  ?AUTO_LINK $it The currently selected licence (null: none selected)
  * @param  boolean $allow_na Whether to allow an N/A selection

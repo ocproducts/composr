@@ -477,7 +477,7 @@ function score_quiz($entry_id, $quiz_id = null, $quiz = null, $questions = null,
 }
 
 /**
- * Is a typed quiz answer correct?
+ * Is a typed quiz answer correct?.
  *
  * @param  string $given_answer The given (typed) answer
  * @param  array $all_answers Answer rows

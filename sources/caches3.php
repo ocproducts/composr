@@ -483,7 +483,7 @@ function erase_cached_templates($preserve_some = false, $only_templates = null, 
 }
 
 /**
- * Erase the Comcode page cache
+ * Erase the Comcode page cache.
  */
 function erase_comcode_page_cache()
 {
@@ -510,7 +510,7 @@ function erase_comcode_page_cache()
 }
 
 /**
- * Erase the theme images cache
+ * Erase the theme images cache.
  */
 function erase_theme_images_cache()
 {

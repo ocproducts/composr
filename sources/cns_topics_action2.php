@@ -582,7 +582,7 @@ function send_pt_notification($post_id, $subject, $topic_id, $to_id, $from_id = 
 }
 
 /**
- * If necessary, send out a support ticket reply
+ * If necessary, send out a support ticket reply.
  *
  * @param  AUTO_LINK $forum_id Forum ID
  * @param  AUTO_LINK $topic_id Topic ID

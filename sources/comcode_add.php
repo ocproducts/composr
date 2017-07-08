@@ -176,7 +176,7 @@ function _get_details_comcode_tags()
 }
 
 /**
- * Get the Comcode tags in groups
+ * Get the Comcode tags in groups.
  *
  * @param  ?string $group Group Name (null: return a specific group)
  * @return array Returns each Group name as key, values as its tags
@@ -229,7 +229,7 @@ function _get_group_tags($group = null)
 }
 
 /**
- * Get the non-WYSIWYG tags (ones the WYSIWYG cannot do itself, so are needed even if it is on)
+ * Get the non-WYSIWYG tags (ones the WYSIWYG cannot do itself, so are needed even if it is on).
  *
  * @return array List of non-WYSIWYG tags
  *

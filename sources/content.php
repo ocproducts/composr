@@ -205,7 +205,7 @@ function convert_composr_type_codes_multiple($type_has, $type_id)
 }
 
 /**
- * Get meta details of a content item
+ * Get meta details of a content item.
  *
  * @param  ID_TEXT $content_type Content type
  * @param  ID_TEXT $content_id Content ID
@@ -295,7 +295,7 @@ function content_get_details($content_type, $content_id, $resource_fs_style = fa
 }
 
 /**
- * Get the title of a content item
+ * Get the title of a content item.
  *
  * @param  array $cma_info The info array for the content type
  * @param  array $content_row Content row

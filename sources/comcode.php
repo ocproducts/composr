@@ -129,7 +129,7 @@ function init_potential_js_naughty_array()
 }
 
 /**
- * Make text usable inside a string inside Comcode
+ * Make text usable inside a string inside Comcode.
  *
  * @param  string $in Raw text
  * @return string Escaped text
@@ -140,7 +140,7 @@ function comcode_escape($in)
 }
 
 /**
- * Convert (X)HTML into Comcode
+ * Convert (X)HTML into Comcode.
  *
  * @param  LONG_TEXT $html The HTML to be converted
  * @param  boolean $force Whether to force full conversion regardless of settings

@@ -472,7 +472,7 @@ function find_country_name_from_iso($iso)
 }
 
 /**
- * Get a nice, formatted XHTML list of countries
+ * Get a nice, formatted XHTML list of countries.
  *
  * @param  array $selected_countries The currently selected countries
  * @return Tempcode The list of countries
@@ -493,7 +493,7 @@ function create_country_selection_list($selected_countries = array())
 }
 
 /**
- * Get a nice, formatted XHTML list of regions
+ * Get a nice, formatted XHTML list of regions.
  *
  * @param  array $selected_regions The currently selected regions
  * @return Tempcode The list of regions
@@ -504,7 +504,7 @@ function create_region_selection_list($selected_regions = array())
 }
 
 /**
- * Get a nice, formatted XHTML list of USA states
+ * Get a nice, formatted XHTML list of USA states.
  *
  * @param  array $selected_states The currently selected states
  * @return Tempcode The list of states
@@ -573,7 +573,7 @@ function get_country()
 }
 
 /**
- * Find the country an IP address long is located in
+ * Find the country an IP address long is located in.
  *
  * @param  ?IP $ip The IP to geolocate (null: current user's IP)
  * @return ?string The country initials (null: unknown)
@@ -621,7 +621,7 @@ function geolocate_ip($ip = null)
 }
 
 /**
- * Get a region inputter
+ * Get a region inputter.
  *
  * @param  array $regions The currently selected regions
  * @return Tempcode The region inputter
@@ -634,7 +634,7 @@ function form_input_regions($regions = array())
 }
 
 /**
- * Get SQL to add to wider SQL query, for region filtering
+ * Get SQL to add to wider SQL query, for region filtering.
  *
  * @param  string $content_type The content type
  * @param  string $field_name_to_join Field name for content ID in table being connected to

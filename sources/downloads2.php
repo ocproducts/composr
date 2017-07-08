@@ -291,7 +291,7 @@ function dload_script()
 }
 
 /**
- * Add a download category
+ * Add a download category.
  *
  * @param  SHORT_TEXT $category The name of the download category
  * @param  AUTO_LINK $parent_id The parent download category
@@ -355,7 +355,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
 }
 
 /**
- * Edit the given download category with the new details given
+ * Edit the given download category with the new details given.
  *
  * @param  AUTO_LINK $category_id The ID of the category being edited
  * @param  SHORT_TEXT $category The name of the download category

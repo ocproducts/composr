@@ -87,7 +87,7 @@ function _choose_language($title, $tip = false, $allow_all_selection = false)
 }
 
 /**
- * Get an array of all the installed languages that can be found in root/lang/ and root/lang_custom/
+ * Get an array of all the installed languages that can be found in root/lang/ and root/lang_custom/.
  *
  * @param  boolean $even_empty_langs Whether to even find empty languages
  * @return array The installed languages (map, lang=>type)

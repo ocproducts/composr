@@ -2498,7 +2498,7 @@ function require_code($codename)
 }
 
 /**
- * Make an object of the given class
+ * Make an object of the given class.
  *
  * @param  string $class The class name
  * @return object The object

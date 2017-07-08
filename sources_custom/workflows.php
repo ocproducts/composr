@@ -14,7 +14,7 @@
  */
 
 /**
- * Returns whether the given user (default: current member) can choose the
+ * Returns whether the given user (default: current member) can choose the.
  * workflow to apply to some content they're submitting/editing.
  *
  * @param  ?MEMBER $member_id Member (null: current member)
@@ -33,7 +33,7 @@ function can_choose_workflow($member_id = null)
 }
 
 /**
- * Returns a form field to choose the desired workflow (if there is more than
+ * Returns a form field to choose the desired workflow (if there is more than.
  * one in the system).
  *
  * @param  boolean $include_inherit Whether to include an option for inheriting
@@ -157,7 +157,7 @@ function get_submitter_of_workflow_content($content_id)
 }
 
 /**
- * Get the Tempcode for viewing/editing the workflow status of the given content
+ * Get the Tempcode for viewing/editing the workflow status of the given content.
  *
  * @param  AUTO_LINK $workflow_content_id The ID of this content in the workflow_content table
  * @return Tempcode The form for this content
@@ -799,7 +799,7 @@ function get_all_approval_points($workflow_id)
 }
 
 /**
- * Gets an array of the group IDs allowed to approve the given point
+ * Gets an array of the group IDs allowed to approve the given point.
  *
  * @param  AUTO_LINK $approval_id The ID of the approval point
  * @return array The IDs of the groups allowed to signoff on it

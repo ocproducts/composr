@@ -536,7 +536,7 @@ function actual_delete_catalogue_field($id)
 }
 
 /**
- * Add a catalogue category
+ * Add a catalogue category.
  *
  * @param  ID_TEXT $catalogue_name The codename of the catalogue the category is in
  * @param  mixed $title The title of this category (either language string map or string)
@@ -1137,7 +1137,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
 }
 
 /**
- * Edit the specified catalogue entry
+ * Edit the specified catalogue entry.
  *
  * @param  AUTO_LINK $id The ID of the entry being edited
  * @param  AUTO_LINK $category_id The ID of the category that the entry is in

@@ -34,7 +34,7 @@ function init__symbols()
 }
 
 /**
- * Evaluate a conventional Tempcode construct, handling escaping
+ * Evaluate a conventional Tempcode construct, handling escaping.
  *
  * @param  string $lang The language to evaluate this symbol in (some symbols refer to language elements).
  * @param  array $escaped Array of escaping operations.
@@ -1415,7 +1415,7 @@ function ecv_TRUNCATE_SPREAD($lang, $escaped, $param)
 }
 
 /**
- * Handle truncation symbols in all their complexity
+ * Handle truncation symbols in all their complexity.
  *
  * @param  array $param Parameters passed to the symbol (0=text, 1=amount, 2=tooltip?, 3=is_html?, 4=use as grammatical length rather than HTML byte length, 5=fractional-deviation-tolerance for grammar-preservation)
  * @param  string $type The type of truncation to do

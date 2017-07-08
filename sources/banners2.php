@@ -19,7 +19,7 @@
  */
 
 /**
- * Get Tempcode for a banner type 'feature box' for the given row
+ * Get Tempcode for a banner type 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -58,7 +58,7 @@ function render_banner_type_box($row, $zone = '_SEARCH', $give_context = true, $
 }
 
 /**
- * Get Tempcode for a banner 'feature box' for the given row
+ * Get Tempcode for a banner 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -98,7 +98,7 @@ function render_banner_box($row, $zone = '_SEARCH', $give_context = true, $guid 
 }
 
 /**
- * Get a nice, formatted XHTML list to select a banner type
+ * Get a nice, formatted XHTML list to select a banner type.
  *
  * @param  ?mixed $it The currently selected banner type (null: none selected)
  * @return Tempcode The list of banner types

@@ -818,7 +818,7 @@ function load_module_page($string, $codename, &$out = null)
 }
 
 /**
- * Find the installed zones, up to the first $max installed
+ * Find the installed zones, up to the first $max installed.
  *
  * @param  boolean $search Whether to search the file system and return zones that might not be fully in the system (otherwise will just use the database)
  * @param  boolean $get_titles Whether to get titles for the zones as well. Only if !$search
@@ -1575,7 +1575,7 @@ function do_block_get_cache_identifier($cache_on, $map)
 }
 
 /**
- * Gets the path to a block code file for a block code name
+ * Gets the path to a block code file for a block code name.
  *
  * @param  ID_TEXT $block The name of the block
  * @return PATH The path to the block

@@ -934,7 +934,7 @@ function gallery_breadcrumbs($gallery, $root = 'root', $no_link_for_me_sir = tru
 }
 
 /**
- * Get a nice, formatted XHTML list of gallery entries, in gallery tree structure
+ * Get a nice, formatted XHTML list of gallery entries, in gallery tree structure.
  *
  * @param  ID_TEXT $table The table we are working with
  * @set    images videos

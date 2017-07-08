@@ -307,7 +307,7 @@ function _css_compile($active_theme, $theme, $c, $full_path, $minify = true)
 }
 
 /**
- * Minimise the given JavaScript
+ * Minimise the given JavaScript.
  *
  * @param  string $js JavaScript to minimise
  * @return string Minimised JavaScript
@@ -353,7 +353,7 @@ function js_minify($js)
  */
 
 /**
- * Minifies stylesheet definitions
+ * Minifies stylesheet definitions.
  *
  * @param  string $v Stylesheet definitions as string
  * @return string Minified stylesheet definitions

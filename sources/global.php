@@ -307,7 +307,7 @@ function require_code($codename, $light_exit = false)
 }
 
 /**
- * Require code, but without looking for sources_custom overrides
+ * Require code, but without looking for sources_custom overrides.
  *
  * @param  string $codename The codename for the source module to load
  */
@@ -349,7 +349,7 @@ function tacit_https()
 }
 
 /**
- * Make an object of the given class
+ * Make an object of the given class.
  *
  * @param  string $class The class name
  * @param  boolean $failure_ok Whether to return null if there is no such class
@@ -409,7 +409,7 @@ function safe_ini_set($var, $value)
 }
 
 /**
- * Get the file base for your installation of Composr
+ * Get the file base for your installation of Composr.
  *
  * @return PATH The file base, without a trailing slash
  */

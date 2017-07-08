@@ -389,7 +389,7 @@ function ical_import($file_name)
 }
 
 /**
- * Get array of an events from node of an imported ical file
+ * Get array of an events from node of an imported ical file.
  *
  * @param  array $calendar_nodes Array of given event details
  * @return array Returns array of event details for mapping

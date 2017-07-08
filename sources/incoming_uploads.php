@@ -19,7 +19,7 @@
  */
 
 /**
- * Function to process the file upload process
+ * Function to process the file upload process.
  */
 function incoming_uploads_script()
 {
@@ -154,7 +154,7 @@ function incoming_uploads_script()
 }
 
 /**
- * Function to clear old uploads, that are older then 2 days
+ * Function to clear old uploads, that are older then 2 days.
  */
 function clear_old_uploads()
 {

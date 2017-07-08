@@ -1442,7 +1442,7 @@ function _multi_sort($a, $b)
 }
 
 /**
- * Require all code relating to the Conversr forum
+ * Require all code relating to the Conversr forum.
  */
 function cns_require_all_forum_stuff()
 {
@@ -1757,7 +1757,7 @@ function list_to_map($map_value, $list)
 }
 
 /**
- * Take a list of maps of just two elements, and make it into a single map
+ * Take a list of maps of just two elements, and make it into a single map.
  *
  * @param  string $key The key key of our maps that reside in our map
  * @param  string $value The value key of our maps that reside in our map
@@ -1770,7 +1770,7 @@ function collapse_2d_complexity($key, $value, $list)
 }
 
 /**
- * Take a list of maps of just one element, and make it into a single map
+ * Take a list of maps of just one element, and make it into a single map.
  *
  * @param  ?string $key The key of our maps that reside in our map (null: first key)
  * @param  array $list The map of maps
@@ -1795,7 +1795,7 @@ function collapse_1d_complexity($key, $list)
 }
 
 /**
- * Find whether an IP address is valid
+ * Find whether an IP address is valid.
  *
  * @param  IP $ip IP address to check.
  * @return boolean Whether the IP address is valid.
@@ -1828,7 +1828,7 @@ function is_valid_ip($ip)
 }
 
 /**
- * Attempt to get the clean IP address of the current user
+ * Attempt to get the clean IP address of the current user.
  *
  * @param  integer $amount The number of groups to include in the IP address (rest will be replaced with *'s). For IP6, this is doubled.
  * @set    1 2 3 4
@@ -1869,7 +1869,7 @@ function get_ip_address($amount = 4, $ip = null)
 }
 
 /**
- * Normalise a provided IP address
+ * Normalise a provided IP address.
  *
  * @param  IP $ip The IP address to normalise
  * @param  ?integer $amount Amount to mask out (null: do not)
@@ -1949,7 +1949,7 @@ function me_debug($ip, $data)
 }
 
 /**
- * Get a string of the users web browser
+ * Get a string of the users web browser.
  *
  * @return string The web browser string
  */
@@ -1961,7 +1961,7 @@ function get_browser_string()
 }
 
 /**
- * Get the user's operating system
+ * Get the user's operating system.
  *
  * @return string The operating system string
  */
@@ -1983,7 +1983,7 @@ function get_os_string()
 }
 
 /**
- * Find if Cron is installed
+ * Find if Cron is installed.
  *
  * @return boolean Whether Cron is installed
  */
@@ -2181,7 +2181,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
 }
 
 /**
- * Log an action
+ * Log an action.
  *
  * @param  ID_TEXT $type The type of activity just carried out (a language string ID)
  * @param  ?SHORT_TEXT $a The most important parameter of the activity (e.g. D) (null: none)
@@ -2599,7 +2599,7 @@ function is_mobile($user_agent = null, $truth = false)
 }
 
 /**
- * Get the name of a webcrawler bot, or null if no bot detected
+ * Get the name of a webcrawler bot, or null if no bot detected.
  *
  * @return ?string Webcrawling bot name (null: not a bot)
  */
@@ -2773,7 +2773,7 @@ function mixed()
 }
 
 /**
- * Get meta information for specified resource
+ * Get meta information for specified resource.
  *
  * @param  ID_TEXT $type The type of resource (e.g. download)
  * @param  ID_TEXT $id The ID of the resource

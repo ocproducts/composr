@@ -101,7 +101,7 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
 }
 
 /**
- * Delete the specified attachment
+ * Delete the specified attachment.
  *
  * @param  AUTO_LINK $id The attachment ID to delete
  * @param  object $db The database connector to use

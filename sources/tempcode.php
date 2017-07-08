@@ -184,7 +184,7 @@ function fast_uniqid()
 }
 
 /**
- * Get a string (natural for Tempcode's stream-based processing-model) representation of a bound Tempcode construct
+ * Get a string (natural for Tempcode's stream-based processing-model) representation of a bound Tempcode construct.
  *
  * @param  mixed $var Construct (or null if not set)
  * @param  ID_TEXT $origin Where this parameter is referenced, in a compressed reference form
@@ -212,7 +212,7 @@ function otp($var, $origin = '')
 }
 
 /**
- * Give an error about a missing template parameter
+ * Give an error about a missing template parameter.
  *
  * @param  ID_TEXT $origin Where this parameter is referenced, in a slash-combined reference form
  * @return string Always ""
@@ -228,7 +228,7 @@ function missing_template_parameter($origin)
 }
 
 /**
- * Build a conventional Tempcode object
+ * Build a conventional Tempcode object.
  *
  * @param  integer $type The type of symbol this is (TC_SYMBOL, TC_LANGUAGE_REFERENCE)
  * @set    0 2
@@ -332,7 +332,7 @@ function build_closure_tempcode($type, $name, $parameters, $escaping = array())
 }
 
 /**
- * This will create a new Tempcode object that is containing a single specifed symbol
+ * This will create a new Tempcode object that is containing a single specifed symbol.
  *
  * @param  ID_TEXT $symbol The ID of the symbol to use
  * @param  array $parameters Symbol parameters
@@ -345,7 +345,7 @@ function symbol_tempcode($symbol, $parameters = array(), $escape = array())
 }
 
 /**
- * This will create a new Tempcode object that is containing a single specifed directive
+ * This will create a new Tempcode object that is containing a single specifed directive.
  *
  * @param  ID_TEXT $directive The ID of the directive to use
  * @param  mixed $content The contents (Tempcode or string)
@@ -495,7 +495,7 @@ function closure_loop($param, $args, $main_function)
 }
 
 /**
- * Serialize the passed parameter names as JSON
+ * Serialize the passed parameter names as JSON.
  *
  * @param  array $param The template bound parameters
  * @param  array $args The loop directive parameters
@@ -732,7 +732,7 @@ function apply_tempcode_escaping_inline($escaped, $value)
 }
 
 /**
- * This will create a new Tempcode object that is containing a single specifed language string ID
+ * This will create a new Tempcode object that is containing a single specifed language string ID.
  *
  * @param  ID_TEXT $lang_string The ID of the language string to use
  * @param  ?mixed $token1 The first token [string or Tempcode] (replaces {1}) (null: none)

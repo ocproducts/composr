@@ -19,7 +19,7 @@
  */
 
 /**
- * Find file meta information for adding to a ZIP file
+ * Find file meta information for adding to a ZIP file.
  *
  * @param  PATH $path The full path to the folder to add
  * @param  PATH $subpath The subpath relative to the path (should be left as the default '', as this is used for the recursion to distinguish the adding base path from where it's currently looking)

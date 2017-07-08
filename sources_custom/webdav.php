@@ -32,7 +32,7 @@ function init__webdav()
 }
 
 /**
- * Main WebDAV entry-point script
+ * Main WebDAV entry-point script.
  */
 function webdav_script()
 {

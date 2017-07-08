@@ -54,7 +54,7 @@ function add_approval_point_to_workflow($bits, $workflow_id, $position = null)
 }
 
 /**
- * Deleting a workflow will remove the workflow, leaving the validated/
+ * Deleting a workflow will remove the workflow, leaving the validated/.
  * unvalidated system to handle content, ie. content which has passed
  * completely through the workflow will have its validated bit set and
  * will thus remain live. Those not completely through will not have
@@ -92,7 +92,7 @@ function delete_workflow($id)
 }
 
 /**
- * Deleting an approval point will remove it from any workflow it is a
+ * Deleting an approval point will remove it from any workflow it is a.
  * part of. Any content which has been approved for this approval point
  * will be unaffected, while those not-yet-approved will first be
  * approved, then have the approval point removed. This is to prevent any

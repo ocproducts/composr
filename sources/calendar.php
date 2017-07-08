@@ -69,7 +69,7 @@ function render_event_box($row, $zone = '_SEARCH', $give_context = true, $guid =
 }
 
 /**
- * Get Tempcode for a calendar type 'feature box' for the given row
+ * Get Tempcode for a calendar type 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use

@@ -23,7 +23,7 @@ The concept of a chain is crucial to proper understanding of the Wiki+ system. P
 */
 
 /**
- * Get Tempcode for a Wiki+ post 'feature box' for the given row
+ * Get Tempcode for a Wiki+ post 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -72,7 +72,7 @@ function render_wiki_post_box($row, $zone = '_SEARCH', $give_context = true, $in
 }
 
 /**
- * Get Tempcode for a Wiki+ post 'feature box' for the given row
+ * Get Tempcode for a Wiki+ post 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -124,7 +124,7 @@ function render_wiki_page_box($row, $zone = '_SEARCH', $give_context = true, $in
 }
 
 /**
- * Edit a Wiki+ post
+ * Edit a Wiki+ post.
  *
  * @param  AUTO_LINK $page_id The page ID
  * @param  string $message The new post
@@ -210,7 +210,7 @@ function wiki_add_post($page_id, $message, $validated = 1, $member_id = null, $s
 }
 
 /**
- * Edit a Wiki+ post
+ * Edit a Wiki+ post.
  *
  * @param  AUTO_LINK $post_id The post ID
  * @param  string $message The new post
@@ -303,7 +303,7 @@ function wiki_edit_post($post_id, $message, $validated, $member_id = null, $page
 }
 
 /**
- * Delete a Wiki+ post
+ * Delete a Wiki+ post.
  *
  * @param  AUTO_LINK $post_id The post ID
  * @param  ?MEMBER $member_id The member doing the action (null: current member)
@@ -360,7 +360,7 @@ function wiki_delete_post($post_id, $member_id = null)
 }
 
 /**
- * Add a Wiki+ page
+ * Add a Wiki+ page.
  *
  * @param  SHORT_TEXT $title The page title
  * @param  LONG_TEXT $description The page description
@@ -450,7 +450,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member_id = n
 }
 
 /**
- * Edit a Wiki+ page
+ * Edit a Wiki+ page.
  *
  * @param  AUTO_LINK $page_id The page ID
  * @param  SHORT_TEXT $title The page title
@@ -538,7 +538,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
 }
 
 /**
- * Delete a Wiki+ page
+ * Delete a Wiki+ page.
  *
  * @param  AUTO_LINK $page_id The page ID
  */
@@ -606,7 +606,7 @@ function wiki_delete_page($page_id)
 }
 
 /**
- * Get a chain script parameter or just an ID, in which case it does more work), and converts it into a ID/chain pair
+ * Get a chain script parameter or just an ID, in which case it does more work), and converts it into a ID/chain pair.
  *
  * @param  ID_TEXT $parameter_name The name of the GET parameter that stores the chain
  * @param  ?string $default_value The default value for the chain (null: no default)
@@ -701,7 +701,7 @@ function wiki_breadcrumbs($chain, $current_title = null, $final_link = false, $l
 }
 
 /**
- * Create a Wiki+ chain from the specified page ID
+ * Create a Wiki+ chain from the specified page ID.
  *
  * @param  AUTO_LINK $id The ID of the page to derive a chain for
  * @param  ?AUTO_LINK $root Virtual root to use (null: none)
@@ -959,7 +959,7 @@ function get_wiki_page_tree(&$wiki_seen, $page_id = null, $breadcrumbs = null, $
 }
 
 /**
- * Dispatch a notification about a Wiki+ post
+ * Dispatch a notification about a Wiki+ post.
  *
  * @param  AUTO_LINK $post_id The post ID
  * @param  ID_TEXT $type The action type
@@ -986,7 +986,7 @@ function dispatch_wiki_post_notification($post_id, $type)
 }
 
 /**
- * Dispatch a notification about a Wiki+ page
+ * Dispatch a notification about a Wiki+ page.
  *
  * @param  AUTO_LINK $page_id The page ID
  * @param  ID_TEXT $type The action type

@@ -623,7 +623,7 @@ function make_cart_payment_button($order_id, $currency, $price_points = 0)
 }
 
 /**
- * Tell the staff the shopping order was placed
+ * Tell the staff the shopping order was placed.
  *
  * @param  AUTO_LINK $order_id Order ID
  */

@@ -39,7 +39,7 @@ function cns_create_selection_list_forum_groupings($avoid = null, $it = null)
 }
 
 /**
- * Get a nice, formatted XHTML list of topics, in forum tree structure
+ * Get a nice, formatted XHTML list of topics, in forum tree structure.
  *
  * @param  ?AUTO_LINK $it The currently selected topic (null: none selected)
  * @return Tempcode The list of topics

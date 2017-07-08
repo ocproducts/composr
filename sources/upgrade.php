@@ -835,7 +835,7 @@ function clear_caches_2()
 }
 
 /**
- * Find extra directories to chmod
+ * Find extra directories to chmod.
  *
  * @return array Extra directories to chmod
  */
@@ -850,7 +850,7 @@ function get_chmod_array_2()
 }
 
 /**
- * Do permission checking
+ * Do permission checking.
  *
  * @return string Output messages
  */
@@ -926,7 +926,7 @@ function check_perms()
 }
 
 /**
- * Do permission setting
+ * Do permission setting.
  *
  * @return string Output messages
  */
@@ -1046,7 +1046,7 @@ function move_modules()
 }
 
 /**
- * Find any excess permissions
+ * Find any excess permissions.
  *
  * @param  array $array Permissions that DO need to be set
  * @param  string $rel Where we are searching under

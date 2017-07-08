@@ -26,7 +26,7 @@ build_rewrite_rules.php is in git / the composr_release_build addon.
 */
 
 /**
- * Find the list of URL remappings
+ * Find the list of URL remappings.
  *
  * @param  ID_TEXT $url_scheme The URL scheme to use
  * @return array The list of URL remappings

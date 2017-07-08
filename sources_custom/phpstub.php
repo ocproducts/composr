@@ -27,7 +27,7 @@ The code quality checker automatically parses and uses this file, to build up th
 */
 
 /**
- * Return the values from a single column in the input array
+ * Return the values from a single column in the input array.
  *
  * @param  array $input A multi-dimensional array or an array of objects from which to pull a column of values from
  * @param  mixed $column_key The column of values to return
@@ -40,7 +40,7 @@ function array_column($input, $column_key, $index_key = null)
 }
 
 /**
- * Timing attack safe string comparison
+ * Timing attack safe string comparison.
  *
  * @param  string $known_string The string of known length to compare against
  * @param  string $user_string The user-supplied string
@@ -52,7 +52,7 @@ function hash_equals($known_string, $user_string)
 }
 
 /**
- * Hash the password using the specified algorithm
+ * Hash the password using the specified algorithm.
  *
  * @param  string $password The password to hash
  * @param  integer $algo The algorithm to use (Defined by PASSWORD_* constants)
@@ -65,7 +65,7 @@ function password_hash($password, $algo, $options)
 }
 
 /**
- * Verify a password against a hash using a timing attack resistant approach
+ * Verify a password against a hash using a timing attack resistant approach.
  *
  * @param  string $password The password to verify
  * @param  string $hash The hash to verify against
@@ -77,7 +77,7 @@ function password_verify($password, $hash)
 }
 
 /**
- * Checks if the given hash matches the given options
+ * Checks if the given hash matches the given options.
  *
  * @param  string $hash The password hash
  * @param  integer $algo The algorithm wanted (Defined by PASSWORD_* constants)
@@ -90,7 +90,7 @@ function password_needs_rehash($hash, $algo, $options = null)
 }
 
 /**
- * Returns information about the given hash
+ * Returns information about the given hash.
  *
  * @param  string $hash The password hash
  * @return array A map of info, include algo, algoName, options
@@ -1233,7 +1233,7 @@ function imageistruecolor($image)
 }
 
 /**
- * Make an image truecolor
+ * Make an image truecolor.
  *
  * @param  resource $image The image handle.
  * @return boolean False on some kind of error, e.g. $image is invalid resource. Will return true if image is already truecolor.

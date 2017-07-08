@@ -273,7 +273,7 @@ function tar_add_folder_incremental(&$resource, $logfile, $path, $threshold, $ma
 }
 
 /**
- * Add a folder to the TAR archive
+ * Add a folder to the TAR archive.
  *
  * @param  array $resource The TAR file handle
  * @param  ?resource $logfile The logfile to write to (null: no logging)
@@ -693,7 +693,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
 }
 
 /**
- * Find the checksum specified in a TAR header
+ * Find the checksum specified in a TAR header.
  *
  * @param  string $header The header from a TAR file
  * @return integer The checksum

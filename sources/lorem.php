@@ -214,7 +214,7 @@ function placeholder_form()
 }
 
 /**
- * Get fields
+ * Get fields.
  *
  * @return Tempcode Place holder text.
  */
@@ -230,7 +230,7 @@ function placeholder_fields()
 }
 
 /**
- * Get fields, but composed of divs (used by forum)
+ * Get fields, but composed of divs (used by forum).
  *
  * @return Tempcode Place holder text.
  */
@@ -246,7 +246,7 @@ function placeholder_fields_as_divs()
 }
 
 /**
- * Get form with a field
+ * Get form with a field.
  *
  * @param  ID_TEXT $field_name The field name wanted.
  * @return Tempcode Place holder text.
@@ -308,7 +308,7 @@ function placeholder_link()
 }
 
 /**
- * Get a random number
+ * Get a random number.
  *
  * @return string Random number
  */
@@ -321,7 +321,7 @@ function placeholder_random()
 }
 
 /**
- * Get a random ID
+ * Get a random ID.
  *
  * @return string Random ID
  */
@@ -334,7 +334,7 @@ function placeholder_random_id()
 }
 
 /**
- * Get a button
+ * Get a button.
  *
  * @return Tempcode Button
  */
@@ -348,7 +348,7 @@ function placeholder_button()
 }
 
 /**
- * Get options for drop-down box
+ * Get options for drop-down box.
  *
  * @return string Place holder text
  */
@@ -363,7 +363,7 @@ function placeholder_options()
 }
 
 /**
- * Get an array
+ * Get an array.
  *
  * @param  integer $num_elements Number of array elements.
  * @return array Place holder array.
@@ -379,7 +379,7 @@ function placeholder_array($num_elements = 3)
 }
 
 /**
- * Get a list
+ * Get a list.
  *
  * @return string Place holder text.
  */
@@ -389,7 +389,7 @@ function placeholder_list_item()
 }
 
 /**
- * Get some set of data
+ * Get some set of data.
  *
  * @return string Place holder text.
  */
@@ -399,7 +399,7 @@ function placeholder_types()
 }
 
 /**
- * Get an image
+ * Get an image.
  *
  * @return Tempcode Place holder text.
  */
@@ -413,7 +413,7 @@ function placeholder_image()
 }
 
 /**
- * Get time
+ * Get time.
  *
  * @return string Place holder text.
  */
@@ -464,7 +464,7 @@ function placeholder_filesize()
 }
 
 /**
- * Get javascript code
+ * Get javascript code.
  *
  * @return string Place holder text.
  */
@@ -474,7 +474,7 @@ function placeholder_javascript_code()
 }
 
 /**
- * Get image url
+ * Get image url.
  *
  * @return string Image url
  */

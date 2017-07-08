@@ -197,7 +197,7 @@ function div($tempcode, $guid = '', $class = null)
 }
 
 /**
- * Get the Tempcode for a span
+ * Get the Tempcode for a span.
  *
  * @param  Tempcode $tempcode The Tempcode to put into a span
  * @param  string $guid GUID for call

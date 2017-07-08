@@ -37,7 +37,7 @@ function init__chat()
 }
 
 /**
- * Get Tempcode for a chatroom 'feature box' for the given row
+ * Get Tempcode for a chatroom 'feature box' for the given row.
  *
  * @param  array $row The database field row of it
  * @param  ID_TEXT $zone The zone to use
@@ -72,7 +72,7 @@ function render_chat_box($row, $zone = '_SEARCH', $give_context = true, $guid = 
 }
 
 /**
- * High-level messages script handling
+ * High-level messages script handling.
  */
 function messages_script()
 {

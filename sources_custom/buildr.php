@@ -633,7 +633,7 @@ function basic_enter_room($member_id, $realm, $x, $y)
 }
 
 /**
- * Does a member hold an item?
+ * Does a member hold an item?.
  *
  * @param  MEMBER $member_id The member
  * @param  string $item_name The item

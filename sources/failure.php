@@ -56,7 +56,7 @@ function init__failure()
 }
 
 /**
- * Give the user an option to see a stack trace by adding in a link, but only if they have permission
+ * Give the user an option to see a stack trace by adding in a link, but only if they have permission.
  */
 function suggest_fatalistic()
 {
@@ -353,7 +353,7 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
 }
 
 /**
- * Do a terminal execution on a defined page type
+ * Do a terminal execution on a defined page type.
  *
  * @param  string $text The error message
  * @return string Sanitised error message
@@ -367,7 +367,7 @@ function _sanitise_error_msg($text)
 }
 
 /**
- * Do a terminal execution on a defined page type
+ * Do a terminal execution on a defined page type.
  *
  * @param  mixed $text The error message (string or Tempcode)
  * @param  ID_TEXT $template Name of the terminal page template

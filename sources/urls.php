@@ -210,7 +210,7 @@ function cms_url_encode_mini($url_part, $can_try_url_schemes = null)
 }
 
 /**
- * Decode a URL component that was encoded with hackerish_url_encode
+ * Decode a URL component that was encoded with hackerish_url_encode.
  *
  * @param  URLPATH $url_part The URL to encode
  * @return URLPATH The encoded result
@@ -321,7 +321,7 @@ function is_page_https($zone, $page)
 }
 
 /**
- * Find if a URL Scheme is in use
+ * Find if a URL Scheme is in use.
  *
  * @param  boolean $avoid_remap Whether to explicitly avoid using URL Schemes. While it might seem weird to put this in as a function parameter, it removes duplicated logic checks in the code.
  * @return boolean Whether a URL Scheme is in use
@@ -336,7 +336,7 @@ function can_try_url_schemes($avoid_remap = false)
 }
 
 /**
- * Find if keep_ parameters are in use
+ * Find if keep_ parameters are in use.
  *
  * @return boolean Whether they are
  */

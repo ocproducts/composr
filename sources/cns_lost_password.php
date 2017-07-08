@@ -19,7 +19,7 @@
  */
 
 /**
- * Find what password reset process will be used
+ * Find what password reset process will be used.
  *
  * @return ID_TEXT Password reset process codename
  */
@@ -33,7 +33,7 @@ function get_password_reset_process()
 }
 
 /**
- * Send out a lost password e-mail
+ * Send out a lost password e-mail.
  *
  * @param  string $username Username to reset for (may be blank if other is not)
  * @param  string $email_address E-mail address to set for (may be blank if other is not)

@@ -301,7 +301,7 @@ function add_privilege($section, $name, $default = false, $not_even_mods = false
 }
 
 /**
- * Sets the privilege of a usergroup
+ * Sets the privilege of a usergroup.
  *
  * @param  GROUP $group_id The usergroup having the permission set
  * @param  ID_TEXT $permission The codename of the permission

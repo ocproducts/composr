@@ -19,7 +19,7 @@
  */
 
 /**
- * Helper function for *_text_file
+ * Helper function for *_text_file.
  *
  * @param  string $codename The file name (without .txt)
  * @param  ?LANGUAGE_NAME $lang The language to load from (null: none) (blank: search)
@@ -63,7 +63,7 @@ function _find_text_file_path($codename, $lang)
 }
 
 /**
- * Read a text file, using the _custom system
+ * Read a text file, using the _custom system.
  *
  * @param  string $codename The file name (without .txt)
  * @param  ?LANGUAGE_NAME $lang The language to load from (null: none) (blank: search)
@@ -100,7 +100,7 @@ function read_text_file($codename, $lang = null, $missing_blank = false)
 }
 
 /**
- * Write a text file, using the _custom system
+ * Write a text file, using the _custom system.
  *
  * @param  string $codename The file name (without .txt)
  * @param  ?LANGUAGE_NAME $lang The language to write for (null: none) (blank: search)

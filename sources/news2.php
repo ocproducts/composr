@@ -701,7 +701,7 @@ function delete_news($id)
 }
 
 /**
- * Import wordpress db
+ * Import wordpress db.
  * Get UI fields for starting news import.
  *
  * @param  boolean $import_to_blog Whether to import to blogs, by default
@@ -743,7 +743,7 @@ DIRECT WORDPRESS DATABASE IMPORT (imports more than RSS import can)
 */
 
 /**
- * Get data from the Wordpress DB
+ * Get data from the Wordpress DB.
  *
  * @return array Result structure
  *

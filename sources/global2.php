@@ -1038,7 +1038,7 @@ function running_script($is_this_running)
 }
 
 /**
- * This is a intended to output an informational exit at the same time as terminating execution
+ * This is a intended to output an informational exit at the same time as terminating execution.
  *
  * @param  mixed $text The error message (string or Tempcode)
  * @param  ?boolean $support_match_key_messages Whether match key messages / redirects should be supported (null: detect)
@@ -1051,7 +1051,7 @@ function inform_exit($text, $support_match_key_messages = null)
 }
 
 /**
- * This is a less-revealing alternative to fatal_exit, that is used for user-errors/common-corruption-scenarios
+ * This is a less-revealing alternative to fatal_exit, that is used for user-errors/common-corruption-scenarios.
  *
  * @param  mixed $text The error message (string or Tempcode)
  * @param  boolean $support_match_key_messages Whether match key messages / redirects should be supported

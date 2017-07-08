@@ -589,7 +589,7 @@ function generate_filtercode_join_key_from_string($str)
 }
 
 /**
- * Make sure we are doing necessary join to be able to access the given field
+ * Make sure we are doing necessary join to be able to access the given field.
  *
  * @param  object $db Database connector
  * @param  array $info Content type info

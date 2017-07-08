@@ -55,7 +55,7 @@ function add_award_type($title, $description, $points, $content_type, $hide_awar
 }
 
 /**
- * Edit an award type
+ * Edit an award type.
  *
  * @param  AUTO_LINK $id The ID
  * @param  SHORT_TEXT $title The title

@@ -589,7 +589,7 @@ function _cleanup_array($in)
 }
 
 /**
- * Type-check the specified parameter (giving an error if the type checking fails) [all checks]
+ * Type-check the specified parameter (giving an error if the type checking fails) [all checks].
  *
  * @param  ID_TEXT $type The parameter type
  * @param  string $function_name The functions name (used in error message)
@@ -702,7 +702,7 @@ function check_function_type($type, $function_name, $name, $value, $range, $set,
 }
 
 /**
- * Type-check the specified parameter (giving an error if the type checking fails) [just value against type]
+ * Type-check the specified parameter (giving an error if the type checking fails) [just value against type].
  *
  * @param  ID_TEXT $type The parameter type
  * @param  string $function_name The functions name (used in error message)

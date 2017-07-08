@@ -33,7 +33,7 @@ function init__banners()
 }
 
 /**
- * Get SQL for selecting appropriate banners
+ * Get SQL for selecting appropriate banners.
  *
  * @param  ?ID_TEXT $b_type The banner type needed (null: don't care)
  * @param  boolean $do_type_join If we want the banner type row joined in

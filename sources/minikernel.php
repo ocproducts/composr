@@ -578,7 +578,7 @@ function die_html_trace($message)
 }
 
 /**
- * This is a less-revealing alternative to fatal_exit, that is used for user-errors/common-corruption-scenarios
+ * This is a less-revealing alternative to fatal_exit, that is used for user-errors/common-corruption-scenarios.
  *
  * @param  mixed $text The error message
  * @return mixed Never returns (i.e. exits)
@@ -589,7 +589,7 @@ function inform_exit($text)
 }
 
 /**
- * This is a less-revealing alternative to fatal_exit, that is used for user-errors/common-corruption-scenarios
+ * This is a less-revealing alternative to fatal_exit, that is used for user-errors/common-corruption-scenarios.
  *
  * @param  mixed $text The error message
  * @return mixed Never returns (i.e. exits)
@@ -891,7 +891,7 @@ function get_param_integer($name, $default = null)
 }
 
 /**
- * Get the file base for your installation of Composr
+ * Get the file base for your installation of Composr.
  *
  * @return PATH The file base, without a trailing slash
  */
