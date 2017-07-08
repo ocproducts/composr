@@ -1139,8 +1139,7 @@ class Module_admin_addons
         $map = array('page' => '_SELF', 'type' => '__addon_export');
         if ($theme !== null) {
             $_redirect = build_url(array('page' => 'admin_themes', 'type' => 'browse'), 'adminzone');
-            $redirect = $_redirect->evaluate();
-            $map['redirect'] = $redirect;
+            $map['redirect'] = protect_url_parameter($_redirect);
             $map['theme'] = $theme;
         }
         $post_url = build_url($map, '_SELF');

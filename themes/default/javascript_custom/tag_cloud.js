@@ -294,5 +294,5 @@ function loadTagCloud(container) {
     };
 
     scene.renderCamera(camera); // First rendering
-    window.setInterval(animateIt, 60);
+    setInterval(animateIt, 60);
 }

@@ -538,7 +538,7 @@ class Module_topicview
                         $redirect_map['threaded'] = $test_threaded;
                     }
                     $redirect = build_url($redirect_map, get_module_zone('topicview'));
-                    $map = array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $id, 'redirect' => $redirect->evaluate());
+                    $map = array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $id, 'redirect' => protect_url_parameter($redirect->evaluate()));
                     if ($test_threaded !== null) {
                         $map['threaded'] = $test_threaded;
                     }

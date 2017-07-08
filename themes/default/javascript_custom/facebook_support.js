@@ -153,7 +153,7 @@
     }
 
     function facebookTriggerRefresh(homePageUrl) {
-        window.setTimeout(function () { // Firefox needs us to wait a bit
+        setTimeout(function () { // Firefox needs us to wait a bit
             if (document.querySelector('failover')) {
                 return;
             }
@@ -167,7 +167,7 @@
                     window.top.location = currentUrl;
                 }
                 else if (currentUrl.indexOf('keep_refreshed_once=1') == -1) {
-                    //window.alert('Could not login, probably due to restrictive cookie settings.');
+                    //alert('Could not login, probably due to restrictive cookie settings.');
                     window.top.location = window.top.location.toString() + '&keep_refreshed_once=1';
                 }
             }

@@ -102,7 +102,7 @@
             var view = this,
                 amount = btn.dataset.moveAmount;
 
-            window.setTimeout(function () {
+            setTimeout(function () {
                 view.carouselMove(amount);
             }, 10);
         },
@@ -127,7 +127,7 @@
             this.updateFaders();
             var that = this;
             if (amount !== 0) {
-                window.setTimeout(function () {
+                setTimeout(function () {
                     that.carouselMove(amount);
                 }, 10);
             }
@@ -269,7 +269,7 @@
                     var isVideo = imgs[position][2];
 
                     // Load proper image
-                    window.setTimeout(function () { // Defer execution until the HTML was parsed
+                    setTimeout(function () { // Defer execution until the HTML was parsed
                         if (isVideo) {
                             var video = document.createElement('video');
                             video.id = 'lightbox_image';
@@ -285,7 +285,7 @@
                             img.className = 'lightbox_image';
                             img.id = 'lightbox_image';
                             img.src = '{$IMG_INLINE;,loading}';
-                            window.setTimeout(function () { // Defer execution until after loading is set
+                            setTimeout(function () { // Defer execution until after loading is set
                                 img.addEventListener('load', function () {
                                     $cms.ui.resizeLightboxDimensionsImg(modal, img, true, isVideo);
                                 });
@@ -449,7 +449,7 @@
         }
 
         if (refreshTime > 0) {
-            window.setInterval(function () {
+            setInterval(function () {
                 if (!img.timer) {
                     img.timer = 0;
                 }
@@ -482,7 +482,7 @@
     $cms.templates.comcodeRandom = function comcodeRandom(params) {
         var rand, part, use, comcoderandom;
 
-        rand = window.parseInt(Math.random() * params.max);
+        rand = parseInt(Math.random() * params.max);
 
         for (var key in params.parts) {
             part = params.parts[key];
@@ -501,7 +501,7 @@
         var id = 'pulse_wave_' + params.randIdPulse;
 
         window[id] = [0, params.maxColor, params.minColor, params.speed, []];
-        window.setInterval(function () {
+        setInterval(function () {
             processWave(document.getElementById(id));
         }, params.speed);
     };
@@ -523,7 +523,7 @@
         }
 
         shockerTick(id, time, params.maxColor, params.minColor);
-        window.setInterval(function () {
+        setInterval(function () {
             shockerTick(id, time, params.maxColor, params.minColor);
         }, time);
     };
@@ -576,7 +576,7 @@
         });
 
         if (!id || ($cms.readCookie('og_' + id) !== '1')) {
-            window.setTimeout(function () {
+            setTimeout(function () {
                 var element, bi;
 
                 $cms.dom.smoothScroll(0);
@@ -597,7 +597,7 @@
 
 
                 if (params.timeout !== '-1') {
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         if (bi) {
                             $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
                         }
@@ -685,7 +685,7 @@
             $cms.filter.nl(params.text) + '<\/span><\/div>'
         );
 
-        window.setInterval(function () {
+        setInterval(function () {
             tickerTick(id, params.width);
         }, 100 / params.speed);
     };
@@ -702,7 +702,7 @@
 
         $cms.dom.html(container, '<span id="' + id + '">' + window.jumper_parts[id][0] + '<\/span>');
 
-        window.setInterval(function () {
+        setInterval(function () {
             jumperTick(id);
         }, params.time);
     };
@@ -750,7 +750,7 @@
         window.$cmsLoad.push(function () {
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
-                window.setTimeout(function () {
+                setTimeout(function () {
                     document.getElementById(params.playerId).addEventListener('stateChange', function (newState) {
                         if (newState == 0) {
                             playerStopped();
@@ -768,7 +768,7 @@
         window.$cmsLoad.push(function () {
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
-                window.setTimeout(function () {
+                setTimeout(function () {
                     document.getElementById(params.playerId).addEventListener('qt_ended', function () {
                         playerStopped();
                     });
@@ -786,7 +786,7 @@
             if (document.getElementById('next_slide')) {
                 stopSlideshowTimer();
 
-                window.setTimeout(function () {
+                setTimeout(function () {
                     var player = document.getElementById(params.playerId);
                     // WMP
                     player.addEventListener('playstatechange', function (newState) {
@@ -817,7 +817,7 @@
         // Tie into callback event to see when finished, for our slideshows
         if (document.getElementById('next_slide')) {
             stopSlideshowTimer();
-            window.setTimeout(function () {
+            setTimeout(function () {
                 window.addEventListener('message', playerStopped, false);
 
                 var player = document.getElementById(params.playerId);
@@ -932,7 +932,7 @@
         window.shocker_pos[id]++;
 
         window['comcodeshocker' + id + '_left'] = [0, minColor, maxColor, time / 13, []];
-        window.setInterval(function () {
+        setInterval(function () {
             processWave(eLeft);
         }, window['comcodeshocker' + id + '_left'][3]);
     }
@@ -941,7 +941,7 @@
         var i, currentPos = 0, section;
 
         if (window['big_tabs_auto_cycler_' + passId]) {
-            window.clearTimeout(window['big_tabs_auto_cycler_' + passId]);
+            clearTimeout(window['big_tabs_auto_cycler_' + passId]);
             window['big_tabs_auto_cycler_' + passId] = null;
         }
 
@@ -1045,7 +1045,7 @@
         }
 
         if (window['move_between_big_tabs_' + passId]) {
-            window['big_tabs_auto_cycler_' + passId] = window.setInterval(window['move_between_big_tabs_' + passId], window['big_tabs_switch_time_' + passId]);
+            window['big_tabs_auto_cycler_' + passId] = setInterval(window['move_between_big_tabs_' + passId], window['big_tabs_switch_time_' + passId]);
         }
 
         return false;
@@ -1074,7 +1074,7 @@
 
         for (i = us.length - 1; i >= 0; i--) {
             multiplier *= multiples[i];
-            total += window.parseInt(us[i]) * multiplier;
+            total += parseInt(us[i]) * multiplier;
         }
 
         if (total > 0) {

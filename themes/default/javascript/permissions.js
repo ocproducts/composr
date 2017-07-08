@@ -85,7 +85,7 @@ function copyPermissionPresets(name, value, justTrack) {
 
             for (j = 0; j < usualSuspects.length; j++) {
                 if (usualSuspects[j] == x) {
-                    test = (access[j] <= window.parseInt(value)) ? 1 : 0;
+                    test = (access[j] <= parseInt(value)) ? 1 : 0;
                     break;
                 }
             }

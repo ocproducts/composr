@@ -39,7 +39,7 @@
 
             window.notifications_time_barrier = timeBarrier;
 
-            window.setInterval(window.pollForNotifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
+            setInterval(window.pollForNotifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
 
             var webNotificationsButton = document.getElementById('web_notifications_button');
             if (webNotificationsButton) {
@@ -208,7 +208,7 @@ function pollForNotifications(forcedUpdate, delay) {
     delay = !!delay;
 
     if (delay) {
-        window.setTimeout(function () {
+        setTimeout(function () {
             pollForNotifications(forcedUpdate);
         }, 1000);
         return;
@@ -231,7 +231,7 @@ function _pollForNotifications(rawAjaxResult) {
         return; // Some kind of error
 
     var timeNode = rawAjaxResult.querySelector('time');
-    window.notifications_time_barrier = window.parseInt($cms.dom.html(timeNode));
+    window.notifications_time_barrier = parseInt($cms.dom.html(timeNode));
 
     // HTML5 notification API
 
@@ -286,7 +286,7 @@ function _pollForNotifications(rawAjaxResult) {
         // Play sound, if requested
         var sound = notification.getAttribute('sound');
         if (!sound) {
-            sound = (window.parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
+            sound = (parseInt(notification.getAttribute('priority')) < 3) ? 'on' : 'off';
         }
         if ($cms.readCookie('sound', 'off') === 'off') {
             sound = 'off';
@@ -325,7 +325,7 @@ function _pollForNotifications(rawAjaxResult) {
 
                     notificationWrapper.notification.addEventListener('click', function () {
                         try {
-                            window.focus();
+                            focus();
                         } catch (ignore) {}
                     });
                 }
@@ -386,7 +386,7 @@ function _toggleMessagingBox(event, name, hide) {
             el.style.opacity = '1.0';
         } catch (ex) {}
     };
-    window.setTimeout(setPosition, 0);
+    setTimeout(setPosition, 0);
 
     if ((el.style.display == 'none') && (!hide)) {
         var tooltips = document.querySelectorAll('body>.tooltip');
@@ -518,7 +518,7 @@ function _toggleMessagingBox(event, name, hide) {
         } else {
             if (window.focus !== undefined) {
                 try {
-                    window.focus();
+                    focus();
                 }
                 catch (e) {
                 }
@@ -618,7 +618,7 @@ function _toggleMessagingBox(event, name, hide) {
         if (settings.autoClose != 0 && notification && !notification.ieVerification && notification.addEventListener) {
             notification.addEventListener("show", function () {
                 var notification = notificationWrapper;
-                window.setTimeout(function () {
+                setTimeout(function () {
                     notification.close();
                 }, settings.autoClose);
             });

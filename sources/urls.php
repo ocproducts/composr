@@ -77,8 +77,9 @@ function init__urls()
     $HAS_NO_KEEP_CONTEXT = false;
     $NO_KEEP_CONTEXT_STACK = array();
 
-    if (!defined('SELF_REDIRECT')) {
-        define('SELF_REDIRECT', '!--:)defUNLIKELY');
+    if (!defined('SELF_REDIRECT_RIP')) {
+        define('SELF_REDIRECT_RIP', '!--:)defUNLIKELY1'); // Use this if you want a self-URL that goes back to the root if there's been a POST request
+        define('SELF_REDIRECT', '!--:)defUNLIKELY2'); // Use this if you want a self-URL that goes back to the root if there's been a POST request
     }
 }
 
@@ -687,10 +688,6 @@ function _build_url($vars, $zone_name = '', $skip = array(), $keep_all = false, 
                 $key = strval($key);
             }
 
-            if ($val === SELF_REDIRECT) {
-                $val = get_self_url(true, true);
-            }
-
             // Add in
             $url .= $symbol . $key . '=' . (is_integer($val) ? strval($val) :/*cms_*/urlencode($val/*,false*/));
             $symbol = '&';
@@ -848,13 +845,13 @@ function _url_rewrite_params($zone_name, $vars, $force_index_php = false)
                     if ($val === null) {
                         continue;
                     }
+
                     if (is_integer($key)) {
                         $key = strval($key);
                     }
-                    if ($val === SELF_REDIRECT) {
-                        $val = get_self_url(true, true);
-                    }
+
                     $_makeup .= ($first ? '?' : '&') . $key . '=' . cms_url_encode($val, true);
+
                     $first = false;
                 }
                 if ($_makeup !== '') {
@@ -1443,7 +1440,7 @@ function ensure_protocol_suitability($url)
         return $https_url;
     }
 
-    return find_script('external_url_proxy') . '?url=' . urlencode($url);
+    return find_script('external_url_proxy') . '?url=' . urlencode(static_evaluate_tempcode(protect_url_parameter($url)));
 }
 
 /**
@@ -1480,4 +1477,57 @@ function check_url_exists($url, $test_freq_secs)
     }
 
     return ($exists == 1);
+}
+
+/**
+ * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on.
+ *
+ * @param  mixed $parameter Non-encoded parameter (Tempcode, string, or null)
+ * @return ?Tempcode Encoded parameter (null: null input pipe-through)
+ */
+function protect_url_parameter($parameter)
+{
+    if ($parameter === null) {
+        return $parameter;
+    }
+
+    return symbol_tempcode('PROTECT_URL_PARAMETER', array($parameter));
+}
+
+/**
+ * Low-level implementation of protect_url_parameter.
+ *
+ * @param  mixed $parameter Non-encoded parameter (Tempcode, string, or null)
+ * @return ?string Encoded parameter (null: null input pipe-through)
+ */
+function _protect_url_parameter($parameter)
+{
+    if ($parameter === null) {
+        return $parameter;
+    }
+
+    if ($parameter === SELF_REDIRECT_RIP) {
+        $parameter = get_self_url(false, true);
+    } elseif ($parameter === SELF_REDIRECT) {
+        $parameter = get_self_url(false, false);
+    }
+
+    $base_url = get_base_url();
+    if (is_object($parameter)) {
+        $parameter = $parameter->evaluate();
+    }
+
+    if (substr($parameter, 0, 8) == 'https://') {
+        $base_url = preg_replace('#^http://#', 'https://', $base_url);
+        if (substr($parameter, 0, strlen($base_url) + 1) == $base_url . '/') {
+            return 'https-cms:' . substr($parameter, strlen($base_url) + 1);
+        }
+    } elseif (substr($parameter, 0, 7) == 'http://') {
+        $base_url = preg_replace('#^https://#', 'http://', $base_url);
+        if (substr($parameter, 0, strlen($base_url) + 1) == $base_url . '/') {
+            return 'http-cms:' . substr($parameter, strlen($base_url) + 1);
+        }
+    }
+
+    return $parameter;
 }

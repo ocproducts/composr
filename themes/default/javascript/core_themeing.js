@@ -43,7 +43,7 @@
 
         // Allow searching via URL hash
         if (window.location.hash) {
-            window.setTimeout(function () {
+            setTimeout(function () {
                 var hash = window.location.hash.substr(1, window.location.hash.length - 1);
                 editareaDoSearch('e_' + params.fileId, hash);
             }, 2000);
@@ -233,7 +233,7 @@
 
             var lastCss = editareaGetValue(textareaId);
 
-            editor.css_recompiler_timer = window.setInterval(function () {
+            editor.css_recompiler_timer = setInterval(function () {
                 if ((window.opener) && (window.opener.document)) {
                     if (editor.last_change === undefined) return; // No change made at all
 
@@ -695,7 +695,7 @@
             window.sitemap = $cms.ui.createTreeList('theme_files', 'data/ajax_tree.php?hook=choose_theme_files&theme=' + params.theme + $cms.$KEEP(), null, '', false, null, false, true);
         });
 
-        window.setTimeout(function () {
+        setTimeout(function () {
             for (var i = 0, len = params.filesToLoad.length; i < len; i++) {
                 templateEditorAddTab(params.filesToLoad[i]);
             }
@@ -892,7 +892,7 @@
                         bit = (character == "\u200B") ? "1" : "0";
                         _bitsRep += bit;
                     }
-                    bitsRep = window.parseInt(_bitsRep, 2);
+                    bitsRep = parseInt(_bitsRep, 2);
                     ret += String.fromCharCode(bitsRep);
                 }
 
@@ -1062,7 +1062,7 @@
             url += '&active_guid=' + encodeURIComponent(window.template_editor_active_guid);
         }
         if (window.template_editor_live_preview_url !== undefined) {
-            url += '&live_preview_url=' + encodeURIComponent(window.template_editor_live_preview_url);
+            url += '&live_preview_url=' + encodeURIComponent($cms.protectURLParameter(window.template_editor_live_preview_url));
         }
         if (revisionId !== undefined) {
             url += '&undo_revision=' + encodeURIComponent(revisionId);
@@ -1094,7 +1094,7 @@
 
         $cms.dom.html('#g_' + fileId, ajaxResult.responseText);
 
-        window.setTimeout(function () {
+        setTimeout(function () {
             var textareaId = 'e_' + fileId;
             if (editareaIsLoaded(textareaId)) {
                 var editor = window.ace_editors[textareaId];
@@ -1125,7 +1125,7 @@
     }
 
     function templateEditorShowTab(fileId) {
-        window.setTimeout(function () {
+        setTimeout(function () {
             if (!document.getElementById('t_' + fileId) || document.getElementById('t_' + fileId).className.indexOf('tab_active') == -1) {
                 // No longer visible
                 return;

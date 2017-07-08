@@ -140,7 +140,7 @@
         $cms.ui.disableSubmitAndPreviewButtons();
 
         if (window.detect_interval !== undefined) {
-            window.clearInterval(window.detect_interval);
+            clearInterval(window.detect_interval);
             delete window.detect_interval;
         }
 
@@ -201,7 +201,7 @@
 
         /* Do our loading-animation */
         if (!window.just_checking_requirements) {
-            window.setInterval($cms.dom.triggerResize, 500);
+            setInterval($cms.dom.triggerResize, 500);
             /* In case its running in an iframe itself */
             $cms.dom.illustrateFrameLoad('preview_iframe');
         }
@@ -854,7 +854,7 @@
         tempForm.style.display = 'none';
         document.body.appendChild(tempForm);
 
-        window.setTimeout(function () {
+        setTimeout(function () {
             tempForm.submit();
             tempForm.parentNode.removeChild(tempForm);
         });

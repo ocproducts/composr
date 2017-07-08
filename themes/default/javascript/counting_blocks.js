@@ -8,7 +8,7 @@
     };
 
     $cms.templates.blockMainCountdown = function (params, el) {
-        window.setInterval(function () {
+        setInterval(function () {
             countdown(el, (params.positive ? -1 : +1) * params.distanceForPrecision, params.tailing);
         }, params.millisecondsForPrecision);
     };

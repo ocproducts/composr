@@ -182,7 +182,7 @@ class Block_main_image_fader_news
         if (count($news) == 0) {
             $submit_url = mixed();
             if ((has_actual_page_access(null, ($blogs === 1) ? 'cms_blogs' : 'cms_news', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), ($blogs === 1) ? 'cms_blogs' : 'cms_news', array('news', $cat)))) {
-                $submit_url = build_url(array('page' => ($blogs === 1) ? 'cms_blogs' : 'cms_news', 'type' => 'add', 'cat' => $cat, 'redirect' => SELF_REDIRECT), get_module_zone(($blogs === 1) ? 'cms_blogs' : 'cms_news'));
+                $submit_url = build_url(array('page' => ($blogs === 1) ? 'cms_blogs' : 'cms_news', 'type' => 'add', 'cat' => $cat, 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone(($blogs === 1) ? 'cms_blogs' : 'cms_news'));
             }
             return do_template('BLOCK_NO_ENTRIES', array(
                 '_GUID' => 'ba84d65b8dd134ba6cd7b1b7bde99de2',

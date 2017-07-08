@@ -169,7 +169,7 @@ class Module_admin_content_reviews
                         break;
                     }
                 }
-                $post_url = build_url($attributes + array('redirect' => get_self_url(true)), $zone);
+                $post_url = build_url($attributes + array('redirect' => protect_url_parameter(SELF_REDIRECT)), $zone);
                 $fields = form_input_huge_list(do_lang_tempcode('CONTENT'), '', $edit_identifier, $content, null, true);
 
                 // Could debate whether to include "'TARGET' => '_blank',". However it does redirect back, so it's a nice linear process like this. If it was new window it could be more efficient, but also would confuse people with a lot of new windows opening and not closing.

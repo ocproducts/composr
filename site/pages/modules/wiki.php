@@ -253,7 +253,7 @@ class Module_wiki
                     $this->title = get_screen_title('ERROR_OCCURRED');
                     $add_access = (has_submit_permission('low', get_member(), get_ip_address(), 'cms_wiki'));
                     require_lang('zones');
-                    $add_url = $add_access ? build_url(array('page' => 'cms_wiki', 'type' => 'add_page', 'id' => $find, 'redirect' => get_self_url(true, true)), get_module_zone('cms_wiki')) : new Tempcode();
+                    $add_url = $add_access ? build_url(array('page' => 'cms_wiki', 'type' => 'add_page', 'id' => $find, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_wiki')) : new Tempcode();
                     return do_template('MISSING_SCREEN', array('_GUID' => 'ba778c816860a9594983ed9ef03d0c42', 'TITLE' => $this->title, 'ADD_URL' => $add_url, 'PAGE' => $find));
                 }
                 $chain = wiki_derive_chain($id);
@@ -627,14 +627,14 @@ class Module_wiki
         }
 
         if ((get_option('wiki_enable_children') == '1') && (has_privilege(get_member(), 'wiki_manage_tree', 'cms_wiki', array('wiki_page', $id))) && (has_actual_page_access(get_member(), 'cms_wiki'))) {
-            $tree_url = build_url(array('page' => 'cms_wiki', 'type' => 'edit_tree', 'id' => $chain, 'redirect' => get_self_url(true, true)), get_module_zone('cms_wiki'));
+            $tree_url = build_url(array('page' => 'cms_wiki', 'type' => 'edit_tree', 'id' => $chain, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_wiki'));
             $tree_button = do_template('BUTTON_SCREEN', array('_GUID' => 'e6edc9f39b6b0aff86cffbaa98c51827', 'REL' => 'edit', 'IMMEDIATE' => false, 'URL' => $tree_url, 'TITLE' => do_lang_tempcode('__WIKI_EDIT_TREE'), 'IMG' => 'buttons__edit_tree'));
         } else {
             $tree_button = new Tempcode();
         }
 
         if ((has_edit_permission('cat_low', get_member(), null, 'cms_wiki', array('wiki_page', $id))) && (has_actual_page_access(get_member(), 'cms_wiki'))) {
-            $edit_url = build_url(array('page' => 'cms_wiki', 'type' => 'edit_page', 'id' => $chain, 'redirect' => get_self_url(true, true)), get_module_zone('cms_wiki'));
+            $edit_url = build_url(array('page' => 'cms_wiki', 'type' => 'edit_page', 'id' => $chain, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_wiki'));
             $edit_button = do_template('BUTTON_SCREEN', array('_GUID' => '5d8783a0af3a35f21022b30397f1b03e', 'REL' => 'edit', 'IMMEDIATE' => false, 'URL' => $edit_url, 'TITLE' => do_lang_tempcode('_WIKI_EDIT_PAGE'), 'IMG' => 'buttons__edit'));
         } else {
             $edit_button = new Tempcode();
@@ -762,8 +762,7 @@ class Module_wiki
     public function do_wiki_merge_interface()
     {
         $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
-        $redir_url = $_redir_url->evaluate();
-        $merge_url = build_url(array('page' => '_SELF', 'type' => 'do', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => $redir_url), '_SELF', array(), true);
+        $merge_url = build_url(array('page' => '_SELF', 'type' => 'do', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => protect_url_parameter($_redir_url)), '_SELF', array(), true);
 
         $merged = '';
         $markers = $this->get_markers();
@@ -869,8 +868,7 @@ class Module_wiki
         check_edit_permission('low', $original_poster, array('wiki_page', $true_page_id), 'cms_wiki');
 
         $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
-        $redir_url = $_redir_url->evaluate();
-        $move_url = build_url(array('page' => '_SELF', 'type' => '_move', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => $redir_url), '_SELF');
+        $move_url = build_url(array('page' => '_SELF', 'type' => '_move', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => protect_url_parameter($_redir_url)), '_SELF');
 
         require_code('form_templates');
 
@@ -1050,7 +1048,7 @@ class Module_wiki
         }
 
         if (addon_installed('points')) {
-            $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true, true)), get_module_zone('login'));
+            $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('login'));
             $_login_url = escape_html($login_url->evaluate());
             if ((is_guest()) && ((get_forum_type() != 'cns') || (has_actual_page_access(get_member(), 'join')))) {
                 $text->attach(paragraph(do_lang_tempcode('NOT_LOGGED_IN_NO_CREDIT', $_login_url)));
@@ -1072,8 +1070,7 @@ class Module_wiki
         $breadcrumbs = breadcrumb_segments_to_tempcode(wiki_breadcrumbs($chain, null, true, true));
 
         $_redir_url = build_url(array('page' => '_SELF', 'type' => 'browse', 'id' => get_param_string('id', strval($id), INPUT_FILTER_GET_COMPLEX)), '_SELF');
-        $redir_url = $_redir_url->evaluate();
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_post', 'id' => get_param_string('id', strval(db_get_first_id()), INPUT_FILTER_GET_COMPLEX), 'redirect' => $redir_url), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_post', 'id' => get_param_string('id', strval(db_get_first_id()), INPUT_FILTER_GET_COMPLEX), 'redirect' => protect_url_parameter($_redir_url)), '_SELF');
 
         $hidden_fields->attach(form_input_hidden('post_id', ($post_id === null) ? '' : strval($post_id)));
 

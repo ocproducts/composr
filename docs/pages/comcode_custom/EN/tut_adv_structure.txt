@@ -31,9 +31,9 @@ For example, if we have a template that has a URL passed into it, like say:
 [/code]
 We could change it to:
 [code="HTML"]
-<a href="{URL*}?redirect={$PAGE_LINK&,site:news_thankyou}">Go somewhere</a>
+<a href="{URL*}?redirect={$PROTECT_URL_ESCAPING&*,{$PAGE_LINK,site:news_thankyou}}">Go somewhere</a>
 /
-<a href="{URL*}&redirect={$PAGE_LINK&,site:news_thankyou}">Go somewhere</a>
+<a href="{URL*}&redirect={$PROTECT_URL_ESCAPING&*,{$PAGE_LINK,site:news_thankyou}}">Go somewhere</a>
 [/code]
 (depending on whether the URL contains an "?" already or not, which typically depends on your URL Scheme)
 

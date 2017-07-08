@@ -143,7 +143,7 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
                 }
                 $profile_url = $GLOBALS['CNS_DRIVER']->member_profile_url($unread_pp['p_poster']);
                 $redirect_url = get_self_url(true, true);
-                $ignore_url = build_url(array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $unread_pp['p_topic_id'], 'redirect' => $redirect_url), get_module_zone('topics'));
+                $ignore_url = build_url(array('page' => 'topics', 'type' => 'mark_read_topic', 'id' => $unread_pp['p_topic_id'], 'redirect' => protect_url_parameter($redirect_url)), get_module_zone('topics'));
                 $notifications->attach(do_template('CNS_NOTIFICATION', array(
                     '_GUID' => '3b224ea3f4da2f8f869a505b9756970a',
                     'ID' => strval($unread_pp['id']),
@@ -212,8 +212,8 @@ function cns_wrapper($title, $content, $show_personal_bar = true, $show_stats = 
         } else { // Guest
             $_this_url = build_url(array('page' => '_SELF'), '_SELF', null, true);
             $this_url = $_this_url->evaluate();
-            $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => $this_url), get_module_zone('login'));
-            $full_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect_passon' => $this_url), get_module_zone('login'));
+            $login_url = build_url(array('page' => 'login', 'type' => 'login', 'redirect' => protect_url_parameter($this_url)), get_module_zone('login'));
+            $full_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect_passon' => protect_url_parameter($this_url)), get_module_zone('login'));
             $join_url = build_url(array('page' => 'join'), get_module_zone('join'));
             $head = do_template('CNS_GUEST_BAR', array('NAVIGATION' => get_zone_chooser(true), 'LOGIN_URL' => $login_url, 'JOIN_LINK' => $join_url, 'FULL_LINK' => $full_url));
         }

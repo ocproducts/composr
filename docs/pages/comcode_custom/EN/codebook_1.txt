@@ -1231,7 +1231,7 @@ Escaping all data embedded in HTML is a key part of security.
 
 [title="5"]URL parameter escaping[/title]
 
-Parameters in URLs are separated by '&'. Keys and values and separated by '='. Also spaces are not allowed, among many other characters. If you pass any complex data that will go into a URL, use the [tt]urlencode[/tt] function ([tt]window.encodeURIComponent[/tt] in JavaScript) which will sort all this for you. The Composr [tt]build_url[/tt] function handles it all in a much better way though, so you should actually almost always use this.
+Parameters in URLs are separated by '&'. Keys and values and separated by '='. Also spaces are not allowed, among many other characters. If you pass any complex data that will go into a URL, use the [tt]urlencode[/tt] function ([tt]encodeURIComponent[/tt] in JavaScript) which will sort all this for you. The Composr [tt]build_url[/tt] function handles it all in a much better way though, so you should actually almost always use this.
 
 [title="4"]Vulnerability types[/title]
 

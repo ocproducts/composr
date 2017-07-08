@@ -175,7 +175,7 @@ function build_order_details($title, $id, $text, $show_order_actions = false)
 
     if ($show_order_actions) {
         $self_url = get_self_url(true, true);
-        $order_actualise_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_act', 'id' => $id, 'redirect' => $self_url), get_module_zone('admin_shopping'));
+        $order_actualise_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_act', 'id' => $id, 'redirect' => protect_url_parameter($self_url)), get_module_zone('admin_shopping'));
         $order_actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array(
             '_GUID' => '6a24f6fb7c23f60b049ebce0f9765736',
             'ORDER_TITLE' => $order_title,

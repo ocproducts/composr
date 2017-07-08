@@ -973,7 +973,7 @@ var SortableTable = (function(){
             { \
               try \
               { \
-                window.scrollTo(0,$cms.dom.findPosY(document.getElementById('"+t.id+"'))); \
+                scrollTo(0,$cms.dom.findPosY(document.getElementById('"+t.id+"'))); \
               } \
               catch (e) {}; \
             } \
@@ -1039,7 +1039,7 @@ var SortableTable = (function(){
       }
 
       if (hasClass(cell,table.SearchableClassName)) {
-        var sel = '<input placeholder="{!SEARCH;^}" type="text" onkeyup="var _this=this; window.setTimeout(function() { SortableTable.filter(_this,_this,null,'+(hasClass(cell,table.SearchableSubstringsClassName)?'true':'false')+'); },0);" onclick="SortableTable.cancelBubble(event)" class="'+table.AutoFilterClassName+'" />';
+        var sel = '<input placeholder="{!SEARCH;^}" type="text" onkeyup="var _this=this; setTimeout(function() { SortableTable.filter(_this,_this,null,'+(hasClass(cell,table.SearchableSubstringsClassName)?'true':'false')+'); },0);" onclick="SortableTable.cancelBubble(event)" class="'+table.AutoFilterClassName+'" />';
         cell.innerHTML += " "+sel;
       }
     });

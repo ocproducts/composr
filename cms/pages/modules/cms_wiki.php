@@ -289,7 +289,7 @@ class Module_cms_wiki
 
         $_title = get_param_string('id', '', INPUT_FILTER_GET_COMPLEX);
 
-        $add_url = build_url(array('page' => '_SELF', 'type' => '_add_page', 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL)), '_SELF');
+        $add_url = build_url(array('page' => '_SELF', 'type' => '_add_page', 'redirect' => protect_url_parameter(get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL))), '_SELF');
 
         require_code('form_templates');
 
@@ -348,8 +348,8 @@ class Module_cms_wiki
         }
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url === null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url == '') {
             $_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => ($id == db_get_first_id()) ? null : $id), get_module_zone('wiki'));
             $url = $_url->evaluate();
         }
@@ -404,12 +404,12 @@ class Module_cms_wiki
         $description = get_translated_text($page['description']);
         $_description = get_translated_tempcode('wiki_pages', $page, 'description');
 
-        $redir_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($redir_url === null) {
+        $redir_url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($redir_url == '') {
             $_redir_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), get_module_zone('wiki'));
             $redir_url = $_redir_url->evaluate();
         }
-        $edit_url = build_url(array('page' => '_SELF', 'redirect' => $redir_url, 'type' => '_edit_page', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
+        $edit_url = build_url(array('page' => '_SELF', 'redirect' => protect_url_parameter($redir_url), 'type' => '_edit_page', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
 
         list($fields, $fields2, $hidden) = $this->get_page_fields($id, $page_title, $page['notes'], $page['hide_posts'], $id);
         require_code('seo2');
@@ -539,12 +539,12 @@ class Module_cms_wiki
             $children .= strval($child_id) . '=' . $child_title . "\n";
         }
 
-        $redir_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($redir_url === null) {
+        $redir_url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($redir_url == '') {
             $_redir_url = build_url(array('page' => 'wiki', 'type' => 'browse', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), get_module_zone('wiki'));
             $redir_url = $_redir_url->evaluate();
         }
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_edit_tree', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => $redir_url), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_edit_tree', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX), 'redirect' => protect_url_parameter($redir_url)), '_SELF');
 
         $wiki_tree = create_selection_list_wiki_page_tree($id, null, '', true, false, true);
 

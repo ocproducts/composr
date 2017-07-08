@@ -150,7 +150,7 @@ class Module_join
         }
         $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
-            $map['redirect'] = $redirect;
+            $map['redirect'] = protect_url_parameter($redirect);
         }
         $url = build_url($map, '_SELF');
 
@@ -188,7 +188,7 @@ class Module_join
         $map = array('page' => '_SELF', 'type' => 'step3');
         $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
-            $map['redirect'] = $redirect;
+            $map['redirect'] = protect_url_parameter($redirect);
         }
         $url = build_url($map, '_SELF');
 
@@ -251,7 +251,7 @@ class Module_join
                 $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
                 $map = array('page' => 'login', 'type' => 'browse');
                 if ($redirect != '') {
-                    $map['redirect'] = $redirect;
+                    $map['redirect'] = protect_url_parameter($redirect);
                 }
                 $url = build_url($map, get_module_zone('login'));
                 return redirect_screen($this->title, $url, do_lang_tempcode('ALREADY_CONFIRMED_THIS'));
@@ -273,7 +273,7 @@ class Module_join
         if ($page_after_join == '') {
             $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
             if ($redirect != '') {
-                $map['redirect'] = $redirect;
+                $map['redirect'] = protect_url_parameter($redirect);
             }
         } else {
             if (strpos($page_after_join, ':') === false) {
@@ -281,9 +281,9 @@ class Module_join
                 if ($zone === null) {
                     $zone = 'site';
                 }
-                $map['redirect'] = static_evaluate_tempcode(build_url(array('page' => $page_after_join), $zone));
+                $map['redirect'] = protect_url_parameter(build_url(array('page' => $page_after_join), $zone));
             } else {
-                $map['redirect'] = page_link_to_url($page_after_join);
+                $map['redirect'] = protect_url_parameter(page_link_to_url($page_after_join));
             }
         }
         $url = build_url($map, get_module_zone('login'));

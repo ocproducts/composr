@@ -303,7 +303,7 @@ class Module_admin_ecommerce_logs
             return do_template('FORM_SCREEN', array('_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => $text, 'URL' => get_self_url(), 'GET' => true, 'HIDDEN' => ''));
         }
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL)), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => protect_url_parameter(get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL))), '_SELF');
 
         $submit_name = do_lang_tempcode('MANUAL_TRANSACTION');
 
@@ -526,8 +526,8 @@ class Module_admin_ecommerce_logs
 
         handle_confirmed_transaction($txn_id, $txn_id, $type_code, $item_name, $purchase_id, $is_subscription, $status, $reason, $amount + $tax, $tax, $currency, false, $parent_txn_id, $pending_reason, $memo, $period, get_member(), 'manual', false, true);
 
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url !== null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url != '') {
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
 

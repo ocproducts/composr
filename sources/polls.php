@@ -90,7 +90,7 @@ function render_poll_box($results, $myrow, $zone = '_SEARCH', $include_manage_li
 
     if ($include_manage_links) {
         if ((has_actual_page_access(null, 'cms_polls', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_polls'))) {
-            $submit_url = build_url(array('page' => 'cms_polls', 'type' => 'add', 'redirect' => get_self_url(true, true, array())), get_module_zone('cms_polls'));
+            $submit_url = build_url(array('page' => 'cms_polls', 'type' => 'add', 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_polls'));
         } else {
             $submit_url = new Tempcode();
         }

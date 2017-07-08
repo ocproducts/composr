@@ -68,7 +68,7 @@ class Block_main_iotd
         $zone = array_key_exists('zone', $map) ? $map['zone'] : get_module_zone('iotds');
 
         if ((has_actual_page_access(null, 'cms_iotds', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_iotds'))) {
-            $submit_url = build_url(array('page' => 'cms_iotds', 'type' => 'add', 'redirect' => SELF_REDIRECT), get_module_zone('cms_iotds'));
+            $submit_url = build_url(array('page' => 'cms_iotds', 'type' => 'add', 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_iotds'));
         } else {
             $submit_url = new Tempcode();
         }

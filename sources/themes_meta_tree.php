@@ -279,7 +279,7 @@ function find_template_tree_nice($metadata, &$collected_templates)
                 'type' => 'edit_templates',
                 'f0file' => $file,
                 'f0guid' => $guid,
-                'preview_url' => get_self_url(true, false, array('special_page_type' => null)),
+                'live_preview_url' => protect_url_parameter(get_self_url(true, false, array('special_page_type' => null))),
                 'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
             );
             $edit_url = build_url($edit_url_map, 'adminzone');

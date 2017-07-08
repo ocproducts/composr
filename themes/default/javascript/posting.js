@@ -114,7 +114,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                         comcode.replace(']new_' + number + '[', ']new_' + window.num_attachments + '[')
                     );
                 }
-                number = '' + (window.parseInt(number) + splitFilename.length - 1);
+                number = '' + (parseInt(number) + splitFilename.length - 1);
             } else {
                 window.insertTextbox(
                     post,
@@ -161,7 +161,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
         }
         url += $cms.keepStub();
 
-        window.setTimeout(function () {
+        setTimeout(function () {
             $cms.ui.showModalDialog(
                 $cms.maintainThemeInLink(url),
                 '',
@@ -178,7 +178,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                                 comcodeSemihtml += tmp[0];
                                 comcode += tmp[1];
                             }
-                            number = '' + (window.parseInt(number) + splitFilename.length - 1);
+                            number = '' + (parseInt(number) + splitFilename.length - 1);
 
                             if (suffix != '') {
                                 comcode += suffix;

@@ -87,9 +87,9 @@ class Hook_profiles_tabs_edit_profile
         require_code('cns_members_action2');
         list($fields, $hidden) = cns_get_member_fields_profile(false, $member_id_of, null, $custom_fields);
 
-        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($redirect !== null) {
-            $hidden->attach(form_input_hidden('redirect', $redirect));
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($redirect != '') {
+            $hidden->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter($redirect))));
         }
 
         $hidden->attach(form_input_hidden('submitting_profile_tab', '1'));

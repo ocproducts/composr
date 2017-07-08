@@ -226,7 +226,7 @@ class Module_admin_points
                 $from = ($from_name === null) ? do_lang_tempcode('UNKNOWN_EM') : hyperlink($from_url, $from_name, false, true);
             }
 
-            $delete_url = build_url(array('page' => '_SELF', 'type' => 'reverse', 'redirect' => get_self_url(true)), '_SELF');
+            $delete_url = build_url(array('page' => '_SELF', 'type' => 'reverse', 'redirect' => protect_url_parameter(SELF_REDIRECT)), '_SELF');
             $delete = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array(
                 '_GUID' => '3585ec7f35a1027e8584d62ffeb41e56',
                 'NAME' => do_lang_tempcode('REVERSE'),
@@ -280,8 +280,8 @@ class Module_admin_points
         reverse_point_gift_transaction($id);
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url === null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url == '') {
             $_url = build_url(array('page' => '_SELF', 'type' => 'browse'), '_SELF');
             $url = $_url->evaluate();
         }
@@ -310,8 +310,8 @@ class Module_admin_points
         $text = do_lang_tempcode('MEMBER_HAS_BEEN_CHARGED', escape_html($username), escape_html(integer_format($amount)), escape_html(integer_format($left)));
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url === null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url == '') {
             $_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $member_id), get_module_zone('points'));
             $url = $_url->evaluate();
         }

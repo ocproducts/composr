@@ -921,7 +921,7 @@ class Module_cms_comcode_pages
         $hidden_fields->attach(form_input_hidden('file', $file));
         $hidden_fields->attach(form_input_hidden('lang', $lang));
         $hidden_fields->attach(form_input_hidden('zone', $zone));
-        $hidden_fields->attach(form_input_hidden('redirect', get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL)));
+        $hidden_fields->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL)))));
 
         $posting_form = get_posting_form(do_lang(($file == '') ? 'COMCODE_PAGE_ADD' : 'SAVE'), ($file == '') ? 'menu___generic_admin__add_one' : 'menu___generic_admin__edit_this', $contents, $post_url, $hidden_fields, $fields, do_lang_tempcode('COMCODE_PAGE'), '', $fields2, $parsed, array(), null, false);
 
@@ -931,7 +931,7 @@ class Module_cms_comcode_pages
 
         $text = new Tempcode();
         if (addon_installed('points')) {
-            $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true, true)), get_module_zone('login'));
+            $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true)), get_module_zone('login'));
             $_login_url = escape_html($login_url->evaluate());
             if ((is_guest()) && ((get_forum_type() != 'cns') || (has_actual_page_access(get_member(), 'join')))) {
                 $text->attach(paragraph(do_lang_tempcode('NOT_LOGGED_IN_NO_CREDIT', $_login_url)));

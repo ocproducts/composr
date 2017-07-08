@@ -16,7 +16,7 @@ function decryptData() {
     container.style.left = ($cms.dom.getWindowWidth() / 2 - 200).toString() + 'px';
     container.style.top = ($cms.dom.getWindowHeight() / 2 - 100).toString() + 'px';
     try {
-        window.scrollTo(0, 0);
+        scrollTo(0, 0);
     } catch (e) {}
 
     var title = document.createElement('h2');
@@ -84,7 +84,7 @@ function decryptData() {
 
     document.body.appendChild(container);
 
-    window.setTimeout(function () {
+    setTimeout(function () {
         try {
             input.focus();
         } catch (e) {}

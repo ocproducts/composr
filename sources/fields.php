@@ -318,7 +318,7 @@ function manage_custom_fields_donext_link($content_type)
             $exists = ($GLOBALS['SITE_DB']->query_select_value_if_there('catalogues', 'c_name', array('c_name' => '_' . $content_type)) !== null);
 
             return array(
-                array('menu/cms/catalogues/edit_one_catalogue', array('cms_catalogues', array('type' => $exists ? '_edit_catalogue' : 'add_catalogue', 'id' => '_' . $content_type, 'redirect' => get_self_url(true)), get_module_zone('cms_catalogues')), do_lang('EDIT_CUSTOM_FIELDS', do_lang($info['content_type_label']))),
+                array('menu/cms/catalogues/edit_one_catalogue', array('cms_catalogues', array('type' => $exists ? '_edit_catalogue' : 'add_catalogue', 'id' => '_' . $content_type, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_catalogues')), do_lang('EDIT_CUSTOM_FIELDS', do_lang($info['content_type_label']))),
             );
         }
     }

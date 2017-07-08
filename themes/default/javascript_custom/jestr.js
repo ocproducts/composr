@@ -4,7 +4,7 @@
     $cms.templates.emoticonImgCodeThemedJestr = function emoticonImgCodeThemedJestr(params, container) {
         if (window.crazy_criters == null) {
             window.crazy_criters = [];
-            window.setInterval(crazy_tick, 300);
+            setInterval(crazy_tick, 300);
         }
 
         var myId = parseInt(Math.random() * 10000),

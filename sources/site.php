@@ -1051,7 +1051,7 @@ function do_site()
             safe_ini_set('default_socket_timeout', '3');
             require_code('version2');
             require_code('http');
-            cache_and_carry('cms_http_request', array('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(get_base_url()) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), array('trigger_error' => false)), 60 * 24/*once a day*/);
+            cache_and_carry('cms_http_request', array('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(static_evaluate_tempcode(protect_url_parameter(get_base_url()))) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), array('trigger_error' => false)), 60 * 24/*once a day*/);
             safe_ini_set('default_socket_timeout', $timeout_before);
         }
     }
@@ -1889,9 +1889,9 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     if (has_edit_comcode_page_permission($zone, $codename, $comcode_page_row['p_submitter'])) {
         $redirect = get_self_url(true, false, array('redirect' => null, 'redirected' => null));
         if ((($codename == 'panel_left') || ($codename == 'panel_right')) && (has_actual_page_access(get_member(), 'admin_zones')) && (get_theme_option('zone_editor_enabled') == '1')) {
-            $edit_url = build_url(array('page' => 'admin_zones', 'type' => '_editor', 'id' => get_zone_name(), 'redirect' => $redirect), get_module_zone('admin_zones'));
+            $edit_url = build_url(array('page' => 'admin_zones', 'type' => '_editor', 'id' => get_zone_name(), 'redirect' => protect_url_parameter($redirect)), get_module_zone('admin_zones'));
         } else {
-            $edit_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $zone . ':' . $codename, /*'lang' => user_lang(), */'redirect' => $redirect), get_module_zone('cms_comcode_pages'));
+            $edit_url = build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'page_link' => $zone . ':' . $codename, /*'lang' => user_lang(), */'redirect' => protect_url_parameter($redirect)), get_module_zone('cms_comcode_pages'));
         }
     } else {
         $edit_url = new Tempcode();
@@ -1899,7 +1899,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     $add_child_url = new Tempcode();
     if (has_add_comcode_page_permission($zone)) {
         if (strpos($raw_comcode, 'main_comcode_page_children') !== false) {
-            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow , 'lang' => user_lang()*//*, 'redirect' => $redirect*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
+            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow , 'lang' => user_lang()*//*, 'redirect' => protect_url_parameter($redirect)*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
         }
     }
 

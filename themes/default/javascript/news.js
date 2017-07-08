@@ -47,13 +47,13 @@
         // Pause function
         window[pause] = function () {
             if (window[cycleTimer]) {
-                window.clearTimeout(cycleTimer);
+                clearTimeout(cycleTimer);
                 window[cycleTimer] = null;
                 $cms.dom.$('#pause_button_' + rand).classList.add('button_depressed');
             } else {
                 $cms.dom.$('#pause_button_' + rand).classList.remove('button_depressed');
 
-                window[cycleTimer] = window.setTimeout(function () {
+                window[cycleTimer] = setTimeout(function () {
                     window[cycle](1);
                 }, +params.mill);
             }
@@ -85,18 +85,18 @@
             $cms.dom.clearTransitionAndSetOpacity(fpAnimation, 0.0);
             $cms.dom.fadeTransition(fpAnimation, 100, 30, 4);
             fpAnimation.src = data[j].image_url;
-            window.setTimeout(function () { // Will know dimensions by the time the timeout happens
+            setTimeout(function () { // Will know dimensions by the time the timeout happens
                 fpAnimationNews.style.left = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetWidth) / 2) + 'px';
                 fpAnimationNews.style.top = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetHeight) / 2) + 'px';
             }, 0);
 
             // Set up timer for next time
             if (window[cycleTimer]) {
-                window.clearTimeout(window[cycleTimer]);
+                clearTimeout(window[cycleTimer]);
             }
             $cms.dom.$('#pause_button_' + rand).classList.remove('button_depressed');
             if (news.length > 1) {
-                window[cycleTimer] = window.setTimeout(function () {
+                window[cycleTimer] = setTimeout(function () {
                     window[cycle](1);
                 }, params.mill);
             }
@@ -129,7 +129,7 @@
         window.tick_pos[myId] = 400;
         $cms.dom.html(ticktickticker, '<div class="ticker" style="text-indent: 400px; width: 400px;" id="' + myId + '"><span>' + newsTickerText + '</span></div>');
 
-        window.setInterval(function () {
+        setInterval(function () {
             ticker_tick(myId, 400);
         }, 50);
 

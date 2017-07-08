@@ -42,8 +42,8 @@
             if (form.elements['end_day'] != undefined && form.elements['end_day'].selectedIndex != 0 || form.elements['end'] != undefined && form.elements['end'].value != '') {
                 var startDate, endDate;
                 if (startDay) {
-                    startDate = new Date(window.parseInt(form.elements['startYear'].value), window.parseInt(form.elements['startMonth'].value) - 1, window.parseInt(form.elements['startDay'].value), window.parseInt(form.elements['startHour'].value), window.parseInt(form.elements['startMinute'].value));
-                    endDate = new Date(window.parseInt(form.elements['end_year'].value), window.parseInt(form.elements['end_month'].value) - 1, window.parseInt(form.elements['end_day'].value), window.parseInt(form.elements['endHour'].value), window.parseInt(form.elements['endMinute'].value));
+                    startDate = new Date(parseInt(form.elements['startYear'].value), parseInt(form.elements['startMonth'].value) - 1, parseInt(form.elements['startDay'].value), parseInt(form.elements['startHour'].value), parseInt(form.elements['startMinute'].value));
+                    endDate = new Date(parseInt(form.elements['end_year'].value), parseInt(form.elements['end_month'].value) - 1, parseInt(form.elements['end_day'].value), parseInt(form.elements['endHour'].value), parseInt(form.elements['endMinute'].value));
                 } else {
                     startDate = start.value;
                     endDate = end.value;

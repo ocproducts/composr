@@ -26,7 +26,7 @@ This rule blocks URLs being passed as parameters within URLs. Composr regularly 
 300018 only occurs if not running a URL Scheme, because the rule works by detecting [tt].php[/tt], and it won't do this with URL Schemes.
 340165 may apply more broadly.
 
-We could probably work around this problem in Composr by encoding the parameter so that it no longer looks like a URL, but this would be messy and have to work across both JavaScript and PHP within Composr, so the complexity cost is too high.
+We try and workaround these rules by encoding URLs-within-URLs specially. If you find cases where the encoding is not there when it should be report it as a bug.
 
 [title="2"]340007 / 340095 / 340113 / 340118 / 340128 / 340147 / 340148 / 340149 / 340157 / 340159 / 350147 / 350148 / 380006 / 380018 / 390708 / 390727 / 973331 -- WYSIWYG editing, template editing and code editor[/title]
 
@@ -36,39 +36,45 @@ To workaround you could manually remove the code from the editor's source view, 
 
 It is likely that there are rules out there that block the WYSIWYG editor completely, but IDs for these aren't known at this time.
 
-We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this. If that is not working then report it as a bug.
 
 [title="2"]340014 / 390904 -- Commandr[/title]
 
 Commandr has a virtual unix filesystem, and stores the current directory in a cookie. If you enter the "/etc" directory, this rule will think you are trying to hack into the server's real filesystem.
 
-We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this. If that is not working then report it as a bug.
 
 [title="2"]300076 / 340007 / 340011 / 340014 / 340016 / 340017 / 340021 / 340027 / 340029 / 340095 / 340118 / 340128 / 340131 / 340133 / 340144 / 340147 / 340148 / 340157 / 340164 / 350147 / 350148 / 380006 / 380018 / 380019 / 380020 / 380021 / 390709 / 390715 / 390801 / 390810 / 393449 -- Code Editor[/title]
 
 This occurs when using the code editor to edit php code. If you try and save code changes (by pressing the edit button at the bottom of the code editor) and you do not receive a confirmation pop-up message, then this is the most likely cause. Your browser development tools (network tab) will report this as a 403 or 500 error for [tt]http://yourbaseurl/code_editor.php?type=edit[/tt].
 
+We have no workaround due to the cut-down nature of the code editor, and it being designed for programmers who should be able to get the server configured properly (or edit code via some other method).
+
 [title="2"]340016 / 340149 / 350147 / 350148 / 390707 -- Translate/re-phrase Composr[/title]
 Using the [b]Translate/re-phrase Composr[/b] feature.
 
-We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this. If that is not working then report it as a bug.
 
 [title="2"]340095 -- XML Import[/title]
 Importing XML data via [b]Admin Zone > Tools > XML data management > XML Import[/b].
 
-We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this. If that is not working then report it as a bug.
 
 [title="2"]380800 -- PHP Info[/title]
 Using the [b]Tools > PHP Info[/b] feature.
 
+ModSecurity may block URLs with "phpinfo" in, because it thinks it will leak privileged information.
+
+We have no workaround for this because the rule is doing what it is designed to do. We don't intend to rename our PHP Info page just to force our way around the rule.
+
 [title="2"]340009 -- Site options[/title]
 Saving changes on [b]Admin Zone > Configuration > Site options[/b] page.
 
-We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this.
+We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this. If that is not working then report it as a bug.
 
 ----
 
-Instead of disabling these rules, most issues can be avoided by the host removing the appropriate line from their configuration.
+Instead of disabling these rules, most issues can be avoided by the host removing a particular line from their configuration.
 
 For hosts using ModSecurity v1, remove:
 [code="htaccess"]

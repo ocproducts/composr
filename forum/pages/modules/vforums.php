@@ -387,7 +387,7 @@ class Module_vforums
                 ocp_mark_as_escaped($moderator_actions);
             }
 
-            $action_url = build_url(array('page' => 'topics', 'redirect' => get_self_url(true)), get_module_zone('topics'));
+            $action_url = build_url(array('page' => 'topics', 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('topics'));
             $topic_wrapper = do_template('CNS_FORUM_TOPIC_WRAPPER', array(
                 '_GUID' => '67356b4daacbed3e3d960d89a57d0a4a',
                 'MAX' => strval($max),

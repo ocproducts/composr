@@ -251,7 +251,7 @@ class Block_main_gallery_embed
 
                         $_edit_url = new Tempcode();
                         if (has_delete_permission('mid', get_member(), $row_image['submitter'], 'cms_galleries', array('gallery', $row_image['cat']))) {
-                            $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => '__edit', 'id' => $row_image['id'], 'redirect' => get_self_url(true)), get_module_zone('cms_galleries'));
+                            $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => '__edit', 'id' => $row_image['id'], 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_galleries'));
                             if ($row_image['submitter'] == get_member()) {
                                 $GLOBALS['DO_NOT_CACHE_THIS'] = true; // If delete was due to groups, groups is a cache key anyways
                             }
@@ -308,7 +308,7 @@ class Block_main_gallery_embed
 
                         $_edit_url = new Tempcode();
                         if (has_delete_permission('mid', get_member(), $row_video['submitter'], 'cms_galleries', array('gallery', $row_video['cat']))) {
-                            $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => '__edit_other', 'id' => $row_video['id'], 'redirect' => get_self_url(true)), get_module_zone('cms_galleries'));
+                            $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => '__edit_other', 'id' => $row_video['id'], 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_galleries'));
                             if ($row_video['submitter'] == get_member()) {
                                 $GLOBALS['DO_NOT_CACHE_THIS'] = true; // If delete was due to groups, groups is a cache key anyways
                             }
@@ -354,10 +354,10 @@ class Block_main_gallery_embed
                 $add_name = mixed();
                 if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $cat_raw))) && (can_submit_to_gallery($cat_raw))) {
                     if ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'accept_images', array('name' => $cat_raw)) !== null) {
-                        $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat_raw, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
+                        $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat_raw, 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_galleries'));
                         $add_name = do_lang_tempcode('ADD_IMAGE');
                     } elseif ($GLOBALS['SITE_DB']->query_select_value_if_there('galleries', 'accept_videos', array('name' => $cat_raw)) !== null) {
-                        $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add_other', 'cat' => $cat_raw, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
+                        $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add_other', 'cat' => $cat_raw, 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_galleries'));
                         $add_name = do_lang_tempcode('ADD_VIDEO');
                     }
                 }

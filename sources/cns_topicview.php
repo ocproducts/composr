@@ -734,9 +734,9 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
     if (array_key_exists('may_edit', $_postdetails)) {
         $map = array('page' => 'topics', 'type' => 'edit_post', 'id' => $_postdetails['id']);
         if ($rendering_context == 'tickets') {
-            $map['redirect'] = static_evaluate_tempcode(build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => get_param_string('id')), get_module_zone('tickets'), array(), false, false, false, '_top'));
+            $map['redirect'] = protect_url_parameter(build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => get_param_string('id')), get_module_zone('tickets'), array(), false, false, false, '_top'));
         } else {
-            $map['redirect'] = get_self_url(true);
+            $map['redirect'] = protect_url_parameter(SELF_REDIRECT);
         }
         $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
@@ -757,9 +757,9 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
     if (array_key_exists('may_delete', $_postdetails)) {
         $map = array('page' => 'topics', 'type' => 'delete_post', 'id' => $_postdetails['id']);
         if ($rendering_context == 'tickets') {
-            $map['redirect'] = static_evaluate_tempcode(build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => get_param_string('id')), get_module_zone('tickets'), array(), false, false, false, '_top'));
+            $map['redirect'] = protect_url_parameter(build_url(array('page' => 'tickets', 'type' => 'ticket', 'id' => get_param_string('id')), get_module_zone('tickets'), array(), false, false, false, '_top'));
         } else {
-            $map['redirect'] = get_self_url(true);
+            $map['redirect'] = protect_url_parameter(SELF_REDIRECT);
         }
         $test = get_param_string('kfs' . (($topic_info['forum_id'] === null) ? '' : strval($topic_info['forum_id'])), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
@@ -791,7 +791,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         if ((array_key_exists('may_warn_members', $topic_info)) && ($_postdetails['poster'] != $GLOBALS['CNS_DRIVER']->get_guest_id()) && (addon_installed('cns_warnings'))) {
             $redir_url = get_self_url(true);
             $redir_url .= '#post_' . strval($_postdetails['id']);
-            $action_url = build_url(array('page' => 'warnings', 'type' => 'add', 'member_id' => $_postdetails['poster'], 'post_id' => $_postdetails['id'], 'redirect' => $redir_url), get_module_zone('warnings'));
+            $action_url = build_url(array('page' => 'warnings', 'type' => 'add', 'member_id' => $_postdetails['poster'], 'post_id' => $_postdetails['id'], 'redirect' => protect_url_parameter($redir_url)), get_module_zone('warnings'));
             $_title = do_lang_tempcode('__WARN_MEMBER');
             $_title_full = do_lang_tempcode('WARN_MEMBER');
             $_title_full->attach(do_lang_tempcode('ID_NUM', strval($_postdetails['id'])));

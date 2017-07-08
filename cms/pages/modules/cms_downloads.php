@@ -582,9 +582,9 @@ class Module_cms_downloads extends Standard_crud_module
 
         $this->donext_type = $category_id;
 
-        if ((get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null) && (addon_installed('galleries'))) {
+        if ((get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) != '') && (addon_installed('galleries'))) {
             $redirect_url = build_url(array('page' => 'downloads', 'type' => 'entry', 'id' => $id), get_module_zone('downloads'));
-            $add_image_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => 'download_' . strval($id), 'redirect' => $redirect_url->evaluate()), get_module_zone('cms_galleries'));
+            $add_image_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => 'download_' . strval($id), 'redirect' => protect_url_parameter($redirect_url)), get_module_zone('cms_galleries'));
             $this->do_next_description = do_lang_tempcode('DOWNLOAD_ADDED', escape_html($add_image_url->evaluate()));
         }
 

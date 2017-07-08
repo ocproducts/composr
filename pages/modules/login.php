@@ -127,7 +127,7 @@ class Module_login
         if ($type == 'login') {
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('_LOGIN'))));
 
-            $username = trim(post_param_string('login_username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES));
+            $username = trim(post_param_string('login_username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES));
 
             $feedback = $GLOBALS['FORUM_DRIVER']->forum_authorise_login($username, null, apply_forum_driver_md5_variant(trim(post_param_string('password', false, INPUT_FILTER_NONE)), $username), trim(post_param_string('password', false, INPUT_FILTER_NONE)));
             if ($feedback['id'] !== null) {
@@ -227,15 +227,15 @@ class Module_login
             global $ZONE;
             $_url = build_url(array('page' => $ZONE['zone_default_page']), '_SELF');
             $url = $_url->evaluate();
-            $passion->attach(form_input_hidden('redirect', $url));
+            $passion->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter($url))));
         }
 
         // POST field relaying
         if (count($_FILES) == 0) { // Only if we don't have _FILES (which could never be relayed)
             $passion->attach(build_keep_post_fields($this->fields_to_not_relay));
-            $redirect_passon = post_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL & ~INPUT_FILTER_ALLOWED_POSTING_SITES);
+            $redirect_passon = post_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL & ~INPUT_FILTER_TRUSTED_SITES);
             if ($redirect_passon !== null) {
-                $passion->attach(form_input_hidden('redirect_passon', $redirect_passon)); // redirect_passon is used when there are POST fields, as it says what the redirect will be on the post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
+                $passion->attach(form_input_hidden('redirect_passon', static_evaluate_tempcode(protect_url_parameter($redirect_passon)))); // redirect_passon is used when there are POST fields, as it says what the redirect will be on the post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
             }
         }
 
@@ -300,9 +300,9 @@ class Module_login
                 $refresh = new Tempcode();
             } else {
                 $post = build_keep_post_fields($this->fields_to_not_relay);
-                $redirect_passon = post_param_string('redirect_passon', null, INPUT_FILTER_URL_INTERNAL & ~INPUT_FILTER_ALLOWED_POSTING_SITES); // redirect_passon is used when there are POST fields, as it says what the redirect will be on this post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
+                $redirect_passon = post_param_string('redirect_passon', null, INPUT_FILTER_URL_INTERNAL & ~INPUT_FILTER_TRUSTED_SITES); // redirect_passon is used when there are POST fields, as it says what the redirect will be on this post-login-check hop (post fields prevent us doing an immediate HTTP-level redirect).
                 if ($redirect_passon !== null) {
-                    $post->attach(form_input_hidden('redirect', enforce_sessioned_url($redirect_passon)));
+                    $post->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(enforce_sessioned_url($redirect_passon)))));
                 }
                 $refresh = do_template('JS_REFRESH', array('_GUID' => 'c7d2f9e7a2cc637f3cf9ac4d1cf97eca', 'FORM_NAME' => 'redir_form'));
             }
@@ -345,8 +345,8 @@ class Module_login
     {
         delete_cache_entry('side_users_online');
 
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url === null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url == '') {
             $_url = build_url(array('page' => ''), '', array('keep_session' => 1));
             $url = $_url->evaluate();
         }
@@ -369,8 +369,8 @@ class Module_login
             }
         }
 
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url === null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url == '') {
             $_url = build_url(array('page' => ''), '');
             $url = $_url->evaluate();
         }
@@ -389,8 +389,8 @@ class Module_login
         require_code('users_active_actions');
         set_invisibility($visible_now);
 
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url === null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url == '') {
             $_url = build_url(array('page' => ''), '');
             $url = $_url->evaluate();
         }

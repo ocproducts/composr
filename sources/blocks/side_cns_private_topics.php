@@ -131,7 +131,7 @@ class Block_side_cns_private_topics
                 'HAS_READ' => !$is_unread,
             )));
         }
-        $send_url = build_url(array('page' => 'topics', 'type' => 'new_pt', 'redirect' => SELF_REDIRECT), get_module_zone('topics'));
+        $send_url = build_url(array('page' => 'topics', 'type' => 'new_pt', 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('topics'));
         if (!cns_may_make_private_topic()) {
             $send_url = new Tempcode();
         }

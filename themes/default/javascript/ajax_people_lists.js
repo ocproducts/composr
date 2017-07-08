@@ -41,11 +41,11 @@
 
         if (!delayed) { // A delay, so as not to throw out too many requests
             if (currentlyDoingListTimer) {
-                window.clearTimeout(currentlyDoingListTimer);
+                clearTimeout(currentlyDoingListTimer);
             }
             var eCopy = { 'keyCode': event.keyCode, 'which': event.which };
 
-            currentlyDoingListTimer = window.setTimeout(function () {
+            currentlyDoingListTimer = setTimeout(function () {
                 $cms.form.updateAjaxMemberList(target, special, true, eCopy);
             }, 400);
             return;
@@ -165,7 +165,7 @@
                 if ($cms.dom.keyPressed(event, 'Enter')) { // ENTER
                     makeSelection(event);
                     currentListForCopy.disabled = true;
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         currentListForCopy.disabled = false;
                     }, 200);
 
@@ -208,7 +208,7 @@
 
                 if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowDown')) { // DOWN
                     currentListForCopy.disabled = true;
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         currentListForCopy.disabled = false;
                     }, 1000);
 
@@ -229,7 +229,7 @@
 
                 if (!event.shiftKey && $cms.dom.keyPressed(event, 'ArrowUp')) { // UP
                     currentListForCopy.disabled = true;
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         currentListForCopy.disabled = false;
                     }, 1000);
 
@@ -267,7 +267,7 @@
                 }
                 var al = $cms.dom.$id('ajax_list');
                 al.parentNode.removeChild(al);
-                window.setTimeout(function () {
+                setTimeout(function () {
                     currentListForCopy.focus();
                 }, 300);
             }

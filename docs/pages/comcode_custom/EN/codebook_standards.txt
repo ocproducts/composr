@@ -215,6 +215,13 @@ Blank lines at the end of files
 | You need to store dynamic files in appropriate places, often [tt]data_custom[/tt]. Then these files must be marked as ignored in the appropriate way in [tt]sources/files.php[/tt] and [tt].gitignore[/tt].
 Also third-party tools may produce files which you may want to define as ignored, such as Microsoft Windows producing [tt]thumbs.db[/tt] files.
 It's impossible to say here exactly what to do as each case varies.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Pass URLs properly[/color]
+| Compatibility with ModSecurity
+| Product development only
+| Manually
+| URLs-within-URLs need to be encoded carefully so as to bypass ModSecurity restrictions (often any embedded URL is blocked). Basically URLs should be read in with a [tt]INPUT_FILTER_URL_*[/tt] flag to [tt]*_param_string[/tt], and URLs should be placed within URLs/forms with a [tt]protect_url_parameter[/tt] call around their value.
 |}
 
 [title="3"]Back-end programming[/title]
@@ -2101,11 +2108,11 @@ Use official DOM (so no [tt]document.all[/tt], or [tt]window.images[/tt])
 | Generally JavaScript files should define at least one class (using the weird but de facto closure and construction mechanism). Class constructors should start with an upper case letter.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-Don't use any deprecated methods (so no [tt]window.escape[/tt])
+Don't use any deprecated methods (so no [tt]escape[/tt])
 | Standards compliance
 | Product development only
 | Automated test ([tt]css_and_js.php[/tt])
-| Instead of window.escape, use [tt]window.encodeURIComponent[/tt].
+| Instead of escape, use [tt]encodeURIComponent[/tt].
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use polyfills[/color]

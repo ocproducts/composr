@@ -42,8 +42,8 @@ function form_to_email_entry_script()
 
     $text = do_lang_tempcode('MAIL_SENT_TEXT', escape_html(post_param_string('to_written_name', get_site_name())));
 
-    $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-    if ($redirect !== null) {
+    $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+    if ($redirect != '') {
         require_code('site2');
         $tpl = redirect_screen($title, $redirect, $text);
     } else {

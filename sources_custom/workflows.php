@@ -450,7 +450,7 @@ function get_workflow_form($workflow_content_id)
     $post_url = build_url(array('page' => '_SELF', 'type' => 'workflow'), '_SELF');
 
     // Set the URL to return to after the handling has taken place
-    $workflow_hidden->attach(form_input_hidden('return_url', get_self_url(true)));
+    $workflow_hidden->attach(form_input_hidden('return_url', protect_url_parameter(SELF_REDIRECT)));
 
     // Add all of these to the form
     $workflow_form = do_template('FORM', array('_GUID' => '9eb9a74add2b4fea737d0af7b65a2d85', 'FIELDS' => $workflow_fields, 'HIDDEN' => $workflow_hidden, 'TEXT' => '', 'URL' => $post_url, 'SUBMIT_NAME' => do_lang_tempcode('SUBMIT_WORKFLOW_CHANGES'), 'SKIP_REQUIRED' => true));

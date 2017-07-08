@@ -59,7 +59,7 @@
                 rand = strVal(target.dataset.vwRand);
 
             if (!target.timer) {
-                target.timer = window.setTimeout(function () {
+                target.timer = setTimeout(function () {
                     popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d');
                 }, 200);
             }
@@ -67,7 +67,7 @@
 
         clearPopUpTimer: function (e, target) {
             if (target.timer) {
-                window.clearTimeout(target.timer);
+                clearTimeout(target.timer);
                 target.timer = null;
             }
         },
@@ -110,7 +110,7 @@
 
             window.menu_hold_time = 3000;
             if (!target.dataset.timer) {
-                target.dataset.timer = window.setTimeout(function () {
+                target.dataset.timer = setTimeout(function () {
                     var ret = popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
                     try {
                         document.getElementById('search_content').focus();
@@ -121,7 +121,7 @@
         },
         adminClearPopUpTimer: function (e, target) {
             if (target.dataset.timer) {
-                window.clearTimeout(target.dataset.timer);
+                clearTimeout(target.dataset.timer);
                 target.dataset.timer = null;
             }
         }
@@ -449,7 +449,7 @@
 
             // Find the num
             var index = el.id.substring(el.id.indexOf('_') + 1, el.id.length);
-            var num = window.parseInt(form.elements['order_' + index].value) || 0;
+            var num = parseInt(form.elements['order_' + index].value) || 0;
 
             // Find the parent
             var parentNum = $cms.dom.$('#parent_' + index).value;
@@ -462,7 +462,7 @@
                 for (i = 0; i < form.elements.length; i++) {
                     if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value == parentNum)) {
                         bindex = form.elements[i].name.substr('parent_'.length, form.elements[i].name.length);
-                        b = window.parseInt(form.elements['order_' + bindex].value) || 0;
+                        b = parseInt(form.elements['order_' + bindex].value) || 0;
                         if ((b < num) && (b > best)) {
                             best = b;
                             bestindex = bindex;
@@ -474,7 +474,7 @@
                 for (i = 0; i < form.elements.length; i++) {
                     if ((form.elements[i].name.startsWith('parent_')) && (form.elements[i].value === parentNum)) {
                         bindex = form.elements[i].name.substr('parent_'.length, form.elements[i].name.length);
-                        b = window.parseInt(form.elements['order_' + bindex].value);
+                        b = parseInt(form.elements['order_' + bindex].value);
                         if ((b > num) && ((b < best) || (best === -1))) {
                             best = b;
                             bestindex = bindex;
@@ -893,9 +893,9 @@
 
     function recreateCleanTimeout() {
         if (cleanMenusTimeout) {
-            window.clearTimeout(cleanMenusTimeout);
+            clearTimeout(cleanMenusTimeout);
         }
-        cleanMenusTimeout = window.setTimeout(cleanMenus, window.menu_hold_time);
+        cleanMenusTimeout = setTimeout(cleanMenus, window.menu_hold_time);
     }
 
     function cleanMenus() {
@@ -937,7 +937,7 @@
         }
 
         if (cleanMenusTimeout) {
-            window.clearTimeout(cleanMenusTimeout);
+            clearTimeout(cleanMenusTimeout);
         }
 
         if ($cms.dom.isDisplayed(el)) {
@@ -1009,7 +1009,7 @@
             el.style.left = posLeft + 'px';
         }
         positionL();
-        window.setTimeout(positionL, 0);
+        setTimeout(positionL, 0);
         function positionT() {
             var posTop = t;
             if (posTop + el.offsetHeight + 10 > fullHeight) {
@@ -1019,7 +1019,7 @@
             el.style.top = posTop + 'px';
         }
         positionT();
-        window.setTimeout(positionT, 0);
+        setTimeout(positionT, 0);
         el.style.zIndex = 200;
 
         recreateCleanTimeout();

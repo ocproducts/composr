@@ -227,8 +227,8 @@
                     group = name.substr(name.lastIndexOf('_') + 1);
                     privilege = name.substr('group_privileges_'.length, name.length - group.length - 1 - ('group_privileges_'.length));
                     element = document.getElementById('access_' + group + '_privilege_' + privilege);
-                    if (element.selectedIndex < window.parseInt(value) + 1)
-                        element.selectedIndex = window.parseInt(value) + 1; // -1 corresponds to 0.
+                    if (element.selectedIndex < parseInt(value) + 1)
+                        element.selectedIndex = parseInt(value) + 1; // -1 corresponds to 0.
                 }
             }
 

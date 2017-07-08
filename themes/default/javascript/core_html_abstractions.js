@@ -12,7 +12,7 @@
                     $cms.dom.triggerResize();
                 } catch (e) {}
 
-                window.setTimeout(function () { // Needed for IE10
+                setTimeout(function () { // Needed for IE10
                     try {
                         $cms.dom.triggerResize();
                     } catch (e) {}

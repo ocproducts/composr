@@ -19,8 +19,8 @@
             var _imHere = document.getElementById("im_here");
             if (_imHere) {
                 var _imTotal = document.getElementById("im_total"),
-                    imHere = window.parseInt(document.getElementById("importancemodulus").value),
-                    imTotal = window.parseInt(_imTotal.className.replace("im_", "")) + imHere;
+                    imHere = parseInt(document.getElementById("importancemodulus").value),
+                    imTotal = parseInt(_imTotal.className.replace("im_", "")) + imHere;
 
                 $cms.dom.html(_imHere, imHere);
                 $cms.dom.html(document.getElementById("im_here_2"), imHere);

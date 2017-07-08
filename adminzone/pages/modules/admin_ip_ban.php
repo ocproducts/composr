@@ -379,8 +379,8 @@ class Module_admin_ip_ban
         persistent_cache_delete('IP_BANS');
 
         // Show it worked / Refresh
-        $_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($_url !== null) {
+        $_url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($_url != '') {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
@@ -428,8 +428,8 @@ class Module_admin_ip_ban
         persistent_cache_delete('IP_BANS');
 
         // Show it worked / Refresh
-        $_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($_url !== null) {
+        $_url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($_url != '') {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
@@ -464,8 +464,8 @@ class Module_admin_ip_ban
         log_it('SYNDICATED_IP_BAN', $ip);
 
         // Show it worked / Refresh
-        $_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($_url !== null) {
+        $_url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($_url != '') {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }
@@ -511,8 +511,8 @@ class Module_admin_ip_ban
         persistent_cache_delete('IP_BANS');
 
         // Show it worked / Refresh
-        $_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($_url !== null) {
+        $_url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($_url != '') {
             $url = make_string_tempcode($_url);
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }

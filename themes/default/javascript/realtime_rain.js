@@ -66,7 +66,7 @@
     $cms.templates.realtimeRainBubble = function (params, container) {
         window.pending_eval_function = function (el) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
             if (params.tickerText !== undefined) {
-                window.setTimeout(function () {
+                setTimeout(function () {
                     $cms.dom.html(document.getElementById('news_go_here'), params.tickerText);
                 }, params.relativeTimestamp * 1000);
             }
@@ -93,12 +93,12 @@ function realtimeRainButtonLoadHandler() {
     if (e) { // Clicked twice - so now we close it
         bubblesTidyUp();
         if (window.bubble_timer_1) {
-            window.clearInterval(window.bubble_timer_1);
+            clearInterval(window.bubble_timer_1);
             window.bubble_timer_1 = null;
         }
 
         if (window.bubble_timer_2) {
-            window.clearInterval(window.bubble_timer_2);
+            clearInterval(window.bubble_timer_2);
             window.bubble_timer_2 = null;
         }
 
@@ -154,11 +154,11 @@ function startRealtimeRain() {
     window.current_time = timeNow() - 10;
     window.time_window = 10;
     getMoreEvents(window.current_time + 1, window.current_time + window.time_window); // note the +1 is because the time window is inclusive
-    window.bubble_timer_1 = window.setInterval(function () {
+    window.bubble_timer_1 = setInterval(function () {
         if (window.paused) return;
         getMoreEvents(window.current_time + 1, window.current_time + window.time_window);
     }, 10000);
-    window.bubble_timer_2 = window.setInterval(function () {
+    window.bubble_timer_2 = setInterval(function () {
         if (window.paused) return;
         if (window.time_window + window.current_time > timeNow()) {
             window.time_window = 10;
@@ -216,7 +216,7 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
             // Too much!
             return true; // (break)
         }
-        window.setTimeout(function () {
+        setTimeout(function () {
             window.pending_eval_function(clonedMessage);
 
             // Set positioning (or break-out if we have too many bubbles to show)
@@ -244,7 +244,7 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
             });
 
             // Draw lines and emails animation (after delay, so that we know it's rendered by then and hence knows full coordinates)
-            window.setTimeout(function () {
+            setTimeout(function () {
                 if ((clonedMessage.lines_for === undefined) || (clonedMessage.icon_multiplicity === undefined)) {
                     return;
                 }
@@ -257,7 +257,7 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
                     iconSpot = iconSpot.parentNode;
                 }
                 for (var x = 0; x < num; x++) {
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         var nextIcon = document.createElement('div');
                         nextIcon.className = mainIcon.className;
                         $cms.dom.html(nextIcon, $cms.dom.html(mainIcon));
@@ -269,7 +269,7 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
                         nextIcon.y_vector = -Math.random() * 6;
                         nextIcon.opacity = 1.0;
                         iconSpot.appendChild(nextIcon);
-                        nextIcon.animation_timer = window.setInterval(function () {
+                        nextIcon.animation_timer = setInterval(function () {
                             if (window.paused) return;
 
                             var _left = ((parseInt(nextIcon.style.left) || 0) + nextIcon.x_vector);
@@ -280,7 +280,7 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
                             nextIcon.opacity *= 0.98;
                             nextIcon.y_vector += 0.2;
                             if ((_top > maxHeight) || (nextIcon.opacity < 0.05) || (_left + 50 > windowWidth) || (_left < 0)) {
-                                window.clearInterval(nextIcon.animation_timer);
+                                clearInterval(nextIcon.animation_timer);
                                 nextIcon.animation_timer = null;
                                 nextIcon.parentNode.removeChild(nextIcon);
                             }
@@ -290,7 +290,7 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
             }, 100);
 
             // Set up animation timer
-            clonedMessage.timer = window.setInterval(function () {
+            clonedMessage.timer = setInterval(function () {
                 animateDown(clonedMessage);
             }, frameDelay);
         }, 0);
@@ -316,7 +316,7 @@ function animateDown(el, avoidRemove) {
                 window.total_lines -= el.querySelectorAll('.line').length;
                 el.parentNode.removeChild(el);
             }
-            window.clearInterval(el.timer);
+            clearInterval(el.timer);
             el.timer = null;
         }
     }
@@ -351,7 +351,7 @@ function bubblesTidyUp() {
     var bubbles = document.getElementById('real_time_surround').parentNode.querySelectorAll('.bubble_wrap');
     for (var i = 0; i < bubbles.length; i++) {
         if (bubbles[i].timer) {
-            window.clearInterval(bubbles[i].timer);
+            clearInterval(bubbles[i].timer);
             bubbles[i].timer = null;
         }
     }
@@ -361,7 +361,7 @@ function bubblesTidyUp() {
     var icons = document.getElementById('real_time_surround').parentNode.querySelectorAll('.email_icon');
     for (var i = 0; i < icons.length; i++) {
         if (icons[i].animation_timer) {
-            window.clearInterval(icons[i].animation_timer);
+            clearInterval(icons[i].animation_timer);
             icons[i].animation_timer = null;
         }
         icons[i].parentNode.removeChild(icons[i]);

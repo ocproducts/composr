@@ -60,7 +60,7 @@ class Block_main_screen_actions
             $from = get_self_url(true);
         }
 
-        $_map = array('page' => 'recommend', 'from' => $from);
+        $_map = array('page' => 'recommend', 'from' => protect_url_parameter($from));
         if (array_key_exists('title', $map)) {
             $_map['title'] = $map['title'];
         }

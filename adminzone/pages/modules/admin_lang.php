@@ -513,8 +513,8 @@ class Module_admin_lang
         }
 
         // Show it worked / Refresh
-        $url = post_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url === null) {
+        $url = post_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url == '') {
             $_url = build_url(array('page' => '_SELF', 'type' => 'content', 'lang' => $lang, 'start' => get_param_integer('start', null)), '_SELF');
             $url = $_url->evaluate();
         }
@@ -576,7 +576,7 @@ class Module_admin_lang
             }
             $post_url = build_url(array('page' => '_SELF', 'type' => '_code2'), '_SELF');
             $hidden = new Tempcode();
-            $hidden->attach(form_input_hidden('redirect', get_self_url(true)));
+            $hidden->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(SELF_REDIRECT))));
             $hidden->attach(form_input_hidden('lang', $lang));
             return do_template('FORM_SCREEN', array('_GUID' => '2d7356fd2c4497ceb19450e65331c9c5', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang('TRANSLATE_CODE')));
         }

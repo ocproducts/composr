@@ -279,7 +279,7 @@ class Module_admin_zones
         // After completion prep/relay
         $_default_redirect = build_url(array('page' => ''), $id);
         $default_redirect = $_default_redirect->evaluate();
-        $post_url = build_url(array('page' => '_SELF', 'type' => '__editor', 'lang' => $lang, 'redirect' => get_param_string('redirect', $default_redirect, INPUT_FILTER_URL_INTERNAL), 'id' => $id), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '__editor', 'lang' => $lang, 'redirect' => protect_url_parameter(get_param_string('redirect', $default_redirect, INPUT_FILTER_URL_INTERNAL)), 'id' => $id), '_SELF');
 
         // Zone editing stuff
         $rows = $GLOBALS['SITE_DB']->query_select('zones', array('*'), array('zone_name' => $id), '', 1);
@@ -875,9 +875,9 @@ class Module_admin_zones
         }
 
         $map = array('page' => '_SELF', 'type' => '__edit');
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url !== null) {
-            $map['redirect'] = $url;
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url != '') {
+            $map['redirect'] = protect_url_parameter($url);
         }
         $post_url = build_url($map, '_SELF');
         $submit_name = do_lang_tempcode('SAVE');
@@ -956,11 +956,11 @@ class Module_admin_zones
 
             // Show it worked / Refresh
             if ($new_zone == $zone) {
-                $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
+                $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
             } else {
-                $url = null; // Can't redirect back
+                $url = ''; // Can't redirect back
             }
-            if ($url === null) {
+            if ($url == '') {
                 $_url = build_url(array('page' => '_SELF', 'type' => 'edit'), '_SELF');
                 $url = $_url->evaluate();
             }

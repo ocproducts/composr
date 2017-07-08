@@ -75,7 +75,7 @@ class Forum_driver_base
             $url = make_string_tempcode($url);
         }
         if ((get_forum_type() != 'none') && (get_forum_type() != 'cns') && (get_option('forum_in_portal') == '1')) {
-            $url = build_url(array('page' => 'forums', 'url' => $url), get_module_zone('forums'));
+            $url = build_url(array('page' => 'forums', 'url' => protect_url_parameter($url)), get_module_zone('forums'));
             if (!$tempcode_okay) {
                 $url = $url->evaluate();
             }
@@ -116,7 +116,7 @@ class Forum_driver_base
     {
         $url = $this->_join_url($tempcode_okay);
         if ((get_forum_type() != 'none') && (get_forum_type() != 'cns') && (get_option('forum_in_portal') == '1')) {
-            $url = build_url(array('page' => 'forums', 'url' => $url), get_module_zone('forums'));
+            $url = build_url(array('page' => 'forums', 'url' => protect_url_parameter($url)), get_module_zone('forums'));
             if (!$tempcode_okay) {
                 $url = $url->evaluate();
             }
@@ -134,7 +134,7 @@ class Forum_driver_base
     {
         $url = $this->_users_online_url($tempcode_okay);
         if ((get_forum_type() != 'none') && (get_forum_type() != 'cns') && (get_option('forum_in_portal') == '1')) {
-            $url = build_url(array('page' => 'forums', 'url' => $url), get_module_zone('forums'));
+            $url = build_url(array('page' => 'forums', 'url' => protect_url_parameter($url)), get_module_zone('forums'));
         }
         return $url;
     }
@@ -150,7 +150,7 @@ class Forum_driver_base
     {
         $url = $this->_member_pm_url($id, $tempcode_okay);
         if ((get_forum_type() != 'none') && (get_forum_type() != 'cns') && (get_option('forum_in_portal') == '1')) {
-            $url = build_url(array('page' => 'forums', 'url' => $url), get_module_zone('forums'));
+            $url = build_url(array('page' => 'forums', 'url' => protect_url_parameter($url)), get_module_zone('forums'));
         }
         return $url;
     }
@@ -166,7 +166,7 @@ class Forum_driver_base
     {
         $url = $this->_forum_url($id, $tempcode_okay);
         if ((get_forum_type() != 'none') && (get_forum_type() != 'cns') && (get_option('forum_in_portal') == '1')) {
-            $url = build_url(array('page' => 'forums', 'url' => $url), get_module_zone('forums'));
+            $url = build_url(array('page' => 'forums', 'url' => protect_url_parameter($url)), get_module_zone('forums'));
         }
         return $url;
     }

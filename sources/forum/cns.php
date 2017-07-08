@@ -610,7 +610,7 @@ class Forum_driver_cns extends Forum_driver_base
 
         $url_map = array('page' => 'join');
         if ((get_page_name() != 'recommend') && (get_option('page_after_join') == '')) {
-            $url_map['redirect'] = $redirect_url;
+            $url_map['redirect'] = protect_url_parameter($redirect_url);
         }
         $url = build_url($url_map, get_module_zone('join'), array('keep_session' => 1, 'redirect' => 1));
 

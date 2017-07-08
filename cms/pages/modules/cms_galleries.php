@@ -317,7 +317,7 @@ class Module_cms_galleries extends Standard_crud_module
         require_lang('trackbacks');
 
         // To choose to batch import from multiple attached files
-        $post_url = build_url(array('page' => '_SELF', 'type' => '__import', 'cat' => $cat, 'uploading' => 1, 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL)), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => '__import', 'cat' => $cat, 'uploading' => 1, 'redirect' => protect_url_parameter(get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL))), '_SELF');
         $fields = new Tempcode();
         $fields->attach(form_input_upload_multi(do_lang_tempcode('UPLOAD'), do_lang_tempcode('DESCRIPTION_ARCHIVE_MEDIA', escape_html(str_replace(',', ', ', get_option('valid_images') . ',' . get_allowed_video_file_types()))), 'file', true, null, null, true, str_replace(' ', '', get_option('valid_images'))));
         $fields->attach(form_input_line(do_lang_tempcode('TITLE'), do_lang_tempcode('DESCRIPTION_GALLERY_IMPORT_TITLE'), 'set_title', '', false/*Is multi-upload and may get from EXIF [besides, this is set_title not title] get_option('gallery_media_title_required') == '1'*/));
@@ -499,7 +499,7 @@ class Module_cms_galleries extends Standard_crud_module
             }
         }
 
-        if (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null) {
+        if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) != '') {
             $url = make_string_tempcode(get_param_string('redirect', INPUT_FILTER_URL_INTERNAL));
             return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));
         }

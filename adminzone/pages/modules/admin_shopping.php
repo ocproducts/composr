@@ -415,7 +415,7 @@ class Module_admin_shopping
         $redirect_url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
         $last_action = get_param_string('last_act', null);
 
-        $update_url = build_url(array('page' => '_SELF', 'type' => '_add_note', 'redirect' => $redirect_url), '_SELF');
+        $update_url = build_url(array('page' => '_SELF', 'type' => '_add_note', 'redirect' => protect_url_parameter($redirect_url)), '_SELF');
 
         $fields = new Tempcode();
 

@@ -83,7 +83,7 @@
         }
 
         if ($cms.usp.has('wide_print')) {
-            try { window.print(); } catch (ignore) {}
+            try { print(); } catch (ignore) {}
         }
     };
 }(window.$cms));

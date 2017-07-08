@@ -295,8 +295,8 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
             attach_message(do_lang_tempcode('SUCCESS'), 'inform');
 
             // Redirect them back
-            $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-            if ($redirect !== null) {
+            $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+            if ($redirect != '') {
                 return redirect_screen($title, $redirect, do_lang_tempcode('SUCCESS'));
             }
         }

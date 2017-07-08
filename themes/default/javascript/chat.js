@@ -201,7 +201,7 @@
         if ((window.chatCheck)) {
             chatCheck(true, 0);
         } else {
-            window.setTimeout(beginImChatting, 500);
+            setTimeout(beginImChatting, 500);
         }
 
         $cms.dom.on(container, 'click', '.js-click-btn-im-invite-ticked-people', function (e, btn) {
@@ -246,7 +246,7 @@
             if ((window.chatCheck)) {
                 chatCheck(true, 0);
             } else {
-                window.setTimeout(beginImChatting, 100);
+                setTimeout(beginImChatting, 100);
             }
         }
     };
@@ -269,7 +269,7 @@
     };
 
     $cms.templates.chatSiteWideImPopup = function (params) {
-        window.detectIfChatWindowClosedChecker = window.setInterval(function () {
+        window.detectIfChatWindowClosedChecker = setInterval(function () {
             if (detectIfChatWindowClosed !== undefined) {
                 detectIfChatWindowClosed();
             }
@@ -324,7 +324,7 @@
                     window.close();
                 } else {
                     if ((window.alreadyAutonomous === undefined) || (!window.alreadyAutonomous)) {
-                        window.setTimeout(function () {
+                        setTimeout(function () {
                             detectIfChatWindowClosed(false, true);
                         }, 3000); // If connection still lost after this time then kill the window
                     }
@@ -385,7 +385,7 @@
             if ((window.chatCheck)) {
                 chatCheck(true, 0);
             } else {
-                window.setTimeout(beginImChatting, 100);
+                setTimeout(beginImChatting, 100);
             }
         }
     };
@@ -582,7 +582,7 @@ function do_input_new_room(fieldName) {
         '',
         function (va) {
             if (va != null) {
-                var vb = window.prompt(
+                var vb = prompt(
                     '{!chat:ENTER_ALLOW;^}',
                     '',
                     function (vb) {
@@ -603,7 +603,7 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
         element.disabled = false;
 
         // Reschedule the next check (cc_timer was reset already higher up in function)
-        window.top_window.cc_timer = window.top_window.setTimeout(function () {
+        window.top_window.cc_timer = window.top_setTimeout(function () {
             window.top_window.chatCheck(false, window.top_window.last_message_id, window.top_window.last_event_id);
         }, window.MESSAGE_CHECK_INTERVAL);
     }
@@ -615,7 +615,7 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
 
     if (messageText !== '') {
         if (window.top_window.cc_timer) {
-            window.top_window.clearTimeout(window.top_window.cc_timer);
+            window.top_clearTimeout(window.top_window.cc_timer);
             window.top_window.cc_timer = null;
         }
 
@@ -636,7 +636,7 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
             if (responses[0]) {
                 processChatXmlMessages(responses[0], true);
 
-                window.setTimeout(function () {
+                setTimeout(function () {
                     element.value = '';
                 }, 20);
                 element.style.height = 'auto';
@@ -647,7 +647,7 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
             }
 
             // Reschedule the next check (cc_timer was reset already higher up in function)
-            window.top_window.cc_timer = window.top_window.setTimeout(function () {
+            window.top_window.cc_timer = window.top_setTimeout(function () {
                 window.top_window.chatCheck(false, window.top_window.last_message_id, window.top_window.last_event_id);
             }, window.MESSAGE_CHECK_INTERVAL);
 
@@ -680,7 +680,7 @@ function chatCheck(backlog, messageId, eventId) {
     eventId = +eventId || -1;  // -1 Means, we don't want to look at events, but the server will give us a null event
 
     // Check for new messages on the server the new or old way
-    window.setTimeout(function () {
+    setTimeout(function () {
         chatCheckTimeout(backlog, messageId, eventId);
     }, window.MESSAGE_CHECK_INTERVAL * 1.2);
 
@@ -727,10 +727,10 @@ function chatCheckResponse(ajaxResultFrame, ajaxResult, skipIncomingSound) {
 
     // Schedule the next check
     if (window.cc_timer) {
-        window.clearTimeout(window.cc_timer);
+        clearTimeout(window.cc_timer);
         window.cc_timer = null;
     }
-    window.cc_timer = window.setTimeout(function () {
+    window.cc_timer = setTimeout(function () {
         chatCheck(false, window.last_message_id, window.last_event_id);
     }, window.MESSAGE_CHECK_INTERVAL);
 
@@ -889,7 +889,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                             if (alertBoxWrap) alertBoxWrap.style.display = 'block';
                             var alertBox = document.getElementById('alert_box');
                             if (alertBox) $cms.dom.html(alertBox, '{!chat:NOW_ONLINE;^}'.replace('{' + '1}', username));
-                            window.setTimeout(function () {
+                            setTimeout(function () {
                                 if (document.getElementById('alert_box')) // If the alert box is still there, remove it
                                     alertBoxWrap.style.display = 'none';
                             }, window.TRANSITORY_ALERT_TIME);
@@ -1063,11 +1063,11 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             }
         } else {
             if (window.getAttention !== undefined) {
-                window.getAttention();
+                getAttention();
             }
             if (window.focus !== undefined) {
                 try {
-                    window.focus();
+                    focus();
                 } catch (e) {}
             }
             var post = document.getElementById('post');
@@ -1085,7 +1085,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
     return currentRoomId;
 
     function addImMember(roomId, memberId, username, away, avatarUrl) {
-        window.setTimeout(function () {
+        setTimeout(function () {
             var doc = document;
             if (window.opened_popups['room_' + roomId] !== undefined) {
                 if (window.opened_popups['room_' + roomId].is_shutdown) return;
@@ -1184,7 +1184,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             if ((!newWindow) || (newWindow.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
                 $cms.ui.alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
             }
-            window.setTimeout(function () { // Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
+            setTimeout(function () { // Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
                 if ((window.opened_popups['room_' + roomId] !== undefined) && (window.opened_popups['room_' + roomId] != null) && (!window.opened_popups['room_' + roomId].is_shutdown)) { // It's been reattached already
                     return;
                 }
@@ -1199,7 +1199,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     newWindow.room_id = roomId;
                     newWindow.load_from_room_id = -1;
 
-                    window.setTimeout(function () { // Allow XHTML to render; needed for .document to be available, which is needed to write in seeded chat messages
+                    setTimeout(function () { // Allow XHTML to render; needed for .document to be available, which is needed to write in seeded chat messages
                         if (!newWindow.document) {
                             return;
                         }
@@ -1347,7 +1347,7 @@ function createOverlayEvent(skipIncomingSound, memberId, message, clickEvent, av
 
     // Contact ones disappear after a time
     if (roomId === null) {
-        window.setTimeout(function () {
+        setTimeout(function () {
             closePopup();
         }, window.TRANSITORY_ALERT_TIME);
     }
@@ -1434,14 +1434,14 @@ function findImConvoRoomIds() {
     if (!chatLobbyConvosTabs) {
         for (i in window.opened_popups) {
             if (i.substr(0, 5) === 'room_') {
-                rooms.push(window.parseInt(i.substr(5)));
+                rooms.push(parseInt(i.substr(5)));
             }
         }
         return rooms;
     }
     for (i = 0; i < chatLobbyConvosTabs.children.length; i++) {
         if (chatLobbyConvosTabs.children[i].id.substr(0, 4) === 'tab_') {
-            rooms.push(window.parseInt(chatLobbyConvosTabs.childNodes[i].id.substr(4)));
+            rooms.push(parseInt(chatLobbyConvosTabs.childNodes[i].id.substr(4)));
         }
     }
     return rooms;
@@ -1504,7 +1504,7 @@ function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a p
         window.is_shutdown = true;
     }
 
-    window.setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
+    setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
         window.top_window.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.top_window.$cms.keepStub(false), function () {
         }, 'room_id=' + encodeURIComponent(roomId)); // Has to be on top_window or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
@@ -1544,7 +1544,7 @@ function findCurrentImRoom() {
     }
     for (var i = 0; i < chatLobbyConvosTabs.children.length; i++) {
         if ((chatLobbyConvosTabs.children[i].nodeName.toLowerCase() === 'div') && (chatLobbyConvosTabs.children[i].className.indexOf('chat_lobby_convos_current_tab') !== -1)) {
-            return window.parseInt(chatLobbyConvosTabs.childNodes[i].id.substr(4));
+            return parseInt(chatLobbyConvosTabs.childNodes[i].id.substr(4));
         }
     }
     return null;

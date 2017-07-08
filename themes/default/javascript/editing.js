@@ -214,11 +214,11 @@ function wysiwygSetReadonly(name, readonly) {
 
     // In case it sticks as read only we need a timer to put it back. But only if not already back.
     if (window.wysiwyg_readonly_timer[name] !== undefined && window.wysiwyg_readonly_timer[name]) {
-        window.clearTimeout(window.wysiwyg_readonly_timer[name]);
+        clearTimeout(window.wysiwyg_readonly_timer[name]);
         window.wysiwyg_readonly_timer[name] = null;
     }
     if (readonly) {
-        window.wysiwyg_readonly_timer[name] = window.setTimeout(function () {
+        window.wysiwyg_readonly_timer[name] = setTimeout(function () {
             wysiwygSetReadonly(name, false);
         }, 5000);
     }
@@ -302,7 +302,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
                     }
                 }
             }
-            window.setTimeout(function (e, id) {
+            setTimeout(function (e, id) {
                 return function () {
                     wysiwygEditorInitFor(e, id);
                 }
@@ -330,13 +330,13 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         if (matches) {
             wysiwygColor = '#';
             var hex;
-            hex = (window.parseInt(matches[1]).toString(16)) + '';
+            hex = (parseInt(matches[1]).toString(16)) + '';
             if (hex.length == 1) hex = '0' + hex;
             wysiwygColor += hex;
-            hex = (window.parseInt(matches[2]).toString(16)) + '';
+            hex = (parseInt(matches[2]).toString(16)) + '';
             if (hex.length == 1) hex = '0' + hex;
             wysiwygColor += hex;
-            hex = (window.parseInt(matches[3]).toString(16)) + '';
+            hex = (parseInt(matches[3]).toString(16)) + '';
             if (hex.length == 1) hex = '0' + hex;
             wysiwygColor += hex;
         }
@@ -344,9 +344,9 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         matches = wysiwygColor.match(/^#([0-4])(.)([0-4])(.)([0-4])(.)$/);
         if (matches) {
             wysiwygColor = '#';
-            wysiwygColor += (window.parseInt(matches[1]) + 4) + matches[2];
-            wysiwygColor += (window.parseInt(matches[3]) + 4) + matches[4];
-            wysiwygColor += (window.parseInt(matches[5]) + 4) + matches[6];
+            wysiwygColor += (parseInt(matches[1]) + 4) + matches[2];
+            wysiwygColor += (parseInt(matches[3]) + 4) + matches[4];
+            wysiwygColor += (parseInt(matches[5]) + 4) + matches[6];
         }
 
         /*{+START,INCLUDE,WYSIWYG_SETTINGS,.js,javascript}{+END}*/
@@ -418,7 +418,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             // Instant preview of Comcode
             findTagsInEditor(editor, element);
         });
-        window.setInterval(function () {
+        setInterval(function () {
             if ($cms.form.isWysiwygField(element))
                 findTagsInEditor(editor, element);
         }, 1000);
@@ -652,7 +652,7 @@ function setTextbox(element, text, html) {
         window.wysiwyg_editors[element.id].setData(html);
         window.wysiwyg_editors[element.id].updateElement();
 
-        window.setTimeout(function () {
+        setTimeout(function () {
             findTagsInEditor(window.wysiwyg_editors[element.id], element);
         }, 100);
     } else {
@@ -913,7 +913,7 @@ function showUploadSyndicationOptions(name, syndicationJson, noQuota) {
             checked = false;
         }
 
-        window.setTimeout((function (id, authorised, hook) {
+        setTimeout((function (id, authorised, hook) {
             document.getElementById(id).onclick = function () {
                 var el = document.getElementById(id);
                 if (el.checked && !authorised) {

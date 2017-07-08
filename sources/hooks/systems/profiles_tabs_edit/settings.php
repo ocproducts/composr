@@ -272,9 +272,9 @@ class Hook_profiles_tabs_edit_settings
             $fields->attach(get_award_fields('member', strval($member_id_of)));
         }
 
-        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($redirect !== null) {
-            $hidden->attach(form_input_hidden('redirect', $redirect));
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($redirect != '') {
+            $hidden->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter($redirect))));
         }
 
         $hidden->attach(form_input_hidden('submitting_settings_tab', '1'));

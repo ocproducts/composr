@@ -89,7 +89,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         $url_map = array(
             'page' => 'admin_themes',
             'type' => 'edit_templates',
-            'live_preview_url' => get_self_url(true, false, array('special_page_type' => null)),
+            'live_preview_url' => protect_url_parameter(get_self_url(true, false, array('special_page_type' => null))),
             'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
             'f0file' => 'css/' . $special_page_type,
             'keep_wide_high' => 1,
@@ -313,7 +313,8 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         $title = get_screen_title('__TRANSLATE_CONTENT', true, array(escape_html($lang_name)));
 
         $post_url = build_url(array('page' => 'admin_lang', 'type' => '_content', 'contextual' => 1), 'adminzone');
-        $hidden = form_input_hidden('redirect', get_self_url(true, true));
+
+        $hidden = form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(SELF_REDIRECT_RIP)));
         $hidden = form_input_hidden('lang', user_lang());
 
         $middle_spt = do_template('FORM_SCREEN', array(
@@ -392,10 +393,14 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
                 $fields->attach(form_input_text($key_extended, $description, 'l_' . $key, str_replace('\n', "\n", $value_found), false));
             }
         }
+
         $title = get_screen_title('__TRANSLATE_CODE', true, array(escape_html($lang_name)));
+
         $post_url = build_url(array('page' => 'admin_lang', 'type' => '_code2'), 'adminzone');
-        $hidden = form_input_hidden('redirect', get_self_url(true, true));
+
+        $hidden = form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(SELF_REDIRECT_RIP)));
         $hidden = form_input_hidden('lang', user_lang());
+
         $middle_spt = do_template('FORM_SCREEN', array(
             '_GUID' => '47a2934eaec30ed5eea635d4c462cee0',
             'SKIP_WEBSTANDARDS' => true,
@@ -430,7 +435,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
         $edit_url_map = array(
             'page' => 'admin_themes',
             'type' => 'edit_templates',
-            'live_preview_url' => get_self_url(true, false, array('special_page_type' => null)),
+            'live_preview_url' => protect_url_parameter(get_self_url(true, false, array('special_page_type' => null))),
             'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
         );
         $edit_url = build_url($edit_url_map, get_module_zone('admin_themes'));
@@ -472,7 +477,7 @@ function special_page_types($special_page_type, &$out, $out_evaluated)
             $url_map = array(
                 'page' => 'admin_themes',
                 'type' => 'edit_templates',
-                'live_preview_url' => get_self_url(true, false, array('special_page_type' => null)),
+                'live_preview_url' => protect_url_parameter(get_self_url(true, false, array('special_page_type' => null))),
                 'theme' => $GLOBALS['FORUM_DRIVER']->get_theme(),
                 'default_theme_files_location' => get_zone_name() . ':' . get_page_name(),
             );

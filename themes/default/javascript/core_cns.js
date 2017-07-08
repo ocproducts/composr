@@ -23,7 +23,7 @@
                     window[tabFunc] = function () {};
 
                     if (automated) {
-                        window.scrollTo(0, 0);
+                        scrollTo(0, 0);
                     }
 
                     $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + this.memberId + window.location.search.replace('?', '&'), null, true).then(function (result) {
@@ -211,7 +211,7 @@
 
             submitButton.disabled = !deleteCheckbox.checked;
 
-            window.setInterval(function () {
+            setInterval(function () {
                 submitButton.disabled = !deleteCheckbox.checked && tab.classList.contains('tab_active');
             }, 100);
         };

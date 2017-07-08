@@ -112,7 +112,7 @@ function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleCli
             controlButton.onclick = function () {
                 return false;
             };
-            window.setTimeout(function () {
+            setTimeout(function () {
                 controlButton.onclick = backup;
             }, 10);
         }

@@ -827,16 +827,16 @@ abstract class Standard_crud_module
         if (get_param_string('type', '') == 'add_catalogue') {
             $map['type'] = '_add_catalogue';
         }
-        if (get_param_string('auto__add_one', null) !== null) {
+        if (get_param_string('auto__add_one', '') != '') {
             $map['auto__add_one'] = get_param_string('auto__add_one');
         }
-        if (get_param_string('auto__add_one_category', null) !== null) {
+        if (get_param_string('auto__add_one_category', '') != '') {
             $map['auto__add_one_category'] = get_param_string('auto__add_one_category');
         }
-        if (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null) {
-            $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
+        if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) != '') {
+            $map['redirect'] = protect_url_parameter(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL));
         }
-        if (get_param_string('continue', null) !== null) {
+        if (get_param_string('continue', '') != '') {
             $map['continue'] = get_param_string('continue');
         }
         if (($this->upload !== null) || ($this->possibly_some_kind_of_upload)) {
@@ -896,7 +896,7 @@ abstract class Standard_crud_module
         if ($this->user_facing) {
             // I think people know how web systems work by now if (($this->care_please) && (do_lang('CARE_PLEASE')!='')) $this->add_text->attach(paragraph(do_lang_tempcode('CARE_PLEASE')));
             if (addon_installed('points')) {
-                $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true, true)), get_module_zone('login'));
+                $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('login'));
                 $_login_url = escape_html($login_url->evaluate());
                 if ((is_guest()) && ((get_forum_type() != 'cns') || (has_actual_page_access(get_member(), 'join')))) {
                     $this->add_text->attach(paragraph(do_lang_tempcode('NOT_LOGGED_IN_NO_CREDIT', $_login_url)));
@@ -1061,8 +1061,8 @@ abstract class Standard_crud_module
         }
 
         //if ($this->redirect_type=='!') {
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url !== null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url != '') {
             $url = str_replace('__ID__', $id, $url);
             return redirect_screen($this->title, $url, $description);
         }
@@ -1189,8 +1189,8 @@ abstract class Standard_crud_module
         if (either_param_string('catalogue_name', '') != '') {
             $map['catalogue_name'] = either_param_string('catalogue_name');
         }
-        if (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null) {
-            $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
+        if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) != '') {
+            $map['redirect'] = protect_url_parameter(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL));
         }
         if (get_param_string('continue', null) !== null) {
             $map['continue'] = get_param_string('continue');
@@ -1318,10 +1318,10 @@ abstract class Standard_crud_module
         if (get_param_string('type', '') == '_edit_catalogue') {
             $map['type'] = '__edit_catalogue';
         }
-        if (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null) {
-            $map['redirect'] = get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL);
+        if (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) != '') {
+            $map['redirect'] = protect_url_parameter(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL));
         }
-        if (get_param_string('continue', null) !== null) {
+        if (get_param_string('continue', '') != '') {
             $map['continue'] = get_param_string('continue');
         }
         if (($this->upload !== null) || ($this->possibly_some_kind_of_upload)) {
@@ -1668,7 +1668,7 @@ abstract class Standard_crud_module
             }
         }
 
-        if ((($this->redirect_type !== null) || (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null)) && ($orig_id == $id)) {
+        if ((($this->redirect_type !== null) || (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) != '')) && ($orig_id == $id)) {
             $url = (($this->redirect_type == '!') || ($this->redirect_type === null)) ? make_string_tempcode(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL)) : build_url(array('page' => '_SELF', 'type' => $this->redirect_type), '_SELF');
 
             return redirect_screen($this->title, $url, do_lang_tempcode($this->success_message_str));
@@ -1725,7 +1725,7 @@ abstract class Standard_crud_module
 
         // UI
         if ($top_level) {
-            if (($this->redirect_type !== null) || (get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL) !== null)) {
+            if (($this->redirect_type !== null) || (get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL) != '')) {
                 $url = make_string_tempcode(get_param_string('redirect', false, INPUT_FILTER_URL_INTERNAL));
 
                 return redirect_screen($this->title, $url, do_lang_tempcode('SUCCESS'));

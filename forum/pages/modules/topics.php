@@ -671,8 +671,8 @@ class Module_topics
         $title = get_screen_title('MARK_READ');
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url !== null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url != '') {
             return redirect_screen($title, $url, do_lang_tempcode('SUCCESS'));
         }
 
@@ -1546,7 +1546,7 @@ class Module_topics
         $map = array('page' => '_SELF', 'type' => '_add_reply');
         $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
-            $map['redirect'] = $redirect;
+            $map['redirect'] = protect_url_parameter($redirect);
         }
         $post_url = build_url($map, '_SELF');
 
@@ -1702,7 +1702,7 @@ class Module_topics
 
         // Note about points?
         if (addon_installed('points')) {
-            $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true, true)), get_module_zone('login'));
+            $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('login'));
             $_login_url = escape_html($login_url->evaluate());
             if ((is_guest()) && ((get_forum_type() != 'cns') || (has_actual_page_access(get_member(), 'join')))) {
                 $text->attach(paragraph(do_lang_tempcode('NOT_LOGGED_IN_NO_CREDIT', $_login_url)));
@@ -1987,7 +1987,7 @@ class Module_topics
         }
 
         if (addon_installed('points')) {
-            $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true, true)), get_module_zone('login'));
+            $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('login'));
             $_login_url = escape_html($login_url->evaluate());
             if ((is_guest()) && ((get_forum_type() != 'cns') || (has_actual_page_access(get_member(), 'join')))) {
                 $text->attach(paragraph(do_lang_tempcode('NOT_LOGGED_IN_NO_CREDIT', $_login_url)));
@@ -2726,8 +2726,8 @@ END;
         }
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url !== null) {
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url != '') {
             return redirect_screen(get_screen_title('DELETE_POST'), $url, do_lang_tempcode('SUCCESS'));
         }
 
@@ -3011,7 +3011,7 @@ END;
         $map = array('page' => '_SELF', 'type' => '_edit_post');
         $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
         if ($redirect != '') {
-            $map['redirect'] = $redirect;
+            $map['redirect'] = protect_url_parameter($redirect);
         }
         $test = get_param_string('kfs' . (($forum_id === null) ? '' : strval($forum_id)), null, INPUT_FILTER_GET_COMPLEX);
         if (($test !== null) && ($test !== '0')) {
@@ -3192,9 +3192,9 @@ END;
         }
 
         // Show it worked / Refresh
-        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($url !== null) {
-            return redirect_screen(get_screen_title('EDIT_POST'), $url, do_lang_tempcode('SUCCESS'));
+        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($url != '') {
+            return redirect_screen(get_screen_title('EDIT_POST'), protect_url_parameter($url), do_lang_tempcode('SUCCESS'));
         }
 
         return $this->redirect_to('EDIT_POST', $topic_id, null, $post_id);

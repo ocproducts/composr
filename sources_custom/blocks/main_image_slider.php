@@ -187,7 +187,7 @@ class Block_main_image_slider
         if (count($images) == 0) {
             $submit_url = mixed();
             if ((has_actual_page_access(null, 'cms_galleries', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_galleries', array('galleries', $cat))) && (can_submit_to_gallery($cat))) {
-                $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat, 'redirect' => SELF_REDIRECT), get_module_zone('cms_galleries'));
+                $submit_url = build_url(array('page' => 'cms_galleries', 'type' => 'add', 'cat' => $cat, 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_galleries'));
             }
             return do_template('BLOCK_NO_ENTRIES', array(
                 '_GUID' => '8b92cd992508e55bfe4139b5c09475c2',

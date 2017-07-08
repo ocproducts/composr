@@ -3,7 +3,7 @@
 
     $cms.templates.supportTicketsScreen = function (params, container) {
         $cms.dom.on(container, 'submit', '.js-form-submit-scroll-to-top', function () {
-            window.scrollTo(0, 0);
+            scrollTo(0, 0);
         });
     };
 

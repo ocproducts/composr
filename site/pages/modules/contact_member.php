@@ -222,7 +222,7 @@ class Module_contact_member
                 $redirect = $redirect->evaluate();
             }
         }
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'actual', 'id' => $member_id, 'redirect' => $redirect), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'actual', 'id' => $member_id, 'redirect' => protect_url_parameter($redirect)), '_SELF');
 
         return do_template('FORM_SCREEN', array(
             '_GUID' => 'e06557e6eceacf1f46ee930c99ac5bb5',

@@ -97,7 +97,7 @@ class Block_main_comments
                 if (addon_installed('unvalidated')) {
                     require_code('submit');
                     $validate_url = get_self_url(true, false, array('keep_session' => null));
-                    $_validate_url = build_url(array('page' => 'topics', 'type' => 'validate_post', 'id' => $GLOBALS['LAST_POST_ID'], 'redirect' => $validate_url), get_module_zone('topics'), array(), false, false, true);
+                    $_validate_url = build_url(array('page' => 'topics', 'type' => 'validate_post', 'id' => $GLOBALS['LAST_POST_ID'], 'redirect' => protect_url_parameter($validate_url)), get_module_zone('topics'), array(), false, false, true);
                     $validate_url = $_validate_url->evaluate();
                     send_validation_request('MAKE_POST', 'f_posts', false, $GLOBALS['LAST_POST_ID'], $validate_url);
                 }

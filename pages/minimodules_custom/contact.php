@@ -57,7 +57,7 @@ if (is_guest()) {
         if (!is_object($join_url)) {
             $join_url = make_string_tempcode($join_url);
         }
-        $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => get_self_url(true)), get_module_zone('login'));
+        $login_url = build_url(array('page' => 'login', 'type' => 'browse', 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('login'));
         $please_log_in = 'You are not logged in. We advise <a href="' . escape_html($join_url->evaluate()) . '">joining</a> then <a href="' . escape_html($login_url->evaluate()) . '">logging in</a> to make best use of the ticket system.';
         attach_message(protect_from_escaping($please_log_in), 'notice');
     }

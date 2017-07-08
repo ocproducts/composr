@@ -71,7 +71,7 @@ function processWave(el) {
             colorG = minColorG + fraction * (maxColorG - minColorG),
             colorB = minColorB + fraction * (maxColorB - minColorB);
 
-        return decToHex(window.parseInt(colorR)) + decToHex(window.parseInt(colorG)) + decToHex(window.parseInt(colorB));
+        return decToHex(parseInt(colorR)) + decToHex(parseInt(colorG)) + decToHex(parseInt(colorB));
     }
 
     function findTextNodes(e) {

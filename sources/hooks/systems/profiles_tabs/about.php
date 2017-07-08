@@ -90,7 +90,7 @@ class Hook_profiles_tabs_about
         $modules = array();
         if ((has_privilege($member_id_viewing, 'warn_members')) && (has_actual_page_access($member_id_viewing, 'warnings')) && (addon_installed('cns_warnings'))) {
             $redir_url = get_self_url(true);
-            $modules[] = array('audit', do_lang_tempcode('WARN_MEMBER'), build_url(array('page' => 'warnings', 'type' => 'add', 'member_id' => $member_id_of, 'redirect' => $redir_url), get_module_zone('warnings')), 'links/warning_add');
+            $modules[] = array('audit', do_lang_tempcode('WARN_MEMBER'), build_url(array('page' => 'warnings', 'type' => 'add', 'member_id' => $member_id_of, 'redirect' => protect_url_parameter($redir_url)), get_module_zone('warnings')), 'links/warning_add');
             $modules[] = array('audit', do_lang_tempcode('PUNITIVE_HISTORY'), build_url(array('page' => 'warnings', 'type' => 'history', 'id' => $member_id_of), get_module_zone('warnings')), 'tabs/member_account/warnings');
         }
         if ((addon_installed('actionlog')) && (has_privilege($member_id_viewing, 'view_revisions')) && (has_actual_page_access($member_id_viewing, 'admin_revisions'))) {
@@ -151,7 +151,7 @@ class Hook_profiles_tabs_about
         if (addon_installed('cns_contact_member')) {
             if ((($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_allow_emails') == 1) || (get_option('member_email_receipt_configurability') == '0')) && ($GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id_of, 'm_email_address') != '') && (!is_guest($member_id_of)) && (has_actual_page_access($member_id_viewing, 'contact_member')) && ($member_id_viewing != $member_id_of)) {
                 $redirect = get_self_url(true);
-                $modules[] = array('contact', do_lang_tempcode('_EMAIL_MEMBER'), build_url(array('page' => 'contact_member', 'redirect' => $redirect, 'id' => $member_id_of), get_module_zone('contact_member')), 'links/contact_member', 'reply nofollow');
+                $modules[] = array('contact', do_lang_tempcode('_EMAIL_MEMBER'), build_url(array('page' => 'contact_member', 'redirect' => protect_url_parameter($redirect), 'id' => $member_id_of), get_module_zone('contact_member')), 'links/contact_member', 'reply nofollow');
             }
         }
         require_lang('menus');

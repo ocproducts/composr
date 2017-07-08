@@ -71,7 +71,7 @@
 
             data['url' + k] = v;
             new Image().src = data['url' + k]; // precache
-            window.setTimeout(function () {
+            setTimeout(function () {
                 function func() {
                     data.fp_animation_fader.src = data.fp_animation.src;
                     $cms.dom.clearTransitionAndSetOpacity(data.fp_animation_fader, 1.0);
@@ -93,7 +93,7 @@
                     func();
                 }
 
-                window.setInterval(func, mill * total);
+                setInterval(func, mill * total);
             }, k * mill);
         }
     });
@@ -250,7 +250,7 @@
 
         for (i = 0; i < files.options.length; i++) {
             $cms.dom.on(files[i], 'mouseover', function (event) {
-                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL()) + '/uploads/galleries/' + window.encodeURI(this.value) + '" \/>', 'auto');
+                $cms.ui.activateTooltip(this, event, '<img width="500" src="' + $cms.filter.html($cms.$BASE_URL()) + '/uploads/galleries/' + encodeURI(this.value) + '" \/>', 'auto');
             });
             $cms.dom.on(files[i], 'mousemove', function (event) {
                 $cms.ui.repositionTooltip(this, event);
@@ -263,7 +263,7 @@
 
     function startSlideshowTimer() {
         if (!window.slideshow_timer) {
-            window.slideshow_timer = window.setInterval(function () {
+            window.slideshow_timer = setInterval(function () {
                 window.slideshow_time--;
                 showCurrentSlideshowTime();
 
@@ -287,7 +287,7 @@
 
     function resetSlideshowCountdown() {
         var slideshowFrom = document.getElementById('slideshow_from');
-        window.slideshow_time = slideshowFrom ? window.parseInt(slideshowFrom.value) : 5;
+        window.slideshow_time = slideshowFrom ? parseInt(slideshowFrom.value) : 5;
 
         showCurrentSlideshowTime();
 
@@ -314,7 +314,7 @@
             $cms.dom.html(changer, message);
         }
         if (window.slideshow_timer) {
-            window.clearInterval(window.slideshow_timer);
+            clearInterval(window.slideshow_timer);
         }
         window.slideshow_timer = null;
         document.getElementById('gallery_entry_screen').style.cursor = '';

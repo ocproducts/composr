@@ -525,8 +525,8 @@ class Module_chat
         // Friend list and IM
         $can_im = has_privilege(get_member(), 'start_im');
         if (($member_id == get_member()) && (!is_guest())) {
-            $post_url_add_friend = build_url(array('page' => '_SELF', 'type' => 'friend_add', 'redirect' => get_self_url(true)), '_SELF');
-            $post_url_remove_friends = build_url(array('page' => '_SELF', 'type' => 'friend_remove', 'redirect' => get_self_url(true)), '_SELF');
+            $post_url_add_friend = build_url(array('page' => '_SELF', 'type' => 'friend_add', 'redirect' => protect_url_parameter(SELF_REDIRECT)), '_SELF');
+            $post_url_remove_friends = build_url(array('page' => '_SELF', 'type' => 'friend_remove', 'redirect' => protect_url_parameter(SELF_REDIRECT)), '_SELF');
         } else {
             $post_url_add_friend = new Tempcode();
             $post_url_remove_friends = new Tempcode();
@@ -554,7 +554,7 @@ class Module_chat
         ));
 
         if (!is_guest()) {
-            $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*, 'redirect' => get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
+            $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*, 'redirect' => protect_url_parameter(SELF_REDIRECT)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
         } else {
             $seteffects_link = new Tempcode();
         }
@@ -681,7 +681,7 @@ class Module_chat
         $download_url = build_url(array('page' => '_SELF', 'type' => 'download_logs', 'id' => $room_id), '_SELF');
         $download_link = hyperlink($download_url, do_lang_tempcode('CHAT_DOWNLOAD_LOGS'), true, false);
 
-        $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*, 'redirect' => get_self_url(true,true)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
+        $seteffects_link = hyperlink(build_url(array('page' => '_SELF', 'type' => 'set_effects'/*, 'redirect' => protect_url_parameter(SELF_REDIRECT)*/), '_SELF'), do_lang_tempcode('CHAT_SET_EFFECTS'), true, false);
 
         $links = array('edit2' => $admin_link, 'tools' => $mod_link, 'export' => $download_link, 'sound_effects' => $seteffects_link);
 
@@ -889,7 +889,7 @@ class Module_chat
             $map = array('page' => '_SELF', 'type' => get_param_string('type'));
             $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
             if ($redirect != '') {
-                $map['redirect'] = $redirect;
+                $map['redirect'] = protect_url_parameter($redirect);
             }
             $url = build_url($map, '_SELF');
             return do_template('CONFIRM_SCREEN', array('_GUID' => '3b76b0e41541d5a38671134e92128d9f', 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $url, 'PREVIEW' => $preview));
@@ -999,8 +999,8 @@ class Module_chat
         require_code('chat2');
         friend_add(get_member(), $member_id);
 
-        $url = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
-        if ($url == '') {
+        $url = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
+        if ($url === null) {
             return inform_screen($this->title, do_lang_tempcode('NOW_ADDED_AS_FRIEND', escape_html($username)));
         }
         return redirect_screen($this->title, $url, do_lang_tempcode('NOW_ADDED_AS_FRIEND', escape_html($username)));
@@ -1166,9 +1166,9 @@ class Module_chat
         $post_url = build_url(array('page' => '_SELF', 'type' => '_set_effects'), '_SELF');
 
         $hidden = new Tempcode();
-        $redirect = get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($redirect !== null) {
-            $hidden->attach(form_input_hidden('redirect', $redirect));
+        $redirect = get_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($redirect != '') {
+            $hidden->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter($redirect))));
         }
 
         $setting_blocks = new Tempcode();
@@ -1277,8 +1277,8 @@ class Module_chat
             }
         }
 
-        $redirect = post_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL);
-        if ($redirect !== null) {
+        $redirect = post_param_string('redirect', '', INPUT_FILTER_URL_INTERNAL);
+        if ($redirect != '') {
             return redirect_screen($this->title, $redirect, do_lang_tempcode('SUCCESS'));
         }
 

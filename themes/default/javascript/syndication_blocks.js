@@ -15,8 +15,8 @@
 
                     scrollerEl.paused = false;
 
-                    window.setTimeout(function () {
-                        window.setInterval(function () {
+                    setTimeout(function () {
+                        setInterval(function () {
                             if (scrollerEl.paused) {
                                 return;
                             }

@@ -29,7 +29,7 @@ function ensure_got_oauth_client_id($service_name, $has_sep_key = false)
         $ob = object_factory('Hook_config_' . $service_name . '_client_id');
         $info = $ob->get_details();
 
-        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $info['category'], 'redirect' => get_self_url(true)), get_module_zone('admin_config'), array(), false, false, false, 'group_' . $info['group']);
+        $config_url = build_url(array('page' => 'admin_config', 'type' => 'category', 'id' => $info['category'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('admin_config'), array(), false, false, false, 'group_' . $info['group']);
         require_code('site2');
         smart_redirect($config_url);
     }

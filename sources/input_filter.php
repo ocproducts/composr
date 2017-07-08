@@ -56,7 +56,7 @@ function check_input_field_string($name, &$val, $posted, $filters)
         log_hack_attack_and_exit('DODGY_GET_HACK', $name, $val);
     }
 
-    if ((($filters & INPUT_FILTER_URL_DESTINATION) != 0) && (!$posted)) { // Don't allow external redirections
+    if ((($filters & INPUT_FILTER_URL_DESTINATION) != 0) && (!$posted)) { // Don't allow redirections to non-trusted sites
         if (!url_is_local($val)) {
             $bus = array(
                 get_base_url(false) . '/',
@@ -84,6 +84,14 @@ function check_input_field_string($name, &$val, $posted, $filters)
                     $val = get_base_url(false);
                 }
             }
+        }
+    }
+
+    if (($filters & INPUT_FILTER_MODSECURITY_URL_PARAMETER) != 0) {
+        if (substr($val, 0, 10) == 'https-cms:') {
+            $val = get_base_url(true) . '/' . substr($val, 10);
+        } elseif (substr($val, 0, 9) == 'http-cms:') {
+            $val = get_base_url(true) . '/' . substr($val, 9);
         }
     }
 
@@ -126,7 +134,7 @@ function check_posted_field($name, $val, $filters)
             $canonical_referer_domain = strip_url_to_representative_domain($referer);
             $canonical_baseurl_domain = strip_url_to_representative_domain(get_base_url());
             if ($canonical_referer_domain != $canonical_baseurl_domain) {
-                if ((has_interesting_post_fields()) && (($filters & INPUT_FILTER_ALLOWED_POSTING_SITES) != 0)) {
+                if ((has_interesting_post_fields()) && (($filters & INPUT_FILTER_TRUSTED_SITES) != 0)) {
                     $trusted_sites = get_trusted_sites(2);
                     $found = false;
                     foreach ($trusted_sites as $partner) {

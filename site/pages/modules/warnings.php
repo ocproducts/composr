@@ -189,7 +189,7 @@ class Module_warnings extends Standard_crud_module
         $f = array(do_lang_tempcode('SLASH_OR', do_lang_tempcode('DATE'), do_lang_tempcode('BY')), do_lang('WHETHER_MAKE_WARNING'), do_lang('CHANGED_USERGROUP'), do_lang('PUNISHMENT_UNDOING'));
         $fields_title = results_field_title($f, array());
         foreach ($rows as $row) {
-            $date = hyperlink(build_url(array('page' => '_SELF', 'type' => '_edit', 'id' => $row['id'], 'redirect' => get_self_url(true)), '_SELF'), get_timezoned_date_time($row['w_time']), false, true, $row['w_explanation']);
+            $date = hyperlink(build_url(array('page' => '_SELF', 'type' => '_edit', 'id' => $row['id'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), '_SELF'), get_timezoned_date_time($row['w_time']), false, true, $row['w_explanation']);
             $by = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($row['w_by']);
             $date_by = new Tempcode();
             $date_by->attach(do_lang_tempcode('SLASH_OR', $date, $by));
@@ -230,7 +230,7 @@ class Module_warnings extends Standard_crud_module
         }
         $results_table = results_table(do_lang_tempcode('PUNITIVE_HISTORY'), 0, 'start', 1000000, 'max', $max_rows, $fields_title, $out, array(), null, null, null, paragraph(do_lang_tempcode('PUNITIVE_HISTORY_TEXT'), '4t4ygyerhrth4'));
 
-        $add_warning_url = build_url(array('page' => '_SELF', 'type' => 'add', 'id' => $member_id, 'redirect' => get_self_url(true)), '_SELF');
+        $add_warning_url = build_url(array('page' => '_SELF', 'type' => 'add', 'id' => $member_id, 'redirect' => protect_url_parameter(SELF_REDIRECT)), '_SELF');
         $view_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
         $edit_profile_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $member_id), get_module_zone('members'), array(), false, false, false, 'tab__edit');
 

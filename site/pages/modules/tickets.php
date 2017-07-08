@@ -750,7 +750,7 @@ class Module_tickets
 
         // Render screen...
 
-        $post_url = build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $ticket_id, 'redirect' => get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL), 'start_comments' => get_param_string('start_comments', null), 'max_comments' => get_param_string('max_comments', null)), '_SELF');
+        $post_url = build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $ticket_id, 'redirect' => protect_url_parameter(get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL)), 'start_comments' => get_param_string('start_comments', null), 'max_comments' => get_param_string('max_comments', null)), '_SELF');
 
         $tpl = do_template('SUPPORT_TICKET_SCREEN', array(
             '_GUID' => 'd21a9d161008c6c44fe7309a14be2c5b',

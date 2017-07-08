@@ -5,9 +5,9 @@ function showGhost(htmlMessage) {
     $cms.dom.html(div, htmlMessage);
     var limit = 36;
     for (var counter = 0; counter < limit; counter++) {
-        window.setTimeout(buildGhostFunc(div, counter, limit), counter * 100);
+        setTimeout(buildGhostFunc(div, counter, limit), counter * 100);
     }
-    window.setTimeout(function () {
+    setTimeout(function () {
         document.body.removeChild(div);
     }, counter * 100);
     document.body.appendChild(div);

@@ -3752,7 +3752,7 @@
     $cms.dom.smoothScroll = function smoothScroll(destY, expectedScrollY, dir, eventAfter) {
         if (!$cms.$CONFIG_OPTION('enable_animations')) {
             try {
-                window.scrollTo(0, destY);
+                scrollTo(0, destY);
             } catch (ignore) {}
             return;
         }
@@ -3783,7 +3783,7 @@
 
         if (((dir === 1) && (scrollY + dist >= destY)) || ((dir === -1) && (scrollY + dist <= destY)) || (distanceToGo > 2000)) {
             try {
-                window.scrollTo(0, destY);
+                scrollTo(0, destY);
             } catch (e) {
             }
             if (eventAfter) {
@@ -3793,12 +3793,12 @@
         }
 
         try {
-            window.scrollBy(0, dist);
+            scrollBy(0, dist);
         } catch (e) {
             return; // May be stopped by popup blocker
         }
 
-        window.setTimeout(function () {
+        setTimeout(function () {
             $cms.dom.smoothScroll(destY, scrollY + dist, dir, eventAfter);
         }, 30);
     };
@@ -4452,7 +4452,7 @@
                 h = minHeight ? minHeight : 100;
 
                 if (frameWindow.parent) {
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         if (frameWindow.parent) {
                             frameWindow.parent.$cms.dom.triggerResize();
                         }
@@ -4464,7 +4464,7 @@
                 if ((frameElement.scrolling !== 'auto' && frameElement.scrolling !== 'yes') || (frameElement.style.height == '0px')) {
                     frameElement.style.height = ((h >= minHeight) ? h : minHeight) + 'px';
                     if (frameWindow.parent) {
-                        window.setTimeout(function () {
+                        setTimeout(function () {
                             if (frameWindow.parent) frameWindow.parent.$cms.dom.triggerResize();
                         });
                     }
@@ -4581,7 +4581,7 @@
         }
 
         if (again) {
-            timeouts[$cms.uid(el)] = window.setTimeout(function () {
+            timeouts[$cms.uid(el)] = setTimeout(function () {
                 $cms.dom.fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter);
             }, periodInMsecs);
         } else if (destroyAfter && el.parentNode) {
@@ -4609,7 +4609,7 @@
 
         if (uid && timeouts[uid]) {
             try { // Cross-frame issues may cause error
-                window.clearTimeout(timeouts[uid]);
+                clearTimeout(timeouts[uid]);
             } catch (ignore) {}
             delete timeouts[uid];
         }
@@ -4850,7 +4850,7 @@
             // Scroll up if required
             if (scrollToTopOfWrapper) {
                 try {
-                    window.scrollTo(0, $cms.dom.findPosY(targetDiv));
+                    scrollTo(0, $cms.dom.findPosY(targetDiv));
                 } catch (e) {}
             }
 
@@ -4901,7 +4901,7 @@
         if (!url) {
             url = window.location.href;
         }
-        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent(url) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
+        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
 
         if (async) {
             return new Promise(function (resolve) {
@@ -5502,6 +5502,31 @@
             : '';
     }
 
+   /**
+    * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on
+    * @memberof $cms.filter
+    * @param {string} parameter
+    * @returns {string}
+    */
+    $cms.protectURLParameter = function protectURLParameter(parameter) {
+        var baseURL = $cms.$BASE_URL;
+
+        if (parameter.startsWith('https://')) {
+            baseURL = baseURL.replace(/^http:\/\//, 'https://');
+            if (parameter.startsWith(baseURL + '/')) {
+                return 'https-cms:' + parameter.substr(baseURL.length + 1);
+            }
+        }
+        else if (parameter.startsWith('http://')) {
+            baseURL = baseURL.replace(/^https:\/\//, 'http://');
+            if (parameter.startsWith(baseURL + '/')) {
+                return 'http-cms:' + parameter.substr(baseURL.length + 1);
+            }
+        }
+
+        return parameter;
+    };
+
     /**
      * JS port of the cms_url_encode function used by the tempcode filter '&' (UL_ESCAPED)
      * @memberof $cms.filter
@@ -5825,7 +5850,7 @@
             tooltipEl = $cms.dom.$('#' + el.tooltip_id);
             tooltipEl.style.display = 'none';
             $cms.dom.html(tooltipEl, '');
-            window.setTimeout(function () {
+            setTimeout(function () {
                 $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
             }, 0);
         } else {
@@ -5892,7 +5917,7 @@
             };
         }
 
-        window.setTimeout(function () {
+        setTimeout(function () {
             if (!el.is_over) {
                 return;
             }
@@ -6106,7 +6131,7 @@
         unescaped = !!unescaped;
 
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
-            callback(window.confirm(question));
+            callback(confirm(question));
             return;
         }
 
@@ -6143,7 +6168,7 @@
         unescaped = !!unescaped;
 
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
-            window.alert(notice);
+            alert(notice);
             callback();
             return Promise.resolve();
         }
@@ -6172,7 +6197,7 @@
      */
     $cms.ui.prompt = function prompt(question, defaultValue, callback, title, inputType) {
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
-            callback(window.prompt(question, defaultValue));
+            callback(prompt(question, defaultValue));
             return;
         }
 
@@ -6321,7 +6346,7 @@
 
         var uid = $cms.uid(btn);
 
-        window.setTimeout(function () {
+        setTimeout(function () {
             btn.style.cursor = 'wait';
             btn.disabled = true;
             if (!permanent) {
@@ -6330,7 +6355,7 @@
         }, 20);
 
         if (!permanent) {
-            window.setTimeout(enableDisabledButton, 5000);
+            setTimeout(enableDisabledButton, 5000);
             $cms.dom.on(window, 'pagehide', enableDisabledButton);
         }
 
@@ -6411,7 +6436,7 @@
             modal = $cms.openModalWindow(myLightbox);
 
         // Load proper image
-        window.setTimeout(function () { // Defer execution until the HTML was parsed
+        setTimeout(function () { // Defer execution until the HTML was parsed
             if (isVideo) {
                 var video = document.createElement('video');
                 video.id = 'lightbox_image';
@@ -6489,11 +6514,11 @@
 
             if (width > maxWidth) {
                 width = maxWidth;
-                height = window.parseInt(maxWidth * realHeight / realWidth - 1);
+                height = parseInt(maxWidth * realHeight / realWidth - 1);
             }
 
             if (height > maxHeight) {
-                width = window.parseInt(maxHeight * realWidth / realHeight - 1);
+                width = parseInt(maxHeight * realWidth / realHeight - 1);
                 height = maxHeight;
             }
 
@@ -6501,7 +6526,7 @@
             img.height = height;
             modal.reset_dimensions('' + width, '' + height, false, true); // Temporarily forced, until real height is known (includes extra text space etc)
 
-            window.setTimeout(function () {
+            setTimeout(function () {
                 modal.reset_dimensions('' + width, '' + height, false);
             });
 
@@ -6659,7 +6684,7 @@
 
             // Constrain to window width
             if (width.match(/^\d+$/) !== null) {
-                if ((window.parseInt(width) > dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width == 'auto')) {
+                if ((parseInt(width) > dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width == 'auto')) {
                     width = '' + (dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
                 }
             }
@@ -6674,11 +6699,11 @@
             var match;
             match = width.match(/^([\d\.]+)%$/);
             if (match !== null) {
-                width = '' + (window.parseFloat(match[1]) * (dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
+                width = '' + (parseFloat(match[1]) * (dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY));
             }
             match = height.match(/^([\d\.]+)%$/);
             if (match !== null) {
-                height = '' + (window.parseFloat(match[1]) * (dim.page_height - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
+                height = '' + (parseFloat(match[1]) * (dim.page_height - this.WINDOW_TOP_GAP - bottomGap - this.BOX_NORTH_PERIPHERARY - this.BOX_SOUTH_PERIPHERARY));
             }
 
             // Work out box dimensions
@@ -6769,7 +6794,7 @@
 
             if (doScroll) {
                 try { // Scroll to top to see
-                    this.top_window.scrollTo(0, 0);
+                    this.top_scrollTo(0, 0);
                     if (iframe && ($cms.dom.hasIframeAccess(iframe))) {
                         iframe.contentWindow.scrolled_up_for = true;
                     }
@@ -6883,7 +6908,7 @@
             this.mousemove = function (e) {
                 if (that.boxWrapperEl && that.boxWrapperEl.firstElementChild.className.indexOf(' mousemove') == -1) {
                     that.boxWrapperEl.firstElementChild.className += ' mousemove';
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         if (that.boxWrapperEl) {
                             that.boxWrapperEl.firstElementChild.classList.remove('mousemove');
                         }
@@ -6925,7 +6950,7 @@
 
                     $cms.dom.animateFrameLoad(iframe, 'overlay_iframe', 50, true);
 
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         if (isEl(that.boxWrapperEl)) {
                             $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_finished);
                         }
@@ -7027,13 +7052,13 @@
                             that.reset_dimensions(that.width, that.height, false);
                         }
                     };
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         $cms.dom.illustrateFrameLoad('overlay_iframe');
                         iframe.src = that.href;
                         makeFrameLikePopup();
 
                         if (that.iframe_restyle_timer == null)
-                            that.iframe_restyle_timer = window.setInterval(makeFrameLikePopup, 300); // In case internal nav changes
+                            that.iframe_restyle_timer = setInterval(makeFrameLikePopup, 300); // In case internal nav changes
                     }, 0);
                     break;
 
@@ -7048,7 +7073,7 @@
                             that.option('yes');
                         });
 
-                        window.setTimeout(function () {
+                        setTimeout(function () {
                             if (that.boxWrapperEl) {
                                 $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_yes);
                             }
@@ -7056,7 +7081,7 @@
 
                         this.button_container.appendChild(button);
                     } else {
-                        window.setTimeout(function () {
+                        setTimeout(function () {
                             if (that.boxWrapperEl) {
                                 $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
                             }
@@ -7111,7 +7136,7 @@
                         this.button_container.appendChild(button);
                     }
 
-                    window.setTimeout(function () {
+                    setTimeout(function () {
                         if (that.boxWrapperEl) {
                             $cms.dom.on(that.boxWrapperEl, 'click', that.clickout_cancel);
                         }
@@ -7869,7 +7894,7 @@
 
         if ($cms.usp.get('wide_print') && ($cms.usp.get('wide_print') !== '0')) {
             try {
-                window.print();
+                print();
             } catch (ignore) {}
         }
 
@@ -7915,7 +7940,7 @@
 
         // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
         window.onpopstate = function () {
-            window.setTimeout(function () {
+            setTimeout(function () {
                 if (!window.location.hash && window.has_js_state) {
                     window.location.reload();
                 }
@@ -8506,7 +8531,7 @@
                 if (val == 'templates') {
                     windowOptions = 'width=' + window.screen.availWidth + ',height=' + window.screen.availHeight + ',scrollbars=yes';
 
-                    window.setTimeout(function () { // Do a refresh with magic markers, in a comfortable few seconds
+                    setTimeout(function () { // Do a refresh with magic markers, in a comfortable few seconds
                         var oldUrl = window.location.href;
                         if (oldUrl.indexOf('keep_template_magic_markers=1') == -1) {
                             window.location.href = oldUrl + ((oldUrl.indexOf('?') == -1) ? '?' : '&') + 'keep_template_magic_markers=1&cache_blocks=0&cache_comcode_pages=0';
@@ -8551,7 +8576,7 @@
 
                     $cms.requireJavascript('realtime_rain');
                     $cms.requireCss('realtime_rain');
-                    window.setTimeout(loadRealtimeRain, 200);
+                    setTimeout(loadRealtimeRain, 200);
 
                     return false;
                 }
@@ -8649,7 +8674,7 @@
                 div.style.zIndex = 10000;
                 div.style.textAlign = 'center';
                 $cms.dom.html(div, '<div aria-busy="true" class="loading_box box"><h2>{!LOADING;^}</h2><img id="loading_image" alt="" src="{$IMG_INLINE*;,loading}" /></div>');
-                window.setTimeout(function () {
+                setTimeout(function () {
                     // Stupid workaround for Google Chrome not loading an image on unload even if in cache
                     if ($cms.dom.$id('loading_image')) {
                         $cms.dom.$id('loading_image').src += '';
@@ -8742,8 +8767,8 @@
                     target.parentNode.insertBefore(ml, target);
 
                     if (target.mo_link)
-                        window.clearTimeout(target.mo_link);
-                    target.mo_link = window.setTimeout(function () {
+                        clearTimeout(target.mo_link);
+                    target.mo_link = setTimeout(function () {
                         if (ml) ml.style.display = 'block';
                     }, 2000);
                 }
@@ -8759,14 +8784,14 @@
                     if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
                         if ((target.mo_link !== undefined) && (target.mo_link)) // Clear timed display of new edit button
                         {
-                            window.clearTimeout(target.mo_link);
+                            clearTimeout(target.mo_link);
                             target.mo_link = null;
                         }
 
                         // Time removal of edit button
                         if (target.mo_link)
-                            window.clearTimeout(target.mo_link);
-                        target.mo_link = window.setTimeout(function () {
+                            clearTimeout(target.mo_link);
+                        target.mo_link = setTimeout(function () {
                             if ((target.edit_window === undefined) || (!target.edit_window) || (target.edit_window.closed)) {
                                 if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1))
                                     target.parentNode.removeChild(target.previousSibling);
@@ -8792,7 +8817,7 @@
                     if (event.preventDefault !== undefined) event.preventDefault();
 
                     if (src.includes('{$BASE_URL_NOHTTP;^}/themes/')) {
-                        ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent(src.replace('{$BASE_URL;,0}/', '')) + $cms.keepStub(), 'edit_theme_image_' + ob.id);
+                        ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.keepStub(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
                     }
@@ -9018,7 +9043,7 @@
 
     $cms.templates.forumsEmbed = function () {
         var frame = this;
-        window.setInterval(function () {
+        setInterval(function () {
             $cms.dom.resizeFrame(frame.name);
         }, 500);
     };
@@ -9083,7 +9108,7 @@
         el.checked = true;
 
         var win = window;
-        window.setTimeout(function () {
+        setTimeout(function () {
             if (win.faux_close !== undefined) {
                 win.faux_close();
             } else {
@@ -9254,7 +9279,7 @@
             spanProxy.style.visibility = 'hidden';
             document.body.appendChild(spanProxy);
 
-            window.setTimeout(function () {
+            setTimeout(function () {
                 var width = spanProxy.offsetWidth + 15;
                 spanProxy.parentNode.removeChild(spanProxy);
                 if (el.parentNode.nodeName === 'TH' || el.parentNode.nodeName === 'TD') {
@@ -9275,7 +9300,7 @@
         }, options);
 
         if (width.match(/^\d+$/)) { // Restrain width to viewport width
-            width = Math.min(window.parseInt(width), $cms.dom.getWindowWidth() - 60) + '';
+            width = Math.min(parseInt(width), $cms.dom.getWindowWidth() - 60) + '';
         }
 
         var el = options.el,
@@ -9403,7 +9428,7 @@
     function infiniteScrollingBlock(event) {
         if (event.keyCode === 35) { // 'End' key pressed, so stop the expand happening for a few seconds while the browser scrolls down
             infiniteScrollBlocked = true;
-            window.setTimeout(function () {
+            setTimeout(function () {
                 infiniteScrollBlocked = false;
             }, 3000);
         }
@@ -9697,7 +9722,7 @@
             // Make AJAX block call
             $cms.callBlock(urlStem + urlStub, '', blockElement, append, false, postParams).then(function () {
                 if (scrollToTop) {
-                    window.scrollTo(0, blockPosY);
+                    scrollTo(0, blockPosY);
                 }
             });
             return false;

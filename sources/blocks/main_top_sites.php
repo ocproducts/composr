@@ -96,7 +96,7 @@ class Block_main_top_sites
         }
 
         if ((has_actual_page_access(null, 'cms_banners', null, null)) && (has_submit_permission('mid', get_member(), get_ip_address(), 'cms_banners'))) {
-            $submit_url = build_url(array('page' => 'cms_banners', 'type' => 'add', 'redirect' => SELF_REDIRECT), get_module_zone('cms_banners'));
+            $submit_url = build_url(array('page' => 'cms_banners', 'type' => 'add', 'redirect' => protect_url_parameter(SELF_REDIRECT_RIP)), get_module_zone('cms_banners'));
         } else {
             $submit_url = new Tempcode();
         }

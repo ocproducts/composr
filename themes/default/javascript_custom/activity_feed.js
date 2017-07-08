@@ -33,7 +33,7 @@
                 window.activities_feed_grow = !!params.grow;
                 window.activities_feed_max = params.max;
                 if (document.getElementById('activities_feed')) {
-                    window.setInterval(sUpdateGetData, params.refreshTime * 1000);
+                    setInterval(sUpdateGetData, params.refreshTime * 1000);
                 }
             }
         }

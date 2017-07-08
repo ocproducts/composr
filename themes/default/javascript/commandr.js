@@ -120,11 +120,11 @@ window.previous_commands || (window.previous_commands = []);
         post = $cms.form.modSecurityWorkaroundAjax(post);
         $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandrCommandResponse, post);
 
-        window.disable_timeout = window.setTimeout(function () {
+        window.disable_timeout = setTimeout(function () {
             document.getElementById('commandr_command').disabled = false;
             document.getElementById('commandr_command').focus();
             if (window.disable_timeout) {
-                window.clearTimeout(window.disable_timeout);
+                clearTimeout(window.disable_timeout);
                 window.disable_timeout = null;
             }
         }, 5000);
@@ -137,7 +137,7 @@ window.previous_commands || (window.previous_commands = []);
 // Deal with the response to a command
 function commandrCommandResponse(ajaxResultFrame, ajaxResult) {
     if (window.disable_timeout) {
-        window.clearTimeout(window.disable_timeout);
+        clearTimeout(window.disable_timeout);
         window.disable_timeout = null;
     }
 

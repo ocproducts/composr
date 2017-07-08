@@ -13233,7 +13233,7 @@ function uploadDialogCompleted(ob, files) {
         }
         filenameField.value += file.name.replace(/:/g, ',');
         name = ob.settings.txtName;
-        window.setTimeout(function () { // In a timeout as file.has_error may not have been set yet
+        setTimeout(function () { // In a timeout as file.has_error may not have been set yet
             if (!file.has_error) {
                 dispatchForPageType(ob.settings.page_type, name, file.name, ob.settings.posting_field_name, files.length);
             }
@@ -13242,7 +13242,7 @@ function uploadDialogCompleted(ob, files) {
         if (ob.settings.page_type.indexOf('_multi') == -1) break;
     }
 
-    window.setTimeout(function () {
+    setTimeout(function () {
         fireFakeUploadFieldChange(name, '1'); // Will trigger start
     }, 0);
 }
@@ -13684,7 +13684,7 @@ function getUploaderObject(settings) {
     ob.bind('Error', uploadError);
     ob.init();
 
-    window.setInterval(function () {
+    setInterval(function () {
         ob.refresh();
     }, 1000);
 
@@ -13810,7 +13810,7 @@ FileProgress.prototype.appear = function () {
     this.fileProgressWrapper.style.opacity = 1;
 
     if ((typeof this.fileProgressElement.fader != 'undefined') && (this.fileProgressElement.fader)) {
-        window.clearTimeout(this.fileProgressElement.fader);
+        clearTimeout(this.fileProgressElement.fader);
         this.fileProgressElement.fader = null;
     }
     this.fileProgressWrapper.style.height = '';

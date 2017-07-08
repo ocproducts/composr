@@ -234,7 +234,7 @@
         }
 
         if (params.supportAutosave && params.formName) {
-            window.setTimeout(function () {
+            setTimeout(function () {
                 if (window.initFormSaving !== undefined) {
                     initFormSaving(params.formName);
                 }
@@ -298,7 +298,7 @@
 
         if ((value === '') && (name === 'edit_password')) {
             // LEGACY Work around annoying Firefox bug. It ignores autocomplete="off" if a password was already saved somehow
-            window.setTimeout(function () {
+            setTimeout(function () {
                 $cms.dom.$('#' + name).value = '';
             }, 300);
         }
@@ -376,7 +376,7 @@
         tryToSimplifyIframeForm();
 
         if (params.iframeUrl) {
-            window.setInterval(function () {
+            setInterval(function () {
                 $cms.dom.resizeFrame('iframe_under');
             }, 1500);
 
@@ -828,7 +828,7 @@
             if (window.wysiwygOn && wysiwygOn()) {
                 postEl.readOnly = true; // Stop typing while it loads
 
-                window.setTimeout(function () {
+                setTimeout(function () {
                     if (postEl.value === postEl.defaultValue) {
                         postEl.readOnly = false; // Too slow, maybe WYSIWYG failed due to some network issue
                     }
@@ -939,7 +939,7 @@
         var loadingSpace = document.getElementById('loading_space');
 
         function shutdownOverlay() {
-            window.setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
+            setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
                 if (window.faux_close !== undefined) {
                     window.faux_close();
                 } else {
@@ -1018,14 +1018,14 @@
                 var ob = uploadElement.plupload_object;
                 if (ob.state == targetWindow.plupload.STARTED) {
                     ob.bind('UploadComplete', function () {
-                        window.setTimeout(dispatchBlockHelper, 100);
+                        setTimeout(dispatchBlockHelper, 100);
                         /*Give enough time for everything else to update*/
                     });
                     ob.bind('Error', shutdownOverlay);
 
                     // Keep copying the upload indicator
                     var progress = $cms.dom.html(targetWindow.document.getElementById('fsUploadProgress_' + field));
-                    window.setInterval(function () {
+                    setInterval(function () {
                         if (progress != '') {
                             $cms.dom.html(loadingSpace, progress);
                             loadingSpace.className = 'spaced flash';
@@ -1039,7 +1039,7 @@
         }
 
         if (!attachedEventAction) {
-            window.setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux popup it can set up faux_close
+            setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux popup it can set up faux_close
         }
     };
 
@@ -1210,7 +1210,7 @@
 
     /* Set up a word count for a form field */
     function setupWordCounter(post, countElement) {
-        window.setInterval(function () {
+        setInterval(function () {
             if ($cms.form.isWysiwygField(post)) {
                 try {
                     var textValue = window.CKEDITOR.instances[post.name].getData();

@@ -19,9 +19,9 @@ function sUpdateGetData() {
             url: $cms.baseUrl('data_custom/latest_activity.txt?chrome_fix=' + Math.floor(Math.random() * 10000)),
             data: {},
             success: function (data) {
-                if (window.parseInt(data) != window.latest_activity) {
+                if (parseInt(data) != window.latest_activity) {
                     // If not then remember the new value
-                    window.latest_activity = window.parseInt(data);
+                    window.latest_activity = parseInt(data);
 
                     // Now grab whatever updates are available
                     var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keepStub(true)),

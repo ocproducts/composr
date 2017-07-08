@@ -480,7 +480,7 @@
                     $cms.dom.html(htmlNode, '<div aria-busy="true" class="vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
                     var container = $cms.dom.$id('tree_list__root_' + ob.name);
                     if ((automated) && (container) && (container.style.overflowY == 'auto')) {
-                        window.setTimeout(function () {
+                        setTimeout(function () {
                             container.scrollTop = $cms.dom.findPosY(htmlNode) - 20;
                         }, 0);
                     }

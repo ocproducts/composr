@@ -76,7 +76,7 @@
 
                 $cms.dom.append(wrapper, ajaxResult.responseText);
 
-                window.setTimeout(function () {
+                setTimeout(function () {
                     var _ids = ids.split(',');
                     for (var i = 0; i < _ids.length; i++) {
                         var element = document.getElementById('post_wrap_' + _ids[i]);
@@ -96,7 +96,7 @@
         if (params.pingUrl) {
             $cms.doAjaxRequest(params.pingUrl, /*async*/function () {});
 
-            window.setInterval(function () {
+            setInterval(function () {
                 $cms.doAjaxRequest(params.pingUrl, /*async*/function () {});
             }, 12000);
         }

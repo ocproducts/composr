@@ -115,11 +115,11 @@ function handle_active_login($username)
     }
 
     if ($member_id !== null) { // Valid user
-        $remember = post_param_integer('remember', 0, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES);
+        $remember = post_param_integer('remember', 0, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES);
 
         // Create invisibility cookie
         if ((array_key_exists(get_member_cookie() . '_invisible', $_COOKIE)/*i.e. already has cookie set, so adjust*/) || ($remember == 1)) {
-            $invisible = post_param_integer('login_invisible', 0, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES);
+            $invisible = post_param_integer('login_invisible', 0, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES);
             if ($invisible == 1) {
                 cms_setcookie(get_member_cookie() . '_invisible', '1');
             } else {
@@ -175,14 +175,14 @@ function handle_active_login($username)
 
         // Create session
         require_code('users_inactive_occasionals');
-        create_session($member_id, 1, post_param_integer('login_invisible', 0, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES) == 1);
+        create_session($member_id, 1, post_param_integer('login_invisible', 0, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES) == 1);
         global $MEMBER_CACHED;
         $MEMBER_CACHED = $member_id;
 
         enforce_temporary_passwords($member_id);
     } else {
         $GLOBALS['SITE_DB']->query_insert('failedlogins', array(
-            'failed_account' => cms_mb_substr(trim(post_param_string('login_username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_ALLOWED_POSTING_SITES)), 0, 80),
+            'failed_account' => cms_mb_substr(trim(post_param_string('login_username', false, INPUT_FILTER_DEFAULT_POST & ~INPUT_FILTER_TRUSTED_SITES)), 0, 80),
             'date_and_time' => time(),
             'ip' => get_ip_address(),
         ));

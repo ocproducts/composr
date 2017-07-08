@@ -16,10 +16,10 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
 
         // Schedule the next check
         if (window.sb_cc_timer) {
-            window.clearTimeout(window.sb_cc_timer);
+            clearTimeout(window.sb_cc_timer);
             window.sb_cc_timer = null;
         }
-        window.sb_cc_timer = window.setTimeout(function () {
+        window.sb_cc_timer = setTimeout(function () {
             var messageId = window.sb_last_message_id;
             return function () {
                 sbChatCheck(window.sb_room_id, messageId, -1)

@@ -922,7 +922,7 @@ class Module_galleries
 
             $_edit_url = new Tempcode();
             if (has_delete_permission('mid', get_member(), $row['submitter'], 'cms_galleries', array('gallery', $row['cat']))) {
-                $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => ($type == 'image') ? '__edit' : '__edit_other', 'id' => $row['r_id'], 'redirect' => get_self_url(true)), get_module_zone('cms_galleries'));
+                $_edit_url = build_url(array('page' => 'cms_galleries', 'type' => ($type == 'image') ? '__edit' : '__edit_other', 'id' => $row['r_id'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_galleries'));
             }
 
             $class = (($type == $probe_type) && ($row['r_id'] == $probe_id)) ? 'currentimage' : '';

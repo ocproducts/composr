@@ -186,15 +186,13 @@ function gd_text_script()
 
 /**
  * Script to track clicks to external sites.
+ * This is not tied in by default, because it might be used by hackers somehow.
  *
  * @ignore
  */
 function simple_tracker_script()
 {
     $url = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
-    if (strpos($url, '://') === false) {
-        $url = base64_decode($url);
-    }
 
     $GLOBALS['SITE_DB']->query_insert('link_tracker', array(
         'c_date_and_time' => time(),
@@ -531,9 +529,6 @@ function emoticons_script()
 function thumb_script()
 {
     $url_full = get_param_string('url', false, INPUT_FILTER_URL_GENERAL);
-    if (strpos($url_full, '://') === false) {
-        $url_full = base64_decode($url_full);
-    }
 
     require_code('images');
 

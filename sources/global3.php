@@ -3585,24 +3585,23 @@ function get_login_url()
     } else {
         $_this_url = build_url(array('page' => '_SELF'), '_SELF', array('keep_session' => 1, 'redirect' => 1), true);
     }
-    $this_url = $_this_url->evaluate();
 
     $url_map = array('page' => 'login', 'type' => 'browse');
     if ((has_interesting_post_fields()) || (get_option('page_after_login') == '')) {
-        $url_map['redirect'] = $this_url;
+        $url_map['redirect'] = protect_url_parameter($_this_url);
     }
     $full_url = build_url($url_map, get_module_zone('login'));
 
-    $url_map = array('page' => 'login', 'type' => 'login', 'redirect' => $this_url);
+    $url_map = array('page' => 'login', 'type' => 'login');
     if ((has_interesting_post_fields()) || (get_option('page_after_login') == '')) {
-        $url_map['redirect'] = $this_url;
+        $url_map['redirect'] = protect_url_parameter($_this_url);
     }
     $login_url = build_url($url_map, get_module_zone('login'));
 
     $join_url = mixed();
     switch (get_forum_type()) {
         case 'cns':
-            $join_url = build_url(array('page' => 'join', 'redirect' => $this_url), get_module_zone('join'));
+            $join_url = build_url(array('page' => 'join', 'redirect' => protect_url_parameter($_this_url)), get_module_zone('join'));
             break;
 
         case 'none':

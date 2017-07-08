@@ -62,7 +62,7 @@ function do_netlink($redir_url = '')
             $has_selected = true;
         }
 
-        $content->attach(form_input_list_entry(base64_encode($url), $selected, $name));
+        $content->attach(form_input_list_entry(static_evaluate_tempcode(protect_url_parameter($url)), $selected, $name));
     }
     if (!$has_selected) {
         $content_temp = new Tempcode();

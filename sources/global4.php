@@ -286,7 +286,7 @@ function member_personal_links_and_details($member_id)
 
     // Conceded mode link
     if (($GLOBALS['SESSION_CONFIRMED_CACHE']) && (get_option('show_conceded_mode_link') == '1')) {
-        $url = build_url(array('page' => 'login', 'type' => 'concede', 'redirect' => (get_page_name() == 'login') ? null : SELF_REDIRECT), get_module_zone('login'));
+        $url = build_url(array('page' => 'login', 'type' => 'concede', 'redirect' => protect_url_parameter((get_page_name() == 'login') ? null : SELF_REDIRECT_RIP)), get_module_zone('login'));
         $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array('_GUID' => '81fa81cfd3130e42996bf72b0e03d8aa', 'POST' => true, 'NAME' => do_lang_tempcode('CONCEDED_MODE'), 'DESCRIPTION' => do_lang_tempcode('DESCRIPTION_CONCEDED_MODE'), 'URL' => $url)));
     }
 
@@ -294,7 +294,7 @@ function member_personal_links_and_details($member_id)
     if (get_option('is_on_invisibility') == '1') {
         if ((array_key_exists(get_session_id(), $GLOBALS['SESSION_CACHE'])) && ($GLOBALS['SESSION_CACHE'][get_session_id()]['session_invisible'] == 0)) {
             $visible = (array_key_exists(get_session_id(), $GLOBALS['SESSION_CACHE'])) && ($GLOBALS['SESSION_CACHE'][get_session_id()]['session_invisible'] == 0);
-            $url = build_url(array('page' => 'login', 'type' => 'invisible', 'redirect' => (get_page_name() == 'login') ? null : SELF_REDIRECT), get_module_zone('login'));
+            $url = build_url(array('page' => 'login', 'type' => 'invisible', 'redirect' => protect_url_parameter((get_page_name() == 'login') ? null : SELF_REDIRECT_RIP)), get_module_zone('login'));
             $links->attach(do_template('BLOCK_SIDE_PERSONAL_STATS_LINK_2', array('_GUID' => '2af618fe39444861c21cf0caec216227', 'NAME' => do_lang_tempcode($visible ? 'INVISIBLE' : 'BE_VISIBLE'), 'DESCRIPTION' => '', 'URL' => $url)));
         }
     }

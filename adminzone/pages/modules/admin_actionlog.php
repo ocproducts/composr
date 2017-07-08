@@ -443,7 +443,10 @@ class Module_admin_actionlog
                 $banned_test_1 = ip_banned($row['ip'], true);
                 $fields['IP_BANNED'] = (!$banned_test_1) ? do_lang_tempcode('NO') : do_lang_tempcode('YES');
                 if ($row['ip'] != get_ip_address()) {
-                    $fields['IP_BANNED']->attach(do_template('ACTIONLOGS_TOGGLE_LINK', array('_GUID' => 'eff2890f2193ece32df8ec8ee48b252d', 'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_ip_ban', 'id' => $row['ip'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')))));
+                    $fields['IP_BANNED']->attach(do_template('ACTIONLOGS_TOGGLE_LINK', array(
+                        '_GUID' => 'eff2890f2193ece32df8ec8ee48b252d',
+                        'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_ip_ban', 'id' => $row['ip'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('admin_ip_ban')),
+                    )));
                 }
 
                 if ($row['ip'] != get_ip_address()) {
@@ -452,7 +455,7 @@ class Module_admin_actionlog
                             '_GUID' => '7d10045c6b3b48f256e2f8eb5535809c',
                             'LABEL' => do_lang_tempcode('PROCEED'),
                             'LONELY' => true,
-                            'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'syndicate_ip_ban', 'ip' => $row['ip'], 'member_id' => $row['member_id'], 'reason' => do_lang('BANNED_ADDRESSES'), 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')),
+                            'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'syndicate_ip_ban', 'ip' => $row['ip'], 'member_id' => $row['member_id'], 'reason' => do_lang('BANNED_ADDRESSES'), 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('admin_ip_ban')),
                         ));
                     }
                 }
@@ -462,7 +465,7 @@ class Module_admin_actionlog
                 $fields['SUBMITTER_BANNED'] = do_template('ACTIONLOGS_TOGGLE_LINK', array(
                     '_GUID' => 'f79fb00ef35d89381371a67bc9c4d69b',
                     'LONELY' => true,
-                    'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_submitter_ban', 'id' => $row['member_id'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')),
+                    'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_submitter_ban', 'id' => $row['member_id'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('admin_ip_ban')),
                 ));
             } else {
                 $banned_test_2 = $GLOBALS['SITE_DB']->query_select_value_if_there('usersubmitban_member', 'the_member', array('the_member' => $row['member_id']));
@@ -473,7 +476,7 @@ class Module_admin_actionlog
                 $fields['MEMBER_BANNED'] = do_template('ACTIONLOGS_TOGGLE_LINK', array(
                     '_GUID' => '6b192ecfad1afc67bb8c2f1e744cc3b1',
                     'LONELY' => true,
-                    'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_member_ban', 'id' => $row['member_id'], 'redirect' => get_self_url(true)), get_module_zone('admin_ip_ban')),
+                    'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_member_ban', 'id' => $row['member_id'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('admin_ip_ban')),
                 ));
             } else {
                 $banned_test_3 = $GLOBALS['FORUM_DRIVER']->is_banned($row['member_id']);
@@ -528,13 +531,13 @@ class Module_admin_actionlog
             }
 
             if (has_privilege(get_member(), 'delete_revisions')) {
-                $delete_url = build_url(array('page' => 'admin_revisions', 'type' => 'delete', 'id' => $revision['id'], 'revision_type' => $revision['revision_type'], 'redirect' => get_self_url(true)), get_module_zone('admin_revisions'));
+                $delete_url = build_url(array('page' => 'admin_revisions', 'type' => 'delete', 'id' => $revision['id'], 'revision_type' => $revision['revision_type'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('admin_revisions'));
                 $delete = hyperlink($delete_url, do_lang_tempcode('DELETE'), false, false, do_lang_tempcode('DELETE_REVISION'), null, new Tempcode());
                 $fields['DELETE_REVISION'] = $delete;
             }
 
             /*if (has_privilege(get_member(), 'undo_revisions')) {
-                $undo_url = build_url(array('page' => 'admin_revisions', 'type' => 'undo', 'id' => $revision['id'], 'revision_type' => $revision['revision_type'], 'redirect' => get_self_url(true)), get_module_zone('admin_revisions'));
+                $undo_url = build_url(array('page' => 'admin_revisions', 'type' => 'undo', 'id' => $revision['id'], 'revision_type' => $revision['revision_type'], 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('admin_revisions'));
                 $delete = hyperlink($delete_url, do_lang_tempcode('UNDO'), false, false, do_lang_tempcode('UNDO_REVISION'), null, new Tempcode());
                 $fields['UNDO_REVISION'] = $delete;
             }*/

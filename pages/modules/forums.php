@@ -121,7 +121,7 @@ class Module_forums
             }
 
             require_code('site2');
-            smart_redirect(get_self_url(true, false, array('url' => get_forum_base_url())));
+            smart_redirect(get_self_url(true, false, array('url' => protect_url_parameter(get_forum_base_url()))));
         }
 
         $old_method = false;

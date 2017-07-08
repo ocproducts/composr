@@ -30,7 +30,7 @@
 
     function iterateCountdown(dif) {
         var st = document.getElementById('quiz_timer');
-        var newValue = window.parseInt($cms.dom.html(st)) + dif;
+        var newValue = parseInt($cms.dom.html(st)) + dif;
         if (newValue >= 0) {
             $cms.dom.html(st, newValue);
         }

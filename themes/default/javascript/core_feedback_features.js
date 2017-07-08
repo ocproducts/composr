@@ -369,7 +369,7 @@
                         oldAction = commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
 
                         // Scroll back to comment
-                        window.setTimeout(function () {
+                        setTimeout(function () {
                             var commentsWrapper = $cms.dom.$id(commentsWrapperId); // outerhtml set will have broken the reference
                             $cms.dom.smoothScroll($cms.dom.findPosY(commentsWrapper, true));
                         }, 0);
@@ -465,7 +465,7 @@
                 _replaceSpot.appendChild(loadingImage);
 
                 // AJAX call
-                var snippetRequest = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(contentType) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent(contentUrl) + '&content_title=' + encodeURIComponent(contentTitle);
+                var snippetRequest = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(contentType) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent($cms.protectURLParameter(contentUrl)) + '&content_title=' + encodeURIComponent(contentTitle);
 
                 $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number), true).then(function (ajaxResult) {
                     var message = ajaxResult.responseText;

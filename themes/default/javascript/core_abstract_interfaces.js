@@ -136,7 +136,7 @@
         internaliseAjaxBlockWrapperLinks(params.url, element, ['.*'], {}, false, true);
 
         if (params.changeDetectionUrl && (Number(params.refreshTime) > 0)) {
-            window.detect_interval = window.setInterval(function () {
+            window.detect_interval = setInterval(function () {
                 detectChange(params.changeDetectionUrl, params.refreshIfChanged, function () {
                     if ((!document.getElementById('post')) || (document.getElementById('post').value === '')) {
                         $cms.callBlock(params.url, '', element, false, true, null, true).then(function () {
@@ -214,7 +214,7 @@
         $cms.doAjaxRequest(changeDetectionUrl, function (result) {
             var response = strVal(result.responseText);
             if (response === '1') {
-                window.clearInterval(window.detect_interval);
+                clearInterval(window.detect_interval);
                 $cms.log('detectChange(): Change detected');
                 callback();
             }
@@ -225,7 +225,7 @@
         $cms.log('detectedChange(): Change notification running');
 
         try {
-            window.focus();
+            focus();
         } catch (e) {}
 
         if (window.soundManager !== undefined) {
