@@ -26,7 +26,7 @@ class Module_cms_chat
     /**
      * Find details of the module.
      *
-     * @return ?array Map of module info (null: module is disabled).
+     * @return ?array Map of module info (null: module is disabled)
      */
     public function info()
     {
@@ -43,11 +43,11 @@ class Module_cms_chat
     /**
      * Find entry-points available within this module.
      *
-     * @param  boolean $check_perms Whether to check permissions.
-     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
-     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $check_perms Whether to check permissions
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user)
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name)
      * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
-     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled)
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
@@ -74,7 +74,7 @@ class Module_cms_chat
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run()
     {
@@ -180,7 +180,7 @@ class Module_cms_chat
     /**
      * Execute the module.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function run()
     {
@@ -224,7 +224,7 @@ class Module_cms_chat
     /**
      * The main user interface for choosing a chatroom to moderate.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function chat_choose_room()
     {
@@ -286,9 +286,9 @@ class Module_cms_chat
     /**
      * Sort chatroom rows (callback).
      *
-     * @param  array $a First row.
-     * @param  array $b Second row.
-     * @return integer Sorting code.
+     * @param  array $a First row
+     * @param  array $b Second row
+     * @return integer Sorting code
      */
     public function _sort_chat_browse_rows($a, $b)
     {
@@ -306,7 +306,7 @@ class Module_cms_chat
     /**
      * The main user interface for moderating a chatroom.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function moderate_chat_room()
     {
@@ -380,7 +380,7 @@ class Module_cms_chat
     /**
      * The actualiser for banning a chatter.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function chat_ban()
     {
@@ -435,7 +435,7 @@ class Module_cms_chat
     /**
      * The actualiser for unbanning a chatter.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function chat_unban()
     {
@@ -482,7 +482,7 @@ class Module_cms_chat
     /**
      * The UI for editing a message.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function chat_edit_message()
     {
@@ -531,7 +531,7 @@ class Module_cms_chat
     /**
      * The actualiser for editing a message.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function _chat_edit_message()
     {
@@ -600,7 +600,7 @@ class Module_cms_chat
     /**
      * The actualiser for deleting a message.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function _chat_delete_message()
     {
@@ -663,7 +663,7 @@ class Module_cms_chat
     /**
      * The UI for deleting all the messages in a room.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function chat_delete_all_messages()
     {
@@ -703,7 +703,7 @@ class Module_cms_chat
     /**
      * The actualiser for deleting all the messages in a room.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function _chat_delete_all_messages()
     {
@@ -740,7 +740,7 @@ class Module_cms_chat
     /**
      * The actualiser for deleting all the ticked messages in a room.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function _chat_delete_many_messages()
     {

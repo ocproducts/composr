@@ -26,7 +26,7 @@ class Module_shopping
     /**
      * Find details of the module.
      *
-     * @return ?array Map of module info (null: module is disabled).
+     * @return ?array Map of module info (null: module is disabled)
      */
     public function info()
     {
@@ -215,11 +215,11 @@ class Module_shopping
     /**
      * Find entry-points available within this module.
      *
-     * @param  boolean $check_perms Whether to check permissions.
-     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
-     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $check_perms Whether to check permissions
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user)
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name)
      * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
-     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled)
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
@@ -243,7 +243,7 @@ class Module_shopping
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run()
     {
@@ -295,7 +295,7 @@ class Module_shopping
     /**
      * Execute the module.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function run()
     {
@@ -345,7 +345,7 @@ class Module_shopping
     /**
      * The UI to show shopping cart.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function view_shopping_cart()
     {
@@ -453,9 +453,9 @@ class Module_shopping
     /**
      * Produce a results table row for a particular shopping cart entry.
      *
-     * @param  Tempcode $shopping_cart Tempcode object of shopping cart result table.
-     * @param  array $details Product details.
-     * @param  array $item Cart row.
+     * @param  Tempcode $shopping_cart Tempcode object of shopping cart result table
+     * @param  array $details Product details
+     * @param  array $item Cart row
      * @param  ?array $tax_details Tax details (null: none known, look them up)
      */
     protected function show_cart_entry(&$shopping_cart, $details, $item, $tax_details = null)
@@ -504,7 +504,7 @@ class Module_shopping
     /**
      * Add an item to the cart.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function add_item()
     {
@@ -540,7 +540,7 @@ class Module_shopping
     /**
      * Update the cart, editing quantities and deleting items.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function update_cart()
     {
@@ -586,7 +586,7 @@ class Module_shopping
     /**
      * Empty the shopping cart.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function empty_cart()
     {
@@ -601,7 +601,7 @@ class Module_shopping
     /**
      * Show all my orders
      *
-     * @return Tempcode The interface.
+     * @return Tempcode The interface
      */
     public function my_orders()
     {
@@ -655,7 +655,7 @@ class Module_shopping
     /**
      * Show an order details
      *
-     * @return Tempcode The interface.
+     * @return Tempcode The interface
      */
     public function order_details()
     {

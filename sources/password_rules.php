@@ -157,8 +157,8 @@ function member_password_too_old($member_id)
  *
  * @param  ID_TEXT $username The username this is for
  * @param  string $password New password
- * @param  boolean $return_errors Whether to return errors instead of dieing on them.
- * @return ?Tempcode Error (null: none).
+ * @param  boolean $return_errors Whether to return errors instead of dieing on them
+ * @return ?Tempcode Error (null: none)
  */
 function check_password_complexity($username, $password, $return_errors = false)
 {

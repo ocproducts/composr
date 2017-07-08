@@ -146,7 +146,7 @@ function ce_do_login()
 /**
  * Output the editing page.
  *
- * @param  string $given_password The password given to get here (so we don't need to re-enter it each edit).
+ * @param  string $given_password The password given to get here (so we don't need to re-enter it each edit)
  */
 function do_access($given_password)
 {

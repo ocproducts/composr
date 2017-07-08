@@ -1482,7 +1482,7 @@ class Hook_addon_registry_cns_forum
      * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
      * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
      *
-     * @param  boolean $voted Whether to show for a has-voted-poll or not.
+     * @param  boolean $voted Whether to show for a has-voted-poll or not
      * @param  boolean $checkboxes Whether to show checkboxes (as oppose to radio buttons). Irrelevant if !$voted.
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */

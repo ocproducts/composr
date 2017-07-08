@@ -189,7 +189,7 @@ class CMSUserRead
      * @param  ?string $id Resource ID (null: site-wide)
      * @param  ?string $area Resource type (null: site-wide)
      * @set forum topic
-     * @return array List of online members.
+     * @return array List of online members
      */
     public function get_online_users($start, $max, $id, $area)
     {
@@ -403,7 +403,7 @@ class CMSUserRead
      * Find friend count.
      *
      * @param  MEMBER $user_id Member involved
-     * @param  boolean $i_follow Whether it is friends that member has (otherwise it is people who have friended that member).
+     * @param  boolean $i_follow Whether it is friends that member has (otherwise it is people who have friended that member)
      * @return integer Total
      */
     private function get_member_follow_count($user_id, $i_follow = true)

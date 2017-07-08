@@ -26,7 +26,7 @@ class Block_menu
     /**
      * Find details of the block.
      *
-     * @return ?array Map of block info (null: block is disabled).
+     * @return ?array Map of block info (null: block is disabled)
      */
     public function info()
     {
@@ -44,7 +44,7 @@ class Block_menu
     /**
      * Find caching details for the block.
      *
-     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
+     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled)
      */
     public function caching_environment()
     {
@@ -59,8 +59,8 @@ class Block_menu
     /**
      * Execute the block.
      *
-     * @param  array $map A map of parameters.
-     * @return Tempcode The result of execution.
+     * @param  array $map A map of parameters
+     * @return Tempcode The result of execution
      */
     public function run($map)
     {
@@ -127,8 +127,8 @@ class Block_menu
 /**
  * Find the cache signature for the block.
  *
- * @param  array $map The block parameters.
- * @return array The cache signature.
+ * @param  array $map The block parameters
+ * @return array The cache signature
  */
 function block_menu__cache_on($map)
 {

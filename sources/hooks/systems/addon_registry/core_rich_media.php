@@ -1831,7 +1831,7 @@ class Hook_addon_registry_core_rich_media
     /**
      * Render a media preview through a specific template.
      *
-     * @param  ID_TEXT $template Template name.
+     * @param  ID_TEXT $template Template name
      * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
      */
     public function do_media_preview($template)

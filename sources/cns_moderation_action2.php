@@ -21,14 +21,14 @@
 /**
  * Edit a multi moderation.
  *
- * @param  AUTO_LINK $id The ID of the multi moderation we are editing.
- * @param  SHORT_TEXT $name The name of the multi moderation.
- * @param  LONG_TEXT $post_text The default post text to add when applying (may be blank).
- * @param  ?AUTO_LINK $move_to The forum to move the topic when applying (null: do not move).
- * @param  ?BINARY $pin_state The pin state after applying (null: unchanged).
- * @param  ?BINARY $open_state The open state after applying (null: unchanged).
- * @param  SHORT_TEXT $forum_multi_code The forum multi code for where this multi moderation may be applied.
- * @param  SHORT_TEXT $title_suffix The title suffix.
+ * @param  AUTO_LINK $id The ID of the multi moderation we are editing
+ * @param  SHORT_TEXT $name The name of the multi moderation
+ * @param  LONG_TEXT $post_text The default post text to add when applying (may be blank)
+ * @param  ?AUTO_LINK $move_to The forum to move the topic when applying (null: do not move)
+ * @param  ?BINARY $pin_state The pin state after applying (null: unchanged)
+ * @param  ?BINARY $open_state The open state after applying (null: unchanged)
+ * @param  SHORT_TEXT $forum_multi_code The forum multi code for where this multi moderation may be applied
+ * @param  SHORT_TEXT $title_suffix The title suffix
  */
 function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state, $open_state, $forum_multi_code, $title_suffix)
 {
@@ -60,7 +60,7 @@ function cns_edit_multi_moderation($id, $name, $post_text, $move_to, $pin_state,
 /**
  * Delete a multi moderation.
  *
- * @param  AUTO_LINK $id The ID of the multi moderation we are deleting.
+ * @param  AUTO_LINK $id The ID of the multi moderation we are deleting
  */
 function cns_delete_multi_moderation($id)
 {
@@ -84,12 +84,12 @@ function cns_delete_multi_moderation($id)
 /**
  * Perform a multi moderation.
  *
- * @param  AUTO_LINK $id The ID of the multi moderation we are performing.
- * @param  AUTO_LINK $topic_id The ID of the topic we are performing the multi moderation on.
- * @param  LONG_TEXT $reason The reason for performing the multi moderation (may be blank).
- * @param  LONG_TEXT $post_text The post text for a post to be added to the topic (blank: do not add a post).
- * @param  BINARY $is_emphasised Whether the post is marked emphasised.
- * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post.
+ * @param  AUTO_LINK $id The ID of the multi moderation we are performing
+ * @param  AUTO_LINK $topic_id The ID of the topic we are performing the multi moderation on
+ * @param  LONG_TEXT $reason The reason for performing the multi moderation (may be blank)
+ * @param  LONG_TEXT $post_text The post text for a post to be added to the topic (blank: do not add a post)
+ * @param  BINARY $is_emphasised Whether the post is marked emphasised
+ * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post
  */
 function cns_perform_multi_moderation($id, $topic_id, $reason, $post_text = '', $is_emphasised = 1, $skip_sig = 0)
 {
@@ -222,10 +222,10 @@ function warnings_script()
 /**
  * Add a formal warning.
  *
- * @param  MEMBER $member_id The member being warned.
- * @param  LONG_TEXT $explanation An explanation for why the member is being warned.
- * @param  ?MEMBER $by The member doing the warning (null: current member).
- * @param  ?TIME $time The time of the warning (null: now).
+ * @param  MEMBER $member_id The member being warned
+ * @param  LONG_TEXT $explanation An explanation for why the member is being warned
+ * @param  ?MEMBER $by The member doing the warning (null: current member)
+ * @param  ?TIME $time The time of the warning (null: now)
  * @param  BINARY $is_warning Whether this counts as a warning
  * @param  ?AUTO_LINK $silence_from_topic The topic being silenced from (null: none)
  * @param  ?AUTO_LINK $silence_from_forum The forum being silenced from (null: none)
@@ -234,7 +234,7 @@ function warnings_script()
  * @param  integer $charged_points The points being charged
  * @param  BINARY $banned_member Whether the member is being banned
  * @param  ?GROUP $changed_usergroup_from The usergroup being changed from (null: no change)
- * @return AUTO_LINK The ID of the newly created warning.
+ * @return AUTO_LINK The ID of the newly created warning
  */
 function cns_make_warning($member_id, $explanation, $by = null, $time = null, $is_warning = 1, $silence_from_topic = null, $silence_from_forum = null, $probation = 0, $banned_ip = '', $charged_points = 0, $banned_member = 0, $changed_usergroup_from = null)
 {
@@ -276,10 +276,10 @@ function cns_make_warning($member_id, $explanation, $by = null, $time = null, $i
 /**
  * Edit a formal warning.
  *
- * @param  AUTO_LINK $warning_id The ID of the formal warning we are editing.
- * @param  LONG_TEXT $explanation An explanation for why the member is being warned.
+ * @param  AUTO_LINK $warning_id The ID of the formal warning we are editing
+ * @param  LONG_TEXT $explanation An explanation for why the member is being warned
  * @param  BINARY $is_warning Whether this counts as a warning
- * @return AUTO_LINK The member ID the warning was for.
+ * @return AUTO_LINK The member ID the warning was for
  */
 function cns_edit_warning($warning_id, $explanation, $is_warning = 1)
 {
@@ -309,8 +309,8 @@ function cns_edit_warning($warning_id, $explanation, $is_warning = 1)
 /**
  * Delete a formal warning.
  *
- * @param  AUTO_LINK $warning_id The ID of the formal warning we are deleting.
- * @return AUTO_LINK The member ID the warning was for.
+ * @param  AUTO_LINK $warning_id The ID of the formal warning we are deleting
+ * @return AUTO_LINK The member ID the warning was for
  */
 function cns_delete_warning($warning_id)
 {

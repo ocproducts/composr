@@ -21,8 +21,8 @@
 /**
  * Get a list of post templates that apply to a certain forum.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum.
- * @return array The list of applicable post templates.
+ * @param  AUTO_LINK $forum_id The ID of the forum
+ * @return array The list of applicable post templates
  */
 function cns_get_post_templates($forum_id)
 {
@@ -54,10 +54,10 @@ function cns_get_post_templates($forum_id)
 /**
  * Check a post would be valid.
  *
- * @param  LONG_TEXT $post The post.
- * @param  ?AUTO_LINK $topic_id The ID of the topic the post would be in (null: don't check with regard to any particular topic).
- * @param  ?MEMBER $poster The poster (null: current member).
- * @return ?array Row of the existing post if a double post (single row map-element in a list of rows) (null: not a double post).
+ * @param  LONG_TEXT $post The post
+ * @param  ?AUTO_LINK $topic_id The ID of the topic the post would be in (null: don't check with regard to any particular topic)
+ * @param  ?MEMBER $poster The poster (null: current member)
+ * @return ?array Row of the existing post if a double post (single row map-element in a list of rows) (null: not a double post)
  */
 function cns_check_post($post, $topic_id = null, $poster = null)
 {
@@ -100,25 +100,25 @@ function cns_check_post($post, $topic_id = null, $poster = null)
 /**
  * Add a post.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic to add the post to.
- * @param  SHORT_TEXT $title The title of the post (may be blank).
- * @param  LONG_TEXT $post The post.
- * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post.
- * @param  ?boolean $is_starter Whether the post is the first in the topic (null: work it out).
- * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked unvalidated initially).
- * @param  BINARY $is_emphasised Whether the post is marked emphasised.
- * @param  ?string $poster_name_if_guest The name of the person making the post (null: username of current member).
- * @param  ?IP $ip_address The IP address the post is to be made under (null: IP of current user).
- * @param  ?TIME $time The time of the post (null: now).
- * @param  ?MEMBER $poster The poster (null: current member).
- * @param  ?MEMBER $intended_solely_for The member that this post is intended solely for (null: public).
- * @param  ?TIME $last_edit_time The last edit time of the post (null: never edited).
- * @param  ?MEMBER $last_edit_by The member that was last to edit the post (null: never edited).
- * @param  boolean $check_permissions Whether to check permissions for whether the post may be made as it is given.
- * @param  boolean $update_caching Whether to update the caches after making the post.
- * @param  ?AUTO_LINK $forum_id The forum the post will be in (null: find out from the DB).
- * @param  boolean $support_attachments Whether to allow attachments in this post.
- * @param  ?string $topic_title The title of the topic (null: find from the DB).
+ * @param  AUTO_LINK $topic_id The ID of the topic to add the post to
+ * @param  SHORT_TEXT $title The title of the post (may be blank)
+ * @param  LONG_TEXT $post The post
+ * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post
+ * @param  ?boolean $is_starter Whether the post is the first in the topic (null: work it out)
+ * @param  ?BINARY $validated Whether the post is validated (null: unknown, find whether it needs to be marked unvalidated initially)
+ * @param  BINARY $is_emphasised Whether the post is marked emphasised
+ * @param  ?string $poster_name_if_guest The name of the person making the post (null: username of current member)
+ * @param  ?IP $ip_address The IP address the post is to be made under (null: IP of current user)
+ * @param  ?TIME $time The time of the post (null: now)
+ * @param  ?MEMBER $poster The poster (null: current member)
+ * @param  ?MEMBER $intended_solely_for The member that this post is intended solely for (null: public)
+ * @param  ?TIME $last_edit_time The last edit time of the post (null: never edited)
+ * @param  ?MEMBER $last_edit_by The member that was last to edit the post (null: never edited)
+ * @param  boolean $check_permissions Whether to check permissions for whether the post may be made as it is given
+ * @param  boolean $update_caching Whether to update the caches after making the post
+ * @param  ?AUTO_LINK $forum_id The forum the post will be in (null: find out from the DB)
+ * @param  boolean $support_attachments Whether to allow attachments in this post
+ * @param  ?string $topic_title The title of the topic (null: find from the DB)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  boolean $anonymous Whether to make the post anonymous
  * @param  boolean $skip_post_checks Whether to skip post checks
@@ -126,7 +126,7 @@ function cns_check_post($post, $topic_id = null, $poster = null)
  * @param  boolean $insert_comcode_as_admin Whether to explicitly insert the Comcode with admin privileges
  * @param  ?AUTO_LINK $parent_id Parent post ID (null: none-threaded/root-of-thread)
  * @param  boolean $send_notification Whether to send out notifications
- * @return AUTO_LINK The ID of the new post.
+ * @return AUTO_LINK The ID of the new post
  */
 function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = false, $validated = null, $is_emphasised = 0, $poster_name_if_guest = null, $ip_address = null, $time = null, $poster = null, $intended_solely_for = null, $last_edit_time = null, $last_edit_by = null, $check_permissions = true, $update_caching = true, $forum_id = null, $support_attachments = true, $topic_title = '', $id = null, $anonymous = false, $skip_post_checks = false, $is_pt = false, $insert_comcode_as_admin = false, $parent_id = null, $send_notification = true)
 {
@@ -441,8 +441,8 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
 /**
  * Force a members post count to be recalculated.
  *
- * @param  MEMBER $member_id The member.
- * @param  ?integer $member_post_count_dif The amount to add to the post count (null: fully recalculate the post count).
+ * @param  MEMBER $member_id The member
+ * @param  ?integer $member_post_count_dif The amount to add to the post count (null: fully recalculate the post count)
  */
 function cns_force_update_member_post_count($member_id, $member_post_count_dif = null)
 {
@@ -482,9 +482,9 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
 /**
  * Decache cached Conversr elements depending on a certain forum, and optionally a certain member.
  *
- * @param  AUTO_LINK $updated_forum_id The ID of the forum.
- * @param  ?string $forum_name The name of the forum (null: find it from the DB).
- * @param  ?MEMBER $member_id The member (null: do no member decaching).
+ * @param  AUTO_LINK $updated_forum_id The ID of the forum
+ * @param  ?string $forum_name The name of the forum (null: find it from the DB)
+ * @param  ?MEMBER $member_id The member (null: do no member decaching)
  */
 function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member_id = null)
 {

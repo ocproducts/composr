@@ -21,8 +21,8 @@
 /**
  * Get the poster name a Guest may have specified, after sanitising it.
  *
- * @param  ?boolean $is_required_field If it is a required field (null: typically no, but look at hidden option for it).
- * @return string Poster name.
+ * @param  ?boolean $is_required_field If it is a required field (null: typically no, but look at hidden option for it)
+ * @return string Poster name
  */
 function cns_get_safe_specified_poster_name($is_required_field = null)
 {
@@ -74,7 +74,7 @@ function cns_get_safe_specified_poster_name($is_required_field = null)
 /**
  * Check to see if a member deserves promotion, and handle it.
  *
- * @param  ?MEMBER $member_id The member (null: current member).
+ * @param  ?MEMBER $member_id The member (null: current member)
  */
 function cns_member_handle_promotion($member_id = null)
 {
@@ -160,15 +160,15 @@ function cns_member_handle_promotion($member_id = null)
 /**
  * Send out a notification, as a topic just got a new post.
  *
- * @param  URLPATH $url The URL to view the new post.
- * @param  AUTO_LINK $topic_id The ID of the topic that got posted in.
- * @param  ?AUTO_LINK $forum_id The forum that the topic is in (null: find out from the DB).
- * @param  MEMBER $sender_member_id The member that made the post triggering this tracking notification.
- * @param  boolean $is_starter Whether the post started a new topic.
- * @param  LONG_TEXT $post The post, in Comcode format.
+ * @param  URLPATH $url The URL to view the new post
+ * @param  AUTO_LINK $topic_id The ID of the topic that got posted in
+ * @param  ?AUTO_LINK $forum_id The forum that the topic is in (null: find out from the DB)
+ * @param  MEMBER $sender_member_id The member that made the post triggering this tracking notification
+ * @param  boolean $is_starter Whether the post started a new topic
+ * @param  LONG_TEXT $post The post, in Comcode format
  * @param  SHORT_TEXT $topic_title The topic title (blank: look it up from the $topic_id). If non-blank we must use it as it is implying the database might not have the correct value yet.
- * @param  ?MEMBER $_limit_to Only send the notification to this member (null: no such limit).
- * @param  boolean $is_pt Whether this is for a Private Topic.
+ * @param  ?MEMBER $_limit_to Only send the notification to this member (null: no such limit)
+ * @param  boolean $is_pt Whether this is for a Private Topic
  * @param  ?ID_TEXT $no_notify_for__notification_code DO NOT send notifications to: The notification code (null: no restriction)
  * @param  ?SHORT_TEXT $no_notify_for__code_category DO NOT send notifications to: The category within the notification code (null: none / no restriction)
  * @param  ?SHORT_TEXT $poster_name The name of the poster (null: default for $sender_member_id)
@@ -215,16 +215,16 @@ function cns_send_topic_notification($url, $topic_id, $forum_id, $sender_member_
 /**
  * Update a topic's caching.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic to update caching of.
+ * @param  AUTO_LINK $topic_id The ID of the topic to update caching of
  * @param  ?integer $post_count_dif The post count difference we know the topic has undergone (null: we'll need to work out from scratch how many posts are in the topic)
- * @param  boolean $last Whether this is the latest post in the topic.
- * @param  boolean $first Whether this is the first post in the topic.
- * @param  ?AUTO_LINK $last_post_id The ID of the last post in the topic (null: unknown).
- * @param  ?TIME $last_time The time of the last post in the topic (null: unknown).
- * @param  ?string $last_title The title of the last post in the topic (null: unknown).
- * @param  ?AUTO_LINK $last_post The ID of the last posts language string for the topic (null: unknown).
- * @param  ?string $last_username The last username to post in the topic (null: unknown).
- * @param  ?MEMBER $last_member_id The ID of the last member to post in the topic (null: unknown).
+ * @param  boolean $last Whether this is the latest post in the topic
+ * @param  boolean $first Whether this is the first post in the topic
+ * @param  ?AUTO_LINK $last_post_id The ID of the last post in the topic (null: unknown)
+ * @param  ?TIME $last_time The time of the last post in the topic (null: unknown)
+ * @param  ?string $last_title The title of the last post in the topic (null: unknown)
+ * @param  ?AUTO_LINK $last_post The ID of the last posts language string for the topic (null: unknown)
+ * @param  ?string $last_username The last username to post in the topic (null: unknown)
+ * @param  ?MEMBER $last_member_id The ID of the last member to post in the topic (null: unknown)
  */
 function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last = true, $first = false, $last_post_id = null, $last_time = null, $last_title = null, $last_post = null, $last_username = null, $last_member_id = null)
 {
@@ -322,14 +322,14 @@ function cns_force_update_topic_caching($topic_id, $post_count_dif = null, $last
 /**
  * Update a forums cached details.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum to update the cached details of.
- * @param  ?integer $num_topics_increment How much to increment the topic count by (null: It has to be completely recalculated).
- * @param  ?integer $num_posts_increment How much to increment the post count by (null: It has to be completely recalculated).
- * @param  ?AUTO_LINK $last_topic_id The ID of the last topic (null: Unknown, it will have to be looked up).
- * @param  ?string $last_title The title of the last topic (null: Unknown, it will have to be looked up).
- * @param  ?TIME $last_time The last post time of the last topic (null: Unknown, it will have to be looked up).
- * @param  ?string $last_username The last post username of the last topic (null: Unknown, it will have to be looked up).
- * @param  ?MEMBER $last_member_id The last post member of the last topic (null: Unknown, it will have to be looked up).
+ * @param  AUTO_LINK $forum_id The ID of the forum to update the cached details of
+ * @param  ?integer $num_topics_increment How much to increment the topic count by (null: It has to be completely recalculated)
+ * @param  ?integer $num_posts_increment How much to increment the post count by (null: It has to be completely recalculated)
+ * @param  ?AUTO_LINK $last_topic_id The ID of the last topic (null: Unknown, it will have to be looked up)
+ * @param  ?string $last_title The title of the last topic (null: Unknown, it will have to be looked up)
+ * @param  ?TIME $last_time The last post time of the last topic (null: Unknown, it will have to be looked up)
+ * @param  ?string $last_username The last post username of the last topic (null: Unknown, it will have to be looked up)
+ * @param  ?MEMBER $last_member_id The last post member of the last topic (null: Unknown, it will have to be looked up)
  * @param  ?AUTO_LINK $last_forum_id The forum the last post was in (note this makes sense, because there may be subforums under this forum that we have to take into account). (null: Unknown, it will have to be looked up).
  */
 function cns_force_update_forum_caching($forum_id, $num_topics_increment = null, $num_posts_increment = null, $last_topic_id = null, $last_title = null, $last_time = null, $last_username = null, $last_member_id = null, $last_forum_id = null)

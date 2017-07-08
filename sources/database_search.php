@@ -933,7 +933,7 @@ function nl_delim_match_sql($field, $i, $type = 'short', $param = null)
  * @param  ?ID_TEXT $meta_type The META type used by our content (null: Cannot support META search)
  * @param  ?ID_TEXT $meta_id_field The name of the field that retrieved META IDs will relate to (null: Cannot support META search)
  * @param  string $content Search string
- * @param  boolean $boolean_search Whether to do a boolean search.
+ * @param  boolean $boolean_search Whether to do a boolean search
  * @param  ID_TEXT $boolean_operator Boolean operator
  * @set OR AND
  * @param  boolean $only_search_meta Whether to only do a META (tags) search
@@ -1490,7 +1490,7 @@ function get_search_rows($meta_type, $meta_id_field, $content, $boolean_search, 
  * Take a search string and find boolean search parameters from it.
  *
  * @param  string $search_filter The search string
- * @return array Words to search under the boolean operator, words that must be included, words that must not be included.
+ * @return array Words to search under the boolean operator, words that must be included, words that must not be included
  *
  * @ignore
  */

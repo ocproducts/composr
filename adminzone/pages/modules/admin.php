@@ -29,7 +29,7 @@ class Module_admin
     /**
      * Find details of the module.
      *
-     * @return ?array Map of module info (null: module is disabled).
+     * @return ?array Map of module info (null: module is disabled)
      */
     public function info()
     {
@@ -46,11 +46,11 @@ class Module_admin
     /**
      * Find entry-points available within this module.
      *
-     * @param  boolean $check_perms Whether to check permissions.
-     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
-     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $check_perms Whether to check permissions
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user)
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name)
      * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
-     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled)
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
@@ -71,7 +71,7 @@ class Module_admin
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run()
     {
@@ -127,7 +127,7 @@ class Module_admin
     /**
      * Execute the module.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function run()
     {
@@ -165,7 +165,7 @@ class Module_admin
     /**
      * Get synonyms for Composr terminology.
      *
-     * @return array Synonyms (each element is an array of synonyms).
+     * @return array Synonyms (each element is an array of synonyms)
      */
     public function _synonyms()
     {
@@ -191,8 +191,8 @@ class Module_admin
     /**
      * Strip junk words from the keywords representing a search.
      *
-     * @param  array $words Input words.
-     * @return array Replaced, with junk words removed.
+     * @param  array $words Input words
+     * @return array Replaced, with junk words removed
      */
     public function _strip_junk_words($words)
     {
@@ -217,8 +217,8 @@ class Module_admin
     /**
      * See if a string matches one of the keywords.
      *
-     * @param  string $t Search string.
-     * @return boolean Whether there is a match.
+     * @param  string $t Search string
+     * @return boolean Whether there is a match
      */
     public function _keyword_match($t)
     {
@@ -257,9 +257,9 @@ class Module_admin
     /**
      * See if our current section is going to be searched.
      *
-     * @param  array $section_limitations List of sections to search (empty: search all sections).
-     * @param  string $results_type Current section.
-     * @return boolean Whether there is a match.
+     * @param  array $section_limitations List of sections to search (empty: search all sections)
+     * @param  string $results_type Current section
+     * @return boolean Whether there is a match
      */
     public function _section_match($section_limitations, $results_type)
     {
@@ -279,7 +279,7 @@ class Module_admin
     /**
      * Actualiser to perform Admin Zone search.
      *
-     * @return Tempcode Interface.
+     * @return Tempcode Interface
      */
     public function search()
     {

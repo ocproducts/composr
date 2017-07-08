@@ -22,7 +22,7 @@ class Hook_members_referrals
      * Find member-related links to inject to details section of the about tab of the member profile.
      *
      * @param  MEMBER $member_id The ID of the member we are getting links for
-     * @return array List of pairs: title to value.
+     * @return array List of pairs: title to value
      */
     public function run($member_id)
     {
@@ -80,7 +80,7 @@ class Hook_members_referrals
      * Find member-related links to inject to tracking section of the about tab of the member profile.
      *
      * @param  MEMBER $member_id The ID of the member we are getting links for
-     * @return array List of pairs: title to value.
+     * @return array List of pairs: title to value
      */
     public function get_tracking_details($member_id)
     {

@@ -808,7 +808,7 @@ NEWS IMPORT UTILITY FUNCTIONS
  * Get data from wordpress DB.
  *
  * @param  string $html HTML
- * @param  boolean $force_linebreaks Whether to add in HTML line breaks from whitespace ones.
+ * @param  boolean $force_linebreaks Whether to add in HTML line breaks from whitespace ones
  * @return string Comcode
  */
 function import_foreign_news_html($html, $force_linebreaks = false)

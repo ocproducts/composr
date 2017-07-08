@@ -21,9 +21,9 @@ class Hook_upon_login_external_db
     /**
      * Standard upon login hook.
      *
-     * @param  boolean $new_attempt Whether it is a new login attempt.
-     * @param  string $username Username.
-     * @param  ?MEMBER $member_id Member ID of already-confirmed login.
+     * @param  boolean $new_attempt Whether it is a new login attempt
+     * @param  string $username Username
+     * @param  ?MEMBER $member_id Member ID of already-confirmed login
      */
     public function run($new_attempt, $username, $member_id)
     {

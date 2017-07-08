@@ -21,10 +21,10 @@
 /**
  * Make a post template.
  *
- * @param  SHORT_TEXT $title The title for the template.
- * @param  LONG_TEXT $text The text of the template.
- * @param  SHORT_TEXT $forum_multi_code The multi code specifying which forums this is applicable in.
- * @param  BINARY $use_default_forums Whether to use this as the default post in applicable forum.
+ * @param  SHORT_TEXT $title The title for the template
+ * @param  LONG_TEXT $text The text of the template
+ * @param  SHORT_TEXT $forum_multi_code The multi code specifying which forums this is applicable in
+ * @param  BINARY $use_default_forums Whether to use this as the default post in applicable forum
  * @return AUTO_LINK The added ID
  */
 function cns_make_post_template($title, $text, $forum_multi_code, $use_default_forums)
@@ -52,11 +52,11 @@ function cns_make_post_template($title, $text, $forum_multi_code, $use_default_f
 /**
  * Make an emoticon.
  *
- * @param  SHORT_TEXT $code The textual code entered to make the emoticon appear.
- * @param  ID_TEXT $theme_img_code The image code used for the emoticon.
+ * @param  SHORT_TEXT $code The textual code entered to make the emoticon appear
+ * @param  ID_TEXT $theme_img_code The image code used for the emoticon
  * @param  integer $relevance_level The relevance level. 0 is core, shown immediately.
  * @range  0 4
- * @param  BINARY $use_topics Whether this may be used as a topic emoticon.
+ * @param  BINARY $use_topics Whether this may be used as a topic emoticon
  * @param  BINARY $is_special Whether this may only be used by privileged members
  */
 function cns_make_emoticon($code, $theme_img_code, $relevance_level = 1, $use_topics = 1, $is_special = 0)

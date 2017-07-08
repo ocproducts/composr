@@ -30,8 +30,8 @@ class RevisionEngineDatabase
     /**
      * Constructor.
      *
-     * @param  boolean $is_log_mod Whether the logs are done via the forum moderator's log.
-     * @param  ?object $db Database connector to use (null: work out using norms for $is_log_mod value).
+     * @param  boolean $is_log_mod Whether the logs are done via the forum moderator's log
+     * @param  ?object $db Database connector to use (null: work out using norms for $is_log_mod value)
      */
     public function __construct($is_log_mod = false, $db = null)
     {
@@ -47,8 +47,8 @@ class RevisionEngineDatabase
     /**
      * Find whether revisions are enabled for the current user.
      *
-     * @param  boolean $check_privilege Whether to check privileges.
-     * @return boolean Whether revisions are enabled.
+     * @param  boolean $check_privilege Whether to check privileges
+     * @return boolean Whether revisions are enabled
      */
     public function enabled($check_privilege)
     {
@@ -68,14 +68,14 @@ class RevisionEngineDatabase
     /**
      * Add a revision.
      *
-     * @param  string $resource_type Resource type.
-     * @param  string $resource_id Resource ID.
+     * @param  string $resource_type Resource type
+     * @param  string $resource_id Resource ID
      * @param  string $category_id Category ID (e.g. a page or a topic). May be the same as $resource_id if the revision is for the category itself.
-     * @param  string $original_title Title before revision (of the resource being edited, not the category) (blank: very common, no title).
-     * @param  string $original_text Text before revision.
-     * @param  MEMBER $original_content_owner Owner of the content (gathered so if deleted we can still see some meta context for this resource).
-     * @param  TIME $original_content_timestamp Original timestamp of the content (gathered so if deleted we can still see some meta context for this resource).
-     * @param  ?AUTO_LINK $log_id Log ID (null: no ID, meaning actually we cannot save a revision at all).
+     * @param  string $original_title Title before revision (of the resource being edited, not the category) (blank: very common, no title)
+     * @param  string $original_text Text before revision
+     * @param  MEMBER $original_content_owner Owner of the content (gathered so if deleted we can still see some meta context for this resource)
+     * @param  TIME $original_content_timestamp Original timestamp of the content (gathered so if deleted we can still see some meta context for this resource)
+     * @param  ?AUTO_LINK $log_id Log ID (null: no ID, meaning actually we cannot save a revision at all)
      */
     public function add_revision($resource_type, $resource_id, $category_id, $original_title, $original_text, $original_content_owner, $original_content_timestamp, $log_id)
     {
@@ -117,7 +117,7 @@ class RevisionEngineDatabase
     /**
      * Delete a particular revision.
      *
-     * @param  AUTO_LINK $id Revision ID.
+     * @param  AUTO_LINK $id Revision ID
      */
     public function delete_revision($id)
     {
@@ -127,15 +127,15 @@ class RevisionEngineDatabase
     /**
      * Retrieve revisions of something.
      *
-     * @param  ?array $resource_types Allowed resource types (null: no filter).
-     * @param  ?string $resource_id Resource ID (null: no filter).
-     * @param  ?string $category_id Category ID (null: no filter).
-     * @param  ?MEMBER $member_id Member ID (null: no filter).
-     * @param  ?AUTO_LINK $revision_id The ID for a particular revision to retrieve (null: no filter).
-     * @param  ?integer $max Maximum to return (null: no limit).
-     * @param  integer $start Start offset.
-     * @param  boolean $limited_data Whether to only collect IDs and other simple low-bandwidth data.
-     * @return array List of revision maps.
+     * @param  ?array $resource_types Allowed resource types (null: no filter)
+     * @param  ?string $resource_id Resource ID (null: no filter)
+     * @param  ?string $category_id Category ID (null: no filter)
+     * @param  ?MEMBER $member_id Member ID (null: no filter)
+     * @param  ?AUTO_LINK $revision_id The ID for a particular revision to retrieve (null: no filter)
+     * @param  ?integer $max Maximum to return (null: no limit)
+     * @param  integer $start Start offset
+     * @param  boolean $limited_data Whether to only collect IDs and other simple low-bandwidth data
+     * @return array List of revision maps
      */
     public function find_revisions($resource_types = null, $resource_id = null, $category_id = null, $member_id = null, $revision_id = null, $max = 100, $start = 0, $limited_data = false)
     {
@@ -229,11 +229,11 @@ class RevisionEngineDatabase
     /**
      * Find if there are revisions of something.
      *
-     * @param  array $resource_types Allowed resource types.
-     * @param  ?string $resource_id Resource ID (null: no filter).
-     * @param  ?string $category_id Category ID (null: no filter).
-     * @param  ?MEMBER $member_id Member ID (null: no filter).
-     * @return boolean Whether there are revisions.
+     * @param  array $resource_types Allowed resource types
+     * @param  ?string $resource_id Resource ID (null: no filter)
+     * @param  ?string $category_id Category ID (null: no filter)
+     * @param  ?MEMBER $member_id Member ID (null: no filter)
+     * @return boolean Whether there are revisions
      */
     public function has_revisions($resource_types, $resource_id = null, $category_id = null, $member_id = null)
     {
@@ -247,11 +247,11 @@ class RevisionEngineDatabase
     /**
      * Find number of revisions of something.
      *
-     * @param  array $resource_types Allowed resource types.
-     * @param  ?string $resource_id Resource ID (null: no filter).
-     * @param  ?string $category_id Category ID (null: no filter).
-     * @param  ?MEMBER $member_id Member ID (null: no filter).
-     * @return integer Total revisions.
+     * @param  array $resource_types Allowed resource types
+     * @param  ?string $resource_id Resource ID (null: no filter)
+     * @param  ?string $category_id Category ID (null: no filter)
+     * @param  ?MEMBER $member_id Member ID (null: no filter)
+     * @return integer Total revisions
      */
     public function total_revisions($resource_types, $resource_id = null, $category_id = null, $member_id = null)
     {
@@ -261,8 +261,8 @@ class RevisionEngineDatabase
     /**
      * Retrieve revisions for a particular action log entry.
      *
-     * @param  AUTO_LINK $log_id The action log entry's ID.
-     * @return ?array A revision map (null: not found).
+     * @param  AUTO_LINK $log_id The action log entry's ID
+     * @return ?array A revision map (null: not found)
      */
     public function find_revision_for_log($log_id)
     {
@@ -292,9 +292,9 @@ class RevisionEngineDatabase
     /**
      * Find most recent revision in a category.
      *
-     * @param  string $resource_type Resource type.
-     * @param  string $category_id Category ID.
-     * @return TIME Last revision (0 if no revisions ever).
+     * @param  string $resource_type Resource type
+     * @param  string $category_id Category ID
+     * @return TIME Last revision (0 if no revisions ever)
      */
     public function find_most_recent_category_change($resource_type, $category_id)
     {
@@ -312,9 +312,9 @@ class RevisionEngineDatabase
      * Move some revisions to a different category.
      * Typically this is when we are moving posts and we want the revisions to show up for the new topic they are in.
      *
-     * @param  string $resource_type Resource type.
-     * @param  string $resource_id Resource ID.
-     * @param  string $new_category_id Category ID.
+     * @param  string $resource_type Resource type
+     * @param  string $resource_id Resource ID
+     * @param  string $new_category_id Category ID
      */
     public function recategorise_old_revisions($resource_type, $resource_id, $new_category_id)
     {
@@ -327,16 +327,16 @@ class RevisionEngineDatabase
      * Does not check permissions, assumes only low-privilege data is revealed.
      * More details are shown in the actionlog, which is linked from here.
      *
-     * @param  ?Tempcode $title Screen title (null: default).
+     * @param  ?Tempcode $title Screen title (null: default)
      * @param  array $_fields_titles List of field titles (i.e. columns).
-     * @param  ?array $resource_types List of resource types (null: no filter).
-     * @param  mixed $row_renderer Callback for rendering out rows.
-     * @param  ?string $resource_id Resource ID (null: no filter).
-     * @param  ?string $category_id Category ID (null: no filter).
-     * @param  ?MEMBER $member_id Member ID (null: no filter).
-     * @param  ?string $category_permission_type Category permission type (null: no checks).
-     * @param  boolean $include_filter_form Include a form for filtering revisions.
-     * @return Tempcode Revision UI.
+     * @param  ?array $resource_types List of resource types (null: no filter)
+     * @param  mixed $row_renderer Callback for rendering out rows
+     * @param  ?string $resource_id Resource ID (null: no filter)
+     * @param  ?string $category_id Category ID (null: no filter)
+     * @param  ?MEMBER $member_id Member ID (null: no filter)
+     * @param  ?string $category_permission_type Category permission type (null: no checks)
+     * @param  boolean $include_filter_form Include a form for filtering revisions
+     * @return Tempcode Revision UI
      */
     public function ui_browse_revisions($title, $_fields_titles, $resource_types, $row_renderer, $resource_id = null, $category_id = null, $member_id = null, $category_permission_type = null, $include_filter_form = false)
     {
@@ -425,11 +425,11 @@ class RevisionEngineDatabase
      * Browse revisions to undo one.
      * More details are shown in the actionlog, which is linked from here.
      *
-     * @param  string $resource_type Resource type.
-     * @param  string $resource_id Resource ID.
-     * @param  string $text Current resource text (may be altered by reference).
-     * @param  ?boolean $revision_loaded Whether a revision was loaded, passed by reference (null: initial value).
-     * @return Tempcode UI.
+     * @param  string $resource_type Resource type
+     * @param  string $resource_id Resource ID
+     * @param  string $text Current resource text (may be altered by reference)
+     * @param  ?boolean $revision_loaded Whether a revision was loaded, passed by reference (null: initial value)
+     * @return Tempcode UI
      */
     public function ui_revision_undoer($resource_type, $resource_id, &$text, &$revision_loaded)
     {

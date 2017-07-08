@@ -26,7 +26,7 @@ class Block_main_multi_content
     /**
      * Find details of the block.
      *
-     * @return ?array Map of block info (null: block is disabled).
+     * @return ?array Map of block info (null: block is disabled)
      */
     public function info()
     {
@@ -67,7 +67,7 @@ class Block_main_multi_content
     /**
      * Find caching details for the block.
      *
-     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
+     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled)
      */
     public function caching_environment()
     {
@@ -137,8 +137,8 @@ class Block_main_multi_content
     /**
      * Execute the block.
      *
-     * @param  array $map A map of parameters.
-     * @return Tempcode The result of execution.
+     * @param  array $map A map of parameters
+     * @return Tempcode The result of execution
      */
     public function run($map)
     {
@@ -709,10 +709,10 @@ class Block_main_multi_content
     /**
      * Make a select SQL fragment.
      *
-     * @param  string $select The select string.
-     * @param  array $info Map of details of our content type.
-     * @param  string $category_field_select The field name of the category to select against.
-     * @return string SQL fragment.
+     * @param  string $select The select string
+     * @param  array $info Map of details of our content type
+     * @param  string $category_field_select The field name of the category to select against
+     * @return string SQL fragment
      */
     public function build_select($select, $info, $category_field_select)
     {

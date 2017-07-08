@@ -39,8 +39,8 @@ function init__currency()
 /**
  * Convert a country code to a currency code.
  *
- * @param  ID_TEXT $country The country code.
- * @return ID_TEXT The currency code.
+ * @param  ID_TEXT $country The country code
+ * @return ID_TEXT The currency code
  */
 function country_to_currency($country)
 {
@@ -92,10 +92,10 @@ function get_currency()
  * Perform a currency conversion to the visitor's currency, if automatic conversions are enabled -- otherwise just display in the site currency.
  * Not cache safe.
  *
- * @param  mixed $amount The starting amount (integer or float).
- * @param  ?ID_TEXT $from_currency The start currency code (null: site currency).
- * @param  integer $display_method A CURRENCY_DISPLAY_* constant.
- * @return mixed The new amount with the specified display method (CURRENCY_DISPLAY_RAW is a float, otherwise a string).
+ * @param  mixed $amount The starting amount (integer or float)
+ * @param  ?ID_TEXT $from_currency The start currency code (null: site currency)
+ * @param  integer $display_method A CURRENCY_DISPLAY_* constant
+ * @return mixed The new amount with the specified display method (CURRENCY_DISPLAY_RAW is a float, otherwise a string)
  */
 function currency_convert_wrap($amount, $from_currency = null, $display_method = 6)
 {
@@ -111,11 +111,11 @@ function currency_convert_wrap($amount, $from_currency = null, $display_method =
  * Perform a currency conversion.
  * Not cache safe.
  *
- * @param  mixed $amount The starting amount (integer or float).
- * @param  ?ID_TEXT $from_currency The start currency code (null: site currency).
- * @param  ?ID_TEXT $to_currency The end currency code (null: something appropriate for the user).
- * @param  integer $display_method A CURRENCY_DISPLAY_* constant.
- * @return mixed The new amount with the specified display method (CURRENCY_DISPLAY_RAW is a float, otherwise a string).
+ * @param  mixed $amount The starting amount (integer or float)
+ * @param  ?ID_TEXT $from_currency The start currency code (null: site currency)
+ * @param  ?ID_TEXT $to_currency The end currency code (null: something appropriate for the user)
+ * @param  integer $display_method A CURRENCY_DISPLAY_* constant
+ * @return mixed The new amount with the specified display method (CURRENCY_DISPLAY_RAW is a float, otherwise a string)
  */
 function currency_convert($amount, $from_currency = null, $to_currency = null, $display_method = 0)
 {
@@ -231,11 +231,11 @@ function currency_convert($amount, $from_currency = null, $to_currency = null, $
 /**
  * Perform a currency conversion using ECB data.
  *
- * @param  mixed $amount The starting amount (integer or float).
- * @param  ID_TEXT $from_currency The start currency code.
- * @param  ID_TEXT $to_currency The end currency code.
- * @param  integer $cache_minutes The number of minutes to cache for.
- * @return ?float The new amount (null: could not look up).
+ * @param  mixed $amount The starting amount (integer or float)
+ * @param  ID_TEXT $from_currency The start currency code
+ * @param  ID_TEXT $to_currency The end currency code
+ * @param  integer $cache_minutes The number of minutes to cache for
+ * @return ?float The new amount (null: could not look up)
  */
 function _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_minutes)
 {
@@ -257,10 +257,10 @@ function _currency_convert__ecb($amount, $from_currency, $to_currency, $cache_mi
 /**
  * Perform a currency conversion using Google.
  *
- * @param  mixed $amount The starting amount (integer or float).
- * @param  ID_TEXT $from_currency The start currency code.
- * @param  ID_TEXT $to_currency The end currency code.
- * @return ?float The new amount (null: could not look up).
+ * @param  mixed $amount The starting amount (integer or float)
+ * @param  ID_TEXT $from_currency The start currency code
+ * @param  ID_TEXT $to_currency The end currency code
+ * @return ?float The new amount (null: could not look up)
  */
 function _currency_convert__google($amount, $from_currency, $to_currency)
 {
@@ -289,8 +289,8 @@ function _currency_convert__google($amount, $from_currency, $to_currency)
 /**
  * Get the symbol for a currency.
  *
- * @param  ID_TEXT $currency The currency.
- * @return array A pair: The symbol, and whether the symbol is okay to use on its own (as it is the accepted default for the symbol).
+ * @param  ID_TEXT $currency The currency
+ * @return array A pair: The symbol, and whether the symbol is okay to use on its own (as it is the accepted default for the symbol)
  */
 function get_currency_symbol($currency)
 {
@@ -484,7 +484,7 @@ function get_currency_symbol($currency)
 /**
  * Get the currency map.
  *
- * @return array The currency map, currency code, to an array of country codes.
+ * @return array The currency map, currency code, to an array of country codes
  */
 function get_currency_map()
 {

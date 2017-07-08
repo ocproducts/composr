@@ -26,7 +26,7 @@ class Hook_unvalidated_cns_posts
     /**
      * Find details on the unvalidated hook.
      *
-     * @return ?array Map of hook info (null: hook is disabled).
+     * @return ?array Map of hook info (null: hook is disabled)
      */
     public function info()
     {

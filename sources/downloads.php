@@ -429,7 +429,7 @@ function get_downloads_tree($submitter = null, $category_id = null, $breadcrumbs
  * @param  ?AUTO_LINK $it The currently selected category (null: none selected)
  * @param  boolean $use_compound_list Whether to make the list elements store comma-separated child lists instead of IDs
  * @param  boolean $addable_filter Whether to only show for what may be added to by the current member
- * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
+ * @param  ?TIME $updated_since Time from which content must be updated (null: no limit)
  * @return Tempcode The list of categories
  */
 function create_selection_list_download_category_tree($it = null, $use_compound_list = false, $addable_filter = false, $updated_since = null)
@@ -627,7 +627,7 @@ function download_breadcrumbs($category_id, $root = null, $no_link_for_me_sir = 
  * Count the downloads and subcategories underneath the specified category, recursively.
  *
  * @param  AUTO_LINK $category_id The ID of the category for which count details are collected
- * @return array The number of downloads is returned in $output['num_downloads'], and the number of subcategories is returned in $output['num_children'], and the (possibly recursive) number of downloads is returned in $output['num_downloads_children'].
+ * @return array The number of downloads is returned in $output['num_downloads'], and the number of subcategories is returned in $output['num_children'], and the (possibly recursive) number of downloads is returned in $output['num_downloads_children']
  */
 function count_download_category_children($category_id)
 {

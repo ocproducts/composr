@@ -37,7 +37,7 @@ class Hook_import_cms_merge
     /**
      * Standard importer hook info function.
      *
-     * @return ?array Importer handling details, including lists of all the import types covered (import types are not necessarily the same as actual tables) (null: importer is disabled).
+     * @return ?array Importer handling details, including lists of all the import types covered (import types are not necessarily the same as actual tables) (null: importer is disabled)
      */
     public function info()
     {
@@ -4164,8 +4164,8 @@ class Hook_import_cms_merge
      *
      * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
-     * @param  ID_TEXT $rating_type The rating type.
-     * @param  ?ID_TEXT $import_type The import type to get remapping from (null: no remapping).
+     * @param  ID_TEXT $rating_type The rating type
+     * @param  ?ID_TEXT $import_type The import type to get remapping from (null: no remapping)
      */
     protected function _import_review_supplement($db, $table_prefix, $rating_type, $import_type)
     {
@@ -4201,8 +4201,8 @@ class Hook_import_cms_merge
      *
      * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
-     * @param  ID_TEXT $content_type The content type.
-     * @param  ?ID_TEXT $import_type The import type to get remapping from (null: no remapping).
+     * @param  ID_TEXT $content_type The content type
+     * @param  ?ID_TEXT $import_type The import type to get remapping from (null: no remapping)
      */
     protected function _import_content_reviews($db, $table_prefix, $content_type, $import_type)
     {
@@ -4228,8 +4228,8 @@ class Hook_import_cms_merge
      *
      * @param  object $db The database connector to import from
      * @param  string $table_prefix The table prefix the target prefix is using
-     * @param  ID_TEXT $content_type The content type.
-     * @param  ?ID_TEXT $import_type The import type to get remapping from (null: no remapping).
+     * @param  ID_TEXT $content_type The content type
+     * @param  ?ID_TEXT $import_type The import type to get remapping from (null: no remapping)
      */
     protected function _import_catalogue_entry_linkage($db, $table_prefix, $content_type, $import_type)
     {

@@ -26,7 +26,7 @@ class Module_subscriptions
     /**
      * Find details of the module.
      *
-     * @return ?array Map of module info (null: module is disabled).
+     * @return ?array Map of module info (null: module is disabled)
      */
     public function info()
     {
@@ -168,11 +168,11 @@ class Module_subscriptions
     /**
      * Find entry-points available within this module.
      *
-     * @param  boolean $check_perms Whether to check permissions.
-     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
-     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $check_perms Whether to check permissions
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user)
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name)
      * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
-     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled)
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
@@ -189,7 +189,7 @@ class Module_subscriptions
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run()
     {
@@ -213,7 +213,7 @@ class Module_subscriptions
     /**
      * Execute the module.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function run()
     {
@@ -242,7 +242,7 @@ class Module_subscriptions
     /**
      * Show my subscriptions.
      *
-     * @return Tempcode The interface.
+     * @return Tempcode The interface
      */
     public function my()
     {
@@ -265,7 +265,7 @@ class Module_subscriptions
     /**
      * Cancel a subscription.
      *
-     * @return Tempcode The interface.
+     * @return Tempcode The interface
      */
     public function cancel()
     {

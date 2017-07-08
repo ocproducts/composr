@@ -21,8 +21,8 @@
 /**
  * Try to further compress a PNG file, via palette tricks and maximum gzip compression.
  *
- * @param  PATH $path File path.
- * @param  boolean $lossy Whether to do a lossy convert.
+ * @param  PATH $path File path
+ * @param  boolean $lossy Whether to do a lossy convert
  */
 function png_compress($path, $lossy = false)
 {

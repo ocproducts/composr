@@ -21,12 +21,12 @@
 /**
  * Validate a post.
  *
- * @param  AUTO_LINK $post_id The ID of the post.
- * @param  ?AUTO_LINK $topic_id The ID of the topic that contains the post (null: find out from the DB).
- * @param  ?AUTO_LINK $forum_id The forum that the topic containing the post is in (null: find out from the DB).
- * @param  ?MEMBER $poster The member that made the post being validated (null: find out from the DB).
- * @param  ?LONG_TEXT $post The post, in Comcode format (null: It'll have to be looked-up).
- * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
+ * @param  AUTO_LINK $post_id The ID of the post
+ * @param  ?AUTO_LINK $topic_id The ID of the topic that contains the post (null: find out from the DB)
+ * @param  ?AUTO_LINK $forum_id The forum that the topic containing the post is in (null: find out from the DB)
+ * @param  ?MEMBER $poster The member that made the post being validated (null: find out from the DB)
+ * @param  ?LONG_TEXT $post The post, in Comcode format (null: It'll have to be looked-up)
+ * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something)
  */
 function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster = null, $post = null)
 {
@@ -86,24 +86,24 @@ function cns_validate_post($post_id, $topic_id = null, $forum_id = null, $poster
 /**
  * Edit a post.
  *
- * @param  AUTO_LINK $post_id The ID of the post that we're editing.
- * @param  ?BINARY $validated Whether the post is validated (null: decide based on permissions).
- * @param  SHORT_TEXT $title The title of the post (may be blank).
- * @param  LONG_TEXT $post The post.
- * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post.
- * @param  BINARY $is_emphasised Whether the post is marked emphasised.
- * @param  ?MEMBER $intended_solely_for The member that this post is intended solely for (null: none).
- * @param  boolean $show_as_edited Whether to show the post as edited.
- * @param  boolean $mark_as_unread Whether to mark the topic as unread by those previous having read this post.
- * @param  LONG_TEXT $reason The reason for this action.
- * @param  boolean $check_perms Whether to check permissions.
+ * @param  AUTO_LINK $post_id The ID of the post that we're editing
+ * @param  ?BINARY $validated Whether the post is validated (null: decide based on permissions)
+ * @param  SHORT_TEXT $title The title of the post (may be blank)
+ * @param  LONG_TEXT $post The post
+ * @param  BINARY $skip_sig Whether to skip showing the posters signature in the post
+ * @param  BINARY $is_emphasised Whether the post is marked emphasised
+ * @param  ?MEMBER $intended_solely_for The member that this post is intended solely for (null: none)
+ * @param  boolean $show_as_edited Whether to show the post as edited
+ * @param  boolean $mark_as_unread Whether to mark the topic as unread by those previous having read this post
+ * @param  LONG_TEXT $reason The reason for this action
+ * @param  boolean $check_perms Whether to check permissions
  * @param  ?TIME $edit_time Edit time (null: either means current time, or if $null_is_literal, means reset to to null)
  * @param  ?TIME $add_time Add time (null: do not change)
  * @param  ?MEMBER $submitter Submitter (null: do not change)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  * @param  boolean $run_checks Whether to run checks
- * @param  ?string $poster_name_if_guest The name of the person making the post (null: no change).
- * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something).
+ * @param  ?string $poster_name_if_guest The name of the person making the post (null: no change)
+ * @return AUTO_LINK The ID of the topic (while this could be known without calling this function, as we've gone to effort and grabbed it from the DB, it might turn out useful for something)
  */
 function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_emphasised, $intended_solely_for, $show_as_edited, $mark_as_unread, $reason, $check_perms = true, $edit_time = null, $add_time = null, $submitter = null, $null_is_literal = false, $run_checks = true, $poster_name_if_guest = null)
 {
@@ -231,12 +231,12 @@ function cns_edit_post($post_id, $validated, $title, $post, $skip_sig, $is_empha
 /**
  * Delete posts from a topic.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic we're deleting posts from.
- * @param  array $posts A list of posts to delete.
- * @param  LONG_TEXT $reason The reason for this action.
- * @param  boolean $check_perms Whether to check permissions.
- * @param  boolean $cleanup Whether to do a cleanup: delete the topic if there will be no posts left in it.
- * @return boolean Whether the topic was deleted, due to all posts in said topic being deleted.
+ * @param  AUTO_LINK $topic_id The ID of the topic we're deleting posts from
+ * @param  array $posts A list of posts to delete
+ * @param  LONG_TEXT $reason The reason for this action
+ * @param  boolean $check_perms Whether to check permissions
+ * @param  boolean $cleanup Whether to do a cleanup: delete the topic if there will be no posts left in it
+ * @return boolean Whether the topic was deleted, due to all posts in said topic being deleted
  */
 function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = true, $cleanup = true)
 {
@@ -378,14 +378,14 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
 /**
  * Move posts from one topic to another.
  *
- * @param  AUTO_LINK $from_topic_id The ID of the source topic.
- * @param  ?AUTO_LINK $to_topic_id The ID of the destination topic (null: move to new topic in $forum_id).
- * @param  array $posts A list of post IDs to move.
- * @param  LONG_TEXT $reason The reason for this action.
- * @param  ?AUTO_LINK $to_forum_id The forum the destination topic is in (null: find from DB).
- * @param  boolean $delete_if_empty Whether to delete the topic if all posts in it have been moved.
- * @param  ?SHORT_TEXT $title The title for the new topic (null: work out / irrelevant).
- * @return boolean Whether the topic was deleted.
+ * @param  AUTO_LINK $from_topic_id The ID of the source topic
+ * @param  ?AUTO_LINK $to_topic_id The ID of the destination topic (null: move to new topic in $forum_id)
+ * @param  array $posts A list of post IDs to move
+ * @param  LONG_TEXT $reason The reason for this action
+ * @param  ?AUTO_LINK $to_forum_id The forum the destination topic is in (null: find from DB)
+ * @param  boolean $delete_if_empty Whether to delete the topic if all posts in it have been moved
+ * @param  ?SHORT_TEXT $title The title for the new topic (null: work out / irrelevant)
+ * @return boolean Whether the topic was deleted
  */
 function cns_move_posts($from_topic_id, $to_topic_id, $posts, $reason, $to_forum_id = null, $delete_if_empty = false, $title = null)
 {

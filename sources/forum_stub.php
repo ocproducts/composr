@@ -378,7 +378,7 @@ class Forum_driver_base
      * Get a list of usergroups a member is in.
      *
      * @param  MEMBER $id The member
-     * @param  boolean $skip_secret Whether to skip looking at secret usergroups, unless we have access.
+     * @param  boolean $skip_secret Whether to skip looking at secret usergroups, unless we have access
      * @param  boolean $handle_probation Whether to take probation into account
      * @return array The list of usergroups
      */

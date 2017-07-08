@@ -542,7 +542,7 @@ function only_member_galleries_of_id($cat, $member_id, $child_count)
  * @param  ?MEMBER $member_id Member we are filtering for (null: not needed)
  * @param  boolean $addable_filter Whether to only show for what may be added to by the current member
  * @param  boolean $editable_filter Whether to only show for what may be edited by the current member
- * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
+ * @param  ?TIME $updated_since Time from which content must be updated (null: no limit)
  * @return Tempcode The tree list
  */
 function create_selection_list_gallery_tree($it = null, $filter = null, $must_accept_images = false, $must_accept_videos = false, $purity = false, $use_compound_list = false, $member_id = null, $addable_filter = false, $editable_filter = false, $updated_since = null)

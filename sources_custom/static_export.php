@@ -16,7 +16,7 @@
 /**
  * Callback for saving a page-link into static output.
  *
- * @param  array $node The Sitemap node.
+ * @param  array $node The Sitemap node
  */
 function _page_link_to_static($node)
 {
@@ -128,9 +128,9 @@ function _page_link_to_static($node)
 /**
  * Cleanup some HTML for static use.
  *
- * @param  string $data The dirty HTML.
- * @param  string $relative_root Root to replace base URL with.
- * @return string Cleaned up HTML.
+ * @param  string $data The dirty HTML
+ * @param  string $relative_root Root to replace base URL with
+ * @return string Cleaned up HTML
  */
 function static_remove_dynamic_references($data, $relative_root = '')
 {
@@ -157,8 +157,8 @@ function static_remove_dynamic_references($data, $relative_root = '')
 /**
  * Callback for replacing dynamic script links with static ones.
  *
- * @param  array $matches The matches.
- * @return string Replaced string.
+ * @param  array $matches The matches
+ * @return string Replaced string
  */
 function _static_export_scriptrep_callback($matches)
 {
@@ -235,8 +235,8 @@ function _static_export_scriptrep_callback($matches)
 /**
  * Make a filename ASCII, for archive/cross-platform portability.
  *
- * @param  array $filename The filename.
- * @return string The ASCII version.
+ * @param  array $filename The filename
+ * @return string The ASCII version
  */
 function _static_export_make_ascii($filename)
 {

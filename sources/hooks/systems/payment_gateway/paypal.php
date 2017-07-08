@@ -38,7 +38,7 @@ class Hook_payment_gateway_paypal
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
-     * @param  float $amount A transaction amount.
+     * @param  float $amount A transaction amount
      * @return float The fee
      */
     public function get_transaction_fee($amount)
@@ -49,7 +49,7 @@ class Hook_payment_gateway_paypal
     /**
      * Get the PayPal payment address.
      *
-     * @return string The answer.
+     * @return string The answer
      */
     protected function _get_payment_address()
     {
@@ -59,7 +59,7 @@ class Hook_payment_gateway_paypal
     /**
      * Get the remote form URL.
      *
-     * @return URLPATH The remote form URL.
+     * @return URLPATH The remote form URL
      */
     protected function _get_remote_form_url()
     {
@@ -69,7 +69,7 @@ class Hook_payment_gateway_paypal
     /**
      * Generate a transaction ID / trans-expecting ID.
      *
-     * @return string A transaction ID.
+     * @return string A transaction ID
      */
     public function generate_trans_id()
     {
@@ -80,15 +80,15 @@ class Hook_payment_gateway_paypal
     /**
      * Make a transaction (payment) button.
      *
-     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  SHORT_TEXT $item_name The human-readable product title.
-     * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $price Transaction price in money.
-     * @param  float $tax Transaction tax in money.
-     * @param  float $shipping_cost Shipping cost.
-     * @param  ID_TEXT $currency The currency to use.
-     * @return Tempcode The button.
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID
+     * @param  ID_TEXT $type_code The product codename
+     * @param  SHORT_TEXT $item_name The human-readable product title
+     * @param  ID_TEXT $purchase_id The purchase ID
+     * @param  float $price Transaction price in money
+     * @param  float $tax Transaction tax in money
+     * @param  float $shipping_cost Shipping cost
+     * @param  ID_TEXT $currency The currency to use
+     * @return Tempcode The button
      */
     public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency)
     {
@@ -118,12 +118,12 @@ class Hook_payment_gateway_paypal
      * Make a transaction (payment) button for multiple shopping cart items.
      * Optional method, provides more detail than make_transaction_button.
      *
-     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
-     * @param  array $items Items array.
-     * @param  float $shipping_cost Shipping cost.
-     * @param  Tempcode $currency Currency symbol.
-     * @param  AUTO_LINK $order_id Order ID.
-     * @return Tempcode The button.
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID
+     * @param  array $items Items array
+     * @param  float $shipping_cost Shipping cost
+     * @param  Tempcode $currency Currency symbol
+     * @param  AUTO_LINK $order_id Order ID
+     * @return Tempcode The button
      */
     public function make_cart_transaction_button($trans_expecting_id, $items, $shipping_cost, $currency, $order_id)
     {
@@ -152,17 +152,17 @@ class Hook_payment_gateway_paypal
     /**
      * Make a subscription (payment) button.
      *
-     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  SHORT_TEXT $item_name The human-readable product title.
-     * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $price Transaction price in money.
-     * @param  float $tax Transaction tax in money.
-     * @param  ID_TEXT $currency The currency to use.
-     * @param  integer $length The subscription length in the units.
-     * @param  ID_TEXT $length_units The length units.
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID
+     * @param  ID_TEXT $type_code The product codename
+     * @param  SHORT_TEXT $item_name The human-readable product title
+     * @param  ID_TEXT $purchase_id The purchase ID
+     * @param  float $price Transaction price in money
+     * @param  float $tax Transaction tax in money
+     * @param  ID_TEXT $currency The currency to use
+     * @param  integer $length The subscription length in the units
+     * @param  ID_TEXT $length_units The length units
      * @set    d w m y
-     * @return Tempcode The button.
+     * @return Tempcode The button
      */
     public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
     {
@@ -189,7 +189,7 @@ class Hook_payment_gateway_paypal
     /**
      * Get a member address/etc for use in payment buttons.
      *
-     * @return array A map of member address details (form field name => address value).
+     * @return array A map of member address details (form field name => address value)
      */
     protected function _build_member_address()
     {
@@ -264,7 +264,7 @@ class Hook_payment_gateway_paypal
     /**
      * Make a subscription cancellation button.
      *
-     * @param  ID_TEXT $purchase_id The purchase ID.
+     * @param  ID_TEXT $purchase_id The purchase ID
      * @return Tempcode The button
      */
     public function make_cancel_button($purchase_id)
@@ -516,9 +516,9 @@ class Hook_payment_gateway_paypal
     /**
      * Store shipping address for a transaction.
      *
-     * @param  ID_TEXT $trans_expecting_id Expected transaction ID.
-     * @param  ID_TEXT $txn_id Transaction ID.
-     * @return AUTO_LINK Address ID.
+     * @param  ID_TEXT $trans_expecting_id Expected transaction ID
+     * @param  ID_TEXT $txn_id Transaction ID
+     * @return AUTO_LINK Address ID
      */
     public function store_shipping_address($trans_expecting_id, $txn_id)
     {
@@ -540,7 +540,7 @@ class Hook_payment_gateway_paypal
     /**
      * Get the status message after a URL callback.
      *
-     * @return ?string Message (null: none).
+     * @return ?string Message (null: none)
      */
     public function get_callback_url_message()
     {
@@ -550,7 +550,7 @@ class Hook_payment_gateway_paypal
     /**
      * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
     public function auto_cancel($subscription_id)

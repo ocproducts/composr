@@ -17,8 +17,8 @@
 /**
  * Find whether a member is bound to HTTP authentication (an exceptional situation, only for sites that use it).
  *
- * @param  MEMBER $member_id The member.
- * @return boolean The answer.
+ * @param  MEMBER $member_id The member
+ * @return boolean The answer
  */
 function cns_is_httpauth_member($member_id)
 {

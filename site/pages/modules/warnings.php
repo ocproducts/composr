@@ -38,7 +38,7 @@ class Module_warnings extends Standard_crud_module
     /**
      * Find icon for this module, specifically to find an icon for the module's main sitemap node. Defined when there is no entry-point for a default page call.
      *
-     * @return string Icon.
+     * @return string Icon
      */
     public function get_wrapper_icon()
     {
@@ -48,11 +48,11 @@ class Module_warnings extends Standard_crud_module
     /**
      * Find entry-points available within this module.
      *
-     * @param  boolean $check_perms Whether to check permissions.
-     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
-     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $check_perms Whether to check permissions
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user)
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name)
      * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
-     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled)
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
@@ -79,9 +79,9 @@ class Module_warnings extends Standard_crud_module
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment)
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -569,8 +569,8 @@ class Module_warnings extends Standard_crud_module
     /**
      * Standard crud_module table function.
      *
-     * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @param  array $url_map Details to go to build_url for link to the next screen
+     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL
      */
     public function create_selection_list_choose_table($url_map)
     {

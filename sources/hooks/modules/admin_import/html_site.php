@@ -17,9 +17,9 @@
 /**
  * Calculate Levenshtein distance between two strings, but work past the PHP function's character limit.
  *
- * @param  string $a First string.
- * @param  string $b Second string.
- * @return integer Distance.
+ * @param  string $a First string
+ * @param  string $b Second string
+ * @return integer Distance
  */
 function fake_levenshtein($a, $b)
 {
@@ -50,7 +50,7 @@ class Hook_import_html_site
     /**
      * Standard importer hook info function.
      *
-     * @return ?array Importer handling details, including lists of all the import types covered (import types are not necessarily the same as actual tables) (null: importer is disabled).
+     * @return ?array Importer handling details, including lists of all the import types covered (import types are not necessarily the same as actual tables) (null: importer is disabled)
      */
     public function info()
     {
@@ -583,11 +583,11 @@ class Hook_import_html_site
 
     /* Try and strip out a bit of HTML from the start/end of another bit of HTML, but with rough levenshtein matching.
      *
-     * @param  string $to_strip What we are stripping.
-     * @param  string $subject What we are stripping from.
-     * @param  boolean $backwards Whether we are removing from the end.
-     * @param  integer $i The position to start at (if $backwards == true, then this is relative to the end).
-     * @return string The altered string.
+     * @param  string $to_strip What we are stripping
+     * @param  string $subject What we are stripping from
+     * @param  boolean $backwards Whether we are removing from the end
+     * @param  integer $i The position to start at (if $backwards == true, then this is relative to the end)
+     * @return string The altered string
      */
     public function levenshtein_strip_search($to_strip, $subject, $backwards, $i)
     {

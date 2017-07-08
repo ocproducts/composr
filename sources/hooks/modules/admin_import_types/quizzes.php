@@ -26,7 +26,7 @@ class Hook_admin_import_types_quizzes
     /**
      * Get a map of valid import types.
      *
-     * @return array A map from codename to the language string that names them to the user.
+     * @return array A map from codename to the language string that names them to the user
      */
     public function run()
     {

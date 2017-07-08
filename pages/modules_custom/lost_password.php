@@ -28,7 +28,7 @@ class Mx_lost_password extends Module_lost_password
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run()
     {
@@ -41,7 +41,7 @@ class Mx_lost_password extends Module_lost_password
     /**
      * Execute the module.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function run()
     {

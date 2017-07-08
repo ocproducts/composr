@@ -21,7 +21,7 @@ class Hook_unvalidated_videos
     /**
      * Find details on the unvalidated hook.
      *
-     * @return ?array Map of hook info (null: hook is disabled).
+     * @return ?array Map of hook info (null: hook is disabled)
      */
     public function info()
     {

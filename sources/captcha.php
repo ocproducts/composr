@@ -250,7 +250,7 @@ function generate_captcha()
 /**
  * Calling this assumes captcha was needed. Checks that it was done correctly.
  *
- * @param  boolean $regenerate_on_error Whether to possibly regenerate upon error.
+ * @param  boolean $regenerate_on_error Whether to possibly regenerate upon error
  */
 function enforce_captcha($regenerate_on_error = true)
 {
@@ -267,9 +267,9 @@ function enforce_captcha($regenerate_on_error = true)
 /**
  * Checks a CAPTCHA.
  *
- * @param  string $code_entered CAPTCHA entered.
- * @param  boolean $regenerate_on_error Whether to possibly regenerate upon error.
- * @return boolean Whether it is valid for the current session.
+ * @param  string $code_entered CAPTCHA entered
+ * @param  boolean $regenerate_on_error Whether to possibly regenerate upon error
+ * @return boolean Whether it is valid for the current session
  */
 function check_captcha($code_entered, $regenerate_on_error = true)
 {
@@ -323,7 +323,7 @@ function _cleanout_captcha()
 /**
  * Get code to do an AJAX check of the CAPTCHA.
  *
- * @return string Function name.
+ * @return string Function name
  */
 function captcha_ajax_check_function()
 {

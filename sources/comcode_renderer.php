@@ -126,7 +126,7 @@ function do_emoticon($imgcode)
  * @param  MEMBER $source_member The member who submitted the URL
  * @param  URLPATH $url The URL to check
  * @param  boolean $as_admin Whether to check as arbitrary admin
- * @return URLPATH Filtered input URL.
+ * @return URLPATH Filtered input URL
  */
 function check_naughty_javascript_url($source_member, $url, $as_admin)
 {
@@ -319,12 +319,12 @@ function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false
 /**
  * Show a Comcode parser error.
  *
- * @param  boolean $preparse_mode Whether this is being pre-parsed, to pick up errors before row insertion.
+ * @param  boolean $preparse_mode Whether this is being pre-parsed, to pick up errors before row insertion
  * @param  array $_message Error message details to pass to do_lang, or if the first in the list is null, use directly
  * @param  integer $pos The position during parsing that the error occurred at
  * @param  LONG_TEXT $comcode The Comcode the parser error occurred in
- * @param  boolean $check_only Whether to only check the Comcode.
- * @return Tempcode An error message to put in the output stream (shown in certain situations, where in other situations we bomb out).
+ * @param  boolean $check_only Whether to only check the Comcode
+ * @return Tempcode An error message to put in the output stream (shown in certain situations, where in other situations we bomb out)
  */
 function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_only = false)
 {
@@ -464,11 +464,11 @@ function comcode_parse_error($preparse_mode, $_message, $pos, $comcode, $check_o
 /**
  * Make a given URL parameter an absolute URL; Fix any errors in it; Test it.
  *
- * @param  URLPATH $given_url URL to fixup.
+ * @param  URLPATH $given_url URL to fixup
  * @param  MEMBER $source_member The member who is responsible for this Comcode
  * @param  boolean $as_admin Whether to check as arbitrary admin
- * @param  ID_TEXT $tag Comcode tag name.
- * @return URLPATH Fixed URL.
+ * @param  ID_TEXT $tag Comcode tag name
+ * @return URLPATH Fixed URL
  */
 function absoluteise_and_test_comcode_url($given_url, $source_member, $as_admin, $tag)
 {
@@ -498,11 +498,11 @@ function absoluteise_and_test_comcode_url($given_url, $source_member, $as_admin,
 /**
  * Test a URL as a broken link.
  *
- * @param  URLPATH $url_full URL to test.
- * @param  string $tag_type Comcode tag type, to which the URL is associated.
- * @param  string $given_url URL actually provided.
+ * @param  URLPATH $url_full URL to test
+ * @param  string $tag_type Comcode tag type, to which the URL is associated
+ * @param  string $given_url URL actually provided
  * @param  MEMBER $source_member The member who is responsible for this Comcode
- * @return Tempcode Error message, or blank if no error.
+ * @return Tempcode Error message, or blank if no error
  */
 function test_url($url_full, $tag_type, $given_url, $source_member)
 {
@@ -2401,8 +2401,8 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
  * Render a code box.
  *
  * @param  string $type The data type (e.g. file extension) we are rendering.
- * @param  Tempcode $embed Contents (code) to render.
- * @param  boolean $numbers Whether to show line numbers.
+ * @param  Tempcode $embed Contents (code) to render
+ * @param  boolean $numbers Whether to show line numbers
  * @param  boolean $in_semihtml Whether what we have came from inside a semihtml tag
  * @param  boolean $is_all_semihtml Whether what we have came from semihtml mode
  * @return array A pair: The Tempcode for the code box, and the title of the box
@@ -2479,7 +2479,7 @@ function do_code_box($type, $embed, $numbers = true, $in_semihtml = false, $is_a
  * @param  array $list_types The list types to use for each level
  * @param  integer $base The level to start from
  * @param  integer $the_level The level we are at in the recursion
- * @return Tempcode The TOC node.
+ * @return Tempcode The TOC node
  *
  * @ignore
  */

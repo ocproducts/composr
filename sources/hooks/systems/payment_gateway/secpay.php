@@ -45,8 +45,8 @@ class Hook_payment_gateway_secpay
     /**
      * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
      *
-     * @param  float $amount A transaction amount.
-     * @return float The fee.
+     * @param  float $amount A transaction amount
+     * @return float The fee
      */
     public function get_transaction_fee($amount)
     {
@@ -56,8 +56,8 @@ class Hook_payment_gateway_secpay
     /**
      * Get a list of card types.
      *
-     * @param  ?string $it The card type to select by default (null: don't care).
-     * @return Tempcode The list.
+     * @param  ?string $it The card type to select by default (null: don't care)
+     * @return Tempcode The list
      */
     public function create_selection_list_card_types($it = null)
     {
@@ -72,7 +72,7 @@ class Hook_payment_gateway_secpay
     /**
      * Get the gateway username.
      *
-     * @return string The answer.
+     * @return string The answer
      */
     protected function _get_username()
     {
@@ -82,7 +82,7 @@ class Hook_payment_gateway_secpay
     /**
      * Get the remote form URL.
      *
-     * @return URLPATH The remote form URL.
+     * @return URLPATH The remote form URL
      */
     protected function _get_remote_form_url()
     {
@@ -92,7 +92,7 @@ class Hook_payment_gateway_secpay
     /**
      * Generate a transaction ID / trans-expecting ID.
      *
-     * @return string A transaction ID.
+     * @return string A transaction ID
      */
     public function generate_trans_id()
     {
@@ -103,15 +103,15 @@ class Hook_payment_gateway_secpay
     /**
      * Make a transaction (payment) button.
      *
-     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  SHORT_TEXT $item_name The human-readable product title.
-     * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $price Transaction price in money.
-     * @param  float $tax Transaction tax in money.
-     * @param  float $shipping_cost Shipping cost.
-     * @param  ID_TEXT $currency The currency to use.
-     * @return Tempcode The button.
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID
+     * @param  ID_TEXT $type_code The product codename
+     * @param  SHORT_TEXT $item_name The human-readable product title
+     * @param  ID_TEXT $purchase_id The purchase ID
+     * @param  float $price Transaction price in money
+     * @param  float $tax Transaction tax in money
+     * @param  float $shipping_cost Shipping cost
+     * @param  ID_TEXT $currency The currency to use
+     * @return Tempcode The button
      */
     public function make_transaction_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost, $currency)
     {
@@ -143,17 +143,17 @@ class Hook_payment_gateway_secpay
     /**
      * Make a subscription (payment) button.
      *
-     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  SHORT_TEXT $item_name The human-readable product title.
-     * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  float $price Transaction price in money.
-     * @param  float $tax Transaction tax in money.
-     * @param  ID_TEXT $currency The currency to use.
-     * @param  integer $length The subscription length in the units.
-     * @param  ID_TEXT $length_units The length units.
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID
+     * @param  ID_TEXT $type_code The product codename
+     * @param  SHORT_TEXT $item_name The human-readable product title
+     * @param  ID_TEXT $purchase_id The purchase ID
+     * @param  float $price Transaction price in money
+     * @param  float $tax Transaction tax in money
+     * @param  ID_TEXT $currency The currency to use
+     * @param  integer $length The subscription length in the units
+     * @param  ID_TEXT $length_units The length units
      * @set    d w m y
-     * @return Tempcode The button.
+     * @return Tempcode The button
      */
     public function make_subscription_button($trans_expecting_id, $type_code, $item_name, $purchase_id, $price, $tax, $currency, $length, $length_units)
     {
@@ -188,10 +188,10 @@ class Hook_payment_gateway_secpay
     /**
      * Find details for a subscription in secpay format.
      *
-     * @param  integer $length The subscription length in the units.
-     * @param  ID_TEXT $length_units The length units.
+     * @param  integer $length The subscription length in the units
+     * @param  ID_TEXT $length_units The length units
      * @set    d w m y
-     * @return array A tuple: the period in secpay units, the date of the first repeat.
+     * @return array A tuple: the period in secpay units, the date of the first repeat
      */
     protected function _translate_subscription_details($length, $length_units)
     {
@@ -225,7 +225,7 @@ class Hook_payment_gateway_secpay
     /**
      * Get a member address/etc for use in payment buttons.
      *
-     * @return array A map of member address details (form field name => address value).
+     * @return array A map of member address details (form field name => address value)
      */
     protected function _build_member_address()
     {
@@ -294,8 +294,8 @@ class Hook_payment_gateway_secpay
     /**
      * Make a subscription cancellation button.
      *
-     * @param  ID_TEXT $purchase_id The purchase ID.
-     * @return Tempcode The button.
+     * @param  ID_TEXT $purchase_id The purchase ID
+     * @return Tempcode The button
      */
     public function make_cancel_button($purchase_id)
     {
@@ -445,9 +445,9 @@ class Hook_payment_gateway_secpay
     /**
      * Store shipping address for a transaction.
      *
-     * @param  ID_TEXT $trans_expecting_id Expected transaction ID.
-     * @param  ID_TEXT $txn_id Transaction ID.
-     * @return AUTO_LINK Address ID.
+     * @param  ID_TEXT $trans_expecting_id Expected transaction ID
+     * @param  ID_TEXT $txn_id Transaction ID
+     * @return AUTO_LINK Address ID
      */
     public function store_shipping_address($trans_expecting_id, $txn_id)
     {
@@ -477,7 +477,7 @@ class Hook_payment_gateway_secpay
     /**
      * Find whether the hook auto-cancels (if it does, auto cancel the given subscription).
      *
-     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel.
+     * @param  AUTO_LINK $subscription_id ID of the subscription to cancel
      * @return ?boolean True: yes. False: no. (null: cancels via a user-URL-directioning)
      */
     public function auto_cancel($subscription_id)
@@ -503,16 +503,16 @@ class Hook_payment_gateway_secpay
     /**
      * Perform a transaction (local not remote).
      *
-     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID.
-     * @param  SHORT_TEXT $cardholder_name Cardholder name.
-     * @param  SHORT_TEXT $card_type Card Type.
+     * @param  ID_TEXT $trans_expecting_id Our internal temporary transaction ID
+     * @param  SHORT_TEXT $cardholder_name Cardholder name
+     * @param  SHORT_TEXT $card_type Card Type
      * @set    "Visa" "Master Card" "Switch" "UK Maestro" "Maestro" "Solo" "Delta" "American Express" "Diners Card" "JCB"
-     * @param  integer $card_number Card number.
-     * @param  SHORT_TEXT $card_start_date Card Start date (blank: none).
-     * @param  SHORT_TEXT $card_expiry_date Card Expiry date (blank: none).
-     * @param  ?integer $card_issue_number Card Issue number (null: none).
-     * @param  integer $card_cv2 Card CV2 number (security number).
-     * @param  float $amount Transaction amount.
+     * @param  integer $card_number Card number
+     * @param  SHORT_TEXT $card_start_date Card Start date (blank: none)
+     * @param  SHORT_TEXT $card_expiry_date Card Expiry date (blank: none)
+     * @param  ?integer $card_issue_number Card Issue number (null: none)
+     * @param  integer $card_cv2 Card CV2 number (security number)
+     * @param  float $amount Transaction amount
      * @param  ID_TEXT $currency The currency
      * @param  LONG_TEXT $billing_street_address Street address (billing, i.e. AVS)
      * @param  SHORT_TEXT $billing_city Town/City (billing, i.e. AVS)
@@ -533,7 +533,7 @@ class Hook_payment_gateway_secpay
      * @param  ?integer $length The subscription length in the units. (null: not a subscription)
      * @param  ?ID_TEXT $length_units The length units. (null: not a subscription)
      * @set    d w m y
-     * @return array A tuple: success (boolean), message (string), raw message (string), transaction ID (string).
+     * @return array A tuple: success (boolean), message (string), raw message (string), transaction ID (string)
      */
     public function do_local_transaction($trans_expecting_id, $cardholder_name, $card_type, $card_number, $card_start_date, $card_expiry_date, $card_issue_number, $card_cv2, $amount, $currency, $billing_street_address, $billing_city, $billing_county, $billing_state, $billing_post_code, $billing_country, $shipping_firstname = '', $shipping_lastname = '', $shipping_street_address = '', $shipping_city = '', $shipping_county = '', $shipping_state = '', $shipping_post_code = '', $shipping_country = '', $shipping_email = '', $shipping_phone = '', $length = null, $length_units = null)
     {
@@ -589,8 +589,8 @@ class Hook_payment_gateway_secpay
     /**
      * Parse the result of the XMLRPC call.
      *
-     * @param  string $result The result.
-     * @return array The map of result data.
+     * @param  string $result The result
+     * @return array The map of result data
      */
     protected function _parse_result($result)
     {

@@ -120,8 +120,8 @@ function init__ecommerce()
 /**
  * Automatically calculates a half-price points-based discount for a product.
  *
- * @param  array $details The product details.
- * @return array The amended product details.
+ * @param  array $details The product details
+ * @return array The amended product details
  */
 function automatic_discount_calculation($details)
 {
@@ -149,10 +149,10 @@ function automatic_discount_calculation($details)
 /**
  * Find the next step for the purchasing module.
  *
- * @param  object $product_object The product object.
- * @param  ID_TEXT $type_code The product type.
- * @param  ID_TEXT $step_before The step prior to the next step.
- * @return ?ID_TEXT The next step (null: error).
+ * @param  object $product_object The product object
+ * @param  ID_TEXT $type_code The product type
+ * @param  ID_TEXT $step_before The step prior to the next step
+ * @return ?ID_TEXT The next step (null: error)
  */
 function get_next_purchase_step($product_object, $type_code, $step_before)
 {
@@ -177,10 +177,10 @@ function get_next_purchase_step($product_object, $type_code, $step_before)
 /**
  * Find the purchasing module breadcrumb steps for a product.
  *
- * @param  object $product_object The product object.
- * @param  ID_TEXT $type_code Type code for product.
- * @param  boolean $consider_categories Whether to consider a category screen.
- * @return array A structure describing the steps.
+ * @param  object $product_object The product object
+ * @param  ID_TEXT $type_code Type code for product
+ * @param  boolean $consider_categories Whether to consider a category screen
+ * @return array A structure describing the steps
  */
 function get_product_purchase_steps($product_object, $type_code, $consider_categories)
 {
@@ -238,9 +238,9 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
 /**
  * Get fields that need to be filled in in the purchasing module.
  *
- * @param  ID_TEXT $type_code The product codename.
- * @param  boolean $force_extended Show all possible input fields.
- * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+ * @param  ID_TEXT $type_code The product codename
+ * @param  boolean $force_extended Show all possible input fields
+ * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none)
  */
 function get_needed_fields($type_code, $force_extended = false)
 {
@@ -313,7 +313,7 @@ function get_needed_fields($type_code, $force_extended = false)
 /**
  * Check whether the system is in test mode (normally, not).
  *
- * @return boolean The answer.
+ * @return boolean The answer
  */
 function ecommerce_test_mode()
 {
@@ -326,8 +326,8 @@ function ecommerce_test_mode()
 /**
  * Get the symbol of the currency we're trading in.
  *
- * @param  ?ID_TEXT $currency The currency (null: configured).
- * @return ID_TEXT The currency symbol.
+ * @param  ?ID_TEXT $currency The currency (null: configured)
+ * @return ID_TEXT The currency symbol
  */
 function ecommerce_get_currency_symbol($currency = null)
 {
@@ -345,9 +345,9 @@ function ecommerce_get_currency_symbol($currency = null)
 /**
  * Find a transaction fee from a transaction amount. Regular fees aren't taken into account.
  *
- * @param  REAL $amount A transaction amount.
- * @param  ID_TEXT $payment_gateway The payment gateway the payment went via.
- * @return REAL The fee.
+ * @param  REAL $amount A transaction amount
+ * @param  ID_TEXT $payment_gateway The payment gateway the payment went via
+ * @return REAL The fee
  */
 function get_transaction_fee($amount, $payment_gateway)
 {
@@ -380,11 +380,11 @@ function get_transaction_fee($amount, $payment_gateway)
 /**
  * Get a URL to a product.
  *
- * @param  ID_TEXT $type_code The product codename.
- * @param  boolean $post_purchase_access_url Access a post-purchase URL appropriate to the buyer.
- * @param  ?MEMBER $member_id Member ID that this is for (null: unknown).
- * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail.
- * @return Tempcode Product URL.
+ * @param  ID_TEXT $type_code The product codename
+ * @param  boolean $post_purchase_access_url Access a post-purchase URL appropriate to the buyer
+ * @param  ?MEMBER $member_id Member ID that this is for (null: unknown)
+ * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail
+ * @return Tempcode Product URL
  */
 function get_product_details_url($type_code, $post_purchase_access_url = false, $member_id = null, $email_safe = false)
 {
@@ -443,10 +443,10 @@ function get_product_details_url($type_code, $post_purchase_access_url = false, 
  * Build a transaction linker. Will link to a transaction if there is access, or show a tooltip of details.
  * Used by the sales and order logs.
  *
- * @param  ID_TEXT $txn_id Transaction ID.
- * @param  boolean $awaiting_payment If payment is still required.
- * @param  ?array $transaction_row The transaction database row (null: look it up).
- * @return Tempcode The linker.
+ * @param  ID_TEXT $txn_id Transaction ID
+ * @param  boolean $awaiting_payment If payment is still required
+ * @param  ?array $transaction_row The transaction database row (null: look it up)
+ * @return Tempcode The linker
  */
 function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row = null)
 {
@@ -493,19 +493,19 @@ function build_transaction_linker($txn_id, $awaiting_payment, $transaction_row =
 /**
  * Make a transaction (payment) button.
  *
- * @param  ID_TEXT $type_code The product codename.
- * @param  SHORT_TEXT $item_name The human-readable product title.
- * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  REAL $price Transaction price in money.
- * @param  array $tax_derivation Transaction tax derivation.
- * @param  REAL $tax Transaction tax in money (including shipping tax).
- * @param  array $tax_tracking Transaction tax tracking ID.
- * @param  REAL $shipping_cost Transaction shipping cost in money.
- * @param  REAL $shipping_tax Transaction shipping tax in money.
- * @param  ID_TEXT $currency The currency to use.
- * @param  integer $price_points Transaction price in points.
- * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
- * @return Tempcode The button.
+ * @param  ID_TEXT $type_code The product codename
+ * @param  SHORT_TEXT $item_name The human-readable product title
+ * @param  ID_TEXT $purchase_id The purchase ID
+ * @param  REAL $price Transaction price in money
+ * @param  array $tax_derivation Transaction tax derivation
+ * @param  REAL $tax Transaction tax in money (including shipping tax)
+ * @param  array $tax_tracking Transaction tax tracking ID
+ * @param  REAL $shipping_cost Transaction shipping cost in money
+ * @param  REAL $shipping_tax Transaction shipping tax in money
+ * @param  ID_TEXT $currency The currency to use
+ * @param  integer $price_points Transaction price in points
+ * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect)
+ * @return Tempcode The button
  */
 function make_transaction_button($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $shipping_tax, $currency, $price_points = 0, $payment_gateway = null)
 {
@@ -548,20 +548,20 @@ function make_transaction_button($type_code, $item_name, $purchase_id, $price, $
 /**
  * Make a subscription (payment) button.
  *
- * @param  ID_TEXT $type_code The product codename.
- * @param  SHORT_TEXT $item_name The human-readable product title.
- * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  REAL $price Transaction price in money.
- * @param  array $tax_derivation Transaction tax derivation.
- * @param  REAL $tax Transaction tax in money.
- * @param  array $tax_tracking Transaction tax tracking ID.
- * @param  ID_TEXT $currency The currency to use.
- * @param  integer $price_points Transaction price in points (only for first transaction).
- * @param  integer $length The subscription length in the units.
- * @param  ID_TEXT $length_units The length units.
+ * @param  ID_TEXT $type_code The product codename
+ * @param  SHORT_TEXT $item_name The human-readable product title
+ * @param  ID_TEXT $purchase_id The purchase ID
+ * @param  REAL $price Transaction price in money
+ * @param  array $tax_derivation Transaction tax derivation
+ * @param  REAL $tax Transaction tax in money
+ * @param  array $tax_tracking Transaction tax tracking ID
+ * @param  ID_TEXT $currency The currency to use
+ * @param  integer $price_points Transaction price in points (only for first transaction)
+ * @param  integer $length The subscription length in the units
+ * @param  ID_TEXT $length_units The length units
  * @set    d w m y
- * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
- * @return Tempcode The button.
+ * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect)
+ * @return Tempcode The button
  */
 function make_subscription_button($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $currency, $price_points = 0, $length, $length_units, $payment_gateway = null)
 {
@@ -604,9 +604,9 @@ function make_subscription_button($type_code, $item_name, $purchase_id, $price, 
 /**
  * Make a subscription cancellation button.
  *
- * @param  AUTO_LINK $purchase_id The purchase ID.
- * @param  ID_TEXT $payment_gateway The payment gateway the payment will go via.
- * @return ?Tempcode The button (null: no special cancellation -- just delete the subscription row to stop Composr regularly re-charging).
+ * @param  AUTO_LINK $purchase_id The purchase ID
+ * @param  ID_TEXT $payment_gateway The payment gateway the payment will go via
+ * @return ?Tempcode The button (null: no special cancellation -- just delete the subscription row to stop Composr regularly re-charging)
  */
 function make_cancel_button($purchase_id, $payment_gateway)
 {
@@ -644,8 +644,8 @@ function find_all_products()
 /**
  * Find product info row and other details.
  *
- * @param  ID_TEXT $search The product codename.
- * @return array A triple: The product info row, the product object (all will be null if not found).
+ * @param  ID_TEXT $search The product codename
+ * @return array A triple: The product info row, the product object (all will be null if not found)
  */
 function find_product_details($search)
 {
@@ -705,7 +705,7 @@ function find_product_details($search)
 /**
  * Find whether local payment will be performed.
  *
- * @return boolean Whether local payment will be performed.
+ * @return boolean Whether local payment will be performed
  */
 function perform_local_payment()
 {
@@ -724,22 +724,22 @@ function perform_local_payment()
 /**
  * Get a form for transacting local payments.
  *
- * @param  ID_TEXT $type_code The product codename.
+ * @param  ID_TEXT $type_code The product codename
  * @param  SHORT_TEXT $item_name The item name
  * @param  ID_TEXT $purchase_id The purchase ID
- * @param  REAL $price Transaction price in money.
- * @param  array $tax_derivation Transaction tax derivation.
- * @param  REAL $tax Transaction tax in money (including shipping tax).
- * @param  array $tax_tracking Transaction tax tracking ID.
- * @param  REAL $shipping_cost Transaction shipping cost in money.
- * @param  REAL $shipping_tax Transaction shipping tax in money.
- * @param  ID_TEXT $currency The currency to use.
- * @param  integer $price_points Transaction price in points (only for first transaction).
+ * @param  REAL $price Transaction price in money
+ * @param  array $tax_derivation Transaction tax derivation
+ * @param  REAL $tax Transaction tax in money (including shipping tax)
+ * @param  array $tax_tracking Transaction tax tracking ID
+ * @param  REAL $shipping_cost Transaction shipping cost in money
+ * @param  REAL $shipping_tax Transaction shipping tax in money
+ * @param  ID_TEXT $currency The currency to use
+ * @param  integer $price_points Transaction price in points (only for first transaction)
  * @param  ?integer $length The length (null: not a subscription)
  * @param  ID_TEXT $length_units The length units
- * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect).
- * @param  boolean $needs_shipping_address Whether a shipping address is needed.
- * @return array A tuple: The form fields, Hidden fields, Confidence logos, Payment processor links.
+ * @param  ?ID_TEXT $payment_gateway The payment gateway the payment will go via (null: autodetect)
+ * @param  boolean $needs_shipping_address Whether a shipping address is needed
+ * @return array A tuple: The form fields, Hidden fields, Confidence logos, Payment processor links
  */
 function get_transaction_form_fields($type_code, $item_name, $purchase_id, $price, $tax_derivation, $tax, $tax_tracking, $shipping_cost, $shipping_tax, $currency, $price_points, $length, $length_units, $payment_gateway = null, $needs_shipping_address = false)
 {
@@ -878,15 +878,15 @@ function get_transaction_form_fields($type_code, $item_name, $purchase_id, $pric
 /**
  * Get form fields for an address.
  *
- * @param  string $prefix The prefix for the address input field.
- * @param  string $street_address Street address.
- * @param  string $city Town/City.
- * @param  string $county County.
- * @param  string $state State.
- * @param  string $post_code Postcode/Zip.
- * @param  string $country Country.
- * @param  boolean $require_all_details Whether to require all details to be input.
- * @return Tempcode Address fields.
+ * @param  string $prefix The prefix for the address input field
+ * @param  string $street_address Street address
+ * @param  string $city Town/City
+ * @param  string $county County
+ * @param  string $state State
+ * @param  string $post_code Postcode/Zip
+ * @param  string $country Country
+ * @param  boolean $require_all_details Whether to require all details to be input
+ * @return Tempcode Address fields
  */
 function get_address_fields($prefix, $street_address, $city, $county, $state, $post_code, $country, $require_all_details = true)
 {
@@ -931,32 +931,32 @@ function get_address_fields($prefix, $street_address, $city, $county, $state, $p
 /**
  * Fetch default eCommerce fields for a form (returns by reference).
  *
- * @param  ?MEMBER $member_id The member this is for (null: current member).
- * @param  string $shipping_email Shipping e-mail address (blank: unknown).
- * @param  string $shipping_phone Shipping phone number (blank: unknown).
- * @param  string $shipping_firstname Shipping first name (blank: unknown).
- * @param  string $shipping_lastname Shipping last name (blank: unknown).
- * @param  string $shipping_street_address Shipping street address (blank: unknown).
- * @param  string $shipping_city Shipping city (blank: unknown).
- * @param  string $shipping_county Shipping county (blank: unknown).
- * @param  string $shipping_state Shipping state (blank: unknown).
- * @param  string $shipping_post_code Shipping postcode (blank: unknown).
- * @param  string $shipping_country Shipping country (blank: unknown).
- * @param  string $cardholder_name Cardholder name (blank: unknown).
- * @param  string $card_type Card type (blank: unknown).
- * @param  ?integer $card_number Card number (null: unknown).
- * @param  ?integer $card_start_date_year Card start year (null: unknown).
- * @param  ?integer $card_start_date_month Card start month (null: unknown).
- * @param  ?integer $card_expiry_date_year Card expiry year (null: unknown).
- * @param  ?integer $card_expiry_date_month Card expiry month (null: unknown).
- * @param  ?integer $card_issue_number Card issue number (null: unknown).
- * @param  ?integer $card_cv2 Card CV2 number (null: unknown).
- * @param  string $billing_street_address Billing street address (blank: unknown).
- * @param  string $billing_city Billing city (blank: unknown).
- * @param  string $billing_county Billing county (blank: unknown).
- * @param  string $billing_state Billing state (blank: unknown).
- * @param  string $billing_post_code Billing postcode (blank: unknown).
- * @param  string $billing_country Billing country (blank: unknown).
+ * @param  ?MEMBER $member_id The member this is for (null: current member)
+ * @param  string $shipping_email Shipping e-mail address (blank: unknown)
+ * @param  string $shipping_phone Shipping phone number (blank: unknown)
+ * @param  string $shipping_firstname Shipping first name (blank: unknown)
+ * @param  string $shipping_lastname Shipping last name (blank: unknown)
+ * @param  string $shipping_street_address Shipping street address (blank: unknown)
+ * @param  string $shipping_city Shipping city (blank: unknown)
+ * @param  string $shipping_county Shipping county (blank: unknown)
+ * @param  string $shipping_state Shipping state (blank: unknown)
+ * @param  string $shipping_post_code Shipping postcode (blank: unknown)
+ * @param  string $shipping_country Shipping country (blank: unknown)
+ * @param  string $cardholder_name Cardholder name (blank: unknown)
+ * @param  string $card_type Card type (blank: unknown)
+ * @param  ?integer $card_number Card number (null: unknown)
+ * @param  ?integer $card_start_date_year Card start year (null: unknown)
+ * @param  ?integer $card_start_date_month Card start month (null: unknown)
+ * @param  ?integer $card_expiry_date_year Card expiry year (null: unknown)
+ * @param  ?integer $card_expiry_date_month Card expiry month (null: unknown)
+ * @param  ?integer $card_issue_number Card issue number (null: unknown)
+ * @param  ?integer $card_cv2 Card CV2 number (null: unknown)
+ * @param  string $billing_street_address Billing street address (blank: unknown)
+ * @param  string $billing_city Billing city (blank: unknown)
+ * @param  string $billing_county Billing county (blank: unknown)
+ * @param  string $billing_state Billing state (blank: unknown)
+ * @param  string $billing_post_code Billing postcode (blank: unknown)
+ * @param  string $billing_country Billing country (blank: unknown)
  * @param  boolean $default_to_store Default to the store address if we don't know the shipping address. Useful for a default tax calculation.
  * @param  boolean $do_checking Check for accuracy of data. If $default_to_store is false, you probably want to set this to false also, as data may not be set properly.
  */
@@ -1157,7 +1157,7 @@ function get_default_ecommerce_fields($member_id = null, &$shipping_email = '', 
 /**
  * Attach a memo field to a product's input fields if needed.
  *
- * @param  ?Tempcode $fields The fields to attach to (null: create new Tempcode object if needed).
+ * @param  ?Tempcode $fields The fields to attach to (null: create new Tempcode object if needed)
  */
 function ecommerce_attach_memo_field_if_needed(&$fields)
 {
@@ -1183,8 +1183,8 @@ function ecommerce_attach_memo_field_if_needed(&$fields)
 /**
  * Get a CPF label, for re-use as a general form input label. Remove any CPF name prefixing.
  *
- * @param  ID_TEXT $cpf_name The CPF name.
- * @return string The CPF label.
+ * @param  ID_TEXT $cpf_name The CPF name
+ * @return string The CPF label
  */
 function do_lang_cpf($cpf_name)
 {
@@ -1198,9 +1198,9 @@ function do_lang_cpf($cpf_name)
 /**
  * Handle a particular local transaction as determined by the POST request.
  *
- * @param  ID_TEXT $payment_gateway The payment gateway.
- * @param  object $payment_gateway_object The payment gateway object.
- * @return array A triple: success status, formatted status message, raw status message.
+ * @param  ID_TEXT $payment_gateway The payment gateway
+ * @param  object $payment_gateway_object The payment gateway object
+ * @return array A triple: success status, formatted status message, raw status message
  */
 function do_local_transaction($payment_gateway, $payment_gateway_object)
 {
@@ -1340,7 +1340,7 @@ function do_local_transaction($payment_gateway, $payment_gateway_object)
  *
  * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
  * @param  boolean $send_notifications Whether to send notifications. Set to false if this is not the primary payment handling (e.g. a POST redirect rather than the real IPN).
- * @return ID_TEXT The ID of the purchase-type (meaning depends on item_name).
+ * @return ID_TEXT The ID of the purchase-type (meaning depends on item_name)
  */
 function handle_ipn_transaction_script($silent_fail = false, $send_notifications = true)
 {
@@ -1377,27 +1377,27 @@ function handle_ipn_transaction_script($silent_fail = false, $send_notifications
  * Variables largely emulate PayPal's IPN API.
  *
  * @param  ?ID_TEXT $trans_expecting_id Our internal temporary transaction ID (null: an immediate transaction that didn't require this table). For a live payment you should always pass a $trans_expecting_id in case tax rates or price changes over the interim, which can cause a mismatch or tax filing errors.
- * @param  ?ID_TEXT $txn_id The transaction ID (null: randomised - for debugging only).
- * @param  ?ID_TEXT $type_code The product codename (null: lookup from $trans_expecting_id - for debugging only).
- * @param  ?SHORT_TEXT $item_name The human-readable product title (blank: doing a subscription cancellation, unknown item name; but can get from $found) (null: lookup from $trans_expecting_id - for debugging only).
- * @param  ?ID_TEXT $purchase_id The ID of the purchase-type (meaning depends on item_name) (null: lookup from $trans_expecting_id - for debugging only).
- * @param  boolean $is_subscription Whether this is a subscription.
- * @param  ID_TEXT $status The status this transaction is telling of.
+ * @param  ?ID_TEXT $txn_id The transaction ID (null: randomised - for debugging only)
+ * @param  ?ID_TEXT $type_code The product codename (null: lookup from $trans_expecting_id - for debugging only)
+ * @param  ?SHORT_TEXT $item_name The human-readable product title (blank: doing a subscription cancellation, unknown item name; but can get from $found) (null: lookup from $trans_expecting_id - for debugging only)
+ * @param  ?ID_TEXT $purchase_id The ID of the purchase-type (meaning depends on item_name) (null: lookup from $trans_expecting_id - for debugging only)
+ * @param  boolean $is_subscription Whether this is a subscription
+ * @param  ID_TEXT $status The status this transaction is telling of
  * @set    Pending Completed SModified SCancelled
- * @param  SHORT_TEXT $reason A reason for the transaction's status (blank: unknown or N/A).
- * @param  ?REAL $amount Transaction amount (null: lookup from $trans_expecting_id - for debugging only).
- * @param  ?REAL $tax Transaction tax amount (null: not separated out, find the tax due and take it out of $amount).
- * @param  ?ID_TEXT $currency The currency the amount is in (points: was done fully with points) (null: lookup from $trans_expecting_id - for debugging only).
- * @param  boolean $check_amounts Check the amounts related to this transaction; if not set no points will be charged.
- * @param  ID_TEXT $parent_txn_id The ID of the parent transaction (blank: unknown or N/A).
- * @param  SHORT_TEXT $pending_reason The reason it is in pending status (if it is) (blank: unknown or N/A).
- * @param  LONG_TEXT $memo A note attached to the transaction (blank: not set).
- * @param  string $period The subscription period (blank: N/A or unknown because trust is checked on the gateway's code).
- * @param  ?MEMBER $member_id_paying The member ID of who is doing the transaction (null: unknown).
- * @param  ID_TEXT $payment_gateway The payment gateway (manual: was a manual transaction, not through a real gateway).
+ * @param  SHORT_TEXT $reason A reason for the transaction's status (blank: unknown or N/A)
+ * @param  ?REAL $amount Transaction amount (null: lookup from $trans_expecting_id - for debugging only)
+ * @param  ?REAL $tax Transaction tax amount (null: not separated out, find the tax due and take it out of $amount)
+ * @param  ?ID_TEXT $currency The currency the amount is in (points: was done fully with points) (null: lookup from $trans_expecting_id - for debugging only)
+ * @param  boolean $check_amounts Check the amounts related to this transaction; if not set no points will be charged
+ * @param  ID_TEXT $parent_txn_id The ID of the parent transaction (blank: unknown or N/A)
+ * @param  SHORT_TEXT $pending_reason The reason it is in pending status (if it is) (blank: unknown or N/A)
+ * @param  LONG_TEXT $memo A note attached to the transaction (blank: not set)
+ * @param  string $period The subscription period (blank: N/A or unknown because trust is checked on the gateway's code)
+ * @param  ?MEMBER $member_id_paying The member ID of who is doing the transaction (null: unknown)
+ * @param  ID_TEXT $payment_gateway The payment gateway (manual: was a manual transaction, not through a real gateway)
  * @param  boolean $silent_fail Return null on failure rather than showing any error message. Used when not sure a valid & finalised transaction is in the POST environment, but you want to try just in case (e.g. on a redirect back from the gateway).
  * @param  boolean $send_notifications Whether to send notifications. Set to false if this is not the primary payment handling (e.g. a POST redirect rather than the real IPN).
- * @return ?array ID_TEXT A pair: The product purchased, The purchasing member ID (or null) (null: error).
+ * @return ?array ID_TEXT A pair: The product purchased, The purchasing member ID (or null) (null: error)
  */
 function handle_confirmed_transaction($trans_expecting_id, $txn_id = null, $type_code = null, $item_name = null, $purchase_id = null, $is_subscription = false, $status = 'Completed', $reason = '', $amount = null, $tax = null, $currency = null, $check_amounts = true, $parent_txn_id = '', $pending_reason = '', $memo = '', $period = '', $member_id_paying, $payment_gateway, $silent_fail, $send_notifications)
 {
@@ -1735,16 +1735,16 @@ function handle_confirmed_transaction($trans_expecting_id, $txn_id = null, $type
 /**
  * Send transaction e-mails.
  *
- * @param  ID_TEXT $txn_id Transaction ID.
- * @param  string $item_name Item name.
- * @param  boolean $shipped Whether the item will be shipped.
+ * @param  ID_TEXT $txn_id Transaction ID
+ * @param  string $item_name Item name
+ * @param  boolean $shipped Whether the item will be shipped
  * @param  boolean $automatic_setup Whether the product was automatically setup (i.e. is ready now).
- * @param  ?MEMBER $member_id Member ID transaction is for (null: unknown).
- * @param  REAL $amount Transaction amount.
- * @param  REAL $tax Transaction tax amount.
- * @param  ID_TEXT $currency The currency.
- * @param  integer $amount_points Points charge paid.
- * @param  string $memo Customer memo.
+ * @param  ?MEMBER $member_id Member ID transaction is for (null: unknown)
+ * @param  REAL $amount Transaction amount
+ * @param  REAL $tax Transaction tax amount
+ * @param  ID_TEXT $currency The currency
+ * @param  integer $amount_points Points charge paid
+ * @param  string $memo Customer memo
  */
 function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup, $member_id, $amount, $tax, $currency, $amount_points, $memo = '')
 {
@@ -1858,11 +1858,11 @@ function send_transaction_mails($txn_id, $item_name, $shipped, $automatic_setup,
 /**
  * See if the transaction is for the correct amount.
  *
- * @param  REAL $amount Transaction amount.
- * @param  REAL $tax Transaction tax amount.
- * @param  REAL $expected_amount Transaction amount expected.
- * @param  REAL $expected_tax Transaction tax amount expected.
- * @return boolean Whether it is.
+ * @param  REAL $amount Transaction amount
+ * @param  REAL $tax Transaction tax amount
+ * @param  REAL $expected_amount Transaction amount expected
+ * @param  REAL $expected_tax Transaction tax amount expected
+ * @return boolean Whether it is
  */
 function paid_amount_matches($amount, $tax, $expected_amount, $expected_tax)
 {
@@ -1880,8 +1880,8 @@ function paid_amount_matches($amount, $tax, $expected_amount, $expected_tax)
 /**
  * Exit Composr and write to the error log file.
  *
- * @param  string $error The message.
- * @param  boolean $dont_trigger Dont trigger an error.
+ * @param  string $error The message
+ * @param  boolean $dont_trigger Dont trigger an error
  * @return mixed Never returns (i.e. exits).
  */
 function fatal_ipn_exit($error, $dont_trigger = false)
@@ -1900,10 +1900,10 @@ function fatal_ipn_exit($error, $dont_trigger = false)
 /**
  * Find the 'discounted' price for a product (check the return values carefully).
  *
- * @param  array $details Product details.
+ * @param  array $details Product details
  * @param  boolean $consider_free Consider the potential for a 0.00 price by paying entirely with points.
- * @param  ?MEMBER $member_id The member who this is for (null: current member).
- * @return array A tuple: Discounted price (null is no discount), Discounted price tax code, Points required to get discount (null is no discount), Whether this is a discount.
+ * @param  ?MEMBER $member_id The member who this is for (null: current member)
+ * @return array A tuple: Discounted price (null is no discount), Discounted price tax code, Points required to get discount (null is no discount), Whether this is a discount
  */
 function get_discounted_price($details, $consider_free = false, $member_id = null)
 {
@@ -1956,8 +1956,8 @@ function get_discounted_price($details, $consider_free = false, $member_id = nul
 /**
  * Get a transaction row.
  *
- * @param  ID_TEXT $txn_id Transaction ID.
- * @return array Row.
+ * @param  ID_TEXT $txn_id Transaction ID
+ * @return array Row
  */
 function get_transaction_row($txn_id)
 {
@@ -1971,8 +1971,8 @@ function get_transaction_row($txn_id)
 /**
  * Get transaction status.
  *
- * @param  ID_TEXT $_status PayPal-style transaction status.
- * @return string The status.
+ * @param  ID_TEXT $_status PayPal-style transaction status
+ * @return string The status
  */
 function get_transaction_status_string($_status)
 {

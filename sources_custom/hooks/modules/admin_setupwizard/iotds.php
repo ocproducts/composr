@@ -21,7 +21,7 @@ class Hook_sw_iotds
     /**
      * Run function for blocks in the setup wizard.
      *
-     * @return array Map of block names, to display types.
+     * @return array Map of block names, to display types
      */
     public function get_blocks()
     {

@@ -75,9 +75,9 @@ function render_topic_box($row, $zone = '_SEARCH', $give_context = true, $includ
 /**
  * Get an SQL 'WHERE' clause for the posts in a topic.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic we are getting details of.
- * @param  ?MEMBER $member_id The member doing the lookup (null: current member).
- * @return string The WHERE clause.
+ * @param  AUTO_LINK $topic_id The ID of the topic we are getting details of
+ * @param  ?MEMBER $member_id The member doing the lookup (null: current member)
+ * @return string The WHERE clause
  */
 function cns_get_topic_where($topic_id, $member_id = null)
 {
@@ -153,8 +153,8 @@ function has_topic_access($topic_id, $member_id = null, $topic_details = null)
 /**
  * Find whether a member may make a Private Topic.
  *
- * @param  ?MEMBER $member_id The member (null: current member).
- * @return boolean The answer.
+ * @param  ?MEMBER $member_id The member (null: current member)
+ * @return boolean The answer
  */
 function cns_may_make_private_topic($member_id = null)
 {
@@ -184,9 +184,9 @@ function cns_check_make_private_topic()
 /**
  * Find whether a member may post a topic in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum the topic would be in.
- * @param  ?MEMBER $member_id The member (null: current member).
- * @return boolean The answer.
+ * @param  AUTO_LINK $forum_id The forum the topic would be in
+ * @param  ?MEMBER $member_id The member (null: current member)
+ * @return boolean The answer
  */
 function cns_may_post_topic($forum_id, $member_id = null)
 {
@@ -212,9 +212,9 @@ function cns_may_post_topic($forum_id, $member_id = null)
 /**
  * Find whether a member has replied to a certain topic.
  *
- * @param  AUTO_LINK $topic_id The topic.
- * @param  ?MEMBER $member_id The member (null: current member).
- * @return boolean The answer.
+ * @param  AUTO_LINK $topic_id The topic
+ * @param  ?MEMBER $member_id The member (null: current member)
+ * @return boolean The answer
  */
 function cns_has_replied_topic($topic_id, $member_id = null)
 {
@@ -225,10 +225,10 @@ function cns_has_replied_topic($topic_id, $member_id = null)
 /**
  * Find whether a member may edit topics in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum the topic would be in.
- * @param  MEMBER $member_id The member checking access for.
+ * @param  AUTO_LINK $forum_id The forum the topic would be in
+ * @param  MEMBER $member_id The member checking access for
  * @param  MEMBER $resource_owner The member that owns this resource
- * @return boolean The answer.
+ * @return boolean The answer
  */
 function cns_may_edit_topics_by($forum_id, $member_id, $resource_owner)
 {
@@ -246,10 +246,10 @@ function cns_may_edit_topics_by($forum_id, $member_id, $resource_owner)
 /**
  * Find whether a member may delete topics in a certain forum.
  *
- * @param  AUTO_LINK $forum_id The forum the topic would be in.
- * @param  MEMBER $member_id The member checking access for.
+ * @param  AUTO_LINK $forum_id The forum the topic would be in
+ * @param  MEMBER $member_id The member checking access for
  * @param  MEMBER $resource_owner The member that owns this resource
- * @return boolean The answer.
+ * @return boolean The answer
  */
 function cns_may_delete_topics_by($forum_id, $member_id, $resource_owner)
 {
@@ -267,9 +267,9 @@ function cns_may_delete_topics_by($forum_id, $member_id, $resource_owner)
 /**
  * Mark a topic as read by the current member.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic to mark as read.
- * @param  ?MEMBER $member_id The member to do this for (null: current member).
- * @param  ?TIME $timestamp Mark read timestamp (null: now).
+ * @param  AUTO_LINK $topic_id The ID of the topic to mark as read
+ * @param  ?MEMBER $member_id The member to do this for (null: current member)
+ * @param  ?TIME $timestamp Mark read timestamp (null: now)
  */
 function cns_ping_topic_read($topic_id, $member_id = null, $timestamp = null)
 {
@@ -288,11 +288,11 @@ function cns_ping_topic_read($topic_id, $member_id = null, $timestamp = null)
 /**
  * Find whether a member has read a certain topic, such that they have possibly read all posts within it already.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic.
- * @param  ?TIME $topic_last_time The time of the last post in the topic (null: get it from the DB).
- * @param  ?MEMBER $member_id The member (null: current member).
- * @param  ?TIME $member_last_time The time the member last viewed the topic (null: get it from the DB).
- * @return boolean They have read it as such, yes.
+ * @param  AUTO_LINK $topic_id The ID of the topic
+ * @param  ?TIME $topic_last_time The time of the last post in the topic (null: get it from the DB)
+ * @param  ?MEMBER $member_id The member (null: current member)
+ * @param  ?TIME $member_last_time The time the member last viewed the topic (null: get it from the DB)
+ * @return boolean They have read it as such, yes
  */
 function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = null, $member_last_time = null)
 {
@@ -339,9 +339,9 @@ function cns_has_read_topic($topic_id, $topic_last_time = null, $member_id = nul
 /**
  * Find whether a member has special access to a certain PT.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic.
- * @param  ?MEMBER $member_id The member (null: current member).
- * @return boolean Whether they have special access.
+ * @param  AUTO_LINK $topic_id The ID of the topic
+ * @param  ?MEMBER $member_id The member (null: current member)
+ * @return boolean Whether they have special access
  */
 function cns_has_special_pt_access($topic_id, $member_id = null)
 {

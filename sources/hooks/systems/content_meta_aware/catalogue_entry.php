@@ -26,9 +26,9 @@ class Hook_content_meta_aware_catalogue_entry
     /**
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
-     * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect).
-     * @param  ?ID_TEXT $catalogue_name Catalogue name for entry (null: unknown / N/A).
-     * @return ?array Map of award content-type info (null: disabled).
+     * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect)
+     * @param  ?ID_TEXT $catalogue_name Catalogue name for entry (null: unknown / N/A)
+     * @return ?array Map of award content-type info (null: disabled)
      */
     public function info($zone = null, $catalogue_name = null)
     {
@@ -137,9 +137,9 @@ class Hook_content_meta_aware_catalogue_entry
 /**
  * Find a catalogue entry title.
  *
- * @param  array $url_parts The URL parts to search from.
- * @param  boolean $resource_fs_style Whether to get the field title using resource-fs style.
- * @return string The field title.
+ * @param  array $url_parts The URL parts to search from
+ * @param  boolean $resource_fs_style Whether to get the field title using resource-fs style
+ * @return string The field title
  */
 function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
 {
@@ -174,8 +174,8 @@ function generate_catalogue_entry_title($url_parts, $resource_fs_style = false)
 /**
  * Find a catalogue entry thumbnail.
  *
- * @param  array $url_parts The URL parts to search from.
- * @return string The field title.
+ * @param  array $url_parts The URL parts to search from
+ * @return string The field title
  */
 function generate_catalogue_thumb_field($url_parts)
 {

@@ -481,7 +481,7 @@ function get_days_between($initial_start_month, $initial_start_day, $initial_sta
  * Get a list of event types, taking security into account against the current member.
  *
  * @param  ?AUTO_LINK $it The event type to select by default (null: none)
- * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
+ * @param  ?TIME $updated_since Time from which content must be updated (null: no limit)
  * @return Tempcode The list
  */
 function create_selection_list_event_types($it = null, $updated_since = null)
@@ -1175,7 +1175,7 @@ function cal_get_start_utctime_for_event($timezone, $year, $month, $day, $monthl
  * @set day_of_month day_of_month_backwards dow_of_month dow_of_month_backwards
  * @param  ?integer $hour Hour (null: end hour of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)
  * @param  ?integer $minute Minute (null: end minute of day in the timezone expressed as UTC, for whatever day the given midnight day/month/year shifts to after timezone conversion)
- * @param  boolean $show_in_users_timezone Whether the time should be converted to the viewer's own timezone instead.
+ * @param  boolean $show_in_users_timezone Whether the time should be converted to the viewer's own timezone instead
  * @return TIME Timestamp
  */
 function cal_get_end_utctime_for_event($timezone, $year, $month, $day, $monthly_spec_type, $hour, $minute, $show_in_users_timezone)
@@ -1240,7 +1240,7 @@ function cal_get_end_utctime_for_event($timezone, $year, $month, $day, $monthly_
  * Put a timestamp into the correct timezone for being reported onto the calendar.
  *
  * @param  TIME $utc_timestamp Timestamp (proper UTC timestamp, not in user time)
- * @param  ID_TEXT $default_timezone The timezone associated with the event (the passed $utc_timestamp should NOT be relative to this timezone, that must be UTC) THIS PARAMETER IS NOT ACTUALLY USED.
+ * @param  ID_TEXT $default_timezone The timezone associated with the event (the passed $utc_timestamp should NOT be relative to this timezone, that must be UTC) THIS PARAMETER IS NOT ACTUALLY USED
  * @param  boolean $show_in_users_timezone Whether the time should be converted to the viewer's own timezone instead
  * @return TIME Altered timestamp
  */

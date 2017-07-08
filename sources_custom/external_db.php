@@ -43,7 +43,7 @@ set_value('external_login_url', '?', true); // Optional
 /**
  * Get a connection to the external user database.
  *
- * @return object Database driver.
+ * @return object Database driver
  */
 function external_db()
 {
@@ -66,7 +66,7 @@ function external_db()
  * Find who is logged into the remote system.
  * THIS FUNCTION NEEDS CUSTOMISING. It is currently written for one particular ASP.net system.
  *
- * @return ?array User record for session (null: none).
+ * @return ?array User record for session (null: none)
  */
 function external_db_user_from_session()
 {
@@ -102,8 +102,8 @@ function external_db_user_from_session()
 /**
  * Synchronise an external user.
  *
- * @param  MEMBER $member_id Authorised member.
- * @param  array $record User record to sync.
+ * @param  MEMBER $member_id Authorised member
+ * @param  array $record User record to sync
  */
 function external_db_user_sync($member_id, $record)
 {
@@ -143,8 +143,8 @@ function external_db_user_sync($member_id, $record)
 /**
  * Import an external user.
  *
- * @param  array $record User record to import.
- * @return MEMBER Authorised member.
+ * @param  array $record User record to import
+ * @return MEMBER Authorised member
  */
 function external_db_user_add($record)
 {

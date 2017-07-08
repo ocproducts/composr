@@ -57,7 +57,7 @@ function cms_version_number()
 /**
  * Get the timestamp at which this version was released.
  *
- * @return integer The timestamp at which this version was released.
+ * @return integer The timestamp at which this version was released
  */
 function cms_version_time()
 {
@@ -67,7 +67,7 @@ function cms_version_time()
 /**
  * Get the timestamp at which this MAJOR version was released.
  *
- * @return integer The timestamp at which this MAJOR version was released.
+ * @return integer The timestamp at which this MAJOR version was released
  */
 function cms_version_time_major()
 {

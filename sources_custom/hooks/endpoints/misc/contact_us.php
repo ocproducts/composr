@@ -21,9 +21,9 @@ class Hook_endpoint_account_contact_us
     /**
      * Run an API endpoint.
      *
-     * @param  ?string $type Standard type parameter, usually either of add/edit/delete/view (null: not-set).
-     * @param  ?string $id Standard ID parameter (null: not-set).
-     * @return array Data structure that will be converted to correct response type.
+     * @param  ?string $type Standard type parameter, usually either of add/edit/delete/view (null: not-set)
+     * @param  ?string $id Standard ID parameter (null: not-set)
+     * @return array Data structure that will be converted to correct response type
      */
     public function run($type, $id)
     {

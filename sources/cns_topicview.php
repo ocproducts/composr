@@ -21,8 +21,8 @@
 /**
  * Find the URL to a post.
  *
- * @param  AUTO_LINK $post_id The post ID.
- * @return URLPATH The URL.
+ * @param  AUTO_LINK $post_id The post ID
+ * @return URLPATH The URL
  */
 function find_post_id_url($post_id)
 {
@@ -61,8 +61,8 @@ function find_post_id_url($post_id)
 /**
  * Find the URL to the latest unread post in a topic.
  *
- * @param  AUTO_LINK $id The topic ID.
- * @return URLPATH The URL.
+ * @param  AUTO_LINK $id The topic ID
+ * @return URLPATH The URL
  */
 function find_first_unread_url($id)
 {
@@ -118,10 +118,10 @@ function find_first_unread_url($id)
 /**
  * Turn a post row, into a detailed map of information that is suitable for use as display parameters for that post.
  *
- * @param  array $_postdetails The post row.
- * @param  array $topic_info The topic row.
- * @param  boolean $only_post Whether the post is the only post in the topic.
- * @return array The detailed map.
+ * @param  array $_postdetails The post row
+ * @param  array $topic_info The topic row
+ * @param  boolean $only_post Whether the post is the only post in the topic
+ * @return array The detailed map
  */
 function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = false)
 {
@@ -220,12 +220,12 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
 /**
  * Read in a great big map of details relating to a topic.
  *
- * @param  ?AUTO_LINK $topic_id The ID of the topic we are getting details of (null: whispers).
+ * @param  ?AUTO_LINK $topic_id The ID of the topic we are getting details of (null: whispers)
  * @param  integer $start The start row for getting details of posts in the topic (i.e. 0 is start of topic, higher is further through).
- * @param  integer $max The maximum number of posts to get detail of.
- * @param  boolean $view_poll_results Whether we are viewing poll results for the topic (if there is no poll for the topic, this is irrelevant).
- * @param  boolean $check_perms Whether to check permissions.
- * @return array The map of details.
+ * @param  integer $max The maximum number of posts to get detail of
+ * @param  boolean $view_poll_results Whether we are viewing poll results for the topic (if there is no poll for the topic, this is irrelevant)
+ * @param  boolean $check_perms Whether to check permissions
+ * @return array The map of details
  */
 function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, $check_perms = true)
 {
@@ -563,7 +563,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
 /**
  * Mass-load details for a list of members into memory, to reduce queries when we access it later.
  *
- * @param  array $members List of members.
+ * @param  array $members List of members
  */
 function cns_cache_member_details($members)
 {
@@ -617,11 +617,11 @@ function cns_cache_member_details($members)
 /**
  * Get buttons for showing under a post.
  *
- * @param  array $topic_info Map of topic info.
- * @param  array $_postdetails Map of post info.
+ * @param  array $topic_info Map of topic info
+ * @param  array $_postdetails Map of post info
  * @param  boolean $may_reply Whether the current member may reply to the topic
  * @param  ID_TEXT $rendering_context Rendering context
- * @return Tempcode The buttons.
+ * @return Tempcode The buttons
  */
 function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $rendering_context = 'cns')
 {
@@ -821,8 +821,8 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
 /**
  * Get post emphasis Tempcode.
  *
- * @param  array $_postdetails Map of post info.
- * @return Tempcode The Tempcode.
+ * @param  array $_postdetails Map of post info
+ * @return Tempcode The Tempcode
  */
 function cns_get_post_emphasis($_postdetails)
 {

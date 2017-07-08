@@ -410,8 +410,8 @@ function convert_html_headers_to_titles($semihtml)
 /**
  * Convert HTML-filled Comcode to cleaner Comcode.
  *
- * @param  LONG_TEXT $comcode The messy Comcode.
- * @return LONG_TEXT The cleaned Comcode.
+ * @param  LONG_TEXT $comcode The messy Comcode
+ * @return LONG_TEXT The cleaned Comcode
  */
 function force_clean_comcode($comcode)
 {

@@ -26,8 +26,8 @@ class Hook_content_meta_aware_calendar_type
     /**
      * Get content type details. Provides information to allow task reporting, randomisation, and add-screen linking, to function.
      *
-     * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect).
-     * @return ?array Map of award content-type info (null: disabled).
+     * @param  ?ID_TEXT $zone The zone to link through to (null: autodetect)
+     * @return ?array Map of award content-type info (null: disabled)
      */
     public function info($zone = null)
     {

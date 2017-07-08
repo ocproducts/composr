@@ -21,11 +21,11 @@
 /**
  * Get the personal post rows for the current member.
  *
- * @param  ?integer $limit The maximum number of rows to get (gets newest first) (null: no limit).
- * @param  boolean $unread Whether to only get unread ones.
- * @param  boolean $include_inline Whether to include inline personal posts.
- * @param  ?TIME $time_barrier Only since this date (null: no limit).
- * @return array The personal post rows (with corresponding topic details).
+ * @param  ?integer $limit The maximum number of rows to get (gets newest first) (null: no limit)
+ * @param  boolean $unread Whether to only get unread ones
+ * @param  boolean $include_inline Whether to include inline personal posts
+ * @param  ?TIME $time_barrier Only since this date (null: no limit)
+ * @return array The personal post rows (with corresponding topic details)
  */
 function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $time_barrier = null)
 {
@@ -159,8 +159,8 @@ function cns_get_pp_rows($limit = 5, $unread = true, $include_inline = true, $ti
 /**
  * Calculate Conversr notifications and render.
  *
- * @param  MEMBER $member_id Member to look up for.
- * @return array A pair: Number of notifications, Rendered notifications.
+ * @param  MEMBER $member_id Member to look up for
+ * @return array A pair: Number of notifications, Rendered notifications
  */
 function generate_notifications($member_id)
 {

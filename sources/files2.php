@@ -104,7 +104,7 @@ function _intelligent_write_error_inline($path)
 /**
  * Find details of where we can save temporary files, taking into account PHP's platform-dependent difficulties.
  *
- * @return array A tuple: preferred temporary path to save to, whether there's a problem saving in the system path, the system path to save to, the local path to save to.
+ * @return array A tuple: preferred temporary path to save to, whether there's a problem saving in the system path, the system path to save to, the local path to save to
  */
 function cms_get_temp_dir()
 {
@@ -121,8 +121,8 @@ function cms_get_temp_dir()
 /**
  * Create file with unique file name, but works around compatibility issues between servers. Note that the file is NOT automatically deleted. You should also delete it using "@unlink", as some servers have problems with permissions.
  *
- * @param  string $prefix The prefix of the temporary file name.
- * @return ~string The name of the temporary file (false: error).
+ * @param  string $prefix The prefix of the temporary file name
+ * @return ~string The name of the temporary file (false: error)
  *
  * @ignore
  */

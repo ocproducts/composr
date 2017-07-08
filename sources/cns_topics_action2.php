@@ -21,17 +21,17 @@
 /**
  * Edit a topic.
  *
- * @param  ?AUTO_LINK $topic_id The ID of the topic to edit (null: Private Topic).
- * @param  ?SHORT_TEXT $description Description of the topic (null: do not change).
- * @param  ?SHORT_TEXT $emoticon The image code of the emoticon for the topic (null: do not change).
- * @param  ?BINARY $validated Whether the topic is validated (null: do not change).
- * @param  ?BINARY $open Whether the topic is open (null: do not change).
- * @param  ?BINARY $pinned Whether the topic is pinned (null: do not change).
- * @param  ?BINARY $cascading Whether the topic is cascading (null: do not change).
- * @param  LONG_TEXT $reason The reason for this action.
- * @param  ?string $title New title for the topic (null: do not change).
+ * @param  ?AUTO_LINK $topic_id The ID of the topic to edit (null: Private Topic)
+ * @param  ?SHORT_TEXT $description Description of the topic (null: do not change)
+ * @param  ?SHORT_TEXT $emoticon The image code of the emoticon for the topic (null: do not change)
+ * @param  ?BINARY $validated Whether the topic is validated (null: do not change)
+ * @param  ?BINARY $open Whether the topic is open (null: do not change)
+ * @param  ?BINARY $pinned Whether the topic is pinned (null: do not change)
+ * @param  ?BINARY $cascading Whether the topic is cascading (null: do not change)
+ * @param  LONG_TEXT $reason The reason for this action
+ * @param  ?string $title New title for the topic (null: do not change)
  * @param  ?SHORT_TEXT $description_link Link related to the topic (e.g. link to view a ticket) (null: do not change).
- * @param  boolean $check_perms Whether to check permissions.
+ * @param  boolean $check_perms Whether to check permissions
  * @param  ?integer $views Number of views (null: do not change)
  * @param  boolean $null_is_literal Determines whether some nulls passed mean 'use a default' or literally mean 'set to null'
  */
@@ -162,11 +162,11 @@ function cns_edit_topic($topic_id, $description = null, $emoticon = null, $valid
 /**
  * Delete a topic.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic to delete.
- * @param  LONG_TEXT $reason The reason for this action .
- * @param  ?AUTO_LINK $post_target_topic_id Where topic to move posts in this topic to (null: delete the posts).
- * @param  boolean $check_perms Whether to check permissions.
- * @return AUTO_LINK The forum ID the topic is in (could be found without calling the function, but as we've looked it up, it is worth keeping).
+ * @param  AUTO_LINK $topic_id The ID of the topic to delete
+ * @param  LONG_TEXT $reason The reason for this action 
+ * @param  ?AUTO_LINK $post_target_topic_id Where topic to move posts in this topic to (null: delete the posts)
+ * @param  boolean $check_perms Whether to check permissions
+ * @return AUTO_LINK The forum ID the topic is in (could be found without calling the function, but as we've looked it up, it is worth keeping)
  */
 function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null, $check_perms = true)
 {
@@ -327,10 +327,10 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
 /**
  * Move some topics.
  *
- * @param  AUTO_LINK $from The forum the topics are currently in.
- * @param  AUTO_LINK $to The forum the topics are being moved to.
- * @param  ?array $topics A list of the topic IDs to move (null: move all topics from source forum).
- * @param  boolean $check_perms Whether to check permissions.
+ * @param  AUTO_LINK $from The forum the topics are currently in
+ * @param  AUTO_LINK $to The forum the topics are being moved to
+ * @param  ?array $topics A list of the topic IDs to move (null: move all topics from source forum)
+ * @param  boolean $check_perms Whether to check permissions
  */
 function cns_move_topics($from, $to, $topics = null, $check_perms = true) // NB: From is good to add a additional security/integrity. We'll never move from more than one forum. Extra constraints that cause no harm are good in a situation that doesn't govern general efficiency.
 {

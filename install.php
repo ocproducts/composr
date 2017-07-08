@@ -2511,9 +2511,9 @@ function object_factory($class)
 /**
  * Sets the value of a configuration option, if the PHP environment allows it.
  *
- * @param  string $var Config option.
- * @param  string $value New value of option.
- * @return ~string Old value of option (false: error).
+ * @param  string $var Config option
+ * @param  string $value New value of option
+ * @return ~string Old value of option (false: error)
  */
 function safe_ini_set($var, $value)
 {

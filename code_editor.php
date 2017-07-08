@@ -33,8 +33,8 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 /**
  * Escape HTML text. Heavily optimised! Ended up with preg_replace after trying lots of things.
  *
- * @param  LONG_TEXT $string The text to escape.
- * @return LONG_TEXT The escaped result.
+ * @param  LONG_TEXT $string The text to escape
+ * @return LONG_TEXT The escaped result
  */
 function code_editor_escape_html($string)
 {
@@ -70,8 +70,8 @@ code_editor_do_footer();
 /**
  * Output the code editors page header.
  *
- * @param  ID_TEXT $type The type our form clicks are.
- * @param  ID_TEXT $target The target our form clicks get sent to.
+ * @param  ID_TEXT $type The type our form clicks are
+ * @param  ID_TEXT $target The target our form clicks get sent to
  */
 function code_editor_do_header($type, $target = '_top')
 {
@@ -220,8 +220,8 @@ END;
 /**
  * Search inside a directory for editable files, while favouring the overridden versions.
  *
- * @param  SHORT_TEXT $dir The directory path to search.
- * @return array A list of the HTML elements for the list box selection.
+ * @param  SHORT_TEXT $dir The directory path to search
+ * @return array A list of the HTML elements for the list box selection
  */
 function ce_do_dir($dir)
 {
@@ -251,7 +251,7 @@ function ce_do_dir($dir)
 /**
  * Output the file selection page.
  *
- * @param  SHORT_TEXT $given_password The password previously given to authorise our editing.
+ * @param  SHORT_TEXT $given_password The password previously given to authorise our editing
  */
 function do_get_path($given_password)
 {
@@ -369,8 +369,8 @@ function open_up_ftp_connection()
 /**
  * Output the editing page and do the editing.
  *
- * @param  SHORT_TEXT $given_password The password previously given to authorise our editing.
- * @param  SHORT_TEXT $path The path of the file we are editing.
+ * @param  SHORT_TEXT $given_password The password previously given to authorise our editing
+ * @param  SHORT_TEXT $path The path of the file we are editing
  */
 function do_page($given_password, $path)
 {
@@ -673,8 +673,8 @@ function ce_check_master_password($password_given)
 /**
  * Create file with unique file name, but works around compatibility issues between servers. Note that the file is NOT automatically deleted. You should also delete it using "@unlink", as some servers have problems with permissions.
  *
- * @param  string $prefix The prefix of the temporary file name.
- * @return ~string The name of the temporary file (false: error).
+ * @param  string $prefix The prefix of the temporary file name
+ * @return ~string The name of the temporary file (false: error)
  */
 function ce_cms_tempnam($prefix = '')
 {

@@ -605,7 +605,7 @@ function upgrade_script()
 /**
  * Get hidden form fields for relaying POST information.
  *
- * @return string The hidden form fields for relaying POST information.
+ * @return string The hidden form fields for relaying POST information
  */
 function post_fields_relay()
 {
@@ -1091,10 +1091,10 @@ function check_excess_perms($array, $rel = '')
 /**
  * Do an integrity check. This does not include an alien check in basic mode; otherwise check_alien() is called within this function.
  *
- * @param  boolean $basic Whether to just do the minimum basic scan.
- * @param  boolean $allow_merging Whether merging of CSS changes is allowed.
- * @param  boolean $unix_help Whether to give some help to unix people.
- * @return string Results.
+ * @param  boolean $basic Whether to just do the minimum basic scan
+ * @param  boolean $allow_merging Whether merging of CSS changes is allowed
+ * @param  boolean $unix_help Whether to give some help to unix people
+ * @return string Results
  */
 function run_integrity_check($basic = false, $allow_merging = true, $unix_help = false)
 {

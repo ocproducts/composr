@@ -32,7 +32,7 @@ function init__cns_general()
 /**
  * Get some forum stats.
  *
- * @return array A map of forum stats.
+ * @return array A map of forum stats
  */
 function cns_get_forums_stats()
 {
@@ -87,12 +87,12 @@ function cns_get_forums_stats()
  * If something is not set, it's not set in the result map. We don't use blank or null here.
  * See the member_personal_links_and_details function for a non-CNS specific UI retriever.
  *
- * @param  MEMBER $member_id The member to get details of.
+ * @param  MEMBER $member_id The member to get details of
  * @param  ?array $need Array of details needed to be returned (it will return more than specified, but this helps performance). Actually even requested stuff may not be set if it's not defined. (null: return everything)
- * @param  boolean $include_encrypted_cpfs Whether to include encrypted CPFs.
+ * @param  boolean $include_encrypted_cpfs Whether to include encrypted CPFs
  * @param  ?boolean $cpf_preview_mode Whether to only gather preview CPFs. (null: don't care).
  * @param  ?MEMBER $member_id_viewing The member viewing the details. (null: current member)
- * @return ?array A map of details (null: not found).
+ * @return ?array A map of details (null: not found)
  */
 function cns_read_in_member_profile($member_id, $need = null, $include_encrypted_cpfs = false, $cpf_preview_mode = null, $member_id_viewing = null)
 {
@@ -503,8 +503,8 @@ function get_member_dob_details($member_id)
 /**
  * Get a member title.
  *
- * @param  MEMBER $member_id Member ID.
- * @return string Member title.
+ * @param  MEMBER $member_id Member ID
+ * @return string Member title
  */
 function get_member_title($member_id)
 {
@@ -523,8 +523,8 @@ function get_member_title($member_id)
 /**
  * Get a usergroup colour based on its ID number.
  *
- * @param  GROUP $gid ID number.
- * @return string Colour.
+ * @param  GROUP $gid ID number
+ * @return string Colour
  */
 function get_group_colour($gid)
 {
@@ -535,8 +535,8 @@ function get_group_colour($gid)
 /**
  * Find all the birthdays in a certain day.
  *
- * @param  ?TIME $time A timestamps that exists in the certain day (null: now).
- * @return array List of maps describing the members whose birthday it is on the certain day.
+ * @param  ?TIME $time A timestamps that exists in the certain day (null: now)
+ * @return array List of maps describing the members whose birthday it is on the certain day
  */
 function cns_find_birthdays($time = null)
 {
@@ -572,8 +572,8 @@ function cns_find_birthdays($time = null)
 /**
  * Turn a list of maps describing buttons, into a Tempcode button panel.
  *
- * @param  array $buttons List of maps (each map contains: url, img, title).
- * @return Tempcode The button panel.
+ * @param  array $buttons List of maps (each map contains: url, img, title)
+ * @return Tempcode The button panel
  */
 function cns_button_screen_wrap($buttons)
 {
@@ -591,7 +591,7 @@ function cns_button_screen_wrap($buttons)
 /**
  * Set the forum context.
  *
- * @param  AUTO_LINK $forum_id Forum ID.
+ * @param  AUTO_LINK $forum_id Forum ID
  */
 function cns_set_context_forum($forum_id)
 {

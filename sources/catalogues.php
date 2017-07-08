@@ -243,7 +243,7 @@ function render_catalogue_box($row, $zone = '_SEARCH', $give_context = true, $gu
  * Count the entries and subcategories underneath the specified category, recursively.
  *
  * @param  AUTO_LINK $category_id The ID of the category for which count details are collected
- * @return array The number of entries is returned in $output['num_entries'], and the number of subcategories is returned in $output['num_children'], the (possibly recursive) number of subcategories in $output['num_children_children'], and the (possibly recursive) number of entries is returned in $output['num_entries_children'].
+ * @return array The number of entries is returned in $output['num_entries'], and the number of subcategories is returned in $output['num_children'], the (possibly recursive) number of subcategories in $output['num_children_children'], and the (possibly recursive) number of entries is returned in $output['num_entries_children']
  */
 function count_catalogue_category_children($category_id)
 {
@@ -284,7 +284,7 @@ function count_catalogue_category_children($category_id)
  * @param  ?SHORT_INTEGER $display_type The display type to use (null: lookup from $catalogue)
  * @param  boolean $do_sorting Whether to perform sorting
  * @param  ?array $entries A list of entry rows (null: select them normally)
- * @param  string $filter Filtercode to apply (blank: none).
+ * @param  string $filter Filtercode to apply (blank: none)
  * @param  ?ID_TEXT $order_by_high_level Orderer (null: read from environment)
  * @param  ID_TEXT $ordering_param Environment param used for ordering. You should pass in $order_by_high_level if it is set.
  * @param  ?MEMBER $viewing_member_id Viewing member ID (null: current user)
@@ -1344,7 +1344,7 @@ function _get_catalogue_entry_field($field_id, $entry_id, $type = 'short', $only
  * @param  ?ID_TEXT $it The name of the currently selected catalogue (null: none selected)
  * @param  boolean $prefer_ones_with_entries If there are too many to list prefer to get ones with entries rather than just the newest
  * @param  boolean $only_submittable Whether to only show catalogues that can be submitted to
- * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
+ * @param  ?TIME $updated_since Time from which content must be updated (null: no limit)
  * @return Tempcode Catalogue selection list
  */
 function create_selection_list_catalogues($it = null, $prefer_ones_with_entries = false, $only_submittable = false, $updated_since = null)

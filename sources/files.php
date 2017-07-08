@@ -56,11 +56,11 @@ function init__files()
 /**
  * Write out to a file, with lots of error checking and locking.
  *
- * @param  PATH $path File path.
- * @param  string $contents File contents.
- * @param  integer $flags FILE_WRITE_* flags.
- * @param  integer $retry_depth How deep it is into retrying if somehow the data did not get written.
- * @return boolean Success status.
+ * @param  PATH $path File path
+ * @param  string $contents File contents
+ * @param  integer $flags FILE_WRITE_* flags
+ * @param  integer $retry_depth How deep it is into retrying if somehow the data did not get written
+ * @return boolean Success status
  */
 function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth = 0)
 {
@@ -172,10 +172,10 @@ function cms_file_put_contents_safe($path, $contents, $flags = 2, $retry_depth =
 /**
  * If cms_file_put_contents_safe has failed, process the error messaging.
  *
- * @param  mixed $error_message Error message (Tempcode or string).
- * @param  PATH $path File path.
- * @param  integer $flags FILE_WRITE_* flags.
- * @return boolean Success status (always false).
+ * @param  mixed $error_message Error message (Tempcode or string)
+ * @param  PATH $path File path
+ * @param  integer $flags FILE_WRITE_* flags
+ * @return boolean Success status (always false)
  */
 function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 2)
 {
@@ -201,8 +201,8 @@ function _cms_file_put_contents_safe_failed($error_message, $path, $flags = 2)
 /**
  * Get the number of bytes for a PHP config option. Code taken from the PHP manual.
  *
- * @param  string $val PHP config option value.
- * @return integer Number of bytes.
+ * @param  string $val PHP config option value
+ * @return integer Number of bytes
  */
 function php_return_bytes($val)
 {

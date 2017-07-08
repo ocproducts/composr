@@ -29,7 +29,7 @@ function init__buildr()
 /**
  * Helper function. From a given GET/POST parameter name, tries to identify a member ID. Parameter may be given as a direct member ID or via a username.
  *
- * @param  string $param_name The given parameter name.
+ * @param  string $param_name The given parameter name
  * @return ?MEMBER Member ID (null: blank requested)
  */
 function grab_new_owner($param_name)
@@ -66,7 +66,7 @@ function buildr_refresh_with_message($message, $msg_type = 'inform')
 /**
  * Get default Buildr prices.
  *
- * @return array Map of items=>prices.
+ * @return array Map of items=>prices
  */
 function get_buildr_prices_default()
 {
@@ -156,9 +156,9 @@ function destick($member_id)
 /**
  * Delete all messages in room by a person.
  *
- * @param  MEMBER $member_id The member who's message is being deleted.
- * @param  MEMBER $dest_member_id The member who's the message was addressed to.
- * @param  string $message The message.
+ * @param  MEMBER $member_id The member who's message is being deleted
+ * @param  MEMBER $dest_member_id The member who's the message was addressed to
+ * @param  string $message The message
  */
 function delete_message($member_id, $dest_member_id, $message)
 {
@@ -443,8 +443,8 @@ function check_coexist($member_id, $dest_member_id)
 /**
  * You can try and pickpocket people in your room, but you have a chance of being imprisoned. Does not return.
  *
- * @param  MEMBER $member_id The member who is doing the pickpocketing.
- * @param  MEMBER $dest_member_id The victim.
+ * @param  MEMBER $member_id The member who is doing the pickpocketing
+ * @param  MEMBER $dest_member_id The victim
  */
 function pickpocket($member_id, $dest_member_id)
 {
@@ -539,9 +539,9 @@ function findperson($dest_member_name)
 /**
  * Have a member steal a random item from somebody else. If there are no items to steal, an error message is triggered (no return).
  *
- * @param  MEMBER $member_id The member doing the stealing.
- * @param  MEMBER $target The victim.
- * @return string The item stolen.
+ * @param  MEMBER $member_id The member doing the stealing
+ * @param  MEMBER $target The victim
+ * @return string The item stolen
  */
 function steal($member_id, $target)
 {

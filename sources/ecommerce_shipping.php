@@ -24,14 +24,14 @@
  * Recalculate shipping cost based on customer context.
  * Does not handle multiple quantities or items, this is complex in itself (due to dimension merging) and handled in derive_cart_amounts.
  *
- * @param  ?array $details Map of product details (null: not for a final sold product, some kind of intermediate stage or peripheral check).
- * @param  ?REAL $shipping_cost The default shipping cost (null: unknown).
- * @param  ?float $product_weight Weight of product (null: unknown).
- * @param  ?float $product_length Length of product (null: unknown).
- * @param  ?float $product_width Width of product (null: unknown).
- * @param  ?float $product_height Height of product (null: unknown).
- * @param  ?MEMBER $member_id The member this is for (null: current member).
- * @return REAL The shipping cost.
+ * @param  ?array $details Map of product details (null: not for a final sold product, some kind of intermediate stage or peripheral check)
+ * @param  ?REAL $shipping_cost The default shipping cost (null: unknown)
+ * @param  ?float $product_weight Weight of product (null: unknown)
+ * @param  ?float $product_length Length of product (null: unknown)
+ * @param  ?float $product_width Width of product (null: unknown)
+ * @param  ?float $product_height Height of product (null: unknown)
+ * @param  ?MEMBER $member_id The member this is for (null: current member)
+ * @return REAL The shipping cost
  */
 function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$product_length, &$product_width, &$product_height, $member_id = null)
 {
@@ -228,8 +228,8 @@ function calculate_shipping_cost($details, $shipping_cost, &$product_weight, &$p
 /**
  * Make an ISO country code shippo-compatible.
  *
- * @param  string $country ISO country code.
- * @return string Shippo-compatible code.
+ * @param  string $country ISO country code
+ * @return string Shippo-compatible code
  */
 function _make_country_for_shippo($country)
 {
@@ -242,7 +242,7 @@ function _make_country_for_shippo($country)
 /**
  * Get the base shipping cost for the shopping cart.
  *
- * @return float Base shipping cost.
+ * @return float Base shipping cost
  */
 function get_base_shipping_cost()
 {
@@ -259,18 +259,18 @@ function get_base_shipping_cost()
 /**
  * Get form fields for a shipping/invoice address.
  *
- * @param  string $shipping_email E-mail address.
- * @param  string $shipping_phone Phone number.
- * @param  string $shipping_firstname First name.
- * @param  string $shipping_lastname Last name.
- * @param  string $shipping_street_address Street address.
- * @param  string $shipping_city Town/City.
- * @param  string $shipping_county County.
- * @param  string $shipping_state State.
- * @param  string $shipping_post_code Postcode/Zip.
- * @param  string $shipping_country Country.
- * @param  boolean $require_all_details Whether to require all details to be input.
- * @return Tempcode Address fields.
+ * @param  string $shipping_email E-mail address
+ * @param  string $shipping_phone Phone number
+ * @param  string $shipping_firstname First name
+ * @param  string $shipping_lastname Last name
+ * @param  string $shipping_street_address Street address
+ * @param  string $shipping_city Town/City
+ * @param  string $shipping_county County
+ * @param  string $shipping_state State
+ * @param  string $shipping_post_code Postcode/Zip
+ * @param  string $shipping_country Country
+ * @param  boolean $require_all_details Whether to require all details to be input
+ * @return Tempcode Address fields
  */
 function get_shipping_address_fields($shipping_email, $shipping_phone, $shipping_firstname, $shipping_lastname, $shipping_street_address, $shipping_city, $shipping_county, $shipping_state, $shipping_post_code, $shipping_country, $require_all_details = true)
 {
@@ -286,10 +286,10 @@ function get_shipping_address_fields($shipping_email, $shipping_phone, $shipping
 /**
  * Get form fields for a shipping/invoice address.
  *
- * @param  string $shipping_firstname First name.
- * @param  string $shipping_lastname Last name.
- * @param  boolean $require_all_details Whether to require all details to be input.
- * @return Tempcode Name fields.
+ * @param  string $shipping_firstname First name
+ * @param  string $shipping_lastname Last name
+ * @param  boolean $require_all_details Whether to require all details to be input
+ * @return Tempcode Name fields
  */
 function get_shipping_name_fields($shipping_firstname, $shipping_lastname, $require_all_details = true)
 {
@@ -304,10 +304,10 @@ function get_shipping_name_fields($shipping_firstname, $shipping_lastname, $requ
 /**
  * Get form fields for a shipping/invoice address.
  *
- * @param  string $shipping_email E-mail address.
- * @param  string $shipping_phone Phone number.
- * @param  boolean $require_all_details Whether to require all details to be input.
- * @return Tempcode Contact fields.
+ * @param  string $shipping_email E-mail address
+ * @param  string $shipping_phone Phone number
+ * @param  boolean $require_all_details Whether to require all details to be input
+ * @return Tempcode Contact fields
  */
 function get_shipping_contact_fields($shipping_email, $shipping_phone, $require_all_details = true)
 {
@@ -323,10 +323,10 @@ function get_shipping_contact_fields($shipping_email, $shipping_phone, $require_
  * Store shipping address for a transaction.
  * We try and merge it with one we already have on record in a sensible way.
  *
- * @param  ID_TEXT $trans_expecting_id Expected transaction ID.
- * @param  ID_TEXT $txn_id Transaction ID (blank: not set yet).
- * @param  ?array $shipping_address Shipping address (null: get from POST parameters).
- * @return ?AUTO_LINK Address ID (null: none saved).
+ * @param  ID_TEXT $trans_expecting_id Expected transaction ID
+ * @param  ID_TEXT $txn_id Transaction ID (blank: not set yet)
+ * @param  ?array $shipping_address Shipping address (null: get from POST parameters)
+ * @return ?AUTO_LINK Address ID (null: none saved)
  */
 function store_shipping_address($trans_expecting_id, $txn_id = '', $shipping_address = null)
 {

@@ -21,9 +21,9 @@
 /**
  * Find whether a certain member may control a certain usergroup.
  *
- * @param  GROUP $group_id The usergroup.
- * @param  MEMBER $member_id The member.
- * @return boolean The answer.
+ * @param  GROUP $group_id The usergroup
+ * @param  MEMBER $member_id The member
+ * @return boolean The answer
  */
 function cns_may_control_group($group_id, $member_id)
 {
@@ -35,16 +35,16 @@ function cns_may_control_group($group_id, $member_id)
 /**
  * Edit a usergroup.
  *
- * @param  AUTO_LINK $group_id The ID of the usergroup to edit.
+ * @param  AUTO_LINK $group_id The ID of the usergroup to edit
  * @param  ?SHORT_TEXT $name The name of the usergroup. (null: do not change)
  * @param  ?BINARY $is_default Whether members are automatically put into the when they join. (null: do not change)
  * @param  ?BINARY $is_super_admin Whether members of this usergroup are all super administrators. (null: do not change)
  * @param  ?BINARY $is_super_moderator Whether members of this usergroup are all super moderators. (null: do not change)
  * @param  ?SHORT_TEXT $title The title for primary members of this usergroup that don't have their own title. (null: do not change)
  * @param  ?URLPATH $rank_image The rank image for this. (null: do not change)
- * @param  ?GROUP $promotion_target The that members of this usergroup get promoted to at point threshold (null: no promotion prospects).
- * @param  ?integer $promotion_threshold The point threshold for promotion (null: no promotion prospects).
- * @param  ?MEMBER $group_leader The leader of this usergroup (null: none).
+ * @param  ?GROUP $promotion_target The that members of this usergroup get promoted to at point threshold (null: no promotion prospects)
+ * @param  ?integer $promotion_threshold The point threshold for promotion (null: no promotion prospects)
+ * @param  ?MEMBER $group_leader The leader of this usergroup (null: none)
  * @param  ?integer $flood_control_submit_secs The number of seconds that members of this usergroup must endure between submits (group 'best of' applies). (null: do not change)
  * @param  ?integer $flood_control_access_secs The number of seconds that members of this usergroup must endure between accesses (group 'best of' applies). (null: do not change)
  * @param  ?integer $max_daily_upload_mb The number of megabytes that members of this usergroup may attach per day (group 'best of' applies). (null: do not change)
@@ -188,8 +188,8 @@ function cns_edit_group($group_id, $name, $is_default, $is_super_admin, $is_supe
 /**
  * Delete a usergroup.
  *
- * @param  AUTO_LINK $group_id The ID of the usergroup to delete.
- * @param  ?GROUP $target_group The usergroup to move primary members to (null: main members).
+ * @param  AUTO_LINK $group_id The ID of the usergroup to delete
+ * @param  ?GROUP $target_group The usergroup to move primary members to (null: main members)
  */
 function cns_delete_group($group_id, $target_group = null)
 {
@@ -259,8 +259,8 @@ function cns_delete_group($group_id, $target_group = null)
 /**
  * Mark a member as applying to be in a certain, and inform the leader.
  *
- * @param  GROUP $group_id The usergroup to apply to.
- * @param  ?MEMBER $member_id The member applying (null: current member).
+ * @param  GROUP $group_id The usergroup to apply to
+ * @param  ?MEMBER $member_id The member applying (null: current member)
  */
 function cns_member_ask_join_group($group_id, $member_id = null)
 {
@@ -329,8 +329,8 @@ function cns_member_ask_join_group($group_id, $member_id = null)
 /**
  * Remove a member from a certain usergroup.
  *
- * @param  GROUP $group_id The usergroup to remove from.
- * @param  ?MEMBER $member_id The member leaving (null: current member).
+ * @param  GROUP $group_id The usergroup to remove from
+ * @param  ?MEMBER $member_id The member leaving (null: current member)
  */
 function cns_member_leave_group($group_id, $member_id = null)
 {
@@ -363,9 +363,9 @@ function cns_member_leave_group($group_id, $member_id = null)
 /**
  * Add a member to a certain usergroup.
  *
- * @param  MEMBER $member_id The member.
- * @param  GROUP $id The usergroup.
- * @param  BINARY $validated Whether the member is validated into the usergroup.
+ * @param  MEMBER $member_id The member
+ * @param  GROUP $id The usergroup
+ * @param  BINARY $validated Whether the member is validated into the usergroup
  */
 function cns_add_member_to_group($member_id, $id, $validated = 1)
 {
@@ -417,10 +417,10 @@ function cns_add_member_to_group($member_id, $id, $validated = 1)
 /**
  * Set whether a member that has applied to be in a, may be in it, and inform them of the decision.
  *
- * @param  GROUP $group_id The usergroup.
- * @param  MEMBER $prospective_member_id The prospective member.
- * @param  boolean $decline Whether the member is being declined membership.
- * @param  string $reason The reason given for declining.
+ * @param  GROUP $group_id The usergroup
+ * @param  MEMBER $prospective_member_id The prospective member
+ * @param  boolean $decline Whether the member is being declined membership
+ * @param  string $reason The reason given for declining
  */
 function cns_member_validate_into_group($group_id, $prospective_member_id, $decline = false, $reason = '')
 {
@@ -466,8 +466,8 @@ function cns_member_validate_into_group($group_id, $prospective_member_id, $decl
 /**
  * Copy permissions relating to one, to another.
  *
- * @param  GROUP $to The that is having its permissions replaced.
- * @param  GROUP $from The that the permissions are being drawn from.
+ * @param  GROUP $to The that is having its permissions replaced
+ * @param  GROUP $from The that the permissions are being drawn from
  */
 function cns_group_absorb_privileges_of($to, $from)
 {
@@ -480,11 +480,11 @@ function cns_group_absorb_privileges_of($to, $from)
 /**
  * Helper function, for copy permissions relating to one, to another.
  *
- * @param  GROUP $to The that is having its permissions replaced.
- * @param  GROUP $from The that the permissions are being drawn from.
- * @param  ID_TEXT $table The table holding the permissions.
- * @param  ID_TEXT $id The name of the field in the table that holds the ID.
- * @param  boolean $cns Whether the operation is being carried out over the Conversr driver.
+ * @param  GROUP $to The that is having its permissions replaced
+ * @param  GROUP $from The that the permissions are being drawn from
+ * @param  ID_TEXT $table The table holding the permissions
+ * @param  ID_TEXT $id The name of the field in the table that holds the ID
+ * @param  boolean $cns Whether the operation is being carried out over the Conversr driver
  *
  * @ignore
  */

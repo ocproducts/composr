@@ -26,7 +26,7 @@ class Hook_cleanup_cns_topics
     /**
      * Find details about this cleanup hook.
      *
-     * @return ?array Map of cleanup hook info (null: hook is disabled).
+     * @return ?array Map of cleanup hook info (null: hook is disabled)
      */
     public function info()
     {

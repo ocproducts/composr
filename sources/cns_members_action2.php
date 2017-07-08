@@ -133,8 +133,8 @@ function create_selection_list_timezone_list($timezone = null)
 /**
  * If we are using human names for usernames, a conflict is likely. Store a suffixed variety. Maybe later Composr will strip these suffixes out in some contexts.
  *
- * @param  SHORT_TEXT $username The desired human name for the member profile.
- * @return SHORT_TEXT A unique username.
+ * @param  SHORT_TEXT $username The desired human name for the member profile
+ * @return SHORT_TEXT A unique username
  */
 function get_username_from_human_name($username)
 {
@@ -155,15 +155,15 @@ function get_username_from_human_name($username)
 /**
  * Get a form for finishing off a member profile (such as for LDAP or httpauth, where a partial profile is automatically made, but needs completion).
  *
- * @param  SHORT_TEXT $username The username for the member profile.
- * @param  ID_TEXT $type The type of member profile we are finishing off.
+ * @param  SHORT_TEXT $username The username for the member profile
+ * @param  ID_TEXT $type The type of member profile we are finishing off
  * @param  string $email_address Auto-detected e-mail address (blank: none)
  * @param  ?integer $dob_day Auto-detected DOB day (null: unknown)
  * @param  ?integer $dob_month Auto-detected DOB month (null: unknown)
  * @param  ?integer $dob_year Auto-detected DOB year (null: unknown)
  * @param  ?ID_TEXT $timezone Auto-detected Timezone (null: unknown)
  * @param  ?ID_TEXT $language Auto-detected Language (null: unknown)
- * @return Tempcode The form.
+ * @return Tempcode The form
  */
 function cns_member_external_linker_ask($username, $type, $email_address = '', $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null)
 {
@@ -204,20 +204,20 @@ function cns_member_external_linker_ask($username, $type, $email_address = '', $
 /**
  * Finishing off of a member profile (such as for LDAP or httpauth, where a partial profile is automatically made, but needs completion).
  *
- * @param  SHORT_TEXT $username The username for the member profile.
- * @param  SHORT_TEXT $password The password for the member profile.
- * @param  ID_TEXT $type The type of member profile we are finishing off.
- * @param  boolean $email_check Whether to check for duplicated email addresses.
+ * @param  SHORT_TEXT $username The username for the member profile
+ * @param  SHORT_TEXT $password The password for the member profile
+ * @param  ID_TEXT $type The type of member profile we are finishing off
+ * @param  boolean $email_check Whether to check for duplicated email addresses
  * @param  string $email_address Auto-detected e-mail address (blank: none)
  * @param  ?integer $dob_day Auto-detected DOB day (null: unknown)
  * @param  ?integer $dob_month Auto-detected DOB month (null: unknown)
  * @param  ?integer $dob_year Auto-detected DOB year (null: unknown)
  * @param  ?ID_TEXT $timezone Auto-detected Timezone (null: unknown)
  * @param  ?ID_TEXT $language Auto-detected Language (null: unknown)
- * @param  ?URLPATH $avatar_url The URL to the member's avatar (blank: none) (null: choose one automatically).
- * @param  URLPATH $photo_url The URL to the member's photo (blank: none).
- * @param  URLPATH $photo_thumb_url The URL to the member's photo thumbnail (blank: none).
- * @return MEMBER The member ID for the finished off profile.
+ * @param  ?URLPATH $avatar_url The URL to the member's avatar (blank: none) (null: choose one automatically)
+ * @param  URLPATH $photo_url The URL to the member's photo (blank: none)
+ * @param  URLPATH $photo_thumb_url The URL to the member's photo thumbnail (blank: none)
+ * @return MEMBER The member ID for the finished off profile
  */
 function cns_member_external_linker($username, $password, $type, $email_check = true, $email_address = '', $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $language = null, $avatar_url = null, $photo_url = '', $photo_thumb_url = '')
 {
@@ -290,9 +290,9 @@ function cns_member_external_linker($username, $password, $type, $email_check = 
 /**
  * Read in the custom profile field POST data.
  *
- * @param  array $custom_fields The CPF field rows that we'll be reading in the member's values for.
+ * @param  array $custom_fields The CPF field rows that we'll be reading in the member's values for
  * @param  ?MEMBER $member_id Member involved (null: new member)
- * @return array The CPF data.
+ * @return array The CPF data
  */
 function cns_read_in_custom_fields($custom_fields, $member_id = null)
 {
@@ -323,34 +323,34 @@ function cns_read_in_custom_fields($custom_fields, $member_id = null)
 /**
  * Get form fields for adding/editing/finishing a member profile.
  *
- * @param  boolean $mini_mode Whether we are only handling the essential details of a profile.
- * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member).
- * @param  ?array $groups A list of usergroups (null: default/current usergroups).
- * @param  SHORT_TEXT $email_address The e-mail address.
- * @param  BINARY $preview_posts Whether posts are previewed before they are made.
- * @param  ?integer $dob_day Day of date of birth (null: not known).
- * @param  ?integer $dob_month Month of date of birth (null: not known).
- * @param  ?integer $dob_year Year of date of birth (null: not known).
- * @param  ?ID_TEXT $timezone The member timezone (null: site default).
- * @param  ?array $custom_fields A map of custom fields values (field-id=>value) (null: not known).
- * @param  ?ID_TEXT $theme The members default theme (null: not known).
- * @param  BINARY $reveal_age Whether the members age may be shown.
- * @param  BINARY $views_signatures Whether the member sees signatures in posts.
- * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config).
- * @param  ?LANGUAGE_NAME $language The members language (null: auto detect).
- * @param  BINARY $allow_emails Whether the member allows e-mails via the site.
- * @param  BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site.
- * @param  BINARY $validated Whether the profile has been validated.
- * @param  ?GROUP $primary_group The members primary (null: not known).
- * @param  SHORT_TEXT $username The username.
- * @param  BINARY $is_perm_banned Whether the member is permanently banned.
- * @param  ID_TEXT $special_type The special type of profile this is (blank: not a special type).
- * @param  BINARY $highlighted_name Whether the member username will be highlighted.
- * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member.
- * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member.
+ * @param  boolean $mini_mode Whether we are only handling the essential details of a profile
+ * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member)
+ * @param  ?array $groups A list of usergroups (null: default/current usergroups)
+ * @param  SHORT_TEXT $email_address The e-mail address
+ * @param  BINARY $preview_posts Whether posts are previewed before they are made
+ * @param  ?integer $dob_day Day of date of birth (null: not known)
+ * @param  ?integer $dob_month Month of date of birth (null: not known)
+ * @param  ?integer $dob_year Year of date of birth (null: not known)
+ * @param  ?ID_TEXT $timezone The member timezone (null: site default)
+ * @param  ?array $custom_fields A map of custom fields values (field-id=>value) (null: not known)
+ * @param  ?ID_TEXT $theme The members default theme (null: not known)
+ * @param  BINARY $reveal_age Whether the members age may be shown
+ * @param  BINARY $views_signatures Whether the member sees signatures in posts
+ * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config)
+ * @param  ?LANGUAGE_NAME $language The members language (null: auto detect)
+ * @param  BINARY $allow_emails Whether the member allows e-mails via the site
+ * @param  BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site
+ * @param  BINARY $validated Whether the profile has been validated
+ * @param  ?GROUP $primary_group The members primary (null: not known)
+ * @param  SHORT_TEXT $username The username
+ * @param  BINARY $is_perm_banned Whether the member is permanently banned
+ * @param  ID_TEXT $special_type The special type of profile this is (blank: not a special type)
+ * @param  BINARY $highlighted_name Whether the member username will be highlighted
+ * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member
+ * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member
  * @param  ?TIME $on_probation_until When the member is on probation until (null: just finished probation / or effectively was never on it)
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return array A pair: The form fields, Hidden fields (both Tempcode).
+ * @return array A pair: The form fields, Hidden fields (both Tempcode)
  */
 function cns_get_member_fields($mini_mode = true, $member_id = null, $groups = null, $email_address = '', $preview_posts = 0, $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $custom_fields = null, $theme = null, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $validated = 1, $primary_group = null, $username = '', $is_perm_banned = 0, $special_type = '', $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $adjusted_config_options = null)
 {
@@ -375,33 +375,33 @@ function cns_get_member_fields($mini_mode = true, $member_id = null, $groups = n
 /**
  * Get form fields for adding/editing/finishing a member profile.
  *
- * @param  boolean $mini_mode Whether we are only handling the essential details of a profile.
- * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member).
- * @param  ?array $groups A list of usergroups (null: default/current usergroups).
- * @param  SHORT_TEXT $email_address The e-mail address.
- * @param  ?BINARY $preview_posts Whether posts are previewed before they are made (null: calculate statistically).
- * @param  ?integer $dob_day Day of date of birth (null: not known).
- * @param  ?integer $dob_month Month of date of birth (null: not known).
- * @param  ?integer $dob_year Year of date of birth (null: not known).
- * @param  ?ID_TEXT $timezone The member timezone (null: site default).
- * @param  ?ID_TEXT $theme The members default theme (null: not known).
- * @param  BINARY $reveal_age Whether the members age may be shown.
- * @param  BINARY $views_signatures Whether the member sees signatures in posts.
- * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config).
- * @param  ?LANGUAGE_NAME $language The members language (null: auto detect).
- * @param  BINARY $allow_emails Whether the member allows e-mails via the site.
- * @param  BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site.
- * @param  BINARY $validated Whether the profile has been validated.
- * @param  ?GROUP $primary_group The members primary (null: not known).
- * @param  SHORT_TEXT $username The username.
- * @param  BINARY $is_perm_banned Whether the member is permanently banned.
- * @param  ID_TEXT $special_type The special type of profile this is (blank: not a special type).
- * @param  BINARY $highlighted_name Whether the member username will be highlighted.
- * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member.
- * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member.
+ * @param  boolean $mini_mode Whether we are only handling the essential details of a profile
+ * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member)
+ * @param  ?array $groups A list of usergroups (null: default/current usergroups)
+ * @param  SHORT_TEXT $email_address The e-mail address
+ * @param  ?BINARY $preview_posts Whether posts are previewed before they are made (null: calculate statistically)
+ * @param  ?integer $dob_day Day of date of birth (null: not known)
+ * @param  ?integer $dob_month Month of date of birth (null: not known)
+ * @param  ?integer $dob_year Year of date of birth (null: not known)
+ * @param  ?ID_TEXT $timezone The member timezone (null: site default)
+ * @param  ?ID_TEXT $theme The members default theme (null: not known)
+ * @param  BINARY $reveal_age Whether the members age may be shown
+ * @param  BINARY $views_signatures Whether the member sees signatures in posts
+ * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config)
+ * @param  ?LANGUAGE_NAME $language The members language (null: auto detect)
+ * @param  BINARY $allow_emails Whether the member allows e-mails via the site
+ * @param  BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site
+ * @param  BINARY $validated Whether the profile has been validated
+ * @param  ?GROUP $primary_group The members primary (null: not known)
+ * @param  SHORT_TEXT $username The username
+ * @param  BINARY $is_perm_banned Whether the member is permanently banned
+ * @param  ID_TEXT $special_type The special type of profile this is (blank: not a special type)
+ * @param  BINARY $highlighted_name Whether the member username will be highlighted
+ * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member
+ * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member
  * @param  ?TIME $on_probation_until When the member is on probation until (null: just finished probation / or effectively was never on it)
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return array A pair: The form fields, Hidden fields (both Tempcode).
+ * @return array A pair: The form fields, Hidden fields (both Tempcode)
  */
 function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $groups = null, $email_address = '', $preview_posts = null, $dob_day = null, $dob_month = null, $dob_year = null, $timezone = null, $theme = null, $reveal_age = 1, $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $validated = 1, $primary_group = null, $username = '', $is_perm_banned = 0, $special_type = '', $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $adjusted_config_options = null)
 {
@@ -695,12 +695,12 @@ function cns_get_member_fields_settings($mini_mode = true, $member_id = null, $g
 /**
  * Get form fields for adding/editing/finishing a member profile.
  *
- * @param  boolean $mini_mode Whether we are only handling the essential details of a profile.
- * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member).
- * @param  ?array $groups A list of usergroups (null: default/current usergroups).
- * @param  ?array $custom_fields A map of custom fields values (field-id=>value) (null: not known).
+ * @param  boolean $mini_mode Whether we are only handling the essential details of a profile
+ * @param  ?MEMBER $member_id The ID of the member we are handling (null: new member)
+ * @param  ?array $groups A list of usergroups (null: default/current usergroups)
+ * @param  ?array $custom_fields A map of custom fields values (field-id=>value) (null: not known)
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return array A pair: The form fields, Hidden fields (both Tempcode).
+ * @return array A pair: The form fields, Hidden fields (both Tempcode)
  */
 function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $groups = null, $custom_fields = null, $adjusted_config_options = null)
 {
@@ -812,15 +812,15 @@ function cns_get_member_fields_profile($mini_mode = true, $member_id = null, $gr
 /**
  * Edit a member.
  *
- * @param  AUTO_LINK $member_id The ID of the member.
+ * @param  AUTO_LINK $member_id The ID of the member
  * @param  ?SHORT_TEXT $email_address The e-mail address. (null: don't change)
  * @param  ?BINARY $preview_posts Whether posts are previewed before they are made. (null: don't change)
  * @param  ?integer $dob_day Day of date of birth. (null: don't change) (-1: deset)
  * @param  ?integer $dob_month Month of date of birth. (null: don't change) (-1: deset)
  * @param  ?integer $dob_year Year of date of birth. (null: don't change) (-1: deset)
  * @param  ?ID_TEXT $timezone The member timezone. (null: don't change)
- * @param  ?GROUP $primary_group The members primary (null: don't change).
- * @param  array $custom_fields A map of custom fields values (field-id=>value).
+ * @param  ?GROUP $primary_group The members primary (null: don't change)
+ * @param  array $custom_fields A map of custom fields values (field-id=>value)
  * @param  ?ID_TEXT $theme The members default theme. (null: don't change)
  * @param  ?BINARY $reveal_age Whether the members age may be shown. (null: don't change)
  * @param  ?BINARY $views_signatures Whether the member sees signatures in posts. (null: don't change)
@@ -1158,7 +1158,7 @@ function cns_edit_member($member_id, $email_address, $preview_posts, $dob_day, $
 /**
  * Delete a member.
  *
- * @param  AUTO_LINK $member_id The ID of the member.
+ * @param  AUTO_LINK $member_id The ID of the member
  */
 function cns_delete_member($member_id)
 {
@@ -1237,7 +1237,7 @@ function cns_delete_member($member_id)
 /**
  * Ban a member.
  *
- * @param  AUTO_LINK $member_id The ID of the member.
+ * @param  AUTO_LINK $member_id The ID of the member
  */
 function cns_ban_member($member_id)
 {
@@ -1267,7 +1267,7 @@ function cns_ban_member($member_id)
 /**
  * Unban a member.
  *
- * @param  AUTO_LINK $member_id The ID of the member.
+ * @param  AUTO_LINK $member_id The ID of the member
  */
 function cns_unban_member($member_id)
 {
@@ -1297,22 +1297,22 @@ function cns_unban_member($member_id)
 /**
  * Edit a custom profile field.
  *
- * @param  AUTO_LINK $id The ID of the custom profile field.
- * @param  SHORT_TEXT $name Name of the field.
- * @param  SHORT_TEXT $description Description of the field.
- * @param  LONG_TEXT $default The default value for the field.
- * @param  BINARY $public_view Whether the field is publicly viewable.
- * @param  BINARY $owner_view Whether the field is viewable by the owner.
- * @param  BINARY $owner_set Whether the field may be set by the owner.
- * @param  BINARY $encrypted Whether the field should be encrypted.
+ * @param  AUTO_LINK $id The ID of the custom profile field
+ * @param  SHORT_TEXT $name Name of the field
+ * @param  SHORT_TEXT $description Description of the field
+ * @param  LONG_TEXT $default The default value for the field
+ * @param  BINARY $public_view Whether the field is publicly viewable
+ * @param  BINARY $owner_view Whether the field is viewable by the owner
+ * @param  BINARY $owner_set Whether the field may be set by the owner
+ * @param  BINARY $encrypted Whether the field should be encrypted
  * @param  BINARY $required Whether the field is to be shown on the join form
- * @param  BINARY $show_in_posts Whether this field is shown in posts and places where member details are highlighted (such as an image in a member gallery).
- * @param  BINARY $show_in_post_previews Whether this field is shown in preview places, such as in the forum member tooltip.
- * @param  integer $order The order of this field relative to other fields.
- * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list).
- * @param  ID_TEXT $type The type of the field.
+ * @param  BINARY $show_in_posts Whether this field is shown in posts and places where member details are highlighted (such as an image in a member gallery)
+ * @param  BINARY $show_in_post_previews Whether this field is shown in preview places, such as in the forum member tooltip
+ * @param  integer $order The order of this field relative to other fields
+ * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list)
+ * @param  ID_TEXT $type The type of the field
  * @set    short_text long_text short_trans long_trans integer upload picture url list tick float
- * @param  BINARY $show_on_join_form Whether it is required that every member have this field filled in.
+ * @param  BINARY $show_on_join_form Whether it is required that every member have this field filled in
  * @param  SHORT_TEXT $options Field options
  */
 function cns_edit_custom_field($id, $name, $description, $default, $public_view, $owner_view, $owner_set, $encrypted, $required, $show_in_posts, $show_in_post_previews, $order, $only_group, $type, $show_on_join_form, $options)
@@ -1385,7 +1385,7 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
 /**
  * Delete a custom profile field.
  *
- * @param  AUTO_LINK $id The ID of the custom profile field.
+ * @param  AUTO_LINK $id The ID of the custom profile field
  */
 function cns_delete_custom_field($id)
 {
@@ -1430,12 +1430,12 @@ function cns_delete_custom_field($id)
 /**
  * Set a custom profile field for a member.
  *
- * @param  MEMBER $member_id The member.
- * @param  AUTO_LINK $field_id The field being set.
+ * @param  MEMBER $member_id The member
+ * @param  AUTO_LINK $field_id The field being set
  * @param  mixed $value The value of the field. For a trans-type field, this can be either a lang-ID to be copied (from forum DB), or an actual string.
- * @param  ?ID_TEXT $type The field type (null: look it up).
- * @param  boolean $defer Whether to defer the change, by returning a result change rather than doing it right away.
- * @return ?array Mapping change (null: none / can't defer).
+ * @param  ?ID_TEXT $type The field type (null: look it up)
+ * @param  boolean $defer Whether to defer the change, by returning a result change rather than doing it right away
+ * @return ?array Mapping change (null: none / can't defer)
  */
 function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defer = false)
 {
@@ -1560,11 +1560,11 @@ function cns_set_custom_field($member_id, $field_id, $value, $type = null, $defe
 /**
  * Check a username is valid for adding, and possibly also the password.
  *
- * @param  ?SHORT_TEXT $username The username (may get altered) (null: nothing to check).
- * @param  ?MEMBER $member_id The member (null: member not actually added yet; this ID is only given for the duplication check, to make sure it doesn't think we are duplicating with ourself).
- * @param  ?SHORT_TEXT $password The password (null: nothing to check).
- * @param  boolean $return_errors Whether to return errors instead of dieing on them.
- * @return ?Tempcode Error (null: none).
+ * @param  ?SHORT_TEXT $username The username (may get altered) (null: nothing to check)
+ * @param  ?MEMBER $member_id The member (null: member not actually added yet; this ID is only given for the duplication check, to make sure it doesn't think we are duplicating with ourself)
+ * @param  ?SHORT_TEXT $password The password (null: nothing to check)
+ * @param  boolean $return_errors Whether to return errors instead of dieing on them
+ * @return ?Tempcode Error (null: none)
  */
 function cns_check_name_valid(&$username, $member_id = null, $password = null, $return_errors = false)
 {
@@ -1702,8 +1702,8 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
 /**
  * Edit a member's personal title, and check validity.
  *
- * @param  SHORT_TEXT $new_title The new title.
- * @param  ?MEMBER $member_id The member (null: the current member).
+ * @param  SHORT_TEXT $new_title The new title
+ * @param  ?MEMBER $member_id The member (null: the current member)
  */
 function cns_member_choose_title($new_title, $member_id = null)
 {
@@ -1732,8 +1732,8 @@ function cns_member_choose_title($new_title, $member_id = null)
 /**
  * Edit a member's signature, and check validity.
  *
- * @param  LONG_TEXT $new_signature The new signature.
- * @param  ?MEMBER $member_id The member (null: the current member).
+ * @param  LONG_TEXT $new_signature The new signature
+ * @param  ?MEMBER $member_id The member (null: the current member)
  */
 function cns_member_choose_signature($new_signature, $member_id = null)
 {
@@ -1772,8 +1772,8 @@ function cns_member_choose_signature($new_signature, $member_id = null)
 /**
  * Edit a member's avatar, and check validity.
  *
- * @param  URLPATH $avatar_url The new avatar URL.
- * @param  ?MEMBER $member_id The member (null: the current member).
+ * @param  URLPATH $avatar_url The new avatar URL
+ * @param  ?MEMBER $member_id The member (null: the current member)
  */
 function cns_member_choose_avatar($avatar_url, $member_id = null)
 {
@@ -1846,9 +1846,9 @@ function cns_member_choose_avatar($avatar_url, $member_id = null)
 /**
  * Edit a member's photo, and check validity.
  *
- * @param  ID_TEXT $param_name The identifier for the name of the posted URL field.
- * @param  ID_TEXT $upload_name The identifier for the name of the posted upload.
- * @param  ?MEMBER $member_id The member (null: the current member).
+ * @param  ID_TEXT $param_name The identifier for the name of the posted URL field
+ * @param  ID_TEXT $upload_name The identifier for the name of the posted upload
+ * @param  ?MEMBER $member_id The member (null: the current member)
  */
 function cns_member_choose_photo($param_name, $upload_name, $member_id = null)
 {
@@ -1910,9 +1910,9 @@ function cns_member_choose_photo($param_name, $upload_name, $member_id = null)
 /**
  * Edit a member's photo.
  *
- * @param  URLPATH $url URL to photo.
- * @param  URLPATH $thumb_url URL to thumbnail photo.
- * @param  ?MEMBER $member_id The member (null: the current member).
+ * @param  URLPATH $url URL to photo
+ * @param  URLPATH $thumb_url URL to thumbnail photo
+ * @param  ?MEMBER $member_id The member (null: the current member)
  */
 function cns_member_choose_photo_concrete($url, $thumb_url, $member_id = null)
 {
@@ -1969,8 +1969,8 @@ function cns_member_choose_photo_concrete($url, $thumb_url, $member_id = null)
 /**
  * Update caching against a member's username. This doesn't change the username in the actual member record -- it is assumed that this will be done elsewhere.
  *
- * @param  MEMBER $member_id The member ID.
- * @param  ID_TEXT $username The new username that is being set for them.
+ * @param  MEMBER $member_id The member ID
+ * @param  ID_TEXT $username The new username that is being set for them
  */
 function update_member_username_caching($member_id, $username)
 {
@@ -1992,7 +1992,7 @@ function update_member_username_caching($member_id, $username)
 /**
  * Delete a custom profile field from one of the predefined templates (this is often used by importers).
  *
- * @param  ID_TEXT $field The identifier of the boiler custom profile field.
+ * @param  ID_TEXT $field The identifier of the boiler custom profile field
  */
 function cns_delete_boiler_custom_field($field)
 {

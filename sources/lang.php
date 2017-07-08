@@ -606,8 +606,8 @@ function require_lang($codename, $lang = null, $type = null, $ignore_errors = fa
  * Include all the language files for use in the script.
  * NOTE: This may reduce performance, so you should only use it if you really have to.
  *
- * @param  ?LANGUAGE_NAME $lang The language to include files from (null: use current users language).
- * @param  boolean $only_if_for_lang Only load it up if it is specifically defined for our language.
+ * @param  ?LANGUAGE_NAME $lang The language to include files from (null: use current users language)
+ * @param  boolean $only_if_for_lang Only load it up if it is specifically defined for our language
  */
 function require_all_lang($lang = null, $only_if_for_lang = false)
 {

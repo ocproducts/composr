@@ -28,7 +28,7 @@ class Hook_cleanup_mysql_optimise
     /**
      * Find details about this cleanup hook.
      *
-     * @return ?array Map of cleanup hook info (null: hook is disabled).
+     * @return ?array Map of cleanup hook info (null: hook is disabled)
      */
     public function info()
     {

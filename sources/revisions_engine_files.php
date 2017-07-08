@@ -34,8 +34,8 @@ class RevisionEngineFiles
     /**
      * Find whether revisions are enabled for the current user.
      *
-     * @param  boolean $check_privilege Whether to check privileges.
-     * @return boolean Whether revisions are enabled.
+     * @param  boolean $check_privilege Whether to check privileges
+     * @return boolean Whether revisions are enabled
      */
     public function enabled($check_privilege)
     {
@@ -55,11 +55,11 @@ class RevisionEngineFiles
     /**
      * Add a revision.
      *
-     * @param  PATH $directory Directory where revisions are stored.
-     * @param  string $filename_id ID of what is being revised (=base filename, no extension).
-     * @param  string $ext File extension for revisable files.
-     * @param  ?string $original_text Text before revision (null: work out from disk).
-     * @param  ?TIME $original_timestamp The creation timestamp for what was just replaced (null: work out from disk).
+     * @param  PATH $directory Directory where revisions are stored
+     * @param  string $filename_id ID of what is being revised (=base filename, no extension)
+     * @param  string $ext File extension for revisable files
+     * @param  ?string $original_text Text before revision (null: work out from disk)
+     * @param  ?TIME $original_timestamp The creation timestamp for what was just replaced (null: work out from disk)
      */
     public function add_revision($directory, $filename_id, $ext, $original_text, $original_timestamp)
     {
@@ -104,10 +104,10 @@ class RevisionEngineFiles
     /**
      * Delete a particular revision.
      *
-     * @param  PATH $directory Directory where revisions are stored.
-     * @param  string $filename_id ID of what is being revised (=base filename, no extension).
-     * @param  string $ext File extension for revisable files.
-     * @param  TIME $id Revision ID.
+     * @param  PATH $directory Directory where revisions are stored
+     * @param  string $filename_id ID of what is being revised (=base filename, no extension)
+     * @param  string $ext File extension for revisable files
+     * @param  TIME $id Revision ID
      */
     public function delete_revision($directory, $filename_id, $ext, $id)
     {
@@ -127,15 +127,15 @@ class RevisionEngineFiles
     /**
      * Retrieve revisions of something.
      *
-     * @param  PATH $directory Directory where revisions are stored.
-     * @param  string $filename_id ID of what was revised (=base filename, no extension).
-     * @param  string $ext File extension for revisable files.
-     * @param  ?string $action The action the revision is for, a language string (null: no filter).
-     * @param  ?TIME $revision_time The creation timestamp for a particular revision to retrieve (null: no filter).
-     * @param  ?integer $max Maximum to return (null: no limit).
-     * @param  integer $start Start offset.
-     * @param  boolean $limited_data Whether to only collect IDs and other simple low-bandwidth data.
-     * @return array List of revision maps.
+     * @param  PATH $directory Directory where revisions are stored
+     * @param  string $filename_id ID of what was revised (=base filename, no extension)
+     * @param  string $ext File extension for revisable files
+     * @param  ?string $action The action the revision is for, a language string (null: no filter)
+     * @param  ?TIME $revision_time The creation timestamp for a particular revision to retrieve (null: no filter)
+     * @param  ?integer $max Maximum to return (null: no limit)
+     * @param  integer $start Start offset
+     * @param  boolean $limited_data Whether to only collect IDs and other simple low-bandwidth data
+     * @return array List of revision maps
      */
     public function find_revisions($directory, $filename_id, $ext, $action = null, $revision_time = null, $max = 100, $start = 0, $limited_data = false)
     {
@@ -227,10 +227,10 @@ class RevisionEngineFiles
     /**
      * Find if there are revisions of something.
      *
-     * @param  PATH $directory Directory where revisions are stored.
-     * @param  string $filename_id ID of what was revised (=base filename, no extension).
-     * @param  string $ext File extension for revisable files.
-     * @return boolean Whether there are revisions.
+     * @param  PATH $directory Directory where revisions are stored
+     * @param  string $filename_id ID of what was revised (=base filename, no extension)
+     * @param  string $ext File extension for revisable files
+     * @return boolean Whether there are revisions
      */
     public function has_revisions($directory, $filename_id, $ext)
     {
@@ -245,10 +245,10 @@ class RevisionEngineFiles
     /**
      * Find number of revisions of something.
      *
-     * @param  PATH $directory Directory where revisions are stored.
-     * @param  string $filename_id ID of what was revised (=base filename, no extension).
-     * @param  string $ext File extension for revisable files.
-     * @return integer Number of revisions.
+     * @param  PATH $directory Directory where revisions are stored
+     * @param  string $filename_id ID of what was revised (=base filename, no extension)
+     * @param  string $ext File extension for revisable files
+     * @return integer Number of revisions
      */
     public function total_revisions($directory, $filename_id, $ext)
     {
@@ -263,8 +263,8 @@ class RevisionEngineFiles
     /**
      * Retrieve revisions for a particular action log entry.
      *
-     * @param  AUTO_LINK $actionlog_id The action log entry's ID.
-     * @return ?array A revision map (null: not found).
+     * @param  AUTO_LINK $actionlog_id The action log entry's ID
+     * @return ?array A revision map (null: not found)
      */
     public function find_revision_for_log($actionlog_id)
     {
@@ -312,13 +312,13 @@ class RevisionEngineFiles
      * Browse revisions to undo one.
      * More details are shown in the actionlog, which is linked from here.
      *
-     * @param  PATH $directory Directory where revisions are stored.
-     * @param  string $filename_id ID of what was revised (=base filename, no extension).
-     * @param  string $ext File extension for revisable files.
-     * @param  string $action The action the revision is for, a language string.
-     * @param  string $text Current resource text (may be altered by reference).
-     * @param  ?boolean $revision_loaded Whether a revision was loaded, passed by reference (null: initial value).
-     * @return Tempcode UI.
+     * @param  PATH $directory Directory where revisions are stored
+     * @param  string $filename_id ID of what was revised (=base filename, no extension)
+     * @param  string $ext File extension for revisable files
+     * @param  string $action The action the revision is for, a language string
+     * @param  string $text Current resource text (may be altered by reference)
+     * @param  ?boolean $revision_loaded Whether a revision was loaded, passed by reference (null: initial value)
+     * @return Tempcode UI
      */
     public function ui_revision_undoer($directory, $filename_id, $ext, $action, &$text, &$revision_loaded = null)
     {

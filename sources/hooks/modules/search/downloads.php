@@ -26,8 +26,8 @@ class Hook_search_downloads extends FieldsSearchHook
     /**
      * Find details for this search hook.
      *
-     * @param  boolean $check_permissions Whether to check permissions.
-     * @return ?array Map of search hook details (null: hook is disabled).
+     * @param  boolean $check_permissions Whether to check permissions
+     * @return ?array Map of search hook details (null: hook is disabled)
      */
     public function info($check_permissions = true)
     {

@@ -21,8 +21,8 @@
 /**
  * Get the active forum sort order from a URL specifier.
  *
- * @param  string $_sort Sort order keyword.
- * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field.
+ * @param  string $_sort Sort order keyword
+ * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field
  */
 function get_forum_sort_order_simplified($_sort = 'first_post')
 {
@@ -32,9 +32,9 @@ function get_forum_sort_order_simplified($_sort = 'first_post')
 /**
  * Get the active forum sort order from a URL specifier.
  *
- * @param  string $_sort Sort order keyword.
- * @param  boolean $simplified Whether to not include pinning etc in the order.
- * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field.
+ * @param  string $_sort Sort order keyword
+ * @param  boolean $simplified Whether to not include pinning etc in the order
+ * @return array A tuple: Sort order in SQL form, keyset pagination field pattern, keyset pagination field
  */
 function get_forum_sort_order($_sort = 'first_post', $simplified = false)
 {
@@ -94,14 +94,14 @@ function get_forum_sort_order($_sort = 'first_post', $simplified = false)
 /**
  * Render the Conversr forumview.
  *
- * @param  ?integer $id Forum ID (null: private topics).
- * @param  ?array $forum_info The forum row (null: private topics).
+ * @param  ?integer $id Forum ID (null: private topics)
+ * @param  ?array $forum_info The forum row (null: private topics)
  * @param  string $current_filter_cat The filter category (blank if no filter)
  * @param  integer $max Maximum results to show
  * @param  integer $start Offset for result showing
  * @param  integer $true_start True offset when disconsidering keyset pagination
- * @param  string $sql_sup Extra SQL to append for where clause.
- * @param  string $sql_sup_order_by Extra SQL to append as order clause.
+ * @param  string $sql_sup Extra SQL to append for where clause
+ * @param  string $sql_sup_order_by Extra SQL to append as order clause
  * @param  string $keyset_field_stripped Keyset field name so that we can extract values from DB result sets
  * @param  AUTO_LINK $root Virtual root
  * @param  ?MEMBER $of_member_id The member to show private topics of (null: not showing private topics)
@@ -486,11 +486,11 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
 /**
  * Get details of a topic (to show eventually as a row in a forum or results view). This is a helper function, and thus the interface is not very user friendly.
  *
- * @param  array $topic_row The DB row of the topic.
- * @param  MEMBER $member_id The member the details are being prepared for.
- * @param  integer $hot_topic_definition The hot topic definition (taken from the config options).
- * @param  boolean $involved Whether the viewing member has a post in the topic.
- * @return array The details.
+ * @param  array $topic_row The DB row of the topic
+ * @param  MEMBER $member_id The member the details are being prepared for
+ * @param  integer $hot_topic_definition The hot topic definition (taken from the config options)
+ * @param  boolean $involved Whether the viewing member has a post in the topic
+ * @return array The details
  */
 function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $involved)
 {
@@ -593,11 +593,11 @@ function cns_get_topic_array($topic_row, $member_id, $hot_topic_definition, $inv
 /**
  * Render a topic row (i.e. a row in a forum or results view), from given details (from cns_get_topic_array).
  *
- * @param  array $topic The details (array containing: last_post_id, id, modifiers, emoticon, first_member_id, first_username, first_post, num_posts, num_views).
- * @param  boolean $has_topic_marking Whether the viewing member has the facility to mark off topics (send as false if there are no actions for them to perform).
- * @param  boolean $pt Whether the topic is a Private Topic.
- * @param  ?object $show_forum The forum name (null: do not show the forum name).
- * @return Tempcode The topic row.
+ * @param  array $topic The details (array containing: last_post_id, id, modifiers, emoticon, first_member_id, first_username, first_post, num_posts, num_views)
+ * @param  boolean $has_topic_marking Whether the viewing member has the facility to mark off topics (send as false if there are no actions for them to perform)
+ * @param  boolean $pt Whether the topic is a Private Topic
+ * @param  ?object $show_forum The forum name (null: do not show the forum name)
+ * @return Tempcode The topic row
  */
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {
@@ -735,14 +735,14 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
 /**
  * Get a map of details relating to the view of a certain forum of a certain member.
  *
- * @param  AUTO_LINK $forum_id The forum ID.
- * @param  array $forum_info The forum row.
+ * @param  AUTO_LINK $forum_id The forum ID
+ * @param  array $forum_info The forum row
  * @param  integer $start The start row for getting details of topics in the forum (i.e. 0 is newest, higher is starting further back in time).
  * @param  integer $true_start True offset when disconsidering keyset pagination
- * @param  ?integer $max The maximum number of topics to get detail of (null: default).
- * @param  string $sql_sup Extra SQL to append.
- * @param  string $sql_sup_order_by Extra SQL to append as order clause.
- * @return array The details.
+ * @param  ?integer $max The maximum number of topics to get detail of (null: default)
+ * @param  string $sql_sup Extra SQL to append
+ * @param  string $sql_sup_order_by Extra SQL to append as order clause
+ * @return array The details
  */
 function cns_get_forum_view($forum_id, $forum_info, $start = 0, $true_start = 0, $max = null, $sql_sup = '', $sql_sup_order_by = '')
 {

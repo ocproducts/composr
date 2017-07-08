@@ -17,10 +17,10 @@ if (!function_exists('do_release')) {
     /**
      * Get template variables for a release.
      *
-     * @param  SHORT_TEXT $name_suffix A substring of the title of the download.
-     * @param  string $prefix Prefix to put on the template params.
-     * @param  ?string $version_must_be_newer_than The version this must be newer than (null: no check).
-     * @return ?array Map of template variables (null: could not find).
+     * @param  SHORT_TEXT $name_suffix A substring of the title of the download
+     * @param  string $prefix Prefix to put on the template params
+     * @param  ?string $version_must_be_newer_than The version this must be newer than (null: no check)
+     * @return ?array Map of template variables (null: could not find)
      */
     function do_release($name_suffix, $prefix, $version_must_be_newer_than = null)
     {

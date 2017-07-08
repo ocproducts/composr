@@ -26,7 +26,7 @@ class Block_main_join
     /**
      * Find details of the block.
      *
-     * @return ?array Map of block info (null: block is disabled).
+     * @return ?array Map of block info (null: block is disabled)
      */
     public function info()
     {
@@ -52,8 +52,8 @@ class Block_main_join
     /**
      * Execute the block.
      *
-     * @param  array $map A map of parameters.
-     * @return Tempcode The result of execution.
+     * @param  array $map A map of parameters
+     * @return Tempcode The result of execution
      */
     public function run($map)
     {
@@ -145,8 +145,8 @@ class Block_main_join
     /**
      * See if there is an e-mail to send.
      *
-     * @param  array $map A map of parameters.
-     * @return boolean If there is.
+     * @param  array $map A map of parameters
+     * @return boolean If there is
      */
     protected function has_email_to_send($map)
     {
@@ -156,9 +156,9 @@ class Block_main_join
     /**
      * Send the e-mail with the document.
      *
-     * @param  array $map A map of parameters.
-     * @param  EMAIL $email_address The e-mail address.
-     * @return boolean If it worked.
+     * @param  array $map A map of parameters
+     * @param  EMAIL $email_address The e-mail address
+     * @return boolean If it worked
      */
     protected function send_email($map, $email_address)
     {

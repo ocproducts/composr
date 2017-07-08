@@ -152,7 +152,7 @@ function preload_block_internal_caching()
  * If declarations aren't made then extra security precautions are taken, which may interfere with normal processing in limited cases.
  * Declarations should be made whenever entering a custom block or module.
  *
- * @param  integer $declarations Bitmask of declarations (I_UNDERSTAND_* constants).
+ * @param  integer $declarations Bitmask of declarations (I_UNDERSTAND_* constants)
  */
 function i_solemnly_declare($declarations)
 {
@@ -190,7 +190,7 @@ function _solemnly_enter()
 /**
  * Leave the most recent security scope (i.e. a custom block or module).
  *
- * @param  ?string $out Output to filter, if I_UNDERSTAND_XSS is not set (null: nothing to filter).
+ * @param  ?string $out Output to filter, if I_UNDERSTAND_XSS is not set (null: nothing to filter)
  *
  * @ignore
  */
@@ -228,8 +228,8 @@ function _solemnly_leave(&$out = null)
 /**
  * Find if a security property has been declared as being understood.
  *
- * @param  integer $declaration The property.
- * @return boolean Whether it is understood.
+ * @param  integer $declaration The property
+ * @return boolean Whether it is understood
  */
 function has_solemnly_declared($declaration)
 {
@@ -244,9 +244,9 @@ function has_solemnly_declared($declaration)
 /**
  * Consider virtual zone merging, where paths are not necessarily where you'd expect for pages in zones.
  *
- * @param  PATH $path The path, assuming in the obvious place.
- * @param  boolean $relative Where the passed path is relative.
- * @return PATH The fixed path.
+ * @param  PATH $path The path, assuming in the obvious place
+ * @param  boolean $relative Where the passed path is relative
+ * @return PATH The fixed path
  */
 function zone_black_magic_filterer($path, $relative = false)
 {

@@ -28,7 +28,7 @@ class Module_admin_ecommerce_logs
     /**
      * Find details of the module.
      *
-     * @return ?array Map of module info (null: module is disabled).
+     * @return ?array Map of module info (null: module is disabled)
      */
     public function info()
     {
@@ -45,11 +45,11 @@ class Module_admin_ecommerce_logs
     /**
      * Find entry-points available within this module.
      *
-     * @param  boolean $check_perms Whether to check permissions.
-     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
-     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $check_perms Whether to check permissions
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user)
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name)
      * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
-     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled)
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
@@ -85,7 +85,7 @@ class Module_admin_ecommerce_logs
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run()
     {
@@ -168,7 +168,7 @@ class Module_admin_ecommerce_logs
     /**
      * Execute the module.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function run()
     {
@@ -257,7 +257,7 @@ class Module_admin_ecommerce_logs
     /**
      * The UI to take details on a manually triggered transaction.
      *
-     * @return Tempcode The UI.
+     * @return Tempcode The UI
      */
     public function trigger()
     {
@@ -396,7 +396,7 @@ class Module_admin_ecommerce_logs
     /**
      * The actualiser for a manually triggered transaction.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function _trigger()
     {
@@ -729,7 +729,7 @@ class Module_admin_ecommerce_logs
     /**
      * Method to display export transaction list filters.
      *
-     * @return Tempcode The interface.
+     * @return Tempcode The interface
      */
     public function export_transactions()
     {
@@ -780,7 +780,7 @@ class Module_admin_ecommerce_logs
     /**
      * Actualiser to build CSV from the selected filters.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function _export_transactions()
     {
@@ -796,7 +796,7 @@ class Module_admin_ecommerce_logs
     /**
      * Show a tax invoice for a transaction.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function tax_invoice()
     {
@@ -810,8 +810,8 @@ class Module_admin_ecommerce_logs
     /**
      * An interface for choosing between dates.
      *
-     * @param  Tempcode $title The title to display.
-     * @return Tempcode The result of execution.
+     * @param  Tempcode $title The title to display
+     * @return Tempcode The result of execution
      */
     public function _get_between($title)
     {
@@ -842,7 +842,7 @@ class Module_admin_ecommerce_logs
      * @param  TIME $from Start of time range
      * @param  TIME $to End of time range
      * @param  boolean $unpaid_invoices_count Whether to count unpaid invoices into this. This means any invoicing in transactions will be ignored, and instead invoicing will be read directly.
-     * @return array A template-ready list of maps of summary for multiple transaction types.
+     * @return array A template-ready list of maps of summary for multiple transaction types
      */
     public function get_types($from, $to, $unpaid_invoices_count = false)
     {
@@ -953,7 +953,7 @@ class Module_admin_ecommerce_logs
     /**
      * Show a cash flow diagram.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function cash_flow()
     {
@@ -973,7 +973,7 @@ class Module_admin_ecommerce_logs
     /**
      * Show a profit/loss account.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function profit_loss()
     {
@@ -994,7 +994,7 @@ class Module_admin_ecommerce_logs
     /**
      * Show manual subscriptions.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function view_manual_subscriptions()
     {
@@ -1052,7 +1052,7 @@ class Module_admin_ecommerce_logs
     /**
      * Cancel a manual subscription.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function cancel_subscription()
     {

@@ -23,11 +23,11 @@
  *
  * @sets_input_state
  *
- * @param  array $new_get The URL component map (must contain 'page').
- * @param  ID_TEXT $new_zone The zone.
- * @param  ID_TEXT $new_current_script The running script.
- * @param  boolean $erase_keep_also Whether to get rid of keep_ variables in current URL.
- * @return array A list of parameters that would be required to be passed back to reset the state.
+ * @param  array $new_get The URL component map (must contain 'page')
+ * @param  ID_TEXT $new_zone The zone
+ * @param  ID_TEXT $new_current_script The running script
+ * @param  boolean $erase_keep_also Whether to get rid of keep_ variables in current URL
+ * @return array A list of parameters that would be required to be passed back to reset the state
  */
 function set_execution_context($new_get, $new_zone = '_SEARCH', $new_current_script = 'index', $erase_keep_also = false)
 {
@@ -371,8 +371,8 @@ function _fixup_protocolless_urls($in)
  *
  * @param  URLPATH $url The URL to convert. Note it may not be a URL Scheme, and it must be based on the local base URL (else failure WILL occur).
  * @param  boolean $abs_only Whether to only convert absolute URLs. Turn this on if you're not sure what you're passing is a URL not and you want to be extra safe.
- * @param  boolean $perfect_only Whether to only allow perfect conversions.
- * @return string The page-link (blank: could not convert).
+ * @param  boolean $perfect_only Whether to only allow perfect conversions
+ * @return string The page-link (blank: could not convert)
  *
  * @ignore
  */
@@ -528,8 +528,8 @@ function _url_to_page_link($url, $abs_only = false, $perfect_only = true)
 /**
  * Convert a local page file path to a written page-link.
  *
- * @param  string $page The path.
- * @return string The page-link (blank: could not convert).
+ * @param  string $page The path
+ * @return string The page-link (blank: could not convert)
  *
  * @ignore
  */
@@ -558,9 +558,9 @@ function _page_path_to_page_link($page)
 /**
  * Called from 'find_id_moniker'. We tried to lookup a moniker, found a hook, but found no stored moniker. So we'll try and autogenerate one.
  *
- * @param  array $ob_info The hooks info profile.
- * @param  array $url_parts The URL component map (must contain 'page', 'type', and 'id' if this function is to do anything).
- * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers).
+ * @param  array $ob_info The hooks info profile
+ * @param  array $url_parts The URL component map (must contain 'page', 'type', and 'id' if this function is to do anything)
+ * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers)
  * @return ?string The moniker ID (null: error generating it somehow, can not do it)
  */
 function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
@@ -615,14 +615,14 @@ function autogenerate_new_url_moniker($ob_info, $url_parts, $zone)
 /**
  * Called when content is added, or edited/moved, based upon a new form field that specifies what moniker to use.
  *
- * @param  ID_TEXT $page Page name.
- * @param  ID_TEXT $type Screen type code.
- * @param  ID_TEXT $id Resource ID.
- * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers).
- * @param  string $moniker_src String from which a moniker will be chosen (may not be blank).
- * @param  boolean $is_new Whether we are sure this is a new moniker (makes things more efficient, saves a query).
+ * @param  ID_TEXT $page Page name
+ * @param  ID_TEXT $type Screen type code
+ * @param  ID_TEXT $id Resource ID
+ * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers)
+ * @param  string $moniker_src String from which a moniker will be chosen (may not be blank)
+ * @param  boolean $is_new Whether we are sure this is a new moniker (makes things more efficient, saves a query)
  * @param  ?string $moniker Actual moniker to use (null: generate from $moniker_src). Usually this is left null.
- * @return string The chosen moniker.
+ * @return string The chosen moniker
  */
 function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_new = false, $moniker = null)
 {
@@ -716,13 +716,13 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
 /**
  * Delete an old moniker, and place a new one.
  *
- * @param  ID_TEXT $page Page name.
- * @param  ID_TEXT $type Screen type code.
- * @param  ID_TEXT $id Resource ID.
- * @param  string $moniker_src String from which a moniker will be chosen (may not be blank).
- * @param  ?string $no_exists_check_for Whether to skip the exists check for a certain moniker (will be used to pass "existing self" for edits) (null: nothing existing to check against).
- * @param  ?string $scope_context Where the moniker will be placed in the moniker URL tree (null: unknown, so make so no duplicates anywhere).
- * @return string Chosen moniker.
+ * @param  ID_TEXT $page Page name
+ * @param  ID_TEXT $type Screen type code
+ * @param  ID_TEXT $id Resource ID
+ * @param  string $moniker_src String from which a moniker will be chosen (may not be blank)
+ * @param  ?string $no_exists_check_for Whether to skip the exists check for a certain moniker (will be used to pass "existing self" for edits) (null: nothing existing to check against)
+ * @param  ?string $scope_context Where the moniker will be placed in the moniker URL tree (null: unknown, so make so no duplicates anywhere)
+ * @return string Chosen moniker
  *
  * @ignore
  */
@@ -773,8 +773,8 @@ function _choose_moniker($page, $type, $id, $moniker_src, $no_exists_check_for =
 /**
  * Generate a moniker from an arbitrary raw string. Does not perform uniqueness checks.
  *
- * @param  string $moniker_src Raw string.
- * @return ID_TEXT Moniker.
+ * @param  string $moniker_src Raw string
+ * @return ID_TEXT Moniker
  *
  * @ignore
  */
@@ -826,12 +826,12 @@ function _generate_moniker($moniker_src)
 /**
  * Take a moniker and it's page-link details, and make a full path from it.
  *
- * @param  ID_TEXT $page Page name.
- * @param  ID_TEXT $type Screen type code.
- * @param  ID_TEXT $id Resource ID.
- * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers).
- * @param  string $main Pathless moniker.
- * @return string The fully qualified moniker.
+ * @param  ID_TEXT $page Page name
+ * @param  ID_TEXT $type Screen type code
+ * @param  ID_TEXT $id Resource ID
+ * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers)
+ * @param  string $main Pathless moniker
+ * @return string The fully qualified moniker
  *
  * @ignore
  */
@@ -912,9 +912,9 @@ function _give_moniker_scope($page, $type, $id, $zone, $main)
 /**
  * Take a moniker and it's page-link details, and make a full path from it.
  *
- * @param  ID_TEXT $content_type The content type.
- * @param  SHORT_TEXT $url_moniker The URL moniker.
- * @return ?ID_TEXT The ID (null: not found).
+ * @param  ID_TEXT $content_type The content type
+ * @param  SHORT_TEXT $url_moniker The URL moniker
+ * @return ?ID_TEXT The ID (null: not found)
  */
 function find_id_via_url_moniker($content_type, $url_moniker)
 {
@@ -941,10 +941,10 @@ function find_id_via_url_moniker($content_type, $url_moniker)
 /**
  * Find a unique path on the filesystem, and corresponding URL and filename.
  *
- * @param  string $subdir Subdirectory relative to base directory.
- * @param  ?string $filename Filename (null: random).
+ * @param  string $subdir Subdirectory relative to base directory
+ * @param  ?string $filename Filename (null: random)
  * @param  boolean $lock_in Whether to write out an empty string to the file so that some other code (e.g. from another request) doesn't try and use the same path.
- * @return array A tuple: path, relative URL for path, filename used.
+ * @return array A tuple: path, relative URL for path, filename used
  */
 function find_unique_path($subdir, $filename = null, $lock_in = false)
 {

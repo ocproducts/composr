@@ -372,8 +372,8 @@ function object_factory($class, $failure_ok = false)
  * Note that you still need to put "@" before set_time_limit, as some web host(s) have their own non-detectable block:
  *  "Cannot set max execution time limit due to system policy"
  *
- * @param  string $function Function name.
- * @return boolean Whether it is.
+ * @param  string $function Function name
+ * @return boolean Whether it is
  */
 function php_function_allowed($function)
 {
@@ -395,9 +395,9 @@ function php_function_allowed($function)
 /**
  * Sets the value of a configuration option, if the PHP environment allows it.
  *
- * @param  string $var Config option.
- * @param  string $value New value of option.
- * @return ~string Old value of option (false: error).
+ * @param  string $var Config option
+ * @param  string $value New value of option
+ * @return ~string Old value of option (false: error)
  */
 function safe_ini_set($var, $value)
 {

@@ -79,7 +79,7 @@ handle_failover_auto_switching();
 /**
  * Switch over the failover mode appropriately if we detect a change in problem state.
  *
- * @param  integer $iteration The check iteration (if deactivating we check a number of times to ensure all is still okay).
+ * @param  integer $iteration The check iteration (if deactivating we check a number of times to ensure all is still okay)
  */
 function handle_failover_auto_switching($iteration = 0)
 {
@@ -211,7 +211,7 @@ function handle_failover_auto_switching($iteration = 0)
 /**
  * A check has failed, inform contact(s) about it then exit.
  *
- * @param  string $url Check that failed.
+ * @param  string $url Check that failed
  */
 function is_failing($url)
 {
@@ -233,8 +233,8 @@ function is_failing($url)
 /**
  * Send a failover email.
  *
- * @param  string $subject Subject.
- * @param  string $message Body.
+ * @param  string $subject Subject
+ * @param  string $message Body
  */
 function send_failover_email($subject, $message)
 {
@@ -248,7 +248,7 @@ function send_failover_email($subject, $message)
 /**
  * Set failover mode to a new value.
  *
- * @param  string $new_mode New failover mode.
+ * @param  string $new_mode New failover mode
  */
 function set_failover_mode($new_mode)
 {

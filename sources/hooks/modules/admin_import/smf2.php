@@ -43,7 +43,7 @@ class Hook_import_smf2
     /**
      * Standard importer hook info function.
      *
-     * @return ?array Importer handling details, including lists of all the import types covered (import types are not necessarily the same as actual tables) (null: importer is disabled).
+     * @return ?array Importer handling details, including lists of all the import types covered (import types are not necessarily the same as actual tables) (null: importer is disabled)
      */
     public function info()
     {
@@ -1447,7 +1447,7 @@ class Hook_import_smf2
      * @param  string $pid Profile ID to map
      * @param  integer $v Value to map
      * @param  boolean $r Whether to return the map or not
-     * @return array The mapped Groups and Profile with highest privilege calculated.
+     * @return array The mapped Groups and Profile with highest privilege calculated
      */
     public function static_perm_arr($gid, $pid, $v, $r = false)
     {

@@ -81,7 +81,7 @@ function init__config()
 /**
  * Find whether to run in multi-lang mode.
  *
- * @return boolean Whether to run in multi-lang mode.
+ * @return boolean Whether to run in multi-lang mode
  */
 function multi_lang()
 {

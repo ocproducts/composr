@@ -60,7 +60,7 @@ function init__profiler()
 /**
  * Find whether profiling is enabled. This may be false due to Composr still starting up, in which case it will be enabled later.
  *
- * @return boolean Whether profiling is enabled.
+ * @return boolean Whether profiling is enabled
  */
 function cms_profile_is_enabled()
 {

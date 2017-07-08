@@ -1286,9 +1286,9 @@ class Forum_driver_mybb extends Forum_driver_base
     /**
      * Salts a password based on a supplied salt.
      *
-     * @param  string $password The md5()'ed password.
-     * @param  string $salt The salt.
-     * @return string The password hash.
+     * @param  string $password The md5()'ed password
+     * @param  string $salt The salt
+     * @return string The password hash
      */
     public function salt_password($password, $salt)
     {

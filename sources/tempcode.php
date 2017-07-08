@@ -125,7 +125,7 @@ function init__tempcode()
 /**
  * Set the Tempcode parameter inlining mode.
  *
- * @param  boolean $m The current Tempcode parameter inlining mode.
+ * @param  boolean $m The current Tempcode parameter inlining mode
  */
 function push_tempcode_parameter_inlining_mode($m)
 {
@@ -235,7 +235,7 @@ function missing_template_parameter($origin)
  * @param  ID_TEXT $name The name of the symbol
  * @param  array $parameters Parameters to the symbol. In same format as expected by ecv.
  * @param  array $escaping Escaping for the symbol
- * @return Tempcode Tempcode object.
+ * @return Tempcode Tempcode object
  */
 function build_closure_tempcode($type, $name, $parameters, $escaping = array())
 {
@@ -2212,7 +2212,7 @@ class Tempcode
     /**
      * Parses the current Tempcode object, then return the parsed string
      *
-     * @return string The evaluated thing.
+     * @return string The evaluated thing
      */
     public function __toString()
     {
@@ -2430,8 +2430,8 @@ function recall_named_function($id, $parameters, $code)
 /**
  * Include and evaluate the specified Tempcode file.
  *
- * @param  PATH $filepath The filename of the file to include.
- * @return mixed Success status or returned value.
+ * @param  PATH $filepath The filename of the file to include
+ * @return mixed Success status or returned value
  *
  * @ignore
  */

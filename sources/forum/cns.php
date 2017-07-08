@@ -1495,7 +1495,7 @@ class Forum_driver_cns extends Forum_driver_base
      * Get the forum usergroup relating to the specified member ID.
      *
      * @param  MEMBER $member The member ID
-     * @param  boolean $skip_secret Whether to skip looking at secret usergroups, unless we have access.
+     * @param  boolean $skip_secret Whether to skip looking at secret usergroups, unless we have access
      * @param  boolean $handle_probation Whether to take probation into account
      * @return array The array of forum usergroups
      */

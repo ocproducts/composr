@@ -31,7 +31,7 @@ class Hook_block_ui_renderers_banners
      * @param  boolean $has_default Whether there is a default value for the field, due to this being an edit
      * @param  string $default Default value for field
      * @param  Tempcode $description Field description
-     * @return ?Tempcode Rendered field (null: not handled).
+     * @return ?Tempcode Rendered field (null: not handled)
      */
     public function render_block_ui($block, $parameter, $has_default, $default, $description)
     {

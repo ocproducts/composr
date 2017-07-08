@@ -26,12 +26,12 @@ class Hook_task_export_member_csv
     /**
      * Run the task hook.
      *
-     * @param  boolean $filter_by_allow Only provide members that have "Receive newsletters and other site updates" set.
-     * @param  string $extension File extension to use.
-     * @param  string $preset Preset to use.
-     * @param  array $fields_to_use List of fields to use (empty: all).
-     * @param  array $usergroups List of usergroups to use (empty: all).
-     * @param  string $order_by Field to order by.
+     * @param  boolean $filter_by_allow Only provide members that have "Receive newsletters and other site updates" set
+     * @param  string $extension File extension to use
+     * @param  string $preset Preset to use
+     * @param  array $fields_to_use List of fields to use (empty: all)
+     * @param  array $usergroups List of usergroups to use (empty: all)
+     * @param  string $order_by Field to order by
      * @return ?array A tuple of at least 2: Return mime-type, content (either Tempcode, or a string, or a filename and file-path pair to a temporary file), map of HTTP headers if transferring immediately, map of ini_set commands if transferring immediately (null: show standard success message)
      */
     public function run($filter_by_allow, $extension, $preset, $fields_to_use, $usergroups, $order_by)

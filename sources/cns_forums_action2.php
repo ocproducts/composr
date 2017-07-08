@@ -21,10 +21,10 @@
 /**
  * Edit a forum grouping.
  *
- * @param  AUTO_LINK $forum_grouping_id The ID of the forum grouping we are editing.
- * @param  SHORT_TEXT $title The title of the forum grouping.
- * @param  SHORT_TEXT $description The description of the forum grouping.
- * @param  BINARY $expanded_by_default Whether the forum grouping will be shown expanded by default (as opposed to contracted, where contained forums will not be shown until expansion).
+ * @param  AUTO_LINK $forum_grouping_id The ID of the forum grouping we are editing
+ * @param  SHORT_TEXT $title The title of the forum grouping
+ * @param  SHORT_TEXT $description The description of the forum grouping
+ * @param  BINARY $expanded_by_default Whether the forum grouping will be shown expanded by default (as opposed to contracted, where contained forums will not be shown until expansion)
  */
 function cns_edit_forum_grouping($forum_grouping_id, $title, $description, $expanded_by_default)
 {
@@ -55,8 +55,8 @@ function cns_edit_forum_grouping($forum_grouping_id, $title, $description, $expa
 /**
  * Delete a forum grouping.
  *
- * @param  AUTO_LINK $forum_grouping_id The ID of the forum grouping we are editing.
- * @param  ?AUTO_LINK $target_forum_grouping_id The ID of the forum grouping that we will move all the contained forum to (null: the first one).
+ * @param  AUTO_LINK $forum_grouping_id The ID of the forum grouping we are editing
+ * @param  ?AUTO_LINK $target_forum_grouping_id The ID of the forum grouping that we will move all the contained forum to (null: the first one)
  */
 function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id = null)
 {
@@ -83,21 +83,21 @@ function cns_delete_forum_grouping($forum_grouping_id, $target_forum_grouping_id
 /**
  * Edit a forum.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum we are editing.
- * @param  SHORT_TEXT $name The name of the forum.
- * @param  SHORT_TEXT $description The description for the forum.
- * @param  AUTO_LINK $forum_grouping_id What forum grouping the forum will be filed with.
- * @param  ?AUTO_LINK $new_parent The ID of the parent forum (null: this is the root forum).
- * @param  integer $position The position of this forum relative to other forums viewable on the same screen (if parent forum hasn't specified automatic ordering).
- * @param  BINARY $post_count_increment Whether post counts will be incremented if members post in the forum.
- * @param  BINARY $order_sub_alpha Whether the ordering of subforums is done automatically, alphabetically).
- * @param  LONG_TEXT $intro_question The question that is shown for newbies to the forum (blank: none).
+ * @param  AUTO_LINK $forum_id The ID of the forum we are editing
+ * @param  SHORT_TEXT $name The name of the forum
+ * @param  SHORT_TEXT $description The description for the forum
+ * @param  AUTO_LINK $forum_grouping_id What forum grouping the forum will be filed with
+ * @param  ?AUTO_LINK $new_parent The ID of the parent forum (null: this is the root forum)
+ * @param  integer $position The position of this forum relative to other forums viewable on the same screen (if parent forum hasn't specified automatic ordering)
+ * @param  BINARY $post_count_increment Whether post counts will be incremented if members post in the forum
+ * @param  BINARY $order_sub_alpha Whether the ordering of subforums is done automatically, alphabetically)
+ * @param  LONG_TEXT $intro_question The question that is shown for newbies to the forum (blank: none)
  * @param  SHORT_TEXT $intro_answer The answer to the question (blank: no specific answer.. if there's a 'question', it just requires a click-through).
- * @param  SHORT_TEXT $redirection Either blank for no redirection, the ID of another forum we are mirroring, or a URL to redirect to.
- * @param  ID_TEXT $order The order the topics are shown in, by default.
- * @param  BINARY $is_threaded Whether the forum is threaded.
+ * @param  SHORT_TEXT $redirection Either blank for no redirection, the ID of another forum we are mirroring, or a URL to redirect to
+ * @param  ID_TEXT $order The order the topics are shown in, by default
+ * @param  BINARY $is_threaded Whether the forum is threaded
  * @param  BINARY $allows_anonymous_posts Whether anonymous posts are allowed
- * @param  boolean $reset_intro_acceptance Whether to force forum rules to be re-agreed to, if they've just been changed.
+ * @param  boolean $reset_intro_acceptance Whether to force forum rules to be re-agreed to, if they've just been changed
  */
 function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new_parent, $position, $post_count_increment, $order_sub_alpha, $intro_question, $intro_answer, $redirection = '', $order = 'last_post', $is_threaded = 0, $allows_anonymous_posts = 0, $reset_intro_acceptance = false)
 {
@@ -183,9 +183,9 @@ function cns_edit_forum($forum_id, $name, $description, $forum_grouping_id, $new
 /**
  * Delete a forum.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum we are deleting.
- * @param  ?AUTO_LINK $target_forum_id The ID of the forum that topics will be moved to (null: root forum).
- * @param  BINARY $delete_topics Whether to delete topics instead of moving them to the target forum.
+ * @param  AUTO_LINK $forum_id The ID of the forum we are deleting
+ * @param  ?AUTO_LINK $target_forum_id The ID of the forum that topics will be moved to (null: root forum)
+ * @param  BINARY $delete_topics Whether to delete topics instead of moving them to the target forum
  */
 function cns_delete_forum($forum_id, $target_forum_id = null, $delete_topics = 0)
 {
@@ -248,7 +248,7 @@ function cns_delete_forum($forum_id, $target_forum_id = null, $delete_topics = 0
 /**
  * Mark all recent topics in a certain forum as read for the current member.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum.
+ * @param  AUTO_LINK $forum_id The ID of the forum
  */
 function cns_ping_forum_read_all($forum_id)
 {
@@ -281,7 +281,7 @@ function cns_ping_forum_read_all($forum_id)
 /**
  * Mark all recent topics in a certain forum as unread for the current member.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum.
+ * @param  AUTO_LINK $forum_id The ID of the forum
  */
 function cns_ping_forum_unread_all($forum_id)
 {
@@ -303,7 +303,7 @@ function cns_ping_forum_unread_all($forum_id)
 /**
  * Bomb out if the specified forum grouping doesn't exist.
  *
- * @param  AUTO_LINK $forum_grouping_id The ID of the forum grouping.
+ * @param  AUTO_LINK $forum_grouping_id The ID of the forum grouping
  */
 function cns_ensure_forum_grouping_exists($forum_grouping_id)
 {
@@ -316,8 +316,8 @@ function cns_ensure_forum_grouping_exists($forum_grouping_id)
 /**
  * Bomb out if the specified forum doesn't exist.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum.
- * @return SHORT_TEXT The name of the forum.
+ * @param  AUTO_LINK $forum_id The ID of the forum
+ * @return SHORT_TEXT The name of the forum
  */
 function cns_ensure_forum_exists($forum_id)
 {

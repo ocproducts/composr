@@ -21,7 +21,7 @@
 /**
  * Initialise state variables for the special page type being requested.
  *
- * @param  ID_TEXT $special_page_type The special page type.
+ * @param  ID_TEXT $special_page_type The special page type
  * @set    query templates tree lang
  */
 function initialise_special_page_types($special_page_type)
@@ -56,7 +56,7 @@ function initialise_special_page_types($special_page_type)
 /**
  * Handle special page type output.
  *
- * @param  ID_TEXT $special_page_type The special page type.
+ * @param  ID_TEXT $special_page_type The special page type
  * @set    query templates tree lang
  * @param  Tempcode $out The normal script Tempcode output
  * @param  string $out_evaluated The normal script evaluated output
@@ -884,7 +884,7 @@ function display_webstandards_results($out, $error, $preview_mode = false, $ret 
 /**
  * Attach a message showing memory usage.
  *
- * @param  Tempcode $messages_bottom Where to place the message.
+ * @param  Tempcode $messages_bottom Where to place the message
  */
 function attach_message_memory_usage(&$messages_bottom)
 {

@@ -27,8 +27,8 @@
 /**
  * Find products in cart.
  *
- * @param  ID_TEXT $catalogue_name Catalogue name.
- * @return array Shopping catalogue fields.
+ * @param  ID_TEXT $catalogue_name Catalogue name
+ * @return array Shopping catalogue fields
  */
 function find_shopping_catalogue_fields($catalogue_name = 'products')
 {
@@ -152,7 +152,7 @@ FOR CART MANAGEMENT
 /**
  * Find products in cart.
  *
- * @return array Product details in cart.
+ * @return array Product details in cart
  */
 function find_products_in_cart()
 {
@@ -168,9 +168,9 @@ function find_products_in_cart()
 /**
  * Add new item to the cart.
  *
- * @param  ID_TEXT $type_code Product codename.
- * @param  ID_TEXT $purchase_id Purchase ID.
- * @param  integer $quantity Quantity.
+ * @param  ID_TEXT $type_code Product codename
+ * @param  ID_TEXT $purchase_id Purchase ID
+ * @param  integer $quantity Quantity
  */
 function add_to_cart($type_code, $purchase_id = '', $quantity = 1)
 {
@@ -206,7 +206,7 @@ function add_to_cart($type_code, $purchase_id = '', $quantity = 1)
 /**
  * Update cart quantities etc.
  *
- * @param  array $products_in_cart List of product specifiers.
+ * @param  array $products_in_cart List of product specifiers
  */
 function update_cart($products_in_cart)
 {
@@ -231,7 +231,7 @@ function update_cart($products_in_cart)
 /**
  * Remove particular items from the cart.
  *
- * @param  array $products_to_remove Products to remove.
+ * @param  array $products_to_remove Products to remove
  */
 function remove_from_cart($products_to_remove)
 {
@@ -265,7 +265,7 @@ function empty_cart()
 /**
  * Log cart actions.
  *
- * @param  ID_TEXT $action The data.
+ * @param  ID_TEXT $action The data
  */
 function log_cart_actions($action)
 {
@@ -285,9 +285,9 @@ FOR MAKING PURCHASE
 /**
  * Find costings for items in the cart / an order.
  *
- * @param  array $shopping_cart_rows List of cart/order items.
+ * @param  array $shopping_cart_rows List of cart/order items
  * @param  string $field_name_prefix Field name prefix. Pass as blank for cart items or 'p_' for order items.
- * @return array A tuple: total price, total tax derivation, total tax, total tax tracking ID, total shipping cost, total shipping tax, total shipping weight, total shipping length, total shipping width, total shipping height.
+ * @return array A tuple: total price, total tax derivation, total tax, total tax tracking ID, total shipping cost, total shipping tax, total shipping weight, total shipping length, total shipping width, total shipping height
  */
 function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
 {
@@ -447,7 +447,7 @@ function derive_cart_amounts($shopping_cart_rows, $field_name_prefix = '')
 /**
  * Convert a shopping cart into an order.
  *
- * @return AUTO_LINK Order ID.
+ * @return AUTO_LINK Order ID
  */
 function copy_shopping_cart_to_order()
 {
@@ -549,9 +549,9 @@ function copy_shopping_cart_to_order()
 /**
  * Make a shopping cart payment button.
  *
- * @param  AUTO_LINK $order_id Order ID.
- * @param  ID_TEXT $currency The currency to use.
- * @param  integer $price_points Transaction price in points.
+ * @param  AUTO_LINK $order_id Order ID
+ * @param  ID_TEXT $currency The currency to use
+ * @param  integer $price_points Transaction price in points
  * @return Tempcode The button
  */
 function make_cart_payment_button($order_id, $currency, $price_points = 0)
@@ -684,7 +684,7 @@ function delete_pending_orders_for_current_user()
 /**
  * Recalculate the saved cost details related to an order. May be used after that order is changed.
  *
- * @param  AUTO_LINK $order_id The order ID.
+ * @param  AUTO_LINK $order_id The order ID
  */
 function recalculate_order_costs($order_id)
 {

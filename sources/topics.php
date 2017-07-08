@@ -447,7 +447,7 @@ class CMS_Topic
      * @param  ?MEMBER $highlight_by_member Member to highlight the posts of (null: none)
      * @param  array $all_individual_review_ratings Review ratings rows
      * @param  AUTO_LINK $forum_id ID of forum this topic in in
-     * @param  ?array $topic_info The topic row (null: not running Conversr).
+     * @param  ?array $topic_info The topic row (null: not running Conversr)
      * @param  ?AUTO_LINK $parent_post_id Only show posts under here (null: show posts from root)
      * @param  boolean $maybe_missing_links Whether to just render everything as flat (used when doing AJAX post loading). NOT actually used since we wrote better post-orphaning-fixing code.
      * @return array Tuple: Rendered topic, serialized options to render more posts, secure hash of serialized options to prevent tampering
@@ -745,7 +745,7 @@ class CMS_Topic
      * @param  ?AUTO_LINK $highlight_by_member Only show posts under here (null: show posts from root)
      * @param  array $all_individual_review_ratings Review ratings rows
      * @param  AUTO_LINK $forum_id ID of forum this topic in in
-     * @param  ?array $topic_info The topic row (null: not running Conversr).
+     * @param  ?array $topic_info The topic row (null: not running Conversr)
      * @param  integer $depth The recursion depth
      * @return Tempcode Rendered tree structure
      */

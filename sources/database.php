@@ -179,7 +179,7 @@ function is_on_multi_site_network()
 /**
  * Find whether to run in multi-lang mode for content translations.
  *
- * @return boolean Whether to run in multi-lang mode for content translations.
+ * @return boolean Whether to run in multi-lang mode for content translations
  */
 function multi_lang_content()
 {
@@ -321,9 +321,9 @@ function db_function($function, $args = array())
 /**
  * Extract certain fields, including any Tempcode details for them, from a DB table row array.
  *
- * @param  array $row DB table row.
- * @param  array $fields List of fields to copy through.
- * @return array Map of fields.
+ * @param  array $row DB table row
+ * @param  array $fields List of fields to copy through
+ * @return array Map of fields
  */
 function db_map_restrict($row, $fields)
 {
@@ -1807,7 +1807,7 @@ class DatabaseConnector
      * Turn a list of maps into the bulk-insert format used by query_insert.
      *
      * @param  array $maps List of maps
-     * @return array The row format for bulk-inserts.
+     * @return array The row format for bulk-inserts
      */
     public function bulk_insert_flip($maps)
     {

@@ -21,16 +21,16 @@
 /**
  * Add a forum poll.
  *
- * @param  AUTO_LINK $topic_id The ID of the topic to add the poll to.
- * @param  SHORT_TEXT $question The question.
- * @param  BINARY $is_private Whether the result tallies are kept private until the poll is made non-private.
- * @param  BINARY $is_open Whether the poll is open for voting.
- * @param  integer $minimum_selections The minimum number of selections that may be made.
- * @param  integer $maximum_selections The maximum number of selections that may be made.
- * @param  BINARY $requires_reply Whether members must have a post in the topic before they made vote.
- * @param  array $answers A list of pairs of the potential voteable answers and the number of votes.
- * @param  boolean $check_permissions Whether to check there are permissions to make the poll.
- * @return AUTO_LINK The ID of the newly created forum poll.
+ * @param  AUTO_LINK $topic_id The ID of the topic to add the poll to
+ * @param  SHORT_TEXT $question The question
+ * @param  BINARY $is_private Whether the result tallies are kept private until the poll is made non-private
+ * @param  BINARY $is_open Whether the poll is open for voting
+ * @param  integer $minimum_selections The minimum number of selections that may be made
+ * @param  integer $maximum_selections The maximum number of selections that may be made
+ * @param  BINARY $requires_reply Whether members must have a post in the topic before they made vote
+ * @param  array $answers A list of pairs of the potential voteable answers and the number of votes
+ * @param  boolean $check_permissions Whether to check there are permissions to make the poll
+ * @return AUTO_LINK The ID of the newly created forum poll
  */
 function cns_make_poll($topic_id, $question, $is_private, $is_open, $minimum_selections, $maximum_selections, $requires_reply, $answers, $check_permissions = true)
 {

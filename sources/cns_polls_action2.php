@@ -21,16 +21,16 @@
 /**
  * Edit a forum poll.
  *
- * @param  AUTO_LINK $poll_id The ID of the poll we're editing.
- * @param  SHORT_TEXT $question The question.
- * @param  BINARY $is_private Whether the result tallies are kept private until the poll is made non-private.
- * @param  BINARY $is_open Whether the poll is open for voting.
- * @param  integer $minimum_selections The minimum number of selections that may be made.
- * @param  integer $maximum_selections The maximum number of selections that may be made.
- * @param  BINARY $requires_reply Whether members must have a post in the topic before they made vote.
- * @param  array $answers A list of the potential voteable answers.
- * @param  LONG_TEXT $reason The reason for editing the poll.
- * @return AUTO_LINK The ID of the topic the poll is on.
+ * @param  AUTO_LINK $poll_id The ID of the poll we're editing
+ * @param  SHORT_TEXT $question The question
+ * @param  BINARY $is_private Whether the result tallies are kept private until the poll is made non-private
+ * @param  BINARY $is_open Whether the poll is open for voting
+ * @param  integer $minimum_selections The minimum number of selections that may be made
+ * @param  integer $maximum_selections The maximum number of selections that may be made
+ * @param  BINARY $requires_reply Whether members must have a post in the topic before they made vote
+ * @param  array $answers A list of the potential voteable answers
+ * @param  LONG_TEXT $reason The reason for editing the poll
+ * @return AUTO_LINK The ID of the topic the poll is on
  */
 function cns_edit_poll($poll_id, $question, $is_private, $is_open, $minimum_selections, $maximum_selections, $requires_reply, $answers, $reason = '')
 {
@@ -91,10 +91,10 @@ function cns_edit_poll($poll_id, $question, $is_private, $is_open, $minimum_sele
 /**
  * Delete a forum poll.
  *
- * @param  AUTO_LINK $poll_id The ID of the poll we're deleting.
- * @param  LONG_TEXT $reason The reason for deleting the poll.
- * @param  boolean $check_perms Whether to check permissions.
- * @return AUTO_LINK The ID of the topic the poll is on.
+ * @param  AUTO_LINK $poll_id The ID of the poll we're deleting
+ * @param  LONG_TEXT $reason The reason for deleting the poll
+ * @param  boolean $check_perms Whether to check permissions
+ * @return AUTO_LINK The ID of the topic the poll is on
  */
 function cns_delete_poll($poll_id, $reason = '', $check_perms = true)
 {
@@ -125,10 +125,10 @@ function cns_delete_poll($poll_id, $reason = '', $check_perms = true)
 /**
  * Place a vote on a specified poll.
  *
- * @param  AUTO_LINK $poll_id The ID of the poll we're voting in.
- * @param  array $votes A list of poll answers that are being voted for.
- * @param  ?MEMBER $member_id The member that's voting (null: current member).
- * @param  ?array $topic_info The row of the topic the poll is for (null: get it from the DB).
+ * @param  AUTO_LINK $poll_id The ID of the poll we're voting in
+ * @param  array $votes A list of poll answers that are being voted for
+ * @param  ?MEMBER $member_id The member that's voting (null: current member)
+ * @param  ?array $topic_info The row of the topic the poll is for (null: get it from the DB)
  */
 function cns_vote_in_poll($poll_id, $votes, $member_id = null, $topic_info = null)
 {

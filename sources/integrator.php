@@ -21,9 +21,9 @@
 /**
  * Take a URL and process it to make a hard include. We'll get the HTML and we'll also load up some global stuff for 'do_header' to use.
  *
- * @param  URLPATH $url The URL that we're operating on.
- * @param  URLPATH $operation_base_url We open up linked URLs under this recursively.
- * @return string The cleaned up contents at the URL, set up for the recursive integrator usage.
+ * @param  URLPATH $url The URL that we're operating on
+ * @param  URLPATH $operation_base_url We open up linked URLs under this recursively
+ * @return string The cleaned up contents at the URL, set up for the recursive integrator usage
  */
 function reprocess_url($url, $operation_base_url)
 {

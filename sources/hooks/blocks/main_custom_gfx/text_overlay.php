@@ -26,9 +26,9 @@ class Hook_main_custom_gfx_text_overlay
     /**
      * Standard graphic generator function. Creates custom graphics from parameters.
      *
-     * @param  array $map Map of hook parameters (relayed from block parameters map).
-     * @param  object $block The block itself (contains utility methods).
-     * @return Tempcode HTML to output.
+     * @param  array $map Map of hook parameters (relayed from block parameters map)
+     * @param  object $block The block itself (contains utility methods)
+     * @return Tempcode HTML to output
      */
     public function run($map, &$block)
     {

@@ -482,9 +482,9 @@ function export_theme_images()
 /**
  * Regenerate all the theme image paths in the database.
  *
- * @param  ID_TEXT $theme The theme we're searching in.
- * @param  ?array $langs A map of languages (lang=>true) (null: find it in-function).
- * @param  ?ID_TEXT $target_theme The theme we're storing in (null: same as $theme).
+ * @param  ID_TEXT $theme The theme we're searching in
+ * @param  ?array $langs A map of languages (lang=>true) (null: find it in-function)
+ * @param  ?ID_TEXT $target_theme The theme we're storing in (null: same as $theme)
  */
 function regen_theme_images($theme, $langs = null, $target_theme = null)
 {

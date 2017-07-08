@@ -71,8 +71,8 @@ function cns_get_filter_cats($only_exists_now = false)
 /**
  * Find whether a member of a certain username is bound to HTTP authentication (an exceptional situation, only for sites that use it).
  *
- * @param  string $authusername The username.
- * @return ?integer The member ID, if it is (null: not bound).
+ * @param  string $authusername The username
+ * @return ?integer The member ID, if it is (null: not bound)
  */
 function cns_authusername_is_bound_via_httpauth($authusername)
 {
@@ -86,8 +86,8 @@ function cns_authusername_is_bound_via_httpauth($authusername)
 /**
  * Find whether a member is bound to HTTP LDAP (an exceptional situation, only for sites that use it).
  *
- * @param  MEMBER $member_id The member.
- * @return boolean The answer.
+ * @param  MEMBER $member_id The member
+ * @return boolean The answer
  */
 function cns_is_ldap_member($member_id)
 {
@@ -103,8 +103,8 @@ function cns_is_ldap_member($member_id)
 /**
  * Find whether a member is bound to HTTP authentication (an exceptional situation, only for sites that use it).
  *
- * @param  MEMBER $member_id The member.
- * @return boolean The answer.
+ * @param  MEMBER $member_id The member
+ * @return boolean The answer
  */
 function cns_is_httpauth_member($member_id)
 {
@@ -115,17 +115,17 @@ function cns_is_httpauth_member($member_id)
 /**
  * Gets all the system custom fields that match certain parameters.
  *
- * @param  ?array $groups That are applicable only to one of the usergroups in this list (empty: CPFs with no restriction) (null: disregard restriction).
- * @param  ?BINARY $public_view That are publicly viewable (null: don't care).
- * @param  ?BINARY $owner_view That are owner viewable (null: don't care).
- * @param  ?BINARY $owner_set That are owner settable (null: don't care).
- * @param  ?BINARY $required That are required (null: don't care).
- * @param  ?BINARY $show_in_posts That are to be shown in posts (null: don't care).
- * @param  ?BINARY $show_in_post_previews That are to be shown in post previews (null: don't care).
+ * @param  ?array $groups That are applicable only to one of the usergroups in this list (empty: CPFs with no restriction) (null: disregard restriction)
+ * @param  ?BINARY $public_view That are publicly viewable (null: don't care)
+ * @param  ?BINARY $owner_view That are owner viewable (null: don't care)
+ * @param  ?BINARY $owner_set That are owner settable (null: don't care)
+ * @param  ?BINARY $required That are required (null: don't care)
+ * @param  ?BINARY $show_in_posts That are to be shown in posts (null: don't care)
+ * @param  ?BINARY $show_in_post_previews That are to be shown in post previews (null: don't care)
  * @param  BINARY $special_start That start 'cms_'
- * @param  ?boolean $show_on_join_form That are to go on the join form (null: don't care).
+ * @param  ?boolean $show_on_join_form That are to go on the join form (null: don't care)
  * @param  array $adjusted_config_options A map of adjusted config options; actually it is field_<id>=0|1 for the purposes of this function, and overrides cf_show_on_join_form
- * @return array A list of rows of such fields.
+ * @return array A list of rows of such fields
  */
 function cns_get_all_custom_fields_match($groups = null, $public_view = null, $owner_view = null, $owner_set = null, $required = null, $show_in_posts = null, $show_in_post_previews = null, $special_start = 0, $show_on_join_form = null, $adjusted_config_options = array())
 {
@@ -224,16 +224,16 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
 /**
  * Gets all a member's custom fields that match certain parameters.
  *
- * @param  MEMBER $member_id The member.
- * @param  ?BINARY $public_view That are publicly viewable (null: don't care).
- * @param  ?BINARY $owner_view That are owner viewable (null: don't care).
- * @param  ?BINARY $owner_set That are owner settable (null: don't care).
- * @param  ?BINARY $encrypted That are encrypted (null: don't care).
- * @param  ?BINARY $required That are required (null: don't care).
- * @param  ?BINARY $show_in_posts That are to be shown in posts (null: don't care).
- * @param  ?BINARY $show_in_post_previews That are to be shown in post previews (null: don't care).
+ * @param  MEMBER $member_id The member
+ * @param  ?BINARY $public_view That are publicly viewable (null: don't care)
+ * @param  ?BINARY $owner_view That are owner viewable (null: don't care)
+ * @param  ?BINARY $owner_set That are owner settable (null: don't care)
+ * @param  ?BINARY $encrypted That are encrypted (null: don't care)
+ * @param  ?BINARY $required That are required (null: don't care)
+ * @param  ?BINARY $show_in_posts That are to be shown in posts (null: don't care)
+ * @param  ?BINARY $show_in_post_previews That are to be shown in post previews (null: don't care)
  * @param  BINARY $special_start That start 'cms_'
- * @param  ?boolean $show_on_join_form That are to go on the join form (null: don't care).
+ * @param  ?boolean $show_on_join_form That are to go on the join form (null: don't care)
  * @return array A mapping of field title to a map of details: 'RAW' as the raw field value, 'RENDERED' as the rendered field value, 'FIELD_ID' to the field ID, 'EDITABILITY' defining if fractional editing can work on this
  */
 function cns_get_all_custom_fields_match_member($member_id, $public_view = null, $owner_view = null, $owner_set = null, $encrypted = null, $required = null, $show_in_posts = null, $show_in_post_previews = null, $special_start = 0, $show_on_join_form = null)
@@ -379,8 +379,8 @@ function cns_get_all_custom_fields_match_member($member_id, $public_view = null,
 /**
  * Get the ID for a CPF if we only know the title. Warning: Only use this with custom code, never core code! It assumes a single language and that fields aren't renamed.
  *
- * @param  SHORT_TEXT $title The title.
- * @return ?AUTO_LINK The ID (null: could not find).
+ * @param  SHORT_TEXT $title The title
+ * @return ?AUTO_LINK The ID (null: could not find)
  */
 function find_cpf_field_id($title)
 {
@@ -402,8 +402,8 @@ function find_cpf_field_id($title)
 /**
  * Get the ID for a CPF if we only know the title. Warning: Only use this with custom code, never core code! It assumes a single language and that fields aren't renamed.
  *
- * @param  SHORT_TEXT $title The title.
- * @return ?AUTO_LINK The ID (null: could not find).
+ * @param  SHORT_TEXT $title The title
+ * @return ?AUTO_LINK The ID (null: could not find)
  */
 function find_cms_cpf_field_id($title)
 {
@@ -425,8 +425,8 @@ function find_cms_cpf_field_id($title)
 /**
  * Returns a list of all field values for user. Doesn't take translation into account. Doesn't take anything permissive into account.
  *
- * @param  MEMBER $member_id The member.
- * @return array The mapping, field_<id> to value.
+ * @param  MEMBER $member_id The member
+ * @return array The mapping, field_<id> to value
  */
 function cns_get_custom_field_mappings($member_id)
 {
@@ -478,8 +478,8 @@ function cns_get_custom_field_mappings($member_id)
 /**
  * Returns a mapping between field number and field value. Doesn't take translation into account. Doesn't take anything permissive into account.
  *
- * @param  MEMBER $member_id The member.
- * @return array The mapping.
+ * @param  MEMBER $member_id The member
+ * @return array The mapping
  */
 function cns_get_custom_fields_member($member_id)
 {
@@ -496,8 +496,8 @@ function cns_get_custom_fields_member($member_id)
 /**
  * Get the primary of a member (supports consulting of LDAP).
  *
- * @param  MEMBER $member_id The member.
- * @return GROUP The primary.
+ * @param  MEMBER $member_id The member
+ * @return GROUP The primary
  */
 function cns_get_member_primary_group($member_id)
 {

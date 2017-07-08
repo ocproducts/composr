@@ -21,9 +21,9 @@
 /**
  * Get a config option, with override support.
  *
- * @param  ID_TEXT $option_name The config option.
- * @param  ?array $overrides Map of config option codenames and overridden values (null: no overrides).
- * @return ID_TEXT Config option value.
+ * @param  ID_TEXT $option_name The config option
+ * @param  ?array $overrides Map of config option codenames and overridden values (null: no overrides)
+ * @return ID_TEXT Config option value
  */
 function get_option_with_overrides($option_name, $overrides)
 {
@@ -36,13 +36,13 @@ function get_option_with_overrides($option_name, $overrides)
 /**
  * Find whether a member's field must be filled in.
  *
- * @param  ?MEMBER $member_id The member being edited (null: new member).
- * @param  string $field_class Special code representing what kind of field it is.
+ * @param  ?MEMBER $member_id The member being edited (null: new member)
+ * @param  string $field_class Special code representing what kind of field it is
  * @set email_address dob required_cpfs
- * @param  ?string $current_value The value the field has now (null: lookup from member record; cannot do this for a CPF).
- * @param  ?MEMBER $editing_member The member doing the adding/editing operation (null: current member).
+ * @param  ?string $current_value The value the field has now (null: lookup from member record; cannot do this for a CPF)
+ * @param  ?MEMBER $editing_member The member doing the adding/editing operation (null: current member)
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
- * @return boolean Whether the field must be filled in.
+ * @return boolean Whether the field must be filled in
  */
 function member_field_is_required($member_id, $field_class, $current_value = null, $editing_member = null, $adjusted_config_options = null)
 {
@@ -76,48 +76,48 @@ function member_field_is_required($member_id, $field_class, $current_value = nul
 /**
  * Add a member.
  *
- * @param  SHORT_TEXT $username The username.
- * @param  SHORT_TEXT $password The password.
- * @param  SHORT_TEXT $email_address The e-mail address.
- * @param  ?array $secondary_groups A list of secondary usergroups (null: default/current usergroups).
- * @param  ?integer $dob_day Day of date of birth (null: unknown).
- * @param  ?integer $dob_month Month of date of birth (null: unknown).
- * @param  ?integer $dob_year Year of date of birth (null: unknown).
- * @param  array $custom_fields A map of custom field values (fieldID=>value).
- * @param  ?ID_TEXT $timezone The member timezone (null: auto-detect).
- * @param  ?GROUP $primary_group The member's primary (null: default).
- * @param  BINARY $validated Whether the profile has been validated.
- * @param  ?TIME $join_time When the member joined (null: now).
- * @param  ?TIME $last_visit_time When the member last visited (null: now).
- * @param  ID_TEXT $theme The member's default theme.
- * @param  ?URLPATH $avatar_url The URL to the member's avatar (blank: none) (null: choose one automatically).
- * @param  LONG_TEXT $signature The member's signature (blank: none).
- * @param  BINARY $is_perm_banned Whether the member is permanently banned.
- * @param  ?BINARY $preview_posts Whether posts are previewed before they are made (null: calculate automatically).
- * @param  BINARY $reveal_age Whether the member's age may be shown.
- * @param  SHORT_TEXT $title The member's title (blank: get from primary).
- * @param  URLPATH $photo_url The URL to the member's photo (blank: none).
- * @param  URLPATH $photo_thumb_url The URL to the member's photo thumbnail (blank: none).
- * @param  BINARY $views_signatures Whether the member sees signatures in posts.
- * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config).
- * @param  ?LANGUAGE_NAME $language The member's language (null: auto detect).
- * @param  BINARY $allow_emails Whether the member allows e-mails via the site.
- * @param  BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site.
- * @param  ?IP $ip_address The member's IP address (null: IP address of current user).
- * @param  SHORT_TEXT $validated_email_confirm_code The code required before the account becomes active (blank: already entered).
- * @param  boolean $check_correctness Whether to check details for correctness.
- * @param  ?ID_TEXT $password_compatibility_scheme The compatibility scheme that the password operates in (blank: none) (null: none [meaning normal Composr salted style] or plain, depending on whether passwords are encrypted).
- * @param  SHORT_TEXT $salt The password salt (blank: password compatibility scheme does not use a salt / auto-generate).
- * @param  ?TIME $last_submit_time The time the member last made a submission (null: set to now).
+ * @param  SHORT_TEXT $username The username
+ * @param  SHORT_TEXT $password The password
+ * @param  SHORT_TEXT $email_address The e-mail address
+ * @param  ?array $secondary_groups A list of secondary usergroups (null: default/current usergroups)
+ * @param  ?integer $dob_day Day of date of birth (null: unknown)
+ * @param  ?integer $dob_month Month of date of birth (null: unknown)
+ * @param  ?integer $dob_year Year of date of birth (null: unknown)
+ * @param  array $custom_fields A map of custom field values (fieldID=>value)
+ * @param  ?ID_TEXT $timezone The member timezone (null: auto-detect)
+ * @param  ?GROUP $primary_group The member's primary (null: default)
+ * @param  BINARY $validated Whether the profile has been validated
+ * @param  ?TIME $join_time When the member joined (null: now)
+ * @param  ?TIME $last_visit_time When the member last visited (null: now)
+ * @param  ID_TEXT $theme The member's default theme
+ * @param  ?URLPATH $avatar_url The URL to the member's avatar (blank: none) (null: choose one automatically)
+ * @param  LONG_TEXT $signature The member's signature (blank: none)
+ * @param  BINARY $is_perm_banned Whether the member is permanently banned
+ * @param  ?BINARY $preview_posts Whether posts are previewed before they are made (null: calculate automatically)
+ * @param  BINARY $reveal_age Whether the member's age may be shown
+ * @param  SHORT_TEXT $title The member's title (blank: get from primary)
+ * @param  URLPATH $photo_url The URL to the member's photo (blank: none)
+ * @param  URLPATH $photo_thumb_url The URL to the member's photo thumbnail (blank: none)
+ * @param  BINARY $views_signatures Whether the member sees signatures in posts
+ * @param  ?BINARY $auto_monitor_contrib_content Whether the member automatically is enabled for notifications for content they contribute to (null: get default from config)
+ * @param  ?LANGUAGE_NAME $language The member's language (null: auto detect)
+ * @param  BINARY $allow_emails Whether the member allows e-mails via the site
+ * @param  BINARY $allow_emails_from_staff Whether the member allows e-mails from staff via the site
+ * @param  ?IP $ip_address The member's IP address (null: IP address of current user)
+ * @param  SHORT_TEXT $validated_email_confirm_code The code required before the account becomes active (blank: already entered)
+ * @param  boolean $check_correctness Whether to check details for correctness
+ * @param  ?ID_TEXT $password_compatibility_scheme The compatibility scheme that the password operates in (blank: none) (null: none [meaning normal Composr salted style] or plain, depending on whether passwords are encrypted)
+ * @param  SHORT_TEXT $salt The password salt (blank: password compatibility scheme does not use a salt / auto-generate)
+ * @param  ?TIME $last_submit_time The time the member last made a submission (null: set to now)
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
- * @param  BINARY $highlighted_name Whether the member username will be highlighted.
- * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member.
- * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member.
+ * @param  BINARY $highlighted_name Whether the member username will be highlighted
+ * @param  SHORT_TEXT $pt_allow Usergroups that may PT the member
+ * @param  LONG_TEXT $pt_rules_text Rules that other members must agree to before they may start a PT with the member
  * @param  ?TIME $on_probation_until When the member is on probation until (null: not on probation)
  * @param  BINARY $auto_mark_read Mark topics as read automatically
  * @param  BINARY $profile_views Total number of views to the profile
  * @param  BINARY $total_sessions Total number of sessions (basically, visits)
- * @return AUTO_LINK The ID of the new member.
+ * @return AUTO_LINK The ID of the new member
  */
 function cns_make_member($username, $password, $email_address, $secondary_groups, $dob_day, $dob_month, $dob_year, $custom_fields, $timezone = null, $primary_group = null, $validated = 1, $join_time = null, $last_visit_time = null, $theme = '', $avatar_url = null, $signature = '', $is_perm_banned = 0, $preview_posts = null, $reveal_age = 0, $title = '', $photo_url = '', $photo_thumb_url = '', $views_signatures = 1, $auto_monitor_contrib_content = null, $language = null, $allow_emails = 1, $allow_emails_from_staff = 1, $ip_address = null, $validated_email_confirm_code = '', $check_correctness = true, $password_compatibility_scheme = null, $salt = '', $last_submit_time = null, $id = null, $highlighted_name = 0, $pt_allow = '*', $pt_rules_text = '', $on_probation_until = null, $auto_mark_read = 1, $profile_views = 0, $total_sessions = 0)
 {
@@ -443,8 +443,8 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
  * Make a custom profile field from one of the predefined templates (this is often used by importers).
  * Also see the cpf_install source file.
  *
- * @param  ID_TEXT $type The identifier of the boiler custom profile field.
- * @return AUTO_LINK The ID of the new custom profile field.
+ * @param  ID_TEXT $type The identifier of the boiler custom profile field
+ * @return AUTO_LINK The ID of the new custom profile field
  */
 function cns_make_boiler_custom_field($type)
 {
@@ -508,10 +508,10 @@ function cns_make_boiler_custom_field($type)
 /**
  * Find how to store a field in the database.
  *
- * @param  ID_TEXT $type The field type.
- * @param  BINARY $encrypted Whether the field is encrypted.
- * @param  string $__default The default value to use.
- * @return array A tuple: the DB field type, whether to index, the default (in correct data type).
+ * @param  ID_TEXT $type The field type
+ * @param  BINARY $encrypted Whether the field is encrypted
+ * @param  string $__default The default value to use
+ * @return array A tuple: the DB field type, whether to index, the default (in correct data type)
  */
 function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
 {
@@ -574,25 +574,25 @@ function get_cpf_storage_for($type, $encrypted = 0, $__default = '')
 /**
  * Make a custom profile field.
  *
- * @param  SHORT_TEXT $name Name of the field.
+ * @param  SHORT_TEXT $name Name of the field
  * @param  BINARY $locked Whether the field is locked (i.e. cannot be deleted from the system).
- * @param  SHORT_TEXT $description Description of the field.
- * @param  LONG_TEXT $default The default value for the field.
- * @param  BINARY $public_view Whether the field is publicly viewable.
- * @param  BINARY $owner_view Whether the field is viewable by the owner.
- * @param  BINARY $owner_set Whether the field may be set by the owner.
- * @param  BINARY $encrypted Whether the field is encrypted.
- * @param  ID_TEXT $type The type of the field.
+ * @param  SHORT_TEXT $description Description of the field
+ * @param  LONG_TEXT $default The default value for the field
+ * @param  BINARY $public_view Whether the field is publicly viewable
+ * @param  BINARY $owner_view Whether the field is viewable by the owner
+ * @param  BINARY $owner_set Whether the field may be set by the owner
+ * @param  BINARY $encrypted Whether the field is encrypted
+ * @param  ID_TEXT $type The type of the field
  * @set    short_text long_text short_trans long_trans integer upload picture url list tick float
- * @param  BINARY $required Whether it is required that every member have this field filled in.
- * @param  BINARY $show_in_posts Whether this field is shown in posts and places where member details are highlighted (such as an image in a member gallery).
- * @param  BINARY $show_in_post_previews Whether this field is shown in preview places, such as in the forum member tooltip.
- * @param  ?integer $order The order of this field relative to other fields (null: next).
- * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list).
+ * @param  BINARY $required Whether it is required that every member have this field filled in
+ * @param  BINARY $show_in_posts Whether this field is shown in posts and places where member details are highlighted (such as an image in a member gallery)
+ * @param  BINARY $show_in_post_previews Whether this field is shown in preview places, such as in the forum member tooltip
+ * @param  ?integer $order The order of this field relative to other fields (null: next)
+ * @param  LONG_TEXT $only_group The usergroups that this field is confined to (comma-separated list)
  * @param  BINARY $show_on_join_form Whether the field is to be shown on the join form
  * @param  SHORT_TEXT $options Field options
- * @param  boolean $no_name_dupe Whether to check that no field has this name already.
- * @return AUTO_LINK The ID of the new custom profile field.
+ * @param  boolean $no_name_dupe Whether to check that no field has this name already
+ * @return AUTO_LINK The ID of the new custom profile field
  */
 function cns_make_custom_field($name, $locked = 0, $description = '', $default = '', $public_view = 0, $owner_view = 0, $owner_set = 0, $encrypted = 0, $type = 'long_text', $required = 0, $show_in_posts = 0, $show_in_post_previews = 0, $order = null, $only_group = '', $show_on_join_form = 0, $options = '', $no_name_dupe = false)
 {
@@ -693,10 +693,10 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 /**
  * Make custom profile field indices.
  *
- * @param  AUTO_LINK $id CPF ID.
- * @param  boolean $index Whether an index is needed for search purposes (there may be other reasons though).
- * @param  ID_TEXT $type CPF type.
- * @param  ID_TEXT $_type Underlying field type.
+ * @param  AUTO_LINK $id CPF ID
+ * @param  boolean $index Whether an index is needed for search purposes (there may be other reasons though)
+ * @param  ID_TEXT $type CPF type
+ * @param  ID_TEXT $_type Underlying field type
  */
 function build_cpf_indices($id, $index, $type, $_type)
 {

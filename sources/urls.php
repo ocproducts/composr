@@ -373,7 +373,7 @@ function has_keep_parameters()
  * @param  boolean $avoid_remap Whether to avoid URL Schemes (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
- * @return Tempcode The URL in Tempcode format.
+ * @return Tempcode The URL in Tempcode format
  */
 function build_url($vars, $zone_name = '_SEARCH', $skip = array(), $keep_all = false, $avoid_remap = false, $skip_keep = false, $hash = '')
 {
@@ -436,7 +436,7 @@ function build_url($vars, $zone_name = '_SEARCH', $skip = array(), $keep_all = f
  * @param  ID_TEXT $zone_name The zone the URL is pointing to. YOU SHOULD NEVER HARD CODE THIS- USE '_SEARCH', '_SELF' (if you're self-referencing your own page) or the output of get_module_zone.
  * @param  array $skip Variables to explicitly not put in the URL (perhaps because we have $keep_all set, or we are blocking certain keep_ values). The format is of a map where the keys are the names, and the values are 1.
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
- * @return string The page-link.
+ * @return string The page-link
  */
 function build_page_link($vars, $zone_name = '', $skip = array(), $hash = '')
 {
@@ -502,7 +502,7 @@ function build_page_link($vars, $zone_name = '', $skip = array(), $hash = '')
 /**
  * Find whether URL monikers are enabled.
  *
- * @return boolean Whether URL monikers are enabled.
+ * @return boolean Whether URL monikers are enabled
  */
 function url_monikers_enabled()
 {
@@ -529,7 +529,7 @@ function url_monikers_enabled()
  * @param  boolean $avoid_remap Whether to avoid URL Schemes (sometimes essential so we can assume the standard URL parameter addition scheme in templates)
  * @param  boolean $skip_keep Whether to skip actually putting on keep_ parameters (rarely will this skipping be desirable)
  * @param  string $hash Hash portion of the URL (blank: none). May or may not start '#' - code will put it on if needed
- * @return string The URL in string format.
+ * @return string The URL in string format
  *
  * @ignore
  */
@@ -1099,8 +1099,8 @@ function fixup_protocolless_urls($in)
  *
  * @param  URLPATH $url The URL to convert. Note it may not be for a URL Scheme, and it must be based on the local base URL (else failure WILL occur).
  * @param  boolean $abs_only Whether to only convert absolute URLs. Turn this on if you're not sure what you're passing is a URL not and you want to be extra safe.
- * @param  boolean $perfect_only Whether to only allow perfect conversions.
- * @return string The page-link (blank: could not convert).
+ * @param  boolean $perfect_only Whether to only allow perfect conversions
+ * @return string The page-link (blank: could not convert)
  */
 function url_to_page_link($url, $abs_only = false, $perfect_only = true)
 {
@@ -1112,7 +1112,7 @@ function url_to_page_link($url, $abs_only = false, $perfect_only = true)
  * Given a URL or page-link, return an absolute URL.
  *
  * @param  string $url URL or page-link
- * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail.
+ * @param  boolean $email_safe Whether to avoid keep_* parameters as it's going in an e-mail
  * @return URLPATH URL
  */
 function page_link_to_url($url, $email_safe = false)
@@ -1142,8 +1142,8 @@ function page_link_to_tempcode_url($page_link)
 /**
  * Convert a local page file path to a written page-link.
  *
- * @param  string $page The path.
- * @return string The page-link (blank: could not convert).
+ * @param  string $page The path
+ * @return string The page-link (blank: could not convert)
  */
 function page_path_to_page_link($page)
 {
@@ -1219,8 +1219,8 @@ function load_moniker_hooks()
 /**
  * Find the textual moniker for a typical Composr URL path. This will be called from inside build_url, based on details learned from a moniker hook (only if a hook exists to hint how to make the requested link SEO friendly).
  *
- * @param  array $url_parts The URL component map (must contain 'page', 'type', and 'id' if this function is to do anything).
- * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers).
+ * @param  array $url_parts The URL component map (must contain 'page', 'type', and 'id' if this function is to do anything)
+ * @param  ID_TEXT $zone The URL zone name (only used for Comcode Page URL monikers)
  * @return ?string The moniker ID (null: could not find)
  */
 function find_id_moniker($url_parts, $zone)
@@ -1401,8 +1401,8 @@ function find_id_moniker($url_parts, $zone)
 /**
  * Extend a URL with additional parameter(s). Does not handle URL encoding of the appended parameter, which you should do first if applicable.
  *
- * @param  string $url The URL to append to (returned by reference).
- * @param  string $append URL parameter(s) to append, with no leading or trailing ? or & characters.
+ * @param  string $url The URL to append to (returned by reference)
+ * @param  string $append URL parameter(s) to append, with no leading or trailing ? or & characters
  */
 function extend_url(&$url, $append)
 {
@@ -1415,8 +1415,8 @@ function extend_url(&$url, $append)
  * Ensure a URL can be embedded within our webpage context.
  * Currently this means making sure if we're on an HTTPS page, everything is HTTPS.
  *
- * @param  string $url The URL to check.
- * @return string $append The fixed URL.
+ * @param  string $url The URL to check
+ * @return string $append The fixed URL
  */
 function ensure_protocol_suitability($url)
 {
@@ -1446,9 +1446,9 @@ function ensure_protocol_suitability($url)
 /**
  * Check to see if a URL exists.
  *
- * @param  string $url The URL to check.
- * @param  integer $test_freq_secs Cache must be newer than this many seconds.
- * @return boolean Whether it does.
+ * @param  string $url The URL to check
+ * @param  integer $test_freq_secs Cache must be newer than this many seconds
+ * @return boolean Whether it does
  */
 function check_url_exists($url, $test_freq_secs)
 {

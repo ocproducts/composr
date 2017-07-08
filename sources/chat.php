@@ -1608,7 +1608,7 @@ function check_chatroom_access($room, $ret = false, $member_id = null, $must_be_
 /**
  * Get a template that will set up the chat sound effects as for what this member needs.
  *
- * @return Tempcode Template to set up chat sound effects.
+ * @return Tempcode Template to set up chat sound effects
  */
 function get_chat_sound_tpl()
 {

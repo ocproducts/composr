@@ -2100,7 +2100,7 @@ function in_tag_stack($tag_stack, $tags)
  * @param  boolean $close Whether the tag is a closing tag
  * @param  integer $len The length of the Comcode
  * @param  LONG_TEXT $comcode The Comcode being parsed
- * @return array A tuple of new parser settings.
+ * @return array A tuple of new parser settings
  *
  * @ignore
  */

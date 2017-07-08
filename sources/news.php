@@ -226,7 +226,7 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
  * @param  boolean $only_existing Whether to limit to only existing cats (otherwise we dynamically add unstarted blogs)
  * @param  ?boolean $only_blogs Whether to limit to only show blog categories (null: don't care, true: blogs only, false: no blogs)
  * @param  boolean $prefer_not_blog_selected Whether to prefer to choose a non-blog category as the default
- * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
+ * @param  ?TIME $updated_since Time from which content must be updated (null: no limit)
  * @return Tempcode The Tempcode for the news category select list
  */
 function create_selection_list_news_categories($it = null, $show_all_personal_categories = false, $addable_filter = false, $only_existing = false, $only_blogs = null, $prefer_not_blog_selected = false, $updated_since = null)

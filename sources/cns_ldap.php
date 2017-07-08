@@ -35,9 +35,9 @@ When looping over results, we always have to skip non-numeric keys, which are fo
 /**
  * Escape, ready for an LDAP query.
  *
- * @param  string $str The value.
- * @param  boolean $for_dn Whether this is for use in a DN string.
- * @return string The escaped value.
+ * @param  string $str The value
+ * @param  boolean $for_dn Whether this is for use in a DN string
+ * @return string The escaped value
  */
 function cms_ldap_escape($str, $for_dn = false)
 {
@@ -61,8 +61,8 @@ function cms_ldap_escape($str, $for_dn = false)
 /**
  * Unescape data from LDAP. Technically this is not unescaping, it's just a character set conversion, but function is named to provide symmetry with cms_ldap_escape which does both escaping and character set conversion.
  *
- * @param  string $str The escaped value.
- * @return string The value.
+ * @param  string $str The escaped value
+ * @return string The value
  */
 function ldap_unescape($str)
 {
@@ -93,7 +93,7 @@ function cns_ldap_connect()
 /**
  * Where in the LDAP hierarchy to search for groups.
  *
- * @return string The property.
+ * @return string The property
  */
 function member_search_qualifier()
 {
@@ -107,7 +107,7 @@ function member_search_qualifier()
 /**
  * The property in LDAP used for logins.
  *
- * @return string The property.
+ * @return string The property
  */
 function member_property()
 {
@@ -117,7 +117,7 @@ function member_property()
 /**
  * The LDAP class indicating an account.
  *
- * @return string The property.
+ * @return string The property
  */
 function get_member_class()
 {
@@ -127,7 +127,7 @@ function get_member_class()
 /**
  * Where in the LDAP hierarchy to search for members.
  *
- * @return string The property.
+ * @return string The property
  */
 function group_search_qualifier()
 {
@@ -141,7 +141,7 @@ function group_search_qualifier()
 /**
  * The group naming property LDAP will be using.
  *
- * @return string The property.
+ * @return string The property
  */
 function group_property()
 {
@@ -151,7 +151,7 @@ function group_property()
 /**
  * The LDAP class indicating a group.
  *
- * @return string The property.
+ * @return string The property
  */
 function get_group_class()
 {
@@ -161,7 +161,7 @@ function get_group_class()
 /**
  * The LDAP group that maps to the default Composr group.
  *
- * @return string The group.
+ * @return string The group
  */
 function get_mapped_users_group()
 {
@@ -171,7 +171,7 @@ function get_mapped_users_group()
 /**
  * The LDAP group that maps to the first administrative group in Composr (db_get_first_id()+1).
  *
- * @return string The group.
+ * @return string The group
  */
 function get_mapped_admin_group()
 {
@@ -185,8 +185,8 @@ function get_mapped_admin_group()
 /**
  * Find whether a member of a certain username WOULD be bound to LDAP authentication (an exceptional situation, only for sites that use it).
  *
- * @param  string $cn The username.
- * @return boolean The answer.
+ * @param  string $cn The username
+ * @return boolean The answer
  */
 function cns_is_ldap_member_potential($cn)
 {
@@ -246,8 +246,8 @@ function cns_ldap_bind()
 /**
  * Find whether a member exists on the LDAP server.
  *
- * @param  SHORT_TEXT $cn The username.
- * @return boolean The answer.
+ * @param  SHORT_TEXT $cn The username
+ * @return boolean The answer
  */
 function cns_is_on_ldap($cn)
 {
@@ -274,8 +274,8 @@ function cns_is_on_ldap($cn)
 /**
  * Find the LDAP servers password for a certain member.
  *
- * @param  string $cn The username.
- * @return ?string The password (null: no such user).
+ * @param  string $cn The username
+ * @return ?string The password (null: no such user)
  */
 function cns_get_ldap_hash($cn)
 {
@@ -306,9 +306,9 @@ function cns_get_ldap_hash($cn)
 /**
  * Convert a plain-text password into a hashed password.
  *
- * @param  string $cn The username (we use this to extract the hash algorithm being used by the member).
- * @param  string $password The password.
- * @return string The hashed password.
+ * @param  string $cn The username (we use this to extract the hash algorithm being used by the member)
+ * @param  string $password The password
+ * @return string The hashed password
  */
 function cns_ldap_hash($cn, $password)
 {
@@ -350,8 +350,8 @@ function cns_ldap_hash($cn, $password)
 /**
  * Get an LDAP login string to do a bind against.
  *
- * @param  string $cn The username.
- * @return string The login string.
+ * @param  string $cn The username
+ * @return string The login string
  */
 function ldap_get_login_string($cn)
 {
@@ -375,9 +375,9 @@ function ldap_get_login_string($cn)
 /**
  * Authorise an LDAP login.
  *
- * @param  string $cn The username.
- * @param  ?string $password The password (null: no such user).
- * @return array Part of the member row to put back in and authorise normally (hackerish, but it works kind of like a filter / stage in a chain).
+ * @param  string $cn The username
+ * @param  ?string $password The password (null: no such user)
+ * @return array Part of the member row to put back in and authorise normally (hackerish, but it works kind of like a filter / stage in a chain)
  */
 function cns_ldap_authorise_login($cn, $password)
 {
@@ -422,8 +422,8 @@ function cns_ldap_authorise_login($cn, $password)
 /**
  * Find the Composr member-ID for an LDAP username.
  *
- * @param  string $cn The username.
- * @return ?integer The Composr member-ID (null: none).
+ * @param  string $cn The username
+ * @return ?integer The Composr member-ID (null: none)
  */
 function cns_member_ldapcn_to_cnsid($cn)
 {
@@ -437,8 +437,8 @@ function cns_member_ldapcn_to_cnsid($cn)
 /**
  * Find the LDAP username for a Composr member-ID.
  *
- * @param  integer $id The Composr member-ID.
- * @return ?SHORT_TEXT The username (null: none).
+ * @param  integer $id The Composr member-ID
+ * @return ?SHORT_TEXT The username (null: none)
  */
 function cns_member_cnsid_to_ldapcn($id)
 {
@@ -452,7 +452,7 @@ function cns_member_cnsid_to_ldapcn($id)
 /**
  * Get a list of usergroups on the LDAP server.
  *
- * @return array The list of user-groups (string).
+ * @return array The list of user-groups (string)
  */
 function cns_get_all_ldap_groups()
 {
@@ -491,8 +491,8 @@ function cns_get_all_ldap_groups()
 /**
  * Find the Composr-ID for a named LDAP usergroup.
  *
- * @param  string $cn The usergroup.
- * @return ?GROUP The Composr-ID (null: none).
+ * @param  string $cn The usergroup
+ * @return ?GROUP The Composr-ID (null: none)
  */
 function cns_group_ldapcn_to_cnsid($cn)
 {
@@ -517,8 +517,8 @@ function cns_group_ldapcn_to_cnsid($cn)
 /**
  * Find the named LDAP usergroup for an Conversr ID. Note that the returned MAY NOT ACTUALLY EXIST!
  *
- * @param  GROUP $id The Conversr ID.
- * @return ?SHORT_TEXT The named LDAP usergroup (null: none).
+ * @param  GROUP $id The Conversr ID
+ * @return ?SHORT_TEXT The named LDAP usergroup (null: none)
  */
 function cns_group_cnsid_to_ldapcn($id)
 {
@@ -537,8 +537,8 @@ function cns_group_cnsid_to_ldapcn($id)
 /**
  * Get the e-mail of a member in LDAP.
  *
- * @param  ID_TEXT $cn The CN of the member.
- * @return SHORT_TEXT Guessed e-mail address (blank: couldn't find).
+ * @param  ID_TEXT $cn The CN of the member
+ * @return SHORT_TEXT Guessed e-mail address (blank: couldn't find)
  */
 function cns_ldap_guess_email($cn)
 {
@@ -561,11 +561,11 @@ function cns_ldap_guess_email($cn)
 /**
  * (LDAP helper for cns_get_group_members_raw) Get a list of members in a group (or more full details if $non_validated is true).
  *
- * @param  array $members The list is written into this.
- * @param  GROUP $group_id The ID of the usergroup.
- * @param  boolean $include_primaries Whether to include those in the usergroup as a primary member.
- * @param  boolean $non_validated Whether to include those applied to join the usergroup, but not validated in.
- * @param  boolean $include_secondaries Whether to include those in the usergroup as a secondary member.
+ * @param  array $members The list is written into this
+ * @param  GROUP $group_id The ID of the usergroup
+ * @param  boolean $include_primaries Whether to include those in the usergroup as a primary member
+ * @param  boolean $non_validated Whether to include those applied to join the usergroup, but not validated in
+ * @param  boolean $include_secondaries Whether to include those in the usergroup as a secondary member
  */
 function cns_get_group_members_raw_ldap(&$members, $group_id, $include_primaries, $non_validated, $include_secondaries)
 {
@@ -663,7 +663,7 @@ function cns_get_group_members_raw_ldap(&$members, $group_id, $include_primaries
 /**
  * (LDAP helper for cns_get_members_groups) Get a list of the usergroups a member is in (keys say the usergroups, values are irrelevant).
  *
- * @param  ?MEMBER $member_id The member to find the usergroups of (null: current member).
+ * @param  ?MEMBER $member_id The member to find the usergroups of (null: current member)
  * @return array Flipped list (e.g. array(1=>true,2=>true,3=>true) for someone in (1,2,3)).
  */
 function cns_get_members_groups_ldap($member_id)
@@ -752,8 +752,8 @@ function cns_get_members_groups_ldap($member_id)
 /**
  * Get the primary usergroup of a member in LDAP.
  *
- * @param  MEMBER $member_id The member.
- * @return GROUP The.
+ * @param  MEMBER $member_id The member
+ * @return GROUP The
  */
 function cns_ldap_get_member_primary_group($member_id)
 {
@@ -798,8 +798,8 @@ function cns_ldap_get_member_primary_group($member_id)
 /**
  * Find the Composr-ID for an LDAP usergroup-ID. POSIX Only.
  *
- * @param  integer $gid The LDAP ID.
- * @return ?GROUP The Composr-ID (null: could not find).
+ * @param  integer $gid The LDAP ID
+ * @return ?GROUP The Composr-ID (null: could not find)
  */
 function cns_group_ldapgid_to_cnsid($gid)
 {
@@ -822,8 +822,8 @@ function cns_group_ldapgid_to_cnsid($gid)
 /**
  * Find the LDAP ID for a named LDAP usergroup. POSIX Only.
  *
- * @param  string $cn The named LDAP usergroup.
- * @return ?integer The LDAP usergroup ID (null: none).
+ * @param  string $cn The named LDAP usergroup
+ * @return ?integer The LDAP usergroup ID (null: none)
  */
 function cns_group_ldapcn_to_ldapgid($cn)
 {
@@ -841,9 +841,9 @@ function cns_group_ldapcn_to_ldapgid($cn)
 /**
  * Converts an active directory style long-CN to a short one.
  *
- * @param  string $long The long one.
+ * @param  string $long The long one
  * @param  string $type The type (e.g. CN, DN).
- * @return string The short one.
+ * @return string The short one
  */
 function cns_long_cn_to_short_cn($long, $type)
 {

@@ -57,7 +57,7 @@ class CMSSocialWrite
     /**
      * Set a friendship.
      *
-     * @param  MEMBER $user_id Member to set on.
+     * @param  MEMBER $user_id Member to set on
      */
     public function follow($user_id)
     {
@@ -78,7 +78,7 @@ class CMSSocialWrite
     /**
      * Remove a friendship.
      *
-     * @param  MEMBER $user_id Member to remove on.
+     * @param  MEMBER $user_id Member to remove on
      */
     public function unfollow($user_id)
     {

@@ -25,10 +25,10 @@
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_MAKE_URL_ABSOLUTE($lang, $escaped, $param)
 {
@@ -52,10 +52,10 @@ function ecv2_MAKE_URL_ABSOLUTE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_VERSION_NUMBER($lang, $escaped, $param)
 {
@@ -77,10 +77,10 @@ function ecv2_VERSION_NUMBER($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ADDON_INSTALLED($lang, $escaped, $param)
 {
@@ -101,10 +101,10 @@ function ecv2_ADDON_INSTALLED($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_BRAND_BASE_URL($lang, $escaped, $param)
 {
@@ -121,10 +121,10 @@ function ecv2_BRAND_BASE_URL($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_CNS($lang, $escaped, $param)
 {
@@ -141,10 +141,10 @@ function ecv2_CNS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_VALID_FILE_TYPES($lang, $escaped, $param)
 {
@@ -176,10 +176,10 @@ function ecv2_VALID_FILE_TYPES($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_MAILTO($lang, $escaped, $param)
 {
@@ -198,10 +198,10 @@ function ecv2_MAILTO($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_IMG_INLINE($lang, $escaped, $param)
 {
@@ -238,10 +238,10 @@ function ecv2_IMG_INLINE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ADD($lang, $escaped, $param)
 {
@@ -262,10 +262,10 @@ function ecv2_ADD($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ALREADY_RATED($lang, $escaped, $param)
 {
@@ -287,10 +287,10 @@ function ecv2_ALREADY_RATED($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ANCHOR($lang, $escaped, $param)
 {
@@ -315,10 +315,10 @@ function ecv2_ANCHOR($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_AT($lang, $escaped, $param)
 {
@@ -346,10 +346,10 @@ function ecv2_AT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ATTACHMENT_DOWNLOADS($lang, $escaped, $param)
 {
@@ -375,10 +375,10 @@ function ecv2_ATTACHMENT_DOWNLOADS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_AVAILABLE_POINTS($lang, $escaped, $param)
 {
@@ -400,10 +400,10 @@ function ecv2_AVAILABLE_POINTS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_AWARD_ID($lang, $escaped, $param)
 {
@@ -430,10 +430,10 @@ function ecv2_AWARD_ID($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_CAN_SPELLCHECK($lang, $escaped, $param)
 {
@@ -450,10 +450,10 @@ function ecv2_CAN_SPELLCHECK($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_URLDECODE($lang, $escaped, $param)
 {
@@ -474,10 +474,10 @@ function ecv2_URLDECODE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_CLEAN_FILE_SIZE($lang, $escaped, $param)
 {
@@ -503,10 +503,10 @@ function ecv2_CLEAN_FILE_SIZE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COMCODE($lang, $escaped, $param)
 {
@@ -533,10 +533,10 @@ function ecv2_COMCODE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COMMA_LIST_FROM_BREADCRUMBS($lang, $escaped, $param)
 {
@@ -570,10 +570,10 @@ function ecv2_COMMA_LIST_FROM_BREADCRUMBS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COMMA_LIST_NICIFY($lang, $escaped, $param)
 {
@@ -597,10 +597,10 @@ function ecv2_COMMA_LIST_NICIFY($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COMMA_LIST_POP($lang, $escaped, $param)
 {
@@ -627,10 +627,10 @@ function ecv2_COMMA_LIST_POP($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COMMA_LIST_PUSH($lang, $escaped, $param)
 {
@@ -657,10 +657,10 @@ function ecv2_COMMA_LIST_PUSH($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COMMA_LIST_REVERSE($lang, $escaped, $param)
 {
@@ -684,10 +684,10 @@ function ecv2_COMMA_LIST_REVERSE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COMMA_LIST_SET($lang, $escaped, $param)
 {
@@ -714,10 +714,10 @@ function ecv2_COMMA_LIST_SET($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COMMA_LIST_SHIFT($lang, $escaped, $param)
 {
@@ -744,10 +744,10 @@ function ecv2_COMMA_LIST_SHIFT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COMMA_LIST_UNSHIFT($lang, $escaped, $param)
 {
@@ -774,10 +774,10 @@ function ecv2_COMMA_LIST_UNSHIFT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_COPPA_ON($lang, $escaped, $param)
 {
@@ -794,10 +794,10 @@ function ecv2_COPPA_ON($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_CSS_DIMENSION_REDUCE($lang, $escaped, $param)
 {
@@ -825,10 +825,10 @@ function ecv2_CSS_DIMENSION_REDUCE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_CURRENTLY_INVISIBLE($lang, $escaped, $param)
 {
@@ -845,10 +845,10 @@ function ecv2_CURRENTLY_INVISIBLE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_DEC($lang, $escaped, $param)
 {
@@ -876,10 +876,10 @@ function ecv2_DEC($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_DIV_CEIL($lang, $escaped, $param)
 {
@@ -904,10 +904,10 @@ function ecv2_DIV_CEIL($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ENTITY_DECODE($lang, $escaped, $param)
 {
@@ -935,10 +935,10 @@ function ecv2_ENTITY_DECODE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ESCAPE($lang, $escaped, $param)
 {
@@ -968,10 +968,10 @@ function ecv2_ESCAPE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FIND_GUID_VIA_ID($lang, $escaped, $param)
 {
@@ -1003,10 +1003,10 @@ function ecv2_FIND_GUID_VIA_ID($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FIND_ID_VIA_GUID($lang, $escaped, $param)
 {
@@ -1038,10 +1038,10 @@ function ecv2_FIND_ID_VIA_GUID($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FIND_ID_VIA_LABEL($lang, $escaped, $param)
 {
@@ -1073,10 +1073,10 @@ function ecv2_FIND_ID_VIA_LABEL($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FIND_ID_VIA_COMMANDR_FS_FILENAME($lang, $escaped, $param)
 {
@@ -1108,10 +1108,10 @@ function ecv2_FIND_ID_VIA_COMMANDR_FS_FILENAME($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FIND_ID_VIA_URL_MONIKER($lang, $escaped, $param)
 {
@@ -1136,10 +1136,10 @@ function ecv2_FIND_ID_VIA_URL_MONIKER($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FIND_LABEL_VIA_ID($lang, $escaped, $param)
 {
@@ -1171,10 +1171,10 @@ function ecv2_FIND_LABEL_VIA_ID($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FIND_COMMANDR_FS_FILENAME_VIA_ID($lang, $escaped, $param)
 {
@@ -1206,10 +1206,10 @@ function ecv2_FIND_COMMANDR_FS_FILENAME_VIA_ID($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FIND_URL_MONIKER_VIA_ID($lang, $escaped, $param)
 {
@@ -1236,10 +1236,10 @@ function ecv2_FIND_URL_MONIKER_VIA_ID($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FLOAT_FORMAT($lang, $escaped, $param)
 {
@@ -1263,10 +1263,10 @@ function ecv2_FLOAT_FORMAT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FORUM_CONTEXT($lang, $escaped, $param)
 {
@@ -1284,10 +1284,10 @@ function ecv2_FORUM_CONTEXT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_GEOLOCATE($lang, $escaped, $param)
 {
@@ -1306,10 +1306,10 @@ function ecv2_GEOLOCATE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_GROUP_NAME($lang, $escaped, $param)
 {
@@ -1336,10 +1336,10 @@ function ecv2_GROUP_NAME($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_HAS_CATEGORY_ACCESS($lang, $escaped, $param)
 {
@@ -1360,10 +1360,10 @@ function ecv2_HAS_CATEGORY_ACCESS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_HAS_EDIT_PERMISSION($lang, $escaped, $param)
 {
@@ -1392,10 +1392,10 @@ function ecv2_HAS_EDIT_PERMISSION($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SUPPORTS_FRACTIONAL_EDITABLE($lang, $escaped, $param)
 {
@@ -1424,10 +1424,10 @@ function ecv2_SUPPORTS_FRACTIONAL_EDITABLE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_HAS_FORUM($lang, $escaped, $param)
 {
@@ -1448,10 +1448,10 @@ function ecv2_HAS_FORUM($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_HAS_PAGE_ACCESS($lang, $escaped, $param)
 {
@@ -1476,10 +1476,10 @@ function ecv2_HAS_PAGE_ACCESS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_HAS_SUBMIT_PERMISSION($lang, $escaped, $param)
 {
@@ -1508,10 +1508,10 @@ function ecv2_HAS_SUBMIT_PERMISSION($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ISSET($lang, $escaped, $param)
 {
@@ -1533,10 +1533,10 @@ function ecv2_ISSET($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_IS_FRIEND($lang, $escaped, $param)
 {
@@ -1563,10 +1563,10 @@ function ecv2_IS_FRIEND($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_IS_VIRTUALISED_REQUEST($lang, $escaped, $param)
 {
@@ -1583,10 +1583,10 @@ function ecv2_IS_VIRTUALISED_REQUEST($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_LENGTH($lang, $escaped, $param)
 {
@@ -1610,10 +1610,10 @@ function ecv2_LENGTH($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_LT($lang, $escaped, $param)
 {
@@ -1634,10 +1634,10 @@ function ecv2_LT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_MEMBER_OVERRIDE($lang, $escaped, $param)
 {
@@ -1657,10 +1657,10 @@ function ecv2_MEMBER_OVERRIDE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_MOD($lang, $escaped, $param)
 {
@@ -1681,10 +1681,10 @@ function ecv2_MOD($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_MULT($lang, $escaped, $param)
 {
@@ -1704,10 +1704,10 @@ function ecv2_MULT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_NEGATE($lang, $escaped, $param)
 {
@@ -1728,10 +1728,10 @@ function ecv2_NEGATE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_STRIP_HTML($lang, $escaped, $param)
 {
@@ -1752,10 +1752,10 @@ function ecv2_STRIP_HTML($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_NUMBER_FORMAT($lang, $escaped, $param)
 {
@@ -1779,10 +1779,10 @@ function ecv2_NUMBER_FORMAT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_MEMBER_DATA($lang, $escaped, $param)
 {
@@ -1821,10 +1821,10 @@ function ecv2_MEMBER_DATA($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_RATING($lang, $escaped, $param)
 {
@@ -1876,10 +1876,10 @@ function ecv2_RATING($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_NUM_RATINGS($lang, $escaped, $param)
 {
@@ -1917,10 +1917,10 @@ function ecv2_NUM_RATINGS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_OBFUSCATE($lang, $escaped, $param)
 {
@@ -1945,10 +1945,10 @@ function ecv2_OBFUSCATE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_CNS_MEMBER_HTML($lang, $escaped, $param)
 {
@@ -1975,10 +1975,10 @@ function ecv2_CNS_MEMBER_HTML($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_PAD_LEFT($lang, $escaped, $param)
 {
@@ -2002,10 +2002,10 @@ function ecv2_PAD_LEFT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_PAD_RIGHT($lang, $escaped, $param)
 {
@@ -2029,10 +2029,10 @@ function ecv2_PAD_RIGHT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_POINTS_USED($lang, $escaped, $param)
 {
@@ -2054,10 +2054,10 @@ function ecv2_POINTS_USED($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_PREG_MATCH($lang, $escaped, $param)
 {
@@ -2083,10 +2083,10 @@ function ecv2_PREG_MATCH($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_QUERY_STRING($lang, $escaped, $param)
 {
@@ -2103,10 +2103,10 @@ function ecv2_QUERY_STRING($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_REM($lang, $escaped, $param)
 {
@@ -2129,10 +2129,10 @@ function ecv2_REM($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_RESET_CYCLE($lang, $escaped, $param)
 {
@@ -2154,10 +2154,10 @@ function ecv2_RESET_CYCLE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ROUND($lang, $escaped, $param)
 {
@@ -2186,10 +2186,10 @@ function ecv2_ROUND($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SECONDS_PERIOD($lang, $escaped, $param)
 {
@@ -2213,10 +2213,10 @@ function ecv2_SECONDS_PERIOD($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SESSION($lang, $escaped, $param)
 {
@@ -2233,10 +2233,10 @@ function ecv2_SESSION($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SESSION_HASHED($lang, $escaped, $param)
 {
@@ -2253,10 +2253,10 @@ function ecv2_SESSION_HASHED($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SET_TITLE($lang, $escaped, $param)
 {
@@ -2276,10 +2276,10 @@ function ecv2_SET_TITLE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SHOW_DOCS($lang, $escaped, $param)
 {
@@ -2296,10 +2296,10 @@ function ecv2_SHOW_DOCS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SITE_SCOPE($lang, $escaped, $param)
 {
@@ -2316,10 +2316,10 @@ function ecv2_SITE_SCOPE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SSW($lang, $escaped, $param)
 {
@@ -2336,10 +2336,10 @@ function ecv2_SSW($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_STAFF_ADDRESS($lang, $escaped, $param)
 {
@@ -2357,10 +2357,10 @@ function ecv2_STAFF_ADDRESS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_STAFF_ADDRESS_PURE($lang, $escaped, $param)
 {
@@ -2377,10 +2377,10 @@ function ecv2_STAFF_ADDRESS_PURE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_STRPOS($lang, $escaped, $param)
 {
@@ -2402,10 +2402,10 @@ function ecv2_STRPOS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SUBTRACT($lang, $escaped, $param)
 {
@@ -2426,10 +2426,10 @@ function ecv2_SUBTRACT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TEMPCODE($lang, $escaped, $param)
 {
@@ -2455,10 +2455,10 @@ function ecv2_TEMPCODE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_MATURITY_FILTER_REQUESTED($lang, $escaped, $param)
 {
@@ -2484,10 +2484,10 @@ function ecv2_MATURITY_FILTER_REQUESTED($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TIME_PERIOD($lang, $escaped, $param)
 {
@@ -2511,10 +2511,10 @@ function ecv2_TIME_PERIOD($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TOTAL_POINTS($lang, $escaped, $param)
 {
@@ -2536,10 +2536,10 @@ function ecv2_TOTAL_POINTS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TO_TIMESTAMP($lang, $escaped, $param)
 {
@@ -2563,10 +2563,10 @@ function ecv2_TO_TIMESTAMP($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TRUNCATE_EXPAND($lang, $escaped, $param)
 {
@@ -2583,10 +2583,10 @@ function ecv2_TRUNCATE_EXPAND($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TRUNCATE_RIGHT($lang, $escaped, $param)
 {
@@ -2603,10 +2603,10 @@ function ecv2_TRUNCATE_RIGHT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TUTORIAL_URL($lang, $escaped, $param)
 {
@@ -2630,10 +2630,10 @@ function ecv2_TUTORIAL_URL($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_UCASE($lang, $escaped, $param)
 {
@@ -2665,10 +2665,10 @@ function ecv2_UCASE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_VIEWS($lang, $escaped, $param)
 {
@@ -2695,10 +2695,10 @@ function ecv2_VIEWS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_WCASE($lang, $escaped, $param)
 {
@@ -2726,10 +2726,10 @@ function ecv2_WCASE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_WORDWRAP($lang, $escaped, $param)
 {
@@ -2758,10 +2758,10 @@ function ecv2_WORDWRAP($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_XOR($lang, $escaped, $param)
 {
@@ -2784,10 +2784,10 @@ function ecv2_XOR($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_ZONE_HEADER_TEXT($lang, $escaped, $param)
 {
@@ -2804,10 +2804,10 @@ function ecv2_ZONE_HEADER_TEXT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_THEMEWIZARD_COLOR($lang, $escaped, $param)
 {
@@ -2832,10 +2832,10 @@ function ecv2_THEMEWIZARD_COLOR($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_CSS_MODE($lang, $escaped, $param)
 {
@@ -2862,10 +2862,10 @@ function ecv2_CSS_MODE($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SELF_PAGE_LINK($lang, $escaped, $param)
 {
@@ -2893,10 +2893,10 @@ function ecv2_SELF_PAGE_LINK($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_SET_TUTORIAL_LINK($lang, $escaped, $param)
 {
@@ -2918,10 +2918,10 @@ function ecv2_SET_TUTORIAL_LINK($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_DISPLAY_CONCEPT($lang, $escaped, $param)
 {
@@ -2959,9 +2959,9 @@ function ecv2_DISPLAY_CONCEPT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_CSS_INHERIT(&$value, $lang, $escaped, $param)
@@ -2989,9 +2989,9 @@ function ecv2_CSS_INHERIT(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_RECONTEXTUALISE_IDS(&$value, $lang, $escaped, $param)
@@ -3018,9 +3018,9 @@ function ecv2_RECONTEXTUALISE_IDS(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_IF(&$value, $lang, $escaped, $param)
@@ -3038,9 +3038,9 @@ function ecv2_IF(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_IF_EMPTY(&$value, $lang, $escaped, $param)
@@ -3057,9 +3057,9 @@ function ecv2_IF_EMPTY(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_IF_NON_EMPTY(&$value, $lang, $escaped, $param)
@@ -3076,9 +3076,9 @@ function ecv2_IF_NON_EMPTY(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_IF_PASSED(&$value, $lang, $escaped, $param)
@@ -3096,9 +3096,9 @@ function ecv2_IF_PASSED(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_IF_NON_PASSED(&$value, $lang, $escaped, $param)
@@ -3116,9 +3116,9 @@ function ecv2_IF_NON_PASSED(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_IF_PASSED_AND_TRUE(&$value, $lang, $escaped, $param)
@@ -3136,9 +3136,9 @@ function ecv2_IF_PASSED_AND_TRUE(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_IF_NON_PASSED_OR_FALSE(&$value, $lang, $escaped, $param)
@@ -3156,9 +3156,9 @@ function ecv2_IF_NON_PASSED_OR_FALSE(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_WHILE(&$value, $lang, $escaped, $param)
@@ -3180,9 +3180,9 @@ function ecv2_WHILE(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  string $value Value to write into.
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  string $value Value to write into
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
  */
 function ecv2_LOOP(&$value, $lang, $escaped, $param)
@@ -3265,10 +3265,10 @@ function ecv2_LOOP(&$value, $lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TAPATALK($lang, $escaped, $param)
 {
@@ -3285,10 +3285,10 @@ function ecv2_TAPATALK($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_AUTHOR_MEMBER($lang, $escaped, $param)
 {
@@ -3316,10 +3316,10 @@ function ecv2_AUTHOR_MEMBER($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_IS_MAINTAINED($lang, $escaped, $param)
 {
@@ -3340,10 +3340,10 @@ function ecv2_IS_MAINTAINED($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_DECIMAL_POINT($lang, $escaped, $param)
 {
@@ -3361,10 +3361,10 @@ function ecv2_DECIMAL_POINT($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TAX_LABEL($lang, $escaped, $param)
 {
@@ -3386,10 +3386,10 @@ function ecv2_TAX_LABEL($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_TAX_NUMBER_LABEL($lang, $escaped, $param)
 {
@@ -3411,10 +3411,10 @@ function ecv2_TAX_NUMBER_LABEL($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_BUSINESS_ADDRESS($lang, $escaped, $param)
 {
@@ -3436,10 +3436,10 @@ function ecv2_BUSINESS_ADDRESS($lang, $escaped, $param)
  *
  * @ignore
  *
- * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements).
- * @param  array $escaped Array of escaping operations.
+ * @param  LANGUAGE_NAME $lang The language to evaluate this symbol in (some symbols refer to language elements)
+ * @param  array $escaped Array of escaping operations
  * @param  array $param Parameters to the symbol. For all but directive it is an array of strings. For directives it is an array of Tempcode objects. Actually there may be template-style parameters in here, as an influence of singular_bind and these may be Tempcode, but we ignore them.
- * @return string The result.
+ * @return string The result
  */
 function ecv2_FLOAT_UNFORMAT($lang, $escaped, $param)
 {

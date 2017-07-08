@@ -167,7 +167,7 @@ function uninstall_cns()
 /**
  * Install/upgrade Conversr.
  *
- * @param  ?float $upgrade_from The version to upgrade from (null: fresh install).
+ * @param  ?float $upgrade_from The version to upgrade from (null: fresh install)
  */
 function install_cns($upgrade_from = null)
 {

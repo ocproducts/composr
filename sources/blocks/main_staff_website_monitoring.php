@@ -28,7 +28,7 @@ class Block_main_staff_website_monitoring
     /**
      * Find details of the block.
      *
-     * @return ?array Map of block info (null: block is disabled).
+     * @return ?array Map of block info (null: block is disabled)
      */
     public function info()
     {
@@ -47,7 +47,7 @@ class Block_main_staff_website_monitoring
     /**
      * Find caching details for the block.
      *
-     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
+     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled)
      */
     public function caching_environment()
     {
@@ -91,7 +91,7 @@ class Block_main_staff_website_monitoring
      * Function to find Alexa details of the site.
      *
      * @param  string $url The URL of the site which you want to find out information on.)
-     * @return array Returns a triple array with the rank, the amount of links, and the speed of the site.
+     * @return array Returns a triple array with the rank, the amount of links, and the speed of the site
      */
     public function getAlexaRank($url)
     {
@@ -240,8 +240,8 @@ class Block_main_staff_website_monitoring
     /**
      * Execute the block.
      *
-     * @param  array $map A map of parameters.
-     * @return Tempcode The result of execution.
+     * @param  array $map A map of parameters
+     * @return Tempcode The result of execution
      */
     public function run($map)
     {

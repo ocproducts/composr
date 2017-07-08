@@ -36,7 +36,7 @@ function init__lorem()
 /**
  * Get suitable placeholder text.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function lorem_word()
 {
@@ -46,7 +46,7 @@ function lorem_word()
 /**
  * Get suitable placeholder text.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function lorem_word_2()
 {
@@ -56,7 +56,7 @@ function lorem_word_2()
 /**
  * Get suitable placeholder text.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function lorem_phrase()
 {
@@ -66,7 +66,7 @@ function lorem_phrase()
 /**
  * Get suitable placeholder text: title.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function lorem_title()
 {
@@ -76,7 +76,7 @@ function lorem_title()
 /**
  * Get suitable placeholder text: title.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_ip()
 {
@@ -86,7 +86,7 @@ function placeholder_ip()
 /**
  * Get suitable placeholder text.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function lorem_sentence()
 {
@@ -96,7 +96,7 @@ function lorem_sentence()
 /**
  * Get suitable placeholder text.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function lorem_paragraph()
 {
@@ -106,7 +106,7 @@ function lorem_paragraph()
 /**
  * Get suitable placeholder text.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function lorem_chunk()
 {
@@ -116,7 +116,7 @@ function lorem_chunk()
 /**
  * Get suitable placeholder text.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function lorem_word_html()
 {
@@ -130,7 +130,7 @@ function lorem_word_html()
 /**
  * Get suitable placeholder text.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function lorem_word_2_html()
 {
@@ -144,7 +144,7 @@ function lorem_word_2_html()
 /**
  * Get suitable placeholder text.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function lorem_phrase_html()
 {
@@ -158,7 +158,7 @@ function lorem_phrase_html()
 /**
  * Get suitable placeholder text.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function lorem_sentence_html()
 {
@@ -172,7 +172,7 @@ function lorem_sentence_html()
 /**
  * Get suitable placeholder text.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function lorem_paragraph_html()
 {
@@ -186,7 +186,7 @@ function lorem_paragraph_html()
 /**
  * Get suitable placeholder text.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function lorem_chunk_html()
 {
@@ -200,7 +200,7 @@ function lorem_chunk_html()
 /**
  * Get suitable placeholder text.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function placeholder_form()
 {
@@ -216,7 +216,7 @@ function placeholder_form()
 /**
  * Get fields.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function placeholder_fields()
 {
@@ -232,7 +232,7 @@ function placeholder_fields()
 /**
  * Get fields, but composed of divs (used by forum).
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function placeholder_fields_as_divs()
 {
@@ -248,8 +248,8 @@ function placeholder_fields_as_divs()
 /**
  * Get form with a field.
  *
- * @param  ID_TEXT $field_name The field name wanted.
- * @return Tempcode Place holder text.
+ * @param  ID_TEXT $field_name The field name wanted
+ * @return Tempcode Place holder text
  */
 function placeholder_form_with_field($field_name)
 {
@@ -268,7 +268,7 @@ function placeholder_form_with_field($field_name)
 /**
  * Get suitable placeholder text.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function placeholder_table()
 {
@@ -282,7 +282,7 @@ function placeholder_table()
 /**
  * Get suitable placeholder URL.
  *
- * @return Tempcode Place holder URL.
+ * @return Tempcode Place holder URL
  */
 function placeholder_url()
 {
@@ -296,7 +296,7 @@ function placeholder_url()
 /**
  * Get suitable placeholder link.
  *
- * @return Tempcode Place holder link.
+ * @return Tempcode Place holder link
  */
 function placeholder_link()
 {
@@ -365,8 +365,8 @@ function placeholder_options()
 /**
  * Get an array.
  *
- * @param  integer $num_elements Number of array elements.
- * @return array Place holder array.
+ * @param  integer $num_elements Number of array elements
+ * @return array Place holder array
  */
 function placeholder_array($num_elements = 3)
 {
@@ -381,7 +381,7 @@ function placeholder_array($num_elements = 3)
 /**
  * Get a list.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_list_item()
 {
@@ -391,7 +391,7 @@ function placeholder_list_item()
 /**
  * Get some set of data.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_types()
 {
@@ -401,7 +401,7 @@ function placeholder_types()
 /**
  * Get an image.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function placeholder_image()
 {
@@ -415,7 +415,7 @@ function placeholder_image()
 /**
  * Get time.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_date()
 {
@@ -425,7 +425,7 @@ function placeholder_date()
 /**
  * Get suitable placeholder timestamp.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_date_raw()
 {
@@ -435,7 +435,7 @@ function placeholder_date_raw()
 /**
  * Get suitable placeholder number.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_number()
 {
@@ -445,7 +445,7 @@ function placeholder_number()
 /**
  * Get suitable placeholder ID.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_id()
 {
@@ -455,7 +455,7 @@ function placeholder_id()
 /**
  * Get suitable placeholder filesize.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_filesize()
 {
@@ -466,7 +466,7 @@ function placeholder_filesize()
 /**
  * Get javascript code.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_javascript_code()
 {
@@ -486,7 +486,7 @@ function placeholder_image_url()
 /**
  * Get a blank screen, for a parameter which is not visible and typically blank.
  *
- * @return string Place holder text.
+ * @return string Place holder text
  */
 function placeholder_blank()
 {
@@ -496,7 +496,7 @@ function placeholder_blank()
 /**
  * Get suitable placeholder breadcrumbs.
  *
- * @return Tempcode Place holder text.
+ * @return Tempcode Place holder text
  */
 function placeholder_breadcrumbs()
 {
@@ -645,7 +645,7 @@ function placeholder_img_code($type = '')
 /**
  * Get pagination.
  *
- * @return Tempcode Pagination.
+ * @return Tempcode Pagination
  */
 function placeholder_pagination()
 {
@@ -738,7 +738,7 @@ function placeholder_pagination()
 /**
  * Get all Comcode files.
  *
- * @return array List of Comcode files.
+ * @return array List of Comcode files
  */
 function find_comcodes()
 {
@@ -754,7 +754,7 @@ function find_comcodes()
 /**
  * Get all HTML files.
  *
- * @return array List of HTML files.
+ * @return array List of HTML files
  */
 function find_html()
 {
@@ -770,7 +770,7 @@ function find_html()
 /**
  * Find the template/screen previews.
  *
- * @return array The map of previews (template to a tuple of preview details).
+ * @return array The map of previews (template to a tuple of preview details)
  */
 function find_all_previews__by_template()
 {

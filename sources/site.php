@@ -192,7 +192,7 @@ function check_has_page_access()
 /**
  * Load up details for the current zone.
  *
- * @return ID_TEXT The "real" zone name (not actually the zone name, but the zone name wants details to load for).
+ * @return ID_TEXT The "real" zone name (not actually the zone name, but the zone name wants details to load for)
  */
 function load_zone_data()
 {

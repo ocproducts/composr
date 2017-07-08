@@ -36,7 +36,7 @@ function init__temporal()
  * Display a time period of seconds in a tidy human-readable way.
  *
  * @param  integer $seconds Number of seconds
- * @return string Human-readable period.
+ * @return string Human-readable period
  */
 function display_seconds_period($seconds)
 {
@@ -58,7 +58,7 @@ function display_seconds_period($seconds)
  * Display a time period in a tidy human-readable way.
  *
  * @param  integer $seconds Number of seconds
- * @return string Human-readable period.
+ * @return string Human-readable period
  */
 function display_time_period($seconds)
 {
@@ -81,7 +81,7 @@ function display_time_period($seconds)
 /**
  * Get the timezone the server is configured with.
  *
- * @return string Server timezone in "boring" format.
+ * @return string Server timezone in "boring" format
  */
 function get_server_timezone()
 {
@@ -98,7 +98,7 @@ function get_server_timezone()
 /**
  * Get the timezone the site is running on.
  *
- * @return string Site timezone in "boring" format.
+ * @return string Site timezone in "boring" format
  */
 function get_site_timezone()
 {
@@ -115,7 +115,7 @@ function get_site_timezone()
  * Get a user's timezone.
  *
  * @param  ?MEMBER $member_id Member for which the date is being rendered (null: current user)
- * @return string Users timezone in "boring" format.
+ * @return string Users timezone in "boring" format
  */
 function get_users_timezone($member_id = null)
 {
@@ -165,8 +165,8 @@ function get_users_timezone($member_id = null)
 /**
  * Given a timezone offset, make it into a formal timezone.
  *
- * @param  float $offset Timezone offset.
- * @return string Users timezone in "boring" format.
+ * @param  float $offset Timezone offset
+ * @return string Users timezone in "boring" format
  */
 function convert_timezone_offset_to_formal_timezone($offset)
 {
@@ -414,9 +414,9 @@ function get_timezoned_time($timestamp, $use_contextual_times = true, $utc_time 
  * Format a local time/date according to locale settings. Combines best features of 'strftime' and 'date'.
  * %o is 'S' in date
  *
- * @param  string $format The formatting string.
+ * @param  string $format The formatting string
  * @param  ?TIME $timestamp The timestamp (null: now). Assumed to already be timezone-shifted as required
- * @return string The formatted string.
+ * @return string The formatted string
  */
 function cms_strftime($format, $timestamp = null)
 {

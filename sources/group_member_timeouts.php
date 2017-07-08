@@ -21,10 +21,10 @@
 /**
  * Put a member into a usergroup temporarily / extend such a temporary usergroup membership.
  *
- * @param  MEMBER $member_id The member going in the usergroup.
- * @param  GROUP $group_id The usergroup.
- * @param  integer $num_minutes The number of minutes (may be negative to take time away).
- * @param  boolean $prefer_for_primary_group Whether to put the member into as a primary group if this is a new temporary membership (it is recommended to NOT use this, since we don't track the source group and hence on expiry the member is put back to the first default group - but also generally you probably don't want to box yourself in with moving people's primary group, it ties your future flexibility down a lot).
+ * @param  MEMBER $member_id The member going in the usergroup
+ * @param  GROUP $group_id The usergroup
+ * @param  integer $num_minutes The number of minutes (may be negative to take time away)
+ * @param  boolean $prefer_for_primary_group Whether to put the member into as a primary group if this is a new temporary membership (it is recommended to NOT use this, since we don't track the source group and hence on expiry the member is put back to the first default group - but also generally you probably don't want to box yourself in with moving people's primary group, it ties your future flexibility down a lot)
  */
 function bump_member_group_timeout($member_id, $group_id, $num_minutes, $prefer_for_primary_group = false)
 {
@@ -42,10 +42,10 @@ function bump_member_group_timeout($member_id, $group_id, $num_minutes, $prefer_
 /**
  * Put a member into a usergroup temporarily. Note that if people are subsequently removed from the usergroup they won't be put back in; this allows the admin to essentially cancel the subscription - however, if it is then extended, they do keep the time they had before too.
  *
- * @param  MEMBER $member_id The member going in the usergroup.
- * @param  GROUP $group_id The usergroup.
- * @param  TIME $timestamp The expiry timestamp.
- * @param  boolean $prefer_for_primary_group Whether to put the member into as a primary group if this is a new temporary membership (it is recommended to NOT use this, since we don't track the source group and hence on expiry the member is put back to the first default group - but also generally you probably don't want to box yourself in with moving people's primary group, it ties your future flexibility down a lot).
+ * @param  MEMBER $member_id The member going in the usergroup
+ * @param  GROUP $group_id The usergroup
+ * @param  TIME $timestamp The expiry timestamp
+ * @param  boolean $prefer_for_primary_group Whether to put the member into as a primary group if this is a new temporary membership (it is recommended to NOT use this, since we don't track the source group and hence on expiry the member is put back to the first default group - but also generally you probably don't want to box yourself in with moving people's primary group, it ties your future flexibility down a lot)
  */
 function set_member_group_timeout($member_id, $group_id, $timestamp, $prefer_for_primary_group = false)
 {

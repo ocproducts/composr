@@ -74,13 +74,13 @@ function has_post_access($post_id, $member_id = null, $post_details = null)
 /**
  * Find whether a member may post in a certain topic.
  *
- * @param  AUTO_LINK $forum_id The forum ID of the forum the topic is in.
- * @param  AUTO_LINK $topic_id The topic ID is in.
- * @param  ?MEMBER $last_member_id The last poster in the topic (null: do not check for double posting).
- * @param  boolean $closed Whether this topic is closed.
- * @param  ?MEMBER $member_id The member (null: current member).
- * @param  boolean $will_be_private_post Whether this post will be private.
- * @return boolean The answer.
+ * @param  AUTO_LINK $forum_id The forum ID of the forum the topic is in
+ * @param  AUTO_LINK $topic_id The topic ID is in
+ * @param  ?MEMBER $last_member_id The last poster in the topic (null: do not check for double posting)
+ * @param  boolean $closed Whether this topic is closed
+ * @param  ?MEMBER $member_id The member (null: current member)
+ * @param  boolean $will_be_private_post Whether this post will be private
+ * @return boolean The answer
  */
 function cns_may_post_in_topic($forum_id, $topic_id, $last_member_id = null, $closed = false, $member_id = null, $will_be_private_post = false)
 {
@@ -120,14 +120,14 @@ function cns_may_post_in_topic($forum_id, $topic_id, $last_member_id = null, $cl
 /**
  * Find whether a member may edit the detailed post.
  *
- * @param  AUTO_LINK $post_id The post ID.
- * @param  ?TIME $post_time The time of the post (null: lookup).
- * @param  ?MEMBER $resource_owner The owner of the post (null: lookup).
- * @param  ?AUTO_LINK $forum_id The forum the post is in (null: is a Private Topic, unless $post_time is null in which case we look this up too).
- * @param  ?MEMBER $member_id The member (null: current member).
- * @param  ?boolean $topic_is_closed Whether the topic the post is in is closed (null: don't consider this, maybe we're not considering any one specific case, unless $post_time is null in which case we look this up to).
- * @param  ?string $reason The reason for the topic being closed is put here (null: no interesting reason).
- * @return boolean The answer.
+ * @param  AUTO_LINK $post_id The post ID
+ * @param  ?TIME $post_time The time of the post (null: lookup)
+ * @param  ?MEMBER $resource_owner The owner of the post (null: lookup)
+ * @param  ?AUTO_LINK $forum_id The forum the post is in (null: is a Private Topic, unless $post_time is null in which case we look this up too)
+ * @param  ?MEMBER $member_id The member (null: current member)
+ * @param  ?boolean $topic_is_closed Whether the topic the post is in is closed (null: don't consider this, maybe we're not considering any one specific case, unless $post_time is null in which case we look this up to)
+ * @param  ?string $reason The reason for the topic being closed is put here (null: no interesting reason)
+ * @return boolean The answer
  */
 function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, $member_id = null, $topic_is_closed = null, &$reason = null)
 {
@@ -190,14 +190,14 @@ function cns_may_edit_post_by($post_id, $post_time, $resource_owner, $forum_id, 
 /**
  * Find whether a member may delete the detailed post.
  *
- * @param  AUTO_LINK $post_id The post ID.
- * @param  ?TIME $post_time The time of the post (null: lookup).
- * @param  ?MEMBER $resource_owner The owner of the post (null: lookup).
- * @param  ?AUTO_LINK $forum_id The forum the post is in (null: is a Private Topic, unless $post_time is null in which case we look this up too).
- * @param  ?MEMBER $member_id The member (null: current member).
- * @param  ?boolean $topic_is_closed Whether the topic the post is in is closed (null: don't consider this, maybe we're not considering any one specific case, unless $post_time is null in which case we look this up to).
- * @param  ?string $reason The reason for the topic being closed is put here (null: no interesting reason).
- * @return boolean The answer.
+ * @param  AUTO_LINK $post_id The post ID
+ * @param  ?TIME $post_time The time of the post (null: lookup)
+ * @param  ?MEMBER $resource_owner The owner of the post (null: lookup)
+ * @param  ?AUTO_LINK $forum_id The forum the post is in (null: is a Private Topic, unless $post_time is null in which case we look this up too)
+ * @param  ?MEMBER $member_id The member (null: current member)
+ * @param  ?boolean $topic_is_closed Whether the topic the post is in is closed (null: don't consider this, maybe we're not considering any one specific case, unless $post_time is null in which case we look this up to)
+ * @param  ?string $reason The reason for the topic being closed is put here (null: no interesting reason)
+ * @return boolean The answer
  */
 function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $forum_id, $member_id = null, $topic_is_closed = null, &$reason = null)
 {
@@ -253,9 +253,9 @@ function cns_may_delete_post_by($post_id, $post_time = null, $resource_owner, $f
 /**
  * Try and make a spacer post look nicer on Conversr than it automatically would.
  *
- * @param  ID_TEXT $linked_type Content type.
- * @param  ID_TEXT $linked_id Content ID.
- * @return array A pair: better description (may be null), better post (may be null).
+ * @param  ID_TEXT $linked_type Content type
+ * @param  ID_TEXT $linked_id Content ID
+ * @return array A pair: better description (may be null), better post (may be null)
  */
 function cns_display_spacer_post($linked_type, $linked_id)
 {

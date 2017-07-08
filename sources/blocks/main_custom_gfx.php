@@ -26,7 +26,7 @@ class Block_main_custom_gfx
     /**
      * Find details of the block.
      *
-     * @return ?array Map of block info (null: block is disabled).
+     * @return ?array Map of block info (null: block is disabled)
      */
     public function info()
     {
@@ -44,8 +44,8 @@ class Block_main_custom_gfx
     /**
      * Execute the block.
      *
-     * @param  array $map A map of parameters.
-     * @return Tempcode The result of execution.
+     * @param  array $map A map of parameters
+     * @return Tempcode The result of execution
      */
     public function run($map)
     {
@@ -67,10 +67,10 @@ class Block_main_custom_gfx
     /**
      * Utility method for writing text onto images.
      *
-     * @param  ID_TEXT $cache_id ID.
-     * @param  array $map A map of parameters.
-     * @param  URLPATH $img_path The image path.
-     * @return mixed URL of completed image OR Tempcode error.
+     * @param  ID_TEXT $cache_id ID
+     * @param  array $map A map of parameters
+     * @param  URLPATH $img_path The image path
+     * @return mixed URL of completed image OR Tempcode error
      */
     public function _do_image($cache_id, &$map, $img_path)
     {

@@ -83,8 +83,8 @@ function render_forum_box($row, $zone = '_SEARCH', $give_context = true, $includ
 /**
  * Get SQL clause to limit a query to accessible forums.
  *
- * @param  ID_TEXT $field Field name.
- * @return string SQL clause.
+ * @param  ID_TEXT $field Field name
+ * @return string SQL clause
  */
 function get_forum_access_sql($field)
 {
@@ -129,9 +129,9 @@ function get_forum_access_sql($field)
 /**
  * Organise a list of forum rows into a tree structure.
  *
- * @param  array $all_forums The list of all forum rows (be aware that this will get modified for performance reasons).
- * @param  AUTO_LINK $forum_id The forum row that we are taking as the root of our current recursion.
- * @return array The child list of $forum_id.
+ * @param  array $all_forums The list of all forum rows (be aware that this will get modified for performance reasons)
+ * @param  AUTO_LINK $forum_id The forum row that we are taking as the root of our current recursion
+ * @return array The child list of $forum_id
  */
 function cns_organise_into_tree(&$all_forums, $forum_id)
 {
@@ -150,11 +150,11 @@ function cns_organise_into_tree(&$all_forums, $forum_id)
 /**
  * Gets a list of subordinate forums of a certain forum.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum we are finding subordinate forums of.
- * @param  ?string $create_or_list The field name to use in the OR list (null: do not make an OR list, return an array).
- * @param  ?array $tree The forum tree structure (null: unknown, it will be found using cns_organise_into_tree).
- * @param  boolean $ignore_permissions Whether to ignore permissions in this.
- * @return mixed The list (is either a true list, or an OR list).
+ * @param  AUTO_LINK $forum_id The ID of the forum we are finding subordinate forums of
+ * @param  ?string $create_or_list The field name to use in the OR list (null: do not make an OR list, return an array)
+ * @param  ?array $tree The forum tree structure (null: unknown, it will be found using cns_organise_into_tree)
+ * @param  boolean $ignore_permissions Whether to ignore permissions in this
+ * @return mixed The list (is either a true list, or an OR list)
  */
 function cns_get_all_subordinate_forums($forum_id, $create_or_list = null, $tree = null, $ignore_permissions = false)
 {
@@ -236,9 +236,9 @@ function cns_is_up_to_date_on_forum($forum_id, $member_id = null)
 /**
  * Find whether a member may moderate a certain forum.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum.
- * @param  ?MEMBER $member_id The member ID (null: current member).
- * @return boolean The answer.
+ * @param  AUTO_LINK $forum_id The ID of the forum
+ * @param  ?MEMBER $member_id The member ID (null: current member)
+ * @return boolean The answer
  */
 function cns_may_moderate_forum($forum_id, $member_id = null)
 {
@@ -256,9 +256,9 @@ function cns_may_moderate_forum($forum_id, $member_id = null)
 /**
  * Get an OR list of a forums parents, suited for selection from the f_topics table.
  *
- * @param  AUTO_LINK $forum_id The ID of the forum.
- * @param  ?AUTO_LINK $parent_id The ID of the parent forum (-1: get it from the DB) (null: there is no parent, as it is the root forum).
- * @return string The OR list.
+ * @param  AUTO_LINK $forum_id The ID of the forum
+ * @param  ?AUTO_LINK $parent_id The ID of the parent forum (-1: get it from the DB) (null: there is no parent, as it is the root forum)
+ * @return string The OR list
  */
 function cns_get_forum_parent_or_list($forum_id, $parent_id = -1)
 {
@@ -282,13 +282,13 @@ function cns_get_forum_parent_or_list($forum_id, $parent_id = -1)
 /**
  * Get breadcrumbs for a forum.
  *
- * @param  ?~mixed $end_point_forum The ID of the forum we are at in our path (null: end of recursion) (false: no forum ID available, this_name and parent_forum must not be null).
- * @param  ?mixed $this_name The name of the given forum as string or Tempcode (null: find it from the DB).
- * @param  ?AUTO_LINK $parent_forum The parent forum of the given forum (null: find it from the DB).
- * @param  boolean $start Whether this is being called as the recursion start of deriving the breadcrumbs (top level call).
- * @param  ?AUTO_LINK $root Virtual root (null: none).
- * @return Tempcode The breadcrumbs.
- * @return array The breadcrumbs.
+ * @param  ?~mixed $end_point_forum The ID of the forum we are at in our path (null: end of recursion) (false: no forum ID available, this_name and parent_forum must not be null)
+ * @param  ?mixed $this_name The name of the given forum as string or Tempcode (null: find it from the DB)
+ * @param  ?AUTO_LINK $parent_forum The parent forum of the given forum (null: find it from the DB)
+ * @param  boolean $start Whether this is being called as the recursion start of deriving the breadcrumbs (top level call)
+ * @param  ?AUTO_LINK $root Virtual root (null: none)
+ * @return Tempcode The breadcrumbs
+ * @return array The breadcrumbs
  */
 function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_forum = null, $start = true, $root = null)
 {
@@ -354,8 +354,8 @@ function cns_forum_breadcrumbs($end_point_forum, $this_name = null, $parent_foru
 /**
  * Whether a forum supports anonymous posts.
  *
- * @param  ?AUTO_LINK $forum_id The ID of the forum (null: private topics).
- * @return boolean Whether it does.
+ * @param  ?AUTO_LINK $forum_id The ID of the forum (null: private topics)
+ * @return boolean Whether it does
  */
 function cns_forum_allows_anonymous_posts($forum_id)
 {

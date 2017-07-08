@@ -255,13 +255,13 @@ function extract_html_body($html)
 /**
  * XHTML-aware substring extraction. Note that it will strip images, linebreaks, rules, etc - it's intended really for inline XHTML.
  *
- * @param  string $html The text to perform on.
- * @param  integer $from The start position of the cut (HTML tags will be taken from before this though).
- * @param  ?integer $length The length you want the concatenated text to be (null: go to end).
- * @param  boolean $literal_pos Whether to do a substr based on literal position in XHTML, rather than based on number of visible characters.
- * @param  boolean $ellipses Whether to add ellipses.
- * @param  float $grammar_completeness_tolerance A fraction of the length we may exceed by in order to maintain grammar tolerance (finish sentences, finish paragraphs, finish the whole thing).
- * @return string The result.
+ * @param  string $html The text to perform on
+ * @param  integer $from The start position of the cut (HTML tags will be taken from before this though)
+ * @param  ?integer $length The length you want the concatenated text to be (null: go to end)
+ * @param  boolean $literal_pos Whether to do a substr based on literal position in XHTML, rather than based on number of visible characters
+ * @param  boolean $ellipses Whether to add ellipses
+ * @param  float $grammar_completeness_tolerance A fraction of the length we may exceed by in order to maintain grammar tolerance (finish sentences, finish paragraphs, finish the whole thing)
+ * @return string The result
  */
 function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellipses = false, $grammar_completeness_tolerance = 0.0)
 {
@@ -545,12 +545,12 @@ function xhtml_substr($html, $from, $length = null, $literal_pos = false, $ellip
 /**
  * XHTML-aware helper function to try and get to a nice grammatical point to call our substring termius.
  *
- * @param  integer $nieve_end_pos The nieve position where we'd end on.
- * @param  float $grammar_completeness_tolerance A fraction of the length we may exceed by in order to maintain grammar tolerance (finish sentences, finish paragraphs, finish the whole thing).
- * @param  integer $real_offset Current offset in the text.
- * @param  string $html The text to perform on.
- * @param  integer $desired_length Desired (nieve) substring length.
- * @return boolean Whether to keep continuing.
+ * @param  integer $nieve_end_pos The nieve position where we'd end on
+ * @param  float $grammar_completeness_tolerance A fraction of the length we may exceed by in order to maintain grammar tolerance (finish sentences, finish paragraphs, finish the whole thing)
+ * @param  integer $real_offset Current offset in the text
+ * @param  string $html The text to perform on
+ * @param  integer $desired_length Desired (nieve) substring length
+ * @return boolean Whether to keep continuing
  *
  * @ignore
  */
@@ -599,13 +599,13 @@ function _smart_grammar_says_futile($nieve_end_pos, $grammar_completeness_tolera
 /**
  * XHTML-aware helper function to try and get to a nice grammatical point to call our substring termius.
  *
- * @param  integer $nieve_end_pos The nieve position where we'd end on.
- * @param  float $grammar_completeness_tolerance A fraction of the length we may exceed by in order to maintain grammar tolerance (finish sentences, finish paragraphs, finish the whole thing).
- * @param  integer $real_offset Current offset in the text.
- * @param  string $html The text to perform on.
- * @param  integer $desired_length Desired (nieve) substring length.
- * @param  boolean $testing_ahead Whether this is a cursory look-ahead rather than a byte-by-byte callback (therefore skip fine-grained checks which would interfere with a cursory result).
- * @return boolean Whether to keep continuing.
+ * @param  integer $nieve_end_pos The nieve position where we'd end on
+ * @param  float $grammar_completeness_tolerance A fraction of the length we may exceed by in order to maintain grammar tolerance (finish sentences, finish paragraphs, finish the whole thing)
+ * @param  integer $real_offset Current offset in the text
+ * @param  string $html The text to perform on
+ * @param  integer $desired_length Desired (nieve) substring length
+ * @param  boolean $testing_ahead Whether this is a cursory look-ahead rather than a byte-by-byte callback (therefore skip fine-grained checks which would interfere with a cursory result)
+ * @return boolean Whether to keep continuing
  *
  * @ignore
  */

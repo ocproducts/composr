@@ -118,7 +118,7 @@ function add_item($name, $bribable, $healthy, $picture_url, $owner, $max_per_pla
  * @param  MEMBER $member_id The member performing the action
  * @param  string $name The name of the item
  * @param  integer $price The price of the item copy
- * @param  BINARY $not_infinite Whether the item is finite.
+ * @param  BINARY $not_infinite Whether the item is finite
  */
 function add_item_wrap_copy($member_id, $name, $price, $not_infinite)
 {
@@ -1039,7 +1039,7 @@ function edit_item($name, $original_name, $bribable, $healthy, $picture_url, $ne
  * @param  MEMBER $member_id The member performing the action
  * @param  string $name The name of the item
  * @param  integer $price The price of the item copy
- * @param  BINARY $not_infinite Whether the item is finite.
+ * @param  BINARY $not_infinite Whether the item is finite
  * @param  integer $new_x The X ordinate of the item copy
  * @param  integer $new_y The Y ordinate of the item copy
  * @param  AUTO_LINK $new_realm The realm of the item copy
@@ -1090,7 +1090,7 @@ function edit_item_wrap_copy($member_id, $name, $price, $not_infinite, $new_x, $
  *
  * @param  MEMBER $member_id The owner of the item copy source
  * @param  string $name The name of the item
- * @param  BINARY $not_infinite Whether the item is finite.
+ * @param  BINARY $not_infinite Whether the item is finite
  * @param  integer $price The price of the item copy
  * @param  integer $new_x The X ordinate of the item copy
  * @param  integer $new_y The Y ordinate of the item copy

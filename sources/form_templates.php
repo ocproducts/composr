@@ -61,8 +61,8 @@ function init__form_templates()
 /**
  * Read a multi code from a named parameter stub.
  *
- * @param  ID_TEXT $param The parameter stub (stub of a series of POST parameters, made by cns_get_forum_multi_code_field's field or similar).
- * @return SHORT_TEXT The multi code.
+ * @param  ID_TEXT $param The parameter stub (stub of a series of POST parameters, made by cns_get_forum_multi_code_field's field or similar)
+ * @return SHORT_TEXT The multi code
  */
 function read_multi_code($param)
 {
@@ -314,11 +314,11 @@ function get_attachments($posting_field_name, $true_attachment_ui = true)
  * Creates a posting form, with attachment support.
  *
  * @param  mixed $submit_name The title of the form submission button
- * @param  ID_TEXT $submit_icon The submit icon CSS class.
- * @param  LONG_TEXT $post The default post to put in.
- * @param  mixed $post_url Where the form is sent (URLPATH or Tempcode).
- * @param  Tempcode $hidden_fields A form_input_hidden buildup of hidden fields (additional parameters sent to the target URL).
- * @param  Tempcode $specialisation A buildup of leading extra fields, in a format compatible with the templates used by this function.
+ * @param  ID_TEXT $submit_icon The submit icon CSS class
+ * @param  LONG_TEXT $post The default post to put in
+ * @param  mixed $post_url Where the form is sent (URLPATH or Tempcode)
+ * @param  Tempcode $hidden_fields A form_input_hidden buildup of hidden fields (additional parameters sent to the target URL)
+ * @param  Tempcode $specialisation A buildup of leading extra fields, in a format compatible with the templates used by this function
  * @param  ?mixed $post_comment The post comment (string or Tempcode). This gives information about how you should post. (null: no post comment)
  * @param  string $extra Extra info to put on the posting form
  * @param  ?Tempcode $specialisation2 A buildup of trailing extra fields, in a format compatible with the templates used by this function. (null: none)
@@ -911,9 +911,9 @@ function form_input_line_comcode($pretty_name, $description, $name, $default, $r
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The base parameter name which this input field is for (as this takes multiple parameters, they are named <name><x>). This name must end with '_'.
  * @param  array $default_array An array of lines to use as default (at least this many lines, filled by this array, will be presented by default)
- * @param  integer $num_required The minimum number of inputs allowed.
+ * @param  integer $num_required The minimum number of inputs allowed
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
- * @param  string $class CSS class for input.
+ * @param  string $class CSS class for input
  * @set    line email
  * @param  ?string $pattern Custom regex pattern (null: none)
  * @param  ?string $pattern_error Custom regex pattern validation error (null: none)
@@ -978,7 +978,7 @@ function form_input_line_multi($pretty_name, $description, $name, $default_array
  * @param  mixed $description A description for this input field
  * @param  ID_TEXT $name The base parameter name which this input field is for (as this takes multiple parameters, they are named <name><x>). This name must end with '_'.
  * @param  array $default_array An array of texts to use as default (at least this many textareas, filled by this array, will be presented by default)
- * @param  integer $num_required The minimum number of textareas allowed.
+ * @param  integer $num_required The minimum number of textareas allowed
  * @param  ?integer $tabindex The tab index of the field (null: not specified)
  * @param  ?integer $maxlength The maximum length of the field (null: unlimited)
  * @return Tempcode The input field
@@ -1403,7 +1403,7 @@ function form_input_various_ticks($options, $description, $_tabindex = null, $_p
  * @param  mixed $set_title A human intelligible name for this input field
  * @param  mixed $set_description A description for this input field
  * @param  Tempcode $hidden A reference to where we're putting hidden fields
- * @param  ID_TEXT $set_name The name which this input field is for (actually, this is a prefix put in front of different input types).
+ * @param  ID_TEXT $set_name The name which this input field is for (actually, this is a prefix put in front of different input types)
  * @param  ?ID_TEXT $theme_image_type The directory of theme images to provide selection from (null: do not support theme images)
  * @param  boolean $required Whether this is a required input field. Set this to false if you are using this field on an edit form and already have an uploaded file -- therefore you'd know no new file would mean not to replace the existing file
  * @param  ?string $default The default value for the field (null: none) (blank: none). Should only be passed if $required is false, because it creates a delete button for the existing file, implying that leaving it with no file is valid

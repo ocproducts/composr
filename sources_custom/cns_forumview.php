@@ -16,11 +16,11 @@
 /**
  * Render a topic row (i.e. a row in a forum or results view), from given details (from cns_get_topic_array).
  *
- * @param  array $topic The details (array containing: last_post_id, id, modifiers, emoticon, first_member_id, first_username, first_post, num_posts, num_views).
- * @param  boolean $has_topic_marking Whether the viewing member has the facility to mark off topics (send as false if there are no actions for them to perform).
- * @param  boolean $pt Whether the topic is a Private Topic.
- * @param  ?string $show_forum The forum name (null: do not show the forum name).
- * @return Tempcode The topic row.
+ * @param  array $topic The details (array containing: last_post_id, id, modifiers, emoticon, first_member_id, first_username, first_post, num_posts, num_views)
+ * @param  boolean $has_topic_marking Whether the viewing member has the facility to mark off topics (send as false if there are no actions for them to perform)
+ * @param  boolean $pt Whether the topic is a Private Topic
+ * @param  ?string $show_forum The forum name (null: do not show the forum name)
+ * @return Tempcode The topic row
  */
 function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum = null)
 {

@@ -26,7 +26,7 @@ class Block_main_content_filtering
     /**
      * Find details of the block.
      *
-     * @return ?array Map of block info (null: block is disabled).
+     * @return ?array Map of block info (null: block is disabled)
      */
     public function info()
     {
@@ -44,8 +44,8 @@ class Block_main_content_filtering
     /**
      * Execute the block.
      *
-     * @param  array $map A map of parameters.
-     * @return Tempcode The result of execution.
+     * @param  array $map A map of parameters
+     * @return Tempcode The result of execution
      */
     public function run($map)
     {
@@ -96,9 +96,9 @@ class Block_main_content_filtering
     /**
      * Execute the module.
      *
-     * @param  string $str Comma separated, equals separated, bits.
-     * @param  string $separator Separarator between pairs.
-     * @return array Mapping.
+     * @param  string $str Comma separated, equals separated, bits
+     * @param  string $separator Separarator between pairs
+     * @return array Mapping
      */
     public function interpret_pairs_from_string($str, $separator = ',')
     {

@@ -592,9 +592,9 @@ function filter_group_permissivity($groups)
  * Only allow members here that are either the give member, admins, or have a privilege. All other members come up to an error message wall.
  *
  * @param  MEMBER $member_id The member who typically (i.e. when it's not an administrative override) we want the current member to be.
- * @param  ?ID_TEXT $privilege The override privilege the current member must have (null: no general override).
- * @param  ?ID_TEXT $privilege2 An alternative privilege to the 'assume_any_member' privilege (null: no override).
- * @param  ?MEMBER $member_viewing The member who is doing the viewing (null: current member).
+ * @param  ?ID_TEXT $privilege The override privilege the current member must have (null: no general override)
+ * @param  ?ID_TEXT $privilege2 An alternative privilege to the 'assume_any_member' privilege (null: no override)
+ * @param  ?MEMBER $member_viewing The member who is doing the viewing (null: current member)
  */
 function enforce_personal_access($member_id, $privilege = null, $privilege2 = null, $member_viewing = null)
 {

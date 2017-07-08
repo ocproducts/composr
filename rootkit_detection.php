@@ -239,8 +239,8 @@ rd_do_footer();
 /**
  * Search inside a directory for files.
  *
- * @param  SHORT_TEXT $dir The directory path to search.
- * @return array The HTML for the list box selection.
+ * @param  SHORT_TEXT $dir The directory path to search
+ * @return array The HTML for the list box selection
  */
 function rd_do_dir($dir)
 {

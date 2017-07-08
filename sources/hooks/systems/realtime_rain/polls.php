@@ -26,9 +26,9 @@ class Hook_realtime_rain_polls
     /**
      * Run function for realtime-rain hooks.
      *
-     * @param  TIME $from Start of time range.
-     * @param  TIME $to End of time range.
-     * @return array A list of template parameter sets for rendering a 'drop'.
+     * @param  TIME $from Start of time range
+     * @param  TIME $to End of time range
+     * @return array A list of template parameter sets for rendering a 'drop'
      */
     public function run($from, $to)
     {

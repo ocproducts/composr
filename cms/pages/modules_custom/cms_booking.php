@@ -37,11 +37,11 @@ class Module_cms_booking extends Standard_crud_module
     /**
      * Find entry-points available within this module.
      *
-     * @param  boolean $check_perms Whether to check permissions.
-     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
-     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $check_perms Whether to check permissions
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user)
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name)
      * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
-     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled)
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
@@ -74,9 +74,9 @@ class Module_cms_booking extends Standard_crud_module
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called.
-     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment).
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @param  boolean $top_level Whether this is running at the top level, prior to having sub-objects called
+     * @param  ?ID_TEXT $type The screen type to consider for metadata purposes (null: read from environment)
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run($top_level = true, $type = null)
     {
@@ -160,8 +160,8 @@ class Module_cms_booking extends Standard_crud_module
     /**
      * Standard crud_module table function.
      *
-     * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @param  array $url_map Details to go to build_url for link to the next screen
+     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -217,11 +217,11 @@ class Module_cms_booking extends Standard_crud_module
     /**
      * Get a form for entering a bookable.
      *
-     * @param  ?array $details Details of the bookable (null: new).
-     * @param  array $supplements List of supplements.
-     * @param  array $blacks List of blacks.
-     * @param  array $codes List of codes.
-     * @return array Tuple: form fields, hidden fields.
+     * @param  ?array $details Details of the bookable (null: new)
+     * @param  array $supplements List of supplements
+     * @param  array $blacks List of blacks
+     * @param  array $codes List of codes
+     * @return array Tuple: form fields, hidden fields
      */
     public function get_form_fields($details = null, $supplements = array(), $blacks = array(), $codes = array())
     {
@@ -408,8 +408,8 @@ class Module_cms_booking_supplements extends Standard_crud_module
     /**
      * Standard crud_module table function.
      *
-     * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @param  array $url_map Details to go to build_url for link to the next screen
+     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -455,9 +455,9 @@ class Module_cms_booking_supplements extends Standard_crud_module
     /**
      * Get a form for entering a bookable supplement.
      *
-     * @param  ?array $details Details of the supplement (null: new).
-     * @param  array $bookables List of bookables this is for.
-     * @return array Tuple: form fields, hidden fields.
+     * @param  ?array $details Details of the supplement (null: new)
+     * @param  array $bookables List of bookables this is for
+     * @return array Tuple: form fields, hidden fields
      */
     public function get_form_fields($details = null, $bookables = array())
     {
@@ -601,8 +601,8 @@ class Module_cms_booking_blacks extends Standard_crud_module
     /**
      * Standard crud_module table function.
      *
-     * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @param  array $url_map Details to go to build_url for link to the next screen
+     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -648,9 +648,9 @@ class Module_cms_booking_blacks extends Standard_crud_module
     /**
      * Get a form for entering a bookable black.
      *
-     * @param  ?array $details Details of the black (null: new).
-     * @param  array $bookables List of bookables this is for.
-     * @return array Tuple: form fields, hidden fields.
+     * @param  ?array $details Details of the black (null: new)
+     * @param  array $bookables List of bookables this is for
+     * @return array Tuple: form fields, hidden fields
      */
     public function get_form_fields($details = null, $bookables = array())
     {
@@ -863,8 +863,8 @@ class Module_cms_booking_bookings extends Standard_crud_module
     /**
      * Standard crud_module table function.
      *
-     * @param  array $url_map Details to go to build_url for link to the next screen.
-     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL.
+     * @param  array $url_map Details to go to build_url for link to the next screen
+     * @return array A quartet: The choose table, Whether re-ordering is supported from this screen, Search URL, Archive URL
      */
     public function create_selection_list_choose_table($url_map)
     {
@@ -922,9 +922,9 @@ class Module_cms_booking_bookings extends Standard_crud_module
     /**
      * Get a form for entering a booking.
      *
-     * @param  ?array $details Details of the booking (null: new).
-     * @param  ?MEMBER $member_id Who the booking is for (null: current member).
-     * @return mixed Either Tempcode; or a tuple: form fields, hidden fields.
+     * @param  ?array $details Details of the booking (null: new)
+     * @param  ?MEMBER $member_id Who the booking is for (null: current member)
+     * @return mixed Either Tempcode; or a tuple: form fields, hidden fields
      */
     public function get_form_fields($details = null, $member_id = null)
     {

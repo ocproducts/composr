@@ -26,7 +26,7 @@ class Hook_sw_banners
     /**
      * Run function for features in the setup wizard.
      *
-     * @return array Current settings.
+     * @return array Current settings
      */
     public function get_current_settings()
     {
@@ -41,8 +41,8 @@ class Hook_sw_banners
     /**
      * Run function for features in the setup wizard.
      *
-     * @param  array $field_defaults Default values for the fields, from the install-profile.
-     * @return array A pair: Input fields, Hidden fields.
+     * @param  array $field_defaults Default values for the fields, from the install-profile
+     * @return array A pair: Input fields, Hidden fields
      */
     public function get_fields($field_defaults)
     {

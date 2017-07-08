@@ -25,9 +25,9 @@
  * This does nothing for a semantic tax code or a simple percentage.
  * For a simple flat figure it does though.
  *
- * @param  ID_TEXT $tax_code The tax code.
- * @param  float $multiplier The multipler.
- * @return ID_TEXT The amended tax code.
+ * @param  ID_TEXT $tax_code The tax code
+ * @param  float $multiplier The multipler
+ * @return ID_TEXT The amended tax code
  */
 function tax_multiplier($tax_code, $multiplier)
 {
@@ -44,10 +44,10 @@ function tax_multiplier($tax_code, $multiplier)
  *
  * @param  ?array $details Map of product details (null: there's no product directly associated). Not strictly needed, only passed for customisation potential.
  * @param  ID_TEXT $tax_code The tax code. This may be different to the product default, e.g. if a discount is in place.
- * @param  REAL $amount The amount.
- * @param  REAL $shipping_cost The shipping cost.
- * @param  ?MEMBER $member_id The member this is for (null: current member).
- * @param  integer $quantity The quantity of items.
+ * @param  REAL $amount The amount
+ * @param  REAL $shipping_cost The shipping cost
+ * @param  ?MEMBER $member_id The member this is for (null: current member)
+ * @param  integer $quantity The quantity of items
  * @return array A tuple: The tax derivation, tax due (including shipping tax), tax tracking ID (at time of writing this is just with TaxCloud), shipping tax
  */
 function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, $member_id = null, $quantity = 1)
@@ -94,8 +94,8 @@ function calculate_tax_due($details, $tax_code, $amount, $shipping_cost = 0.00, 
  *
  * @param  array $item_details A list of pairs: shopping-cart/order style row (with at least 'quantity'), product details (with at least 'tax_code' and 'price'). This is returned by reference as a list of tuples, (tax, tax_derivation, tax_tracking) gets appended.
  * @param  string $field_name_prefix Field name prefix. Pass as blank for cart items or 'p_' for order items.
- * @param  REAL $shipping_cost The shipping cost.
- * @param  ?MEMBER $member_id The member this is for (null: current member).
+ * @param  REAL $shipping_cost The shipping cost
+ * @param  ?MEMBER $member_id The member this is for (null: current member)
  * @return array A tuple: The shipping tax derivation, shipping tax due (including shipping tax), shipping tax tracking ID (at time of writing this is just with TaxCloud)
  */
 function get_tax_using_tax_codes(&$item_details, $field_name_prefix = '', $shipping_cost = 0.00, $member_id = null)
@@ -434,10 +434,10 @@ function check_taxcloud_configured_correctly()
 /**
  * Mark an order completed on TaxCloud, i.e. tax has been received for payment to the tax authority.
  *
- * @param  ID_TEXT $tracking_id The TaxCloud tracking ID.
- * @param  ID_TEXT $txn_id The transaction ID.
- * @param  MEMBER $member_id The member ID.
- * @param  ID_TEXT $session_id The session ID of the purchaser.
+ * @param  ID_TEXT $tracking_id The TaxCloud tracking ID
+ * @param  ID_TEXT $txn_id The transaction ID
+ * @param  MEMBER $member_id The member ID
+ * @param  ID_TEXT $session_id The session ID of the purchaser
  */
 function taxcloud_declare_completed($tracking_id, $txn_id, $member_id, $session_id)
 {
@@ -471,9 +471,9 @@ function taxcloud_declare_completed($tracking_id, $txn_id, $member_id, $session_
 /**
  * Work out the tax rate for a given payment amount and flat tax figure.
  *
- * @param  REAL $amount Amount.
- * @param  REAL $tax Tax in money.
- * @return REAL The tax rate (as a percentage).
+ * @param  REAL $amount Amount
+ * @param  REAL $tax Tax in money
+ * @return REAL The tax rate (as a percentage)
  */
 function backcalculate_tax_rate($amount, $tax)
 {
@@ -486,14 +486,14 @@ function backcalculate_tax_rate($amount, $tax)
 /**
  * Generate an invoicing breakdown.
  *
- * @param  ID_TEXT $type_code The product codename.
- * @param  SHORT_TEXT $item_name The human-readable product title.
- * @param  ID_TEXT $purchase_id The purchase ID.
- * @param  REAL $price Transaction price in money.
- * @param  REAL $tax Transaction tax in money (including shipping tax).
- * @param  REAL $shipping_cost Transaction shipping cost in money.
- * @param  REAL $shipping_tax Transaction shipping tax in money.
- * @return array Invoicing breakdown.
+ * @param  ID_TEXT $type_code The product codename
+ * @param  SHORT_TEXT $item_name The human-readable product title
+ * @param  ID_TEXT $purchase_id The purchase ID
+ * @param  REAL $price Transaction price in money
+ * @param  REAL $tax Transaction tax in money (including shipping tax)
+ * @param  REAL $shipping_cost Transaction shipping cost in money
+ * @param  REAL $shipping_tax Transaction shipping tax in money
+ * @return array Invoicing breakdown
  */
 function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $price, $tax, $shipping_cost = 0.00, $shipping_tax = 0.00)
 {
@@ -562,8 +562,8 @@ function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $pri
 /**
  * Send an invoice notification to a member.
  *
- * @param  MEMBER $member_id The member to send to.
- * @param  AUTO_LINK $id The invoice ID.
+ * @param  MEMBER $member_id The member to send to
+ * @param  AUTO_LINK $id The invoice ID
  */
 function send_invoice_notification($member_id, $id)
 {
@@ -579,8 +579,8 @@ function send_invoice_notification($member_id, $id)
 /**
  * Generate tax invoice.
  *
- * @param  ID_TEXT $txn_id Transaction ID.
- * @return Tempcode Tax invoice.
+ * @param  ID_TEXT $txn_id Transaction ID
+ * @return Tempcode Tax invoice
  */
 function generate_tax_invoice($txn_id)
 {

@@ -450,7 +450,7 @@ function demonstratr_add_site_raw($server, $codename, $email_address, $password)
 /**
  * Get the relative path to the special directory that holds NFS links to servers, etc.
  *
- * @return string Server path.
+ * @return string Server path
  */
 function special_demonstratr_dir()
 {
@@ -460,7 +460,7 @@ function special_demonstratr_dir()
 /**
  * Get a list of categories that sites may be in.
  *
- * @return Tempcode The result of execution.
+ * @return Tempcode The result of execution
  */
 function get_site_categories()
 {
@@ -504,7 +504,7 @@ function create_selection_list_servers($server)
 /**
  * Find all the servers for our shared hosting.
  *
- * @return array A list of servers.
+ * @return array A list of servers
  */
 function find_all_servers()
 {
@@ -526,7 +526,7 @@ function find_all_servers()
 /**
  * Cause the _config.php file to be rebuilt.
  *
- * @param  ID_TEXT $server The server.
+ * @param  ID_TEXT $server The server
  */
 function reset_base_config_file($server)
 {
@@ -673,8 +673,8 @@ function reset_aliases()
 /**
  * Find the load of a server.
  *
- * @param  ID_TEXT $server The server to check load for.
- * @return ?float The load (null: out of action).
+ * @param  ID_TEXT $server The server to check load for
+ * @return ?float The load (null: out of action)
  */
 function find_server_load($server)
 {
@@ -695,7 +695,7 @@ function find_server_load($server)
 /**
  * Find the best server.
  *
- * @return ID_TEXT The best server.
+ * @return ID_TEXT The best server
  */
 function choose_available_server()
 {
@@ -814,9 +814,9 @@ function demonstratr_delete_old_sites()
 /**
  * Delete a site from Demonstratr.
  *
- * @param  ID_TEXT $server The server to delete from.
- * @param  ID_TEXT $codename The site.
- * @param  boolean $bulk Whether this is a bulk delete (in which case we don't want to do a config file reset each time).
+ * @param  ID_TEXT $server The server to delete from
+ * @param  ID_TEXT $codename The site
+ * @param  boolean $bulk Whether this is a bulk delete (in which case we don't want to do a config file reset each time)
  */
 function demonstratr_delete_site($server, $codename, $bulk = false)
 {

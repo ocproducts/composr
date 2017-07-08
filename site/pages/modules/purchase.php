@@ -53,7 +53,7 @@ class Module_purchase
     /**
      * Find details of the module.
      *
-     * @return ?array Map of module info (null: module is disabled).
+     * @return ?array Map of module info (null: module is disabled)
      */
     public function info()
     {
@@ -398,11 +398,11 @@ class Module_purchase
     /**
      * Find entry-points available within this module.
      *
-     * @param  boolean $check_perms Whether to check permissions.
-     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
-     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $check_perms Whether to check permissions
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user)
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name)
      * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
-     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled)
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
@@ -416,7 +416,7 @@ class Module_purchase
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run()
     {
@@ -488,7 +488,7 @@ class Module_purchase
     /**
      * Execute the module.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function run()
     {
@@ -546,13 +546,13 @@ class Module_purchase
     /**
      * Wrap-up so as to remove redundancy in templates.
      *
-     * @param  Tempcode $content To wrap.
-     * @param  Tempcode $title The title to use.
-     * @param  ?mixed $url URL (null: no next URL).
+     * @param  Tempcode $content To wrap
+     * @param  Tempcode $title The title to use
+     * @param  ?mixed $url URL (null: no next URL)
      * @param  boolean $get Whether it is a GET form
      * @param  ?Tempcode $submit_name Submit button label to use (null: default)
      * @param  string $icon CSS icon label to use
-     * @return Tempcode Wrapped.
+     * @return Tempcode Wrapped
      */
     protected function _wrap($content, $title, $url, $get = false, $submit_name = null, $icon = 'buttons__proceed')
     {
@@ -580,7 +580,7 @@ class Module_purchase
     /**
      * Choose-product step.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function choose()
     {
@@ -807,14 +807,14 @@ class Module_purchase
     /**
      * See if a product is filtered out.
      *
-     * @param  object $product_object The product object.
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  array $details The product details.
-     * @param  string $filter Filter prefix.
-     * @param  string $type_filter Filter by exact product name.
-     * @param  boolean $must_support_money Filter out products that don't support money.
-     * @param  boolean $must_support_points Filter out products that don't support points.
-     * @return boolean Is filtered.
+     * @param  object $product_object The product object
+     * @param  ID_TEXT $type_code The product codename
+     * @param  array $details The product details
+     * @param  string $filter Filter prefix
+     * @param  string $type_filter Filter by exact product name
+     * @param  boolean $must_support_money Filter out products that don't support money
+     * @param  boolean $must_support_points Filter out products that don't support points
+     * @return boolean Is filtered
      */
     protected function _is_filtered_out($product_object, $type_code, $details, $filter, $type_filter, $must_support_money, $must_support_points)
     {
@@ -863,7 +863,7 @@ class Module_purchase
      * Message about product step.
      * Note that by using a 'include_message' parameter to a 'details' or 'pay' step you include the message on that other step and skip this step.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function message()
     {
@@ -908,7 +908,7 @@ class Module_purchase
     /**
      * Terms and conditions step.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function terms()
     {
@@ -949,7 +949,7 @@ class Module_purchase
     /**
      * Details about purchase step (including a possible form).
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function details()
     {
@@ -1009,7 +1009,7 @@ class Module_purchase
     /**
      * Payment step.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function pay()
     {
@@ -1291,7 +1291,7 @@ class Module_purchase
     /**
      * Finish step.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function finish()
     {
@@ -1422,8 +1422,8 @@ class Module_purchase
     /**
      * Check to see if a product is available to the current user.
      *
-     * @param  ID_TEXT $type_code The product code.
-     * @return ?Tempcode Error screen (null: no error).
+     * @param  ID_TEXT $type_code The product code
+     * @return ?Tempcode Error screen (null: no error)
      */
     protected function _check_availability($type_code)
     {
@@ -1484,8 +1484,8 @@ class Module_purchase
     /**
      * Check to see if the current user can afford a product.
      *
-     * @param  ID_TEXT $type_code The product code.
-     * @return ?Tempcode Error screen (null: no error).
+     * @param  ID_TEXT $type_code The product code
+     * @return ?Tempcode Error screen (null: no error)
      */
     protected function _check_can_afford($type_code)
     {

@@ -170,7 +170,7 @@ function post_import_cleanup()
 /**
  * Turn index maintenance off to help speed import, or back on.
  *
- * @param  boolean $on Whether index maintenance should be on.
+ * @param  boolean $on Whether index maintenance should be on
  */
 function set_database_index_maintenance($on)
 {

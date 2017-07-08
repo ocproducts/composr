@@ -21,7 +21,7 @@ class Block_side_amazon_affiliate_sales
     /**
      * Find details of the block.
      *
-     * @return ?array Map of block info (null: block is disabled).
+     * @return ?array Map of block info (null: block is disabled)
      */
     public function info()
     {
@@ -39,7 +39,7 @@ class Block_side_amazon_affiliate_sales
     /**
      * Find caching details for the block.
      *
-     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled).
+     * @return ?array Map of cache details (cache_on and ttl) (null: block is disabled)
      */
     public function caching_environment()
     {
@@ -52,8 +52,8 @@ class Block_side_amazon_affiliate_sales
     /**
      * Execute the block.
      *
-     * @param  array $map A map of parameters.
-     * @return Tempcode The result of execution.
+     * @param  array $map A map of parameters
+     * @return Tempcode The result of execution
      */
     public function run($map)
     {

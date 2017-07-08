@@ -84,7 +84,7 @@ class CMSBoardStats
     /**
      * Find number of online users, includes both members and guests.
      *
-     * @return integer Number of online users.
+     * @return integer Number of online users
      */
     private function get_online_users_count()
     {
@@ -96,7 +96,7 @@ class CMSBoardStats
     /**
      * Find number of online guests.
      *
-     * @return integer Number of online guests.
+     * @return integer Number of online guests
      */
     private function get_online_guests_count()
     {

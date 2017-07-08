@@ -21,7 +21,7 @@ class Block_main_sortable_table
     /**
      * Find details of the block.
      *
-     * @return ?array Map of block info (null: block is disabled).
+     * @return ?array Map of block info (null: block is disabled)
      */
     public function info()
     {
@@ -39,8 +39,8 @@ class Block_main_sortable_table
     /**
      * Execute the block.
      *
-     * @param  array $map A map of parameters.
-     * @return Tempcode The result of execution.
+     * @param  array $map A map of parameters
+     * @return Tempcode The result of execution
      */
     public function run($map)
     {
@@ -395,9 +395,9 @@ class Block_main_sortable_table
     /**
      * Find a field type for a row index.
      *
-     * @param  array $_rows Rows.
-     * @param  integer $j Column offset.
-     * @return string Field type.
+     * @param  array $_rows Rows
+     * @param  integer $j Column offset
+     * @return string Field type
      * @set integer float date currency alphanumeric
      */
     public function determine_field_type($_rows, $j)
@@ -467,10 +467,10 @@ class Block_main_sortable_table
     /**
      * Apply formatting to a cell value.
      *
-     * @param  string $value Value to apply formatting to.
-     * @param  ID_TEXT $sortable_type Sortable type.
+     * @param  string $value Value to apply formatting to
+     * @param  ID_TEXT $sortable_type Sortable type
      * @set integer float date currency alphanumeric
-     * @return string Formatted value.
+     * @return string Formatted value
      */
     public function apply_formatting($value, $sortable_type)
     {

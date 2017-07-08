@@ -32,7 +32,7 @@ function init__global4()
 /**
  * Attach a message mentioning how the site is closed.
  *
- * @param  Tempcode $messages_bottom Where to place the message.
+ * @param  Tempcode $messages_bottom Where to place the message
  */
 function attach_message_site_closed(&$messages_bottom)
 {
@@ -48,7 +48,7 @@ function attach_message_site_closed(&$messages_bottom)
 /**
  * Attach a message mentioning SU is active.
  *
- * @param  Tempcode $messages_bottom Where to place the message.
+ * @param  Tempcode $messages_bottom Where to place the message
  */
 function attach_message_su(&$messages_bottom)
 {
@@ -319,8 +319,8 @@ function member_personal_links_and_details($member_id)
 /**
  * Use the url_title_cache table (a bit of a hack but saved changed the DB structure) to see if a check-op was performed has been performed within the last 30 days.
  *
- * @param  ID_TEXT $id_code Special check code (often a URL but does not need to be).
- * @return boolean Whether the check has happened recently.
+ * @param  ID_TEXT $id_code Special check code (often a URL but does not need to be)
+ * @return boolean Whether the check has happened recently
  */
 function handle_has_checked_recently($id_code)
 {
@@ -339,9 +339,9 @@ function handle_has_checked_recently($id_code)
 /**
  * Convert a string to an array, with utf-8 awareness where possible/required.
  *
- * @param  string $str Input.
- * @param  boolean $force Whether to force unicode as on.
- * @return array Output.
+ * @param  string $str Input
+ * @param  boolean $force Whether to force unicode as on
+ * @return array Output
  */
 function cms_mb_str_split($str, $force = false)
 {
@@ -356,11 +356,11 @@ function cms_mb_str_split($str, $force = false)
 /**
  * Split a string into smaller chunks, with utf-8 awareness where possible/required. Can be used to split a string into smaller chunks which is useful for e.g. converting base64_encode output to match RFC 2045 semantics. It inserts end (defaults to "\r\n") every chunklen characters.
  *
- * @param  string $str The input string.
- * @param  integer $len The maximum chunking length.
- * @param  string $glue Split character.
- * @param  boolean $force Whether to force unicode as on.
- * @return string The chunked version of the input string.
+ * @param  string $str The input string
+ * @param  integer $len The maximum chunking length
+ * @param  string $glue Split character
+ * @param  boolean $force Whether to force unicode as on
+ * @return string The chunked version of the input string
  */
 function cms_mb_chunk_split($str, $len = 76, $glue = "\r\n", $force = false)
 {

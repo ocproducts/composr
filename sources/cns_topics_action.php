@@ -22,20 +22,20 @@
  * Add a topic.
  * This does not create the first post, you need to do an cns_make_post call for that. Conversr allows topics with zero posts.
  *
- * @param  ?AUTO_LINK $forum_id The ID of the forum the topic will be in (null: Private Topic).
- * @param  SHORT_TEXT $description Description of the topic.
- * @param  SHORT_TEXT $emoticon The theme image code of the emoticon for the topic.
- * @param  ?BINARY $validated Whether the topic is validated (null: detect whether it should be).
- * @param  BINARY $open Whether the topic is open.
- * @param  BINARY $pinned Whether the topic is pinned.
- * @param  BINARY $cascading Whether the topic is cascading.
- * @param  ?MEMBER $pt_from If it is a Private Topic, who is it 'from' (null: not a Private Topic).
- * @param  ?MEMBER $pt_to If it is a Private Topic, who is it 'to' (null: not a Private Topic).
- * @param  boolean $check_perms Whether to check the poster has permissions for the given topic settings.
- * @param  integer $num_views The number of times the topic has been viewed.
+ * @param  ?AUTO_LINK $forum_id The ID of the forum the topic will be in (null: Private Topic)
+ * @param  SHORT_TEXT $description Description of the topic
+ * @param  SHORT_TEXT $emoticon The theme image code of the emoticon for the topic
+ * @param  ?BINARY $validated Whether the topic is validated (null: detect whether it should be)
+ * @param  BINARY $open Whether the topic is open
+ * @param  BINARY $pinned Whether the topic is pinned
+ * @param  BINARY $cascading Whether the topic is cascading
+ * @param  ?MEMBER $pt_from If it is a Private Topic, who is it 'from' (null: not a Private Topic)
+ * @param  ?MEMBER $pt_to If it is a Private Topic, who is it 'to' (null: not a Private Topic)
+ * @param  boolean $check_perms Whether to check the poster has permissions for the given topic settings
+ * @param  integer $num_views The number of times the topic has been viewed
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @param  SHORT_TEXT $description_link Link related to the topic (e.g. link to view a ticket).
- * @return AUTO_LINK The ID of the newly created topic.
+ * @return AUTO_LINK The ID of the newly created topic
  */
 function cns_make_topic($forum_id, $description = '', $emoticon = '', $validated = null, $open = 1, $pinned = 0, $cascading = 0, $pt_from = null, $pt_to = null, $check_perms = true, $num_views = 0, $id = null, $description_link = '')
 {

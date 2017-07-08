@@ -301,7 +301,7 @@ function sitemap_do_next_manager($title, $page, $zone, $completion_text)
  * @param  ?ID_TEXT $sel The zone in the list to select by default (null: use first)
  * @param  array $no_go A list of zone to not put into the list
  * @param  ?array $reorder A reordering (null: no reordering)
- * @param  ?TIME $updated_since Time from which content must be updated (null: no limit).
+ * @param  ?TIME $updated_since Time from which content must be updated (null: no limit)
  * @return Tempcode The list
  */
 function create_selection_list_zones($sel = null, $no_go = array(), $reorder = null, $updated_since = null)

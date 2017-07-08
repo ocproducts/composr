@@ -30,7 +30,7 @@ class Hook_ecommerce_catalogue_items
     /**
      * Get the overall categorisation for the products handled by this eCommerce hook.
      *
-     * @return ?array A map of product categorisation details (null: disabled).
+     * @return ?array A map of product categorisation details (null: disabled)
      */
     public function get_product_category()
     {
@@ -49,8 +49,8 @@ class Hook_ecommerce_catalogue_items
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @return array A map of product name to list of product details.
+     * @param  ?ID_TEXT $search Product being searched for (null: none)
+     * @return array A map of product name to list of product details
      */
     public function get_products($search = null)
     {
@@ -180,11 +180,11 @@ class Hook_ecommerce_catalogue_items
     /**
      * Check whether the product codename is available for purchase by the member.
      *
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  MEMBER $member_id The member we are checking against.
-     * @param  integer $req_quantity The number required.
-     * @param  boolean $must_be_listed Whether the product must be available for public listing.
-     * @return integer The availability code (a ECOMMERCE_PRODUCT_* constant).
+     * @param  ID_TEXT $type_code The product codename
+     * @param  MEMBER $member_id The member we are checking against
+     * @param  integer $req_quantity The number required
+     * @param  boolean $must_be_listed Whether the product must be available for public listing
+     * @return integer The availability code (a ECOMMERCE_PRODUCT_* constant)
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
@@ -239,10 +239,10 @@ class Hook_ecommerce_catalogue_items
     /**
      * Get currently available quantity of selected product.
      *
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  boolean $consider_own_cart_contents Whether to consider the contents of your own cart.
-     * @param  ?MEMBER $member_id The member we are checking against (null: current member).
-     * @return ?integer Quantity (null: no limit).
+     * @param  ID_TEXT $type_code The product codename
+     * @param  boolean $consider_own_cart_contents Whether to consider the contents of your own cart
+     * @param  ?MEMBER $member_id The member we are checking against (null: current member)
+     * @return ?integer Quantity (null: no limit)
      */
     public function get_available_quantity($type_code, $consider_own_cart_contents = true, $member_id = null)
     {
@@ -323,8 +323,8 @@ class Hook_ecommerce_catalogue_items
     /**
      * Get the message for use in the purchasing module
      *
-     * @param  ID_TEXT $type_code The product in question.
-     * @return ?Tempcode The message (null: no message).
+     * @param  ID_TEXT $type_code The product in question
+     * @return ?Tempcode The message (null: no message)
      */
     public function get_message($type_code)
     {
@@ -357,8 +357,8 @@ class Hook_ecommerce_catalogue_items
      * Get eCommerce-specific template-parameters to include in catalogue templating.
      * Only called from the catalogues code, not the main eCommerce framework.
      *
-     * @param  AUTO_LINK $id Product entry ID.
-     * @param  array $map Map where product details are placed.
+     * @param  AUTO_LINK $id Product entry ID
+     * @param  array $map Map where product details are placed
      */
     public function get_catalogue_template_parameters($id, &$map)
     {
@@ -392,9 +392,9 @@ class Hook_ecommerce_catalogue_items
     /**
      * Get fields that need to be filled in in the purchasing module.
      *
-     * @param  ID_TEXT $type_code The product codename.
+     * @param  ID_TEXT $type_code The product codename
      * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
-     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none)
      */
     public function get_needed_fields($type_code, $from_admin = false)
     {
@@ -408,9 +408,9 @@ class Hook_ecommerce_catalogue_items
      * Get the filled in fields and do something with them.
      * May also be called from Admin Zone to get a default purchase ID (i.e. when there's no post context).
      *
-     * @param  ID_TEXT $type_code The product codename.
+     * @param  ID_TEXT $type_code The product codename
      * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
-     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation).
+     * @return array A pair: The purchase ID, a confirmation box to show (null for no specific confirmation)
      */
     public function handle_needed_fields($type_code, $from_admin = false)
     {
@@ -460,10 +460,10 @@ class Hook_ecommerce_catalogue_items
     /**
      * Handling of a product purchase change state.
      *
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  ID_TEXT $purchase_id The purchase ID.
-     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS.
-     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification).
+     * @param  ID_TEXT $type_code The product codename
+     * @param  ID_TEXT $purchase_id The purchase ID
+     * @param  array $details Details of the product, with added keys: TXN_ID, STATUS, ORDER_STATUS
+     * @return boolean Whether the product was automatically dispatched (if not then hopefully this function sent a staff notification)
      */
     public function actualiser($type_code, $purchase_id, $details)
     {
@@ -509,8 +509,8 @@ class Hook_ecommerce_catalogue_items
     /**
      * Update stock levels after a purchase.
      *
-     * @param  AUTO_LINK $entry_id Catalogue entry ID.
-     * @param  integer $quantity Quantity to deduct.
+     * @param  AUTO_LINK $entry_id Catalogue entry ID
+     * @param  integer $quantity Quantity to deduct
      */
     public function reduce_stock($entry_id, $quantity)
     {
@@ -608,9 +608,9 @@ class Hook_ecommerce_catalogue_items
     /**
      * Get the member who made the purchase.
      *
-     * @param  ID_TEXT $type_code The product codename.
-     * @param  ID_TEXT $purchase_id The purchase ID.
-     * @return ?MEMBER The member ID (null: none).
+     * @param  ID_TEXT $type_code The product codename
+     * @param  ID_TEXT $purchase_id The purchase ID
+     * @return ?MEMBER The member ID (null: none)
      */
     public function member_for($type_code, $purchase_id)
     {
@@ -621,7 +621,7 @@ class Hook_ecommerce_catalogue_items
     /**
      * Function to return dispatch type of product.
      *
-     * @return ID_TEXT Dispatch type (manual/automatic).
+     * @return ID_TEXT Dispatch type (manual/automatic)
      */
     public function get_product_dispatch_type()
     {

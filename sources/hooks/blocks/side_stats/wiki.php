@@ -26,7 +26,7 @@ class Hook_stats_wiki
     /**
      * Show a stats section.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function run()
     {

@@ -137,8 +137,8 @@ function post_param_multi_source_upload($name, $upload_to, $required = true, $is
 /**
  * Find whether an plupload upload has just happened, and optionally simulate as if it were a normal upload (although 'is_uploaded_file'/'move_uploaded_file' would not work).
  *
- * @param  boolean $fake_prepopulation Simulate population of the $_FILES array.
- * @return boolean Whether an plupload upload has just happened.
+ * @param  boolean $fake_prepopulation Simulate population of the $_FILES array
+ * @return boolean Whether an plupload upload has just happened
  */
 function is_plupload($fake_prepopulation = false)
 {
@@ -571,7 +571,7 @@ function get_url($specify_name, $attach_name, $upload_folder, $obfuscate = 0, $e
 /**
  * Filters specified URLs to make sure we're really allowed to access them.
  *
- * @param  MEMBER $member_id Member ID to check permissions with.
+ * @param  MEMBER $member_id Member ID to check permissions with
  * @param  ID_TEXT $specify_name The name of the POST parameter storing the URL (if '', then no POST parameter). Parameter value may be blank.
  * @param  ID_TEXT $upload_folder The folder name where we will put this upload
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
@@ -668,8 +668,8 @@ function _get_specify_url($member_id, $specify_name, $upload_folder, $enforce_ty
 /**
  * Ensures a given filename is of the right file extension for the desired file type.
  *
- * @param  MEMBER $member_id Member ID to check permissions with.
- * @param  string $file The filename.
+ * @param  MEMBER $member_id Member ID to check permissions with
+ * @param  string $file The filename
  * @param  integer $enforce_type The type of upload it is (bitmask, from CMS_UPLOAD_* constants)
  * @param  boolean $accept_errors Whether to accept upload errors
  * @return boolean Success status
@@ -754,7 +754,7 @@ function _check_enforcement_of_type($member_id, $file, $enforce_type, $accept_er
 /**
  * Converts an uploaded file into a URL, by moving it to an appropriate place.
  *
- * @param  MEMBER $member_id Member ID to check permissions with.
+ * @param  MEMBER $member_id Member ID to check permissions with
  * @param  ID_TEXT $attach_name The name of the HTTP file parameter storing the upload (if '', then no HTTP file parameter). No file necessarily is uploaded under this.
  * @param  ID_TEXT $upload_folder The folder name where we will put this upload
  * @param  PATH $upload_folder_full Full folder path
@@ -880,8 +880,8 @@ function handle_upload_post_processing($enforce_type, $path, $upload_folder, $fi
 /**
  * In Tapatalk files may be passed as arrays, so abstract that complexity.
  *
- * @param  ID_TEXT $name The name of the HTTP file parameter storing the upload.
- * @param  array $filearrays Where we are storing our file arrays.
+ * @param  ID_TEXT $name The name of the HTTP file parameter storing the upload
+ * @param  array $filearrays Where we are storing our file arrays
  */
 function get_upload_filearray($name, &$filearrays)
 {

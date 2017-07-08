@@ -73,7 +73,7 @@ class Hook_media_rendering_vimeo extends Media_renderer_with_fallback
      * If we can handle this URL, get the thumbnail URL.
      *
      * @param  URLPATH $src_url Video URL
-     * @return ?string The thumbnail URL (null: no match).
+     * @return ?string The thumbnail URL (null: no match)
      */
     public function get_video_thumbnail($src_url)
     {

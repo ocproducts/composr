@@ -26,7 +26,7 @@ class Module_admin_email_log
     /**
      * Find details of the module.
      *
-     * @return ?array Map of module info (null: module is disabled).
+     * @return ?array Map of module info (null: module is disabled)
      */
     public function info()
     {
@@ -43,11 +43,11 @@ class Module_admin_email_log
     /**
      * Find entry-points available within this module.
      *
-     * @param  boolean $check_perms Whether to check permissions.
-     * @param  ?MEMBER $member_id The member to check permissions as (null: current user).
-     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name).
+     * @param  boolean $check_perms Whether to check permissions
+     * @param  ?MEMBER $member_id The member to check permissions as (null: current user)
+     * @param  boolean $support_crosslinks Whether to allow cross links to other modules (identifiable via a full-page-link rather than a screen-name)
      * @param  boolean $be_deferential Whether to avoid any entry-point (or even return null to disable the page in the Sitemap) if we know another module, or page_group, is going to link to that entry-point. Note that "!" and "browse" entry points are automatically merged with container page nodes (likely called by page-groupings) as appropriate.
-     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled).
+     * @return ?array A map of entry points (screen-name=>language-code/string or screen-name=>[language-code/string, icon-theme-image]) (null: disabled)
      */
     public function get_entry_points($check_perms = true, $member_id = null, $support_crosslinks = true, $be_deferential = false)
     {
@@ -61,7 +61,7 @@ class Module_admin_email_log
     /**
      * Module pre-run function. Allows us to know metadata for <head> before we start streaming output.
      *
-     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none).
+     * @return ?Tempcode Tempcode indicating some kind of exceptional output (null: none)
      */
     public function pre_run()
     {
@@ -103,7 +103,7 @@ class Module_admin_email_log
     /**
      * Execute the module.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function run()
     {
@@ -137,7 +137,7 @@ class Module_admin_email_log
     /**
      * Get a list of all the e-mails sent/queued.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function show()
     {
@@ -239,7 +239,7 @@ class Module_admin_email_log
     /**
      * Get a map table for an email.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function view()
     {
@@ -346,7 +346,7 @@ class Module_admin_email_log
     /**
      * View an attachment.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function attachment()
     {
@@ -394,7 +394,7 @@ class Module_admin_email_log
     /**
      * Get a form to edit/send/delete an email.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function edit()
     {
@@ -477,7 +477,7 @@ class Module_admin_email_log
     /**
      * Actualiser to edit/send/delete an email.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function _edit()
     {
@@ -573,7 +573,7 @@ class Module_admin_email_log
     /**
      * Actualiser to do a mass send.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function mass_send()
     {
@@ -621,7 +621,7 @@ class Module_admin_email_log
     /**
      * Actualiser to do a mass send.
      *
-     * @return Tempcode The result of execution.
+     * @return Tempcode The result of execution
      */
     public function mass_delete()
     {

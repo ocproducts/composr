@@ -228,8 +228,8 @@ function fix_permissions($path, $perms = null)
 /**
  * Get the contents of a file, with locking support.
  *
- * @param  PATH $path File path.
- * @return string File contents.
+ * @param  PATH $path File path
+ * @return string File contents
  */
 function cms_file_get_contents_safe($path)
 {
@@ -275,8 +275,8 @@ function cms_http_request($url, $options = array())
  *
  * @sets_output_state
  *
- * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state.
- * @param  boolean $true_blank Whether to go for a completely blank state (no defaults!), not just a default fresh state.
+ * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state
+ * @param  boolean $true_blank Whether to go for a completely blank state (no defaults!), not just a default fresh state
  *
  * @ignore
  */
@@ -380,8 +380,8 @@ function _load_blank_output_state($just_tempcode = false, $true_blank = false)
  *
  * @sets_output_state
  *
- * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state.
- * @param  boolean $true_blank Whether to go for a completely blank state (no defaults!), not just a default fresh state.
+ * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state
+ * @param  boolean $true_blank Whether to go for a completely blank state (no defaults!), not just a default fresh state
  */
 function push_output_state($just_tempcode = false, $true_blank = false)
 {
@@ -399,9 +399,9 @@ function push_output_state($just_tempcode = false, $true_blank = false)
  *
  * @sets_output_state
  *
- * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state.
- * @param  boolean $merge_current Whether to merge the current output state in.
- * @param  array $keep Settings to keep / merge if possible.
+ * @param  boolean $just_tempcode Whether to only restore the Tempcode execution part of the state
+ * @param  boolean $merge_current Whether to merge the current output state in
+ * @param  array $keep Settings to keep / merge if possible
  */
 function restore_output_state($just_tempcode = false, $merge_current = false, $keep = array())
 {
@@ -784,7 +784,7 @@ function find_template_place($codename, $lang, $theme, $suffix, $directory, $non
 /**
  * Find whether panels and the header/footer areas won't be shown.
  *
- * @return BINARY Result.
+ * @return BINARY Result
  */
 function is_wide_high()
 {
@@ -800,7 +800,7 @@ function is_wide_high()
 /**
  * Find whether panels will be shown.
  *
- * @return BINARY Result.
+ * @return BINARY Result
  */
 function is_wide()
 {
@@ -860,9 +860,9 @@ function fix_bad_unicode($input, $definitely_unicode = false)
 /**
  * Get string length, with utf-8 awareness where possible/required.
  *
- * @param  string $in The string to get the length of.
- * @param  boolean $force Whether to force unicode as on.
- * @return integer The string length.
+ * @param  string $in The string to get the length of
+ * @param  boolean $force Whether to force unicode as on
+ * @return integer The string length
  */
 function cms_mb_strlen($in, $force = false)
 {
@@ -881,11 +881,11 @@ function cms_mb_strlen($in, $force = false)
 /**
  * Return part of a string, with utf-8 awareness where possible/required.
  *
- * @param  string $in The subject.
- * @param  integer $from The start position.
- * @param  ?integer $amount The length to extract (null: all remaining).
- * @param  boolean $force Whether to force unicode as on.
- * @return ~string String part (false: $start was over the end of the string).
+ * @param  string $in The subject
+ * @param  integer $from The start position
+ * @param  ?integer $amount The length to extract (null: all remaining)
+ * @param  boolean $force Whether to force unicode as on
+ * @return ~string String part (false: $start was over the end of the string)
  */
 function cms_mb_substr($in, $from, $amount = null, $force = false)
 {
@@ -926,8 +926,8 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
 /**
  * Make a string title-case, with utf-8 awareness where possible/required.
  *
- * @param  string $in Subject.
- * @return string Result.
+ * @param  string $in Subject
+ * @return string Result
  */
 function cms_mb_ucwords($in)
 {
@@ -945,8 +945,8 @@ function cms_mb_ucwords($in)
 /**
  * Make a string lowercase, with utf-8 awareness where possible/required.
  *
- * @param  string $in Subject.
- * @return string Result.
+ * @param  string $in Subject
+ * @return string Result
  */
 function cms_mb_strtolower($in)
 {
@@ -964,8 +964,8 @@ function cms_mb_strtolower($in)
 /**
  * Make a string uppercase, with utf-8 awareness where possible/required.
  *
- * @param  string $in Subject.
- * @return string Result.
+ * @param  string $in Subject
+ * @return string Result
  */
 function cms_mb_strtoupper($in)
 {
@@ -1175,8 +1175,8 @@ function float_format($val, $decs_wanted = 2, $only_needed_decs = false)
 /**
  * Take the given formatted float number and convert it to a native float. The inverse of float_format.
  *
- * @param  string $str The formatted float number using the locale.
- * @param  boolean $no_thousands_sep Whether we do *not* expect a thousands separator, which means we can be a bit smarter.
+ * @param  string $str The formatted float number using the locale
+ * @param  boolean $no_thousands_sep Whether we do *not* expect a thousands separator, which means we can be a bit smarter
  * @return float Native float
  */
 function float_unformat($str, $no_thousands_sep = false)
@@ -1231,7 +1231,7 @@ function integer_format($val)
  * Sort a list of maps by the string length of a particular key ID in the maps.
  *
  * @param  array $rows List of maps to sort
- * @param  mixed $sort_key Either an integer sort key (to sort by integer key ID of contained arrays) or a String sort key (to sort by string key ID of contained arrays).
+ * @param  mixed $sort_key Either an integer sort key (to sort by integer key ID of contained arrays) or a String sort key (to sort by string key ID of contained arrays)
  */
 function sort_maps_by__strlen($rows, $sort_key)
 {
@@ -1270,7 +1270,7 @@ function _strlen_sort($a, $b)
  * Sort a list of maps by a particular key ID in the maps. Does not (and should not) preserve list indices, but does preserve associative key indices.
  *
  * @param  array $rows List of maps to sort
- * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it).
+ * @param  mixed $sort_keys Either an integer sort key (to sort by integer key ID of contained arrays) or a Comma-separated list of sort keys (to sort by string key ID of contained arrays; prefix '!' a key to reverse the sort order for it)
  * @param  boolean $preserve_order_if_possible Don't shuffle order unnecessarily (i.e. do a merge sort)
  */
 function sort_maps_by(&$rows, $sort_keys, $preserve_order_if_possible = false)
@@ -1460,8 +1460,8 @@ function cns_require_all_forum_stuff()
 /**
  * Create file with unique file name, but works around compatibility issues between servers. Note that the file is NOT automatically deleted. You should also delete it using "@unlink", as some servers have problems with permissions.
  *
- * @param  string $prefix The prefix of the temporary file name.
- * @return ~string The name of the temporary file (false: error).
+ * @param  string $prefix The prefix of the temporary file name
+ * @return ~string The name of the temporary file (false: error)
  */
 function cms_tempnam($prefix = 'cms')
 {
@@ -1701,9 +1701,9 @@ function get_page_name()
 /**
  * Fix a page name that may have been given dashes for SEO reasons.
  *
- * @param  string $zone Zone.
- * @param  string $page Page.
- * @return string The fixed page name.
+ * @param  string $zone Zone
+ * @param  string $page Page
+ * @return string The fixed page name
  */
 function fix_page_name_dashing($zone, $page)
 {
@@ -1797,8 +1797,8 @@ function collapse_1d_complexity($key, $list)
 /**
  * Find whether an IP address is valid.
  *
- * @param  IP $ip IP address to check.
- * @return boolean Whether the IP address is valid.
+ * @param  IP $ip IP address to check
+ * @return boolean Whether the IP address is valid
  */
 function is_valid_ip($ip)
 {
@@ -2731,7 +2731,7 @@ function has_js()
  *
  * @param  array $array Array to convert
  * @param  boolean $already_stripped Whether PHP magic-quotes have already been cleaned out for the array
- * @return string A humanely readable version of the array.
+ * @return string A humanely readable version of the array
  */
 function flatten_slashed_array($array, $already_stripped = false)
 {
@@ -2777,7 +2777,7 @@ function mixed()
  *
  * @param  ID_TEXT $type The type of resource (e.g. download)
  * @param  ID_TEXT $id The ID of the resource
- * @return array A pair: The first element is the meta keyword string for the specified resource, and the other is the meta description string.
+ * @return array A pair: The first element is the meta keyword string for the specified resource, and the other is the meta description string
  */
 function seo_meta_get_for($type, $id)
 {
@@ -3219,8 +3219,8 @@ function get_mass_import_mode()
 /**
  * Prepare an argument for use literally in a command. Works around common PHP restrictions.
  *
- * @param  string $arg The argument.
- * @return string Escaped.
+ * @param  string $arg The argument
+ * @return string Escaped
  */
 function escapeshellarg_wrap($arg)
 {

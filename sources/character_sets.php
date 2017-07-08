@@ -165,8 +165,8 @@ function _convert_data_encodings($known_utf8 = false)
 /**
  * Convert a unicode character number to a unicode string. Callback for preg_replace.
  *
- * @param  array $matches Regular expression match array.
- * @return ~string Converted data (false: could not convert).
+ * @param  array $matches Regular expression match array
+ * @return ~string Converted data (false: could not convert)
  */
 function unichrm_hex($matches)
 {
@@ -176,8 +176,8 @@ function unichrm_hex($matches)
 /**
  * Convert a unicode character number to a unicode string. Callback for preg_replace.
  *
- * @param  array $matches Regular expression match array.
- * @return ~string Converted data (false: could not convert).
+ * @param  array $matches Regular expression match array
+ * @return ~string Converted data (false: could not convert)
  */
 function unichrm($matches)
 {
@@ -187,8 +187,8 @@ function unichrm($matches)
 /**
  * Convert a unicode character number to a HTML-entity enabled string, using lower ASCII characters where possible.
  *
- * @param  integer $c Character number.
- * @return ~string Converted data (false: could not convert).
+ * @param  integer $c Character number
+ * @return ~string Converted data (false: could not convert)
  */
 function unichr($c)
 {
@@ -202,8 +202,8 @@ function unichr($c)
 /**
  * Convert text to an entity format via unicode, compatible with the GD TTF functions. Originally taken from php manual but heavily modified. Passed text is assumed to be in the get_charset() character set.
  *
- * @param  string $data Input text.
- * @return string Output 7-bit unicode-entity-encoded ASCII text.
+ * @param  string $data Input text
+ * @return string Output 7-bit unicode-entity-encoded ASCII text
  */
 function foxy_utf8_to_nce($data = '')
 {
@@ -316,8 +316,8 @@ function foxy_utf8_to_nce($data = '')
 /**
  * Turn utf-8 characters into unicode HTML entities. Useful as GD truetype functions need this. Based on function in PHP code comments.
  *
- * @param  string $utf8 Input.
- * @return string Output.
+ * @param  string $utf8 Input
+ * @return string Output
  */
 function utf8tohtml($utf8)
 {
@@ -393,7 +393,7 @@ function do_simple_environment_utf8_conversion()
 /**
  * Do a UTF8 conversion on the environmental GET/POST parameters.
  *
- * @param  string $from_charset Charset that was used to encode the environmental data.
+ * @param  string $from_charset Charset that was used to encode the environmental data
  */
 function do_environment_utf8_conversion($from_charset)
 {
@@ -439,8 +439,8 @@ function do_environment_utf8_conversion($from_charset)
  * Guard for entity_utf8_decode. Checks that the data can be stripped so there is no unicode left. Either the htmlentities function must convert mechanically to entity-characters or all higher ascii character codes (which are actually unicode control codes in a unicode interpretation) that are used happen to be linked to named entities.
  * PHP's utf-8 support may not be great. For example, we have seen emoji characters not converting.
  *
- * @param  string $data Data to check.
- * @return boolean Whether we are good to execute entity_utf8_decode.
+ * @param  string $data Data to check
+ * @return boolean Whether we are good to execute entity_utf8_decode
  */
 function will_be_unicode_neutered($data)
 {
@@ -459,10 +459,10 @@ function will_be_unicode_neutered($data)
 /**
  * Convert some data from one encoding to the internal encoding.
  *
- * @param  string $data Data to convert.
- * @param  string $input_charset Charset to convert from.
- * @param  ?string $internal_charset Charset to convert to (null: current encoding).
- * @return string Converted data.
+ * @param  string $data Data to convert
+ * @param  string $input_charset Charset to convert from
+ * @param  ?string $internal_charset Charset to convert to (null: current encoding)
+ * @return string Converted data
  */
 function convert_to_internal_encoding($data, $input_charset, $internal_charset = null)
 {
@@ -546,9 +546,9 @@ function convert_to_internal_encoding($data, $input_charset, $internal_charset =
 /**
  * Convert some data from UTF to a character set PHP supports, using HTML entities where there's no direct match.
  *
- * @param  string $data Data to convert.
- * @param  string $internal_charset Charset to convert to.
- * @return ~string Converted data (false: could not convert).
+ * @param  string $data Data to convert
+ * @param  string $internal_charset Charset to convert to
+ * @return ~string Converted data (false: could not convert)
  */
 function entity_utf8_decode($data, $internal_charset)
 {

@@ -133,11 +133,11 @@ function sitemap_script_loading()
 /**
  * Convert a Sitemap node into an XML representation.
  *
- * @param  array $admin_groups Global list of admin groups.
- * @param  array $groups Global map of usergroups (ID => name).
- * @param  array $node The Sitemap node.
- * @param  boolean $permissions_needed Whether we need selectable nodes to support some selectable permissions.
- * @param  integer $recurse_level How deep in recursion we are.
+ * @param  array $admin_groups Global list of admin groups
+ * @param  array $groups Global map of usergroups (ID => name)
+ * @param  array $node The Sitemap node
+ * @param  boolean $permissions_needed Whether we need selectable nodes to support some selectable permissions
+ * @param  integer $recurse_level How deep in recursion we are
  *
  * @ignore
  */
@@ -279,10 +279,10 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
 /**
  * Get a mapping of set access for a particular sitemap node.
  *
- * @param  array $admin_groups Global list of admin groups.
- * @param  array $groups Global map of usergroups (ID => name).
- * @param  array $node The sitemap node.
- * @return ?array A map of set access (group => N/A) (null: no view permissions for this node).
+ * @param  array $admin_groups Global list of admin groups
+ * @param  array $groups Global map of usergroups (ID => name)
+ * @param  array $node The sitemap node
+ * @return ?array A map of set access (group => N/A) (null: no view permissions for this node)
  *
  * @ignore
  */
@@ -332,10 +332,10 @@ function _get_view_access_for_node($admin_groups, $groups, $node)
 /**
  * Get a mapping of set privileges for a particular sitemap node.
  *
- * @param  array $admin_groups Global list of admin groups.
- * @param  array $groups Global map of usergroups (ID => name).
- * @param  array $node The sitemap node.
- * @return ?array A map of set privileges (group => (privileges => value)) (null: no view permissions for this node).
+ * @param  array $admin_groups Global list of admin groups
+ * @param  array $groups Global map of usergroups (ID => name)
+ * @param  array $node The sitemap node
+ * @return ?array A map of set privileges (group => (privileges => value)) (null: no view permissions for this node)
  *
  * @ignore
  */
@@ -386,10 +386,10 @@ function _get_privileges_for_node($admin_groups, $groups, $node)
 /**
  * Organise loaded privileges into a more searchable structure.
  *
- * @param  array $admin_groups Global list of admin groups.
- * @param  array $groups Global map of usergroups (ID => name).
+ * @param  array $admin_groups Global list of admin groups
+ * @param  array $groups Global map of usergroups (ID => name)
  * @param  array $_privilege_access Privilege database rows
- * @return array A map of set privileges (group => (privileges => value)).
+ * @return array A map of set privileges (group => (privileges => value))
  *
  * @ignore
  */
@@ -408,7 +408,7 @@ function _organise_loaded_privileges($admin_groups, $groups, $_privilege_access)
 /**
  * Get overridable privileges under a particular permission page.
  *
- * @param  ?ID_TEXT $privilege_page The privilege page (null: interesting ones we want to allow specification on the root sitemap node).
+ * @param  ?ID_TEXT $privilege_page The privilege page (null: interesting ones we want to allow specification on the root sitemap node)
  * @return array A map of privileges that are overridable; privilege to 0 or 1. 0 means "not category overridable". 1 means "category overridable".
  *
  * @ignore

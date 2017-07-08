@@ -21,9 +21,9 @@
 /**
  * Find member subscriptions.
  *
- * @param  MEMBER $member_id The member.
- * @param  boolean $usergroup_subscriptions_only Whether to limit us to usergroup subscriptions.
- * @return array A list of subscriptions and subscription lifetime positions.
+ * @param  MEMBER $member_id The member
+ * @param  boolean $usergroup_subscriptions_only Whether to limit us to usergroup subscriptions
+ * @return array A list of subscriptions and subscription lifetime positions
  */
 function find_member_subscriptions($member_id, $usergroup_subscriptions_only = false)
 {
@@ -188,8 +188,8 @@ function find_member_subscriptions($member_id, $usergroup_subscriptions_only = f
 /**
  * Get template-ready parameters for displaying a subscription.
  *
- * @param  array $subscription Subscription details.
- * @return array Template-ready parameters.
+ * @param  array $subscription Subscription details
+ * @return array Template-ready parameters
  */
 function prepare_templated_subscription($subscription)
 {

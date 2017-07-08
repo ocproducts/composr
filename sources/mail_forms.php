@@ -57,14 +57,14 @@ function form_to_email_entry_script()
 /**
  * Send the POSTed form over e-mail to the staff address.
  *
- * @param  ?string $subject The subject of the e-mail (null: from POSTed/tagged subject parameter).
- * @param  string $subject_prefix The prefix text to the e-mail subject (blank: none).
- * @param  string $subject_suffix The suffix text to the e-mail subject (blank: none).
- * @param  string $body_prefix The prefix text to the e-mail body (blank: none).
- * @param  string $body_suffix The suffix text to the e-mail body (blank: none).
+ * @param  ?string $subject The subject of the e-mail (null: from POSTed/tagged subject parameter)
+ * @param  string $subject_prefix The prefix text to the e-mail subject (blank: none)
+ * @param  string $subject_suffix The suffix text to the e-mail subject (blank: none)
+ * @param  string $body_prefix The prefix text to the e-mail body (blank: none)
+ * @param  string $body_suffix The suffix text to the e-mail body (blank: none)
  * @param  ?array $fields A map of fields to field titles to transmit. (null: all POSTed fields, except subject and e-mail)
- * @param  ?string $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address).
- * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map.
+ * @param  ?string $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address)
+ * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map
  */
 function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = '', $body_prefix = '', $body_suffix = '', $fields = null, $to_email = null, $is_via_post = true)
 {
@@ -109,14 +109,14 @@ function form_to_email($subject = null, $subject_prefix = '', $subject_suffix = 
  * Worker funtion for form_to_email.
  *
  * @param  array $extra_boring_fields Fields to skip in addition to the normal skipped ones
- * @param  ?string $subject The subject of the e-mail (null: from POSTed/tagged subject parameter).
- * @param  string $subject_prefix The prefix text to the e-mail subject (blank: none).
- * @param  string $subject_suffix The suffix text to the e-mail subject (blank: none).
- * @param  string $body_prefix The prefix text to the e-mail body (blank: none).
- * @param  string $body_suffix The suffix text to the e-mail body (blank: none).
+ * @param  ?string $subject The subject of the e-mail (null: from POSTed/tagged subject parameter)
+ * @param  string $subject_prefix The prefix text to the e-mail subject (blank: none)
+ * @param  string $subject_suffix The suffix text to the e-mail subject (blank: none)
+ * @param  string $body_prefix The prefix text to the e-mail body (blank: none)
+ * @param  string $body_suffix The suffix text to the e-mail body (blank: none)
  * @param  ?array $fields A map of field names to field titles to transmit. (null: all POSTed fields, except certain standardised ones)
- * @param  ?string $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address).
- * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map.
+ * @param  ?string $to_email E-mail address to send to (null: look from POST environment [if allowed] / staff address)
+ * @param  boolean $is_via_post Whether $fields refers to some POSTed fields, as opposed to a direct field->value map
  * @return array A tuple: subject, message, to e-mail, to name, from e-mail, from name, attachments, body parts (if calling code wants partials instead of a single $message)
  *
  * @ignore
@@ -234,13 +234,13 @@ function _form_to_email($extra_boring_fields = array(), $subject = null, $subjec
 /**
  * Append a value to a text e-mail.
  *
- * @param  string $body Text-email (altered by reference).
- * @param  boolean $is_tick Whether it is a tick field.
- * @param  string $field_name Field name.
- * @param  string $field_title Field title.
- * @param  string $field_val Field value.
- * @param  integer $num_fields Number of fields for e-mail.
- * @param  array $body_parts Body parts (returned by reference).
+ * @param  string $body Text-email (altered by reference)
+ * @param  boolean $is_tick Whether it is a tick field
+ * @param  string $field_name Field name
+ * @param  string $field_title Field title
+ * @param  string $field_val Field value
+ * @param  integer $num_fields Number of fields for e-mail
+ * @param  array $body_parts Body parts (returned by reference)
  *
  * @ignore
  */

@@ -29,8 +29,8 @@ class Hook_ecommerce_tax
      * IMPORTANT NOTE TO PROGRAMMERS: This function may depend only on the database, and not on get_member() or any GET/POST values.
      *  Such dependencies will break IPN, which works via a Guest and no dependable environment variables. It would also break manual transactions from the Admin Zone.
      *
-     * @param  ?ID_TEXT $search Product being searched for (null: none).
-     * @return array A map of product name to list of product details.
+     * @param  ?ID_TEXT $search Product being searched for (null: none)
+     * @return array A map of product name to list of product details
      */
     public function get_products($search = null)
     {
@@ -64,9 +64,9 @@ class Hook_ecommerce_tax
     /**
      * Get fields that need to be filled in in the purchasing module.
      *
-     * @param  ID_TEXT $type_code The product codename.
+     * @param  ID_TEXT $type_code The product codename
      * @param  boolean $from_admin Whether this is being called from the Admin Zone. If so, optionally different fields may be used, including a purchase_id field for direct purchase ID input.
-     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none).
+     * @return ?array A triple: The fields (null: none), The text (null: none), The JavaScript (null: none)
      */
     public function get_needed_fields($type_code, $from_admin = false)
     {

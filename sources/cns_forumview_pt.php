@@ -23,11 +23,11 @@
  *
  * @param  integer $start The start row for getting details of topics in the Private Topic forum (i.e. 0 is newest, higher is starting further back in time).
  * @param  integer $true_start True offset when disconsidering keyset pagination
- * @param  ?integer $max The maximum number of topics to get detail of (null: default).
- * @param  string $sql_sup Extra SQL to append.
- * @param  string $sql_sup_order_by Extra SQL to append as order clause.
- * @param  ?MEMBER $member_id The member to get Private Topics of (null: current member).
- * @return array The details.
+ * @param  ?integer $max The maximum number of topics to get detail of (null: default)
+ * @param  string $sql_sup Extra SQL to append
+ * @param  string $sql_sup_order_by Extra SQL to append as order clause
+ * @param  ?MEMBER $member_id The member to get Private Topics of (null: current member)
+ * @return array The details
  */
 function cns_get_private_topics($start = 0, $true_start = 0, $max = null, $sql_sup = '', $sql_sup_order_by = '', $member_id = null)
 {

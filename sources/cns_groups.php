@@ -80,9 +80,9 @@ function render_group_box($row, $zone = '_SEARCH', $give_context = true, $guid =
 /**
  * Get a nice list for selection from the usergroups. Suitable for admin use only (does not check hidden status).
  *
- * @param  ?AUTO_LINK $it Usergroup selected by default (null: no specific default).
- * @param  boolean $allow_guest_group Allow the guest usergroup to be in the list.
- * @return Tempcode The list.
+ * @param  ?AUTO_LINK $it Usergroup selected by default (null: no specific default)
+ * @param  boolean $allow_guest_group Allow the guest usergroup to be in the list
+ * @return Tempcode The list
  */
 function cns_create_selection_list_usergroups($it = null, $allow_guest_group = true)
 {
@@ -103,7 +103,7 @@ function cns_create_selection_list_usergroups($it = null, $allow_guest_group = t
 /**
  * Find the first default group.
  *
- * @return GROUP The first default group.
+ * @return GROUP The first default group
  */
 function get_first_default_group()
 {
@@ -117,9 +117,9 @@ function get_first_default_group()
 /**
  * Get a list of the default usergroups (the usergroups a member is put in when they join).
  *
- * @param  boolean $include_primary Whether to include the default primary (at the end of the list).
+ * @param  boolean $include_primary Whether to include the default primary (at the end of the list)
  * @param  boolean $include_all_configured_default_groups The functionality does not usually consider configured default groups [unless there's just one], because this is a layer of uncertainity (the user PICKS one of these). If you want to return all configured default groups, set this parameter to true.
- * @return array The list of default IDs.
+ * @return array The list of default IDs
  */
 function cns_get_all_default_groups($include_primary = false, $include_all_configured_default_groups = false)
 {
@@ -156,7 +156,7 @@ function cns_get_all_default_groups($include_primary = false, $include_all_confi
 /**
  * Ensure a list of usergroups are cached in memory.
  *
- * @param  mixed $groups The list of usergroups (array) or '*'.
+ * @param  mixed $groups The list of usergroups (array) or '*'
  */
 function cns_ensure_groups_cached($groups)
 {
@@ -219,9 +219,9 @@ function cns_ensure_groups_cached($groups)
 /**
  * Get a rendered link to a usergroup.
  *
- * @param  GROUP $id The ID of the group.
- * @param  boolean $hide_hidden Whether to hide the name if it is a hidden group.
- * @return Tempcode The link.
+ * @param  GROUP $id The ID of the group
+ * @param  boolean $hide_hidden Whether to hide the name if it is a hidden group
+ * @return Tempcode The link
  */
 function cns_get_group_link($id, $hide_hidden = true)
 {
@@ -250,9 +250,9 @@ function cns_get_group_link($id, $hide_hidden = true)
 /**
  * Get a usergroup name.
  *
- * @param  GROUP $group The ID of the group.
- * @param  boolean $hide_hidden Whether to hide the name if it is a hidden group.
- * @return string The usergroup name.
+ * @param  GROUP $group The ID of the group
+ * @param  boolean $hide_hidden Whether to hide the name if it is a hidden group
+ * @return string The usergroup name
  */
 function cns_get_group_name($group, $hide_hidden = true)
 {
@@ -266,10 +266,10 @@ function cns_get_group_name($group, $hide_hidden = true)
 /**
  * Get a certain property of a certain.
  *
- * @param  GROUP $group The ID of the group.
- * @param  ID_TEXT $property The identifier of the property.
- * @param  boolean $hide_hidden Whether to hide the name if it is a hidden group.
- * @return mixed The property value.
+ * @param  GROUP $group The ID of the group
+ * @param  ID_TEXT $property The identifier of the property
+ * @param  boolean $hide_hidden Whether to hide the name if it is a hidden group
+ * @return mixed The property value
  */
 function cns_get_group_property($group, $property, $hide_hidden = true)
 {
@@ -295,9 +295,9 @@ function cns_get_group_property($group, $property, $hide_hidden = true)
 /**
  * Get the best value of all values of a property for a member (due to members being in multiple usergroups).
  *
- * @param  MEMBER $member_id The ID of the member.
- * @param  ID_TEXT $property The identifier of the property.
- * @return mixed The property value.
+ * @param  MEMBER $member_id The ID of the member
+ * @param  ID_TEXT $property The identifier of the property
+ * @return mixed The property value
  */
 function cns_get_member_best_group_property($member_id, $property)
 {
@@ -307,9 +307,9 @@ function cns_get_member_best_group_property($member_id, $property)
 /**
  * Get the best value of all values of a property for a list of usergroups.
  *
- * @param  array $groups The list of usergroups.
- * @param  ID_TEXT $property The identifier of the property.
- * @return mixed The best property value ('best' is dependant on the property we are looking at).
+ * @param  array $groups The list of usergroups
+ * @param  ID_TEXT $property The identifier of the property
+ * @return mixed The best property value ('best' is dependant on the property we are looking at)
  */
 function cns_get_best_group_property($groups, $property)
 {
@@ -337,8 +337,8 @@ function cns_get_best_group_property($groups, $property)
 /**
  * Get a list of the usergroups a member is in (keys say the usergroups, values are irrelevant).
  *
- * @param  ?MEMBER $member_id The member to find the usergroups of (null: current member).
- * @param  boolean $skip_secret Whether to skip looking at secret usergroups, unless we have access.
+ * @param  ?MEMBER $member_id The member to find the usergroups of (null: current member)
+ * @param  boolean $skip_secret Whether to skip looking at secret usergroups, unless we have access
  * @param  boolean $handle_probation Whether to take probation into account
  * @param  boolean $include_implicit Whether to include implicit groups
  * @return array Flipped list (e.g. array(1=>true,2=>true,3=>true) for someone in (1,2,3)).
@@ -463,8 +463,8 @@ function cns_get_members_groups($member_id = null, $skip_secret = false, $handle
 /**
  * Get the ID for a usergroup if we only know the title. Warning: Only use this with custom code, never core code! It assumes a single language and that usergroups aren't renamed.
  *
- * @param  SHORT_TEXT $title The title.
- * @return ?AUTO_LINK The ID (null: could not find).
+ * @param  SHORT_TEXT $title The title
+ * @return ?AUTO_LINK The ID (null: could not find)
  */
 function find_usergroup_id($title)
 {

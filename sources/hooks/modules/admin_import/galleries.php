@@ -26,7 +26,7 @@ class Hook_import_galleries
     /**
      * Standard importer hook info function.
      *
-     * @return ?array Importer handling details (null: importer is disabled).
+     * @return ?array Importer handling details (null: importer is disabled)
      */
     public function info()
     {

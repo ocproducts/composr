@@ -54,7 +54,7 @@ class Hook_chat_bot_trickstr
      * Give ability to reply to any communication.
      *
      * @param  AUTO_LINK $room_id The ID of the chatroom
-     * @param  string $string The message used.
+     * @param  string $string The message used
      * @return ?string Bot reply (null: bot does not handle the command)
      */
     function reply_to_any_communication($room_id, $string)

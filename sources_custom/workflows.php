@@ -710,7 +710,7 @@ function workflow_update_handler()
  * Adds the specified content (image, video, gallery, etc.) to the
  * specified workflow.
  *
- * @param  ID_TEXT $content_type The content-meta-aware name that applies to this content.
+ * @param  ID_TEXT $content_type The content-meta-aware name that applies to this content
  * @param  ID_TEXT $content_id The ID of this content. Must be a string. Integers will be extracted from the string if needed.
  * @param  ?AUTO_LINK $workflow_id The ID of the desired workflow. (null: system default)
  * @param  boolean $remove_existing Whether to remove any existing workflows from this content beforehand (current permissions must allow this)
@@ -785,7 +785,7 @@ function add_content_to_workflow($content_type = '', $content_id = '', $workflow
  * Returns all of the approval point which are currently defined. Indices are
  * IDs, values are names.
  *
- * @param  AUTO_LINK $workflow_id The workflow ID.
+ * @param  AUTO_LINK $workflow_id The workflow ID
  * @return array The approval points which are defined. Empty if none are defined.
  */
 function get_all_approval_points($workflow_id)

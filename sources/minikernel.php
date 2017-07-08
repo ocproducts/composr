@@ -221,8 +221,8 @@ function sync_file($filename)
 /**
  * Find whether a particular PHP function is blocked.
  *
- * @param  string $function Function name.
- * @return boolean Whether it is.
+ * @param  string $function Function name
+ * @return boolean Whether it is
  */
 function php_function_allowed($function)
 {
