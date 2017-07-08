@@ -1005,6 +1005,8 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('link_tracker', 'member_id', array('c_member_id'));
             $GLOBALS['SITE_DB']->create_index('logged_mail_messages', 'm_as', array('m_as'));
             $GLOBALS['SITE_DB']->create_index('rating', 'rating_member', array('rating_member'));
+            $GLOBALS['SITE_DB']->create_index('attachment_refs', 'attachmentreferences', array('r_referer_type', 'r_referer_id'));
+            $GLOBALS['SITE_DB']->create_index('notifications_enabled', 'who_has', array('l_notification_code', 'l_code_category(10)', 'l_setting')); // l_code_category is not enough as may be searched as ''
         }
     }
 

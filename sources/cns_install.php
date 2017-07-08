@@ -273,15 +273,15 @@ function install_cns($upgrade_from = null)
 
         $GLOBALS['FORUM_DB']->add_table_field('f_custom_fields', 'cf_options', 'SHORT_TEXT');
 
-        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
-        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
-        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'codename', 'cf_default' => 'RANDOM'), array('cf_type' => 'random'));
-        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=vertical_checkboxes,custom_values=yes'), array('cf_type' => 'combo_multi'));
-        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi'), array('cf_type' => 'multilist'));
-        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=horizontal_checkboxes'), array('cf_type' => 'tick_multi'));
-        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio,custom_values=yes'), array('cf_type' => 'combo'));
-        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio'), array('cf_type' => 'radiolist'));
-        $GLOBALS['SITE_DB']->query_update('f_custom_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'member'), array('cf_type' => 'user'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'member_multi'), array('cf_type' => 'user_multi'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'codename', 'cf_default' => 'RANDOM'), array('cf_type' => 'random'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=vertical_checkboxes,custom_values=yes'), array('cf_type' => 'combo_multi'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi'), array('cf_type' => 'multilist'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list_multi', 'cf_options' => 'widget=horizontal_checkboxes'), array('cf_type' => 'tick_multi'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio,custom_values=yes'), array('cf_type' => 'combo'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'list', 'cf_options' => 'widget=radio'), array('cf_type' => 'radiolist'));
+        $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'integer', 'cf_default' => 'AUTO_INCREMENT'), array('cf_type' => 'auto_increment'));
 
         $GLOBALS['FORUM_DB']->add_table_field('f_forums', 'f_allows_anonymous_posts', 'BINARY', intval(get_option('is_on_anonymous_posts')));
 
@@ -335,7 +335,7 @@ function install_cns($upgrade_from = null)
             $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf_ft_' . strval($id));
 
             if (substr(get_db_type(), 0, 5) == 'mysql') {
-                $GLOBALS['SITE_DB']->query('SET sql_mode=\'\'', null, 0, true); // Turn off strict mode
+                $GLOBALS['FORUM_DB']->query('SET sql_mode=\'\'', null, 0, true); // Turn off strict mode
             }
             $GLOBALS['FORUM_DB']->alter_table_field('f_member_custom_fields', 'field_' . strval($id), $_type);
 
@@ -348,6 +348,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->create_index('f_posts', 'last_edit_by', array('p_last_edit_by'));
         $GLOBALS['FORUM_DB']->create_index('f_invites', 'inviter', array('i_inviter'));
         $GLOBALS['FORUM_DB']->create_index('f_poll_votes', 'member_id', array('pv_member_id'));
+        $GLOBALS['FORUM_DB']->create_index('f_members', 'last_visit_time_2', array('m_last_visit_time'));
     }
 
     // If we have the forum installed to this db already, leave
