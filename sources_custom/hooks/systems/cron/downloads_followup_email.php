@@ -102,15 +102,14 @@ class Hook_cron_downloads_followup_email
             // Create template object to hold download list
             $download_list = new Tempcode();
             $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
-            $member_name = 'Guest';
             $member_id = $id['member_id'];
-            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
             $lang = get_lang($member_id);
             $zone = get_module_zone('downloads');
             $count = 0;
 
             if ($debug) {
-                echo "downloads_followup_email: preparing notification to ID #" . strval($member_id) . " ($member_name) language=$lang\n";
+                echo "downloads_followup_email: preparing notification to ID #" . strval($member_id) . " ($username) language=$lang\n";
             }
 
             // Do a query to get list of download IDs the current member ID has downloaded since last run and place them in a content variable
@@ -141,12 +140,12 @@ class Hook_cron_downloads_followup_email
             if ($count > 1) {
                 $s = 's';
             }
-            $subject_line = do_lang('SUBJECT_DOWNLOADS_FOLLOWUP_EMAIL', get_site_name(), $member_name, $s, $lang, false);
+            $subject_line = do_lang('SUBJECT_DOWNLOADS_FOLLOWUP_EMAIL', get_site_name(), $username, $s, $lang, false);
             // Pass download count, download list, and member ID to template.
             $message = static_evaluate_tempcode(do_notification_template($mail_template, array('MEMBER_ID' => strval($member_id), 'DOWNLOAD_LIST' => $download_list, 'DOWNLOAD_COUNT' => strval($count))));
 
             if ($debug) {
-                echo "downloads_followup_email: sending notification (if user allows download followup notifications) to ID #" . strval($member_id) . " ($member_name)\n";
+                echo "downloads_followup_email: sending notification (if user allows download followup notifications) to ID #" . strval($member_id) . " ($username)\n";
             }
             if ($debug) {
                 echo "downloads_followup_email: notifications enabled = " . (notifications_enabled('downloads_followup_email', null, $member_id) ? 'true' : 'false') . "\n";

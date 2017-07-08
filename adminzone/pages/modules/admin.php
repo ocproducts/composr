@@ -551,7 +551,13 @@ class Module_admin
                             $_url = build_url(array('page' => $page), $zone);
                             $sitemap_editor_url = build_url(array('page' => 'admin_sitemap', 'type' => 'browse', 'id' => $zone . ':' . $page), get_module_zone('admin_sitemap'));
                             $permission_tree_editor_url = build_url(array('page' => 'admin_permissions', 'id' => $zone . ':' . $page), get_module_zone('admin_permissions'));
-                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '65420db47f2a73b4cc24258a9e9f3ef9', 'NAME' => $n, 'URL' => $_url, 'TITLE' => '', 'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($sitemap_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())))));
+                            $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+                                '_GUID' => '65420db47f2a73b4cc24258a9e9f3ef9',
+                                'NAME' => $n,
+                                'URL' => $_url,
+                                'TITLE' => '',
+                                'DESCRIPTION' => do_lang_tempcode('FIND_IN_SITEMAP_EDITOR', escape_html($sitemap_editor_url->evaluate()), escape_html($permission_tree_editor_url->evaluate())),
+                            )));
                         }
                     }
                 }

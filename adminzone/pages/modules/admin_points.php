@@ -214,14 +214,14 @@ class Module_admin_points
             if (is_guest($myrow['gift_to'])) {
                 $to = do_lang_tempcode('USER_SYSTEM');
             } else {
-                $to_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_to']);
+                $to_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_to'], USERNAME_DEFAULT_NULL);
                 $to_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $myrow['gift_to']), get_module_zone('points'));
                 $to = ($to_name === null) ? do_lang_tempcode('UNKNOWN_EM') : hyperlink($to_url, $to_name, false, true);
             }
             if (is_guest($myrow['gift_from'])) {
                 $from = do_lang_tempcode('USER_SYSTEM');
             } else {
-                $from_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_from']);
+                $from_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_from'], USERNAME_DEFAULT_NULL);
                 $from_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $myrow['gift_from']), get_module_zone('points'));
                 $from = ($from_name === null) ? do_lang_tempcode('UNKNOWN_EM') : hyperlink($from_url, $from_name, false, true);
             }
@@ -266,14 +266,14 @@ class Module_admin_points
         if ($confirm == 0) {
             $_sender_id = (is_guest($sender_id)) ? get_site_name() : $GLOBALS['FORUM_DRIVER']->get_username($sender_id);
             $_recipient_id = (is_guest($recipient_id)) ? get_site_name() : $GLOBALS['FORUM_DRIVER']->get_username($recipient_id);
-            if ($_sender_id === null) {
-                $_sender_id = do_lang('UNKNOWN');
-            }
-            if ($_recipient_id === null) {
-                $_recipient_id = do_lang('UNKNOWN');
-            }
             $preview = do_lang_tempcode('ARE_YOU_SURE_REVERSE', escape_html(integer_format($amount)), escape_html($_sender_id), escape_html($_recipient_id));
-            return do_template('CONFIRM_SCREEN', array('_GUID' => 'd3d654c7dcffb353638d08b53697488b', 'TITLE' => $this->title, 'PREVIEW' => $preview, 'URL' => get_self_url(false, false, array('confirm' => 1)), 'FIELDS' => build_keep_post_fields()));
+            return do_template('CONFIRM_SCREEN', array(
+                '_GUID' => 'd3d654c7dcffb353638d08b53697488b',
+                'TITLE' => $this->title,
+                'PREVIEW' => $preview,
+                'URL' => get_self_url(false, false, array('confirm' => 1)),
+                'FIELDS' => build_keep_post_fields(),
+            ));
         }
 
         require_code('points2');
@@ -304,9 +304,6 @@ class Module_admin_points
         $left = available_points($member_id);
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
         $text = do_lang_tempcode('MEMBER_HAS_BEEN_CHARGED', escape_html($username), escape_html(integer_format($amount)), escape_html(integer_format($left)));
 
         // Show it worked / Refresh

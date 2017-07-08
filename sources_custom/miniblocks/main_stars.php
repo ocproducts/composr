@@ -36,7 +36,7 @@ if (count($gifts) == 0 && $GLOBALS['DEV_MODE']) {
 $count = 0;
 foreach ($gifts as $gift) {
     $member_id = $gift['gift_to'];
-    $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
+    $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true, USERNAME_DEFAULT_NULL);
     if ($username !== null) {
         $url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
         $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);

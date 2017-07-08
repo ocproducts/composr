@@ -384,7 +384,7 @@ function _lang_remap($field_name, $id, $text, $db = null, $comcode = false, $pas
     $lang = user_lang();
 
     $member_id = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id(); // This updates the Comcode reference to match the current user, which may not be the owner of the content this is for. This is for a reason - we need to parse with the security token of the current user, not the original content submitter.
-    if (($for_member === null) || ($GLOBALS['FORUM_DRIVER']->get_username($for_member) === null)) {
+    if (($for_member === null) || ($GLOBALS['FORUM_DRIVER']->get_username($for_member, USERNAME_DEFAULT_NULL) === null)) {
         $for_member = $member_id;
     }
 

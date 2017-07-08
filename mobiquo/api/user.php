@@ -355,7 +355,7 @@ function get_recommended_user_func($raw_params)
 
     $users = array();
     foreach ($_users as $user) {
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($user['member_liked']);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($user['member_liked'], USERNAME_DEFAULT_NULL);
         if ($username === null) {
             continue;
         }

@@ -505,9 +505,6 @@ function findperson($dest_member_name)
 
         if ($dest_member_id >= 0) {
             $dest_member_name = $GLOBALS['FORUM_DRIVER']->get_username($dest_member_id);
-            if ($dest_member_name === null) {
-                $dest_member_name = do_lang('UNKNOWN');
-            }
         } else {
             $dest_member_name = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'troll_name', array('id' => (-$dest_member_id - 1)));
         }

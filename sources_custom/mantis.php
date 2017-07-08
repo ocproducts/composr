@@ -181,7 +181,7 @@ function create_tracker_post($tracker_id, $tracker_comment_message)
 
     $monitors = $GLOBALS['SITE_DB']->query_select('mantis_bug_monitor_table', array('user_id'), array('bug_id' => $tracker_id));
     foreach ($monitors as $m) {
-        $to_name = $GLOBALS['FORUM_DRIVER']->get_username($m['user_id'], true);
+        $to_name = $GLOBALS['FORUM_DRIVER']->get_username($m['user_id'], true, USERNAME_DEFAULT_NULL);
         if ($to_name !== null) {
             $to_email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($m['user_id']);
 

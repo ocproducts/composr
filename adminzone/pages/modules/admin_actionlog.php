@@ -137,10 +137,7 @@ class Module_admin_actionlog
             if ($GLOBALS['FORUM_DB']->query_select_value('f_moderator_logs', 'COUNT(DISTINCT l_by)') < 5000) {
                 $members = list_to_map('l_by', $GLOBALS['FORUM_DB']->query_select('f_moderator_logs', array('l_by', 'COUNT(*) AS cnt'), array(), 'GROUP BY l_by ORDER BY COUNT(*) DESC'));
                 foreach ($members as $member) {
-                    $username = $GLOBALS['FORUM_DRIVER']->get_username($member['l_by']);
-                    if ($username === null) {
-                        $username = strval($member['l_by']);
-                    }
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username($member['l_by'], USERNAME_DEFAULT_ID_RAW);
                     $_member_choice_list[$member['l_by']] = array($username, $member['cnt']);
                 }
             }
@@ -148,10 +145,7 @@ class Module_admin_actionlog
         if ($GLOBALS['SITE_DB']->query_select_value('actionlogs', 'COUNT(DISTINCT member_id)') < 5000) {
             $_staff = list_to_map('member_id', $GLOBALS['SITE_DB']->query_select('actionlogs', array('member_id', 'COUNT(*) AS cnt'), array(), 'GROUP BY member_id ORDER BY COUNT(*) DESC'));
             foreach ($_staff as $staff) {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($staff['member_id']);
-                if ($username === null) {
-                    $username = strval($staff['member_id']);
-                }
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($staff['member_id'], USERNAME_DEFAULT_ID_RAW);
                 if (!array_key_exists($staff['member_id'], $_member_choice_list)) {
                     $_member_choice_list[$staff['member_id']] = array($username, $staff['cnt']);
                 } else {
@@ -198,7 +192,18 @@ class Module_admin_actionlog
         $post_url = build_url(array('page' => '_SELF', 'type' => 'list'), '_SELF', array(), false, true);
         $submit_name = do_lang_tempcode('VIEW_ACTIONLOGS');
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'f2c6eda24e0e973aa7e253054f6683a5', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => '', 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'f2c6eda24e0e973aa7e253054f6683a5',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'TEXT' => '',
+            'URL' => $post_url,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**
@@ -413,9 +418,6 @@ class Module_admin_actionlog
         $row = $rows[0];
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
 
         $type_str = do_lang($row['the_type'], $row['param_a'], $row['param_b'], null, null, false);
         if ($type_str === null) {

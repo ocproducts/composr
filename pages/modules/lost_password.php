@@ -246,7 +246,7 @@ class Module_lost_password
                 return redirect_screen($this->title, $redirect_url);
             }
 
-            $_reset_url = build_url(array('page' => '_SELF', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)), '_SELF');
+            $_reset_url = build_url(array('page' => '_SELF', 'username' => $GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_BLANK)), '_SELF');
             $reset_url = $_reset_url->evaluate();
             warn_exit(do_lang_tempcode('PASSWORD_ALREADY_RESET', escape_html($reset_url), get_site_name()));
         }

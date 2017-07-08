@@ -124,9 +124,6 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
         $root_forum_name = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => $root));
         $pt_username = $GLOBALS['FORUM_DRIVER']->get_username($of_member_id);
         $pt_displayname = $GLOBALS['FORUM_DRIVER']->get_username($of_member_id, true);
-        if ($pt_username === null) {
-            $pt_username = do_lang('UNKNOWN');
-        }
         $details['name'] = do_lang_tempcode('PRIVATE_TOPICS_OF', escape_html($pt_displayname), escape_html($pt_username));
     } else {
         $details = cns_get_forum_view($id, $forum_info, $start, $true_start, $max, $sql_sup, $sql_sup_order_by);
@@ -656,9 +653,6 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
     if ($pt) {
         $with = ($topic['pt_from'] == $topic['first_member_id']) ? $topic['pt_to'] : $topic['pt_from'];
         $with_username = $GLOBALS['CNS_DRIVER']->get_username($with);
-        if ($with_username === null) {
-            $with_username = do_lang('UNKNOWN');
-        }
         $colour = get_group_colour(cns_get_member_primary_group($with));
         $b = do_template('CNS_USER_MEMBER', array(
             '_GUID' => 'e7806e13ba51edd88c8b090ee4b31444',

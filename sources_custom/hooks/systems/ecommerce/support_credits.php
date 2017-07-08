@@ -128,7 +128,7 @@ class Hook_ecommerce_support_credits
 
         // Check if we've already been passed a member ID and use it to pre-populate the field
         $member_id = get_param_integer('member_id', null);
-        $username = $GLOBALS['FORUM_DRIVER']->get_username(($member_id === null) ? get_member() : $member_id);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username(($member_id === null) ? get_member() : $member_id, USERNAME_DEFAULT_BLANK);
 
         $fields = new Tempcode();
         $fields->attach(form_input_username(do_lang('USERNAME'), do_lang('USERNAME_CREDITS_FOR'), 'member_username', $username, true));

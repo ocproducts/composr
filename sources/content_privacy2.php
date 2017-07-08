@@ -55,7 +55,7 @@ function get_privacy_form_fields($content_type, $content_id = null, $show_header
         $rows = $GLOBALS['SITE_DB']->query_select('content_privacy__members', array('*'), array('content_type' => $content_type, 'content_id' => $content_id));
         $additional_access = array();
         foreach ($rows as $row) {
-            $additional_access[] = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
+            $additional_access[] = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id'], USERNAME_DEFAULT_BLANK);
         }
     } else {
         $test = ($content_type === null) ? null : $GLOBALS['SITE_DB']->query_select_value_if_there('content_privacy', 'AVG(guest_view)', array('content_type' => $content_type));

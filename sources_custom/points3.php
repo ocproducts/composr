@@ -35,10 +35,7 @@ function points_profile($member_id_of, $member_id_viewing)
     }
 
     // Get info about viewed user
-    $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of, true);
-    if (($username === null) || (is_guest($member_id_of))) {
-        warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
-    }
+    $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of, true, USERNAME_GUEST_AS_DEFAULT | USERNAME_DEFAULT_ERROR);
 
     $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id_of, true);
 
@@ -108,9 +105,6 @@ function points_profile($member_id_of, $member_id_viewing)
         $charges = new Tempcode();
         $from_name = get_site_name();
         $to_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of, true);
-        if ($to_name === null) {
-            $to_name = do_lang('UNKNOWN');
-        }
         require_code('templates_results_table');
         $fields_title = results_field_title(array(do_lang_tempcode('DATE'), do_lang_tempcode('AMOUNT'), do_lang_tempcode('FROM'), do_lang_tempcode('TO'), do_lang_tempcode('REASON')), $sortables, 'sort', $sortable . ' ' . $sort_order);
         foreach ($rows as $myrow) {

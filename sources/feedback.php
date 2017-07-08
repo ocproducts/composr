@@ -325,7 +325,7 @@ function get_rating_simple_array($content_url, $content_title, $content_type, $c
                     if (count($liked_by) < MAX_LIKES_TO_SHOW) {
                         $_liked_by = $GLOBALS['SITE_DB']->query_select('rating', array('rating_member'), array('rating_for_type' => $rating_for_type, 'rating_for_id' => $content_id, 'rating' => 10));
                         foreach ($_liked_by as $l) {
-                            $username = $GLOBALS['FORUM_DRIVER']->get_username($l['rating_member']);
+                            $username = $GLOBALS['FORUM_DRIVER']->get_username($l['rating_member'], USERNAME_DEFAULT_NULL);
                             if ($username !== null) {
                                 $liked_by[] = array(
                                     'MEMBER_ID' => strval($l['rating_member']),

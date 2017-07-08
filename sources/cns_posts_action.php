@@ -182,9 +182,6 @@ function cns_make_post($topic_id, $title, $post, $skip_sig = 0, $is_starter = fa
             $poster_name_if_guest = do_lang('GUEST');
         } else {
             $poster_name_if_guest = $GLOBALS['CNS_DRIVER']->get_username($poster, true);
-            if ($poster_name_if_guest === null) {
-                $poster_name_if_guest = do_lang('UNKNOWN');
-            }
         }
     }
 

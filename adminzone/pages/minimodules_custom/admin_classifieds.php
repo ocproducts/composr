@@ -108,5 +108,13 @@ foreach ($_catalogues as $_catalogue) {
     $catalogues[$_catalogue['c_name']] = get_translated_text($_catalogue['c_title']);
 }
 
-$ret = do_template('CLASSIFIEDS_PRICING_SCREEN', array('_GUID' => '8fd97a8bc88dfdd5c8455d41d290ae56', 'TITLE' => $title, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('SAVE'), 'CATALOGUES' => $catalogues, 'PRICES' => $prices, 'POST_URL' => get_self_url()));
+$ret = do_template('CLASSIFIEDS_PRICING_SCREEN', array(
+    '_GUID' => '8fd97a8bc88dfdd5c8455d41d290ae56',
+    'TITLE' => $title,
+    'SUBMIT_ICON' => 'buttons__save',
+    'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
+    'CATALOGUES' => $catalogues,
+    'PRICES' => $prices,
+    'POST_URL' => get_self_url(),
+));
 $ret->evaluate_echo();

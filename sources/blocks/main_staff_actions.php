@@ -134,9 +134,6 @@ class Block_main_staff_actions
         $fields = new Tempcode();
         foreach ($rows as $myrow) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-            if ($username === null) {
-                $username = do_lang('UNKNOWN');
-            }
 
             $date = escape_html_tempcode(get_timezoned_date_time_tempcode($myrow['date_and_time']));
 

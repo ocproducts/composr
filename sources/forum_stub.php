@@ -99,9 +99,6 @@ class Forum_driver_base
         if ($_username == '') {
             $_username = $this->get_username($id, $use_displayname);
         }
-        if ($_username === null) {
-            return do_lang_tempcode('UNKNOWN');
-        }
         $url = $this->member_profile_url($id, true);
         return hyperlink($url, $_username, false, true);
     }

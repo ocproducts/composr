@@ -212,9 +212,6 @@ function activities_ajax_update_list_handler()
                 list($message, $member_avatar, $timestamp, $member_url, $is_public) = render_activity($row);
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']);
-                if ($username === null) {
-                    $username = do_lang('UNKNOWN');
-                }
 
                 $list_item = do_template('BLOCK_MAIN_ACTIVITIES_XML', array(
                     '_GUID' => '02dfa8b02040f56d76b783ddb8fb382f',

@@ -656,9 +656,6 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     if (function_exists('get_member')) {
         $id = get_member();
         $username = $GLOBALS['FORUM_DRIVER']->get_username($id);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
     } else {
         $id = db_get_first_id();
         $username = function_exists('do_lang') ? do_lang('UNKNOWN') : 'Unknown';

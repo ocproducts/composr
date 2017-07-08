@@ -493,10 +493,7 @@ class Module_calendar
         check_privilege('view_calendar');
 
         $member_id = get_param_integer('member_id', get_member());
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-        if ($username === null) {
-            warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
-        }
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true, USERNAME_DEFAULT_ERROR);
 
         $view = get_param_string('view', 'day');
         $filter = $this->get_filter();
@@ -1487,7 +1484,7 @@ class Module_calendar
             $subscriptions = $GLOBALS['SITE_DB']->query_select('calendar_reminders', array('DISTINCT n_member_id'), array('e_id' => $id), '', 100);
             if (count($subscriptions) < 100) {
                 foreach ($subscriptions as $subscription) {
-                    $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription['n_member_id']);
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription['n_member_id'], USERNAME_DEFAULT_NULL);
                     if ($username !== null) {
                         $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($subscription['n_member_id'], true);
                         $subscribed[] = array('MEMBER_ID' => strval($subscription['n_member_id']), 'MEMBER_URL' => $member_url, 'USERNAME' => $username);

@@ -47,10 +47,7 @@ class Hook_rss_iotds
         $rows = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'iotd WHERE add_date>' . strval($cutoff) . ' AND (used=1 OR is_current=1) ORDER BY add_date DESC', $max);
         foreach ($rows as $row) {
             $id = strval($row['id']);
-            $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter']);
-            if ($author === null) {
-                $author = '';
-            }
+            $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter'], USERNAME_DEFAULT_BLANK);
 
             $news_date = date($date_string, $row['add_date']);
             $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);

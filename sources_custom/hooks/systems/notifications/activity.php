@@ -50,7 +50,7 @@ class Hook_notification_activity extends Hook_Notification
             $types[] = array('member_liked' => intval($type['l_code_category']));
         }
         foreach ($types as $type) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($type['member_liked']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($type['member_liked'], USERNAME_DEFAULT_NULL);
 
             if ($username !== null) {
                 $page_links[$type['member_liked']] = array(

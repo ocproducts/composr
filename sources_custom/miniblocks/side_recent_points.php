@@ -32,17 +32,11 @@ foreach ($gifts as $gift) {
         continue;
     }
 
-    $from_name = $GLOBALS['FORUM_DRIVER']->get_username($gift['gift_from'], true);
-    if ($from_name === null) {
-        continue;
-    }
+    $from_name = $GLOBALS['FORUM_DRIVER']->get_username($gift['gift_from'], true, USERNAME_DEFAULT_NULL);
     $from_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $gift['gift_from']), get_module_zone('points'));
     $from_link = hyperlink($from_url, $from_name, false, true);
 
-    $to_name = $GLOBALS['FORUM_DRIVER']->get_username($gift['gift_to'], true);
-    if ($to_name === null) {
-        continue;
-    }
+    $to_name = $GLOBALS['FORUM_DRIVER']->get_username($gift['gift_to'], true, USERNAME_DEFAULT_NULL);
     $to_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $gift['gift_to']), get_module_zone('points'));
     $to_link = do_template('MEMBER_TOOLTIP', array('_GUID' => '0cdd0adf612cf0f50a732daa79718d09', 'SUBMITTER' => strval($gift['gift_to'])));//hyperlink($to_url, $to_name, false, true);
 

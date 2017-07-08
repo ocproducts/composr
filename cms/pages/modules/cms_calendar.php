@@ -445,7 +445,7 @@ class Module_cms_calendar extends Standard_crud_module
         if (has_privilege(get_member(), 'calendar_add_to_others') || $member_calendar == get_member()) {
             $fields2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'c40661dec7b2e3a59114d1dd846890ff', 'SECTION_HIDDEN' => $member_calendar === null, 'TITLE' => do_lang_tempcode('ADVANCED'))));
 
-            $_member_calendar = ($member_calendar === null) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_calendar);
+            $_member_calendar = ($member_calendar === null) ? '' : $GLOBALS['FORUM_DRIVER']->get_username($member_calendar, USERNAME_DEFAULT_BLANK);
             $fields2->attach(form_input_username(do_lang_tempcode('MEMBER_CALENDAR'), do_lang_tempcode('DESCRIPTION_MEMBER_CALENDAR'), 'member_calendar', $_member_calendar, !has_privilege(get_member(), 'add_public_events')));
         }
 

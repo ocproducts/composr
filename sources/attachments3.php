@@ -55,7 +55,7 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
 
     $member_id = (function_exists('get_member')) ? get_member() : $GLOBALS['FORUM_DRIVER']->get_guest_id();
 
-    if (($for_member === null) || ($GLOBALS['FORUM_DRIVER']->get_username($for_member) === null)) {
+    if (($for_member === null) || ($GLOBALS['FORUM_DRIVER']->get_username($for_member, USERNAME_DEFAULT_NULL) === null)) {
         $for_member = $member_id;
     }
 

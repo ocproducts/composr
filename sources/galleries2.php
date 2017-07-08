@@ -1712,10 +1712,7 @@ function get_potential_gallery_title($cat)
         $parent_info = $_parent_info[0];
 
         // Work out name
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-        if ($username === null) {
-            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
-        }
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true, USERNAME_DEFAULT_ERROR);
         $fullname = get_translated_text($parent_info['fullname']);
         if ($fullname == do_lang('GALLERIES_HOME')) {
             $fullname = do_lang('GALLERY');

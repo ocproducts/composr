@@ -196,9 +196,6 @@ function generate_notifications($member_id)
 
             $by_id = (($unread_pp['t_cache_first_member_id'] === null) || ($unread_pp['t_forum_id'] !== null)) ? $unread_pp['p_poster'] : $unread_pp['t_cache_first_member_id'];
             $by = is_guest($by_id) ? do_lang('SYSTEM') : $GLOBALS['CNS_DRIVER']->get_username($by_id);
-            if ($by === null) {
-                $by = do_lang('UNKNOWN');
-            }
             $u_title = $unread_pp['t_cache_first_title'];
             if ($unread_pp['t_forum_id'] === null) {
                 $type = do_lang_tempcode(($unread_pp['t_cache_first_post_id'] == $unread_pp['id']) ? 'NEW_PT_NOTIFICATION' : 'NEW_PP_NOTIFICATION');

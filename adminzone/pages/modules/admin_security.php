@@ -196,7 +196,7 @@ class Module_admin_security
         require_code('templates_results_table');
         $fields_title = results_field_title(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('IP_ADDRESS')), $sortables, 'failed_sort', $_sortable . ' ' . $sort_order);
         $member_id = post_param_integer('member_id', null);
-        $map = ($member_id !== null) ? array('failed_account' => $GLOBALS['FORUM_DRIVER']->get_username($member_id)) : null;
+        $map = ($member_id !== null) ? array('failed_account' => $GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_NULL)) : null;
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('failedlogins', 'COUNT(*)', $map);
         $rows = $GLOBALS['SITE_DB']->query_select('failedlogins', array('*'), $map, 'ORDER BY ' . $_sortable . ' ' . $sort_order, $max, $start);
         $fields = new Tempcode();
@@ -269,9 +269,6 @@ class Module_admin_security
         $post = with_whitespace(unixify_line_format($row['data_post']));
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
 
         return do_template('SECURITY_ALERT_SCREEN', array(
             '_GUID' => '6c5543151af09c79bf204bea5df61dde',

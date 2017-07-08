@@ -248,9 +248,6 @@ function render_topic_to_tapatalk($topic_id, $return_html, $start, $max, $detail
 
         if ($moderation_details !== null) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($last_moderation_details['l_by']);
-            if ($username === null) {
-                $username = do_lang('UNKNOWN');
-            }
 
             $arr += array(
                 'moderated_by_id' => mobiquo_val(strval($last_moderation_details['l_by']), 'string'),
@@ -437,7 +434,7 @@ function get_topic_participants($topic_id, $max = null, $topic_details = null)
 
     $participants = array();
     foreach (get_topic_participant_uids($topic_id, $max, $topic_details) as $participant) {
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($participant);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($participant, USERNAME_DEFAULT_NULL);
         if ($username !== null) {
             $participants[] = array(
                 'user_id' => $participant,
@@ -478,9 +475,6 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
 
     $post_author_id = $post_row['p_poster'];
     $username = $GLOBALS['FORUM_DRIVER']->get_username($post_author_id);
-    if ($username === null) {
-        $username = do_lang('UNKNOWN');
-    }
 
     require_code('users2');
 
@@ -491,9 +485,6 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
         $likes = $GLOBALS['FORUM_DB']->query_select('rating', array('rating_member'), array('rating' => 10, 'rating_for_type' => 'post', 'rating_for_id' => strval($post_id)), '', 100);
         foreach ($likes as $like) {
             $lusername = $GLOBALS['FORUM_DRIVER']->get_username($like['rating_member']);
-            if ($username === null) {
-                $lusername = do_lang('UNKNOWN');
-            }
 
             $_arr = array(
                 'userid' => mobiquo_val($like['rating_member'], 'string'),
@@ -600,9 +591,6 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
 
         if ($moderation_details !== null) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($moderation_details['l_by']);
-            if ($username === null) {
-                $username = do_lang('UNKNOWN');
-            }
 
             $arr += array(
                 'moderated_by_id' => mobiquo_val(strval($moderation_details['l_by']), 'string'),
@@ -613,9 +601,6 @@ function render_post_to_tapatalk($post_id, $return_html, $post_row = null, $beha
     } else {
         if ($post_row['p_last_edit_time'] !== null) {
             $editor_name = $GLOBALS['FORUM_DRIVER']->get_username($post_row['p_last_edit_by']);
-            if ($editor_name === null) {
-                $editor_name = do_lang('UNKNOWN');
-            }
 
             $edit_reason = '';
             if (has_actual_page_access($member_id, 'admin_actionlog')) {
@@ -658,9 +643,6 @@ function prepare_post_for_tapatalk($post, $return_html = false)
             $poster = $post_details[0]['p_poster_name_if_guest'];
             if ($poster == '') {
                 $poster = $GLOBALS['FORUM_DRIVER']->get_username($post_details[0]['p_poster']);
-                if ($poster === null) {
-                    $poster = do_lang('UNKNOWN');
-                }
             }
 
             $content .= '[quote="' . addslashes($poster) . '"]' . get_translated_text($post_details[0]['p_post'], $GLOBALS['FORUM_DB']) . "[/quote]\n\n";
@@ -677,9 +659,6 @@ function prepare_post_for_tapatalk($post, $return_html = false)
     $whisper_username = mixed();
     if ($post['p_intended_solely_for'] !== null) {
         $whisper_username = $GLOBALS['FORUM_DRIVER']->get_username($post['p_intended_solely_for']);
-        if ($whisper_username === null) {
-            $whisper_username = do_lang('UNKNOWN');
-        }
     }
 
     $content = static_evaluate_tempcode(do_template('TAPATALK_POST_WRAPPER', array(

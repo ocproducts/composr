@@ -2503,9 +2503,6 @@ function handle_conflict_resolution($id = null, $only_staff = false)
     $last_edit_screen_time = $GLOBALS['SITE_DB']->query('SELECT * FROM ' . $GLOBALS['SITE_DB']->get_table_prefix() . 'edit_pings WHERE ' . db_string_equal_to('the_page', cms_mb_substr(get_page_name(), 0, 80)) . ' AND ' . db_string_equal_to('the_type', cms_mb_substr(get_param_string('type', 'browse'), 0, 80)) . ' AND ' . db_string_equal_to('the_id', cms_mb_substr($id, 0, 80)) . ' AND the_member<>' . strval(get_member()) . ' ORDER BY the_time DESC', 1);
     if ((array_key_exists(0, $last_edit_screen_time)) && ($last_edit_screen_time[0]['the_time'] > time() - 20)) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($last_edit_screen_time[0]['the_member']);
-        if ($username === null) {
-            $username = '?';
-        }
         $warning_details = do_template('WARNING_BOX', array('_GUID' => '10c4e7c0d16df68b38b66d162919c068', 'WARNING' => do_lang_tempcode('EDIT_CONFLICT_WARNING', escape_html($username))));
     } else {
         $warning_details = null;

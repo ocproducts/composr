@@ -100,7 +100,7 @@ class Hook_fields_member_multi
 
         $out = array();
         foreach (($ev == '') ? array() : explode("\n", $ev) as $ev) {
-            $out[intval($ev)] = $GLOBALS['FORUM_DRIVER']->get_username(intval($ev), true);
+            $out[intval($ev)] = $GLOBALS['FORUM_DRIVER']->get_username(intval($ev, USERNAME_DEFAULT_BLANK), true);
         }
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');
@@ -142,7 +142,7 @@ class Hook_fields_member_multi
         }
         $usernames = array();
         foreach (explode("\n", $actual_value) as $actual_value) {
-            $usernames[] = $GLOBALS['FORUM_DRIVER']->get_username(intval($actual_value));
+            $usernames[] = $GLOBALS['FORUM_DRIVER']->get_username(intval($actual_value), USERNAME_DEFAULT_BLANK);
         }
         $input_name = empty($field['cf_input_name']) ? ('field_' . strval($field['id'])) : $field['cf_input_name'];
         return form_input_username_multi($_cf_name, $_cf_description, $input_name, $usernames, ($field['cf_required'] == 1) ? 1 : 0, true);

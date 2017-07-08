@@ -42,27 +42,27 @@ function init__programe__respond()
 	/**
 	* The number of times a loop may occur before the error is thrown. -1 equals to no limit.
 	*/
-	define("LOOPINGLIMIT",150); // -1 for no limit
+	define("LOOPINGLIMIT", 150); // -1 for no limit
 
 	/**
 	* Has something to do with the random generator
 	*/
-	define("RANDOMCHANCECLEAN",100); // -1 to never check
+	define("RANDOMCHANCECLEAN", 100); // -1 to never check
 
 	/**
 	* the amount of minutes certain data needs to be kept.
 	*/
-	define("MINUTESTOKEEPDATA",120); // -1 to keep forever
+	define("MINUTESTOKEEPDATA", 120); // -1 to keep forever
 
 	/**
 	* Minutes to keep the chatlot, standard set to -1, meaning forever.
 	*/
-	define("MINUTESTOKEEPCHATLOG",-1); // -1 to keep forever
+	define("MINUTESTOKEEPCHATLOG", -1); // -1 to keep forever
 
 	/**
 	* standard value when a user predicate hasn't been set. 
 	*/ 
-	define("DEFAULTPREDICATEVALUE", $GLOBALS['FORUM_DRIVER']->get_username(get_member(),true));
+	define("DEFAULTPREDICATEVALUE", $GLOBALS['FORUM_DRIVER']->get_username(get_member(), true));
 
 
 	/**

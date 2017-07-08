@@ -165,9 +165,6 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
         $post['last_edit_time'] = $_postdetails['p_last_edit_time'];
         $post['last_edit_date'] = get_timezoned_date_time($_postdetails['p_last_edit_time']);
         $post['last_edit_by_username'] = $GLOBALS['CNS_DRIVER']->get_username($_postdetails['p_last_edit_by']);
-        if ($post['last_edit_by_username'] == '') {
-            $post['last_edit_by_username'] = do_lang('UNKNOWN'); // Shouldn't happen, but imported data can be weird
-        }
     }
 
     // Find title
@@ -834,13 +831,7 @@ function cns_get_post_emphasis($_postdetails)
         $emphasis = do_lang_tempcode('IMPORTANT');
     } elseif (array_key_exists('intended_solely_for', $_postdetails)) {
         $pp_to_displayname = $GLOBALS['FORUM_DRIVER']->get_username($_postdetails['intended_solely_for'], true);
-        if ($pp_to_displayname === null) {
-            $pp_to_displayname = do_lang('UNKNOWN');
-        }
         $pp_to_username = $GLOBALS['FORUM_DRIVER']->get_username($_postdetails['intended_solely_for']);
-        if ($pp_to_username === null) {
-            $pp_to_username = do_lang('UNKNOWN');
-        }
         $emphasis = do_lang('PP_TO', $pp_to_displayname, $pp_to_username);
     }
     return $emphasis;

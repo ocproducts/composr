@@ -106,10 +106,7 @@ class Module_contact_member
             attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
             $member_id = get_param_integer('id');
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-            if ($username === null) {
-                warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
-            }
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true, USERNAME_DEFAULT_ERROR);
 
             $this->title = get_screen_title('EMAIL_MEMBER', true, array(escape_html($username)));
 

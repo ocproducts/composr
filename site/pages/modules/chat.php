@@ -815,7 +815,7 @@ class Module_chat
         $blocked = $GLOBALS['SITE_DB']->query_select('chat_blocking', array('member_blocked'), array('member_blocker' => get_member()));
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '85cbdbced505a6621ccbedc2de50c5f9', 'TITLE' => do_lang_tempcode('EXISTING_BLOCKS'), 'HELP' => (count($blocked) != 0) ? new Tempcode() : do_lang_tempcode('NONE_EM'))));
         foreach ($blocked as $row) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_blocked'], true);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_blocked'], true, USERNAME_DEFAULT_NULL);
             if ($username !== null) {
                 $fields->attach(form_input_tick(do_lang_tempcode('BLOCK_THEM', escape_html($username)), do_lang_tempcode('_BLOCK_MEMBER', escape_html($username)), 'block_' . strval($row['member_blocked']), true));
             }
@@ -1189,7 +1189,7 @@ class Module_chat
         if ($friend_count < 200) {
             $friends = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()));
             foreach ($friends as $friend) {
-                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']) === null) {
+                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked'], USERNAME_DEFAULT_NULL) === null) {
                     continue;
                 }
 
@@ -1229,7 +1229,7 @@ class Module_chat
             $friends = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()));
             $suffixes = array('');
             foreach ($friends as $friend) {
-                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']) === null) {
+                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked'], USERNAME_DEFAULT_NULL) === null) {
                     continue;
                 }
 

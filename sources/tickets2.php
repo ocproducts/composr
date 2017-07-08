@@ -307,13 +307,7 @@ function send_ticket_email($ticket_id, $title, $post, $ticket_url, $uid_email = 
     $_temp = explode('_', $ticket_id, 2);
     $uid = intval($_temp[0]);
     $uid_displayname = $GLOBALS['FORUM_DRIVER']->get_username($uid, true);
-    if ($uid_displayname === null) {
-        $uid_displayname = do_lang('UNKNOWN');
-    }
     $uid_username = $GLOBALS['FORUM_DRIVER']->get_username($uid);
-    if ($uid_username === null) {
-        $uid_username = do_lang('UNKNOWN');
-    }
 
     // Clarify some details about this ticket
     if ($title == '') {

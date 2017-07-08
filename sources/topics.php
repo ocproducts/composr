@@ -766,9 +766,6 @@ class CMS_Topic
             $date = get_timezoned_date_time($post['date']);
             $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], true);
             $poster_name = array_key_exists('username', $post) ? $post['username'] : $GLOBALS['FORUM_DRIVER']->get_username($post['member']);
-            if ($poster_name === null) {
-                $poster_name = do_lang('UNKNOWN');
-            }
             $highlight = ($highlight_by_member === $post['member']);
 
             // Find review, if there is one
@@ -1027,9 +1024,6 @@ class CMS_Topic
         $date = get_timezoned_date_time($post['date']);
         $poster_url = is_guest($post['member']) ? new Tempcode() : $GLOBALS['FORUM_DRIVER']->member_profile_url($post['member'], true);
         $poster_name = array_key_exists('username', $post) ? $post['username'] : $GLOBALS['FORUM_DRIVER']->get_username($post['member']);
-        if ($poster_name === null) {
-            $poster_name = do_lang('UNKNOWN');
-        }
         $is_unread = ($this->topic_last_read === null) || ($this->topic_last_read <= $post['date']) || (get_forum_type() == 'cns') && ($post['p_last_edit_time'] !== null) && ($this->topic_last_read <= $post['p_last_edit_time']);
         if ($post['p_poster'] == get_member()) {
             $is_unread = false;

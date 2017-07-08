@@ -513,11 +513,8 @@ class Module_groups
         $club = $this->club;
 
         // Leadership
-        if (($group['g_group_leader'] !== null) && ($GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader']) !== null)) {
+        if (($group['g_group_leader'] !== null) && ($GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader'], USERNAME_DEFAULT_NULL) !== null)) {
             $leader_name = $GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader'], true);
-            if ($leader_name === null) {
-                $leader_name = do_lang('UNKNOWN');
-            }
             $leader_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $group['g_group_leader']), get_module_zone('members'));
             $leader_link = hyperlink($leader_url, $leader_name, false, true);
             $leader = paragraph(do_lang_tempcode('GROUP_LED_BY', $leader_link), 'gfgdfggdf');
@@ -735,9 +732,6 @@ class Module_groups
     {
         $member_id = get_param_integer('member_id');
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
 
         $id = post_param_integer('id', null);
         if ($id === null) {
@@ -781,13 +775,10 @@ class Module_groups
             if ($free_access) {
                 $text = do_lang_tempcode('ABOUT_TO_APPLY_FREE_ACCESS', escape_html($group_name));
             } else {
-                if (($_leader === null) || ($GLOBALS['FORUM_DRIVER']->get_username($_leader) === null)) {
+                if (($_leader === null) || ($GLOBALS['FORUM_DRIVER']->get_username($_leader, USERNAME_DEFAULT_NULL) === null)) {
                     $text = do_lang_tempcode('ABOUT_TO_APPLY_STAFF', escape_html($group_name), escape_html(get_site_name()));
                 } else {
                     $leader_username = $GLOBALS['FORUM_DRIVER']->get_username($_leader, true);
-                    if ($leader_username === null) {
-                        $leader_username = do_lang('UNKNOWN');
-                    }
                     $leader_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($_leader, true);
                     $text = do_lang_tempcode('ABOUT_TO_APPLY_LEADER', escape_html($group_name), escape_html($leader_username), escape_html($leader_url));
                 }

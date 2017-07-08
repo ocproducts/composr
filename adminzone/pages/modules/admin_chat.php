@@ -196,10 +196,7 @@ class Module_admin_chat extends Standard_crud_module
         $allow2_groups = $row['allow_list_groups'];
         $disallow2 = $row['disallow_list'];
         $disallow2_groups = $row['disallow_list_groups'];
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner']);
-        if ($username === null) {
-            $username = '';
-        }
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner'], USERNAME_DEFAULT_BLANK);
 
         list($fields, $hidden) = get_chatroom_fields(intval($id), false, $row['room_name'], get_translated_text($row['c_welcome']), $username, $allow2, $allow2_groups, $disallow2, $disallow2_groups);
 

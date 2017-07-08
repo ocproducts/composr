@@ -135,9 +135,6 @@ class Module_leader_board
                 $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-                if ($username === null) {
-                    $username = do_lang('UNKNOWN');
-                }
 
                 $week_tpl->attach(do_template('POINTS_LEADER_BOARD_ROW', array(
                     '_GUID' => '6d323b4b5abea0e82a14cb4745c4af4f',

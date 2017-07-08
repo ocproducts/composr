@@ -186,10 +186,7 @@ class Module_points
             $this->member_id_of = get_param_integer('id', get_member());
             set_feed_url('?mode=points&select=' . strval($this->member_id_of));
 
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($this->member_id_of, true);
-            if (($username === null) || (is_guest($this->member_id_of))) {
-                warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
-            }
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($this->member_id_of, true, USERNAME_DEFAULT_ERROR | USERNAME_GUEST_AS_DEFAULT);
             $this->title = get_screen_title('_POINTS', true, array(escape_html($username)));
         }
 
@@ -375,9 +372,6 @@ class Module_points
                     $left = available_points($member_id_of);
 
                     $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of);
-                    if ($username === null) {
-                        $username = do_lang('UNKNOWN');
-                    }
                     $message = do_lang_tempcode('MEMBER_HAS_BEEN_CHARGED', escape_html($username), escape_html(integer_format($amount)), escape_html(integer_format($left)));
 
                     $worked = true;

@@ -404,16 +404,13 @@ function get_workflow_form($workflow_content_id)
     // if we know who it is
     $submitter = get_submitter_of_workflow_content($workflow_content_id);
     if ($submitter !== null) {
-        $submitter_details = array();        // Build the array independently
+        $submitter_details = array(); // Build the array independently
         $submitter_details[] = $GLOBALS['FORUM_DRIVER']->get_username($submitter) . ' (' . do_lang('SUBMITTER') . ')';
-        $submitter_details[] = 'send_author';        // Name
-        $submitter_details[] = false;        // Value
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter);
-        if ($username === null) {
-            $username = do_lang('DELETED');
-        }
-        $submitter_details[] = do_lang_tempcode('NEXT_APPROVAL_AUTHOR', escape_html($username));        // Description
-        $send_to_boxes[] = $submitter_details;        // Then tack it on the end
+        $submitter_details[] = 'send_author'; // Name
+        $submitter_details[] = false; // Value
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter, USERNAME_DEFAULT_DELETED);
+        $submitter_details[] = do_lang_tempcode('NEXT_APPROVAL_AUTHOR', escape_html($username)); // Description
+        $send_to_boxes[] = $submitter_details; // Then tack it on the end
     }
 
     ////////////////////////

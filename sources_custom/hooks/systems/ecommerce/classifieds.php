@@ -144,9 +144,6 @@ class Hook_ecommerce_classifieds
                 $ad_title = $data_map['FIELD_0'];
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['ce_submitter']);
-                if ($username === null) {
-                    $username = do_lang('UNKNOWN');
-                }
                 $list->attach(form_input_list_entry(strval($row['id']), get_param_integer('id', null) === $row['id'], do_lang('CLASSIFIED_OF', strval($row['id']), $username, $ad_title)));
             }
             $fields->attach(form_input_list(do_lang_tempcode('ENTRY'), '', 'purchase_id', $list));

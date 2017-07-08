@@ -536,9 +536,6 @@ class Module_admin_quiz
 
         $member_id = $row['q_member'];
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
         $member_url = mixed();
         $member_url = get_base_url();
         if (!is_guest($member_id)) {

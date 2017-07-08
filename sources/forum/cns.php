@@ -418,10 +418,7 @@ class Forum_driver_cns extends Forum_driver_base
     public function set_custom_field($member, $field, $value)
     {
         // Check member exists
-        $username = $this->get_username($member);
-        if ($username === null) {
-            return;
-        }
+        $username = $this->get_username($member, USERNAME_DEFAULT_NULL);
 
         require_code('cns_members_action');
         require_code('cns_members_action2');
@@ -447,10 +444,7 @@ class Forum_driver_cns extends Forum_driver_base
     public function get_custom_fields($member)
     {
         // Check member exists
-        $username = $this->get_username($member);
-        if ($username === null) {
-            return null;
-        }
+        $username = $this->get_username($member, USERNAME_DEFAULT_NULL);
 
         require_code('cns_members');
 
@@ -568,8 +562,8 @@ class Forum_driver_cns extends Forum_driver_base
     protected function _member_profile_url($id, $tempcode_okay = false)
     {
         if (get_option('username_profile_links') == '1') {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($id);
-            $map = array('page' => 'members', 'type' => 'view', 'id' => ($username === null) ? strval($id) : $username);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($id, USERNAME_DEFAULT_ID_TIDY);
+            $map = array('page' => 'members', 'type' => 'view', 'id' => $username);
             if (get_page_name() == 'members') {
                 $map += propagate_filtercode();
             }
@@ -1327,7 +1321,7 @@ class Forum_driver_cns extends Forum_driver_base
         }
         $row = $this->db->query_select('f_members', array('*'), array('m_username' => $name), '', 1);
         if (!array_key_exists(0, $row)) {
-            if ((is_numeric($name)) && ($this->get_username(intval($name)) !== null)) {
+            if ((is_numeric($name)) && ($this->get_username(intval($name), USERNAME_DEFAULT_NULL) !== null)) {
                 return intval($name);
             }
             return null;

@@ -156,9 +156,6 @@ class Module_forumview
             $of_member_id = get_param_integer('id', get_member());
             $pt_username = $GLOBALS['FORUM_DRIVER']->get_username($of_member_id);
             $pt_displayname = $GLOBALS['FORUM_DRIVER']->get_username($of_member_id, true);
-            if ($pt_username === null) {
-                $pt_username = do_lang('UNKNOWN');
-            }
             $breadcrumbs[] = array('', do_lang_tempcode('PRIVATE_TOPICS_OF', escape_html($pt_displayname), escape_html($pt_username)));
             $this->breadcrumbs = breadcrumb_segments_to_tempcode($breadcrumbs);
             $this->of_member_id = $of_member_id;

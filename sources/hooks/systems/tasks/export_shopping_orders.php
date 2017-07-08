@@ -71,9 +71,6 @@ class Hook_task_export_shopping_orders
             $order[do_lang('ORDERED_PRODUCTS')] = get_ordered_product_list_string($_order['o_id']);
 
             $order[do_lang('ORDERED_BY')] = $GLOBALS['FORUM_DRIVER']->get_username($_order['member_id']);
-            if ($order[do_lang('ORDERED_BY')] === null) {
-                $order[do_lang('ORDERED_BY')] = do_lang('UNKNOWN');
-            }
 
             // Put address together
             $address = array();

@@ -33,9 +33,6 @@ function buildr_messages_script()
     $messages = new Tempcode();
     foreach ($rows as $myrow) {
         $message_sender = $GLOBALS['FORUM_DRIVER']->get_username($myrow['originator_id']);
-        if ($message_sender === null) {
-            $message_sender = do_lang('UNKNOWN');
-        }
         $messages->attach(do_template('W_MESSAGE_' . (($myrow['destination'] === null) ? 'ALL' : 'TO'), array('MESSAGE_SENDER' => $message_sender, 'MESSAGE' => comcode_to_tempcode($myrow['m_message'], $myrow['originator_id']), 'DATE' => get_timezoned_date_time($myrow['m_datetime']))));
     }
 
@@ -135,9 +132,6 @@ function download_map($realm, $sx, $sy)
             $by = $_y * $room_size + $border_size + $room_size - 1;
 
             $owner = $GLOBALS['FORUM_DRIVER']->get_username($room['owner']);
-            if ($owner === null) {
-                $owner = do_lang('UNKNOWN');
-            }
 
             // Draw room
             if (($x == $sx) && ($y == $sy)) {

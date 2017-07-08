@@ -262,7 +262,7 @@ class Module_cms_chat
             if ((!handle_chatroom_pruning($row)) && ($has_mod_access)) {
                 $url = build_url(array('page' => '_SELF', 'type' => 'room', 'id' => $row['id']), '_SELF');
                 $messages = $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'COUNT(*)', array('room_id' => $row['id']));
-                $_username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner']);
+                $_username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner'], USERNAME_DEFAULT_NULL);
                 if ($_username === null) {
                     $username = do_lang_tempcode('NA_EM');
                 } else {
@@ -342,10 +342,7 @@ class Module_cms_chat
         foreach ($rows as $myrow) {
             $url = build_url(array('page' => '_SELF', 'type' => 'edit', 'room_id' => $room_id, 'id' => $myrow['id']), '_SELF');
 
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id']);
-            if ($username === null) {
-                $username = '';
-            }
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id'], USERNAME_DEFAULT_BLANK);
 
             $message = get_translated_tempcode('chat_messages', $myrow, 'the_message');
 
@@ -417,9 +414,6 @@ class Module_cms_chat
         }
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
 
         if ($confirm_needed) {
             $hidden = form_input_hidden('member_id', strval($member_id));
@@ -460,9 +454,6 @@ class Module_cms_chat
         }
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
 
         if ($confirm_needed) {
             $hidden = form_input_hidden('member_id', strval($member_id));

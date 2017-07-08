@@ -42,7 +42,7 @@ class CMSSocialRead
         $rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()));
         $followers = array();
         foreach ($rows as $row) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_liked'], USERNAME_DEFAULT_NULL);
             if ($username === null) {
                 continue;
             }
@@ -88,7 +88,7 @@ class CMSSocialRead
         $rows = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_likes'), array('member_liked' => get_member()));
         $followers = array();
         foreach ($rows as $row) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_likes']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_likes'], USERNAME_DEFAULT_NULL);
             if ($username === null) {
                 continue;
             }
@@ -139,7 +139,7 @@ class CMSSocialRead
             if (is_guest($row['d_from_member_id'])) {
                 $username = do_lang('SYSTEM');
             } else {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['d_from_member_id']);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['d_from_member_id'], USERNAME_DEFAULT_NULL);
                 if ($username === null) {
                     $username = do_lang('UNKNOWN');
                 }
@@ -196,7 +196,7 @@ class CMSSocialRead
 
         $items = array();
         foreach ($rows as $row) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id'], USERNAME_DEFAULT_NULL);
             if ($username === null) {
                 $username = do_lang('UNKNOWN');
             }

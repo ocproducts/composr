@@ -130,7 +130,7 @@ class Module_cms_cns_groups extends Standard_crud_module
     public function get_form_fields($id = null, $name = '', $group_leader = null, $open_membership = 1)
     {
         if ($group_leader === null) {
-            $group_leader = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
+            $group_leader = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), USERNAME_DEFAULT_BLANK);
         }
 
         $fields = new Tempcode();
@@ -249,10 +249,7 @@ class Module_cms_cns_groups extends Standard_crud_module
         }
         $myrow = $rows[0];
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['g_group_leader']);
-        if ($username === null) {
-            $username = '';
-        }
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['g_group_leader'], USERNAME_DEFAULT_BLANK);
         return $this->get_form_fields($id, get_translated_text($myrow['g_name'], $GLOBALS['FORUM_DB']), $username, $myrow['g_open_membership']);
     }
 

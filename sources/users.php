@@ -238,7 +238,7 @@ function get_member($quick_only = false)
             }
 
             // Test this member still exists
-            if ($GLOBALS['FORUM_DRIVER']->get_username($member_id) === null) {
+            if ($GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_NULL) === null) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 

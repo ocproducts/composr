@@ -252,7 +252,7 @@ class Module_cms_authors
 
         if (has_privilege(get_member(), 'edit_midrange_content', 'cms_authors')) {
             $specialisation2->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'b18ab131f72a024039eaa92814f0f4a9', 'SECTION_HIDDEN' => $handle !== null, 'TITLE' => do_lang_tempcode('ADVANCED'))));
-            $specialisation2->attach(form_input_username(do_lang_tempcode('MEMBER'), do_lang_tempcode('DESCRIPTION_MEMBER_AUTHOR'), 'member_id', ($handle === null) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(intval($handle)), false));
+            $specialisation2->attach(form_input_username(do_lang_tempcode('MEMBER'), do_lang_tempcode('DESCRIPTION_MEMBER_AUTHOR'), 'member_id', ($handle === null) ? '' : $GLOBALS['FORUM_DRIVER']->get_username(intval($handle), USERNAME_DEFAULT_BLANK), false));
         } else {
             $hidden->attach(form_input_hidden('member_id', strval($handle)));
         }
@@ -303,9 +303,6 @@ class Module_cms_authors
         if ($author == '') {
             $member_id_string = post_param_string('member_id', strval(get_member()));
             $author = is_numeric($member_id_string) ? $GLOBALS['FORUM_DRIVER']->get_username(intval($member_id_string)) : $member_id_string;
-            if ($author === null) {
-                $author = do_lang('UNKNOWN');
-            }
         }
 
         $_member_id = post_param_string('member_id', null);

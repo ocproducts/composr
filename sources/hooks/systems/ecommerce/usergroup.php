@@ -187,10 +187,7 @@ class Hook_ecommerce_usergroup
             $list = new Tempcode();
             $rows = $GLOBALS['SITE_DB']->query_select('ecom_subscriptions', array('*'), array('s_type_code' => $type_code, 's_state' => 'new'), 'ORDER BY id DESC');
             foreach ($rows as $row) {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['s_member_id']);
-                if ($username === null) {
-                    $username = do_lang('UNKNOWN');
-                }
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($row['s_member_id'], USERNAME_DEFAULT_BLANK);
                 $list->attach(form_input_list_entry(strval($row['id']), false, do_lang('SUBSCRIPTION_OF', strval($row['id']), $username, get_timezoned_date_time($row['s_time']))));
             }
 
@@ -270,9 +267,6 @@ class Hook_ecommerce_usergroup
         }
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if ($username === null) {
-            $username = do_lang('GUEST');
-        }
 
         if ($details['STATUS'] == 'SCancelled') { // Cancelled
             $test = in_array($new_group, $GLOBALS['FORUM_DRIVER']->get_members_groups($member_id));

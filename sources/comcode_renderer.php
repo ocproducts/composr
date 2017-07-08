@@ -618,9 +618,6 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
     global $DANGEROUS_TAGS, $STRUCTURE_LIST, $COMCODE_PARSE_TITLE;
     if ((isset($DANGEROUS_TAGS[$tag])) && (!$comcode_dangerous) && (!comcode_white_listed($tag, $marker, $comcode))) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($source_member);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
         if ($semiparse_mode) { // Can't load through error for this, so just show it as a tag
             return make_string_tempcode(add_wysiwyg_comcode_markup($tag, $attributes, $embed, ($in_semihtml) || ($is_all_semihtml), WYSIWYG_COMCODE__STANDOUT_BLOCK, $html_errors));
         }
@@ -2206,10 +2203,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $COMCODE_ATTACHMENTS[$pass_id][] = array('tag_type' => $tag, 'time' => $attachment_row['a_add_time'], 'type' => 'existing', 'initial_id' => $id, 'id' => $__id, 'attachmenttype' => $attributes['type'], 'comcode' => $comcode);
                 } else { // No permission
                     require_lang('permissions');
-                    $username = $GLOBALS['FORUM_DRIVER']->get_username($source_member);
-                    if ($username === null) {
-                        $username = do_lang('DELETED');
-                    }
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username($source_member, USERNAME_DEFAULT_DELETED);
                     $temp_tpl = do_template('WARNING_BOX', array(
                         '_GUID' => 'af61f96b5cc6819979ce681d6f49b384',
                         'RESTRICT_VISIBILITY' => strval($source_member),

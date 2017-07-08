@@ -143,9 +143,6 @@ class CMSPmWrite
 
                 $post = get_translated_text($post_details[0]['p_post'], $GLOBALS['FORUM_DB']);
                 $poster = $GLOBALS['FORUM_DRIVER']->get_username($post_details[0]['p_poster']);
-                if ($poster === null) {
-                    $poster = do_lang('UNKNOWN');
-                }
                 $quote_content = '[quote="' . addslashes($poster) . '"]' . $post . "[/quote]\n";
                 $_message = $quote_content . "\n\n" . $message;
 

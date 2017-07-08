@@ -141,9 +141,6 @@ class CMSPmRead
                 }
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($topic[$anti_lookup_key]);
-                if ($username === null) {
-                    $username = do_lang('UNKNOWN');
-                }
                 $msgs_to[$topic[$anti_lookup_key]] = array(
                     'user_id' => $topic[$anti_lookup_key],
                     'username' => $username,
@@ -155,9 +152,6 @@ class CMSPmRead
                 }
 
                 $msg_from = $GLOBALS['FORUM_DRIVER']->get_username($post['p_poster']);
-                if ($msg_from === null) {
-                    $msg_from = do_lang('UNKNOWN');
-                }
 
                 $icon_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($post['p_poster']);
 
@@ -261,18 +255,12 @@ class CMSPmRead
 
         $msg_to = array();
         $username = $GLOBALS['FORUM_DRIVER']->get_username($post_row['t_pt_to']);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
         $msg_to[] = array(
             'user_id' => $post_row['t_pt_to'],
             'username' => $username,
         );
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($post_row['t_pt_from']);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
 
         $icon_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($post_row['p_poster']);
 

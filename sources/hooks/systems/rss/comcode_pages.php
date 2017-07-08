@@ -121,15 +121,12 @@ class Hook_rss_comcode_pages
                         continue;
                     }
 
-                    $author = $GLOBALS['FORUM_DRIVER']->get_username($rows3[$id]['p_submitter']);
+                    $author = $GLOBALS['FORUM_DRIVER']->get_username($rows3[$id]['p_submitter'], USERNAME_DEFAULT_BLANK);
                     $news_date = date($date_string, $rows3[$id]['p_add_date']);
                     $edit_date = date($date_string, $rows3[$id]['p_edit_date']);
                     if ($news_date == $edit_date) {
                         $edit_date = '';
                     }
-                }
-                if ($author === null) {
-                    $author = '';
                 }
 
                 $category = $zone_details[1];

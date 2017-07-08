@@ -457,10 +457,7 @@ class CMSModerationWrite
             access_denied('I_ERROR');
         }
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-        if ($username === null) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
-        }
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id, USERNAME_DEFAULT_ERROR);
 
         require_lang('cns_warnings');
 
@@ -496,10 +493,7 @@ class CMSModerationWrite
             access_denied('I_ERROR');
         }
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-        if ($username === null) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
-        }
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id, USERNAME_DEFAULT_ERROR);
 
         $ip = $GLOBALS['FORUM_DRIVER']->get_member_row_field($user_id, 'm_ip_address');
 

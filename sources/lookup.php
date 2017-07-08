@@ -48,7 +48,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
 
     if (is_numeric($member)) {
         // From member ID
-        $name = $GLOBALS['FORUM_DRIVER']->get_username(intval($member));
+        $name = $GLOBALS['FORUM_DRIVER']->get_username(intval($member), USERNAME_DEFAULT_NULL);
         if ($name === null) {
             return array();
         }
@@ -60,7 +60,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
     } elseif (is_email_address($member)) {
         // From e-mail address
         $id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($member);
-        $name = $GLOBALS['FORUM_DRIVER']->get_username($id);
+        $name = $GLOBALS['FORUM_DRIVER']->get_username($id, USERNAME_DEFAULT_NULL);
         if ($id === null) {
             return array();
         }
@@ -93,9 +93,6 @@ function lookup_member_page($member, &$name, &$id, &$ip)
             attach_message(do_lang_tempcode('MEMBERS_ALSO_ON_IP', $also), 'inform');
         }
         $name = $GLOBALS['FORUM_DRIVER']->get_username($id);
-        if ($name === null) {
-            $name = do_lang('UNKNOWN');
-        }
     } else {
         // From name
         $id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($member);
@@ -215,9 +212,6 @@ function find_security_alerts($where = array())
         $reason = symbol_truncator(array($reason, '50', '1'), 'left');
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
 
         $_row = array(hyperlink($member_url, $username, false, true), hyperlink($full_url, $date, false, true), hyperlink($lookup_url, $row['ip'], false, true), $reason);
 

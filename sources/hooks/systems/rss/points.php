@@ -55,19 +55,13 @@ class Hook_rss_points
 
             $author = '';
             if ($row['anonymous'] == 0) {
-                $from = $GLOBALS['FORUM_DRIVER']->get_username($row['gift_from']);
-                if ($from === null) {
-                    $from = '';
-                }
+                $author = $GLOBALS['FORUM_DRIVER']->get_username($row['gift_from'], USERNAME_DEFAULT_BLANK);
             }
 
             $news_date = date($date_string, $row['date_and_time']);
             $edit_date = '';
 
             $to = $GLOBALS['FORUM_DRIVER']->get_username($row['gift_to']);
-            if ($to === null) {
-                $to = do_lang('UNKNOWN');
-            }
             $news_title = xmlentities(do_lang('POINTS_RSS_LINE', $to, integer_format($row['amount'])));
             $summary = xmlentities(get_translated_text($row['reason']));
             $news = '';

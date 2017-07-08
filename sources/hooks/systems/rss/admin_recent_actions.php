@@ -50,9 +50,6 @@ class Hook_rss_admin_recent_actions
         foreach ($rows as $row) {
             $id = strval($row['id']);
             $author = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
-            if ($author === null) {
-                $author = do_lang('UNKNOWN');
-            }
             $author .= ' / ' . $row['ip'];
 
             $news_date = date($date_string, $row['date_and_time']);

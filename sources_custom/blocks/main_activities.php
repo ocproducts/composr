@@ -164,9 +164,6 @@ class Block_main_activities
                 list($message, $member_avatar, $timestamp, $member_url, $lang_string, $is_public) = render_activity($row);
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']);
-                if ($username === null) {
-                    $username = do_lang('UNKNOWN');
-                }
 
                 $content[] = array(
                     'IS_PUBLIC' => $is_public,
@@ -176,7 +173,7 @@ class Block_main_activities
                     'MESSAGE' => $message,
                     'AVATAR' => $member_avatar,
                     'MEMBER_ID' => strval($row['a_member_id']),
-                    'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($row['a_member_id']),
+                    'USERNAME' => $username,
                     'MEMBER_URL' => $member_url,
                     'TIMESTAMP' => strval($timestamp),
                     'LIID' => strval($row['id']),

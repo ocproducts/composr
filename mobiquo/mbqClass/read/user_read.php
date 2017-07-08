@@ -30,10 +30,7 @@ class CMSUserRead
     {
         cms_verify_parameters_phpdoc();
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-        if ($username === null) {
-            warn_exit(do_lang_tempcode('MISSING_RESOURCE', 'member'));
-        }
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id, USERNAME_DEFAULT_ERROR);
 
         $user_type = 'normal';
         if ($GLOBALS['FORUM_DRIVER']->is_banned($user_id)) {
@@ -208,9 +205,6 @@ class CMSUserRead
                 $member_id = $session['member_id'];
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-                if ($username === null) {
-                    $username = do_lang('UNKNOWN');
-                }
 
                 $list[] = array(
                     'user_id' => $member_id,
@@ -244,9 +238,6 @@ class CMSUserRead
                 $member_id = $member_viewing['mt_member_id'];
 
                 $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-                if ($username === null) {
-                    $username = do_lang('UNKNOWN');
-                }
 
                 $list[] = array(
                     'user_id' => $member_id,
@@ -557,9 +548,6 @@ class CMSUserRead
         $users = array();
         foreach ($user_ids as $user_id) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-            if ($username === null) {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id);
-            }
 
             $users[] = array(
                 'user_id' => $user_id,

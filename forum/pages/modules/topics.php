@@ -1520,7 +1520,7 @@ class Module_topics
             breadcrumb_set_parents(array(array('_SEARCH:forumview:pt', do_lang_tempcode('PRIVATE_TOPICS'))));
 
             $username = mixed();
-            $username = ($member_id == get_member()) ? false : $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+            $username = ($member_id == get_member()) ? false : $GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_NULL);
             if ($username === null) {
                 warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
             }
@@ -1848,7 +1848,7 @@ class Module_topics
 
         $whisperer = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_posts', 'p_poster', array('p_topic_id' => $topic_id, 'p_intended_solely_for' => get_member()), 'ORDER BY p_time DESC');
         if ($whisperer !== null) {
-            $_whisperer = $GLOBALS['FORUM_DRIVER']->get_username($whisperer);
+            $_whisperer = $GLOBALS['FORUM_DRIVER']->get_username($whisperer, USERNAME_DEFAULT_NULL);
             if ($_whisperer !== null) {
                 attach_message(do_lang_tempcode('TOPIC_HAS_WHISPER_TO_YOU', escape_html($_whisperer)), 'notice');
             }
@@ -1952,10 +1952,7 @@ class Module_topics
 
         $_intended_solely_for = '';
         if ($intended_solely_for !== null) {
-            $_intended_solely_for = $GLOBALS['FORUM_DRIVER']->get_username($intended_solely_for);
-            if ($_intended_solely_for === null) {
-                $_intended_solely_for = '';
-            }
+            $_intended_solely_for = $GLOBALS['FORUM_DRIVER']->get_username($intended_solely_for, USERNAME_DEFAULT_BLANK);
         }
         if (cns_may_make_private_topic()) {
             if ((($_intended_solely_for != '') || (get_option('inline_pp_advertise') == '1')) && ($forum_id !== null)) {
@@ -2390,7 +2387,7 @@ END;
                 if (is_ticket_forum($forum_id)) {
                     if ($metadata['submitter'] === null || $metadata['submitter'] == get_member()) {
                         $metadata['submitter'] = get_active_support_user();
-                        if ($poster_name_if_guest == $GLOBALS['FORUM_DRIVER']->get_username(get_member())) {
+                        if ($poster_name_if_guest == $GLOBALS['FORUM_DRIVER']->get_username(get_member(), USERNAME_DEFAULT_BLANK)) {
                             $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($metadata['submitter']);
                         }
                     }
@@ -3166,7 +3163,7 @@ END;
 
         $poster_name_if_guest = null;
         if (isset($metadata['submitter'])) {
-            if (($metadata['submitter'] != $post_details[0]['p_poster']) && ($post_details[0]['p_poster_name_if_guest'] == $GLOBALS['FORUM_DRIVER']->get_username($post_details[0]['p_poster'], true))) {
+            if (($metadata['submitter'] != $post_details[0]['p_poster']) && ($post_details[0]['p_poster_name_if_guest'] == $GLOBALS['FORUM_DRIVER']->get_username($post_details[0]['p_poster'], true, USERNAME_DEFAULT_BLANK))) {
                 $poster_name_if_guest = $GLOBALS['FORUM_DRIVER']->get_username($metadata['submitter'], true);
             }
         }

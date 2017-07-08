@@ -311,9 +311,9 @@ class Module_admin_shopping
             $order_details_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
             $order_date = hyperlink($order_details_url, get_timezoned_date_time($row['add_date'], false), false, true);
 
-            $submitted_by = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
+            $submitted_by = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id'], USERNAME_DEFAULT_NULL);
             if (($submitted_by === null) || (is_guest($row['member_id']))) {
-                $member_link = do_lang('UNKNOWN');
+                $member_link = do_lang_tempcode('UNKNOWN');
             } else {
                 $member_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $row['member_id']), get_module_zone('members'));
                 $member_link = hyperlink($member_url, $submitted_by, false, true, do_lang('CUSTOMER'));
@@ -434,9 +434,9 @@ class Module_admin_shopping
             $res = $GLOBALS['SITE_DB']->query_select('shopping_orders', array('*'), array('id' => $id), '', 1);
             $order_details = $res[0];
 
-            $member_name = $GLOBALS['FORUM_DRIVER']->get_username($order_details['member_id']);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($order_details['member_id']);
 
-            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($member_name), array(strval($id)), get_lang($order_details['member_id']));
+            $message = do_lang('ORDER_DISPATCHED_MAIL_MESSAGE', comcode_escape(get_site_name()), comcode_escape($username), array(strval($id)), get_lang($order_details['member_id']));
 
             $fields->attach(form_input_text(do_lang_tempcode('DISPATCH_MAIL_PREVIEW'), do_lang_tempcode('DISPATCH_MAIL_PREVIEW_DESCRIPTION'), 'dispatch_mail_content', $message, true));
 

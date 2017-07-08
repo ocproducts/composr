@@ -65,11 +65,11 @@ function assign_referral_awards($referee, $trigger)
 
         return;
     }
-    $referrer_username = $GLOBALS['FORUM_DRIVER']->get_username($referrer);
+    $referrer_username = $GLOBALS['FORUM_DRIVER']->get_username($referrer, USERNAME_DEFAULT_NULL);
     if ($referrer_username === null) {
         return; // Deleted member
     }
-    $referrer_displayname = $GLOBALS['FORUM_DRIVER']->get_username($referrer, true);
+    $referrer_displayname = $GLOBALS['FORUM_DRIVER']->get_username($referrer, true, USERNAME_DEFAULT_NULL);
     if (is_guest($referrer)) {
         return;
     }

@@ -598,7 +598,7 @@ class Module_tickets
                         continue;
                     }
 
-                    $username = $GLOBALS['FORUM_DRIVER']->get_username($row['l_member_id']);
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username($row['l_member_id'], USERNAME_DEFAULT_NULL);
                     if ($username === null) {
                         continue;
                     }
@@ -1011,9 +1011,6 @@ class Module_tickets
 
         $ticket_owner = check_ticket_access($ticket_id);
         $ticket_owner_username = $GLOBALS['FORUM_DRIVER']->get_username($ticket_owner);
-        if ($ticket_owner_username === null) {
-            $ticket_owner_username = do_lang('UNKNOWN');
-        }
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_set_ticket_extra_access', 'id' => $ticket_id), '_SELF');
 
@@ -1026,7 +1023,7 @@ class Module_tickets
         $access = array();
         $_access = $GLOBALS['SITE_DB']->query_select('ticket_extra_access', array('member_id'), array('ticket_id' => $ticket_id));
         foreach ($_access as $a) {
-            $access[] = $GLOBALS['FORUM_DRIVER']->get_username($a['member_id']);
+            $access[] = $GLOBALS['FORUM_DRIVER']->get_username($a['member_id'], USERNAME_DEFAULT_BLANK);
         }
         $fields->attach(form_input_username_multi(do_lang_tempcode('USERNAME'), '', 'access', $access, 0, true));
 
@@ -1134,9 +1131,6 @@ class Module_tickets
 
             require_code('notifications');
             $username = $GLOBALS['FORUM_DRIVER']->get_username($uid);
-            if ($username === null) {
-                $username = do_lang('UNKNOWN');
-            }
             $ticket_type_details = get_ticket_type($ticket_type);
             $ticket_type_name_new = $ticket_type_details['ticket_type_name_trans'];
             $ticket_type_details = get_ticket_type($old_ticket_type);

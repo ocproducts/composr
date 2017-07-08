@@ -748,7 +748,7 @@ class Module_admin_customers
         if ($username === null) {
             $member_id = get_param_integer('member_id', null);
             if ($member_id !== null) {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_BLANK);
             } else {
                 $username = '';
             }
@@ -784,10 +784,7 @@ class Module_admin_customers
         $rows = new Tempcode();
         $logs = $GLOBALS['SITE_DB']->query_select('credit_charge_log', array('charging_member_id', 'num_credits', 'date_and_time', 'reason'), array('member_id' => $member_id), 'ORDER BY date_and_time DESC', 10);
         foreach ($logs as $log) {
-            $charging_username = $GLOBALS['FORUM_DRIVER']->get_username($log['charging_member_id']);
-            if ($charging_username === null) {
-                $charging_username = do_lang('DELETED');
-            }
+            $charging_username = $GLOBALS['FORUM_DRIVER']->get_username($log['charging_member_id'], USERNAME_DEFAULT_DELETED);
             $_num_credits = integer_format($log['num_credits']);
             $date = get_timezoned_date_time($log['date_and_time']);
             $reason = $log['reason'];

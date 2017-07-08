@@ -84,9 +84,6 @@ class Hook_rss_web_notifications
         foreach ($rows as $row) {
             $id = strval($row['id']);
             $author = ($row['d_from_member_id'] === null) ? null : $GLOBALS['FORUM_DRIVER']->get_username($row['d_from_member_id']);
-            if ($author === null) {
-                $author = do_lang('UNKNOWN');
-            }
 
             $news_date = date($date_string, $row['d_date_and_time']);
             $edit_date = escape_html('');

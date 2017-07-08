@@ -21,7 +21,7 @@ function realms()
     $rows = $GLOBALS['SITE_DB']->query_select('w_realms', array('*'));
     $out = new Tempcode();
     foreach ($rows as $myrow) {
-        $owner = $GLOBALS['FORUM_DRIVER']->get_username($myrow['owner']);
+        $owner = $GLOBALS['FORUM_DRIVER']->get_username($myrow['owner'], USERNAME_DEFAULT_NULL);
         if ($owner === null) {
             $owner = do_lang('UNKNOWN');
             $url = '';
@@ -76,9 +76,6 @@ function output_inventory_screen($member_id)
     $avatar = '';
     if ($member_id > $GLOBALS['FORUM_DRIVER']->get_guest_id()) {
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
         if (method_exists($GLOBALS['FORUM_DRIVER'], 'get_member_photo_url')) {
             $photo = $GLOBALS['FORUM_DRIVER']->get_member_photo_url($member_id);
         }
@@ -226,9 +223,6 @@ function output_room_screen($member_id)
     $people_here = new Tempcode();
     foreach ($rows as $myrow) {
         $this_member_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['id']);
-        if ($this_member_name === null) {
-            $this_member_name = do_lang('UNKNOWN');
-        }
         $people_here->attach(do_template('W_MAIN_PERSON_HERE', array('_GUID' => 'd799e4343da8daa27459b097bc3b2e89', 'THIS_MEMBER_NAME' => $this_member_name, 'ID' => strval($myrow['id']), 'SELECTED' => false)));
     }
 
@@ -241,9 +235,6 @@ function output_room_screen($member_id)
         $aux = new Tempcode();
         if ($id >= 0) {
             $name = $GLOBALS['FORUM_DRIVER']->get_username($id);
-            if ($name === null) {
-                $name = do_lang('UNKNOWN');
-            }
             if ($myrow['banned'] == 1) {
                 $aux = do_lang_tempcode('W_IS_BANNED');
             } elseif ($myrow['health'] < 1) {
@@ -311,9 +302,6 @@ function output_room_screen($member_id)
         $myrow2 = $rows2[0];
 
         $seller = $GLOBALS['FORUM_DRIVER']->get_username($myrow['copy_owner']);
-        if ($seller === null) {
-            $seller = do_lang('UNKNOWN');
-        }
 
         $aux = new Tempcode();
         if (($myrow2['healthy'] == 1) && ($myrow2['bribable'] == 1)) {
@@ -353,9 +341,6 @@ function output_room_screen($member_id)
     foreach ($rows as $myrow) {
         if ($myrow['id'] >= 0) {
             $this_member_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['id']);
-            if ($this_member_name === null) {
-                $this_member_name = do_lang('UNKNOWN');
-            }
         } else {
             $this_member_name = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'troll_name', array('id' => (-$myrow['id'] - 1)));
         }
@@ -368,9 +353,6 @@ function output_room_screen($member_id)
         foreach ($rows as $myrow) {
             if ($myrow['id'] >= 0) {
                 $this_member_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['id']);
-                if ($this_member_name === null) {
-                    $this_member_name = do_lang('UNKNOWN');
-                }
             } else {
                 $this_member_name = $GLOBALS['SITE_DB']->query_select_value('w_realms', 'troll_name', array('id' => (-$myrow['id'] - 1)));
             }

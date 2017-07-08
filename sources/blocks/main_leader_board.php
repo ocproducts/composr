@@ -114,7 +114,7 @@ class Block_main_leader_board
 
             $profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($member_id, true);
 
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_NULL);
             if ($username === null) {
                 continue; // Deleted member now
             }

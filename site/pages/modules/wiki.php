@@ -526,9 +526,6 @@ class Module_wiki
             // Work out posters details
             $poster = $myrow['member_id'];
             $username = $GLOBALS['FORUM_DRIVER']->get_username($poster);
-            if ($username === null) {
-                $username = do_lang('UNKNOWN');
-            }
 
             $post_id = $myrow['id'];
 

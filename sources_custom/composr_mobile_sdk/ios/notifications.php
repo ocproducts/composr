@@ -56,13 +56,13 @@ class IOSPushNotifications
         $data['notification_code'] = $notification_code;
         $data['code_category'] = ($code_category === null) ? '' : $code_category;
         $data['from_id'] = strval($from_member_id);
-        $data['from_username'] = ($from_member_id >= 0) ? $GLOBALS['FORUM_DRIVER']->get_username($from_member_id) : '';
-        $data['from_displayname'] = ($from_member_id >= 0) ? $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, true) : '';
+        $data['from_username'] = ($from_member_id >= 0) ? $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, USERNAME_DEFAULT_NULL) : '';
+        $data['from_displayname'] = ($from_member_id >= 0) ? $GLOBALS['FORUM_DRIVER']->get_username($from_member_id, true, USERNAME_DEFAULT_NULL) : '';
         $data['from_avatar_url'] = ($from_member_id >= 0) ? $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($from_member_id) : '';
         $data['from_photo_url'] = ($from_member_id >= 0) ? $GLOBALS['FORUM_DRIVER']->get_member_photo_url($from_member_id) : '';
         $data['to_id'] = strval($to_member_id);
-        $data['to_username'] = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id);
-        $data['to_displayname'] = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id, true);
+        $data['to_username'] = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id, USERNAME_DEFAULT_NULL);
+        $data['to_displayname'] = $GLOBALS['FORUM_DRIVER']->get_username($to_member_id, true, USERNAME_DEFAULT_NULL);
 
         uasort($properties, 'strlen');
         $properties = array_reverse($properties, true);

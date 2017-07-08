@@ -303,7 +303,7 @@ class Module_galleries
                 // Possibly we will 'imply' it's existence if this is a member gallery; allows normal rendering to finish, with add links
                 $matches = array();
                 if (preg_match('#^member_(\d+)_(.*)$#', $cat, $matches) != 0) {
-                    $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($matches[1]));
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username(intval($matches[1]), USERNAME_DEFAULT_NULL);
                     if ($username !== null) {
                         $gallery_rows = $GLOBALS['SITE_DB']->query_select('galleries', array('*'), array('name' => $matches[2]), '', 1);
                     }

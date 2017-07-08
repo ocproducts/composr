@@ -195,9 +195,6 @@ function report_content_member_link($content_member_id, $content_poster_name_if_
     if (($content_member_id !== null) && (!is_guest($content_member_id))) {
         if (!is_guest($content_member_id)) {
             $content_poster_name = $GLOBALS['FORUM_DRIVER']->get_username($content_member_id, true);
-            if ($content_poster_name === null) {
-                $content_poster_name = do_lang('UNKNOWN');
-            }
             $content_member = '[page="_SEARCH:members:view:' . strval($content_member_id) . '"]' . $content_poster_name . '[/page]';
         } else {
             $content_member = $content_poster_name_if_guest;
@@ -303,9 +300,6 @@ function report_content($content_type, $content_id, $report_post, $anonymous = 0
     $content_rendered = $ob->run($content_row, get_module_zone($cma_info['module']));
 
     $content_member = $GLOBALS['FORUM_DRIVER']->get_username($content_member_id, true);
-    if ($content_member === null) {
-        $content_member = do_lang('UNKNOWN');
-    }
 
     check_report_content_access();
 

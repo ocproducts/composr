@@ -529,7 +529,17 @@ class Module_admin_addons
             $text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
         }
 
-        return do_template('FORM_SCREEN', array('_GUID' => '7f50130c5a46e0f6e8a95e936ce7bf47', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => $text, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '7f50130c5a46e0f6e8a95e936ce7bf47',
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => $hidden,
+            'TITLE' => $this->title,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => $submit_name,
+            'FIELDS' => $fields,
+            'TEXT' => $text,
+            'URL' => $post_url,
+        ));
     }
 
     /**
@@ -1144,7 +1154,16 @@ class Module_admin_addons
         }
         $post_url = build_url($map, '_SELF');
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'dd8bea111b0dfc7df7ddc7e2246f0ef9', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => '', 'URL' => $post_url, 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'dd8bea111b0dfc7df7ddc7e2246f0ef9',
+            'HIDDEN' => $hidden,
+            'TITLE' => $this->title,
+            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields,
+            'TEXT' => '',
+            'URL' => $post_url,
+            'SUPPORT_AUTOSAVE' => true,
+        ));
     }
 
     /**
@@ -1211,7 +1230,18 @@ class Module_admin_addons
         $fields = form_input_huge_list(do_lang_tempcode('ZONE_OR_BLOCKS'), '', 'id', $list, null, true);
         $submit_name = do_lang_tempcode('PROCEED');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '43cc3d9031a3094b62e78461eb99fb5d', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('CHOOSE_ZONE_OF_MODULES'), 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '43cc3d9031a3094b62e78461eb99fb5d',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('CHOOSE_ZONE_OF_MODULES'),
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**

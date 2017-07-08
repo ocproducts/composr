@@ -91,7 +91,7 @@ function show_im_contacts($member_id = null, $simpler = false, $max = null)
             $online = member_is_online($friend['member_liked']);
             $online_text = $online ? do_lang_tempcode('ONLINE') : do_lang_tempcode('OFFLINE');
         }
-        $username = array_key_exists($friend['member_liked'], $friend_active) ? $friend_active[$friend['member_liked']] : $GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']);
+        $username = array_key_exists($friend['member_liked'], $friend_active) ? $friend_active[$friend['member_liked']] : $GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked'], USERNAME_DEFAULT_NULL);
         if ($username !== null) {
             $member_profile_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($friend['member_liked'], true);
 

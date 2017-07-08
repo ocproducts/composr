@@ -2544,9 +2544,6 @@ function ecv_USERNAME($lang, $escaped, $param)
 {
     $member_id = (isset($param[0])) ? intval($param[0]) : get_member();
     $value = $GLOBALS['FORUM_DRIVER']->get_username($member_id, (isset($param[1])) && ($param[1] == '1'));
-    if ($value === null) {
-        $value = do_lang('UNKNOWN');
-    }
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
