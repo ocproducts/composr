@@ -568,7 +568,7 @@ function find_images_do_dir($theme, $subdir, $langs)
                         foreach (array_keys($langs) as $lang) {
                             $_subdir = str_replace('/' . $lang . '/', '/', $_subdir);
                         }
-                        $_subdir = preg_replace('#(^|/)images(\_custom)?/#', '', $_subdir);
+                        $_subdir = preg_replace('#(^|/)images(_custom)?/#', '', $_subdir);
                         $out[$_subdir . $_file[0]] = 'themes/' . rawurlencode($theme) . '/' . $subdir . rawurlencode($file);
                     }
                 }

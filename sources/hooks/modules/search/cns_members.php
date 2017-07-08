@@ -179,7 +179,7 @@ class Hook_search_cns_members extends FieldsSearchHook
                 break;
 
             default:
-                if (preg_match('#^field\_\d+$#', $sort) != 0) {
+                if (preg_match('#^field_\d+$#', $sort) != 0) {
                     $remapped_orderer = $sort;
                 }
                 break;

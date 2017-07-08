@@ -252,7 +252,7 @@ class Hook_ecommerce_custom
             return ECOMMERCE_PRODUCT_NO_GUESTS;
         }
 
-        $custom_product_id = intval(preg_replace('#^CUSTOM\_#', '', $type_code));
+        $custom_product_id = intval(preg_replace('#^CUSTOM_#', '', $type_code));
         $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_custom', array('*'), array('id' => $custom_product_id, 'c_enabled' => 1));
         if (!array_key_exists(0, $rows)) {
             return ECOMMERCE_PRODUCT_MISSING;
@@ -299,7 +299,7 @@ class Hook_ecommerce_custom
             return false;
         }
 
-        $custom_product_id = intval(preg_replace('#^CUSTOM\_#', '', $type_code));
+        $custom_product_id = intval(preg_replace('#^CUSTOM_#', '', $type_code));
 
         $member_id = intval($purchase_id);
 

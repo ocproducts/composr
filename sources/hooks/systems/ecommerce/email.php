@@ -361,7 +361,7 @@ class Hook_ecommerce_email
             return ECOMMERCE_PRODUCT_NO_GUESTS;
         }
 
-        switch (preg_replace('#\_.*$#', '', $type_code)) {
+        switch (preg_replace('#_.*$#', '', $type_code)) {
             case 'POP3':
                 if (get_option('is_on_pop3_buy') == '1') {
                     return ECOMMERCE_PRODUCT_DISABLED;
@@ -414,9 +414,9 @@ class Hook_ecommerce_email
 
         $member_id = get_member();
 
-        switch (preg_replace('#\_.*$#', '', $type_code)) {
+        switch (preg_replace('#_.*$#', '', $type_code)) {
             case 'POP3':
-                $domain = preg_replace('#^.*\_#', '', $type_code);
+                $domain = preg_replace('#^.*_#', '', $type_code);
                 $fields->attach(form_input_line(do_lang_tempcode('ADDRESS_DESIRED_STUB'), do_lang_tempcode('DESCRIPTION_ADDRESS_DESIRED_STUB', escape_html($domain)), 'email_prefix', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), true));
                 $fields->attach(form_input_password(do_lang_tempcode('PASSWORD'), '', 'pass1', true));
                 $fields->attach(form_input_password(do_lang_tempcode('CONFIRM_PASSWORD'), '', 'pass2', true));
@@ -446,7 +446,7 @@ class Hook_ecommerce_email
                 break;
 
             case 'FORWARDING':
-                $domain = preg_replace('#^.*\_#', '', $type_code);
+                $domain = preg_replace('#^.*_#', '', $type_code);
                 $fields->attach(form_input_line(do_lang_tempcode('ADDRESS_DESIRED_STUB'), do_lang_tempcode('DESCRIPTION_ADDRESS_DESIRED_STUB', escape_html($domain)), 'email_prefix', $GLOBALS['FORUM_DRIVER']->get_username(get_member()), true));
                 $fields->attach(form_input_line(do_lang_tempcode('ADDRESS_CURRENT'), '', 'email', $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), true));
 
@@ -474,9 +474,9 @@ class Hook_ecommerce_email
     {
         $member_id = get_member();
 
-        switch (preg_replace('#\_.*$#', '', $type_code)) {
+        switch (preg_replace('#_.*$#', '', $type_code)) {
             case 'POP3':
-                $suffix = preg_replace('#^POP3\_#', '', $type_code);
+                $suffix = preg_replace('#^POP3_#', '', $type_code);
 
                 $prefix = post_param_string('email_prefix', $from_admin ? '' : false);
                 if ($prefix == '') {
@@ -505,7 +505,7 @@ class Hook_ecommerce_email
                 return array(strval(get_member()), null);
 
             case 'FORWARDING':
-                $suffix = preg_replace('#^FORWARDING\_#', '', $type_code);
+                $suffix = preg_replace('#^FORWARDING_#', '', $type_code);
 
                 $email = post_param_string('email', $from_admin ? '' : false);
                 if ($email == '') {
@@ -564,9 +564,9 @@ class Hook_ecommerce_email
             return false;
         }
 
-        switch (preg_replace('#\_.*$#', '', $type_code)) {
+        switch (preg_replace('#_.*$#', '', $type_code)) {
             case 'POP3':
-                $suffix = preg_replace('#^POP3\_#', '', $type_code);
+                $suffix = preg_replace('#^POP3_#', '', $type_code);
 
                 $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
                 list($member_id, $prefix, $password) = json_decode($e_details);
@@ -611,7 +611,7 @@ class Hook_ecommerce_email
                 $prefix = $pop3_details[0]['details'];
                 $suffix = $pop3_details[0]['details2'];
 
-                $quota = intval(preg_replace('#^QUOTA\_#', '', $type_code));
+                $quota = intval(preg_replace('#^QUOTA_#', '', $type_code));
 
                 $sale_id = $GLOBALS['SITE_DB']->query_insert('ecom_sales', array('date_and_time' => time(), 'member_id' => $member_id, 'details' => do_lang('QUOTA', null, null, null, get_site_default_lang()), 'details2' => strval($quota), 'txn_id' => $details['TXN_ID']), true);
 
@@ -632,7 +632,7 @@ class Hook_ecommerce_email
                 break;
 
             case 'FORWARDING':
-                $suffix = preg_replace('#^FORWARDING\_#', '', $type_code);
+                $suffix = preg_replace('#^FORWARDING_#', '', $type_code);
 
                 $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
                 list($member_id, $email, $prefix) = json_decode($e_details);
@@ -671,7 +671,7 @@ class Hook_ecommerce_email
      */
     public function member_for($type_code, $purchase_id)
     {
-        switch (preg_replace('#\_.*$#', '', $type_code)) {
+        switch (preg_replace('#_.*$#', '', $type_code)) {
             case 'POP3':
             case 'FORWARDING':
                 $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));

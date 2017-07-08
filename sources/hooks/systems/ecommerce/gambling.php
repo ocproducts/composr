@@ -161,7 +161,7 @@ class Hook_ecommerce_gambling
             return false;
         }
 
-        $amount = intval(preg_replace('#^GAMBLING\_#', '', $type_code));
+        $amount = intval(preg_replace('#^GAMBLING_#', '', $type_code));
 
         $member_id = intval($purchase_id);
 

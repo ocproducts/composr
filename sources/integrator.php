@@ -189,9 +189,9 @@ function reprocess_url($url, $operation_base_url)
 
         // meta
         global $SEO_KEYWORDS, $SEO_DESCRIPTION;
-        $count = preg_match_all('#\<\s*meta[^\>]*name=["\']([^"\']*)["\'][^\>]*content="([^"]*)"[^\>]*/?\s*>#i', $head, $all_matches);
+        $count = preg_match_all('#<\s*meta[^>]*name=["\']([^"\']*)["\'][^>]*content="([^"]*)"[^>]*/?\s*>#i', $head, $all_matches);
         if ($count == 0) {
-            $count = preg_match_all('#\<\s*meta\s+[^\>]*name=["\']([^"\']*)["\']\s+[^\>]*content=\'([^\']*)\'[^\>]*/?\s*>#i', $head, $all_matches);
+            $count = preg_match_all('#<\s*meta\s+[^>]*name=["\']([^"\']*)["\']\s+[^>]*content=\'([^\']*)\'[^>]*/?\s*>#i', $head, $all_matches);
         }
         if ($count != 0) {
             for ($i = 0; $i < count($all_matches[0]); $i++) {

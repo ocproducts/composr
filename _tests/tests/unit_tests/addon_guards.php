@@ -47,11 +47,11 @@ class addon_guards_test_set extends cms_test_case
                     $this->assertTrue(strpos($c, 'require_lang(\'' . basename($file, '.ini') . '\')') === false, 'Unnecessary require_lang call for ' . $file . ' in ' . $addon);
                 }
 
-                if ((substr($file, -4) == '.php') && (preg_match('#(^\_tests/|^data\_custom/stress\_test\_loader\.php$|^sources/hooks/modules/admin\_import/)#', $file) == 0)) {
+                if ((substr($file, -4) == '.php') && (preg_match('#(^_tests/|^data_custom/stress_test_loader\.php$|^sources/hooks/modules/admin_import/)#', $file) == 0)) {
                     $c = file_get_contents(get_file_base() . '/' . $file);
 
                     $matches = array();
-                    $num_matches = preg_match_all('#(require\_lang|require\_code|require\_css|require\_javascript|do\_template)\(\'([^\']*)\'[\),]#', $c, $matches);
+                    $num_matches = preg_match_all('#(require_lang|require_code|require_css|require_javascript|do_template)\(\'([^\']*)\'[\),]#', $c, $matches);
                     for ($i = 0; $i < $num_matches; $i++) {
                         $include = $matches[2][$i];
 

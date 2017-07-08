@@ -95,7 +95,7 @@ function init__lang()
      * @global boolean $LANG_FILTER_OB
      */
     global $LANG_FILTER_OB, $LANG_RUNTIME_PROCESSING;
-    $lang_stripped = preg_replace('#[\-\_].*$#', '', user_lang());
+    $lang_stripped = preg_replace('#[\-_].*$#', '', user_lang());
     require_code('lang_filter_' . fallback_lang());
     if (((is_file(get_file_base() . '/sources/lang_filter_' . $lang_stripped . '.php')) || (is_file(get_file_base() . '/sources_custom/lang_filter_' . $lang_stripped . '.php'))) && (!in_safe_mode())) {
         require_code('lang_filter_' . $lang_stripped);

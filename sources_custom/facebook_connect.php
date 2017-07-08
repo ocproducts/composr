@@ -102,7 +102,7 @@ function handle_facebook_connection_login($current_logged_in_member)
     }
     if ($language !== null) {
         if (!does_lang_exist($language)) {
-            $language = preg_replace('#\_.*$#', '', $language);
+            $language = preg_replace('#_.*$#', '', $language);
             if (!does_lang_exist($language)) {
                 $language = '';
             }

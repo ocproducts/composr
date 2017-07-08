@@ -336,7 +336,7 @@
                                 $cms.form.setFieldError(theElement, '');
                             }
 
-                            if ((!noRecurse) && (theElement.className.indexOf('date') != -1) && (theElement.name.match(/\_(day|month|year)$/))) {
+                            if ((!noRecurse) && (theElement.className.indexOf('date') != -1) && (theElement.name.match(/_(day|month|year)$/))) {
                                 var e = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_day'));
                                 if (e != theElement) {
                                     e.onblur(event, true);
@@ -485,7 +485,7 @@
                 errorMsg = errorMsgElement.getAttribute('data-errorUnfilled');
         } else {
             // Standard field-type checks
-            if ((theElement.className.indexOf('date') !== -1) && (theElement.name.match(/\_(day|month|year)$/)) && (myValue != '')) {
+            if ((theElement.className.indexOf('date') !== -1) && (theElement.name.match(/_(day|month|year)$/)) && (myValue != '')) {
                 var _day = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')];
                 var _month = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')];
                 var _year = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')];
@@ -511,7 +511,7 @@
             if (((theClass === 'input_username') || (theClass === 'input_username_required')) && (myValue != '')) {
                 errorMsg = '{!javascript:NOT_USERNAME;^}'.replace('\{1}', myValue);
             }
-            if (((theClass === 'input_codename') || (theClass === 'input_codename_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\-\.\_]*$/))) {
+            if (((theClass === 'input_codename') || (theClass === 'input_codename_required')) && (myValue != '') && (!myValue.match(/^[a-zA-Z0-9\-\._]*$/))) {
                 errorMsg = '{!javascript:NOT_CODENAME;^}'.replace('\{1}', myValue);
             }
             if (((theClass === 'input_integer') || (theClass === 'input_integer_required')) && (myValue != '') && (parseInt(myValue, 10) != myValue - 0)) {

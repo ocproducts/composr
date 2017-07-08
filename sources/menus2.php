@@ -123,7 +123,7 @@ function menu_management_script()
 
     foreach (array_keys($test ? $_GET : $_POST) as $key) {
         $val = $test ? get_param_string($key) : post_param_string($key);
-        $key = preg_replace('#\_\d+$#', '', $key);
+        $key = preg_replace('#_\d+$#', '', $key);
         if (($key == 'caption') || ($key == 'caption_long')) {
             if ($row === null) {
                 $changes += insert_lang('i_' . $key, $val, 2);

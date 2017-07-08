@@ -3218,7 +3218,7 @@ class Hook_import_cms_merge
                             if ($val === null) {
                                 $val = '';
                             }
-                            if (preg_match('#^field\_\d+$#', $key) != 0) {
+                            if (preg_match('#^field_\d+$#', $key) != 0) {
                                 $cpf_id = import_id_remap_get('cpf', substr($key, 6), true);
                                 if ($cpf_id === null) {
                                     continue;

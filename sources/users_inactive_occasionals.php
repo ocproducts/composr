@@ -54,17 +54,17 @@ function _enforce_sessioned_url($url)
     } else {
         $url .= '&';
     }
-    $url = preg_replace('#keep\_session=\w+&#', '', $url);
-    $url = preg_replace('#&keep\_session=\w+#', '', $url);
+    $url = preg_replace('#keep_session=\w+&#', '', $url);
+    $url = preg_replace('#&keep_session=\w+#', '', $url);
 
     // Get hash back
     $url .= $hash;
-    $url = preg_replace('#\?keep\_session=\w+#', '', $url);
+    $url = preg_replace('#\?keep_session=\w+#', '', $url);
 
     // Possibly a nested URL too
-    $url = preg_replace('#keep\_session=\w+' . preg_quote(urlencode('&')) . '#', '', $url);
-    $url = preg_replace('#' . preg_quote(urlencode('&')) . 'keep\_session=\w+#', '', $url);
-    $url = preg_replace('#' . preg_quote(urlencode('?')) . 'keep\_session=\w+#', '', $url);
+    $url = preg_replace('#keep_session=\w+' . preg_quote(urlencode('&')) . '#', '', $url);
+    $url = preg_replace('#' . preg_quote(urlencode('&')) . 'keep_session=\w+#', '', $url);
+    $url = preg_replace('#' . preg_quote(urlencode('?')) . 'keep_session=\w+#', '', $url);
 
     // Put keep_session back
     $url .= 'keep_session=' . urlencode(get_session_id());

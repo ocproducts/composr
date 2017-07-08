@@ -808,7 +808,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     if (($i == 0) && (str_replace(array('&nbsp;', '<br />', ' '), array('', '', ''), trim($part)) == '')) {
                         continue;
                     }
-                    $temp_tpl->attach('<li>' . preg_replace('#\<br /\>(\&nbsp;|\s)*$#D', '', preg_replace('#^\<br /\>(\&nbsp;|\s)*#D', '', $part)) . '</li>');
+                    $temp_tpl->attach('<li>' . preg_replace('#<br />(\&nbsp;|\s)*$#D', '', preg_replace('#^<br />(\&nbsp;|\s)*#D', '', $part)) . '</li>');
                 }
                 $temp_tpl->attach('</' . $tag . '>');
             } else {
@@ -817,7 +817,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     if (($i == 0) && (str_replace(array('&nbsp;', '<br />', ' '), array('', '', ''), trim($part)) == '')) {
                         continue;
                     }
-                    $temp_tpl->attach('<li>' . preg_replace('#\<br /\>(\&nbsp;|\s)*$#D', '', preg_replace('#^\<br /\>(\&nbsp;|\s)*#D', '', $part)) . '</li>');
+                    $temp_tpl->attach('<li>' . preg_replace('#<br />(\&nbsp;|\s)*$#D', '', preg_replace('#^<br />(\&nbsp;|\s)*#D', '', $part)) . '</li>');
                 }
                 $temp_tpl->attach('</ul>');
             }

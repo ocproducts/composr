@@ -411,7 +411,7 @@ function lex($text = null)
                     } elseif ($token_found == 'START_HEREDOC') {
                         $lex_state = PLEXER_HEREDOC;
                         $matches = array();
-                        preg_match('#(["\']?)([A-Za-z0-9\_]*)\\1#', $TEXT, $matches, 0, $i);
+                        preg_match('#(["\']?)([A-Za-z0-9_]*)\\1#', $TEXT, $matches, 0, $i);
                         $heredoc_symbol = $matches[2];
                         $i += strlen($heredoc_symbol);
                         break;
@@ -566,7 +566,7 @@ function lex($text = null)
                 // Exit case
                 if ($char == "\n" . $heredoc_symbol . ';') {
                     $lex_state = PLEXER_FREE;
-                    if ((isset($GLOBALS['CHECKS'])) && (preg_match('#\<[^\<\>]*\>#', $special_token_value) != 0)) {
+                    if ((isset($GLOBALS['CHECKS'])) && (preg_match('#<[^<>]*>#', $special_token_value) != 0)) {
                         log_warning('It looks like HTML used outside of templates', $i, true);
                     }
                     $tokens[] = array('string_literal', $special_token_value, $i);
@@ -642,7 +642,7 @@ function lex($text = null)
                                 $heredoc_buildup[] = array('string_literal', $matches[1], $i);
                                 $heredoc_buildup[] = array('EXTRACT_CLOSE', $i);
                                 $i += strlen($matches[1]) + 3;
-                            } elseif (($char == '[') && (preg_match('#\[([A-Za-z0-9\_]+)\]#A', $TEXT, $matches, 0, $i - 1) != 0)) {
+                            } elseif (($char == '[') && (preg_match('#\[([A-Za-z0-9_]+)\]#A', $TEXT, $matches, 0, $i - 1) != 0)) {
                                 $heredoc_buildup[] = array((count($heredoc_buildup) == 0) ? 'variable' : 'IDENTIFIER', $special_token_value_2, $i);
                                 $special_token_value_2 = '';
                                 $heredoc_buildup[] = array('EXTRACT_OPEN', $i);
@@ -667,7 +667,7 @@ function lex($text = null)
                             $special_token_value_2 = '';
                             $heredoc_buildup[] = array('OBJECT_OPERATOR', $i);
                             $i++;
-                        } elseif (($char == '[') && (preg_match('#\[([\'A-Za-z0-9\_]+)\]#A', $TEXT, $matches, 0, $i - 1) != 0)) {
+                        } elseif (($char == '[') && (preg_match('#\[([\'A-Za-z0-9_]+)\]#A', $TEXT, $matches, 0, $i - 1) != 0)) {
                             if (strpos($matches[1], "'") !== false) {
                                 log_warning('Do not use quotes with the simple variable embedding syntax', $i, true);
                                 break 2;

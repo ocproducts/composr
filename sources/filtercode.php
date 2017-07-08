@@ -179,7 +179,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
             if (array_key_exists($field_name, $labels)) {
                 $field_title = escape_html($labels[$field_name]);
             } else {
-                $target_name = preg_replace('#^filter\_#', '', preg_replace('#\_op$#', '', $field_name));
+                $target_name = preg_replace('#^filter_#', '', preg_replace('#_op$#', '', $field_name));
                 if (array_key_exists($target_name, $labels)) {
                     $operator_target_label = escape_html($labels[$target_name]);
                 } else {
@@ -299,7 +299,7 @@ function form_for_filtercode($filter, $labels = array(), $content_type = null, $
                 }
             }
 
-            $field_title = array_key_exists($field_name, $labels) ? $labels[$field_name] : titleify(preg_replace('#^filter\_#', '', $field_name));
+            $field_title = array_key_exists($field_name, $labels) ? $labels[$field_name] : titleify(preg_replace('#^filter_#', '', $field_name));
 
             $default_value = read_filtercode_parameter_from_env($field_name, $field_type);
 
@@ -528,7 +528,7 @@ function _fields_api_filtercode_named($db, $info, $catalogue_name, &$extra_join,
 function _fields_api_filtercode($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
     $matches = array();
-    if (preg_match('#^((.*)\.)?field\_(\d+)#', $filter_key, $matches) == 0) {
+    if (preg_match('#^((.*)\.)?field_(\d+)#', $filter_key, $matches) == 0) {
         return null;
     }
 
@@ -609,7 +609,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
 
     // Special case for ratings
     $matches = array('', $info['feedback_type_code']);
-    if (($filter_key == 'compound_rating') || (preg_match('#^compound_rating\_\_(.+)#', $filter_key, $matches) != 0)) {
+    if (($filter_key == 'compound_rating') || (preg_match('#^compound_rating__(.+)#', $filter_key, $matches) != 0)) {
         if ($filter_key == 'compound_rating') {
             $matches[1] .= '__' . $catalogue_name;
         }
@@ -618,7 +618,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
         return array($clause, '', $filter_val);
     }
     $matches = array('', $info['feedback_type_code']);
-    if (($filter_key == 'average_rating') || (preg_match('#^average_rating\_\_(.+)#', $filter_key, $matches) != 0)) {
+    if (($filter_key == 'average_rating') || (preg_match('#^average_rating__(.+)#', $filter_key, $matches) != 0)) {
         if ($filter_key == 'average_rating') {
             $matches[1] .= '__' . $catalogue_name;
         }
@@ -629,7 +629,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
 
     // Random
     $matches = array('', $info['feedback_type_code']);
-    if (($filter_key == 'fixed_random') || (preg_match('#^fixed_random\_\_(.+)#', $filter_key, $matches) != 0)) {
+    if (($filter_key == 'fixed_random') || (preg_match('#^fixed_random__(.+)#', $filter_key, $matches) != 0)) {
         if ($filter_key == 'fixed_random') {
             $matches[1] .= '__' . $catalogue_name;
         }
@@ -660,7 +660,7 @@ function _default_conv_func($db, $info, $catalogue_name, &$extra_join, &$extra_s
     }
 
     // Fields API
-    if ((preg_match('#^((.*)\.)?field\_(\d+)#', $filter_key) != 0) && (isset($info['content_type']))) {
+    if ((preg_match('#^((.*)\.)?field_(\d+)#', $filter_key) != 0) && (isset($info['content_type']))) {
         return _fields_api_filtercode($db, $info, '_' . $info['content_type'], $extra_join, $extra_select, $filter_key, $filter_val, $db_fields, $table_join_code);
     }
 

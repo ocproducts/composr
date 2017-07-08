@@ -733,7 +733,7 @@ function install_addon($file, $files = null, $do_files = true, $do_db = true)
             }
 
             if (($files === null) || (in_array($addon_file, $files))) {
-                if (preg_match('#^(sources|sources\_custom)/blocks/([^/]*)\.php$#', $addon_file, $matches) != 0) {
+                if (preg_match('#^(sources|sources_custom)/blocks/([^/]*)\.php$#', $addon_file, $matches) != 0) {
                     if (!block_installed($matches[2])) {
                         reinstall_block($matches[2]);
                     } else {

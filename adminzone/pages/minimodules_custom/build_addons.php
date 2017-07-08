@@ -58,7 +58,7 @@ foreach ($addons as $name => $place) {
 
     $addon_info = read_addon_info($name);
 
-    $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '-' . get_version_branch(floatval($addon_info['version'])) . '.tar';
+    $file = preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '-' . get_version_branch(floatval($addon_info['version'])) . '.tar';
     $full_path = get_custom_file_base() . '/exports/addons/' . $file;
 
     // Copy through times from previous build IF the files didn't change (as git munges mtimes)
@@ -162,7 +162,7 @@ if (get_param_integer('export_themes', 0) == 1) {
         $dependencies = get_theme_option('dependencies', '', $theme);
         $incompatibilities = get_theme_option('incompatibilities', '', $theme);
 
-        $file = 'theme-' . preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $theme)) . '-' . get_version_branch() . '.tar';
+        $file = 'theme-' . preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $theme)) . '-' . get_version_branch() . '.tar';
 
         $files2 = array();
         $theme_files = get_directory_contents(get_custom_file_base() . '/themes/' . $theme, 'themes/' . $theme);
@@ -173,7 +173,7 @@ if (get_param_integer('export_themes', 0) == 1) {
         }
         foreach ($page_files as $file2) {
             $matches = array();
-            $regexp = '#^((\w+)/)?pages/comcode_custom/[^/]*/\_' . preg_quote($theme, '#') . '\_\_(\w+)\.txt$#';
+            $regexp = '#^((\w+)/)?pages/comcode_custom/[^/]*/\_' . preg_quote($theme, '#') . '__(\w+)\.txt$#';
             if ((preg_match($regexp, $file2, $matches) != 0) && ($matches[1] != 'docs')) {
                 $files2[] = dirname($file2) . '/' . $matches[2];
             }

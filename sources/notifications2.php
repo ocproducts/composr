@@ -278,7 +278,7 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
 
             foreach (array_keys($_POST) as $key) {
                 $matches = array();
-                if (preg_match('#^notification\_' . preg_quote($notification_code) . '\_category\_(.*)#', $key, $matches) != 0) {
+                if (preg_match('#^notification_' . preg_quote($notification_code) . '_category_(.*)#', $key, $matches) != 0) {
                     $notification_category = $matches[1];
 
                     $new_setting = A_NA;

@@ -1349,7 +1349,7 @@ class Forum_driver_phpbb3 extends Forum_driver_base
         } else {
             $real_member_cookie = $member_cookie_name;
             $real_pass_cookie = get_pass_cookie();
-            $real_session_cookie = preg_replace('#\_u$#', '_sid', $real_member_cookie);
+            $real_session_cookie = preg_replace('#_u$#', '_sid', $real_member_cookie);
         }
 
         require_code('crypt');

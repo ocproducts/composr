@@ -203,7 +203,7 @@ function selectcode_to_sqlfragment($filter, $field_name, $parent_spec__table_nam
                     }
                 }
             }
-        } elseif ((preg_match('#^(.+)\~$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3~'
+        } elseif ((preg_match('#^(.+)~$#', $token, $matches) != 0) && ($parent_spec__parent_name !== null)) { // e.g. '3~'
             $subtree = _selectcode_subtree_fetch($matches[1], $parent_spec__table_name, $parent_spec__parent_name, $parent_spec__field_name, $numeric_category_set_ids, $db, $cached_mappings);
             foreach ($subtree as $ii) {
                 if ($out_and != '') {
@@ -378,7 +378,7 @@ function _selectcode_to_generic($filter, $field_name, $table_name, $ids_and_pare
                     }
                 }
             }
-        } elseif (preg_match('#^(.+)\~$#', $token, $matches) != 0) { // e.g. '3~'
+        } elseif (preg_match('#^(.+)~$#', $token, $matches) != 0) { // e.g. '3~'
             if ($ids_and_parents === null) {
                 if ($field_name !== null) {
                     $ids_and_parents = call_user_func_array($ids_and_parents_callback[0], array_merge($ids_and_parents_callback[1], array($db)));

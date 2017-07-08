@@ -351,7 +351,7 @@ class Hook_ecommerce_permission
             return ECOMMERCE_PRODUCT_NO_GUESTS;
         }
 
-        $permission_product_id = intval(preg_replace('#^PERMISSION\_#', '', $type_code));
+        $permission_product_id = intval(preg_replace('#^PERMISSION_#', '', $type_code));
         $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('id' => $permission_product_id, 'p_enabled' => 1), '', 1);
         if (!array_key_exists(0, $rows)) {
             return ECOMMERCE_PRODUCT_MISSING;
@@ -429,7 +429,7 @@ class Hook_ecommerce_permission
             return false;
         }
 
-        $permission_product_id = intval(preg_replace('#^PERMISSION\_#', '', $type_code));
+        $permission_product_id = intval(preg_replace('#^PERMISSION_#', '', $type_code));
 
         $rows = $GLOBALS['SITE_DB']->query_select('ecom_prods_permissions', array('*'), array('id' => $permission_product_id, 'p_enabled' => 1), '', 1);
         if (!array_key_exists(0, $rows)) {

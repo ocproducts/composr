@@ -1369,13 +1369,13 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
         $stripped = $OUT;
         $matches = array();
         if (stripos($stripped, '<style') !== false) {
-            $num_matches = preg_match_all('#\<style.*\</style\>#Umis', $stripped, $matches);
+            $num_matches = preg_match_all('#<style.*</style>#Umis', $stripped, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 $stripped = str_replace($matches[0][$i], str_repeat(' ', strlen($matches[0][$i])), $stripped);
             }
         }
         if (stripos($stripped, '<script') !== false) {
-            $num_matches = preg_match_all('#\<script.*\</script\>#Umis', $stripped, $matches);
+            $num_matches = preg_match_all('#<script.*</script>#Umis', $stripped, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 $stripped = str_replace($matches[0][$i], str_repeat(' ', strlen($matches[0][$i])), $stripped);
             }

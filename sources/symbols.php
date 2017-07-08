@@ -2313,7 +2313,7 @@ function ecv_CPF_VALUE($lang, $escaped, $param)
         } elseif ((substr($param[0], 0, 2) == 'm_') && (stripos($param[0], 'hash') === false) && (stripos($param[0], 'salt') === false)) {
             $_value = $GLOBALS['FORUM_DRIVER']->get_member_row_field(isset($param[1]) ? intval($param[1]) : get_member(), $param[0]);
         } else {
-            if (preg_match('#^[a-z\_\d]*$#', $param[0]) != 0) {
+            if (preg_match('#^\w*$#', $param[0]) != 0) {
                 $_value = get_cms_cpf($param[0], isset($param[1]) ? intval($param[1]) : null);
             } else {
                 require_code('cns_members');

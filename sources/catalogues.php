@@ -606,7 +606,7 @@ function render_catalogue_category_entry_buildup($category_id, $catalogue_name, 
  */
 function _catalogues_filtercode($db, $info, $catalogue_name, &$extra_join, &$extra_select, $filter_key, $filter_val, $db_fields, $table_join_code)
 {
-    if (preg_match('#^((.*)\.)?field\_(\d+)#', $filter_key) != 0) { // This is by field ID, not field sequence #
+    if (preg_match('#^((.*)\.)?field_(\d+)#', $filter_key) != 0) { // This is by field ID, not field sequence #
         $ret = _fields_api_filtercode($db, $info, $catalogue_name, $extra_join, $extra_select, $filter_key, $filter_val, $db_fields, $table_join_code);
         if ($ret !== null) {
             return $ret;

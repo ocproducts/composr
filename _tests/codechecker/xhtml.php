@@ -461,7 +461,7 @@ if ((!isset($URL_BASE)) && (isset($CRAWLED_URLS))) {
                 echo 'ISSUE "' . $to_use . '" 1 1 ' . html_entity_decode(do_lang('XHTML_BROKEN_URL', $url, '500'), ENT_QUOTES) . "\n";
             }
         }
-        if (preg_match('#^[A-Za-z0-9\-\_\.][A-Za-z0-9\-\_\./]*$#', $url) != 0) {
+        if (preg_match('#^[A-Za-z0-9\-_\.][A-Za-z0-9\-_\./]*$#', $url) != 0) {
             if (!file_exists(dirname($to_use) . '/' . $url)) {
                 $global_pos = strpos($contents, $url);
                 $line = substr_count(substr($contents, 0, $global_pos), "\n") + 1;

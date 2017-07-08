@@ -65,7 +65,7 @@ function get_effect_settings($full_urls = false, $for_member = null, $all_member
     if ($all_members) {
         foreach (array_keys($EFFECT_SETTINGS_ROWS) as $effect_id) {
             $matches = array();
-            if ((!array_key_exists($effect_id, $effects)) && (preg_match('#^(.*)\_(\d+)$#', $effect_id, $matches) != 0) && (array_key_exists($matches[1], $effects))) {
+            if ((!array_key_exists($effect_id, $effects)) && (preg_match('#^(.*)_(\d+)$#', $effect_id, $matches) != 0) && (array_key_exists($matches[1], $effects))) {
                 $effects[$effect_id] = $matches[1];
             }
         }

@@ -181,7 +181,7 @@ class Hook_ecommerce_classifieds
         }
 
         $matches = array();
-        if (preg_match('#^CLASSIFIEDS\_ADVERT\_(\d+)$#', $type_code, $matches) != 0) {
+        if (preg_match('#^CLASSIFIEDS_ADVERT_(\d+)$#', $type_code, $matches) != 0) {
             $entry_catalogue_name = $GLOBALS['SITE_DB']->query_select_value_if_there('catalogue_entries', 'c_name', array('id' => $entry_id));
             if ($entry_catalogue_name === null) {
                 warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
@@ -213,7 +213,7 @@ class Hook_ecommerce_classifieds
             return false;
         }
 
-        $classified_type_id = intval(preg_replace('#^CLASSIFIEDS\_ADVERT\_#', '', $type_code));
+        $classified_type_id = intval(preg_replace('#^CLASSIFIEDS_ADVERT_#', '', $type_code));
 
         $entry_id = intval($purchase_id);
 

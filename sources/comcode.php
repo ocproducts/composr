@@ -192,7 +192,7 @@ function apply_emoticons($text)
 function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false, $pass_id = null, $db = null, $flags = 0, $highlight_bits = array(), $on_behalf_of_member = null)
 {
     $matches = array();
-    if (preg_match('#^\{\!([A-Z\_]+)\}$#', $comcode, $matches) != 0) {
+    if (preg_match('#^\{\!([A-Z_]+)\}$#', $comcode, $matches) != 0) {
         return do_lang_tempcode($matches[1]);
     }
 
@@ -203,7 +203,7 @@ function comcode_to_tempcode($comcode, $source_member = null, $as_admin = false,
             $key = strval($key);
         }
 
-        if (preg_match('#^hidFileID\_#i', $key) != 0) {
+        if (preg_match('#^hidFileID_#i', $key) != 0) {
             $attachments = true;
         }
     }

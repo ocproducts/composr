@@ -658,7 +658,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         'object', 'caption', 'label', 'b', 'i', 'small', 'big');
     $semihtml = preg_replace('#(<(' . implode('|', $inline_elements) . ')( [^>]*)?' . '>)\s+#', '${1}</CDATA__space>', $semihtml);
     $semihtml = preg_replace('#\s+(</(' . implode('|', $inline_elements) . ')>)#', '</CDATA__space>${1}', $semihtml);
-    $semihtml = preg_replace('#([^\>\s])\s+(<(' . implode('|', $inline_elements) . ')( [^>]*)?' . '>)#', '${1}</CDATA__space>${2}', $semihtml);
+    $semihtml = preg_replace('#([^>\s])\s+(<(' . implode('|', $inline_elements) . ')( [^>]*)?' . '>)#', '${1}</CDATA__space>${2}', $semihtml);
     $semihtml = preg_replace('#(</(' . implode('|', $inline_elements) . ')>)\s+#', '${1}</CDATA__space>', $semihtml);
     $semihtml = preg_replace('#>\s+#', '>', $semihtml); // NB: Only non-inline, due to above CDATA__space
     $semihtml = preg_replace('#\s+<#', '<', $semihtml); // ditto
@@ -854,7 +854,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
         $old_semihtml = $semihtml;
 
         // Empty tags
-        $semihtml = preg_replace('#\<(\w+)\>\</\1\>#', '', $semihtml);
+        $semihtml = preg_replace('#<(\w+)></\1>#', '', $semihtml);
         if (stripos($semihtml, '[font') !== false) {
             $semihtml = preg_replace('#\[font[^\]]*\]\[/font\]#', '', $semihtml);
         }
@@ -892,19 +892,19 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
             if (stripos($semihtml, '[' . $tagx) !== false) {
                 $semihtml = comcode_preg_replace($tagx, '#^(\[' . $tag . '\])(.*)\\1(.*)\[/' . $tagx . '\](.*)\[/' . $tagx . '\]$#si', '${1}${2}${3}${4}[/' . $tagx . ']', $semihtml);
 
-                $semihtml = preg_replace('#(\[' . $tag . '\])([^\[\]]*)\[/' . $tagx . '\]((&nbsp;|</CDATA\_\_space>|\s)*)\\1#si', '${1}${2}${3}', $semihtml); // Only works in simple case, not when there are tags nested within first tag. Can't use comcode_preg_replace as we are joining two tags (i.e. not operating over single bind)
+                $semihtml = preg_replace('#(\[' . $tag . '\])([^\[\]]*)\[/' . $tagx . '\]((&nbsp;|</CDATA__space>|\s)*)\\1#si', '${1}${2}${3}', $semihtml); // Only works in simple case, not when there are tags nested within first tag. Can't use comcode_preg_replace as we are joining two tags (i.e. not operating over single bind)
             }
         }
 
         // Cleanup lines filled with spaces/font-junk
         foreach ($text_formatting_tags as $tag) {
             if (stripos($semihtml, '[' . $tag) !== false) {
-                $semihtml = preg_replace('#(\[' . $tag . '[^\]]*\])((&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*)#i', '${2}${1}', $semihtml); // Tag starting unnecessarily early -> Move it back
-                $semihtml = preg_replace('#((&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*)(\[/' . $tag . '\])#i', '${3}${1}', $semihtml); // Tag ending unnecessarily late -> Move it back
-                $semihtml = preg_replace('#\[' . $tag . '[^\]]*\]((&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*)\[/' . $tag . '\]#i', '${1}', $semihtml); // Tag wrapping whitespace -> White space
+                $semihtml = preg_replace('#(\[' . $tag . '[^\]]*\])((&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*)#i', '${2}${1}', $semihtml); // Tag starting unnecessarily early -> Move it back
+                $semihtml = preg_replace('#((&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*)(\[/' . $tag . '\])#i', '${3}${1}', $semihtml); // Tag ending unnecessarily late -> Move it back
+                $semihtml = preg_replace('#\[' . $tag . '[^\]]*\]((&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*)\[/' . $tag . '\]#i', '${1}', $semihtml); // Tag wrapping whitespace -> White space
             }
         }
-        $semihtml = preg_replace('#(&nbsp;|</CDATA\_\_space>|\s)*<br\s*/>#i', '<br />', $semihtml); // Spaces on end of line -> (Remove)
+        $semihtml = preg_replace('#(&nbsp;|</CDATA__space>|\s)*<br\s*/>#i', '<br />', $semihtml); // Spaces on end of line -> (Remove)
     } while (preg_replace('#\s#', '', $semihtml) != preg_replace('#\s#', '', $old_semihtml));
 
     // Undone center tagging
@@ -928,8 +928,8 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     $semihtml = preg_replace('#\[align="\w+"\]\s*(&nbsp;)?\s*\[/align\]#', '', $semihtml);
 
     // Cleanup list Comcode (nice and pretty)
-    $semihtml = preg_replace('#(&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*\[/\*\](&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*#', '[/*]', $semihtml);
-    $semihtml = preg_replace('#(&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*\[\*\](&nbsp;|</CDATA\_\_space>|\s|<br\s*/>|\n)*#', '[*]', $semihtml);
+    $semihtml = preg_replace('#(&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*\[/\*\](&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*#', '[/*]', $semihtml);
+    $semihtml = preg_replace('#(&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*\[\*\](&nbsp;|</CDATA__space>|\s|<br\s*/>|\n)*#', '[*]', $semihtml);
     $semihtml = preg_replace('#\[/\*\]([^\s])#', '[/*]<cmsbr />${1}', $semihtml);
     $semihtml = preg_replace('#\[list\]([^\s])#', '[list]<cmsbr />${1}', $semihtml);
 
@@ -937,7 +937,7 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
     global $BLOCK_TAGS;
     foreach (array_keys($BLOCK_TAGS) as $tag) {
         if (strpos($semihtml, '[' . $tag) !== false) {
-            $semihtml = preg_replace('#( |</CDATA\_\_space>)*(\[' . $tag . '[\] ])#', '${2}', $semihtml);
+            $semihtml = preg_replace('#( |</CDATA__space>)*(\[' . $tag . '[\] ])#', '${2}', $semihtml);
             $semihtml = preg_replace('#\[/' . $tag . '\](?!\[/)(?!<br)#', '[/' . $tag . ']' . (($tag == 'title') ? '<cmsbr /><cmsbr />' : '<cmsbr />'), $semihtml);
         }
     }

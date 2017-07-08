@@ -499,7 +499,7 @@ function generate_invoicing_breakdown($type_code, $item_name, $purchase_id, $pri
 {
     $invoicing_breakdown = array();
 
-    if (preg_match('#^CART\_ORDER\_\d+$#', $type_code) == 0) {
+    if (preg_match('#^CART_ORDER_\d+$#', $type_code) == 0) {
         // Not a cart order...
 
         $invoicing_breakdown[] = array(

@@ -117,7 +117,7 @@ function init__transifex()
                 $LANGUAGE_FILES_ADDON[$matches[1]] = $addon;
             }
         }
-        if (preg_match('#^language\_(\w+)$#', $addon, $matches) != 0) {
+        if (preg_match('#^language_(\w+)$#', $addon, $matches) != 0) {
             $EXISTING_LANGUAGE_AUTHORS[$matches[1]] = explode(', ', $info['author']);
         }
     }

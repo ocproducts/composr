@@ -72,7 +72,7 @@ class standard_dir_files_test_set extends cms_test_case
                 (!file_exists($dir . '/EN')) &&
                 (strpos($dir, 'ckeditor') === false) &&
                 (strpos($dir, 'uploads') === false) &&
-                (preg_match('#/data(/|$|\_)#', $dir) == 0)
+                (preg_match('#/data(/|$|_)#', $dir) == 0)
                 && (strpos($dir, 'themes') === false) &&
                 (strpos($dir, 'exports') === false)
             ) {

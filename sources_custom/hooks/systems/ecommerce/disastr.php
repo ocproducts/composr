@@ -133,7 +133,7 @@ class Hook_ecommerce_disastr
         }
 
         $matches = array();
-        if (preg_match('#^(CURE|IMMUNISATION)\_(\d+)$#', $type_code, $matches) == 0) {
+        if (preg_match('#^(CURE|IMMUNISATION)_(\d+)$#', $type_code, $matches) == 0) {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
         $disease_id = intval($matches[2]);
@@ -203,7 +203,7 @@ class Hook_ecommerce_disastr
         require_lang('disastr');
 
         $matches = array();
-        if (preg_match('#^(CURE|IMMUNISATION)\_(\d+)$#', $type_code, $matches) == 0) {
+        if (preg_match('#^(CURE|IMMUNISATION)_(\d+)$#', $type_code, $matches) == 0) {
             fatal_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
         $disease_id = intval($matches[2]);

@@ -162,7 +162,7 @@ function get_innodb_tables_by_addon()
                 $file_contents = file_get_contents(get_file_base() . '/' . $file);
 
                 $matches = array();
-                $num_matches = preg_match_all("#create\_table\('([^']+)'#", $file_contents, $matches);
+                $num_matches = preg_match_all("#create_table\('([^']+)'#", $file_contents, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $table_name = $matches[1][$i];
                     if (strpos($file_contents, "/*\$GLOBALS['SITE_DB']->create_table('" . $table_name . "'") === false) {

@@ -1211,7 +1211,7 @@ class Module_admin_setupwizard
                 foreach ($uninstalling as $addon_info) {
                     // Archive it off to exports/addons
                     if ($addon_info['files'] != array()) {
-                        $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $addon_info['name'])) . '.tar';
+                        $file = preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $addon_info['name'])) . '.tar';
                         create_addon(
                             $file,
                             $addon_info['files'],
@@ -1332,7 +1332,7 @@ class Module_admin_setupwizard
                 $files = get_directory_contents($dir);
                 foreach ($files as $file) {
                     $matches = array();
-                    $regexp = '#^\_' . preg_quote($source_theme, '#') . '\_\_([\w\_]+)\.txt$#';
+                    $regexp = '#^\_' . preg_quote($source_theme, '#') . '__([\w\-]+)\.txt$#';
                     if (preg_match($regexp, $file, $matches) != 0) {
                         $page_name = $matches[1];
                         cms_file_put_contents_safe($dir . '/' . $page_name . '.txt', cms_file_get_contents_safe($dir . '/' . $file));

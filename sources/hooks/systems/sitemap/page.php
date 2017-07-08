@@ -132,7 +132,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
             case 'HTML_CUSTOM':
                 $page_contents = file_get_contents(get_file_base() . '/' . $path);
                 $matches = array();
-                if (preg_match('#\<title[^\>]*\>#', $page_contents, $matches) != 0) {
+                if (preg_match('#<title[^>]*>#', $page_contents, $matches) != 0) {
                     $start = strpos($page_contents, $matches[0]) + strlen($matches[0]);
                     $end = strpos($page_contents, '</title>', $start);
                     $_title = substr($page_contents, $start, $end - $start);
@@ -258,7 +258,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                     if (is_object($_title)) {
                                         $struct['title'] = $_title;
                                     } else {
-                                        $struct['title'] = (preg_match('#^[A-Z\_]+$#', $_title) == 0) ? make_string_tempcode($_title) : do_lang_tempcode($_title);
+                                        $struct['title'] = (preg_match('#^[A-Z_]+$#', $_title) == 0) ? make_string_tempcode($_title) : do_lang_tempcode($_title);
                                     }
                                 }
                                 if ($entry_points['!'][1] !== null) {
@@ -283,7 +283,7 @@ class Hook_sitemap_page extends Hook_sitemap_base
                                     if (is_object($_title)) {
                                         $struct['title'] = $_title;
                                     } else {
-                                        $struct['title'] = (preg_match('#^[A-Z\_]+$#', $_title) == 0) ? make_string_tempcode($_title) : do_lang_tempcode($_title);
+                                        $struct['title'] = (preg_match('#^[A-Z_]+$#', $_title) == 0) ? make_string_tempcode($_title) : do_lang_tempcode($_title);
                                     }
                                 }
                                 if ($entry_points[$move_down_entry_point][1] !== null) {

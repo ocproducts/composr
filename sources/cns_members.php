@@ -167,7 +167,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
             $where .= ' AND (cf_show_on_join_form=' . strval($show_on_join_form);
             foreach ($adjusted_config_options as $config_option => $config_value) {
                 if ($config_value == '1') {
-                    if (preg_match('#^field\_\d+$#', $config_option) != 0) {
+                    if (preg_match('#^field_\d+$#', $config_option) != 0) {
                         $where .= ' OR id=' . substr($config_option, strlen('field_'));
                     }
                 }
@@ -175,7 +175,7 @@ function cns_get_all_custom_fields_match($groups = null, $public_view = null, $o
             $where .= ')';
             foreach ($adjusted_config_options as $config_option => $config_value) {
                 if ($config_value == '0') {
-                    if (preg_match('#^field\_\d+$#', $config_option) != 0) {
+                    if (preg_match('#^field_\d+$#', $config_option) != 0) {
                         $where .= ' AND id<>' . substr($config_option, strlen('field_'));
                     }
                 }
@@ -486,7 +486,7 @@ function cns_get_custom_fields_member($member_id)
     $row = cns_get_custom_field_mappings($member_id);
     $result = array();
     foreach ($row as $column => $val) {
-        if (preg_match('#^field\_\d+$#', $column) != 0) {
+        if (preg_match('#^field_\d+$#', $column) != 0) {
             $result[intval(substr($column, 6))] = $val;
         }
     }

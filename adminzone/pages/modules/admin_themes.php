@@ -551,7 +551,7 @@ class Module_admin_themes
             require_lang('config');
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('SETUPWIZARD')))));
             foreach ($settings as $setting) {
-                $fields->attach(form_input_line(titleify(preg_replace('#^setupwizard\_\_#', '', $setting)), '', $setting, get_theme_option($setting, null, $name), false));
+                $fields->attach(form_input_line(titleify(preg_replace('#^setupwizard__#', '', $setting)), '', $setting, get_theme_option($setting, null, $name), false));
             }
         }
 
@@ -566,7 +566,7 @@ class Module_admin_themes
             );
             $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('THEME_SETTING_SECTION', do_lang_tempcode('THEMEWIZARD')))));
             foreach ($settings as $setting) {
-                $fields->attach(form_input_line(titleify(preg_replace('#^themewizard\_\_#', '', $setting)), '', $setting, get_theme_option($setting, null, $name), false));
+                $fields->attach(form_input_line(titleify(preg_replace('#^themewizard__#', '', $setting)), '', $setting, get_theme_option($setting, null, $name), false));
             }
         }
 
@@ -1269,8 +1269,8 @@ class Module_admin_themes
 
                     $template_used = "(" . implode(', ', $all_previews__by_screen[$func]) . ")";
 
-                    $tpl_x = do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '1f27f619db553dfcb8d427e70a736226', 'URL' => $preview_url, 'COLOR' => 'green', 'TEMPLATE' => preg_replace('#^tpl_preview\_\_#', '', $func), 'LIST' => $template_used));
-                    if (preg_match('#^tpl_preview\_\_administrative\_\_#', $func) != 0) {
+                    $tpl_x = do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '1f27f619db553dfcb8d427e70a736226', 'URL' => $preview_url, 'COLOR' => 'green', 'TEMPLATE' => preg_replace('#^tpl_preview__#', '', $func), 'LIST' => $template_used));
+                    if (preg_match('#^tpl_preview__administrative__#', $func) != 0) {
                         $lis_admin->attach($tpl_x);
                     } else {
                         $lis->attach($tpl_x);

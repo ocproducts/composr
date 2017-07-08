@@ -100,7 +100,7 @@ function _password_censor($text, $scan_type = 1, $explicit_only = false)
 
                 // Strip tags, so these aren't considered for passwords
                 $m = preg_replace('#\[[^\]]+\]#', '', $m);
-                $m = preg_replace('#\<[^\>]+\>#', '', $m);
+                $m = preg_replace('#<[^>]+>#', '', $m);
 
                 // Strip brackets
                 $m = ltrim($m, '<[{(');

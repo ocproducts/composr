@@ -25,7 +25,7 @@ require_javascript('editing');
 if (count($_POST) != 0) {
     foreach (array_keys($_POST) as $key) {
         $matches = array();
-        if (preg_match('#^catalogue\_(existing|new)\_(\d*)$#', $key, $matches) != 0) {
+        if (preg_match('#^catalogue_(existing|new)_(\d*)$#', $key, $matches) != 0) {
             $catalogue = post_param_string('catalogue_' . $matches[1] . '_' . $matches[2], '');
             $days = post_param_string('days_' . $matches[1] . '_' . $matches[2], '');
             $label = post_param_string('label_' . $matches[1] . '_' . $matches[2], '');

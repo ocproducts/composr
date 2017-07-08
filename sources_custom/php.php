@@ -728,7 +728,7 @@ function test_fail_php_type_check($type, $function_name, $name, $value, $echo = 
         return;
     }
 
-    if ((is_string($value)) && (preg_match('#^[A-Z\_]+$#', $value) != 0)) {
+    if ((is_string($value)) && (preg_match('#^[A-Z_]+$#', $value) != 0)) {
         return;
     }
 

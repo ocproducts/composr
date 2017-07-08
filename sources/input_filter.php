@@ -332,8 +332,8 @@ function hard_filter_input_data__html(&$val, $lite = false)
 
     // Tag vectors
     $bad_tags = 'noscript|script|link|style|meta|iframe|frame|object|embed|applet|html|xml|body|head|form|base|layer|v:vmlframe|svg';
-    $val = preg_replace('#\<(' . $bad_tags . ')#i', '<span', $val); // Intentionally does not strip so as to avoid attacks like <<scriptscript --> <script
-    $val = preg_replace('#\</(' . $bad_tags . ')#i', '</span', $val);
+    $val = preg_replace('#<(' . $bad_tags . ')#i', '<span', $val); // Intentionally does not strip so as to avoid attacks like <<scriptscript --> <script
+    $val = preg_replace('#</(' . $bad_tags . ')#i', '</span', $val);
 
     // CSS attack vectors
     $val = preg_replace('#\\\\(\d+)#i', '${1}', $val); // CSS escaping

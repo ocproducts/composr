@@ -139,7 +139,7 @@ class Hook_ecommerce_bank
 
         require_lang('bank');
 
-        $amount = intval(preg_replace('#^BANK\_#', '', $type_code));
+        $amount = intval(preg_replace('#^BANK_#', '', $type_code));
 
         $member_id = intval($purchase_id);
 

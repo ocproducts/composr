@@ -941,18 +941,18 @@ function make_install_sql()
     }
 
     // Not with wrong table prefixes / multiple installs
-    if (preg_match('#CREATE TABLE cms\d+\_#', $contents) != 0) {
+    if (preg_match('#CREATE TABLE cms\d+_#', $contents) != 0) {
         warn_exit('install.sql: Contains a version-prefixed install');
     }
-    if (preg_match('#CREATE TABLE cms\_#', $contents) == 0) {
+    if (preg_match('#CREATE TABLE cms_#', $contents) == 0) {
         warn_exit('install.sql: Does not contain a standard-prefixed install');
     }
 
     // Not having been run
-    if (preg_match('#INSERT INTO cms\_cache#i', $contents) != 0) {
+    if (preg_match('#INSERT INTO cms_cache#i', $contents) != 0) {
         warn_exit('install.sql: Contains cache data');
     }
-    if (preg_match('#INSERT INTO cms\_stats#i', $contents) != 0) {
+    if (preg_match('#INSERT INTO cms_stats#i', $contents) != 0) {
         warn_exit('install.sql: Contains stat data - site should not have been loaded ever yet');
     }
 

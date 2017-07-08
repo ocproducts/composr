@@ -85,21 +85,21 @@ class lang_misc_test_set extends cms_test_case
     {
         $matches = array();
 
-        $num_matches = preg_match_all('#do\_lang\_tempcode\(\'([^\']*)\'[\),]#', $c, $matches);
+        $num_matches = preg_match_all('#do_lang_tempcode\(\'([^\']*)\'[\),]#', $c, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $str = $matches[1][$i];
             $this->process_str_reference($str, 'do_lang_tempcode', $file);
             $this->check_includes($c, $str, $file);
         }
 
-        $num_matches = preg_match_all('#do\_lang\(\'([^\']*)\'[\),]#', $c, $matches);
+        $num_matches = preg_match_all('#do_lang\(\'([^\']*)\'[\),]#', $c, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $str = $matches[1][$i];
             $this->process_str_reference($str, 'do_lang', $file);
             $this->check_includes($c, $str, $file);
         }
 
-        $num_matches = preg_match_all('#do\_notification\_lang\(\'([^\']*)\'[\),]#', $c, $matches);
+        $num_matches = preg_match_all('#do_notification_lang\(\'([^\']*)\'[\),]#', $c, $matches);
         for ($i = 0; $i < $num_matches; $i++) {
             $str = $matches[1][$i];
             $this->process_str_reference($str, 'do_lang', $file);

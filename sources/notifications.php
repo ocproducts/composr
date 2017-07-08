@@ -206,7 +206,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
  */
 function _get_notification_ob_for_code($notification_code)
 {
-    $path = 'hooks/systems/notifications/' . filter_naughty(preg_replace('#\_\_\w*$#', '', $notification_code));
+    $path = 'hooks/systems/notifications/' . filter_naughty(preg_replace('#__\w*$#', '', $notification_code));
     if ((!is_file(get_file_base() . '/sources/' . $path . '.php')) && (!is_file(get_file_base() . '/sources_custom/' . $path . '.php'))) {
         require_all_lang();
         $hooks = find_all_hook_obs('systems', 'notifications', 'Hook_notification_');
@@ -219,7 +219,7 @@ function _get_notification_ob_for_code($notification_code)
         }
     } else { // Ah, we know already (file exists directly) - so quick route
         require_code($path);
-        return object_factory('Hook_notification_' . filter_naughty(preg_replace('#\_\_\w*$#', '', $notification_code)));
+        return object_factory('Hook_notification_' . filter_naughty(preg_replace('#__\w*$#', '', $notification_code)));
     }
     return null;
     //return object_factory('Hook_Notification'); // default
@@ -950,7 +950,7 @@ class Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $codename = preg_replace('#^Hook\_Notification\_#', '', strtolower(get_class($this)));
+        $codename = preg_replace('#^Hook_Notification_#', '', strtolower(get_class($this)));
         $list[$codename] = array(do_lang('GENERAL'), do_lang('NOTIFICATION_TYPE_' . $codename));
         return $list;
     }
@@ -1311,7 +1311,7 @@ class Hook_notification__Staff extends Hook_Notification
     public function list_handled_codes()
     {
         $list = array();
-        $codename = preg_replace('#^Hook\_Notification\_#', '', strtolower(get_class($this)));
+        $codename = preg_replace('#^Hook_Notification_#', '', strtolower(get_class($this)));
         $list[$codename] = array(do_lang('STAFF'), do_lang('NOTIFICATION_TYPE_' . $codename));
         return $list;
     }

@@ -110,7 +110,7 @@ class Hook_ecommerce_giftr
      */
     public function is_available($type_code, $member_id, $req_quantity = 1, $must_be_listed = false)
     {
-        $gift_id = intval(preg_replace('#^GIFTR\_#', '', $type_code));
+        $gift_id = intval(preg_replace('#^GIFTR_#', '', $type_code));
         $rows = $GLOBALS['SITE_DB']->query_select('giftr', array('*'), array('id' => $gift_id), '', 1);
         if (!array_key_exists(0, $rows)) {
             return ECOMMERCE_PRODUCT_MISSING;
@@ -178,7 +178,7 @@ class Hook_ecommerce_giftr
 
         require_lang('giftr');
 
-        $gift_id = intval(preg_replace('#^GIFTR\_#', '', $type_code));
+        $gift_id = intval(preg_replace('#^GIFTR_#', '', $type_code));
 
         $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
         list($from_member_id, $to_member, $gift_message, $anonymous) = json_decode($e_details);

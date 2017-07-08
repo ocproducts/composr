@@ -125,7 +125,7 @@ function block_helper_script()
             if (array_key_exists($block, $addons_blocks)) {
                 $addon_name = $addons_blocks[$block];
                 $addon_icon = array_key_exists($addon_name, $addon_icons) ? $addon_icons[$addon_name] : null;
-                $addon_name = preg_replace('#^core\_#', '', $addon_name);
+                $addon_name = preg_replace('#^core_#', '', $addon_name);
             } else {
                 $addon_name = null;
                 $addon_icon = null;
@@ -311,14 +311,14 @@ function block_helper_script()
                     $dh = opendir(get_file_base() . '/themes/default/templates/');
                     $options = array();
                     while (($file = readdir($dh)) !== false) {
-                        if (preg_match('^MENU\_([a-z]+)\.tpl$^', $file, $matches) != 0) {
+                        if (preg_match('^MENU_([a-z]+)\.tpl$^', $file, $matches) != 0) {
                             $options[] = $matches[1];
                         }
                     }
                     closedir($dh);
                     $dh = opendir(get_custom_file_base() . '/themes/default/templates_custom/');
                     while (($file = readdir($dh)) !== false) {
-                        if ((preg_match('^MENU\_([a-z]+)\.tpl$^', $file, $matches) != 0) && (!file_exists(get_file_base() . '/themes/default/templates/' . $file))) {
+                        if ((preg_match('^MENU_([a-z]+)\.tpl$^', $file, $matches) != 0) && (!file_exists(get_file_base() . '/themes/default/templates/' . $file))) {
                             $options[] = $matches[1];
                         }
                     }

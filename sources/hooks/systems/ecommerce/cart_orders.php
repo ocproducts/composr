@@ -53,7 +53,7 @@ class Hook_ecommerce_cart_orders
         require_lang('shopping');
 
         if ($search !== null) {
-            if (preg_match('#^CART\_ORDER\_\d+$#', $search) == 0) {
+            if (preg_match('#^CART_ORDER_\d+$#', $search) == 0) {
                 return array();
             }
             $where = 'id=' . strval(intval(substr($search, strlen('CART_ORDER_'))));
@@ -162,7 +162,7 @@ class Hook_ecommerce_cart_orders
         require_code('shopping');
         require_lang('shopping');
 
-        $order_id = intval(preg_replace('#^CART\_ORDER\_#', '', $type_code));
+        $order_id = intval(preg_replace('#^CART_ORDER_#', '', $type_code));
 
         if ($details['STATUS'] == 'Completed') {
             // Insert sale

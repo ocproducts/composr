@@ -108,7 +108,7 @@ function wysiwyg_comcode_markup_style($tag, $attributes = null, $embed = null, $
 
     $_button_edited_tags = $BUTTON_EDITED_TAGS;
 
-    if (($tag == 'attachment_safe') && ($embed !== null) && (preg_match('#^new\_\d+$#', $embed->evaluate()) != 0)) {
+    if (($tag == 'attachment_safe') && ($embed !== null) && (preg_match('#^new_\d+$#', $embed->evaluate()) != 0)) {
         $_button_edited_tags['attachment_safe'] = true;
     } else {
         if ((isset($REVERSIBLE_TAGS[$tag])) && (is_bool($REVERSIBLE_TAGS[$tag]))) {

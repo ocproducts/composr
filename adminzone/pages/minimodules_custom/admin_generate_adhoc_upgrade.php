@@ -154,10 +154,10 @@ if ($type == 'auto_probe') {
 
                         if (substr($file, -4) == '.php') {
                             $matches = array();
-                            if (preg_match('#\n(\t*)function install(\_cns)?\([^\n]*\)\n\\1\{\n(.*)\n\\1\}#sU', $old, $matches) != 0) {
+                            if (preg_match('#\n(\t*)function install(_cns)?\([^\n]*\)\n\\1\{\n(.*)\n\\1\}#sU', $old, $matches) != 0) {
                                 $old_install_code = $matches[3];
                                 $new_install_code = '';
-                                if (preg_match('#\n(\t*)function install(\_cns)?\([^\n]*\)\n\\1\{\n(.*)\n\\1\}#sU', $new, $matches) != 0) {
+                                if (preg_match('#\n(\t*)function install(_cns)?\([^\n]*\)\n\\1\{\n(.*)\n\\1\}#sU', $new, $matches) != 0) {
                                     $new_install_code = $matches[3];
                                 }
                                 if ($new_install_code != $old_install_code) {
@@ -243,7 +243,7 @@ if ($type == 'go') {
                         $new = file_get_contents(get_file_base() . '/' . $file);
                         if (($probe_dir == '') || ($old !== $new)) {
                             $new_filename = $file;
-                            if (((preg_match('#^(lang)\_custom/#', $file) != 0) || (strpos($old, 'CUSTOMISED FOR PROJECT') !== false)) && (($probe_dir == '') || ($old != ''))) {
+                            if (((preg_match('#^(lang)_custom/#', $file) != 0) || (strpos($old, 'CUSTOMISED FOR PROJECT') !== false)) && (($probe_dir == '') || ($old != ''))) {
                                 $new_filename .= '.quarantine';
                             }
                             if (!isset($done[$new_filename])) {

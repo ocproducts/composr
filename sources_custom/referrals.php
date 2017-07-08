@@ -422,7 +422,7 @@ function referrer_is_qualified($scheme, $member_id)
         foreach (array_keys($scheme) as $key) {
             $matches = array();
 
-            if (preg_match('#^referrer\_qualified\_for\_\_purchase\_(.+)$#', $key, $matches) != 0) {
+            if (preg_match('#^referrer_qualified_for__purchase_(.+)$#', $key, $matches) != 0) {
                 $sql = 'SELECT o.id FROM ' . get_table_prefix() . 'shopping_orders o JOIN ' . get_table_prefix() . 'shopping_order_details d ON o.id=d.p_order_id WHERE ' . db_string_equal_to('p_type_code', $matches[1]) . ' AND member_id=' . strval($member_id) . ' AND (' . db_string_equal_to('order_status', 'payment_received') . ' OR ' . db_string_equal_to('order_status', 'dispatched') . ')';
                 if ($GLOBALS['SITE_DB']->query_value_if_there($sql) !== null) {
                     $positive++;

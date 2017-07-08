@@ -537,7 +537,7 @@ function do_search_block($map)
 
     $options = array();
     if ((count($limit_to) == 1) && ($limit_to[0] != 'all_defaults')) { // If we are doing a specific hook
-        $id = preg_replace('#^search\_#', '', $limit_to[0]);
+        $id = preg_replace('#^search_#', '', $limit_to[0]);
 
         require_code('hooks/modules/search/' . filter_naughty($id));
         $object = object_factory('Hook_search_' . $id);

@@ -680,7 +680,7 @@ abstract class Resource_fs_base
     {
         $name = strtolower($label);
         $name = preg_replace('#[^\w\.\-]#', '_', $name);
-        $name = preg_replace('#\_+\$#', '', $name);
+        $name = preg_replace('#_+\$#', '', $name);
         if ($name == '') {
             $name = 'unnamed';
         }

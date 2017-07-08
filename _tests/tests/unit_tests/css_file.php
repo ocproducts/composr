@@ -93,7 +93,7 @@ class css_file_test_set extends cms_test_case
 
                     $contents = file_get_contents($dir . '/' . $e);
                     $matches = array();
-                    $found = preg_match_all('#\.([a-z][a-z_\d\-]*)[ ,:]#i', $contents, $matches);
+                    $found = preg_match_all('#\.([a-z][\w\-]*)[ ,:]#i', $contents, $matches);
                     for ($i = 0; $i < $found; $i++) {
                         if ($matches[1][$i] != 'txt') {
                             $out[] = $matches[1][$i];

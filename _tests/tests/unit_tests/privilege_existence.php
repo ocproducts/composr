@@ -43,7 +43,7 @@ class privilege_existence_test_set extends cms_test_case
             if ($file_type == 'php') {
                 $c = file_get_contents(get_file_base() . '/' . $f);
 
-                $num_matches = preg_match_all('#add\_privilege\(\'[^\']+\', \'([^\']+)\'#', $c, $matches);
+                $num_matches = preg_match_all('#add_privilege\(\'[^\']+\', \'([^\']+)\'#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $privilege = $matches[1][$i];
 
@@ -62,7 +62,7 @@ class privilege_existence_test_set extends cms_test_case
             if ($file_type == 'php') {
                 $c = file_get_contents(get_file_base() . '/' . $f);
 
-                $num_matches = preg_match_all('#has\_privilege\((get_member\(\)|\$\w+), \'([^\']+)\'\)#', $c, $matches);
+                $num_matches = preg_match_all('#has_privilege\((get_member\(\)|\$\w+), \'([^\']+)\'\)#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $privilege = $matches[2][$i];
 
@@ -75,7 +75,7 @@ class privilege_existence_test_set extends cms_test_case
                     $done_privileges[$privilege] = true;
                 }
 
-                $num_matches = preg_match_all('#has\_(actual\_)?page\_access\((get_member\(\)|\$\w+), \'([^\']+)\'\)#', $c, $matches);
+                $num_matches = preg_match_all('#has_(actual_)?page_access\((get_member\(\)|\$\w+), \'([^\']+)\'\)#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $page = $matches[3][$i];
 
@@ -88,7 +88,7 @@ class privilege_existence_test_set extends cms_test_case
                     $done_pages[$page] = true;
                 }
 
-                $num_matches = preg_match_all('#get\_(page|module)\_zone\(\'([^\']+)\'\)#', $c, $matches);
+                $num_matches = preg_match_all('#get_(page|module)_zone\(\'([^\']+)\'\)#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $page = $matches[2][$i];
 
@@ -105,7 +105,7 @@ class privilege_existence_test_set extends cms_test_case
             if ($file_type == 'tpl' || $file_type == 'txt') {
                 $c = file_get_contents(get_file_base() . '/' . $f);
 
-                $num_matches = preg_match_all('#\{\$HAS\_PRIVILEGE,(\w+)\}#', $c, $matches);
+                $num_matches = preg_match_all('#\{\$HAS_PRIVILEGE,(\w+)\}#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $privilege = $matches[1][$i];
 
@@ -118,7 +118,7 @@ class privilege_existence_test_set extends cms_test_case
                     $done_privileges[$privilege] = true;
                 }
 
-                $num_matches = preg_match_all('#\{\$HAS\_(ACTUAL\_)?PAGE\_ACCESS,(\w+)\}#', $c, $matches);
+                $num_matches = preg_match_all('#\{\$HAS_(ACTUAL_)?PAGE_ACCESS,(\w+)\}#', $c, $matches);
                 for ($i = 0; $i < $num_matches; $i++) {
                     $page = $matches[2][$i];
 

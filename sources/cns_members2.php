@@ -36,7 +36,7 @@
 function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select, $filter_key, $field_val, $db_fields, $table_join_code)
 {
     // If it's trivial
-    if (($filter_key == 'id') || (preg_match('#^m\_\w+$#', $filter_key) != 0)) {
+    if (($filter_key == 'id') || (preg_match('#^m_\w+$#', $filter_key) != 0)) {
         if (!array_key_exists($filter_key, $db_fields)) {
             return null;
         }
@@ -63,7 +63,7 @@ function _members_filtercode($db, $info, $context, &$extra_join, &$extra_select,
         }
 
         return array($new_filter_key, '', $field_val);
-    } elseif (preg_match('#^field\_\d+$#', $filter_key) == 0) { // If it's not already correct
+    } elseif (preg_match('#^field_\d+$#', $filter_key) == 0) { // If it's not already correct
         require_code('cns_members');
         $cpf_id = find_cpf_field_id($filter_key);
         if ($cpf_id === null) {

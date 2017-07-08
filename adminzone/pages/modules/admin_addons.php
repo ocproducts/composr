@@ -670,7 +670,7 @@ class Module_admin_addons
             $addon_info = read_addon_info($name);
 
             // Archive it off to exports/addons
-            $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '.tar';
+            $file = preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '.tar';
             create_addon(
                 $file,
                 $addon_info['files'],
@@ -815,7 +815,7 @@ class Module_admin_addons
         $addon_info = read_addon_info($name);
 
         // Archive it off to exports/addons
-        $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '.tar';
+        $file = preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', $name)) . '.tar';
 
         $new_addon_files = array();
         foreach ($addon_info['files'] as $_file) {
@@ -1156,7 +1156,7 @@ class Module_admin_addons
     {
         appengine_live_guard();
 
-        $file = preg_replace('#^[\_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', post_param_string('name'))) . date('-dmY-Hm', time()) . '.tar';
+        $file = preg_replace('#^[_\.\-]#', 'x', preg_replace('#[^\w\.\-]#', '_', post_param_string('name'))) . date('-dmY-Hm', time()) . '.tar';
 
         $files = array();
         foreach ($_POST as $key => $val) {

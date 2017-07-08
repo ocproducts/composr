@@ -198,7 +198,7 @@ class Hook_ecommerce_topic_pin
 
         require_lang('cns');
 
-        $days = intval(preg_replace('#^TOPIC_PIN_\_#', '', $type_code));
+        $days = intval(preg_replace('#^TOPIC_PIN__#', '', $type_code));
 
         list($member_id, $topic_id) = json_decode($purchase_id);
 

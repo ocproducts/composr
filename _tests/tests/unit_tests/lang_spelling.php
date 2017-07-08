@@ -113,7 +113,7 @@ class lang_spelling_test_set extends cms_test_case
         }
 
         // Hyphen wanted (we want our canonical way)
-        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) != 0) && (($key === null) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false) && (basename($file) != 'tut_facebook.txt')) {
+        if ((preg_match('#([^\[\]\|"\'/_])email#', $string, $matches) != 0) && (($key === null) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false) && (basename($file) != 'tut_facebook.txt')) {
             $prefix = $matches[1];
             $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'e-mail\'.');
         }
@@ -129,7 +129,7 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'meta tree') !== false) {
             $this->assertTrue(false, 'The phrase \'meta tree\' was used in ' . $file . '. This should be changed to \'meta-tree\'.');
         }
-        if (preg_match('#([^\[\]<>\|"\'/\_])popup#', $string, $matches) != 0) {
+        if (preg_match('#([^\[\]<>\|"\'/_])popup#', $string, $matches) != 0) {
             $this->assertTrue(false, 'The phrase \'popup\' was used in ' . $file . '. This should be changed to \'pop-up\'.');
         }
         if ((preg_match('#[^e]built in[^t]#', $string) != 0) && (strpos($string, 'in a ') === false)) {
@@ -193,7 +193,7 @@ class lang_spelling_test_set extends cms_test_case
         if ((stripos($string, 'unvalidated') !== false) && ($file !== 'tut_addon_index.txt') && ($file !== 'sup_set_up_a_workflow_in_composr.txt')) {
             $this->assertTrue(false, 'The word \'unvalidated\' was used in ' . $file . '. This should be changed to \'non-validated\'.');
         }
-        if (preg_match('#([^\]/A-Za-z"\_<]+)comcode([^A-Za-z"]+)#', $string) != 0) {
+        if (preg_match('#([^\]/A-Za-z"_<]+)comcode([^A-Za-z"]+)#', $string) != 0) {
             $this->assertTrue(false, 'The term \'comcode\' was used in ' . $file . '. This should be changed to \'Comcode\'.');
         }
         if (strpos($string, 'wiki+') !== false) {
@@ -214,10 +214,10 @@ class lang_spelling_test_set extends cms_test_case
         if (preg_match('#([^/\.A-Za-z]+)tar([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The filetype \'tar\' was used in ' . $file . '. This should be changed to \'TAR\'.');
         }
-        if ((preg_match('#([^/\_\-\.A-Za-z]+)zip([^A-Za-z]+)#', $string) != 0) && (($key === null) || (!in_array($key, array('ZIP_NEEDED_FOR_USA', 'INVALID_ZIP_FOR_USA', 'CONFIG_OPTION_business_post_code'))))) {
+        if ((preg_match('#([^/_\-\.A-Za-z]+)zip([^A-Za-z]+)#', $string) != 0) && (($key === null) || (!in_array($key, array('ZIP_NEEDED_FOR_USA', 'INVALID_ZIP_FOR_USA', 'CONFIG_OPTION_business_post_code'))))) {
             $this->assertTrue(false, 'The filetype \'zip\' was used in ' . $file . '. This should be changed to \'ZIP\'.');
         }
-        if (preg_match('#([^\]/A-Za-z"\_<]+)internet#', $string) != 0) {
+        if (preg_match('#([^\]/A-Za-z"_<]+)internet#', $string) != 0) {
             $this->assertTrue(false, 'The term \'internet\' was used in ' . $file . '. This should be changed to \'Internet\'.');
         }
         if (stripos($string, 'e-commerce') !== false) {
@@ -318,13 +318,13 @@ class lang_spelling_test_set extends cms_test_case
         if (preg_match('#([^A-Za-z]>+)id([^A-Za-z=<]+)#', $string) != 0) {
             $this->assertTrue(false, 'The acronym \'id\' was used in ' . $file . '. This should be changed to \'ID\'.');
         }
-        if (preg_match('#([^\$:\_A-Za-z\[\]></\']+)url([^\}\(A-Za-z=\']+)#', $string, $matches) != 0) {
+        if (preg_match('#([^\$:_A-Za-z\[\]></\']+)url([^\}\(A-Za-z=\']+)#', $string, $matches) != 0) {
             $prefix = $matches[1];
             if ($prefix != '="') {
                 $this->assertTrue(false, 'The acronym \'url\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'URL\'.');
             }
         }
-        if (preg_match('#([^\]/A-Za-z"\_<]+)thankyou#i', $string) != 0) {
+        if (preg_match('#([^\]/A-Za-z"_<]+)thankyou#i', $string) != 0) {
             $this->assertTrue(false, 'The word \'thankyou\' was used in ' . $file . '. This should be changed to \'thank you\'.');
         }
 

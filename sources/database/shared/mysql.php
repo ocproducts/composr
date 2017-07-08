@@ -350,7 +350,7 @@ class Database_super_mysql extends DatabaseDriver
             $charset = 'utf8';
         }
 
-        $query .= ' CHARACTER SET=' . preg_replace('#\_.*$#', '', $charset);
+        $query .= ' CHARACTER SET=' . preg_replace('#_.*$#', '', $charset);
 
         $query .= ' ' . $type_key . '=' . $table_type;
 

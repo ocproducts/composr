@@ -194,7 +194,7 @@ class Hook_ecommerce_banners
             }
         }
 
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
                 if ($banner_name !== null) {
                     return ECOMMERCE_PRODUCT_ALREADY_HAS;
@@ -225,7 +225,7 @@ class Hook_ecommerce_banners
      */
     public function get_message($type_code)
     {
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
                 return do_lang_tempcode('BANNERS_INTRO', escape_html(integer_format(intval(get_option('initial_banner_hits')))));
 
@@ -251,7 +251,7 @@ class Hook_ecommerce_banners
         require_code('banners');
         require_code('banners2');
 
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
                 list($fields, $javascript) = get_banner_form_fields(true);
                 break;
@@ -280,7 +280,7 @@ class Hook_ecommerce_banners
     {
         require_lang('banners');
 
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
                 $member_id = get_member();
 
@@ -333,7 +333,7 @@ class Hook_ecommerce_banners
         require_code('banners');
         require_code('banners2');
 
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
                 $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
                 list($member_id, $name, $image_url, $site_url, $caption, $direct_code, $notes) = json_decode($e_details);
@@ -368,7 +368,7 @@ class Hook_ecommerce_banners
                 break;
 
             case 'BANNER_UPGRADE_HITS':
-                $extrahit = intval(preg_replace('#^BANNER\_UPGRADE\_HITS\_#', '', $type_code));
+                $extrahit = intval(preg_replace('#^BANNER_UPGRADE_HITS_#', '', $type_code));
                 $member_id = intval($purchase_id);
                 $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'BANNER_ACTIVATE'));
                 $curhit = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'campaign_remaining', array('name' => $banner_name));
@@ -383,7 +383,7 @@ class Hook_ecommerce_banners
                 break;
 
             case 'BANNER_UPGRADE_IMPORTANCE':
-                $extraimp = intval(preg_replace('#^BANNER\_UPGRADE\_IMPORTANCE\_#', '', $type_code));
+                $extraimp = intval(preg_replace('#^BANNER_UPGRADE_IMPORTANCE_#', '', $type_code));
                 $member_id = intval($purchase_id);
                 $banner_name = $GLOBALS['SITE_DB']->query_select_value_if_there('ecom_sales s JOIN ' . get_table_prefix() . 'ecom_transactions t ON t.id=s.txn_id', 'details2', array('details' => do_lang('BANNER', null, null, null, get_site_default_lang()), 'member_id' => $member_id, 't_type_code' => 'BANNER_ACTIVATE'));
                 $curimp = $GLOBALS['SITE_DB']->query_select_value_if_there('banners', 'importance_modulus', array('name' => $banner_name));
@@ -410,7 +410,7 @@ class Hook_ecommerce_banners
      */
     public function member_for($type_code, $purchase_id)
     {
-        switch (preg_replace('#\_\d+$#', '', $type_code)) {
+        switch (preg_replace('#_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
                 $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
                 list($member_id) = json_decode($e_details);

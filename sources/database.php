@@ -1331,7 +1331,7 @@ class DatabaseConnector
                             break; // Bad API call, but we'll let it fail naturally
                         }
 
-                        if (preg_match('#^[A-Za-z\_\*]+$#', $s) !== 0) {
+                        if (preg_match('#^[A-Za-z_\*]+$#', $s) !== 0) {
                             $select[$i] = 'main.' . $s;
                         }
                     }
@@ -1341,7 +1341,7 @@ class DatabaseConnector
                             break; // Bad API call, but we'll let it fail naturally
                         }
 
-                        if (preg_match('#^[A-Za-z\_]+$#', $i) !== 0) {
+                        if (preg_match('#^[A-Za-z_]+$#', $i) !== 0) {
                             unset($where_map[$i]);
                             $where_map['main.' . $i] = $s;
                         }

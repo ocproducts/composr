@@ -158,7 +158,7 @@ function is_plupload($fake_prepopulation = false)
             $key = strval($key);
         }
 
-        if ((preg_match('#^hidFileID\_#i', $key) != 0) && ($value != '-1')) {
+        if ((preg_match('#^hidFileID_#i', $key) != 0) && ($value != '-1')) {
             // Get the incoming uploads appropiate database table row
             if (substr($value, -4) == '.dat') { // By .dat name
                 $filename = post_param_string(str_replace('hidFileID', 'hidFileName', $key), '');
@@ -189,7 +189,7 @@ function is_plupload($fake_prepopulation = false)
                                 if (!$done_fake_prepopulation) {
                                     $new_key = $key;
                                     $matches = array();
-                                    if (preg_match('#^hidFileID\_(.*)(\d+)$#', $key, $matches) != 0) {
+                                    if (preg_match('#^hidFileID_(.*)(\d+)$#', $key, $matches) != 0) {
                                         $new_key = $matches[1] . strval(intval($matches[2]) + $rolling_offset);
                                     } else {
                                         $new_key = substr($key, 10);

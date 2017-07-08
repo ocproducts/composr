@@ -2620,7 +2620,7 @@ function handle_self_referencing_embedment()
                     } else {
                         $file = file_get_contents(get_file_base() . '/themes/default/css/' . $css_file . '.css');
                     }
-                    $file = preg_replace('#\{\$IMG;?\,([^,\}\']+)\}#', 'install.php?type=themes/default/images/${1}.png', $file);
+                    $file = preg_replace('#\{\$IMG;?,([^,\}\']+)\}#', 'install.php?type=themes/default/images/${1}.png', $file);
 
                     require_code('tempcode_compiler');
                     $css = template_to_tempcode($file, 0, false, '');
@@ -2637,7 +2637,7 @@ function handle_self_referencing_embedment()
                     } else {
                         $file = file_get_contents(get_file_base() . '/themes/default/css/install.css');
                     }
-                    $file = preg_replace('#\{\$IMG\,([^,\}\']+)\}#', 'themes/default/images/${1}.png', $file);
+                    $file = preg_replace('#\{\$IMG,([^,\}\']+)\}#', 'themes/default/images/${1}.png', $file);
 
                     require_code('tempcode_compiler');
                     $css = template_to_tempcode($file, 0, false, '');

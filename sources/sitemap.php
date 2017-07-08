@@ -559,7 +559,7 @@ abstract class Hook_sitemap_base
             if (($options & SITEMAP_GEN_LABEL_CONTENT_TYPES) == 0) {
                 if ($title !== null) {
                     if (is_string($title)) {
-                        $title = (preg_match('#^[A-Z\_]+$#', $title) == 0) ? make_string_tempcode($title) : do_lang_tempcode($title);
+                        $title = (preg_match('#^[A-Z_]+$#', $title) == 0) ? make_string_tempcode($title) : do_lang_tempcode($title);
                     }
 
                     if (!$title->is_empty()) {
@@ -570,7 +570,7 @@ abstract class Hook_sitemap_base
 
             if ($description !== null) {
                 if (is_string($description)) {
-                    $description = (preg_match('#^[A-Z\_]+$#', $description) == 0) ? make_string_tempcode($description) : comcode_lang_string($description);
+                    $description = (preg_match('#^[A-Z_]+$#', $description) == 0) ? make_string_tempcode($description) : comcode_lang_string($description);
                 }
 
                 if (($meta_gather & SITEMAP_GATHER_DESCRIPTION) != 0) {

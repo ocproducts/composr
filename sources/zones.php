@@ -1298,7 +1298,7 @@ function apply_quick_caching($_cache)
 //    }
 
     $matches = array();
-    $num_matches = preg_match_all('#(((\?)|(&(amp;)?))keep\_[^="\']*=[^&"\']*)+#', $cache, $matches, PREG_OFFSET_CAPTURE); // We assume that the keep_* parameters always come last, which holds true in Composr
+    $num_matches = preg_match_all('#(((\?)|(&(amp;)?))keep_[^="\']*=[^&"\']*)+#', $cache, $matches, PREG_OFFSET_CAPTURE); // We assume that the keep_* parameters always come last, which holds true in Composr
     for ($i = 0; $i < $num_matches; $i++) {
         $new_offset = $matches[0][$i][1];
 
@@ -1678,7 +1678,7 @@ function extract_module_functions($path, $functions, $params = array(), $prefer_
             if (!HHVM && $class_name === null) {
                 $classes_before = get_declared_classes();
             }
-            $require_path = preg_replace('#^' . preg_quote(get_file_base()) . '/#', '', preg_replace('#^' . preg_quote(get_file_base()) . '/((sources)|(sources\_custom))/(.*)\.php#', '${4}', $path));
+            $require_path = preg_replace('#^' . preg_quote(get_file_base()) . '/#', '', preg_replace('#^' . preg_quote(get_file_base()) . '/((sources)|(sources_custom))/(.*)\.php#', '${4}', $path));
             require_code($require_path);
             if (!HHVM && $class_name === null) {
                 $classes_after = get_declared_classes();

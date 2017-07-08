@@ -104,7 +104,7 @@ function adminzone_extended_breadcrumbs()
         $hooks = find_all_hooks('systems', 'page_groupings');
         $_hooks = array();
         $page_looking = $page;
-        $page_looking = preg_replace('#^(cms|admin)\_#', '', $page_looking);
+        $page_looking = preg_replace('#^(cms|admin)_#', '', $page_looking);
         if (array_key_exists($page_looking, $hooks)) {
             $_hooks[$page_looking] = $hooks[$page_looking];
             unset($hooks[$page_looking]);

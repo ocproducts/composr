@@ -274,7 +274,7 @@ function _css_compile($active_theme, $theme, $c, $full_path, $minify = true)
     $CSS_COMPILE_ACTIVE_THEME = $active_theme;
 
     // Support @ocp_include preprocessing commands
-    $out = preg_replace_callback('#\@cms\_include\(\'?(\w+)/(\w+)/(\w+)\'?\);#', '_css_cms_include', $out);
+    $out = preg_replace_callback('#\@cms_include\(\'?(\w+)/(\w+)/(\w+)\'?\);#', '_css_cms_include', $out);
 
     // Strip empty comments (would have encapsulated Tempcode comments)
     $out = preg_replace('#/\*\s*\*/#', '', $out);

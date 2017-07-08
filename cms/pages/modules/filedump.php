@@ -1411,7 +1411,7 @@ class Module_filedump
 
         foreach (array_keys($_POST) as $key) {
             $matches = array();
-            if (preg_match('#^to\_(\d+)$#', $key, $matches) != 0) {
+            if (preg_match('#^to_(\d+)$#', $key, $matches) != 0) {
                 $from = post_param_string('from_' . $matches[1]);
                 $to = post_param_string('to_' . $matches[1]);
                 if ($to != '') {

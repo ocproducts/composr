@@ -188,7 +188,7 @@ class Hook_upload_syndication_photobucket
             $api = $this->_get_api();
             $success = $this->_login();
 
-            $remote_gallery_name = preg_replace('#[^A-Za-z\d\_\- ]#', '', get_site_name());
+            $remote_gallery_name = preg_replace('#[^A-Za-z\d_\- ]#', '', get_site_name());
             $call_params = array(
                 'name' => $remote_gallery_name,
             );

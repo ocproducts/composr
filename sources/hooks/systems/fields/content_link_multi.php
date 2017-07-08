@@ -101,7 +101,7 @@ class Hook_fields_content_link_multi
             return '';
         }
 
-        $type = preg_replace('#^choose\_#', '', substr($field['cf_type'], 3));
+        $type = preg_replace('#^choose_#', '', substr($field['cf_type'], 3));
 
         $out = array();
         $evs = explode("\n", $ev);

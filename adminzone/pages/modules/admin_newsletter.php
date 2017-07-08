@@ -866,7 +866,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $matches = array();
 
         // Confirm screen for removal
-        if (preg_match('#^remove\_existing\_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
+        if (preg_match('#^remove_existing_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
             $hidden = new Tempcode();
             $hidden->attach(form_input_hidden('periodic_choice', 'periodic_remove_confirmed_' . $matches[1]));
             return do_template('PERIODIC_NEWSLETTER_REMOVE', array(
@@ -877,7 +877,7 @@ class Module_admin_newsletter extends Standard_crud_module
             ));
         }
         // Actualiser for removal
-        if (preg_match('#^periodic\_remove\_confirmed\_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
+        if (preg_match('#^periodic_remove_confirmed_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
             delete_periodic_newsletter(intval($matches[1]));
 
             // We redirect back to the admin_newsletter main page
@@ -919,7 +919,7 @@ class Module_admin_newsletter extends Standard_crud_module
         $periodic_action_raw = post_param_string('periodic_choice', '');
         $periodic_subject = '';
         $defaults = mixed();
-        switch (preg_replace('#\_\d+$#', '', $periodic_action_raw)) {
+        switch (preg_replace('#_\d+$#', '', $periodic_action_raw)) {
             case 'remove_existing':
                 // Remove whatever is already set. We don't need any changes for
                 // this, but we do need a hidden form field.
@@ -1066,7 +1066,7 @@ class Module_admin_newsletter extends Standard_crud_module
                 }
 
                 $matches = array();
-                if ((preg_match('#^result\_\_member_(\d+)$#', $post_key, $matches) != 0) && (post_param_integer($post_key, 0) == 1)) {
+                if ((preg_match('#^result__member_(\d+)$#', $post_key, $matches) != 0) && (post_param_integer($post_key, 0) == 1)) {
                     $member_id = intval($matches[1]);
                     $_csv_data[] = array($GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id), $GLOBALS['FORUM_DRIVER']->get_username($member_id), 'm' . strval($member_id));
                 }
@@ -1404,7 +1404,7 @@ class Module_admin_newsletter extends Standard_crud_module
             }
 
             $matches = array();
-            if (preg_match('#^replace_existing\_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
+            if (preg_match('#^replace_existing_(\d+)$#', post_param_string('periodic_choice', ''), $matches) != 0) {
                 $last_sent = null;
                 if (post_param_string('periodic_for') != 'future') {
                     $last_sent = 0;

@@ -70,7 +70,7 @@ class Hook_commandr_command_find_entry_points
                                     if (is_object($val)) {
                                         $_title = $val;
                                     } else {
-                                        $_title = (preg_match('#^[A-Z\_]+$#', $val) == 0) ? $val : do_lang($val);
+                                        $_title = (preg_match('#^[A-Z_]+$#', $val) == 0) ? $val : do_lang($val);
                                     }
 
                                     $entry_points[$page_link] = $_title;

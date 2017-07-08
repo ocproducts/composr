@@ -568,7 +568,7 @@ class PHP_Crossword
 	function insertWord($word, $question)
 	{
 		$word = trim($word);
-		$word = preg_replace("/[\_\'\"\%\*\+\\\\\/\[\]\(\)\.\{\}\$\^\,\<\>\;\:\=\?\#\-]/", '', $word);
+		$word = preg_replace("/[_'\"%\*\+\\\\\/\[\]\(\)\.\{\}\$\^,<>;:=\?\#\-]/", '', $word);
 		if (empty($word)) return FALSE;
 		if ($this->existsWord($word)) return FALSE;
 

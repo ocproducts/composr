@@ -340,7 +340,7 @@ class template_previews_test_set extends cms_test_case
             $code = file_get_contents(get_file_base() . '/' . $place . '/hooks/systems/addon_registry/' . $hook . '.php');
 
             $matches = array();
-            $num_matches = preg_match_all('#function tpl\_preview\_\_(.*)\(#U', $code, $matches);
+            $num_matches = preg_match_all('#function tpl_preview__(.*)\(#U', $code, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 $this->assertTrue(in_array($matches[1][$i], $used), 'Non-used screen function ' . $matches[1][$i]);
             }

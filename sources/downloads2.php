@@ -744,7 +744,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
             }
         // intentionally rolls on...
         case 'xml':
-            $mash = str_replace('&apos;', '\'', str_replace(' false ', ' ', str_replace(' true ', ' ', @html_entity_decode(preg_replace('#\<[^\<\>]*\>#', ' ', $data), ENT_QUOTES, get_charset()))));
+            $mash = str_replace('&apos;', '\'', str_replace(' false ', ' ', str_replace(' true ', ' ', @html_entity_decode(preg_replace('#<[^<>]*>#', ' ', $data), ENT_QUOTES, get_charset()))));
             $mash = preg_replace('#Error : Bad \w+#', '', $mash);
             break;
         case 'xls':

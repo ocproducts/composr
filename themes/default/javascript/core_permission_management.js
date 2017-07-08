@@ -130,7 +130,7 @@
                     for (k = 0; k < ths.length; k++) cells.push(ths[k]);
                     for (k = 0; k < tds.length; k++) cells.push(tds[k]);
                     for (k = 0; k < cells.length; k++) {
-                        if ((cells[k].className.match(/(^|\s)privilege\_header($|\s)/)) || (cells[k].className.match(/(^|\s)privilege\_footer($|\s)/)) || (cells[k].className.match(/(^|\s)privilege\_cell($|\s)/))) {
+                        if ((cells[k].className.match(/(^|\s)privilege_header($|\s)/)) || (cells[k].className.match(/(^|\s)privilege_footer($|\s)/)) || (cells[k].className.match(/(^|\s)privilege_cell($|\s)/))) {
                             cells[k].parentNode.removeChild(cells[k]);
                         }
                     }

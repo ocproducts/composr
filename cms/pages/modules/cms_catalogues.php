@@ -1989,9 +1989,9 @@ class Module_cms_catalogues_alt extends Standard_crud_module
                 }
 
                 $matches = array();
-                if (preg_match('#new\_field\_(\d+)\_(.*)#A', $key, $matches) != 0) {
+                if (preg_match('#new_field_(\d+)_(.*)#A', $key, $matches) != 0) {
                     $new[$matches[1]][$matches[2]] = $val;
-                } elseif (preg_match('#existing\_field\_(\d+)\_(.*)#A', $key, $matches) != 0) {
+                } elseif (preg_match('#existing_field_(\d+)_(.*)#A', $key, $matches) != 0) {
                     $old[$matches[1]][$matches[2]] = $val;
                 }
             }

@@ -486,7 +486,7 @@ class Module_admin
                             if (is_object($val)) {
                                 $n = $val;
                             } else {
-                                $n = (preg_match('#^[A-Z\_]+$#', $val) == 0) ? make_string_tempcode($val) : do_lang_tempcode($val);
+                                $n = (preg_match('#^[A-Z_]+$#', $val) == 0) ? make_string_tempcode($val) : do_lang_tempcode($val);
                             }
                             if (($this->_keyword_match($n->evaluate())) && (has_actual_page_access(get_member(), $page, $zone))) {
                                 $breadcrumbs = new Tempcode();

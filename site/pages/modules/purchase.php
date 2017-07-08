@@ -605,7 +605,7 @@ class Module_purchase
 
             // Category folding?
             if (($category === null) && ($use_categorisation)) {
-                $this_category = preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object));
+                $this_category = preg_replace('#^Hook_ecommerce_#', '', get_class($product_object));
 
                 if (isset($categories_done[$this_category])) {
                     continue;
@@ -633,7 +633,7 @@ class Module_purchase
                     $num_products_in_category = 0;
                     $num_products_in_category_available = 0;
                     foreach ($_products as $_type_code => $_details) {
-                        if (preg_replace('#^Hook\_ecommerce\_#', '', get_class($_details['product_object'])) == $this_category) {
+                        if (preg_replace('#^Hook_ecommerce_#', '', get_class($_details['product_object'])) == $this_category) {
                             if ($_details['price'] !== null) {
                                 $supports_money = true;
                                 $money_involved = true;
@@ -697,7 +697,7 @@ class Module_purchase
                 }
             }
             if ($category !== null) {
-                $this_category = preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object));
+                $this_category = preg_replace('#^Hook_ecommerce_#', '', get_class($product_object));
                 if ($this_category != $category) {
                     continue;
                 }
@@ -1236,7 +1236,7 @@ class Module_purchase
                     }
 
                     require_code('shopping');
-                    $order_id = intval(preg_replace('#^CART\_ORDER\_#', '', $type_code));
+                    $order_id = intval(preg_replace('#^CART_ORDER_#', '', $type_code));
                     $transaction_button = make_cart_payment_button($order_id, $currency, ($points_for_discount === null) ? 0 : $points_for_discount);
                     break;
                 case PRODUCT_PURCHASE:

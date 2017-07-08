@@ -125,7 +125,7 @@ class Hook_ecommerce_community_billboard
             $queue = 0;
         }
 
-        $days = intval(preg_replace('#^COMMUNITY_BILLBOARD\_#', '', $type_code));
+        $days = intval(preg_replace('#^COMMUNITY_BILLBOARD_#', '', $type_code));
 
         return do_template('ECOM_PRODUCT_COMMUNITY_BILLBOARD', array('_GUID' => '92d51c5b87745c31397d9165595262d3', 'QUEUE' => integer_format($queue), 'DAYS' => integer_format($days)));
     }
@@ -184,7 +184,7 @@ class Hook_ecommerce_community_billboard
 
         require_lang('community_billboard');
 
-        $days = intval(preg_replace('#^COMMUNITY_BILLBOARD\_#', '', $type_code));
+        $days = intval(preg_replace('#^COMMUNITY_BILLBOARD_#', '', $type_code));
 
         $e_details = $GLOBALS['SITE_DB']->query_select_value('ecom_sales_expecting', 'e_details', array('id' => intval($purchase_id)));
         list($member_id, $message) = json_decode($e_details);

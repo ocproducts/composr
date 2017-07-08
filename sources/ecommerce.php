@@ -198,7 +198,7 @@ function get_product_purchase_steps($product_object, $type_code, $consider_categ
     if ($consider_categories) {
         if (method_exists($product_object, 'get_product_category')) {
             $product_category = $product_object->get_product_category();
-            $steps[] = array('_SELF:_SELF:browse:category=' . preg_replace('#^Hook\_ecommerce\_#', '', get_class($product_object)) . ':' . $more_params, 'browse', $product_category['category_name']);
+            $steps[] = array('_SELF:_SELF:browse:category=' . preg_replace('#^Hook_ecommerce_#', '', get_class($product_object)) . ':' . $more_params, 'browse', $product_category['category_name']);
         }
     }
 
@@ -396,7 +396,7 @@ function get_product_details_url($type_code, $post_purchase_access_url = false, 
     $product_details_url = null;
 
     $matches = array();
-    if (($post_purchase_access_url) && (preg_match('#^PERMISSION\_(\d+)$#', $type_code, $matches) != 0)) {
+    if (($post_purchase_access_url) && (preg_match('#^PERMISSION_(\d+)$#', $type_code, $matches) != 0)) {
         $permission_product_id = intval($matches[1]);
         if (isset($permission_product_rows[$permission_product_id])) {
             $module = $permission_product_rows[$permission_product_id]['p_module'];
@@ -418,7 +418,7 @@ function get_product_details_url($type_code, $post_purchase_access_url = false, 
                 }
             }
         }
-    } elseif (($post_purchase_access_url) && (preg_match('#^CART_ORDER\_(\d+)$#', $type_code, $matches) != 0)) {
+    } elseif (($post_purchase_access_url) && (preg_match('#^CART_ORDER_(\d+)$#', $type_code, $matches) != 0)) {
         if (has_actual_page_access(get_member(), 'admin_shopping')) {
             $product_details_url = build_url(array('page' => 'admin_shopping', 'type' => 'order_details', 'id' => $matches[1]), get_module_zone('admin_shopping'), array(), false, false, $email_safe);
         } else {
