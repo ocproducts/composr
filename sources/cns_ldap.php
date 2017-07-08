@@ -55,7 +55,7 @@ function cms_ldap_escape($str, $for_dn = false)
 
     $ret = str_replace($meta_chars, $quoted_meta_chars, $str);
     require_code('character_sets');
-    return convert_to_internal_encoding($ret, get_charset(), 'utf8');
+    return convert_to_internal_encoding($ret, get_charset(), 'utf-8');
 }
 
 /**
@@ -67,7 +67,7 @@ function cms_ldap_escape($str, $for_dn = false)
 function ldap_unescape($str)
 {
     require_code('character_sets');
-    return convert_to_internal_encoding($str, 'utf8', get_charset());
+    return convert_to_internal_encoding($str, 'utf-8', get_charset());
 }
 
 /**

@@ -104,7 +104,7 @@ class CMS_RSS
                 }
             }
             // Weed out if isn't supported
-            if (($charset === null) || (!in_array(strtoupper($charset), array('ISO-8859-1', 'US-ASCII', 'utf-8')))) {
+            if (($charset === null) || (!in_array(strtoupper($charset), array('ISO-8859-1', 'US-ASCII', 'UTF-8')))) {
                 $charset = 'utf-8';
             }
 

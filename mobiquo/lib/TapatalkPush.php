@@ -113,7 +113,7 @@ class TapatalkPush extends TapatalkBasePush
         }
         $post_row = $post_rows[0];
 
-        ini_set('ocproducts.type_strictness', '0');
+        safe_ini_set('ocproducts.type_strictness', '0');
 
         // Send basic topic/post
         if ($post_row['p_cache_forum_id'] === null) {
@@ -164,7 +164,7 @@ class TapatalkPush extends TapatalkBasePush
         }
         $post_row = $post_rows[0];
 
-        ini_set('ocproducts.type_strictness', '0');
+        safe_ini_set('ocproducts.type_strictness', '0');
 
         $member_ids = array($post_row['p_poster']);
 

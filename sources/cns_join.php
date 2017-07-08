@@ -20,7 +20,7 @@
 
 /**
  * Give error if Conversr-joining is not possible on this site.
- * 
+ *
  * @param  ?array $adjusted_config_options A map of adjusted config options (null: none)
  */
 function check_joining_allowed($adjusted_config_options = null)

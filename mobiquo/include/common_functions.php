@@ -56,7 +56,7 @@ function initialise_composr()
     require_once($FILE_BASE . '/sources/global.php');
 
     error_reporting(E_ALL);
-    ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
+    safe_ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
 
     cns_require_all_forum_stuff();
 
@@ -65,7 +65,7 @@ function initialise_composr()
     require_code('developer_tools');
 
     require_code('character_sets');
-    convert_data_encodings(true);
+    convert_request_data_encodings(true);
 
     push_lax_comcode(true);
 }

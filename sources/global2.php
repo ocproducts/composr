@@ -348,7 +348,7 @@ function init__global2()
     require_code('lang'); // So that we can do language stuff (e.g. errors). Note that even though we have included a lot so far, we can't really use any of it until lang is loaded. Lang isn't loaded earlier as it itself has a dependency on Tempcode.
     if (!$MICRO_AJAX_BOOTUP) {
         require_code('temporal'); // Date/time functions
-        convert_data_encodings(get_param_integer('known_utf8', 0) == 1);
+        convert_request_data_encodings(get_param_integer('known_utf8', 0) == 1);
         if (!$MICRO_BOOTUP) {
             // FirePHP console support, only for administrators
             if ((get_param_integer('keep_firephp', 0) == 1) && (($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) || ($GLOBALS['IS_ACTUALLY_ADMIN']))) {
@@ -663,7 +663,7 @@ function prepare_for_known_ajax_response()
 {
     set_http_caching(null);
 
-    convert_data_encodings(true);
+    convert_request_data_encodings(true);
 
     global $KNOWN_AJAX;
     $KNOWN_AJAX = true;
@@ -708,6 +708,7 @@ function disable_php_memory_limit()
 
 /**
  * Get the character set to use. We try and be clever to allow AJAX scripts to avoid loading up language.
+ * We may assume utf-8 is lower case, but any other character set may be of any case.
  *
  * @return string The character set
  */
@@ -1954,7 +1955,7 @@ function sync_file_move($old, $new)
  *
  * @param  boolean $known_utf8 Whether we know we are working in utf-8. This is the case for AJAX calls.
  */
-function convert_data_encodings($known_utf8 = false)
+function convert_request_data_encodings($known_utf8 = false)
 {
     global $VALID_ENCODING, $CONVERTED_ENCODING;
     $VALID_ENCODING = true;
@@ -1969,7 +1970,7 @@ function convert_data_encodings($known_utf8 = false)
     }
 
     require_code('character_sets');
-    _convert_data_encodings($known_utf8);
+    _convert_request_data_encodings($known_utf8);
 }
 
 /**

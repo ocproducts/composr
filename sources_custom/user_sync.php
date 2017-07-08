@@ -98,7 +98,7 @@ function user_sync__inbound($since = null)
     $dbh = new PDO($connect_string, $db_user, $db_password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
 
-    if (strtolower(get_charset()) == 'utf-8') {
+    if (get_charset() == 'utf-8') {
         $dbh->exec('set names utf8');
     }
 

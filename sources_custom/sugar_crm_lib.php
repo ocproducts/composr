@@ -646,7 +646,7 @@ class SugarWrapper
     
     /**
       * Upload file to Sugar Document
-      * 
+      *
       * @param string $docID the document ID the file should be attached to
       * @param string $filename the file name 
       * @param string $path the full path of the file

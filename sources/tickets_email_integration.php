@@ -415,10 +415,10 @@ function _imap_get_part($stream, $msg_number, $mime_type, &$attachments, &$attac
             $filedata = imap_fetchbody($stream, $msg_number, $part_number);
             if ($structure->encoding == 3) {
                 $filedata = imap_base64($filedata);
-                $filedata = convert_to_internal_encoding($filedata, 'iso-8859-1');
+                $filedata = convert_to_internal_encoding($filedata, 'ISO-8859-1');
             } elseif ($structure->encoding == 4) {
                 $filedata = imap_qprint($filedata);
-                $filedata = convert_to_internal_encoding($filedata, 'iso-8859-1');
+                $filedata = convert_to_internal_encoding($filedata, 'ISO-8859-1');
             }
             if ($structure->ifparameters == 1) {
                 $parameters = array();

@@ -112,7 +112,7 @@ class Block_main_custom_gfx
             $pos_y = intval(array_key_exists('y', $map) ? $map['y'] : '16');
 
             require_code('character_sets');
-            $text = foxy_utf8_to_nce($map['data']);
+            $text = convert_to_html_encoding($map['data']);
             foreach (explode("\n", $text) as $line) {
                 if ($line == '') {
                     $line = ' '; // Otherwise our algorithm breaks

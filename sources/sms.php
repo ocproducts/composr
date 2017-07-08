@@ -54,7 +54,7 @@ function dispatch_sms($message, $to_sms)
     $username = xmlentities(get_option('sms_username'));
     $password = xmlentities(get_option('sms_password'));
     $site_name = xmlentities(substr(get_site_name(), 0, 11));
-    if ((strtolower(get_charset()) != 'utf-8') && (strtolower(get_charset()) != 'utf8')) {
+    if (get_charset() != 'utf-8') {
         $site_name = utf8_encode($site_name);
     }
     //$callback = xmlentities(find_script('sms')); --- set on clickatell's site
@@ -87,7 +87,7 @@ function dispatch_sms($message, $to_sms)
 
         // If just gone over quota, tell them instead of sending the real notification
         $_message = ($sent_in_month + 1 == $limit) ? do_lang('OVER_SMS_LIMIT') : xmlentities($message);
-        if ((strtolower(get_charset()) != 'utf-8') && (strtolower(get_charset()) != 'utf8')) {
+        if (get_charset() != 'utf-8') {
             $_message = utf8_encode($_message);
         }
 

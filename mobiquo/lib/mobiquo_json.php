@@ -81,7 +81,7 @@ class MobiquoServerJSON extends MobiquoServer
 
         $params = @array_merge(array_values(json_decode($data, true)), $get);
 
-        ini_set('ocproducts.xss_detect', '0');
+        safe_ini_set('ocproducts.xss_detect', '0');
 
         global $SERVER_DEFINE;
         $function = $SERVER_DEFINE[$this->get_method_name()]['function'];

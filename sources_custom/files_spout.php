@@ -20,8 +20,6 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
 {
     require_code('character_sets');
 
-    ini_set('default_charset', get_charset());
-
     switch ($ext) {
         case 'xls':
             $type = Type::XLS;

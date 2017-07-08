@@ -483,10 +483,10 @@ class Module_admin_permissions
                 continue;
             }
 
-            $header_cells->attach(do_template('PERMISSION_HEADER_CELL', array('_GUID' => 'c77bd5d8d9dedb6a3e61c477910a06b7', 'COLOR' => $color, 'GROUP' => foxy_utf8_to_nce($name))));
+            $header_cells->attach(do_template('PERMISSION_HEADER_CELL', array('_GUID' => 'c77bd5d8d9dedb6a3e61c477910a06b7', 'COLOR' => $color, 'GROUP' => $name)));
         }
 
-        $header_cells->attach(do_template('PERMISSION_HEADER_CELL', array('_GUID' => '33fde6c008293f20bb3a51e912748c67', 'COLOR' => $color, 'GROUP' => foxy_utf8_to_nce('+/-'))));
+        $header_cells->attach(do_template('PERMISSION_HEADER_CELL', array('_GUID' => '33fde6c008293f20bb3a51e912748c67', 'COLOR' => $color, 'GROUP' => '+/-')));
 
         return $header_cells;
     }

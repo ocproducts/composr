@@ -583,7 +583,7 @@ function get_charset()
     if (preg_match('#charset=([\w\-]+)\r?\n#', $contents, $matches) != 0) {
         return strtolower($matches[1]);
     }
-    return strtolower('utf-8');
+    return 'utf-8';
 }
 
 /**

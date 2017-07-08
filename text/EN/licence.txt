@@ -127,7 +127,7 @@ This product includes:
   - FirePHP (BSD-like licence)
   - SabreDAV (BSD-like licence)
   - m-zip (Francesco M. Munafo', liberal custom licence)
-  - utf8tohtml implementation (from php.net comment by silverbeat, Creative Commons Attribution License)
+  - convert_to_html_encoding implementation (from php.net comment by silverbeat, Creative Commons Attribution License)
   - mergesort implementation (from php.net comment by sreid, Creative Commons Attribution License)
   - GUID implementation (from php.net comment by Andrew Moore, Creative Commons Attribution License)
   - adjust_pic_orientation function (from stackoverflow comment)

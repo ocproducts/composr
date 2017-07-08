@@ -535,7 +535,6 @@ function snippet_script()
     }
 
     header('Content-Type: text/plain; charset=' . get_charset());
-    convert_data_encodings(true);
     $hook = filter_naughty_harsh(get_param_string('snippet'));
     require_code('hooks/systems/snippets/' . $hook, true);
     $object = object_factory('Hook_snippet_' . $hook);

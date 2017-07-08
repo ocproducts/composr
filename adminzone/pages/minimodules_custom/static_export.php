@@ -157,10 +157,6 @@ foreach ($directory as $entry) {
         if (get_param_integer('save__redirects', 1) == 1) {
             $datax = '<meta http-equiv="refresh" content="0;' . escape_html(basename($dir_name)) . '/browse.htm" />';
             foreach (array_keys($langs) as $lang) {
-                if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', 0, false, true)) < 5)) {
-                    continue; // Probably this is just the utf8 addon
-                }
-
                 tar_add_file($STATIC_EXPORT_TAR, ((count($langs) != 1) ? ($lang . '/') : '') . $dir_name . '.htm', $datax, 0644, time(), false);
             }
         }
@@ -172,10 +168,6 @@ if (count($langs) != 1) {
 
     // Recognise when language explicitly called
     foreach (array_keys($langs) as $lang) {
-        if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', 0, false, true)) < 5)) {
-            continue; // Probably this is just the utf8 addon
-        }
-
         $data .= 'RewriteRule ' . $lang . ' - [L]' . "\n"; // This stops it looping; [L] ends an iteration for a directory level but doesn't stop inter-level recursions
         $data .= 'RewriteCond %{QUERY_STRING} keep_lang=' . $lang . "\n";
         $data .= 'RewriteRule (^.*\.htm.*$) ' . $lang . '/$1 [L]' . "\n";
@@ -186,10 +178,6 @@ if (count($langs) != 1) {
     // Recognise when language supported by browser
     if (get_option('detect_lang_browser') == '1') {
         foreach (array_keys($langs) as $lang) {
-            if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', 0, false, true)) < 5)) {
-                continue; // Probably this is just the utf8 addon
-            }
-
             $data .= 'RewriteCond %{HTTP:Accept-Language} (^' . strtolower($lang) . ') [NC]' . "\n";
             $data .= 'RewriteRule (^.*\.htm.*$) ' . $lang . '/$1 [L]' . "\n";
 
@@ -212,9 +200,6 @@ require_code('mail');
 // Mailer
 $robots_data = '';
 foreach (array_keys($langs) as $lang) {
-    if (($lang != fallback_lang()) && (count(get_directory_contents(get_custom_file_base() . '/lang_custom/' . $lang, '', 0, false, true)) < 5)) {
-        continue; // Probably this is just the utf8 addon
-    }
     $mailer_script = '
 <' . '?php
 

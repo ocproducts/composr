@@ -1696,6 +1696,7 @@ function ini_get($varname)
 
 /**
  * Sets the value of a configuration option.
+ * Usually call safe_ini_set for Composr code.
  *
  * @param  string $var Config option
  * @param  string $value New value of option

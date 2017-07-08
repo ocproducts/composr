@@ -74,9 +74,9 @@ class MobiquoServerXMLRPC extends MobiquoServer
      */
     public function dispatch_request()
     {
-        ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
+        safe_ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
 
-        ini_set('ocproducts.xss_detect', '0');
+        safe_ini_set('ocproducts.xss_detect', '0');
 
         if (!empty($_POST['method_name'])) // HTTP post message, no further payload data
         {
@@ -122,7 +122,7 @@ class MobiquoServerXMLRPC extends MobiquoServer
      */
     public function val($data, $type)
     {
-        ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
+        safe_ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
 
         if ($type === 'dateTime.iso8601') {
             $data = $this->iso8601_encode($data);
@@ -160,7 +160,7 @@ class MobiquoServerXMLRPC extends MobiquoServer
      */
     public function response($data)
     {
-        ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
+        safe_ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
 
         return new xmlrpcresp($data);
     }
@@ -172,7 +172,7 @@ class MobiquoServerXMLRPC extends MobiquoServer
      */
     public function output_response($response)
     {
-        ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
+        safe_ini_set('ocproducts.type_strictness', '0'); // Much Tapatalk client code will not be compatible with this
 
         echo $this->rpc_server->xml_header('UTF-8');
         echo $response->serialize();
