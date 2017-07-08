@@ -690,11 +690,12 @@ function suggest_new_idmoniker_for($page, $type, $id, $zone, $moniker_src, $is_n
     }
 
     // Insert
-    $GLOBALS['SITE_DB']->query_delete('url_id_monikers', array(    // It's possible we're re-activating a deprecated one
-                                                                   'm_resource_page' => $page,
-                                                                   'm_resource_type' => $type,
-                                                                   'm_resource_id' => $id,
-                                                                   'm_moniker' => $moniker,
+    $GLOBALS['SITE_DB']->query_delete('url_id_monikers', array(
+        // It's possible we're re-activating a deprecated one
+        'm_resource_page' => $page,
+        'm_resource_type' => $type,
+        'm_resource_id' => $id,
+        'm_moniker' => $moniker,
     ), '', 1);
     $GLOBALS['SITE_DB']->query_insert('url_id_monikers', array(
         'm_resource_page' => $page,
