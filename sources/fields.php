@@ -109,6 +109,9 @@ function catalogue_file_script()
         $submitter = null;
     }
 
+    // Caching
+    set_http_caching(filemtime($_full));
+
     // Send header
     require_code('mime_types');
     header('Content-Type: ' . get_mime_type(get_file_extension($original_filename), false) . '; authoritative=true;');

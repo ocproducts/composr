@@ -66,8 +66,7 @@ function notification_mark_all_read_script()
  */
 function notification_display_script()
 {
-    header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
-    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+    set_http_caching(null);
     header('Content-type: text/plain; charset=' . get_charset());
 
     $max = post_param_integer('max', null);
@@ -85,8 +84,7 @@ function notification_poller_script()
 
     require_code('xml');
 
-    header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
-    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+    set_http_caching(null);
     header('Content-Type: application/xml');
     $xml .= '<' . '?xml version="1.0" encoding="' . escape_html(get_charset()) . '" ?' . '>
 ' . get_xml_entities() . '

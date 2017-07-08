@@ -66,10 +66,7 @@ function init__global2()
     @ob_end_clean(); // Reset to have no output buffering by default (we'll use it internally, taking complete control)
 
     // Don't want the browser caching PHP output, explicitly say this
-    @header('Expires: Mon, 20 Dec 1998 01:00:00 GMT');
-    @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-    @header('Cache-Control: no-cache, max-age=0');
-    @header('Pragma: no-cache'); // for proxies, and also IE
+    set_http_caching(null);
 
     if (php_function_allowed('session_cache_limiter')) {
         @session_cache_limiter('');
@@ -611,6 +608,28 @@ function fixup_bad_php_env_vars()
 }
 
 /**
+ * Set HTTP caching in a conclusive and simple way.
+ *
+ * @param  ?TIME $last_modified When the resource was last modified (null: dynamic non-cached request)
+ * @param  boolean $public Whether the request is public (can be cached in public proxy caches)
+ * @param  TIME $expiry_seconds Seconds until cache expires (only applicable if $last_modified is not null)
+ */
+function set_http_caching($last_modified, $public = false, $expiry_seconds = 604800/*1 week*/)
+{
+    if ($last_modified === null) {
+        @header('Expires: Mon, 20 Dec 1998 01:00:00 GMT');
+        @header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
+        @header('Cache-Control: no-cache, max-age=0');
+        @header('Pragma: no-cache');
+    } else {
+        @header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expiry_seconds) . ' GMT');
+        @header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $last_modified) . ' GMT');
+        @header('Cache-Control: ' . ($public ? 'public' : 'private') . 'max-age=' . strval($expiry_seconds));
+        @header_remove('Pragma');
+    }
+}
+
+/**
  * Use with register_shutdown_function to log slow URLs.
  */
 function monitor_slow_urls()
@@ -642,8 +661,7 @@ function memory_tracking()
  */
 function prepare_for_known_ajax_response()
 {
-    header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
-    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+    set_http_caching(null);
 
     convert_data_encodings(true);
 

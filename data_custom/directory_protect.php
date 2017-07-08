@@ -101,11 +101,8 @@ header('Content-Disposition: inline; filename="' . escape_header($filename, true
 header('Accept-Ranges: bytes');
 
 // Caching
-header('Pragma: private');
-header('Cache-Control: private');
-header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 60 * 60 * 24 * 365) . ' GMT');
 $time = filemtime($_full);
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $time) . ' GMT');
+set_http_caching($time);
 
 if (cms_srv('REQUEST_METHOD') == 'HEAD') {
     return '';

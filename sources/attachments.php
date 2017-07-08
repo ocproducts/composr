@@ -192,7 +192,6 @@ function attachments_script()
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('ATTACHMENT')));
     }
     $myrow = $rows[0];
-    header('Last-Modified: ' . gmdate('D, d M Y H:i:s \G\M\T', $myrow['a_add_time']));
     if ($myrow['a_url'] == '') {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
@@ -255,10 +254,7 @@ function attachments_script()
     header('Accept-Ranges: bytes');
 
     // Caching
-    header('Pragma: private');
-    header('Cache-Control: private');
-    header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 60 * 60 * 24 * 365) . ' GMT');
-    header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $myrow['a_add_time']) . ' GMT');
+    set_http_caching($myrow['a_add_time']);
 
     // Default to no resume
     $from = 0;

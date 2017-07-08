@@ -25,9 +25,9 @@ This allows static cache to run even when Composr is itself not booting at all.
 
 if (!isset($GLOBALS['FILE_BASE'])) {
     // Fixup SCRIPT_FILENAME potentially being missing
-$_SERVER['SCRIPT_FILENAME'] = __FILE__;
+    $_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
-// Find Composr base directory, and chdir into it
+    // Find Composr base directory, and chdir into it
     global $FILE_BASE;
     $FILE_BASE = (strpos(__FILE__, './') === false) ? __FILE__ : realpath(__FILE__);
     $FILE_BASE = dirname(dirname($FILE_BASE));
@@ -240,10 +240,10 @@ function static_cache($mode)
         if (($mtime > time() - $expires) || (($mode & STATIC_CACHE__FAILOVER_MODE) != 0)) {
             // Only bots can do HTTP caching, as they won't try to login and end up reaching a previously cached page
             if ((($mode & STATIC_CACHE__FAST_SPIDER) != 0) && (($mode & STATIC_CACHE__FAILOVER_MODE) == 0) && (function_exists('cms_srv'))) {
-                header('Pragma: public');
-                header('Cache-Control: max-age=' . strval($expires));
                 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
                 header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $mtime) . ' GMT');
+                header('Cache-Control: public, max-age=' . strval($expires));
+                header_remove('Pragma');
 
                 $since = cms_srv('HTTP_IF_MODIFIED_SINCE');
                 if ($since != '') {
