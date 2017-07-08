@@ -423,12 +423,12 @@ class Hook_ecommerce_email
 
                 $text = do_lang_tempcode('EMAIL_CONTACT_MESSAGE');
 
+                // TODO: Salman this needs moving into JS
                 $javascript = "
                     var form=document.getElementById('pass1').form;
                     form.old_submit=form.onsubmit;
                     form.onsubmit=function() {
-                        if ((form.elements['pass1'].value!=form.elements['pass2'].value))
-                        {
+                        if ((form.elements['pass1'].value!=form.elements['pass2'].value)) {
                             window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
                             return false;
                         }

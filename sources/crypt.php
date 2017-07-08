@@ -63,6 +63,8 @@ function produce_salt()
 {
     // md5 used in all the below so that we get nice ASCII characters
 
+    // LEGACY
+
     if (function_exists('random_bytes')) {
         $u = substr(md5(random_bytes(13)), 0, 13);
     } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
@@ -108,6 +110,8 @@ function get_rand_password()
  */
 function get_secure_random_number()
 {
+    // LEGACY
+
     // TODO: #3046 in tracker
     // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.6/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
     if (function_exists('random_int')) {

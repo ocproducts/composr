@@ -143,7 +143,7 @@ class Module_admin_permissions
             add_privilege('SUBMISSION', 'unfiltered_input', false);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             if (!privilege_exists('perform_keyword_check')) {
                 add_privilege('SUBMISSION', 'perform_keyword_check', false);
             }
@@ -153,7 +153,7 @@ class Module_admin_permissions
             $GLOBALS['SITE_DB']->create_index('group_page_access', 'group_id', array('group_id'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
             rename_privilege('bypass_word_filter', 'bypass_wordfilter');
 
             delete_privilege('view_revision_history');
@@ -168,7 +168,7 @@ class Module_admin_permissions
             $GLOBALS['SITE_DB']->query_update('privilege_list', array('p_section' => 'VOTE'), array('the_name' => 'vote_in_polls'), '', 1);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 10)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 10)) { // LEGACY
             rename_privilege('see_stack_dump', 'see_stack_trace');
         }
 

@@ -89,7 +89,7 @@
                 xfbml: true
             });
 
-            // Ignore floods of "Unsafe JavaScript attempt to access frame with URL" errors in Chrome they are benign
+            // Ignore floods of "Unsafe JavaScript attempt to access frame with URL" errors in Chrome, they are benign
 
             /*{+START,IF,{$CONFIG_OPTION,facebook_allow_signups}}*/
 

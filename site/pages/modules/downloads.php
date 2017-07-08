@@ -170,7 +170,7 @@ class Module_downloads
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('download_downloads', 'url_redirect', 'URLPATH');
 
             $GLOBALS['SITE_DB']->alter_table_field('download_downloads', 'comments', 'LONG_TRANS', 'additional_details');

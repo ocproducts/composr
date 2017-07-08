@@ -114,11 +114,11 @@ class Module_admin_stats
             ), true);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('stats', 'get', 'URLPATH', 's_get');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('stats', 'the_user', 'MEMBER', 'member_id');
             $GLOBALS['SITE_DB']->add_table_field('stats', 'session_id', 'ID_TEXT');
             $GLOBALS['SITE_DB']->query_update('db_meta_indices', array('i_fields' => 'member_id'), array('i_name' => 'member_track_1'), '', 1);

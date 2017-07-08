@@ -172,7 +172,7 @@ class Module_calendar
             $GLOBALS['SITE_DB']->create_index('calendar_jobs', 'applicablejobs', array('j_time'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             $GLOBALS['SITE_DB']->delete_table_field('calendar_events', 'e_geo_position');
             $GLOBALS['SITE_DB']->delete_table_field('calendar_events', 'e_groups_access');
             $GLOBALS['SITE_DB']->delete_table_field('calendar_events', 'e_groups_modify');
@@ -195,12 +195,12 @@ class Module_calendar
             }
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('calendar_events', 'e_start_monthly_spec_type', 'ID_TEXT', 'day_of_month');
             $GLOBALS['SITE_DB']->add_table_field('calendar_events', 'e_end_monthly_spec_type', 'ID_TEXT', 'day_of_month');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) { // LEGACY
             add_privilege('CALENDAR', 'set_reminders', false);
         }
 
@@ -213,7 +213,7 @@ class Module_calendar
             add_privilege('SEARCH', 'autocomplete_title_event', false);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('calendar_events', 'e_member_calendar', '?MEMBER');
             if (addon_installed('content_privacy')) {
                 $private_events = $GLOBALS['SITE_DB']->query_select('calendar_events', array('id'), array('e_is_public' => 0));
@@ -623,28 +623,24 @@ class Module_calendar
         // Nofollow stuff
         $previous_no_follow = ($previous_timestamp < time() - 60 * 60 * 24 * 31);
         $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE e_start_year=' . date('Y', $next_timestamp) . ' AND e_start_month<=' . date('m', $next_timestamp) . ' OR e_start_year<' . date('Y', $next_timestamp));
-        if ($test !== null) // if there really are events before, this takes priority
-        {
+        if ($test !== null) { // if there really are events before, this takes priority
             $previous_no_follow = false;
         }
         $next_no_follow = ($next_timestamp > time() + 60 * 60 * 24 * 31 * 6/*So can see 6 months of recurrences/empty space*/);
         $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE e_start_year=' . date('Y', $next_timestamp) . ' AND e_start_month>=' . date('m', $next_timestamp) . ' OR e_start_year>' . date('Y', $next_timestamp));
-        if ($test !== null) // if there really are events after, this takes priority
-        {
+        if ($test !== null) { // if there really are events after, this takes priority
             $next_no_follow = false;
         }
         if (/*get_bot_type()!==null Actually we can't rely on bot detection, so let's just tie to guest && */is_guest()) {
             // Some bots ignore nofollow, so let's be more forceful
             $past_no_follow = ($timestamp < time() - 60 * 60 * 24 * 31);
             $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE e_start_year=' . date('Y', $timestamp) . ' AND e_start_month<=' . date('m', $timestamp) . ' OR e_start_year<' . date('Y', $timestamp));
-            if ($test !== null) // if there really are events before, this takes priority
-            {
+            if ($test !== null) { // if there really are events before, this takes priority
                 $past_no_follow = false;
             }
             $future_no_follow = ($timestamp > time() + 60 * 60 * 24 * 31 * 6/*So can see 6 months of recurrences/empty space*/);
             $test = $GLOBALS['SITE_DB']->query_value_if_there('SELECT id FROM ' . get_table_prefix() . 'calendar_events WHERE e_start_year=' . date('Y', $timestamp) . ' AND e_start_month>=' . date('m', $timestamp) . ' OR e_start_year>' . date('Y', $timestamp));
-            if ($test !== null) // if there really are events after, this takes priority
-            {
+            if ($test !== null) { // if there really are events after, this takes priority
                 $future_no_follow = false;
             }
             if ($past_no_follow || $future_no_follow) {

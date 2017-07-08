@@ -70,38 +70,17 @@
 
         /* Go through our tree list looking for a particular XML node */
         getElementByIdHack: function getElementByIdHack(id, type, ob, serverid) {
-            var i, test, done = false;
-
             type = strVal(type) || 'c';
             ob = ob || this.tree_list_data;
             serverid = !!serverid;
 
-            // Normally we could only ever use getElementsByTagName, but Konqueror and Safari don't like it
-            try { // IE9 beta has serious problems
-                if (ob.getElementsByTagName) {
-                    var results = ob.getElementsByTagName((type === 'c') ? 'category' : 'entry');
-                    for (i = 0; i < results.length; i++) {
-                        if ((results[i].getAttribute !== undefined) && (results[i].getAttribute(serverid ? 'serverid' : 'id') == id)) {
-                            return results[i];
-                        }
-                    }
-                    done = true;
-                }
-            } catch (e) {}
-
-            if (!done) {
-                for (i = 0; i < ob.children.length; i++) {
-                    if (ob.children[i].localName === 'category') {
-                        test = this.getElementByIdHack(id, type, ob.children[i], serverid);
-                        if (test) {
-                            return test;
-                        }
-                    }
-                    if ((ob.children[i].localName === ((type === 'c') ? 'category' : 'entry')) && (ob.children[i].getAttribute(serverid ? 'serverid' : 'id') == id)) {
-                        return ob.children[i];
-                    }
+            var results = ob.getElementsByTagName((type === 'c') ? 'category' : 'entry');
+            for (var i = 0; i < results.length; i++) {
+                if ((results[i].getAttribute !== undefined) && (results[i].getAttribute(serverid ? 'serverid' : 'id') == id)) {
+                    return results[i];
                 }
             }
+
             return null;
         },
 

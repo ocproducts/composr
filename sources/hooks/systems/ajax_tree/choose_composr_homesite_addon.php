@@ -40,7 +40,7 @@ class Hook_ajax_tree_choose_composr_homesite_addon
         require_code('character_sets');
         $http_result = cms_http_request($url);
         $contents = $http_result->data;
-        $utf = ($http_result->charset == 'utf-8'); // We have to use 'U' in the regexp to work around a Chrome parser bug (we can't rely on convert_to_internal_encoding being 100% correct)
+        $utf = ($http_result->charset == 'utf-8');
         require_code('character_sets');
         $contents = convert_to_internal_encoding($contents, $http_result->charset);
         $contents = preg_replace('#^\s*<' . '\?xml version="1.0" encoding="[^"]*"\?' . '><request>#' . ($utf ? 'U' : ''), '', $contents);

@@ -1073,11 +1073,9 @@ function invisible_output_encode($string)
             $bitmask = bindec($_bitmask);
             $bit = ($char & $bitmask) !== 0;
             if ($utf8) {
-                if ($bit)
-                {
+                if ($bit) {
                     $ret .= chr(0xE2) . chr(0x80) . chr(0x8B); // http://www.fileformat.info/info/unicode/char/200B/index.htm (ZERO WIDTH SPACE)
-                } else
-                {
+                } else {
                     $ret .= chr(0xEF) . chr(0xBB) . chr(0xBF); // http://www.fileformat.info/info/unicode/char/feff/index.htm (ZERO WIDTH NO-BREAK SPACE)
                 }
             } else {

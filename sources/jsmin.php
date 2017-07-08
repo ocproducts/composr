@@ -117,8 +117,7 @@ class JSMin
             case 2: // Handle next being a string
                 $this->a = $this->b;
 
-                if ($this->a === "'" || $this->a === '"') // Entering a quoted string, jump through it
-                {
+                if ($this->a === "'" || $this->a === '"') { // Entering a quoted string, jump through it
                     while (true) {
                         $this->output .= $this->a;
                         $this->a = $this->get();

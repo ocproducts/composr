@@ -195,7 +195,7 @@ class Module_galleries
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('videos', 'title', 'SHORT_TRANS');
             $GLOBALS['SITE_DB']->add_table_field('images', 'title', 'SHORT_TRANS');
             $GLOBALS['SITE_DB']->create_index('images', 'ftjoin_dtitle', array('title'));
@@ -204,13 +204,13 @@ class Module_galleries
             $GLOBALS['SITE_DB']->add_table_field('galleries', 'g_owner', '?MEMBER');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('images', 'comments', 'LONG_TRANS', 'description');
             $GLOBALS['SITE_DB']->alter_table_field('videos', 'comments', 'LONG_TRANS', 'description');
             $GLOBALS['SITE_DB']->delete_table_field('galleries', 'teaser');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 10)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 10)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('video_transcoding', 't_local_id', '?AUTO_LINK', null);
             $GLOBALS['SITE_DB']->add_table_field('video_transcoding', 't_local_id_field', 'ID_TEXT', '');
 

@@ -893,9 +893,8 @@ function cms_mb_substr($in, $from, $amount = null, $force = false)
         $amount = cms_mb_strlen($in, $force) - $from;
     }
 
-    if ($in == '' || strlen($in) == $from)
-    {
-        return ''; // Workaround PHP bug/inconsistency (https://bugs.php.net/bug.php?id=72320)
+    if ($in == '' || strlen($in) == $from) {
+        return ''; // LEGACY Workaround PHP bug/inconsistency (https://bugs.php.net/bug.php?id=72320)
     }
 
     if ((!$force) && (get_charset() != 'utf-8')) {
@@ -2382,10 +2381,10 @@ function escape_html($string)
 }
 
 /**
- * See's if the current browser matches some special property code. Assumes users are keeping up on newish browsers (except for IE users, who are 6+).
+ * See's if the current browser matches some special property code. Assumes users are keeping up on newish browsers (as defined in tut_browsers).
  *
  * @param  string $code The property code
- * @set    android ios wysiwyg windows mac linux odd_os mobile ie ie8 ie8+ ie9 ie9+ gecko safari odd_browser chrome bot simplified_attachments_ui itunes
+ * @set    android ios wysiwyg windows mac linux odd_os mobile ie gecko safari odd_browser chrome bot simplified_attachments_ui itunes
  * @param  ?string $comcode Comcode that might be WYSIWYG edited; used to determine whether WYSIWYG may load when we'd prefer it to not do so (null: none)
  * @return boolean Whether there is a match
  */
@@ -2402,10 +2401,6 @@ function browser_matches($code, $comcode = null)
     $is_chrome = strpos($browser, 'chrome/') !== false;
     $is_gecko = (strpos($browser, 'gecko') !== false) && !$is_safari;
     $is_ie = ((strpos($browser, 'msie') !== false) || (strpos($browser, 'trident') !== false) || (strpos($browser, 'edge/') !== false));
-    $is_ie8 = (strpos($browser, 'msie 8') !== false) && ($is_ie);
-    $is_ie9 = (strpos($browser, 'msie 9') !== false) && ($is_ie);
-    $is_ie8_plus = $is_ie; // Below IE8 not supported/recognised
-    $is_ie9_plus = $is_ie && !$is_ie8;
 
     switch ($code) {
         case 'simplified_attachments_ui':
@@ -2447,18 +2442,6 @@ function browser_matches($code, $comcode = null)
             return $browser_matches_cache[$code];
         case 'ie':
             $browser_matches_cache[$code] = $is_ie;
-            return $browser_matches_cache[$code];
-        case 'ie8':
-            $browser_matches_cache[$code] = $is_ie8;
-            return $browser_matches_cache[$code];
-        case 'ie8+':
-            $browser_matches_cache[$code] = $is_ie8_plus;
-            return $browser_matches_cache[$code];
-        case 'ie9':
-            $browser_matches_cache[$code] = $is_ie9;
-            return $browser_matches_cache[$code];
-        case 'ie9+':
-            $browser_matches_cache[$code] = $is_ie9_plus;
             return $browser_matches_cache[$code];
         case 'chrome':
             $browser_matches_cache[$code] = $is_chrome;

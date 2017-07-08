@@ -60,7 +60,7 @@ form.activities_remove .remove_cross:hover {
 	cursor: pointer;
 }
 
-form.activities_remove input.remove_cross::-moz-focus-inner { /* What's this all about, eh? Standards compliant are we Mozilla? What-ever*/
+form.activities_remove input.remove_cross::-moz-focus-inner {
 	border: 0;
 }
 

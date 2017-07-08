@@ -76,13 +76,13 @@ class Module_admin_security
             $GLOBALS['SITE_DB']->create_index('hackattack', 'h_date_and_time', array('date_and_time'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('hackattack', 'user_agent', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('hackattack', 'referer', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('hackattack', 'user_os', 'SHORT_TEXT');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('hackattack', 'the_user', 'MEMBER', 'member_id');
         }
     }

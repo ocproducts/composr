@@ -86,8 +86,7 @@ class Hook_video_syndication_youtube
                 $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
                 $xml = $http_result->data;
 
-                if (!isset($parsed->entry)) // Annoying! YouTube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
-                {
+                if (!isset($parsed->entry)) { // Annoying! YouTube search index takes time and doesn't consider unlisted. We therefore need to search much harder.
                     unset($query_params['category']);
                     $http_result = $this->_http('https://gdata.youtube.com/feeds/api/users/default/uploads', $query_params);
                     $xml = $http_result->data;

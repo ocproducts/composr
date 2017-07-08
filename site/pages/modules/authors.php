@@ -71,11 +71,11 @@ class Module_authors
             add_privilege('SUBMISSION', 'set_own_author_profile');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('authors', 'member_id', '?MEMBER');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('authors', 'forum_handle', '?MEMBER', 'member_id');
 
             $GLOBALS['SITE_DB']->delete_index_if_exists('authors', 'findmemberlink');

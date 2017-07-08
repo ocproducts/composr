@@ -38,7 +38,7 @@ Composr is designed to work on all serious modern browsers:
 
 &dagger;&dagger; We officially support the last two releases of these browsers. In practice we are likely to accept bug reports for older browsers if they are still widely used by relevant demographics.
 
-&dagger;&dagger;&dagger; As IE is particularly widely-used and inflexible we are more explicit about what we will support. Officially it is still the last two releases, but we will accept bug reports for IE10/IE11. The exact supported versions will change over time, as install bases change, and this tutorial will be updated accordingly.
+&dagger;&dagger;&dagger; As Microsoft Browsers are particularly widely-used and inflexible we are more explicit about what we will support. Officially it is still the last two releases, but we will accept bug reports for IE10/IE11. The exact supported versions will change over time, as install bases change, and this tutorial will be updated accordingly.
 
 We do not explicitly support the following browsers, but will generally accept bug reports for them:
  - Chromium (the Open Source version of Google Chrome)
@@ -55,13 +55,13 @@ Browser testing presents the following difficulties:
 1) A machine can only have one Microsoft browser installed.
 2) To test on mobile devices you really should test on a proper mobile device to get a real feel for things.
 3) Safari only works on Mac OS, so you need a Mac.
-4) Internet Explorer only works on Windows, so you need a Windows install.
+4) Microsoft Edge only works on Windows, so you need a Windows install.
 5) On browsers such as Google Chrome operating system font rendering differences may mean things lay out slightly differently on different operating systems.
 
 There are a number of approaches that can help you with the above problems:
 [list]
 [*] Google Chrome has excellent device emulation, for quick/earlier testing for different mobile devices (not a substitute for proper testing).
-[*] Internet Explorer lets you run in compatibility modes to test on earlier versions of their engines (imperfect, but useful).
+[*] Microsoft Edge lets you run in compatibility modes to test on earlier versions of their engines (imperfect, but useful).
 [*] [url="IETester"]http://www.my-debugbar.com/wiki/IETester/HomePage[/url] lets you test much older Internet Explorer versions (imperfect/unstable, but useful).
 [*] Virtual Machines let you test different Internet Explorer browsers without needing separate physical machines. [url="Microsoft supply free images to help"]https://dev.modern.ie/[/url]. They come at a hefty download size though, uses lots of disk space, and using VMs means lots of RAM usage.
 [*] You can use a commercial online testing system like [url="BrowserStack"]https://www.browserstack.com/[/url]. BrowserStack host virtual machines for you in the cloud so that you don't need to maintain your own VMs. You can also automatically take mass-screenshots across many devices, and also run automated JavaScript testing (for developers).

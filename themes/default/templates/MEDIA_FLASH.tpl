@@ -4,15 +4,13 @@
 		<param name="quality" value="high" />
 		<param name="pluginspage" value="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" />
 
-		<!--[if !IE]> -->
-			<object width="{WIDTH*}" height="{HEIGHT*}" data="{URL*}" type="application/x-shockwave-flash">
-				<param name="movie" value="{URL*}" />
-				<param name="quality" value="high" />
-				<param name="pluginspage" value="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" />
+		<object width="{WIDTH*}" height="{HEIGHT*}" data="{URL*}" type="application/x-shockwave-flash">
+			<param name="movie" value="{URL*}" />
+			<param name="quality" value="high" />
+			<param name="pluginspage" value="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" />
 
-				{!ANIMATION}
-			</object>
-		<!-- <![endif]-->
+			{!ANIMATION}
+		</object>
 	</object>
 
 	{+START,IF_NON_EMPTY,{DESCRIPTION}}

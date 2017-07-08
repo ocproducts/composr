@@ -58,8 +58,7 @@ function spreadsheet_export__spout($ext, $data, $filename, $headers, $output_and
     // Add our data
     $row = 0;
     foreach ($data as $_i => $line) {
-        if ($row == 0) // Header
-        {
+        if ($row == 0) { // Header
             $single_row = array();
             foreach (array_keys($line) as $column => $val) {
                 $val = convert_to_internal_encoding($val, get_charset(), 'utf-8');

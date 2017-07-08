@@ -759,8 +759,7 @@ function get_post_attachments($post_id, $attachment_id = null, $non_image_only =
             }
 
             if ($non_image_only) {
-                if (is_image($attachment_row[0]['a_original_filename'], IMAGE_CRITERIA_WEBSAFE, has_privilege($attachment_row[0]['a_member_id'], 'comcode_dangerous'))) // Already as [img] tag
-                {
+                if (is_image($attachment_row[0]['a_original_filename'], IMAGE_CRITERIA_WEBSAFE, has_privilege($attachment_row[0]['a_member_id'], 'comcode_dangerous'))) { // Already as [img] tag
                     if (!url_is_local($attachment_row[0]['a_url'])) {
                         if ($content !== null) {
                             $content = preg_replace('#\[img\][^\[\]]*' . preg_quote(find_script('attachment'), '#') . '\?id=' . strval($att['a_id']) . '[^\[\]]*\[\/img\]#U', '[img]' . $attachment_row[0]['a_url'] . '[/img]', $content);

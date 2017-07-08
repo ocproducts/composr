@@ -48,7 +48,7 @@
 /*{+END}*/
 /*{+START,CSS_MODE,desktop}*/
 	.comcode_big_tab {
-		margin-left: 186px; /* 2px gap to workaround IE lameness */
+		margin-left: 186px;
 		min-height: 190px;
 	}
 /*{+END}*/

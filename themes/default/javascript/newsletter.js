@@ -27,7 +27,7 @@
                     headElement = document.createElement('head');
                     de.appendChild(headElement);
                 }
-                if (!de.querySelector('style') && adjustedPreview.indexOf('<head') != -1) {/*{$,The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice}*/
+                if (!de.querySelector('style') && adjustedPreview.indexOf('<head') != -1) { /* The conditional is needed for Firefox - for some odd reason it is unable to parse any head tags twice */
                     $cms.dom.html(headElement, adjustedPreview.replace(/^(.|\n)*<head[^>]*>((.|\n)*)<\/head>(.|\n)*$/i, '$2'));
                 }
 

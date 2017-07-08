@@ -84,11 +84,11 @@ class Module_admin_commandr
             }
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) { // LEGACY
             $GLOBALS['SITE_DB']->rename_table('occlechat', 'commandrchat');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->drop_table_if_exists('commandrchat');
         }
     }

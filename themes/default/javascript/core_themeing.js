@@ -772,7 +772,7 @@
                     window.unloaded = false;
 
                     var ret = '{!themes:UNSAVED_TEMPLATE_CHANGES;^}';
-                    event.returnValue = ret; // Fix Chrome bug (explained on https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload)
+                    event.returnValue = ret; // Workaround Chrome issue (explained on https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload)
                     return ret;
                 }
                 return null;

@@ -56,7 +56,6 @@ function copyFieldsIntoBottom(i, changed) {
         $cms.dom.$('#check_perms_' + i).disabled = !this.checked;
     });
 
-    //$cms.dom.html(form.elements['branch_type'],$cms.dom.html(document.getElementById('branch_type_'+i))); Breaks in IE due to strict container rules
     form.elements['branch_type'].selectedIndex = $cms.dom.$id('branch_type_' + i).selectedIndex;
     form.elements['branch_type'].addEventListener('change', function (event) {
         $cms.dom.$('#branch_type_' + i).selectedIndex = this.selectedIndex;

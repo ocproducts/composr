@@ -110,7 +110,7 @@ class Module_admin_addons
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('addons', 'addon_category', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('addons', 'addon_copyright_attribution', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('addons', 'addon_licence', 'SHORT_TEXT');

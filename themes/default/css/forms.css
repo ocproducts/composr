@@ -616,7 +616,6 @@ span.validated_checkbox+input[name="validated"].input_tick {
 
 .posting_form_wrap_buttons {
 	background-color: {$GET,point_of_interest_background};
-	white-space: nowrap; /* Needed for IE8 */
 }
 
 .posting_form_wrap_buttons, .posting_form_insert_buttons {
@@ -956,7 +955,5 @@ comcode-{$REPLACE,\,,\,comcode-,{$COMCODE_TAGS;,{$WYSIWYG_COMCODE__XML_BLOCK}}\,
 /* Other styles */
 
 body#wysiwyg_editor {
-	/* IE9 selectability fix */
-	width: 100%;
 	min-height: 140px;
 }

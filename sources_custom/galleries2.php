@@ -152,8 +152,7 @@ function init__galleries2($code)
             if ($edit_workflow && ($workflow_id == -1)) {
                 // Look for the workflow of the containing gallery
                 $workflow_id = get_workflow_of_content("gallery", $title);
-                if ($workflow_id === null)
-                {
+                if ($workflow_id === null) {
                     // Use the default if it has none
                     $default_workflow = get_default_workflow();
                     if (($default_workflow !== null) && ($current_workflow != $default_workflow)) {
@@ -170,8 +169,7 @@ function init__galleries2($code)
             }
             else if ($edit_workflow) {
                 // Use the specific ID provided
-                if ($workflow_id != $current_workflow)
-                {
+                if ($workflow_id != $current_workflow) {
                     add_content_to_workflow("image", strval($id), $workflow_id);
                     attach_message(do_lang("CONTENT_NOW_IN_WORKFLOW", get_translated_text($workflow_id)), "inform");
                 }
@@ -185,8 +183,7 @@ function init__galleries2($code)
     // ...videos...
     $code = str_replace('log_it(\'EDIT_VIDEO\', strval($id), $title);',
         '
-        if ($validated == 0)
-        {
+        if ($validated == 0) {
             require_code("workflows");
             require_lang("workflows");
             // See if we have a specific workflow to use
@@ -249,8 +246,7 @@ function init__galleries2($code)
         if ($edit_workflow && $workflow_id == -1) {
             // Look for the workflow of the containing gallery
             $workflow_id = get_workflow_of_content("gallery", $parent_id);
-            if ($workflow_id === null)
-            {
+            if ($workflow_id === null) {
                 // Use the default if it has none
                 $default_workflow = get_default_workflow();
                 if (($default_workflow !== null) && ($current_workflow != $default_workflow)) {

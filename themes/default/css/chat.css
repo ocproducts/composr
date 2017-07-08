@@ -165,7 +165,6 @@
 
 .messages_window_full_chat {
 	max-height: 35em;
-	overflow: auto; /* LEGACY Needed for Opera, very strange */
 }
 
 .messages_window {

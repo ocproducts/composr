@@ -367,7 +367,6 @@ hr {
 	height: 0;
 	border: 0;
 	border-bottom: 2px dotted {$GET,hr};
-	text-align: left; /* LEGACY Fixes difference with Opera */
 }
 
 img {
@@ -1068,7 +1067,7 @@ footer a:hover, footer .button_hyperlink:hover {
 /*{+END}*/
 
 footer .footer_button_loading {
-	opacity: 0.4; display: inline-block;/*Needed for IE8*/
+	opacity: 0.4;
 }
 
 footer .global_footer_left .horizontal_buttons {
@@ -1155,7 +1154,6 @@ footer .invisible_ref_point {
 footer .global_minilinks {
 	padding-bottom: 0.3em;
 	font-size: 0.9em;
-	white-space: nowrap; /* LEGACY Stops logout link wrapping around in Firefox 3.6 */
 	margin-right: 3em; /* Make tidy gap away from the font sizer */
 }
 /*{+START,CSS_MODE,desktop}*/
@@ -2087,11 +2085,6 @@ hr.spaced_rule {
 	display: inline-block;
 }
 
-.inline_block .wide_table_wrap { /* LEGACY Fixes Firefox bug */
-	overflow-x: visible;
-	overflow-y: visible;
-}
-
 .inline {
 	display: inline;
 }
@@ -2497,7 +2490,7 @@ div.zebra_0+div.zebra_1, div.zebra_1+div.zebra_0 {
 	padding-right: 30px;
 }
 .faded_tooltip_img {
-	opacity: 0.2; display: inline-block; /*Needed for IE8*/
+	opacity: 0.2;
 }
 
 .diff del {
@@ -2928,11 +2921,11 @@ div.ajax_loading, p.ajax_loading {
 }
 
 .rating_star {
-	opacity: 0.2; display: inline-block;/*Needed for IE8*/
+	opacity: 0.2;
 	padding-right: 3px;
 }
 .rating_star_highlight {
-	opacity: 1.0; display: inline-block;/*Needed for IE8*/
+	opacity: 1.0;
 }
 
 .rating_likers a+a {
@@ -3034,18 +3027,18 @@ div.ajax_loading, p.ajax_loading {
 }
 
 div .post_buttons>*, div .buttons_group_faded>* {
-	opacity: 0.25; display: inline-block;/*Needed for IE8*/
+	opacity: 0.25;
 	transition-property : opacity;
 	transition-duration : 0.5s;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 
 .post_buttons>*[rel="add reply"], .post_buttons>a[rel="back_to_top"] {
-	opacity: 1.0 !important; display: inline-block;/*Needed for IE8*/
+	opacity: 1.0 !important;
 }
 
 .post_buttons:hover>*, body.touch_enabled .post_buttons>*, .buttons_group_faded:hover>*, body.touch_enabled .buttons_group_faded>* {
-	opacity: 1.0 !important; display: inline-block;/*Needed for IE8*/
+	opacity: 1.0 !important;
 }
 
 .post_show_more {
@@ -3078,7 +3071,7 @@ div .post_buttons>*, div .buttons_group_faded>* {
 
 .reviews_average {
 	font-size: 0.8em;
-	opacity: 0.7; display: inline-block;/*Needed for IE8*/
+	opacity: 0.7;
 }
 
 .comments_field_name_column {
@@ -3658,15 +3651,12 @@ ul.buttons_group, ul.associated_links_block_group {
 ::placeholder { /* W3C */
 	color: {$GET,unfilled_input_text} !important;
 }
-
 ::-webkit-input-placeholder { /* Webkit, Blink, Edge */
 	color: {$GET,unfilled_input_text} !important;
 }
-
 ::-moz-placeholder { /* Firefox */
 	color: {$GET,unfilled_input_text} !important;
 }
-
 :-ms-input-placeholder { /* IE */
 	color: {$GET,unfilled_input_text} !important;
 }
@@ -3844,12 +3834,10 @@ div .button_micro {
 	opacity: 0.85 !important;
 	cursor: not-allowed;
 }
-.button_micro:hover, .button_screen:hover, .button_screen_item:hover {
-	opacity: 1.0;
-}
+.button_micro:hover, .button_screen:hover, .button_screen_item:hover,
 .button_screen:hover, .button_screen_item:hover, .button_micro:hover, .toggleable_tray_button:hover img,
 body.touch_enabled .button_screen, body.touch_enabled .button_screen_item, body.touch_enabled .button_micro, body.touch_enabled .toggleable_tray_button img {
-	opacity: 1.0; /* LEGACY Needed for Opera */
+	opacity: 1.0;
 }
 .button_micro:disabled, .button_screen:disabled, .button_screen_item:disabled {
 	opacity: 0.4 !important;
@@ -4319,7 +4307,6 @@ Formulaic bindings between CSS classes and icons, for our nice CSS buttons.
 	width: 100%;
 	height: 0;
 	float: left; /* Stops it breaking up margin collapsing */
-	transform: scale(1); /* Fixes bugginess in Chrome */
 }
 
 /*
@@ -4525,12 +4512,12 @@ ul.nl, .nl ul {
 
 /* We hide the inline edit menu links for design reasons, they fade in on top of stuff when hovering the menu */
 .edit_menu_link_inline, .edit_page_link_inline {
-	opacity: 0 !important; display: inline-block;/*Needed for IE8*/
+	opacity: 0 !important;
 	transition: opacity 0.5s linear;
 	transform: scale(1); /* Needed to stop size jerk during animation, by forcing it as a layer at all times */
 }
 div:hover>.edit_menu_link_inline, div:hover>.edit_page_link_inline {
-	opacity: 1.0 !important; display: inline-block;/*Needed for IE8*/
+	opacity: 1.0 !important;
 }
 .edit_menu_link_inline {
 	position: absolute;
@@ -5218,7 +5205,6 @@ a[title="{!VIRTUAL_ROOT}"]:hover {
 .overlay .previous_button, .overlay .next_button {
 	position: absolute;
 	cursor: pointer;
-	top: 43%; /*fallback, IE8/IE9*/
 	top: calc(50% - {$DIV,74,2}px);
 	max-width: 20%;
 }

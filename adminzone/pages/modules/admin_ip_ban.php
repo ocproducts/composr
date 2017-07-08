@@ -71,7 +71,7 @@ class Module_admin_ip_ban
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('banned_ip', 'i_ban_until', '?TIME');
             $GLOBALS['SITE_DB']->add_table_field('banned_ip', 'i_ban_positive', 'BINARY', 1);
         }
@@ -315,13 +315,10 @@ class Module_admin_ip_ban
             }
             preg_match('#^([^\s]+)(.*)$#', $str, $matches);
             $ip = $matches[1];
-            if (preg_match('#^[a-f0-9\.]+$#U', $ip) == 0)
-            {
+            if (preg_match('#^[a-f0-9\.]+$#U', $ip) == 0) {
                 attach_message(do_lang_tempcode('IP_ADDRESS_NOT_VALID_MAKE_UNBANNABLE', escape_html($str)), 'warn');
-            } else
-            {
-                if (!in_array($ip, $unbannable_already))
-                {
+            } else {
+                if (!in_array($ip, $unbannable_already)) {
                     $GLOBALS['SITE_DB']->query_insert('unbannable_ip', array(
                         'ip' => $ip,
                         'note' => isset($matches[2]) ? $matches[2] : '',

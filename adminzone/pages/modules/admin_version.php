@@ -420,17 +420,17 @@ class Module_admin_version
             }
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 13)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 13)) { // LEGACY
             $GLOBALS['SITE_DB']->create_index('translate', 'equiv_lang', array('text_original(4)'));
             $GLOBALS['SITE_DB']->create_index('translate', 'decache', array('text_parsed(2)'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from >= 10) && ($upgrade_from < 14)) {
+        if (($upgrade_from !== null) && ($upgrade_from >= 10) && ($upgrade_from < 14)) { // LEGACY
             $GLOBALS['SITE_DB']->drop_table_if_exists('tracking');
             $GLOBALS['SITE_DB']->add_table_field('logged_mail_messages', 'm_template', 'ID_TEXT');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from == 14)) {
+        if (($upgrade_from !== null) && ($upgrade_from == 14)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('digestives_tin', 'd_from_member_id', '?MEMBER');
         }
 
@@ -497,7 +497,7 @@ class Module_admin_version
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 16)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 16)) { // LEGACY
             $GLOBALS['SITE_DB']->delete_index_if_exists('cron_caching_requests', 'c_in_panel');
             $GLOBALS['SITE_DB']->delete_index_if_exists('cron_caching_requests', 'c_interlock');
             $GLOBALS['SITE_DB']->delete_table_field('cron_caching_requests', 'c_interlock');
@@ -507,7 +507,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('rating', 'rating_for_id', array('rating_for_id'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 17)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 17)) { // LEGACY
             $comcode_lang_fields = array(
                 'award_types' => array(
                     'a_description',
@@ -985,7 +985,7 @@ class Module_admin_version
             $GLOBALS['SITE_DB']->create_index('post_tokens', 'generation_time', array('generation_time'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 18)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 18)) { // LEGACY
             $GLOBALS['SITE_DB']->drop_table_if_exists('bookmarks');
 
             $GLOBALS['SITE_DB']->add_table_field('cron_caching_requests', 'c_is_ssl', '?BINARY');

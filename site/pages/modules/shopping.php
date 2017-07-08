@@ -133,7 +133,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->create_index('shopping_logging', 'cart_log', array('l_date_and_time'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('shopping_orders', 'session_id', 'ID_TEXT');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_cart', 'session_id', 'ID_TEXT');
             $GLOBALS['SITE_DB']->alter_table_field('shopping_logging', 'l_session_id', 'ID_TEXT');
@@ -143,7 +143,7 @@ class Module_shopping
             $GLOBALS['SITE_DB']->delete_index_if_exists('shopping_orders', 'recent_shopped');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'price');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'price_pre_tax');
             $GLOBALS['SITE_DB']->delete_table_field('shopping_cart', 'product_name');

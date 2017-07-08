@@ -111,8 +111,7 @@ function code_editor_do_footer()
 </form>
 
 <script>
-if (document.getElementById('file'))
-{
+if (document.getElementById('file')) {
     aceComposrLoader('file','php');
 }
 </script>
@@ -463,11 +462,9 @@ END;
                     echo <<<END
 <script>
 var msg='Access denied. You probably should have specified FTP details.';
-if (window.alert!==null)
-{
+if (window.alert !== null) {
     window.alert(msg);
-} else
-{
+} else {
     console.log(msg+' (popup blocker stopping alert)');
 }
 </script>
@@ -481,11 +478,9 @@ END;
                     echo <<<END
 <script>
 var msg='Could not write to file, out of disk space?';
-if (window.alert!==null)
-{
+if (window.alert !== null) {
     window.alert(msg);
-} else
-{
+} else {
     console.log(msg+' (popup blocker stopping alert)');
 }
 </script>
@@ -506,12 +501,10 @@ END;
                     echo <<<END
 <script>
 var msg='Could not write to file, out of disk space?';
-if (window.alert!==null)
-{
+if (window.alert !== null) {
     window.alert(msg);
-} else
-{
-    console.log(msg+' (popup blocker stopping alert)');
+} else {
+    console.log(msg + ' (popup blocker stopping alert)');
 }
 </script>
 END;
@@ -525,12 +518,10 @@ END;
                     echo <<<END
 <script>
 var msg='Could not save via FTP ['.@strval($php_errormsg).'].';
-if (window.alert!==null)
-{
+if (window.alert !== null) {
     window.alert(msg);
-} else
-{
-    console.log(msg+' (popup blocker stopping alert)');
+} else {
+    console.log(msg + ' (popup blocker stopping alert)');
 }
 </script>
 END;
@@ -585,12 +576,10 @@ END;
         echo <<<END
 <script>
 var msg='{$message}';
-if (window.alert!==null)
-{
+if (window.alert !== null) {
     window.alert(msg);
-} else
-{
-    console.log(msg+' (popup blocker stopping alert)');
+} else {
+    console.log(msg + ' (popup blocker stopping alert)');
 }
 </script>
 END;

@@ -682,7 +682,7 @@
         for (i = 0; i < elements.length; i++) {
             if (elements[i].href && elements[i].href.includes('://')) {
                 try {
-                    if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) { // LEGACY guard due to weird Firefox bug, JS actions still opening new window
+                    if (!elements[i].href.toLowerCase().startsWith('javascript:') && (elements[i].target !== '_self') && (elements[i].target !== '_blank')) { // guard due to JS actions still opening new window in some browsers
                         elements[i].target = 'false_blank'; // Real _blank would trigger annoying CSS. This is better anyway.
                     }
                 } catch (ignore) {} // IE can have security exceptions
@@ -792,7 +792,7 @@
      */
     $cms.form.checkFieldForBlankness = function checkFieldForBlankness(field, alreadyShownMessage) {
         if (!field) {
-            // Shame we need this, seems on Google Chrome things can get confused on JS assigned to page-changing events
+            // Things can get confused on JS assigned to page-changing events
             return true;
         }
 

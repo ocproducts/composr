@@ -3,13 +3,11 @@
 	<param name="quality" value="high" />
 	<param name="pluginspage" value="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" />
 
-	<!--[if !IE]> -->
-		<object width="{WIDTH*}" height="{HEIGHT*}" data="{IMG*}" type="application/x-shockwave-flash">
-			<param name="movie" value="{IMG*}" />
-			<param name="quality" value="high" />
-			<param name="pluginspage" value="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" />
+	<object width="{WIDTH*}" height="{HEIGHT*}" data="{IMG*}" type="application/x-shockwave-flash">
+		<param name="movie" value="{IMG*}" />
+		<param name="quality" value="high" />
+		<param name="pluginspage" value="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" />
 
-			{!ANIMATION}
-		</object>
-	<!-- <![endif]-->
+		{!ANIMATION}
+	</object>
 </object>

@@ -101,8 +101,7 @@ class Hook_chat_bot_trickstr
             return null;
         }
 
-        if (file_exists(get_custom_file_base() . '/sources_custom/programe')) // AliceBot, much better
-        {
+        if (file_exists(get_custom_file_base() . '/sources_custom/programe')) { // AliceBot, much better
             if (get_value('trickstr_installed') !== '1') {
                 disable_php_memory_limit();
 

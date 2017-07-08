@@ -105,7 +105,7 @@ class Module_points
             $GLOBALS['FORUM_DRIVER']->install_create_custom_field('points_gained_rating', 20, 1, 0, 0, 0, '', 'integer');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('chargelog', 'user_id', 'MEMBER', 'member_id');
         }
 

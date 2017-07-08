@@ -905,8 +905,7 @@ function check_perms()
                     $out .= '<li>' . do_lang('FU_NEEDS_CHMOD', '<kbd>' . escape_html($_chmod) . '</kbd>') . '</li>';
                 }
             }
-        } else
-        {*/
+        } else {*/
         if (!file_exists(get_file_base() . '/' . $chmod)) {
             continue;
         }
@@ -982,8 +981,7 @@ function fix_perms()
                     afm_set_perms($_chmod, true);
                 }
             }
-        } else
-        {*/
+        } else {*/
         if (!file_exists(get_file_base() . '/' . $chmod)) {
             continue;
         }

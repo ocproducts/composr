@@ -744,6 +744,7 @@
         }
     };
 
+    // LEGACY
     $cms.templates.mediaRealmedia = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://service.real.com/help/library/guides/realone/ScriptingGuide/PDF/ScriptingGuide.pdf
@@ -762,6 +763,7 @@
         });
     };
 
+    // LEGACY
     $cms.templates.mediaQuicktime = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
@@ -778,6 +780,7 @@
         });
     };
 
+    // LEGACY
     $cms.templates.mediaVideoGeneral = function (params) {
         // Tie into callback event to see when finished, for our slideshows
         // API: http://developer.apple.com/library/safari/#documentation/QuickTime/Conceptual/QTScripting_JavaScript/bQTScripting_JavaScri_Document/QuickTimeandJavaScri.html
@@ -985,7 +988,7 @@
             x.style.display = (currentPos == 0) ? 'inline-block' : 'none';
         }
 
-        // We make our forthcoming one instantly visible to stop Google Chrome possibly scrolling up if there is a tiny time interval when none are visible
+        // We make our forthcoming one instantly visible to stop the browser possibly scrolling up if there is a tiny time interval when none are visible
         x = document.getElementById(passId + '_section_' + sections[i]);
         if (x) x.style.display = 'block';
 

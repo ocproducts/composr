@@ -1111,7 +1111,7 @@ The lines of code themselves have to follow strict rules (which are beyond the s
 [code="JavaScript"]
 function is_IE()
 {
-	if(navigator.appName=="Microsoft Internet Explorer")
+	if (navigator.appName == "Microsoft Internet Explorer")
 	{
 		return true;
 	}

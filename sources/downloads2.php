@@ -235,7 +235,7 @@ function dload_script()
             $bits = explode('-', $range);
             if (count($bits) == 2) {
                 list($from, $to) = array_map('intval', $bits);
-                if (($to - $from != 0) || ($from == 0)) { // Workaround to weird behaviour on Chrome
+                if (($to - $from != 0) || ($from == 0)) {
                     $new_length = $to - $from + 1;
 
                     header('HTTP/1.1 206 Partial Content');
@@ -777,8 +777,7 @@ function create_data_mash($url, $data = null, $extension = null, $direct_path = 
                             break;
                         }
                     }
-                    if ((strlen($x) < $min_length) || ($x == strtoupper($x)) || ($x == 'Microsoft Word Document') || ($x == 'WordDocument') || ($x == 'SummaryInformation') || ($x == 'DocumentSummaryInformation')) // Valid word okay
-                    {
+                    if ((strlen($x) < $min_length) || ($x == strtoupper($x)) || ($x == 'Microsoft Word Document') || ($x == 'WordDocument') || ($x == 'SummaryInformation') || ($x == 'DocumentSummaryInformation')) { // Valid word okay
                         $i = $j;
                         continue;
                     }

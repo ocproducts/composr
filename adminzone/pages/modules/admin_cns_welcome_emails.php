@@ -85,7 +85,7 @@ class Module_admin_cns_welcome_emails extends Standard_crud_module
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('f_welcome_emails', 'w_usergroup', '?AUTO_LINK', null);
             $GLOBALS['SITE_DB']->add_table_field('f_welcome_emails', 'w_usergroup_type', 'ID_TEXT', '');
             $GLOBALS['SITE_DB']->alter_table_field('f_welcome_emails', 'w_newsletter', '?AUTO_LINK');

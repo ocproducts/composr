@@ -284,7 +284,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
 
             window.wysiwyg_original_comcode[id] = e.value;
             if (!ajaxCopy) {
-                if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value != '') && ((e.defaultValue == ''/*IE bug*/) || (e.defaultValue == e.value))) // The extra conditionals are for if back button used
+                if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value != '') && ((e.defaultValue == ''/*LEGACY IE bug*/) || (e.defaultValue == e.value))) // The extra conditionals are for if back button used
                     e.value = postingForm.elements[id + '_parsed'].value;
             } else {
                 var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keepStub());
@@ -735,7 +735,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
         sel = document.selection ? document.selection : null;
     }
 
-    if (element.selectionEnd !== undefined)  { // Mozilla style
+    if (element.selectionEnd !== undefined) {
         from = element.selectionStart;
         to = element.selectionEnd;
 
@@ -744,18 +744,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
 
         element.value = start + element.value.substring(from, to) + text + end;
         setSelectionRange(element, from + text.length, from + text.length);
-    } else if (sel) { // IE style
-        var ourRange = sel.createRange();
-        if ((ourRange.moveToElementText) || (ourRange.parentElement() == element)) {
-            if (ourRange.parentElement() != element) ourRange.moveToElementText(element);
-            ourRange.text = ourRange.text + text;
-        } else {
-            element.value += text;
-            from += 2;
-            setSelectionRange(element, from + text.length, from + text.length);
-        }
-    }
-    else {
+    } else {
         // :(
         from += 2;
         element.value += text;
@@ -777,14 +766,9 @@ function getSelectedHtml(editor) {
 
     var selectedText = '';
     if (mySelection.getNative()) {
-        if ((window.CKEDITOR.env.ie) && (mySelection.getNative().getRangeAt === undefined)) { // IE8 and under (selection object)
-            mySelection.unlock(true);
-            selectedText = mySelection.getNative().createRange().htmlText;
-        } else { // IE9 / standards (HTMLSelection object)
-            try {
-                selectedText = $cms.dom.html(mySelection.getNative().getRangeAt(0).cloneContents());
-            } catch (e) {}
-        }
+        try {
+            selectedText = $cms.dom.html(mySelection.getNative().getRangeAt(0).cloneContents());
+        } catch (e) {}
     }
     return selectedText;
 }
@@ -841,7 +825,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         return;
     }
 
-    if (element.selectionEnd != null)  { // Mozilla style
+    if (element.selectionEnd != null) {
         from = element.selectionStart;
         to = element.selectionEnd;
 
@@ -854,16 +838,6 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
             element.value = start + beforeWrapTag + afterWrapTag + end;
         }
         setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
-    } else if (document.selection != null) { // IE style
-        element.focus();
-        var sel = document.selection;
-        var ourRange = sel.createRange();
-        if ((ourRange.moveToElementText) || (ourRange.parentElement() == element)) {
-            if (ourRange.parentElement() != element) {
-                ourRange.moveToElementText(element);
-            }
-            ourRange.text = beforeWrapTag + ourRange.text + afterWrapTag;
-        } else element.value += beforeWrapTag + afterWrapTag;
     } else {
         // :(
         element.value += beforeWrapTag + afterWrapTag;
@@ -873,15 +847,9 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
 
 // From http://www.faqts.com/knowledge_base/view.phtml/aid/13562
 function setSelectionRange(input, selectionStart, selectionEnd) {
-    if (input.setSelectionRange !== undefined) {/* Mozilla style */
+    if (input.setSelectionRange !== undefined) {
         input.focus();
         input.setSelectionRange(selectionStart, selectionEnd);
-    } else if (input.createTextRange !== undefined) {/* IE style */
-        var range = input.createTextRange();
-        range.collapse(true);
-        range.moveEnd('character', selectionEnd);
-        range.moveStart('character', selectionStart);
-        range.select();
     } else {
         input.focus();
     }

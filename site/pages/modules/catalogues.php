@@ -387,7 +387,7 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->create_index('catalogue_entries', 'ce_c_name', array('c_name'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             require_code('catalogues2');
             rebuild_catalogue_cat_treecache();
 
@@ -432,7 +432,7 @@ class Module_catalogues
             add_privilege('SEARCH', 'autocomplete_title_catalogue_category', false);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 8)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 8)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('catalogues', 'c_default_review_freq', '?INTEGER', null);
 
             require_code('content2');
@@ -455,7 +455,7 @@ class Module_catalogues
             $GLOBALS['SITE_DB']->create_index('catalogue_categories', 'cc_order', array('cc_order'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date_time'), array('cf_type' => 'date'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
             $GLOBALS['SITE_DB']->query_update('catalogue_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));

@@ -82,7 +82,7 @@ class Module_search
             add_privilege('SEARCH', 'autocomplete_title_comcode_page', false);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             $GLOBALS['SITE_DB']->drop_table_if_exists('searches_saved');
         }
     }

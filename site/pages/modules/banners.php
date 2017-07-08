@@ -199,7 +199,7 @@ class Module_banners
             add_privilege('BANNERS', 'banner_free', false);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('banners', 'b_direct_code', 'LONG_TEXT');
             delete_config_option('money_ad_code');
             delete_config_option('advert_chance');

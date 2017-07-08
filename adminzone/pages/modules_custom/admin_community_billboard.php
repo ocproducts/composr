@@ -78,7 +78,7 @@ class Module_admin_community_billboard extends Standard_crud_module
             $GLOBALS['SITE_DB']->create_index('community_billboard', 'find_active_billboard_msg', array('active_now'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             rename_config_option('system_flagrant', 'system_community_billboard');
 
             $GLOBALS['SITE_DB']->rename_table('text', 'community_billboard');

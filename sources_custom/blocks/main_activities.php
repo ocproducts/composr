@@ -83,7 +83,7 @@ class Block_main_activities
             add_privilege('SUBMISSION', 'syndicate_site_activity', false);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 2)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 2)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('activities', 'a_pagelink_1', 'SHORT_TEXT', 'a_page_link_1');
             $GLOBALS['SITE_DB']->alter_table_field('activities', 'a_pagelink_2', 'SHORT_TEXT', 'a_page_link_2');
             $GLOBALS['SITE_DB']->alter_table_field('activities', 'a_pagelink_3', 'SHORT_TEXT', 'a_page_link_3');

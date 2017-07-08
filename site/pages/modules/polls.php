@@ -136,7 +136,7 @@ class Module_polls
             $GLOBALS['SITE_DB']->create_index('poll_votes', 'v_vote_for', array('v_vote_for'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $polls = $GLOBALS['SITE_DB']->query_select('poll', array('id', 'ip'));
             foreach ($polls as $poll) {
                 $voters = explode('-', $poll['ip']);
@@ -152,7 +152,7 @@ class Module_polls
             $GLOBALS['SITE_DB']->delete_table_field('poll', 'ip');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('poll', 'option6', '?SHORT_TRANS__COMCODE');
             $GLOBALS['SITE_DB']->alter_table_field('poll', 'option7', '?SHORT_TRANS__COMCODE');
         }

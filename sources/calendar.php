@@ -1156,8 +1156,7 @@ function cal_get_start_utctime_for_event($timezone, $year, $month, $day, $monthl
         return $timestamp_day_start + ($timestamp_day_end - $timezoned_day_end_timestamp);
     }
 
-    if (!$show_in_users_timezone) // Move into timezone, as if that is UTC, as it won't get converted later
-    {
+    if (!$show_in_users_timezone) { // Move into timezone, as if that is UTC, as it won't get converted later
         $timestamp = tz_time($timestamp, $timezone);
     }
 
@@ -1228,8 +1227,7 @@ function cal_get_end_utctime_for_event($timezone, $year, $month, $day, $monthly_
         return $timestamp_day_end + ($timestamp_day_start - $timezoned_day_start_timestamp);
     }
 
-    if (!$show_in_users_timezone) // Move into timezone, as if that is UTC, as it won't get converted later
-    {
+    if (!$show_in_users_timezone) { // Move into timezone, as if that is UTC, as it won't get converted later
         $timestamp = tz_time($timestamp, $timezone);
     }
 

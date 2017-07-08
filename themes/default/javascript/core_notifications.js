@@ -404,6 +404,8 @@ function _toggleMessagingBox(event, name, hide) {
     return false;
 }
 
+// LEGACY
+
 /**
  * Copyright 2012 Tsvetan Tsvetkov
  *
@@ -487,7 +489,7 @@ function _toggleMessagingBox(event, name, hide) {
 
     function getNotification(title, options) {
         var notification;
-        if (window.Notification) { /* Safari 6, Chrome (23+) */
+        if (window.Notification) {
             notification = new window.Notification(title, {
                 /* The notification's icon - For Chrome in Windows, Linux & Chrome OS */
                 icon: isString(options.icon) ? options.icon : options.icon.x32,

@@ -97,9 +97,7 @@
                 list.style.left = ($cms.dom.findPosX(currentListForEl)) + 'px';
                 list.style.top = ($cms.dom.findPosY(currentListForEl) + currentListForEl.offsetHeight) + 'px';
             }
-            setTimeout(function () {
-                list.style.zIndex++;
-            }, 100); // LEGACY Fixes Opera by causing a refresh
+            list.style.zIndex++;
 
             if (listContents.children.length === 0) {
                 return;

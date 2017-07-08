@@ -477,7 +477,7 @@ $feature_tree = array(
                 null, // divider
                 array('Make inline changes to content titles'),
                 array('Easy text changes', 'Easily change the language strings used to build up any screen'),
-                array('Easily diagnose permission configuration problems', 'Log permission checks, or interactively display them in Firefox'),
+                array('Easily diagnose permission configuration problems', 'Log permission checks, or interactively display them in the browser console'),
             ),
         ),
         'richmedia' => array(

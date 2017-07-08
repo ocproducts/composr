@@ -116,7 +116,7 @@ class Module_subscriptions
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('subscriptions', 's_special', 'ID_TEXT', 's_purchase_id');
             $GLOBALS['SITE_DB']->add_table_field('subscriptions', 's_length', 'INTEGER', 1);
             $GLOBALS['SITE_DB']->add_table_field('subscriptions', 's_length_units', 'SHORT_TEXT', 'm');
@@ -143,7 +143,7 @@ class Module_subscriptions
             $GLOBALS['SITE_DB']->add_table_field('f_usergroup_subs', 's_auto_recur', 'BINARY', 1);
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             $GLOBALS['SITE_DB']->rename_table('subscriptions', 'ecom_subscriptions');
 
             $GLOBALS['SITE_DB']->alter_table_field('ecom_subscriptions', 's_amount', 'REAL');

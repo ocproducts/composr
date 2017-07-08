@@ -77,7 +77,7 @@ class Module_admin_wordfilter
             }
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->add_auto_key('wordfilter');
 
             if ((strpos(get_db_type(), 'mysql') !== false) && (get_charset() == 'utf-8')) {

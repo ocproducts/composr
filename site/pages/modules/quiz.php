@@ -70,11 +70,11 @@ class Module_quiz
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('quiz_questions', 'q_required', 'BINARY');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('quizzes', 'q_reveal_answers', 'BINARY');
             $GLOBALS['SITE_DB']->add_table_field('quizzes', 'q_shuffle_questions', 'BINARY');
             $GLOBALS['SITE_DB']->add_table_field('quizzes', 'q_shuffle_answers', 'BINARY');

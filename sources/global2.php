@@ -986,7 +986,7 @@ function is_browser_decaching()
         return true;
     }
 
-    return false;    // This technique stopped working well, Chrome sends cache-control too freely
+    return false; // The below technique stopped working well, Chrome sends cache-control too freely
 
     /*
     $header_method = (array_key_exists('HTTP_CACHE_CONTROL', $_SERVER)) && ($_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache') && (cms_srv('REQUEST_METHOD') != 'POST') && ((!function_exists('browser_matches')));

@@ -81,7 +81,7 @@ class Module_buildr
             add_privilege('BUILDR', 'administer_buildr');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('w_attempts', 'datetime', 'TIME', 'a_datetime');
             $GLOBALS['SITE_DB']->alter_table_field('w_items', 'count', 'INTEGER', 'i_count');
             $GLOBALS['SITE_DB']->alter_table_field('w_messages', 'message', 'SHORT_TEXT', 'm_message');
@@ -91,7 +91,7 @@ class Module_buildr
             $GLOBALS['SITE_DB']->alter_table_field('w_realms', 'private', 'BINARY', 'r_private');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('w_items', 'cost', 'INTEGER', 'price');
         }
 

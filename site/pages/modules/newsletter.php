@@ -146,17 +146,17 @@ class Module_newsletter
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('newsletter_drip_send', 'd_template', 'ID_TEXT');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 11)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 11)) { // LEGACY
             $GLOBALS['SITE_DB']->rename_table('newsletter', 'newsletter_subscribers');
 
             $GLOBALS['SITE_DB']->alter_table_field('newsletter_subscribers', 'the_password', 'SHORT_TEXT');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 12)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 12)) { // LEGACY
             $GLOBALS['SITE_DB']->delete_index_if_exists('newsletter_drip_send', 'd_to_email');
             $GLOBALS['SITE_DB']->delete_index_if_exists('newsletter_drip_send', 'd_inject_time');
 
@@ -177,11 +177,11 @@ class Module_newsletter
             $GLOBALS['SITE_DB']->add_table_field('newsletter_archive', 'html_only', 'BINARY');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 12)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 12)) { // LEGACY
             $GLOBALS['SITE_DB']->create_index('newsletter_drip_send', 'd_message_id', array('d_message_id'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 13)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 13)) { // LEGACY
             // We've switched to JSON for CSV data
             $periodic = $GLOBALS['SITE_DB']->query_select('newsletter_periodic', array('id', 'np_csv_data'));
             foreach ($periodic as $p) {

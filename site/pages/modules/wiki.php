@@ -139,7 +139,7 @@ class Module_wiki
             $GLOBALS['SITE_DB']->create_index('wiki_pages', 'ftjoin_spd', array('description'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 9)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 9)) { // LEGACY
             $GLOBALS['SITE_DB']->rename_table('seedy_children', 'wiki_children');
             $GLOBALS['SITE_DB']->rename_table('seedy_pages', 'wiki_pages');
             $GLOBALS['SITE_DB']->rename_table('seedy_posts', 'wiki_posts');

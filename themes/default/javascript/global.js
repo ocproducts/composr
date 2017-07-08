@@ -2033,7 +2033,7 @@
 
             document.cookie = [
                 cookieName + '=' + value,
-                details.expires ? '; expires=' + details.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+                details.expires ? '; expires=' + details.expires.toUTCString() : '', // use expires attribute, max-age is not supported by all browsers
                 details.path ? '; path=' + details.path : '',
                 details.domain ? '; domain=' + details.domain : '',
                 details.secure ? '; secure' : ''
@@ -4478,12 +4478,10 @@
                         } catch (ignore) {}
 
                         return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
-                    }; // LEGACY Needed for Opera
+                    };
                 }
             }
         }
-
-        frameElement.style.transform = 'scale(1)'; // Workaround Chrome painting bug
     };
 
     /**
@@ -5147,7 +5145,7 @@
      * @returns {boolean}
      */
     function magicKeypress(event) {
-        // Cmd+Shift works on Mac - cannot hold down control or alt in Mac firefox at least
+        // Cmd+Shift works on Mac - cannot hold down control or alt in Mac Firefox at least
         var count = 0;
         if (event.shiftKey) {
             count++;
@@ -5205,11 +5203,7 @@
         var isSafari = browser.includes('applewebkit'),
             isChrome = browser.includes('chrome/'),
             isGecko = browser.includes('gecko') && !isSafari,
-            _isIe = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/'),
-            isIe8 = browser.includes('msie 8') && (_isIe),
-            isIe8Plus = isIe8,
-            isIe9 = browser.includes('msie 9') && (_isIe),
-            isIe9Plus = isIe9 && !isIe8;
+            _isIe = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/');
 
         switch (code) {
             case 'simplified_attachments_ui':
@@ -5230,14 +5224,6 @@
                 return os.includes('linux');
             case 'ie':
                 return _isIe;
-            case 'ie8':
-                return isIe8;
-            case 'ie8+':
-                return isIe8Plus;
-            case 'ie9':
-                return isIe9;
-            case 'ie9+':
-                return isIe9Plus;
             case 'chrome':
                 return isChrome;
             case 'gecko':
@@ -5876,7 +5862,7 @@
                 } else {
                     tooltipEl.style.maxWidth = width;
                 }
-                tooltipEl.style.width = 'auto'; // LEGACY Needed for Opera, else it uses maxWidth for width too
+                tooltipEl.style.width = 'auto';
             }
             if (height && (height !== 'auto')) {
                 tooltipEl.style.maxHeight = height;
@@ -7013,15 +6999,6 @@
                                 baseElement = bases[0];
                             }
                             baseElement.target = that.target;
-                            // Firefox 3.6 does not respect <base> element put in via DOM manipulation :(
-                            var forms = iframe.contentWindow.document.getElementsByTagName('form');
-                            for (var i = 0; i < forms.length; i++) {
-                                if (!forms[i].target) forms[i].target = that.target;
-                            }
-                            var as = iframe.contentWindow.document.getElementsByTagName('a');
-                            for (var i = 0; i < as.length; i++) {
-                                if (!as[i].target) as[i].target = that.target;
-                            }
 
                             // Set frame name
                             if (name && iframe.contentWindow.name != name) iframe.contentWindow.name = name;
@@ -8811,7 +8788,7 @@
 
                 var src = ob.origsrc ? ob.origsrc : ((ob.src === undefined) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
                 if (src && (force || ($cms.magicKeypress(event)))) {
-                    // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in firefox anyway)
+                    // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in Firefox anyway)
                     event.stopPropagation();
 
                     if (event.preventDefault !== undefined) event.preventDefault();
@@ -8843,11 +8820,14 @@
 
                 if (
                     (msg.includes('AJAX_REQUESTS is not defined')) || // Intermittent during page out-clicks
-                        // Internet Explorer false positives
+
+                    // LEGACY
+
+                    // Internet Explorer false positives
                     (((msg.includes("'null' is not an object")) || (msg.includes("'undefined' is not a function"))) && ((file === undefined) || (file === 'undefined'))) || // Weird errors coming from outside
                     (((code === 0) || (code === '0')) && (msg.includes('Script error.'))) || // Too generic, can be caused by user's connection error
 
-                        // Firefox false positives
+                    // Firefox false positives
                     (msg.includes("attempt to run compile-and-go script on a cleared scope")) || // Intermittent buggyness
                     (msg.includes('UnnamedClass.toString')) || // Weirdness
                     (msg.includes('ASSERT: ')) || // Something too generic
@@ -8857,7 +8837,7 @@
                     (msg.includes('Error loading script')) || // User's connection error
                     (msg.includes('NS_ERROR_FAILURE')) || // Usually an internal error
 
-                        // Google Chrome false positives
+                    // Google Chrome false positives
                     (msg.includes('can only be used in extension processes')) || // Can come up with MeasureIt
                     (msg.includes('extension.')) || // E.g. "Uncaught Error: Invocation of form extension.getURL() doesn't match definition extension.getURL(string path) schema_generated_bindings"
 
@@ -9244,17 +9224,7 @@
     function gdImageTransform(el) {
         /* GD text maybe can do with transforms */
         var span = document.createElement('span');
-        if (typeof span.style.writingMode === 'string') { // IE (which has buggy rotation space reservation, but a decent writing-mode instead)
-            el.style.display = 'none';
-            span.style.writingMode = 'tb-lr';
-            if (span.style.writingMode !== 'tb-lr') {
-                span.style.writingMode = 'vertical-lr';
-            }
-            span.style.webkitWritingMode = 'vertical-lr';
-            span.style.whiteSpace = 'nowrap';
-            span.textContent = el.alt;
-            el.parentNode.insertBefore(span, el);
-        } else if (typeof span.style.transform === 'string') {
+        if (typeof span.style.transform === 'string') {
             el.style.display = 'none';
             $cms.dom.css(span, {
                 transform: 'rotate(90deg)',
@@ -9269,7 +9239,7 @@
 
             el.parentNode.style.textAlign = 'left';
             el.parentNode.style.width = '1em';
-            el.parentNode.style.overflow = 'hidden'; // Needed due to https://bugzilla.mozilla.org/show_bug.cgi?id=456497
+            el.parentNode.style.overflow = 'hidden'; // LEGACY Needed due to https://bugzilla.mozilla.org/show_bug.cgi?id=456497
             el.parentNode.style.verticalAlign = 'top';
             span.textContent = el.alt;
 

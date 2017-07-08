@@ -39,7 +39,6 @@
 		background: {$GET,floating_section_background};
 		font-size: 0.9em;
 		width: 100%;
-		z-index: 100; /* LEGACY Needed for Opera, else footer icons with 'transform' CSS property overlay (bug in Opera) */
 		padding: 0 0.5em;
 		box-sizing: border-box;
 	}

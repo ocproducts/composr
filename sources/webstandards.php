@@ -258,7 +258,7 @@ function init__webstandards()
         'content' => '.+',
         'counter-increment' => $enforce_counter_increment,
         'counter-reset' => $enforce_counter_increment,
-        'cursor' => '(' . $enforce_functional_url . '|(?i)auto|crosshair|default|move|text|wait|help|n-resize|e-resize|s-resize|w-resize|ne-resize|nw-resize|se-resize|sw-resize|pointer|not-allowed|no-drop|vertical-text|all-scroll|col-resize|row-resize|none|progress(?-i))', // hand is actually IE specific version of pointer; we'll use Tempcode so as to only show that when really needed
+        'cursor' => '(' . $enforce_functional_url . '|(?i)auto|crosshair|default|move|text|wait|help|n-resize|e-resize|s-resize|w-resize|ne-resize|nw-resize|se-resize|sw-resize|pointer|not-allowed|no-drop|vertical-text|all-scroll|col-resize|row-resize|none|progress(?-i))',
         'direction' => '(ltr|rtl)',
         'display' => '(none|inline|block|list-item|table|table-header-group|table-footer-group|inline-block|run-in|inline-table|table-row|table-row-group|table-column-group|table-column|table-cell|table-caption|flex|-ms-flexbox|-\w+-flex)',
         'flex-wrap' => 'nowrap|wrap|wrap-reverse',
@@ -335,6 +335,7 @@ function init__webstandards()
         'white-space' => '(normal|pre|nowrap|pre-wrap|pre-line)',
         'width' => $enforce_auto_or_length,
         'word-spacing' => $enforce_normal_or_length,
+        'writing-mode' => '(tb-rl|lr-tb)',
         'z-index' => '(auto|(\d+))',
         'user-select' => '(none|auto|text|all|contain)',
         'text-overflow' => '(clip|ellipsis|\'[^\']\')',
@@ -349,7 +350,6 @@ function init__webstandards()
         */
 
         /* These are non standard but we want them */
-        'writing-mode' => '(tb-rl|lr-tb)', // A more complex W3C standard is underway. Only IE supports this one.
         'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
         'overflow-scrolling' => '(touch|auto)',
         'text-size-adjust' => '(none|auto|\d%|\d\d%|100%)',
@@ -1263,7 +1263,7 @@ function check_xhtml($out, $well_formed_only = false, $is_fragment = false, $web
                     $only_one_of = $only_one_of_template;
                     ++$stack_size;
                 } else {
-                    if ((($WEBSTANDARDS_CHECKER_OFF === null)) && (!$WELL_FORMED_ONLY) && ((!$XML_CONSTRAIN) || (!isset($MUST_SELFCLOSE_TAGS[$basis_token]))) && (($WEBSTANDARDS_CHECKER_OFF === null))) { // A tags must not self close even when only an anchor. Makes a weird underlined line effect in firefox
+                    if ((($WEBSTANDARDS_CHECKER_OFF === null)) && (!$WELL_FORMED_ONLY) && ((!$XML_CONSTRAIN) || (!isset($MUST_SELFCLOSE_TAGS[$basis_token]))) && (($WEBSTANDARDS_CHECKER_OFF === null))) { // A tags must not self close even when only an anchor. Makes a weird underlined line effect in Firefox
                         if (!$bad_root) {
                             $errors[] = _xhtml_error('XHTML_CEMPTY_TAG', $basis_token);
                         }

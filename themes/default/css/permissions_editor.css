@@ -18,7 +18,6 @@
 .privileges td {
 	text-align: {!en_right};
 	vertical-align: middle;
-	padding-{!en_right}: 4px; /* Fixes firefox bug of scrollbar appearing for .wide_table_wrap */
 }
 
 .permission_header_cell {

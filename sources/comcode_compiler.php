@@ -926,7 +926,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
                                             $p_len = 1;
                                             while ($pos + $p_len < $len) {
                                                 $p_portion = substr($comcode, $pos - 1, $p_len);
-                                                if (substr_count(str_replace('{', ' { ', $p_portion), '{') === substr_count(str_replace('}', ' } ', $p_portion), '}')) { // str_replace is to workaround a Quercus bug #4494
+                                                if (substr_count($p_portion, '{') === substr_count($p_portion, '}')) {
                                                     break;
                                                 }
                                                 $p_len++;

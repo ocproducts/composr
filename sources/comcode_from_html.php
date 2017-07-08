@@ -1192,8 +1192,7 @@ function array_html_preg_replace($element, $array, $semihtml)
             break;
         }
 
-        if ($pos == 0) // First iteration is just to find first opener
-        {
+        if ($pos == 0) { // First iteration is just to find first opener
             $pos = $pos_opener + 1;
             continue;
         }
@@ -1253,8 +1252,7 @@ function array_html_preg_replace($element, $array, $semihtml)
 
                     $opens = isset($s_opens[$start][$end]) ? $s_opens[$start][$end] : null;
                     $closes = isset($s_closes[$start][$end]) ? $s_closes[$start][$end] : null;
-                    if ($opens === null) // Not worked out yet, work out and put into $s_opens and $s_closes
-                    {
+                    if ($opens === null) { // Not worked out yet, work out and put into $s_opens and $s_closes
                         $segment = substr($semihtml, $start, $end + $lengths[$i] - $start);
                         $opens = substr_count($segment, '<' . $element . ' ') + substr_count($segment, '<' . $element . '>');
                         $closes = substr_count($segment, '</' . $element . '>');

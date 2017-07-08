@@ -85,7 +85,7 @@ class Module_filedump
             }
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             if (addon_installed('redirects_editor')) {
                 $GLOBALS['SITE_DB']->query_delete('redirects', array('r_from_page' => 'filedump', 'r_from_zone' => 'collaboration', 'r_to_page' => 'filedump', 'r_to_zone' => 'cms', 'r_is_transparent' => 1));
             }

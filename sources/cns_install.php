@@ -216,7 +216,7 @@ function install_cns($upgrade_from = null)
         ));
         $GLOBALS['FORUM_DB']->create_index('f_password_history', 'p_member_id', array('p_member_id'));
     }
-    if (($upgrade_from !== null) && ($upgrade_from < 11.0)) {
+    if (($upgrade_from !== null) && ($upgrade_from < 11.0)) { // LEGACY
         $GLOBALS['FORUM_DB']->delete_table_field('f_multi_moderations', 'mm_sink_state');
         $GLOBALS['FORUM_DB']->delete_table_field('f_topics', 't_sunk');
 
@@ -228,7 +228,7 @@ function install_cns($upgrade_from = null)
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'date'), array('cf_type' => 'just_date'));
         $GLOBALS['FORUM_DB']->query_update('f_custom_fields', array('cf_type' => 'time'), array('cf_type' => 'just_time'));
     }
-    if (($upgrade_from !== null) && ($upgrade_from < 10.0)) {
+    if (($upgrade_from !== null) && ($upgrade_from < 10.0)) { // LEGACY
         delete_config_option('no_dob_ask');
 
         $GLOBALS['FORUM_DB']->delete_index_if_exists('f_posts', 'posts_by');
@@ -342,7 +342,7 @@ function install_cns($upgrade_from = null)
             build_cpf_indices($id, $index, $type, $_type);
         }
     }
-    if (($upgrade_from !== null) && ($upgrade_from < 11.0)) {
+    if (($upgrade_from !== null) && ($upgrade_from < 11.0)) { // LEGACY
         add_privilege('FORUMS_AND_MEMBERS', 'appear_under_birthdays', true);
     }
 

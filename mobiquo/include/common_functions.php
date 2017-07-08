@@ -288,8 +288,7 @@ function tapatalk_strip_comcode($data)
         {
             $char = $data[$i];
 
-            if ($char == '"') // This can cause severe HTML corruption so is a disallowed character
-            {
+            if ($char == '"') { // This can cause severe HTML corruption so is a disallowed character
                 $i++;
                 continue;
             }

@@ -16,7 +16,7 @@ function sUpdateGetData() {
     } else {
         // First we check whether our feed is already up to date
         jQuery.ajax({
-            url: $cms.baseUrl('data_custom/latest_activity.txt?chrome_fix=' + Math.floor(Math.random() * 10000)),
+            url: $cms.baseUrl('data_custom/latest_activity.txt?cache_break=' + Math.floor(Math.random() * 10000)),
             data: {},
             success: function (data) {
                 if (parseInt(data) != window.latest_activity) {

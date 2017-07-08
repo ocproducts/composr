@@ -767,7 +767,6 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             // Find out about our message
             id = messages[i].getAttribute('id');
             timestamp = messages[i].getAttribute('timestamp');
-            if (!id) id = messages[i].id; // LEGACY Weird fix for Opera
             if (((window.top_window.last_message_id) && (parseInt(id) <= window.top_window.last_message_id)) && ((window.top_window.last_timestamp) && (parseInt(timestamp) <= window.top_window.last_timestamp))) {
                 continue;
             }

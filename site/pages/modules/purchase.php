@@ -171,7 +171,7 @@ class Module_purchase
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             $GLOBALS['FORUM_DB']->add_table_field('trans_expecting', 'e_currency', 'ID_TEXT', get_option('currency'));
 
             $GLOBALS['SITE_DB']->alter_table_field('transactions', 'purchase_id', 'ID_TEXT', 't_purchase_id');
@@ -222,7 +222,7 @@ class Module_purchase
             $GLOBALS['SITE_DB']->create_index('ecom_trans_addresses', 'txn_id', array('a_txn_id'));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) { // LEGACY
             require_code('cns_members');
             $cf_id = find_cms_cpf_field_id('cms_payment_card_issue_number');
             if ($cf_id !== null) {

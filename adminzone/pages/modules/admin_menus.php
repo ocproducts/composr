@@ -496,12 +496,12 @@ class Module_admin_menus
     public function add_menu_item($menu, $id, &$ids, $parent, &$old_menu_bits, &$order)
     {
         // Load in details of menu item
-        $caption = post_param_string('caption_' . strval($id), ''); // Default needed to workaround Opera problem
-        $caption_long = post_param_string('caption_long_' . strval($id), ''); // Default needed to workaround Opera problem
-        $page_only = post_param_string('page_only_' . strval($id), ''); // Default needed to workaround Opera problem
-        $theme_img_code = post_param_string('theme_img_code_' . strval($id), ''); // Default needed to workaround Opera problem
+        $caption = post_param_string('caption_' . strval($id), '');
+        $caption_long = post_param_string('caption_long_' . strval($id), '');
+        $page_only = post_param_string('page_only_' . strval($id), '');
+        $theme_img_code = post_param_string('theme_img_code_' . strval($id), '');
         $check_permissions = post_param_integer('check_perms_' . strval($id), 0);
-        $branch_type = post_param_string('branch_type_' . strval($id), 'branch_plus'); // Default needed to workaround Opera problem
+        $branch_type = post_param_string('branch_type_' . strval($id), 'branch_plus');
         if ($branch_type == 'branch_plus') {
             $expanded = 1;
         } else {

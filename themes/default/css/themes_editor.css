@@ -76,7 +76,6 @@
 	padding-right: 16px;
 	float: left;
 	height: 45em;
-	transform: scale(1); /* Needed to stop Chrome rendering bug by forcing it as a layer at all times */
 }
 
 .template_editor_file_selector>.inner {

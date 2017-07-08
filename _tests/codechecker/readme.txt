@@ -41,7 +41,7 @@ The checker is not a be-all-and-end-all tool for conformance. Rather, it is desi
 
 In situations where additional code would remove ambiguity with-respect-to what may and may not be an error, the checkers enforce that the extra code to be written. For instance, the PHP checker enforces strict-typing (even though PHP itself does not), so that typing-errors may be found -- typing errors are in fact, often the cause of major security problems, as well as general bugs.
 
-The checkers favour practical quality rather than strict standard compliance. For example, many CSS errors are generated purely to avoid problems with Internet Explorer's lack of standards support.
+The checkers favour practical quality rather than strict standard compliance.
 
 HTML etc
 --------

@@ -113,20 +113,20 @@ class Module_admin_giftr extends Standard_crud_module
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 3)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 3)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('giftr', 'category', 'SHORT_TEXT', do_lang('GENERAL'));
 
             $GLOBALS['SITE_DB']->alter_table_field('members_gifts', 'annonymous', 'BINARY', 'is_anonymous');
             $GLOBALS['SITE_DB']->alter_table_field('members_gifts', 'topic_id', '?AUTO_LINK');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 4)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->delete_table_field('members_gifts', 'topic_id');
             $GLOBALS['SITE_DB']->alter_table_field('members_gifts', 'from_user_id', 'MEMBER', 'from_member_id');
             $GLOBALS['SITE_DB']->alter_table_field('members_gifts', 'to_user_id', 'MEMBER', 'to_member_id');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $GLOBALS['SITE_DB']->rename_table('ocgifts', 'giftr');
         }
     }

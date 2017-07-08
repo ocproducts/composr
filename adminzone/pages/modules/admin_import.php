@@ -61,7 +61,7 @@ class Module_admin_import
      */
     public function install($upgrade_from = null, $upgrade_from_hack = null)
     {
-        if (($upgrade_from !== null) && ($upgrade_from < 7)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 7)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_session', '*ID_TEXT');
 
             $GLOBALS['SITE_DB']->alter_table_field('import_session', 'imp_session', '*ID_TEXT');
@@ -75,15 +75,15 @@ class Module_admin_import
             }
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 6)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 6)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('import_session', 'imp_db_host', 'ID_TEXT');
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 5)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('import_id_remap', 'id_old', 'ID_TEXT');
         }
 
-        if (($upgrade_from === null) || ($upgrade_from < 4)) {
+        if (($upgrade_from === null) || ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->create_table('import_parts_done', array(
                 'id' => '*AUTO',
                 'imp_id' => 'SHORT_TEXT',

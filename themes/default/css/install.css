@@ -13,7 +13,6 @@
 
 #installer_body {
 	background-image: linear-gradient(to bottom, {$GET,installer_background_a}, {$GET,installer_background_b});
-	background-color: {$GET,installer_background_b}; {$,IE fallback}
 	background-repeat: no-repeat;
 }
 

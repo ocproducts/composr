@@ -152,7 +152,7 @@ class Module_booking
             ));
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 2)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 2)) { // LEGACY
             $GLOBALS['SITE_DB']->add_table_field('booking', 'customer_name', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('booking', 'customer_email', 'SHORT_TEXT');
             $GLOBALS['SITE_DB']->add_table_field('booking', 'customer_mobile', 'SHORT_TEXT');

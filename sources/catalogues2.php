@@ -569,8 +569,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
         $order = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MAX(cc_order)', array('c_name' => $catalogue_name));
         if (($order === null) || ($order >= 2147483648)) { // TODO: #3046 in tracker
             $order = 0;
-        } else
-        {
+        } else {
             $order++;
         }
     }

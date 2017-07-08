@@ -260,10 +260,8 @@ if (true)
         {
             do
             {
-                    if (true)
-                    {
-                    } else
-                    {
+                    if (true) {
+                    } else {
                             echo 3;
                     }
             }

@@ -18,6 +18,8 @@
  * @package    core_rich_media
  */
 
+// LEGACY
+
 /**
  * Hook class.
  */

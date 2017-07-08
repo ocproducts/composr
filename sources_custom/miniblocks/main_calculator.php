@@ -22,7 +22,7 @@ $equation = $map['equation'];
 $equation = str_replace('math.', 'Math.', strtolower($equation)); // Name fields come out lower case, so equation needs to be
 echo '<form onsubmit="return false;" action="#!" method="post">';
 foreach ($map as $key => $val) {
-    $key = strtolower($key); // Firefox forces this, but we'll force it too just in case of browser inconsistency
+    $key = strtolower($key);
     if (($key != 'equation') && ($key != 'block') && ($key != 'message') && ($key != 'cache')) {
         echo '<p>
             <input class="input_integer_required right" size="6" type="text" id="' . escape_html($key) . '" name="' . escape_html($key) . '" value="" />

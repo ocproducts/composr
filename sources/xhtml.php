@@ -43,7 +43,7 @@ function xhtmlise_html($html, $definitely_want = false, $snippet = false)
     // echo xhtmlise_html('test<a></a><br /><po></p><p></po>'); // expect: test<a></a><br /><po><p></p></po>
 
     if (!$definitely_want) {
-        return $html; // One day, this will get removed and we'll ensure all our output is always XHTML. But so far there's no point as IE doesn't support true XHTML
+        return $html; // For performance we won't force cleanup, as we're not on true-XHTML mode
     }
 
     $is_escaped = (($GLOBALS['XSS_DETECT']) && (ocp_is_escaped($html)));

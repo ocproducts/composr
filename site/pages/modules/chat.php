@@ -192,7 +192,7 @@ class Module_chat
             // NB: edit_lowrange_content may be overridden for the chat module also, allowing editing messages in rooms
         }
 
-        if (($upgrade_from !== null) && ($upgrade_from < 12)) {
+        if (($upgrade_from !== null) && ($upgrade_from < 12)) { // LEGACY
             $GLOBALS['SITE_DB']->rename_table('chat_buddies', 'chat_friends');
 
             $GLOBALS['SITE_DB']->alter_table_field('chat_messages', 'user_id', 'MEMBER', 'member_id');
