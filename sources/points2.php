@@ -111,7 +111,7 @@ function give_points($amount, $recipient_id, $sender_id, $reason, $anonymous = f
     $GLOBALS['FORUM_DRIVER']->set_custom_field($sender_id, 'gift_points_used', strval($sender_gift_points_used + $amount));
     $temp_points = point_info($recipient_id);
     $GLOBALS['FORUM_DRIVER']->set_custom_field($recipient_id, 'points_gained_given', strval((array_key_exists('points_gained_given', $temp_points) ? $temp_points['points_gained_given'] : 0) + $amount));
-    $their_username = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id, USERNAME_DEFAULT_ERROR);
+    $their_username = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id, false, USERNAME_DEFAULT_ERROR);
     $their_displayname = $GLOBALS['FORUM_DRIVER']->get_username($recipient_id, true, USERNAME_DEFAULT_ERROR);
     $yes = $GLOBALS['FORUM_DRIVER']->get_member_email_allowed($recipient_id);
     if (($yes) && ($send_email)) {

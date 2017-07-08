@@ -65,7 +65,7 @@ function assign_referral_awards($referee, $trigger)
 
         return;
     }
-    $referrer_username = $GLOBALS['FORUM_DRIVER']->get_username($referrer, USERNAME_DEFAULT_NULL);
+    $referrer_username = $GLOBALS['FORUM_DRIVER']->get_username($referrer, false, USERNAME_DEFAULT_NULL);
     if ($referrer_username === null) {
         return; // Deleted member
     }

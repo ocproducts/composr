@@ -455,7 +455,17 @@ class Module_admin_email_log
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_edit', 'id' => $id), '_SELF');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '84c9b97944b6cf799ac1abb5044d426a', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => '', 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '84c9b97944b6cf799ac1abb5044d426a',
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'TEXT' => '',
+            'URL' => $post_url,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**

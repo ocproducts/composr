@@ -792,10 +792,7 @@ class Module_warnings extends Standard_crud_module
         $explanation = post_param_string('explanation');
         $member_id = post_param_integer('member_id');
         $message = post_param_string('message', '');
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
-        if ($username === null) {
-            warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html($username)));
-        }
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, false, USERNAME_DEFAULT_ERROR);
 
         $save = post_param_string('save');
         if ($save != '') {

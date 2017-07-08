@@ -23,12 +23,6 @@
  *
  * @package    core
  */
-
-/**
- * Forum driver class.
- *
- * @package    core
- */
 class Forum_driver_base
 {
     public $db;
@@ -173,42 +167,80 @@ class Forum_driver_base
      *
      * @param  MEMBER $id The member
      * @param  boolean $use_displayname Whether to use the displayname rather than the username (if we have them)
-     * @return ?SHORT_TEXT The username (null: deleted member)
+     * @param  integer $options A bitmask of USERNAME_* options to define how to handle missing members
+     * @return ?SHORT_TEXT The username (null: deleted/missing member)
      */
-    public function get_username($id, $use_displayname = false)
+    public function get_username($id, $use_displayname = false, $options = USERNAME_DEFAULT_DELETED)
     {
-        if ($id == $this->get_guest_id()) {
-            require_code('lang');
-            if (!function_exists('do_lang')) {
-                return 'Guest';
+        $guest_id = $this->get_guest_id();
+
+        if (($id == $guest_id) && (($options & USERNAME_GUEST_AS_DEFAULT) != 0)) {
+            $ret = null;
+        } else {
+            // Special case: Guest
+            if ($id == $guest_id) {
+                require_code('lang');
+                if (!function_exists('do_lang')) {
+                    return 'Guest';
+                }
+                $ret = do_lang('GUEST', null, null, null, null, false);
+                if ($ret === null) {
+                    $ret = 'Guest';
+                }
+                return $ret;
             }
-            $ret = do_lang('GUEST', null, null, null, null, false);
-            if ($ret === null) {
-                $ret = 'Guest';
+
+            // Special case: Cache
+            global $USER_NAME_CACHE;
+            if (isset($USER_NAME_CACHE[$id])) {
+                $ret = $USER_NAME_CACHE[$id];
+                if ($use_displayname) {
+                    $ret = get_displayname($ret);
+                }
+                return $ret;
             }
-            return $ret;
+
+            // Lookup
+            $ret = $this->_get_username($id);
+
+            // Clean data
+            if ($ret === '') {
+                $ret = null; // Odd, but sometimes
+            }
+
+            // Cache
+            $USER_NAME_CACHE[$id] = $ret;
         }
 
-        global $USER_NAME_CACHE;
-        if (isset($USER_NAME_CACHE[$id])) {
-            $ret = $USER_NAME_CACHE[$id];
+        // Make a display name?
+        if ($ret !== null) {
             if ($use_displayname) {
                 $ret = get_displayname($ret);
             }
-            return $ret;
         }
 
-        $ret = $this->_get_username($id);
-        if ($ret === '') {
-            if (get_forum_type() == 'cns') {
-                return uniqid('', false); // Let it get deleted at least
-            }
-            $ret = null; // Odd, but sometimes
+        // How to handle missing members
+        if ($ret === null) {
+            case USERNAME_DEFAULT_DELETED:
+                $ret = do_lang('DELETED');
+                break;
+
+            case USERNAME_DEFAULT_ID_RAW:
+                $ret = strval($id);
+                break;
+
+            case USERNAME_DEFAULT_ID_TIDY:
+                $ret = '#' . strval($id);
+                break;
+
+            case USERNAME_DEFAULT_BLANK:
+                $ret = '';
+                break;
+
+            case USERNAME_DEFAULT_ERROR:
+                warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html(strval($id))));
         }
-        $USER_NAME_CACHE[$id] = $ret;
-        if ($use_displayname) {
-            $ret = get_displayname($ret);
-        }
+
         return $ret;
     }
 

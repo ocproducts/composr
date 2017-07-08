@@ -513,7 +513,7 @@ class Module_groups
         $club = $this->club;
 
         // Leadership
-        if (($group['g_group_leader'] !== null) && ($GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader'], USERNAME_DEFAULT_NULL) !== null)) {
+        if (($group['g_group_leader'] !== null) && ($GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader'], false, USERNAME_DEFAULT_NULL) !== null)) {
             $leader_name = $GLOBALS['FORUM_DRIVER']->get_username($group['g_group_leader'], true);
             $leader_url = build_url(array('page' => 'members', 'type' => 'view', 'id' => $group['g_group_leader']), get_module_zone('members'));
             $leader_link = hyperlink($leader_url, $leader_name, false, true);
@@ -775,7 +775,7 @@ class Module_groups
             if ($free_access) {
                 $text = do_lang_tempcode('ABOUT_TO_APPLY_FREE_ACCESS', escape_html($group_name));
             } else {
-                if (($_leader === null) || ($GLOBALS['FORUM_DRIVER']->get_username($_leader, USERNAME_DEFAULT_NULL) === null)) {
+                if (($_leader === null) || ($GLOBALS['FORUM_DRIVER']->get_username($_leader, false, USERNAME_DEFAULT_NULL) === null)) {
                     $text = do_lang_tempcode('ABOUT_TO_APPLY_STAFF', escape_html($group_name), escape_html(get_site_name()));
                 } else {
                     $leader_username = $GLOBALS['FORUM_DRIVER']->get_username($_leader, true);
@@ -854,7 +854,17 @@ class Module_groups
             $hidden = form_input_hidden('id', strval($id));
             $fields->attach(form_input_line(do_lang_tempcode('REASON'), '', 'reason', '', false));
 
-            return do_template('FORM_SCREEN', array('_GUID' => 'ebec84204dee305a8db1a57e5a95c774', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'TEXT' => $text, 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__no', 'SUBMIT_NAME' => $submit_name));
+            return do_template('FORM_SCREEN', array(
+                '_GUID' => 'ebec84204dee305a8db1a57e5a95c774',
+                'SKIP_WEBSTANDARDS' => true,
+                'HIDDEN' => $hidden,
+                'TITLE' => $this->title,
+                'TEXT' => $text,
+                'URL' => $post_url,
+                'FIELDS' => $fields,
+                'SUBMIT_ICON' => 'buttons__no',
+                'SUBMIT_NAME' => $submit_name,
+            ));
         }
 
         if (!cns_may_control_group($id, get_member())) {

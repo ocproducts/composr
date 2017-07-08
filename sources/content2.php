@@ -159,7 +159,7 @@ function metadata_get_fields($content_type, $content_id, $allow_no_owner = false
         $submitter_field = in_array('submitter', $fields_to_skip) ? null : $info['submitter_field'];
         if ($submitter_field !== null) {
             $submitter = ($content_row === null) ? get_member() : $content_row[$submitter_field];
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter, USERNAME_DEFAULT_NULL);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter, false, USERNAME_DEFAULT_NULL);
             if ($username === null) {
                 $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member());
             }

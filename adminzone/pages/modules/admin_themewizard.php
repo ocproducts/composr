@@ -453,7 +453,17 @@ class Module_admin_themewizard
 
         $fields->attach(form_input_list(do_lang_tempcode('THEME'), do_lang_tempcode('DESCRIPTION_LOGOWIZARD_THEME'), 'theme', create_selection_list_themes($theme, true)));
 
-        return do_template('FORM_SCREEN', array('_GUID' => '08449c0ae8edf5c0b3510611c9ac9618', 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => ''));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '08449c0ae8edf5c0b3510611c9ac9618',
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'HIDDEN' => '',
+        ));
     }
 
     /**

@@ -408,7 +408,7 @@ function get_workflow_form($workflow_content_id)
         $submitter_details[] = $GLOBALS['FORUM_DRIVER']->get_username($submitter) . ' (' . do_lang('SUBMITTER') . ')';
         $submitter_details[] = 'send_author'; // Name
         $submitter_details[] = false; // Value
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter, USERNAME_DEFAULT_DELETED);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($submitter, false, USERNAME_DEFAULT_DELETED);
         $submitter_details[] = do_lang_tempcode('NEXT_APPROVAL_AUTHOR', escape_html($username)); // Description
         $send_to_boxes[] = $submitter_details; // Then tack it on the end
     }

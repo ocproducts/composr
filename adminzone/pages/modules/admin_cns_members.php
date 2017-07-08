@@ -274,7 +274,16 @@ class Module_admin_cns_members
 
         $submit_name = do_lang_tempcode('ADD_MEMBER');
         $url = build_url(array('page' => '_SELF', 'type' => 'step2'), '_SELF');
-        return do_template('FORM_SCREEN', array('_GUID' => '3724dec184e27bb1bfebc5712e8faec2', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '3724dec184e27bb1bfebc5712e8faec2',
+            'HIDDEN' => $hidden,
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'menu__site_meta__user_actions__join',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $url,
+        ));
     }
 
     /**
@@ -474,7 +483,16 @@ class Module_admin_cns_members
         $post_url = build_url(array('page' => '_SELF', 'type' => '_delurk'), '_SELF');
         $text = do_lang_tempcode('CHOOSE_DELURK_CRITERIA');
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'f911fc5be2865bdd065abf7c636530d4', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'f911fc5be2865bdd065abf7c636530d4',
+            'TITLE' => $this->title,
+            'HIDDEN' => $hidden,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**
@@ -680,7 +698,18 @@ class Module_admin_cns_members
         $post_url = build_url(array('page' => '_SELF', 'type' => '_download_csv'), '_SELF');
         $text = '';
 
-        return do_template('FORM_SCREEN', array('_GUID' => '24cae29bc329a307a94c8b3f1e087708', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'TARGET' => '_blank', 'JS_FUNCTION_CALLS' => $js_function_calls));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '24cae29bc329a307a94c8b3f1e087708',
+            'TITLE' => $this->title,
+            'HIDDEN' => $hidden,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_NAME' => $submit_name,
+            'TARGET' => '_blank',
+            'JS_FUNCTION_CALLS' => $js_function_calls,
+        ));
     }
 
     /**
@@ -722,7 +751,16 @@ class Module_admin_cns_members
         $post_url = build_url(array('page' => '_SELF', 'type' => '_import_csv'), '_SELF');
         $text = '';
 
-        return do_template('FORM_SCREEN', array('_GUID' => '9196652a093d7f3a0e5dd0922f74cc51', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '9196652a093d7f3a0e5dd0922f74cc51',
+            'TITLE' => $this->title,
+            'HIDDEN' => $hidden,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**

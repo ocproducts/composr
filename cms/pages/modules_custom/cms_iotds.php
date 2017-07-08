@@ -227,7 +227,16 @@ class Module_cms_iotds extends Standard_crud_module
         $archive_url = build_url(array('page' => 'iotds'), get_module_zone('iotds'));
         $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST_EXTRA', escape_html($search_url->evaluate()), escape_html($archive_url->evaluate())));
 
-        return do_template('IOTD_ADMIN_CHOOSE_SCREEN', array('_GUID' => '3ee2847c986bf349caa40d462f45eb9c', 'SHOWING_OLD' => $used == 1, 'TITLE' => $this->title, 'TEXT' => $text, 'USED_URL' => $used_url, 'CURRENT_IOTD' => $current_iotd, 'UNUSED_IOTD' => $unused_iotd, 'USED_IOTD' => $used_iotd));
+        return do_template('IOTD_ADMIN_CHOOSE_SCREEN', array(
+            '_GUID' => '3ee2847c986bf349caa40d462f45eb9c',
+            'SHOWING_OLD' => $used == 1,
+            'TITLE' => $this->title,
+            'TEXT' => $text,
+            'USED_URL' => $used_url,
+            'CURRENT_IOTD' => $current_iotd,
+            'UNUSED_IOTD' => $unused_iotd,
+            'USED_IOTD' => $used_iotd,
+        ));
     }
 
     /**

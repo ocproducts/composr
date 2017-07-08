@@ -34,7 +34,7 @@ function render_profile_tabset($title, $member_id_of, $member_id_viewing = null,
     }
 
     if ($username === null) {
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of, USERNAME_GUEST_AS_DEFAULT | USERNAME_DEFAULT_ERROR);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id_of, false, USERNAME_GUEST_AS_DEFAULT | USERNAME_DEFAULT_ERROR);
     }
 
     $tabs = array();

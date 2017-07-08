@@ -73,7 +73,7 @@ class Hook_rss_chat
 
             if (check_chatroom_access($categories[$row['room_id']], true)) {
                 $id = strval($row['id']);
-                $author = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id'], USERNAME_DEFAULT_BLANK);
+                $author = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id'], false, USERNAME_DEFAULT_BLANK);
 
                 $news_date = date($date_string, $row['date_and_time']);
                 $edit_date = '';

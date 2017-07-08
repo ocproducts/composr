@@ -101,7 +101,7 @@ class Hook_rss_catalogues
                 }
 
                 $id = strval($row['id']);
-                $author = $GLOBALS['FORUM_DRIVER']->get_username($row['ce_submitter'], USERNAME_DEFAULT_BLANK);
+                $author = $GLOBALS['FORUM_DRIVER']->get_username($row['ce_submitter'], false, USERNAME_DEFAULT_BLANK);
 
                 $news_date = date($date_string, $row['ce_add_date']);
                 $edit_date = ($row['ce_edit_date'] === null) ? '' : date($date_string, $row['ce_edit_date']);

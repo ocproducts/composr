@@ -116,7 +116,7 @@ class Module_contact_member
 
         if ($type == 'actual') {
             $member_id = get_param_integer('id');
-            $to_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true);
+            $to_name = $GLOBALS['FORUM_DRIVER']->get_username($member_id, true, USERNAME_DEFAULT_ERROR);
 
             breadcrumb_set_parents(array(array('_SELF:_SELF:browse', do_lang_tempcode('EMAIL_MEMBER', escape_html($to_name)))));
             breadcrumb_set_self(do_lang_tempcode('DONE'));
@@ -256,10 +256,6 @@ class Module_contact_member
         }
 
         $join_time = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_join_time');
-
-        if ($to_name === null) {
-            warn_exit(do_lang_tempcode('MEMBER_NO_EXIST'));
-        }
 
         $from_email = trim(post_param_string('email_address'));
         require_code('type_sanitisation');

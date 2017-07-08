@@ -214,14 +214,14 @@ class Module_admin_points
             if (is_guest($myrow['gift_to'])) {
                 $to = do_lang_tempcode('USER_SYSTEM');
             } else {
-                $to_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_to'], USERNAME_DEFAULT_NULL);
+                $to_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_to'], false, USERNAME_DEFAULT_NULL);
                 $to_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $myrow['gift_to']), get_module_zone('points'));
                 $to = ($to_name === null) ? do_lang_tempcode('UNKNOWN_EM') : hyperlink($to_url, $to_name, false, true);
             }
             if (is_guest($myrow['gift_from'])) {
                 $from = do_lang_tempcode('USER_SYSTEM');
             } else {
-                $from_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_from'], USERNAME_DEFAULT_NULL);
+                $from_name = $GLOBALS['FORUM_DRIVER']->get_username($myrow['gift_from'], false, USERNAME_DEFAULT_NULL);
                 $from_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $myrow['gift_from']), get_module_zone('points'));
                 $from = ($from_name === null) ? do_lang_tempcode('UNKNOWN_EM') : hyperlink($from_url, $from_name, false, true);
             }

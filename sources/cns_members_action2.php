@@ -1663,6 +1663,7 @@ function cns_check_name_valid(&$username, $member_id = null, $password = null, $
         $restricted_usernames = explode(',', get_option('restricted_usernames'));
         $restricted_usernames[] = do_lang('GUEST');
         $restricted_usernames[] = do_lang('UNKNOWN');
+        $restricted_usernames[] = do_lang('DELETED');
         $restricted_usernames[] = do_lang('SYSTEM');
         foreach ($restricted_usernames as $_restricted_username) {
             $restricted_username = trim($_restricted_username);

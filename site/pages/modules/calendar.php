@@ -1484,7 +1484,7 @@ class Module_calendar
             $subscriptions = $GLOBALS['SITE_DB']->query_select('calendar_reminders', array('DISTINCT n_member_id'), array('e_id' => $id), '', 100);
             if (count($subscriptions) < 100) {
                 foreach ($subscriptions as $subscription) {
-                    $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription['n_member_id'], USERNAME_DEFAULT_NULL);
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username($subscription['n_member_id'], false, USERNAME_DEFAULT_NULL);
                     if ($username !== null) {
                         $member_url = $GLOBALS['FORUM_DRIVER']->member_profile_url($subscription['n_member_id'], true);
                         $subscribed[] = array('MEMBER_ID' => strval($subscription['n_member_id']), 'MEMBER_URL' => $member_url, 'USERNAME' => $username);
@@ -1647,7 +1647,17 @@ class Module_calendar
         $fields->attach(form_input_float(do_lang_tempcode('REMINDER_TIME'), do_lang_tempcode('DESCRIPTION_REMINDER_TIME'), 'hours_before', 1.0, true));
         $submit_name = do_lang_tempcode('SUBSCRIBE_EVENT');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '8f6a962617031264ee1af552701804ca', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '8f6a962617031264ee1af552701804ca',
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'TEXT' => '',
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**

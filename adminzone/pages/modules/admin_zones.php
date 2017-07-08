@@ -718,7 +718,18 @@ class Module_admin_zones
         $text = paragraph(do_lang_tempcode('ZONE_ADD_TEXT'));
 
         require_javascript('core_zone_editor');
-        return do_template('FORM_SCREEN', array('_GUID' => 'd8f08884cc370672c2e5604aefe78c6c',  'JS_FUNCTION_CALLS' => $js_function_calls, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'd8f08884cc370672c2e5604aefe78c6c',
+             'JS_FUNCTION_CALLS' => $js_function_calls,
+            'HIDDEN' => $hidden,
+            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+            'SUBMIT_NAME' => $submit_name,
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUPPORT_AUTOSAVE' => true,
+        ));
     }
 
     /**
@@ -882,7 +893,18 @@ class Module_admin_zones
         $post_url = build_url($map, '_SELF');
         $submit_name = do_lang_tempcode('SAVE');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '54a578646aed86da06f30c459c9586c2', 'JS_FUNCTION_CALLS' => $js_function_calls, 'HIDDEN' => $hidden, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => '', 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '54a578646aed86da06f30c459c9586c2',
+            'JS_FUNCTION_CALLS' => $js_function_calls,
+            'HIDDEN' => $hidden,
+            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_NAME' => $submit_name,
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => '',
+            'SUPPORT_AUTOSAVE' => true,
+        ));
     }
 
     /**

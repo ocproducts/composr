@@ -748,7 +748,7 @@ class Module_admin_customers
         if ($username === null) {
             $member_id = get_param_integer('member_id', null);
             if ($member_id !== null) {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_BLANK);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, false, USERNAME_DEFAULT_BLANK);
             } else {
                 $username = '';
             }
@@ -784,7 +784,7 @@ class Module_admin_customers
         $rows = new Tempcode();
         $logs = $GLOBALS['SITE_DB']->query_select('credit_charge_log', array('charging_member_id', 'num_credits', 'date_and_time', 'reason'), array('member_id' => $member_id), 'ORDER BY date_and_time DESC', 10);
         foreach ($logs as $log) {
-            $charging_username = $GLOBALS['FORUM_DRIVER']->get_username($log['charging_member_id'], USERNAME_DEFAULT_DELETED);
+            $charging_username = $GLOBALS['FORUM_DRIVER']->get_username($log['charging_member_id'], false, USERNAME_DEFAULT_DELETED);
             $_num_credits = integer_format($log['num_credits']);
             $date = get_timezoned_date_time($log['date_and_time']);
             $reason = $log['reason'];
@@ -801,7 +801,16 @@ class Module_admin_customers
             $text->attach(do_template('COLUMNED_TABLE', array('_GUID' => '032e4dcb1d4224ed6633679154b6d827', 'HEADER_ROW' => $header_row, 'ROWS' => $rows)));
         }
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'f91185ee725f47ffa652d5fef8d85c0b', 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => $text, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'f91185ee725f47ffa652d5fef8d85c0b',
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'TEXT' => $text,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**

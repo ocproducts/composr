@@ -434,7 +434,7 @@ function get_topic_participants($topic_id, $max = null, $topic_details = null)
 
     $participants = array();
     foreach (get_topic_participant_uids($topic_id, $max, $topic_details) as $participant) {
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($participant, USERNAME_DEFAULT_NULL);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($participant, false, USERNAME_DEFAULT_NULL);
         if ($username !== null) {
             $participants[] = array(
                 'user_id' => $participant,

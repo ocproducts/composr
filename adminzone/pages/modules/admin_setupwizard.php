@@ -193,7 +193,16 @@ class Module_admin_setupwizard
 
         $fields = new Tempcode();
 
-        $inner = do_template('FORM', array('_GUID' => '71316d91703e3549301f57182405c997', 'SKIP_WEBSTANDARDS' => true, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => ''));
+        $inner = do_template('FORM', array(
+            '_GUID' => '71316d91703e3549301f57182405c997',
+            'SKIP_WEBSTANDARDS' => true,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'HIDDEN' => '',
+        ));
         return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '38a02343903542f8bbe1fb49a7b21eb7', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(1)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
@@ -363,7 +372,17 @@ class Module_admin_setupwizard
         }
         $fields->attach(form_input_list(do_lang_tempcode('SECURITY_LEVEL'), do_lang_tempcode('DESCRIPTION_SECURITY_LEVEL'), 'security_level', $security_levels));
 
-        $inner = do_template('FORM', array('_GUID' => '3126441524b51cba6a1e0de336c8a9d5', 'SKIP_WEBSTANDARDS' => true, 'SKIPPABLE' => 'skip_3', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => ''));
+        $inner = do_template('FORM', array(
+            '_GUID' => '3126441524b51cba6a1e0de336c8a9d5',
+            'SKIP_WEBSTANDARDS' => true,
+            'SKIPPABLE' => 'skip_3',
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'HIDDEN' => '',
+        ));
         return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '6bdae2f0aa24b5dbe81fd0fc72e87feb', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(3)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
@@ -583,7 +602,18 @@ class Module_admin_setupwizard
         $fields .= static_evaluate_tempcode(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '00948cc876d0ecb8b511800eabd8cae2', 'SECTION_HIDDEN' => true, 'TITLE' => do_lang_tempcode('ADVANCED'))));
         $fields .= $fields_advanced;
 
-        $inner = do_template('FORM', array('_GUID' => '0f361a3ac0e020ba71f3a7a900eca0e4', 'NO_SIZING' => true, 'SKIP_WEBSTANDARDS' => true, 'SKIPPABLE' => 'skip_4', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
+        $inner = do_template('FORM', array(
+            '_GUID' => '0f361a3ac0e020ba71f3a7a900eca0e4',
+            'NO_SIZING' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'SKIPPABLE' => 'skip_4',
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'HIDDEN' => $hidden,
+        ));
         return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'ca91a76aa418d5c9ae956247ebc70652', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(4)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
     }
 
@@ -835,7 +865,17 @@ class Module_admin_setupwizard
         require_code('setupwizard');
         require_javascript('setupwizard');
         $js_function_calls = array('adminSetupWizardStep7');
-        $form = do_template('FORM', array('_GUID' => 'bf01a2b90967e86213ae0672c36a4b4e', 'SKIPPABLE' => 'skip_7', 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden, 'JS_FUNCTION_CALLS' => $js_function_calls));
+        $form = do_template('FORM', array(
+            '_GUID' => 'bf01a2b90967e86213ae0672c36a4b4e',
+            'SKIPPABLE' => 'skip_7',
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'HIDDEN' => $hidden,
+            'JS_FUNCTION_CALLS' => $js_function_calls,
+        ));
 
         $balanced = comcode_to_tempcode($this->get_rules_file('balanced'), null, true);
         $liberal = comcode_to_tempcode($this->get_rules_file('liberal'), null, true);

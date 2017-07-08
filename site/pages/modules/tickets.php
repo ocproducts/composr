@@ -598,7 +598,7 @@ class Module_tickets
                         continue;
                     }
 
-                    $username = $GLOBALS['FORUM_DRIVER']->get_username($row['l_member_id'], USERNAME_DEFAULT_NULL);
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username($row['l_member_id'], false, USERNAME_DEFAULT_NULL);
                     if ($username === null) {
                         continue;
                     }
@@ -1023,11 +1023,20 @@ class Module_tickets
         $access = array();
         $_access = $GLOBALS['SITE_DB']->query_select('ticket_extra_access', array('member_id'), array('ticket_id' => $ticket_id));
         foreach ($_access as $a) {
-            $access[] = $GLOBALS['FORUM_DRIVER']->get_username($a['member_id'], USERNAME_DEFAULT_BLANK);
+            $access[] = $GLOBALS['FORUM_DRIVER']->get_username($a['member_id'], false, USERNAME_DEFAULT_BLANK);
         }
         $fields->attach(form_input_username_multi(do_lang_tempcode('USERNAME'), '', 'access', $access, 0, true));
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'a94d516fc14662908628ff19eb7305b9', 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => $text, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu__adminzone__security__permissions__privileges', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'a94d516fc14662908628ff19eb7305b9',
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'TEXT' => $text,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu__adminzone__security__permissions__privileges',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**
@@ -1107,7 +1116,16 @@ class Module_tickets
         }
         $fields->attach(form_input_list(do_lang_tempcode('TICKET_TYPE'), '', 'ticket_type', $_ticket_types));
 
-        return do_template('FORM_SCREEN', array('_GUID' => '1fd8f7eaf5346776ae2362450d81f4c2', 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => $text, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '1fd8f7eaf5346776ae2362450d81f4c2',
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'TEXT' => $text,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**

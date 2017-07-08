@@ -370,7 +370,17 @@ class Module_admin_permissions
         $fields->attach(form_input_list(do_lang_tempcode('FROM'), do_lang_tempcode('PERMISSIONS_FROM'), 'from', $list1));
         $fields->attach(form_input_list(do_lang_tempcode('TO'), do_lang_tempcode('PERMISSIONS_TO'), 'to', $list2));
 
-        return do_template('FORM_SCREEN', array('_GUID' => '9e20011006a26b240fc898279338875c', 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'HIDDEN' => '', 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '9e20011006a26b240fc898279338875c',
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'FIELDS' => $fields,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**

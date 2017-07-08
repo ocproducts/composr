@@ -48,7 +48,9 @@ function cns_get_safe_specified_poster_name($is_required_field = null)
         }
 
         $restricted_usernames = explode(',', get_option('restricted_usernames'));
+        $restricted_usernames[] = do_lang('GUEST');
         $restricted_usernames[] = do_lang('UNKNOWN');
+        $restricted_usernames[] = do_lang('DELETED');
         $restricted_usernames[] = do_lang('SYSTEM');
         if ($GLOBALS['FORUM_DRIVER']->get_member_from_username($poster_name_if_guest) !== null) {
             $restricted_usernames[] = $poster_name_if_guest;

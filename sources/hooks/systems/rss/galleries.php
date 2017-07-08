@@ -86,7 +86,7 @@ class Hook_rss_galleries
         $rows = array_merge($rows1, $rows2);
         foreach ($rows as $row) {
             $id = strval($row['id']);
-            $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter'], USERNAME_DEFAULT_BLANK);
+            $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter'], false, USERNAME_DEFAULT_BLANK);
 
             $news_date = date($date_string, $row['add_date']);
             $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);

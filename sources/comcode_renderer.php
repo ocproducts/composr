@@ -2203,7 +2203,7 @@ function _do_tags_comcode($tag, $attributes, $embed, $comcode_dangerous, $pass_i
                     $COMCODE_ATTACHMENTS[$pass_id][] = array('tag_type' => $tag, 'time' => $attachment_row['a_add_time'], 'type' => 'existing', 'initial_id' => $id, 'id' => $__id, 'attachmenttype' => $attributes['type'], 'comcode' => $comcode);
                 } else { // No permission
                     require_lang('permissions');
-                    $username = $GLOBALS['FORUM_DRIVER']->get_username($source_member, USERNAME_DEFAULT_DELETED);
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username($source_member, false, USERNAME_DEFAULT_DELETED);
                     $temp_tpl = do_template('WARNING_BOX', array(
                         '_GUID' => 'af61f96b5cc6819979ce681d6f49b384',
                         'RESTRICT_VISIBILITY' => strval($source_member),

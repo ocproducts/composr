@@ -55,7 +55,7 @@ class Hook_rss_points
 
             $author = '';
             if ($row['anonymous'] == 0) {
-                $author = $GLOBALS['FORUM_DRIVER']->get_username($row['gift_from'], USERNAME_DEFAULT_BLANK);
+                $author = $GLOBALS['FORUM_DRIVER']->get_username($row['gift_from'], false, USERNAME_DEFAULT_BLANK);
             }
 
             $news_date = date($date_string, $row['date_and_time']);

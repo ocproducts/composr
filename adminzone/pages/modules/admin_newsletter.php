@@ -332,7 +332,17 @@ class Module_admin_newsletter extends Standard_crud_module
             $hidden->attach(form_input_hidden('lang', $_language));
             handle_max_file_size($hidden);
 
-            return do_template('FORM_SCREEN', array('_GUID' => '7e0387bcc4a1b7e2846ba357d36dbc15', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+            return do_template('FORM_SCREEN', array(
+                '_GUID' => '7e0387bcc4a1b7e2846ba357d36dbc15',
+                'SKIP_WEBSTANDARDS' => true,
+                'HIDDEN' => $hidden,
+                'TITLE' => $this->title,
+                'TEXT' => '',
+                'FIELDS' => $fields,
+                'SUBMIT_ICON' => 'menu___generic_admin__import',
+                'SUBMIT_NAME' => $submit_name,
+                'URL' => $post_url,
+            ));
         }
 
         // Read data
@@ -1492,7 +1502,18 @@ class Module_admin_newsletter extends Standard_crud_module
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'view'), '_SELF', array(), false, true);
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'ee295e41dc86c4583c123e6e0e445380', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__view_archive', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'ee295e41dc86c4583c123e6e0e445380',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => $hidden,
+            'TITLE' => $this->title,
+            'TEXT' => '',
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__view_archive',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**

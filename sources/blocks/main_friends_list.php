@@ -105,7 +105,7 @@ class Block_main_friends_list
             $f_id = ($row['member_liked'] == $member_id) ? $row['member_likes'] : $row['member_liked'];
 
             if (($f_id == $row['member_likes']) || (!in_array($f_id, $blocked))) {
-                $friend_username = $GLOBALS['FORUM_DRIVER']->get_username($f_id, USERNAME_DEFAULT_NULL);
+                $friend_username = $GLOBALS['FORUM_DRIVER']->get_username($f_id, false, USERNAME_DEFAULT_NULL);
                 if ($friend_username === null) {
                     continue;
                 }

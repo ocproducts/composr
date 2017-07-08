@@ -520,7 +520,17 @@ class Module_admin_import
         $hidden->attach(build_keep_post_fields($skip_hidden));
         $hidden->attach(build_keep_form_fields('', true));
 
-        return do_template('IMPORT_ACTION_SCREEN', array('_GUID' => 'a3a69637e541923ad76e9e7e6ec7e1af', 'EXTRA' => $extra, 'MESSAGE' => $message, 'TITLE' => $this->title, 'FIELDS' => '', 'HIDDEN' => $hidden, 'IMPORTER' => $importer, 'IMPORT_LIST' => $import_list, 'URL' => $url));
+        return do_template('IMPORT_ACTION_SCREEN', array(
+            '_GUID' => 'a3a69637e541923ad76e9e7e6ec7e1af',
+            'EXTRA' => $extra,
+            'MESSAGE' => $message,
+            'TITLE' => $this->title,
+            'FIELDS' => '',
+            'HIDDEN' => $hidden,
+            'IMPORTER' => $importer,
+            'IMPORT_LIST' => $import_list,
+            'URL' => $url,
+        ));
     }
 
     /**

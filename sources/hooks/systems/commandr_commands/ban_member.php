@@ -51,7 +51,7 @@ class Hook_commandr_command_ban_member
             $member_id = $GLOBALS['FORUM_DRIVER']->get_member_from_username($parameters[0]);
 
             if ($member_id === null) {
-                return array('', '', '', do_lang('MEMBER_NO_EXIST'));
+                return array('', '', '', do_lang('_MEMBER_NO_EXIST', $parameters[0]));
             }
 
             if ((array_key_exists('u', $options)) || (array_key_exists('unban', $options))) {

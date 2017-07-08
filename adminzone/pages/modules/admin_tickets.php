@@ -240,7 +240,18 @@ class Module_admin_tickets
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '09e6f1d2276ee679f280b33a79bff089', 'TITLE' => do_lang_tempcode('ACTIONS'))));
         $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE'), 'delete', false));
 
-        return do_template('FORM_SCREEN', array('_GUID' => '0a505a779c1639fd2d3ee10c24a7905a', 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url, 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '0a505a779c1639fd2d3ee10c24a7905a',
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'TEXT' => '',
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+            'SUPPORT_AUTOSAVE' => true,
+        ));
     }
 
     /**

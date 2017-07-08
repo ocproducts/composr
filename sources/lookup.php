@@ -48,7 +48,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
 
     if (is_numeric($member)) {
         // From member ID
-        $name = $GLOBALS['FORUM_DRIVER']->get_username(intval($member), USERNAME_DEFAULT_NULL);
+        $name = $GLOBALS['FORUM_DRIVER']->get_username(intval($member), false, USERNAME_DEFAULT_NULL);
         if ($name === null) {
             return array();
         }
@@ -60,7 +60,7 @@ function lookup_member_page($member, &$name, &$id, &$ip)
     } elseif (is_email_address($member)) {
         // From e-mail address
         $id = $GLOBALS['FORUM_DRIVER']->get_member_from_email_address($member);
-        $name = $GLOBALS['FORUM_DRIVER']->get_username($id, USERNAME_DEFAULT_NULL);
+        $name = $GLOBALS['FORUM_DRIVER']->get_username($id, false, USERNAME_DEFAULT_NULL);
         if ($id === null) {
             return array();
         }

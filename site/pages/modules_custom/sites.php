@@ -349,7 +349,16 @@ class Module_sites
         $post_url = build_url(array('page' => '_SELF', 'type' => 'hostingcopy_step3'), '_SELF');
         $submit_name = do_lang('HOSTING_COPY');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '0758605aeb4ee00f1eee562c14d16a5f', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__upload', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '0758605aeb4ee00f1eee562c14d16a5f',
+            'HIDDEN' => $hidden,
+            'TITLE' => $this->title,
+            'URL' => $post_url,
+            'FIELDS' => $fields,
+            'TEXT' => '',
+            'SUBMIT_ICON' => 'buttons__upload',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**

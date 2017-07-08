@@ -246,7 +246,18 @@ class Module_points
         $text->attach(paragraph(do_lang_tempcode('POINTS_SEARCH_FORM')));
         $text->attach(paragraph(do_lang_tempcode('WILDCARD')));
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'e5ab8d5d599093d1a550cb3b3e56d2bf', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__search', 'SUBMIT_NAME' => $submit_name, 'TEXT' => $text));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'e5ab8d5d599093d1a550cb3b3e56d2bf',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'URL' => $post_url,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__search',
+            'SUBMIT_NAME' => $submit_name,
+            'TEXT' => $text,
+        ));
     }
 
     /**

@@ -311,7 +311,7 @@ class Module_admin_shopping
             $order_details_url = build_url(array('page' => '_SELF', 'type' => 'order_details', 'id' => $row['id']), '_SELF');
             $order_date = hyperlink($order_details_url, get_timezoned_date_time($row['add_date'], false), false, true);
 
-            $submitted_by = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id'], USERNAME_DEFAULT_NULL);
+            $submitted_by = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id'], false, USERNAME_DEFAULT_NULL);
             if (($submitted_by === null) || (is_guest($row['member_id']))) {
                 $member_link = do_lang_tempcode('UNKNOWN');
             } else {

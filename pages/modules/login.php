@@ -258,7 +258,7 @@ class Module_login
         require_css('login');
         $username = trim(get_param_string('username', ''));
         if (!is_guest()) {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), USERNAME_DEFAULT_BLANK);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), false, USERNAME_DEFAULT_BLANK);
         }
         return do_template('LOGIN_SCREEN', array('_GUID' => '0940dbf2c42493c53b7e99eb50ca51f1', 'EXTRA' => $extra, 'USERNAME' => $username, 'JOIN_URL' => $GLOBALS['FORUM_DRIVER']->join_url(true), 'TITLE' => $this->title, 'LOGIN_URL' => $login_url, 'PASSION' => $passion));
     }

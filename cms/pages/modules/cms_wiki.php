@@ -374,7 +374,18 @@ class Module_cms_wiki
         $archive_url = build_url(array('page' => 'wiki'), get_module_zone('wiki'));
         $text = paragraph(do_lang_tempcode('CHOOSE_EDIT_LIST_EXTRA', escape_html($search_url->evaluate()), escape_html($archive_url->evaluate())));
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'e64757db1c77d752d813638f8a80581d', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'TEXT' => $text, 'FIELDS' => $fields, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'e64757db1c77d752d813638f8a80581d',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'TEXT' => $text,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+        ));
     }
 
     /**
@@ -557,7 +568,15 @@ class Module_cms_wiki
         $fields->attach(form_input_text(do_lang_tempcode('CHILD_PAGES'), new Tempcode(), 'children', $children, false, null, true));
         $form = do_template('FORM', array('_GUID' => 'b908438ccfc9be6166cf7c5c81d5de8b', 'FIELDS' => $fields, 'URL' => $post_url, 'HIDDEN' => '', 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('SAVE'), 'SUPPORT_AUTOSAVE' => true));
 
-        return do_template('WIKI_MANAGE_TREE_SCREEN', array('_GUID' => '83da3f20799b66b8846eafa4251a5d01', 'PAGE_TITLE' => $page_title, 'PING_URL' => $ping_url, 'WARNING_DETAILS' => $warning_details, 'TITLE' => $this->title, 'FORM' => $form, 'WIKI_TREE' => $wiki_tree));
+        return do_template('WIKI_MANAGE_TREE_SCREEN', array(
+            '_GUID' => '83da3f20799b66b8846eafa4251a5d01',
+            'PAGE_TITLE' => $page_title,
+            'PING_URL' => $ping_url,
+            'WARNING_DETAILS' => $warning_details,
+            'TITLE' => $this->title,
+            'FORM' => $form,
+            'WIKI_TREE' => $wiki_tree,
+        ));
     }
 
     /**

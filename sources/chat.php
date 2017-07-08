@@ -168,7 +168,7 @@ function messages_script()
             }
             $member_id = intval($person);
             if ($member_id != get_member()) {
-                $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_NULL);
+                $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, false, USERNAME_DEFAULT_NULL);
                 $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($member_id);
                 if ($username !== null) {
                     $events_output .= '<chat_event event_type="PREINVITED_TO_IM" away="' . (chatter_active($member_id) ? '0' : '1') . '" member_id="' . strval($member_id) . '" username="' . xmlentities($username) . '" avatar_url="' . xmlentities($avatar_url) . '" room_id="' . strval($room_id) . '"></chat_event>';
@@ -534,7 +534,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
                                 $room['room_owner'] = $people_in_room[1];
                             }
                         }
-                        $test = $GLOBALS['FORUM_DRIVER']->get_username($room['room_owner'], USERNAME_DEFAULT_NULL);
+                        $test = $GLOBALS['FORUM_DRIVER']->get_username($room['room_owner'], false, USERNAME_DEFAULT_NULL);
                         if ($test !== null) {
                             $room['room_name'] = $test;
                         }
@@ -594,7 +594,7 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
                         break;
                 }
                 if ($send_out) {
-                    $username = $GLOBALS['FORUM_DRIVER']->get_username($event['e_member_id'], USERNAME_DEFAULT_NULL);
+                    $username = $GLOBALS['FORUM_DRIVER']->get_username($event['e_member_id'], false, USERNAME_DEFAULT_NULL);
                     $avatar_url = $GLOBALS['FORUM_DRIVER']->get_member_avatar_url($event['e_member_id']);
                     if ($username !== null) {
                         $events_output .= '<chat_event away="' . (chatter_active($event['e_member_id']) ? '0' : '1') . '" event_type="' . $event['e_type_code'] . '" member_id="' . strval($event['e_member_id']) . '" username="' . xmlentities($username) . '" avatar_url="' . xmlentities($avatar_url) . '" room_id="' . (($event['e_room_id'] === null) ? '' : strval($event['e_room_id'])) . '">' . strval($event['id']) . '</chat_event>' . "\n";
@@ -994,7 +994,7 @@ function get_chatters_in_room($room_id)
 
     $found_users = array();
     foreach ($active as $values) {
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($values['member_id'], USERNAME_DEFAULT_NULL);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($values['member_id'], false, USERNAME_DEFAULT_NULL);
         if ($username !== null) {
             $found_users[$values['member_id']] = $username;
         }

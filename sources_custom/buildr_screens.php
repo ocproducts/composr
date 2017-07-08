@@ -21,7 +21,7 @@ function realms()
     $rows = $GLOBALS['SITE_DB']->query_select('w_realms', array('*'));
     $out = new Tempcode();
     foreach ($rows as $myrow) {
-        $owner = $GLOBALS['FORUM_DRIVER']->get_username($myrow['owner'], USERNAME_DEFAULT_NULL);
+        $owner = $GLOBALS['FORUM_DRIVER']->get_username($myrow['owner'], false, USERNAME_DEFAULT_NULL);
         if ($owner === null) {
             $owner = do_lang('UNKNOWN');
             $url = '';

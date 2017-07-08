@@ -593,7 +593,18 @@ class Module_recommend
             warn_exit(do_lang_tempcode('ERROR_NO_CONTACTS_SELECTED'));
         }
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'e3831cf87d76295c48cbce627bdd07e3', 'PREVIEW' => true, 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'menu__site_meta__recommend', 'SUBMIT_NAME' => $submit_name, 'TEXT' => $text));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'e3831cf87d76295c48cbce627bdd07e3',
+            'PREVIEW' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $this->title,
+            'HIDDEN' => $hidden,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'menu__site_meta__recommend',
+            'SUBMIT_NAME' => $submit_name,
+            'TEXT' => $text,
+        ));
     }
 
     /**

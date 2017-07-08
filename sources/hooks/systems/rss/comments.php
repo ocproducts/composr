@@ -118,7 +118,7 @@ class Hook_rss_comments
                     $if_comments = new Tempcode();
 
                     $id = strval($comment['id']);
-                    $author = $GLOBALS['FORUM_DRIVER']->get_username($comment['member'], USERNAME_DEFAULT_BLANK);
+                    $author = $GLOBALS['FORUM_DRIVER']->get_username($comment['member'], false, USERNAME_DEFAULT_BLANK);
 
                     $news_date = date($date_string, $timestamp);
                     $edit_date = escape_html('');

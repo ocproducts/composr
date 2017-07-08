@@ -582,7 +582,18 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
         $post_url = build_url(array('page' => '_SELF', 'type' => '_stats'), '_SELF', array(), false, true);
         $submit_name = do_lang_tempcode('CUSTOM_PROFILE_FIELD_STATS');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '393bac2180c9e135ae9c31565ddf7761', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'HIDDEN' => '', 'FIELDS' => $fields, 'TEXT' => '', 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '393bac2180c9e135ae9c31565ddf7761',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'FIELDS' => $fields,
+            'TEXT' => '',
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**

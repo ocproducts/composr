@@ -27,6 +27,16 @@
  */
 function init__users()
 {
+    if (!defined('USERNAME_DEFAULT_UNKNOWN')) {
+        define('USERNAME_GUEST_AS_DEFAULT', 1);
+        define('USERNAME_DEFAULT_DELETED', 2);
+        define('USERNAME_DEFAULT_NULL', 4);
+        define('USERNAME_DEFAULT_ID_RAW', 8);
+        define('USERNAME_DEFAULT_ID_TIDY', 16);
+        define('USERNAME_DEFAULT_BLANK', 32);
+        define('USERNAME_DEFAULT_ERROR', 64);
+    }
+
     global $SESSION_CACHE, $MEMBER_CACHED;
     global $USER_NAME_CACHE, $USERS_GROUPS_CACHE;
     global $SESSION_CONFIRMED_CACHE, $GETTING_MEMBER, $USER_THEME_CACHE, $EMOTICON_LEVELS;
@@ -238,7 +248,7 @@ function get_member($quick_only = false)
             }
 
             // Test this member still exists
-            if ($GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_NULL) === null) {
+            if ($GLOBALS['FORUM_DRIVER']->get_username($member_id, false, USERNAME_DEFAULT_NULL) === null) {
                 $member_id = $GLOBALS['FORUM_DRIVER']->get_guest_id();
             }
 

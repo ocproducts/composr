@@ -738,7 +738,17 @@ class Module_chat
             $text = new Tempcode();
         }
 
-        return do_template('FORM_SCREEN', array('_GUID' => '5697add8e81f641559a212697d35a470', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $posting_name, 'URL' => $posting_url, 'TEXT' => $text, 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '5697add8e81f641559a212697d35a470',
+            'HIDDEN' => $hidden,
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+            'SUBMIT_NAME' => $posting_name,
+            'URL' => $posting_url,
+            'TEXT' => $text,
+            'SUPPORT_AUTOSAVE' => true,
+        ));
     }
 
     /**
@@ -1098,7 +1108,18 @@ class Module_chat
             inform_exit(do_lang_tempcode('NO_CATEGORIES', 'chat'));
         }
 
-        return do_template('FORM_SCREEN', array('_GUID' => '6741ef01d1c6dd8d2de9be3290666db7', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $posting_name, 'URL' => $posting_url, 'TEXT' => ''));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '6741ef01d1c6dd8d2de9be3290666db7',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $posting_name,
+            'URL' => $posting_url,
+            'TEXT' => '',
+        ));
     }
 
     /**
@@ -1189,7 +1210,7 @@ class Module_chat
         if ($friend_count < 200) {
             $friends = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()));
             foreach ($friends as $friend) {
-                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked'], USERNAME_DEFAULT_NULL) === null) {
+                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked'], false, USERNAME_DEFAULT_NULL) === null) {
                     continue;
                 }
 
@@ -1229,7 +1250,7 @@ class Module_chat
             $friends = $GLOBALS['SITE_DB']->query_select('chat_friends', array('member_liked'), array('member_likes' => get_member()));
             $suffixes = array('');
             foreach ($friends as $friend) {
-                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked'], USERNAME_DEFAULT_NULL) === null) {
+                if ($GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked'], false, USERNAME_DEFAULT_NULL) === null) {
                     continue;
                 }
 

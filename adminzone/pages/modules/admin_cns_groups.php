@@ -507,7 +507,7 @@ class Module_admin_cns_groups extends Standard_crud_module
         if ($myrow['g_group_leader'] === null) {
             $username = '';
         } else {
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['g_group_leader'], USERNAME_DEFAULT_BLANK);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['g_group_leader'], false, USERNAME_DEFAULT_BLANK);
         }
 
         if ((intval($id) == db_get_first_id() + 8) && ($GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)', array('g_is_presented_at_install' => '1')) == 0)) {

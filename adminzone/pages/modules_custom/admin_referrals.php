@@ -160,7 +160,16 @@ class Module_admin_referrals
         $is_qualified_list->attach(form_input_list_entry('0', $is_qualified === 0, do_lang_tempcode('NO')));
         $fields->attach(form_input_list(do_lang_tempcode('IS_QUALIFIED'), '', 'is_qualified', $is_qualified_list, null, false, false));
 
-        return do_template('FORM_SCREEN', array('_GUID' => '7e28b416287fb891c2cd7029795e49f0', 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '7e28b416287fb891c2cd7029795e49f0',
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'TEXT' => '',
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**

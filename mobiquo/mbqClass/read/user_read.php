@@ -30,7 +30,7 @@ class CMSUserRead
     {
         cms_verify_parameters_phpdoc();
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id, USERNAME_DEFAULT_ERROR);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($user_id, false, USERNAME_DEFAULT_ERROR);
 
         $user_type = 'normal';
         if ($GLOBALS['FORUM_DRIVER']->is_banned($user_id)) {

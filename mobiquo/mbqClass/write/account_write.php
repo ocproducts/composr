@@ -313,7 +313,7 @@ class CMSAccountWrite
 
         cns_require_all_forum_stuff();
 
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, USERNAME_DEFAULT_BLANK);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id, false, USERNAME_DEFAULT_BLANK);
         $email = $GLOBALS['FORUM_DRIVER']->get_member_email_address($member_id);
 
         // Basic validation

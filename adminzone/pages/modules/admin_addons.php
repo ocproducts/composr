@@ -626,7 +626,15 @@ class Module_admin_addons
 
         $url = build_url(array('page' => '_SELF', 'type' => '_multi_action'), '_SELF');
 
-        return do_template('ADDON_MULTI_CONFIRM_SCREEN', array('_GUID' => 'bd6b7e012825bb0c873a76a9f4b19cf1', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'URL' => $url, 'INSTALL_FILES' => $install_files, 'UNINSTALL_FILES' => $uninstall_files, 'WARNINGS' => $warnings));
+        return do_template('ADDON_MULTI_CONFIRM_SCREEN', array(
+            '_GUID' => 'bd6b7e012825bb0c873a76a9f4b19cf1',
+            'TITLE' => $this->title,
+            'HIDDEN' => $hidden,
+            'URL' => $url,
+            'INSTALL_FILES' => $install_files,
+            'UNINSTALL_FILES' => $uninstall_files,
+            'WARNINGS' => $warnings,
+        ));
     }
 
     /**

@@ -465,7 +465,14 @@ class Module_admin_themes
             $theme_default_reason = new Tempcode(); // We don't need to know the reason really; don't over-complicate simple sites
         }
 
-        return do_template('THEME_MANAGE_SCREEN', array('_GUID' => '1dc277f18562976f6a23facec56a98e8', 'TITLE' => $this->title, 'THEMES' => $themes, 'THEME_DEFAULT_REASON' => $theme_default_reason, 'ZONES' => $zones, 'HAS_FREE_CHOICES' => $free_choices != 0));
+        return do_template('THEME_MANAGE_SCREEN', array(
+            '_GUID' => '1dc277f18562976f6a23facec56a98e8',
+            'TITLE' => $this->title,
+            'THEMES' => $themes,
+            'THEME_DEFAULT_REASON' => $theme_default_reason,
+            'ZONES' => $zones,
+            'HAS_FREE_CHOICES' => $free_choices != 0,
+        ));
     }
 
     /**
@@ -1039,7 +1046,16 @@ class Module_admin_themes
             $text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
         }
 
-        return do_template('FORM_SCREEN', array('_GUID' => '7b8066b63002cda0a7628ddadddd9962', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '7b8066b63002cda0a7628ddadddd9962',
+            'HIDDEN' => $hidden,
+            'TITLE' => $this->title,
+            'URL' => $post_url,
+            'FIELDS' => $fields,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**
@@ -1157,7 +1173,16 @@ class Module_admin_themes
             $text->attach(paragraph(do_lang_tempcode(($config_url === null) ? 'MAXIMUM_UPLOAD' : 'MAXIMUM_UPLOAD_STAFF', escape_html(($max > 10.0) ? integer_format(intval($max)) : float_format($max)), escape_html(($config_url === null) ? '' : $config_url))));
         }
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'b0e178ad1f840a07c4967f3c266c750b', 'HIDDEN' => $hidden, 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'b0e178ad1f840a07c4967f3c266c750b',
+            'HIDDEN' => $hidden,
+            'TITLE' => $this->title,
+            'URL' => $post_url,
+            'FIELDS' => $fields,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**

@@ -507,9 +507,6 @@ class Forum_driver_smf2 extends Forum_driver_base
             $email = '';
         }
         $username = $this->get_username($member);
-        if ($username === null) {
-            $username = do_lang('UNKNOWN');
-        }
         $post_id = $this->db->query_insert('messages', array('id_topic' => $topic_id, 'id_board' => $forum_id, 'poster_time' => $time, 'id_member' => $member, 'subject' => $post_title, 'poster_name' => $username, 'poster_email' => $email, 'poster_ip' => $ip, 'body' => $post, 'modified_name' => ''), true);
         $this->db->query('UPDATE ' . $this->db->get_table_prefix() . 'boards SET id_last_msg=' . strval($post_id) . ', num_posts=(num_posts+1) WHERE id_board=' . strval($forum_id), 1); // , last_updated='.strval($time).'
         $this->db->query('UPDATE ' . $this->db->get_table_prefix() . 'topics SET id_last_msg=' . strval($post_id) . ', num_replies=(num_replies+1), id_member_updated=' . strval($member) . ' WHERE id_topic=' . strval($topic_id), 1);

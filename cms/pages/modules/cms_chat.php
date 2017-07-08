@@ -262,7 +262,7 @@ class Module_cms_chat
             if ((!handle_chatroom_pruning($row)) && ($has_mod_access)) {
                 $url = build_url(array('page' => '_SELF', 'type' => 'room', 'id' => $row['id']), '_SELF');
                 $messages = $GLOBALS['SITE_DB']->query_select_value('chat_messages', 'COUNT(*)', array('room_id' => $row['id']));
-                $_username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner'], USERNAME_DEFAULT_NULL);
+                $_username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner'], false, USERNAME_DEFAULT_NULL);
                 if ($_username === null) {
                     $username = do_lang_tempcode('NA_EM');
                 } else {
@@ -342,7 +342,7 @@ class Module_cms_chat
         foreach ($rows as $myrow) {
             $url = build_url(array('page' => '_SELF', 'type' => 'edit', 'room_id' => $room_id, 'id' => $myrow['id']), '_SELF');
 
-            $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id'], USERNAME_DEFAULT_BLANK);
+            $username = $GLOBALS['FORUM_DRIVER']->get_username($myrow['member_id'], false, USERNAME_DEFAULT_BLANK);
 
             $message = get_translated_tempcode('chat_messages', $myrow, 'the_message');
 
@@ -664,7 +664,17 @@ class Module_cms_chat
         $post_url = build_url(array('page' => '_SELF', 'type' => '_delete', 'id' => $id), '_SELF');
         $submit_name = do_lang_tempcode('DELETE');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '31b488e5d4ff52ffd5e097876c0b13c7', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__delete', 'SUBMIT_NAME' => $submit_name, 'TEXT' => $text));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '31b488e5d4ff52ffd5e097876c0b13c7',
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'URL' => $post_url,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__delete',
+            'SUBMIT_NAME' => $submit_name,
+            'TEXT' => $text,
+        ));
     }
 
     /**

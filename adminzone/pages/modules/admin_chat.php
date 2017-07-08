@@ -196,7 +196,7 @@ class Module_admin_chat extends Standard_crud_module
         $allow2_groups = $row['allow_list_groups'];
         $disallow2 = $row['disallow_list'];
         $disallow2_groups = $row['disallow_list_groups'];
-        $username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner'], USERNAME_DEFAULT_BLANK);
+        $username = $GLOBALS['FORUM_DRIVER']->get_username($row['room_owner'], false, USERNAME_DEFAULT_BLANK);
 
         list($fields, $hidden) = get_chatroom_fields(intval($id), false, $row['room_name'], get_translated_text($row['c_welcome']), $username, $allow2, $allow2_groups, $disallow2, $disallow2_groups);
 
@@ -297,7 +297,17 @@ class Module_admin_chat extends Standard_crud_module
         $posting_name = do_lang_tempcode('PROCEED');
         $posting_url = build_url(array('page' => '_SELF', 'type' => '_delete_all'), '_SELF');
         $text = paragraph(do_lang_tempcode('CONFIRM_DELETE_ALL_CHATROOMS'));
-        return do_template('FORM_SCREEN', array('_GUID' => 'fdf02f5b3a3b9ce6d1abaccf0970ed73', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__delete', 'SUBMIT_NAME' => $posting_name, 'URL' => $posting_url, 'TEXT' => $text));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'fdf02f5b3a3b9ce6d1abaccf0970ed73',
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__delete',
+            'SUBMIT_NAME' => $posting_name,
+            'URL' => $posting_url,
+            'TEXT' => $text,
+        ));
     }
 
     /**

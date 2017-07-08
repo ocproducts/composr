@@ -58,7 +58,7 @@ class Hook_rss_downloads
         $rows = $GLOBALS['SITE_DB']->query($query, $max);
         foreach ($rows as $row) {
             $id = strval($row['id']);
-            $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter'], USERNAME_DEFAULT_BLANK);
+            $author = $GLOBALS['FORUM_DRIVER']->get_username($row['submitter'], false, USERNAME_DEFAULT_BLANK);
 
             $news_date = date($date_string, $row['add_date']);
             $edit_date = ($row['edit_date'] === null) ? '' : date($date_string, $row['edit_date']);
