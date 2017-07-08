@@ -740,7 +740,14 @@ class Module_groups
             $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
             $hidden = form_input_hidden('id', strval($id));
 
-            return do_template('CONFIRM_SCREEN', array('_GUID' => 'f98ab98f130646f6fd33fbf85ae3f972', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE_REMOVE_FROM_GROUP', escape_html($username)), 'URL' => $post_url, 'HIDDEN' => $hidden, 'FIELDS' => ''));
+            return do_template('CONFIRM_SCREEN', array(
+                '_GUID' => 'f98ab98f130646f6fd33fbf85ae3f972',
+                'TITLE' => $this->title,
+                'TEXT' => do_lang_tempcode('Q_SURE_REMOVE_FROM_GROUP', escape_html($username)),
+                'URL' => $post_url,
+                'HIDDEN' => $hidden,
+                'FIELDS' => '',
+            ));
         }
 
         if (!cns_may_control_group($id, get_member())) {
@@ -821,7 +828,14 @@ class Module_groups
             $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
             $hidden = form_input_hidden('id', strval($id));
 
-            return do_template('CONFIRM_SCREEN', array('_GUID' => 'ebc562534bceb3161a21307633bc229e', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => $hidden, 'FIELDS' => ''));
+            return do_template('CONFIRM_SCREEN', array(
+                '_GUID' => 'ebc562534bceb3161a21307633bc229e',
+                'TITLE' => $this->title,
+                'TEXT' => do_lang_tempcode('Q_SURE'),
+                'URL' => $post_url,
+                'HIDDEN' => $hidden,
+                'FIELDS' => '',
+            ));
         }
 
         if (!cns_may_control_group($id, get_member())) {
@@ -893,7 +907,14 @@ class Module_groups
             $post_url = build_url(array('page' => '_SELF', 'type' => get_param_string('type')), '_SELF', array(), true);
             $hidden = form_input_hidden('id', strval($id));
 
-            return do_template('CONFIRM_SCREEN', array('_GUID' => 'd9524899fbc243247a9d253cf93c8aa2', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE'), 'URL' => $post_url, 'HIDDEN' => $hidden, 'FIELDS' => ''));
+            return do_template('CONFIRM_SCREEN', array(
+                '_GUID' => 'd9524899fbc243247a9d253cf93c8aa2',
+                'TITLE' => $this->title,
+                'TEXT' => do_lang_tempcode('Q_SURE'),
+                'URL' => $post_url,
+                'HIDDEN' => $hidden,
+                'FIELDS' => '',
+            ));
         }
 
         cns_member_leave_group($id, get_member());

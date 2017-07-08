@@ -836,7 +836,15 @@ class Module_admin_zones
         $table = results_table(do_lang('ZONES'), get_param_integer('start', 0), 'start', either_param_integer('max', 20), 'max', $max_rows, $header_row, $fields, $sortables, $sortable, $sort_order);
 
         $text = do_lang_tempcode('CHOOSE_EDIT_LIST');
-        $tpl = do_template('COLUMNED_TABLE_SCREEN', array('_GUID' => 'a33d3ff1178e7898b42acd83b38b5dcb', 'TITLE' => $title, 'TEXT' => $text, 'TABLE' => $table, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => null, 'POST_URL' => get_self_url()));
+        $tpl = do_template('COLUMNED_TABLE_SCREEN', array(
+            '_GUID' => 'a33d3ff1178e7898b42acd83b38b5dcb',
+            'TITLE' => $title,
+            'TEXT' => $text,
+            'TABLE' => $table,
+            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_NAME' => null,
+            'POST_URL' => get_self_url(),
+        ));
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);

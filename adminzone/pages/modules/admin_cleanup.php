@@ -161,7 +161,17 @@ class Module_admin_cleanup
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '4a9d6e722f246887160c444a062a9d00', 'SECTION_HIDDEN' =>  !$fields_optimise_expand, 'TITLE' => do_lang_tempcode('CLEANUP_PAGE_EXP_OPTIMISERS'), 'HELP' => do_lang_tempcode('CLEANUP_PAGE_OPTIMISERS'))));
         $fields->attach($fields_optimise);
 
-        return do_template('FORM_SCREEN', array('_GUID' => '85bfdf171484604594a157aa8983f920', 'SKIP_WEBSTANDARDS' => true, 'TEXT' => '', 'SUBMIT_ICON' => 'menu__adminzone__tools__cleanup', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'HIDDEN' => '', 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '85bfdf171484604594a157aa8983f920',
+            'SKIP_WEBSTANDARDS' => true,
+            'TEXT' => '',
+            'SUBMIT_ICON' => 'menu__adminzone__tools__cleanup',
+            'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'URL' => $url,
+        ));
     }
 
     /**

@@ -157,7 +157,16 @@ function warn_exit_wordfilter($name, $message)
         $fields = form_input_text(do_lang_tempcode('CHANGE'), '', $name, $value, true);
     }
     $post_url = get_self_url();
-    $output = do_template('FORM_SCREEN', array('_GUID' => 'e644c444027b244ebc382eae66ae23fc', 'TITLE' => get_screen_title('ERROR_OCCURRED'), 'TEXT' => $message, 'URL' => $post_url, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED')));
+    $output = do_template('FORM_SCREEN', array(
+        '_GUID' => 'e644c444027b244ebc382eae66ae23fc',
+        'TITLE' => get_screen_title('ERROR_OCCURRED'),
+        'TEXT' => $message,
+        'URL' => $post_url,
+        'HIDDEN' => $hidden,
+        'FIELDS' => $fields,
+        'SUBMIT_ICON' => 'buttons__proceed',
+        'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
+    ));
     $echo = globalise($output, null, '', true);
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();

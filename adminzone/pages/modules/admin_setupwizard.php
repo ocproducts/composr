@@ -203,7 +203,13 @@ class Module_admin_setupwizard
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => '',
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '38a02343903542f8bbe1fb49a7b21eb7', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(1)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
+        return do_template('SETUPWIZARD_SCREEN', array(
+                '_GUID' => '38a02343903542f8bbe1fb49a7b21eb7',
+                'TITLE' => $this->title,
+                'STEP' => strval($this->get_effective_step(1)),
+                'INNER' => $inner,
+                'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable()),
+            ));
     }
 
     /**
@@ -258,11 +264,32 @@ class Module_admin_setupwizard
 
         // --
 
-        $text = do_template('SETUPWIZARD_2', array('_GUID' => '2042f3786d10c7c5be5d38ea28942b47', 'SKIP_WEBSTANDARDS' => true, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        $text = do_template('SETUPWIZARD_2', array(
+            '_GUID' => '2042f3786d10c7c5be5d38ea28942b47',
+            'SKIP_WEBSTANDARDS' => true,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+        ));
 
-        $inner = do_template('FORM', array('SKIP_WEBSTANDARDS' => true, 'SKIP_REQUIRED' => true, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
+        $inner = do_template('FORM', array(
+            'SKIP_WEBSTANDARDS' => true,
+            'SKIP_REQUIRED' => true,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'HIDDEN' => $hidden,
+        ));
 
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'e04bc40dfc4047b62b586711d15ad875', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(2)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
+        return do_template('SETUPWIZARD_SCREEN', array(
+            '_GUID' => 'e04bc40dfc4047b62b586711d15ad875',
+            'TITLE' => $this->title,
+            'STEP' => strval($this->get_effective_step(2)),
+            'INNER' => $inner,
+            'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable()),
+        ));
     }
 
     /**
@@ -383,7 +410,13 @@ class Module_admin_setupwizard
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => '',
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '6bdae2f0aa24b5dbe81fd0fc72e87feb', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(3)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
+        return do_template('SETUPWIZARD_SCREEN', array(
+                '_GUID' => '6bdae2f0aa24b5dbe81fd0fc72e87feb',
+                'TITLE' => $this->title,
+                'STEP' => strval($this->get_effective_step(3)),
+                'INNER' => $inner,
+                'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable()),
+            ));
     }
 
     /**
@@ -614,7 +647,13 @@ class Module_admin_setupwizard
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'ca91a76aa418d5c9ae956247ebc70652', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(4)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
+        return do_template('SETUPWIZARD_SCREEN', array(
+                '_GUID' => 'ca91a76aa418d5c9ae956247ebc70652',
+                'TITLE' => $this->title,
+                'STEP' => strval($this->get_effective_step(4)),
+                'INNER' => $inner,
+                'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable()),
+            ));
     }
 
     /**
@@ -692,7 +731,13 @@ class Module_admin_setupwizard
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '8dfd885199d3d1416c044fad7a97d953', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(5)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
+        return do_template('SETUPWIZARD_SCREEN', array(
+                '_GUID' => '8dfd885199d3d1416c044fad7a97d953',
+                'TITLE' => $this->title,
+                'STEP' => strval($this->get_effective_step(5)),
+                'INNER' => $inner,
+                'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable()),
+            ));
     }
 
     /**
@@ -820,7 +865,13 @@ class Module_admin_setupwizard
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '7c2cbc9577974b210e196b92158b4bb8', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(6)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
+        return do_template('SETUPWIZARD_SCREEN', array(
+                '_GUID' => '7c2cbc9577974b210e196b92158b4bb8',
+                'TITLE' => $this->title,
+                'STEP' => strval($this->get_effective_step(6)),
+                'INNER' => $inner,
+                'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable()),
+            ));
     }
 
     /**
@@ -882,7 +933,13 @@ class Module_admin_setupwizard
         $corporate = comcode_to_tempcode($this->get_rules_file('corporate'), null, true);
 
         $inner = do_template('SETUPWIZARD_7', array('_GUID' => '5e46c3a989e42fa6eec5a017e8c644c2', 'FORM' => $form, 'BALANCED' => $balanced, 'LIBERAL' => $liberal, 'CORPORATE' => $corporate));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => '04f24f8c44267d2ad315aa34243e9712', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(7)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
+        return do_template('SETUPWIZARD_SCREEN', array(
+            '_GUID' => '04f24f8c44267d2ad315aa34243e9712',
+            'TITLE' => $this->title,
+            'STEP' => strval($this->get_effective_step(7)),
+            'INNER' => $inner,
+            'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable()),
+        ));
     }
 
     /**
@@ -916,7 +973,13 @@ class Module_admin_setupwizard
             'SUBMIT_NAME' => $submit_name,
             'HIDDEN' => $hidden,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'e67abf478cea7aed5cda64189549677a', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(8)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
+        return do_template('SETUPWIZARD_SCREEN', array(
+                '_GUID' => 'e67abf478cea7aed5cda64189549677a',
+                'TITLE' => $this->title,
+                'STEP' => strval($this->get_effective_step(8)),
+                'INNER' => $inner,
+                'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable()),
+            ));
     }
 
     /**
@@ -950,7 +1013,13 @@ class Module_admin_setupwizard
             'HIDDEN' => $hidden,
             'JS_FUNCTION_CALLS' => $js_function_calls,
         ));
-        return do_template('SETUPWIZARD_SCREEN', array('_GUID' => 'de13f131460e7f342c8beb6ba5ae3f42', 'TITLE' => $this->title, 'STEP' => strval($this->get_effective_step(9)), 'INNER' => $inner, 'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable())));
+        return do_template('SETUPWIZARD_SCREEN', array(
+                '_GUID' => 'de13f131460e7f342c8beb6ba5ae3f42',
+                'TITLE' => $this->title,
+                'STEP' => strval($this->get_effective_step(9)),
+                'INNER' => $inner,
+                'NUM_STEPS_ENUMERABLE' => strval($this->get_num_steps_enumerable()),
+            ));
     }
 
     /**

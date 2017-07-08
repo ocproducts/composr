@@ -58,7 +58,14 @@ class Hook_checklist_backup
 
         $url = build_url(array('page' => 'admin_backup', 'type' => 'browse'), 'adminzone');
         list($info, $seconds_due_in) = staff_checklist_time_ago_and_due($seconds_ago, $limit_hours);
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => '432685ec6c9f7548ce8b488b6ce00030', 'CONFIG_URL' => $config_url, 'URL' => $url, 'STATUS' => $_status, 'TASK' => do_lang_tempcode('BACKUP'), 'INFO' => $info));
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
+            '_GUID' => '432685ec6c9f7548ce8b488b6ce00030',
+            'CONFIG_URL' => $config_url,
+            'URL' => $url,
+            'STATUS' => $_status,
+            'TASK' => do_lang_tempcode('BACKUP'),
+            'INFO' => $info,
+        ));
         return array(array($tpl, $seconds_due_in, null, 'backup_time'));
     }
 }

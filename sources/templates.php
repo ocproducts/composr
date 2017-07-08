@@ -313,7 +313,15 @@ function form_input_list_entry($value, $selected = false, $text = '', $red = fal
     }
     */
 
-    return do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array('_GUID' => 'dd76a2685d0fba5f819ef160b0816d03', 'SELECTED' => $selected, 'DISABLED' => $disabled, 'CLASS' => $red ? 'criticalfield' : '', 'NAME' => is_integer($value) ? strval($value) : $value, 'TEXT' => $text, 'TITLE' => ($title == '') ? null : $title));
+    return do_template('FORM_SCREEN_INPUT_LIST_ENTRY', array(
+        '_GUID' => 'dd76a2685d0fba5f819ef160b0816d03',
+        'SELECTED' => $selected,
+        'DISABLED' => $disabled,
+        'CLASS' => $red ? 'criticalfield' : '',
+        'NAME' => is_integer($value) ? strval($value) : $value,
+        'TEXT' => $text,
+        'TITLE' => ($title == '') ? null : $title,
+    ));
 }
 
 /**

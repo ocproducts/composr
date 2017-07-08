@@ -151,7 +151,14 @@ class Hook_profiles_tabs_edit_avatar
         $width = cns_get_member_best_group_property($member_id_of, 'max_avatar_width');
         $height = cns_get_member_best_group_property($member_id_of, 'max_avatar_height');
 
-        $text = do_template('CNS_EDIT_AVATAR_TAB', array('_GUID' => 'dbdac6ca3bc752b54d2a24a4c6e69c7c', 'MEMBER_ID' => strval($member_id_of), 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id_of), 'AVATAR' => $avatar, 'WIDTH' => integer_format($width), 'HEIGHT' => integer_format($height)));
+        $text = do_template('CNS_EDIT_AVATAR_TAB', array(
+            '_GUID' => 'dbdac6ca3bc752b54d2a24a4c6e69c7c',
+            'MEMBER_ID' => strval($member_id_of),
+            'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($member_id_of),
+            'AVATAR' => $avatar,
+            'WIDTH' => integer_format($width),
+            'HEIGHT' => integer_format($height),
+        ));
 
         $hidden = new Tempcode();
         $hidden->attach(form_input_hidden('submitting_avatar_tab', '1'));

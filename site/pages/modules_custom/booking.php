@@ -554,7 +554,15 @@ class Module_booking
             $fields->attach(form_input_line(do_lang_tempcode('YOUR_MOBILE_NUMBER'), '', 'customer_mobile', '', false));
             $fields->attach(form_input_line(do_lang_tempcode('YOUR_PHONE_NUMBER'), '', 'customer_phone', '', true));
             $submit_name = do_lang_tempcode('BOOK');
-            $form = do_template('FORM', array('_GUID' => '18e831a00ac918b06c7f761c7d7d5fb0', 'TEXT' => do_lang_tempcode('A_FEW_DETAILS'), 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
+            $form = do_template('FORM', array(
+                '_GUID' => '18e831a00ac918b06c7f761c7d7d5fb0',
+                'TEXT' => do_lang_tempcode('A_FEW_DETAILS'),
+                'HIDDEN' => $hidden,
+                'FIELDS' => $fields,
+                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_NAME' => $submit_name,
+                'URL' => $url,
+            ));
         } else {
             // Integrated signup
             $form = cns_join_form($url, true, false, false);

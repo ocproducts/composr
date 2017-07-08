@@ -172,7 +172,14 @@ class Module_admin_cns_ldap
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'actual'), '_SELF');
 
-        return do_template('CNS_LDAP_SYNC_SCREEN', array('_GUID' => '38c608ce56cf3dbafb1dd1446c65d592', 'URL' => $post_url, 'TITLE' => $this->title, 'MEMBERS_DELETE' => $members_delete, 'GROUPS_DELETE' => $groups_delete, 'GROUPS_ADD' => $groups_add));
+        return do_template('CNS_LDAP_SYNC_SCREEN', array(
+            '_GUID' => '38c608ce56cf3dbafb1dd1446c65d592',
+            'URL' => $post_url,
+            'TITLE' => $this->title,
+            'MEMBERS_DELETE' => $members_delete,
+            'GROUPS_DELETE' => $groups_delete,
+            'GROUPS_ADD' => $groups_add,
+        ));
     }
 
     /**

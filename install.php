@@ -1289,7 +1289,14 @@ function step_5()
         $log->attach(step_5_core_2());
     }
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '83ed0405bc32fdf2cc499662bfa51bc9', 'PREVIOUS_STEP' => '4', 'CURRENT_STEP' => '5', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array(
+        '_GUID' => '83ed0405bc32fdf2cc499662bfa51bc9',
+        'PREVIOUS_STEP' => '4',
+        'CURRENT_STEP' => '5',
+        'URL' => $url,
+        'LOG' => $log,
+        'HIDDEN' => build_keep_post_fields(),
+    ));
 }
 
 /**
@@ -2161,7 +2168,14 @@ function step_6()
     install_cns();
     $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('_GUID' => 'f268a7e03ca5b06ed9f62b29b1357d25', 'SOMETHING' => do_lang_tempcode('INSTALLED_CNS'))));
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '450f62a4664c67b6780228781218a8f2', 'PREVIOUS_STEP' => '5', 'CURRENT_STEP' => '6', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array(
+        '_GUID' => '450f62a4664c67b6780228781218a8f2',
+        'PREVIOUS_STEP' => '5',
+        'CURRENT_STEP' => '6',
+        'URL' => $url,
+        'LOG' => $log,
+        'HIDDEN' => build_keep_post_fields(),
+    ));
 }
 
 /**
@@ -2248,7 +2262,14 @@ function step_7()
 
     $url = prepare_installer_url('install.php?step=8');
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'c016b2a364d20cf711af7e14c60a7921', 'PREVIOUS_STEP' => '6', 'CURRENT_STEP' => '7', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array(
+        '_GUID' => 'c016b2a364d20cf711af7e14c60a7921',
+        'PREVIOUS_STEP' => '6',
+        'CURRENT_STEP' => '7',
+        'URL' => $url,
+        'LOG' => $log,
+        'HIDDEN' => build_keep_post_fields(),
+    ));
 }
 
 /**
@@ -2271,7 +2292,14 @@ function step_8()
 
     $url = prepare_installer_url('install.php?step=9');
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => '27fad5aa7f96d26a51e6afb6b7e5c7b1', 'PREVIOUS_STEP' => '7', 'CURRENT_STEP' => '8', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array(
+        '_GUID' => '27fad5aa7f96d26a51e6afb6b7e5c7b1',
+        'PREVIOUS_STEP' => '7',
+        'CURRENT_STEP' => '8',
+        'URL' => $url,
+        'LOG' => $log,
+        'HIDDEN' => build_keep_post_fields(),
+    ));
 }
 
 /**
@@ -2308,7 +2336,14 @@ function step_9()
 
     $url = prepare_installer_url('install.php?step=10');
 
-    return do_template('INSTALLER_STEP_LOG', array('_GUID' => 'b20121b8f4f84dd8e625e3b821c753b3', 'PREVIOUS_STEP' => '8', 'CURRENT_STEP' => '9', 'URL' => $url, 'LOG' => $log, 'HIDDEN' => build_keep_post_fields()));
+    return do_template('INSTALLER_STEP_LOG', array(
+        '_GUID' => 'b20121b8f4f84dd8e625e3b821c753b3',
+        'PREVIOUS_STEP' => '8',
+        'CURRENT_STEP' => '9',
+        'URL' => $url,
+        'LOG' => $log,
+        'HIDDEN' => build_keep_post_fields(),
+    ));
 }
 
 /**
@@ -2693,7 +2728,13 @@ function make_option($nice_name, $description, $name, $value, $hidden = false, $
         $a = do_template('INSTALLER_STEP_4_SECTION_OPTION', array('_GUID' => '455b0f61e6ce2eaf2acce2844fdd5e7a', 'NAME' => $name, 'INPUT' => $input1, 'NICE_NAME' => $nice_name, 'DESCRIPTION' => $description));
         if ((substr($name, 0, 3) != 'db_') && (substr($name, 0, 12) != 'gae_live_db_') && ($name != 'ftp_password')) {
             $input2 = do_template('INSTALLER_INPUT_PASSWORD', array('_GUID' => '0f15bfe5b58f3ca7830a48791f1a6a6d', 'REQUIRED' => $_required, 'NAME' => $name . '_confirm', 'VALUE' => $value));
-            $b = do_template('INSTALLER_STEP_4_SECTION_OPTION', array('_GUID' => 'c99e7339b7ffe81318ae84953e3c03a3', 'NAME' => $name, 'INPUT' => $input2, 'NICE_NAME' => $nice_name, 'DESCRIPTION' => do_lang_tempcode('CONFIRM_PASSWORD')));
+            $b = do_template('INSTALLER_STEP_4_SECTION_OPTION', array(
+                '_GUID' => 'c99e7339b7ffe81318ae84953e3c03a3',
+                'NAME' => $name,
+                'INPUT' => $input2,
+                'NICE_NAME' => $nice_name,
+                'DESCRIPTION' => do_lang_tempcode('CONFIRM_PASSWORD'),
+            ));
             $a->attach($b);
         }
         return $a;

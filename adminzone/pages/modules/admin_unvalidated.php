@@ -132,7 +132,17 @@ class Module_admin_unvalidated
                 $fields = form_input_list(do_lang_tempcode('CONTENT'), '', $info['edit_identifier'], $content, null, true);
 
                 // Could debate whether to include "'TARGET' => '_blank',". However it does redirect back, so it's a nice linear process like this. If it was new window it could be more efficient, but also would confuse people with a lot of new windows opening and not closing.
-                $content = do_template('FORM', array('_GUID' => '51dcee39273a0fee29569190344f2e41', 'SKIP_REQUIRED' => true, 'GET' => true, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('EDIT'), 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
+                $content = do_template('FORM', array(
+                    '_GUID' => '51dcee39273a0fee29569190344f2e41',
+                    'SKIP_REQUIRED' => true,
+                    'GET' => true,
+                    'HIDDEN' => '',
+                    'SUBMIT_ICON' => 'buttons__save',
+                    'SUBMIT_NAME' => do_lang_tempcode('EDIT'),
+                    'FIELDS' => $fields,
+                    'URL' => $post_url,
+                    'TEXT' => '',
+                ));
             }
 
             $out[$info['title']->evaluate()] = do_template('UNVALIDATED_SECTION', array('_GUID' => '838240008e190b9cbaa0280fbddd6baf', 'TITLE' => $info['title'], 'CONTENT' => $content));

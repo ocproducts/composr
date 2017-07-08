@@ -194,7 +194,14 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
         }
     }
     $hidden = build_keep_form_fields('_SELF', true, array($max_name, $start_name));
-    $per_page = do_template('PAGINATION_PER_PAGE', array('_GUID' => '1993243727e58347d1544279c5eba496', 'HASH' => ($hash == '') ? null : $hash, 'HIDDEN' => $hidden, 'URL' => $get_url, 'MAX_NAME' => $max_name, 'SELECTORS' => $selectors));
+    $per_page = do_template('PAGINATION_PER_PAGE', array(
+        '_GUID' => '1993243727e58347d1544279c5eba496',
+        'HASH' => ($hash == '') ? null : $hash,
+        'HIDDEN' => $hidden,
+        'URL' => $get_url,
+        'MAX_NAME' => $max_name,
+        'SELECTORS' => $selectors,
+    ));
     $GLOBALS['INCREMENTAL_ID_GENERATOR']++;
 
     if ($max < $max_rows) { // If they don't all fit on one page
@@ -286,7 +293,15 @@ function pagination($title, $start, $start_name, $max, $max_name, $max_rows, $ke
             if (($start + $max * 2) > $max_rows) {
                 $rel = 'last';
             }
-            $next = do_template('PAGINATION_NEXT_LINK', array('_GUID' => '6da9b396bdd46b7ee18c05b5a7eb4d10', 'NOFOLLOW' => ($start + $max > $max * 5) && ($bot), 'REL' => $rel, 'TITLE' => $title, 'NUM_PAGES' => integer_format($num_pages), 'P' => integer_format(intval($p)), 'URL' => $cat_url));
+            $next = do_template('PAGINATION_NEXT_LINK', array(
+                    '_GUID' => '6da9b396bdd46b7ee18c05b5a7eb4d10',
+                    'NOFOLLOW' => ($start + $max > $max * 5) && ($bot),
+                    'REL' => $rel,
+                    'TITLE' => $title,
+                    'NUM_PAGES' => integer_format($num_pages),
+                    'P' => integer_format(intval($p)),
+                    'URL' => $cat_url,
+                ));
         } else {
             $next = do_template('PAGINATION_NEXT');
         }

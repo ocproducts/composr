@@ -403,7 +403,13 @@ class Module_cms_banners extends Standard_crud_module
             $banner_type_row = array('t_image_width' => 728, 't_image_height' => 90);
         }
         $stats_url = build_url(array('page' => 'banners', 'type' => 'view', 'source' => $name), get_module_zone('banners'));
-        $banner_code = do_template('BANNER_SHOW_CODE', array('_GUID' => '745d555fcca3a1320123ad3a5a04418b', 'TYPE' => $b_type, 'NAME' => $name, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height'])));
+        $banner_code = do_template('BANNER_SHOW_CODE', array(
+            '_GUID' => '745d555fcca3a1320123ad3a5a04418b',
+            'TYPE' => $b_type,
+            'NAME' => $name,
+            'WIDTH' => strval($banner_type_row['t_image_width']),
+            'HEIGHT' => strval($banner_type_row['t_image_height']),
+        ));
         $tpl = do_template('BANNER_ADDED_SCREEN', array('_GUID' => '897bab3e444f0d3c909e7a95b84d4396', 'DO_NEXT' => '', 'TEXT' => '', 'TITLE' => '', 'BANNER_CODE' => $banner_code, 'STATS_URL' => $stats_url));
 
         if (get_option('use_banner_permissions') == '1') {

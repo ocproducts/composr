@@ -221,24 +221,17 @@ class Forum_driver_base
 
         // How to handle missing members
         if ($ret === null) {
-            case USERNAME_DEFAULT_DELETED:
+            if (($options & USERNAME_DEFAULT_DELETED) != 0) {
                 $ret = do_lang('DELETED');
-                break;
-
-            case USERNAME_DEFAULT_ID_RAW:
+            } elseif (($options & USERNAME_DEFAULT_ID_RAW) != 0) {
                 $ret = strval($id);
-                break;
-
-            case USERNAME_DEFAULT_ID_TIDY:
+            } elseif (($options & USERNAME_DEFAULT_ID_TIDY) != 0) {
                 $ret = '#' . strval($id);
-                break;
-
-            case USERNAME_DEFAULT_BLANK:
+            } elseif (($options & USERNAME_DEFAULT_BLANK) != 0) {
                 $ret = '';
-                break;
-
-            case USERNAME_DEFAULT_ERROR:
+            } elseif (($options & USERNAME_DEFAULT_ERROR) != 0) {
                 warn_exit(do_lang_tempcode('_MEMBER_NO_EXIST', escape_html(strval($id))));
+            }
         }
 
         return $ret;

@@ -225,7 +225,16 @@ class Module_cms_downloads extends Standard_crud_module
         $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION_PATH'), do_lang_tempcode('DESCRIPTION_DESTINATION_PATH'), 'destination', null, 'choose_download_category', array('addable_filter' => true), true));
         $fields->attach(form_input_tick(do_lang_tempcode('KEEP_SUBFOLDERS'), do_lang_tempcode('DESCRIPTION_KEEP_SUBFOLDERS'), 'subfolders', true));
 
-        return do_template('FORM_SCREEN', array('_GUID' => '3b0fadb204770861ab34a91fc062cf03', 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_LOAD_FTP_FILES')), 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '3b0fadb204770861ab34a91fc062cf03',
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_LOAD_FTP_FILES')),
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**
@@ -264,7 +273,16 @@ class Module_cms_downloads extends Standard_crud_module
         $fields->attach(form_input_tree_list(do_lang_tempcode('DESTINATION_PATH'), do_lang_tempcode('DESCRIPTION_DESTINATION_PATH'), 'destination', null, 'choose_download_category', array('addable_filter' => true), true));
         $fields->attach(form_input_tick(do_lang_tempcode('KEEP_SUBFOLDERS'), do_lang_tempcode('DESCRIPTION_KEEP_SUBFOLDERS'), 'subfolders', true));
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'b2a15e705e907f0b20373a80ca8839c6', 'TITLE' => $this->title, 'HIDDEN' => '', 'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_LOAD_FILESYSTEM_FILES')), 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'b2a15e705e907f0b20373a80ca8839c6',
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'TEXT' => paragraph(do_lang_tempcode('DESCRIPTION_LOAD_FILESYSTEM_FILES')),
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**

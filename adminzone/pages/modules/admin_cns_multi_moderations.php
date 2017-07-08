@@ -177,7 +177,16 @@ class Module_admin_cns_multi_moderations extends Standard_crud_module
 
         $text = paragraph(do_lang_tempcode('DESCRIPTION_IMPORT_STOCK_RESPONSES'));
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'bd30d8b0077567e3caf9239ed64204e5', 'TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES'), 'URL' => $post_url, 'TEXT' => $text, 'HIDDEN' => ''));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'bd30d8b0077567e3caf9239ed64204e5',
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => do_lang_tempcode('IMPORT_STOCK_RESPONSES'),
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'HIDDEN' => '',
+        ));
     }
 
     /**

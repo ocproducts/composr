@@ -386,7 +386,16 @@ class Module_admin_cns_forums extends Standard_crud_module
             ocp_mark_as_escaped($orderings);
         }
 
-        return do_template('CNS_EDIT_FORUM_SCREEN_FORUM', array('_GUID' => '35fdeb9848919b5c30b069eb5df603d5', 'ID' => strval($id), 'ORDERINGS' => $orderings, 'FORUM_GROUPINGS' => $forum_groupings, 'CLASS' => $class, 'FORUM' => $forum, 'VIEW_URL' => $view_url, 'EDIT_URL' => $edit_url));
+        return do_template('CNS_EDIT_FORUM_SCREEN_FORUM', array(
+            '_GUID' => '35fdeb9848919b5c30b069eb5df603d5',
+            'ID' => strval($id),
+            'ORDERINGS' => $orderings,
+            'FORUM_GROUPINGS' => $forum_groupings,
+            'CLASS' => $class,
+            'FORUM' => $forum,
+            'VIEW_URL' => $view_url,
+            'EDIT_URL' => $edit_url,
+        ));
     }
 
     /**

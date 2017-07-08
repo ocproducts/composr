@@ -58,7 +58,14 @@ class Hook_checklist_newsletter
 
         $url = build_url(array('page' => 'admin_newsletter', 'type' => 'whatsnew'), 'adminzone');
         list($info, $seconds_due_in) = staff_checklist_time_ago_and_due($seconds_ago, $limit_hours);
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'fb9483bb05ad90b9f2b7eba0c53996f4', 'CONFIG_URL' => $config_url, 'URL' => $url, 'STATUS' => $_status, 'TASK' => do_lang_tempcode('NEWSLETTER_SEND'), 'INFO' => $info));
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
+            '_GUID' => 'fb9483bb05ad90b9f2b7eba0c53996f4',
+            'CONFIG_URL' => $config_url,
+            'URL' => $url,
+            'STATUS' => $_status,
+            'TASK' => do_lang_tempcode('NEWSLETTER_SEND'),
+            'INFO' => $info,
+        ));
         return array(array($tpl, $seconds_due_in, null, 'newsletter_update_time'));
     }
 }

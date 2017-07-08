@@ -300,7 +300,17 @@ class Module_admin_ecommerce_logs
 
             url_default_parameters__disable();
 
-            return do_template('FORM_SCREEN', array('_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $fields, 'TEXT' => $text, 'URL' => get_self_url(), 'GET' => true, 'HIDDEN' => ''));
+            return do_template('FORM_SCREEN', array(
+                '_GUID' => 'a2fe914c23e378c493f6e1dad0dc11eb',
+                'TITLE' => $this->title,
+                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_NAME' => $submit_name,
+                'FIELDS' => $fields,
+                'TEXT' => $text,
+                'URL' => get_self_url(),
+                'GET' => true,
+                'HIDDEN' => '',
+            ));
         }
 
         $post_url = build_url(array('page' => '_SELF', 'type' => '_trigger', 'redirect' => protect_url_parameter(get_param_string('redirect', null, INPUT_FILTER_URL_INTERNAL))), '_SELF');
@@ -329,7 +339,17 @@ class Module_admin_ecommerce_logs
 
                 url_default_parameters__disable();
 
-                return do_template('FORM_SCREEN', array('_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'FIELDS' => $needed_fields, 'TEXT' => $text, 'JAVASCRIPT' => $needed_javascript, 'URL' => get_self_url(), 'HIDDEN' => $extra_hidden));
+                return do_template('FORM_SCREEN', array(
+                    '_GUID' => '90ee397ac24dcf0b3a0176da9e9c9741',
+                    'TITLE' => $this->title,
+                    'SUBMIT_ICON' => 'buttons__proceed',
+                    'SUBMIT_NAME' => $submit_name,
+                    'FIELDS' => $needed_fields,
+                    'TEXT' => $text,
+                    'JAVASCRIPT' => $needed_javascript,
+                    'URL' => get_self_url(),
+                    'HIDDEN' => $extra_hidden,
+                ));
             }
         }
 

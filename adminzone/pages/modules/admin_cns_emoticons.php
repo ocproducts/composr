@@ -179,7 +179,16 @@ class Module_admin_cns_emoticons extends Standard_crud_module
         $hidden->attach(form_input_hidden('test', '1'));
         handle_max_file_size($hidden);
 
-        return do_template('FORM_SCREEN', array('_GUID' => '1910e01ec183392f6b254671dc7050a3', 'TITLE' => $this->title, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => do_lang_tempcode('BATCH_IMPORT_ARCHIVE_CONTENTS'), 'URL' => $post_url, 'TEXT' => $text, 'HIDDEN' => $hidden));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '1910e01ec183392f6b254671dc7050a3',
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => do_lang_tempcode('BATCH_IMPORT_ARCHIVE_CONTENTS'),
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'HIDDEN' => $hidden,
+        ));
     }
 
     /**

@@ -220,7 +220,17 @@ class Module_admin_invoices
         $post_url = build_url(array('page' => '_SELF', 'type' => '_add'), '_SELF');
         $submit_name = do_lang_tempcode('CREATE_INVOICE');
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'b8a08145bd1262c277e00a1151d6383e', 'HIDDEN' => '', 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'TEXT' => do_lang_tempcode('DESCRIPTION_INVOICE_PAGE'), 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'b8a08145bd1262c277e00a1151d6383e',
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'URL' => $post_url,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'TEXT' => do_lang_tempcode('DESCRIPTION_INVOICE_PAGE'),
+            'SUPPORT_AUTOSAVE' => true,
+        ));
     }
 
     /**

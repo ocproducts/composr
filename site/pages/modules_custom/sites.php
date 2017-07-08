@@ -441,7 +441,16 @@ class Module_sites
         $text = do_lang_tempcode('CMS_ENTER_DETAILS');
         $post_url = build_url(array('page' => '_SELF', 'type' => '_demonstratr'), '_SELF');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '0ed12af5b64c65a673b9837bd47a80b1', 'TITLE' => $this->title, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang('PROCEED'), 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'HIDDEN' => ''));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '0ed12af5b64c65a673b9837bd47a80b1',
+            'TITLE' => $this->title,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => do_lang('PROCEED'),
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'HIDDEN' => '',
+        ));
     }
 
     /**

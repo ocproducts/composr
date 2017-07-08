@@ -224,7 +224,13 @@ class Module_admin_email_log
         $mass_delete_url = build_url(array('page' => '_SELF', 'type' => 'mass_delete'), '_SELF');
         $mass_send_url = build_url(array('page' => '_SELF', 'type' => 'mass_send'), '_SELF');
 
-        $tpl = do_template('EMAIL_LOG_SCREEN', array('_GUID' => '8c249a372933e1215d8b9ff6d4bb0de3', 'TITLE' => $this->title, 'RESULTS_TABLE' => $results_table, 'MASS_DELETE_URL' => $mass_delete_url, 'MASS_SEND_URL' => $mass_send_url));
+        $tpl = do_template('EMAIL_LOG_SCREEN', array(
+            '_GUID' => '8c249a372933e1215d8b9ff6d4bb0de3',
+            'TITLE' => $this->title,
+            'RESULTS_TABLE' => $results_table,
+            'MASS_DELETE_URL' => $mass_delete_url,
+            'MASS_SEND_URL' => $mass_send_url,
+        ));
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);

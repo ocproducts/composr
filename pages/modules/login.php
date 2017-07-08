@@ -260,7 +260,15 @@ class Module_login
         if (!is_guest()) {
             $username = $GLOBALS['FORUM_DRIVER']->get_username(get_member(), false, USERNAME_DEFAULT_BLANK);
         }
-        return do_template('LOGIN_SCREEN', array('_GUID' => '0940dbf2c42493c53b7e99eb50ca51f1', 'EXTRA' => $extra, 'USERNAME' => $username, 'JOIN_URL' => $GLOBALS['FORUM_DRIVER']->join_url(true), 'TITLE' => $this->title, 'LOGIN_URL' => $login_url, 'PASSION' => $passion));
+        return do_template('LOGIN_SCREEN', array(
+            '_GUID' => '0940dbf2c42493c53b7e99eb50ca51f1',
+            'EXTRA' => $extra,
+            'USERNAME' => $username,
+            'JOIN_URL' => $GLOBALS['FORUM_DRIVER']->join_url(true),
+            'TITLE' => $this->title,
+            'LOGIN_URL' => $login_url,
+            'PASSION' => $passion,
+        ));
     }
 
     /**
@@ -305,7 +313,14 @@ class Module_login
             }
             delete_cache_entry('side_users_online');
 
-            return do_template('REDIRECT_POST_METHOD_SCREEN', array('_GUID' => '82e056de9150bbed185120eac3571f40', 'REFRESH' => $refresh, 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('_LOGIN_TEXT'), 'URL' => $url, 'POST' => $post));
+            return do_template('REDIRECT_POST_METHOD_SCREEN', array(
+                '_GUID' => '82e056de9150bbed185120eac3571f40',
+                'REFRESH' => $refresh,
+                'TITLE' => $this->title,
+                'TEXT' => do_lang_tempcode('_LOGIN_TEXT'),
+                'URL' => $url,
+                'POST' => $post,
+            ));
         } else {
             $text = $feedback['error'];
 

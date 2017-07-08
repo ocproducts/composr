@@ -64,7 +64,12 @@ function download_licence_script()
     }
     $licence_title = $rows[0]['l_title'];
     $licence_text = $rows[0]['l_text'];
-    $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'd8f60d5f6f56b08589ed6f4b874dad85', 'TITLE' => $licence_title, 'POPUP' => true, 'CONTENT' => comcode_to_tempcode($licence_text, $GLOBALS['FORUM_DRIVER']->get_guest_id(), false)));
+    $echo = do_template('STANDALONE_HTML_WRAP', array(
+        '_GUID' => 'd8f60d5f6f56b08589ed6f4b874dad85',
+        'TITLE' => $licence_title,
+        'POPUP' => true,
+        'CONTENT' => comcode_to_tempcode($licence_text, $GLOBALS['FORUM_DRIVER']->get_guest_id(), false),
+    ));
     $echo->evaluate_echo();
 }
 
@@ -158,7 +163,15 @@ function render_download_box($row, $pic = true, $include_breadcrumbs = true, $zo
         if ($licence_title !== null) {
             $keep = symbol_tempcode('KEEP');
             $licence_url = find_script('download_licence') . '?id=' . strval($licence) . $keep->evaluate();
-            $licence_hyperlink = do_template('HYPERLINK_POPUP_WINDOW', array('_GUID' => ($guid != '') ? $guid : '58a9e5c99bd236290009b6eab44dbac3', 'TITLE' => '', 'CAPTION' => $licence_title, 'URL' => $licence_url, 'WIDTH' => '600', 'HEIGHT' => '500', 'REL' => 'license'));
+            $licence_hyperlink = do_template('HYPERLINK_POPUP_WINDOW', array(
+                '_GUID' => ($guid != '') ? $guid : '58a9e5c99bd236290009b6eab44dbac3',
+                'TITLE' => '',
+                'CAPTION' => $licence_title,
+                'URL' => $licence_url,
+                'WIDTH' => '600',
+                'HEIGHT' => '500',
+                'REL' => 'license',
+            ));
         } else {
             $licence = null; // Orphaned
         }

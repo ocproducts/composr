@@ -475,7 +475,13 @@ function _chat_messages_script_ajax($room_id, $backlog = false, $message_id = nu
         }
 
         if (($room_id != -1) && (addon_installed('actionlog')) && (addon_installed('securitylogging')) && ((has_actual_page_access(get_member(), 'admin_actionlog')) || (has_actual_page_access(get_member(), 'cms_chat')))) {
-            $staff_actions = do_template('CHAT_STAFF_ACTIONS', array('_GUID' => 'd3fbcaa9eee688452091583ee436e465', 'CHAT_BAN_URL' => $chat_ban_url, 'CHAT_UNBAN_URL' => $chat_unban_url, 'EDIT_URL' => $edit_url, 'BAN_URL' => $ban_url));
+            $staff_actions = do_template('CHAT_STAFF_ACTIONS', array(
+                '_GUID' => 'd3fbcaa9eee688452091583ee436e465',
+                'CHAT_BAN_URL' => $chat_ban_url,
+                'CHAT_UNBAN_URL' => $chat_unban_url,
+                'EDIT_URL' => $edit_url,
+                'BAN_URL' => $ban_url,
+            ));
         } else {
             $staff_actions = new Tempcode();
         }
@@ -1334,7 +1340,12 @@ function _deal_with_chatcode_private($pm_user, $pm_message, $username, $text, $r
             $text = preg_replace('#\[private=&quot;([^&]*)&quot;\]([^\[]*)\[/private\]#', $response_text, $text, 1);
         } else {
             // Display the message
-            $private_code = do_template('CHAT_PRIVATE', array('_GUID' => '96ef50f1442b319b034fe6f68ca50c12', 'SYSTEM_MESSAGE' => strval($system_message), 'MESSAGE' => $pm_message, 'USER' => do_lang_tempcode('CHAT_PRIVATE_TITLE', ($username == $pm_user) ? do_lang_tempcode('USER_SYSTEM') : make_string_tempcode(escape_html($username)))));
+            $private_code = do_template('CHAT_PRIVATE', array(
+                '_GUID' => '96ef50f1442b319b034fe6f68ca50c12',
+                'SYSTEM_MESSAGE' => strval($system_message),
+                'MESSAGE' => $pm_message,
+                'USER' => do_lang_tempcode('CHAT_PRIVATE_TITLE', ($username == $pm_user) ? do_lang_tempcode('USER_SYSTEM') : make_string_tempcode(escape_html($username))),
+            ));
             $text = preg_replace('#\[private=&quot;([^&]*)&quot;\]([^\[]*)\[/private\]#', $private_code->evaluate(), $text, 1);
         }
     } else { // No we are not...

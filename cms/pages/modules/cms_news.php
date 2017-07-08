@@ -786,7 +786,16 @@ class Module_cms_news extends Standard_crud_module
         $hidden->attach(form_input_hidden('lang', $lang));
         handle_max_file_size($hidden);
 
-        return do_template('FORM_SCREEN', array('_GUID' => '4ac8c667fa38c1e6338eedcb138e7fd4', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('IMPORT_NEWS_TEXT'), 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '4ac8c667fa38c1e6338eedcb138e7fd4',
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('IMPORT_NEWS_TEXT'),
+            'HIDDEN' => $hidden,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**

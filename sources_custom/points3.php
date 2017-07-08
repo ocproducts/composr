@@ -127,7 +127,12 @@ function points_profile($member_id_of, $member_id_viewing)
         if (($enough_ok) && ($give_ok)) {
             // Show how many points are available also
             $give_url = build_url(array('page' => 'points', 'type' => 'give', 'id' => $member_id_of), get_module_zone('points'));
-            $give_template = do_template('POINTS_GIVE', array('_GUID' => 'a7663fab037412fd4e6a6404a4291939', 'GIVE_URL' => $give_url, 'MEMBER' => strval($member_id_of), 'VIEWER_GIFT_POINTS_AVAILABLE' => $have_negative_gift_points ? '' : integer_format($viewer_gift_points_available)));
+            $give_template = do_template('POINTS_GIVE', array(
+                '_GUID' => 'a7663fab037412fd4e6a6404a4291939',
+                'GIVE_URL' => $give_url,
+                'MEMBER' => strval($member_id_of),
+                'VIEWER_GIFT_POINTS_AVAILABLE' => $have_negative_gift_points ? '' : integer_format($viewer_gift_points_available),
+            ));
         } else {
             $give_template = do_lang_tempcode('PE_LACKING_GIFT_POINTS');
         }

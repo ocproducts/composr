@@ -1145,7 +1145,16 @@ class Module_cms_calendar extends Standard_crud_module
         $hidden->attach(form_input_hidden('lang', $lang));
         handle_max_file_size($hidden);
 
-        return do_template('FORM_SCREEN', array('_GUID' => '5a970cd3766a6d32b64015b4dfd4b25e', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('IMPORT_ICAL_TEXT'), 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '5a970cd3766a6d32b64015b4dfd4b25e',
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('IMPORT_ICAL_TEXT'),
+            'HIDDEN' => $hidden,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**
@@ -1194,7 +1203,17 @@ class Module_cms_calendar extends Standard_crud_module
         $post_url = build_url(array('page' => '_SELF', 'type' => '_export'), '_SELF');
         $submit_name = do_lang_tempcode('EXPORT_ICAL');
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'fa308cb6dd4f82f5ed2dd2fab45b0fef', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('EXPORT_ICAL_TEXT'), 'HIDDEN' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url, 'GET' => true));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'fa308cb6dd4f82f5ed2dd2fab45b0fef',
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('EXPORT_ICAL_TEXT'),
+            'HIDDEN' => '',
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+            'GET' => true,
+        ));
     }
 
     /**

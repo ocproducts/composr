@@ -1013,7 +1013,17 @@ class Module_cms_catalogues extends Standard_crud_module
         $fields->attach(feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, '', $allow_comments == 2, false, false));
 
         require_javascript('catalogues');
-        return do_template('FORM_SCREEN', array('_GUID' => '0ad5a822bccb3de8e53fcc47594eb404', 'TITLE' => $this->title, 'JS_FUNCTION_CALLS' => array('cmsCataloguesImportCatalogue'), 'TEXT' => do_lang_tempcode('CATALOGUE_IMPORT_TEXT'), 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '0ad5a822bccb3de8e53fcc47594eb404',
+            'TITLE' => $this->title,
+            'JS_FUNCTION_CALLS' => array('cmsCataloguesImportCatalogue'),
+            'TEXT' => do_lang_tempcode('CATALOGUE_IMPORT_TEXT'),
+            'HIDDEN' => $hidden,
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**

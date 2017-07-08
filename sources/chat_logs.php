@@ -93,7 +93,11 @@ function chat_logs_script()
         return;
     }
 
-    $message_contents = do_template('BASIC_HTML_WRAP', array('_GUID' => 'ff052ede2357f894a219c27a3ec75642', 'TITLE' => do_lang('CHAT_LOGS', escape_html(get_site_name()), escape_html($room_name), array(escape_html($start_date), escape_html($finish_date))), 'CONTENT' => $message_contents));
+    $message_contents = do_template('BASIC_HTML_WRAP', array(
+        '_GUID' => 'ff052ede2357f894a219c27a3ec75642',
+        'TITLE' => do_lang('CHAT_LOGS', escape_html(get_site_name()), escape_html($room_name), array(escape_html($start_date), escape_html($finish_date))),
+        'CONTENT' => $message_contents,
+    ));
 
     echo $message_contents->evaluate();
 }

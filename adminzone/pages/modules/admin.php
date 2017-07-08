@@ -326,7 +326,15 @@ class Module_admin
         }
         $_keywords = $this->_strip_junk_words($_keywords);
         if (count($_keywords) == 0) {
-            return do_template('INDEX_SCREEN_FANCIER_SCREEN', array('_GUID' => '8635190f315a0c1cf1d5bad4009a7955', 'TITLE' => get_screen_title('ADMIN_ZONE_SEARCH_RESULTS'), 'EMPTY' => true, 'ARRAY' => true, 'CONTENT' => '', 'PRE' => '', 'POST' => ''));
+            return do_template('INDEX_SCREEN_FANCIER_SCREEN', array(
+                '_GUID' => '8635190f315a0c1cf1d5bad4009a7955',
+                'TITLE' => get_screen_title('ADMIN_ZONE_SEARCH_RESULTS'),
+                'EMPTY' => true,
+                'ARRAY' => true,
+                'CONTENT' => '',
+                'PRE' => '',
+                'POST' => '',
+            ));
         }
         $keywords = array(); // Keyword groups
         $synonym_rows = $this->_synonyms(); // Only in English by default. To do for another language, override this file using inheritance
@@ -633,7 +641,14 @@ class Module_admin
                     $content[$current_results_type]->attach(do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => 'f7271912ccbe0358fe263ed61f7ed427', 'NAME' => $n, 'URL' => $url, 'TITLE' => '', 'DESCRIPTION' => $_t, 'SUP' => $sup)));
 
                     if ($conf_found_count > 100) {
-                        $content[$current_results_type] = do_template('INDEX_SCREEN_FANCIER_ENTRY', array('_GUID' => '360a5362435a57f9c1d6a7b18624f53b', 'NAME' => do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'), 'URL' => '', 'TITLE' => '', 'DESCRIPTION' => '', 'SUP' => ''));
+                        $content[$current_results_type] = do_template('INDEX_SCREEN_FANCIER_ENTRY', array(
+                            '_GUID' => '360a5362435a57f9c1d6a7b18624f53b',
+                            'NAME' => do_lang_tempcode('TOO_MANY_TO_CHOOSE_FROM'),
+                            'URL' => '',
+                            'TITLE' => '',
+                            'DESCRIPTION' => '',
+                            'SUP' => '',
+                        ));
                         break;
                     }
 

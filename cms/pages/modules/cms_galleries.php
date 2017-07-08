@@ -294,7 +294,18 @@ class Module_cms_galleries extends Standard_crud_module
 
         $submit_name = do_lang_tempcode('GALLERY_IMPORT');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '5213edb75c8d534c121b587c555a3b9a', 'TITLE' => $this->title, 'SKIP_WEBSTANDARDS' => true, 'GET' => true, 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '5213edb75c8d534c121b587c555a3b9a',
+            'TITLE' => $this->title,
+            'SKIP_WEBSTANDARDS' => true,
+            'GET' => true,
+            'HIDDEN' => '',
+            'TEXT' => '',
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+        ));
     }
 
     /**
@@ -347,7 +358,16 @@ class Module_cms_galleries extends Standard_crud_module
         }
         // Show form
         $hidden->attach(form_input_hidden('test', '1'));
-        $form = do_template('FORM', array('_GUID' => '05de2bc134ed0b1ab703ac8bfbfabce4', 'TABINDEX' => strval(get_form_field_tabindex()), 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => do_lang_tempcode('BATCH_IMPORT_ARCHIVE_CONTENTS'), 'URL' => $post_url, 'TEXT' => $text, 'HIDDEN' => $hidden));
+        $form = do_template('FORM', array(
+            '_GUID' => '05de2bc134ed0b1ab703ac8bfbfabce4',
+            'TABINDEX' => strval(get_form_field_tabindex()),
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__import',
+            'SUBMIT_NAME' => do_lang_tempcode('BATCH_IMPORT_ARCHIVE_CONTENTS'),
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'HIDDEN' => $hidden,
+        ));
 
         // Orphaned upload form
         // To choose to batch import what already exists in gallery directory, but is orphaned
@@ -405,7 +425,17 @@ class Module_cms_galleries extends Standard_crud_module
                 require_code('feedback2');
                 $fields_2->attach(feedback_fields($this->content_type, true, true, true, false, '', null, false, true, true, 'ss_'));
 
-                $form2 = do_template('FORM', array('_GUID' => '79c9fd4f29197460f08443bf2ffdf8b2', 'SECONDARY_FORM' => true, 'TABINDEX' => strval(get_form_field_tabindex()), 'FIELDS' => $fields_2, 'SUBMIT_ICON' => 'menu___generic_admin__import', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'URL' => $add_url, 'TEXT' => '', 'HIDDEN' => $hidden_2));
+                $form2 = do_template('FORM', array(
+                    '_GUID' => '79c9fd4f29197460f08443bf2ffdf8b2',
+                    'SECONDARY_FORM' => true,
+                    'TABINDEX' => strval(get_form_field_tabindex()),
+                    'FIELDS' => $fields_2,
+                    'SUBMIT_ICON' => 'menu___generic_admin__import',
+                    'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
+                    'URL' => $add_url,
+                    'TEXT' => '',
+                    'HIDDEN' => $hidden_2,
+                ));
             } else {
                 $form2 = new Tempcode();
             }

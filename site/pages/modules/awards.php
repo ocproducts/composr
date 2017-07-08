@@ -234,7 +234,13 @@ class Module_awards
             }
         }
 
-        return do_template('INDEX_SCREEN_FANCIER_SCREEN', array('_GUID' => '4d705418b837db3dc992de95c3b93f71', 'TITLE' => $this->title, 'PRE' => do_lang_tempcode('DESCRIPTION_AWARD_OVERVIEW'), 'CONTENT' => $content, 'POST' => ''));
+        return do_template('INDEX_SCREEN_FANCIER_SCREEN', array(
+                    '_GUID' => '4d705418b837db3dc992de95c3b93f71',
+                    'TITLE' => $this->title,
+                    'PRE' => do_lang_tempcode('DESCRIPTION_AWARD_OVERVIEW'),
+                    'CONTENT' => $content,
+                    'POST' => '',
+                ));
     }
 
     /**
@@ -299,7 +305,14 @@ class Module_awards
 
         $sub_title = do_lang_tempcode('AWARD_HISTORY');
 
-        $tpl = do_template('PAGINATION_SCREEN', array('_GUID' => 'b9cf3a37300aced490003f79d7bb4914', 'TITLE' => $this->title, 'SUB_TITLE' => $sub_title, 'DESCRIPTION' => $description, 'CONTENT' => $content, 'PAGINATION' => $pagination));
+        $tpl = do_template('PAGINATION_SCREEN', array(
+            '_GUID' => 'b9cf3a37300aced490003f79d7bb4914',
+            'TITLE' => $this->title,
+            'SUB_TITLE' => $sub_title,
+            'DESCRIPTION' => $description,
+            'CONTENT' => $content,
+            'PAGINATION' => $pagination,
+        ));
 
         require_code('templates_internalise_screen');
         return internalise_own_screen($tpl);

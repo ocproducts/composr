@@ -201,7 +201,14 @@ function handle_facebook_connection_login($current_logged_in_member)
             if (post_param_integer('associated_confirm', 0) == 0) {
                 $title = get_screen_title('LOGIN_FACEBOOK_HEADER');
                 $message = do_lang_tempcode('LOGGED_IN_SURE_FACEBOOK', escape_html($GLOBALS['FORUM_DRIVER']->get_username($current_logged_in_member)));
-                $middle = do_template('CONFIRM_SCREEN', array('_GUID' => '3d80095b18cf57717d0b091cf3680252', 'TITLE' => $title, 'TEXT' => $message, 'HIDDEN' => form_input_hidden('associated_confirm', '1'), 'URL' => get_self_url_easy(), 'FIELDS' => ''));
+                $middle = do_template('CONFIRM_SCREEN', array(
+                    '_GUID' => '3d80095b18cf57717d0b091cf3680252',
+                    'TITLE' => $title,
+                    'TEXT' => $message,
+                    'HIDDEN' => form_input_hidden('associated_confirm', '1'),
+                    'URL' => get_self_url_easy(),
+                    'FIELDS' => '',
+                ));
                 $tpl = globalise($middle, null, '', true);
                 $tpl->evaluate_echo();
                 exit();

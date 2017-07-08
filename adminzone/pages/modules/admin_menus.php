@@ -379,7 +379,12 @@ class Module_admin_menus
 
                 $display = (($branch_type == 0) && (!$clickable_sections)) ? 'display: none' : '';
                 $_child_branches = $this->menu_branch($id, $menu_item['id'], $order, $clickable_sections, $menu_items);
-                $_branch = do_template('MENU_EDITOR_BRANCH', array('_GUID' => '381f5600da214b84e300bcf668f66570', 'CLICKABLE_SECTIONS' => $clickable_sections ? 'true' : 'false', 'I' => strval($menu_item['id']), 'CHILD_BRANCHES' => $_child_branches->evaluate()));
+                $_branch = do_template('MENU_EDITOR_BRANCH', array(
+                    '_GUID' => '381f5600da214b84e300bcf668f66570',
+                    'CLICKABLE_SECTIONS' => $clickable_sections ? 'true' : 'false',
+                    'I' => strval($menu_item['id']),
+                    'CHILD_BRANCHES' => $_child_branches->evaluate(),
+                ));
                 $_wrap = do_template('MENU_EDITOR_BRANCH_WRAP', array(
                     '_GUID' => '1ace7da7a1d8a18f13305eec5069e4c5',
                     'DISPLAY' => $display,

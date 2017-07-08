@@ -189,7 +189,16 @@ function cns_member_external_linker_ask($username, $type, $email_address = '', $
     $submit_name = do_lang_tempcode('PROCEED');
     $url = get_self_url();
 
-    return do_template('FORM_SCREEN', array('_GUID' => 'f3fa74f4842f3660f0831f8d708d256d', 'HIDDEN' => $hidden, 'TITLE' => $title, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu__site_meta__user_actions__join', 'SUBMIT_NAME' => $submit_name, 'URL' => $url));
+    return do_template('FORM_SCREEN', array(
+        '_GUID' => 'f3fa74f4842f3660f0831f8d708d256d',
+        'HIDDEN' => $hidden,
+        'TITLE' => $title,
+        'FIELDS' => $fields,
+        'TEXT' => $text,
+        'SUBMIT_ICON' => 'menu__site_meta__user_actions__join',
+        'SUBMIT_NAME' => $submit_name,
+        'URL' => $url,
+    ));
 }
 
 /**

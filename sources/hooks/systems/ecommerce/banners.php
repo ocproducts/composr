@@ -358,7 +358,13 @@ class Hook_ecommerce_banners
                 } else {
                     $banner_type_row = array('t_image_width' => 728, 't_image_height' => 90);
                 }
-                $banner_code = do_template('BANNER_SHOW_CODE', array('_GUID' => 'c96f0ce22de97782b1ab9bee3f43c0ba', 'TYPE' => '', 'NAME' => $name, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height'])));
+                $banner_code = do_template('BANNER_SHOW_CODE', array(
+                    '_GUID' => 'c96f0ce22de97782b1ab9bee3f43c0ba',
+                    'TYPE' => '',
+                    'NAME' => $name,
+                    'WIDTH' => strval($banner_type_row['t_image_width']),
+                    'HEIGHT' => strval($banner_type_row['t_image_height']),
+                ));
 
                 // Show a message about banner usage (will only be seen if buying with points)
                 $result = do_template('BANNER_ADDED_SCREEN', array('_GUID' => '68725923b19d3df71c72276ada826183', 'TITLE' => '', 'TEXT' => $text, 'BANNER_CODE' => $banner_code, 'STATS_URL' => $stats_url, 'DO_NEXT' => ''));

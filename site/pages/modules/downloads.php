@@ -370,7 +370,14 @@ class Module_downloads
                     } else {
                         $iedit_url = new Tempcode();
                     }
-                    $_content = do_template('DOWNLOAD_SCREEN_IMAGE', array('_GUID' => 'fba0e309aa0ae04891e32c65a625b177', 'ID' => strval($row['id']), 'VIEW_URL' => $view_url, 'EDIT_URL' => $iedit_url, 'THUMB' => $thumb, 'DESCRIPTION' => $image_description));
+                    $_content = do_template('DOWNLOAD_SCREEN_IMAGE', array(
+                        '_GUID' => 'fba0e309aa0ae04891e32c65a625b177',
+                        'ID' => strval($row['id']),
+                        'VIEW_URL' => $view_url,
+                        'EDIT_URL' => $iedit_url,
+                        'THUMB' => $thumb,
+                        'DESCRIPTION' => $image_description,
+                    ));
 
                     $_row->attach(do_template('DOWNLOAD_GALLERY_IMAGE_CELL', array('_GUID' => '8400a832dbed64bb63f264eb3a038895', 'CONTENT' => $_content)));
 
@@ -761,7 +768,15 @@ class Module_downloads
             if ($licence_title !== null) {
                 $keep = symbol_tempcode('KEEP');
                 $licence_url = find_script('download_licence') . '?id=' . strval($licence) . $keep->evaluate();
-                $licence_hyperlink = do_template('HYPERLINK_POPUP_WINDOW', array('_GUID' => '10582f28c37ee7e9e462fdbd6a2cb8dd', 'TITLE' => '', 'CAPTION' => $licence_title, 'URL' => $licence_url, 'WIDTH' => '600', 'HEIGHT' => '500', 'REL' => 'license'));
+                $licence_hyperlink = do_template('HYPERLINK_POPUP_WINDOW', array(
+                    '_GUID' => '10582f28c37ee7e9e462fdbd6a2cb8dd',
+                    'TITLE' => '',
+                    'CAPTION' => $licence_title,
+                    'URL' => $licence_url,
+                    'WIDTH' => '600',
+                    'HEIGHT' => '500',
+                    'REL' => 'license',
+                ));
             } else {
                 $licence = null; // Orphaned
             }

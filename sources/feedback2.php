@@ -200,7 +200,11 @@ function feedback_fields($content_type, $allow_rating, $allow_comments, $allow_t
             } else {
                 $section_hidden = $notes == '' && $allow_comments && (($allow_trackbacks === null) || $allow_trackbacks || (get_option('is_on_trackbacks') == '0')) && $allow_rating;
             }
-            $_fields = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '95864784029fd6d46a8b2ebbca9d81eb', 'SECTION_HIDDEN' => $section_hidden, 'TITLE' => do_lang_tempcode((get_option('enable_staff_notes') == '1') ? 'FEEDBACK_AND_NOTES' : '_FEEDBACK')));
+            $_fields = do_template('FORM_SCREEN_FIELD_SPACER', array(
+                '_GUID' => '95864784029fd6d46a8b2ebbca9d81eb',
+                'SECTION_HIDDEN' => $section_hidden,
+                'TITLE' => do_lang_tempcode((get_option('enable_staff_notes') == '1') ? 'FEEDBACK_AND_NOTES' : '_FEEDBACK'),
+            ));
             $_fields->attach($fields);
             $fields = $_fields;
         }

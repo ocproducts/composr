@@ -44,7 +44,13 @@ class Hook_checklist_forum
                 }
             }
 
-            $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'a2cdfc2ea5db2d8c13a4d9eafa9b644b', 'URL' => '', 'STATUS' => $status, 'TASK' => do_lang_tempcode('NAG_FORUMS', escape_html_tempcode($url)), 'INFO' => ''));
+            $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
+                '_GUID' => 'a2cdfc2ea5db2d8c13a4d9eafa9b644b',
+                'URL' => '',
+                'STATUS' => $status,
+                'TASK' => do_lang_tempcode('NAG_FORUMS', escape_html_tempcode($url)),
+                'INFO' => '',
+            ));
 
             return array(array($tpl, null, null, null));
         }

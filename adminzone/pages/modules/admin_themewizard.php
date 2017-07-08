@@ -215,7 +215,19 @@ class Module_admin_themewizard
         $fields->attach(form_input_tick(do_lang_tempcode('INHERIT_CSS'), do_lang_tempcode('DESCRIPTION_INHERIT_CSS'), 'inherit_css', get_param_integer('inherit_css', 0) == 1));
 
         require_javascript('themewizard');
-        return do_template('FORM_SCREEN', array('_GUID' => '98963f4d7ff60744382f937e6cc5acbf', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'JS_FUNCTION_CALLS' => array('adminThemeWizardStep1'), 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '98963f4d7ff60744382f937e6cc5acbf',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $this->title,
+            'JS_FUNCTION_CALLS' => array('adminThemeWizardStep1'),
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'HIDDEN' => $hidden,
+        ));
     }
 
     /**
@@ -298,7 +310,17 @@ class Module_admin_themewizard
         $hidden->attach(form_input_hidden('dark', strval($dark)));
         $hidden->attach(form_input_hidden('inherit_css', strval($inherit_css)));
 
-        return do_template('FORM_SCREEN', array('_GUID' => '349383d77ecfce8c65f3303cfec86ea0', 'SKIP_WEBSTANDARDS' => true, 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('REFRESH_TO_FINISH'), 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '349383d77ecfce8c65f3303cfec86ea0',
+            'SKIP_WEBSTANDARDS' => true,
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('REFRESH_TO_FINISH'),
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'HIDDEN' => $hidden,
+        ));
     }
 
     /**

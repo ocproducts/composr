@@ -414,7 +414,18 @@ class Module_cms_authors
         $fields = form_input_huge_list(do_lang_tempcode('NAME'), '', 'author', $authors, null, true);
         $post_url = build_url(array('page' => '_SELF', 'type' => '_add'), '_SELF');
         $submit_name = do_lang_tempcode('SETUP');
-        $define_form = do_template('FORM', array('_GUID' => '1109c0cfdd598bf87134de1838709c39', 'TABINDEX' => strval(get_form_field_tabindex()), 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'GET' => true, 'URL' => $post_url, 'SUBMIT_ICON' => 'menu___generic_admin__edit_this', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
+        $define_form = do_template('FORM', array(
+            '_GUID' => '1109c0cfdd598bf87134de1838709c39',
+            'TABINDEX' => strval(get_form_field_tabindex()),
+            'HIDDEN' => '',
+            'TEXT' => '',
+            'FIELDS' => $fields,
+            'GET' => true,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'menu___generic_admin__edit_this',
+            'SUBMIT_NAME' => $submit_name,
+            'SUPPORT_AUTOSAVE' => true,
+        ));
 
         if (has_privilege(get_member(), 'delete_midrange_content')) {
             $fields = new Tempcode();
@@ -422,7 +433,17 @@ class Module_cms_authors
             $fields->attach(form_input_list(do_lang_tempcode('PARAMETER_B'), do_lang_tempcode('DESCRIPTION_NAME'), 'mauthor2', $authors));
             $post_url = build_url(array('page' => '_SELF', 'type' => '_merge'), '_SELF');
             $submit_name = do_lang_tempcode('MERGE_AUTHORS');
-            $merge_form = do_template('FORM', array('_GUID' => 'd0dd075a54b72cfe47d3c2d9fe987c89', 'TABINDEX' => strval(get_form_field_tabindex()), 'SECONDARY_FORM' => true, 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'menu___generic_admin__merge', 'SUBMIT_NAME' => $submit_name));
+            $merge_form = do_template('FORM', array(
+                '_GUID' => 'd0dd075a54b72cfe47d3c2d9fe987c89',
+                'TABINDEX' => strval(get_form_field_tabindex()),
+                'SECONDARY_FORM' => true,
+                'HIDDEN' => '',
+                'TEXT' => '',
+                'FIELDS' => $fields,
+                'URL' => $post_url,
+                'SUBMIT_ICON' => 'menu___generic_admin__merge',
+                'SUBMIT_NAME' => $submit_name,
+            ));
         } else {
             $merge_form = new Tempcode();
         }

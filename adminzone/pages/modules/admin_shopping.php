@@ -324,7 +324,12 @@ class Module_admin_shopping
             $order_status = do_lang_tempcode($row['order_status']);
 
             $order_actualise_url = build_url(array('page' => '_SELF', 'type' => 'order_act', 'id' => $row['id']), '_SELF');
-            $actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array('_GUID' => '19ad8393aa5dba3f2f768818f22d8837', 'ORDER_TITLE' => $order_title, 'ORDER_ACTUALISE_URL' => $order_actualise_url, 'ORDER_STATUS' => $order_status));
+            $actions = do_template('ECOM_ADMIN_ORDER_ACTIONS', array(
+                '_GUID' => '19ad8393aa5dba3f2f768818f22d8837',
+                'ORDER_TITLE' => $order_title,
+                'ORDER_ACTUALISE_URL' => $order_actualise_url,
+                'ORDER_STATUS' => $order_status,
+            ));
 
             $order_entries->attach(results_entry(array(
                 escape_html($order_title),

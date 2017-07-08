@@ -128,7 +128,15 @@ function output_inventory_screen($member_id)
         $inventory->attach(do_template('W_INVENTORY_ITEM', array('_GUID' => '6850866532d2e5a65ca1b74f5ed8e49a', 'HEALTHY' => $healthy == 1, 'BRIBABLE' => $bribable == 1, 'WIDTH' => $width, 'PIC_URL' => $pic_url, 'ITEM_NAME' => $myrow['item_name'], 'DESCRIPTION' => $description, 'ITEM_COUNT' => integer_format($myrow['item_count']))));
     }
 
-    return do_template('W_INVENTORY_SCREEN', array('_GUID' => '74dd29919831eb75212b9805511fdca8', 'TITLE' => $title, 'USERNAME' => $username, 'HEALTH' => integer_format($health), 'AVATAR' => $avatar, 'PHOTO' => $photo, 'INVENTORY' => $inventory));
+    return do_template('W_INVENTORY_SCREEN', array(
+        '_GUID' => '74dd29919831eb75212b9805511fdca8',
+        'TITLE' => $title,
+        'USERNAME' => $username,
+        'HEALTH' => integer_format($health),
+        'AVATAR' => $avatar,
+        'PHOTO' => $photo,
+        'INVENTORY' => $inventory,
+    ));
 }
 
 /**

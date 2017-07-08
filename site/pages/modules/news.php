@@ -548,7 +548,14 @@ class Module_news
         }
 
         // Render
-        return do_template('NEWS_ARCHIVE_SCREEN', array('_GUID' => '228918169ab1db445ee0c2d71f85983c', 'CAT' => is_numeric($select) ? $select : null, 'SUBMIT_URL' => $submit_url, 'BLOG' => $blog === 1, 'TITLE' => $this->title, 'CONTENT' => $content));
+        return do_template('NEWS_ARCHIVE_SCREEN', array(
+            '_GUID' => '228918169ab1db445ee0c2d71f85983c',
+            'CAT' => is_numeric($select) ? $select : null,
+            'SUBMIT_URL' => $submit_url,
+            'BLOG' => $blog === 1,
+            'TITLE' => $this->title,
+            'CONTENT' => $content,
+        ));
     }
 
     /**

@@ -205,10 +205,16 @@ class Module_authors
         // Links associated with the mapping between the author and a forum member
         $handle = get_author_id_from_name($author);
         if ($handle !== null) {
-            $forum_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => 'b90b606f263eeabeba38e06eef40a21e', 'ACTION' => hyperlink($GLOBALS['FORUM_DRIVER']->member_profile_url($handle, true), do_lang_tempcode('AUTHOR_PROFILE'), false, false, '', null, null, 'me')));
+            $forum_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array(
+                '_GUID' => 'b90b606f263eeabeba38e06eef40a21e',
+                'ACTION' => hyperlink($GLOBALS['FORUM_DRIVER']->member_profile_url($handle, true), do_lang_tempcode('AUTHOR_PROFILE'), false, false, '', null, null, 'me'),
+            ));
             if (addon_installed('points')) {
                 $give_points_url = build_url(array('page' => 'points', 'type' => 'member', 'id' => $handle), get_module_zone('points'));
-                $point_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => '2bfb9bf9b5fdf1dad34102abd4bc4648', 'ACTION' => hyperlink($give_points_url, do_lang_tempcode('AUTHOR_POINTS'), false, false)));
+                $point_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array(
+                    '_GUID' => '2bfb9bf9b5fdf1dad34102abd4bc4648',
+                    'ACTION' => hyperlink($give_points_url, do_lang_tempcode('AUTHOR_POINTS'), false, false),
+                ));
             } else {
                 $point_details = new Tempcode();
             }
@@ -220,7 +226,10 @@ class Module_authors
         // Homepage
         $url = $details['url'];
         if (strlen($url) > 0) {
-            $url_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array('_GUID' => '4276bac5acb0ce5839a90614438c1049', 'ACTION' => hyperlink($url, do_lang_tempcode('AUTHOR_HOMEPAGE'), false, false, '', null, null, 'me')));
+            $url_details = do_template('AUTHOR_SCREEN_POTENTIAL_ACTION_ENTRY', array(
+                '_GUID' => '4276bac5acb0ce5839a90614438c1049',
+                'ACTION' => hyperlink($url, do_lang_tempcode('AUTHOR_HOMEPAGE'), false, false, '', null, null, 'me'),
+            ));
         } else {
             $url_details = new Tempcode();
         }

@@ -269,7 +269,10 @@ class Module_admin_lookup
                     ));
                 }
                 if (($ip != '') && ($ip != get_ip_address()) && ($ip != cms_srv('SERVER_ADDR'))) {
-                    $ip_ban_link = do_template('ACTIONLOGS_TOGGLE_LINK', array('_GUID' => '76979d80cdd7d3e664c9a4ec04419bc6', 'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_ip_ban', 'id' => $ip), get_module_zone('admin_actionlog'))));
+                    $ip_ban_link = do_template('ACTIONLOGS_TOGGLE_LINK', array(
+                        '_GUID' => '76979d80cdd7d3e664c9a4ec04419bc6',
+                        'URL' => build_url(array('page' => 'admin_ip_ban', 'type' => 'toggle_ip_ban', 'id' => $ip), get_module_zone('admin_actionlog')),
+                    ));
                 }
                 if ((!is_guest($id)) && ($id != get_member())) {
                     $submitter_ban_link = do_template('ACTIONLOGS_TOGGLE_LINK', array(

@@ -551,7 +551,15 @@ class Module_wiki
             $post = get_translated_tempcode('wiki_posts', $myrow, 'the_message');
             if ((has_edit_permission('low', get_member(), $poster, 'cms_wiki', array('wiki_page', $id))) && (($id != db_get_first_id()) || (has_privilege(get_member(), 'feature')))) {
                 $edit_url = build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $chain, 'post_id' => $post_id), '_SELF');
-                $extra = do_template('BUTTON_SCREEN_ITEM', array('_GUID' => '37404e2e5cf7e4cb806f796e9df90898', 'REL' => 'edit', 'IMMEDIATE' => false, 'URL' => $edit_url, 'FULL_TITLE' => do_lang_tempcode('EDIT'), 'TITLE' => do_lang_tempcode('EDIT'), 'IMG' => 'buttons__edit'));
+                $extra = do_template('BUTTON_SCREEN_ITEM', array(
+                    '_GUID' => '37404e2e5cf7e4cb806f796e9df90898',
+                    'REL' => 'edit',
+                    'IMMEDIATE' => false,
+                    'URL' => $edit_url,
+                    'FULL_TITLE' => do_lang_tempcode('EDIT'),
+                    'TITLE' => do_lang_tempcode('EDIT'),
+                    'IMG' => 'buttons__edit',
+                ));
                 $move_url = build_url(array('page' => '_SELF', 'type' => 'move', 'id' => $chain, 'post_id' => $post_id), '_SELF');
                 $extra->attach(do_template('BUTTON_SCREEN_ITEM', array('_GUID' => 'b4325cd1bac924cc83771d4c3c41be8b', 'REL' => 'move', 'IMMEDIATE' => false, 'URL' => $move_url, 'FULL_TITLE' => do_lang_tempcode('MOVE'), 'TITLE' => do_lang_tempcode('MOVE'), 'IMG' => 'buttons__move')));
             } else {
@@ -614,32 +622,66 @@ class Module_wiki
 
         /*if ((addon_installed('search')) && (has_actual_page_access(get_member(),'search'))) { // Not enough space
             $search_url = build_url(array('page' => 'search', 'type' => 'browse', 'id' => 'wiki_posts', 'search_under' => $id), get_module_zone('search'));
-            $search_button = do_template('BUTTON_SCREEN', array('_GUID' => 'ad8783a0af3a35f21022b30397f1b03e', 'IMMEDIATE' => false, 'REL' => 'search', 'URL' => $search_url, 'TITLE' => do_lang_tempcode('SEARCH'), 'IMG' => 'buttons__search'));
+            $search_button = do_template('BUTTON_SCREEN', array(
+                '_GUID' => 'ad8783a0af3a35f21022b30397f1b03e',
+                'IMMEDIATE' => false,
+                'REL' => 'search',
+                'URL' => $search_url,
+                'TITLE' => do_lang_tempcode('SEARCH'),
+                'IMG' => 'buttons__search',
+            ));
         } else */
         $search_button = new Tempcode();
 
         if (addon_installed('actionlog')) {
             $revisions_url = build_url(array('page' => '_SELF', 'type' => 'revisions', 'id' => $chain), '_SELF');
-            $revisions_button = do_template('BUTTON_SCREEN', array('_GUID' => '99ad7faac817326510583a69ac719d58', 'IMMEDIATE' => false, 'REL' => 'revisions', 'URL' => $revisions_url, 'TITLE' => do_lang_tempcode('actionlog:REVISIONS'), 'IMG' => 'buttons__revisions'));
+            $revisions_button = do_template('BUTTON_SCREEN', array(
+                '_GUID' => '99ad7faac817326510583a69ac719d58',
+                'IMMEDIATE' => false,
+                'REL' => 'revisions',
+                'URL' => $revisions_url,
+                'TITLE' => do_lang_tempcode('actionlog:REVISIONS'),
+                'IMG' => 'buttons__revisions',
+            ));
         }
 
         if ((get_option('wiki_enable_children') == '1') && (has_privilege(get_member(), 'wiki_manage_tree', 'cms_wiki', array('wiki_page', $id))) && (has_actual_page_access(get_member(), 'cms_wiki'))) {
             $tree_url = build_url(array('page' => 'cms_wiki', 'type' => 'edit_tree', 'id' => $chain, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_wiki'));
-            $tree_button = do_template('BUTTON_SCREEN', array('_GUID' => 'e6edc9f39b6b0aff86cffbaa98c51827', 'REL' => 'edit', 'IMMEDIATE' => false, 'URL' => $tree_url, 'TITLE' => do_lang_tempcode('__WIKI_EDIT_TREE'), 'IMG' => 'buttons__edit_tree'));
+            $tree_button = do_template('BUTTON_SCREEN', array(
+                '_GUID' => 'e6edc9f39b6b0aff86cffbaa98c51827',
+                'REL' => 'edit',
+                'IMMEDIATE' => false,
+                'URL' => $tree_url,
+                'TITLE' => do_lang_tempcode('__WIKI_EDIT_TREE'),
+                'IMG' => 'buttons__edit_tree',
+            ));
         } else {
             $tree_button = new Tempcode();
         }
 
         if ((has_edit_permission('cat_low', get_member(), null, 'cms_wiki', array('wiki_page', $id))) && (has_actual_page_access(get_member(), 'cms_wiki'))) {
             $edit_url = build_url(array('page' => 'cms_wiki', 'type' => 'edit_page', 'id' => $chain, 'redirect' => protect_url_parameter(SELF_REDIRECT)), get_module_zone('cms_wiki'));
-            $edit_button = do_template('BUTTON_SCREEN', array('_GUID' => '5d8783a0af3a35f21022b30397f1b03e', 'REL' => 'edit', 'IMMEDIATE' => false, 'URL' => $edit_url, 'TITLE' => do_lang_tempcode('_WIKI_EDIT_PAGE'), 'IMG' => 'buttons__edit'));
+            $edit_button = do_template('BUTTON_SCREEN', array(
+                '_GUID' => '5d8783a0af3a35f21022b30397f1b03e',
+                'REL' => 'edit',
+                'IMMEDIATE' => false,
+                'URL' => $edit_url,
+                'TITLE' => do_lang_tempcode('_WIKI_EDIT_PAGE'),
+                'IMG' => 'buttons__edit',
+            ));
         } else {
             $edit_button = new Tempcode();
         }
 
         if (($may_post) && (has_submit_permission('low', get_member(), get_ip_address(), 'cms_wiki', array('wiki_page', $id))) && (($id != db_get_first_id()) || (has_privilege(get_member(), 'feature')))) {
             $post_url = build_url(array('page' => '_SELF', 'type' => 'post', 'id' => $chain), '_SELF');
-            $post_button = do_template('BUTTON_SCREEN', array('_GUID' => 'c26462f34a64c4bf80c1fb7c40102eb0', 'IMMEDIATE' => false, 'URL' => $post_url, 'TITLE' => do_lang_tempcode('MAKE_POST'), 'IMG' => 'buttons__new_reply'));
+            $post_button = do_template('BUTTON_SCREEN', array(
+                '_GUID' => 'c26462f34a64c4bf80c1fb7c40102eb0',
+                'IMMEDIATE' => false,
+                'URL' => $post_url,
+                'TITLE' => do_lang_tempcode('MAKE_POST'),
+                'IMG' => 'buttons__new_reply',
+            ));
         } else {
             $post_button = new Tempcode();
         }
@@ -788,7 +830,13 @@ class Module_wiki
 
         $posting_form = get_posting_form(do_lang('MERGE_WIKI_POSTS'), 'menu___generic_admin__merge', $merged, $merge_url, new Tempcode(), new Tempcode());
 
-        return do_template('POSTING_SCREEN', array('_GUID' => '4372327fb689ef70a9ac5d275dd454f1', 'POSTING_FORM' => $posting_form, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('WIKI_MERGE_TEXT')));
+        return do_template('POSTING_SCREEN', array(
+            '_GUID' => '4372327fb689ef70a9ac5d275dd454f1',
+            'POSTING_FORM' => $posting_form,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('WIKI_MERGE_TEXT'),
+        ));
     }
 
     /**
@@ -1079,7 +1127,14 @@ class Module_wiki
             url_default_parameters__disable();
         }
 
-        return do_template('WIKI_POSTING_SCREEN', array('_GUID' => 'efdea6198cba136eb6809937c2322458', 'PING_URL' => $ping_url, 'WARNING_DETAILS' => $warning_details, 'TEXT' => $text, 'TITLE' => $this->title, 'POSTING_FORM' => $posting_form));
+        return do_template('WIKI_POSTING_SCREEN', array(
+            '_GUID' => 'efdea6198cba136eb6809937c2322458',
+            'PING_URL' => $ping_url,
+            'WARNING_DETAILS' => $warning_details,
+            'TEXT' => $text,
+            'TITLE' => $this->title,
+            'POSTING_FORM' => $posting_form,
+        ));
     }
 
     /**

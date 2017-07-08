@@ -146,7 +146,13 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
             } else { // Ask the question
                 $title = get_screen_title(($details['answer'] == '') ? 'INTRO_NOTICE' : 'INTRO_QUESTION');
                 $url = get_self_url();
-                return do_template('CNS_FORUM_INTRO_QUESTION_SCREEN', array('_GUID' => 'ee9caba0735aea9c39c4194337036e81', 'ANSWER' => $details['answer'], 'TITLE' => $title, 'URL' => $url, 'QUESTION' => $details['question']));
+                return do_template('CNS_FORUM_INTRO_QUESTION_SCREEN', array(
+                    '_GUID' => 'ee9caba0735aea9c39c4194337036e81',
+                    'ANSWER' => $details['answer'],
+                    'TITLE' => $title,
+                    'URL' => $url,
+                    'QUESTION' => $details['question'],
+                ));
             }
         }
     }
@@ -452,7 +458,11 @@ function cns_render_forumview($id, $forum_info, $current_filter_cat, $max, $star
                 }
             }
 
-            $filters = do_template('CNS_PT_FILTERS', array('_GUID' => '1ffed81e1cfb82d0741d0669cdc38876', 'FILTERS' => $filters_arr, 'RESET_URL' => build_url(array('page' => '_SELF', 'category' => null), '_SELF', array(), true)));
+            $filters = do_template('CNS_PT_FILTERS', array(
+                '_GUID' => '1ffed81e1cfb82d0741d0669cdc38876',
+                'FILTERS' => $filters_arr,
+                'RESET_URL' => build_url(array('page' => '_SELF', 'category' => null), '_SELF', array(), true),
+            ));
         }
     }
 
@@ -609,7 +619,14 @@ function cns_render_topic($topic, $has_topic_marking, $pt = false, $show_forum =
         } else {
             $poster = do_lang_tempcode('NA');
         }
-        $last_post = do_template('CNS_FORUM_TOPIC_ROW_LAST_POST', array('_GUID' => '6aa8d0f4024ae12bf94b68b74faae7cf', 'ID' => strval($topic['id']), 'DATE_RAW' => strval($topic['last_time']), 'DATE' => $topic['last_date'], 'POSTER' => $poster, 'LAST_URL' => $last_post_url));
+        $last_post = do_template('CNS_FORUM_TOPIC_ROW_LAST_POST', array(
+            '_GUID' => '6aa8d0f4024ae12bf94b68b74faae7cf',
+            'ID' => strval($topic['id']),
+            'DATE_RAW' => strval($topic['last_time']),
+            'DATE' => $topic['last_date'],
+            'POSTER' => $poster,
+            'LAST_URL' => $last_post_url,
+        ));
     } else {
         $last_post = do_lang_tempcode('NA_EM');
     }

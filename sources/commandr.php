@@ -1366,7 +1366,12 @@ function do_command_help($command, $options, $parameters)
         $_parameters[] = $_parameter;
     }
 
-    return do_template('COMMANDR_HELP', array('_GUID' => '6abdbac52ae2a63f219f5d2e44687bb9', 'INTRODUCTION' => do_lang_tempcode('CMD_' . strtoupper($command) . '_HELP'), 'OPTIONS' => $_options, 'PARAMETERS' => $_parameters));
+    return do_template('COMMANDR_HELP', array(
+                        '_GUID' => '6abdbac52ae2a63f219f5d2e44687bb9',
+                        'INTRODUCTION' => do_lang_tempcode('CMD_' . strtoupper($command) . '_HELP'),
+                        'OPTIONS' => $_options,
+                        'PARAMETERS' => $_parameters,
+                    ));
 }
 
 /**

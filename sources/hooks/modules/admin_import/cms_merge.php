@@ -213,7 +213,13 @@ class Hook_import_cms_merge
 
         // Show warning
         if ($bad) {
-            return do_template('CONFIRM_SCREEN', array('_GUID' => '286928b79830cdff4ac506e4f4f00f3a', 'TITLE' => $title, 'PREVIEW' => do_lang_tempcode('IMPORT_WARNINGS_GIVEN'), 'FIELDS' => build_keep_post_fields(), 'URL' => get_self_url(false, false, array('happy' => 1))));
+            return do_template('CONFIRM_SCREEN', array(
+                '_GUID' => '286928b79830cdff4ac506e4f4f00f3a',
+                'TITLE' => $title,
+                'PREVIEW' => do_lang_tempcode('IMPORT_WARNINGS_GIVEN'),
+                'FIELDS' => build_keep_post_fields(),
+                'URL' => get_self_url(false, false, array('happy' => 1)),
+            ));
         }
 
         return null;

@@ -417,7 +417,14 @@ class Module_cms_chat
 
         if ($confirm_needed) {
             $hidden = form_input_hidden('member_id', strval($member_id));
-            return do_template('CONFIRM_SCREEN', array('_GUID' => '7d04bebbac2c49be4458afdbf5619dc7', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE_BAN', escape_html($username)), 'URL' => get_self_url(), 'HIDDEN' => $hidden, 'FIELDS' => ''));
+            return do_template('CONFIRM_SCREEN', array(
+                '_GUID' => '7d04bebbac2c49be4458afdbf5619dc7',
+                'TITLE' => $this->title,
+                'TEXT' => do_lang_tempcode('Q_SURE_BAN', escape_html($username)),
+                'URL' => get_self_url(),
+                'HIDDEN' => $hidden,
+                'FIELDS' => '',
+            ));
         }
 
         chatroom_ban_to($member_id, $id);
@@ -457,7 +464,14 @@ class Module_cms_chat
 
         if ($confirm_needed) {
             $hidden = form_input_hidden('member_id', strval($member_id));
-            return do_template('CONFIRM_SCREEN', array('_GUID' => '6e90c87aa46814a8f4b8c5b2fee6c29d', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE_UNBAN', escape_html($username)), 'URL' => get_self_url(), 'HIDDEN' => $hidden, 'FIELDS' => ''));
+            return do_template('CONFIRM_SCREEN', array(
+                '_GUID' => '6e90c87aa46814a8f4b8c5b2fee6c29d',
+                'TITLE' => $this->title,
+                'TEXT' => do_lang_tempcode('Q_SURE_UNBAN', escape_html($username)),
+                'URL' => get_self_url(),
+                'HIDDEN' => $hidden,
+                'FIELDS' => '',
+            ));
         }
 
         chatroom_unban_to($member_id, $id);
@@ -502,7 +516,16 @@ class Module_cms_chat
         $fields->attach(do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => '43ca9d141f23445a018634bdc70f1c7c', 'TITLE' => do_lang_tempcode('ACTIONS'))));
         $fields->attach(form_input_tick(do_lang_tempcode('DELETE'), do_lang_tempcode('DESCRIPTION_DELETE_MESSAGE'), 'delete', false));
 
-        return do_template('FORM_SCREEN', array('_GUID' => 'bf92ecd4d5f923f78bbed4faca6c0cb6', 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'URL' => $post_url, 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('SAVE')));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => 'bf92ecd4d5f923f78bbed4faca6c0cb6',
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'TEXT' => '',
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
+        ));
     }
 
     /**

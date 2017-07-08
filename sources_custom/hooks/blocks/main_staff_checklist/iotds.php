@@ -60,7 +60,14 @@ class Hook_checklist_iotds
         $num_queue = $this->get_num_iotd_queue();
         list($info, $seconds_due_in) = staff_checklist_time_ago_and_due($seconds_ago, $limit_hours);
         $info->attach(do_lang_tempcode('NUM_QUEUE', escape_html(integer_format($num_queue))));
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => '5c55aed7bedca565c8aa553548b88e64', 'CONFIG_URL' => $config_url, 'URL' => $url, 'STATUS' => $_status, 'TASK' => do_lang_tempcode('PRIVILEGE_choose_iotd'), 'INFO' => $info));
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
+            '_GUID' => '5c55aed7bedca565c8aa553548b88e64',
+            'CONFIG_URL' => $config_url,
+            'URL' => $url,
+            'STATUS' => $_status,
+            'TASK' => do_lang_tempcode('PRIVILEGE_choose_iotd'),
+            'INFO' => $info,
+        ));
         return array(array($tpl, $seconds_due_in, null, 'iotd_update_time'));
     }
 

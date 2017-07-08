@@ -36,7 +36,17 @@ function approve_ip_script()
         $fields->attach(form_input_codename(do_lang_tempcode('CODE'), '', 'code', '', true));
         $submit_name = do_lang_tempcode('PROCEED');
         $url = find_script('approve_ip') . $keep;
-        $middle = do_template('FORM_SCREEN', array('_GUID' => 'd92ce4ec82dc709f920a4ce6760778de', 'TITLE' => $title, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'URL' => $url, 'FIELDS' => $fields, 'TEXT' => do_lang_tempcode('MISSING_CONFIRM_CODE'), 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name));
+        $middle = do_template('FORM_SCREEN', array(
+            '_GUID' => 'd92ce4ec82dc709f920a4ce6760778de',
+            'TITLE' => $title,
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'URL' => $url,
+            'FIELDS' => $fields,
+            'TEXT' => do_lang_tempcode('MISSING_CONFIRM_CODE'),
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+        ));
         $echo = globalise($middle, null, '', true, true);
         $echo->evaluate_echo();
         exit();

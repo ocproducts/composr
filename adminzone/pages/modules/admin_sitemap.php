@@ -277,7 +277,14 @@ class Module_admin_sitemap
             $from = $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_title', array('zone_name' => get_param_string('zone')));
             $to = $GLOBALS['SITE_DB']->query_select_value('zones', 'zone_title', array('zone_name' => get_param_string('destination_zone')));
 
-            return do_template('CONFIRM_SCREEN', array('_GUID' => 'c6e872cc62bdc7cf1c5157fbfdb2dfd6', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('Q_SURE_MOVE', escape_html($from), escape_html($to)), 'URL' => $post_url, 'HIDDEN' => $hidden, 'FIELDS' => ''));
+            return do_template('CONFIRM_SCREEN', array(
+                '_GUID' => 'c6e872cc62bdc7cf1c5157fbfdb2dfd6',
+                'TITLE' => $this->title,
+                'TEXT' => do_lang_tempcode('Q_SURE_MOVE', escape_html($from), escape_html($to)),
+                'URL' => $post_url,
+                'HIDDEN' => $hidden,
+                'FIELDS' => '',
+            ));
         }
 
         $new_zone = post_param_string('destination_zone', ''/*Could be welcome zone so need to imply '' is valid*/);

@@ -446,7 +446,20 @@ function block_helper_script()
             $text = do_lang_tempcode('BLOCK_HELPER_2', escape_html(cleanup_block_name($block)), escape_html($block_description), escape_html($block_use));
         }
         $hidden = form_input_hidden('block', $block);
-        $content = do_template('FORM_SCREEN', array('_GUID' => '62f8688bf0ae4223a2ba1f76fef3b0b4', 'TITLE' => $title, 'TARGET' => '_self', 'SKIP_WEBSTANDARDS' => true, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => $text, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'HIDDEN' => $hidden, 'PREVIEW' => true, 'THEME' => $GLOBALS['FORUM_DRIVER']->get_theme()));
+        $content = do_template('FORM_SCREEN', array(
+            '_GUID' => '62f8688bf0ae4223a2ba1f76fef3b0b4',
+            'TITLE' => $title,
+            'TARGET' => '_self',
+            'SKIP_WEBSTANDARDS' => true,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'HIDDEN' => $hidden,
+            'PREVIEW' => true,
+            'THEME' => $GLOBALS['FORUM_DRIVER']->get_theme(),
+        ));
 
         if ($fields->is_empty()) {
             $type = 'step3';

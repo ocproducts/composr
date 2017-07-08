@@ -310,7 +310,13 @@ class Module_cms_wiki
 
         url_default_parameters__disable();
 
-        return do_template('POSTING_SCREEN', array('_GUID' => 'ea72f10d85ed06b618866f21da515180', 'POSTING_FORM' => $posting_form, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => paragraph(do_lang_tempcode('WIKI_EDIT_PAGE_TEXT'))));
+        return do_template('POSTING_SCREEN', array(
+            '_GUID' => 'ea72f10d85ed06b618866f21da515180',
+            'POSTING_FORM' => $posting_form,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'TEXT' => paragraph(do_lang_tempcode('WIKI_EDIT_PAGE_TEXT')),
+        ));
     }
 
     /**
@@ -566,7 +572,16 @@ class Module_cms_wiki
 
         $fields = new Tempcode();
         $fields->attach(form_input_text(do_lang_tempcode('CHILD_PAGES'), new Tempcode(), 'children', $children, false, null, true));
-        $form = do_template('FORM', array('_GUID' => 'b908438ccfc9be6166cf7c5c81d5de8b', 'FIELDS' => $fields, 'URL' => $post_url, 'HIDDEN' => '', 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('SAVE'), 'SUPPORT_AUTOSAVE' => true));
+        $form = do_template('FORM', array(
+            '_GUID' => 'b908438ccfc9be6166cf7c5c81d5de8b',
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'HIDDEN' => '',
+            'TEXT' => '',
+            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
+            'SUPPORT_AUTOSAVE' => true,
+        ));
 
         return do_template('WIKI_MANAGE_TREE_SCREEN', array(
             '_GUID' => '83da3f20799b66b8846eafa4251a5d01',

@@ -422,7 +422,12 @@ class Module_topicview
                         ));
                     } else {
                         $lookup_ip_url = ((addon_installed('securitylogging')) && (array_key_exists('ip_address', $_postdetails)) && (has_actual_page_access(get_member(), 'admin_lookup'))) ? build_url(array('page' => 'admin_lookup', 'param' => $_postdetails['ip_address']), get_module_zone('admin_lookup')) : new Tempcode();
-                        $poster = do_template('CNS_POSTER_GUEST', array('_GUID' => '36a8e550222cdac5165ef8f722be3def', 'LOOKUP_IP_URL' => $lookup_ip_url, 'POSTER_DETAILS' => $poster_details, 'POSTER_USERNAME' => $_postdetails['poster_username']));
+                        $poster = do_template('CNS_POSTER_GUEST', array(
+                            '_GUID' => '36a8e550222cdac5165ef8f722be3def',
+                            'LOOKUP_IP_URL' => $lookup_ip_url,
+                            'POSTER_DETAILS' => $poster_details,
+                            'POSTER_USERNAME' => $_postdetails['poster_username'],
+                        ));
                     }
 
                     // Signature
@@ -684,7 +689,15 @@ class Module_topicview
                     } else {
                         $width = 0;
                     }
-                    $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array('_GUID' => 'b32f4c526e147abf20ca0d668e40d515', 'ID' => strval($_poll['id']), 'NUM_VOTES' => integer_format($num_votes), 'TOTAL_VOTES' => integer_format($total_votes), 'WIDTH' => strval($width), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
+                    $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER_RESULTS', array(
+                        '_GUID' => 'b32f4c526e147abf20ca0d668e40d515',
+                        'ID' => strval($_poll['id']),
+                        'NUM_VOTES' => integer_format($num_votes),
+                        'TOTAL_VOTES' => integer_format($total_votes),
+                        'WIDTH' => strval($width),
+                        'ANSWER' => $answer['answer'],
+                        'I' => strval($answer['id']),
+                    ));
                 } else {
                     $answer_tpl = do_template('CNS_TOPIC_POLL_ANSWER' . ($_poll['maximum_selections'] == 1 ? '_RADIO' : ''), array('REAL_BUTTON' => $real_button, 'ID' => strval($_poll['id']), 'ANSWER' => $answer['answer'], 'I' => strval($answer['id'])));
                 }

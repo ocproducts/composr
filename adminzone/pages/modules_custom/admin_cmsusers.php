@@ -231,6 +231,14 @@ class Module_admin_cmsusers
             $_rows->attach(do_template('CMS_SITE', $rt));
         }
 
-        return do_template('CMS_SITES_SCREEN', array('_GUID' => '7f4b56c730f2b613994a3fe6f00ed525', 'TITLE' => $this->title, 'ROWS' => $_rows, 'NAMEORD' => $nameord, 'ACPORD' => $acpord, 'KEYORD' => $keyord, 'VERORD' => $versord));
+        return do_template('CMS_SITES_SCREEN', array(
+            '_GUID' => '7f4b56c730f2b613994a3fe6f00ed525',
+            'TITLE' => $this->title,
+            'ROWS' => $_rows,
+            'NAMEORD' => $nameord,
+            'ACPORD' => $acpord,
+            'KEYORD' => $keyord,
+            'VERORD' => $versord,
+        ));
     }
 }

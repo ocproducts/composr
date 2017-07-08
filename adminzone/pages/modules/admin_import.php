@@ -244,7 +244,18 @@ class Module_admin_import
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'session'), '_SELF');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '02416e5e9d6cb64248adeb9d2e6f2402', 'GET' => true, 'HIDDEN' => '', 'SKIP_WEBSTANDARDS' => true, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '02416e5e9d6cb64248adeb9d2e6f2402',
+            'GET' => true,
+            'HIDDEN' => '',
+            'SKIP_WEBSTANDARDS' => true,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => '',
+        ));
     }
 
     /**
@@ -375,7 +386,16 @@ class Module_admin_import
         $url = build_url(array('page' => '_SELF', 'type' => 'hook', 'session' => $session, 'importer' => $importer), '_SELF');
         $message = array_key_exists('message', $info) ? $info['message'] : '';
 
-        return do_template('FORM_SCREEN', array('_GUID' => '15f2c855acf0d365a2e6329bec692dc8', 'TEXT' => $message, 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $url, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED')));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '15f2c855acf0d365a2e6329bec692dc8',
+            'TEXT' => $message,
+            'TITLE' => $this->title,
+            'FIELDS' => $fields,
+            'URL' => $url,
+            'HIDDEN' => '',
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
+        ));
     }
 
     /**

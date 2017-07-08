@@ -504,7 +504,15 @@ class Module_buildr
             $member = either_param_integer('member', -1);
             $param = either_param_string('param', '');
 
-            return do_template('W_CONFIRM_SCREEN', array('_GUID' => '365870cb4c6cb4282ff6c7a11f4f8a5b', 'TITLE' => $this->title, 'URL' => $url, 'COMMAND' => $type2, 'ITEM' => $item, 'MEMBER' => strval($member), 'PARAM' => $param));
+            return do_template('W_CONFIRM_SCREEN', array(
+                '_GUID' => '365870cb4c6cb4282ff6c7a11f4f8a5b',
+                'TITLE' => $this->title,
+                'URL' => $url,
+                'COMMAND' => $type2,
+                'ITEM' => $item,
+                'MEMBER' => strval($member),
+                'PARAM' => $param,
+            ));
         }
 
         if ($type == 'reallocate') {

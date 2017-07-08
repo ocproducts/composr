@@ -838,7 +838,17 @@ class Module_chat
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'blocking_set'), '_SELF');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '74e0700f4d2b52d71a0cbf8eb3045ecf', 'TITLE' => $this->title, 'HIDDEN' => '', 'SKIP_WEBSTANDARDS' => true, 'TEXT' => do_lang_tempcode('ABOUT_BLOCKING'), 'SUBMIT_ICON' => 'buttons__ignore', 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'), 'FIELDS' => $fields, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '74e0700f4d2b52d71a0cbf8eb3045ecf',
+            'TITLE' => $this->title,
+            'HIDDEN' => '',
+            'SKIP_WEBSTANDARDS' => true,
+            'TEXT' => do_lang_tempcode('ABOUT_BLOCKING'),
+            'SUBMIT_ICON' => 'buttons__ignore',
+            'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+        ));
     }
 
     /**
@@ -1221,7 +1231,14 @@ class Module_chat
                         $has_some = true;
                     }
                 }
-                $block = do_template('CHAT_SET_EFFECTS_SETTING_BLOCK', array('_GUID' => '28916255c41e5cad386cbd0a045a3373', 'HAS_SOME' => $has_some, 'MEMBER_ID' => strval($friend['member_liked']), 'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']), 'EFFECTS' => $effect_settings, 'LIBRARY' => $library));
+                $block = do_template('CHAT_SET_EFFECTS_SETTING_BLOCK', array(
+                            '_GUID' => '28916255c41e5cad386cbd0a045a3373',
+                            'HAS_SOME' => $has_some,
+                            'MEMBER_ID' => strval($friend['member_liked']),
+                            'USERNAME' => $GLOBALS['FORUM_DRIVER']->get_username($friend['member_liked']),
+                            'EFFECTS' => $effect_settings,
+                            'LIBRARY' => $library,
+                        ));
                 $setting_blocks->attach($block);
             }
         }
@@ -1229,7 +1246,16 @@ class Module_chat
         require_code('form_templates');
         handle_max_file_size($hidden);
 
-        return do_template('CHAT_SET_EFFECTS_SCREEN', array('_GUID' => 'f965b4376d603fc14dbcac7fb3c5580d', 'TITLE' => $this->title, 'CHAT_SOUND' => get_chat_sound_tpl(), 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang_tempcode('SAVE'), 'HIDDEN' => $hidden, 'POST_URL' => $post_url, 'SETTING_BLOCKS' => $setting_blocks));
+        return do_template('CHAT_SET_EFFECTS_SCREEN', array(
+            '_GUID' => 'f965b4376d603fc14dbcac7fb3c5580d',
+            'TITLE' => $this->title,
+            'CHAT_SOUND' => get_chat_sound_tpl(),
+            'SUBMIT_ICON' => 'buttons__save',
+            'SUBMIT_NAME' => do_lang_tempcode('SAVE'),
+            'HIDDEN' => $hidden,
+            'POST_URL' => $post_url,
+            'SETTING_BLOCKS' => $setting_blocks,
+        ));
     }
 
     /**

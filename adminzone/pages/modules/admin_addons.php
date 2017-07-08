@@ -380,7 +380,12 @@ class Module_admin_addons
                     $row = read_addon_info($name);
                 }
 
-                $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array('_GUID' => '5a65c9aa87291ecfe46f75e9b2949246', 'GET' => true, 'NAME' => $name, 'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_uninstall', 'name' => $name), '_SELF')));
+                $actions = do_template('COLUMNED_TABLE_ACTION_DELETE_ENTRY', array(
+                    '_GUID' => '5a65c9aa87291ecfe46f75e9b2949246',
+                    'GET' => true,
+                    'NAME' => $name,
+                    'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_uninstall', 'name' => $name), '_SELF'),
+                ));
                 $updated = array_key_exists($name, $updated_addons_arr);
                 $status = do_lang_tempcode($updated ? 'STATUS_OUTOFDATE' : 'STATUS_INSTALLED');
                 $colour = $updated ? 'red' : 'green';
@@ -434,7 +439,13 @@ class Module_admin_addons
                 }
 
                 if ($addon_tpl === null) {
-                    $actions = do_template('COLUMNED_TABLE_ACTION_INSTALL_ENTRY', array('_GUID' => 'e6e2bdac62c0d3afcd5251b3d525a1c9', 'GET' => true, 'NAME' => $addon['name'], 'HIDDEN' => '', 'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_install', 'file' => $filename), '_SELF')));
+                    $actions = do_template('COLUMNED_TABLE_ACTION_INSTALL_ENTRY', array(
+                        '_GUID' => 'e6e2bdac62c0d3afcd5251b3d525a1c9',
+                        'GET' => true,
+                        'NAME' => $addon['name'],
+                        'HIDDEN' => '',
+                        'URL' => build_url(array('page' => '_SELF', 'type' => 'addon_install', 'file' => $filename), '_SELF'),
+                    ));
                     $status = do_lang_tempcode('STATUS_NOT_INSTALLED');
                     $description = $addon['description'];
                     $file_list = $addon['files'];
@@ -486,7 +497,13 @@ class Module_admin_addons
 
         $multi_action = build_url(array('page' => '_SELF', 'type' => 'multi_action'), '_SELF');
 
-        return do_template('ADDON_SCREEN', array('_GUID' => 'ed6c80c29fcae333323ef03619954b6b', 'TITLE' => $this->title, 'ADDONS' => $tpl_addons, 'MULTI_ACTION' => $multi_action, 'UPDATED_ADDONS' => $updated_addons));
+        return do_template('ADDON_SCREEN', array(
+            '_GUID' => 'ed6c80c29fcae333323ef03619954b6b',
+            'TITLE' => $this->title,
+            'ADDONS' => $tpl_addons,
+            'MULTI_ACTION' => $multi_action,
+            'UPDATED_ADDONS' => $updated_addons,
+        ));
     }
 
     /**
@@ -936,7 +953,14 @@ class Module_admin_addons
             $i++;
         }
 
-        return do_template('ADDON_EXPORT_SCREEN', array('_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa', 'TITLE' => $this->title, 'LANGUAGES' => $tpl_langs, 'URL' => $url, 'FILES' => $frm_files, 'THEMES' => $tpl_themes));
+        return do_template('ADDON_EXPORT_SCREEN', array(
+                '_GUID' => 'd89367c0bbc3d6b8bd19f736d9474dfa',
+                'TITLE' => $this->title,
+                'LANGUAGES' => $tpl_langs,
+                'URL' => $url,
+                'FILES' => $frm_files,
+                'THEMES' => $tpl_themes,
+            ));
     }
 
     /**
@@ -1144,7 +1168,12 @@ class Module_admin_addons
                     }
                 }
                 if ($_fields != '' || $fields_after != '') {
-                    $field = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'e3f8c43ac243a7666a318319e8b6dd60', 'SECTION_HIDDEN' => false, 'TITLE' => do_lang_tempcode('PAGES'), 'HELP' => do_lang_tempcode('THEME_ALSO_INCLUDE_PAGES')));
+                    $field = do_template('FORM_SCREEN_FIELD_SPACER', array(
+                        '_GUID' => 'e3f8c43ac243a7666a318319e8b6dd60',
+                        'SECTION_HIDDEN' => false,
+                        'TITLE' => do_lang_tempcode('PAGES'),
+                        'HELP' => do_lang_tempcode('THEME_ALSO_INCLUDE_PAGES'),
+                    ));
                     $fields .= $field->evaluate();
                     $fields .= $_fields;
                     $fields .= $fields_after;

@@ -75,7 +75,14 @@ class Hook_checklist_blog
 
         $url = build_url(array('page' => 'cms_blogs', 'type' => 'add'), get_module_zone('cms_blogs'));
         list($info, $seconds_due_in) = staff_checklist_time_ago_and_due($seconds_ago, $limit_hours);
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'a75d4a165aa5e16ad3aa06d2e0bab5db', 'CONFIG_URL' => $config_url, 'URL' => $url, 'STATUS' => $_status, 'TASK' => do_lang_tempcode('BLOG'), 'INFO' => $info));
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
+            '_GUID' => 'a75d4a165aa5e16ad3aa06d2e0bab5db',
+            'CONFIG_URL' => $config_url,
+            'URL' => $url,
+            'STATUS' => $_status,
+            'TASK' => do_lang_tempcode('BLOG'),
+            'INFO' => $info,
+        ));
         return array(array($tpl, $seconds_due_in, null, 'blog_update_time'));
     }
 }

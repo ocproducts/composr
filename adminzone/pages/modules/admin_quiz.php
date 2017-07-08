@@ -232,7 +232,17 @@ class Module_admin_quiz
         $post_url = build_url(array('page' => '_SELF', 'type' => '_export'), '_SELF');
         $submit_name = do_lang_tempcode('EXPORT_QUIZ');
 
-        return do_template('FORM_SCREEN', array('_GUID' => '3110ee0e917e2e0f83a41ab27ec7eafe', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('EXPORT_QUIZ_TEXT'), 'HIDDEN' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__export', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url, 'POST' => true));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '3110ee0e917e2e0f83a41ab27ec7eafe',
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('EXPORT_QUIZ_TEXT'),
+            'HIDDEN' => '',
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__export',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+            'POST' => true,
+        ));
     }
 
     /**
@@ -378,7 +388,13 @@ class Module_admin_quiz
         }
 
         // Show the winners
-        return do_template('INDEX_SCREEN', array('_GUID' => 'd427ec7300a325ee4f00020ea59468e2', 'TITLE' => $this->title, 'CONTENT' => $_winners, 'PRE' => do_lang_tempcode('WINNERS_FOUND_AS_FOLLOWS'), 'POST' => do_lang_tempcode('WINNERS_HANDLING')));
+        return do_template('INDEX_SCREEN', array(
+            '_GUID' => 'd427ec7300a325ee4f00020ea59468e2',
+            'TITLE' => $this->title,
+            'CONTENT' => $_winners,
+            'PRE' => do_lang_tempcode('WINNERS_FOUND_AS_FOLLOWS'),
+            'POST' => do_lang_tempcode('WINNERS_HANDLING'),
+        ));
     }
 
     /**

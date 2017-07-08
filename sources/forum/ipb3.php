@@ -1020,10 +1020,20 @@ class Forum_driver_ipb3 extends Forum_driver_base
                     if (($attachment['attach_thumb_location'] != '') || ($attachment['attach_is_image'] == 0)) { // Not fully inline
                         $url = get_forum_base_url() . '/index.php?act=Attach&type=post&id=' . urlencode($attachment['attach_id']);
                         if ($attachment['attach_thumb_location'] != '') {
-                            $special = do_template('FORUM_ATTACHMENT_IMAGE_THUMB', array('_GUID' => 'f06760e3325efd9be27e2d5c89611d43', 'FULL' => $url, 'URL' => get_forum_base_url() . '/uploads/' . $attachment['attach_thumb_location']));
+                            $special = do_template('FORUM_ATTACHMENT_IMAGE_THUMB', array(
+                                '_GUID' => 'f06760e3325efd9be27e2d5c89611d43',
+                                'FULL' => $url,
+                                'URL' => get_forum_base_url() . '/uploads/' . $attachment['attach_thumb_location'],
+                            ));
                         } else {
                             require_code('files');
-                            $special = do_template('FORUM_ATTACHMENT_LINK', array('_GUID' => '344b0b127433938302118b2ca7572452', 'FULL' => $url, 'FILENAME' => $attachment['attach_file'], 'CLEAN_SIZE' => clean_file_size($attachment['attach_filesize']), 'NUM_DOWNLOADS' => integer_format($attachment['attach_hits'])));
+                            $special = do_template('FORUM_ATTACHMENT_LINK', array(
+                                '_GUID' => '344b0b127433938302118b2ca7572452',
+                                'FULL' => $url,
+                                'FILENAME' => $attachment['attach_file'],
+                                'CLEAN_SIZE' => clean_file_size($attachment['attach_filesize']),
+                                'NUM_DOWNLOADS' => integer_format($attachment['attach_hits']),
+                            ));
                         }
                     } else { // Must be an inline image
                         $special = do_template('FORUM_ATTACHMENT_IMAGE', array('_GUID' => '22f1e3e5a9e156afc53d847cabe4a754', 'URL' => get_forum_base_url() . '/uploads/' . $attachment['attach_location']));

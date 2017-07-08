@@ -217,7 +217,12 @@ function get_category_permissions_for_environment($module, $category, $page = nu
         $overridables = array();
     } else {
         require_lang('permissions');
-        $temp = do_template('FORM_SCREEN_FIELD_SPACER', array('_GUID' => 'd4659e64eaeb8e9f4c09255a8d3c9f33', 'TITLE' => do_lang_tempcode('PERMISSIONS'), 'HELP' => do_lang_tempcode('PINTERACE_HELP'), 'SECTION_HIDDEN' => true));
+        $temp = do_template('FORM_SCREEN_FIELD_SPACER', array(
+            '_GUID' => 'd4659e64eaeb8e9f4c09255a8d3c9f33',
+            'TITLE' => do_lang_tempcode('PERMISSIONS'),
+            'HELP' => do_lang_tempcode('PINTERACE_HELP'),
+            'SECTION_HIDDEN' => true,
+        ));
         $overridables = is_array($_overridables[0]) ? call_user_func_array($_overridables[0][0], $_overridables[0][1]) : eval($_overridables[0]);
     }
     $out->attach($temp);
@@ -393,7 +398,13 @@ function get_permissions_matrix($server_id, $access, $overridables, $privileges,
     }
 
     // Finish off the matrix and return
-    $inner = do_template('FORM_SCREEN_INPUT_PERMISSION_MATRIX', array('_GUID' => '0f019c7e60366fa04058097ee6f3829a', 'SERVER_ID' => $server_id, 'COLOR' => $color, 'OVERRIDES' => $overrides_array, 'PERMISSION_ROWS' => $permission_rows));
+    $inner = do_template('FORM_SCREEN_INPUT_PERMISSION_MATRIX', array(
+        '_GUID' => '0f019c7e60366fa04058097ee6f3829a',
+        'SERVER_ID' => $server_id,
+        'COLOR' => $color,
+        'OVERRIDES' => $overrides_array,
+        'PERMISSION_ROWS' => $permission_rows,
+    ));
 
     if ($no_outer) {
         return make_string_tempcode(static_evaluate_tempcode($inner));

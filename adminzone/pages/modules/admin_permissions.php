@@ -444,7 +444,15 @@ class Module_admin_permissions
         require_code('permissions2');
         $editor = get_permissions_matrix('', array(), array(), array(), array(), true);
 
-        return do_template('PERMISSIONS_TREE_EDITOR_SCREEN', array('_GUID' => '08bb679a7cfab45c0c29b5393666dd57', 'USERGROUPS' => $all_groups, 'TITLE' => $this->title, 'INITIAL_GROUP' => $initial_group, 'COLOR' => $color, 'GROUPS' => $groups, 'EDITOR' => $editor));
+        return do_template('PERMISSIONS_TREE_EDITOR_SCREEN', array(
+            '_GUID' => '08bb679a7cfab45c0c29b5393666dd57',
+            'USERGROUPS' => $all_groups,
+            'TITLE' => $this->title,
+            'INITIAL_GROUP' => $initial_group,
+            'COLOR' => $color,
+            'GROUPS' => $groups,
+            'EDITOR' => $editor,
+        ));
     }
 
     /**
@@ -500,7 +508,18 @@ class Module_admin_permissions
 
         $post_url = get_self_url(false, false, array(), false, true);
 
-        return do_template('FORM_SCREEN', array('_GUID' => '457a5b8200991996b383bf75515382ab', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'), 'TITLE' => $title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '457a5b8200991996b383bf75515382ab',
+            'GET' => true,
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'),
+            'TITLE' => $title,
+            'FIELDS' => $fields,
+            'URL' => $post_url,
+            'TEXT' => '',
+        ));
     }
 
     /**
@@ -572,7 +591,15 @@ class Module_admin_permissions
             $rows2->attach(do_template('PERMISSION_KEYS_MESSAGE_ROW', array('_GUID' => 'bf52d4ac938ce5c495b89d06a4cb9e5e', 'KEY' => $row['k_match_key'], 'MSG' => $msg, 'UID' => is_integer($row['id']) ? strval($row['id']) : $row['id'])));
         }
 
-        return do_template('PERMISSION_KEYS_PERMISSIONS_SCREEN', array('_GUID' => '61a702db2df67adb2702ae6c7081b4ab', 'TITLE' => $this->title, 'COLS' => $cols, 'URL' => $url, 'HEADER_CELLS' => $header_cells, 'ROWS' => $rows, 'ROWS2' => $rows2));
+        return do_template('PERMISSION_KEYS_PERMISSIONS_SCREEN', array(
+            '_GUID' => '61a702db2df67adb2702ae6c7081b4ab',
+            'TITLE' => $this->title,
+            'COLS' => $cols,
+            'URL' => $url,
+            'HEADER_CELLS' => $header_cells,
+            'ROWS' => $rows,
+            'ROWS2' => $rows2,
+        ));
     }
 
     /**
@@ -698,7 +725,18 @@ class Module_admin_permissions
 
             $post_url = get_self_url(false, false, array(), false, true);
 
-            return do_template('FORM_SCREEN', array('_GUID' => 'e5d457a49a76706afebc92da3d846e74', 'GET' => true, 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'), 'TITLE' => $this->title, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => ''));
+            return do_template('FORM_SCREEN', array(
+                '_GUID' => 'e5d457a49a76706afebc92da3d846e74',
+                'GET' => true,
+                'SKIP_WEBSTANDARDS' => true,
+                'HIDDEN' => '',
+                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_NAME' => do_lang_tempcode('CHOOSE'),
+                'TITLE' => $this->title,
+                'FIELDS' => $fields,
+                'URL' => $post_url,
+                'TEXT' => '',
+            ));
         }
 
         $url = build_url(array('page' => '_SELF', 'type' => '_privileges', 'id' => $p_section), '_SELF');

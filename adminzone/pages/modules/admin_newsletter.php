@@ -396,7 +396,17 @@ class Module_admin_newsletter extends Standard_crud_module
         $post_url = get_self_url();
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'bounce_filter_b'), '_SELF');
-        return do_template('FORM_SCREEN', array('_GUID' => '87f79d177931bab13f614b9cb24fb877', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => '', 'TITLE' => $this->title, 'TEXT' => do_lang_tempcode('ENTER_IMAP_DETAILS'), 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '87f79d177931bab13f614b9cb24fb877',
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => '',
+            'TITLE' => $this->title,
+            'TEXT' => do_lang_tempcode('ENTER_IMAP_DETAILS'),
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**
@@ -428,7 +438,17 @@ class Module_admin_newsletter extends Standard_crud_module
         $post_url = get_self_url();
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'bounce_filter_c'), '_SELF');
-        return do_template('FORM_SCREEN', array('_GUID' => '69437ad3611c0ee55d09907985df8205', 'SKIP_WEBSTANDARDS' => true, 'HIDDEN' => build_keep_post_fields(), 'TITLE' => $this->title, 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '69437ad3611c0ee55d09907985df8205',
+            'SKIP_WEBSTANDARDS' => true,
+            'HIDDEN' => build_keep_post_fields(),
+            'TITLE' => $this->title,
+            'TEXT' => '',
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'buttons__proceed',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
     }
 
     /**
@@ -659,7 +679,15 @@ class Module_admin_newsletter extends Standard_crud_module
                 if ($csv == 1) {
                     echo '"' . str_replace('"', '""', $email) . '",' . '"' . str_replace('"', '""', $forename) . '",' . '"' . str_replace('"', '""', $surname) . '",' . '"' . str_replace('"', '""', $name) . '",' . '"' . str_replace('"', '""', $send_id) . '",' . '"' . str_replace('"', '""', $unsub) . '",' . '"' . str_replace('"', '""', $hash) . '",' . '"' . str_replace('"', '""', $salt) . '",' . '"' . str_replace('"', '""', $_language) . '",' . '"' . str_replace('"', '""', strval($confirm_code)) . '",' . '"' . str_replace('"', '""', date('Y-m-d h:i:s', $join_time)) . '"' . "\n";
                 } else {
-                    $tpl = do_template('NEWSLETTER_SUBSCRIBER', array('_GUID' => 'ca45867a23cbaa7c6788d3cd2ba2793c', 'EMAIL' => $email, 'FORENAME' => $forename, 'SURNAME' => $surname, 'NAME' => $name, 'NEWSLETTER_SEND_ID' => $send_id, 'NEWSLETTER_HASH' => $hash));
+                    $tpl = do_template('NEWSLETTER_SUBSCRIBER', array(
+                    '_GUID' => 'ca45867a23cbaa7c6788d3cd2ba2793c',
+                    'EMAIL' => $email,
+                    'FORENAME' => $forename,
+                    'SURNAME' => $surname,
+                    'NAME' => $name,
+                    'NEWSLETTER_SEND_ID' => $send_id,
+                    'NEWSLETTER_HASH' => $hash,
+                ));
                     $out .= $tpl->evaluate();
                 }
             }

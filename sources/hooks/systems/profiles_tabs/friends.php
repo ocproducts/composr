@@ -68,7 +68,12 @@ class Hook_profiles_tabs_friends
             }
         }
 
-        $content = do_template('CNS_MEMBER_PROFILE_FRIENDS', array('_GUID' => 'b24a8607c6e2d3d6ddc29c8e22b972e8', 'MEMBER_ID' => strval($member_id_of), 'ADD_FRIEND_URL' => $add_friend_url, 'REMOVE_FRIEND_URL' => $remove_friend_url));
+        $content = do_template('CNS_MEMBER_PROFILE_FRIENDS', array(
+                '_GUID' => 'b24a8607c6e2d3d6ddc29c8e22b972e8',
+                'MEMBER_ID' => strval($member_id_of),
+                'ADD_FRIEND_URL' => $add_friend_url,
+                'REMOVE_FRIEND_URL' => $remove_friend_url,
+            ));
 
         return array($title, $content, $order, 'tabs/member_account/friends');
     }

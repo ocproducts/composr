@@ -210,7 +210,16 @@ class Module_admin_backup
             $js_function_calls[] = 'adminBackupInterfaceCalendar';
         }
 
-        $form = do_template('FORM', array('_GUID' => '64ae569b2cce398e89d1b4167f116193', 'HIDDEN' => '', 'JS_FUNCTION_CALLS' => $js_function_calls, 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'buttons__proceed', 'SUBMIT_NAME' => do_lang_tempcode('BACKUP'), 'URL' => $url));
+        $form = do_template('FORM', array(
+                '_GUID' => '64ae569b2cce398e89d1b4167f116193',
+                'HIDDEN' => '',
+                'JS_FUNCTION_CALLS' => $js_function_calls,
+                'TEXT' => '',
+                'FIELDS' => $fields,
+                'SUBMIT_ICON' => 'buttons__proceed',
+                'SUBMIT_NAME' => do_lang_tempcode('BACKUP'),
+                'URL' => $url,
+            ));
 
         $results = $this->get_results();
 

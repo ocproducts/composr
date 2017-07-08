@@ -396,7 +396,13 @@ function iframe_script()
     }
 
     // Normal output
-    $tpl = do_template('STANDALONE_HTML_WRAP', array('_GUID' => '04cf4ef7aac4201bb985327ec0e04c87', 'OPENS_BELOW' => get_param_integer('opens_below', 0) == 1, 'FRAME' => true, 'TARGET' => '_top', 'CONTENT' => $output));
+    $tpl = do_template('STANDALONE_HTML_WRAP', array(
+        '_GUID' => '04cf4ef7aac4201bb985327ec0e04c87',
+        'OPENS_BELOW' => get_param_integer('opens_below', 0) == 1,
+        'FRAME' => true,
+        'TARGET' => '_top',
+        'CONTENT' => $output,
+    ));
     $tpl->handle_symbol_preprocessing();
     $tpl->evaluate_echo();
 

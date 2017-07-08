@@ -649,7 +649,18 @@ class Module_admin_themes
         }
 
         require_javascript('core_themeing');
-        return do_template('FORM_SCREEN', array('_GUID' => '08b45be04f4035c7595458a719260bd9', 'HIDDEN' => '', 'JS_FUNCTION_CALLS' => array('adminThemesAddTheme'), 'TITLE' => $this->title, 'URL' => $post_url, 'FIELDS' => $fields, 'TEXT' => $text, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'SUPPORT_AUTOSAVE' => true));
+        return do_template('FORM_SCREEN', array(
+            '_GUID' => '08b45be04f4035c7595458a719260bd9',
+            'HIDDEN' => '',
+            'JS_FUNCTION_CALLS' => array('adminThemesAddTheme'),
+            'TITLE' => $this->title,
+            'URL' => $post_url,
+            'FIELDS' => $fields,
+            'TEXT' => $text,
+            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+            'SUBMIT_NAME' => $submit_name,
+            'SUPPORT_AUTOSAVE' => true,
+        ));
     }
 
     /**
@@ -1294,7 +1305,13 @@ class Module_admin_themes
 
                     $template_used = "(" . implode(', ', $all_previews__by_screen[$func]) . ")";
 
-                    $tpl_x = do_template('THEME_SCREEN_PREVIEW', array('_GUID' => '1f27f619db553dfcb8d427e70a736226', 'URL' => $preview_url, 'COLOR' => 'green', 'TEMPLATE' => preg_replace('#^tpl_preview__#', '', $func), 'LIST' => $template_used));
+                    $tpl_x = do_template('THEME_SCREEN_PREVIEW', array(
+                        '_GUID' => '1f27f619db553dfcb8d427e70a736226',
+                        'URL' => $preview_url,
+                        'COLOR' => 'green',
+                        'TEMPLATE' => preg_replace('#^tpl_preview__#', '', $func),
+                        'LIST' => $template_used,
+                    ));
                     if (preg_match('#^tpl_preview__administrative__#', $func) != 0) {
                         $lis_admin->attach($tpl_x);
                     } else {

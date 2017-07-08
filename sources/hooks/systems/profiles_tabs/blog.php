@@ -75,7 +75,13 @@ class Hook_profiles_tabs_blog
         }
 
         // Wrap it all up
-        $content = do_template('CNS_MEMBER_PROFILE_BLOG', array('_GUID' => 'f76244bc259c3e7da8c98b28fff85953', 'RSS_URL' => $rss_url, 'ADD_BLOG_POST_URL' => $add_blog_post_url, 'MEMBER_ID' => strval($member_id_of), 'RECENT_BLOG_POSTS' => $recent_blog_posts));
+        $content = do_template('CNS_MEMBER_PROFILE_BLOG', array(
+            '_GUID' => 'f76244bc259c3e7da8c98b28fff85953',
+            'RSS_URL' => $rss_url,
+            'ADD_BLOG_POST_URL' => $add_blog_post_url,
+            'MEMBER_ID' => strval($member_id_of),
+            'RECENT_BLOG_POSTS' => $recent_blog_posts,
+        ));
 
         return array($title, $content, $order, 'tabs/member_account/blog');
     }

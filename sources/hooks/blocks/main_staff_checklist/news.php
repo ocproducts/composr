@@ -59,7 +59,14 @@ class Hook_checklist_news
 
         $url = build_url(array('page' => 'cms_news', 'type' => 'add'), get_module_zone('cms_news'));
         list($info, $seconds_due_in) = staff_checklist_time_ago_and_due($seconds_ago, $limit_hours);
-        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'dd14f34eafa4f24c4c173c195cd84fe3', 'CONFIG_URL' => $config_url, 'URL' => $url, 'STATUS' => $_status, 'TASK' => do_lang_tempcode('ADD_NEWS'), 'INFO' => $info));
+        $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array(
+            '_GUID' => 'dd14f34eafa4f24c4c173c195cd84fe3',
+            'CONFIG_URL' => $config_url,
+            'URL' => $url,
+            'STATUS' => $_status,
+            'TASK' => do_lang_tempcode('ADD_NEWS'),
+            'INFO' => $info,
+        ));
         return array(array($tpl, $seconds_due_in, null, 'news_update_time'));
     }
 }

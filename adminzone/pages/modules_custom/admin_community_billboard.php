@@ -257,7 +257,13 @@ class Module_admin_community_billboard extends Standard_crud_module
 
         $username = $GLOBALS['FORUM_DRIVER']->member_profile_hyperlink($myrow['member_id']);
 
-        $text = do_template('COMMUNITY_BILLBOARD_DETAILS', array('_GUID' => 'dcc7a8b027d450a3c17c79b23b39cd87', 'USERNAME' => $username, 'DAYS_ORDERED' => integer_format($myrow['days']), 'DATE_RAW' => strval($date_raw), 'DATE' => $date));
+        $text = do_template('COMMUNITY_BILLBOARD_DETAILS', array(
+            '_GUID' => 'dcc7a8b027d450a3c17c79b23b39cd87',
+            'USERNAME' => $username,
+            'DAYS_ORDERED' => integer_format($myrow['days']),
+            'DATE_RAW' => strval($date_raw),
+            'DATE' => $date,
+        ));
 
         return array($fields, $hidden, new Tempcode(), $text);
     }

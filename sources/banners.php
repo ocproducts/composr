@@ -364,7 +364,16 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
             } else {
                 $banner_type_row = array('t_image_width' => $width, 't_image_height' => $height);
             }
-            $content = do_template('BANNER_FLASH', array('_GUID' => '25525a3722715e79a83af4cec53fe072', 'B_TYPE' => $b_type, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height']), 'SOURCE' => $source, 'DEST' => $name, 'CAPTION' => $caption, 'IMG' => $img_url));
+            $content = do_template('BANNER_FLASH', array(
+                '_GUID' => '25525a3722715e79a83af4cec53fe072',
+                'B_TYPE' => $b_type,
+                'WIDTH' => strval($banner_type_row['t_image_width']),
+                'HEIGHT' => strval($banner_type_row['t_image_height']),
+                'SOURCE' => $source,
+                'DEST' => $name,
+                'CAPTION' => $caption,
+                'IMG' => $img_url,
+            ));
         } elseif (($url != '') || (is_image($img_url, IMAGE_CRITERIA_WEBSAFE, has_privilege($submitter, 'comcode_dangerous')))) { // Image; Can't rely on image check, because often they have script-generated URLs
             if (url_is_local($img_url)) {
                 if (substr($img_url, 0, 12) == 'data/images/') {
@@ -390,7 +399,18 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
                 $banner_type_rows[$b_type] = $banner_type_row;
             }
             $local = (url_is_local($url)) || (substr($url, 0, strlen(get_base_url())) == get_base_url());
-            $content = do_template('BANNER_IMAGE', array('_GUID' => '6aaf45b7bb7349393024c24458549e9e', 'LOCAL' => $local, 'URL' => $url, 'B_TYPE' => $b_type, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height']), 'SOURCE' => $source, 'DEST' => $name, 'CAPTION' => $caption, 'IMG' => $img_url));
+            $content = do_template('BANNER_IMAGE', array(
+                '_GUID' => '6aaf45b7bb7349393024c24458549e9e',
+                'LOCAL' => $local,
+                'URL' => $url,
+                'B_TYPE' => $b_type,
+                'WIDTH' => strval($banner_type_row['t_image_width']),
+                'HEIGHT' => strval($banner_type_row['t_image_height']),
+                'SOURCE' => $source,
+                'DEST' => $name,
+                'CAPTION' => $caption,
+                'IMG' => $img_url,
+            ));
         } else { // Iframe
             if (url_is_local($img_url)) {
                 $img_url = get_custom_base_url() . '/' . $img_url;
@@ -405,7 +425,13 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
             } else {
                 $banner_type_row = array('t_image_width' => $width, 't_image_height' => $height);
             }
-            $content = do_template('BANNER_IFRAME', array('_GUID' => 'deeef9834bc308b5d07e025ab9c04c0e', 'B_TYPE' => $b_type, 'IMG' => $img_url, 'WIDTH' => strval($banner_type_row['t_image_width']), 'HEIGHT' => strval($banner_type_row['t_image_height'])));
+            $content = do_template('BANNER_IFRAME', array(
+                '_GUID' => 'deeef9834bc308b5d07e025ab9c04c0e',
+                'B_TYPE' => $b_type,
+                'IMG' => $img_url,
+                'WIDTH' => strval($banner_type_row['t_image_width']),
+                'HEIGHT' => strval($banner_type_row['t_image_height']),
+            ));
         }
     } else { // Text/HTML/PHP
         if ($direct_code == '') { // Text

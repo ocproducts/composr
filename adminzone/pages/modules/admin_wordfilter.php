@@ -178,7 +178,16 @@ class Module_admin_wordfilter
             $submit_name = do_lang_tempcode('DELETE_WORDFILTER');
             $fields = form_input_list(do_lang_tempcode('WORD'), '', 'word', $list);
 
-            $tpl = do_template('FORM', array('_GUID' => 'a752cea5acab633e1cc0781f0e77e0be', 'TABINDEX' => strval(get_form_field_tabindex()), 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'URL' => $delete_url, 'SUBMIT_ICON' => 'menu___generic_admin__delete', 'SUBMIT_NAME' => $submit_name));
+            $tpl = do_template('FORM', array(
+                '_GUID' => 'a752cea5acab633e1cc0781f0e77e0be',
+                'TABINDEX' => strval(get_form_field_tabindex()),
+                'HIDDEN' => '',
+                'TEXT' => '',
+                'FIELDS' => $fields,
+                'URL' => $delete_url,
+                'SUBMIT_ICON' => 'menu___generic_admin__delete',
+                'SUBMIT_NAME' => $submit_name,
+            ));
         } else {
             $tpl = new Tempcode();
         }
@@ -190,7 +199,18 @@ class Module_admin_wordfilter
         $fields->attach(form_input_line(do_lang_tempcode('WORD'), do_lang_tempcode('DESCRIPTION_WORD'), 'word_2', '', true));
         $fields->attach(form_input_line(do_lang_tempcode('REPLACEMENT'), do_lang_tempcode('DESCRIPTION_REPLACEMENT'), 'replacement', '', false));
         $fields->attach(form_input_tick(do_lang_tempcode('WORD_SUBSTR'), do_lang_tempcode('DESCRIPTION_WORD_SUBSTR'), 'substr', false));
-        $add_form = do_template('FORM', array('_GUID' => '5b1d45b374e15392b9f5496de8db2e1c', 'TABINDEX' => strval(get_form_field_tabindex()), 'SECONDARY_FORM' => true, 'SKIP_REQUIRED' => true, 'HIDDEN' => '', 'TEXT' => '', 'FIELDS' => $fields, 'SUBMIT_ICON' => 'menu___generic_admin__add_one', 'SUBMIT_NAME' => $submit_name, 'URL' => $post_url));
+        $add_form = do_template('FORM', array(
+            '_GUID' => '5b1d45b374e15392b9f5496de8db2e1c',
+            'TABINDEX' => strval(get_form_field_tabindex()),
+            'SECONDARY_FORM' => true,
+            'SKIP_REQUIRED' => true,
+            'HIDDEN' => '',
+            'TEXT' => '',
+            'FIELDS' => $fields,
+            'SUBMIT_ICON' => 'menu___generic_admin__add_one',
+            'SUBMIT_NAME' => $submit_name,
+            'URL' => $post_url,
+        ));
 
         return do_template('WORDFILTER_SCREEN', array('_GUID' => '4b355f5d2cecc0bc26e76a69716cc841', 'TITLE' => $this->title, 'TPL' => $tpl, 'ADD_FORM' => $add_form));
     }

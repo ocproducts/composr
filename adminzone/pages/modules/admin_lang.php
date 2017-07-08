@@ -331,19 +331,28 @@ class Module_admin_lang
                         }
 
                         if ($num_is != $num) {
-                            $crit = do_template('TRANSLATE_LANGUAGE_CRITICISM', array('_GUID' => '424388712f07bde0a04d89b0f349a0de', 'CRITICISM' => do_lang_tempcode('CRITICISM_PARAMETER_COUNT_MISMATCH', escape_html($key), escape_html($val))));
+                            $crit = do_template('TRANSLATE_LANGUAGE_CRITICISM', array(
+                                '_GUID' => '424388712f07bde0a04d89b0f349a0de',
+                                'CRITICISM' => do_lang_tempcode('CRITICISM_PARAMETER_COUNT_MISMATCH', escape_html($key), escape_html($val)),
+                            ));
                             $file->attach($crit);
                         }
 
                         unset($criticise_map[$key]);
                     } elseif (trim($val) != '') {
-                        $crit = do_template('TRANSLATE_LANGUAGE_CRITICISM', array('_GUID' => '1c06d1d7c26ed73787eef6bfd912f57a', 'CRITICISM' => do_lang_tempcode('CRITICISM_MISSING_STRING', escape_html($key), escape_html($val))));
+                        $crit = do_template('TRANSLATE_LANGUAGE_CRITICISM', array(
+                            '_GUID' => '1c06d1d7c26ed73787eef6bfd912f57a',
+                            'CRITICISM' => do_lang_tempcode('CRITICISM_MISSING_STRING', escape_html($key), escape_html($val)),
+                        ));
                         $file->attach($crit);
                     }
                 }
 
                 foreach ($criticise_map as $key => $val) {
-                    $crit = do_template('TRANSLATE_LANGUAGE_CRITICISM', array('_GUID' => '550018f24c0f677c50cd1bba96f24cc8', 'CRITICISM' => do_lang_tempcode('CRITICISM_EXTRA_STRING', escape_html($key))));
+                    $crit = do_template('TRANSLATE_LANGUAGE_CRITICISM', array(
+                        '_GUID' => '550018f24c0f677c50cd1bba96f24cc8',
+                        'CRITICISM' => do_lang_tempcode('CRITICISM_EXTRA_STRING', escape_html($key)),
+                    ));
                     $file->attach($crit);
                 }
             } else {
@@ -442,7 +451,16 @@ class Module_admin_lang
 
             check_suhosin_request_quantity(2, strlen('trans_' . $name));
 
-            $line = do_template('TRANSLATE_LINE_CONTENT', array('_GUID' => '87a0f5298ce9532839f3206cd0e06051', 'NAME' => $name, 'ID' => strval($id), 'OLD' => $old, 'CURRENT' => $current, 'ACTIONS' => $actions, 'PRIORITY' => $priority, 'LAST' => !isset($to_translate[$i + 1])));
+            $line = do_template('TRANSLATE_LINE_CONTENT', array(
+                '_GUID' => '87a0f5298ce9532839f3206cd0e06051',
+                'NAME' => $name,
+                'ID' => strval($id),
+                'OLD' => $old,
+                'CURRENT' => $current,
+                'ACTIONS' => $actions,
+                'PRIORITY' => $priority,
+                'LAST' => !isset($to_translate[$i + 1]),
+            ));
             $lines .= $line->evaluate(); /*XHTMLXHTML*/
 
             $last_level = $it['importance_level'];
@@ -578,7 +596,16 @@ class Module_admin_lang
             $hidden = new Tempcode();
             $hidden->attach(form_input_hidden('redirect', static_evaluate_tempcode(protect_url_parameter(SELF_REDIRECT))));
             $hidden->attach(form_input_hidden('lang', $lang));
-            return do_template('FORM_SCREEN', array('_GUID' => '2d7356fd2c4497ceb19450e65331c9c5', 'TITLE' => $this->title, 'HIDDEN' => $hidden, 'FIELDS' => $fields, 'URL' => $post_url, 'TEXT' => '', 'SUBMIT_ICON' => 'buttons__save', 'SUBMIT_NAME' => do_lang('TRANSLATE_CODE')));
+            return do_template('FORM_SCREEN', array(
+                '_GUID' => '2d7356fd2c4497ceb19450e65331c9c5',
+                'TITLE' => $this->title,
+                'HIDDEN' => $hidden,
+                'FIELDS' => $fields,
+                'URL' => $post_url,
+                'TEXT' => '',
+                'SUBMIT_ICON' => 'buttons__save',
+                'SUBMIT_NAME' => do_lang('TRANSLATE_CODE'),
+            ));
         }
         $lang_file = get_param_string('lang_file');
         if (!file_exists($map_b)) {
@@ -690,13 +717,29 @@ class Module_admin_lang
                 $actions = do_template('TRANSLATE_ACTION', array('_GUID' => '9e9a68cb2c1a1e23a901b84c9af2280b', 'LANG_FROM' => get_site_default_lang(), 'LANG_TO' => $lang, 'NAME' => 'trans_' . $name, 'OLD' => $_current));
             }
 
-            $temp = do_template('TRANSLATE_LINE', array('_GUID' => '9cb331f5852ee043e6ad30b45aedc43b', 'TRANSLATE_AUTO' => $translate_auto, 'DESCRIPTION' => $description, 'NAME' => $name, 'OLD' => str_replace('\n', "\n", $old), 'CURRENT' => $_current, 'ACTIONS' => $actions));
+            $temp = do_template('TRANSLATE_LINE', array(
+                '_GUID' => '9cb331f5852ee043e6ad30b45aedc43b',
+                'TRANSLATE_AUTO' => $translate_auto,
+                'DESCRIPTION' => $description,
+                'NAME' => $name,
+                'OLD' => str_replace('\n', "\n", $old),
+                'CURRENT' => $_current,
+                'ACTIONS' => $actions,
+            ));
             $lines .= $temp->evaluate();
         }
 
         $url = build_url(array('page' => '_SELF', 'type' => '_code', 'lang_file' => $lang_file, 'lang' => $lang), '_SELF');
 
-        return do_template('TRANSLATE_SCREEN', array('_GUID' => 'b3429f8bd0b4eb79c33709ca43e3207c', 'PAGE' => $lang_file, 'GOOGLE' => (get_option('google_translate_api_key') != '') ? $google : '', 'LANG' => $lang, 'LINES' => $lines, 'TITLE' => $this->title, 'URL' => $url));
+        return do_template('TRANSLATE_SCREEN', array(
+            '_GUID' => 'b3429f8bd0b4eb79c33709ca43e3207c',
+            'PAGE' => $lang_file,
+            'GOOGLE' => (get_option('google_translate_api_key') != '') ? $google : '',
+            'LANG' => $lang,
+            'LINES' => $lines,
+            'TITLE' => $this->title,
+            'URL' => $url,
+        ));
     }
 
     /**

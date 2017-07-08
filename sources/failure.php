@@ -343,7 +343,13 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
         _generic_exit($text, 'FATAL_SCREEN', false, false);
     }
 
-    return do_template('WARN_SCREEN', array('_GUID' => 'a762a7ac8cd08623a0ed6413d9250d97', 'TITLE' => $title, 'WEBSERVICE_RESULT' => get_webservice_result($text), 'TEXT' => $text, 'PROVIDE_BACK' => $provide_back));
+    return do_template('WARN_SCREEN', array(
+        '_GUID' => 'a762a7ac8cd08623a0ed6413d9250d97',
+        'TITLE' => $title,
+        'WEBSERVICE_RESULT' => get_webservice_result($text),
+        'TEXT' => $text,
+        'PROVIDE_BACK' => $provide_back,
+    ));
 }
 
 /**
