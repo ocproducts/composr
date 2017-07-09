@@ -19,6 +19,24 @@
  */
 
 /**
+ * Standard code module initialisation function.
+ *
+ * @ignore
+ */
+function init__forum_stub()
+{
+    if (!defined('USERNAME_DEFAULT_UNKNOWN')) {
+        define('USERNAME_GUEST_AS_DEFAULT', 1);
+        define('USERNAME_DEFAULT_DELETED', 2);
+        define('USERNAME_DEFAULT_NULL', 4);
+        define('USERNAME_DEFAULT_ID_RAW', 8);
+        define('USERNAME_DEFAULT_ID_TIDY', 16);
+        define('USERNAME_DEFAULT_BLANK', 32);
+        define('USERNAME_DEFAULT_ERROR', 64);
+    }
+}
+
+/**
  * Forum Driver base class.
  *
  * @package    core

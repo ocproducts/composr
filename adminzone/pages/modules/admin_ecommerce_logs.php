@@ -882,7 +882,7 @@ class Module_admin_ecommerce_logs
 
             $type_code = $transaction['t_type_code'];
 
-            $transaction['t_amount'] = currency_convert($transaction['t_amount'], $transaction['t_currency'], get_option('currency')); // HACKHACK: Not ideal because exchange rates change, but we don't normally trade multiple currencies anyway
+            $transaction['t_amount'] = currency_convert($transaction['t_amount'], $transaction['t_currency'], get_option('currency')); // FUDGE: Not ideal because exchange rates change, but we don't normally trade multiple currencies anyway
 
             $types['CLOSING']['AMOUNT'] += $transaction['t_amount']/*no sales tax on this figure as it goes straight out*/;
 

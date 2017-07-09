@@ -292,7 +292,6 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
         $db_types = collapse_2d_complexity('m_name', 'm_type', $this_ref->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table_name)));
 
         $sized = false;
-        $fields_full = array();
         foreach ($fields as $field_name) {
             if (strpos($field_name, '(') !== false) {
                 $sized = true;
@@ -309,20 +308,15 @@ function _helper_create_index($this_ref, $table_name, $index_name, $fields, $uni
             if (substr($db_type, 0, 1) != '*') {
                 $db_type = '*' . $db_type;
             }
-            $fields_full[$field_name] = $db_type;
 
-            $fields_with_types[$_field_name] = $db_type;
+            $fields_with_types[$field_name] = $db_type;
         }
         if (!$sized) {
-            _check_sizes($table_name, false, $fields_full, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
+            _check_sizes($table_name, false, $fields_with_types, $index_name, false, true, true/*indexes don't use so many bytes as keys somehow*/);
         }
     } else {
         foreach ($fields as $field_name) {
-            if (strpos($field_name, '(') !== false) {
-                $sized = true;
-            }
-            $_field_name = preg_replace('#\(.*\)$#', '', $field_name);
-            $fields_with_types[$_field_name] = null;
+            $fields_with_types[$field_name] = null;
         }
     }
 
@@ -404,8 +398,10 @@ function _helper_generate_index_fields($table_name, $fields, $is_full_text)
             }
 
             if ((!$is_full_text) && ((!multi_lang_content()) || (strpos($db_type, '_TRANS') === false))) {
-                if (((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
-                    $_fields .= '(250)'; // 255 would be too much with MySQL's UTF. Only MySQL supports index lengths, but the other drivers will strip them back out again.
+                if (strpos($field_name, '(') === false) {
+                    if (((strpos($db_type, 'SHORT_TEXT') !== false) || (strpos($db_type, 'SHORT_TRANS') !== false) || (strpos($db_type, 'LONG_TEXT') !== false) || (strpos($db_type, 'LONG_TRANS') !== false) || (strpos($db_type, 'URLPATH') !== false))) {
+                        $_fields .= '(250)'; // 255 would be too much with MySQL's UTF. Only MySQL supports index lengths, but the other drivers will strip them back out again.
+                    }
                 }
             }
         }

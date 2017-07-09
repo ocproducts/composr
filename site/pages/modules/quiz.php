@@ -185,7 +185,7 @@ class Module_quiz
         }
 
         if (($upgrade_from === null) || ($upgrade_from < 7)) {
-            $GLOBALS['SITE_DB']->create_index('quiz_entries', 'member', array('q_member'));
+            $GLOBALS['SITE_DB']->create_index('quiz_entries', 'q_member', array('q_member'));
             $GLOBALS['SITE_DB']->create_index('quiz_member_last_visit', 'member_id', array('v_member_id'));
         }
     }

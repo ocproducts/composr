@@ -61,7 +61,7 @@ class Hook_ecommerce_cart_orders
             $where = '(' . db_string_equal_to('order_status', 'ORDER_STATUS_awaiting_payment') . ' OR ' . db_string_equal_to('order_status', 'ORDER_STATUS_payment_received') . ')';
 
             if (get_page_name() == 'purchase') {
-                $where .= ' AND member_id=' . strval(get_member()); // HACKHACK: A bit naughty, but we only do it if $search is null and on purchase page
+                $where .= ' AND member_id=' . strval(get_member()); // FUDGE: A bit naughty, but we only do it if $search is null and on purchase page
             }
         }
 

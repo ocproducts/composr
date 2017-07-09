@@ -339,6 +339,12 @@ function do_set()
         if ($key == 'given_password') {
             continue;
         }
+        if ((strpos($key, '_forums') !== false) && (($val == '') || ($val == $_POST[str_replace('_forums', '_site', $key)]))) {
+            continue;
+        }
+        if (($key == 'cns_table_prefix') && (($val == '') || ($val == $_POST['table_prefix']))) {
+            continue;
+        }
 
         // If new password is blank use existing one
         if ((($key == 'master_password') || ($key == 'master_password_confirm')) && ($val == '')) {
@@ -436,13 +442,13 @@ function do_set()
     foreach ($new as $key => $val) {
         if (is_array($val)) {
             foreach ($val as $val2) {
-                $_val = str_replace('\\', '\\\\', $val2);
+                $_val = addslashes($val2);
                 if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\'][] = \'' . $_val . "';\n") === false) {
                     echo '<strong>Could not save to file. Out of disk space?<strong>';
                 }
             }
         } else {
-            $_val = str_replace('\\', '\\\\', $val);
+            $_val = addslashes($val);
             if (fwrite($config_file_handle, '$SITE_INFO[\'' . $key . '\'] = \'' . $_val . "';\n") === false) {
                 echo '<strong>Could not save to file. Out of disk space?<strong>';
             }

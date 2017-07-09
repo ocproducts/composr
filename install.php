@@ -15,10 +15,6 @@
  * @package    installer
  */
 
-if (!function_exists('preg_match')) {
-    header('Content-type: text/plain');
-    exit('The PHP preg support may not be disabled');
-}
 $functions = array('fopen');
 foreach ($functions as $function) {
     if (preg_match('#[^,\s]' . $function . '[$,\s]#', ini_get('disable_functions')) != 0) {
@@ -316,6 +312,7 @@ function step_1()
     erase_cached_language();
 
     // Integrity check
+    require_code('files');
     $warnings = new Tempcode();
     global $DATADOTCMS_FILE;
     if (!@is_resource($DATADOTCMS_FILE)) { // Do an integrity check - missing corrupt files
@@ -331,16 +328,7 @@ function step_1()
 
                 foreach ($files as $file => $file_info) {
                     // Volatile files (see also list in make_release.php)
-                    if ($file == 'data_custom/errorlog.php') {
-                        continue;
-                    }
-                    if ($file == 'data_custom/execute_temp.php') {
-                        continue;
-                    }
-                    if ($file == '_config.php') {
-                        continue;
-                    }
-                    if ($file == 'themes/map.ini') {
+                    if (should_ignore_file($file, IGNORE_BUNDLED_VOLATILE)) {
                         continue;
                     }
                     if ($file == 'sources/version.php') {
@@ -355,6 +343,8 @@ function step_1()
                     if ($file == 'data/files_previous.dat') {
                         continue;
                     }
+
+                    // Large file size, skip for performance
                     if ($file == 'data/modules/admin_stats/IP_Country.txt') {
                         continue;
                     }
@@ -377,14 +367,21 @@ function step_1()
                 }
 
                 if (count($missing) > 4) {
-                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => '515c2f26a5415224f3c09b2429a78a5f', 'FILES' => $missing, 'MESSAGE' => do_lang_tempcode('_MISSING_INSTALLATION_FILE', escape_html(integer_format(count($missing)))))));
+                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array(
+                        '_GUID' => '515c2f26a5415224f3c09b2429a78a5f',
+                        'FILES' => $missing,
+                        'MESSAGE' => do_lang_tempcode('_MISSING_INSTALLATION_FILE', escape_html(integer_format(count($missing)))))));
                 } else {
                     foreach ($missing as $file) {
                         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('MISSING_INSTALLATION_FILE', escape_html($file)))));
                     }
                 }
                 if (count($corrupt) > 4) {
-                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array('_GUID' => 'f8958458d76bd4f6d146d3fe59132a02', 'FILES' => $corrupt, 'MESSAGE' => do_lang_tempcode('_CORRUPT_INSTALLATION_FILE', escape_html(integer_format(count($corrupt)))))));
+                    $warnings->attach(do_template('INSTALLER_WARNING_LONG', array(
+                        '_GUID' => 'f8958458d76bd4f6d146d3fe59132a02',
+                        'FILES' => $corrupt,
+                        'MESSAGE' => do_lang_tempcode('_CORRUPT_INSTALLATION_FILE', escape_html(integer_format(count($corrupt)))),
+                    )));
                 } else {
                     foreach ($corrupt as $file) {
                         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('CORRUPT_INSTALLATION_FILE', escape_html($file)))));
@@ -1402,14 +1399,6 @@ function step_5_ftp()
         }
 
         // Test tmp file isn't currently being used by another iteration of process (race issue, causing horrible corruption)
-        $file_size_before = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
-        sleep(1);
-        $file_size_after = @filesize(get_file_base() . '/cms_inst_tmp/tmp');
-        if ($file_size_before !== $file_size_after) {
-            warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
-        }
-
-        // Test tmp file isn't currently being used by another iteration of process (race issue, causing horrible corruption)
         $lock_myfile = fopen(get_file_base() . '/cms_inst_tmp/tmp', 'ab');
         if (!flock($lock_myfile, LOCK_EX)) {
             warn_exit(do_lang_tempcode('DATA_FILE_CONFLICT'));
@@ -1703,7 +1692,6 @@ function step_5_write_config()
     $config_contents = "<" . "?php\nglobal \$SITE_INFO;";
 
     $config_contents .= '
-
 if (!function_exists(\'git_repos\')) {
     /**
      * Find the git branch name. This is useful for making this config file context-adaptive (i.e. dev settings vs production settings).
@@ -1760,12 +1748,22 @@ if (!function_exists(\'git_repos\')) {
             continue;
         }
 
+        if ((strpos($key, '_forums') !== false) && ($val == $_POST[str_replace('_forums', '_site', $key)])) {
+            continue;
+        }
+
+        if (($key == 'cns_table_prefix') && ($val == $_POST['table_prefix'])) {
+            continue;
+        }
+
         if ($key == 'master_password') {
             $val = password_hash($val, PASSWORD_BCRYPT, array('cost' => 12));
         }
+
         if ($key == 'base_url') {
             $val = $base_url;
         }
+
         $_val = addslashes(trim($val));
         $config_contents .= '$SITE_INFO[\'' . $key . '\'] = \'' . $_val . "';\n";
     }
