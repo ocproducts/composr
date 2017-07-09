@@ -178,7 +178,7 @@ function attachments_script()
     if (!$has_no_restricts) {
         global $SITE_INFO;
         if ((!is_guest()) || (!isset($SITE_INFO['any_guest_cached_too'])) || ($SITE_INFO['any_guest_cached_too'] == '0')) {
-            if ((get_param_string('for_session', '') != md5(get_session_id())) && (get_option('anti_leech') == '1') && (cms_srv('HTTP_REFERER') != '')) {
+            if ((get_param_string('for_session', '') != md5(get_session_id())) && (get_option('anti_leech') == '1') && ($_SERVER['HTTP_REFERER'] != '')) {
                 warn_exit(do_lang_tempcode('LEECH_BLOCK'));
             }
         }
@@ -216,7 +216,7 @@ function attachments_script()
 
         if (get_param_integer('no_count', 0) == 0) {
             // Update download count
-            if (cms_srv('HTTP_RANGE') == '') {
+            if ($_SERVER['HTTP_RANGE'] == '') {
                 $db->query_update('attachments', array('a_num_downloads' => $myrow['a_num_downloads'] + 1, 'a_last_downloaded_time' => time()), array('id' => $id), '', 1, 0, false, true);
             }
         }
@@ -263,9 +263,9 @@ function attachments_script()
     safe_ini_set('zlib.output_compression', 'Off'); // So ranges work, plus workaround to bugs caused by IE being 'smart' http://blogs.msdn.com/b/ieinternals/archive/2014/10/21/http-compression-optimize-file-formats-with-deflate.aspx
 
     // They're trying to resume (so update our range)
-    $httprange = cms_srv('HTTP_RANGE');
+    $httprange = $_SERVER['HTTP_RANGE'];
     if (strlen($httprange) > 0) {
-        $_range = explode('=', cms_srv('HTTP_RANGE'));
+        $_range = explode('=', $_SERVER['HTTP_RANGE']);
         if (count($_range) == 2) {
             if (strpos($_range[0], '-') === false) {
                 $_range = array_reverse($_range);
@@ -303,7 +303,7 @@ function attachments_script()
 
     safe_ini_set('ocproducts.xss_detect', '0');
 
-    if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+    if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return;
     }
 

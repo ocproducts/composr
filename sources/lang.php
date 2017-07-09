@@ -307,7 +307,7 @@ function user_lang()
 function get_lang_browser()
 {
     // In browser?
-    $http_lang = cms_srv('HTTP_ACCEPT_LANGUAGE');
+    $http_lang = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
     if (strlen($http_lang) > 0) {
         $http_langs = explode(',', $http_lang);
         foreach ($http_langs as $lang) {

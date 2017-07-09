@@ -159,8 +159,8 @@ function _convert_request_data_encodings($known_utf8 = false)
                 if ((!is_string($input_charset)) || ($input_charset == 'pass')) {
                     $input_charset = '';
                 }
-                if ((function_exists('mb_detect_encoding')) && ($input_charset == '') && (cms_srv('REQUEST_URI') != '')) {
-                    $input_charset = mb_detect_encoding(urldecode(cms_srv('REQUEST_URI')), $internal_charset . ',utf-8,ISO-8859-1');
+                if ((function_exists('mb_detect_encoding')) && ($input_charset == '') && ($_SERVER['REQUEST_URI'] != '')) {
+                    $input_charset = mb_detect_encoding(urldecode($_SERVER['REQUEST_URI']), $internal_charset . ',utf-8,ISO-8859-1');
                     if ((!is_string($input_charset)) || ($input_charset == 'pass')) {
                         $input_charset = '';
                     }

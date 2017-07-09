@@ -56,7 +56,7 @@ function semi_dev_mode_startup()
             erase_cached_templates(true); // Stop anything trying to read a template cache item (E.g. CSS, JS) that might not exist!
         }*/
 
-        if ((strpos(cms_srv('HTTP_REFERER'), cms_srv('HTTP_HOST')) !== false) && (strpos(cms_srv('HTTP_REFERER'), 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('external_url_proxy')) && (!running_script('upgrader')) && (strpos(cms_srv('HTTP_REFERER'), 'login') === false) && (get_page_name() != 'login') && (get_param_string('keep_devtest', null) === null)) {
+        if ((strpos($_SERVER['HTTP_REFERER'], get_local_hostname()) !== false) && (strpos($_SERVER['HTTP_REFERER'], 'keep_devtest') !== false) && (!running_script('attachment')) && (!running_script('external_url_proxy')) && (!running_script('upgrader')) && (strpos($_SERVER['HTTP_REFERER'], 'login') === false) && (get_page_name() != 'login') && (get_param_string('keep_devtest', null) === null)) {
             $_GET['keep_devtest'] = '1';
             attach_message('URL not constructed properly: development mode in use but keep_devtest was not specified. This indicates that links have been made without build_url (in PHP) or $cms.keepStub (in JavaScript). While not fatal this time, failure to use these functions can cause problems when your site goes live. See the Composr codebook for more details.', 'warn', false, true);
         } else {
@@ -91,7 +91,7 @@ function semi_dev_mode_startup()
             if (($SCREEN_TEMPLATE_CALLED === null) && ($EXITING == 0) && (running_script('index'))) {
                 @exit(escape_html('No screen template called.'));
             }
-            if ((!$TITLE_CALLED) && (($SCREEN_TEMPLATE_CALLED === null) || ($SCREEN_TEMPLATE_CALLED != '')) && ($EXITING == 0) && (strpos(cms_srv('SCRIPT_NAME'), 'index.php') !== false)) {
+            if ((!$TITLE_CALLED) && (($SCREEN_TEMPLATE_CALLED === null) || ($SCREEN_TEMPLATE_CALLED != '')) && ($EXITING == 0) && (strpos($_SERVER['SCRIPT_NAME'], 'index.php') !== false)) {
                 @exit(escape_html('No title used on screen.'));
             }
         }
@@ -99,8 +99,8 @@ function semi_dev_mode_startup()
         register_shutdown_function('dev_mode_aftertests');
     }
 
-    if ((cms_srv('SCRIPT_NAME') != '') && (empty($GLOBALS['EXTERNAL_CALL'])) && ($DEV_MODE) && (strpos(cms_srv('SCRIPT_NAME'), 'data_custom') === false)) {
-        if (@strlen(file_get_contents(cms_srv('SCRIPT_NAME'))) > 4500) {
+    if (($_SERVER['SCRIPT_NAME'] != '') && (empty($GLOBALS['EXTERNAL_CALL'])) && ($DEV_MODE) && (strpos($_SERVER['SCRIPT_NAME'], 'data_custom') === false)) {
+        if (@strlen(file_get_contents($_SERVER['SCRIPT_NAME'])) > 4500) {
             fatal_exit('Entry scripts (front controllers) should not be shoved full of code.');
         }
     }
@@ -179,7 +179,7 @@ function restrictify()
             $GLOBALS['SITE_DB']->query($smq, null, 0, true);
         }
     }
-    if (($GLOBALS['DEV_MODE']) && (strpos(cms_srv('SCRIPT_NAME'), '_tests') === false)) {
+    if (($GLOBALS['DEV_MODE']) && (strpos($_SERVER['SCRIPT_NAME'], '_tests') === false)) {
         if (get_param_integer('keep_type_strictness', null) !== 0) {
             safe_ini_set('ocproducts.type_strictness', '1');
         }

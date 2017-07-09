@@ -271,7 +271,7 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
         header('Content-Type: text/csv; charset=' . get_charset());
         header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
-        if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+        if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
             return '';
         }
     }

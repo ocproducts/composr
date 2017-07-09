@@ -281,7 +281,7 @@ function find_user_metadata($include_referer = true)
     $data[do_lang('LANGUAGE')] = lookup_language_full_name(user_lang());
 
     if ($include_referer) {
-        $referer = cms_srv('HTTP_REFERER');
+        $referer = $_SERVER['HTTP_REFERER'];
         if ($referer != '') {
             $data[do_lang('REFERER')] = $referer;
         }

@@ -175,30 +175,30 @@ function get_afm_form_fields()
         if (!empty($GLOBALS['SITE_INFO']['ftp_directory'])) {
             $ftp_directory = $GLOBALS['SITE_INFO']['ftp_directory'];
         } else {
-            $pos = strpos(cms_srv('SCRIPT_NAME'), 'adminzone/index.php');
+            $pos = strpos($_SERVER['SCRIPT_NAME'], 'adminzone/index.php');
             if (($pos === false) && (get_zone_name() != '')) {
-                $pos = strpos(cms_srv('SCRIPT_NAME'), get_zone_name() . '/index.php');
+                $pos = strpos($_SERVER['SCRIPT_NAME'], get_zone_name() . '/index.php');
             }
             if ($pos === false) {
-                $pos = strpos(cms_srv('SCRIPT_NAME'), 'data/');
+                $pos = strpos($_SERVER['SCRIPT_NAME'], 'data/');
             }
             if ($pos === false) {
-                $pos = strpos(cms_srv('SCRIPT_NAME'), 'data_custom/');
+                $pos = strpos($_SERVER['SCRIPT_NAME'], 'data_custom/');
             }
             if ($pos === false) {
-                $pos = strpos(cms_srv('SCRIPT_NAME'), 'cms/index.php');
+                $pos = strpos($_SERVER['SCRIPT_NAME'], 'cms/index.php');
             }
             if ($pos === false) {
-                $pos = strpos(cms_srv('SCRIPT_NAME'), 'site/index.php');
+                $pos = strpos($_SERVER['SCRIPT_NAME'], 'site/index.php');
             }
-            $dr = cms_srv('DOCUMENT_ROOT');
+            $dr = $_SERVER['DOCUMENT_ROOT'];
             if (strpos($dr, '/') !== false) {
                 $dr_parts = explode('/', $dr);
             } else {
                 $dr_parts = explode('\\', $dr);
             }
             $webdir_stub = $dr_parts[count($dr_parts) - 1];
-            $ftp_directory = '/' . $webdir_stub . substr(cms_srv('SCRIPT_NAME'), 0, $pos);
+            $ftp_directory = '/' . $webdir_stub . substr($_SERVER['SCRIPT_NAME'], 0, $pos);
         }
     }
 

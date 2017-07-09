@@ -36,7 +36,7 @@ class Hook_spam_heuristics_user_agents
             return 0;
         }
 
-        $user_agent = strtolower(cms_srv('HTTP_USER_AGENT'));
+        $user_agent = strtolower($_SERVER['HTTP_USER_AGENT']);
 
         $bad_user_agents = get_option('spam_heuristic_user_agents');
         if ($bad_user_agents != '') {

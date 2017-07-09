@@ -203,7 +203,7 @@ function fix_permissions($path, $perms = null)
     }
 
     // If the file user is different to the FTP user, we need to make it world writeable
-    if ((!is_suexec_like()) || (cms_srv('REQUEST_METHOD') == '')) {
+    if ((!is_suexec_like()) || ($_SERVER['REQUEST_METHOD'] == '')) {
         @chmod($path, $perms);
     } else { // Otherwise we do not
         if ($perms == 0666) {
@@ -701,7 +701,7 @@ function set_http_status_code($code)
     global $HTTP_STATUS_CODE;
     $HTTP_STATUS_CODE = $code; // So we can keep track
 
-    if ((!headers_sent()) && (function_exists('browser_matches')) && (!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
+    if ((!headers_sent()) && (function_exists('browser_matches')) && (!browser_matches('ie')) && (strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
         http_response_code($code);
     }
 }
@@ -1848,15 +1848,15 @@ function get_ip_address($amount = 4, $ip = null)
 
     if ($ip === null) {
         /* Presents too many security and maintenance problems. Can easily be faked, or changed.
-        $fw = cms_srv('HTTP_X_FORWARDED_FOR');
-        if (cms_srv('HTTP_CLIENT_IP') != '') {
-            $fw = cms_srv('HTTP_CLIENT_IP');
+        $fw = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        if ($_SERVER['HTTP_CLIENT_IP'] != '') {
+            $fw = $_SERVER['HTTP_CLIENT_IP'];
         }
-        if (($fw != '') && ($fw != '127.0.0.1') && (substr($fw, 0, 8) != '192.168.') && (substr($fw, 0, 3) != '10.') && (is_valid_ip($fw)) && ($fw != cms_srv('SERVER_ADDR'))) {
+        if (($fw != '') && ($fw != '127.0.0.1') && (substr($fw, 0, 8) != '192.168.') && (substr($fw, 0, 3) != '10.') && (is_valid_ip($fw)) && ($fw != $_SERVER['SERVER_ADDR'])) {
             $ip = $fw;
         } else
         */
-        $ip = cms_srv('REMOTE_ADDR');
+        $ip = $_SERVER['REMOTE_ADDR'];
     }
 
     global $SITE_INFO;
@@ -1954,7 +1954,7 @@ function me_debug($ip, $data)
  */
 function get_browser_string()
 {
-    $ret = cms_srv('HTTP_USER_AGENT');
+    $ret = $_SERVER['HTTP_USER_AGENT'];
     $ret = str_replace(' (' . get_os_string() . ')', '', $ret);
     return $ret;
 }
@@ -1966,13 +1966,13 @@ function get_browser_string()
  */
 function get_os_string()
 {
-    if (cms_srv('HTTP_UA_OS') != '') {
-        return cms_srv('HTTP_UA_OS');
-    } elseif (cms_srv('HTTP_USER_AGENT') != '') {
+    if ($_SERVER['HTTP_UA_OS'] != '') {
+        return $_SERVER['HTTP_UA_OS'];
+    } elseif ($_SERVER['HTTP_USER_AGENT'] != '') {
         // E.g. Mozilla/4.5 [en] (X11; U; Linux 2.2.9 i586)
         // We need to get the stuff in the brackets
         $matches = array();
-        if (preg_match('#\(([^\)]*)\)#', cms_srv('HTTP_USER_AGENT'), $matches) != 0) {
+        if (preg_match('#\(([^\)]*)\)#', $_SERVER['HTTP_USER_AGENT'], $matches) != 0) {
             $ret = $matches[1];
             $ret = preg_replace('#^compatible; (MSIE[^;]*; )?#', '', $ret);
             return $ret;
@@ -2134,7 +2134,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
 
         if ((($ip4) && (compare_ip_address_ip4($ban['ip'], $ip_parts))) || ((!$ip4) && (compare_ip_address_ip6($ban['ip'], $ip_parts)))) {
             if ($self_ip === null) {
-                $self_host = cms_srv('HTTP_HOST');
+                $self_host = get_local_hostname();
                 if (($self_host == '') || (preg_match('#^localhost[\.\:$]#', $self_host) != 0)) {
                     $self_ip = '';
                 } else {
@@ -2144,7 +2144,7 @@ function ip_banned($ip, $force_db = false, $handle_uncertainties = false)
                         $self_ip = '';
                     }
                     if ($self_ip == '') {
-                        $self_ip = cms_srv('SERVER_ADDR');
+                        $self_ip = $_SERVER['SERVER_ADDR'];
                     }
                 }
             }
@@ -2395,8 +2395,8 @@ function browser_matches($code, $comcode = null)
         return $browser_matches_cache[$code];
     }
 
-    $browser = strtolower(cms_srv('HTTP_USER_AGENT'));
-    $os = strtolower(cms_srv('HTTP_UA_OS')) . ' ' . $browser;
+    $browser = strtolower($_SERVER['HTTP_USER_AGENT']);
+    $os = strtolower($_SERVER['HTTP_UA_OS']) . ' ' . $browser;
     $is_safari = strpos($browser, 'applewebkit') !== false;
     $is_chrome = strpos($browser, 'chrome/') !== false;
     $is_gecko = (strpos($browser, 'gecko') !== false) && !$is_safari;
@@ -2490,7 +2490,7 @@ function is_mobile($user_agent = null, $truth = false)
     }
 
     if ($user_agent === null) {
-        $user_agent = cms_srv('HTTP_USER_AGENT');
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
     }
 
     global $SITE_INFO;
@@ -2593,7 +2593,7 @@ function get_bot_type()
         return $BOT_TYPE_CACHE;
     }
 
-    $agent = cms_srv('HTTP_USER_AGENT');
+    $agent = $_SERVER['HTTP_USER_AGENT'];
     if (strpos($agent, 'WebKit') !== false || strpos($agent, 'Trident') !== false || strpos($agent, 'MSIE') !== false || strpos($agent, 'Firefox') !== false || strpos($agent, 'Opera') !== false) {
         if (strpos($agent, 'bot') === false) {
             // Quick exit path
@@ -3221,9 +3221,9 @@ function escapeshellarg_wrap($arg)
 function running_locally()
 {
     return
-        (substr(cms_srv('HTTP_HOST'), 0, 8) == '192.168.') ||
-        (substr(cms_srv('HTTP_HOST'), 0, 7) == '10.0.0.') ||
-        (in_array(cms_srv('HTTP_HOST'), array('localhost')));
+        (substr(get_local_hostname(), 0, 8) == '192.168.') ||
+        (substr(get_local_hostname(), 0, 7) == '10.0.0.') ||
+        (in_array(get_local_hostname(), array('localhost')));
 }
 
 /**
@@ -3553,7 +3553,7 @@ function escape_header($str, $within_quotes = false)
  */
 function is_cli()
 {
-    return ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && (cms_srv('REMOTE_ADDR') == ''));
+    return ((php_function_allowed('php_sapi_name')) && (php_sapi_name() == 'cli') && ($_SERVER['REMOTE_ADDR'] == ''));
 }
 
 /**

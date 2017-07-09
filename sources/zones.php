@@ -351,8 +351,8 @@ function get_zone_name()
     }
     if ($VIRTUALISED_ZONES_CACHE !== false) {
         $VIRTUALISED_ZONES_CACHE = false;
-        $url_path = str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')));
-        $host = preg_replace('#:\d+$#', '', cms_srv('HTTP_HOST'));
+        $url_path = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+        $host = preg_replace('#:\d+$#', '', get_local_hostname());
         foreach ($SITE_INFO as $key => $val) {
             if (($key[0] === 'Z') && (substr($key, 0, 13) === 'ZONE_MAPPING_') && (is_array($val))) {
                 $VIRTUALISED_ZONES_CACHE = true;

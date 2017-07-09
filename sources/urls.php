@@ -99,8 +99,8 @@ function get_self_url_easy($script_name_if_cli = false)
     }
 
     $protocol = tacit_https() ? 'https' : 'http';
-    $self_url = $protocol . '://' . cms_srv('HTTP_HOST');
-    $self_url .= cms_srv('REQUEST_URI');
+    $self_url = $protocol . '://' . get_local_hostname();
+    $self_url .= $_SERVER['REQUEST_URI'];
     return $self_url;
 }
 

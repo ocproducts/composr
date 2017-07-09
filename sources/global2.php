@@ -18,6 +18,8 @@
  * @package    core
  */
 
+// NB: Make sure to update the version in minikernel.php too if you add new common functions or change behaviours
+
 /**
  * Standard code module initialisation function.
  *
@@ -276,7 +278,7 @@ function init__global2()
     require_code('global3'); // A lot of support code is present in this
     require_code('web_resources');
     if (!running_script('webdav')) {
-        $http_method = cms_srv('REQUEST_METHOD');
+        $http_method = $_SERVER['REQUEST_METHOD'];
         if ($http_method != 'GET' && $http_method != 'POST' && $http_method != 'HEAD' && $http_method != '') {
             header('HTTP/1.0 405 Method Not Allowed');
             exit();
@@ -289,7 +291,7 @@ function init__global2()
         static_cache((($bot_type !== null) ? STATIC_CACHE__FAST_SPIDER : 0) | STATIC_CACHE__FAILOVER_MODE);
     }
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for bots and possibly guests
-        if (($STATIC_CACHE_ENABLED) && (cms_srv('REQUEST_METHOD') != 'POST')) {
+        if (($STATIC_CACHE_ENABLED) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
             $bot_type = get_bot_type();
             if (($bot_type !== null) && (!empty($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0')) {
                 load_csp(array('csp_enabled' => '0'));
@@ -337,7 +339,7 @@ function init__global2()
     }
     require_code('users'); // Users are important due to permissions
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) { // Fast caching for Guests
-        if (($STATIC_CACHE_ENABLED) && (cms_srv('REQUEST_METHOD') != 'POST')) {
+        if (($STATIC_CACHE_ENABLED) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
             if ((isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1') && (is_guest(null, true)) && (get_param_integer('keep_failover', null) !== 0)) {
                 require_code('static_cache');
                 static_cache(STATIC_CACHE__GUEST);
@@ -392,7 +394,7 @@ function init__global2()
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');
-    if (($spam_check_level == 'EVERYTHING') || ((cms_srv('REQUEST_METHOD') == 'POST') && (($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') && (is_guest())))) {
+    if (($spam_check_level == 'EVERYTHING') || (($_SERVER['REQUEST_METHOD'] == 'POST') && (($spam_check_level == 'ACTIONS') || ($spam_check_level == 'GUESTACTIONS') && (is_guest())))) {
         require_code('antispam');
         check_for_spam(null, null, true);
     }
@@ -537,12 +539,56 @@ function init__global2()
  */
 function fixup_bad_php_env_vars()
 {
+    // Variables may be defined in $_ENV on some servers
+    $understood = array(
+        'DOCUMENT_ROOT',
+        'HTTP_ACCEPT',
+        'HTTP_ACCEPT_CHARSET',
+        'HTTP_ACCEPT_LANGUAGE',
+        'HTTP_CLIENT_IP',
+        'HTTP_HOST',
+        'HTTP_IF_MODIFIED_SINCE',
+        'HTTP_ORIGIN',
+        'PATH_INFO',
+        'HTTP_PREFER',
+        'HTTP_RANGE',
+        'HTTP_REFERER',
+        'HTTP_UA_OS',
+        'HTTP_USER_AGENT',
+        'HTTP_X_FORWARDED_FOR',
+        'HTTP_X_FORWARDED_PROTO',
+        'HTTPS',
+        'PHP_SELF',
+        'QUERY_STRING',
+        'REMOTE_ADDR',
+        'REQUEST_METHOD',
+        'REQUEST_URI',
+        'SCRIPT_FILENAME',
+        'SCRIPT_NAME',
+        'SERVER_ADDR',
+        'SERVER_NAME',
+        'SERVER_SOFTWARE',
+    );
+    foreach ($understood as $key) {
+        if (empty($_SERVER[$key])) {
+            if (empty($_ENV[$key])) {
+                $_SERVER[$key] = '';
+            } else {
+                $_SERVER[$key] = $_ENV[$key];
+            }
+        }
+    }
+
     // We can trust these to be there
-    $script_filename = empty($_SERVER['SCRIPT_FILENAME']) ? $_ENV['SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME']; // If was not here, was added by our front-end controller script
+    $script_filename = $_SERVER['SCRIPT_FILENAME']; // If was not here, was added by our front-end controller script
 
     // Now derive missing ones...
 
-    $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? (empty($_ENV['DOCUMENT_ROOT']) ? '' : $_ENV['DOCUMENT_ROOT']) : $_SERVER['DOCUMENT_ROOT'];
+    if ((empty($_SERVER['SERVER_ADDR'])) && (!empty($_SERVER['LOCAL_ADDR']))) {
+        $_SERVER['SERVER_ADDR'] = $_SERVER['LOCAL_ADDR'];
+    }
+
+    $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? '' : $_SERVER['DOCUMENT_ROOT'];
     if (empty($document_root)) {
         $document_root = '';
 
@@ -569,22 +615,22 @@ function fixup_bad_php_env_vars()
         $_SERVER['DOCUMENT_ROOT'] = $document_root;
     }
 
-    $php_self = empty($_SERVER['PHP_SELF']) ? (empty($_ENV['PHP_SELF']) ? '' : $_ENV['PHP_SELF']) : $_SERVER['PHP_SELF'];
+    $php_self = empty($_SERVER['PHP_SELF']) ? '' : $_SERVER['PHP_SELF'];
     if ((empty($php_self)) || (/*or corrupt*/strpos($php_self, '.php') === false)) {
         // We're really desparate if we have to derive this, but here we go
         $_SERVER['PHP_SELF'] = '/' . preg_replace('#^' . preg_quote($document_root, '#') . '/#', '', $script_filename);
-        $path_info = empty($_SERVER['PATH_INFO']) ? (empty($_ENV['PATH_INFO']) ? '' : $_ENV['PATH_INFO']) : $_SERVER['PATH_INFO'];
+        $path_info = empty($_SERVER['PATH_INFO']) ? '' : $_SERVER['PATH_INFO'];
         if (!empty($path_info)) { // Add in path-info if we have it
             $_SERVER['PHP_SELF'] .= $path_info;
         }
         $php_self = $_SERVER['PHP_SELF'];
     }
 
-    if ((empty($_SERVER['SCRIPT_NAME'])) && (empty($_ENV['SCRIPT_NAME']))) {
+    if (empty($_SERVER['SCRIPT_NAME'])) {
         $_SERVER['SCRIPT_NAME'] = preg_replace('#\.php/.*#', '.php', $php_self); // Same as PHP_SELF except without path-info on the end
     }
 
-    if ((empty($_SERVER['REQUEST_URI'])) && (empty($_ENV['REQUEST_URI']))) {
+    if (empty($_SERVER['REQUEST_URI'])) {
         if (isset($_SERVER['REDIRECT_URL'])) {
             $_SERVER['REQUEST_URI'] = $_SERVER['REDIRECT_URL'];
             if (strpos($_SERVER['REQUEST_URI'], '?') === false) {
@@ -602,9 +648,28 @@ function fixup_bad_php_env_vars()
         }
     }
 
-    if ((empty($_SERVER['QUERY_STRING'])) && (empty($_ENV['QUERY_STRING']))) {
+    if (empty($_SERVER['QUERY_STRING'])) {
         $_SERVER['QUERY_STRING'] = http_build_query($_GET);
     }
+}
+
+/**
+ * Get server hostname.
+ *
+ * @return string The hostname
+ */
+function get_local_hostname()
+{
+    if (!empty($_SERVER['HTTP_HOST'])) {
+        return $_SERVER['HTTP_HOST'];
+    }
+    if (php_function_allowed('gethostname')) {
+        return gethostname();
+    }
+    if (!empty($_SERVER['SERVER_ADDR'])) {
+        return $_SERVER['SERVER_ADDR'];
+    }
+    return 'localhost';
 }
 
 /**
@@ -1008,7 +1073,7 @@ function is_browser_decaching()
     return false; // The below technique stopped working well, Chrome sends cache-control too freely
 
     /*
-    $header_method = (array_key_exists('HTTP_CACHE_CONTROL', $_SERVER)) && ($_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache') && (cms_srv('REQUEST_METHOD') != 'POST') && ((!function_exists('browser_matches')));
+    $header_method = ($_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache') && ($_SERVER['REQUEST_METHOD'] != 'POST') && ((!function_exists('browser_matches')));
     $BROWSER_DECACHEING = (($header_method) && ((array_key_exists('FORUM_DRIVER', $GLOBALS)) && (has_actual_page_access(get_member(), 'admin_cleanup')) || ($GLOBALS['IS_ACTUALLY_ADMIN'])));
     return $BROWSER_DECACHEING;
     */
@@ -1024,7 +1089,7 @@ function current_script()
     // Strip down current URL so we can do a simple compare
     global $WHAT_IS_RUNNING_CACHE;
     if ($WHAT_IS_RUNNING_CACHE === null) {
-        $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
+        $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
         $stripped_current_url = basename($script_name);
         $WHAT_IS_RUNNING_CACHE = substr($stripped_current_url, 0, strpos($stripped_current_url, '.'));
     }
@@ -1165,27 +1230,15 @@ function get_domain()
             $ret = preg_replace('#^www\.#', '', $matches[1]);
         }
 
-        // Derive from other possibilities. Note that we can't use cms_srv due to bootstrap order (it's in global3.php)
+        // Derive from other possibilities
         if (!empty($_SERVER['HTTP_HOST'])) {
             return preg_replace('#^www\.#', '', $_SERVER['HTTP_HOST']);
-        }
-        if (!empty($_ENV['HTTP_HOST'])) {
-            return preg_replace('#^www\.#', '', $_ENV['HTTP_HOST']);
         }
         if (php_function_allowed('gethostname')) {
             return preg_replace('#^www\.#', '', gethostname());
         }
         if (!empty($_SERVER['SERVER_ADDR'])) {
             return preg_replace('#^www\.#', '', $_SERVER['SERVER_ADDR']);
-        }
-        if (!empty($_ENV['SERVER_ADDR'])) {
-            return preg_replace('#^www\.#', '', $_ENV['SERVER_ADDR']);
-        }
-        if (!empty($_SERVER['LOCAL_ADDR'])) {
-            return preg_replace('#^www\.#', '', $_SERVER['LOCAL_ADDR']);
-        }
-        if (!empty($_ENV['LOCAL_ADDR'])) {
-            return preg_replace('#^www\.#', '', $_ENV['LOCAL_ADDR']);
         }
         return 'localhost';
     }
@@ -1304,7 +1357,7 @@ function in_safe_mode()
         }
     }
 
-    $backdoor_ip = ((!empty($SITE_INFO['backdoor_ip'])) && (cms_srv('REMOTE_ADDR') == $SITE_INFO['backdoor_ip']) && (cms_srv('HTTP_X_FORWARDED_FOR') == ''));
+    $backdoor_ip = ((!empty($SITE_INFO['backdoor_ip'])) && ($_SERVER['REMOTE_ADDR'] == $SITE_INFO['backdoor_ip']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == ''));
 
     global $CHECKING_SAFEMODE, $REQUIRED_CODE;
     if (!$backdoor_ip) {
@@ -1323,53 +1376,6 @@ function in_safe_mode()
     $ret = (($url_says) && ($backdoor_ip || (isset($GLOBALS['IS_ACTUALLY_ADMIN']) && ($GLOBALS['IS_ACTUALLY_ADMIN'])) || (!array_key_exists('FORUM_DRIVER', $GLOBALS)) || ($GLOBALS['FORUM_DRIVER'] === null) || (!function_exists('get_member')) || (empty($GLOBALS['MEMBER_CACHED'])) || ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))));
     $CHECKING_SAFEMODE = false;
     return $ret;
-}
-
-/**
- * Get server environment variables.
- *
- * @param  string $key The variable name
- * @return string The variable value ('' means unknown)
- */
-function cms_srv($key)
-{
-    if (isset($_SERVER[$key])) {
-        return ($_SERVER[$key]);
-    }
-    if ((isset($_ENV)) && (isset($_ENV[$key]))) {
-        return ($_ENV[$key]);
-    }
-
-    if ($key == 'HTTP_HOST') {
-        if (!empty($_SERVER['HTTP_HOST'])) {
-            return $_SERVER['HTTP_HOST'];
-        }
-        if (!empty($_ENV['HTTP_HOST'])) {
-            return $_ENV['HTTP_HOST'];
-        }
-        if (function_exists('gethostname')) {
-            return gethostname();
-        }
-        if (!empty($_SERVER['SERVER_ADDR'])) {
-            return $_SERVER['SERVER_ADDR'];
-        }
-        if (!empty($_ENV['SERVER_ADDR'])) {
-            return $_ENV['SERVER_ADDR'];
-        }
-        if (!empty($_SERVER['LOCAL_ADDR'])) {
-            return $_SERVER['LOCAL_ADDR'];
-        }
-        if (!empty($_ENV['LOCAL_ADDR'])) {
-            return $_ENV['LOCAL_ADDR'];
-        }
-        return 'localhost';
-    }
-
-    if ($key == 'SERVER_ADDR') { // IIS issue
-        return cms_srv('LOCAL_ADDR');
-    }
-
-    return '';
 }
 
 /**
@@ -1473,7 +1479,7 @@ function get_base_url($https = null, $zone_for = null)
     global $SITE_INFO;
     if ((!isset($SITE_INFO)) || (empty($SITE_INFO['base_url']))) { // Try and autodetect the base URL if it's not configured
         $domain = get_domain();
-        $script_name_path = dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : ''));
+        $script_name_path = dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '');
         if (($GLOBALS['RELATIVE_PATH'] === '') || (strpos($script_name_path, $GLOBALS['RELATIVE_PATH']) !== false)) {
             $script_name_path = preg_replace('#/' . preg_quote($GLOBALS['RELATIVE_PATH'], '#') . '$#', '', $script_name_path);
         } else {
@@ -1490,7 +1496,7 @@ function get_base_url($https = null, $zone_for = null)
     global $CURRENT_SHARE_USER;
     if ($CURRENT_SHARE_USER !== null) {
         // Put in access domain, in case there is a custom domain attached to the site
-        $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : '');
+        $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
         $base_url = preg_replace('#^http(s)?://([\w]+\.)?' . preg_quote($SITE_INFO['custom_share_domain'], '#') . '#', 'http$1://' . $domain, $base_url);
     }
     $found_mapping = false;

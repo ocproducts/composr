@@ -287,9 +287,9 @@ function page_not_found($codename, $zone)
     }
 
     require_code('global4');
-    if ((cms_srv('HTTP_REFERER') != '') && (!handle_has_checked_recently('request-' . $zone . ':' . $codename))) {
+    if (($_SERVER['HTTP_REFERER'] != '') && (!handle_has_checked_recently('request-' . $zone . ':' . $codename))) {
         require_code('failure');
-        relay_error_notification(do_lang('_MISSING_RESOURCE', $zone . ':' . $codename, do_lang('PAGE')) . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_page');
+        relay_error_notification(do_lang('_MISSING_RESOURCE', $zone . ':' . $codename, do_lang('PAGE')) . ' ' . do_lang('REFERRER', $_SERVER['HTTP_REFERER'], substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_page');
     }
 
     $title = get_screen_title('ERROR_OCCURRED');

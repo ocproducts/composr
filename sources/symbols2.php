@@ -2090,7 +2090,7 @@ function ecv2_PREG_MATCH($lang, $escaped, $param)
  */
 function ecv2_QUERY_STRING($lang, $escaped, $param)
 {
-    $value = cms_srv('QUERY_STRING');
+    $value = $_SERVER['QUERY_STRING'];
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -2470,8 +2470,6 @@ function ecv2_MATURITY_FILTER_REQUESTED($lang, $escaped, $param)
         }
     } elseif (isset($_SERVER['HTTP_PREFER'])) {
         $safe = $_SERVER['HTTP_PREFER'];
-    } elseif (isset($_ENV['HTTP_PREFER'])) {
-        $safe = $_ENV['HTTP_PREFER'];
     }
     if (strtolower($safe) == 'safe') {
         return '1';

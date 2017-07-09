@@ -122,14 +122,14 @@ function check_posted_field($name, $val, $filters)
 {
     $evil = false;
 
-    $referer = cms_srv('HTTP_REFERER');
+    $referer = $_SERVER['HTTP_REFERER'];
     if ($referer == '') {
-        $referer = cms_srv('HTTP_ORIGIN');
+        $referer = $_SERVER['HTTP_ORIGIN'];
     }
 
     $is_true_referer = (substr($referer, 0, 7) === 'http://') || (substr($referer, 0, 8) === 'https://');
 
-    if ((cms_srv('REQUEST_METHOD') === 'POST') && (!is_guest())) {
+    if (($_SERVER['REQUEST_METHOD'] === 'POST') && (!is_guest())) {
         if ($is_true_referer) {
             $canonical_referer_domain = strip_url_to_representative_domain($referer);
             $canonical_baseurl_domain = strip_url_to_representative_domain(get_base_url());
@@ -215,7 +215,7 @@ function get_trusted_sites($level)
         $base_url = $SITE_INFO['base_url'];
         $trusted_sites[] = parse_url($base_url, PHP_URL_HOST);
     } else {
-        $host = cms_srv('HTTP_HOST');
+        $host = get_local_hostname();
         if ($host != '') {
             $trusted_sites[] = $host;
         }

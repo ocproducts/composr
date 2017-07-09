@@ -374,7 +374,7 @@ function generate_logo($name, $font_choice = 'Vera', $logo_theme_image = 'logo/d
         header('Content-type: image/png');
         //header('Content-Disposition: attachment; filename="-logo.png"');
 
-        if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+        if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
             return '';
         }
 

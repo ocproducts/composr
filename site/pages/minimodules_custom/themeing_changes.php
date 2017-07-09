@@ -69,7 +69,7 @@ $special_file_types = array(
 );
 
 // Read defaults
-if (cms_srv('REQUEST_METHOD') == 'POST') { // From form
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { // From form
     $files_to_show = array();
     $i = 0;
     foreach ($special_file_types as $label => $_search) {
@@ -88,7 +88,7 @@ if (cms_srv('REQUEST_METHOD') == 'POST') { // From form
         'themes/default/templates/GLOBAL_HTML_WRAP.tpl',
     );
 }
-if (cms_srv('REQUEST_METHOD') == 'POST') { // From form
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { // From form
     $versions_interested_in = isset($_POST['releases']) ? $_POST['releases'] : array();
 } elseif (isset($_GET['releases'])) { // By URL
     $versions_interested_in = explode(',', $_GET['releases']);

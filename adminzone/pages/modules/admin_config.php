@@ -656,14 +656,14 @@ class Module_admin_config
 
         $category = get_param_string('id', 'MAIN');
 
-        if (cms_srv('REQUEST_METHOD') != 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
         }
 
         // Make sure we haven't locked ourselves out due to URL Scheme support
         if (
             (post_param_string('url_scheme', 'RAW') != 'RAW') &&
-            (substr(cms_srv('SERVER_SOFTWARE'), 0, 6) == 'Apache') &&
+            (substr($_SERVER['SERVER_SOFTWARE'], 0, 6) == 'Apache') &&
             (
                 (!file_exists(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess')) ||
                 (stripos(file_get_contents(get_file_base() . DIRECTORY_SEPARATOR . '.htaccess'), 'RewriteEngine on') === false) ||

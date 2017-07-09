@@ -333,10 +333,10 @@ abstract class HttpDownloader
 
         // Prevent DOS loop attack...
 
-        if (cms_srv('HTTP_USER_AGENT') == $this->ua) {
+        if ($_SERVER['HTTP_USER_AGENT'] == $this->ua) {
             $ua = 'Composr-recurse';
         }
-        if (cms_srv('HTTP_USER_AGENT') == 'Composr-recurse') {
+        if ($_SERVER['HTTP_USER_AGENT'] == 'Composr-recurse') {
             return;
         }
         if ($DOWNLOAD_LEVEL == 8) {
@@ -383,10 +383,7 @@ abstract class HttpDownloader
 
         if ($this->do_ip_forwarding) { // For cases where we have IP-forwarding, and a strong firewall (i.e. blocked to our own domain's IP by default)
             if ($config_ip_forwarding == '1') {
-                $this->connect_to = cms_srv('LOCAL_ADDR');
-                if ($this->connect_to == '') {
-                    $this->connect_to = cms_srv('SERVER_ADDR');
-                }
+                $this->connect_to = $_SERVER['SERVER_ADDR'];
                 if ($this->connect_to == '') {
                     $this->connect_to = '127.0.0.1'; // "localhost" can fail due to IP6
                 }

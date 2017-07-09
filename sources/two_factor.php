@@ -81,7 +81,7 @@ function maintenance_script_htaccess_option_available()
         return false;
     }
 
-    $server_software = cms_srv('SERVER_SOFTWARE');
+    $server_software = $_SERVER['SERVER_SOFTWARE'];
     if ((stripos($server_software, 'Apache') === false) && (stripos($server_software, 'LiteSpeed') === false)) {
         return false;
     }

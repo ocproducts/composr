@@ -775,7 +775,7 @@ class Module_admin_lang
         $descriptions = get_lang_file_section(fallback_lang(), $lang_file);
         $runtime_processing = get_lang_file_section(fallback_lang(), $lang_file, 'runtime_processing');
 
-        if ((count($_POST) == 0) && (cms_srv('REQUEST_METHOD') != 'POST')) {
+        if ((count($_POST) == 0) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 

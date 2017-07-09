@@ -131,7 +131,7 @@ function static_cache($mode)
 {
     global $SITE_INFO;
 
-    $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
+    $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
     if (basename($script_name) == 'backend.php') {
         $file_extension = '.xml';
     } else {
@@ -146,7 +146,7 @@ function static_cache($mode)
 
     if (($mode & STATIC_CACHE__FAILOVER_MODE) != 0) {
         // Correct HTTP status
-        if ((!function_exists('browser_matches')) || (!function_exists('cms_srv')) || ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false))) {
+        if ((!function_exists('browser_matches')) || ((!browser_matches('ie')) && (strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false))) {
             header('HTTP/1.0 503 Service Temporarily Unavailable');
         }
     }
@@ -239,13 +239,13 @@ function static_cache($mode)
         $mtime = filemtime($fast_cache_path);
         if (($mtime > time() - $expires) || (($mode & STATIC_CACHE__FAILOVER_MODE) != 0)) {
             // Only bots can do HTTP caching, as they won't try to login and end up reaching a previously cached page
-            if ((($mode & STATIC_CACHE__FAST_SPIDER) != 0) && (($mode & STATIC_CACHE__FAILOVER_MODE) == 0) && (function_exists('cms_srv'))) {
+            if ((($mode & STATIC_CACHE__FAST_SPIDER) != 0) && (($mode & STATIC_CACHE__FAILOVER_MODE) == 0)) {
                 header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expires) . ' GMT');
                 header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $mtime) . ' GMT');
                 header('Cache-Control: public, max-age=' . strval($expires));
                 header_remove('Pragma');
 
-                $since = cms_srv('HTTP_IF_MODIFIED_SINCE');
+                $since = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
                 if ($since != '') {
                     if (strtotime($since) < $mtime) {
                         header('HTTP/1.0 304 Not Modified');

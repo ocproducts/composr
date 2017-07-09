@@ -32,7 +32,7 @@ class Hook_check_server_software
     {
         $warning = array();
 
-        $server_software = cms_srv('SERVER_SOFTWARE');
+        $server_software = $_SERVER['SERVER_SOFTWARE'];
 
         /*$unsupported_server_software = array('lighttpd', 'Tengine', 'nginx', 'IdeaWebServer');
         foreach ($unsupported_server_software as $_server_software) {

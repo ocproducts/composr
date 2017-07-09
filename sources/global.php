@@ -343,7 +343,7 @@ function tacit_https()
 {
     static $tacit_https = null;
     if ($tacit_https === null) {
-        $tacit_https = ((cms_srv('HTTPS') != '') && (cms_srv('HTTPS') != 'off')) || (cms_srv('HTTP_X_FORWARDED_PROTO') == 'https');
+        $tacit_https = (($_SERVER['HTTPS'] != '') && ($_SERVER['HTTPS'] != 'off')) || ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https');
     }
     return $tacit_https;
 }

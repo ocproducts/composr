@@ -171,7 +171,7 @@ function uninstall_cns()
  */
 function install_cns($upgrade_from = null)
 {
-    if (cms_srv('REQUEST_METHOD') != 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         exit(); // Needed as YSlow can load as GET's in background and cause horrible results
     }
 

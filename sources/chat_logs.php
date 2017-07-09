@@ -89,7 +89,7 @@ function chat_logs_script()
     }
     header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
-    if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+    if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return;
     }
 

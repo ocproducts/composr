@@ -515,7 +515,7 @@ By default browsers do have referrers enabled, but some firewall products may di
 
 To check you have referrers enabled, go to Commandr (Admin Zone > Tools > Commandr) and type:
 [code="Commandr"]
-:echo cms_srv('HTTP_REFERER');
+:echo $_SERVER['HTTP_REFERER'];
 [/code]
 You should get a URL back that is a URL under your own website.
 

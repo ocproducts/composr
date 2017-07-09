@@ -237,7 +237,7 @@ function upgrade_script()
                     echo '<form title="' . do_lang('PROCEED') . '" enctype="multipart/form-data" action="upgrader.php?type=_file_upgrade" method="post">' . post_fields_relay();
                     echo '<p><label for="url">' . do_lang('URL') . '</label> <input type="text" id="url" name="url" size="80" value="' . escape_html(base64_decode(get_param_string('tar_url', '', INPUT_FILTER_URL_GENERAL))) . '" /></p>';
                     echo '<p><label for="dry_run"><input type="checkbox" id="dry_run" name="dry_run" value="1" /> ' . do_lang('FU_DRY_RUN') . '</label></p>';
-                    if ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
+                    if ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE'])) { // for ocProducts to use on own site, for testing
                         echo '<p><label for="upload">' . do_lang('ALT_FIELD', do_lang('UPLOAD')) . '</label> <input type="file" id="upload" name="upload" /></p>';
                         echo '<script ' . csp_nonce_html() . '>var url=document.getElementById(\'url\'); url.addEventListener(\'change\', function() { document.getElementById(\'upload\').disabled=url.value!=\'\'; });</script>';
                     }
@@ -263,7 +263,7 @@ function upgrade_script()
 
                     // Download file
                     require_code('tar');
-                    if ((post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') && ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
+                    if ((post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') && ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
                         $temp_path = $_FILES['upload']['tmp_name'];
                     } else {
                         if (post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') {
@@ -678,20 +678,20 @@ function up_do_login($message = null)
     }
     if ($ftp_folder === null) {
         if (empty($SITE_INFO['ftp_folder'])) {
-            $dr = cms_srv('DOCUMENT_ROOT');
+            $dr = $_SERVER['DOCUMENT_ROOT'];
             if (strpos($dr, '/') !== false) {
                 $dr_parts = explode('/', $dr);
             } else {
                 $dr_parts = explode('\\', $dr);
             }
             $webdir_stub = $dr_parts[count($dr_parts) - 1];
-            $pos = strpos(cms_srv('SCRIPT_NAME'), 'upgrader.php');
+            $pos = strpos($_SERVER['SCRIPT_NAME'], 'upgrader.php');
             if ($pos === false) {
-                $pos = strlen(cms_srv('SCRIPT_NAME'));
+                $pos = strlen($_SERVER['SCRIPT_NAME']);
             } else {
                 $pos--;
             }
-            $ftp_folder = '/' . $webdir_stub . substr(cms_srv('SCRIPT_NAME'), 0, $pos);
+            $ftp_folder = '/' . $webdir_stub . substr($_SERVER['SCRIPT_NAME'], 0, $pos);
         } else {
             $ftp_folder = $SITE_INFO['ftp_folder'];
         }

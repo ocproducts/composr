@@ -290,7 +290,7 @@ class Module_admin_revisions
     {
         check_privilege('delete_revisions');
 
-        if (cms_srv('REQUEST_METHOD') != 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
         }
 

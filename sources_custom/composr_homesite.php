@@ -755,9 +755,9 @@ function do_backup_script()
     $new_length = strlen($data);
 
     // They're trying to resume (so update our range)
-    $httprange = cms_srv('HTTP_RANGE');
+    $httprange = $_SERVER['HTTP_RANGE'];
     if (strlen($httprange) > 0) {
-        $_range = explode('=', cms_srv('HTTP_RANGE'));
+        $_range = explode('=', $_SERVER['HTTP_RANGE']);
         if (count($_range) == 2) {
             if (strpos($_range[0], '-') === false) {
                 $_range = array_reverse($_range);

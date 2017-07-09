@@ -399,7 +399,7 @@ function prevent_double_submit($type, $a = null, $b = null)
         return;
     }
 
-    if (strpos(cms_srv('SCRIPT_NAME'), '_tests') !== false) {
+    if (strpos($_SERVER['SCRIPT_NAME'], '_tests') !== false) {
         return;
     }
 

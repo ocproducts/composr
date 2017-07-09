@@ -80,11 +80,11 @@ function init__site()
     // SEO redirection
     require_code('urls');
     if (can_try_url_schemes()) {
-        $ruri = cms_srv('REQUEST_URI');
+        $ruri = $_SERVER['REQUEST_URI'];
 
         $url_scheme = get_option('url_scheme');
         if (($url_scheme == 'PG') || ($url_scheme == 'HTM')) {
-            if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
+            if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
                 require_code('permissions');
                 set_http_status_code(301);
                 header('Location: ' . escape_header(get_self_url(true)));
@@ -94,18 +94,18 @@ function init__site()
     }
 
     // Search engine having session in URL, we don't like this
-    if ((get_bot_type() !== null) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_string('keep_session', null) !== null)) {
+    if ((get_bot_type() !== null) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (get_param_string('keep_session', null) !== null)) {
         set_http_status_code(301);
         header('Location: ' . escape_header(get_self_url(true, false, array('keep_session' => null, 'keep_print' => null))));
         exit();
     }
 
     if (running_script('index')) {
-        $access_host = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
+        $access_host = preg_replace('#:.*#', '', get_local_hostname());
 
         // Detect bad access domain
         global $SITE_INFO;
-        if (($access_host != '') && ((isset($_SERVER['HTTP_HOST'])) || (isset($_ENV['HTTP_HOST']))) && (empty($GLOBALS['EXTERNAL_CALL']))) {
+        if (($access_host != '') && (isset($_SERVER['HTTP_HOST'])) && (empty($GLOBALS['EXTERNAL_CALL']))) {
             $parsed_base_url = parse_url(get_base_url());
 
             if ((array_key_exists('host', $parsed_base_url)) && (strtolower($parsed_base_url['host']) != strtolower($access_host))) {
@@ -132,7 +132,7 @@ function init__site()
 
             // Detect bad cookie path
             $cookie_path = get_cookie_path();
-            $access_path = '/' . cms_srv('SCRIPT_NAME');
+            $access_path = '/' . $_SERVER['SCRIPT_NAME'];
             if (!empty($cookie_path) && !empty($access_path)) {
                 if (substr($access_path, 0, strlen($cookie_path)) != $cookie_path) {
                     attach_message(do_lang_tempcode('INCORRECT_COOKIE_PATH', escape_html($cookie_path), escape_html($access_path)), 'warn');
@@ -771,7 +771,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                 if ($ob_info['view_page_link_pattern'] == $looking_for) {
                     if (is_numeric($url_id)) { // Lookup and redirect to moniker
                         $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $url_id), $zone);
-                        if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && (cms_srv('REQUEST_METHOD') != 'POST')) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).
+                        if (($correct_moniker !== null) && ($correct_moniker != $url_id) && (get_param_integer('keep_failover', null) !== 0) && ($_SERVER['REQUEST_METHOD'] != 'POST')) { // test is very unlikely to fail. Will only fail if the title of the resource was numeric - in which case the moniker was chosen to be the ID (NOT the number in the title, as that would have created ambiguity).
                             set_http_status_code(301);
                             $_new_url = build_url(array('page' => '_SELF', 'id' => $correct_moniker), '_SELF', array(), true);
                             $new_url = $_new_url->evaluate();
@@ -790,7 +790,7 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
                         $_GET['id'] = $monikers[0]['m_resource_id']; // We need to know the ID number rather than the moniker
 
                         $deprecated = $monikers[0]['m_deprecated'] == 1;
-                        if (($deprecated) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0)) {
+                        if (($deprecated) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (get_param_integer('keep_failover', null) !== 0)) {
                             $correct_moniker = find_id_moniker(array('page' => $page, 'type' => get_param_string('type', 'browse'), 'id' => $monikers[0]['m_resource_id']), $zone);
                             if ($correct_moniker != $url_id) { // Just in case database corruption means ALL are deprecated
                                 set_http_status_code(301);
@@ -1085,7 +1085,7 @@ function do_site()
 function save_static_caching($out, $mime_type = 'text/html')
 {
     global $SITE_INFO;
-    if ((cms_srv('REQUEST_METHOD') != 'POST') && (isset($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0') && (is_guest()) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+    if (($_SERVER['REQUEST_METHOD'] != 'POST') && (isset($SITE_INFO['fast_spider_cache'])) && ($SITE_INFO['fast_spider_cache'] != '0') && (is_guest()) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
         $bot_type = get_bot_type();
         $supports_failover_mode = (isset($SITE_INFO['failover_mode'])) && ($SITE_INFO['failover_mode'] != 'off');
         $supports_guest_caching = (isset($SITE_INFO['any_guest_cached_too'])) && ($SITE_INFO['any_guest_cached_too'] == '1');
@@ -2077,7 +2077,7 @@ function log_stats($string, $pg_time)
     $session_id = get_session_id();
     $member_id = get_member();
     $time = time();
-    $referer = cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255);
+    $referer = cms_mb_substr($_SERVER['HTTP_REFERER'], 0, 255);
     $browser = cms_mb_substr(get_browser_string(), 0, 255);
     $os = cms_mb_substr(get_os_string(), 0, 255);
     if ($os === null) {

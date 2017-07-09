@@ -386,7 +386,7 @@ class DecisionTree
         $details = $this->decision_tree[$tree_position];
 
         // Field inputters for less-basic field inputting (only supported for POST fields)
-        if ((isset($details['questions'])) && (cms_srv('REQUEST_METHOD') == 'POST')) {
+        if ((isset($details['questions'])) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
             $i = 0;
             foreach ($details['questions'] as $question_name => $question_details) {
                 if (post_param_integer('_processed__' . $question_name, 0) == 0) {
@@ -413,7 +413,7 @@ class DecisionTree
         }
 
         // Comcode prepend/append (only supported for POST fields)
-        if ((isset($details['questions'])) && (cms_srv('REQUEST_METHOD') == 'POST')) {
+        if ((isset($details['questions'])) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
             foreach ($details['questions'] as $question_name => $question_details) {
                 if (!empty($_POST[$question_name])) {
                     $val = $_POST[$question_name];

@@ -56,7 +56,7 @@ function captcha_script()
         header('Content-Disposition: inline; filename="captcha.wav"');
         //header('Content-Disposition: attachment; filename="captcha.wav"');  Useful for testing
 
-        if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+        if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
             return;
         }
 

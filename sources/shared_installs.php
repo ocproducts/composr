@@ -32,10 +32,10 @@ function current_share_user()
 
     global $SITE_INFO;
     $custom_share_domain = $SITE_INFO['custom_share_domain'];
-    $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : (isset($_ENV['HTTP_HOST']) ? $_ENV['HTTP_HOST'] : $custom_share_domain);
+    $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $custom_share_domain;
     $domain = preg_replace('#:\d+#', '', $domain);
     if ($domain == $custom_share_domain) { // Get from the access path
-        $path = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
+        $path = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
         if (substr($path, 0, strlen($SITE_INFO['custom_share_path']) + 1) == '/' . $SITE_INFO['custom_share_path']) {
             $path = substr($path, strlen($SITE_INFO['custom_share_path']) + 1);
         }

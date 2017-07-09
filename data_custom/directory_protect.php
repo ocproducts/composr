@@ -104,7 +104,7 @@ header('Accept-Ranges: bytes');
 $time = filemtime($_full);
 set_http_caching($time);
 
-if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
     return '';
 }
 
@@ -115,9 +115,9 @@ $new_length = $size;
 safe_ini_set('zlib.output_compression', 'Off');
 
 // They're trying to resume (so update our range)
-$httprange = cms_srv('HTTP_RANGE');
+$httprange = $_SERVER['HTTP_RANGE'];
 if (strlen($httprange) > 0) {
-    $_range = explode('=', cms_srv('HTTP_RANGE'));
+    $_range = explode('=', $_SERVER['HTTP_RANGE']);
     if (count($_range) == 2) {
         if (strpos($_range[0], '-') === false) {
             $_range = array_reverse($_range);

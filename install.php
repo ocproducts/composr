@@ -543,7 +543,7 @@ function step_3()
     }
     if (($email != '') || ($advertise_on == 1)) {
         require_code('files');
-        http_get_contents('http://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode(static_evaluate_tempcode(protect_url_parameter('http://' . cms_srv('HTTP_HOST') . cms_srv('SCRIPT_NAME')))) . '&email=' . urlencode($email) . '&advertise_on=' . strval($advertise_on) . '&lang=' . $INSTALL_LANG, array('trigger_error' => false));
+        http_get_contents('http://compo.sr/uploads/website_specific/compo.sr/scripts/newsletter_join.php?url=' . urlencode(static_evaluate_tempcode(protect_url_parameter('http://' . get_local_hostname() . $_SERVER['SCRIPT_NAME']))) . '&email=' . urlencode($email) . '&advertise_on=' . strval($advertise_on) . '&lang=' . $INSTALL_LANG, array('trigger_error' => false));
     }
 
     // Forum chooser
@@ -782,7 +782,7 @@ function step_4()
     $member_cookie = $PROBED_FORUM_CONFIG['cookie_member_id'];
     $pass_cookie = $PROBED_FORUM_CONFIG['cookie_member_hash'];
     $multi_lang_content = file_exists(get_file_base() . '/.git')/*randomise in dev mode*/ ? mt_rand(0, 1) : 0;
-    $domain = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
+    $domain = preg_replace('#:.*#', '', get_local_hostname());
 
     $specifics = $GLOBALS['FORUM_DRIVER']->install_specifics();
 
@@ -875,7 +875,7 @@ function step_4()
     if ($ftp_username === null) {
         $ftp_username = '';
     }
-    $dr = array_key_exists('DOCUMENT_ROOT', $_SERVER) ? $_SERVER['DOCUMENT_ROOT'] : (array_key_exists('DOCUMENT_ROOT', $_ENV) ? $_ENV['DOCUMENT_ROOT'] : '');
+    $dr = array_key_exists('DOCUMENT_ROOT', $_SERVER) ? $_SERVER['DOCUMENT_ROOT'] : '';
     if (strpos($dr, '/') !== false) {
         $dr_parts = explode('/', $dr);
     } else {
@@ -892,7 +892,7 @@ function step_4()
         }
     }
 
-    $ftp_folder = '/' . $webdir_stub . basename(cms_srv('SCRIPT_NAME'));
+    $ftp_folder = '/' . $webdir_stub . basename($_SERVER['SCRIPT_NAME']);
     $ftp_domain = $domain;
 
     // Is this autoinstaller? FTP settings...
@@ -2937,7 +2937,7 @@ SecFilterScanPOST Off
 </IfModule>
 END;
 
-    $base = str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')));
+    $base = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
     $clauses[] = <<<END
 <FilesMatch !"\.(jpg|jpeg|gif|png|ico)$">
 ErrorDocument 404 {$base}/index.php?page=404

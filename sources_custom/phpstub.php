@@ -5574,11 +5574,4 @@ NB about paths:
  DOCUMENT_ROOT is never really knowable, don't rely on it
  PHP_SELF is always set but you almost always want SCRIPT_NAME instead (or REQUEST_URI for URLs)
  Chris's notes in the PHP manual (http://php.net/manual/en/reserved.variables.server.php) explain how everything works; we emulate stuff as discussed in the notes
-
-NB about $_SERVER:
- We should always check both $_SERVER and $_ENV for stuff (usually via cms_srv) apart from for...
-  argv
-  PHP_AUTH_USER
-  HTTP_CACHE_CONTROL
-  When we know the architecture involved implicitly (e.g. Demonstratr, Rackspace Cloud, CloudFlare with Apache)
 */

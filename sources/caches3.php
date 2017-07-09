@@ -227,7 +227,7 @@ function erase_cached_language()
                     if (running_script('index')) {
                         $key = 'page__' . get_zone_name() . '__' . get_page_name();
                     } else {
-                        $key = 'script__' . md5(serialize(cms_srv('SCRIPT_NAME')) . serialize($_GET));
+                        $key = 'script__' . md5(serialize($_SERVER['SCRIPT_NAME']) . serialize($_GET));
                     }
                     if ($key . '.lcd' == $file) {
                         continue; // Will be open/locked

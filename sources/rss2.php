@@ -77,7 +77,7 @@ function rss_backend_script()
 {
     // Closed site
     $site_closed = get_option('site_closed');
-    if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (get_ip_address() != cms_srv('SERVER_ADDR')) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
+    if (($site_closed == '1') && (!has_privilege(get_member(), 'access_closed_site')) && (get_ip_address() != $_SERVER['SERVER_ADDR']) && (!$GLOBALS['IS_ACTUALLY_ADMIN'])) {
         header('Content-type: text/plain; charset=' . get_charset());
         @exit(get_option('closed'));
     }
@@ -229,7 +229,7 @@ function rss_backend_script()
     // Firefox (and probably other browsers, but I didn't test) doesn't want to display Atom feeds inline if they're sent as text/xml+atom, even if the Content-Disposition is sent to inline :(
     header('Content-Type: text/xml'); // application/rss+xml ?
 
-    if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+    if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return;
     }
 

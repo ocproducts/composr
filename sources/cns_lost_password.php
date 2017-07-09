@@ -106,12 +106,12 @@ function lost_password_emailer_step($username, $email_address)
         require_code('mail');
         dispatch_mail(do_lang('LOST_PASSWORD_CONFIRM', null, null, null, get_lang($member_id)), $message, array($email), $GLOBALS['FORUM_DRIVER']->get_username($member_id, true), '', '', array('bypass_queue' => true, 'require_recipient_valid_since' => $join_time));
     } else {
-        $old_php_self = cms_srv('PHP_SELF');
-        $old_server_name = cms_srv('SERVER_NAME');
+        $old_php_self = $_SERVER['PHP_SELF'];
+        $old_server_name = $_SERVER['SERVER_NAME'];
 
         // Fiddle to try and anonymise details of the e-mail
         $_SERVER['PHP_SELF'] = "/";
-        $_SERVER['SERVER_NAME'] = cms_srv('SERVER_ADDR');
+        $_SERVER['SERVER_NAME'] = $_SERVER['SERVER_ADDR'];
 
         $from_email = get_option('website_email');
         //$from_email = 'noreply@' . $_SERVER['SERVER_ADDR'];  Won't work on most hosting

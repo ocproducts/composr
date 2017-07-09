@@ -61,7 +61,7 @@ function init__failure()
 function suggest_fatalistic()
 {
     if ((may_see_stack_traces()) && (get_param_integer('keep_fatalistic', 0) == 0) && (running_script('index'))) {
-        if (cms_srv('REQUEST_METHOD') != 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
             $stack_trace_url = build_url(array('page' => '_SELF', 'keep_fatalistic' => 1), '_SELF', array(), true);
             $st = do_lang_tempcode('WARN_TO_STACK_TRACE', escape_html($stack_trace_url->evaluate()));
         } elseif (count($_FILES) == 0 || function_exists('is_plupload') && is_plupload()) {
@@ -334,8 +334,8 @@ function _warn_screen($title, $text, $provide_back = true, $support_match_key_me
     if (strpos($text_eval, do_lang('MISSING_RESOURCE_SUBSTRING')) !== false) {
         require_code('global3');
         set_http_status_code(404);
-        if (cms_srv('HTTP_REFERER') != '') {
-            relay_error_notification($text_eval . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_resource');
+        if ($_SERVER['HTTP_REFERER'] != '') {
+            relay_error_notification($text_eval . ' ' . do_lang('REFERRER', $_SERVER['HTTP_REFERER'], substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_resource');
         }
     }
 
@@ -405,7 +405,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
     if ($see_php_errors) {
         if ($template == 'FATAL_SCREEN') {
             // Supplement error message with some useful info
-            if ((function_exists('cms_version_pretty')) && (function_exists('get_self_url_easy')) && (function_exists('cms_srv'))) {
+            if ((function_exists('cms_version_pretty')) && (function_exists('get_self_url_easy'))) {
                 $sup = ' (version: ' . cms_version_pretty() . ', PHP version: ' . PHP_VERSION . ', URL: ' . get_self_url_easy(true) . ')';
             } else {
                 $sup = '';
@@ -490,8 +490,8 @@ function _generic_exit($text, $template, $support_match_key_messages = false, $l
             if (!headers_sent()) {
                 set_http_status_code(404);
             }
-            if (cms_srv('HTTP_REFERER') != '') {
-                relay_error_notification($text_eval . ' ' . do_lang('REFERRER', cms_srv('HTTP_REFERER'), substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_resource');
+            if ($_SERVER['HTTP_REFERER'] != '') {
+                relay_error_notification($text_eval . ' ' . do_lang('REFERRER', $_SERVER['HTTP_REFERER'], substr(get_browser_string(), 0, 255)), false, 'error_occurred_missing_resource');
             }
         } elseif ($template == 'WARN_SCREEN') {
             if (!headers_sent()) {
@@ -652,11 +652,11 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     }
 
     $ip = get_ip_address();
-    $ip2 = cms_srv('REMOTE_ADDR');
+    $ip2 = $_SERVER['REMOTE_ADDR'];
     if (!is_valid_ip($ip2)) {
         $ip2 = '';
     }
-    if (($ip2 == $ip) || ($ip2 == '') || (cms_srv('SERVER_ADDR') == $ip2)) {
+    if (($ip2 == $ip) || ($ip2 == '') || ($_SERVER['SERVER_ADDR'] == $ip2)) {
         $ip2 = null;
     }
     if (function_exists('get_member')) {
@@ -667,7 +667,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         $username = function_exists('do_lang') ? do_lang('UNKNOWN') : 'Unknown';
     }
 
-    $url = cms_srv('REQUEST_URI');
+    $url = $_SERVER['REQUEST_URI'];
     $post = '';
     foreach ($_POST as $key => $val) {
         if (!is_string($val)) {
@@ -691,7 +691,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     }
     $new_row = array(
         'user_agent' => cms_mb_substr(get_browser_string(), 0, 255),
-        'referer' => cms_mb_substr(cms_srv('HTTP_REFERER'), 0, 255),
+        'referer' => cms_mb_substr($_SERVER['HTTP_REFERER'], 0, 255),
         'user_os' => cms_mb_substr(get_os_string(), 0, 255),
         'reason' => $reason,
         'reason_param_a' => cms_mb_substr($reason_param_a, 0, 255),
@@ -807,7 +807,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 '_GUID' => '6253b3c42c5e6c70d20afa9d1f5b40bd',
                 'STACK_TRACE' => $stack_trace,
                 'USER_AGENT' => get_browser_string(),
-                'REFERER' => cms_srv('HTTP_REFERER'),
+                'REFERER' => $_SERVER['HTTP_REFERER'],
                 'USER_OS' => get_os_string(),
                 'REASON' => $reason_full,
                 'IP' => $ip,
@@ -1122,7 +1122,7 @@ function may_see_stack_traces()
     if ($GLOBALS['CURRENT_SHARE_USER'] !== null) {
         return true; // Demonstratr exception
     }
-    if ((function_exists('cms_srv')) && (cms_srv('REQUEST_METHOD') == '')) {
+    if ($_SERVER['REQUEST_METHOD'] == '') {
         return true; // Command line
     }
     if ((function_exists('running_script')) && (running_script('upgrader'))) {

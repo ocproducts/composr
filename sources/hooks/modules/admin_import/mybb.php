@@ -434,7 +434,7 @@ class Hook_import_mybb
         }
 
         $home_dir_parts = parse_url($homeurl);
-        $forum_dir = cms_srv('DOCUMENT_ROOT') . urldecode($home_dir_parts['path']);
+        $forum_dir = $_SERVER['DOCUMENT_ROOT'] . urldecode($home_dir_parts['path']);
 
         $avatar_gallery_path = $forum_dir . '/' . $avatar_gallery_path;
         $avatar_path = preg_replace('#\.\/#', '/', $avatar_path);
@@ -829,7 +829,7 @@ class Hook_import_mybb
         $homeurl = empty($options[0]['value']) ? '' : $options[0]['value'];
 
         $home_dir_parts = parse_url($homeurl);
-        $forum_dir = cms_srv('DOCUMENT_ROOT') . urldecode($home_dir_parts['path']);
+        $forum_dir = $_SERVER['DOCUMENT_ROOT'] . urldecode($home_dir_parts['path']);
 
         $attachments_dir = $forum_dir . '/uploads/'; // Forum attachments directory
         $file_path = $attachments_dir . $filename;

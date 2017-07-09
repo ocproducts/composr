@@ -45,7 +45,7 @@ function webdav_script()
     global $WEBDAV_LOG_FILE;
     if (is_file($log_path)) {
         $WEBDAV_LOG_FILE = fopen($log_path, 'a');
-        $log_message = 'Request... ' . cms_srv('REQUEST_METHOD') . ': ' . cms_srv('REQUEST_URI');
+        $log_message = 'Request... ' . $_SERVER['REQUEST_METHOD'] . ': ' . $_SERVER['REQUEST_URI'];
         //$log_message.="\n".file_get_contents('php://input'); // Only enable when debugging, as breaks PUT requests (see http://stackoverflow.com/questions/3107624/why-can-php-input-be-read-more-than-once-despite-the-documentation-saying-othe)
         webdav_log($log_message);
     }

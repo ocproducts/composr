@@ -150,12 +150,56 @@ function peek_suppress_error_death()
  */
 function fixup_bad_php_env_vars()
 {
+    // Variables may be defined in $_ENV on some servers
+    $understood = array(
+        'DOCUMENT_ROOT',
+        'HTTP_ACCEPT',
+        'HTTP_ACCEPT_CHARSET',
+        'HTTP_ACCEPT_LANGUAGE',
+        'HTTP_CLIENT_IP',
+        'HTTP_HOST',
+        'HTTP_IF_MODIFIED_SINCE',
+        'HTTP_ORIGIN',
+        'PATH_INFO',
+        'HTTP_PREFER',
+        'HTTP_RANGE',
+        'HTTP_REFERER',
+        'HTTP_UA_OS',
+        'HTTP_USER_AGENT',
+        'HTTP_X_FORWARDED_FOR',
+        'HTTP_X_FORWARDED_PROTO',
+        'HTTPS',
+        'PHP_SELF',
+        'QUERY_STRING',
+        'REMOTE_ADDR',
+        'REQUEST_METHOD',
+        'REQUEST_URI',
+        'SCRIPT_FILENAME',
+        'SCRIPT_NAME',
+        'SERVER_ADDR',
+        'SERVER_NAME',
+        'SERVER_SOFTWARE',
+    );
+    foreach ($understood as $key) {
+        if (empty($_SERVER[$key])) {
+            if (empty($_ENV[$key])) {
+                $_SERVER[$key] = '';
+            } else {
+                $_SERVER[$key] = $_ENV[$key];
+            }
+        }
+    }
+
     // We can trust these to be there
-    $script_filename = empty($_SERVER['SCRIPT_FILENAME']) ? $_ENV['SCRIPT_FILENAME'] : $_SERVER['SCRIPT_FILENAME']; // If was not here, was added by our front-end controller script
+    $script_filename = $_SERVER['SCRIPT_FILENAME']; // If was not here, was added by our front-end controller script
 
     // Now derive missing ones...
 
-    $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? (empty($_ENV['DOCUMENT_ROOT']) ? '' : $_ENV['DOCUMENT_ROOT']) : $_SERVER['DOCUMENT_ROOT'];
+    if ((empty($_SERVER['SERVER_ADDR'])) && (!empty($_SERVER['LOCAL_ADDR']))) {
+        $_SERVER['SERVER_ADDR'] = $_SERVER['LOCAL_ADDR'];
+    }
+
+    $document_root = empty($_SERVER['DOCUMENT_ROOT']) ? '' : $_SERVER['DOCUMENT_ROOT'];
     if (empty($document_root)) {
         $document_root = '';
         $path_components = explode(DIRECTORY_SEPARATOR, get_file_base());
@@ -169,22 +213,22 @@ function fixup_bad_php_env_vars()
         $_SERVER['DOCUMENT_ROOT'] = $document_root;
     }
 
-    $php_self = empty($_SERVER['PHP_SELF']) ? (empty($_ENV['PHP_SELF']) ? '' : $_ENV['PHP_SELF']) : $_SERVER['PHP_SELF'];
+    $php_self = empty($_SERVER['PHP_SELF']) ? '' : $_SERVER['PHP_SELF'];
     if ((empty($php_self)) || (/*or corrupt*/strpos($php_self, '.php') === false)) {
         // We're really desparate if we have to derive this, but here we go
         $_SERVER['PHP_SELF'] = '/' . preg_replace('#^' . preg_quote($document_root, '#') . '/#', '', $script_filename);
-        $path_info = empty($_SERVER['PATH_INFO']) ? (empty($_ENV['PATH_INFO']) ? '' : $_ENV['PATH_INFO']) : $_SERVER['PATH_INFO'];
+        $path_info = empty($_SERVER['PATH_INFO']) ? '' : $_SERVER['PATH_INFO'];
         if (!empty($path_info)) { // Add in path-info if we have it
             $_SERVER['PHP_SELF'] .= $path_info;
         }
         $php_self = $_SERVER['PHP_SELF'];
     }
 
-    if ((empty($_SERVER['SCRIPT_NAME'])) && (empty($_ENV['SCRIPT_NAME']))) {
+    if (empty($_SERVER['SCRIPT_NAME'])) {
         $_SERVER['SCRIPT_NAME'] = preg_replace('#\.php/.*#', '.php', $php_self); // Same as PHP_SELF except without path-info on the end
     }
 
-    if ((empty($_SERVER['REQUEST_URI'])) && (empty($_ENV['REQUEST_URI']))) {
+    if (empty($_SERVER['REQUEST_URI'])) {
         if (isset($_SERVER['REDIRECT_URL'])) {
             $_SERVER['REQUEST_URI'] = $_SERVER['REDIRECT_URL'];
             if (strpos($_SERVER['REQUEST_URI'], '?') === false) {
@@ -202,9 +246,28 @@ function fixup_bad_php_env_vars()
         }
     }
 
-    if ((empty($_SERVER['QUERY_STRING'])) && (empty($_ENV['QUERY_STRING']))) {
+    if (empty($_SERVER['QUERY_STRING'])) {
         $_SERVER['QUERY_STRING'] = http_build_query($_GET);
     }
+}
+
+/**
+ * Get server hostname.
+ *
+ * @return string The hostname
+ */
+function get_local_hostname()
+{
+    if (!empty($_SERVER['HTTP_HOST'])) {
+        return $_SERVER['HTTP_HOST'];
+    }
+    if (php_function_allowed('gethostname')) {
+        return gethostname();
+    }
+    if (!empty($_SERVER['SERVER_ADDR'])) {
+        return $_SERVER['SERVER_ADDR'];
+    }
+    return 'localhost';
 }
 
 /**
@@ -499,53 +562,6 @@ function in_safe_mode()
 }
 
 /**
- * Get server environment variables.
- *
- * @param  string $key The variable name
- * @return string The variable value ('' means unknown)
- */
-function cms_srv($key)
-{
-    if (isset($_SERVER[$key])) {
-        return ($_SERVER[$key]);
-    }
-    if ((isset($_ENV)) && (isset($_ENV[$key]))) {
-        return ($_ENV[$key]);
-    }
-
-    if ($key == 'HTTP_HOST') {
-        if (!empty($_SERVER['HTTP_HOST'])) {
-            return $_SERVER['HTTP_HOST'];
-        }
-        if (!empty($_ENV['HTTP_HOST'])) {
-            return $_ENV['HTTP_HOST'];
-        }
-        if (function_exists('gethostname')) {
-            return gethostname();
-        }
-        if (!empty($_SERVER['SERVER_ADDR'])) {
-            return $_SERVER['SERVER_ADDR'];
-        }
-        if (!empty($_ENV['SERVER_ADDR'])) {
-            return $_ENV['SERVER_ADDR'];
-        }
-        if (!empty($_SERVER['LOCAL_ADDR'])) {
-            return $_SERVER['LOCAL_ADDR'];
-        }
-        if (!empty($_ENV['LOCAL_ADDR'])) {
-            return $_ENV['LOCAL_ADDR'];
-        }
-        return 'localhost';
-    }
-
-    if ($key == 'SERVER_ADDR') { // IIS issue
-        return cms_srv('LOCAL_ADDR');
-    }
-
-    return '';
-}
-
-/**
  * Find whether a certain script is being run to get here.
  *
  * @param  string $is_this_running Script filename (canonically we want NO .php file type suffix)
@@ -556,7 +572,7 @@ function running_script($is_this_running)
     if (substr($is_this_running, -4) != '.php') {
         $is_this_running .= '.php';
     }
-    $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_ENV['SCRIPT_NAME']) ? $_ENV['SCRIPT_NAME'] : '');
+    $script_name = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : '';
     return (basename($script_name) == $is_this_running);
 }
 
@@ -691,7 +707,7 @@ function get_domain()
 {
     global $SITE_INFO;
     if (empty($SITE_INFO['domain'])) {
-        $SITE_INFO['domain'] = preg_replace('#:.*#', '', cms_srv('HTTP_HOST'));
+        $SITE_INFO['domain'] = preg_replace('#:.*#', '', get_local_hostname());
     }
     return $SITE_INFO['domain'];
 }
@@ -748,7 +764,7 @@ function get_base_url($https = null, $zone_for = '')
 {
     global $SITE_INFO;
     if (empty($SITE_INFO['base_url'])) {
-        $default_base_url = (tacit_https() ? 'https://' : 'http://') . cms_srv('HTTP_HOST') . str_replace('%2F', '/', rawurlencode(str_replace('\\', '/', dirname(cms_srv('SCRIPT_NAME')))));
+        $default_base_url = (tacit_https() ? 'https://' : 'http://') . get_local_hostname() . str_replace('%2F', '/', rawurlencode(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']))));
 
         $base_url = post_param_string('base_url', $default_base_url, INPUT_FILTER_URL_GENERAL);
         if (substr($base_url, -1) == '/') {

@@ -62,19 +62,19 @@ function reprocess_url($url, $operation_base_url)
     }
 
     // Download the document
-    $ua = cms_srv('HTTP_USER_AGENT');
+    $ua = $_SERVER['HTTP_USER_AGENT'];
     if ($ua == '') {
         $ua = 'Composr-integrator';
     }
-    $accept = cms_srv('HTTP_ACCEPT');
+    $accept = $_SERVER['HTTP_ACCEPT'];
     if ($accept == '') {
         $accept = null;
     }
-    $accept_charset = cms_srv('HTTP_ACCEPT_CHARSET');
+    $accept_charset = $_SERVER['HTTP_ACCEPT_CHARSET'];
     if ($accept_charset == '') {
         $accept_charset = null;
     }
-    $accept_language = cms_srv('HTTP_ACCEPT_LANGUAGE');
+    $accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
     if ($accept_language == '') {
         $accept_language = null;
     }

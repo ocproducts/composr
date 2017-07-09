@@ -4630,7 +4630,7 @@ function ecv_REVIEW_STATUS($lang, $escaped, $param)
  */
 function ecv__POSTED($lang, $escaped, $param)
 {
-    return (cms_srv('REQUEST_METHOD') == 'POST') ? '1' : '0';
+    return ($_SERVER['REQUEST_METHOD'] == 'POST') ? '1' : '0';
 }
 
 /**
@@ -5246,7 +5246,7 @@ function ecv_OS($lang, $escaped, $param)
  */
 function ecv_USER_AGENT($lang, $escaped, $param)
 {
-    $value = cms_srv('HTTP_USER_AGENT');
+    $value = $_SERVER['HTTP_USER_AGENT'];
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);
@@ -5391,7 +5391,7 @@ function ecv_VALUE_OPTION($lang, $escaped, $param)
             $value = function_exists('get_value') ? get_value($param[0], null, true) : '';
             if ($value === null) {
                 $value = isset($param[1]) ? $param[1] : '';
-                if (($param[0] == 'textmate') && ((running_locally()) && (strpos(cms_srv('HTTP_USER_AGENT'), 'Macintosh') !== false))) {
+                if (($param[0] == 'textmate') && ((running_locally()) && (strpos($_SERVER['HTTP_USER_AGENT'], 'Macintosh') !== false))) {
                     $value = '1';
                 }
             }

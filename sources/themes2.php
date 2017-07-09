@@ -39,7 +39,7 @@ function autoprobe_cdns()
         return '';
     }
 
-    $server_ip = cms_srv('REMOTE_ADDR');
+    $server_ip = $_SERVER['REMOTE_ADDR'];
     $try = array(
         'cdn' . '.' . $domain_name,
         ($server_ip == '127.0.0.1' || substr($server_ip, 0, 8) == '192.168.' || substr($server_ip, 0, 5) == '10.0.') ? null : $server_ip,

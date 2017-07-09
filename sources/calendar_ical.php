@@ -43,7 +43,7 @@ function output_ical()
     header('Content-Type: text/calendar');
     header('Content-Disposition: inline; filename="export.ics"');
 
-    if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+    if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return;
     }
 

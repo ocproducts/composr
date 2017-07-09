@@ -359,7 +359,7 @@ class LangFilter_EN extends LangFilter
 
             // Putting in correct keypress for Mac users
             elseif ($flag == 'platform_specific') {
-                if (strpos(cms_srv('HTTP_USER_AGENT'), 'Macintosh') === false) {
+                if (strpos($_SERVER['HTTP_USER_AGENT'], 'Macintosh') === false) {
                     $value = str_replace('Ctrl key (Option key on a mac)', 'Ctrl key', $value);
                 } else {
                     $value = str_replace('Ctrl key (Option key on a mac)', 'Option key', $value);

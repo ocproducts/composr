@@ -89,7 +89,7 @@ function check_for_spam($username, $email, $page_level)
     if (!$page_level) {
         check_stopforumspam($username, $email);
     }
-    if ((!$page_level) || (cms_srv('REQUEST_METHOD') == 'POST')) {
+    if ((!$page_level) || ($_SERVER['REQUEST_METHOD'] == 'POST')) {
         check_spam_heuristics($page_level);
     }
 }

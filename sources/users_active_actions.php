@@ -395,10 +395,10 @@ function cms_eatcookie($name)
     $expire = time() - 100000; // Note the negative number must be greater than 13*60*60 to account for maximum timezone difference
 
     // Try and remove other potentials
-    @setcookie($name, '', $expire, '', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '/', preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
-    @setcookie($name, '', $expire, '/', 'www.' . preg_replace('#^www\.#', '', cms_srv('HTTP_HOST')));
+    @setcookie($name, '', $expire, '', preg_replace('#^www\.#', '', get_local_hostname()));
+    @setcookie($name, '', $expire, '/', preg_replace('#^www\.#', '', get_local_hostname()));
+    @setcookie($name, '', $expire, '', 'www.' . preg_replace('#^www\.#', '', get_local_hostname()));
+    @setcookie($name, '', $expire, '/', 'www.' . preg_replace('#^www\.#', '', get_local_hostname()));
     @setcookie($name, '', $expire, '', '');
     @setcookie($name, '', $expire, '/', '');
 

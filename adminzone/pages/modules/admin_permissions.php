@@ -907,7 +907,7 @@ class Module_admin_permissions
     {
         require_all_lang();
 
-        if ((count($_POST) == 0) && (cms_srv('REQUEST_METHOD') != 'POST')) {
+        if ((count($_POST) == 0) && ($_SERVER['REQUEST_METHOD'] != 'POST')) {
             warn_exit(do_lang_tempcode('PERMISSION_TRAGEDY_PREVENTED'));
         }
 

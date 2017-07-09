@@ -620,7 +620,7 @@ class Module_admin_newsletter extends Standard_crud_module
             header('Content-type: text/csv; charset=' . get_charset());
             header('Content-Disposition: attachment; filename="' . escape_header($filename, true) . '"');
 
-            if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+            if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
                 exit();
             }
 

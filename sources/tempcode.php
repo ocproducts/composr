@@ -2313,7 +2313,7 @@ class Tempcode
      */
     public function evaluate_echo($current_lang = null, $stop_if_stuck = false)
     {
-        if (cms_srv('REQUEST_METHOD') === 'HEAD') {
+        if ($_SERVER['REQUEST_METHOD'] === 'HEAD') {
             return '';
         }
 

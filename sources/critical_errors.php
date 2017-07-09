@@ -74,7 +74,7 @@ if (!function_exists('critical_error')) {
 
         if (!headers_sent()) {
             if ((function_exists('browser_matches')) && (($relay === null) || (strpos($relay, 'Allowed memory') === false))) {
-                if ((!browser_matches('ie')) && (strpos(cms_srv('SERVER_SOFTWARE'), 'IIS') === false)) {
+                if ((!browser_matches('ie')) && (strpos($_SERVER['SERVER_SOFTWARE'], 'IIS') === false)) {
                     header('HTTP/1.0 500 Internal server error');
                 }
             }
@@ -159,7 +159,7 @@ if (!function_exists('critical_error')) {
 
         $extra = '';
 
-        if ((strpos($error, 'Allowed memory') === false) && (($relay === null) || (strpos($relay, 'Stack trace') === false)) && (function_exists('cms_srv')) && (((cms_srv('REMOTE_ADDR') == cms_srv('SERVER_ADDR')) && (cms_srv('HTTP_X_FORWARDED_FOR') == '')) || ((isset($SITE_INFO['backdoor_ip'])) && (cms_srv('REMOTE_ADDR') == $SITE_INFO['backdoor_ip']) && (cms_srv('HTTP_X_FORWARDED_FOR') == '')) || (preg_match('#^localhost(\.|\:|$)#', cms_srv('HTTP_HOST')) != 0) && (function_exists('get_base_url')) && (substr(get_base_url(), 0, 16) == 'http://localhost'))) {
+        if ((strpos($error, 'Allowed memory') === false) && (($relay === null) || (strpos($relay, 'Stack trace') === false)) && ((($_SERVER['REMOTE_ADDR'] == $_SERVER['SERVER_ADDR']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == '')) || ((isset($SITE_INFO['backdoor_ip'])) && ($_SERVER['REMOTE_ADDR'] == $SITE_INFO['backdoor_ip']) && ($_SERVER['HTTP_X_FORWARDED_FOR'] == '')) || (preg_match('#^localhost(\.|\:|$)#', get_local_hostname()) != 0) && (function_exists('get_base_url')) && (substr(get_base_url(), 0, 16) == 'http://localhost'))) {
             $_trace = debug_backtrace();
             $extra = '<div class="box guid_{_GUID}"><div class="box_inner"><h2>Stack trace&hellip;</h2>';
             foreach ($_trace as $stage) {

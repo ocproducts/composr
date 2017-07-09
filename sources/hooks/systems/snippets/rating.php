@@ -35,7 +35,7 @@ class Hook_snippet_rating
         }
 
         // Has there actually been any rating?
-        if (cms_srv('REQUEST_METHOD') == 'POST') { // Code branch if this is a post request. Allow rating to not be given (= unrate). Has to check is post request to stop CSRF
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Code branch if this is a post request. Allow rating to not be given (= unrate). Has to check is post request to stop CSRF
             $rating = post_param_integer('rating', null);
         } else {
             $rating = post_param_integer('rating'); // Will fail if no rating

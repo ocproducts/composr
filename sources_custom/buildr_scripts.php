@@ -171,7 +171,7 @@ function download_map($realm, $sx, $sy)
     // Output to browser
     header('Content-Type: image/png');
     header('Content-Disposition: inline; filename=realm' . strval($realm) . '_map.png');
-    if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+    if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return;
     }
     imagepng($my_img);

@@ -82,7 +82,7 @@ function catalogue_file_script()
         $ev .= '::' . $original_filename;
     }
     if ($is_catalogue_type) { // Now check the match, if we support checking on it
-        if (get_ip_address() != cms_srv('SERVER_ADDR')/*We need to allow media renderer to get through*/) {
+        if (get_ip_address() != $_SERVER['SERVER_ADDR']/*We need to allow media renderer to get through*/) {
             $c_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => $entry_id));
             if (substr($c_name, 0, 1) != '_') { // Doesn't work on custom fields (this is documented)
                 $cc_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'cc_id', array('id' => $entry_id));
@@ -141,9 +141,9 @@ function catalogue_file_script()
     safe_ini_set('zlib.output_compression', 'Off');
 
     // They're trying to resume (so update our range)
-    $httprange = cms_srv('HTTP_RANGE');
+    $httprange = $_SERVER['HTTP_RANGE'];
     if (strlen($httprange) > 0) {
-        $_range = explode('=', cms_srv('HTTP_RANGE'));
+        $_range = explode('=', $_SERVER['HTTP_RANGE']);
         if (count($_range) == 2) {
             if (strpos($_range[0], '-') === false) {
                 $_range = array_reverse($_range);
@@ -175,7 +175,7 @@ function catalogue_file_script()
     }
     error_reporting(0);
 
-    if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+    if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return;
     }
 

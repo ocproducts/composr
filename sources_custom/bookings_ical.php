@@ -31,7 +31,7 @@ function bookables_ical_script()
         @set_time_limit(0);
     }
 
-    if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+    if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return '';
     }
 
@@ -166,7 +166,7 @@ function bookings_ical_script()
         header('Content-Disposition: inline; filename="bookings_export.ics"');
     } // If not, it's an admin testing, so just display contents
 
-    if (cms_srv('REQUEST_METHOD') == 'HEAD') {
+    if ($_SERVER['REQUEST_METHOD'] == 'HEAD') {
         return '';
     }
 
