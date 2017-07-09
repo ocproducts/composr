@@ -1,3 +1,5 @@
+/* LEGACY https://bugzilla.mozilla.org/show_bug.cgi?id=98168 */
+
 // A workaround for XSL-to-XHTML systems that don't
 //  implement XSL 'disable-output-escaping="yes"'.
 //

@@ -68,7 +68,7 @@ tab_width = 3
 #  themes/default/css_custom/unslider.css themes/default/css_custom/sortable_tables.css themes/default/css_custom/google_search.css \
 #  themes/default/css_custom/columns.css themes/default/css_custom/crossword.css themes/default/css_custom/flip.css
 # (ends)
-# if updating above, update line_count.sh and http://compo.sr/tracker/view.php?id=651 too
+# if updating above, update line_count.sh and https://docs.google.com/spreadsheets/d/1Im6ICITZmzoBVMizD0CkM7N0kXH5Rb-NQJzD1hk49cU/edit#gid=0 and licence.txt and phpdoc.dist.xml and maintenance_sheet.csv too
 
 # PHPStorm settings (.idea/codeStyleSettings.xml)...
 

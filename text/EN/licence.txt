@@ -132,10 +132,8 @@ This product includes:
   - GUID implementation (from php.net comment by Andrew Moore, Creative Commons Attribution License)
   - adjust_pic_orientation function (from stackoverflow comment)
   - Stemmer (BSD-like licence)
-  - PHP 5.5 hashing compatibility library (MIT licence)
   - jsmin (MIT licence)
   - cssmin (MIT licence)
-  - JSON decoder (BSD licence)
   - HMAC calculation code (public domain by Lance Rushing)
   - php-mail-signature (LGPL licence)
  - Frontend code used under licence:
@@ -150,7 +148,7 @@ This product includes:
   - Plupload (used under commercial licence; sponsored by Tom McMasters)
   - HTML5-Desktop-Notifications (https://github.com/ttsvetko/HTML5-Desktop-Notifications, Apache licence)
   - CKEditor WYSIWYG editor (MPL licence)
-  - EditArea code editor (BSD-like licence)
+  - Ace code editor (BSD-like licence)
   - xsl_mopup.js (public domain)
   - JavaScript base-64 code (http://www.webtoolkit.info/, liberal custom licence)
   - JW-Player (used under commercial licence)
@@ -174,5 +172,3 @@ This product includes:
   - Class Lists (Eli Grey, public domain)
 
 Non-bundled addons will often have their own third party materials documented within the addon.
-
-A list of dependencies is maintained on the Composr tracker (http://compo.sr/tracker/view.php?id=651).

@@ -169,8 +169,14 @@ function phase_1_pre()
             <li>Make sure <kbd>curl-ca-bundle.crt</kbd> is reasonably up-to-date.</li>
         ';
     }
+    if (is_maintained('geocode_internal')) {
+        echo '
+            <li>Update <kbd>IP_Country.txt</kbd>
+        ';
+    }
     echo '
-        <li>Consider updating the $discontinued array in <kbd>uploads/website_specific/compo.sr/scripts/version.php</kbd>.</li>
+        <li><a href="https://docs.google.com/spreadsheets/d/1Im6ICITZmzoBVMizD0CkM7N0kXH5Rb-NQJzD1hk49cU/edit#gid=0" title="Re-sync third-party code (this link will open in a new window)" target="_blank">Re-sync third-party code</a> as appropriate</li>
+        <li>Consider updating the <kbd>$discontinued</kbd> array in <kbd>uploads/website_specific/compo.sr/scripts/version.php</kbd>.</li>
         <li>Consider moving Composr to a fresh repository, so you can have a clean history and a clean set of branches; update the COMPOSR_REPOS_URL constant if you do this</li>
     </ul>
     <p>Ideally do these at least on some major versions:</p>

@@ -201,13 +201,6 @@ Blank lines at the end of files
 | Generally we prefer code to fit on the screen without scrolling, but don't force it by breaking up and indenting lines in a way that doesn't align with structure. It is better to have symmetrical looking code than forced breaks, especially given text editors can have automatic word-wrapping enabled when desired. Often you can break up code in a clean way by pre-computing function arguments, or neatly indenting array or parameter structures.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Keep external code excluded from certain places[/color]
-| Communication, stability
-| Product development only
-| Manually, Automated test ([tt]external_code_considerations.php[/tt])
-| We want to exclude external code from [tt]line_count.sh[/tt], from automatic PhpStorm formatting ([tt].editorconfig[/tt]), and sometimes from PHPDoc generation ([tt]phpdoc.dist.xml[/tt]).
-|-
-| [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Define ignoring of files[/color]
 | Modularity: installer generation etc
 | Product development only
@@ -2448,11 +2441,17 @@ Provide addon screenshots
 | For example, Chris once found that [tt]XMLHttpRequest[/tt] on Internet Explorer had a caching bug... so instead of just throwing in a solution to where it affected him, he considered the problem architecturally, making sure all AJAX-facing PHP scripts have a common approach to solving the problem. This kind of approach is essential.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
-[color="red"]Update credits file[/color]
-| Legal, ethics
+[color="red"]Properly index 3rd-party code[/color]
+| Legal, ethics, maintainability, communication, stability
 | Product development only
-| Manually
-| If you include some third party code you must update [tt]licence.txt[/tt] to reference it properly. This file is shown when users install.
+| Manually, Automated test ([tt]external_code_considerations.php[/tt])
+| If you include some third party code you must update:
+ - [tt]licence.txt[/tt] (this file is shown when users install)
+ - [tt]line_count.sh[/tt] (excludes the code from our line counting)
+ - [tt].editorconfig[/tt] (the part for automatic PhpStorm formatting)
+ - [tt]phpdoc.dist.xml[/tt] (if appropriate, PHPDoc generation)
+ - [tt]maintenance_sheet.csv[/tt] (if appropriate, non-maintained systems)
+ - https://docs.google.com/spreadsheets/d/1Im6ICITZmzoBVMizD0CkM7N0kXH5Rb-NQJzD1hk49cU/edit#gid=0 (notes about merging in external bug fixing)
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Update maintenance sheet[/color]

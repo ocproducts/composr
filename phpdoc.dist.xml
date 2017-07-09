@@ -5,7 +5,8 @@
 		<target>docs/api</target>
 		<markers>
 			<item>TODO</item>
-			<item>FIXME</item>
+			<item>FIXME</item> <!-- Not official, but people use it -->
+			<item>HACKHACK</item> <!-- Not official, but people use it -->
 			<item>IDEA</item>
 			<item>LEGACY</item>
 			<item>FUDGE</item>
@@ -50,3 +51,5 @@
 		<ignore>sources/minikernel.php</ignore>
 	</files>
 </phpdoc>
+
+<!-- # remember to update .editorconfig and https://docs.google.com/spreadsheets/d/1Im6ICITZmzoBVMizD0CkM7N0kXH5Rb-NQJzD1hk49cU/edit#gid=0 and licence.txt and line_count.sh and maintenance_sheet.csv too -->
