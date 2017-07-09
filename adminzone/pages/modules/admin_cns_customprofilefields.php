@@ -401,7 +401,7 @@ class Module_admin_cns_customprofilefields extends Standard_crud_module
      */
     public function change_order($id, $old_order, $new_order)
     {
-        $sql = 'SELECT r.id AS r_id,r.cf_order FROM ' . get_table_prefix() . 'f_custom_fields r WHERE cf_order BETWEEN ';
+        $sql = 'SELECT r.id AS r_id,r.cf_order FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_custom_fields r WHERE cf_order BETWEEN ';
         $sql .= strval(min($old_order, $new_order)) . ' AND ' . strval(max($old_order, $new_order));
         $sql .= ' ORDER BY cf_order,' . $GLOBALS['FORUM_DB']->translate_field_ref('cf_name');
         $rows = $GLOBALS['FORUM_DB']->query($sql, null, 0, false, false, array('cf_name' => 'SHORT_TRANS'));
