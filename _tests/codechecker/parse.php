@@ -2036,7 +2036,7 @@ function handle_comment($comment)
             log_warning('TODO comment found (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
         }
         if (strpos($comment[1], 'FIXME') !== false) {
-            log_warning('FIXME comment found (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
+            log_warning('FIXME comment found [should be a TODO] (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
         }
         if (strpos($comment[1], 'IDEA') !== false) {
             log_warning('IDEA comment found (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
@@ -2046,6 +2046,9 @@ function handle_comment($comment)
         }
         if (strpos($comment[1], 'FUDGE') !== false) {
             log_warning('FUDGE comment found (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
+        }
+        if (strpos($comment[1], 'HACKHACK') !== false) {
+            log_warning('HACKHACK comment found [should be a FUDGE] (' . str_replace("\n", ' ', trim($comment[1])) . ')', $GLOBALS['I']);
         }
         //if (strpos($comment[1], 'XHTMLXHTML') !== false) log_warning('XHTMLXHTML comment found', $GLOBALS['I']); Don't want to report these
     }
