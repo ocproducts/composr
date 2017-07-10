@@ -122,7 +122,7 @@ function init__site()
 
         if (get_value('disable_cookie_checks') !== '1') {
             // Detect bad cookie domain (reasonable approximation)
-            $cookie_domain = ltrim(get_cookie_domain(), '.');
+            $cookie_domain = @ltrim(get_cookie_domain(), '.');
             if (!empty($cookie_domain) && !empty($access_host)) {
                 if (substr($access_host, -strlen($cookie_domain)) != $cookie_domain) {
                     attach_message(do_lang_tempcode('INCORRECT_COOKIE_DOMAIN', escape_html($cookie_domain), escape_html($access_host)), 'warn');
