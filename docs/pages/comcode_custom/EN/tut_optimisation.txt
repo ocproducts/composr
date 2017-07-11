@@ -446,21 +446,8 @@ Round-Robin DNS could be used to choose a frontend server from the farm randomly
 [title="3"]Reverse proxying notes[/title]
 
 If you are using a reverse proxy then it's important PHP sees the correct IP addresses of end-users, not your proxy server.
-A solution is to set PHP's [tt]auto_prepend_file[/tt] option to a script like the following:
-[code="PHP"]
-<?php
-
-if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-	$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	$_SERVER['HTTP_X_FORWARDED_FOR'] = '';
-}
-[/code]
-This assumes that the server is only accessible from your reverse proxy. If not, you need to white-list the [tt]$_SERVER['REMOTE_ADDR'][/tt] values that may trust the [tt]$_SERVER['HTTP_X_FORWARDED_FOR'][/tt] setting.
-
-Some web server configurations don't appear to support [tt]auto_prepend_file[/tt], in which case you can include by referencing it in [tt]_config.php[/tt]:
-[code="PHP"]
-require(__DIR__ . '/_reverse_proxy_fix.php');
-[/code]
+You can solve this by setting the Composr [tt]ip_cidr_trusts[/tt] installation option (edited via [tt]config_editor.php[/tt]).
+By default we place trust on Cloudflare IP ranges.
 
 [title="3"]Geographic distribution of servers[/title]
 
@@ -486,7 +473,7 @@ DNS may be used to route the CDN servers based on geographic location.
 
 There are many commercial CDN services available that can be configured in via this option. Many of them automatically will transfer over any file you reference on their service (via URL equivalencies) so that you don't need to worry about copying files over yourself.
 
-If you use a service like CloudFlare it can automatically provide CDN functionality similar to the above, although from a single server only. CloudFlare works a little differently as it automatically rewrites your pages as they route through its systems. The CDN options above directly affect Composr's output.
+If you use a service like Cloudflare it can automatically provide CDN functionality similar to the above, although from a single server only. Cloudflare works a little differently as it automatically rewrites your pages as they route through its systems. The CDN options above directly affect Composr's output.
 
 [title="4"]Upload syndication[/title]
 
@@ -565,7 +552,7 @@ Interesting optimisations include:
 
 The work on HTTP/2 is also interesting (previously Google SPDY), and SDCH is [i]extremely interesting[/i]. At this time of writing it is too early to really think about these, but they should provide automatic optimisations to Composr.
 
-The CloudFlare service provides some of the same optimisations that mod_pagespeed does, as well as a CDN. However personally I'd opt to use mod_pagespeed and a custom CDN, as it is a more straight-forward configuration that doesn't require proxying your traffic (which itself will impact performance). That said, CloudFlare does provide nice anti-spam and traffic filtering, so if you have a big spam/DOS problem, it can be a very useful tool. CloudFlare's preloading feature also looks interesting, but it is not likely to result in noticeable speedup for most sites.
+The Cloudflare service provides some of the same optimisations that mod_pagespeed does, as well as a CDN. However personally I'd opt to use mod_pagespeed and a custom CDN, as it is a more straight-forward configuration that doesn't require proxying your traffic (which itself will impact performance). That said, Cloudflare does provide nice anti-spam and traffic filtering, so if you have a big spam/DOS problem, it can be a very useful tool. Cloudflare's preloading feature also looks interesting, but it is not likely to result in noticeable speedup for most sites.
 
 [title="2"]Preloaded links[/title]
 

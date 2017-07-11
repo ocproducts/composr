@@ -576,54 +576,6 @@ function _inet_pton($ip)
 }
 
 /**
- * Find if an IP address is within a CIDR range. Based on comment in PHP manual: http://php.net/manual/en/ref.network.php.
- *
- * @param  IP $ip IP address
- * @param  SHORT_TEXT $cidr CIDR range (e.g. 204.93.240.0/24)
- * @return boolean Whether it is
- */
-function ip_cidr_check($ip, $cidr)
-{
-    if ((strpos($ip, ':') === false) !== (strpos($cidr, ':') === false)) {
-        return false; // Different IP address type
-    }
-
-    if (strpos($ip, ':') === false) {
-        // IPv4...
-
-        list($net, $maskbits) = explode('/', $cidr, 2);
-
-        $ip_net = ip2long($net);
-        $ip_mask = ~((1 << (32 - intval($maskbits))) - 1);
-
-        $ip_ip = ip2long($ip);
-
-        return (($ip_ip & $ip_mask) == $ip_net);
-    }
-
-    // IPv6...
-
-    $unpacked = unpack('A16', _inet_pton($ip));
-    $binaryip = '';
-    for ($i = 0; $i < strlen($unpacked[1]); $i++) {
-        $char = $unpacked[1][$i];
-        $binaryip .= str_pad(decbin(ord($char)), 8, '0', STR_PAD_LEFT);
-    }
-
-    list($net, $maskbits) = explode('/', $cidr, 2);
-    $unpacked = unpack('A16', _inet_pton($net));
-    $binarynet = '';
-    for ($i = 0; $i < strlen($unpacked[1]); $i++) {
-        $char = $unpacked[1][$i];
-        $binarynet .= str_pad(decbin(ord($char)), 8, '0', STR_PAD_LEFT);
-    }
-
-    $ip_net_bits = substr($binaryip, 0, intval($maskbits));
-    $net_bits = substr($binarynet, 0, intval($maskbits));
-    return ($ip_net_bits == $net_bits);
-}
-
-/**
  * Log a hackattack, then displays an error message. It also attempts to send an e-mail to the staff alerting them of the hackattack.
  *
  * @param  ID_TEXT $reason The reason for the hack attack. This has to be a language string ID
@@ -733,7 +685,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                                 $is_se = true;
                             }
                         } else {
-                            if (ip_cidr_check($ip_s, $_ip_list_array)) {
+                            if ((function_exists('ip_cidr_check')) && (ip_cidr_check($ip_s, $_ip_list_array))) {
                                 $is_se = true;
                             }
                         }

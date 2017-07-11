@@ -119,6 +119,6 @@ geocode_external,IP address geocoding (web service, more detailed),ocProducts,oc
 ssl_trust_internal,SSL certificate trust chains (internal list),ocProducts,,Could potentially break due to third-party changes.,No,Part of release process.
 taxcloud,TaxCloud integration for US sales tax,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.
 eu_digital_tax,Download of EU digital tax rates,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.
-cloudflare_changes,CloudFlare optimisations (potentially-disruptive optimisations CloudFlare may try and make when proxying the site),,,Not regularly Tested.,No,
-cloudflare_ip_lists,CloudFlare true IP detection (a list of CloudFlare IPs to trust and the cloudflare_workaround hidden option),ocProducts,,Not regularly Tested.,No,
+cloudflare_changes,Cloudflare optimisations (potentially-disruptive optimisations Cloudflare may try and make when proxying the site),,,Not regularly Tested.,No,
+cloudflare_ip_lists,Cloudflare true IP detection (a list of Cloudflare IPs to trust),ocProducts,,Not regularly Tested.,No,
 non_block_ip_list,Lists of IPs to not block,ocProducts,,Not regularly Tested.,No,Part of release process.

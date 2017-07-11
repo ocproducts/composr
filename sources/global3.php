@@ -1838,24 +1838,7 @@ function get_ip_address($amount = 4, $ip = null)
 {
     require_code('config');
 
-    if ((get_value('cloudflare_workaround') === '1') && (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) && (isset($_SERVER['REMOTE_ADDR']))) {
-        $regexp = '^(204\.93\.240\.|204\.93\.177\.|199\.27\.|173\.245\.|103\.21\.|103\.22\.|103\.31\.|141\.101\.|108\.162\.|190\.93\.|188\.114\.|197\.234\.|198\.41\.|162\.)';
-        if (preg_match('#' . $regexp . '#', $_SERVER['REMOTE_ADDR']) != 0) {
-            $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            unset($_SERVER['HTTP_X_FORWARDED_FOR']);
-        }
-    }
-
     if ($ip === null) {
-        /* Presents too many security and maintenance problems. Can easily be faked, or changed.
-        $fw = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        if ($_SERVER['HTTP_CLIENT_IP'] != '') {
-            $fw = $_SERVER['HTTP_CLIENT_IP'];
-        }
-        if (($fw != '') && ($fw != '127.0.0.1') && (substr($fw, 0, 8) != '192.168.') && (substr($fw, 0, 3) != '10.') && (is_valid_ip($fw)) && ($fw != $_SERVER['SERVER_ADDR'])) {
-            $ip = $fw;
-        } else
-        */
         $ip = $_SERVER['REMOTE_ADDR'];
     }
 

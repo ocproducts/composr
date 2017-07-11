@@ -431,6 +431,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/tutorial_image_consistency.php',
             '_tests/tests/unit_tests/tutorial_quality.php',
             '_tests/tests/unit_tests/tutorials_broken_links.php',
+            '_tests/tests/unit_tests/cloudflare_ip_range_sync.php',
             '_tests/tests/unit_tests/moderation.php',
             '_tests/tests/unit_tests/modularisation.php',
             '_tests/tests/unit_tests/geshi.php',

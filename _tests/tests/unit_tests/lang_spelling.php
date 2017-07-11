@@ -208,6 +208,9 @@ class lang_spelling_test_set extends cms_test_case
         if (preg_match('#([^A-Za-z]+)(PHP-Storm|phpStorm)([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'A misspelling of \'PhpStorm\' occurred in ' . $file . '.');
         }
+        if (preg_match('#([^A-Za-z]+)CloudFlare([^A-Za-z]+)#', $string) != 0) {
+            $this->assertTrue(false, 'The word \'CloudFlare\' was used in ' . $file . '. This should be changed to \'Cloudflare\'.');
+        }
         if (preg_match('#([^A-Za-z]+)Javascript([^A-Za-z]+)#', $string) != 0) {
             $this->assertTrue(false, 'The word \'Javascript\' was used in ' . $file . '. This should be changed to \'JavaScript\'.');
         }

@@ -528,6 +528,54 @@ function hhvm_include($path)
     return include($path . '.hh');*/
 }
 
+/**
+ * Find if an IP address is within a CIDR range. Based on comment in PHP manual: http://php.net/manual/en/ref.network.php.
+ *
+ * @param  IP $ip IP address
+ * @param  SHORT_TEXT $cidr CIDR range (e.g. 204.93.240.0/24)
+ * @return boolean Whether it is
+ */
+function ip_cidr_check($ip, $cidr)
+{
+    if ((strpos($ip, ':') === false) !== (strpos($cidr, ':') === false)) {
+        return false; // Different IP address type
+    }
+
+    if (strpos($ip, ':') === false) {
+        // IPv4...
+
+        list($net, $maskbits) = explode('/', $cidr, 2);
+
+        $ip_net = ip2long($net);
+        $ip_mask = ~((1 << (32 - intval($maskbits))) - 1);
+
+        $ip_ip = ip2long($ip);
+
+        return (($ip_ip & $ip_mask) == $ip_net);
+    }
+
+    // IPv6...
+
+    $unpacked = unpack('A16', _inet_pton($ip));
+    $binaryip = '';
+    for ($i = 0; $i < strlen($unpacked[1]); $i++) {
+        $char = $unpacked[1][$i];
+        $binaryip .= str_pad(decbin(ord($char)), 8, '0', STR_PAD_LEFT);
+    }
+
+    list($net, $maskbits) = explode('/', $cidr, 2);
+    $unpacked = unpack('A16', _inet_pton($net));
+    $binarynet = '';
+    for ($i = 0; $i < strlen($unpacked[1]); $i++) {
+        $char = $unpacked[1][$i];
+        $binarynet .= str_pad(decbin(ord($char)), 8, '0', STR_PAD_LEFT);
+    }
+
+    $ip_net_bits = substr($binaryip, 0, intval($maskbits));
+    $net_bits = substr($binarynet, 0, intval($maskbits));
+    return ($ip_net_bits == $net_bits);
+}
+
 // Useful for basic profiling
 global $PAGE_START_TIME;
 $PAGE_START_TIME = microtime(true);
@@ -622,13 +670,30 @@ if (count($SITE_INFO) == 0) {
     }
 }
 
+// Make sure we have the correct IP address in REMOTE_ADDR
+if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    if (empty($SITE_INFO['ip_cidr_trusts'])) {
+        $ip_cidr_trusts = '103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,104.16.0.0/12,108.162.192.0/18,131.0.72.0/22,141.101.64.0/18,162.158.0.0/15,172.64.0.0/13,173.245.48.0/20,188.114.96.0/20,190.93.240.0/20,197.234.240.0/22,198.41.128.0/17,2400:cb00::/32,2405:8100::/32,2405:b500::/32,2606:4700::/32,2803:f800::/32,2c0f:f248::/32,2a06:98c0::/29';
+    } else {
+        $ip_cidr_trusts = $SITE_INFO['ip_cidr_trusts'];
+    }
+    foreach (explode(',', $ip_cidr_trusts) as $ip_cidr_trust) {
+        if (strpos($ip_cidr_trust, '/') !== false) {
+            if (ip_cidr_check($_SERVER['REMOTE_ADDR'], $ip_cidr_trust)) {
+                $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                break;
+            }
+        }
+    }
+}
+
 // Rate limiter, to stop aggressive bots
 global $SITE_INFO;
 $rate_limiting = empty($SITE_INFO['rate_limiting']) ? false : ($SITE_INFO['rate_limiting'] == '1');
 if ($rate_limiting) {
-    if (((!empty($_SERVER['REMOTE_ADDR'])) || (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))) && (basename($_SERVER['SCRIPT_NAME']) == 'index.php')) {
+    if ((!empty($_SERVER['REMOTE_ADDR'])) && (basename($_SERVER['SCRIPT_NAME']) == 'index.php')) {
         // Basic context
-        $ip = empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_FORWARDED_FOR'];
+        $ip = $_SERVER['REMOTE_ADDR'];
         $time = time();
 
         if (!(((!empty($_SERVER['SERVER_ADDR'])) && ($ip == $_SERVER['SERVER_ADDR'])) || ((!empty($_SERVER['LOCAL_ADDR'])) && ($ip == $_SERVER['LOCAL_ADDR'])))) {
