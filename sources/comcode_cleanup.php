@@ -76,7 +76,7 @@ function _download_associated_media(&$text, $old_url)
     $matches2 = array();
     if ((preg_match('#^https?://([^:/]+)#', $old_url, $matches2) != 0) && ($matches2[1] != $local_domain_1) && ($matches2[1] != $local_domain_2)) {
         require_code('crypt');
-        $temp_filename = get_rand_password();
+        $temp_filename = get_secure_random_string();
         $temp_path = get_custom_file_base() . '/uploads/external_media/' . $temp_filename;
 
         $write_to_file = fopen($temp_path, 'wb');
@@ -104,7 +104,7 @@ function _download_associated_media(&$text, $old_url)
         $new_filename = preg_replace('#\..*#', '', basename($http_result->filename));
         if ($new_filename == '') {
             require_code('crypt');
-            $new_filename = get_rand_password();
+            $new_filename = get_secure_random_string();
         }
         $new_filename .= '.' . $mapping[$http_result->download_mime_type];
         require_code('urls2');

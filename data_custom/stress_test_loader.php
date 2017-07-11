@@ -473,7 +473,7 @@ function do_work()
     require_code('shopping');
     for ($j = $GLOBALS['SITE_DB']->query_select_value('shopping_cart', 'COUNT(*)'); $j < $num_wanted; $j++) {
         $GLOBALS['SITE_DB']->query_insert('shopping_cart', array(
-            'session_id' => get_rand_password(),
+            'session_id' => get_secure_random_string(),
             'ordered_by' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
             'type_code' => strval(db_get_first_id()),
             'purchase_id' => strval(get_member()),
@@ -483,7 +483,7 @@ function do_work()
     for ($j = $GLOBALS['SITE_DB']->query_select_value('shopping_orders', 'COUNT(*)'); $j < $num_wanted; $j++) {
         $order_id = $GLOBALS['SITE_DB']->query_insert('shopping_orders', array(
             'member_id' => mt_rand(db_get_first_id() + 1, $num_wanted - 1),
-            'session_id' => get_rand_password(),
+            'session_id' => get_secure_random_string(),
             'add_date' => time(),
             'total_price' => 10.00,
             'total_tax_derivation' => '',

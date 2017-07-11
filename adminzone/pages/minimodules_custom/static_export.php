@@ -410,7 +410,7 @@ if (trim($post) != "") {
         $mailer_path = get_custom_file_base() . '/pages/html_custom/' . $lang . '/mailer_temp.htm';
         cms_file_put_contents_safe($mailer_path, $mailer_script, FILE_WRITE_FIX_PERMISSIONS);
         $session_cookie_id = get_session_cookie();
-        $data = http_get_contents(static_evaluate_tempcode(build_url(array('page' => 'mailer_temp', 'keep_lang' => (count($langs) != 1) ? $lang : null), '', array(), false, false, true)), array('trigger_error' => false, 'post_params' => array($session_cookie_id => get_rand_password())));
+        $data = http_get_contents(static_evaluate_tempcode(build_url(array('page' => 'mailer_temp', 'keep_lang' => (count($langs) != 1) ? $lang : null), '', array(), false, false, true)), array('trigger_error' => false, 'post_params' => array($session_cookie_id => get_secure_random_string())));
         unlink($mailer_path);
         $data = preg_replace('#<title>.*</title>#', '<title>' . escape_html(get_site_name()) . '</title>', $data);
         $relative_root = (count($langs) != 1) ? '../' : '';

@@ -108,7 +108,7 @@ function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed
                 exit();
             } else {
                 require_code('crypt');
-                $user_id = cns_member_external_linker($username, get_rand_password(), 'ldap');
+                $user_id = cns_member_external_linker($username, get_secure_random_string(), 'ldap');
                 $row = $this_ref->get_member_row($user_id);
             }
         }
@@ -242,7 +242,7 @@ function _forum_authorise_login($this_ref, $username, $user_id, $password_hashed
                 }
 
                 require_code('crypt');
-                $code = ($test2 !== null) ? $test2 : get_rand_password();
+                $code = ($test2 !== null) ? $test2 : get_secure_random_string();
                 $this_ref->db->query_insert('f_member_known_login_ips', array('i_val_code' => $code, 'i_member_id' => $row['id'], 'i_ip' => $ip));
                 $url = find_script('approve_ip') . '?code=' . urlencode($code);
                 $url_simple = find_script('approve_ip');

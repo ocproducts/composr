@@ -102,7 +102,7 @@ class Module_admin_stats
             require_lang('stats');
 
             require_code('crypt');
-            $secure_ref = produce_salt();
+            $secure_ref = get_secure_random_string();
             $id = $GLOBALS['SITE_DB']->query_insert('task_queue', array(
                 't_title' => do_lang('INSTALL_GEOLOCATION_DATA'),
                 't_hook' => 'install_geolocation_data',

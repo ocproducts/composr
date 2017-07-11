@@ -158,7 +158,7 @@ class Hook_payment_gateway_authorize
     public function generate_trans_id()
     {
         require_code('crypt');
-        return get_rand_password();
+        return get_secure_random_string();
     }
 
     /**

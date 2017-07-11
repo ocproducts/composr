@@ -799,7 +799,7 @@ function _get_upload_url($member_id, $attach_name, $upload_folder, $upload_folde
             $ext = (($obfuscate == 2) && (!is_image($file, IMAGE_CRITERIA_WEBSAFE, has_privilege(get_member(), 'comcode_dangerous')))) ? 'dat' : get_file_extension($file);
 
             require_code('crypt');
-            $filename = get_rand_password() . '.' . $ext;
+            $filename = get_secure_random_string() . '.' . $ext;
             list($place, , $filename) = find_unique_path($upload_folder, $filename);
         }
     } else {

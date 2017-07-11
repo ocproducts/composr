@@ -234,7 +234,7 @@ function save_user_metadata($include_referer = false)
     $data = find_user_metadata($include_referer);
 
     require_code('crypt');
-    $path = get_custom_file_base() . '/temp/mail_' . get_rand_password() . '.txt';
+    $path = get_custom_file_base() . '/temp/mail_' . get_secure_random_string() . '.txt';
 
     file_put_contents($path, json_encode($data, JSON_PRETTY_PRINT));
     fix_permissions($path);

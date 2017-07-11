@@ -76,7 +76,7 @@ function lost_password_emailer_step($username, $email_address)
         }
     }
     if (($code == '') || ($password_reset_process == 'ultra') && ($session_id != get_session_id())) {
-        $code = get_rand_password();
+        $code = get_secure_random_string();
         if ($password_reset_process == 'ultra') {
             $GLOBALS['FORUM_DB']->query_update('f_members', array('m_password_change_code' => $code . '__' . get_session_id()), array('id' => $member_id), '', 1);
         } else {

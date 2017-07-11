@@ -49,7 +49,7 @@ class Hook_cron_backups
                 $b_type = get_value('backup_b_type');
                 global $MB2_FILE, $MB2_B_TYPE, $MB2_MAX_SIZE;
                 require_code('crypt');
-                $end = ((get_option('backup_overwrite') != '1') || ($b_type == 'incremental')) ? get_rand_password() : 'scheduled';
+                $end = ((get_option('backup_overwrite') != '1') || ($b_type == 'incremental')) ? get_secure_random_string() : 'scheduled';
                 if ($b_type == 'full') {
                     $file = 'restore_' . $end;
                 } elseif ($b_type == 'incremental') {

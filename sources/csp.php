@@ -92,7 +92,7 @@ function init__csp()
      * @global boolean $CSP_NONCE
      */
     global $CSP_NONCE;
-    $CSP_NONCE = produce_salt();
+    $CSP_NONCE = get_secure_random_string();
 
     global $CSP_ENABLED;
     $CSP_ENABLED = false;

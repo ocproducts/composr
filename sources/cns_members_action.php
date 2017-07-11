@@ -248,7 +248,7 @@ function cns_make_member($username, $password, $email_address, $secondary_groups
     }
     if (($salt == '') && (($password_compatibility_scheme == '') || ($password_compatibility_scheme == 'temporary'))) {
         require_code('crypt');
-        $salt = produce_salt();
+        $salt = get_secure_random_string();
         $password_salted = ratchet_hash($password, $salt);
     } else {
         $password_salted = $password;

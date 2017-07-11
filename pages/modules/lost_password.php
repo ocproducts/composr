@@ -279,7 +279,7 @@ class Module_lost_password
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
 
         require_code('crypt');
-        $new_password = get_rand_password();
+        $new_password = get_secure_random_string();
 
         $temporary_passwords = ($password_reset_process != 'emailed');
 

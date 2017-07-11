@@ -45,7 +45,7 @@ function generate_csrf_token()
 
     if ($token === null) {
         require_code('crypt');
-        $token = get_rand_password();
+        $token = get_secure_random_string();
 
         $GLOBALS['SITE_DB']->query_insert('post_tokens', array(
             'token' => $token,

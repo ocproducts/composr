@@ -950,7 +950,7 @@ function find_unique_path($subdir, $filename = null, $lock_in = false)
 {
     if ($filename === null) {
         require_code('crypt');
-        $filename = get_rand_password() . '.dat';
+        $filename = get_secure_random_string() . '.dat';
     }
 
     $ext = get_file_extension($filename);

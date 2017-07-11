@@ -420,9 +420,9 @@ class Module_newsletter
 
             $code_confirm = ($old_confirm === null) ? get_secure_random_number() : $old_confirm;
             if ($password == '') {
-                $password = get_rand_password();
+                $password = get_secure_random_string();
             }
-            $salt = produce_salt();
+            $salt = get_secure_random_string();
             if ($old_confirm === null) {
                 add_newsletter_subscriber($email, time(), $code_confirm, ratchet_hash($password, $salt), $salt, $language, $forename, $surname);
 
@@ -482,7 +482,7 @@ class Module_newsletter
         $email = trim(get_param_string('email', false, INPUT_FILTER_GET_COMPLEX));
         $language = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'language', array('email' => $email));
         $salt = $GLOBALS['SITE_DB']->query_select_value('newsletter_subscribers', 'pass_salt', array('email' => $email));
-        $new_password = produce_salt();
+        $new_password = get_secure_random_string();
         $GLOBALS['SITE_DB']->query_update('newsletter_subscribers', array('the_password' => ratchet_hash($new_password, $salt)), array('email' => $email), '', 1);
 
         $message = do_lang('NEWSLETTER_PASSWORD_CHANGE', comcode_escape(get_ip_address()), comcode_escape($new_password), null, $language);

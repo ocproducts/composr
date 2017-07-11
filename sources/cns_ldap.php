@@ -296,7 +296,7 @@ function cns_get_ldap_hash($cn)
         require_code('site');
         attach_message(do_lang_tempcode('LDAP_CANNOT_CHECK_PASSWORDS'), 'warn', false, true);
         require_code('crypt');
-        return get_rand_password();
+        return get_secure_random_string();
     }
     $pass = $entries[0]['userpassword'][0];
     ldap_free_result($results);

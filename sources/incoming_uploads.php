@@ -36,7 +36,7 @@ function incoming_uploads_script()
     }
 
     require_code('crypt');
-    $savename = 'uploads/incoming/' . get_rand_password() . '.dat';
+    $savename = 'uploads/incoming/' . get_secure_random_string() . '.dat';
 
     if (array_key_exists('file', $_FILES)) { // Nice mime upload
         if (is_uploaded_file($_FILES['file']['tmp_name'])) {

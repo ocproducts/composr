@@ -263,7 +263,7 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = ar
     // Enqueue...
 
     require_code('crypt');
-    $secure_ref = produce_salt();
+    $secure_ref = get_secure_random_string();
 
     $id = $GLOBALS['SITE_DB']->query_insert('task_queue', array(
         't_title' => $plain_title,

@@ -62,7 +62,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
 
             require_code('xml');
             require_code('crypt');
-            $transcoded_filename = 'transcoded--' . get_rand_password() . '--' . rawurldecode(preg_replace('#\.\w+$#', '', basename($url))) . '.' . $extension;
+            $transcoded_filename = 'transcoded--' . get_secure_random_string() . '--' . rawurldecode(preg_replace('#\.\w+$#', '', basename($url))) . '.' . $extension;
             $xml = '<' . '?xml version="1.0" encoding="utf-8"?' . '>
                     <api-request>
                             <api_key>' . xmlentities(get_option('transcoding_zencoder_api_key')) . '</api_key>
@@ -122,7 +122,7 @@ function transcode_video($url, $table, $local_id, $local_id_field, $url_field, $
                 // Store details, so callback knows how to update DB
                 require_code('crypt');
                 $GLOBALS['SITE_DB']->query_insert('video_transcoding', array(
-                    't_id' => 'cmstrans_' . get_rand_password(),
+                    't_id' => 'cmstrans_' . get_secure_random_string(),
                     't_local_id' => $local_id,
                     't_local_id_field' => $local_id_field,
                     't_error' => '',

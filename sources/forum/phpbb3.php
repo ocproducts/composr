@@ -1354,11 +1354,11 @@ class Forum_driver_phpbb3 extends Forum_driver_base
 
         require_code('crypt');
 
-        $hash = substr(get_rand_password(), 0, 17);
+        $hash = substr(get_secure_random_string(), 0, 17);
         $this->db->query_insert('sessions_keys', array('key_id' => md5($hash), 'user_id' => $id, 'last_ip' => ip2long(get_ip_address()), 'last_login' => time()));
 
         if (substr($member_cookie_name, 0, 5) != 'cms__') {
-            $session_id = get_rand_password();
+            $session_id = get_secure_random_string();
             $this->db->query_insert('sessions', array(
                 'session_id' => $session_id,
                 'session_user_id' => $id,

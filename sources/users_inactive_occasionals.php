@@ -101,7 +101,7 @@ function create_session($member_id, $session_confirmed = 0, $invisible = false, 
     if ($restored_session === null) { // We're force to make a new one
         // Generate random session
         require_code('crypt');
-        $new_session = get_rand_password();
+        $new_session = get_secure_random_string();
 
         // Store session
         $username = $GLOBALS['FORUM_DRIVER']->get_username($member_id);
@@ -295,7 +295,7 @@ function try_su_login($member_id)
         if ((get_forum_type() == 'cns') && (get_param_integer('keep_su_online', 0) == 1)) {
             require_code('crypt');
             $new_session_row = array(
-                'the_session' => get_rand_password(),
+                'the_session' => get_secure_random_string(),
                 'last_activity' => time(),
                 'member_id' => $member_id,
                 'ip' => get_ip_address(3),

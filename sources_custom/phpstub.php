@@ -3035,7 +3035,7 @@ function ucwords($str)
 
 /**
  * Generate a unique ID.
- * NOT CRYPTOGRAPHICALLY SECURE: USE get_rand_password() instead.
+ * NOT CRYPTOGRAPHICALLY SECURE: USE get_secure_random_string() instead.
  *
  * @param  string $prefix Prefix for unique ID
  * @param  boolean $lcg Whether to add additional "combined LCG" entropy at the end of the return value. Always pass as true, because on some IIS systems the timer resolution will be in seconds.

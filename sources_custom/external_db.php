@@ -114,7 +114,7 @@ function external_db_user_sync($member_id, $record)
     require_code('crypt');
     $salt = $GLOBALS['FORUM_DRIVER']->get_member_row_field($member_id, 'm_pass_salt');
     if ($salt == '') {
-        $salt = produce_salt();
+        $salt = get_secure_random_string();
     }
     $new = ratchet_hash($record[$password_field], $salt);
 

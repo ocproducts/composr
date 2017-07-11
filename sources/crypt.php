@@ -55,34 +55,6 @@ function ratchet_hash_verify($password, $salt, $pass_hash_salted, $legacy_style 
 }
 
 /**
- * Get a decent randomised salt.
- *
- * @return ID_TEXT The salt
- */
-function produce_salt()
-{
-    // md5 used in all the below so that we get nice ASCII characters
-
-    // LEGACY
-
-    if (function_exists('random_bytes')) {
-        $u = substr(md5(random_bytes(13)), 0, 13);
-
-    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
-        $u = substr(md5(openssl_random_pseudo_bytes(13)), 0, 13);
-
-    } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
-        $ratchet = max(10, function_exists('crypt_ratchet') ? intval(get_option('crypt_ratchet')) : 3);
-        return substr(md5(password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => $ratchet))), 0, 13);
-
-    } else {
-        $u = substr(md5(uniqid(strval(get_secure_random_number()), true)), 0, 13);
-    }
-
-    return $u;
-}
-
-/**
  * Get the site-wide salt. It should be something hard for a hacker to get, so we depend on data gathered both from the database and file-system.
  *
  * @return ID_TEXT The salt
@@ -91,24 +63,44 @@ function get_site_salt()
 {
     $site_salt = get_value('site_salt');
     if ($site_salt === null) {
-        $site_salt = produce_salt();
+        $site_salt = get_secure_random_string();
         set_value('site_salt', $site_salt);
     }
     return md5($site_salt);
 }
 
 /**
- * Get a randomised password.
+ * Get a randomised string acceptable for use as passwords, tokens, etc.
+ * Will be 13 bytes long and base64.
  *
  * @return string The randomised password
  */
-function get_rand_password()
+function get_secure_random_string()
 {
-    return produce_salt();
+    // md5 used in all the below so that we get nice ASCII characters
+
+    // LEGACY
+
+    if (function_exists('random_bytes')) {
+        $string = substr(md5(random_bytes(13)), 0, 13);
+
+    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
+        $string = substr(md5(openssl_random_pseudo_bytes(13)), 0, 13);
+
+    } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
+        $ratchet = max(10, function_exists('crypt_ratchet') ? intval(get_option('crypt_ratchet')) : 3);
+        return substr(md5(password_hash(uniqid('', true), PASSWORD_BCRYPT, array('cost' => $ratchet))), 0, 13);
+
+    } else {
+        $string = substr(md5(uniqid(strval(get_secure_random_number()), true)), 0, 13);
+    }
+
+    return $string;
 }
 
 /**
  * Get a secure random number, the best this PHP version can do.
+ * Will be between 1 and max signed 32 bit integer (so it can be stored in a 32 bit database).
  *
  * @return integer The randomised number
  */
@@ -120,12 +112,12 @@ function get_secure_random_number()
         // TODO: #3046 in tracker
         // 2147483647 is from MySQL limit http://dev.mysql.com/doc/refman/5.6/en/integer-types.html ; PHP_INT_MAX is higher on 64bit machines
         if (function_exists('random_int')) {
-            $code = random_int(1, 2147483647);
+            $number = random_int(1, 2147483647);
 
         } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
-            $code = intval(2147483647 * (hexdec(bin2hex(openssl_random_pseudo_bytes(4))) / 0xffffffff));
-            if ($code < 0) {
-                $code = -$code;
+            $number = intval(2147483647 * (hexdec(bin2hex(openssl_random_pseudo_bytes(4))) / 0xffffffff));
+            if ($number < 0) {
+                $number = -$number;
             }
 
         } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
@@ -134,12 +126,12 @@ function get_secure_random_number()
             return crc32($hash);
 
         } else {
-            $code = mt_rand(1, min(2147483647, mt_getrandmax()));
+            $number = mt_rand(1, min(2147483647, mt_getrandmax()));
         }
     }
-    while ($code <= 0);
+    while ($number <= 0);
 
-    return $code;
+    return $number;
 }
 
 /**

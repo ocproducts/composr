@@ -138,7 +138,7 @@ function _cms_tempnam($prefix = '')
     } else {
         // A fake temporary file, as true ones have been disabled on PHP
         require_code('crypt');
-        $tempnam = 'tmpfile__' . $prefix . produce_salt();
+        $tempnam = 'tmpfile__' . $prefix . get_secure_random_string();
         $myfile = fopen($local_path . '/' . $tempnam, 'wb');
         fclose($myfile);
         fix_permissions($local_path . '/' . $tempnam);

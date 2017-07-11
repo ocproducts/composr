@@ -446,7 +446,7 @@ class CMSAccountWrite
 
         if (($salt == '') && ($password_compatibility_scheme == '')) {
             require_code('crypt');
-            $salt = produce_salt();
+            $salt = get_secure_random_string();
             $password_salted = ratchet_hash($password, $salt);
         } else {
             $password_salted = $password;

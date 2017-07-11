@@ -29,7 +29,10 @@ class crypt_test_set extends cms_test_case
     {
         $numbers = array();
         for ($i = 0; $i < 1000; $i++) {
-            $numbers[] = get_secure_random_number();
+            $number = get_secure_random_number();
+            $this->assertTrue($number > 0);
+            $this->assertTrue($number <= 2147483647);
+            $numbers[] = $number;
         }
         $this->assertTrue(count(array_unique($numbers)) == count($numbers));
     }
@@ -38,15 +41,17 @@ class crypt_test_set extends cms_test_case
     {
         $strings = array();
         for ($i = 0; $i < 100000; $i++) {
-            $strings[] = get_rand_password();
+            $string = get_secure_random_string();
+            $this->assertTrue(strlen($string) == 13);
+            $strings[] = $string;
         }
         $this->assertTrue(count(array_unique($strings)) == count($strings));
     }
 
     public function testRatchet()
     {
-        $password = get_rand_password();
-        $salt = get_rand_password();
+        $password = get_secure_random_string();
+        $salt = get_secure_random_string();
         $pass_hash_salted = ratchet_hash($password, $salt);
         $this->assertTrue(ratchet_hash_verify($password, $salt, $pass_hash_salted));
     }

@@ -711,7 +711,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
                 if ($ret !== null) {
                     if ($expected_output_path === null) {
                         require_code('crypt');
-                        $filename = 'thumb_' . get_rand_password() . '.png';
+                        $filename = 'thumb_' . get_secure_random_string() . '.png';
                         $expected_output_path = get_custom_file_base() . '/uploads/galleries/' . $filename;
                     }
                     require_code('files');
@@ -766,7 +766,7 @@ function create_video_thumb($src_url, $expected_output_path = null)
 
         if (class_exists('ffmpeg_movie')) {
             require_code('crypt');
-            $filename = 'thumb_' . get_rand_password() . '1.jpg';
+            $filename = 'thumb_' . get_secure_random_string() . '1.jpg';
             if ($expected_output_path === null) {
                 $expected_output_path = get_custom_file_base() . '/uploads/galleries/' . $filename;
             }
