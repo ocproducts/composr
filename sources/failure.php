@@ -706,14 +706,9 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0') && ($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip)) === null)) {
         // Test we're not banning a good bot
         $se_ip_lists = array(
-            // NB: We're using Coral Cache (nyud.net)
-            'http://www.iplists.com.nyud.net/nw/google.txt' => false,
-            'http://www.iplists.com.nyud.net/nw/misc.txt' => false, // Includes Bing, Yandex, SOSO, Sogou, Baidu, Ask Jeeves (aka Teoma)
-            // NB: Yahoo (aka Slurp aka Inktomi), AltaVista, InfoSeek, Lycos, are all confirmed defunct.
-            'https://www.cloudflare.com/ips-v4' => true,
-            'https://www.cloudflare.com/ips-v6' => true,
+            get_file_base() . '/custom/no_banning.txt',
+            get_file_base() . '/data_custom/no_banning.txt',
         );
-        $se_ip_lists[get_base_url() . '/data_custom/no_banning.txt'] = false;
         $ip_stack = array();
         $ip_bits = explode((strpos($alt_ip ? $ip2 : $ip, '.') !== false) ? '.' : ':', $alt_ip ? $ip2 : $ip);
         foreach ($ip_bits as $i => $ip_bit) {
@@ -727,9 +722,9 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             $ip_stack[] = $buildup;
         }
         $is_se = false;
-        foreach ($se_ip_lists as $ip_list => $is_proxy) {
-            $ip_list_file = http_get_contents($ip_list, array('trigger_error' => false));
-            if (is_string($ip_list_file)) {
+        foreach ($se_ip_lists as $ip_list) {
+            if (is_file($ip_list)) {
+                $ip_list_file = file_get_contents($se_ip_lists);
                 $ip_list_array = explode("\n", $ip_list_file);
                 foreach ($ip_stack as $ip_s) {
                     foreach ($ip_list_array as $_ip_list_array) {

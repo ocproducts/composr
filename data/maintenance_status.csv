@@ -114,8 +114,11 @@ country_codes,ISO countries (internal list),ocProducts,,Could potentially break 
 currency,Currency conversion,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 stop_forum_spam,Stop Forum Spam integration,ocProducts,ocProducts,Could potentially break due to third-party changes.,No,
 newsletter_spam_check,Postmark spam-check integration,ocProducts,,Could potentially break due to third-party changes.,No,
-geocode_internal,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,Manual. Part of release process.
+geocode_internal,IP address geocoding (internal list),ocProducts,ocProducts,Could potentially break due to third-party changes.,No,Part of release process.
 geocode_external,IP address geocoding (web service, more detailed),ocProducts,ocProducts,Could potentially break due to third-party changes.,No
-ssl_trust_internal,SSL certificate trust chains (internal list),ocProducts,,Could potentially break due to third-party changes.,No,Manual. Part of release process.
+ssl_trust_internal,SSL certificate trust chains (internal list),ocProducts,,Could potentially break due to third-party changes.,No,Part of release process.
 taxcloud,TaxCloud integration for US sales tax,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.
 eu_digital_tax,Download of EU digital tax rates,ocProducts,,Could potentially break due to third-party changes.,No,Unit test.
+cloudflare_changes,CloudFlare optimisations (potentially-disruptive optimisations CloudFlare may try and make when proxying the site),,,Not regularly Tested.,No,
+cloudflare_ip_lists,CloudFlare true IP detection (a list of CloudFlare IPs to trust and the cloudflare_workaround hidden option),ocProducts,,Not regularly Tested.,No,
+non_block_ip_list,Lists of IPs to not block,ocProducts,,Not regularly Tested.,No,Part of release process.

@@ -634,7 +634,7 @@ Run the [tt]sync_file[/tt] function after making any file changes
 | Internationalisation, portability
 | Product development only
 | Manually
-| We almost always open text files as binary, not text ([tt]t[/tt] mode). This is because we don't benefit from line-ending auto-conversion and we prefer consistency across platforms. We use our [tt]unixify_file_format[/tt] function instead to enforce consistency.
+| We almost always open text files as binary, not text ([tt]t[/tt] mode). This is because we don't benefit from line-ending auto-conversion and we prefer consistency across platforms. We use our [tt]unixify_line_format[/tt] function instead to enforce consistency.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]1 KB = 1024 bytes, etc[/color]

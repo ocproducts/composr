@@ -72,6 +72,7 @@ function make_installers($skip_file_grab = false)
         $out .= populate_build_files_list();
         $out .= '</ul>';
 
+        download_latest_data_files();
         make_files_manifest();
         make_database_manifest();
         make_install_sql();
@@ -1002,6 +1003,81 @@ function make_install_sql()
         require_code('files');
         cms_file_put_contents_safe(get_file_base() . '/install' . strval($i + 1) . '.sql', $segment, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
     }
+}
+
+function download_latest_data_files()
+{
+    _download_latest_data_cert();
+    _download_latest_data_ip_country();
+    _download_latest_data_no_banning();
+}
+
+function _download_latest_data_cert()
+{
+    cms_file_put_contents_safe(get_file_base() . '/data/curl-ca-bundle.crt', http_get_contents('https://curl.haxx.se/ca/cacert.pem'));
+}
+
+function _download_latest_data_ip_country()
+{
+    disable_php_memory_limit();
+
+    $csv_data = '';
+
+    $tmp_name_gzip = cms_tempnam();
+    $myfile = fopen($tmp_name_gzip, 'wb');
+    cms_http_request('http://download.db-ip.com/free/dbip-country-' . date('Y-m') . '.csv.gz', array('write_to_file' => $myfile, 'timeout' => 30.0));
+    fclose($myfile);
+
+    $tmp_name_tar = cms_tempnam();
+    shell_exec('gunzip -c ' . escapeshellarg($tmp_name_gzip) . ' > ' . escapeshellarg($tmp_name_tar));
+
+    $lines = explode("\n", unixify_line_format(file_get_contents($tmp_name_tar)));
+    foreach ($lines as $line) {
+        $x = str_getcsv($line);
+
+        if (!isset($x[2])) {
+            continue;
+        }
+
+        $from = ip2long($x[0]);
+        $to = ip2long($x[1]);
+
+        if (empty($from)) {
+            continue;
+        }
+        if (empty($to)) {
+            continue;
+        }
+
+        $csv_data .= strval($from) . ',' . strval($to) . ',' . $x[2] . "\n";
+    }
+
+    if (empty($csv_data)) {
+        fatal_exit('Failed to extract MaxMind IP address data');
+    }
+
+    cms_file_put_contents_safe(get_file_base() . '/data/modules/admin_stats/IP_Country.txt', $csv_data);
+
+    @unlink($tmp_name_gzip);
+    @unlink($tmp_name_tar);
+}
+
+function _download_latest_data_no_banning()
+{
+    $urls = array(
+        'http://www.iplists.com/google.txt',
+        'http://www.iplists.com/misc.txt',
+        'http://www.iplists.com/non_engines.txt',
+        'https://www.cloudflare.com/ips-v4',
+        'https://www.cloudflare.com/ips-v6',
+    );
+
+    $data = '';
+    foreach ($urls as $url) {
+        $data .= http_get_contents($url);
+    }
+
+    cms_file_put_contents_safe(get_file_base() . '/data/no_banning.txt', $data);
 }
 
 // See phpdoc_parser.php for functions.dat manifest building

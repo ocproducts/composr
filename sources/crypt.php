@@ -84,7 +84,7 @@ function get_secure_random_string()
     if (function_exists('random_bytes')) {
         $string = substr(md5(random_bytes(13)), 0, 13);
 
-    } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
+    } elseif (function_exists('openssl_random_pseudo_bytes')) {
         $string = substr(md5(openssl_random_pseudo_bytes(13)), 0, 13);
 
     } elseif (function_exists('password_hash')) { // password_hash will include a randomised component
@@ -114,7 +114,7 @@ function get_secure_random_number()
         if (function_exists('random_int')) {
             $number = random_int(1, 2147483647);
 
-        } elseif ((function_exists('openssl_random_pseudo_bytes')) && (function_exists('get_value')) && (get_value('disable_openssl') !== '1')) {
+        } elseif (function_exists('openssl_random_pseudo_bytes')) {
             $number = intval(2147483647 * (hexdec(bin2hex(openssl_random_pseudo_bytes(4))) / 0xffffffff));
             if ($number < 0) {
                 $number = -$number;

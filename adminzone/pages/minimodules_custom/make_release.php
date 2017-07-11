@@ -140,9 +140,8 @@ For all changes, see the [url="git history"]' . COMPOSR_REPOS_URL . '/commits/[/
 function phase_1_pre()
 {
     echo '
-    <p>As this is a substantial new release make sure you have done the following:</p>
+    <p>As this is a substantial new release make sure you have done the following (mostly testing):</p>
     <ul>
-        <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
         <li>Run the <a href="' . escape_html(static_evaluate_tempcode(build_url(array('page' => 'plug_guid'), 'adminzone'))) . '" target="_blank">plug_guid</a> tool to build needed GUIDs into the PHP.</li>
     ';
     if (is_maintained('import_phpbb3')) {
@@ -156,26 +155,17 @@ function phase_1_pre()
         ';
     }
     echo '
+        <li><a href="https://docs.google.com/spreadsheets/d/1Im6ICITZmzoBVMizD0CkM7N0kXH5Rb-NQJzD1hk49cU/edit#gid=0" title="Re-sync third-party code (this link will open in a new window)" target="_blank">Re-sync third-party code</a> as appropriate</li>
         <li>Run all the <kbd>_</kbd> prefixed unit tests individually</li>
         <li>Do profiling (usually mainly xdebug) to make sure there are no serious performance regressions, particularly around unneeded code files being loaded, excessively used function calls, expensive function calls, excessive queries, expensive queries, excessive IO operations, expected caching not activating</li>
         <li>Install test content then view the <kbd>lorem:start</kbd>, <kbd>lorem:lorem</kbd> and <kbd>lorem:menus</kbd> pages to ensure blocks are working</li>
-        <li>Test doing an upgrade from the prior version</li>
         <li>Go through a full quick installer test install, and then through the full Setup Wizard</li>
-        <li>A good way to test that module/block/addon upgrade code is working as expected is to use the MySQL cleanup tool. It will say if tables/indices/privileges are not in the database as they are expected to be (assuming you already generated <kbd>db_meta.dat</kbd> via <kbd>data_custom/build_db_meta_file.php</kbd> on a clean install).</li>
-        <li>Write custom theme upgrading code into <kbd>sources/upgrade.php</kbd>. Make sure all ocProducts themes are up-to-date (CSS changes, template changes, theme image changes). TODO: Update this when Convertr done.</li>
-    ';
-    if (is_maintained('ssl_trust_internal')) {
-        echo '
-            <li>Make sure <kbd>curl-ca-bundle.crt</kbd> is reasonably up-to-date.</li>
-        ';
-    }
-    if (is_maintained('geocode_internal')) {
-        echo '
-            <li>Update <kbd>IP_Country.txt</kbd>
-        ';
-    }
-    echo '
-        <li><a href="https://docs.google.com/spreadsheets/d/1Im6ICITZmzoBVMizD0CkM7N0kXH5Rb-NQJzD1hk49cU/edit#gid=0" title="Re-sync third-party code (this link will open in a new window)" target="_blank">Re-sync third-party code</a> as appropriate</li>
+        <li>Upgrading prep and testing:<ul>
+            <li>Copy <kbd>data/files.dat</kbd> from the most recent past release to <kbd>data/files_previous.dat</kbd> in the new release (the hosted upgrade generator does this for upgrade TARs dynamically, but we want our main release to have the correct metadata also)</li>
+            <li>Write custom theme upgrading code into <kbd>sources/upgrade.php</kbd>. Make sure all ocProducts themes are up-to-date (CSS changes, template changes, theme image changes). TODO: Update this when Convertr done.</li>
+            <li>Test doing an upgrade from the prior version</li>
+            <li>A good way to test that module/block/addon upgrade code is working as expected is to use the MySQL cleanup tool. It will say if tables/indices/privileges are not in the database as they are expected to be (assuming you already generated <kbd>db_meta.dat</kbd> via <kbd>data_custom/build_db_meta_file.php</kbd> on a clean install).</li>
+        </ul></li>
         <li>Consider updating the <kbd>$discontinued</kbd> array in <kbd>uploads/website_specific/compo.sr/scripts/version.php</kbd>.</li>
         <li>Consider moving Composr to a fresh repository, so you can have a clean history and a clean set of branches; update the COMPOSR_REPOS_URL constant if you do this</li>
     </ul>

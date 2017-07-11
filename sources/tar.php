@@ -114,7 +114,11 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
             if (substr($header, 257, 5) == 'ustar') {
                 $path = str_replace('\\', '/', substr($header, 345, min(512, strpos($header, $chr_0, 345) - 345)) . substr($header, 0, min(100, strpos($header, $chr_0, 0))));
             } else {
-                $path = substr($header, 0, min(100, strpos($header, $chr_0, 0)));
+                $end_of_string = strpos($header, $chr_0, 0);
+                if ($end_of_string === false) {
+                    warn_exit(do_lang_tempcode('CORRUPT_TAR'), false, true);
+                }
+                $path = substr($header, 0, min(100, $end_of_string));
             }
             if ($next_name !== null) {
                 $path = $next_name;

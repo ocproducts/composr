@@ -568,6 +568,7 @@ class Hook_addon_registry_core
             'themes/default/text/index.html',
             'themes/default/xml/.htaccess',
             'themes/default/xml/index.html',
+            'data/no_banning.txt',
             'data/ace/ace.js',
             'data/ace/ace_composr.js',
             'data/ace/ext-beautify.js',
