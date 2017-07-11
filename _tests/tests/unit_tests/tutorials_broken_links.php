@@ -20,6 +20,8 @@ class tutorials_broken_links_test_set extends cms_test_case
 {
     public function setUp()
     {
+        parent::setUp();
+
         $this->path = get_file_base() . '/docs/pages/comcode_custom/EN';
         $dh = opendir($this->path);
         $this->pages = array();
@@ -32,8 +34,6 @@ class tutorials_broken_links_test_set extends cms_test_case
                 $this->pages[basename($f, '.txt')] = true;
             }
         }
-
-        parent::setUp();
     }
 
     public function testSelfLinks()

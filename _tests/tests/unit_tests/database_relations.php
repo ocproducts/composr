@@ -20,9 +20,9 @@ class database_relations_test_set extends cms_test_case
 {
     public function setUp()
     {
-        require_code('database_relations');
-
         parent::setUp();
+
+        require_code('database_relations');
     }
 
     public function testTablePurposesDefined()

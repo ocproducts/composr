@@ -20,10 +20,10 @@ class lang_duplication_test_set extends cms_test_case
 {
     public function setUp()
     {
+        parent::setUp();
+
         require_code('lang_compile');
         require_code('lang2');
-
-        parent::setUp();
     }
 
     public function testLangDuplication()

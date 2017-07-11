@@ -23,7 +23,7 @@
  *
  * @param  ?PATH $path The path to the TAR archive (null: write out directly to stdout)
  * @param  string $mode The mode to open the TAR archive (rb=read, wb=write)
- * @set    rb wb w+b
+ * @set    rb wb c+b
  * @return array The TAR file handle
  */
 function tar_open($path, $mode)
@@ -32,7 +32,7 @@ function tar_open($path, $mode)
         $myfile = mixed();
         $exists = false;
     } else {
-        $exists = file_exists($path) && (strpos($mode, 'a') !== false);
+        $exists = file_exists($path) && (strpos($mode, 'c+') !== false);
         $myfile = @fopen($path, $mode);
         if ($myfile === false) {
             if (substr($mode, 0, 1) == 'r') {
@@ -53,7 +53,7 @@ function tar_open($path, $mode)
     $resource['myfile'] = $myfile;
     $resource['full'] = $path;
     $resource['already_at_end'] = false;
-    if (((!$exists) || (!(filesize($path) > 0))) && (strpos($mode, 'r') === false)) {
+    if (((!$exists) || (!(filesize($path) > 0))) && (strpos($mode, 'w') !== false)) {
         $chunk = pack('a1024', '');
         if ($myfile !== null) {
             if (fwrite($myfile, $chunk) < strlen($chunk)) {
@@ -100,6 +100,7 @@ function tar_get_directory(&$resource, $tolerate_errors = false)
 
         $offset = ftell($myfile);
         $header = fread($myfile, 512);
+
         if (!isset($header[511])) {
             if ($tolerate_errors) {
                 return null;

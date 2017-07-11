@@ -20,11 +20,11 @@ class auth_test_set extends cms_test_case
 {
     public function setUp()
     {
+        parent::setUp();
+
         require_code('users');
 
         $GLOBALS['SITE_DB']->query_delete('sessions');
-
-        parent::setUp();
     }
 
     public function testNoBackdoor()

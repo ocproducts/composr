@@ -41,7 +41,7 @@ function ratchet_hash($password, $salt)
  * @param  integer $legacy_style Legacy hashing style to fallback to
  * @return boolean Whether the password if verified
  */
-function ratchet_hash_verify($password, $salt, $pass_hash_salted, $legacy_style = PASSWORD_SALT)
+function ratchet_hash_verify($password, $salt, $pass_hash_salted, $legacy_style = 0)
 {
     if (strpos($pass_hash_salted, '$') !== false) {
         return password_verify($salt . md5($password), $pass_hash_salted);

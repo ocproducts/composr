@@ -20,13 +20,13 @@ class _commandr_fs_test_set extends cms_test_case
 {
     public function setUp()
     {
+        parent::setUp();
+
         push_query_limiting(false);
 
         require_code('commandr_fs');
 
         disable_php_memory_limit();
-
-        parent::setUp();
     }
 
     public function testVar()

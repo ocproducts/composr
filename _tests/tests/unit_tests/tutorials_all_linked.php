@@ -22,13 +22,13 @@ class tutorials_all_linked_test_set extends cms_test_case
 
     public function setUp()
     {
+        parent::setUp();
+
         require_code('tutorials');
 
         $_GET['keep_tutorial_test'] = '1';
 
         $this->tutorials = list_tutorials();
-
-        parent::setUp();
     }
 
     public function testAddonLinkage()

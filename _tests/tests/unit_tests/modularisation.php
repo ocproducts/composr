@@ -20,11 +20,11 @@ class modularisation_test_set extends cms_test_case
 {
     public function setUp()
     {
+        parent::setUp();
+
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
         }
-
-        parent::setUp();
     }
 
     public function testModularisation()

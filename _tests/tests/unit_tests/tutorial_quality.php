@@ -22,13 +22,31 @@ class tutorial_quality_test_set extends cms_test_case
 
     public function setUp()
     {
+        parent::setUp();
+
+        if (php_function_allowed('set_time_limit')) {
+            @set_time_limit(0);
+        }
+
         require_code('tutorials');
 
         $_GET['keep_tutorial_test'] = '1';
 
         $this->tutorials = list_tutorials();
+    }
 
-        parent::setUp();
+    public function testValidComcode()
+    {
+        require_code('comcode_check');
+
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $f);
+                check_comcode($c);
+            }
+        }
     }
 
     public function testHaveFullMetaData()

@@ -20,9 +20,9 @@ class lang_spelling_test_set extends cms_test_case
 {
     public function setUp()
     {
-        require_code('lang_compile');
-
         parent::setUp();
+
+        require_code('lang_compile');
     }
 
     public function testLangMistakes()

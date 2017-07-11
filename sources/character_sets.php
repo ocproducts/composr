@@ -85,9 +85,69 @@ function _convert_request_data_encodings($known_utf8 = false)
             }
         }
 
-        $done_something = true;
+        $CONVERTED_ENCODING = true;
+        return;
+    }
 
-    } elseif ((function_exists('iconv')) && (get_value('disable_iconv') !== '1')) {
+    if ((strtolower($input_charset) == 'utf-8') && (strtoupper($internal_charset) == 'ISO-8859-1')) {
+        // utf8_decode (mail extension) option. Imperfect as it needs utf-8 vs ISO-8859-1.
+
+        foreach ($_GET as $key => $val) {
+            if (is_string($val)) {
+                $_GET[$key] = utf8_decode($val);
+            } elseif (is_array($val)) {
+                foreach ($val as $i => $v) {
+                    $_GET[$key][$i] = utf8_decode($v);
+                }
+            }
+        }
+        foreach ($_POST as $key => $val) {
+            if (is_string($val)) {
+                $_POST[$key] = utf8_decode($val);
+            } elseif (is_array($val)) {
+                foreach ($val as $i => $v) {
+                    $_POST[$key][$i] = utf8_decode($v);
+                }
+            }
+        }
+        foreach ($_FILES as $key => $val) {
+            $_FILES[$key]['name'] = utf8_decode($val['name']);
+        }
+
+        $CONVERTED_ENCODING = true;
+        return;
+    }
+
+    if ((strtoupper($input_charset) == 'ISO-8859-1') && ($internal_charset == 'utf-8')) {
+        // utf8_encode (mail extension) option. Imperfect as it needs utf-8 vs ISO-8859-1.
+
+        foreach ($_GET as $key => $val) {
+            if (is_string($val)) {
+                $_GET[$key] = utf8_encode($val);
+            } elseif (is_array($val)) {
+                foreach ($val as $i => $v) {
+                    $_GET[$key][$i] = utf8_encode($v);
+                }
+            }
+        }
+        foreach ($_POST as $key => $val) {
+            if (is_string($val)) {
+                $_POST[$key] = utf8_encode($val);
+            } elseif (is_array($val)) {
+                foreach ($val as $i => $v) {
+                    $_POST[$key][$i] = utf8_encode($v);
+                }
+            }
+        }
+        foreach ($_FILES as $key => $val) {
+            $_FILES[$key]['name'] = utf8_encode($val['name']);
+        }
+
+        $CONVERTED_ENCODING = true;
+        return;
+    }
+
+    if ((function_exists('iconv')) && (get_value('disable_iconv') !== '1')) {
         // iconv option
 
         if (!function_exists('iconv_set_encoding') || @iconv_set_encoding('input_encoding', $input_charset)) {
@@ -133,9 +193,12 @@ function _convert_request_data_encodings($known_utf8 = false)
         } else {
             $VALID_ENCODING = false;
         }
-        $done_something = true;
 
-    } elseif ((function_exists('mb_convert_encoding')) && (get_value('disable_mbstring') !== '1')) {
+        $CONVERTED_ENCODING = true;
+        return;
+    }
+    
+    if ((function_exists('mb_convert_encoding')) && (get_value('disable_mbstring') !== '1')) {
         // mbstring option
 
         if (function_exists('mb_list_encodings')) {
@@ -196,69 +259,8 @@ function _convert_request_data_encodings($known_utf8 = false)
             }
         }
 
-        $done_something = true;
-
-    } elseif ((strtolower($input_charset) == 'utf-8') && (strtoupper($internal_charset) == 'ISO-8859-1')) {
-        // utf8_decode (mail extension) option
-
-        // Imperfect as it needs utf-8 vs ISO-8859-1, but it's our last resort.
-
-        foreach ($_GET as $key => $val) {
-            if (is_string($val)) {
-                $_GET[$key] = utf8_decode($val);
-            } elseif (is_array($val)) {
-                foreach ($val as $i => $v) {
-                    $_GET[$key][$i] = utf8_decode($v);
-                }
-            }
-        }
-        foreach ($_POST as $key => $val) {
-            if (is_string($val)) {
-                $_POST[$key] = utf8_decode($val);
-            } elseif (is_array($val)) {
-                foreach ($val as $i => $v) {
-                    $_POST[$key][$i] = utf8_decode($v);
-                }
-            }
-        }
-        foreach ($_FILES as $key => $val) {
-            $_FILES[$key]['name'] = utf8_decode($val['name']);
-        }
-
-        $done_something = true;
-
-    } elseif ((strtoupper($input_charset) == 'ISO-8859-1') && ($internal_charset == 'utf-8')) {
-        // utf8_encode (mail extension) option
-
-        // Imperfect as it needs utf-8 vs ISO-8859-1, but it's our last resort.
-
-        foreach ($_GET as $key => $val) {
-            if (is_string($val)) {
-                $_GET[$key] = utf8_encode($val);
-            } elseif (is_array($val)) {
-                foreach ($val as $i => $v) {
-                    $_GET[$key][$i] = utf8_encode($v);
-                }
-            }
-        }
-        foreach ($_POST as $key => $val) {
-            if (is_string($val)) {
-                $_POST[$key] = utf8_encode($val);
-            } elseif (is_array($val)) {
-                foreach ($val as $i => $v) {
-                    $_POST[$key][$i] = utf8_encode($v);
-                }
-            }
-        }
-        foreach ($_FILES as $key => $val) {
-            $_FILES[$key]['name'] = utf8_encode($val['name']);
-        }
-
-        $done_something = true;
-    }
-
-    if ($done_something) {
         $CONVERTED_ENCODING = true;
+        return;
     }
 }
 
@@ -285,7 +287,12 @@ function convert_to_internal_encoding($data, $input_charset, $internal_charset =
         return $data;
     }
 
-    if ($input_charset == $internal_charset) {
+    if (strtolower($input_charset) == strtolower($internal_charset)) {
+        // No change needed
+        return $data;
+    }
+
+    if ($data == '') {
         // No change needed
         return $data;
     }
@@ -304,14 +311,32 @@ function convert_to_internal_encoding($data, $input_charset, $internal_charset =
         }
     }
 
+    if ((strtolower($input_charset) == 'utf-8') && (strtoupper($internal_charset) == 'ISO-8859-1')) {
+        // utf8_decode (mail extension) option. Imperfect as it needs utf-8 vs ISO-8859-1.
+
+        $test = @utf8_decode($data);
+        if ($test !== false) {
+            return $test;
+        }
+    }
+
+    if ((strtoupper($input_charset) == 'ISO-8859-1') && (strtolower($internal_charset) == 'utf-8')) {
+        // utf8_encode (mail extension) option. Imperfect as it needs utf-8 vs ISO-8859-1.
+
+        $test = @utf8_encode($data);
+        if ($test !== false) {
+            return $test;
+        }
+    }
+
     if ((function_exists('iconv')) && ($VALID_ENCODING) && (get_value('disable_iconv') !== '1')) {
         // iconv option
 
         $test = @iconv($input_charset, $internal_charset . '//TRANSLIT', $data);
-        if ($test === false) {
+        if (empty($test)) {
             $test = @iconv($input_charset, $internal_charset . '//IGNORE', $data);
         }
-        if ($test !== false) {
+        if (!empty($test)) {
             return $test;
         }
     }
@@ -334,24 +359,6 @@ function convert_to_internal_encoding($data, $input_charset, $internal_charset =
             if ($test !== false) {
                 return $test;
             }
-        }
-    }
-
-    if ((strtolower($input_charset) == 'utf-8') && (strtoupper($internal_charset) == 'ISO-8859-1')) {
-        // utf8_decode (mail extension) option
-
-        $test = @utf8_decode($data); // Imperfect as it needs utf-8 vs ISO-8859-1, but it's our last resort.
-        if ($test !== false) {
-            return $test;
-        }
-    }
-
-    if (($internal_charset == 'utf-8') && (strtoupper($input_charset) == 'ISO-8859-1')) {
-        // utf8_encode (mail extension) option
-
-        $test = @utf8_encode($data); // Imperfect as it needs utf-8 vs ISO-8859-1, but it's our last resort.
-        if ($test !== false) {
-            return $test;
         }
     }
 
@@ -381,7 +388,7 @@ function _will_be_successfully_unicode_neutered($data)
 }
 
 /**
- * Convert some data from UTF to a character set PHP supports, using HTML entities where there's no direct match.
+ * Convert some data from utf-8 to a character set PHP supports, using HTML entities where there's no direct match.
  *
  * @param  string $data Data to convert
  * @param  string $internal_charset Charset to convert to
@@ -389,20 +396,26 @@ function _will_be_successfully_unicode_neutered($data)
  */
 function entity_utf8_decode($data, $internal_charset)
 {
+    // Encode to create entities for difficult characters
     $encoded = htmlentities($data, ENT_COMPAT, 'utf-8'); // Only works on some servers, which is why we test the utility of it before running this function. NB: It is fine that this will double encode any pre-existing entities- as the double encoding will trivially be undone again later (amp can always decode to a lower ascii character)
     if ((strlen($encoded) == 0) && ($data != '')) {
         $encoded = htmlentities($data, ENT_COMPAT);
     }
 
+    // Decode so any non-difficult characters come back
     $test = mixed();
     $test = @html_entity_decode($encoded, ENT_COMPAT, $internal_charset); // this is nice because it will leave equivalent entities where it can't get a character match; Comcode supports those entities
     if ((strlen($test) == 0) && ($data != '')) {
         $test = false;
     }
+
     if ($test === false) {
+        // Alternative decoding method, character-by-character substitution...
+
         $test = preg_replace_callback('/&#x([0-9a-f]+);/i', '_unichrm_hex', $encoded); // imperfect as it can only translate lower ascii back, but better than nothing. htmlentities would have encoded key other ones as named entities though which get_html_translation_table can handle
         $test = preg_replace_callback('/&#([0-9]+);/', '_unichrm', $test); // imperfect as it can only translate lower ascii back, but better than nothing. htmlentities would have encoded key other ones as named entities though which get_html_translation_table can handle
-        if (strtolower($internal_charset) == 'iso-8859-1') { // trans table only valid for this charset. Else we just need to live with things getting turned into named entities. However we don't allow this function to be called if this code branch would be skipped here.
+
+        if (strtoupper($internal_charset) == 'ISO-8859-1') { // trans table only valid for this charset. Else we just need to live with things getting turned into named entities. However we don't allow this function to be called if this code branch would be skipped here.
             require_code('xml');
             $test2 = convert_bad_entities($test, $internal_charset);
             if ((strlen($test2) != 0) || ($data == '')) {
@@ -410,20 +423,24 @@ function entity_utf8_decode($data, $internal_charset)
             }
         }
     }
-    if ($test !== false) {
-        $data = $test;
-        $shortcuts = array('(EUR-)' => '&euro;', '{f.}' => '&fnof;', '-|-' => '&dagger;', '=|=' => '&Dagger;', '{%o}' => '&permil;', '{~S}' => '&Scaron;', '{~Z}' => '&#x17D;', '(TM)' => '&trade;', '{~s}' => '&scaron;', '{~z}' => '&#x17E;', '{.Y.}' => '&Yuml;', '(c)' => '&copy;', '(r)' => '&reg;', '---' => '&mdash;', '--' => '&ndash;', '...' => '&hellip;', '==>' => '&rarr;', '<==' => '&larr;');
-        foreach ($shortcuts as $to => $from) {
-            $data = str_replace($from, $to, $data);
-        }
-    } else {
-        $data = false;
+
+    if ($test === false) {
+        return false;
     }
+
+    $data = $test;
+
+    // We'd rather have text-code than entities
+    $shortcuts = array('(EUR-)' => '&euro;', '{f.}' => '&fnof;', '-|-' => '&dagger;', '=|=' => '&Dagger;', '{%o}' => '&permil;', '{~S}' => '&Scaron;', '{~Z}' => '&#x17D;', '(TM)' => '&trade;', '{~s}' => '&scaron;', '{~z}' => '&#x17E;', '{.Y.}' => '&Yuml;', '(c)' => '&copy;', '(r)' => '&reg;', '---' => '&mdash;', '--' => '&ndash;', '...' => '&hellip;', '==>' => '&rarr;', '<==' => '&larr;');
+    foreach ($shortcuts as $to => $from) {
+        $data = str_replace($from, $to, $data);
+    }
+
     return $data;
 }
 
 /**
- * Convert a unicode character number to a unicode string. Callback for preg_replace.
+ * Convert a unicode character number to a utf-8 HTML-entity enabled string. Callback for preg_replace.
  *
  * @param  array $matches Regular expression match array
  * @return ~string Converted data (false: could not convert)
@@ -434,7 +451,7 @@ function _unichrm_hex($matches)
 }
 
 /**
- * Convert a unicode character number to a unicode string. Callback for preg_replace.
+ * Convert a unicode character number to a utf-8 HTML-entity enabled string. Callback for preg_replace.
  *
  * @param  array $matches Regular expression match array
  * @return ~string Converted data (false: could not convert)
@@ -471,7 +488,8 @@ function convert_to_html_encoding($text)
     $text = convert_to_internal_encoding($text, get_charset(), 'utf-8');
 
     $result = '';
-    for ($i = 0; $i < strlen($text); $i++) {
+    $len = strlen($text);
+    for ($i = 0; $i < $len; $i++) {
         $char = $text[$i];
         $ascii = ord($char);
         if ($ascii < 128) {

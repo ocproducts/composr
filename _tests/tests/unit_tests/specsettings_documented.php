@@ -20,13 +20,13 @@ class specsettings_documented_test_set extends cms_test_case
 {
     public function setUp()
     {
+        parent::setUp();
+
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
         }
 
         require_code('files2');
-
-        parent::setUp();
     }
 
     public function testSymbols()

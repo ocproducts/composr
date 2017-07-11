@@ -23,6 +23,8 @@ class sitemap_test_set extends cms_test_case
 
     public function setUp()
     {
+        parent::setUp();
+
         $this->establish_admin_session();
 
         require_code('sitemap');
@@ -38,8 +40,6 @@ class sitemap_test_set extends cms_test_case
 
         $this->sitemap = retrieve_sitemap_node($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, $options, $zone, $meta_gather);
         $this->flattened = $this->flatten_sitemap($this->sitemap);
-
-        parent::setUp();
     }
 
     public function flatten_sitemap($sitemap)
