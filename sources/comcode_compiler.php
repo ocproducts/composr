@@ -2064,6 +2064,10 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         $html_errors = true;
     }*/
 
+    if (strpos($comcode,'{$,page hint: make_mobile}') !== false) {
+        return directive_tempcode('MAKE_MOBILE', $tag_output);
+    }
+
     return $tag_output;
 }
 

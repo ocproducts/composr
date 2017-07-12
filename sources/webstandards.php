@@ -824,6 +824,7 @@ function init__webstandards()
         'img.longdesc' => '.+',
         'img.src' => $enforce_link,
         'img.srcset' => '(' . $enforce_link . ' \d+x( |$))*',
+        'img.sizes' => '.+',
         'img.usemap' => '.+',
         'img.width' => $enforce_inumber,
         'input.accept' => '.+',

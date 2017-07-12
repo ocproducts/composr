@@ -522,9 +522,96 @@ function ecv($lang, $escaped, $type, $name, $param)
 
             case 'MAKE_MOBILE':
                 $value = $param[count($param) - 2]->evaluate();
+
                 if (is_mobile()) {
+                    // Easy table conversion for mobile
                     $value = preg_replace('#<(table|tbody|thead|tr|th|td)(\s[^<>]*)?' . '>#', '<div$2>', $value);
                     $value = preg_replace('#</(table|tbody|thead|tr|th|td)>#', '</div>', $value);
+                }
+
+                // Easy responsive images
+                $new_value = '';
+                $matches = array();
+                $last_offset = 0;
+                $num_matches = preg_match_all('#(<img\s[^<>]*src=")([^"]*)(")([^<>]*>)#i', $value, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
+                for ($i = 0; $i < $num_matches; $i++) {
+                    $this_offset = $matches[$i][0][1];
+
+                    $new_value .= substr($value, $last_offset, $this_offset - $last_offset);
+
+                    if (strpos($matches[$i][0][0], 'srcset=') !== false) {
+                        // Already responsive?
+                        $new_value .= $matches[$i][0][0];
+                        $last_offset = $this_offset + strlen($matches[$i][0][0]);
+                        continue;
+                    }
+
+                    // Find alternate images
+                    $url = html_entity_decode($matches[$i][2][0], ENT_QUOTES);
+                    $mobile_url = null;
+                    $url_stub = get_custom_base_url() . '/uploads/filedump/';
+                    if (substr($url, 0, strlen($url_stub)) == $url_stub) {
+                        $file_path = get_custom_file_base() . substr($url, strlen(get_custom_base_url()));
+                        if (is_file($file_path)) {
+                            $ext = get_file_extension($file_path);
+                            $mobile_file_path = dirname($file_path) . '/' . basename($file_path, '.' . $ext) . '_mobile.' . $ext;
+                            if (!is_file($mobile_file_path)) {
+                                $mobile_file_path = dirname($file_path) . '/' . basename($file_path, '.' . $ext) . '-mobile.' . $ext;
+                            }
+                            if (is_file($mobile_file_path)) {
+                                $mobile_url = get_custom_base_url() . substr($mobile_file_path, strlen(get_custom_file_base()));
+                            }
+                        }
+                    }
+
+                    if ($mobile_url === null) {
+                        // No mobile version
+                        $new_value .= $matches[$i][0][0];
+                        $last_offset = $this_offset + strlen($matches[$i][0][0]);
+                        continue;
+                    }
+
+                    if (is_mobile()) {
+                        // Simple <img> element with mobile version URL...
+
+                        $new_value .= $matches[$i][1][0]; // Front of img tag and start src attribute
+                        $new_value .= escape_html($mobile_url); // Image URL
+                        $new_value .= $matches[$i][3][0]; // Close src attribute
+                        $new_value .= $matches[$i][4][0]; // End of img tag
+                    } else {
+                        // Complex <picture> element...
+
+                        $new_value .= '<picture>';
+
+                        if ((isset($param[1])) && (is_numeric($param[0]))) {
+                            $viewport_switch = intval($param[0]);
+                        } else {
+                            $viewport_switch = 641; // TODO: Change to 983px in v10
+                        }
+
+                        // Responsive design code for desktop
+                        $new_value .= '<source media="(min-width: ' . strval($viewport_switch) . 'px)" srcset="' . escape_html($url) . '" />';
+
+                        // Responsive design code for mobile
+                        $new_value .= '<source media="(max-width: ' . strval($viewport_switch - 1) . 'px)" srcset="' . escape_html($mobile_url) . '" />';
+
+                        $new_value .= $matches[$i][1][0]; // Front of img tag and start src attribute
+                        $new_value .= escape_html($url); // Non-responsive default image URL
+                        $new_value .= $matches[$i][3][0]; // Close src attribute
+                        $new_value .= $matches[$i][4][0]; // End of img tag
+
+                        $new_value .= '</picture>';
+                    }
+
+                    $last_offset = $this_offset + strlen($matches[$i][0][0]);
+                }
+                if ($num_matches > 0) {
+                    $new_value .= substr($value, $last_offset);
+                    $value = $new_value;
+                }
+
+                if (is_mobile()) {
+                    // Allow targeted CSS
                     $value = '<div class="make_mobile">' . $value . '</div>';
                 }
                 break;
