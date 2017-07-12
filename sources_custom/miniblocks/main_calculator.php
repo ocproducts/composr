@@ -14,13 +14,17 @@
  */
 
 i_solemnly_declare(I_UNDERSTAND_SQL_INJECTION | I_UNDERSTAND_XSS | I_UNDERSTAND_PATH_INJECTION);
+load_csp(array('csp_allow_eval_js' => '1'));
 
 require_javascript('checking');
+require_javascript('calculatr');
 
 $message = $map['message'];
 $equation = $map['equation'];
 $equation = str_replace('math.', 'Math.', strtolower($equation)); // Name fields come out lower case, so equation needs to be
-echo '<form onsubmit="return false;" action="#!" method="post">';
+?>
+<form data-require-javascript="calculatr" data-tpl="miniblockMainCalculator" data-tp-message="<?= escape_html($message) ?>" data-tp-equation="<?= escape_html($equation) ?>" action="#!" method="post">
+<?php
 foreach ($map as $key => $val) {
     $key = strtolower($key);
     if (($key != 'equation') && ($key != 'block') && ($key != 'message') && ($key != 'cache')) {
@@ -30,25 +34,8 @@ foreach ($map as $key => $val) {
         </p>';
     }
 }
-$uniqid = str_replace('.', '_', uniqid('', true));
-echo '
-    <script>
-        function calculate_sum_' . $uniqid . '(elements)
-        {
-            var equation=\'' . $equation . '\';
-            for (var i=0;i<elements.length;i++)
-            {
-                if (elements[i].name!=\'\')
-                    this[elements[i].name]=elements[i].value;
-            }
-            window.eval(\'var ret=\'+equation);
-            return Math.round(ret);
-        }
-    </script>
-    <p class="proceed_button">
-        <input onclick="if ($cms.form.checkForm(this.form)) $cms.ui.alert(\'' . $message . '\'.replace(\'xxx\',calculate_sum_' . $uniqid . '(this.form.elements))); return false;" class="buttons__calculate button_screen_item" type="submit" value="Calculate" />
-    </p>
+?>
+<p class="proceed_button">
+    <input data-click-pd class="buttons__calculate button_screen_item js-btn-click-calculate-sum" type="submit" value="Calculate" />
+</p>
 </form>
-';
-
-// TODO: Salman. CSP splitup needed
