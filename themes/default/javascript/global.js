@@ -677,6 +677,7 @@
          * @namespace $cms.templates
          */
         templates: {},
+        
         /**
          * Addons can add functions under this object
          * @namespace $cms.functions
@@ -7340,9 +7341,7 @@
 
     // ---
 
-    var ajaxInstances = [],
-        ajaxCallbacks = [],
-        networkDownAlerted = false;
+    var networkDownAlerted = false;
 
     /**
      * @param url

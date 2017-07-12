@@ -136,6 +136,7 @@ This is coded as a "mini block", and serves as a good example of how you can use
         return array(
             'sources_custom/hooks/systems/addon_registry/calculatr.php',
             'sources_custom/miniblocks/main_calculator.php',
+            'themes/default/javascript_custom/calculatr.js',
         );
     }
 }
