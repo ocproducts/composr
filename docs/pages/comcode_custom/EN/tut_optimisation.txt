@@ -446,7 +446,7 @@ Round-Robin DNS could be used to choose a frontend server from the farm randomly
 [title="3"]Reverse proxying notes[/title]
 
 If you are using a reverse proxy then it's important PHP sees the correct IP addresses of end-users, not your proxy server.
-You can solve this by setting the Composr [tt]ip_cidr_trusts[/tt] installation option (edited via [tt]config_editor.php[/tt]).
+You can solve this by setting the Composr [tt]trusted_proxies[/tt] installation option (edited via [tt]config_editor.php[/tt]).
 By default we place trust on Cloudflare IP ranges.
 
 [title="3"]Geographic distribution of servers[/title]

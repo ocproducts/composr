@@ -672,14 +672,14 @@ if (count($SITE_INFO) == 0) {
 
 // Make sure we have the correct IP address in REMOTE_ADDR
 if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-    if (empty($SITE_INFO['ip_cidr_trusts'])) {
-        $ip_cidr_trusts = '103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,104.16.0.0/12,108.162.192.0/18,131.0.72.0/22,141.101.64.0/18,162.158.0.0/15,172.64.0.0/13,173.245.48.0/20,188.114.96.0/20,190.93.240.0/20,197.234.240.0/22,198.41.128.0/17,2400:cb00::/32,2405:8100::/32,2405:b500::/32,2606:4700::/32,2803:f800::/32,2c0f:f248::/32,2a06:98c0::/29';
+    if (empty($SITE_INFO['trusted_proxies'])) {
+        $trusted_proxies = '103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,104.16.0.0/12,108.162.192.0/18,131.0.72.0/22,141.101.64.0/18,162.158.0.0/15,172.64.0.0/13,173.245.48.0/20,188.114.96.0/20,190.93.240.0/20,197.234.240.0/22,198.41.128.0/17,2400:cb00::/32,2405:8100::/32,2405:b500::/32,2606:4700::/32,2803:f800::/32,2c0f:f248::/32,2a06:98c0::/29';
     } else {
-        $ip_cidr_trusts = $SITE_INFO['ip_cidr_trusts'];
+        $trusted_proxies = $SITE_INFO['trusted_proxies'];
     }
-    foreach (explode(',', $ip_cidr_trusts) as $ip_cidr_trust) {
-        if (strpos($ip_cidr_trust, '/') !== false) {
-            if (ip_cidr_check($_SERVER['REMOTE_ADDR'], $ip_cidr_trust)) {
+    foreach (explode(',', $trusted_proxies) as $proxy) {
+        if (((strpos($proxy, '/') !== false) && (ip_cidr_check($_SERVER['REMOTE_ADDR'], $proxy))) || ($_SERVER['REMOTE_ADDR'] == $proxy)) {
+            if (ip_cidr_check($_SERVER['REMOTE_ADDR'], $proxy)) {
                 $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
                 break;
             }

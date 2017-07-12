@@ -680,14 +680,8 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 $ip_list_array = explode("\n", $ip_list_file);
                 foreach ($ip_stack as $ip_s) {
                     foreach ($ip_list_array as $_ip_list_array) {
-                        if (strpos($ip_s, '/') === false) {
-                            if ($ip_s == $_ip_list_array) {
-                                $is_se = true;
-                            }
-                        } else {
-                            if ((function_exists('ip_cidr_check')) && (ip_cidr_check($ip_s, $_ip_list_array))) {
-                                $is_se = true;
-                            }
+                        if (((strpos($ip_s, '/') !== false) && (function_exists('ip_cidr_check')) && (ip_cidr_check($ip_s, $_ip_list_array))) || ($ip_s == $_ip_list_array)) {
+                            $is_se = true;
                         }
                     }
                 }
