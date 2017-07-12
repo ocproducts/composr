@@ -1014,7 +1014,11 @@ function download_latest_data_files()
 
 function _download_latest_data_cert()
 {
-    cms_file_put_contents_safe(get_file_base() . '/data/curl-ca-bundle.crt', http_get_contents('https://curl.haxx.se/ca/cacert.pem'));
+    $data = http_get_contents('https://curl.haxx.se/ca/cacert.pem');
+    if (strpos($data, 'BEGIN CERTIFICATE') === false) {
+        fatal_exit('Error with certificates');
+    }
+    cms_file_put_contents_safe(get_file_base() . '/data/curl-ca-bundle.crt', $data);
 }
 
 function _download_latest_data_ip_country()
