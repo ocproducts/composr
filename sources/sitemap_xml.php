@@ -168,6 +168,12 @@ function rebuild_sitemap_index()
     foreach ($sitemap_sets as $sitemap_set) {
         $path = get_custom_file_base() . '/data_custom/sitemaps/set_' . strval($sitemap_set['set_number']) . '.xml';
         $url = get_custom_base_url() . '/data_custom/sitemaps/set_' . strval($sitemap_set['set_number']) . '.xml';
+
+        if ((is_file($path)) && (filesize($path) < 120)) {
+            // Google gives hard errors on empty sets
+            continue;
+        }
+
         if (is_file($path . '.gz')) {
             // Point to .gz if we have been gzipping. We cannot assume we have consistently managed that
             $path .= '.gz';
@@ -190,6 +196,10 @@ function rebuild_sitemap_index()
     fwrite($sitemaps_out_file, $blob);
     fclose($sitemaps_out_file);
     @unlink($sitemaps_out_path);
+    if (!file_exists(dirname($sitemaps_out_path))) {
+        @mkdir(dirname($sitemaps_out_path));
+        fix_permissions(dirname($sitemaps_out_path));
+    }
     rename($sitemaps_out_temppath, $sitemaps_out_path);
     sync_file($sitemaps_out_path);
     fix_permissions($sitemaps_out_path);
