@@ -186,23 +186,23 @@ function _get_details_comcode_tags()
 function _get_group_tags($group = null)
 {
     $group_tags = array(
-        'dynamic_front_end' => array('overlay', 'random', 'pulse', 'ticker', 'shocker', 'jumping', 'sections', 'big_tabs', 'tabs', 'carousel', 'hide', 'tooltip'),
-
-        'dynamic_back_end' => array('currency', 'if_in_group'),
-
         'structure' => array('title', 'contents', 'include', 'concepts', 'concept', 'staff_note', 'menu', 'surround'),
-
-        'formatting' => array('list', 'indent', 'ins', 'del', 'b', 'u', 'i', 's', 'sup', 'sub', 'size', 'color', 'highlight', 'font', 'align', 'left', 'center', 'right', 'abbr', 'box', 'quote'),
-
-        'semantic' => array('cite', 'samp', 'q', 'var', 'dfn', 'address'),
-
-        'display_code' => array('codebox', 'code', 'tt', 'no_parse'),
-
-        'execute_code' => array('semihtml', 'html'),
 
         'media' => array('img', 'thumb', 'flash', 'media', 'media_set'),
 
         'linking' => array('url', 'email', 'reference', 'page', 'snapback', 'post', 'topic'),
+
+        'formatting' => array('list', 'indent', 'ins', 'del', 'b', 'u', 'i', 's', 'sup', 'sub', 'size', 'color', 'highlight', 'font', 'align', 'left', 'center', 'right', 'abbr', 'box', 'quote'),
+
+        'display_code' => array('codebox', 'code', 'tt', 'no_parse'),
+
+        'dynamic_front_end' => array('overlay', 'random', 'pulse', 'ticker', 'shocker', 'jumping', 'sections', 'big_tabs', 'tabs', 'carousel', 'hide', 'tooltip'),
+
+        'dynamic_back_end' => array('currency', 'if_in_group'),
+
+        'semantic' => array('cite', 'samp', 'q', 'var', 'dfn', 'address'),
+
+        'execute_code' => array('semihtml', 'html'),
     );
 
     // Non-categorised ones
@@ -1003,6 +1003,28 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
 
         $filedump_url = build_url(array('page' => 'filedump'), get_module_zone('filedump'));
         $field_set->attach(form_input_tree_list(do_lang_tempcode('filedump:FILEDUMP'), do_lang_tempcode('COMCODE_TAG_media_EMBED__library', escape_html($filedump_url->evaluate())), 'tag_contents__b', '', 'choose_filedump_file', array(), false, '', false));
+
+        /*
+        TODO: Salman integrate this new code I wrote
+        $javascript .= '
+            // If we select an image we want to have good defaults for an image, but only if the defaults weren't already changed
+            document.getElementById(\'tag_contents__b\').onchange=function() {
+                var ext=this.value.substring(this.value.indexOf(\'.\')+1);
+                var is_image=(\',' . addslashes(get_option('valid_images')) . '\'.indexOf(\',\'+ext+\',\')!=-1);
+                if (is_image) {
+                    var framed=document.getElementById(\'framed\');
+                    var wysiwyg_editable=document.getElementById(\'wysiwyg_editable\');
+                    var thumb=document.getElementById(\'thumb\');
+
+                    if (framed.defaultChecked==framed.checked && wysiwyg_editable.defaultChecked==wysiwyg_editable.checked && thumb.defaultChecked==thumb.checked) {
+                        framed.checked=false;
+                        wysiwyg_editable.checked=true;
+                        thumb.checked=false;
+                    }
+                }
+            };
+        ';
+        */
 
         $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required, $default_embed));
     } elseif ($tag == 'attachment') {
