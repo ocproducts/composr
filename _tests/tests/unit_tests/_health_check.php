@@ -632,10 +632,14 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // PHP version no longer supported
-    /*public function testForTODO()
+    public function testForUnsupportedPHP()
     {
-        // TODO
-    }*/
+        require_code('version2');
+
+        $v = strval(PHP_MAJOR_VERSION) . '.' . strval(PHP_MINOR_VERSION);
+
+        $this->assertTrue(is_php_version_supported($v));
+    }
 
     // Cache headers not set correctly on static resources like images or CSS or JavaScript
     /*public function testForTODO()
