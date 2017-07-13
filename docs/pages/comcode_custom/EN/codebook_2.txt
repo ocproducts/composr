@@ -436,7 +436,7 @@ Here's a script for if you want to know some basic stats about Composr's English
  See text/EN/licence.txt for full licencing information.
 
  Meta Script:
-   Count the number of words in ocPortal currently
+   Count the number of words in Composr currently
 */
 
 if (!isset($_GET['path'])) {
