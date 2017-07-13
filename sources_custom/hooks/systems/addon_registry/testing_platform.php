@@ -346,6 +346,7 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/http.php',
             '_tests/tests/unit_tests/bump_member_group_timeout.php',
             '_tests/tests/unit_tests/env_vars.php',
+            '_tests/tests/unit_tests/_health_check.php',
             '_tests/tests/unit_tests/catalogues.php',
             '_tests/tests/unit_tests/catalogues_category.php',
             '_tests/tests/unit_tests/wiki.php',

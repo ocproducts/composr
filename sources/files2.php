@@ -1229,11 +1229,17 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             }
 
                                             // SSL prep
-                                            $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
-                                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, !((function_exists('get_value')) && (get_value('disable_ssl_for__' . $url_parts['host']) === '1')));
+                                            $disabled_ssl_verify = ((function_exists('get_value')) && (get_value('disable_ssl_for__' . $url_parts['host']) === '1'));
+                                            if ($disabled_ssl_verify) {
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                                            } else {
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+                                            }
                                             if (ini_get('curl.cainfo') == '') {
+                                                $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
                                                 curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
-                                                curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
                                             }
                                             if (defined('CURL_SSLVERSION_TLSv1')) {
                                                 curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1); // https://jve.linuxwall.info/blog/index.php?post/TLS_Survey
@@ -1245,8 +1251,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 }
                                             }
                                             if ($do_ip_forwarding) {
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
                                             }
 
                                             // Misc settings

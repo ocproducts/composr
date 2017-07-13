@@ -96,6 +96,11 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>Vector graphics standard, used for drawing statistics graphs.</td>
 			<td>You are unlikely to need any awareness of this.</td>
 		</tr>
+		<tr>
+			<td>[url="https://developers.google.com/search/reference/robots_txt"]robots.txt[/url]</td>
+			<td>Robots exclusion standard. Google's version of the specification is the most accurate to what search engines now support.</td>
+			<td>Knowing this may be important for [abbr="Search Engine Optimisation"]SEO[/abbr].</td>
+		</tr>
 
 		<tr>
 			<th colspan="3"><em>Accessibility and Internationalisation</em></th>
