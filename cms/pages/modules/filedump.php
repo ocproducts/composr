@@ -295,6 +295,7 @@ class Module_filedump
 
         // Find all files in the filedump directory
         $db_rows = array();
+        $directories = array();
         $files = array();
         $dir_contents = get_directory_contents(get_custom_file_base() . '/uploads/filedump' . $place, trim($place, '/'), IGNORE_ACCESS_CONTROLLERS, $recurse == 1);
         foreach ($dir_contents as $filename) {
@@ -339,7 +340,7 @@ class Module_filedump
                     $timestamp = filemtime($_full);
                 }
 
-                $files[] = array(
+                $file_map = array(
                     'filename' => $is_directory ? ($filename . '/') : $filename,
                     'place' => $_place,
                     '_description' => $_description,
@@ -348,10 +349,16 @@ class Module_filedump
                     'submitter' => isset($db_row) ? $db_row['the_member'] : null,
                     'is_directory' => $is_directory,
                 );
+                if ($is_directory) {
+                    $directories[] = $file_map;
+                } else {
+                    $files[] = $file_map;
+                }
             }
         }
 
         // Sorting
+        @sort_maps_by($directories, 'filename');
         switch ($order) {
             case 'time':
                 @sort_maps_by($files, '_time');
@@ -366,6 +373,7 @@ class Module_filedump
         if ($direction == 'DESC') {
             $files = array_reverse($files);
         }
+        $files = array_merge($directories, $files);
 
         // Pagination
         $max_rows = count($files);
