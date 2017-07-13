@@ -7949,6 +7949,8 @@
 
                 'click [data-click-alert]': 'showModalAlert',
                 'keypress [data-keypress-alert]': 'showModalAlert',
+                
+                'keypress [data-submit-on-enter]': 'submitOnEnter',
 
                 // Prevent url change for clicks on anchor tags with a placeholder href
                 'click a[href$="#!"]': 'preventDefault',
@@ -8125,6 +8127,14 @@
         showModalAlert: function (e, target) {
             var options = objVal($cms.dom.data(target, e.type + 'Alert'), 'notice');
             $cms.ui.alert(options.notice);
+        },
+
+        // Implementation for [data-submit-on-enter]
+        submitOnEnter: function submitOnEnter(e, input) {
+            if ($cms.dom.keyPressed(e, 'Enter')) {
+                input.form.submit();
+                e.preventDefault();
+            }
         },
 
         preventDefault: function (e) {
