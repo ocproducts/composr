@@ -174,13 +174,19 @@
                 extra = ' ';
                 func = node.getAttribute('img_func_1');
                 if (func) {
-                    // TODO: Salman stop needing to use eval
-                    extra = extra + eval(func + '(node)');
+                    if (func === 'permissionsImgFunc1') {
+                        extra = extra + window.permissionsImgFunc1(node);
+                    } else if (func === 'permissionsImgFunc2') {
+                        extra = extra + window.permissionsImgFunc2(node);
+                    }
                 }
                 func = node.getAttribute('img_func_2');
                 if (func) {
-                    // TODO: Salman stop needing to use eval
-                    extra = extra + eval(func + '(node)');
+                    if (func === 'permissionsImgFunc1') {
+                        extra = extra + window.permissionsImgFunc1(node);
+                    } else if (func === 'permissionsImgFunc2') {
+                        extra = extra + window.permissionsImgFunc2(node);
+                    }
                 }
                 nodeSelfWrap = document.createElement('div');
                 nodeSelf = document.createElement('div');

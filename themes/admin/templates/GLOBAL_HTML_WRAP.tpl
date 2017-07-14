@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-{$REQUIRE_JAVASCRIPT,core_primary_layout}
-
 <!--
 Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 {$BRAND_BASE_URL*}

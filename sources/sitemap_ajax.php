@@ -244,7 +244,7 @@ function _sitemap_node_to_xml($admin_groups, $groups, $node, $permissions_needed
             $privilege_perms .= ' no_privileges="1"';
         }
 
-        $privilege_perms .= ' img_func_1="permissions_img_func_1" img_func_2="permissions_img_func_2" highlighted="true"';
+        $privilege_perms .= ' img_func_1="permissionsImgFunc1" img_func_2="permissionsImgFunc2" highlighted="true"';
     }
 
     $draggable = (preg_match('#^adminzone:admin_#', $node['content_id']) == 0) && (preg_match('#^\w*:\w+$#', $node['content_id']) != 0);

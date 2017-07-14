@@ -1,5 +1,27 @@
 (function ($cms) {
     'use strict';
+    
+    $cms.functions.moduleCmsQuiz = function moduleCmsQuiz() {
+        document.getElementById('type').addEventListener('change', hideFunc);
+        hideFunc();
+
+        function hideFunc() {
+            var ob = document.getElementById('type');
+            if (ob.value === 'TEST') {
+                document.getElementById('percentage').disabled = false;
+                document.getElementById('num_winners').disabled = true;
+            }
+            if (ob.value === 'COMPETITION') {
+                document.getElementById('num_winners').disabled = false;
+                document.getElementById('percentage').disabled = true;
+            }
+            if (ob.value === 'SURVEY') {
+                document.getElementById('text').value = document.getElementById('text').value.replace(/ \[\*\]/g, '');
+                document.getElementById('num_winners').disabled = true;
+                document.getElementById('percentage').disabled = true;
+            }
+        }
+    };
 
     $cms.templates.quizScreen = function quizScreen(params, container) {
         var form = $cms.dom.$(container, '.js-quiz-form'),
