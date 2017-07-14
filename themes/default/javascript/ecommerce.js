@@ -49,6 +49,22 @@
             }
         }
     };
+    
+    $cms.functions.ecommerceEmailGetNeededFieldsPop3 = function () {
+        var form = document.getElementById('pass1').form;
+        form.onsubmit = function() {
+            if (form.elements['pass1'].value !== form.elements['pass2'].value) {
+                window.fauxmodal_alert('{!PASSWORD_MISMATCH;}');
+                return false;
+            }
+        };
+    };
+    
+    $cms.templates.ecomPurchaseStageDetails = function ecomPurchaseStageDetails(params) {
+        if (params.jsFunctionCalls != null) {
+            $cms.executeJsFunctionCalls(params.jsFunctionCalls);
+        }
+    };
 
     $cms.templates.purchaseWizardStageTerms = function purchaseWizardStageTerms(params, container) {
         $cms.dom.on(container, 'click', '.js-checkbox-click-toggle-proceed-btn', function (e, checkbox) {

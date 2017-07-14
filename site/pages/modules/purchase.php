@@ -972,7 +972,7 @@ class Module_purchase
         $url = build_url(array('page' => '_SELF', 'type' => $next_purchase_step), '_SELF', array('include_message' => true), true);
 
         require_code('form_templates');
-        list($fields, $text, $javascript) = get_needed_fields($type_code);
+        list($fields, $text, $js_function_calls) = get_needed_fields($type_code);
 
         if (get_param_integer('include_message', 0) == 1) {
             // Request to show message on the details screen (we would have been hot-linked straight to here)
@@ -1002,7 +1002,7 @@ class Module_purchase
             'TYPE_CODE' => $type_code,
             'TEXT' => $text,
             'FIELDS' => $fields,
-            'JAVASCRIPT' => $javascript, // TODO: Salman convert to new JS system
+            'JS_FUNCTION_CALLS' => $js_function_calls,
         ));
         return $this->_wrap($result, $this->title, $url);
     }

@@ -374,6 +374,10 @@
     };
 
     $cms.templates.formScreen = function (params, container) {
+        if (params.jsFunctionCalls != null) {
+            $cms.executeJsFunctionCalls(params.jsFunctionCalls);
+        }
+        
         tryToSimplifyIframeForm();
 
         if (params.iframeUrl) {

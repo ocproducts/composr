@@ -323,7 +323,8 @@ class Module_admin_ecommerce_logs
 
         // To work out key
         if (post_param_integer('got_purchase_key_dependencies', 0) == 0) {
-            list($needed_fields, $needed_text, $needed_javascript) = get_needed_fields($type_code, true);
+            list($needed_fields, $needed_text, $js_function_calls) = get_needed_fields($type_code, true);
+
             if ($needed_fields !== null) { // Only do step if we actually have fields - create intermediary step. get_self_url ensures first product-choose step choice is propagated.
                 $submit_name = do_lang_tempcode('PROCEED');
 
@@ -346,7 +347,7 @@ class Module_admin_ecommerce_logs
                     'SUBMIT_NAME' => $submit_name,
                     'FIELDS' => $needed_fields,
                     'TEXT' => $text,
-                    'JAVASCRIPT' => $needed_javascript,
+                    'JS_FUNCTION_CALLS' => $js_function_calls,
                     'URL' => get_self_url(),
                     'HIDDEN' => $extra_hidden,
                 ));

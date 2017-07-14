@@ -253,7 +253,7 @@ class Hook_ecommerce_banners
 
         switch (preg_replace('#_\d+$#', '', $type_code)) {
             case 'BANNER_ACTIVATE':
-                list($fields, $javascript) = get_banner_form_fields(true);
+                list($fields, $js_function_calls) = get_banner_form_fields(true);
                 break;
 
             case 'BANNER_UPGRADE_HITS':
@@ -265,7 +265,7 @@ class Hook_ecommerce_banners
 
         ecommerce_attach_memo_field_if_needed($fields);
 
-        return array($fields, null, $javascript);
+        return array($fields, null, $js_function_calls);
     }
 
     /**

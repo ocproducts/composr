@@ -411,7 +411,7 @@ class Hook_ecommerce_email
     public function get_needed_fields($type_code, $from_admin = false)
     {
         $fields = new Tempcode();
-
+        $js_function_calls = [];
         $member_id = get_member();
 
         switch (preg_replace('#_.*$#', '', $type_code)) {
@@ -423,22 +423,13 @@ class Hook_ecommerce_email
 
                 $text = do_lang_tempcode('EMAIL_CONTACT_MESSAGE');
 
-                // TODO: Salman this needs moving into JS
-                $javascript = /**@lang JavaScript*/"
-                    var form = document.getElementById('pass1').form;
-                    form.onsubmit = function() {
-                        if (form.elements['pass1'].value != form.elements['pass2'].value) {
-                            window.fauxmodal_alert('" . php_addslashes(do_lang('PASSWORD_MISMATCH')) . "');
-                            return false;
-                        }
-                    };
-                ";
-
+                require_javascript('ecommerce');
+                $js_function_calls = ['ecommerceEmailGetNeededFieldsPop3'];
                 break;
 
             case 'QUOTA':
                 $fields = null;
-                $javascript = null;
+                $js_function_calls = null;
 
                 break;
 
@@ -449,14 +440,14 @@ class Hook_ecommerce_email
 
                 $text = do_lang_tempcode('EMAIL_CONTACT_MESSAGE');
 
-                $javascript = null;
+                $js_function_calls = null;
 
                 break;
         }
 
         ecommerce_attach_memo_field_if_needed($fields);
 
-        return array($fields, $text, $javascript);
+        return array($fields, $text, $js_function_calls);
     }
 
     /**

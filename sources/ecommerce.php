@@ -248,10 +248,10 @@ function get_needed_fields($type_code, $force_extended = false)
 
     $fields = mixed();
     $text = mixed();
-    $javascript = mixed();
+    $js_function_calls = mixed();
 
     if (method_exists($product_object, 'get_needed_fields')) {
-        list($fields, $text, $javascript) = $product_object->get_needed_fields($type_code);
+        list($fields, $text, $js_function_calls) = $product_object->get_needed_fields($type_code);
     }
 
     $shipping_email = '';
@@ -307,7 +307,7 @@ function get_needed_fields($type_code, $force_extended = false)
         $fields->attach(get_shipping_contact_fields($shipping_email, $shipping_phone, $require_all_details));
     }
 
-    return array($fields, $text, $javascript);
+    return array($fields, $text, $js_function_calls);
 }
 
 /**

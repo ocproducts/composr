@@ -1,3 +1,5 @@
+{$REQUIRE_JAVASCRIPT,ecommerce}
+<div data-tpl="ecomPurchaseStageDetails" data-tpl-params="{+START,PARAMS_JSON,JS_FUNCTION_CALLS}{_*}{+END}">
 {+START,IF_PASSED,TEXT}
 	{$PARAGRAPH,{TEXT}}
 {+END}
@@ -16,3 +18,4 @@
 		</tbody>
 	</table></div>
 {+END}
+</div>
