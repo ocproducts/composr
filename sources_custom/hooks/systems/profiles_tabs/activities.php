@@ -43,8 +43,7 @@ class Hook_profiles_tabs_activities
         // Need to declare these here as the Tempcode engine can't look as deep, into a loop (I think), as it would need to, to find the block declaring the dependency
         require_lang('activities');
         require_css('activities');
-        require_javascript('activities_state');
-        require_javascript('activities');
+        require_javascript('activity_feed');
         require_javascript('jquery');
         require_javascript('base64');
 

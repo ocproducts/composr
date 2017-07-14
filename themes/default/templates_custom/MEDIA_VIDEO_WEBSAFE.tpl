@@ -3,7 +3,7 @@
 
 	{$REQUIRE_JAVASCRIPT,jquery}
 	{$REQUIRE_JAVASCRIPT,mediaelement-and-player}
-	{$REQUIRE_JAVASCRIPT,mediaelement}
+	{$REQUIRE_JAVASCRIPT,core_rich_media}
 	{$REQUIRE_CSS,mediaelementplayer}
 
 	{+START,IF_NON_PASSED_OR_FALSE,WYSIWYG_EDITABLE}
@@ -16,7 +16,7 @@
 	{+END}
 
 	<div class="responsive_video">
-		<video width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" poster="{THUMB_URL*}" controls="controls" preload="none" id="{$GET%,player_id}" data-require-javascript="['mediaelement-and-player','mediaelement']" data-tpl="mediaVideoWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,URL}{_*}{+END}">
+		<video width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" poster="{THUMB_URL*}" controls="controls" preload="none" id="{$GET%,player_id}" data-require-javascript="['mediaelement-and-player','core_rich_media']" data-tpl="mediaVideoWebsafe" data-tpl-params="{+START,PARAMS_JSON,player_id,WIDTH,HEIGHT,URL}{_*}{+END}">
 			<source type="{MIME_TYPE*}" src="{$ENSURE_PROTOCOL_SUITABILITY*,{URL}}" />
 			<object width="{$MIN*,950,{WIDTH}}" height="{$MIN*,{$MULT,{HEIGHT},{$DIV_FLOAT,950,{WIDTH}}},{HEIGHT}}" type="application/x-shockwave-flash" data="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf">
 				<param name="movie" value="{$BASE_URL*}/data_custom/mediaelement/flashmediaelement.swf" />

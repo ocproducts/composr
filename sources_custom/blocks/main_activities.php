@@ -118,7 +118,7 @@ class Block_main_activities
 
         require_lang('activities');
         require_css('activities');
-        require_javascript('activities');
+        require_javascript('activity_feed');
         require_javascript('jquery');
         require_javascript('base64');
 

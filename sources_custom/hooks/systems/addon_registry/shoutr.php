@@ -137,7 +137,6 @@ After installing this addon your shout box will essentially be treated as an emb
         return array(
             'sources_custom/hooks/systems/addon_registry/shoutr.php',
             'themes/default/javascript_custom/shake.js',
-            'themes/default/javascript_custom/shoutbox.js',
             'themes/default/javascript_custom/text_ghosts.js',
             'sources_custom/blocks/side_shoutbox.php',
             'themes/default/templates_custom/BLOCK_SIDE_SHOUTBOX.tpl',

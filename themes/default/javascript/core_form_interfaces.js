@@ -1212,6 +1212,136 @@
         // Uncomment if you want to force jQuery-UI inputs even when there is native browser input support
         //window.jQuery('#' + params.name).inputTime({});
     };
+    
+    /**
+     * Marking things (to avoid illegally nested forms)
+     * @param form
+     * @param prefix
+     * @returns {boolean}
+     */
+    $cms.form.addFormMarkedPosts = function addFormMarkedPosts(form, prefix) {
+        prefix = strVal(prefix);
+
+        var get = form.method.toLowerCase() === 'get',
+            i;
+
+        if (get) {
+            for (i = 0; i < form.elements.length; i++) {
+                if ((new RegExp('&' + prefix + '\d+=1$', 'g')).test(form.elements[i].name)) {
+                    form.elements[i].parentNode.removeChild(form.elements[i]);
+                }
+            }
+        } else {
+            // Strip old marks out of the URL
+            form.action = form.action.replace('?', '&')
+                .replace(new RegExp('&' + prefix + '\d+=1$', 'g'), '')
+                .replace('&', '?'); // will just do first due to how JS works
+        }
+
+        var checkboxes = $cms.dom.$$('input[type="checkbox"][name^="' + prefix + '"]:checked'),
+            append = '';
+
+        for (i = 0; i < checkboxes.length; i++) {
+            append += (((append === '') && !form.action.includes('?') && !form.action.includes('/pg/') && !get) ? '?' : '&') + checkboxes[i].name + '=1';
+        }
+
+        if (get) {
+            var bits = append.split('&');
+            for (i = 0; i < bits.length; i++) {
+                if (bits[i] !== '') {
+                    $cms.dom.append(form, $cms.dom.create('input', {
+                        name: bits[i].substr(0, bits[i].indexOf('=1')),
+                        type: 'hidden',
+                        value: '1'
+                    }));
+                }
+            }
+        } else {
+            form.action += append;
+        }
+
+        return append !== '';
+    };
+    
+    /**
+     * @memberof $cms.form
+     * @param form
+     * @returns {boolean}
+     */
+    $cms.form.modSecurityWorkaround = function modSecurityWorkaround(form) {
+        var tempForm = document.createElement('form');
+        tempForm.method = 'post';
+
+        if (form.target) {
+            tempForm.target = form.target;
+        }
+        tempForm.action = form.action;
+
+        var data = $cms.dom.serialize(form);
+        data = _modSecurityWorkaround(data);
+
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = '_data';
+        input.value = data;
+        tempForm.appendChild(input);
+
+        if (form.elements.csrf_token) {
+            var csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrf_token';
+            csrfInput.value = form.elements.csrf_token.value;
+            tempForm.appendChild(csrfInput);
+        }
+
+        tempForm.style.display = 'none';
+        document.body.appendChild(tempForm);
+
+        setTimeout(function () {
+            tempForm.submit();
+            tempForm.parentNode.removeChild(tempForm);
+        });
+
+        return false;
+    };
+
+
+    /**
+     * @memberof $cms.form
+     * @param data
+     * @returns {string}
+     */
+    $cms.form.modSecurityWorkaroundAjax = function modSecurityWorkaroundAjax(data) {
+        return '_data=' + encodeURIComponent(_modSecurityWorkaround(data));
+    };
+
+    function _modSecurityWorkaround(data) {
+        data = strVal(data);
+
+        var remapper = {
+                '\\': '<',
+                '/': '>',
+                '<': '\'',
+                '>': '"',
+                '\'': '/',
+                '"': '\\',
+                '%': '&',
+                '&': '%',
+                '@': ':',
+                ':': '@'
+            },
+            out = '',
+            character;
+        for (var i = 0; i < data.length; i++) {
+            character = data[i];
+            if (remapper[character] !== undefined) {
+                out += remapper[character];
+            } else {
+                out += character;
+            }
+        }
+        return out;
+    }
 
     /* Set up a word count for a form field */
     function setupWordCounter(post, countElement) {

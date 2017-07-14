@@ -49,8 +49,7 @@ class Block_main_activities_state
 
         require_lang('activities');
         require_css('activities');
-        require_javascript('activities');
-        require_javascript('activities_state');
+        require_javascript('activity_feed');
         require_javascript('jquery');
 
         $block_id = get_block_id($map);

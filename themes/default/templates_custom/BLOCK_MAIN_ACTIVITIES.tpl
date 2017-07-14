@@ -1,4 +1,3 @@
-{$REQUIRE_JAVASCRIPT,activities}
 {$REQUIRE_JAVASCRIPT,activity_feed}
 {$SET,is_block_raw,{$EQ,{$COMMA_LIST_GET,{BLOCK_PARAMS},raw},1}}
 

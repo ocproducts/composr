@@ -396,9 +396,10 @@
                                 targetXmlNode.appendChild(xmlNode);
 
                                 // Ajax request
-                                // TODO: Salman stop needing to use eval
-                                eval('drag_' + xmlNode.getAttribute('draggable') + '("' + xmlNode.getAttribute('serverid') + '","' + targetXmlNode.getAttribute('serverid') + '")');
-
+                                if (xmlNode.getAttribute('draggable') === 'page') {
+                                    dragPage(xmlNode.getAttribute('serverid'), targetXmlNode.getAttribute('serverid'));
+                                }
+                                
                                 fixupNodePositions(this.object.name);
                             }
                         }
@@ -429,6 +430,21 @@
             $cms.dom.triggerResize();
 
             return a;
+
+            function dragPage(from, to) {
+                var newZone = to.replace(/:/, ''),
+                    bits = from.split(/:/),
+                    moveUrl = '{$PAGE_LINK;,_SELF:_SELF:_move:zone=[1]:destination_zone=[3]:page__[2]=1}';
+                
+                if (bits.length === 1) {// Workaround IE bug
+                    bits.push(bits[0]);
+                    bits[0] = '';
+                }
+
+                var myUrl = moveUrl.replace(/%5B1%5D/, bits[0]).replace(/\[2\]/, bits[1]).replace(/%5B3%5D/, newZone);
+
+                window.open(myUrl, 'move_page');
+            }
         },
 
         handleTreeClick: function handleTreeClick(event, automated) { // Not called as a method

@@ -116,7 +116,6 @@ class Hook_addon_registry_core_permission_management
             'themes/default/templates/PERMISSION_CELL.tpl',
             'themes/default/templates/PERMISSION_HEADER_CELL.tpl',
             'themes/default/templates/PERMISSION_ROW.tpl',
-            'themes/default/javascript/permissions.js',
             'themes/default/templates/PERMISSIONS_TREE_EDITOR_SCREEN.tpl',
             'themes/default/templates/PERMISSION_KEYS_MESSAGE_ROW.tpl',
             'adminzone/pages/modules/admin_permissions.php',
