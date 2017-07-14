@@ -1,6 +1,6 @@
 <body class="website_body zone_running_{$ZONE*} page_running_{$PAGE*} type_running_{$_GET*,type,browse}{+START,IF,{$_GET,overlay}} overlay lightbox{+END}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 	{+START,IF,{$SHOW_HEADER}}
-		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner">
+		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 			<a accesskey="s" class="accessibility_hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
@@ -47,12 +47,12 @@
 		<div class="bnrHolder">
 			<div class="headBnr">
 				<div class="banner">
-					<div class="bnrText">
+					<h1 class="bnrText">
 						The versatile <span class="orange">Content Management System</span> for next<br>
 						generation websites
-					</div>
+					</h1>
 
-					<div class="bannerImg"><img alt="Small Composr screenshot" src="{$IMG*,composr_homesite/start/banner-img1}" /></div>
+					<div class="bannerImg"><img width="600" height="403" alt="Small Composr screenshot" src="{$IMG*,composr_homesite/start/banner-img1}" /></div>
 
 					<div class="textTop">
 						Need a website? Tired of primitive systems that don't meet your requirements?
@@ -182,11 +182,11 @@
 				<div class="ftrRight">
 					<div class="ftrImg">
 						<div class="one">
-							<a class="ttGeekCred" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'&lt;div class=&quot;geekCred&quot;&gt;&lt;h2&gt;Geek stats&lt;br /&gt;(standard Composr)&lt;/h2&gt;OSS License: CPAL&lt;br /&gt;&lt;br /&gt;Template files: &lt;strong&gt;1087&lt;/strong&gt;&lt;br /&gt;PHP files: &lt;strong&gt;2092&lt;/strong&gt;&lt;br /&gt;Image files: &lt;strong&gt;1377&lt;/strong&gt;&lt;br /&gt;CSS files: &lt;strong&gt;81&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;KLOC: &lt;strong&gt;428&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;Downloads: &lt;strong&gt;over 1.5 million&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;em&gt;(As of Jan 2015)&lt;/em&gt;&lt;/div&gt;','auto');" href="{$PAGE_LINK*,site:licence}"><img alt="Composr is Open Source" src="{$IMG*,composr_homesite/img-open-source}" title="" /></a>
+							<a class="ttGeekCred" onfocus="this.onmouseover();" onblur="this.onmouseout();" onmouseover="if (typeof window.activate_tooltip!='undefined') activate_tooltip(this,event,'&lt;div class=&quot;geekCred&quot;&gt;&lt;h2&gt;Geek stats&lt;br /&gt;(standard Composr)&lt;/h2&gt;OSS License: CPAL&lt;br /&gt;&lt;br /&gt;Template files: &lt;strong&gt;1087&lt;/strong&gt;&lt;br /&gt;PHP files: &lt;strong&gt;2092&lt;/strong&gt;&lt;br /&gt;Image files: &lt;strong&gt;1377&lt;/strong&gt;&lt;br /&gt;CSS files: &lt;strong&gt;81&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;KLOC: &lt;strong&gt;428&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;Downloads: &lt;strong&gt;over 1.5 million&lt;/strong&gt;&lt;br /&gt;&lt;br /&gt;&lt;em&gt;(As of Jan 2015)&lt;/em&gt;&lt;/div&gt;','auto');" href="{$PAGE_LINK*,site:licence}"><img alt="Composr is Open Source" src="{$IMG*,composr_homesite/img-open-source}" width="{$IMG_WIDTH*,{$IMG,composr_homesite/img-open-source}}" height="{$IMG_HEIGHT*,{$IMG,composr_homesite/img-open-source}}" title="" /></a>
 						</div>
 
 						<div class="two">
-							<a href="{$PAGE_LINK*,docs:tutorials:Web standards & Accessibility}"><img alt="Composr uses HTML5" src="{$IMG*,composr_homesite/img-html5}" /></a>
+							<a href="{$PAGE_LINK*,docs:tutorials:Web standards & Accessibility}"><img alt="Composr uses HTML5" src="{$IMG*,composr_homesite/img-html5}" width="{$IMG_WIDTH*,{$IMG,composr_homesite/img-html5}}" height="{$IMG_HEIGHT*,{$IMG,composr_homesite/img-html5}}" /></a>
 						</div>
 					</div>
 				</div>

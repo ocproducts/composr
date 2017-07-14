@@ -11,7 +11,7 @@
 
 {$,Page title}
 {+START,IF,{$EQ,{$PAGE},start}}
-	<title>{+START,IF_NON_PASSED,TITLE}Composr: The versatile Content Management System for next generation websites{+END}{+START,IF_PASSED,TITLE}{TITLE}{+END}</title>
+	<title>{+START,IF_NON_PASSED,TITLE}Composr CMS: Content Management meets social media{+END}{+START,IF_PASSED,TITLE}{TITLE}{+END}</title>
 {+END}
 {+START,IF,{$NEQ,{$PAGE},start}}
 	<title>{+START,IF_NON_PASSED,TITLE}{+START,IF_NON_EMPTY,{$HEADER_TEXT}}{$HEADER_TEXT*} &ndash; {+END}Composr{+END}{+START,IF_PASSED,TITLE}{TITLE}{+END}</title>

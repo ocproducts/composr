@@ -117,9 +117,9 @@
 
 	<div class="cntRow">
 		<div class="libHolder">
-			<div class="libHead">
+			<h2 class="libHead">
 				Tutorial Library
-			</div>
+			</h2>
 
 			<div id="tabsHolder">
 				<ul class="tabs">

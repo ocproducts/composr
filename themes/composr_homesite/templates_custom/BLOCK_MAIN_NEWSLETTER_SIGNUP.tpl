@@ -1,8 +1,8 @@
 {+START,IF,{$NOT,{$MOBILE}}}
 <div class="ltNewsRht">
-	<h4 class="ltNewsHead">
+	<h2 class="ltNewsHead">
 		Newsletter Sign up
-	</h4>
+	</h2>
 {+END}
 
 	<div class="ltCnt">
@@ -18,7 +18,10 @@
 			<form class="inpEmail" title="{!NEWSLETTER}" onsubmit="if ((check_field_for_blankness(this.elements['address{NID*}'],event)) &amp;&amp; (this.elements['address{NID*}'].value.match(/^[a-zA-Z0-9\._\-\+]+@[a-zA-Z0-9\._\-]+$/))) { disable_button_just_clicked(this); return true; } window.fauxmodal_alert('{!javascript:NOT_A_EMAIL;=*}'); return false;" action="{URL*}" method="post">
 				{$INSERT_SPAMMER_BLACKHOLE}
 
+				<label for="bfirstname" class="accessibility_hidden">Please enter your name</label>
 				<input id="bfirstname" name="firstname{NID*}" class="user" type="text" placeholder="Please enter your name" />
+
+				<label for="baddress" class="accessibility_hidden">E-mail address</label>
 				<input id="baddress" name="address{NID*}" class="email" type="text" placeholder="E-mail address" />
 
 				<input class="emailBtn" name="Submit" type="submit" value="Submit" />

@@ -24,7 +24,7 @@
 	.bnrHolder { margin:0px auto; width:100%; height:526px; display:block; background-image:url('{$IMG;,composr_homesite/start/bnr-bg}'); background-repeat:repeat-x; background-position:bottom left; }
 	.headBnr { margin:0px auto; width:960px; background-image:url('{$IMG;,composr_homesite/start/bnr-inr-bg}'); background-repeat:repeat-x; background-position:bottom left; }
 	.banner { overflow:hidden; }
-	.bnrText { padding:15px 10px 22px 10px; font-size:34px; color:#000; text-align:center; font-weight:bold; }
+	.bnrText { margin:0; padding:15px 10px 22px 10px; font-size:34px; color:#000; text-align:center; font-weight:bold; }
 
 	.bannerImg { float:left; width:600px; }
 	.orange { color:#E5922D !important; }
@@ -55,7 +55,7 @@
 	/*Tutorial Library*/
 
 	.libHolder { padding:20px 0px 22px 0px; background-image:url('{$IMG;,composr_homesite/start/lib-hold-shadow}'); background-repeat:no-repeat; background-position:bottom center; }
-	.libHead { background-image:url('{$IMG;,composr_homesite/tut-lib-head-bg}'); background-repeat:repeat-x; background-position:top left; text-align:center; font-size:24px; font-weight:bold; color:#FFF; line-height:47px; text-shadow:1px 1px #45526D; {$BETA_CSS_PROPERTY,border-radius:13px 13px 0px 0px;} }
+	.libHead { margin: 0; padding-bottom: 0 !important; background-image:url('{$IMG;,composr_homesite/tut-lib-head-bg}'); background-repeat:repeat-x; background-position:top left; text-align:center; font-size:24px; font-weight:bold; color:#FFF; line-height:47px; text-shadow:1px 1px #45526D; {$BETA_CSS_PROPERTY,border-radius:13px 13px 0px 0px;} }
 
 
 	/*Tab menu (for tutorials)*/

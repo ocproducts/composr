@@ -1,9 +1,9 @@
 {+START,IF,{$AND,{$RUNNING_SCRIPT,index},{$EQ,{$PAGE},start}}}
 	{+START,IF,{$NOT,{$MOBILE}}}
 		<div class="ltNews">
-			<h4 class="ltNewsHead">
+			<h2 class="ltNewsHead">
 				{TITLE*}
-			</h4>
+			</h2>
 
 			<div class="ltCnt">
 				{CONTENT}

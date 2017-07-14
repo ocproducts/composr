@@ -1,7 +1,7 @@
 <body itemscope="itemscope" itemtype="http://schema.org/WebPage" class="website_body_actual">
 <div class="website_body zone_running_{$ZONE*} page_running_{$PAGE*}" id="main_website">
 	{+START,IF,{$SHOW_HEADER}}
-		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner">
+		<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 			{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 			<a accesskey="s" class="accessibility_hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 
