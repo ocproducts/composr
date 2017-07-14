@@ -1,4 +1,4 @@
-{$REQUIRE_JAVASCRIPT,syndication_blocks}
+{$REQUIRE_JAVASCRIPT,news}
 {+START,IF,{$NOT,{TICKER}}}
 	<section id="tray_{TITLE|}" data-view="ToggleableTray" data-tray-cookie="{TITLE|}" class="box box___block_side_rss">
 		<h3 class="toggleable_tray_title js-tray-header">

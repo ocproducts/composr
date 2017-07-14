@@ -1,4 +1,5 @@
-<section class="box box___block_main_join_done"><div class="box_inner">
+{$REQUIRE_JAVASCRIPT,core_cns}
+<section data-tpl="blockMainJoinDone" class="box box___block_main_join_done"><div class="box_inner">
 	<h3>{!_JOIN}</h3>
 
 	{+START,IF_PASSED,MESSAGE}
@@ -14,7 +15,7 @@
 			{+START,IF,{HAS_EMAIL_TO_SEND}}
 				{+START,IF_NON_EMPTY,{EMAIL_ADDRESS}}
 					{$,TODO: Salman move to JS framework}
-					<form action="{$SELF_URL*}" method="post" onsubmit="var _this=this; ga_track(null,'{!DOWNLOAD_WHITEPAPER;}',null,function() { _this.submit(); }); return false;">
+					<form action="{$SELF_URL*}" method="post" class="js-submit-ga-track-dl-whitepaper">
 						{$INSERT_SPAMMER_BLACKHOLE}
 						<input type="hidden" name="_send_document" value="1" />
 

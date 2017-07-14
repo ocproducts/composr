@@ -116,7 +116,6 @@ class Hook_addon_registry_syndication_blocks
             'sources/hooks/systems/commandr_commands/feed_display.php',
             'sources/hooks/systems/addon_registry/syndication_blocks.php',
             'sources/hooks/modules/admin_setupwizard/syndication_blocks.php',
-            'themes/default/javascript/syndication_blocks.js',
         );
     }
 
