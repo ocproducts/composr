@@ -31,7 +31,7 @@ You will need to decide what software you are going to use internally. Standardi
 Here are some areas to consider, and suggestions:
  - Internal chat (e.g. Skype, HipChat, IRC)
  - Sharing files (e.g. Dropbox)
- - Writing documents (e.g. Microsoft Office, LibreOffice) -- sadly, no Open Source tool can currently match Microsoft Office in terms of stability, ease of use, and performance
+ - Writing documents (e.g. Microsoft Office, LibreOffice, Google Docs) -- sadly, no Open Source tool can currently match Microsoft Office in terms of stability, ease of use, and performance
  - Source code control system (e.g. Git, Bitbucket)
  - Issue tracker (e.g. MantisBT, Bitbucket issues, Github issues, JIRA)
  - Standard IDE (e.g. PhpStorm, Netbeans, TextMate)

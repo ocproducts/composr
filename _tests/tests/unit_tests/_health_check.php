@@ -31,15 +31,18 @@ class _health_check_test_set extends cms_test_case
 
     protected function get_root_content()
     {
-        static $ret = null;
-        if ($ret !== null) {
-            $ret = http_download_file($this->get_root_url());
+        static $ret = false;
+        if ($ret === false) {
+            $ret = http_download_file($this->get_root_url(), null, false);
+
+            // Server blocked to access itself
+            $this->assertTrue($ret !== null, 'The server cannot download itself');
         }
         return $ret;
     }
 
     // Expired SSL certificate, or otherwise malfunctioning SSL (if enabled)
-    /*public function testForSSLIssues()
+    /*public function testForSSLIssues($manual_checks = false, $automatic_repair = false)
     {
         if ((addon_installed('ssl')) || (substr(get_base_url(), 0, 7) == 'https://')) {
             // If it's a problem with SSL verification in general
@@ -74,7 +77,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Heavy 404 errors on the same URLs, with no redirects
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
@@ -82,19 +85,19 @@ class _health_check_test_set extends cms_test_case
     // TODO: Decent 404 page with sitemap
 
     // Outgoing mail not working
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // CRON taking more than 5 minutes to run
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Lost packets doing simple outbound ping
-    /*public function testForPingIssues()
+    /*public function testForPingIssues($manual_checks = false, $automatic_repair = false)
     {
         if (php_function_allowed('shell_exec')) {
             $result = shell_exec('ping -c 10 8.8.8.8');
@@ -105,60 +108,180 @@ class _health_check_test_set extends cms_test_case
         }
     }*/
 
-    // Lost packets doing simple inbound ping from proxy
-    /*public function testForTODO()
-    {
-        // TODO
-    }*/
-
     // Slow download speed
-    /*public function testForTODO()
+    /*public function testForSlowDownload($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
+        $time_before = microtime(true);
+        $result = http_download_file('http://www.google.com/');
+        $time_after = microtime(true);
+
+        $time = ($time_after - $time_before);
+
+        $threshold = 0.4;
+
+        $this->assertTrue($time < $threshold, 'Slow downloading speed (downloading Google home page took over ' . float_format($time) . ' seconds)');
     }*/
 
     // Slow upload speed
-    /*public function testForTODO()
+    /*public function testForSlowUpload($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
+        $test_file_path = get_file_base() . '/data/curl-ca-bundle.crt';
+
+        $data_to_send = str_repeat(file_get_contents($test_file_path), 20);
+
+        $time_before = microtime(true);
+        $post_params = array('test_data' => $data_to_send);
+        $result = http_download_file('http://www.cloudflare.com/about-overview/', null, false, true, 'Composr', $post_params);
+        $time_after = microtime(true);
+
+        $time = ($time_after - $time_before);
+
+        $megabytes_per_second = floatval(strlen($data_to_send)) / (1024.0 * 1024.0 * $time);
+
+        $threshold_in_megabits_per_second = 4.0;
+
+        $this->assertTrue($megabytes_per_second * 8.0 > $threshold_in_megabits_per_second, 'Slow uploading speed (' . float_format($megabytes_per_second) . ' Megabytes per second)');
     }*/
 
-    // A page takes more than a second to load (configurable regexp of pages)
-    /*public function testForTODO()
+    // A page takes more than a second to load
+    /*public function testForSlowPageSpeeds($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
+        $page_links = array( // TODO: Make configurable
+            ':',
+        );
+
+        foreach ($page_links as $page_link) {
+            $url = page_link_to_url($page_link);
+
+            $time_before = microtime(true);
+            $result = http_download_file($url);
+            $time_after = microtime(true);
+
+            $time = ($time_after - $time_before);
+
+            $threshold = 1.0; // Threshold is pretty high because we may have stale caches etc; we're looking for major issues, not testing our overall optimisation
+
+            $this->assertTrue($time < $threshold, 'Slow page generation speed ("' . $page_link . '" page-link took over ' . float_format($time) . ' seconds)');
+        }
     }*/
 
-    // Meta description missing for page, too short, or too long [>155] (configurable regexp of pages)
-    /*public function testForTODO()
+    // Meta description missing for page, too short, or too long
+    /*public function testForBadMetaDescription($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
+        $data = $this->get_root_content();
+        if ($data === null) {
+            return;
+        }
+
+        $meta_description = null;
+        $matches = array();
+        if (preg_match('#<meta\s+[^<>]*name="description"[^<>]*content="([^"]*)"#is', $data, $matches) != 0) {
+            $meta_description = $matches[1];
+        } elseif (preg_match('#<meta\s+[^<>]*content="([^"]*)"[^<>]*name="description"#is', $data, $matches) != 0) {
+            $meta_description = $matches[1];
+        }
+
+        $ok = ($meta_description !== null);
+        $this->assertTrue($ok, 'Could not find a meta description');
+        if ($ok) {
+            $len = strlen($meta_description);
+            $min = 40;
+            $max = 155;
+            $this->assertTrue($len >= $min, 'Meta description lengthis under ' . strval($min) . ' @ ' . strval(integer_format($len)) . ' characters');
+            $this->assertTrue($len <= $max, 'Meta description length is over ' . strval($max) . ' @ ' . strval(integer_format($len)) . ' characters');
+        }
     }*/
 
-    // TODO: No <title>, too short, or too long (>70)
+    // Meta keywords missing for page, too few, or too many
+    /*public function testForBadMetaKeywords($manual_checks = false, $automatic_repair = false)
+    {
+        $data = $this->get_root_content();
+        if ($data === null) {
+            return;
+        }
 
-    // TODO: No <h1>
+        $meta_keywords = null;
+        $matches = array();
+        if (preg_match('#<meta\s+[^<>]*name="keywords"[^<>]*content="([^"]*)"#is', $data, $matches) != 0) {
+            $meta_keywords = array_map('trim', explode(',', $matches[1]));
+        } elseif (preg_match('#<meta\s+[^<>]*content="([^"]*)"[^<>]*name="keywords"#is', $data, $matches) != 0) {
+            $meta_keywords = array_map('trim', explode(',', $matches[1]));
+        }
+
+        $ok = ($meta_keywords !== null);
+        $this->assertTrue($ok, 'Could not find any meta keywords');
+        if ($ok) {
+            $count = count($meta_keywords);
+            $min = 4;
+            $max = 20;
+            $this->assertTrue($count >= $min, 'Meta keyword count is under ' . strval($min) . ' @ ' . strval(integer_format($count)));
+            $this->assertTrue($count <= $max, 'Meta keyword count is over ' . strval($max) . ' @ ' . strval(integer_format($count)));
+        }
+    }*/
+
+    // No <title>, too short, or too long
+    /*public function testForBadTitle($manual_checks = false, $automatic_repair = false)
+    {
+        $data = $this->get_root_content();
+        if ($data === null) {
+            return;
+        }
+
+        $title = null;
+        $matches = array();
+        if (preg_match('#<title[^<>]*>([^<>]*)</title>#is', $data, $matches) != 0) {
+            $title = $matches[1];
+        }
+
+        $ok = ($title !== null);
+        $this->assertTrue($ok, 'Could not find any <title>');
+        if ($ok) {
+            $len = strlen($title);
+            $min = 4;
+            $max = 70;
+            $this->assertTrue($len >= $min, '<title> length is under ' . strval($min) . ' @ ' . strval(integer_format($len)));
+            $this->assertTrue($len <= $max, '<title> length is over ' . strval($max) . ' @ ' . strval(integer_format($len)));
+        }
+    }*/
+
+    // No <h1>
+    /*public function testForBadTitle($manual_checks = false, $automatic_repair = false)
+    {
+        $data = $this->get_root_content();
+        if ($data === null) {
+            return;
+        }
+
+        $header = null;
+        $matches = array();
+        if (preg_match('#<h1[^<>]*>([^<>]*)</h1>#is', $data, $matches) != 0) {
+            $header = $matches[1];
+        }
+
+        $ok = ($header !== null);
+        $this->assertTrue($ok, 'Could not find any <h1>');
+    }*/
 
     // XML Sitemap not being extended
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // XML Sitemap fails validation test
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // robots.txt fails validation test
-    /*public function testForRobotsTxtErrors()
+    /*public function testForRobotsTxtErrors($manual_checks = false, $automatic_repair = false)
     {
         $this->robotsParse(null, true);
     }
 
     // robots.txt banning Google on a live site
-    public function testForRobotsTxtBlocking()
+    public function testForRobotsTxtBlocking($manual_checks = false, $automatic_repair = false)
     {
         $url = $this->get_root_url();
 
@@ -342,235 +465,336 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // robots.txt missing or does not block maintenance scripts
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // MyISAM database table(s) crashed
-    /*public function testForTODO()
+    /*public function testForCorruptTables($manual_checks = false, $automatic_repair = false)
+    {
+        if (strpos(get_db_type(), 'mysql') !== false) {
+            $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
+            foreach ($tables as $table) {
+                $results = $GLOBALS['SITE_DB']->query('CHECK TABLE ' . get_table_prefix() . $table['m_table']);
+                $ok = $results[0]['Msg_text'] == 'OK';
+
+                if (!$ok) {
+                    $message = 'Corrupt table likely repairing: ' . $table['m_table'] . ' gave status ' . $results[0]['Msg_text'];
+                    if ($automatic_repair) {
+                        $results_repair = $GLOBALS['SITE_DB']->query('REPAIR TABLE ' . get_table_prefix() . $table['m_table']);
+                        $ok_repair = $results[0]['Msg_text'] == 'OK';
+                        if ($ok_repair) {
+                            $message = 'Corrupt table automatically repaired: ' . $table['m_table'] . ' gave status ' . $results[0]['Msg_text'];
+                        }
+                    }
+
+                    $this->assertTrue($ok, $message);
+                } else {
+                    $this->assertTrue(true);
+                }
+            }
+        }
+    }*/
+
+    // Missing </html> tag on page (implies page isn't fully generating) (configurable list of page-links)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // Missing </html> tag on page (implies page isn't fully generating) (configurable regexp of pages)
-    /*public function testForTODO()
-    {
-        // TODO
-    }*/
-
-    // Page too big (configurable regexp of pages, configurable max size)
-    /*public function testForTODO()
+    // Page too big (configurable list of page-links, configurable max size)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Disk space too low (and remove page-load request, "Little disk space check" and it's independent notification)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // Page too small (configurable regexp of pages, configurable max size)
-    /*public function testForTODO()
+    // Page too small (configurable list of page-links, configurable max size)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // No guest access to page (configurable regexp of pages)
-    /*public function testForTODO()
+    // No guest access to page (configurable list of page-links)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Backups configured but not appearing under exports/backups
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Web server not accessible from external proxy
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // Broken links page (configurable regexp of pages) (and remove old cleanup tool that currently does this)
-    /*public function testForTODO()
+    // Broken links page (configurable list of page-links) (and remove old cleanup tool that currently does this)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // Broken images on page (configurable regexp of pages) (would need a config option)
-    /*public function testForTODO()
+    // Broken images on page (configurable list of page-links) (would need a config option)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Inconsistent database state (and remove old cleanup tool that currently does this)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Outdated copyright date
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Fall in Google position (ties into main_staff_website_monitoring block)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Fall in hits
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // www/non-www redirect not handled well - either does not exist, or redirects deep to home page, and/or is not 301
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // https/non-https redirect not handled well - either does not exist, or redirects deep to home page, and/or is not 301
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // JS error on page (configurable regexp of pages)
-    /*public function testForTODO()
+    // JS error on page (configurable list of page-links)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Integrity checker fail
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // E-mail queue piling up
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Newsletter queue piling up
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Stuff going into error log
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // http:// URLs appearing on page when site has a https:// base URL (configurable regexp of pages)
-    /*public function testForTODO()
+    // http:// URLs appearing on page when site has a https:// base URL (configurable list of page-links)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // Non-https images/scripts/CSS/etc embedded on pages that are https (configurable regexp of pages)
-    /*public function testForTODO()
+    // Non-https images/scripts/CSS/etc embedded on pages that are https (configurable list of page-links)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // Web standards validation errors (configurable regexp of pages, blank by default)
-    /*public function testForTODO()
+    // Web standards validation errors (configurable list of page-links, blank by default)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // URLs using this regexp https?://(localhost|127.|192.|10.).
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // Links to broken CSS or Javascript files (configurable regexp of pages)
-    /*public function testForTODO()
+    // Links to broken CSS or JavaScript files
+    /*public function testForBrokenWebIncludes($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
+        $data = $this->get_root_content();
+        if ($data === null) {
+            return;
+        }
+
+        $urls = array();
+        $matches = array();
+        $num_matches = preg_match_all('#<link\s[^<>]*href="([^"]*)"[^<>]*rel="stylesheet"#is', $data, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $urls[] = $matches[1][$i];
+        }
+        $num_matches = preg_match_all('#<link\s[^<>]*rel="stylesheet"[^<>]*href="([^"]*)"#is', $data, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $urls[] = $matches[1][$i];
+        }
+        $num_matches = preg_match_all('#<script\s[^<>]*src="([^"]*)"#is', $data, $matches);
+        for ($i = 0; $i < $num_matches; $i++) {
+            $urls[] = $matches[1][$i];
+        }
+
+        foreach ($urls as $url) {
+            if (substr($url, 0, 2) == '//') {
+                $url = 'http:' . $url;
+            }
+
+            if (substr($url, 0, strlen(get_base_url(false)) + 1) == get_base_url(false) . '/') {
+                continue;
+            }
+
+            if (substr($url, 0, strlen(get_base_url(true)) + 1) == get_base_url(true) . '/') {
+                continue;
+            }
+
+            if (strpos($url, '://') !== false) {
+                $result = http_download_file($url, null, false);
+                $this->assertTrue(!empty($result), 'Broken included file: ' . $url);
+            }
+        }
     }*/
 
     // CRON tasks not successfully running all the way through
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Cache or temp directories unreasonably huge
-    /*public function testForTODO()
+    /*public function testForOverflowingDirectories($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
+        require_code('files');
+        require_code('files2');
+
+        $mb = 1024 * 1024;
+        $directories = array(
+            'caches/guest_pages' => 500,
+            'caches/lang' => 200,
+            'caches/persistent' => 500,
+            'caches/self_learning' => 500,
+            'uploads/incoming' => 500,
+            'safe_mode_temp' => 50, // TODO: temp in v11
+            'themes/' . $GLOBALS['FORUM_DRIVER']->get_theme('') . '/templates_cached' => 20,
+        );
+        foreach ($directories as $dir => $max_size_in_mb) {
+            $size = get_directory_size(get_file_base() . '/' . $dir);
+            $this->assertTrue($size < $mb * $max_size_in_mb, 'Directory ' . $dir . ' is ' . clean_file_size($size));
+        }
+
+        $directories = array(
+            'uploads/incoming',
+            'safe_mode_temp', // TODO: temp in v11
+        );
+        foreach ($directories as $dir => $max_size_in_mb) {
+            $count = count(get_directory_contents(get_file_base() . '/' . $dir));
+            $this->assertTrue($count < 50, 'Directory ' . $dir . ' now contains ' . integer_format($count) . ' files, should hover only slightly over empty');
+        }
     }*/
 
-    // Cache tables unreasonably huge
-    /*public function testForTODO()
+    // Volatile tables unreasonably huge
+    /*public function testForOverflowingTables($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
-    }*/
+        $tables = array(
+            'autosave' => 100000,
+            'cache' => 1000000,
+            'cached_comcode_pages' => 10000,
+            'captchas' => 10000,
+            'chat_active' => 100000,
+            'chat_events' => 10000000,
+            'cron_caching_requests' => 10000,
+            'post_tokens' => 10000,
+            'edit_pings' => 10000,
+            'hackattack' => 1000000,
+            'incoming_uploads' => 10000,
+            'logged_mail_messages' => 100000,
+            'messages_to_render' => 100000,
+            'sessions' => 1000000,
+            'sitemap_cache' => 100000,
+            'temp_block_permissions' => 10000000,
+            'url_title_cache' => 100000,
+            'urls_checked' => 100000,
+        );
 
-    // Server IP banned itself
-    /*public function testForTODO()
-    {
-        // TODO
+        foreach ($tables as $table => $max) {
+            $cnt = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)');
+            $this->assertTrue($cnt < $max, 'Volatile-defined table now contains ' . integer_format($cnt) . ' records');
+        }
     }*/
 
     // Administrators getting banned, either by username or by IP
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Admin account that has not logged in in months and should be deleted
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Unusual increase in rate limiting triggers (could indicate a distributed denial of service attack)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Unusual increase in CAPTCHA fails (could indicate a distributed denial of service attack)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Unusual increase in spam detection (could indicate a distributed denial of service attack)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // High server CPU load
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // High server I/O load
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Low free RAM
-    /*public function testForLowRAM()
+    /*public function testForLowRAM($manual_checks = false, $automatic_repair = false)
     {
         if (php_function_allowed('shell_exec')) {
             $kb_free = null;
@@ -597,20 +821,22 @@ class _health_check_test_set extends cms_test_case
         }
     }*/
 
-    // Unusual increase in failed logins
-    /*public function testForTODO()
+    // Unusual number of recent failed logins
+    /*public function testForFailedLoginsSpike($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
+        $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'failedlogins WHERE date_and_time>' . strval(time() - 60 * 60 * 24);
+        $num_failed = $GLOBALS['SITE_DB']->query_value_if_there($sql);
+        $this->assertTrue($num_failed < 100, integer_format($num_failed) . ' failed logins happened today');
     }*/
 
     // Hanging (long-running) PHP/Apache processes (the process names to monitor would be configurable)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // Signs of malware (configurable regexp of pages)
-    /*public function testForTODO()
+    // Signs of malware (configurable list of page-links)
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // Unexpected meta redirect tags
         // TODO
@@ -631,7 +857,7 @@ class _health_check_test_set extends cms_test_case
     // TODO: What if site running slow
 
     // What if DNS not resolving
-    /*public function testForMailIssues($manual_checks = false)
+    /*public function testForMailIssues($manual_checks = false, $automatic_repair = false)
     {
         if ((php_function_allowed('getmxrr')) && (php_function_allowed('checkdnsrr'))) {
             $domains = array();
@@ -694,7 +920,7 @@ class _health_check_test_set extends cms_test_case
     // TODO: Other spam issues. Blacklisted? SPF issue?
 
     // What if DNS not resolving
-    /*public function testForDNSResolutionIssues()
+    /*public function testForDNSResolutionIssues($manual_checks = false, $automatic_repair = false)
     {
         if (php_function_allowed('checkdnsrr')) {
             $domain = parse_url(get_base_url(), PHP_URL_HOST);
@@ -706,7 +932,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Running on an expired domain name
-    /*public function testForExpiringDomainName()
+    /*public function testForExpiringDomainName($manual_checks = false, $automatic_repair = false)
     {
         if (php_function_allowed('shell_exec')) {
             $domain = parse_url(get_base_url(), PHP_URL_HOST);
@@ -726,13 +952,13 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Site seems to be configured on a base URL which is not what a public web request sees is running on that base URL (security)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Cookie problems
-    /*public function testForLargeCookies()
+    /*public function testForLargeCookies($manual_checks = false, $automatic_repair = false)
     {
         $url = $this->get_root_url();
 
@@ -764,19 +990,19 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // No recent activity on any 1 of a set of configured Twitter accounts
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // No recent activity on any 1 of a set of configured Facebook accounts
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Output pages are not gzipped
-    /*public function testForUncompressed()
+    /*public function testForUncompressed($manual_checks = false, $automatic_repair = false)
     {
         //set_option('gzip_output', '1');
 
@@ -804,13 +1030,13 @@ class _health_check_test_set extends cms_test_case
     // TODO: Static file gzip test (CSS, images, JS)
 
     // Composr version no longer supported
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // PHP version no longer supported
-    /*public function testForUnsupportedPHP()
+    /*public function testForUnsupportedPHP($manual_checks = false, $automatic_repair = false)
     {
         require_code('version2');
 
@@ -820,35 +1046,38 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Cache headers not set correctly on static resources like images or CSS or JavaScript
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Repeated logins by individual user (indicates a login problem)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Logins from the same username but different countries (indicates hacking)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Staff not doing their tasks as identified by items in the staff checklist
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Google Analytics configured but not in output HTML
-    /*public function testForGANonPresent()
+    /*public function testForGANonPresent($manual_checks = false, $automatic_repair = false)
     {
         $ga = get_option('google_analytics');
         if (trim($ga) != '') {
-            $data = http_download_file($this->get_root_content());
+            $data = $this->get_root_content();
+            if ($data === null) {
+                return;
+            }
 
             $this->assertTrue(strpos($data, $ga) !== false, 'Google Analytics enabled but not in page output (themeing issue?)');
         }
@@ -856,7 +1085,7 @@ class _health_check_test_set extends cms_test_case
     // TODO: Check with API data being collected?
 
     // Crawl errors (not warnings) in Google Webmaster Tools
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // https://developers.google.com/webmaster-tools/search-console-api-original/
         // TODO
@@ -869,34 +1098,42 @@ class _health_check_test_set extends cms_test_case
     // TODO: Structured data tool https://search.google.com/structured-data/testing-tool/u/0/#url=https%3A%2F%2Fcompo.sr
 
     // OpenGraph tagging problem (see https://developers.facebook.com/tools/debug/sharing/)
-    /*public function testForTODO()
+    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
-    // TODO: Manual suggestion for https://developers.google.com/speed/pagespeed/insights
+    // Things wrong found by checking manually
+    public function testForManualValidation($manual_checks = false, $automatic_repair = false)
+    {
+        if (!$manual_checks) {
+            return;
+        }
 
-    // TODO: Manual suggestion for HTML5 validation https://validator.w3.org/ (with take-with-pinch-of-salt warning)
+        // TODO: Manual suggestion for https://developers.google.com/speed/pagespeed/insights
 
-    // TODO: Manual suggestion for CSS validation https://jigsaw.w3.org/css-validator/ (with take-with-pinch-of-salt warning)
+        // TODO: Manual suggestion for HTML5 validation https://validator.w3.org/ (with take-with-pinch-of-salt warning)
 
-    // TODO: Manual suggestion for WCAG validation https://achecker.ca/ (with take-with-pinch-of-salt warning)
+        // TODO: Manual suggestion for CSS validation https://jigsaw.w3.org/css-validator/ (with take-with-pinch-of-salt warning)
 
-    // TODO: Manual suggestion for browser testing
+        // TODO: Manual suggestion for WCAG validation https://achecker.ca/ (with take-with-pinch-of-salt warning)
 
-    // TODO: Manual suggestion for SSL security testing https://www.ssllabs.com/ssltest/ (with take-with-pinch-of-salt warning)
+        // TODO: Manual suggestion for browser testing
 
-    // TODO: Manual suggestion for SEO test https://seositecheckup.com/ (with take-with-pinch-of-salt warning)
+        // TODO: Manual suggestion for SSL security testing https://www.ssllabs.com/ssltest/ (with take-with-pinch-of-salt warning)
 
-    // TODO: Manual suggestion for going through Webmaster Tools (and remove from main_staff_links)
+        // TODO: Manual suggestion for SEO test https://seositecheckup.com/ (with take-with-pinch-of-salt warning)
 
-    // TODO: Manual suggestion for https://www.woorank.com/ (with take-with-pinch-of-salt warning)
+        // TODO: Manual suggestion for going through Webmaster Tools (and remove from main_staff_links)
 
-    // TODO: Manual suggestion for https://website.grader.com/
+        // TODO: Manual suggestion for https://www.woorank.com/ (with take-with-pinch-of-salt warning)
 
-    // TODO: Add manual links to maintenance-sheet
+        // TODO: Manual suggestion for https://website.grader.com/
+    }
 
     // --
+
+    // TODO: Add testForManualValidation etc links to maintenance-sheet
 
     // TODO: Test everything on compo.sr
 }
