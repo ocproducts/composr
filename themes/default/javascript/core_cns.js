@@ -76,6 +76,15 @@
             }
         }
     });
+    
+    $cms.templates.blockMainJoinDone = function blockMainJoinDone(params, container) {
+        $cms.dom.on(container, 'submit', '.js-submit-ga-track-dl-whitepaper', function (e, form) {
+            $cms.gaTrack(null, '{!DOWNLOAD_WHITEPAPER;}', null, function () {
+                form.submit();
+            });
+            e.preventDefault();
+        });
+    };
 
     $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
         $cms.log('Executing $cms.templates.cnsMemberProfileEdit()');

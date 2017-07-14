@@ -163,12 +163,13 @@
     function FormScreenInputPermissionOverride(params) {
         FormScreenInputPermissionOverride.base(this, 'constructor', arguments);
 
-        var prefix = 'access_' + params.groupId;
+        var prefix = 'access_' + params.groupId,
+            defaultAccess = intVal(params.defaultAccess);
 
         this.groupId = params.groupId;
         this.prefix = prefix;
 
-        setupPrivilegeOverrideSelector(prefix, params.defaultAccess, params.privilege, params.title, !!params.allGlobal);
+        setupPrivilegeOverrideSelector(prefix, defaultAccess, params.privilege, params.title, !!params.allGlobal);
 
         if (!params.allGlobal) {
             var list = document.getElementById(prefix + '_presets');

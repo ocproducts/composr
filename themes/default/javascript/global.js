@@ -4957,10 +4957,10 @@
      * @param el
      * @param category
      * @param action
+     * @param callback
      * @returns {boolean}
      */
-    function gaTrack(el, category, action, callback)
-    {
+    function gaTrack(el, category, action, callback) {
         if ($cms.$CONFIG_OPTION('google_analytics') && !$cms.$IS_STAFF() && !$cms.$IS_ADMIN()) {
             if (!category) {
                 category = '{!URL;^}';
@@ -4984,8 +4984,7 @@
                         hitCallback: callback
                     }
                 );
-            }
-            catch(err) {
+            } catch(err) {
                 okay = false;
             }
 
@@ -9030,6 +9029,37 @@
         }
     };
 
+    $cms.templates.standaloneHtmlWrap = function (params) {
+        if (window.parent) {
+            window.$cmsLoad.push(function () {
+                document.body.classList.add('frame');
+
+                try {
+                    $cms.dom.triggerResize();
+                } catch (e) {}
+
+                setTimeout(function () { // Needed for IE10
+                    try {
+                        $cms.dom.triggerResize();
+                    } catch (e) {}
+                }, 1000);
+            });
+        }
+
+        if (params.isPreview) {
+            $cms.form.disablePreviewScripts();
+        }
+    };
+
+    $cms.templates.jsRefresh = function (params){
+        if (!window.location.hash.includes('redirected_once')) {
+            window.location.hash = 'redirected_once';
+            document.getElementById(params.formName).submit();
+        } else {
+            window.history.go(-2); // We've used back button, don't redirect forward again
+        }
+    };
+    
     $cms.templates.forumsEmbed = function () {
         var frame = this;
         setInterval(function () {
