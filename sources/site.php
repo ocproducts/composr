@@ -83,7 +83,16 @@ function init__site()
 
         $url_scheme = get_option('url_scheme');
         if (($url_scheme == 'PG') || ($url_scheme == 'HTM')) {
-            if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
+            if (
+                (!headers_sent()) &&
+                (running_script('index')) &&
+                ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) &&
+                (cms_srv('REQUEST_METHOD') != 'POST') &&
+                (get_param_integer('keep_failover', null) !== 0) &&
+                ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) &&
+                ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM')) &&
+                ($ruri != '/')
+            ) {
                 require_code('permissions');
                 set_http_status_code('301'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
                 header('Location: ' . escape_header(get_self_url(true)));
