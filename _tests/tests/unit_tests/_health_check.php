@@ -20,6 +20,24 @@ class _health_check_test_set extends cms_test_case
 {
     // These tests will eventually become a part of the Health Check system https://compo.sr/tracker/view.php?id=3314
 
+    protected function get_root_url()
+    {
+        static $ret = null;
+        if ($ret !== null) {
+            $ret = static_evaluate_tempcode(build_url(array('page' => ''), ''));
+        }
+        return $ret;
+    }
+
+    protected function get_root_content()
+    {
+        static $ret = null;
+        if ($ret !== null) {
+            $ret = http_download_file($this->get_root_url());
+        }
+        return $ret;
+    }
+
     // Expired SSL certificate, or otherwise malfunctioning SSL (if enabled)
     /*public function testForSSLIssues()
     {
@@ -61,6 +79,8 @@ class _health_check_test_set extends cms_test_case
         // TODO
     }*/
 
+    // TODO: Decent 404 page with sitemap
+
     // Outgoing mail not working
     /*public function testForTODO()
     {
@@ -80,7 +100,7 @@ class _health_check_test_set extends cms_test_case
             $result = shell_exec('ping -c 10 8.8.8.8');
             $matches = array();
             if (preg_match('# (\d(\.\d+)%) packet loss#', $result, $matches) != 0) {
-                $this->assertTrue(floatval($matches[1]) == 0.0);
+                $this->assertTrue(floatval($matches[1]) == 0.0, 'Unreliable Internet connection on server');
             }
         }
     }*/
@@ -109,11 +129,15 @@ class _health_check_test_set extends cms_test_case
         // TODO
     }*/
 
-    // Meta description missing for page (configurable regexp of pages)
+    // Meta description missing for page, too short, or too long (configurable regexp of pages)
     /*public function testForTODO()
     {
         // TODO
     }*/
+
+    // TODO: No <title>, too short, or too long
+
+    // TODO: No <h1>
 
     // XML Sitemap not being extended
     /*public function testForTODO()
@@ -136,7 +160,7 @@ class _health_check_test_set extends cms_test_case
     // robots.txt banning Google on a live site
     public function testForRobotsTxtBlocking()
     {
-        $url = static_evaluate_tempcode(build_url(array('page' => ''), ''));
+        $url = $this->get_root_url();
 
         $google_blocked = $this->robotsAllowed($url, 'Googlebot', true);
         $other_blocked = $this->robotsAllowed($url, 'Googlebot', false); // We'll still check for Google, just with the other way of doing precedence
@@ -221,7 +245,7 @@ class _health_check_test_set extends cms_test_case
 
         $this->robots_rules = null;
 
-        $robots_path = get_file_base() . '/robots.txt';
+        $robots_path = get_file_base() . '/robots.txt'; // TODO: Should be on domain root
         if (!is_file($robots_path)) {
             return;
         }
@@ -281,7 +305,7 @@ class _health_check_test_set extends cms_test_case
                 $core_rule = ($key == 'allow') || ($key == 'disallow');
 
                 if ($error_messages) {
-                    $this->assertTrue(in_array($key, array('allow', 'disallow', 'sitemap')), 'Unrecognised robots.txt rule:' . $key);
+                    $this->assertTrue(in_array($key, array('allow', 'disallow', 'sitemap', 'crawl-delay')), 'Unrecognised robots.txt rule:' . $key);
 
                     if ($core_rule) {
                         $this->assertTrue($did_some_ua_line, 'Floating ' . ucwords($key) . ' outside of any User-Agent section');
@@ -305,6 +329,8 @@ class _health_check_test_set extends cms_test_case
 
                 continue;
             }
+
+            // TODO: What if Sitemap URL on different domain or different protocol, or relative URL?
 
             // Unrecognised line
             if ($error_messages) {
@@ -544,9 +570,31 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Low free RAM
-    /*public function testForTODO()
+    /*public function testForLowRAM()
     {
-        // TODO
+        if (php_function_allowed('shell_exec')) {
+            $kb_free = null;
+
+            $matches = array();
+
+            if (strpos(PHP_OS, 'Darwin') !== false) {
+                $data = shell_exec('vm_stat');
+                if (preg_match('#^Pages free:\s*(\d+)#m', $data, $matches) != 0) {
+                    $kb_free = intval($matches[1]) * 4;
+                }
+            }
+
+            if (strpos(PHP_OS, 'Linux') !== false) {
+                $data = shell_exec('free');
+                if (preg_match('#^Mem:\s+(\d+)\s+(\d+)\s+(\d+)#m', $data, $matches) != 0) {
+                    $kb_free = intval($matches[3]);
+                }
+            }
+
+            if ($kb_free !== null) {
+                $this->assertTrue($kb_free > 200 * 1024, 'Server has less than 200MB of free RAM');
+            }
+        }
     }*/
 
     // Unusual increase in failed logins
@@ -562,7 +610,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Signs of malware (configurable regexp of pages)
-    public function testForTODO()
+    /*public function testForTODO()
     {
         // Unexpected meta redirect tags
         // TODO
@@ -575,24 +623,106 @@ class _health_check_test_set extends cms_test_case
 
         // Spammy keywords (maybe call an external tool to run this check)
         // TODO
-    }
 
-    // Cookies not being set
-    /*public function testForTODO()
-    {
+        // Google thinks malware on site? https://developers.google.com/safe-browsing/v3/lookup-guide
         // TODO
     }*/
 
-    // Too many cookies set
-    /*public function testForTODO()
+    // TODO: What if site running slow
+
+    // What if DNS not resolving
+    /*public function testForMailIssues($manual_checks = false)
     {
-        // TODO
+        if ((php_function_allowed('getmxrr')) && (php_function_allowed('checkdnsrr'))) {
+            $domains = array();
+            $domains[preg_replace('#^.*@#', '', get_option('staff_address'))] = get_option('staff_address');
+            $domains[preg_replace('#^.*@#', '', get_option('website_email'))] = get_option('website_email');
+            if (addon_installed('tickets')) {
+                $domains[preg_replace('#^.*@#', '', get_option('ticket_email_from'))] = get_option('ticket_email_from');
+            }
+
+            $domains = array('ocportal.com' => 'chris@ocportal.com'); // TODO
+
+            foreach ($domains as $domain => $email) {
+                if (($domain == 'localhost') || (trim($domain, '0123456789.') == '') || (strpos($domain, ':') !== false)) {
+                    continue;
+                }
+
+                $mail_hosts = array();
+                $this->assertTrue(@getmxrr($domain, $mail_hosts), 'Cannot look up MX records for our ' . $email . ' e-mail address');
+
+                foreach ($mail_hosts as $host) {
+                    $this->assertTrue(checkdnsrr($host, 'A'), 'Mail server DNS does not seem to be setup properly for our ' . $email . ' e-mail address');
+
+                    if ((php_function_allowed('fsockopen')) && (php_function_allowed('gethostbyname')) && (php_function_allowed('gethostbyaddr'))) {
+                        // See if SMTP running
+                        $socket = @fsockopen($host, 25);
+                        $can_connect = ($socket !== false);
+                        $this->assertTrue($can_connect, 'Cannot connect to SMTP server for ' . $email . ' address');
+                        if ($can_connect) {
+                            fread($socket, 1024);
+                            fwrite($socket, 'HELO ' . $domain . "\n");
+                            $data = fread($socket, 1024);
+                            fclose($socket);
+
+                            $matches = array();
+                            $has_helo = preg_match('#^250 ([^\s]*)#', $data, $matches) != 0;
+                            $this->assertTrue($has_helo, 'Cannot get HELO response from SMTP server for ' . $email . ' address');
+                            if ($has_helo) {
+                                $reported_host = $matches[1];
+
+                                / *
+                                $reverse_dns_host = gethostbyaddr(gethostbyname($host));  Fails way too much
+
+                                $this->assertTrue($reported_host == $reverse_dns_host, 'HELO response from SMTP server (' . $reported_host . ') not matching reverse DNS (' . $reverse_dns_host . ') for ' . $email . ' address');
+                                * /
+                            }
+                        }
+                    }
+                }
+
+                // What if mailbox missing? Or generally e-mail not received
+                if ($manual_checks) {
+                    require_code('mail');
+                    mail_wrap('Test', 'Test e-mail from Health Check', array($email));
+                    $this->assertTrue(false, 'Manual check: An e-mail was sent to ' . $email . ', confirm it was received');
+                }
+            }
+        }
+    }*/
+
+    // TODO: Other spam issues. Blacklisted? SPF issue?
+
+    // What if DNS not resolving
+    /*public function testForDNSResolutionIssues()
+    {
+        if (php_function_allowed('checkdnsrr')) {
+            $domain = parse_url(get_base_url(), PHP_URL_HOST);
+
+            if (($domain != 'localhost') && (trim($domain, '0123456789.') != '') && (strpos($domain, ':') === false)) {
+                $this->assertTrue(checkdnsrr($domain, 'A'), 'DNS does not seem to be setup properly for our domain');
+            }
+        }
     }*/
 
     // Running on an expired domain name
-    /*public function testForTODO()
+    /*public function testForExpiringDomainName()
     {
-        // TODO
+        if (php_function_allowed('shell_exec')) {
+            $domain = parse_url(get_base_url(), PHP_URL_HOST);
+
+            if (($domain != 'localhost') && (trim($domain, '0123456789.') != '') && (strpos($domain, ':') === false)) {
+                $result = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
+
+                $matches = array();
+                if (preg_match('#(Expiry date|Expiration date|Expiration):\s*([^\s]*)#im', $result, $matches) != 0) {
+                    $expiry = strtotime($matches[2]);
+                    if ($expiry > 0) {
+                        $this->assertTrue($expiry > time() - 60 * 60 * 24 * 7, 'Domain seems to be expiring within a week or already expired');
+                    }
+                }
+            }
+        }
     }*/
 
     // Site seems to be configured on a base URL which is not what a public web request sees is running on that base URL (security)
@@ -601,10 +731,36 @@ class _health_check_test_set extends cms_test_case
         // TODO
     }*/
 
-    // Large cookies set
-    /*public function testForTODO()
+    // Cookie problems
+    /*public function testForLargeCookies()
     {
-        // TODO
+        $url = $this->get_root_url();
+
+        $headers = get_headers($url, 1);
+        $found_has_cookies_cookie = false;
+        foreach ($headers as $key => $vals) {
+            if (strtolower($key) == strtolower('Set-Cookie')) {
+                if (is_string($vals)) {
+                    $vals = array($val);
+                }
+
+                foreach ($vals as $val) {
+                    if (preg_match('#^has_cookies=1;#', $val) != 0) {
+                        $found_has_cookies_cookie = true;
+                    }
+
+                    // Large cookies set
+                    $_val = preg_replace('#^.*=#U', '', preg_replace('#; .*$#s', '', $val));
+                    $this->assertTrue(strlen($_val) < 100, 'Cookie with over 100 bytes being set which is bad for performance');
+                }
+
+                // Too many cookies set
+                $this->assertTrue(count($vals) < 8, '8 or more cookies are being set which is bad for performance');
+            }
+        }
+
+        // Composr cookies not set
+        $this->assertTrue($found_has_cookies_cookie, 'Cookies not being properly set');
     }*/
 
     // No recent activity on any 1 of a set of configured Twitter accounts
@@ -620,10 +776,32 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Output pages are not gzipped
-    /*public function testForTODO()
+    /*public function testForUncompressed()
     {
-        // TODO
+        //set_option('gzip_output', '1');
+
+        $url = $this->get_root_url();
+
+        stream_context_set_default(array('http' => array('header' => 'Accept-Encoding: gzip')));
+        $headers = get_headers($url, 1);
+        $is_gzip = false;
+        foreach ($headers as $key => $vals) {
+            if (strtolower($key) == strtolower('Content-Encoding')) {
+                if (is_string($vals)) {
+                    $vals = array($val);
+                }
+
+                foreach ($vals as $val) {
+                    if ($val == 'gzip') {
+                        $is_gzip = true;
+                    }
+                }
+            }
+        }
+        $this->assertTrue($is_gzip, 'Page gzip compression is not enabled/working, significantly wasting bandwidth for page loads');
     }*/
+
+    // TODO: Static file gzip test (CSS, images, JS)
 
     // Composr version no longer supported
     /*public function testForTODO()
@@ -632,14 +810,14 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // PHP version no longer supported
-    public function testForUnsupportedPHP()
+    /*public function testForUnsupportedPHP()
     {
         require_code('version2');
 
         $v = strval(PHP_MAJOR_VERSION) . '.' . strval(PHP_MINOR_VERSION);
 
-        $this->assertTrue(is_php_version_supported($v));
-    }
+        $this->assertTrue(is_php_version_supported($v), 'Unsupported PHP version ' . $v);
+    }*/
 
     // Cache headers not set correctly on static resources like images or CSS or JavaScript
     /*public function testForTODO()
@@ -666,20 +844,57 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Google Analytics configured but not in output HTML
+    /*public function testForGANonPresent()
+    {
+        $ga = get_option('google_analytics');
+        if (trim($ga) != '') {
+            $data = http_download_file($this->get_root_content());
+
+            $this->assertTrue(strpos($data, $ga) !== false, 'Google Analytics enabled but not in page output (themeing issue?)');
+        }
+    }*/
+    // TODO: Check with API data being collected?
+
+    // Crawl errors (not warnings) in Google Webmaster Tools
     /*public function testForTODO()
     {
+        // https://developers.google.com/webmaster-tools/search-console-api-original/
         // TODO
     }*/
 
-    // Errors (not warnings) in Google Webmaster Tools
-    /*public function testForTODO()
-    {
-        // TODO
-    }*/
+    // TODO: Check cannot download secured files in .htaccess / web.config
+
+    // TODO: No lorem ipsum or TODOs
+
+    // TODO: Structured data tool https://search.google.com/structured-data/testing-tool/u/0/#url=https%3A%2F%2Fcompo.sr
 
     // OpenGraph tagging problem (see https://developers.facebook.com/tools/debug/sharing/)
     /*public function testForTODO()
     {
         // TODO
     }*/
+
+    // TODO: Manual suggestion for https://developers.google.com/speed/pagespeed/insights
+
+    // TODO: Manual suggestion for HTML5 validation (with take-with-pinch-of-salt warning)
+
+    // TODO: Manual suggestion for CSS validation (with take-with-pinch-of-salt warning)
+
+    // TODO: Manual suggestion for WCAG validation (with take-with-pinch-of-salt warning)
+
+    // TODO: Manual suggestion for browser testing
+
+    // TODO: Manual suggestion for SSL security testing https://www.ssllabs.com/ssltest/ (with take-with-pinch-of-salt warning)
+
+    // TODO: Manual suggestion for https://sitecheck.sucuri.net/
+
+    // TODO: Manual suggestion for SEO test https://seositecheckup.com/seo-audit (with take-with-pinch-of-salt warning)
+
+    // TODO: Manual suggestion for going through Webmaster Tools (and remove from main_staff_links)
+
+    // TODO: Manual suggestion for https://www.woorank.com/ (and remove from main_staff_links)
+
+    // TODO: Add manual links to maintenance-sheet
+
+    // TODO: Test everything on compo.sr
 }
