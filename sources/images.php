@@ -21,7 +21,7 @@
  */
 
 /**
- * Render an 'IMAGE_WIDTH'/'IMAGE_HEIGHT' symbol.
+ * Render an 'IMG_WIDTH'/'IMG_HEIGHT' symbol.
  *
  * @param  array $param Symbol parameters
  * @return array A pair: Image dimensions
