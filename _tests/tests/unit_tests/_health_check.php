@@ -129,13 +129,13 @@ class _health_check_test_set extends cms_test_case
         // TODO
     }*/
 
-    // Meta description missing for page, too short, or too long (configurable regexp of pages)
+    // Meta description missing for page, too short, or too long [>155] (configurable regexp of pages)
     /*public function testForTODO()
     {
         // TODO
     }*/
 
-    // TODO: No <title>, too short, or too long
+    // TODO: No <title>, too short, or too long (>70)
 
     // TODO: No <h1>
 
@@ -876,25 +876,30 @@ class _health_check_test_set extends cms_test_case
 
     // TODO: Manual suggestion for https://developers.google.com/speed/pagespeed/insights
 
-    // TODO: Manual suggestion for HTML5 validation (with take-with-pinch-of-salt warning)
+    // TODO: Manual suggestion for HTML5 validation https://validator.w3.org/ (with take-with-pinch-of-salt warning)
 
     // TODO: Manual suggestion for CSS validation (with take-with-pinch-of-salt warning)
 
     // TODO: Manual suggestion for WCAG validation (with take-with-pinch-of-salt warning)
+    //  https://achecker.ca/
+    //  http://wave.webaim.org/
+    //  https://try.powermapper.com/
 
     // TODO: Manual suggestion for browser testing
 
     // TODO: Manual suggestion for SSL security testing https://www.ssllabs.com/ssltest/ (with take-with-pinch-of-salt warning)
 
-    // TODO: Manual suggestion for https://sitecheck.sucuri.net/
-
-    // TODO: Manual suggestion for SEO test https://seositecheckup.com/seo-audit (with take-with-pinch-of-salt warning)
+    // TODO: Manual suggestion for SEO test https://seositecheckup.com/ (with take-with-pinch-of-salt warning)
 
     // TODO: Manual suggestion for going through Webmaster Tools (and remove from main_staff_links)
 
-    // TODO: Manual suggestion for https://www.woorank.com/ (and remove from main_staff_links)
+    // TODO: Manual suggestion for https://www.woorank.com/ (with take-with-pinch-of-salt warning)
+
+    // TODO: Manual suggestion for https://website.grader.com/
 
     // TODO: Add manual links to maintenance-sheet
+
+    // --
 
     // TODO: Test everything on compo.sr
 }
