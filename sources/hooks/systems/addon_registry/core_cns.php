@@ -371,6 +371,7 @@ class Hook_addon_registry_core_cns
             'pages/modules/join.php',
             'sources/cns_join.php',
             'pages/modules/lost_password.php',
+            'themes/default/templates/JOIN_FORM.tpl',
             'themes/default/templates/CNS_AUTO_TIME_ZONE_ENTRY.tpl',
             'themes/default/templates/CNS_DELURK_CONFIRM.tpl',
             'themes/default/templates/CNS_JOIN_STEP2_SCREEN.tpl',

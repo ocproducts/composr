@@ -187,7 +187,6 @@ class Hook_addon_registry_core_abstract_interfaces
             'themes/default/images/progress_indicator/stage_future.png',
             'themes/default/images/progress_indicator/stage_past.png',
             'themes/default/images/progress_indicator/stage_present.png',
-            'themes/default/javascript/core_abstract_interfaces.js',
         );
     }
 

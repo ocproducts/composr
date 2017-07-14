@@ -114,7 +114,7 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
 
     $submit_name = do_lang_tempcode('PROCEED');
 
-    return do_template('FORM', array(
+    return do_template('JOIN_FORM', array(
         '_GUID' => 'f6dba5638ae50a04562df50b1f217311',
         'TEXT' => '',
         'HIDDEN' => $hidden,
@@ -123,14 +123,11 @@ function cns_join_form($url, $captcha_if_enabled = true, $intro_message_if_enabl
         'SUBMIT_NAME' => $submit_name,
         'URL' => $url,
         'ANALYTIC_EVENT_CATEGORY' => do_lang('_JOIN'),
-        // Only used by the join form:
-        'IS_JOIN_FORM' => true,
         'USERNAME_CHECK_SCRIPT' => find_script('username_check'),
         'SNIPPET_SCRIPT' => find_script('snippet'),
         'INVITES_ENABLED' => $invites_if_enabled && (get_option_with_overrides('is_on_invites', $adjusted_config_options) == '1'),
         'ONE_PER_EMAIL_ADDRESS' => (get_option_with_overrides('one_per_email_address', $adjusted_config_options) != '0'),
         'USE_CAPTCHA' => $captcha_if_enabled && addon_installed('captcha') && use_captcha(),
-        // TODO: Salman, I don't like this being squashed into a common form. Better to copy the template.
     ));
 }
 

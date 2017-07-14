@@ -287,6 +287,21 @@
         });
     };
 
+    $cms.templates.joinForm = function (params, container) {
+        var skippable =  strVal(params.skippable);
+
+        joinForm(params);
+
+        $cms.dom.on(container, 'click', '.js-click-btn-skip-step', function () {
+            $cms.dom.$('#' + skippable).value = '1';
+        });
+
+        $cms.dom.on(container, 'submit', '.js-submit-modesecurity-workaround', function (e, form) {
+            e.preventDefault();
+            $cms.form.modSecurityWorkaround(form);
+        });
+    };
+
     window.decryptData = decryptData;
     function decryptData() {
         if (document.getElementById('decryption_overlay')) {
@@ -376,4 +391,64 @@
             } catch (e) {}
         }, 0);
     }
+
+    function joinForm(params) {
+        var form = document.getElementById('username').form,
+            submitBtn = document.getElementById('submit_button');
+
+        form.elements['username'].onchange = function () {
+            if (form.elements['intro_title'])
+                form.elements['intro_title'].value = '{!cns:INTRO_POST_DEFAULT;^}'.replace(/\{1\}/g, form.elements['username'].value);
+        };
+
+        form.addEventListener('submit', function submitCheck(e) {
+            if ((form.elements['confirm'] !== undefined) && (form.elements['confirm'].type === 'checkbox') && (!form.elements['confirm'].checked)) {
+                $cms.ui.alert('{!cns:DESCRIPTION_I_AGREE_RULES;^}');
+                return false;
+            }
+
+            if ((form.elements['email_address_confirm'] !== undefined) && (form.elements['email_address_confirm'].value != form.elements['email_address'].value)) {
+                $cms.ui.alert('{!EMAIL_ADDRESS_MISMATCH;^}');
+                return false;
+            }
+
+            if ((form.elements['password_confirm'] !== undefined) && (form.elements['password_confirm'].value != form.elements['password'].value)) {
+                $cms.ui.alert('{!PASSWORD_MISMATCH;^}');
+                return false;
+            }
+
+            var checkPromises = [];
+            e.preventDefault();
+            submitBtn.disabled = true;
+
+            var url = params.usernameCheckScript + '?username=' + encodeURIComponent(form.elements['username'].value);
+            checkPromises.push($cms.form.doAjaxFieldTest(url, 'password=' + encodeURIComponent(form.elements['password'].value)));
+
+            if (params.invitesEnabled) {
+                url = params.snippetScript + '?snippet=invite_missing&name=' + encodeURIComponent(form.elements['email_address'].value);
+                checkPromises.push($cms.form.doAjaxFieldTest(url));
+            }
+
+            if (params.onePerEmailAddress) {
+                url = params.snippetScript + '?snippet=exists_email&name=' + encodeURIComponent(form.elements['email_address'].value);
+                checkPromises.push($cms.form.doAjaxFieldTest(url));
+            }
+
+            if (params.useCaptcha) {
+                url = params.snippetScript + '?snippet=captcha_wrong&name=' + encodeURIComponent(form.elements['captcha'].value);
+                checkPromises.push($cms.form.doAjaxFieldTest(url));
+            }
+
+            Promise.all(checkPromises).then(function (validities) {
+                if (!validities.includes(false)) {
+                    // All valid!
+                    form.removeEventListener('submit', submitCheck);
+                    form.submit();
+                } else {
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    }
+
 }(window.$cms));
