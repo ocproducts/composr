@@ -878,12 +878,9 @@ class _health_check_test_set extends cms_test_case
 
     // TODO: Manual suggestion for HTML5 validation https://validator.w3.org/ (with take-with-pinch-of-salt warning)
 
-    // TODO: Manual suggestion for CSS validation (with take-with-pinch-of-salt warning)
+    // TODO: Manual suggestion for CSS validation https://jigsaw.w3.org/css-validator/ (with take-with-pinch-of-salt warning)
 
-    // TODO: Manual suggestion for WCAG validation (with take-with-pinch-of-salt warning)
-    //  https://achecker.ca/
-    //  http://wave.webaim.org/
-    //  https://try.powermapper.com/
+    // TODO: Manual suggestion for WCAG validation https://achecker.ca/ (with take-with-pinch-of-salt warning)
 
     // TODO: Manual suggestion for browser testing
 
