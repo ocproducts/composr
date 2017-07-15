@@ -376,6 +376,7 @@
     }
 }(window.$cms));
 
+
 function showPermissionSetting(ob, event) {
     if (ob.disabled) { // already showing default in disabled dropdown
         return;
@@ -446,7 +447,7 @@ function copyPermissionPresets(name, value, justTrack) {
 
     if (value !== '-1') {
         for (i = 0; i < elements.length; i++) {
-            if (elements[i].name.indexOf('presets') != -1) {
+            if (elements[i].name.indexOf('presets') !== -1) {
                 continue;
             }
 
@@ -468,7 +469,9 @@ function copyPermissionPresets(name, value, justTrack) {
                     madeChange = true;
                     if (elements[i].selectedIndex != test + 1) {
                         madeChange = true;
-                        if (!justTrack) elements[i].selectedIndex = test + 1; // -1 is at index 0
+                        if (!justTrack) { 
+                            elements[i].selectedIndex = test + 1; // -1 is at index 0
+                        }
                     }
                 }
             }
@@ -479,7 +482,9 @@ function copyPermissionPresets(name, value, justTrack) {
                 continue;
             }
 
-            if (window.sitemap === undefined) elements[i].disabled = true;
+            if (window.sitemap === undefined) {
+                elements[i].disabled = true;
+            }
             // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
             // TODO: Salman remove eval somehow
             elements[i].selectedIndex = eval(elements[i].name + ';') + 1; // -1 is at index 0

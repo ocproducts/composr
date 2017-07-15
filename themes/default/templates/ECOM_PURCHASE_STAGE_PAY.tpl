@@ -1,5 +1,6 @@
 {$,Template is used for remote payments only; local payments use ECOM_PURCHASE_STAGE_TRANSACT}
-
+{$REQUIRE_JAVASCRIPT,ecommerce}
+<div data-tpl="ecomPurchaseStagePay" data-tpl-params="{+START,PARAMS_JSON,TYPE_CODE}{_*}{+END}">
 {$,You may want to put in some JavaScript to auto-click the payment button, at least for some TYPE_CODE values, as this step is usually over-complex; we do for CART_ORDER_* by default}
 
 {+START,IF_PASSED,CONFIRMATION_BOX}
@@ -32,10 +33,4 @@
 {+END}
 
 {TRANSACTION_BUTTON}
-
-{+START,IF,{$PREG_MATCH,^CART_ORDER_,{TYPE_CODE}}}
-	TODO: Fix JavaScript Salman, automatic link clicking of purchase button for cart orders (because button was already pressed on cart screen)
-	<script>// <![CDATA[
-		click_link(document.getElementById('purchase_button'));
-	//]]></script>
-{+END}
+</div>

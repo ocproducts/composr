@@ -913,6 +913,25 @@
 
         jwplayer(params.playerId).setup(playerOptions);
     };
+    
+    $cms.functions.comcodeAddTryForSpecialComcodeTagSpecificContentsUi = function () {
+        // If we select an image we want to have good defaults for an image, but only if the defaults weren't already changed
+        document.getElementById('tag_contents__b').onchange = function () {
+            var ext = this.value.substring(this.value.indexOf('.') + 1);
+            var is_image = ',{$CONFIG_OPTION;,valid_images}'.indexOf(',' + ext + ',') !== -1;
+            if (is_image) {
+                var framed = document.getElementById('framed');
+                var wysiwyg_editable = document.getElementById('wysiwyg_editable');
+                var thumb = document.getElementById('thumb');
+
+                if (framed.defaultChecked == framed.checked && wysiwyg_editable.defaultChecked == wysiwyg_editable.checked && thumb.defaultChecked == thumb.checked) {
+                    framed.checked = false;
+                    wysiwyg_editable.checked = true;
+                    thumb.checked = false;
+                }
+            }
+        };
+    };
 
     function shockerTick(id, time, minColor, maxColor) {
         if ((document.hidden !== undefined) && (document.hidden)) return;

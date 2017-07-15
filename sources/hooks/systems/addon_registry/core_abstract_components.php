@@ -119,7 +119,6 @@ class Hook_addon_registry_core_abstract_components
             'sources_custom/hooks/systems/change_detection/.htaccess',
             'sources/hooks/systems/change_detection/index.html',
             'sources_custom/hooks/systems/change_detection/index.html',
-            'themes/default/javascript/core_abstract_components.js',
         );
     }
 

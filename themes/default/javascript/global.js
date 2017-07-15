@@ -8540,38 +8540,9 @@
         },
 
         loadRealtimeRain: function () {
-            loadRealtimeRain();
-
-            function loadRealtimeRain() {
-                if ((window.realtimeRainButtonLoadHandler === undefined)) {
-                    if (document.getElementById('realtime_rain_img_loader')) {
-                        setTimeout(loadRealtimeRain, 200);
-                        return false;
-                    }
-
-                    var img = document.getElementById('realtime_rain_img');
-                    img.className = 'footer_button_loading';
-                    var tmpElement = document.createElement('img');
-                    tmpElement.src = $cms.img('{$IMG;,loading}');
-                    tmpElement.style.position = 'absolute';
-                    tmpElement.style.left = ($cms.dom.findPosX(img) + 2) + 'px';
-                    tmpElement.style.top = ($cms.dom.findPosY(img) + 1) + 'px';
-                    tmpElement.id = 'realtime_rain_img_loader';
-                    img.parentNode.appendChild(tmpElement);
-
-                    $cms.requireJavascript('realtime_rain');
-                    $cms.requireCss('realtime_rain');
-                    setTimeout(loadRealtimeRain, 200);
-
-                    return false;
-                }
-                if ((window.realtimeRainButtonLoadHandler !== undefined)) {
-                    return realtimeRainButtonLoadHandler();
-                }
-                window.location.href = document.getElementById('realtime_rain_button').href;
-                return false;
-            }
-
+            $cms.requireJavascript('button_realtime_rain').then(function () {
+                loadRealtimeRain();
+            });
         },
 
         loadCommandr: function () {
@@ -8936,6 +8907,540 @@
             }
         }
     });
+
+
+    $cms.views.Menu = Menu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends $cms.View
+     */
+    function Menu(params) {
+        Menu.base(this, 'constructor', arguments);
+
+        /** @var {string} */
+        this.menu = strVal(params.menu);
+
+        /** @var {string} */
+        this.menuId = strVal(params.menuId);
+
+        if (params.javascriptHighlighting) {
+            menuActiveSelection(this.menuId);
+        }
+    }
+
+    $cms.inherits(Menu, $cms.View);
+
+    // Templates:
+    // MENU_dropdown.tpl
+    // - MENU_BRANCH_dropdown.tpl
+    $cms.views.DropdownMenu = DropdownMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
+    function DropdownMenu(params) {
+        DropdownMenu.base(this, 'constructor', arguments);
+    }
+
+    $cms.inherits(DropdownMenu, Menu, /**@lends DropdownMenu#*/{
+        events: function () {
+            return {
+                'mousemove .js-mousemove-timer-pop-up-menu': 'timerPopUpMenu',
+                'mouseout .js-mouseout-clear-pop-up-timer': 'clearPopUpTimer',
+                'focus .js-focus-pop-up-menu': 'focusPopUpMenu',
+                'mousemove .js-mousemove-pop-up-menu': 'popUpMenu',
+                'mouseover .js-mouseover-set-active-menu': 'setActiveMenu',
+                'click .js-click-unset-active-menu': 'unsetActiveMenu',
+                'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu',
+                // For admin/templates/MENU_dropdown.tpl:
+                'mousemove .js-mousemove-admin-timer-pop-up-menu': 'adminTimerPopUpMenu',
+                'mouseout .js-mouseout-admin-clear-pop-up-timer': 'adminClearPopUpTimer'
+            };
+        },
+
+        timerPopUpMenu: function (e, target) {
+            var menu = $cms.filter.id(this.menu),
+                rand = strVal(target.dataset.vwRand);
+
+            if (!target.timer) {
+                target.timer = setTimeout(function () {
+                    popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d');
+                }, 200);
+            }
+        },
+
+        clearPopUpTimer: function (e, target) {
+            if (target.timer) {
+                clearTimeout(target.timer);
+                target.timer = null;
+            }
+        },
+
+        focusPopUpMenu: function (e, target) {
+            var menu = $cms.filter.id(this.menu),
+                rand = strVal(target.dataset.vwRand);
+
+            popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
+        },
+
+        popUpMenu: function (e, target) {
+            var menu = $cms.filter.id(this.menu),
+                rand = strVal(target.dataset.vwRand);
+
+            popUpMenu(menu + '_dexpand_' + rand, null, menu + '_d');
+        },
+
+        setActiveMenu: function (e, target) {
+            if (!target.contains(e.relatedTarget)) {
+                var menu = $cms.filter.id(this.menu);
+
+                if (window.active_menu == null) {
+                    setActiveMenu(target.id, menu + '_d');
+                }
+            }
+        },
+
+        unsetActiveMenu: function (e, target) {
+            if (!target.contains(e.relatedTarget)) {
+                window.active_menu = null;
+                recreateCleanTimeout();
+            }
+        },
+
+        /* For admin/templates/MENU_dropdown.tpl */
+        adminTimerPopUpMenu: function (e, target) {
+            var menu = $cms.filter.id(this.menu),
+                rand = strVal(target.dataset.vwRand);
+
+            window.menu_hold_time = 3000;
+            if (!target.dataset.timer) {
+                target.dataset.timer = setTimeout(function () {
+                    var ret = popUpMenu(menu + '_dexpand_' + rand, 'below', menu + '_d', true);
+                    try {
+                        document.getElementById('search_content').focus();
+                    } catch (ignore) {}
+                    return ret;
+                }, 200);
+            }
+        },
+        adminClearPopUpTimer: function (e, target) {
+            if (target.dataset.timer) {
+                clearTimeout(target.dataset.timer);
+                target.dataset.timer = null;
+            }
+        }
+    });
+
+    $cms.views.PopupMenu = PopupMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
+    function PopupMenu(params) {
+        PopupMenu.base(this, 'constructor', arguments);
+    }
+
+    $cms.inherits(PopupMenu, Menu, /**@lends PopupMenu#*/{
+        events: function () {
+            return {
+                'click .js-click-unset-active-menu': 'unsetActiveMenu',
+                'mouseout .js-mouseout-unset-active-menu': 'unsetActiveMenu'
+            };
+        },
+
+        unsetActiveMenu: function (e, target) {
+            if (!target.contains(e.relatedTarget)) {
+                window.active_menu = null;
+                recreateCleanTimeout();
+            }
+        }
+    });
+
+    $cms.views.PopupMenuBranch = PopupMenuBranch;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
+    function PopupMenuBranch() {
+        PopupMenuBranch.base(this, 'constructor', arguments);
+
+        this.rand = this.params.rand;
+        this.menu = $cms.filter.id(this.params.menu);
+        this.popup = this.menu + '_pexpand_' + this.rand;
+    }
+
+    $cms.inherits(PopupMenuBranch, $cms.View, /**@lends PopupMenuBranch#*/{
+        events: function () {
+            return {
+                'focus .js-focus-pop-up-menu': 'popUpMenu',
+                'mousemove .js-mousemove-pop-up-menu': 'popUpMenu',
+                'mouseover .js-mouseover-set-active-menu': 'setActiveMenu'
+            };
+        },
+        popUpMenu: function () {
+            popUpMenu(this.popup, null, this.menu + '_p');
+        },
+        setActiveMenu: function () {
+            if (!window.active_menu) {
+                setActiveMenu(this.popup, this.menu + '_p');
+            }
+        }
+    });
+
+    $cms.views.TreeMenu = TreeMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
+    function TreeMenu() {
+        TreeMenu.base(this, 'constructor', arguments);
+    }
+
+    $cms.inherits(TreeMenu, Menu, /**@lends TreeMenu#*/{
+        events: function () {
+            return {
+                'click [data-menu-tree-toggle]': 'toggleMenu'
+            };
+        },
+
+        toggleMenu: function (e, target) {
+            var menuId = target.dataset.menuTreeToggle;
+
+            $cms.toggleableTray($cms.dom.$('#' + menuId));
+        }
+    });
+
+    // Templates:
+    // MENU_mobile.tpl
+    // - MENU_BRANCH_mobile.tpl
+    $cms.views.MobileMenu = MobileMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
+    function MobileMenu() {
+        MobileMenu.base(this, 'constructor', arguments);
+        this.menuContentEl = this.$('.js-el-menu-content');
+    }
+
+    $cms.inherits(MobileMenu, Menu, /**@lends MobileMenu#*/{
+        events: function () {
+            return {
+                'click .js-click-toggle-content': 'toggleContent',
+                'click .js-click-toggle-sub-menu': 'toggleSubMenu'
+            };
+        },
+        toggleContent: function (e) {
+            e.preventDefault();
+            $cms.dom.toggle(this.menuContentEl);
+        },
+        toggleSubMenu: function (e, link) {
+            var rand = link.dataset.vwRand,
+                subEl = this.$('#' + this.menuId + '_pexpand_' + rand),
+                href;
+
+            if ($cms.dom.notDisplayed(subEl)) {
+                $cms.dom.show(subEl);
+            } else {
+                href = link.getAttribute('href');
+                // Second click goes to it
+                if (href && !href.startsWith('#')) {
+                    return;
+                }
+                $cms.dom.hide(subEl);
+            }
+
+            e.preventDefault();
+        }
+    });
+
+    // For admin/templates/MENU_mobile.tp
+    $cms.templates.menuMobile = function menuMobile(params) {
+        var menuId = strVal(params.menuId);
+        $cms.dom.on(document.body, 'click', 'click .js-click-toggle-' + menuId + '-content', function (e) {
+            var branch = document.getElementById(menuId);
+
+            if (branch) {
+                $cms.dom.toggle(branch.parentElement);
+                e.preventDefault();
+            }
+        });
+    };
+
+    $cms.views.SelectMenu = SelectMenu;
+    /**
+     * @memberof $cms.views
+     * @class
+     * @extends Menu
+     */
+    function SelectMenu() {
+        SelectMenu.base(this, 'constructor', arguments);
+    }
+
+    $cms.inherits(SelectMenu, Menu, /**@lends SelectMenu#*/{
+        events: function () {
+            return {
+                'change .js-change-redirect-to-value': 'redirect'
+            };
+        },
+        redirect: function (e, changed) {
+            if (changed.value) {
+                window.location.href = changed.value;
+            }
+        }
+    });
+
+    function menuActiveSelection(menuId) {
+        var menuElement = $cms.dom.$('#' + menuId),
+            possibilities = [], isSelected, url, min_score, i;
+
+        if (menuElement.localName === 'select') {
+            for (i = 0; i < menuElement.options.length; i++) {
+                url = menuElement.options[i].value;
+                isSelected = menuItemIsSelected(url);
+                if (isSelected !== null) {
+                    possibilities.push({
+                        url: url,
+                        score: isSelected,
+                        element: menuElement.options[i]
+                    });
+                }
+            }
+
+            if (possibilities.length > 0) {
+                possibilities.sort(function (a, b) {
+                    return a.score - b.score
+                });
+
+                min_score = possibilities[0].score;
+                for (i = 0; i < possibilities.length; i++) {
+                    if (possibilities[i].score != min_score) {
+                        break;
+                    }
+                    possibilities[i].element.selected = true;
+                }
+            }
+        } else {
+            var menuItems = menuElement.querySelectorAll('.non_current'), a;
+            for (i = 0; i < menuItems.length; i++) {
+                a = null;
+                for (var j = 0; j < menuItems[i].children.length; j++) {
+                    if (menuItems[i].children[j].localName === 'a') {
+                        a = menuItems[i].children[j];
+                    }
+                }
+                if (!a) {
+                    continue;
+                }
+
+                url = (a.getAttribute('href') === '') ? '' : a.href;
+                isSelected = menuItemIsSelected(url);
+                if (isSelected !== null) {
+                    possibilities.push({
+                        url: url,
+                        score: isSelected,
+                        element: menuItems[i]
+                    });
+                }
+            }
+
+            if (possibilities.length > 0) {
+                possibilities.sort(function (a, b) {
+                    return a.score - b.score
+                });
+
+                min_score = possibilities[0].score;
+                for (i = 0; i < possibilities.length; i++) {
+                    if (possibilities[i].score != min_score) {
+                        break;
+                    }
+                    possibilities[i].element.classList.remove('non_current');
+                    possibilities[i].element.classList.add('current');
+                }
+            }
+        }
+
+        function menuItemIsSelected(url) {
+            url = strVal(url);
+
+            if (url === '') {
+                return null;
+            }
+
+            var currentUrl = window.location.href;
+            if (currentUrl === url) {
+                return 0;
+            }
+            var globalBreadcrumbs = document.getElementById('global_breadcrumbs');
+
+            if (globalBreadcrumbs) {
+                var links = globalBreadcrumbs.querySelectorAll('a');
+                for (var i = 0; i < links.length; i++) {
+                    if (url == links[links.length - 1 - i].href) {
+                        return i + 1;
+                    }
+                }
+            }
+
+            return null;
+        }
+    }
+
+    window.menu_hold_time = 500;
+    window.active_menu = null;
+    window.last_active_menu = null;
+
+    var cleanMenusTimeout,
+        lastActiveMenu;
+
+    function setActiveMenu(id, menu) {
+        window.active_menu = id;
+        if (menu != null) {
+            lastActiveMenu = menu;
+        }
+    }
+
+    function recreateCleanTimeout() {
+        if (cleanMenusTimeout) {
+            clearTimeout(cleanMenusTimeout);
+        }
+        cleanMenusTimeout = setTimeout(cleanMenus, window.menu_hold_time);
+    }
+
+    function popUpMenu(id, place, menu, outsideFixedWidth) {
+        place || (place = 'right');
+        outsideFixedWidth = !!outsideFixedWidth;
+
+        var el = $cms.dom.$('#' + id);
+
+        if (!el) {
+            return;
+        }
+
+        if (cleanMenusTimeout) {
+            clearTimeout(cleanMenusTimeout);
+        }
+
+        if ($cms.dom.isDisplayed(el)) {
+            return false;
+        }
+
+        window.active_menu = id;
+        lastActiveMenu = menu;
+        cleanMenus();
+
+        var l = 0;
+        var t = 0;
+        var p = el.parentNode;
+
+        // Our own position computation as we are positioning relatively, as things expand out
+        if ($cms.dom.isCss(p.parentElement, 'position', 'absolute')) {
+            l += p.offsetLeft;
+            t += p.offsetTop;
+        } else {
+            while (p) {
+                if (p && $cms.dom.isCss(p, 'position', 'relative')) {
+                    break;
+                }
+
+                l += p.offsetLeft;
+                t += p.offsetTop - (parseInt(p.style.borderTop) || 0);
+                p = p.offsetParent;
+
+                if (p && $cms.dom.isCss(p, 'position', 'absolute')) {
+                    break;
+                }
+            }
+        }
+        if (place === 'below') {
+            t += el.parentNode.offsetHeight;
+        } else {
+            l += el.parentNode.offsetWidth;
+        }
+
+        var fullHeight = $cms.dom.getWindowScrollHeight(); // Has to be got before e is visible, else results skewed
+        el.style.position = 'absolute';
+        el.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
+        el.style.display = 'block';
+        $cms.dom.clearTransitionAndSetOpacity(el, 0.0);
+        $cms.dom.fadeTransition(el, 100, 30, 8);
+
+        var fullWidth = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
+
+        if ($cms.$CONFIG_OPTION('fixed_width') && !outsideFixedWidth) {
+            var mainWebsiteInner = document.getElementById('main_website_inner');
+            if (mainWebsiteInner) {
+                fullWidth = mainWebsiteInner.offsetWidth;
+            }
+        }
+
+        var eParentWidth = el.parentNode.offsetWidth;
+        el.style.minWidth = eParentWidth + 'px';
+        var eParentHeight = el.parentNode.offsetHeight;
+        var eWidth = el.offsetWidth;
+        function positionL() {
+            var posLeft = l;
+            if (place == 'below') { // Top-level of drop-down
+                if (posLeft + eWidth > fullWidth) {
+                    posLeft += eParentWidth - eWidth;
+                }
+            } else { // NB: For non-below, we can't assume 'left' is absolute, as it is actually relative to parent node which is itself positioned
+                if ($cms.dom.findPosX(el.parentNode, true) + eWidth + eParentWidth + 10 > fullWidth) posLeft -= eWidth + eParentWidth;
+            }
+            el.style.left = posLeft + 'px';
+        }
+        positionL();
+        setTimeout(positionL, 0);
+        function positionT() {
+            var posTop = t;
+            if (posTop + el.offsetHeight + 10 > fullHeight) {
+                var abovePosTop = posTop - $cms.dom.contentHeight(el) + eParentHeight - 10;
+                if (abovePosTop > 0) posTop = abovePosTop;
+            }
+            el.style.top = posTop + 'px';
+        }
+        positionT();
+        setTimeout(positionT, 0);
+        el.style.zIndex = 200;
+
+        recreateCleanTimeout();
+
+        return false;
+
+        function cleanMenus() {
+            cleanMenusTimeout = null;
+
+            var m = $cms.dom.$('#r_' + lastActiveMenu);
+            if (!m) {
+                return;
+            }
+            var tags = m.querySelectorAll('.nlevel');
+            var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
+            var i, hideable;
+            for (i = tags.length - 1; i >= 0; i--) {
+                if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') continue;
+
+                hideable = true;
+                if (e) {
+                    t = e;
+                    do {
+                        if (tags[i].id == t.id) hideable = false;
+                        t = t.parentNode.parentNode;
+                    } while (t.id != 'r_' + lastActiveMenu);
+                }
+                if (hideable) {
+                    tags[i].style.left = '-999px';
+                    tags[i].style.display = 'none';
+                }
+            }
+        }
+    }
 
     $cms.templates.globalHtmlWrap = function () {
         if (document.getElementById('global_messages_2')) {
@@ -9554,6 +10059,39 @@
                 window.close();
             }
         });
+    };
+
+    $cms.templates.buttonScreenItem = function buttonScreenItem() {};
+
+    $cms.templates.cropTextMouseOver = function (params, el) {
+        var textLarge = $cms.filter.nl(params.textLarge);
+
+        $cms.dom.on(el, 'mouseover', function (e) {
+            $cms.ui.activateTooltip(el, e, textLarge, '40%');
+        });
+    };
+
+    $cms.templates.cropTextMouseOverInline = function (params, el) {
+        var textLarge = $cms.filter.nl(params.textLarge);
+
+        $cms.dom.on(el, 'mouseover', function (e) {
+            var window = $cms.getMainCmsWindow(true);
+            window.$cms.ui.activateTooltip(el, e, textLarge, '40%', null, null, null, false, false, false, window);
+        });
+    };
+
+    $cms.templates.handleConflictResolution = function (params) {
+        if (params.pingUrl) {
+            $cms.doAjaxRequest(params.pingUrl, /*async*/function () {});
+
+            setInterval(function () {
+                $cms.doAjaxRequest(params.pingUrl, /*async*/function () {});
+            }, 12000);
+        }
+    };
+
+    $cms.templates.indexScreenFancierScreen = function indexScreenFancierScreen(params) {
+        document.getElementById('search_content').value = strVal(params.rawSearchString);
     };
 
     function detectChange(changeDetectionUrl, refreshIfChanged, callback) {

@@ -1328,6 +1328,7 @@
             },
             out = '',
             character;
+        
         for (var i = 0; i < data.length; i++) {
             character = data[i];
             if (remapper[character] !== undefined) {
@@ -1336,6 +1337,7 @@
                 out += character;
             }
         }
+        
         return out;
     }
 

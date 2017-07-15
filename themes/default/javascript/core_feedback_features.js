@@ -298,6 +298,38 @@
             }
         }
     });
+    
+    $cms.templates.postChildLoadLink = function (params, container) {
+        var ids = params.implodedIds,
+            id = params.id;
+
+        $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
+            /* Load more from a threaded topic */
+            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.comments_serialized_options) + '&hash=' + encodeURIComponent(window.comments_hash), null, true).then(function (ajaxResult) {
+                var wrapper;
+                if (id !== '') {
+                    wrapper = $cms.dom.$('#post_children_' + id);
+                } else {
+                    wrapper = container.parentNode;
+                }
+                container.parentNode.removeChild(container);
+
+                $cms.dom.append(wrapper, ajaxResult.responseText);
+
+                setTimeout(function () {
+                    var _ids = ids.split(',');
+                    for (var i = 0; i < _ids.length; i++) {
+                        var element = document.getElementById('post_wrap_' + _ids[i]);
+                        if (element) {
+                            $cms.dom.clearTransitionAndSetOpacity(element, 0);
+                            $cms.dom.fadeTransition(element, 100, 30, 10);
+                        }
+                    }
+                }, 0);
+            });
+        });
+
+    };
 
     function forceReloadOnBack() {
         $cms.dom.on(window, 'pageshow', function () {
@@ -476,4 +508,69 @@
             });
         });
     }
+    
+    /**
+     * Reply to a topic using AJAX
+     * @param el
+     * @param isThreaded
+     * @param id
+     * @param replyingToUsername
+     * @param replyingToPost
+     * @param replyingToPostPlain
+     * @param isExplicitQuote
+     */
+    $cms.functions.topicReply = function topicReply(el, isThreaded, id, replyingToUsername, replyingToPost, replyingToPostPlain, isExplicitQuote) {
+        isThreaded = !!isThreaded;
+        isExplicitQuote = !!isExplicitQuote;
+
+        var form = $cms.dom.$('form#comments_form');
+
+        var parentIdField;
+        if (form.elements.parent_id === undefined) {
+            parentIdField = document.createElement('input');
+            parentIdField.type = 'hidden';
+            parentIdField.name = 'parent_id';
+            form.appendChild(parentIdField);
+        } else {
+            parentIdField = form.elements['parent_id'];
+            if (window.last_reply_to !== undefined) {
+                $cms.dom.clearTransitionAndSetOpacity(window.last_reply_to, 1.0);
+            }
+        }
+        window.last_reply_to = el;
+        parentIdField.value = isThreaded ? id : '';
+
+        el.classList.add('activated_quote_button');
+
+        var post = form.elements.post;
+
+        $cms.dom.smoothScroll($cms.dom.findPosY(form, true));
+
+        var outer = $cms.dom.$('#comments_posting_form_outer');
+        if (outer && $cms.dom.notDisplayed(outer)) {
+            $cms.toggleableTray(outer);
+        }
+
+        if (isThreaded) {
+            post.value = $cms.format('{!QUOTED_REPLY_MESSAGE;^}', replyingToUsername, replyingToPostPlain);
+            post.strip_on_focus = post.value;
+            post.classList.add('field_input_non_filled');
+        } else {
+            if ((post.strip_on_focus !== undefined) && (post.value == post.strip_on_focus)) {
+                post.value = '';
+            } else if (post.value != '') {
+                post.value += '\n\n';
+            }
+
+            post.focus();
+            post.value += '[quote="' + replyingToUsername + '"]\n' + replyingToPost + '\n[snapback]' + id + '[/snapback][/quote]\n\n';
+
+            if (!isExplicitQuote) {
+                post.default_substring_to_strip = post.value;
+            }
+        }
+
+        $cms.manageScrollHeight(post);
+        post.scrollTop = post.scrollHeight;
+    };
 }(window.$cms));

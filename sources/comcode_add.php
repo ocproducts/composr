@@ -1004,27 +1004,7 @@ function _try_for_special_comcode_tag_specific_contents_ui($tag, $actual_tag, &$
         $filedump_url = build_url(array('page' => 'filedump'), get_module_zone('filedump'));
         $field_set->attach(form_input_tree_list(do_lang_tempcode('filedump:FILEDUMP'), do_lang_tempcode('COMCODE_TAG_media_EMBED__library', escape_html($filedump_url->evaluate())), 'tag_contents__b', '', 'choose_filedump_file', array(), false, '', false));
 
-        /*
-        TODO: Salman integrate this new code I wrote
-        $javascript .= '
-            // If we select an image we want to have good defaults for an image, but only if the defaults weren't already changed
-            document.getElementById(\'tag_contents__b\').onchange=function() {
-                var ext=this.value.substring(this.value.indexOf(\'.\')+1);
-                var is_image=(\',' . addslashes(get_option('valid_images')) . '\'.indexOf(\',\'+ext+\',\')!=-1);
-                if (is_image) {
-                    var framed=document.getElementById(\'framed\');
-                    var wysiwyg_editable=document.getElementById(\'wysiwyg_editable\');
-                    var thumb=document.getElementById(\'thumb\');
-
-                    if (framed.defaultChecked==framed.checked && wysiwyg_editable.defaultChecked==wysiwyg_editable.checked && thumb.defaultChecked==thumb.checked) {
-                        framed.checked=false;
-                        wysiwyg_editable.checked=true;
-                        thumb.checked=false;
-                    }
-                }
-            };
-        ';
-        */
+        $js_function_calls[] = 'comcodeAddTryForSpecialComcodeTagSpecificContentsUi';
 
         $fields->attach(alternate_fields_set__end($set_name, $set_title, '', $field_set, $required, $default_embed));
     } elseif ($tag == 'attachment') {

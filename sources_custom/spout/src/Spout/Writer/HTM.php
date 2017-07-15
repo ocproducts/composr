@@ -63,11 +63,10 @@ td {
 
 <!-- TODO: Salman. CSP splitup needed -->
 <script>
-window.onscroll=function() {
-    var ths=document.getElementsByTagName('div');
-    for (var i=0;i<ths.length;i++)
-    {
-        ths[i].style.marginLeft=(-window.scrollX)+'px';
+window.onscroll = function() {
+    var ths = document.getElementsByTagName('div');
+    for (var i=0;i<ths.length;i++) {
+        ths[i].style.marginLeft = (-window.scrollX) + 'px';
     }
 };
 </script>

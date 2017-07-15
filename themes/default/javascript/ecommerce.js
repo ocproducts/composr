@@ -82,6 +82,15 @@
         window.ANS_customer_id = strVal(params.customerId);
         $cms.requireJavascript('https://verify.authorize.net/anetseal/seal.js');
     };
+    
+    $cms.templates.ecomPurchaseStagePay = function ecomPurchaseStagePay(params) {
+        var typeCode = strVal(params.typeCode);
+        
+        if (typeCode.toUpperCase().startsWith('CART_ORDER_')) {
+            // Automatic link clicking of purchase button for cart orders (because button was already pressed on cart screen)
+            $cms.dom.trigger('#purchase_button', 'click');
+        }
+    };
 }(window.$cms));
 
 /*TODO Salman: This is from the v10.1 branch and needs merging into new JS framework...

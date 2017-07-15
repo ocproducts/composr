@@ -39,73 +39,7 @@
             }
         }
     });
-
-    /* TODO: Salman move to core_feedback_features.js */
-    /**
-     * Reply to a topic using AJAX
-     * @param el
-     * @param isThreaded
-     * @param id
-     * @param replyingToUsername
-     * @param replyingToPost
-     * @param replyingToPostPlain
-     * @param isExplicitQuote
-     */
-    $cms.functions.topicReply = function topicReply(el, isThreaded, id, replyingToUsername, replyingToPost, replyingToPostPlain, isExplicitQuote) {
-        isThreaded = !!isThreaded;
-        isExplicitQuote = !!isExplicitQuote;
-
-        var form = $cms.dom.$('form#comments_form');
-
-        var parentIdField;
-        if (form.elements.parent_id === undefined) {
-            parentIdField = document.createElement('input');
-            parentIdField.type = 'hidden';
-            parentIdField.name = 'parent_id';
-            form.appendChild(parentIdField);
-        } else {
-            parentIdField = form.elements['parent_id'];
-            if (window.last_reply_to !== undefined) {
-                $cms.dom.clearTransitionAndSetOpacity(window.last_reply_to, 1.0);
-            }
-        }
-        window.last_reply_to = el;
-        parentIdField.value = isThreaded ? id : '';
-
-        el.classList.add('activated_quote_button');
-
-        var post = form.elements.post;
-
-        $cms.dom.smoothScroll($cms.dom.findPosY(form, true));
-
-        var outer = $cms.dom.$('#comments_posting_form_outer');
-        if (outer && $cms.dom.notDisplayed(outer)) {
-            $cms.toggleableTray(outer);
-        }
-
-        if (isThreaded) {
-            post.value = $cms.format('{!QUOTED_REPLY_MESSAGE;^}', replyingToUsername, replyingToPostPlain);
-            post.strip_on_focus = post.value;
-            post.classList.add('field_input_non_filled');
-        } else {
-            if ((post.strip_on_focus !== undefined) && (post.value == post.strip_on_focus)) {
-                post.value = '';
-            } else if (post.value != '') {
-                post.value += '\n\n';
-            }
-
-            post.focus();
-            post.value += '[quote="' + replyingToUsername + '"]\n' + replyingToPost + '\n[snapback]' + id + '[/snapback][/quote]\n\n';
-
-            if (!isExplicitQuote) {
-                post.default_substring_to_strip = post.value;
-            }
-        }
-
-        $cms.manageScrollHeight(post);
-        post.scrollTop = post.scrollHeight;
-    };
-
+    
     $cms.functions.moduleTopicsPostJavascript = function moduleTopicsPostJavascript(size, stub) {
         var form = document.getElementById('post').form;
         form.addEventListener('submit', function () {

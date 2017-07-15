@@ -162,7 +162,7 @@ function load_csp($options = null, $enable_more_open_html_for = null)
     $csp_enabled = ($options['csp_enabled'] != '0');
     $report_only = ($options['csp_enabled'] == '2');
     $csp_exceptions = $options['csp_exceptions'];
-    $csp_whitelisted_plugins = $options['csp_whitelisted_plugins'];
+    $csp_whitelisted_plugins = trim($options['csp_whitelisted_plugins']);
     $csp_allowed_iframe_ancestors = $options['csp_allowed_iframe_ancestors'];
     $csp_allowed_iframe_descendants = $options['csp_allowed_iframe_descendants'];
 
@@ -245,7 +245,7 @@ function load_csp($options = null, $enable_more_open_html_for = null)
 
     // object-src (unlimited)
     $_sources_list = array();
-    $_sources_list[] = '*';
+    $_sources_list[] = ($csp_whitelisted_plugins !== 'none') ? '*' : "'none'";
     $clauses[] = 'object-src ' . implode(' ', $_sources_list);
 
     // img-src (unlimited)
@@ -270,7 +270,7 @@ function load_csp($options = null, $enable_more_open_html_for = null)
     $clauses[] = "base-uri 'self'";
 
     // plugin-types
-    if (trim($csp_whitelisted_plugins) != '') {
+    if (($csp_whitelisted_plugins !== '') && ($csp_whitelisted_plugins !== 'none')) {
         $clauses[] = 'plugin-types ' . str_replace("\n", ' ', $csp_whitelisted_plugins);
     }
 

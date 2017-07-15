@@ -48,7 +48,8 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
 
     var post = document.getElementById(fieldName);
 
-    var trueAttachmentUi = (post.className.indexOf('true_attachment_ui') != -1); // TODO: Salman, let's get all our className indexOf stuff to use a cleaner way (like hasClass or something). Grep the code
+    // TODO: Salman, let's get all our className indexOf stuff to use a cleaner way (like hasClass or something). Grep the code
+    var trueAttachmentUi = (post.className.indexOf('true_attachment_ui') != -1);
 
     var tmpForm = post.form;
     if ((tmpForm) && (tmpForm.preview)) {
@@ -200,7 +201,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                         }
                     } else { // Cancelled
                         var clearButton = document.getElementById('fsClear_file' + number);
-                        if (clearButton) {
+                        if (clearButton && clearButton.onclick) {
                             clearButton.onclick();
                         }
                     }
@@ -230,10 +231,11 @@ function generateBackgroundPreview(post) {
         }
     }
     formPost = $cms.form.modSecurityWorkaroundAjax(formPost.substr(1));
-    /*TODO: Salman Synchronous XHR*/
-    var previewRet = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', null, formPost);
-    /*TODO: Salman eval() call*/
-    eval(previewRet.responseText.replace('<script>', '').replace('</script>', ''));
+
+    var previewRet = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', function () {
+        /*TODO: Salman eval() call*/
+        eval(previewRet.responseText.replace('<script>', '').replace('</script>', ''));
+    }, formPost);
 }
 
 // ====================
