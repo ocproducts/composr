@@ -62,7 +62,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<th colspan="3"><em>Web</em></th>
 		</tr>
 		<tr>
-			<td>[abbr="HyperText Transfer Protocol"][url="http://tools.ietf.org/html/rfc2616"]HTTP[/url][/abbr]</td>
+			<td>[abbr="HyperText Transfer Protocol"][url="http://tools.ietf.org/html/rfc2616"]HTTP[/url][/abbr] with some [url="common extensions"]https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers[/url]</td>
 			<td>This is the protocol for transmitting web data.</td>
 			<td>You won't need much awareness that web [abbr="Uniform Resource Locator"]URL[/abbr]s come from the HTTP standard, as do cookies, as does HTTP authentication (not used on many sites, but sometimes useful).</td>
 		</tr>
