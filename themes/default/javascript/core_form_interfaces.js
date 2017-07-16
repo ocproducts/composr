@@ -880,8 +880,8 @@
         mainWindow.setTextbox(post, params.newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), params.newPostValueHtml);
 
         // Turn main post editing back on
-        if (wysiwygSetReadonly !== undefined) {
-            wysiwygSetReadonly('post', false);
+        if (window.wysiwygSetReadonly !== undefined) {
+            window.wysiwygSetReadonly('post', false);
         }
 
         // Remove attachment uploads

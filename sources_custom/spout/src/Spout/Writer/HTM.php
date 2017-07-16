@@ -65,7 +65,7 @@ td {
 <script>
 window.onscroll = function() {
     var ths = document.getElementsByTagName('div');
-    for (var i=0;i<ths.length;i++) {
+    for (var i=0; i<ths.length; i++) {
         ths[i].style.marginLeft = (-window.scrollX) + 'px';
     }
 };

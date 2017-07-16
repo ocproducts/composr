@@ -233,8 +233,7 @@ function generateBackgroundPreview(post) {
     formPost = $cms.form.modSecurityWorkaroundAjax(formPost.substr(1));
 
     var previewRet = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', function () {
-        /*TODO: Salman eval() call*/
-        eval(previewRet.responseText.replace('<script>', '').replace('</script>', ''));
+        $cms.dom.append(document.body, previewRet.responseText);
     }, formPost);
 }
 

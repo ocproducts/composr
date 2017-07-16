@@ -6332,7 +6332,8 @@
             return;
         }
 
-        var uid = $cms.uid(btn);
+        var uid = $cms.uid(btn),
+            timeout, interval;
 
         setTimeout(function () {
             btn.style.cursor = 'wait';
@@ -6343,11 +6344,29 @@
         }, 20);
 
         if (!permanent) {
-            setTimeout(enableDisabledButton, 5000);
+            timeout = setTimeout(enableDisabledButton, 5000);
+
+            if (btn.form.target === 'preview_iframe') {
+                interval = window.setInterval(function () {
+                    if (window.frames['preview_iframe'].document && window.frames['preview_iframe'].document.body) {
+                        if (interval != null) {
+                            window.clearInterval(interval);
+                            interval = null;
+                        }
+                        enableDisabledButton();
+                    }
+                }, 500);
+            }
+            
             $cms.dom.on(window, 'pagehide', enableDisabledButton);
         }
 
         function enableDisabledButton() {
+            if (timeout != null) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+            
             if (tempDisabledButtons[uid]) {
                 btn.disabled = false;
                 btn.style.removeProperty('cursor');
@@ -7423,12 +7442,10 @@
         }
 
         function processRequestChange(ajaxResultFrame, ajaxCallback) {
-            var method = null,
-                methodEl = ajaxResultFrame.querySelector('method');
+            var method = null;
 
-            if (methodEl || ajaxCallback) {
-                // TODO: Salman remove eval, but first check that we are no longer using any <method> AJAX results [the initiating JS should define the callback] (and then all the <method> code can be removed)
-                method = methodEl ? eval('return ' + methodEl.textContent) : ajaxCallback;
+            if (ajaxCallback) {
+                method = ajaxCallback;
             }
 
             var messageEl = ajaxResultFrame.querySelector('message');
@@ -7753,6 +7770,17 @@
 
                 $cms.dom.$$$(context, 'img:not([data-cms-rich-tooltip])').forEach(function (img) {
                     convertTooltip(img);
+                });
+            }
+        },
+        
+        // Implementation for [data-remove-if-js-enabled]
+        removeIfJsEnabled: {
+            attach: function (context) {
+                var els = $cms.dom.$$$(context, '[data-remove-if-js-enabled]');
+                
+                els.forEach(function (el) {
+                    $cms.dom.remove(el);
                 });
             }
         },
