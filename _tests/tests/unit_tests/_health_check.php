@@ -58,7 +58,7 @@ class _health_check_test_set extends cms_test_case
     }
 
     // Expired SSL certificate, or otherwise malfunctioning SSL (if enabled)
-    /*public function testForSSLIssues($manual_checks = false, $automatic_repair = false)
+    /*public function testForSSLIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if ((addon_installed('ssl')) || (substr(get_base_url(), 0, 7) == 'https://')) {
             // If it's a problem with SSL verification in general
@@ -93,7 +93,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Bad 404 page
-    /*public function testForBad404($manual_checks = false, $automatic_repair = false)
+    /*public function testForBad404($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $url = get_base_url() . '/testing-for-404.html';
         $data = http_download_file($url, null, false); // TODO: In v11 set the parameter to return output even for 404
@@ -105,31 +105,31 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Outgoing mail not working
-    /*public function testForMailFailing($manual_checks = false, $automatic_repair = false)
+    /*public function testForMailFailing($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // CRON taking more than 5 minutes to run
-    /*public function testForCRONSlow($manual_checks = false, $automatic_repair = false)
+    /*public function testForCRONSlow($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // CRON tasks not successfully running all the way through
-    /*public function testForCRONFailure($manual_checks = false, $automatic_repair = false)
+    /*public function testForCRONFailure($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // CRON not running at all
-    /*public function testForCRONNotRunning($manual_checks = false, $automatic_repair = false)
+    /*public function testForCRONNotRunning($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // Lost packets doing simple outbound ping
-    /*public function testForPingIssues($manual_checks = false, $automatic_repair = false)
+    /*public function testForPingIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (php_function_allowed('shell_exec')) {
             $data = shell_exec('ping -c 10 8.8.8.8');
@@ -141,7 +141,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Slow download speed
-    /*public function testForSlowDownload($manual_checks = false, $automatic_repair = false)
+    /*public function testForSlowDownload($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $time_before = microtime(true);
         $data = http_download_file('http://www.google.com/');
@@ -155,7 +155,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Slow upload speed
-    /*public function testForSlowUpload($manual_checks = false, $automatic_repair = false)
+    /*public function testForSlowUpload($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $test_file_path = get_file_base() . '/data/curl-ca-bundle.crt';
 
@@ -176,7 +176,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // A page takes more than a second to load
-    /*public function testForSlowPageSpeeds($manual_checks = false, $automatic_repair = false)
+    /*public function testForSlowPageSpeeds($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $page_links = array( // TODO: Make configurable
             ':',
@@ -198,7 +198,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Meta description missing for page, too short, or too long
-    /*public function testForBadMetaDescription($manual_checks = false, $automatic_repair = false)
+    /*public function testForBadMetaDescription($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $data = $this->get_page_content();
         if ($data === null) {
@@ -225,7 +225,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Meta keywords missing for page, too few, or too many
-    /*public function testForBadMetaKeywords($manual_checks = false, $automatic_repair = false)
+    /*public function testForBadMetaKeywords($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $data = $this->get_page_content();
         if ($data === null) {
@@ -252,7 +252,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // No <title>, too short, or too long
-    /*public function testForBadTitle($manual_checks = false, $automatic_repair = false)
+    /*public function testForBadTitle($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $data = $this->get_page_content();
         if ($data === null) {
@@ -277,7 +277,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // No <h1>
-    /*public function testForBadH1($manual_checks = false, $automatic_repair = false)
+    /*public function testForBadH1($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $data = $this->get_page_content();
         if ($data === null) {
@@ -295,7 +295,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // XML Sitemap not being extended
-    /*public function testForXMLSitemapUpdating($manual_checks = false, $automatic_repair = false)
+    /*public function testForXMLSitemapUpdating($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (!cron_installed()) {
             return;
@@ -324,13 +324,13 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // robots.txt fails validation test
-    /*public function testForRobotsTxtErrors($manual_checks = false, $automatic_repair = false)
+    /*public function testForRobotsTxtErrors($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $this->robotsParse(null, true);
     }
 
     // robots.txt banning Google on a live site
-    public function testForRobotsTxtBlocking($manual_checks = false, $automatic_repair = false)
+    public function testForRobotsTxtBlocking($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $url = $this->get_page_url();
 
@@ -514,19 +514,19 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // robots.txt missing or does not block maintenance scripts
-    /*public function testForRobotsTxtInsufficient($manual_checks = false, $automatic_repair = false)
+    /*public function testForRobotsTxtInsufficient($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // TODO: Can download secured files that are meant to be in .htaccess / web.config
-    /*public function testForPublicSecuredFileAccess($manual_checks = false, $automatic_repair = false)
+    /*public function testForPublicSecuredFileAccess($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // MyISAM database table(s) crashed
-    /*public function testForCorruptTables($manual_checks = false, $automatic_repair = false)
+    /*public function testForCorruptTables($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (strpos(get_db_type(), 'mysql') !== false) {
             $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
@@ -553,7 +553,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Missing </html> tag on page
-    /*public function testForBrokenPages($manual_checks = false, $automatic_repair = false)
+    /*public function testForBrokenPages($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $page_links = array( // TODO: Make configurable
             ':',
@@ -570,7 +570,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Page too big (configurable
-    /*public function testForHugePages($manual_checks = false, $automatic_repair = false)
+    /*public function testForHugePages($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $page_links = array( // TODO: Make configurable
             ':',
@@ -592,7 +592,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Disk space too low
-    /*public function testForLowDiskSpace($manual_checks = false, $automatic_repair = false)
+    /*public function testForLowDiskSpace($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (php_function_allowed('disk_free_space')) {
             $disk_space_threshold = 500 * 1024 * 1024; // TODO: Make configurable
@@ -607,7 +607,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // No guest access to page (configurable list of page-links)
-    /*public function testForPagesWithoutAccess($manual_checks = false, $automatic_repair = false)
+    /*public function testForPagesWithoutAccess($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $page_links = array( // TODO: Make configurable
             ':',
@@ -623,7 +623,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Backups configured but not appearing under exports/backups
-    /*public function testForFailingBackups($manual_checks = false, $automatic_repair = false)
+    /*public function testForFailingBackups($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $backup_schedule_time = intval(get_value('backup_schedule_time'));
         $last_backup = get_value('last_backup');
@@ -644,7 +644,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Web server not accessible from external proxy
-    /*public function testForExternalAccess($manual_checks = false, $automatic_repair = false)
+    /*public function testForExternalAccess($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if ($this->is_local_domain()) {
             return;
@@ -656,13 +656,13 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Broken links on pages (configurable list of page-links) (and remove old cleanup tool that currently does this)
-    /*public function testForBrokenLinks($manual_checks = false, $automatic_repair = false)
+    /*public function testForBrokenLinks($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // Broken images on pages (configurable list of page-links) (would need a config option)
-    public function testForBrokenImages($manual_checks = false, $automatic_repair = false)
+    public function testForBrokenImages($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $data = $this->get_page_content();
         if ($data === null) {
@@ -673,7 +673,7 @@ class _health_check_test_set extends cms_test_case
     }
 
     // Inconsistent database state
-    /*public function testForInconsistentDBState($manual_checks = false, $automatic_repair = false)
+    /*public function testForInconsistentDBState($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if ($manual_checks) {
             require_code('database_repair');
@@ -684,7 +684,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Outdated copyright date
-    /*public function testForCopyrightOutdated($manual_checks = false, $automatic_repair = false)
+    /*public function testForCopyrightOutdated($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $data = $this->get_page_content();
 
@@ -716,31 +716,31 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Fall in Google position (ties into main_staff_website_monitoring block)
-    /*public function testForGooglePositionDrop($manual_checks = false, $automatic_repair = false)
+    /*public function testForGooglePositionDrop($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // Fall in hits
-    /*public function testForHitDrop($manual_checks = false, $automatic_repair = false)
+    /*public function testForHitDrop($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // www/non-www redirect not handled well - either does not exist, or redirects deep to home page, and/or is not 301
-    /*public function testForWWWRedirectingIssues($manual_checks = false, $automatic_repair = false)
+    /*public function testForWWWRedirectingIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // https/non-https redirect not handled well - either does not exist, or redirects deep to home page, and/or is not 301
-    /*public function testForHTTPSRedirectingIssues($manual_checks = false, $automatic_repair = false)
+    /*public function testForHTTPSRedirectingIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // Database upgrade pending
-    /*public function testForIntegrityIssues($manual_checks = false, $automatic_repair = false)
+    /*public function testForIntegrityIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         require_code('upgrade');
 
@@ -756,7 +756,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Integrity checker fail
-    /*public function testForIntegrityIssues($manual_checks = false, $automatic_repair = false)
+    /*public function testForIntegrityIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if ($manual_checks) {
             require_code('upgrade');
@@ -766,7 +766,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // E-mail queue piling up
-    /*public function testForEmailQueueStuck($manual_checks = false, $automatic_repair = false)
+    /*public function testForEmailQueueStuck($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_queued=1 AND m_date_and_time<' . strval(time() - 60 * 60 * 1);
         $count = $GLOBALS['SITE_DB']->query_value_if_there($sql);
@@ -775,7 +775,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Newsletter queue piling up
-    /*public function testForNewsletterQueueStuck($manual_checks = false, $automatic_repair = false)
+    /*public function testForNewsletterQueueStuck($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter_drip_send WHERE d_inject_time<' . strval(time() - 60 * 60 * 24 * 7);
         $count = $GLOBALS['SITE_DB']->query_value_if_there($sql);
@@ -784,7 +784,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Stuff going into error log fast
-    /*public function testForErrorLogFlooding($manual_checks = false, $automatic_repair = false)
+    /*public function testForErrorLogFlooding($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $path = get_custom_file_base() . '/data_custom/errorlog.php';
         $myfile = fopen($path, 'rb');
@@ -818,19 +818,19 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // http:// URLs appearing on page when site has a https:// base URL (configurable list of page-links)
-    /*public function testForIncorrectHTTPSLinking($manual_checks = false, $automatic_repair = false)
+    /*public function testForIncorrectHTTPSLinking($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // Non-https images/scripts/CSS/etc embedded on pages that are https (configurable list of page-links)
-    /*public function testForIncorrectHTTPSEmbedding($manual_checks = false, $automatic_repair = false)
+    /*public function testForIncorrectHTTPSEmbedding($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // Links to broken CSS or JavaScript files
-    /*public function testForBrokenWebIncludes($manual_checks = false, $automatic_repair = false)
+    /*public function testForBrokenWebIncludes($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $data = $this->get_page_content();
         if ($data === null) {
@@ -873,7 +873,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Cache or temp directories unreasonably huge
-    /*public function testForOverflowingDirectories($manual_checks = false, $automatic_repair = false)
+    /*public function testForOverflowingDirectories($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         require_code('files');
         require_code('files2');
@@ -907,7 +907,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Logs too large
-    /*public function testForLargeLogs($manual_checks = false, $automatic_repair = false)
+    /*public function testForLargeLogs($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         require_code('files');
 
@@ -923,7 +923,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Volatile tables unreasonably huge
-    /*public function testForOverflowingTables($manual_checks = false, $automatic_repair = false)
+    /*public function testForOverflowingTables($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $tables = array(
             'autosave' => 100000,
@@ -953,7 +953,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Admin account that has not logged in in months and should be deleted
-    /*public function testForUnusedAdminAccounts($manual_checks = false, $automatic_repair = false)
+    /*public function testForUnusedAdminAccounts($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $threshold = time() - 60 * 60 * 24 * 90; // TODO: Make configurable
 
@@ -967,7 +967,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Logins from the same account but different countries (indicates hacking)
-    /*public function testForCountryShifting($manual_checks = false, $automatic_repair = false)
+    /*public function testForCountryShifting($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (addon_installed('stats')) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
@@ -1002,7 +1002,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Unusual number of hack attacks
-    /*public function testForHackAttackSpike($manual_checks = false, $automatic_repair = false)
+    /*public function testForHackAttackSpike($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'hackattack WHERE date_and_time>' . strval(time() - 60 * 60 * 24);
         $num_failed = $GLOBALS['SITE_DB']->query_value_if_there($sql);
@@ -1010,7 +1010,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Unusual number of failed logins
-    /*public function testForFailedLoginsSpike($manual_checks = false, $automatic_repair = false)
+    /*public function testForFailedLoginsSpike($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'failedlogins WHERE date_and_time>' . strval(time() - 60 * 60 * 24);
         $num_failed = $GLOBALS['SITE_DB']->query_value_if_there($sql);
@@ -1018,25 +1018,25 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Unusual increase in rate limiting triggers (could indicate a distributed denial of service attack)
-    /*public function testForRateLimitingSpike($manual_checks = false, $automatic_repair = false)
+    /*public function testForRateLimitingSpike($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // Unusual increase in CAPTCHA fails (could indicate a distributed denial of service attack)
-    /*public function testForCAPTCHAFailSpike($manual_checks = false, $automatic_repair = false)
+    /*public function testForCAPTCHAFailSpike($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // Unusual increase in spam detection (could indicate a distributed denial of service attack)
-    /*public function testForSpamDetectionSpike($manual_checks = false, $automatic_repair = false)
+    /*public function testForSpamDetectionSpike($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // High server CPU load
-    /*public function testForHighCPULoad($manual_checks = false, $automatic_repair = false)
+    /*public function testForHighCPULoad($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (php_function_allowed('shell_exec')) {
             $cpu = null;
@@ -1086,7 +1086,7 @@ class _health_check_test_set extends cms_test_case
     }*/ 
 
     // High server uptime value
-    /*public function testForPoorUptimeValue($manual_checks = false, $automatic_repair = false)
+    /*public function testForPoorUptimeValue($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (php_function_allowed('shell_exec')) {
             $data = shell_exec('uptime');
@@ -1101,7 +1101,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // High server I/O load
-    /*public function testForHighIOLoad($manual_checks = false, $automatic_repair = false)
+    /*public function testForHighIOLoad($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (php_function_allowed('shell_exec')) {
             $load = null;
@@ -1128,7 +1128,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Hanging (long-running) PHP/Apache processes (the process names to monitor would be configurable)
-    /*public function testForHangingProcesses($manual_checks = false, $automatic_repair = false)
+    /*public function testForHangingProcesses($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (php_function_allowed('shell_exec')) {
             $commands_regexp = 'php\d*|php\d*-cgi|php\d*-fpm|php\d*.dSYM'; // TODO: Make configurable
@@ -1174,7 +1174,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Low free RAM
-    /*public function testForLowRAM($manual_checks = false, $automatic_repair = false)
+    /*public function testForLowRAM($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (php_function_allowed('shell_exec')) {
             $kb_free = null;
@@ -1203,7 +1203,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Infected with Malware (configurable list of page-links)
-    /*public function testForMalwareInfection($manual_checks = false, $automatic_repair = false)
+    /*public function testForMalwareInfection($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // API https://developers.google.com/safe-browsing/v4/
 
@@ -1267,7 +1267,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // DNS not resolving
-    /*public function testForMailIssues($manual_checks = false, $automatic_repair = false)
+    /*public function testForMailIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if ((php_function_allowed('getmxrr')) && (php_function_allowed('checkdnsrr'))) {
             $domains = array();
@@ -1328,19 +1328,19 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // SPF prohibits us sending
-    /*public function testForSPFBlock($manual_checks = false, $automatic_repair = false)
+    /*public function testForSPFBlock($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // SMTP server is blacklisted
-    /*public function testForSMTPBlacklisting($manual_checks = false, $automatic_repair = false)
+    /*public function testForSMTPBlacklisting($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // DNS not resolving
-    /*public function testForDNSResolutionIssues($manual_checks = false, $automatic_repair = false)
+    /*public function testForDNSResolutionIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (php_function_allowed('checkdnsrr')) {
             $domain = $this->get_domain();
@@ -1352,7 +1352,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Running on an expired domain name
-    /*public function testForExpiringDomainName($manual_checks = false, $automatic_repair = false)
+    /*public function testForExpiringDomainName($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (php_function_allowed('shell_exec')) {
             $domain = $this->get_domain();
@@ -1372,7 +1372,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Site seems to be configured on a base URL which is not what a public web request sees is running on that base URL (security)
-    /*public function testForOrphanedSite($manual_checks = false, $automatic_repair = false)
+    /*public function testForOrphanedSite($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $path = 'uploads/website_specific/orphaned-test.txt';
         require_code('crypt');
@@ -1398,7 +1398,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Cookie problems
-    /*public function testForLargeCookies($manual_checks = false, $automatic_repair = false)
+    /*public function testForLargeCookies($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $url = $this->get_page_url();
 
@@ -1429,52 +1429,80 @@ class _health_check_test_set extends cms_test_case
         $this->assertTrue($found_has_cookies_cookie, 'Cookies not being properly set');
     }*/
 
-    // Output pages are not gzipped
-    /*public function testForPagesUncompressed($manual_checks = false, $automatic_repair = false)
+    // Files/Pages are not gzipped or cached properly
+    /*public function testForURLHTTPPerfIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         //set_option('gzip_output', '1');   To test
 
-        $url = $this->get_page_url();
+        $urls = array(
+            'page' => $this->get_page_url(),
+            'css' => get_base_url() . '/themes/default/templates_cached/EN/global.css',
+            'js' => get_base_url() . '/themes/default/templates_cached/EN/global.js',
+            'png' => get_base_url() . '/themes/default/images/button1.png',
+        );
 
-        stream_context_set_default(array('http' => array('header' => 'Accept-Encoding: gzip')));
-        $headers = get_headers($url, 1);
-        $is_gzip = false;
-        foreach ($headers as $key => $vals) {
-            if (strtolower($key) == strtolower('Content-Encoding')) {
+        foreach ($urls as $type => $url) {
+            stream_context_set_default(array('http' => array('header' => 'Accept-Encoding: gzip')));
+            $headers = @get_headers($url, 1);
+            if ($headers === false) {
+                continue;
+            }
+
+            $is_gzip = false;
+            $is_cached = false;
+            foreach ($headers as $key => $vals) {
                 if (is_string($vals)) {
-                    $vals = array($val);
+                    $vals = array($vals);
                 }
 
-                foreach ($vals as $val) {
-                    if ($val == 'gzip') {
-                        $is_gzip = true;
-                    }
+                switch (strtolower($key)) {
+                    case 'content-encoding':
+                        foreach ($vals as $val) {
+                            if ($val == 'gzip') {
+                                $is_gzip = true;
+                            }
+                        }
+
+                        break;
+
+                    case 'expires':
+                        $is_cached = (strtotime($vals[0]) > time());
+                        break;
+
+                    case 'last-modified':
+                        $is_cached = (strtotime($vals[0]) < time());
+                        break;
                 }
             }
+
+            switch ($type) {
+                case 'page':
+                    $this->assertTrue(!$is_cached, 'Caching should not be given for pages (except for bots, which Composr will automatically do if the static cache is enabled)');
+                    $this->assertTrue($is_gzip, 'Gzip compression is not enabled/working for pages, significantly wasting bandwidth for page loads');
+                    break;
+
+                case 'css':
+                case 'js':
+                    $this->assertTrue($is_cached, 'Caching should be given for ' . $type . ' files (Composr will automatically make sure edited versions cache under different URLs via automatic timestamp parameters)');
+                    $this->assertTrue($is_gzip, 'Gzip compression is not enabled/working for ' . $type . ' files, significantly wasting bandwidth for page loads');
+                    break;
+
+                case 'png':
+                    $this->assertTrue($is_cached, 'Caching should be given for ' . $type . ' files');
+                    $this->assertTrue(!$is_gzip, 'Gzip compression should not be given for ' . $type . ' files, they are already compressed so it is a waste of CPU power');
+                    break;
+            }
         }
-        $this->assertTrue($is_gzip, 'Page gzip compression is not enabled/working, significantly wasting bandwidth for page loads');
-    }*/
-
-    // Static file gzip test (CSS, images, JS)
-    /*public function testForStaticUncompressed($manual_checks = false, $automatic_repair = false)
-    {
-        // TODO: Static file gzip test (CSS, images, JS)
-    }
-
-    // Cache headers not set correctly on static resources like images or CSS or JavaScript
-    /*public function testForStaticFileCacheMissing($manual_checks = false, $automatic_repair = false)
-    {
-        // TODO
     }*/
 
     // Composr version no longer supported
-    /*public function testForOutdatedComposr($manual_checks = false, $automatic_repair = false)
+    /*public function testForOutdatedComposr($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
     // PHP version no longer supported
-    /*public function testForUnsupportedPHP($manual_checks = false, $automatic_repair = false)
+    /*public function testForUnsupportedPHP($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         require_code('version2');
 
@@ -1484,22 +1512,53 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Site is closed
-    /*public function testForSiteClosed($manual_checks = false, $automatic_repair = false)
+    /*public function testForSiteClosed($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
-        // TODO
-        // TODO: Will vary based on test site status
+        if (!$is_test_site) {
+            $this->assertTrue(get_option('site_closed') == '1', 'The website is still closed');
+        }
     }*/
 
     // Staff not doing their tasks as identified by items in the staff checklist
-    /*public function testForStaffChecklistIgnoring($manual_checks = false, $automatic_repair = false)
+    /*public function testForStaffChecklistIgnoring($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
-        if (manual_checks) {
-            // TODO
+        if ($manual_checks) {
+            require_code('blocks/main_staff_checklist');
+
+            $_hooks = find_all_hooks('blocks', 'main_staff_checklist'); // TODO: Change in v11
+            foreach (array_keys($_hooks) as $hook) {
+                require_code('hooks/blocks/main_staff_checklist/' . filter_naughty_harsh($hook));
+                $object = object_factory('Hook_checklist_' . filter_naughty_harsh($hook), true);
+                if (is_null($object)) {
+                    continue;
+                }
+                $ret = $object->run();
+
+                foreach ($ret as $r) {
+                    list(, $seconds_due_in, $num_to_do) = $r;
+
+                    if ($seconds_due_in !== null) {
+                        $ok = ($seconds_due_in > 0);
+                        $this->assertTrue($ok, 'Staff checklist items for ' . $hook . ' due ' . display_time_period($seconds_due_in) . ' ago');
+                        if (!$ok) {
+                            break;
+                        }
+                    }
+
+                    if ($num_to_do !== null) {
+                        $ok = ($num_to_do == 0);
+                        $this->assertTrue($ok, 'Staff checklist items for ' . $hook . ', ' . integer_format($num_to_do) . ' items');
+                        if (!$ok) {
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }*/
 
     // Google Analytics configured but not in output HTML
-    /*public function testForGANonPresent($manual_checks = false, $automatic_repair = false)
+    /*public function testForGANonPresent($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $ga = get_option('google_analytics');
         if (trim($ga) != '') {
@@ -1514,7 +1573,7 @@ class _health_check_test_set extends cms_test_case
     // TODO: Check with API data being collected?
 
     // Has links to local files.
-    public function testForLocalLinks($manual_checks = false, $automatic_repair = false)
+    /*public function testForLocalLinks($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if ($manual_checks) {
             if ($this->is_local_domain()) {
@@ -1529,10 +1588,10 @@ class _health_check_test_set extends cms_test_case
             $c = '#https?://(localhost|127\.|192\.168\.|10\.)#';
             $this->assertTrue(preg_match($c, $data) == 0, 'Found links to a local URL');
         }
-    }
+    }*/
 
     // Has lorem ipsum or TODOs
-    /*public function testForIncomplete($manual_checks = false, $automatic_repair = false)
+    /*public function testForIncomplete($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if ($manual_checks) {
             $data = $this->get_page_content();
@@ -1548,7 +1607,7 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Things wrong found by checking manually
-    /*public function testForManualValidation($manual_checks = false, $automatic_repair = false)
+    /*public function testForManualValidation($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if (!$manual_checks) {
             return;
@@ -1588,13 +1647,13 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // HTTP implementation is failing
-    /*public function testForHTTPFailing($manual_checks = false, $automatic_repair = false)
+    /*public function testForHTTPFailing($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO: Move http.php unit test to here
     }*/
 
     // Some block(s) not rendering
-    /*public function testForBlocksFailing($manual_checks = false, $automatic_repair = false)
+    /*public function testForBlocksFailing($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO: Move blocks all render unit test (blocks.php) to here
     }*/
@@ -1620,7 +1679,7 @@ class _health_check_test_set extends cms_test_case
 
     // TODO: Tie into CRON, but with a config option of whether it runs. It should run as the first CRON hook. E-mail results on a new notification type ("Automatic check failure"). A config option would allow specifying whether to get a daily "all is good" e-mail sent out.
 
-    // TODO: Create new bridge unit test
+    // TODO: Create new bridge unit test (out of this file)
 
     // -- testing --
 
