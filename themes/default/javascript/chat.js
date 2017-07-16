@@ -783,8 +783,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             if (document.getElementById('messages_window_' + currentRoomId)) {
                 messageContainer = document.getElementById('messages_window_' + currentRoomId);
                 tabElement = document.getElementById('tab_' + currentRoomId);
-                if ((tabElement) && (tabElement.className.indexOf('chat_lobby_convos_current_tab') === -1)) {
-                    tabElement.className = ((tabElement.className.indexOf('chat_lobby_convos_tab_first') !== -1) ? 'chat_lobby_convos_tab_first ' : '') + 'chat_lobby_convos_tab_new_messages';
+                if ((tabElement) && (!tabElement.classList.contains('chat_lobby_convos_current_tab'))) {
+                    tabElement.className = ((tabElement.classList.contains('chat_lobby_convos_tab_first')) ? 'chat_lobby_convos_tab_first ' : '') + 'chat_lobby_convos_tab_new_messages';
                 }
             } else if ((window.opened_popups['room_' + currentRoomId] !== undefined) && (!window.opened_popups['room_' + currentRoomId].is_shutdown) && (window.opened_popups['room_' + currentRoomId].document)) { // Popup
                 messageContainer = window.opened_popups['room_' + currentRoomId].document.getElementById('messages_window_' + currentRoomId);
@@ -1444,7 +1444,7 @@ function findImConvoRoomIds() {
 }
 
 function closeChatConversation(roomId) {
-    var isPopup = (document.body.className.indexOf('sitewide_im_popup_body') !== -1);
+    var isPopup = (document.body.classList.contains('sitewide_im_popup_body'));
     /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
     $cms.ui.generateQuestionUi(
         '{!chat:WANT_TO_DOWNLOAD_LOGS*;^}',
@@ -1539,7 +1539,7 @@ function findCurrentImRoom() {
         return window.room_id;
     }
     for (var i = 0; i < chatLobbyConvosTabs.children.length; i++) {
-        if ((chatLobbyConvosTabs.children[i].nodeName.toLowerCase() === 'div') && (chatLobbyConvosTabs.children[i].className.indexOf('chat_lobby_convos_current_tab') !== -1)) {
+        if ((chatLobbyConvosTabs.children[i].nodeName.toLowerCase() === 'div') && (chatLobbyConvosTabs.children[i].classList.contains('chat_lobby_convos_current_tab'))) {
             return parseInt(chatLobbyConvosTabs.childNodes[i].id.substr(4));
         }
     }
@@ -1550,8 +1550,8 @@ function chatSelectTab(element) {
     var i, chatLobbyConvosTabs = document.getElementById('chat_lobby_convos_tabs');
 
     for (i = 0; i < chatLobbyConvosTabs.children.length; i++) {
-        if (chatLobbyConvosTabs.children[i].className.indexOf('chat_lobby_convos_current_tab') !== -1) {
-            chatLobbyConvosTabs.children[i].className = ((chatLobbyConvosTabs.children[i].className.indexOf('chat_lobby_convos_tab_first') !== -1) ? 'chat_lobby_convos_tab_first ' : '') + 'chat_lobby_convos_tab_uptodate';
+        if (chatLobbyConvosTabs.children[i].classList.contains('chat_lobby_convos_current_tab')) {
+            chatLobbyConvosTabs.children[i].className = ((chatLobbyConvosTabs.children[i].classList.contains('chat_lobby_convos_tab_first')) ? 'chat_lobby_convos_tab_first ' : '') + 'chat_lobby_convos_tab_uptodate';
             document.getElementById('room_' + chatLobbyConvosTabs.children[i].id.substr(4)).style.display = 'none';
             break;
         }
@@ -1562,5 +1562,5 @@ function chatSelectTab(element) {
         document.getElementById('post_' + element.id.substr(4)).focus();
     } catch (ignore) {}
 
-    element.className = ((element.className.indexOf('chat_lobby_convos_tab_first') !== -1) ? 'chat_lobby_convos_tab_first ' : '') + 'chat_lobby_convos_tab_uptodate chat_lobby_convos_current_tab';
+    element.className = ((element.classList.contains('chat_lobby_convos_tab_first')) ? 'chat_lobby_convos_tab_first ' : '') + 'chat_lobby_convos_tab_uptodate chat_lobby_convos_current_tab';
 }

@@ -6900,7 +6900,7 @@
             };
 
             this.mousemove = function (e) {
-                if (that.boxWrapperEl && that.boxWrapperEl.firstElementChild.className.indexOf(' mousemove') == -1) {
+                if (that.boxWrapperEl && !that.boxWrapperEl.firstElementChild.classList.contains(' mousemove')) {
                     that.boxWrapperEl.firstElementChild.className += ' mousemove';
                     setTimeout(function () {
                         if (that.boxWrapperEl) {
@@ -6971,7 +6971,7 @@
                         if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body) && (iframe.contentWindow.document.body.done_popup_trans === undefined)) {
                             iframe.contentWindow.document.body.style.background = 'transparent';
 
-                            if (iframe.contentWindow.document.body.className.indexOf('overlay') == -1) {
+                            if (!iframe.contentWindow.document.body.classList.contains('overlay')) {
                                 iframe.contentWindow.document.body.className += ' overlay lightbox';
                             }
 
@@ -8755,7 +8755,7 @@
              */
             function handleImageMouseOver(event) {
                 var target = event.target;
-                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
+                if (target.previousSibling && target.previousSibling.classList && (target.previousSibling.classList.contains('magic_image_edit_link'))) {
                     return;
                 }
                 if (target.offsetWidth < 130) {
@@ -8809,7 +8809,7 @@
                 var target = event.target;
 
                 if ($cms.$CONFIG_OPTION('enable_theme_img_buttons')) {
-                    if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
+                    if (target.previousSibling && target.previousSibling.classList && (target.previousSibling.classList.contains('magic_image_edit_link'))) {
                         if ((target.mo_link !== undefined) && (target.mo_link)) // Clear timed display of new edit button
                         {
                             clearTimeout(target.mo_link);
@@ -8821,8 +8821,9 @@
                             clearTimeout(target.mo_link);
                         target.mo_link = setTimeout(function () {
                             if ((target.edit_window === undefined) || (!target.edit_window) || (target.edit_window.closed)) {
-                                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1))
+                                if (target.previousSibling && target.previousSibling.classList && (target.previousSibling.classList.contains('magic_image_edit_link'))) {
                                     target.parentNode.removeChild(target.previousSibling);
+                                }
                             }
                         }, 3000);
                     }

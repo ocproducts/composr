@@ -1038,7 +1038,7 @@
             function templateEditorRemoveTab(fileId) {
                 var header = document.getElementById('t_' + fileId);
                 if (header) {
-                    var isActive = (header.className.indexOf(' tab_active') != -1);
+                    var isActive = (header.classList.contains('tab_active'));
 
                     header.parentNode.removeChild(header);
                     var body = document.getElementById('g_' + fileId);
@@ -1126,7 +1126,7 @@
 
     function templateEditorShowTab(fileId) {
         setTimeout(function () {
-            if (!document.getElementById('t_' + fileId) || document.getElementById('t_' + fileId).className.indexOf('tab_active') == -1) {
+            if (!document.getElementById('t_' + fileId) || !document.getElementById('t_' + fileId).classList.contains('tab_active')) {
                 // No longer visible
                 return;
             }

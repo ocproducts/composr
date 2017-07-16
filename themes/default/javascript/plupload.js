@@ -13519,7 +13519,7 @@ function replaceFileInput(pageType, name, _btnSubmitId, postingFieldName, filter
 
     var settings = getUploaderSettings(name, pageType, _btnSubmitId, postingFieldName, filter);
     settings.progress_target = 'fsUploadProgress_' + name;
-    settings.required = rep.className.indexOf('required') != -1;
+    settings.required = rep.classList.contains('required');
     settings.browse_button = 'uploadButton_' + name;
     settings.drop_element = 'txtFileName_' + name;
     settings.container = mainDiv.id;
