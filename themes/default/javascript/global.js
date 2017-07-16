@@ -5497,7 +5497,7 @@
     * @returns {string}
     */
     $cms.protectURLParameter = function protectURLParameter(parameter) {
-        var baseURL = $cms.$BASE_URL;
+        var baseURL = $cms.$BASE_URL();
 
         if (parameter.startsWith('https://')) {
             baseURL = baseURL.replace(/^http:\/\//, 'https://');
@@ -5742,8 +5742,7 @@
 
         return false;
     };
-
-    // TODO: Salman haveLinks does not seem to be working. In admin_config the config option descriptions should be click-to-see, not hover
+    
     /**
      * Tooltips that can work on any element with rich HTML support
      * @memberof $cms.ui
@@ -5788,9 +5787,7 @@
         if (!el) {
             return;
         }
-
-        $cms.log('$cms.ui.activateTooltip');
-
+        
         if (!haveLinks && $cms.isTouchEnabled()) {
             return; // Too erratic
         }
@@ -5807,8 +5804,10 @@
                 $cms.ui.repositionTooltip(el, event, false, false, null, false, win);
             });
         } else {
-            $cms.dom.on(el, 'click.cmsTooltip', function () {
-                $cms.ui.deactivateTooltip(el);
+            $cms.dom.on(window, 'click.cmsTooltip', function (e) {
+                if ($cms.dom.$id(el.tooltip_id) && $cms.dom.isDisplayed($cms.dom.$id(el.tooltip_id))) {
+                    $cms.ui.deactivateTooltip(el);
+                }
             });
         }
 
@@ -5835,9 +5834,9 @@
 
         var tooltipEl;
         if ((el.tooltip_id != null) && ($cms.dom.$id(el.tooltip_id))) {
-            tooltipEl = $cms.dom.$('#' + el.tooltip_id);
+            tooltipEl = $cms.dom.$id(el.tooltip_id);
             tooltipEl.style.display = 'none';
-            $cms.dom.html(tooltipEl, '');
+            $cms.dom.empty(tooltipEl);
             setTimeout(function () {
                 $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
             }, 0);
@@ -5846,20 +5845,21 @@
             tooltipEl.role = 'tooltip';
             tooltipEl.style.display = 'none';
             var rtPos = tooltip.indexOf('results_table');
-            tooltipEl.className = 'tooltip ' + ((rtPos == -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (haveLinks ? ' have_links' : '');
+            tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (haveLinks ? ' have_links' : '');
             if (el.className.substr(0, 3) === 'tt_') {
                 tooltipEl.className += ' ' + el.className;
             }
             if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
                 tooltipEl.style.wordWrap = 'normal';
             }
-
             if (forceWidth) {
                 tooltipEl.style.width = width;
             } else {
                 if (width === 'auto') {
                     var newAutoWidth = $cms.dom.getWindowWidth(win) - 30 - window.mouse_x;
-                    if (newAutoWidth < 150) newAutoWidth = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
+                    if (newAutoWidth < 150) { // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
+                        newAutoWidth = 150;
+                    } 
                     tooltipEl.style.maxWidth = newAutoWidth + 'px';
                 } else {
                     tooltipEl.style.maxWidth = width;
@@ -5897,14 +5897,6 @@
             'type': event.type || ''
         };
 
-        // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
-        var bi = $cms.dom.$('#main_website_inner') || document.body;
-        if ((window.TouchEvent !== undefined) && !bi.onmouseover) {
-            bi.onmouseover = function () {
-                return true;
-            };
-        }
-
         setTimeout(function () {
             if (!el.is_over) {
                 return;
@@ -5916,7 +5908,7 @@
 
             el.tooltip_on = true;
             tooltipEl.style.display = 'block';
-            if ((tooltipEl.style.width == 'auto') && ((tooltipEl.childNodes.length != 1) || (tooltipEl.childNodes[0].nodeName.toLowerCase() != 'img'))) {
+            if ((tooltipEl.style.width === 'auto') && ((tooltipEl.childNodes.length !== 1) || (tooltipEl.childNodes[0].nodeName.toLowerCase() !== 'img'))) {
                 tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
             }
 
@@ -5947,10 +5939,7 @@
             return;
         }
 
-        //console.log('reposition_tooltip');
-
         if (!starting) { // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
-
             if (el.getAttribute('title')) {
                 el.setAttribute('title', '');
             }
@@ -5969,7 +5958,7 @@
                 el.onmouseover(event);
             }
             return;
-        }  // Should not happen but written as a fail-safe
+        }
 
         tooltipElement || (tooltipElement = $cms.dom.$id(el.tooltip_id));
 
@@ -5988,7 +5977,7 @@
         y += styleOffsetY;
         try {
             if (event.type) {
-                if (event.type != 'focus') {
+                if (event.type !== 'focus') {
                     el.done_none_focus = true;
                 }
 
@@ -5999,16 +5988,14 @@
                 x = (event.type === 'focus') ? (win.pageXOffset + $cms.dom.getWindowWidth(win) / 2) : (window.mouse_x + styleOffsetX);
                 y = (event.type === 'focus') ? (win.pageYOffset + $cms.dom.getWindowHeight(win) / 2 - 40) : (window.mouse_y + styleOffsetY);
             }
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
         // Maybe mouse position actually needs to be in parent document?
         try {
             if (event.target && (event.target.ownerDocument !== win.document)) {
                 x = win.mouse_x + styleOffsetX;
                 y = win.mouse_y + styleOffsetY;
             }
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
 
         // Work out which direction to render in
         var width = $cms.dom.contentWidth(tooltipElement);
@@ -6034,9 +6021,13 @@
             tooltipElement.style.top = (y - height) + 'px';
         } else {
             var yExcess = y - $cms.dom.getWindowHeight(win) - win.pageYOffset + height + styleOffsetY;
-            if (yExcess > 0) y -= yExcess;
+            if (yExcess > 0) {
+                y -= yExcess;
+            }
             var scrollY = win.pageYOffset;
-            if (y < scrollY) y = scrollY;
+            if (y < scrollY) {
+                y = scrollY;
+            }
             tooltipElement.style.top = y + 'px';
         }
         tooltipElement.style.left = x + 'px';
@@ -6052,8 +6043,6 @@
         }
         el.is_over = false;
 
-        //console.log('deactivate_tooltip');
-
         if (el.tooltip_id == null) {
             return;
         }
@@ -6063,7 +6052,7 @@
         if (tooltipElement) {
             $cms.dom.off(tooltipElement, 'mouseout.cmsTooltip');
             $cms.dom.off(tooltipElement, 'mousemove.cmsTooltip');
-            $cms.dom.off(tooltipElement, 'click.cmsTooltip');
+            $cms.dom.off(window, 'click.cmsTooltip');
             $cms.dom.hide(tooltipElement);
         }
     };
@@ -6325,9 +6314,7 @@
      */
     $cms.ui.disableButton = function disableButton(btn, permanent) {
         permanent = !!permanent;
-
-        // TODO: Salman merge in this change https://github.com/ocproducts/composr/commit/670ad2c791eedd4f0e3bf2290854d1f1a02369ff and also the relevant bits in here which fix this change https://github.com/ocproducts/composr/commit/f42749ec932a3143e6d3d4f59ce48f48b04a331c
-
+        
         if (btn.form && (btn.form.target === '_blank')) {
             return;
         }
@@ -8435,13 +8422,21 @@
             $cms.ui.deactivateTooltip(el);
         },
 
+        // Implementation for [data-cms-rich-tooltip]
         activateRichTooltip: function (e, el) {
+            var options = objVal($cms.dom.data(el, 'cmsRichTooltip'));
+            
             if (el.ttitle === undefined) {
                 el.ttitle = (el.attributes['data-title'] ? el.getAttribute('data-title') : el.title);
+                el.title = '';
+            }
+
+            if ((e.type === 'mouseover') && options.haveLinks) {
+                return;
             }
 
             //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
-            var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, !!el.have_links];
+            var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true/*!!el.have_links*/];
 
             try {
                 $cms.ui.activateTooltip.apply(undefined, args);
@@ -9489,32 +9484,32 @@
         recreateCleanTimeout();
 
         return false;
+    }
+    
+    function cleanMenus() {
+        cleanMenusTimeout = null;
 
-        function cleanMenus() {
-            cleanMenusTimeout = null;
+        var m = $cms.dom.$('#r_' + lastActiveMenu);
+        if (!m) {
+            return;
+        }
+        var tags = m.querySelectorAll('.nlevel');
+        var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
+        var i, hideable;
+        for (i = tags.length - 1; i >= 0; i--) {
+            if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') continue;
 
-            var m = $cms.dom.$('#r_' + lastActiveMenu);
-            if (!m) {
-                return;
+            hideable = true;
+            if (e) {
+                t = e;
+                do {
+                    if (tags[i].id == t.id) hideable = false;
+                    t = t.parentNode.parentNode;
+                } while (t.id != 'r_' + lastActiveMenu);
             }
-            var tags = m.querySelectorAll('.nlevel');
-            var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
-            var i, hideable;
-            for (i = tags.length - 1; i >= 0; i--) {
-                if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') continue;
-
-                hideable = true;
-                if (e) {
-                    t = e;
-                    do {
-                        if (tags[i].id == t.id) hideable = false;
-                        t = t.parentNode.parentNode;
-                    } while (t.id != 'r_' + lastActiveMenu);
-                }
-                if (hideable) {
-                    tags[i].style.left = '-999px';
-                    tags[i].style.display = 'none';
-                }
+            if (hideable) {
+                tags[i].style.left = '-999px';
+                tags[i].style.display = 'none';
             }
         }
     }
@@ -10270,8 +10265,8 @@
             el: null
         }, options);
 
-        if (width.match(/^\d+$/)) { // Restrain width to viewport width
-            width = Math.min(parseInt(width), $cms.dom.getWindowWidth() - 60) + '';
+        if (options.width.match(/^\d+$/)) { // Restrain width to viewport width
+            options.width = Math.min(parseInt(options.width), $cms.dom.getWindowWidth() - 60) + '';
         }
 
         var el = options.el,
@@ -10322,7 +10317,7 @@
                 // TODO: Salman, why empty?
             };
         }
-
+        
         // And now define nice listeners for it all...
         var global = $cms.getMainCmsWindow(true);
 
