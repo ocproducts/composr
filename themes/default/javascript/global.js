@@ -2118,6 +2118,9 @@
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
+    
+    // Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
+    $cms.support.animation = ('animate' in emptyEl);
 
     /**
      * If the browser has support for CSS transitions
@@ -2248,7 +2251,7 @@
      */
     function computedStyle(el, property) {
         var cs = el.ownerDocument.defaultView.getComputedStyle(el);
-        return (property !== undefined) ? cs.getPropertyValue(property) : cs;
+        return (property !== undefined) ? cs.getPropertyValue(dasherize(property)) : cs;
     }
 
     var rgxIdSelector = /^\#[\w\-]+$/,
@@ -3329,7 +3332,7 @@
                 var cs = computedStyle(el),
                     props = {};
                 property.forEach(function (prop) {
-                    props[prop] = (el.style[camelize(prop)] || cs.getPropertyValue(prop));
+                    props[prop] = (el.style[camelize(prop)] || cs.getPropertyValue(dasherize(prop)));
                 });
                 return props;
             }
@@ -3533,7 +3536,7 @@
 
         $cms.dom.show(el);
 
-        if (('animate' in emptyEl) && (duration > 0)) { // Progressive enhancement using the web animations API
+        if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: 0 }, { opacity: target }],
                 options = { duration : duration },
                 animation = el.animate(keyFrames, options);
@@ -3569,7 +3572,7 @@
 
         duration = Number.isFinite(+duration) ? +duration : 400;
 
-        if ('animate' in emptyEl) { // Progressive enhancement using the web animations API
+        if ($cms.support.animation) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
                 options = { duration: duration },
                 animation = el.animate(keyFrames, options);
@@ -3595,7 +3598,15 @@
      * @param callback
      */
     $cms.dom.fadeToggle = function fadeToggle(el, duration, callback) {
-        // TODO Salman. To be implemented
+        el = elArg(el);
+        
+        var fadeIn = $cms.dom.notDisplayed(el);
+        
+        if (fadeIn) {
+            $cms.dom.fadeIn(el, duration, callback);
+        } else {
+            $cms.dom.fadeOut(el, duration, callback)
+        }
     };
 
     /**
@@ -3605,7 +3616,66 @@
      * @param callback
      */
     $cms.dom.slideDown = function slideDown(el, duration, callback) {
-        // TODO Salman. To be implemented
+        el = elArg(el);
+
+        if ((typeof duration === 'function') && (callback === undefined)) {
+            callback = duration;
+            duration = undefined;
+        }
+
+        duration = Number.isFinite(+duration) ? +duration : 400;
+        
+        // Show element if it is hidden
+        $cms.dom.show(el);
+
+        // Get the element position to restore it then
+        var prevPosition = el.style.position,
+            prevVisibility = el.style.visibility;
+        
+        // place it so it displays as usually but hidden
+        el.style.position = 'absolute';
+        el.style.visibility = 'hidden';
+
+        var startKeyframe = {
+                height: 0,
+                marginTop: 0,
+                marginBottom: 0,
+                paddingTop: 0,
+                paddingBottom: 0
+            },
+            // Fetch natural height, margin, padding
+            endKeyframe = {
+                height: $cms.dom.css(el, 'height'),
+                marginTop: $cms.dom.css(el, 'margin-top'),
+                marginBottom: $cms.dom.css(el, 'margin-bottom'),
+                paddingTop: $cms.dom.css(el, 'padding-top'),
+                paddingBottom: $cms.dom.css(el, 'padding-bottom')
+            };
+
+        // Set initial css for animation
+        el.style.position = prevPosition;
+        el.style.visibility = prevVisibility;
+
+        var prevOverflow = el.style.overflow;
+        el.style.overflow = 'hidden';
+
+        if ($cms.support.animation) { // Progressive enhancement using the web animations API
+            var keyFrames = [startKeyframe, endKeyframe],
+                options = { duration: duration },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function (e) {
+                el.style.overflow = prevOverflow;
+                if (callback) {
+                    callback.call(el, e, el);
+                }
+            };
+        } else {
+            el.style.overflow = prevOverflow;
+            if (callback) {
+                callback.call(el, {}, el);
+            }
+        }
     };
 
     /**
@@ -3615,7 +3685,57 @@
      * @param callback
      */
     $cms.dom.slideUp = function slideUp(el, duration, callback) {
-        // TODO Salman. To be implemented
+        el = elArg(el);
+
+        if ((typeof duration === 'function') && (callback === undefined)) {
+            callback = duration;
+            duration = undefined;
+        }
+
+        duration = Number.isFinite(+duration) ? +duration : 400;
+        
+        if ($cms.dom.notDisplayed(el)) {
+            // Already hidden
+            return;
+        }
+        
+        var prevOverflow = el.style.overflow;
+        el.style.overflow = 'hidden';
+        
+        var startKeyframe = {
+                height: $cms.dom.css(el, 'height'),
+                marginTop: $cms.dom.css(el, 'marginTop'),
+                marginBottom: $cms.dom.css(el, 'marginBottom'),
+                paddingTop: $cms.dom.css(el, 'paddingTop'),
+                paddingBottom: $cms.dom.css(el, 'paddingBottom')
+            },
+            endKeyframe = {
+                height: 0,
+                marginTop: 0,
+                marginBottom: 0,
+                paddingTop: 0,
+                paddingBottom: 0
+            };
+        
+        if ($cms.support.animation) { // Progressive enhancement using the web animations API
+            var keyFrames = [startKeyframe, endKeyframe],
+                options = { duration: duration },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function (e) {
+                el.style.overflow = prevOverflow;
+                $cms.dom.hide(el);
+                if (callback) {
+                    callback.call(el, e, el);
+                }
+            };
+        } else {
+            el.style.overflow = prevOverflow;
+            $cms.dom.hide(el);
+            if (callback) {
+                callback.call(el, {}, el);
+            }
+        }
     };
 
     /**
@@ -3625,7 +3745,15 @@
      * @param callback
      */
     $cms.dom.slideToggle = function slideToggle(el, duration, callback) {
-        // TODO Salman. To be implemented
+        el = elArg(el);
+
+        var slideDown = $cms.dom.notDisplayed(el);
+
+        if (slideDown) {
+            $cms.dom.slideDown(el, duration, callback);
+        } else {
+            $cms.dom.slideUp(el, duration, callback)
+        }
     };
 
     /**
@@ -9635,8 +9763,7 @@
         if ($cms.isPlainObj(elOrOptions)) {
             options = elOrOptions;
             el =  options.el;
-            //@TODO: Implement slide-up/down animation triggered by this boolean    Salman
-            animate = $cms.$CONFIG_OPTION('enable_animations') ? ((options.animate != null) ? !!options.animate : true) : false;
+            animate = $cms.$CONFIG_OPTION('enable_animations') ? ((options.animate !== undefined) ? !!options.animate : true) : false;
         } else {
             el = elOrOptions;
             animate = $cms.$CONFIG_OPTION('enable_animations');
@@ -9659,14 +9786,22 @@
         el.setAttribute('aria-expanded', 'true');
 
         if ($cms.dom.notDisplayed(el)) {
-            $cms.dom.fadeIn(el);
-
+            if (animate) {
+                $cms.dom.slideDown(el);
+            } else {
+                $cms.dom.fadeIn(el);
+            }
+            
             if (pic) {
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
             }
         } else {
-            $cms.dom.hide(el);
-
+            if (animate) {
+                $cms.dom.slideUp();
+            } else {
+                $cms.dom.hide(el);    
+            }
+            
             if (pic) {
                 setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
                 pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
