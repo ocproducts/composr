@@ -358,7 +358,9 @@
                 /**@member {string}*/
                 google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics),
                 /**@member {string}*/
-                cookie_notice: strVal(symbols.CONFIG_OPTION.cookie_notice)
+                cookie_notice: strVal(symbols.CONFIG_OPTION.cookie_notice), 
+                /**@member {string}*/
+                chat_message_direction: strVal(symbols.CONFIG_OPTION.chat_message_direction)
             };
 
             if (hasOwn(configOptions, optionName)) {
@@ -2580,7 +2582,7 @@
      * @returns {*}
      */
     $cms.dom.data = function data(el, key, value) {
-        // TODO: Salman is the internalised caching here actually worthwhile? To me it seems like it could introduce bugs for a case the browsers would already have optimised.
+        // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
 
         var name, data;
 
@@ -7695,6 +7697,53 @@
             }
         },
 
+        initializeTables: {
+            attach: function attach(context) {
+                var tables = $cms.dom.$$$(context, 'table');
+
+                tables.forEach(function (table) {
+                    // Responsive table prep work
+                    if (table.classList.contains('responsive_table')) {
+                        var trs = table.getElementsByTagName('tr'),
+                            ths_first_row = trs[0].cells,
+                            i, tds, j, data;
+                        
+                        for (i = 0; i < trs.length; i++) {
+                            tds = trs[i].cells;
+                            for (j = 0; j < tds.length; j++) {
+                                if (!tds[j].classList.contains('responsive_table_no_prefix')) {
+                                    data = (ths_first_row[j] === undefined) ? '' : ths_first_row[j].textContent.replace(/^\s+/, '').replace(/\s+$/, '');
+                                    if (data !== '') {
+                                        tds[j].setAttribute('data-th', data);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        },
+        
+        columnHeightBalancing: {
+            attach: function attach(context) {
+                var cols = $cms.dom.$$$('.col_balance_height'),
+                    i, max, j, height;
+
+                for (i = 0; i < cols.length; i++) {
+                    max = null;
+                    for (j = 0; j < cols.length; j++) {
+                        if (cols[i].className === cols[j].className) {
+                            height = cols[j].offsetHeight;
+                            if (max === null || height > max) {
+                                max = height;
+                            }
+                        }
+                        cols[i].style.height = max + 'px';
+                    }
+                }
+            }
+        },
+        
         // Convert img title attributes into composr tooltips
         imageTooltips: {
             attach: function (context) {
@@ -10623,49 +10672,3 @@
         }
     }
 }());
-
-/*
-TODO, Salman, this needs integrating (came from feature__hybrid_responsive branch and facilitates responsive tables)
-
---- 70,80 ----
-  	{
-  		new_html__initialise(document.images[i]);
-  	}
-+ 	var tables=document.getElementsByTagName('table');
-+ 	for (i=0;i<tables.length;i++)
-+ 	{
-+ 		new_html__initialise(tables[i]);
-+ 	}
-  
-  	// Column height balancing
-  	var cols=document.getElementsByClassName('col_balance_height');
---- 269,295 ----
-  {
-  	switch (element.nodeName.toLowerCase())
-  	{
-+ 		case 'table':
-+ 			// Responsive table prep work
-+ 			if (element.className.indexOf('responsive_table')!=-1)
-+ 			{
-+ 				var trs=element.getElementsByTagName('tr');
-+ 				var ths_first_row=trs[0].cells;
-+ 				for (var i=0;i<trs.length;i++)
-+ 				{
-+ 					var tds=trs[i].cells;
-+ 					for (var j=0;j<tds.length;j++)
-+ 					{
-+ 						if (tds[j].className.indexOf('responsive_table_no_prefix')==-1)
-+ 						{
-+ 							var data=(typeof ths_first_row[j]=='undefined')?'':ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,'');
-+ 							if (data!='') tds[j].setAttribute('data-th',data);
-+ 						}
-+ 					}
-+ 				}
-+ 			}
-+ 			break;
-+ 
-  		case 'img':
-  			// GD text maybe can do with transforms
-  			if (element.className=='gd_text')
-
-*/

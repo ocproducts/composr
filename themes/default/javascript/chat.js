@@ -830,15 +830,13 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
             // Non-first message
             if (messageContainer.children.length > 0) {
-                // TODO: Salman, map config option
-                /*{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},upwards}}*/
+                if ($cms.$CONFIG_OPTION('chat_message_direction') === 'upwards') {
                     messageContainer.insertBefore(clonedMessage, messageContainer.firstElementChild);
-                /*{+END}*/
-                /*{+START,IF,{$EQ,{$CONFIG_OPTION,chat_message_direction},downwards}}*/
+                } else if ($cms.$CONFIG_OPTION('chat_message_direction') === 'downwards') {
                     messageContainer.appendChild(clonedMessage);
                     messageContainer.scrollTop = 1000000;
-                /*{+END}*/
-
+                }
+                
                 if (!firstSet) {// Only if no other message sound already for this event update
                     if (!skipIncomingSound) {
                         if (window.playChatSound !== undefined) {

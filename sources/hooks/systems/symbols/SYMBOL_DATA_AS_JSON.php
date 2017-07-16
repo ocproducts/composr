@@ -116,6 +116,8 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'collapse_user_zones'             => get_option('collapse_user_zones'),
             'sitewide_im'                     => get_option('sitewide_im'),
             'cookie_notice'                   => get_option('cookie_notice'),
+
+            'chat_message_direction'          => get_option('chat_message_direction'),
         );
 
         $value['VALUE_OPTION'] = array(
