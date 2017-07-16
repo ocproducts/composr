@@ -61,8 +61,7 @@ td {
 }
 </style>
 
-<!-- TODO: Salman. CSP splitup needed -->
-<script>
+<script " . (function_exists('csp_nonce_html') ? csp_nonce_html() : '') .">
 window.onscroll = function() {
     var ths = document.getElementsByTagName('div');
     for (var i=0; i<ths.length; i++) {

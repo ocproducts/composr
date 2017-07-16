@@ -8208,7 +8208,10 @@
 
                 // Toggle tray
                 'click [data-click-tray-toggle]': 'clickTrayToggle',
-                'click [data-click-tray-accordion-toggle]': 'clickTrayAccordionToggle',
+                
+                'click [data-click-ui-open]': 'clickUiOpen',
+                
+                'click [data-click-do-input]': 'clickDoInput',
 
                 /* Footer links */
                 'click .js-click-load-software-chat': 'loadSoftwareChat',
@@ -8220,7 +8223,6 @@
                 'click .js-global-click-load-realtime-rain': 'loadRealtimeRain',
 
                 'click .js-global-click-load-commandr': 'loadCommandr'
-
             };
         },
 
@@ -8606,12 +8608,25 @@
 
             $cms.toggleableTray(trayEl);
         },
-
-        // Implementation for [data-click-tray-accordion-toggle]
-        clickTrayAccordionToggle: function () {
-            // TODO: Salman ???
+        
+        
+        clickUiOpen: function (e, clicked) {
+            var args = arrVal($cms.dom.data(clicked, 'clickUiOpen'));
+            args[0] = $cms.maintainThemeInLink(args[0]);
+            $cms.ui.open.apply(undefined, args);
         },
-
+        
+        clickDoInput: function (e, clicked) {
+            var args = arrVal($cms.dom.data(clicked, 'clickDoInput')),
+                type = strVal(args[0]),
+                fieldName = strVal(args[1]),
+                tag = strVal(args[2]);
+                
+            if (typeof window['do_input_' + type] === 'function') {
+                window['do_input_' + type](fieldName, tag);
+            }
+        },
+        
         // Detecting of JavaScript support
         detectJavascript: function () {
             var url = window.location.href,
