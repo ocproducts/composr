@@ -30,7 +30,7 @@ class Hook_checklist_content_reviews
      */
     public function run()
     {
-        if (!$GLOBALS['SITE_DB']->table_exists('content_reviews')) {
+        if (!addon_installed('content_reviews')) {
             return array();
         }
 
