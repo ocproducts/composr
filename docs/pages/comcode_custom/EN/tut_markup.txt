@@ -62,7 +62,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<th colspan="3"><em>Web</em></th>
 		</tr>
 		<tr>
-			<td>[abbr="HyperText Transfer Protocol"][url="http://tools.ietf.org/html/rfc2616"]HTTP[/url][/abbr]</td>
+			<td>[abbr="HyperText Transfer Protocol"][url="http://tools.ietf.org/html/rfc2616"]HTTP[/url][/abbr] with some [url="common extensions"]https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers[/url]</td>
 			<td>This is the protocol for transmitting web data.</td>
 			<td>You won't need much awareness that web [abbr="Uniform Resource Locator"]URL[/abbr]s come from the HTTP standard, as do cookies, as does HTTP authentication (not used on many sites, but sometimes useful).</td>
 		</tr>
@@ -95,6 +95,11 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>[abbr="Scalable Vector Graphics"][url="http://www.w3.org/Graphics/SVG/"]SVG[/url][/abbr]</td>
 			<td>Vector graphics standard, used for drawing statistics graphs.</td>
 			<td>You are unlikely to need any awareness of this.</td>
+		</tr>
+		<tr>
+			<td>[url="https://developers.google.com/search/reference/robots_txt"]robots.txt[/url]</td>
+			<td>Robots exclusion standard. Google's version of the specification is the most accurate to what search engines now support.</td>
+			<td>Knowing this may be important for [abbr="Search Engine Optimisation"]SEO[/abbr].</td>
 		</tr>
 
 		<tr>
@@ -1265,6 +1270,7 @@ Some cool effects:
 [title="2"]Miscellaneous[/title]
 
  - http://uitest.com/
+ - https://dev.twitter.com/cards/getting-started (you may want to implement this yourself if you use Twitter)
 
 [concepts
  1_key="XML"                  1_value="eXtensible Markup Language: a format for structuring other languages that fit well into a tree structure"

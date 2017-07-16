@@ -84,7 +84,7 @@
 {+START,IF_NON_EMPTY,{$METADATA,meta_description}}<meta property="og:description" content="{$METADATA*,meta_description}" />{+END}
 <meta property="og:image" content="{$IMG*,opengraph}" />
 {+START,IF_NON_EMPTY,{$METADATA,video}}<meta property="og:video" content="{$METADATA*,video}" /><meta property="og:video:width" content="{$METADATA*,video:width}" /><meta property="og:video:height" content="{$METADATA*,video:height}" /><meta property="og:video:type" content="{$METADATA*,video:type}" />{+END}
-<meta property="og:locale" content="{$REPLACE,-,_,{!locale}}" />
+<meta property="og:locale" content="{$PREG_REPLACE,\..*$,,{$PREG_REPLACE,\,.*$,,{$REPLACE,-,_,{!locale}}}}" />
 {+START,IF,{$EQ,{$METADATA,type},Article}}
 	{+START,IF_NON_EMPTY,{$METADATA,created}}<meta name="article:published_time" content="{$METADATA*,created}" />{+END}
 	{+START,IF_NON_EMPTY,{$METADATA,modified}}<meta name="article:modified_time" content="{$METADATA*,modified}" />{+END}

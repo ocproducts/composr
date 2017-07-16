@@ -778,7 +778,7 @@ function up_do_header()
     $lang = user_lang();
     $dir = do_lang('dir');
 
-    @ob_end_clean();
+    cms_ob_end_clean();
     echo <<<END
 <!DOCTYPE html>
     <html lang="{$lang}" dir="{$dir}">
@@ -1497,7 +1497,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
         sort($dir_files);
         foreach ($dir_files as $file) {
-            if (should_ignore_file($rela . $file, IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE)) {
+            if (should_ignore_file($rela . $file, IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES)) {
                 continue;
             }
 
@@ -2142,7 +2142,7 @@ function fix_mysql_database_charset()
  */
 function change_mysql_database_charset($new_charset, $db, $reencode = false)
 {
-    @ob_end_clean();
+    cms_ob_end_clean();
 
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(0);

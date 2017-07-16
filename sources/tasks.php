@@ -246,7 +246,9 @@ function call_user_func_array__long_task($plain_title, $title, $hook, $args = nu
 
         // Some downloaded result
         if (is_array($content_result)) {
+            cms_ob_end_clean();
             readfile($content_result[1]);
+
             @unlink($content_result[1]);
             sync_file($content_result[1]);
         }/* elseif (is_object($content_result))

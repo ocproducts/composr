@@ -354,7 +354,7 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
         throw new CMSException($text);
     }
 
-    @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+    cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
     if (is_object($text)) {
         $text = $text->evaluate();
@@ -399,8 +399,6 @@ function _generic_exit($text, $template, $support_match_key_messages = false)
 
     @header('Content-type: text/html; charset=' . get_charset());
     @header('Content-Disposition: inline');
-
-    //$x = @ob_get_contents(); @ob_end_clean(); //if (is_string($x)) @print($x);      Disabled as causes weird crashes
 
     if ($GLOBALS['HTTP_STATUS_CODE'] == '200') {
         if (($text_eval == do_lang('cns:NO_MARKERS_SELECTED')) || ($text_eval == do_lang('NOTHING_SELECTED'))) {
@@ -611,14 +609,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     $ip_ban_todo = null;
     if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0') && (is_null($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip))))) {
         // Test we're not banning a good bot
-        $se_ip_lists = array(
-            // NB: We're using Coral Cache (nyud.net)
-            'http://www.iplists.com.nyud.net/nw/google.txt' => false,
-            'http://www.iplists.com.nyud.net/nw/misc.txt' => false, // Includes Bing, Yandex, SOSO, Sogou, Baidu, Ask Jeeves (aka Teoma)
-            // NB: Yahoo (aka Slurp aka Inktomi), AltaVista, InfoSeek, Lycos, are all confirmed defunct.
-            'https://www.cloudflare.com/ips-v4' => true,
-            'https://www.cloudflare.com/ips-v6' => true,
-        );
+        $se_ip_lists[get_base_url() . '/data/no_banning.txt'] = false;
         $se_ip_lists[get_base_url() . '/data_custom/no_banning.txt'] = false;
         $ip_stack = array();
         $ip_bits = explode((strpos($alt_ip ? $ip2 : $ip, '.') !== false) ? '.' : ':', $alt_ip ? $ip2 : $ip);
@@ -1430,7 +1421,7 @@ function _access_denied($class, $param, $force_login)
             exit();
         }
 
-        @ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
+        cms_ob_end_clean(); // Emergency output, potentially, so kill off any active buffer
 
         $redirect = get_self_url(true, false, array('page' => get_page_name())); // We have to pass in 'page' because an access-denied situation tells get_page_name() (which get_self_url() relies on) that we are on page ''.
         $_GET['redirect'] = $redirect;

@@ -30,17 +30,29 @@ function catalogue_file_script()
         @exit(get_option('closed'));
     }
 
+    $table = get_param_string('table');
+    $original_filename = get_param_string('original_filename', null, true);
+    $is_catalogue_type = ($table == 'catalogue_efv_short' || $table == 'catalogue_efv_long');
+    $is_member_type = ($table == 'f_member_custom_fields');
+
+    // Find file
+    switch ($table) {
+        case 'f_member_custom_fields':
+            $upload_dir = 'uploads/cns_cpf_upload';
+            break;
+
+        default:
+            $upload_dir = 'uploads/catalogues';
+            break;
+    }
     $file = filter_naughty(get_param_string('file', false, true));
-    $_full = get_custom_file_base() . '/uploads/catalogues/' . filter_naughty(rawurldecode($file));
+    $_full = get_custom_file_base() . '/' . $upload_dir . '/' . filter_naughty(rawurldecode($file));
     if (!file_exists($_full)) {
         warn_exit(do_lang_tempcode('MISSING_RESOURCE', do_lang_tempcode('FILE')));
     }
     $size = filesize($_full);
 
-    $original_filename = get_param_string('original_filename', null, true);
-
     // Security check; doesn't work for very old attachments (pre-v8)
-    $table = get_param_string('table');
     if ($table != 'catalogue_efv_short' && $table != 'catalogue_efv_long' && $table != 'f_member_custom_fields') {
         access_denied('I_ERROR');
     }
@@ -52,7 +64,7 @@ function catalogue_file_script()
         $field_id_field = filter_naughty_harsh($field_id_field);
     }
     $url_field = filter_naughty_harsh(get_param_string('url_field'));
-    $ev = 'uploads/catalogues/' . $file;
+    $ev = $upload_dir . '/' . $file;
     if ($original_filename === null) {
         $original_filename = basename($file);
     }
@@ -67,21 +79,32 @@ function catalogue_file_script()
     if ($original_filename !== null) {
         $ev .= '::' . $original_filename;
     }
-    if (($table == 'catalogue_efv_short' || $table == 'catalogue_efv_long') && (get_ip_address() != cms_srv('SERVER_ADDR')/*We need to allow media renderer to get through*/)) { // Now check the match, if we support checking on it
-        $c_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => $entry_id));
-        if (substr($c_name, 0, 1) != '_') { // Doesn't work on custom fields (this is documented)
-            $cc_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'cc_id', array('id' => $entry_id));
-            if (!has_category_access(get_member(), 'catalogues_catalogue', $c_name)) {
-                access_denied('CATALOGUE_ACCESS');
+    if ($is_catalogue_type) { // Now check the match, if we support checking on it
+        if (get_ip_address() != cms_srv('SERVER_ADDR')/*We need to allow media renderer to get through*/) {
+            $c_name = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'c_name', array('id' => $entry_id));
+            if (substr($c_name, 0, 1) != '_') { // Doesn't work on custom fields (this is documented)
+                $cc_id = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'cc_id', array('id' => $entry_id));
+                if (!has_category_access(get_member(), 'catalogues_catalogue', $c_name)) {
+                    access_denied('CATALOGUE_ACCESS');
+                }
+                if (!has_category_access(get_member(), 'catalogues_category', strval($cc_id))) {
+                    access_denied('CATEGORY_ACCESS');
+                }
             }
-            if (!has_category_access(get_member(), 'catalogues_category', strval($cc_id))) {
-                access_denied('CATEGORY_ACCESS');
+            if (addon_installed('content_privacy')) {
+                require_code('content_privacy');
+                check_privacy('catalogue_entry', strval($entry_id));
             }
         }
-        if (addon_installed('content_privacy')) {
-            require_code('content_privacy');
-            check_privacy('catalogue_entry', strval($entry_id));
-        }
+    }
+
+    // Find submitter
+    if ($is_catalogue_type) {
+        $submitter = $GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'ce_submitter', array('id' => $entry_id));
+    } elseif ($is_member_type) {
+        $submitter = $entry_id;
+    } else {
+        $submitter = null;
     }
 
     // Send header
@@ -95,7 +118,8 @@ function catalogue_file_script()
         }
         if (get_option('immediate_downloads', true) === '1' || get_param_integer('inline', 0) == 1) {
             require_code('mime_types');
-            header('Content-Type: ' . get_mime_type(get_file_extension($original_filename), has_privilege($GLOBALS['SITE_DB']->query_select_value('catalogue_entries', 'ce_submitter', array('id' => $entry_id)), 'comcode_dangerous')) . '; authoritative=true;');
+            $as_admin = ($submitter !== null) && (has_privilege($submitter, 'comcode_dangerous'));
+            header('Content-Type: ' . get_mime_type(get_file_extension($original_filename), $as_admin) . '; authoritative=true;');
             header('Content-Disposition: inline; filename="' . escape_header($original_filename, true) . '"');
         } else {
             header('Content-Disposition: attachment; filename="' . escape_header($original_filename, true) . '"');
@@ -153,13 +177,13 @@ function catalogue_file_script()
     // Send actual data
     $myfile = fopen($_full, 'rb');
     fseek($myfile, $from);
-    /*if ($size == $new_length)    Uses a lot of memory :S
-    {
+    if ($size == $new_length) {
+        cms_ob_end_clean();
         fpassthru($myfile);
-    } else*/
+    } else
     {
         $i = 0;
-        flush(); // Works around weird PHP bug that sends data before headers, on some PHP versions
+        flush(); // LEGACY Works around weird PHP bug that sends data before headers, on some PHP versions
         while ($i < $new_length) {
             $content = fread($myfile, min($new_length - $i, 1048576));
             echo $content;

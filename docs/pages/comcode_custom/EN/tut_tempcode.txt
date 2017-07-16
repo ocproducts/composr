@@ -421,7 +421,7 @@ You are very unlikely to ever want to use rows in red, as they are intended for 
 			<td>{$CLEAN_FILE_SIZE,10000}</td>
 			<td>Convert a number of bytes into a nice clean human readable file size.</td>
 		</tr>
-		<tr style="background: #FFDDDD">
+		<tr style="background: #DDFFDD">
 			<td>{$TRIM, abc }</td>
 			<td>Trim any textual or XHTML white-space from the given string.</td>
 		</tr>

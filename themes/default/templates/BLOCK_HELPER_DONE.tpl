@@ -1,6 +1,6 @@
 <div aria-busy="true" class="spaced" id="loading_space">
 	<div class="ajax_loading vertical_alignment">
-		<img id="loading_image" src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
+		<img src="{$IMG*,loading}" title="{!LOADING}" alt="{!LOADING}" />
 		<span>{!LOADING}</span>
 	</div>
 </div>

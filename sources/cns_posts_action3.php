@@ -304,7 +304,14 @@ function cns_delete_posts_topic($topic_id, $posts, $reason = '', $check_perms = 
     }
 
     // Update member post counts
-    $post_counts = is_null($forum_id) ? 1 : $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_post_count_increment', array('id' => $forum_id));
+    if ($forum_id === null) {
+        $post_counts = 1;
+    } else {
+        $post_counts = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_post_count_increment', array('id' => $forum_id));
+        if ($post_counts === null) {
+            $post_counts = 1;
+        }
+    }
     if ($post_counts == 1) {
         $sql = 'SELECT p_poster FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_posts WHERE (' . $or_list . ')';
         if (addon_installed('unvalidated')) {
