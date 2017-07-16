@@ -10305,18 +10305,6 @@
                 return;
             }
         }
-
-        // Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
-        if (!el.onmouseout) {
-            el.onmouseout = function () {
-                // TODO: Salman, why empty?
-            };
-        }
-        if (!el.onmousemove) {
-            el.onmouseover = function () {
-                // TODO: Salman, why empty?
-            };
-        }
         
         // And now define nice listeners for it all...
         var global = $cms.getMainCmsWindow(true);
