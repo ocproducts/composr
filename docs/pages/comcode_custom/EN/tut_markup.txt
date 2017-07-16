@@ -1270,6 +1270,7 @@ Some cool effects:
 [title="2"]Miscellaneous[/title]
 
  - http://uitest.com/
+ - https://dev.twitter.com/cards/getting-started (you may want to implement this yourself if you use Twitter)
 
 [concepts
  1_key="XML"                  1_value="eXtensible Markup Language: a format for structuring other languages that fit well into a tree structure"

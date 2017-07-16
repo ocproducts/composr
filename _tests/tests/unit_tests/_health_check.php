@@ -92,12 +92,6 @@ class _health_check_test_set extends cms_test_case
         }
     }*/
 
-    // Heavy 404 errors on the same URLs, with no redirects
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
-    {
-        // TODO
-    }*/
-
     // Bad 404 page
     /*public function testForBad404($manual_checks = false, $automatic_repair = false)
     {
@@ -111,13 +105,25 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Outgoing mail not working
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForMailFailing($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // CRON taking more than 5 minutes to run
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForCRONSlow($manual_checks = false, $automatic_repair = false)
+    {
+        // TODO
+    }*/
+
+    // CRON tasks not successfully running all the way through
+    /*public function testForCRONFailure($manual_checks = false, $automatic_repair = false)
+    {
+        // TODO
+    }*/
+
+    // CRON not running at all
+    /*public function testForCRONNotRunning($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
@@ -508,7 +514,13 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // robots.txt missing or does not block maintenance scripts
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForRobotsTxtInsufficient($manual_checks = false, $automatic_repair = false)
+    {
+        // TODO
+    }*/
+
+    // TODO: Can download secured files that are meant to be in .htaccess / web.config
+    /*public function testForPublicSecuredFileAccess($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
@@ -632,22 +644,33 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Web server not accessible from external proxy
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForExternalAccess($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
+        if ($this->is_local_domain()) {
+            return;
+        }
+
+        $url = 'https://tools.keycdn.com/curl-query.php?url=' . urlencode($this->get_page_url());
+        $data = http_download_file($url);
+        $this->assertTrue(strpos($data, '200 OK') !== false, 'Cannot access website externally');
     }*/
 
     // Broken links on pages (configurable list of page-links) (and remove old cleanup tool that currently does this)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForBrokenLinks($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Broken images on pages (configurable list of page-links) (would need a config option)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    public function testForBrokenImages($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
-    }*/
+        $data = $this->get_page_content();
+        if ($data === null) {
+            return;
+        }
+
+        //$num_matches = TODO;
+    }
 
     // Inconsistent database state
     /*public function testForInconsistentDBState($manual_checks = false, $automatic_repair = false)
@@ -693,25 +716,25 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Fall in Google position (ties into main_staff_website_monitoring block)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForGooglePositionDrop($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Fall in hits
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForHitDrop($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // www/non-www redirect not handled well - either does not exist, or redirects deep to home page, and/or is not 301
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForWWWRedirectingIssues($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // https/non-https redirect not handled well - either does not exist, or redirects deep to home page, and/or is not 301
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForHTTPSRedirectingIssues($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
@@ -760,7 +783,7 @@ class _health_check_test_set extends cms_test_case
         $this->assertTrue($count == 0, 'The newsletter queue has e-mails still not sent within a week');
     }*/
 
-    // Stuff going into error log
+    // Stuff going into error log fast
     /*public function testForErrorLogFlooding($manual_checks = false, $automatic_repair = false)
     {
         $path = get_custom_file_base() . '/data_custom/errorlog.php';
@@ -795,25 +818,13 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // http:// URLs appearing on page when site has a https:// base URL (configurable list of page-links)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForIncorrectHTTPSLinking($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Non-https images/scripts/CSS/etc embedded on pages that are https (configurable list of page-links)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
-    {
-        // TODO
-    }*/
-
-    // Web standards validation errors (configurable list of page-links, blank by default)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
-    {
-        // TODO
-    }*/
-
-    // URLs using this regexp https?://(localhost|127.|192.|10.).
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForIncorrectHTTPSEmbedding($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
@@ -859,12 +870,6 @@ class _health_check_test_set extends cms_test_case
                 $this->assertTrue(!empty($data), 'Broken included file: ' . $url);
             }
         }
-    }*/
-
-    // CRON tasks not successfully running all the way through
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
-    {
-        // TODO
     }*/
 
     // Cache or temp directories unreasonably huge
@@ -1013,19 +1018,19 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Unusual increase in rate limiting triggers (could indicate a distributed denial of service attack)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForRateLimitingSpike($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Unusual increase in CAPTCHA fails (could indicate a distributed denial of service attack)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForCAPTCHAFailSpike($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
 
     // Unusual increase in spam detection (could indicate a distributed denial of service attack)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForSpamDetectionSpike($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
@@ -1261,7 +1266,7 @@ class _health_check_test_set extends cms_test_case
         }
     }*/
 
-    // What if DNS not resolving
+    // DNS not resolving
     /*public function testForMailIssues($manual_checks = false, $automatic_repair = false)
     {
         if ((php_function_allowed('getmxrr')) && (php_function_allowed('checkdnsrr'))) {
@@ -1322,9 +1327,19 @@ class _health_check_test_set extends cms_test_case
         }
     }*/
 
-    // TODO: Other spam issues. Blacklisted? SPF issue?
+    // SPF prohibits us sending
+    /*public function testForSPFBlock($manual_checks = false, $automatic_repair = false)
+    {
+        // TODO
+    }*/
 
-    // What if DNS not resolving
+    // SMTP server is blacklisted
+    /*public function testForSMTPBlacklisting($manual_checks = false, $automatic_repair = false)
+    {
+        // TODO
+    }*/
+
+    // DNS not resolving
     /*public function testForDNSResolutionIssues($manual_checks = false, $automatic_repair = false)
     {
         if (php_function_allowed('checkdnsrr')) {
@@ -1414,20 +1429,8 @@ class _health_check_test_set extends cms_test_case
         $this->assertTrue($found_has_cookies_cookie, 'Cookies not being properly set');
     }*/
 
-    // No recent activity on any 1 of a set of configured Twitter accounts
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
-    {
-        // TODO
-    }*/
-
-    // No recent activity on any 1 of a set of configured Facebook accounts
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
-    {
-        // TODO
-    }*/
-
     // Output pages are not gzipped
-    /*public function testForUncompressed($manual_checks = false, $automatic_repair = false)
+    /*public function testForPagesUncompressed($manual_checks = false, $automatic_repair = false)
     {
         //set_option('gzip_output', '1');   To test
 
@@ -1452,10 +1455,20 @@ class _health_check_test_set extends cms_test_case
         $this->assertTrue($is_gzip, 'Page gzip compression is not enabled/working, significantly wasting bandwidth for page loads');
     }*/
 
-    // TODO: Static file gzip test (CSS, images, JS)
+    // Static file gzip test (CSS, images, JS)
+    /*public function testForStaticUncompressed($manual_checks = false, $automatic_repair = false)
+    {
+        // TODO: Static file gzip test (CSS, images, JS)
+    }
+
+    // Cache headers not set correctly on static resources like images or CSS or JavaScript
+    /*public function testForStaticFileCacheMissing($manual_checks = false, $automatic_repair = false)
+    {
+        // TODO
+    }*/
 
     // Composr version no longer supported
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForOutdatedComposr($manual_checks = false, $automatic_repair = false)
     {
         // TODO
     }*/
@@ -1470,16 +1483,19 @@ class _health_check_test_set extends cms_test_case
         $this->assertTrue(is_php_version_supported($v), 'Unsupported PHP version ' . $v);
     }*/
 
-    // Cache headers not set correctly on static resources like images or CSS or JavaScript
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    // Site is closed
+    /*public function testForSiteClosed($manual_checks = false, $automatic_repair = false)
     {
         // TODO
+        // TODO: Will vary based on test site status
     }*/
 
     // Staff not doing their tasks as identified by items in the staff checklist
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
+    /*public function testForStaffChecklistIgnoring($manual_checks = false, $automatic_repair = false)
     {
-        // TODO
+        if (manual_checks) {
+            // TODO
+        }
     }*/
 
     // Google Analytics configured but not in output HTML
@@ -1497,7 +1513,25 @@ class _health_check_test_set extends cms_test_case
     }*/
     // TODO: Check with API data being collected?
 
-    // No lorem ipsum or TODOs
+    // Has links to local files.
+    public function testForLocalLinks($manual_checks = false, $automatic_repair = false)
+    {
+        if ($manual_checks) {
+            if ($this->is_local_domain()) {
+                return;
+            }
+
+            $data = $this->get_page_content();
+            if ($data === null) {
+                return;
+            }
+
+            $c = '#https?://(localhost|127\.|192\.168\.|10\.)#';
+            $this->assertTrue(preg_match($c, $data) == 0, 'Found links to a local URL');
+        }
+    }
+
+    // Has lorem ipsum or TODOs
     /*public function testForIncomplete($manual_checks = false, $automatic_repair = false)
     {
         if ($manual_checks) {
@@ -1513,18 +1547,8 @@ class _health_check_test_set extends cms_test_case
         }
     }*/
 
-    // TODO: Check cannot download secured files in .htaccess / web.config
-
-    // TODO: Structured data tool https://search.google.com/structured-data/testing-tool/u/0/#url=https%3A%2F%2Fcompo.sr
-
-    // OpenGraph tagging problem (see https://developers.facebook.com/tools/debug/sharing/)
-    /*public function testForTODO($manual_checks = false, $automatic_repair = false)
-    {
-        // TODO
-    }*/
-
     // Things wrong found by checking manually
-    public function testForManualValidation($manual_checks = false, $automatic_repair = false)
+    /*public function testForManualValidation($manual_checks = false, $automatic_repair = false)
     {
         if (!$manual_checks) {
             return;
@@ -1534,9 +1558,14 @@ class _health_check_test_set extends cms_test_case
         $this->assertTrue(false, 'Check CSS validation https://jigsaw.w3.org/css-validator/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
         $this->assertTrue(false, 'Check WCAG validation https://achecker.ca/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
 
+        $this->assertTrue(false, 'Check schema.org/microformats validation on any key pages you want to be semantic https://search.google.com/structured-data/testing-tool/u/0/');
+        $this->assertTrue(false, 'Check OpenGraph metadata on any key pages you expect to be shared https://developers.facebook.com/tools/debug/sharing/');
+
         $this->assertTrue(false, 'Check for speed issues https://developers.google.com/speed/pagespeed/insights (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->assertTrue(false, 'Check SSL security https://www.ssllabs.com/ssltest/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->assertTrue(false, 'Check SEO https://seositecheckup.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+
+        $this->assertTrue(false, 'Check for SSL security issues https://www.ssllabs.com/ssltest/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+
+        $this->assertTrue(false, 'Check for SEO issues https://seositecheckup.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
         $this->assertTrue(false, 'Check for search issues in Google Webmaster Tools https://www.google.com/webmasters/tools/home');
 
         $this->assertTrue(false, 'Do a general check https://www.woorank.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
@@ -1550,15 +1579,85 @@ class _health_check_test_set extends cms_test_case
         $this->assertTrue(false, 'Test in Safari');
         $this->assertTrue(false, 'Test in Google Chrome (mobile)');
         $this->assertTrue(false, 'Test in Safari (mobile)');
-    }
 
-    // --
+        $this->assertTrue(false, 'Manually check the web server error logs, e.g. for 404 errors you may want to serve via a redirect');
 
-    // TODO: Windows support
+        $this->assertTrue(false, 'Manually check the website would look good if printed');
 
-    // TODO: Say what has to be skipped
+        $this->assertTrue(false, 'Manually check the social media channels are being regularly updated');
+    }*/
+
+    // HTTP implementation is failing
+    /*public function testForHTTPFailing($manual_checks = false, $automatic_repair = false)
+    {
+        // TODO: Move http.php unit test to here
+    }*/
+
+    // Some block(s) not rendering
+    /*public function testForBlocksFailing($manual_checks = false, $automatic_repair = false)
+    {
+        // TODO: Move blocks all render unit test (blocks.php) to here
+    }*/
+
+    // -- finishing --
+
+    // TODO: Check that http_download_file calls all have errors blocked but also properly handle null results and HTTP response codes
+
+    // TODO: Some of the services we are using should be moved to compo.sr so we don't abuse other people's services
+
+    // TODO: Say what has to be skipped. Probably instead of assert's we'll have success/failure/skip calls
+
+    // TODO: Whether it is a test site or a live site would be controlled via a configuration option, which will turn into a method parameter. Change methods to use it as appropriate (e.g. robots.txt checks for blocking on a test site).
+
+    // -- integration --
+
+    // TODO: Convert into checks hooks, initially in a non-bundled addon. Each check hook would get a parameter to say whether it was running for an install, a live site, or a test site, or in manual mode.
+
+    // TODO: The checks should be initiated from a new "Health Check" item on the 'Tools' menu of the Admin Zone, which would call manual mode. There'd be checkboxes to say what tests to run, very similar to 'Website cleanup tools'.
+    // TODO: Results would be shown in a table. Each failed check would quote the codename of the hook that failed, and there'd be a config option to list codenames of hooks to not run.
+
+    // TODO: Checks would also be runnable by a health_check.php script in data_custom. This would need http-authentication to run, or an explicit login as an admin. It would need to be documented in the codebook (which lists manually callable scripts). It should allow a parameter to filter which checks to run.
+
+    // TODO: Tie into CRON, but with a config option of whether it runs. It should run as the first CRON hook. E-mail results on a new notification type ("Automatic check failure"). A config option would allow specifying whether to get a daily "all is good" e-mail sent out.
+
+    // TODO: Create new bridge unit test
+
+    // -- testing --
+
+    // TODO: Windows support, and test
+
+    // TODO: Test everything on compo.sr
+
+    // -- documentation in v11 --
+
+    // TODO: List feature in our features list.
+
+    // TODO: Document this Health Check system, including all the checks that run, and how it needs CRON, and how you can plug an external uptime checker tool into the health_check.php script. Maybe this would all be documented next to our advice about something like Uptime Robot.
+    /*
+    We want to be able to automatically detect when something goes wrong with a website.
+    This could be:
+     - Software compatibility issue arisen
+     - Upgrade fault
+     - Hardware failure
+     - Hack-attack
+     - Some important admin item forgotten
+     - Some kind of screw up
+    The web is just far too complex and commoditised now for people to be able to intentionally check for everything that could go wrong. We need to get all the checks automated into the system.
+    */
+
+    // TODO: Document in the Code Book: Health Check vs Testing Platform vs Local web-standards checks vs PHP-Info vs Website Cleanup Tools vs Staff Checklist vs Health Check manual linking to external tools. Most tests will still be done in the dev cycle (testing platform) [due to needing extra code, or taking a long time to run, or being destructive]
+
+    // TODO: Add running a Health Check to the sup_professional_upgrading and the codebook_standards tutorials.
+
+    // -- v11 --
 
     // TODO: Add testForManualValidation etc links to maintenance-sheet
 
-    // TODO: Test everything on compo.sr
+    // TODO: Move over to bundled in Composr v11
+
+    // TODO: Drop database_integrity.php unit test
+
+    // TODO: Strip from 'PHP-info' and the Admin Zone dashboard, where it runs currently.
+
+    // TODO: Mark done on tracker https://compo.sr/tracker/view.php?id=3314
 }

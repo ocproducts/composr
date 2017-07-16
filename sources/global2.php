@@ -215,6 +215,8 @@ function init__global2()
     $BASE_URL_HTTPS_CACHE = null;
 
     require_code_no_override('version');
+    @header('X-Content-Type-Options: nosniff');
+    @header('X-XSS-Protection: 1');
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
         // Marker that Composr running
         //@header('X-Powered-By: Composr ' . cms_version_pretty() . ' (PHP ' . phpversion() . ')');
