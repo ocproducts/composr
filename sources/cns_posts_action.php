@@ -512,14 +512,14 @@ function cns_force_update_member_post_count($member_id, $member_post_count_dif =
 function cns_decache_cms_blocks($updated_forum_id, $forum_name = null, $member = null)
 {
     if (is_null($forum_name)) {
-        $forum_name = $GLOBALS['FORUM_DB']->query_select_value('f_forums', 'f_name', array('id' => $updated_forum_id));
+        $forum_name = $GLOBALS['FORUM_DB']->query_select_value_if_there('f_forums', 'f_name', array('id' => $updated_forum_id));
     }
 
     $decache = array(
         array('main_forum_news', null),
         array('main_forum_topics', null),
         array('side_forum_news', null),
-        array('bottom_news', array($forum_name)),
+        array('bottom_news', ($forum_name === null) ? null : array($forum_name)),
     );
 
     if (!is_null($member)) {
