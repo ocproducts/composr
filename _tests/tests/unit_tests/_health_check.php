@@ -57,6 +57,46 @@ class _health_check_test_set extends cms_test_case
         return ($domain == 'localhost') || (trim($domain, '0123456789.') == '') || (strpos($domain, ':') !== false);
     }
 
+    protected function callCompoSrApi($type, $params)
+    {
+        $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/api.php?type=' . urlencode($type);
+        foreach ($params as $key => $_val) {
+            switch (gettype($_val)) {
+                case 'string':
+                    $val = $_val;
+                    break;
+
+                case 'boolean':
+                    $val = $_val ? '1' : '0';
+                    break;
+
+                case 'integer':
+                    $val = strval($_val);
+                    break;
+
+                case 'double':
+                    $val = float_to_raw_string($_val);
+                    break;
+
+                case 'array':
+                    $val = @implode(',', array_map('strval', $_val));
+                    break;
+
+                case 'NULL':
+                    $val = '';
+                    break;
+
+                case 'string':
+                default:
+                    $val = $_val;
+                    break;
+            }
+
+            $url .= '&' . $key . '=' . urlencode($val);
+        }
+        return @json_decode(http_download_file($url, null, false));
+    }
+
     // Expired SSL certificate, or otherwise malfunctioning SSL (if enabled)
     /*public function testForSSLIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
@@ -519,10 +559,26 @@ class _health_check_test_set extends cms_test_case
         // TODO
     }*/
 
-    // TODO: Can download secured files that are meant to be in .htaccess / web.config
+    // Can download secured files that are meant to be in .htaccess / web.config
     /*public function testForPublicSecuredFileAccess($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
-        // TODO
+        $to_check = array(
+            'data_custom/ecommerce.log',
+            'caches/test.txt',
+            'safe_mode_temp/test.txt',
+        );
+        foreach ($to_check as $c) {
+            $full_path = get_custom_file_base() . '/' . $c;
+            $exists = is_file($full_path);
+            if (!$exists) {
+                cms_file_put_contents_safe($full_path, '');
+            }
+            http_download_file(get_custom_base_url() . '/' . $c, null, false);
+            $this->assertTrue($GLOBALS['HTTP_MESSAGE'] == '403', 'Should not be able to download ' . $c . ', should be secured by some kind of server configuration');
+            if (!$exists) {
+                @unlink($full_path);
+            }
+        }
     }*/
 
     // MyISAM database table(s) crashed
@@ -898,7 +954,7 @@ class _health_check_test_set extends cms_test_case
         $directories = array(
             'uploads/incoming' => 50,
             'safe_mode_temp' => 50, // TODO: temp in v11
-            'data_custom/profiling' => 50,
+            'data_custom' => 100,
         );
         foreach ($directories as $dir => $max_contents_threshold) {
             $count = count(get_directory_contents(get_file_base() . '/' . $dir));
@@ -1007,6 +1063,12 @@ class _health_check_test_set extends cms_test_case
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'hackattack WHERE date_and_time>' . strval(time() - 60 * 60 * 24);
         $num_failed = $GLOBALS['SITE_DB']->query_value_if_there($sql);
         $this->assertTrue($num_failed < 100, integer_format($num_failed) . ' hack-attack alerts happened today');
+
+        // TODO: For v11 add a 'percentage_score' field to the hackattack table
+        //  insert rows in enforce_captcha with a low score
+        //  insert rows before warn_exit(do_lang_tempcode('STOPPED_BY_ANTISPAM' in antispam.php with a zero score
+        //  consider the score in any threshold tests (including automatic banning)
+        //  filter out any lower scores from the admin_security module with a threshold input field that defaults to 80%
     }*/
 
     // Unusual number of failed logins
@@ -1017,22 +1079,51 @@ class _health_check_test_set extends cms_test_case
         $this->assertTrue($num_failed < 100, integer_format($num_failed) . ' failed logins happened today');
     }*/
 
-    // Unusual increase in rate limiting triggers (could indicate a distributed denial of service attack)
+    // Unusual increase in rate limiting triggers (could indicate a DDOS)
     /*public function testForRateLimitingSpike($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
-        // TODO
-    }*/
+        global $RATE_LIMITING_DATA;
+        $RATE_LIMITING_DATA = array();
 
-    // Unusual increase in CAPTCHA fails (could indicate a distributed denial of service attack)
-    /*public function testForCAPTCHAFailSpike($manual_checks = false, $automatic_repair = false, $is_test_site = false)
-    {
-        // TODO
-    }*/
+        $rate_limiter_path = get_custom_file_base() . '/data_custom/rate_limiter.php';
+        if (is_file($rate_limiter_path)) {
+            $fp = fopen($rate_limiter_path, 'rb');
+            flock($fp, LOCK_SH);
+            include($rate_limiter_path);
+            flock($fp, LOCK_UN);
+            fclose($fp);
+        }
 
-    // Unusual increase in spam detection (could indicate a distributed denial of service attack)
-    /*public function testForSpamDetectionSpike($manual_checks = false, $automatic_repair = false, $is_test_site = false)
-    {
-        // TODO
+        $threshold_sample = 20;
+        $threshold_rps = 1.0;
+
+        $threshold_sample_compound = 60;
+        $threshold_rps_compound = 0.3;
+
+        / *  Test
+        $RATE_LIMITING_DATA = array(
+            '1.2.3.4' => array_fill(0, 30, time()),
+        );
+        * /
+
+        if (!empty($RATE_LIMITING_DATA)) {
+            global $SITE_INFO;
+            $rate_limit_time_window = empty($SITE_INFO['rate_limit_time_window']) ? 10 : intval($SITE_INFO['rate_limit_time_window']);
+
+            $times_compound = array();
+
+            foreach ($RATE_LIMITING_DATA as $ip => $times) {
+                $requests_per_second = floatval(count($times)) / floatval($rate_limit_time_window);
+                $ok = (count($times) < $threshold_sample) || ($requests_per_second < $threshold_rps);
+                $this->assertTrue($ok, float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample) . ') requests from IP ' . $ip);
+
+                $times_compound = array_merge($times_compound, $times);
+            }
+
+            $requests_per_second = floatval(count($times_compound)) / floatval($rate_limit_time_window);
+            $ok = (count($times_compound) < $threshold_sample) || ($requests_per_second < $threshold_rps);
+            $this->assertTrue($ok, float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample_compound) . ') requests from all IPs together');
+        }
     }*/
 
     // High server CPU load
@@ -1496,9 +1587,10 @@ class _health_check_test_set extends cms_test_case
     }*/
 
     // Composr version no longer supported
-    /*public function testForOutdatedComposr($manual_checks = false, $automatic_repair = false, $is_test_site = false)
+    /*public function testForDiscontinuedComposr($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
-        // TODO
+        $is_discontinued = $this->callCompoSrApi('is_release_discontinued', array('version' => cms_version_number()));
+        $this->assertTrue($is_discontinued !== true, 'The ' . brand_name() . ' version is discontinued');
     }*/
 
     // PHP version no longer supported

@@ -193,6 +193,7 @@ This addon does not contain the compo.sr install code and the overall site and t
             'uploads/website_specific/compo.sr/scripts/errorservice.php',
             'uploads/website_specific/compo.sr/scripts/goto_release_notes.php',
             'uploads/website_specific/compo.sr/scripts/fetch_release_details.php',
+            'uploads/website_specific/compo.sr/scripts/api.php',
             'uploads/website_specific/compo.sr/scripts/newsletter_join.php',
             'uploads/website_specific/compo.sr/scripts/user.php',
             'uploads/website_specific/compo.sr/scripts/version.php',

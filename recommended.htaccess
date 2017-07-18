@@ -131,7 +131,7 @@ RewriteRule ^([^=]*)pg/s/([^\&\?]*)/index\.php$ $1index.php\?page=wiki&id=$2 [L,
 RewriteRule ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/([^\&\?]*)/index\.php(.*)$ $1index.php\?page=$2&type=$3&id=$4$5 [L,QSA]
 RewriteRule ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/index\.php(.*)$ $1index.php\?page=$2&type=$3$4 [L,QSA]
 RewriteRule ^([^=]*)pg/([^/\&\?]*)/index\.php(.*)$ $1index.php\?page=$2$3 [L,QSA]
-RewriteRule ^([^=]*)pg/index\.php(.*)$ $1index.php\?page=$3 [L,QSA]
+RewriteRule ^([^=]*)pg/index\.php(.*)$ $1index.php\?page=$2 [L,QSA]
 
 # PG STYLE: Now the same as the above sets, but without any additional parameters (and thus no index.php)
 RewriteRule ^([^=]*)pg/s/([^\&\?]*)$ $1index.php\?page=wiki&id=$2 [L,QSA]

@@ -66,7 +66,7 @@ class Module_admin_wordfilter
             ));
 
             $naughties = array(
-                'arsehole', 'asshole', 'arse', 'bastard', 'cock', 'cocked', 'cocksucker', 'crap', 'cunt', 'cum',
+                'arsehole', 'asshole', 'arse', 'bastard', 'cock', 'cocked', 'cocksucker', 'cunt', 'cum',
                 'blowjob', 'bollocks', 'bondage', 'bugger', 'buggery', 'dickhead', 'dildo', 'faggot', 'fuck', 'fucked', 'fucking',
                 'fucker', 'gayboy', 'jackoff', 'jerk-off', 'motherfucker', 'nigger', 'piss', 'pissed', 'puffter', 'pussy',
                 'queers', 'retard', 'shag', 'shagged',
