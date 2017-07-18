@@ -57,7 +57,7 @@ class _health_check_test_set extends cms_test_case
         return ($domain == 'localhost') || (trim($domain, '0123456789.') == '') || (strpos($domain, ':') !== false);
     }
 
-    protected function callCompoSrApi($type, $params)
+    protected function call_composr_homesite_api($type, $params)
     {
         $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/api.php?type=' . urlencode($type);
         foreach ($params as $key => $_val) {
@@ -1589,7 +1589,7 @@ class _health_check_test_set extends cms_test_case
     // Composr version no longer supported
     /*public function testForDiscontinuedComposr($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
-        $is_discontinued = $this->callCompoSrApi('is_release_discontinued', array('version' => cms_version_number()));
+        $is_discontinued = $this->call_composr_homesite_api('is_release_discontinued', array('version' => cms_version_number()));
         $this->assertTrue($is_discontinued !== true, 'The ' . brand_name() . ' version is discontinued');
     }*/
 
