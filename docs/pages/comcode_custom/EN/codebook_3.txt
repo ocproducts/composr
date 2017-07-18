@@ -569,7 +569,7 @@ Values are like hidden configuration options. They are either hidden because the
   - [tt]memory_tracking[/tt] -- set this to the number of megabytes peak memory usage after which you want the execution URL to be silently logged to the error log (useful for debugging memory usage on a live site). The value must be an integer, with no trailing 'M'. This does not impose a memory limit, which is 64MB by default in Composr, but may be turned off within certain carefully-chosen execution contexts (usually admin tasks which are necessarily memory consuming). Requires PHP 5.2+.
   - [tt]enable_profiler[/tt] -- set this to '1' if you want to {$IS_MAINTAINED,extra_logging,enable the Composr profiler}, which will write select performance information to [tt]data_custom/profiling.(ID).log[/tt]. For your security you should ensure these files are web-accessible (we will do this by default if we can via the [tt]data_custom/.htaccess[/tt], but you should take care). The web server needs permissions to save files into [tt]data_custom/[/tt] (this is possible by default on modern suEXEC environments). Set to '2' if you want to read Linux performance data, which will then be included in the logging (takes a bit more work by the profiler, assumes Linux and sufficient permissions).
   - [tt]monitor_slow_urls[/tt] -- set this to a number of seconds to log any requests taking at least that many seconds seconds to the error log
-  - [tt]permission_log_success_too[/tt] -- set this to '1' if you want the permission log file ([tt]data_custom/permissioncheckslog.php[/tt]) to show both successful and unsuccessful permission checks. Usually it only shows fails.
+  - [tt]permission_log_success_too[/tt] -- set this to '1' if you want the permission log file ([tt]data_custom/permission_checks.log[/tt]) to show both successful and unsuccessful permission checks. Usually it only shows fails.
  - For system-integrators
   - [tt]agency_email_address[/tt] -- set this to a secondary e-mail address where you would like all error e-mails to go (the primary one being the staff address). Only set this if you are an agency and want to receive error e-mails in addition/instead of your client
  - For back-end developers
@@ -857,7 +857,7 @@ These log files exist by default in [tt]data_custom[/tt]:
  - [tt]errorlog.php[/tt] -- Run-time error logging (using the PHP error logging system) [shown in Composr Error log page]
 
 The follow log files can be created in [tt]data_custom[/tt], and will then be appended to as Composr runs:
- - [tt]permissioncheckslog.php[/tt] -- Permisison checks (useful for debugging why accessing is failing) [shown in Composr Error log page]
+ - [tt]permission_checks.log[/tt] -- Permisison checks (useful for debugging why accessing is failing) [shown in Composr Error log page]
  - [tt]ecommerce.log[/tt] -- raw eCommerce transaction data (useful for debugging IPN)
  - [tt]queries.log[/tt] -- queries running (debugging)
  - [tt]big_query_screens.log[/tt] -- slow queries running (debugging performance)

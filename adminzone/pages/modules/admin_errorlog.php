@@ -190,8 +190,8 @@ class Module_admin_errorlog
 
         // Read in end of permissions file
         require_all_lang();
-        if (is_readable(get_custom_file_base() . '/data_custom/permissioncheckslog.php')) {
-            $myfile = @fopen(get_custom_file_base() . '/data_custom/permissioncheckslog.php', 'rb');
+        if (is_readable(get_custom_file_base() . '/data_custom/permission_checks.log')) {
+            $myfile = @fopen(get_custom_file_base() . '/data_custom/permission_checks.log', 'rb');
             if ($myfile !== false) {
                 flock($myfile, LOCK_SH);
                 fseek($myfile, -40000, SEEK_END);

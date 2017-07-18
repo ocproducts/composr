@@ -173,7 +173,7 @@ There are FirePHP equivalents in other browsers, but for simplicity we have focu
 
 [title="3"]{$IS_MAINTAINED,extra_logging,Logging}[/title]
 
-As an alternative to FirePHP, you can create an empty writable [tt]data_custom/permissioncheckslog.php[/tt] file. All failed permission checks will be logged to it.
+As an alternative to FirePHP, you can create an empty writable [tt]data_custom/permission_checks.log[/tt] file. All failed permission checks will be logged to it.
 
 Just don't leave the file there or it'll get very big, very fast!
 

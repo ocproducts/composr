@@ -516,7 +516,6 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
             'chat_last_full_check.dat' => 'data_custom/modules/chat',
             'chat_last_msg.dat' => 'data_custom/modules/chat',
             'latest.dat' => 'data_custom/modules/web_notifications',
-            'permissioncheckslog.php' => 'data_custom',
             'failover_rewritemap.txt' => 'data_custom',
             'failover_rewritemap__mobile.txt' => 'data_custom',
             'aggregate_types.xml' => 'data_custom/xml_config',

@@ -27,7 +27,7 @@ class git_conflicts_test_set extends cms_test_case
         require_code('files2');
         $contents = get_directory_contents(get_file_base());
         foreach ($contents as $c) {
-            if ((substr($c, -4) == '.php') && (basename($c) != 'MessageFormatter.php') && (basename($c) != 'errorlog.php') && (basename($c) != 'phpstub.php') && (basename($c) != 'permissioncheckslog.php')) {
+            if ((substr($c, -4) == '.php') && (basename($c) != 'MessageFormatter.php') && (basename($c) != 'errorlog.php') && (basename($c) != 'phpstub.php')) {
                 $this->assertTrue(strpos(file_get_contents($c), '<<<' . '<') === false, $c);
             }
         }

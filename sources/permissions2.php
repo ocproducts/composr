@@ -86,7 +86,7 @@ function _handle_permission_check_logging($member_id, $op, $params, $result)
             fwrite($PERMISSION_CHECK_LOGGER, ' --> ' . ($result ? do_lang('YES') : do_lang('NO')) . "\n");
         }
         fwrite($PERMISSION_CHECK_LOGGER, "\n");
-        sync_file(get_custom_file_base() . '/data_custom/permissioncheckslog.php');
+        sync_file(get_custom_file_base() . '/data_custom/permission_checks.log');
     }
 
     if ((function_exists('fb')) && (get_param_integer('keep_firephp', 0) == 1) && (!headers_sent())) {
