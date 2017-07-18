@@ -20,7 +20,7 @@
 
     // Too useful to not have globally!
     window.intVal   = intVal;
-    //window.numVal = numVal;
+    window.numVal   = numVal;
     window.boolVal  = boolVal;
     window.strVal   = strVal;
     window.arrVal   = arrVal;
@@ -204,36 +204,22 @@
          * @param {string} optionName
          * @returns {boolean|string|number}
          */
-        $CONFIG_OPTION: function $CONFIG_OPTION(optionName) {
-            if (window.IN_MINIKERNEL_VERSION) {
-                // Installer, likely executing global.js
-                return '';
-            }
+        $CONFIG_OPTION: (function () {
+            var $PUBLIC_CONFIG_OPTIONS_JSON = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
             
-            if (hasOwn(symbols['CONFIG_OPTION'], optionName)) {
-                return symbols['CONFIG_OPTION'][optionName];
-            }
+            return function $CONFIG_OPTION(optionName) {
+                if (window.IN_MINIKERNEL_VERSION) {
+                    // Installer, likely executing global.js
+                    return '';
+                }
 
-            $cms.error('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
-        },
-        /**
-         * WARNING: This is a very limited subset of the $VALUE_OPTION tempcode symbol
-         * @method
-         * @param {string} optionName
-         * @returns {string|boolean|number}
-         */
-        $VALUE_OPTION: function $VALUE_OPTION(optionName) {
-            if (window.IN_MINIKERNEL_VERSION) {
-                // Installer, likely executing global.js
-                return '';
-            }
-            
-            if (hasOwn(symbols['VALUE_OPTION'], optionName)) {
-                return symbols['VALUE_OPTION'][optionName];
-            }
+                if (hasOwn($PUBLIC_CONFIG_OPTIONS_JSON, optionName)) {
+                    return $PUBLIC_CONFIG_OPTIONS_JSON[optionName];
+                }
 
-            $cms.error('$cms.$VALUE_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
-        },
+                $cms.error('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
+            };
+        }()),
         /**
          * WARNING: This is a very limited subset of the $HAS_PRIVILEGE tempcode symbol
          * @method
@@ -7589,7 +7575,7 @@
                         }
                     }
 
-                    if ($cms.$VALUE_OPTION('js_keep_params')) {
+                    if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         // Keep parameters need propagating
                         if (anchor.href && anchor.href.startsWith($cms.$BASE_URL() + '/')) {
                             anchor.href += keepStubWithContext(anchor.href);
@@ -7631,7 +7617,7 @@
                         }
                     }
 
-                    if ($cms.$VALUE_OPTION('js_keep_params')) {
+                    if (boolVal('{$VALUE_OPTION;,js_keep_params}')) {
                         /* Keep parameters need propagating */
                         if (form.action && form.action.startsWith($cms.$BASE_URL() + '/')) {
                             form.action += keepStubWithContext(form.action);
