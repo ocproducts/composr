@@ -31,7 +31,7 @@ class notifications_all_coded_test_set extends cms_test_case
         $php_path = find_php_path();
         $contents = get_directory_contents(get_file_base());
         foreach ($contents as $c) {
-            if ((substr($c, -4) == '.php') && (basename($c) != 'errorlog.php') && (basename($c) != 'phpstub.php') && (basename($c) != 'permissioncheckslog.php')) {
+            if ((substr($c, -4) == '.php') && (basename($c) != 'errorlog.php') && (basename($c) != 'phpstub.php')) {
                 foreach (array_keys($hooks) as $hook) {
                     $file = file_get_contents($c);
                     if (preg_match('#dispatch_notification\(\s*\'' . $hook . '\'#', $file) != 0) {

@@ -35,7 +35,7 @@ class msns_test_set extends cms_test_case
                 continue;
             }
 
-            if ((substr($f, -4) == '.php') && (basename($f) != 'errorlog.php') && (basename($f) != 'permissioncheckslog.php')) {
+            if ((substr($f, -4) == '.php') && (basename($f) != 'errorlog.php')) {
                 $c = file_get_contents($f);
 
                 $this->assertTrue(strpos($c, ". get_table_prefix() . 'f_") === false, 'Wrong forum table prefix in ' . $f);
