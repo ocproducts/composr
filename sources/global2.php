@@ -390,7 +390,7 @@ function init__global2()
     setlocale(LC_ALL, explode(',', do_lang('locale')));
     if (substr(strftime('%M'), 0, 2) == '??') { // Windows may do this because it can't output a utf-8 character set, so gets mangled to question marks by PHP
         setlocale(LC_ALL, explode(',', 'en-GB.UTF-8,en_GB.UTF-8,en-US.UTF-8,en_US.UTF-8,en.UTF-8,en-GB,en_GB,en-US,en_US,en')); // The user will have to define locale_subst correctly
-    } 
+    }
 
     // Check RBLs
     $spam_check_level = get_option('spam_check_level');
@@ -440,7 +440,6 @@ function init__global2()
         if (has_zone_access(get_member(), 'adminzone')) {
             $JAVASCRIPTS_DEFAULT['staff'] = true;
             $JAVASCRIPTS_DEFAULT['themeing'] = true;
-            $JAVASCRIPTS_DEFAULT['ajax'] = true;
             if (get_option('bottom_show_commandr_button', true) === '1') {
                 $JAVASCRIPTS_DEFAULT['button_commandr'] = true;
             }

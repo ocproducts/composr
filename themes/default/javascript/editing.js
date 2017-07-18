@@ -263,7 +263,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         e = postingForm.elements[counter];
         id = e.id;
 
-        if ((e.type === 'textarea') && (e.className.indexOf('wysiwyg') !== -1)) {
+        if ((e.type === 'textarea') && (e.classList.contains('wysiwyg'))) {
             if (document.getElementById(id + '__is_wysiwyg')) {
                 indicator = document.getElementById(id + '__is_wysiwyg');
             } else {

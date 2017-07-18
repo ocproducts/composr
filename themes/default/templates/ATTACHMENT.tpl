@@ -15,7 +15,7 @@
 							{!ATTACHMENT,{I*}}
 
 							{+START,IF,{TRUE_ATTACHMENT_UI}}
-								<img class="help_icon" data-cms-rich-tooltip="1" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
+								<img class="help_icon" data-cms-rich-tooltip="{}" title="{!ATTACHMENT_HELP_2=,{$GET,IMAGE_TYPES}}" alt="{!HELP}" src="{$IMG*,icons/16x16/help}" srcset="{$IMG*,icons/32x32/help} 2x" />
 							{+END}
 						</th>
 					{+END}

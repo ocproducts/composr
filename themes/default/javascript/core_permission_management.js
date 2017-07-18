@@ -486,8 +486,7 @@ function copyPermissionPresets(name, value, justTrack) {
                 elements[i].disabled = true;
             }
             // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
-            // TODO: Salman remove eval somehow
-            elements[i].selectedIndex = eval(elements[i].name + ';') + 1; // -1 is at index 0
+            elements[i].selectedIndex = window[elements[i].name] + 1; // -1 is at index 0
         }
     }
 

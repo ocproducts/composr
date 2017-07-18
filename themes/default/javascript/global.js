@@ -358,7 +358,9 @@
                 /**@member {string}*/
                 google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics),
                 /**@member {string}*/
-                cookie_notice: strVal(symbols.CONFIG_OPTION.cookie_notice)
+                cookie_notice: strVal(symbols.CONFIG_OPTION.cookie_notice), 
+                /**@member {string}*/
+                chat_message_direction: strVal(symbols.CONFIG_OPTION.chat_message_direction)
             };
 
             if (hasOwn(configOptions, optionName)) {
@@ -2116,6 +2118,9 @@
 
         return decodeURIComponent(cookies.substring(startIdx + cookieName.length + 1, endIdx));
     }
+    
+    // Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
+    $cms.support.animation = ('animate' in emptyEl);
 
     /**
      * If the browser has support for CSS transitions
@@ -2246,7 +2251,7 @@
      */
     function computedStyle(el, property) {
         var cs = el.ownerDocument.defaultView.getComputedStyle(el);
-        return (property !== undefined) ? cs.getPropertyValue(property) : cs;
+        return (property !== undefined) ? cs.getPropertyValue(dasherize(property)) : cs;
     }
 
     var rgxIdSelector = /^\#[\w\-]+$/,
@@ -2580,7 +2585,7 @@
      * @returns {*}
      */
     $cms.dom.data = function data(el, key, value) {
-        // TODO: Salman is the internalised caching here actually worthwhile? To me it seems like it could introduce bugs for a case the browsers would already have optimised.
+        // Note: We have internalised caching here. You must not change data-* attributes manually and expect this API to pick up on it.
 
         var name, data;
 
@@ -3327,7 +3332,7 @@
                 var cs = computedStyle(el),
                     props = {};
                 property.forEach(function (prop) {
-                    props[prop] = (el.style[camelize(prop)] || cs.getPropertyValue(prop));
+                    props[prop] = (el.style[camelize(prop)] || cs.getPropertyValue(dasherize(prop)));
                 });
                 return props;
             }
@@ -3531,7 +3536,7 @@
 
         $cms.dom.show(el);
 
-        if (('animate' in emptyEl) && (duration > 0)) { // Progressive enhancement using the web animations API
+        if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: 0 }, { opacity: target }],
                 options = { duration : duration },
                 animation = el.animate(keyFrames, options);
@@ -3567,7 +3572,7 @@
 
         duration = Number.isFinite(+duration) ? +duration : 400;
 
-        if ('animate' in emptyEl) { // Progressive enhancement using the web animations API
+        if ($cms.support.animation) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
                 options = { duration: duration },
                 animation = el.animate(keyFrames, options);
@@ -3593,7 +3598,15 @@
      * @param callback
      */
     $cms.dom.fadeToggle = function fadeToggle(el, duration, callback) {
-        // TODO Salman. To be implemented
+        el = elArg(el);
+        
+        var fadeIn = $cms.dom.notDisplayed(el);
+        
+        if (fadeIn) {
+            $cms.dom.fadeIn(el, duration, callback);
+        } else {
+            $cms.dom.fadeOut(el, duration, callback)
+        }
     };
 
     /**
@@ -3603,7 +3616,66 @@
      * @param callback
      */
     $cms.dom.slideDown = function slideDown(el, duration, callback) {
-        // TODO Salman. To be implemented
+        el = elArg(el);
+
+        if ((typeof duration === 'function') && (callback === undefined)) {
+            callback = duration;
+            duration = undefined;
+        }
+
+        duration = Number.isFinite(+duration) ? +duration : 400;
+        
+        // Show element if it is hidden
+        $cms.dom.show(el);
+
+        // Get the element position to restore it then
+        var prevPosition = el.style.position,
+            prevVisibility = el.style.visibility;
+        
+        // place it so it displays as usually but hidden
+        el.style.position = 'absolute';
+        el.style.visibility = 'hidden';
+
+        var startKeyframe = {
+                height: 0,
+                marginTop: 0,
+                marginBottom: 0,
+                paddingTop: 0,
+                paddingBottom: 0
+            },
+            // Fetch natural height, margin, padding
+            endKeyframe = {
+                height: $cms.dom.css(el, 'height'),
+                marginTop: $cms.dom.css(el, 'margin-top'),
+                marginBottom: $cms.dom.css(el, 'margin-bottom'),
+                paddingTop: $cms.dom.css(el, 'padding-top'),
+                paddingBottom: $cms.dom.css(el, 'padding-bottom')
+            };
+
+        // Set initial css for animation
+        el.style.position = prevPosition;
+        el.style.visibility = prevVisibility;
+
+        var prevOverflow = el.style.overflow;
+        el.style.overflow = 'hidden';
+
+        if ($cms.support.animation) { // Progressive enhancement using the web animations API
+            var keyFrames = [startKeyframe, endKeyframe],
+                options = { duration: duration },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function (e) {
+                el.style.overflow = prevOverflow;
+                if (callback) {
+                    callback.call(el, e, el);
+                }
+            };
+        } else {
+            el.style.overflow = prevOverflow;
+            if (callback) {
+                callback.call(el, {}, el);
+            }
+        }
     };
 
     /**
@@ -3613,7 +3685,57 @@
      * @param callback
      */
     $cms.dom.slideUp = function slideUp(el, duration, callback) {
-        // TODO Salman. To be implemented
+        el = elArg(el);
+
+        if ((typeof duration === 'function') && (callback === undefined)) {
+            callback = duration;
+            duration = undefined;
+        }
+
+        duration = Number.isFinite(+duration) ? +duration : 400;
+        
+        if ($cms.dom.notDisplayed(el)) {
+            // Already hidden
+            return;
+        }
+        
+        var prevOverflow = el.style.overflow;
+        el.style.overflow = 'hidden';
+        
+        var startKeyframe = {
+                height: $cms.dom.css(el, 'height'),
+                marginTop: $cms.dom.css(el, 'marginTop'),
+                marginBottom: $cms.dom.css(el, 'marginBottom'),
+                paddingTop: $cms.dom.css(el, 'paddingTop'),
+                paddingBottom: $cms.dom.css(el, 'paddingBottom')
+            },
+            endKeyframe = {
+                height: 0,
+                marginTop: 0,
+                marginBottom: 0,
+                paddingTop: 0,
+                paddingBottom: 0
+            };
+        
+        if ($cms.support.animation) { // Progressive enhancement using the web animations API
+            var keyFrames = [startKeyframe, endKeyframe],
+                options = { duration: duration },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function (e) {
+                el.style.overflow = prevOverflow;
+                $cms.dom.hide(el);
+                if (callback) {
+                    callback.call(el, e, el);
+                }
+            };
+        } else {
+            el.style.overflow = prevOverflow;
+            $cms.dom.hide(el);
+            if (callback) {
+                callback.call(el, {}, el);
+            }
+        }
     };
 
     /**
@@ -3623,7 +3745,15 @@
      * @param callback
      */
     $cms.dom.slideToggle = function slideToggle(el, duration, callback) {
-        // TODO Salman. To be implemented
+        el = elArg(el);
+
+        var slideDown = $cms.dom.notDisplayed(el);
+
+        if (slideDown) {
+            $cms.dom.slideDown(el, duration, callback);
+        } else {
+            $cms.dom.slideUp(el, duration, callback)
+        }
     };
 
     /**
@@ -5495,7 +5625,7 @@
     * @returns {string}
     */
     $cms.protectURLParameter = function protectURLParameter(parameter) {
-        var baseURL = $cms.$BASE_URL;
+        var baseURL = $cms.$BASE_URL();
 
         if (parameter.startsWith('https://')) {
             baseURL = baseURL.replace(/^http:\/\//, 'https://');
@@ -5740,8 +5870,7 @@
 
         return false;
     };
-
-    // TODO: Salman haveLinks does not seem to be working. In admin_config the config option descriptions should be click-to-see, not hover
+    
     /**
      * Tooltips that can work on any element with rich HTML support
      * @memberof $cms.ui
@@ -5786,9 +5915,7 @@
         if (!el) {
             return;
         }
-
-        $cms.log('$cms.ui.activateTooltip');
-
+        
         if (!haveLinks && $cms.isTouchEnabled()) {
             return; // Too erratic
         }
@@ -5805,8 +5932,10 @@
                 $cms.ui.repositionTooltip(el, event, false, false, null, false, win);
             });
         } else {
-            $cms.dom.on(el, 'click.cmsTooltip', function () {
-                $cms.ui.deactivateTooltip(el);
+            $cms.dom.on(window, 'click.cmsTooltip', function (e) {
+                if ($cms.dom.$id(el.tooltip_id) && $cms.dom.isDisplayed($cms.dom.$id(el.tooltip_id))) {
+                    $cms.ui.deactivateTooltip(el);
+                }
             });
         }
 
@@ -5833,9 +5962,9 @@
 
         var tooltipEl;
         if ((el.tooltip_id != null) && ($cms.dom.$id(el.tooltip_id))) {
-            tooltipEl = $cms.dom.$('#' + el.tooltip_id);
+            tooltipEl = $cms.dom.$id(el.tooltip_id);
             tooltipEl.style.display = 'none';
-            $cms.dom.html(tooltipEl, '');
+            $cms.dom.empty(tooltipEl);
             setTimeout(function () {
                 $cms.ui.repositionTooltip(el, event, bottom, true, tooltipEl, forceWidth);
             }, 0);
@@ -5844,20 +5973,21 @@
             tooltipEl.role = 'tooltip';
             tooltipEl.style.display = 'none';
             var rtPos = tooltip.indexOf('results_table');
-            tooltipEl.className = 'tooltip ' + ((rtPos == -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (haveLinks ? ' have_links' : '');
+            tooltipEl.className = 'tooltip ' + ((rtPos === -1 || rtPos > 100) ? 'tooltip_ownlayout' : 'tooltip_nolayout') + ' boxless_space' + (haveLinks ? ' have_links' : '');
             if (el.className.substr(0, 3) === 'tt_') {
                 tooltipEl.className += ' ' + el.className;
             }
             if (tooltip.length < 50) {  // Only break words on long tooltips. Otherwise it messes with alignment.
                 tooltipEl.style.wordWrap = 'normal';
             }
-
             if (forceWidth) {
                 tooltipEl.style.width = width;
             } else {
                 if (width === 'auto') {
                     var newAutoWidth = $cms.dom.getWindowWidth(win) - 30 - window.mouse_x;
-                    if (newAutoWidth < 150) newAutoWidth = 150; // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
+                    if (newAutoWidth < 150) { // For tiny widths, better let it slide to left instead, which it will as this will force it to not fit
+                        newAutoWidth = 150;
+                    } 
                     tooltipEl.style.maxWidth = newAutoWidth + 'px';
                 } else {
                     tooltipEl.style.maxWidth = width;
@@ -5895,14 +6025,6 @@
             'type': event.type || ''
         };
 
-        // This allows turning off tooltips by pressing anywhere, on iPhone (and probably Android etc). The clickability of body forces the simulated onmouseout events to fire.
-        var bi = $cms.dom.$('#main_website_inner') || document.body;
-        if ((window.TouchEvent !== undefined) && !bi.onmouseover) {
-            bi.onmouseover = function () {
-                return true;
-            };
-        }
-
         setTimeout(function () {
             if (!el.is_over) {
                 return;
@@ -5914,7 +6036,7 @@
 
             el.tooltip_on = true;
             tooltipEl.style.display = 'block';
-            if ((tooltipEl.style.width == 'auto') && ((tooltipEl.childNodes.length != 1) || (tooltipEl.childNodes[0].nodeName.toLowerCase() != 'img'))) {
+            if ((tooltipEl.style.width === 'auto') && ((tooltipEl.childNodes.length !== 1) || (tooltipEl.childNodes[0].nodeName.toLowerCase() !== 'img'))) {
                 tooltipEl.style.width = ($cms.dom.contentWidth(tooltipEl) + 1/*for rounding issues from em*/) + 'px'; // Fix it, to stop the browser retroactively reflowing ambiguous layer widths on mouse movement
             }
 
@@ -5945,10 +6067,7 @@
             return;
         }
 
-        //console.log('reposition_tooltip');
-
         if (!starting) { // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
-
             if (el.getAttribute('title')) {
                 el.setAttribute('title', '');
             }
@@ -5967,7 +6086,7 @@
                 el.onmouseover(event);
             }
             return;
-        }  // Should not happen but written as a fail-safe
+        }
 
         tooltipElement || (tooltipElement = $cms.dom.$id(el.tooltip_id));
 
@@ -5986,7 +6105,7 @@
         y += styleOffsetY;
         try {
             if (event.type) {
-                if (event.type != 'focus') {
+                if (event.type !== 'focus') {
                     el.done_none_focus = true;
                 }
 
@@ -5997,16 +6116,14 @@
                 x = (event.type === 'focus') ? (win.pageXOffset + $cms.dom.getWindowWidth(win) / 2) : (window.mouse_x + styleOffsetX);
                 y = (event.type === 'focus') ? (win.pageYOffset + $cms.dom.getWindowHeight(win) / 2 - 40) : (window.mouse_y + styleOffsetY);
             }
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
         // Maybe mouse position actually needs to be in parent document?
         try {
             if (event.target && (event.target.ownerDocument !== win.document)) {
                 x = win.mouse_x + styleOffsetX;
                 y = win.mouse_y + styleOffsetY;
             }
-        } catch (ignore) {
-        }
+        } catch (ignore) {}
 
         // Work out which direction to render in
         var width = $cms.dom.contentWidth(tooltipElement);
@@ -6032,9 +6149,13 @@
             tooltipElement.style.top = (y - height) + 'px';
         } else {
             var yExcess = y - $cms.dom.getWindowHeight(win) - win.pageYOffset + height + styleOffsetY;
-            if (yExcess > 0) y -= yExcess;
+            if (yExcess > 0) {
+                y -= yExcess;
+            }
             var scrollY = win.pageYOffset;
-            if (y < scrollY) y = scrollY;
+            if (y < scrollY) {
+                y = scrollY;
+            }
             tooltipElement.style.top = y + 'px';
         }
         tooltipElement.style.left = x + 'px';
@@ -6050,8 +6171,6 @@
         }
         el.is_over = false;
 
-        //console.log('deactivate_tooltip');
-
         if (el.tooltip_id == null) {
             return;
         }
@@ -6061,7 +6180,7 @@
         if (tooltipElement) {
             $cms.dom.off(tooltipElement, 'mouseout.cmsTooltip');
             $cms.dom.off(tooltipElement, 'mousemove.cmsTooltip');
-            $cms.dom.off(tooltipElement, 'click.cmsTooltip');
+            $cms.dom.off(window, 'click.cmsTooltip');
             $cms.dom.hide(tooltipElement);
         }
     };
@@ -6323,14 +6442,13 @@
      */
     $cms.ui.disableButton = function disableButton(btn, permanent) {
         permanent = !!permanent;
-
-        // TODO: Salman merge in this change https://github.com/ocproducts/composr/commit/670ad2c791eedd4f0e3bf2290854d1f1a02369ff and also the relevant bits in here which fix this change https://github.com/ocproducts/composr/commit/f42749ec932a3143e6d3d4f59ce48f48b04a331c
-
+        
         if (btn.form && (btn.form.target === '_blank')) {
             return;
         }
 
-        var uid = $cms.uid(btn);
+        var uid = $cms.uid(btn),
+            timeout, interval;
 
         setTimeout(function () {
             btn.style.cursor = 'wait';
@@ -6341,11 +6459,29 @@
         }, 20);
 
         if (!permanent) {
-            setTimeout(enableDisabledButton, 5000);
+            timeout = setTimeout(enableDisabledButton, 5000);
+
+            if (btn.form.target === 'preview_iframe') {
+                interval = window.setInterval(function () {
+                    if (window.frames['preview_iframe'].document && window.frames['preview_iframe'].document.body) {
+                        if (interval != null) {
+                            window.clearInterval(interval);
+                            interval = null;
+                        }
+                        enableDisabledButton();
+                    }
+                }, 500);
+            }
+            
             $cms.dom.on(window, 'pagehide', enableDisabledButton);
         }
 
         function enableDisabledButton() {
+            if (timeout != null) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+            
             if (tempDisabledButtons[uid]) {
                 btn.disabled = false;
                 btn.style.removeProperty('cursor');
@@ -6892,7 +7028,7 @@
             };
 
             this.mousemove = function (e) {
-                if (that.boxWrapperEl && that.boxWrapperEl.firstElementChild.className.indexOf(' mousemove') == -1) {
+                if (that.boxWrapperEl && !that.boxWrapperEl.firstElementChild.classList.contains(' mousemove')) {
                     that.boxWrapperEl.firstElementChild.className += ' mousemove';
                     setTimeout(function () {
                         if (that.boxWrapperEl) {
@@ -6963,7 +7099,7 @@
                         if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body) && (iframe.contentWindow.document.body.done_popup_trans === undefined)) {
                             iframe.contentWindow.document.body.style.background = 'transparent';
 
-                            if (iframe.contentWindow.document.body.className.indexOf('overlay') == -1) {
+                            if (!iframe.contentWindow.document.body.classList.contains('overlay')) {
                                 iframe.contentWindow.document.body.className += ' overlay lightbox';
                             }
 
@@ -7421,12 +7557,10 @@
         }
 
         function processRequestChange(ajaxResultFrame, ajaxCallback) {
-            var method = null,
-                methodEl = ajaxResultFrame.querySelector('method');
+            var method = null;
 
-            if (methodEl || ajaxCallback) {
-                // TODO: Salman remove eval, but first check that we are no longer using any <method> AJAX results [the initiating JS should define the callback] (and then all the <method> code can be removed)
-                method = methodEl ? eval('return ' + methodEl.textContent) : ajaxCallback;
+            if (ajaxCallback) {
+                method = ajaxCallback;
             }
 
             var messageEl = ajaxResultFrame.querySelector('message');
@@ -7695,6 +7829,53 @@
             }
         },
 
+        initializeTables: {
+            attach: function attach(context) {
+                var tables = $cms.dom.$$$(context, 'table');
+
+                tables.forEach(function (table) {
+                    // Responsive table prep work
+                    if (table.classList.contains('responsive_table')) {
+                        var trs = table.getElementsByTagName('tr'),
+                            ths_first_row = trs[0].cells,
+                            i, tds, j, data;
+                        
+                        for (i = 0; i < trs.length; i++) {
+                            tds = trs[i].cells;
+                            for (j = 0; j < tds.length; j++) {
+                                if (!tds[j].classList.contains('responsive_table_no_prefix')) {
+                                    data = (ths_first_row[j] === undefined) ? '' : ths_first_row[j].textContent.replace(/^\s+/, '').replace(/\s+$/, '');
+                                    if (data !== '') {
+                                        tds[j].setAttribute('data-th', data);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        },
+        
+        columnHeightBalancing: {
+            attach: function attach(context) {
+                var cols = $cms.dom.$$$('.col_balance_height'),
+                    i, max, j, height;
+
+                for (i = 0; i < cols.length; i++) {
+                    max = null;
+                    for (j = 0; j < cols.length; j++) {
+                        if (cols[i].className === cols[j].className) {
+                            height = cols[j].offsetHeight;
+                            if (max === null || height > max) {
+                                max = height;
+                            }
+                        }
+                        cols[i].style.height = max + 'px';
+                    }
+                }
+            }
+        },
+        
         // Convert img title attributes into composr tooltips
         imageTooltips: {
             attach: function (context) {
@@ -7704,6 +7885,17 @@
 
                 $cms.dom.$$$(context, 'img:not([data-cms-rich-tooltip])').forEach(function (img) {
                     convertTooltip(img);
+                });
+            }
+        },
+        
+        // Implementation for [data-remove-if-js-enabled]
+        removeIfJsEnabled: {
+            attach: function (context) {
+                var els = $cms.dom.$$$(context, '[data-remove-if-js-enabled]');
+                
+                els.forEach(function (el) {
+                    $cms.dom.remove(el);
                 });
             }
         },
@@ -8016,7 +8208,10 @@
 
                 // Toggle tray
                 'click [data-click-tray-toggle]': 'clickTrayToggle',
-                'click [data-click-tray-accordion-toggle]': 'clickTrayAccordionToggle',
+                
+                'click [data-click-ui-open]': 'clickUiOpen',
+                
+                'click [data-click-do-input]': 'clickDoInput',
 
                 /* Footer links */
                 'click .js-click-load-software-chat': 'loadSoftwareChat',
@@ -8028,7 +8223,6 @@
                 'click .js-global-click-load-realtime-rain': 'loadRealtimeRain',
 
                 'click .js-global-click-load-commandr': 'loadCommandr'
-
             };
         },
 
@@ -8358,13 +8552,21 @@
             $cms.ui.deactivateTooltip(el);
         },
 
+        // Implementation for [data-cms-rich-tooltip]
         activateRichTooltip: function (e, el) {
+            var options = objVal($cms.dom.data(el, 'cmsRichTooltip'));
+            
             if (el.ttitle === undefined) {
                 el.ttitle = (el.attributes['data-title'] ? el.getAttribute('data-title') : el.title);
+                el.title = '';
+            }
+
+            if ((e.type === 'mouseover') && options.haveLinks) {
+                return;
             }
 
             //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
-            var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, !!el.have_links];
+            var args = [el, e, el.ttitle, 'auto', null, null, false, true, false, false, window, true/*!!el.have_links*/];
 
             try {
                 $cms.ui.activateTooltip.apply(undefined, args);
@@ -8406,12 +8608,25 @@
 
             $cms.toggleableTray(trayEl);
         },
-
-        // Implementation for [data-click-tray-accordion-toggle]
-        clickTrayAccordionToggle: function () {
-            // TODO: Salman ???
+        
+        
+        clickUiOpen: function (e, clicked) {
+            var args = arrVal($cms.dom.data(clicked, 'clickUiOpen'));
+            args[0] = $cms.maintainThemeInLink(args[0]);
+            $cms.ui.open.apply(undefined, args);
         },
-
+        
+        clickDoInput: function (e, clicked) {
+            var args = arrVal($cms.dom.data(clicked, 'clickDoInput')),
+                type = strVal(args[0]),
+                fieldName = strVal(args[1]),
+                tag = strVal(args[2]);
+                
+            if (typeof window['do_input_' + type] === 'function') {
+                window['do_input_' + type](fieldName, tag);
+            }
+        },
+        
         // Detecting of JavaScript support
         detectJavascript: function () {
             var url = window.location.href,
@@ -8683,7 +8898,7 @@
              */
             function handleImageMouseOver(event) {
                 var target = event.target;
-                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
+                if (target.previousSibling && target.previousSibling.classList && (target.previousSibling.classList.contains('magic_image_edit_link'))) {
                     return;
                 }
                 if (target.offsetWidth < 130) {
@@ -8737,7 +8952,7 @@
                 var target = event.target;
 
                 if ($cms.$CONFIG_OPTION('enable_theme_img_buttons')) {
-                    if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1)) {
+                    if (target.previousSibling && target.previousSibling.classList && (target.previousSibling.classList.contains('magic_image_edit_link'))) {
                         if ((target.mo_link !== undefined) && (target.mo_link)) // Clear timed display of new edit button
                         {
                             clearTimeout(target.mo_link);
@@ -8749,8 +8964,9 @@
                             clearTimeout(target.mo_link);
                         target.mo_link = setTimeout(function () {
                             if ((target.edit_window === undefined) || (!target.edit_window) || (target.edit_window.closed)) {
-                                if (target.previousSibling && (target.previousSibling.className !== undefined) && (target.previousSibling.className.indexOf !== undefined) && (target.previousSibling.className.indexOf('magic_image_edit_link') != -1))
+                                if (target.previousSibling && target.previousSibling.classList && (target.previousSibling.classList.contains('magic_image_edit_link'))) {
                                     target.parentNode.removeChild(target.previousSibling);
+                                }
                             }
                         }, 3000);
                     }
@@ -9412,32 +9628,32 @@
         recreateCleanTimeout();
 
         return false;
+    }
+    
+    function cleanMenus() {
+        cleanMenusTimeout = null;
 
-        function cleanMenus() {
-            cleanMenusTimeout = null;
+        var m = $cms.dom.$('#r_' + lastActiveMenu);
+        if (!m) {
+            return;
+        }
+        var tags = m.querySelectorAll('.nlevel');
+        var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
+        var i, hideable;
+        for (i = tags.length - 1; i >= 0; i--) {
+            if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') continue;
 
-            var m = $cms.dom.$('#r_' + lastActiveMenu);
-            if (!m) {
-                return;
+            hideable = true;
+            if (e) {
+                t = e;
+                do {
+                    if (tags[i].id == t.id) hideable = false;
+                    t = t.parentNode.parentNode;
+                } while (t.id != 'r_' + lastActiveMenu);
             }
-            var tags = m.querySelectorAll('.nlevel');
-            var e = (window.active_menu == null) ? null : document.getElementById(window.active_menu), t;
-            var i, hideable;
-            for (i = tags.length - 1; i >= 0; i--) {
-                if (tags[i].localName !== 'ul' && tags[i].localName !== 'div') continue;
-
-                hideable = true;
-                if (e) {
-                    t = e;
-                    do {
-                        if (tags[i].id == t.id) hideable = false;
-                        t = t.parentNode.parentNode;
-                    } while (t.id != 'r_' + lastActiveMenu);
-                }
-                if (hideable) {
-                    tags[i].style.left = '-999px';
-                    tags[i].style.display = 'none';
-                }
+            if (hideable) {
+                tags[i].style.left = '-999px';
+                tags[i].style.display = 'none';
             }
         }
     }
@@ -9562,8 +9778,7 @@
         if ($cms.isPlainObj(elOrOptions)) {
             options = elOrOptions;
             el =  options.el;
-            //@TODO: Implement slide-up/down animation triggered by this boolean    Salman
-            animate = $cms.$CONFIG_OPTION('enable_animations') ? ((options.animate != null) ? !!options.animate : true) : false;
+            animate = $cms.$CONFIG_OPTION('enable_animations') ? ((options.animate !== undefined) ? !!options.animate : true) : false;
         } else {
             el = elOrOptions;
             animate = $cms.$CONFIG_OPTION('enable_animations');
@@ -9586,14 +9801,22 @@
         el.setAttribute('aria-expanded', 'true');
 
         if ($cms.dom.notDisplayed(el)) {
-            $cms.dom.fadeIn(el);
-
+            if (animate) {
+                $cms.dom.slideDown(el);
+            } else {
+                $cms.dom.fadeIn(el);
+            }
+            
             if (pic) {
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
             }
         } else {
-            $cms.dom.hide(el);
-
+            if (animate) {
+                $cms.dom.slideUp();
+            } else {
+                $cms.dom.hide(el);    
+            }
+            
             if (pic) {
                 setTrayThemeImage('contract', 'expand', $IMG_contract, $IMG_expand, $IMG_expand2);
                 pic.setAttribute('alt', pic.getAttribute('alt').replace('{!CONTRACT;^}', '{!EXPAND;^}'));
@@ -10193,8 +10416,8 @@
             el: null
         }, options);
 
-        if (width.match(/^\d+$/)) { // Restrain width to viewport width
-            width = Math.min(parseInt(width), $cms.dom.getWindowWidth() - 60) + '';
+        if (options.width.match(/^\d+$/)) { // Restrain width to viewport width
+            options.width = Math.min(parseInt(options.width), $cms.dom.getWindowWidth() - 60) + '';
         }
 
         var el = options.el,
@@ -10233,19 +10456,7 @@
                 return;
             }
         }
-
-        // Stop the tooltip code adding to these events, by defining our own (it will not overwrite existing events).
-        if (!el.onmouseout) {
-            el.onmouseout = function () {
-                // TODO: Salman, why empty?
-            };
-        }
-        if (!el.onmousemove) {
-            el.onmouseover = function () {
-                // TODO: Salman, why empty?
-            };
-        }
-
+        
         // And now define nice listeners for it all...
         var global = $cms.getMainCmsWindow(true);
 
@@ -10623,49 +10834,3 @@
         }
     }
 }());
-
-/*
-TODO, Salman, this needs integrating (came from feature__hybrid_responsive branch and facilitates responsive tables)
-
---- 70,80 ----
-  	{
-  		new_html__initialise(document.images[i]);
-  	}
-+ 	var tables=document.getElementsByTagName('table');
-+ 	for (i=0;i<tables.length;i++)
-+ 	{
-+ 		new_html__initialise(tables[i]);
-+ 	}
-  
-  	// Column height balancing
-  	var cols=document.getElementsByClassName('col_balance_height');
---- 269,295 ----
-  {
-  	switch (element.nodeName.toLowerCase())
-  	{
-+ 		case 'table':
-+ 			// Responsive table prep work
-+ 			if (element.className.indexOf('responsive_table')!=-1)
-+ 			{
-+ 				var trs=element.getElementsByTagName('tr');
-+ 				var ths_first_row=trs[0].cells;
-+ 				for (var i=0;i<trs.length;i++)
-+ 				{
-+ 					var tds=trs[i].cells;
-+ 					for (var j=0;j<tds.length;j++)
-+ 					{
-+ 						if (tds[j].className.indexOf('responsive_table_no_prefix')==-1)
-+ 						{
-+ 							var data=(typeof ths_first_row[j]=='undefined')?'':ths_first_row[j].textContent.replace(/^\s+/,'').replace(/\s+$/,'');
-+ 							if (data!='') tds[j].setAttribute('data-th',data);
-+ 						}
-+ 					}
-+ 				}
-+ 			}
-+ 			break;
-+ 
-  		case 'img':
-  			// GD text maybe can do with transforms
-  			if (element.className=='gd_text')
-
-*/

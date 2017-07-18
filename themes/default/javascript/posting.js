@@ -48,8 +48,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
 
     var post = document.getElementById(fieldName);
 
-    // TODO: Salman, let's get all our className indexOf stuff to use a cleaner way (like hasClass or something). Grep the code
-    var trueAttachmentUi = (post.className.indexOf('true_attachment_ui') != -1);
+    var trueAttachmentUi = (post.classList.contains('true_attachment_ui'));
 
     var tmpForm = post.form;
     if ((tmpForm) && (tmpForm.preview)) {
@@ -233,8 +232,7 @@ function generateBackgroundPreview(post) {
     formPost = $cms.form.modSecurityWorkaroundAjax(formPost.substr(1));
 
     var previewRet = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', function () {
-        /*TODO: Salman eval() call*/
-        eval(previewRet.responseText.replace('<script>', '').replace('</script>', ''));
+        $cms.dom.append(document.body, previewRet.responseText);
     }, formPost);
 }
 

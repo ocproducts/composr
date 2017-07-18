@@ -32,7 +32,7 @@
 			var uses_plupload = false;
 
 			var aub = document.getElementById('attachment_upload_button');
-			var doing_attachment_uploads = (aub) && (aub.className.indexOf('for_field_' + editor.element.$.id + ' ')!=-1);
+			var doing_attachment_uploads = (aub) && (aub.classList.contains('for_field_' + editor.element.$.id));
 
 			if ((typeof window.rebuild_attachment_button_for_next != 'undefined') && (doing_attachment_uploads)) {
 				if ((!aub) || (aub.parentNode.parentNode.style.display == 'none')) // If attachment button was not placed elsewhere

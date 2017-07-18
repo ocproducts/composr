@@ -336,7 +336,7 @@
                                 $cms.form.setFieldError(theElement, '');
                             }
 
-                            if ((!noRecurse) && (theElement.className.indexOf('date') != -1) && (theElement.name.match(/_(day|month|year)$/))) {
+                            if ((!noRecurse) && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
                                 var e = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_day'));
                                 if (e != theElement) {
                                     e.onblur(event, true);
@@ -485,7 +485,7 @@
                 errorMsg = errorMsgElement.getAttribute('data-errorUnfilled');
         } else {
             // Standard field-type checks
-            if ((theElement.className.indexOf('date') !== -1) && (theElement.name.match(/_(day|month|year)$/)) && (myValue != '')) {
+            if ((theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/)) && (myValue != '')) {
                 var _day = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_day')];
                 var _month = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_month')];
                 var _year = theForm.elements[theElement.name.replace(/\_(day|month|year)$/, '_year')];

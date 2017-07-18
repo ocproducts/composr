@@ -78,7 +78,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
 
             foreach (array_keys($attributes) as $attribute) {
                 if (substr($attribute, 0, 2) == 'on') {
-                    // TODO Re-enable Salman when all inline event handlers gone  $errors[] = array('CSP_EVENT_HANDLER');
+                    $errors[] = array('CSP_EVENT_HANDLER');
                 }
             }
         }

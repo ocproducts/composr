@@ -1,1 +1,11 @@
-TODO: Salman. This needs re-doing from the master branch's BLOCK_SIDE_GOOGLE_SEARCH.tpl.
+{$REQUIRE_JAVASCRIPT,google_search}
+{$REQUIRE_CSS,google_search}
+<section class="box box___block_side_google_search" data-tpl="blockSideGoogleSearch" data-tpl-params="{+START,PARAMS_JSON,ID}{_*}{+END}">
+	<div class="box_inner">
+	{+START,IF_NON_EMPTY,{TITLE}}<h3>{TITLE*}</h3>{+END}
+
+	<div id="cse-search-form">
+		<gcse:searchbox-only resultsUrl="{$PAGE_LINK*,_SELF:{PAGE_NAME}}"></gcse:searchbox-only>
+	</div>
+</div>
+</section>

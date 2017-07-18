@@ -403,16 +403,6 @@
     };
 
     $cms.templates.formScreenFieldDescription = function formScreenFieldDescription(params, img) {
-        var activateTooltip = function () {
-            if (img.ttitle === undefined) {
-                img.ttitle = img.title;
-            }
-            img.title = '';
-            //img.have_links = true;
-            img.setAttribute('data-cms-rich-tooltip', '1');
-        };
-        $cms.dom.one(img, 'mouseover', activateTooltip);
-        $cms.dom.one(img, 'click', activateTooltip);
     };
 
     $cms.templates.formScreenInputLine = function formScreenInputLine(params) {
@@ -880,7 +870,7 @@
         mainWindow.setTextbox(post, params.newPostValue.replace(/&#111;/g, 'o').replace(/&#79;/g, 'O'), params.newPostValueHtml);
 
         // Turn main post editing back on
-        if (wysiwygSetReadonly !== undefined) {
+        if (window.wysiwygSetReadonly !== undefined) {
             wysiwygSetReadonly('post', false);
         }
 
