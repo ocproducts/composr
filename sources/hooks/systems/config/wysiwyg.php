@@ -41,6 +41,8 @@ class Hook_config_wysiwyg
             'required' => true,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

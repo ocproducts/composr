@@ -41,6 +41,8 @@ class Hook_config_js_overlays
             'required' => true,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

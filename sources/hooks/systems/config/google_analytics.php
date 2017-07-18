@@ -41,6 +41,8 @@ class Hook_config_google_analytics
             'required' => false,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

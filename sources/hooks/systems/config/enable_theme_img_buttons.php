@@ -42,6 +42,8 @@ class Hook_config_enable_theme_img_buttons
 
             'required' => true,
             'addon' => 'core_themeing',
+
+            'public' => true,
         );
     }
 

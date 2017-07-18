@@ -42,6 +42,8 @@ class Hook_config_fixed_width
 
             'required' => true,
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

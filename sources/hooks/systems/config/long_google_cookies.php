@@ -41,6 +41,8 @@ class Hook_config_long_google_cookies
             'required' => true,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

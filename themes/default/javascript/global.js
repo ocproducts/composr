@@ -21,6 +21,7 @@
     // Too useful to not have globally!
     window.intVal   = intVal;
     //window.numVal = numVal;
+    window.boolVal  = boolVal;
     window.strVal   = strVal;
     window.arrVal   = arrVal;
     window.objVal   = objVal;
@@ -88,34 +89,14 @@
         $INLINE_STATS: constant(boolVal(symbols.INLINE_STATS)),
         /**
          * @method
-         * @returns {boolean}
-         */
-        $VERBOSE: constant(false),
-        /**
-         * @method
          * @returns {number}
          */
         $HTTP_STATUS_CODE: constant(+symbols.HTTP_STATUS_CODE || 0),
         /**
          * @method
-         * @returns {number}
-         */
-        $GROUP_ID: constant(+symbols.GROUP_ID || 0),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $VERSION: constant(strVal(symbols.VERSION)),
-        /**
-         * @method
          * @returns {string}
          */
         $PAGE: constant(strVal(symbols.PAGE)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $PAGE_TITLE: constant(strVal(symbols.PAGE_TITLE)),
         /**
          * @method
          * @returns {string}
@@ -135,26 +116,6 @@
          * @method
          * @returns {string}
          */
-        $AVATAR: constant(strVal(symbols.AVATAR)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $MEMBER_EMAIL: constant(strVal(symbols.MEMBER_EMAIL)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $PHOTO: constant(strVal(symbols.PHOTO)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $MEMBER_PROFILE_URL: constant(strVal(symbols.MEMBER_PROFILE_URL)),
-        /**
-         * @method
-         * @returns {string}
-         */
         $FROM_TIMESTAMP: constant(symbols.FROM_TIMESTAMP),
         /**
          * @method
@@ -166,36 +127,6 @@
          * @returns {string}
          */
         $LANG: constant(strVal(symbols.LANG)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $BROWSER_UA: constant(strVal(symbols.BROWSER_UA)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $OS: constant(strVal(symbols.OS)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $USER_AGENT: constant(strVal(symbols.USER_AGENT)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $IP_ADDRESS: constant(strVal(symbols.IP_ADDRESS)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $TIMEZONE: constant(strVal(symbols.TIMEZONE)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $CHARSET: constant(strVal(symbols.CHARSET)),
         /**
          * @method
          * @returns {string}
@@ -215,72 +146,47 @@
          * @method
          * @returns {string}
          */
-        $COPYRIGHT: constant(strVal(symbols.COPYRIGHT)),
+        $BASE_URL: constant(strVal('{$BASE_URL;}')),
         /**
          * @method
          * @returns {string}
          */
-        $DOMAIN: constant(strVal(symbols.DOMAIN)),
+        $BASE_URL_NOHTTP: constant(strVal('{$BASE_URL_NOHTTP;}')),
         /**
          * @method
          * @returns {string}
          */
-        $BASE_URL: constant(strVal(symbols.BASE_URL)),
+        $CUSTOM_BASE_URL: constant(strVal('{$CUSTOM_BASE_URL;}')),
         /**
          * @method
          * @returns {string}
          */
-        $BASE_URL_S: constant(strVal(symbols.BASE_URL) + '/'), // With trailing slash
+        $CUSTOM_BASE_URL_NOHTTP: constant(strVal('{$CUSTOM_BASE_URL_NOHTTP;}')),
         /**
          * @method
          * @returns {string}
          */
-        $BASE_URL_PRL: constant(toSchemeRelative(symbols.BASE_URL)), // Scheme relative
+        $FORUM_BASE_URL: constant(strVal('{$FORUM_BASE_URL;}')),
         /**
          * @method
          * @returns {string}
          */
-        $BASE_URL_NOHTTP: constant(strVal(symbols.BASE_URL_NOHTTP)),
+        $BRAND_NAME: constant(strVal('{$BRAND_NAME;}')),
         /**
          * @method
          * @returns {string}
          */
-        $BASE_URL_NOHTTP_S: constant(strVal(symbols.BASE_URL_NOHTTP) + '/'), // With trailing slash
+        $SESSION_COOKIE_NAME: constant(strVal('{$SESSION_COOKIE_NAME;}')),
         /**
          * @method
          * @returns {string}
          */
-        $CUSTOM_BASE_URL: constant(strVal(symbols.CUSTOM_BASE_URL)),
+        $COOKIE_PATH: constant(strVal('{$COOKIE_PATH;}')),
         /**
          * @method
          * @returns {string}
          */
-        $CUSTOM_BASE_URL_NOHTTP: constant(strVal(symbols.CUSTOM_BASE_URL_NOHTTP)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $FORUM_BASE_URL: constant(strVal(symbols.FORUM_BASE_URL)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $BRAND_NAME: constant(strVal(symbols.BRAND_NAME)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $SESSION_COOKIE_NAME: constant(strVal(symbols.SESSION_COOKIE_NAME)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $COOKIE_PATH: constant(strVal(symbols.COOKIE_PATH)),
-        /**
-         * @method
-         * @returns {string}
-         */
-        $COOKIE_DOMAIN: constant(strVal(symbols.COOKIE_DOMAIN)),
+        $COOKIE_DOMAIN: constant(strVal('{$COOKIE_DOMAIN;}')),
         /**
          * @method
          * @returns {string}
@@ -295,7 +201,7 @@
         /**
          * WARNING: This is a very limited subset of the $CONFIG_OPTION tempcode symbol
          * @method
-         * @param {configOptions} optionName
+         * @param {string} optionName
          * @returns {boolean|string|number}
          */
         $CONFIG_OPTION: function $CONFIG_OPTION(optionName) {
@@ -303,68 +209,9 @@
                 // Installer, likely executing global.js
                 return '';
             }
-
-            /**
-             * @enum configOptions
-             * @readonly
-             */
-            var configOptions =  {
-                /**@member {boolean}*/
-                js_overlays: boolVal(symbols.CONFIG_OPTION.js_overlays),
-                /**@member {boolean}*/
-                enable_animations: boolVal(symbols.CONFIG_OPTION.enable_animations),
-                /**@member {boolean}*/
-                detect_javascript: boolVal(symbols.CONFIG_OPTION.detect_javascript),
-                /**@member {boolean}*/
-                is_on_timezone_detection: boolVal(symbols.CONFIG_OPTION.is_on_timezone_detection),
-                /**@member {boolean}*/
-                wysiwyg: boolVal(symbols.CONFIG_OPTION.wysiwyg),
-                /**@member {boolean}*/
-                complex_uploader: boolVal(symbols.CONFIG_OPTION.complex_uploader),
-                /**@member {boolean}*/
-                collapse_user_zones: boolVal(symbols.CONFIG_OPTION.collapse_user_zones),
-                /**@member {boolean}*/
-                sitewide_im: boolVal(symbols.CONFIG_OPTION.sitewide_im),
-                /**@member {boolean}*/
-                simplified_attachments_ui: boolVal(symbols.CONFIG_OPTION.simplified_attachments_ui),
-                /**@member {boolean}*/
-                spam_heuristic_pasting: boolVal(symbols.CONFIG_OPTION.spam_heuristic_pasting),
-                /**@member {boolean}*/
-                long_google_cookies: boolVal(symbols.CONFIG_OPTION.long_google_cookies),
-                /**@member {boolean}*/
-                enable_theme_img_buttons: boolVal(symbols.CONFIG_OPTION.enable_theme_img_buttons),
-                /**@member {boolean}*/
-                enable_previews: boolVal(symbols.CONFIG_OPTION.enable_previews),
-                /**@member {boolean}*/
-                show_inline_stats: boolVal(symbols.CONFIG_OPTION.show_inline_stats),
-                /**@member {boolean}*/
-                background_template_compilation: boolVal(symbols.CONFIG_OPTION.background_template_compilation),
-                /**@member {boolean}*/
-                notification_desktop_alerts: boolVal(symbols.CONFIG_OPTION.notification_desktop_alerts),
-                /**@member {boolean}*/
-                eager_wysiwyg: boolVal(symbols.CONFIG_OPTION.eager_wysiwyg),
-                /**@member {boolean}*/
-                fixed_width: boolVal(symbols.CONFIG_OPTION.fixed_width),
-                /**@member {boolean}*/
-                infinite_scrolling: boolVal(symbols.CONFIG_OPTION.infinite_scrolling),
-                /**@member {boolean}*/
-                js_captcha: boolVal(symbols.CONFIG_OPTION.js_captcha),
-                /**@member {boolean}*/
-                editarea: boolVal(symbols.CONFIG_OPTION.editarea),
-
-                /**@member {number}*/
-                thumb_width: intVal(symbols.CONFIG_OPTION.thumb_width),
-
-                /**@member {string}*/
-                google_analytics: strVal(symbols.CONFIG_OPTION.google_analytics),
-                /**@member {string}*/
-                cookie_notice: strVal(symbols.CONFIG_OPTION.cookie_notice), 
-                /**@member {string}*/
-                chat_message_direction: strVal(symbols.CONFIG_OPTION.chat_message_direction)
-            };
-
-            if (hasOwn(configOptions, optionName)) {
-                return configOptions[optionName];
+            
+            if (hasOwn(symbols['CONFIG_OPTION'], optionName)) {
+                return symbols['CONFIG_OPTION'][optionName];
             }
 
             $cms.error('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
@@ -372,6 +219,7 @@
         /**
          * WARNING: This is a very limited subset of the $VALUE_OPTION tempcode symbol
          * @method
+         * @param {string} optionName
          * @returns {string|boolean|number}
          */
         $VALUE_OPTION: function $VALUE_OPTION(optionName) {
@@ -379,16 +227,9 @@
                 // Installer, likely executing global.js
                 return '';
             }
-
-            var options = {
-                /**@member {string}*/
-                js_keep_params: symbols.VALUE_OPTION.js_keep_params,
-                /**@member {string}*/
-                commercial_spellchecker: symbols.VALUE_OPTION.commercial_spellchecker
-            };
-
-            if (hasOwn(options, optionName)) {
-                return options[optionName];
+            
+            if (hasOwn(symbols['VALUE_OPTION'], optionName)) {
+                return symbols['VALUE_OPTION'][optionName];
             }
 
             $cms.error('$cms.$VALUE_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
@@ -396,6 +237,7 @@
         /**
          * WARNING: This is a very limited subset of the $HAS_PRIVILEGE tempcode symbol
          * @method
+         * @param {string} optionName
          * @returns {boolean}
          */
         $HAS_PRIVILEGE: function $HAS_PRIVILEGE(optionName) {
@@ -404,13 +246,8 @@
                 return false;
             }
 
-            var options = {
-                /**@member {string}*/
-                sees_javascript_error_alerts: symbols.HAS_PRIVILEGE.sees_javascript_error_alerts
-            };
-
-            if (hasOwn(options, optionName)) {
-                return options[optionName];
+            if (hasOwn(symbols['HAS_PRIVILEGE'], optionName)) {
+                return symbols['HAS_PRIVILEGE'][optionName];
             }
 
             $cms.error('$cms.$HAS_PRIVILEGE(): Privilege "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
@@ -679,7 +516,6 @@
          * @namespace $cms.templates
          */
         templates: {},
-        
         /**
          * Addons can add functions under this object
          * @namespace $cms.functions
@@ -1385,7 +1221,7 @@
      */
     function boolVal(val) {
         var p;
-        return !!val && (val !== '0') && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
+        return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
     }
 
     /**
@@ -1395,7 +1231,7 @@
      */
     function isEmpty(val) {
         var p;
-        return !!val && (val !== '0') && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
+        return !!val && (val !== '0'); // && ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
     }
 
     /**
@@ -1623,7 +1459,7 @@
         relativeUrl = strVal(relativeUrl);
 
         if (relativeUrl === '') {
-            return $cms.$BASE_URL_S();
+            return $cms.$BASE_URL() + '/';
         }
 
         if (isAbsolute(relativeUrl)) {
@@ -1634,7 +1470,7 @@
             return window.location.protocol + relativeUrl;
         }
 
-        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : $cms.$BASE_URL_S()) + relativeUrl;
+        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : $cms.$BASE_URL() + '/') + relativeUrl;
     }
 
     function isAbsolute(url) {
@@ -1755,7 +1591,7 @@
     }
 
     function verbose() {
-        if ($cms.$DEV_MODE() && $cms.$VERBOSE()) {
+        if ($cms.$DEV_MODE()) {
             return console.log.apply(undefined, arguments);
         }
     }
@@ -7755,7 +7591,7 @@
 
                     if ($cms.$VALUE_OPTION('js_keep_params')) {
                         // Keep parameters need propagating
-                        if (anchor.href && anchor.href.startsWith($cms.$BASE_URL_S())) {
+                        if (anchor.href && anchor.href.startsWith($cms.$BASE_URL() + '/')) {
                             anchor.href += keepStubWithContext(anchor.href);
                         }
                     }
@@ -7797,7 +7633,7 @@
 
                     if ($cms.$VALUE_OPTION('js_keep_params')) {
                         /* Keep parameters need propagating */
-                        if (form.action && form.action.startsWith($cms.$BASE_URL_S())) {
+                        if (form.action && form.action.startsWith($cms.$BASE_URL() + '/')) {
                             form.action += keepStubWithContext(form.action);
                         }
                     }
@@ -10587,8 +10423,7 @@
                 for (var i = 0; i < paginationParent.childNodes.length; i++) {
                     if (paginationParent.childNodes[i].nodeName != '#text') numNodeChildren++;
                 }
-                if (numNodeChildren == 0) // Remove empty pagination wrapper
-                {
+                if (numNodeChildren == 0) { // Remove empty pagination wrapper
                     paginationParent.style.display = 'none';
                 }
 
@@ -10616,8 +10451,7 @@
         }
         for (var _i = 0; _i < _pagination.length; _i++) {
             var pagination = _pagination[_i];
-            if (foundNewLinks != null) // Cleanup old pagination
-            {
+            if (foundNewLinks != null) {// Cleanup old pagination
                 if (_i != foundNewLinks) {
                     var _moreLinks = pagination.getElementsByTagName('a');
                     var numLinks = _moreLinks.length;
@@ -10642,8 +10476,7 @@
                 foundRel = true;
             }
         }
-        if (!foundRel) // Ah, no more scrolling possible
-        {
+        if (!foundRel) { // Ah, no more scrolling possible
             // Remove old pagination_load_more's
             var paginationLoadMore = wrapper.querySelectorAll('.pagination_load_more');
             if (paginationLoadMore.length > 0) {
