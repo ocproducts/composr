@@ -41,6 +41,8 @@ class Hook_config_background_template_compilation
             'required' => true,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

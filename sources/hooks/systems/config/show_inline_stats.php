@@ -41,6 +41,8 @@ class Hook_config_show_inline_stats
             'required' => true,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

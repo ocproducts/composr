@@ -41,6 +41,8 @@ class Hook_config_chat_message_direction
             'required' => true,
 
             'addon' => 'chat',
+
+            'public' => true,
         );
     }
 

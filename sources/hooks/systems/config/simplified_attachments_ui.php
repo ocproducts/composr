@@ -42,6 +42,8 @@ class Hook_config_simplified_attachments_ui
 
             'required' => true,
             'addon' => 'core_rich_media',
+
+            'public' => true,
         );
     }
 

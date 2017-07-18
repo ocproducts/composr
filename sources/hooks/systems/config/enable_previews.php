@@ -42,6 +42,8 @@ class Hook_config_enable_previews
 
             'required' => true,
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

@@ -41,6 +41,8 @@ class Hook_config_detect_javascript
             'required' => true,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

@@ -41,6 +41,8 @@ class Hook_config_cookie_notice
             'required' => true,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

@@ -41,6 +41,8 @@ class Hook_config_notification_desktop_alerts
             'required' => true,
 
             'addon' => 'core_notifications',
+
+            'public' => true,
         );
     }
 

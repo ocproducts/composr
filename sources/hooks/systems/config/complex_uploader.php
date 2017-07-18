@@ -41,6 +41,8 @@ class Hook_config_complex_uploader
             'required' => true,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

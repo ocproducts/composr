@@ -41,6 +41,8 @@ class Hook_config_collapse_user_zones
             'required' => true,
 
             'addon' => 'core_configuration',
+
+            'public' => true,
         );
     }
 

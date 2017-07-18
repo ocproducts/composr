@@ -37,7 +37,7 @@
         function notificationPollerInit(timeBarrier) {
             $cms.requireJavascript('sound');
 
-            window.notifications_time_barrier = timeBarrier;
+            window.notificationsTimeBarrier = timeBarrier;
 
             setInterval(window.pollForNotifications, window.NOTIFICATION_POLL_FREQUENCY * 1000);
 
@@ -56,7 +56,7 @@
     };
 
     $cms.templates.blockTopNotifications = function blockTopNotifications(params, container) {
-        window.max_notifications_to_show = +params.max || 0;
+        window.maxNotificationsToShow = +params.max || 0;
 
         $cms.dom.on(container, 'click', '.js-click-notifications-mark-all-read', function (e) {
             notificationsMarkAllRead(e);
@@ -88,10 +88,10 @@
 
         function notificationsMarkAllRead(event) {
             var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=mark_all_read';
-            if (window.max_notifications_to_show !== undefined) {
-                url += '&max=' + window.max_notifications_to_show;
+            if (window.maxNotificationsToShow !== undefined) {
+                url += '&max=' + window.maxNotificationsToShow;
             }
-            url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
+            url += '&time_barrier=' + encodeURIComponent(window.notificationsTimeBarrier);
             url += '&forced_update=1';
             url += $cms.keepStub();
             $cms.doAjaxRequest(url, window._pollForNotifications);
@@ -199,9 +199,9 @@
  Poll for notifications (and unread PTs)
  */
 
-window.notifications_already_presented || (window.notifications_already_presented = {});
+window.notificationsAlreadyPresented || (window.notificationsAlreadyPresented = {});
 (window.NOTIFICATION_POLL_FREQUENCY != null) || (window.NOTIFICATION_POLL_FREQUENCY = '{$CONFIG_OPTION%,notification_poll_frequency}');
-(window.notifications_time_barrier != null) || (window.notifications_time_barrier = 0);
+(window.notificationsTimeBarrier != null) || (window.notificationsTimeBarrier = 0);
 
 function pollForNotifications(forcedUpdate, delay) {
     forcedUpdate = !!forcedUpdate;
@@ -215,10 +215,10 @@ function pollForNotifications(forcedUpdate, delay) {
     }
 
     var url = '{$FIND_SCRIPT_NOHTTP;,notifications}?type=poller&type=poller';
-    if (window.max_notifications_to_show !== undefined) {
-        url += '&max=' + window.max_notifications_to_show;
+    if (window.maxNotificationsToShow !== undefined) {
+        url += '&max=' + window.maxNotificationsToShow;
     }
-    url += '&time_barrier=' + encodeURIComponent(window.notifications_time_barrier);
+    url += '&time_barrier=' + encodeURIComponent(window.notificationsTimeBarrier);
     if (forcedUpdate) {
         url += '&forced_update=1';
     }
@@ -231,7 +231,7 @@ function _pollForNotifications(rawAjaxResult) {
         return; // Some kind of error
 
     var timeNode = rawAjaxResult.querySelector('time');
-    window.notifications_time_barrier = parseInt($cms.dom.html(timeNode));
+    window.notificationsTimeBarrier = parseInt($cms.dom.html(timeNode));
 
     // HTML5 notification API
 
@@ -278,7 +278,7 @@ function _pollForNotifications(rawAjaxResult) {
     function displayAlert(notification) {
         var id = notification.getAttribute('id');
 
-        if (window.notifications_already_presented[id] !== undefined) {
+        if (window.notificationsAlreadyPresented[id] !== undefined) {
             // Already handled this one
             return;
         }
@@ -335,7 +335,7 @@ function _pollForNotifications(rawAjaxResult) {
         }
 
         // Mark done
-        window.notifications_already_presented[id] = true;
+        window.notificationsAlreadyPresented[id] = true;
     }
 }
 
