@@ -3,32 +3,7 @@ Order Allow,Deny
 Deny from all
 </Files>
 
-<Files "permissioncheckslog.php">
-Order Allow,Deny
-Deny from all
-</Files>
-
-<Files "profiling.*.log">
-Order Allow,Deny
-Deny from all
-</Files>
-
-<Files "ecommerce.log">
-Order Allow,Deny
-Deny from all
-</Files>
-
-<Files "resource_fs.log">
-Order Allow,Deny
-Deny from all
-</Files>
-
-<Files "big_query_screens.log">
-Order Allow,Deny
-Deny from all
-</Files>
-
-<Files "queries.log">
+<Files "*.log">
 Order Allow,Deny
 Deny from all
 </Files>
