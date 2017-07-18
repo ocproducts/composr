@@ -251,7 +251,7 @@
                 lastPoint = point.latLng;
             });
             google.maps.event.addListener(data_map, 'click', function () {
-                $cms.log(lastPoint.lat() + ', ' + lastPoint.lng());
+                $cms.inform(lastPoint.lat() + ', ' + lastPoint.lng());
             });
         }
     }

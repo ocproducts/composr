@@ -100,7 +100,7 @@
                     // Must have JS FB login before can instruct to logout. Will not re-auth -- we know we have authed due to FB_CONNECT_LOGGED_OUT being set
                     if (justLoggedOut) {
                         window.FB.logout(function (response) {
-                            $cms.log('Facebook: Logged out.');
+                            $cms.inform('Facebook: Logged out.');
                         });
                     }
 
@@ -117,7 +117,7 @@
                         if (forms[i].action.includes(logoutPageUrl)) {
                             forms[i].addEventListener('submit', (function (logoutLink) {
                                 window.FB.logout(function (response) {
-                                    $cms.log('Facebook: Logged out.');
+                                    $cms.inform('Facebook: Logged out.');
                                     window.location = logoutLink;
                                 });
                                 // We cancel the form submit, as we need to wait for the AJAX request to happen

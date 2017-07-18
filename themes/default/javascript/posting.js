@@ -706,7 +706,7 @@ function do_input_font(fieldName) {
 function initFormSaving(formId) {
     window.last_autosave = new Date();
 
-    $cms.log('Initialising auto-save subsystem');
+    $cms.inform('Initialising auto-save subsystem');
 
     // Go through all forms/elements
     var form = document.getElementById(formId);
@@ -753,9 +753,9 @@ function initFormSaving(formId) {
                         biggestLengthData = value;
                     }
 
-                    $cms.log('+ Has autosave for ' + elementName + ' (' + autosaveName + ')');
+                    $cms.inform('+ Has autosave for ' + elementName + ' (' + autosaveName + ')');
                 } else {
-                    $cms.log('- Has no autosave for ' + elementName);
+                    $cms.inform('- Has no autosave for ' + elementName);
                 }
             }
 
@@ -763,23 +763,23 @@ function initFormSaving(formId) {
                 _restoreFormAutosave(form, fieldsToDo, biggestLengthData);
                 return; // If we had it locally, we won't let it continue on to try via AJAX
             } else {
-                $cms.log('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
+                $cms.inform('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
             }
         }
     } else {
-        $cms.log('Nothing in local storage');
+        $cms.inform('Nothing in local storage');
     }
 
     // Load via AJAX (if issue happened on another machine, or if we do not support local storage)
     if (navigator.onLine) {
-        $cms.log('Searching AJAX for auto-save');
+        $cms.inform('Searching AJAX for auto-save');
 
         var url = '{$FIND_SCRIPT_NOHTTP;,autosave}?type=retrieve';
         url += '&stem=' + encodeURIComponent(getAutosaveUrlStem());
         url += $cms.keepStub();
         var callback = function (form) {
             return function (result) {
-                $cms.log('Auto-save AJAX says', result);
+                $cms.inform('Auto-save AJAX says', result);
                 _retrieveFormAutosave(result, form);
             }
         }(form);
@@ -788,7 +788,7 @@ function initFormSaving(formId) {
 
     function handleFormSavingExplicit(event, form) {
         if (event.keyCode == 83/*s*/ && (navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey) && (!navigator.platform.match('Mac') ? event.ctrlKey : event.metaKey) && (!event.altKey)) {
-            $cms.log('Doing explicit auto-save');
+            $cms.inform('Doing explicit auto-save');
 
             event.preventDefault(); // Prevent browser save dialog
 
@@ -861,7 +861,7 @@ function initFormSaving(formId) {
         if ((fieldsToDoCounter != 0) && (biggestLengthData.length > 25)) {
             _restoreFormAutosave(form, fieldsToDo, biggestLengthData);
         } else {
-            $cms.log('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
+            $cms.inform('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
         }
     }
 
@@ -882,7 +882,7 @@ function initFormSaving(formId) {
                         if (typeof fieldsToDo[key] != 'string') continue;
 
                         if (form.elements[key] !== undefined) {
-                            $cms.log('Restoring ' + key);
+                            $cms.inform('Restoring ' + key);
                             cleverSetValue(form, form.elements[key], fieldsToDo[key]);
                         }
                     }
@@ -1016,7 +1016,7 @@ function handleFormSaving(event, element, force) {
         // Save remotely
         if (navigator.onLine) {
             if ($cms.$DEV_MODE()) {
-                $cms.log('Doing AJAX auto-save');
+                $cms.inform('Doing AJAX auto-save');
             }
 
             post = $cms.form.modSecurityWorkaroundAjax(post);
@@ -1056,7 +1056,7 @@ function _handleFormSaving(event, element, force) {
     // Save locally
     if (window.localStorage !== undefined) {
         if ($cms.$DEV_MODE()) {
-            $cms.log('Doing local storage auto-save for ' + elementName + ' (' + autosaveName + ')');
+            $cms.inform('Doing local storage auto-save for ' + elementName + ' (' + autosaveName + ')');
         }
 
         try {

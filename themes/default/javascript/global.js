@@ -217,7 +217,7 @@
                     return $PUBLIC_CONFIG_OPTIONS_JSON[optionName];
                 }
 
-                $cms.error('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
+                $cms.fatal('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
             };
         }()),
         /**
@@ -236,7 +236,7 @@
                 return symbols['HAS_PRIVILEGE'][optionName];
             }
 
-            $cms.error('$cms.$HAS_PRIVILEGE(): Privilege "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
+            $cms.fatal('$cms.$HAS_PRIVILEGE(): Privilege "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
         },
 
         // Just some more useful stuff, (not tempcode symbols)
@@ -365,19 +365,11 @@
         /**@method*/
         navigate: navigate,
         /**@method*/
-        log: log,
-        /**@method*/
-        info: info,
+        inform: inform,
         /**@method*/
         warn: warn,
         /**@method*/
-        dir: dir,
-        /**@method*/
-        assert: assert,
-        /**@method*/
-        verbose: verbose,
-        /**@method*/
-        error: error,
+        fatal: fatal,
         /**@method*/
         exception: exception,
         /**
@@ -394,19 +386,19 @@
             }
 
             if (!Array.isArray(resourceEls)) {
-                $cms.error('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+                $cms.fatal('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
             }
 
             if (resourceEls.length < 1) {
                 return Promise.resolve();
             }
 
-            $cms.verbose('$cms.waitForResources(): Waiting for resources', resourceEls);
+            //$cms.inform('$cms.waitForResources(): Waiting for resources', resourceEls);
 
             var scriptsToLoad = [];
             resourceEls.forEach(function (el) {
                 if (!isEl(el)) {
-                    $cms.error('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                    $cms.fatal('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
                     return;
                 }
 
@@ -430,9 +422,9 @@
                     }
 
                     if (event.type === 'load') {
-                        $cms.verbose('$cms.waitForResources(): Resource loaded successfully', loadedEl);
+                        //$cms.inform('$cms.waitForResources(): Resource loaded successfully', loadedEl);
                     } else {
-                        $cms.error('$cms.waitForResources(): Resource failed to load', loadedEl);
+                        $cms.fatal('$cms.waitForResources(): Resource failed to load', loadedEl);
                     }
 
                     scriptsToLoad = scriptsToLoad.filter(function (el) {
@@ -1456,7 +1448,7 @@
             return window.location.protocol + relativeUrl;
         }
 
-        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : $cms.$BASE_URL() + '/') + relativeUrl;
+        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : ($cms.$BASE_URL() + '/')) + relativeUrl;
     }
 
     function isAbsolute(url) {
@@ -1540,46 +1532,18 @@
         return window.JSON5.parse(strVal(source));
     }
 
-    function log() {
+    function inform() {
         if ($cms.$DEV_MODE()) {
             return console.log.apply(undefined, arguments);
-        }
-    }
-
-    function info() {
-        if ($cms.$DEV_MODE()) {
-            return console.info.apply(undefined, arguments);
         }
     }
 
     function warn() {
-        if ($cms.$DEV_MODE()) {
-            return console.warn.apply(undefined, arguments);
-        }
+        return console.warn.apply(undefined, arguments);
     }
-
-    function dir() {
-        if ($cms.$DEV_MODE()) {
-            return console.dir.apply(undefined, arguments);
-        }
-    }
-
-    function assert() {
-        if ($cms.$DEV_MODE()) {
-            return console.assert.apply(undefined, arguments);
-        }
-    }
-
-    function error() {
-        if ($cms.$DEV_MODE()) {
-            return console.error.apply(undefined, arguments);
-        }
-    }
-
-    function verbose() {
-        if ($cms.$DEV_MODE()) {
-            return console.log.apply(undefined, arguments);
-        }
+    
+    function fatal() {
+        return console.error.apply(undefined, arguments);
     }
 
     function exception(ex) {
@@ -1654,7 +1618,7 @@
         }
 
         if (!scriptEl) {
-            $cms.log('_requireJavascript', script);
+            $cms.inform('_requireJavascript', script);
 
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
@@ -1703,7 +1667,7 @@
         }
         return promise.then(function(val){
             return (funcs.length > 0) ? sequentialPromises(funcs) : val;
-        }, function () {
+        }, function (val) {
             return (funcs.length > 0) ? sequentialPromises(funcs) : val;
         });
     }
@@ -2444,7 +2408,7 @@
             try {
                 data = dataAttr(el, key);
             } catch (e) {
-                $cms.error('$cms.dom.data(): Exception thrown while parsing JSON in data attribute "' + key + '" of', el, e);
+                $cms.fatal('$cms.dom.data(): Exception thrown while parsing JSON in data attribute "' + key + '" of', el, e);
             }
 
             if (data !== undefined) {
@@ -4642,9 +4606,9 @@
                 if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
                     try {
                         ret = $cms.behaviors[name].attach(context, settings);
-                        $cms.verbose('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
+                        //$cms.inform('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
                     } catch (e) {
-                        $cms.error('$cms.attachBehaviors(): Error while attaching behavior "' + name + '"  to', context, '\n', e);
+                        $cms.fatal('$cms.attachBehaviors(): Error while attaching behavior "' + name + '"  to', context, '\n', e);
                     }
                 }
 
@@ -4685,9 +4649,9 @@
             if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].detach === 'function')) {
                 try {
                     $cms.behaviors[name].detach(context, settings, trigger);
-                    $cms.verbose('$cms.detachBehaviors(): detached behavior "' + name + '" from context', context);
+                    //$cms.inform('$cms.detachBehaviors(): detached behavior "' + name + '" from context', context);
                 } catch (e) {
-                    $cms.error('$cms.detachBehaviors(): Error while detaching behavior \'' + name + '\' from', context, '\n', e);
+                    $cms.fatal('$cms.detachBehaviors(): Error while detaching behavior \'' + name + '\' from', context, '\n', e);
                 }
             }
         }
@@ -4924,7 +4888,7 @@
 
             var okay = true;
             try {
-                $cms.info('Beacon', 'send', 'event', category, action);
+                $cms.inform('Beacon', 'send', 'event', category, action);
 
                 window.ga(
                     'send',
@@ -5033,7 +4997,7 @@
      */
     function executeJsFunctionCalls(functionCallsArray) {
         if (!Array.isArray(functionCallsArray)) {
-            $cms.error('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + typeName(functionCallsArray) + '" passed');
+            $cms.fatal('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + typeName(functionCallsArray) + '" passed');
             return;
         }
 
@@ -5045,7 +5009,7 @@
             }
 
             if (!Array.isArray(func) || (func.length < 1)) {
-                $cms.error('$cms.executeJsFunctionCalls(): Invalid function call format', func);
+                $cms.fatal('$cms.executeJsFunctionCalls(): Invalid function call format', func);
                 return;
             }
 
@@ -5055,7 +5019,7 @@
             if (typeof $cms.functions[funcName] === 'function') {
                 $cms.functions[funcName].apply(undefined, args);
             } else {
-                $cms.error('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
+                $cms.fatal('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
             }
         });
     }
@@ -5340,7 +5304,7 @@
          * @method
          */
         delegate: function (eventName, selector, listener) {
-            //$cms.verbose('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
+            //$cms.inform('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
             $cms.dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },
@@ -7370,10 +7334,10 @@
                             networkDownAlerted = true;
                         }
                     } else {
-                        $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + ajaxInstance.status + ': ' + ajaxInstance.statusText + '.', ajaxInstance);
+                        $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + ajaxInstance.status + ': ' + ajaxInstance.statusText + '.', ajaxInstance);
                     }
                 } catch (e) {
-                    $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
+                    $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
                 }
             }
         }
@@ -7424,7 +7388,7 @@
             }
 
             if (xhr.responseText && xhr.responseText.includes('<html')) {
-                $cms.error('$cms.doAjaxRequest(): ', xhr);
+                $cms.fatal('$cms.doAjaxRequest(): ', xhr);
                 $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
@@ -7462,7 +7426,7 @@
                 if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
                     if (xhr.responseText !== 'false') {
                         if (xhr.responseText.length > 1000) {
-                            $cms.log('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
+                            $cms.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
                             $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
                         } else {
                             $cms.ui.alert(xhr.responseText);
@@ -7514,16 +7478,16 @@
                         view, viewOptions = { el: el };
 
                     if (typeof $cms.views[el.dataset.view] !== 'function') {
-                        $cms.error('$cms.behaviors.initializeViews.attach(): Missing view constructor "' + el.dataset.view + '" for', el);
+                        $cms.fatal('$cms.behaviors.initializeViews.attach(): Missing view constructor "' + el.dataset.view + '" for', el);
                         return;
                     }
 
                     try {
                         view = new $cms.views[el.dataset.view](params, viewOptions);
                         $cms.viewInstances[$cms.uid(view)] = view;
-                        $cms.verbose('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
+                        //$cms.inform('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
                     } catch (ex) {
-                        $cms.error('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
+                        $cms.fatal('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
                     }
                 });
             }
@@ -7537,15 +7501,15 @@
                         params = objVal($cms.dom.data(el, 'tplParams'));
 
                     if (typeof $cms.templates[template] !== 'function') {
-                        $cms.error('$cms.behaviors.initializeTemplates.attach(): Missing template function "' + template + '" for', el);
+                        $cms.fatal('$cms.behaviors.initializeTemplates.attach(): Missing template function "' + template + '" for', el);
                         return;
                     }
 
                     try {
                         $cms.templates[template].call(el, params, el);
-                        $cms.verbose('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
+                        //$cms.inform('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
                     } catch (ex) {
-                        $cms.error('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
+                        $cms.fatal('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
                     }
                 });
             }
@@ -8351,7 +8315,7 @@
                 //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                $cms.fatal('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -8365,7 +8329,7 @@
                 //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                $cms.fatal('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -8393,7 +8357,7 @@
             try {
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                $cms.fatal('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -10144,14 +10108,14 @@
             var response = strVal(result.responseText);
             if (response === '1') {
                 clearInterval(window.detect_interval);
-                $cms.log('detectChange(): Change detected');
+                $cms.inform('detectChange(): Change detected');
                 callback();
             }
         }, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged));
     }
 
     function detectedChange() {
-        $cms.log('detectedChange(): Change notification running');
+        $cms.inform('detectedChange(): Change notification running');
 
         try {
             focus();
