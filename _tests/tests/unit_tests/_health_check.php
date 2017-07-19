@@ -284,18 +284,18 @@ class _health_check_test_set extends cms_test_case
     {
         $test_file_path = get_file_base() . '/data/curl-ca-bundle.crt';
 
-        $data_to_send = str_repeat(file_get_contents($test_file_path), 20);
+        $data_to_send = str_repeat(file_get_contents($test_file_path), 5);
 
         $time_before = microtime(true);
         $post_params = array('test_data' => $data_to_send);
-        $data = http_download_file('https://compo.sr/uploads/website_specific/scripts/testing.php', null, false, true, 'Composr', $post_params);
+        $data = http_download_file('https://compo.sr/uploads/website_specific/scripts/testing.php?type=test_upload', null, false, true, 'Composr', $post_params);
         $time_after = microtime(true);
 
         $time = ($time_after - $time_before);
 
         $megabytes_per_second = floatval(strlen($data_to_send)) / (1024.0 * 1024.0 * $time);
 
-        $threshold_in_megabits_per_second = 4.0;
+        $threshold_in_megabits_per_second = 2.0;
 
         $this->assertTrue($megabytes_per_second * 8.0 > $threshold_in_megabits_per_second, 'Slow uploading speed @ ' . float_format($megabytes_per_second) . ' Megabytes per second');
     }
@@ -821,7 +821,7 @@ class _health_check_test_set extends cms_test_case
 
         require_code('json'); // TODO: Fix in v11
 
-        $url = 'https://compo.sr/uploads/website_specific/scripts/testing.php?url=' . urlencode($this->get_page_url());
+        $url = 'https://compo.sr/uploads/website_specific/scripts/testing.php?type=http_status_check&url=' . urlencode($this->get_page_url());
         $data = http_download_file($url, null, false);
         $result = @json_decode($data, true);
         $this->assertTrue($result === '200', 'Cannot access website externally');
