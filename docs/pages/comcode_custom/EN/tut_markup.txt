@@ -57,6 +57,11 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 			<td>This is the standard for signing e-mails.</td>
 			<td>You don't need to know about this, unless you are configuring it to run on Composr generated e-mails.</td>
 		</tr>
+		<tr>
+			<td>[abbr="Sender Policy Framework"][url="http://www.openspf.org/"]SPF[/url][/abbr]</td>
+			<td>This is the protocol for limiting what servers can send e-mail for a particula domain.</td>
+			<td>It is advised to set this up to reduce spam and fraud.</td>
+		</tr>
 
 		<tr>
 			<th colspan="3"><em>Web</em></th>

@@ -48,7 +48,25 @@ class _health_check_test_set extends cms_test_case
         return parse_url(get_base_url(), PHP_URL_HOST);
     }
 
-    protected function is_local_domain($domain = null)
+    protected function get_mail_domains()
+    {
+        $domains = array();
+        $domains[preg_replace('#^.*@#', '', get_option('staff_address'))] = get_option('staff_address');
+        $domains[preg_replace('#^.*@#', '', get_option('website_email'))] = get_option('website_email');
+        if (addon_installed('tickets')) {
+            $domains[preg_replace('#^.*@#', '', get_option('ticket_email_from'))] = get_option('ticket_email_from');
+        }
+
+        foreach ($domains as $domain => $email) {
+            if ($this->is_localhost_domain($domain)) {
+                unset($domains[$email]);
+            }
+        }
+
+        return array_unique($domains);
+    }
+
+    protected function is_localhost_domain($domain = null)
     {
         if ($domain === null) {
             $domain = parse_url(get_base_url(), PHP_URL_HOST);
@@ -662,7 +680,7 @@ class _health_check_test_set extends cms_test_case
         // TODO: Remove page-load request, "Little disk space check" and it's independent notification
     }*/
 
-    // No guest access to page (configurable list of page-links)
+    // No guest access to page
     /*public function testForPagesWithoutAccess($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         $page_links = array( // TODO: Make configurable
@@ -702,7 +720,7 @@ class _health_check_test_set extends cms_test_case
     // Web server not accessible from external proxy
     /*public function testForExternalAccess($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
-        if ($this->is_local_domain()) {
+        if ($this->is_localhost_domain()) {
             return;
         }
 
@@ -711,22 +729,86 @@ class _health_check_test_set extends cms_test_case
         $this->assertTrue(strpos($data, '200 OK') !== false, 'Cannot access website externally');
     }*/
 
-    // Broken links on pages (configurable list of page-links) (and remove old cleanup tool that currently does this)
-    /*public function testForBrokenLinks($manual_checks = false, $automatic_repair = false, $is_test_site = false)
+    // http:// URLs appearing on page when site has a https:// base URL (configurable list of page-links)
+    /*public function testForIncorrectHTTPSLinking($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // TODO
     }*/
 
-    // Broken images on pages (configurable list of page-links) (would need a config option)
-    public function testForBrokenImages($manual_checks = false, $automatic_repair = false, $is_test_site = false)
+    // Non-https images/scripts/CSS/etc embedded on pages that are https (configurable list of page-links)
+    /*public function testForIncorrectHTTPSEmbedding($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
-        $data = $this->get_page_content();
-        if ($data === null) {
-            return;
+        // TODO
+    }*/
+
+    // Links to broken CSS or JavaScript or image files
+    /*public function testForBrokenLinks($manual_checks = false, $automatic_repair = false, $is_test_site = false)
+    {
+        $page_links = array( // TODO: Make configurable
+            ':',
+        );
+
+        $urls = array();
+        foreach ($page_links as $page_link) {
+            $data = $this->get_page_content($page_link);
+            if ($data === null) {
+                continue;
+            }
+
+            $matches = array();
+            $num_matches = preg_match_all('#<link\s[^<>]*href="([^"]*)"[^<>]*rel="stylesheet"#is', $data, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $urls[] = $matches[1][$i];
+            }
+            $num_matches = preg_match_all('#<link\s[^<>]*rel="stylesheet"[^<>]*href="([^"]*)"#is', $data, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $urls[] = $matches[1][$i];
+            }
+            $num_matches = preg_match_all('#<script\s[^<>]*src="([^"]*)"#is', $data, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $urls[] = $matches[1][$i];
+            }
+            $num_matches = preg_match_all('#<(img|audio|video|source|track|input|iframe|embed)\s[^<>]*src="([^"]*)"#is', $data, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $urls[] = $matches[2][$i];
+            }
+            $num_matches = preg_match_all('#<(a|area)\s[^<>]*href="([^"]*)"#is', $data, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $urls[] = $matches[2][$i];
+            }
+            $num_matches = preg_match_all('#<object\s[^<>]*data="([^"]*)"#is', $data, $matches);
+            for ($i = 0; $i < $num_matches; $i++) {
+                $urls[] = $matches[1][$i];
+            }
+        }
+        $urls = array_unique($urls);
+
+        $_urls = array();
+        foreach ($urls as $url) {
+            if (substr($url, 0, 2) == '//') {
+                $url = 'http:' . $url;
+            }
+
+            // Don't check local URLs, we're interested in broken remote links (local validation is too much)
+            if (substr($url, 0, strlen(get_base_url(false)) + 1) == get_base_url(false) . '/') {
+                continue;
+            }
+            if (substr($url, 0, strlen(get_base_url(true)) + 1) == get_base_url(true) . '/') {
+                continue;
+            }
+            if (strpos($url, '://') === false) {
+                continue;
+            }
+
+            $_urls[] = $url;
         }
 
-        //$num_matches = TODO;
-    }
+        foreach ($_urls as $url) {
+            // Check
+            $data = http_download_file($url, 0, false);
+            $this->assertTrue($data !== null, 'Broken link: ' . $url);
+        }
+    }*/
 
     // Inconsistent database state
     /*public function testForInconsistentDBState($manual_checks = false, $automatic_repair = false, $is_test_site = false)
@@ -870,61 +952,6 @@ class _health_check_test_set extends cms_test_case
             fclose($myfile);
 
             $this->assertTrue(count($dates) < $threshold_count, integer_format(count($dates)) . ' logged errors in the last day');
-        }
-    }*/
-
-    // http:// URLs appearing on page when site has a https:// base URL (configurable list of page-links)
-    /*public function testForIncorrectHTTPSLinking($manual_checks = false, $automatic_repair = false, $is_test_site = false)
-    {
-        // TODO
-    }*/
-
-    // Non-https images/scripts/CSS/etc embedded on pages that are https (configurable list of page-links)
-    /*public function testForIncorrectHTTPSEmbedding($manual_checks = false, $automatic_repair = false, $is_test_site = false)
-    {
-        // TODO
-    }*/
-
-    // Links to broken CSS or JavaScript files
-    /*public function testForBrokenWebIncludes($manual_checks = false, $automatic_repair = false, $is_test_site = false)
-    {
-        $data = $this->get_page_content();
-        if ($data === null) {
-            return;
-        }
-
-        $urls = array();
-        $matches = array();
-        $num_matches = preg_match_all('#<link\s[^<>]*href="([^"]*)"[^<>]*rel="stylesheet"#is', $data, $matches);
-        for ($i = 0; $i < $num_matches; $i++) {
-            $urls[] = $matches[1][$i];
-        }
-        $num_matches = preg_match_all('#<link\s[^<>]*rel="stylesheet"[^<>]*href="([^"]*)"#is', $data, $matches);
-        for ($i = 0; $i < $num_matches; $i++) {
-            $urls[] = $matches[1][$i];
-        }
-        $num_matches = preg_match_all('#<script\s[^<>]*src="([^"]*)"#is', $data, $matches);
-        for ($i = 0; $i < $num_matches; $i++) {
-            $urls[] = $matches[1][$i];
-        }
-
-        foreach ($urls as $url) {
-            if (substr($url, 0, 2) == '//') {
-                $url = 'http:' . $url;
-            }
-
-            if (substr($url, 0, strlen(get_base_url(false)) + 1) == get_base_url(false) . '/') {
-                continue;
-            }
-
-            if (substr($url, 0, strlen(get_base_url(true)) + 1) == get_base_url(true) . '/') {
-                continue;
-            }
-
-            if (strpos($url, '://') !== false) {
-                $data = http_download_file($url, null, false);
-                $this->assertTrue(!empty($data), 'Broken included file: ' . $url);
-            }
         }
     }*/
 
@@ -1293,7 +1320,7 @@ class _health_check_test_set extends cms_test_case
         }
     }*/
 
-    // Infected with Malware (configurable list of page-links)
+    // Infected with Malware
     /*public function testForMalwareInfection($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         // API https://developers.google.com/safe-browsing/v4/
@@ -1305,7 +1332,7 @@ class _health_check_test_set extends cms_test_case
 
         require_code('json'); // Change in v11
 
-        / *if ($this->is_local_domain()) {   TODO Re-enable
+        / *if ($this->is_localhost_domain()) {   TODO Re-enable
             return;
         }* /
 
@@ -1361,22 +1388,12 @@ class _health_check_test_set extends cms_test_case
     /*public function testForMailIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if ((php_function_allowed('getmxrr')) && (php_function_allowed('checkdnsrr'))) {
-            $domains = array();
-            $domains[preg_replace('#^.*@#', '', get_option('staff_address'))] = get_option('staff_address');
-            $domains[preg_replace('#^.*@#', '', get_option('website_email'))] = get_option('website_email');
-            if (addon_installed('tickets')) {
-                $domains[preg_replace('#^.*@#', '', get_option('ticket_email_from'))] = get_option('ticket_email_from');
-            }
-
-            $domains = array('ocportal.com' => 'chris@ocportal.com'); // TODO
+            $domains = $this->get_mail_domains();
 
             foreach ($domains as $domain => $email) {
-                if ($this->is_local_domain($domain)) {
-                    continue;
-                }
-
                 $mail_hosts = array();
-                $this->assertTrue(@getmxrr($domain, $mail_hosts), 'Cannot look up MX records for our ' . $email . ' e-mail address');
+                $result = @getmxrr($domain, $mail_hosts);
+                $this->assertTrue($result, 'Cannot look up MX records for our ' . $email . ' e-mail address');
 
                 foreach ($mail_hosts as $host) {
                     $this->assertTrue(checkdnsrr($host, 'A'), 'Mail server DNS does not seem to be setup properly for our ' . $email . ' e-mail address');
@@ -1418,16 +1435,169 @@ class _health_check_test_set extends cms_test_case
         }
     }*/
 
-    // SPF prohibits us sending
-    /*public function testForSPFBlock($manual_checks = false, $automatic_repair = false, $is_test_site = false)
+    /*protected function do_spf_check($domain, $self_domain, $self_ip)
     {
-        // TODO
+        $records = dns_get_record($domain, DNS_TXT);
+        foreach ($records as $record) {
+            if (!isset($record['txt'])) {
+                continue;
+            }
+            $_record = $record['txt'];
+
+            $matches = array();
+            if (preg_match('#^v=spf1 (.*)#', $_record, $matches) != 0) {
+                $passed = false;
+                $blocked = false;
+                $passed_wildcard = false;
+
+                $parts = explode(' ', $matches[1]);
+                foreach ($parts as $part) {
+                    // Normalise to something more manageable
+                    $prefix = substr($part, 0, 1);
+                    if (in_array($prefix, array('+', '-', '#', '?'))) {
+                        $part = substr($part, 1);
+                    } else {
+                        $prefix = '+';
+                    }
+                    if ($prefix == '~') {
+                        $prefix = '-';
+                    }
+
+                    if ($this->spf_term_matches($part, $self_domain, $self_ip)) {
+                        switch ($prefix) {
+                            case '+':
+                                $passed = true;
+                                break;
+
+                            case '-':
+                                $blocked = true;
+                                break;
+                        }
+                    }
+
+                    if ($part == 'all') {
+                        switch ($prefix) {
+                            case '+':
+                                $passed_wildcard = true;
+                                break;
+
+                            case '-':
+                                // We ignore this, we consider neutrality and blocking all equivalently
+                                break;
+                        }
+                    }
+                }
+
+                $this->assertTrue(!$passed_wildcard, 'SPF record for ' . $domain . ' is wildcarded, so offers no real value');
+
+                return ($passed || $passed_wildcard) && !$blocked;
+            }
+        }
+
+        return null;
+    }
+
+    protected function spf_term_matches($part, $self_domain, $self_ip)
+    {
+        if (substr($part, 0, 4) == 'ip4:') {
+            $_part = substr($part, 4);
+
+            if (strpos($_part, '/') === false) {
+                return ($self_ip == $_part);
+            } else {
+                require_code('failure'); // TODO: Remove in v11
+                return ip_cidr_check($self_ip, $_part);
+            }
+        }
+
+        if (($part == 'a:' . $self_domain) || ($part == 'a')) {
+            return true;
+        }
+
+        if (($part == 'mx:' . $self_domain) || ($part == 'mx')) {
+            return true;
+        }
+        if (($part == 'ptr:' . $self_domain) || ($part == 'ptr')) {
+            return true;
+        }
+
+        if (substr($part, 0, 8) == 'include:') {
+            $include = substr($part, 8);
+            $ret = $this->do_spf_check($include, $self_domain, $self_ip);
+
+            $this->assertTrue($ret !== null, 'SPF include ' . $include . ' is broken');
+
+            if ($ret === null) {
+                $ret = false;
+            }
+            return $ret;
+        }
+
+        if (substr($part, 0, 9) == 'redirect:') {
+            $redirect = substr($part, 9);
+            $ret = $this->do_spf_check($redirect, $self_domain, $self_ip);
+
+            $this->assertTrue($ret !== null, 'SPF redirect ' . $redirect . ' is broken');
+
+            if ($ret === null) {
+                $ret = false;
+            }
+            return $ret;
+        }
+
+        return false;
+    }
+
+    // SPF prohibits us sending
+    public function testForSPFBlock($manual_checks = false, $automatic_repair = false, $is_test_site = false)
+    {
+        if ((php_function_allowed('dns_get_record')) && (php_function_allowed('gethostbyname')) && ($manual_checks) && (get_option('smtp_sockets_use') == '0')) {
+            $self_domain = $this->get_domain();
+            $self_ip = gethostbyname($self_domain);
+
+            $domains = $this->get_mail_domains();
+
+            foreach ($domains as $domain => $email) {
+                $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
+
+                $this->assertTrue($passed !== null, 'SPF record is not set for ' . $domain . ', setting it will significantly reduce the chance of fraud and spam blockage');
+
+                if ($passed !== null) {
+                    $this->assertTrue($passed, 'SPF record for ' . $domain . ' does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
+                }
+            }
+        }
     }*/
 
     // SMTP server is blacklisted
     /*public function testForSMTPBlacklisting($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
-        // TODO
+        require_code('antispam');
+
+        if ((php_function_allowed('getmxrr')) && (php_function_allowed('checkdnsrr')) && (php_function_allowed('gethostbyname'))) {
+            $domains = $this->get_mail_domains();
+
+            foreach ($domains as $domain => $email) {
+                $mail_hosts = array();
+                $result = @getmxrr($domain, $mail_hosts);
+                if ($result === false) {
+                    continue;
+                }
+
+                foreach ($mail_hosts as $host) {
+                    $ip = gethostbyname($host);
+                    $rbls = array(
+                        '*.dnsbl.sorbs.net',
+                        '*.bl.spamcop.net',
+                    );
+                    foreach ($rbls as $rbl) {
+                        $response = rbl_resolve($ip, $rbl, true);
+                        $blocked = ($response === array('127', '0', '0', '2'));
+                        $this->assertTrue(!$blocked, 'The ' . $host . ' SMTP server is blocked by ' . $rbl);
+                    }
+                }
+            }
+        }
     }*/
 
     // DNS not resolving
@@ -1436,7 +1606,7 @@ class _health_check_test_set extends cms_test_case
         if (php_function_allowed('checkdnsrr')) {
             $domain = $this->get_domain();
 
-            if (!$this->is_local_domain($domain)) {
+            if (!$this->is_localhost_domain($domain)) {
                 $this->assertTrue(checkdnsrr($domain, 'A'), 'DNS does not seem to be setup properly for our domain');
             }
         }
@@ -1448,7 +1618,7 @@ class _health_check_test_set extends cms_test_case
         if (php_function_allowed('shell_exec')) {
             $domain = $this->get_domain();
 
-            if (!$this->is_local_domain($domain)) {
+            if (!$this->is_localhost_domain($domain)) {
                 $data = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
 
                 $matches = array();
@@ -1668,7 +1838,7 @@ class _health_check_test_set extends cms_test_case
     /*public function testForLocalLinks($manual_checks = false, $automatic_repair = false, $is_test_site = false)
     {
         if ($manual_checks) {
-            if ($this->is_local_domain()) {
+            if ($this->is_localhost_domain()) {
                 return;
             }
 
