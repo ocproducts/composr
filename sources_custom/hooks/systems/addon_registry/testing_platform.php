@@ -379,7 +379,6 @@ class Hook_addon_registry_testing_platform
             '_tests/tests/unit_tests/css_and_js.php',
             '_tests/tests/unit_tests/dev_environment.php',
             '_tests/tests/unit_tests/sitemap.php',
-            '_tests/tests/unit_tests/blocks.php',
             '_tests/tests/unit_tests/_commandr_fs.php',
             '_tests/tests/unit_tests/broken_includes.php',
             '_tests/tests/unit_tests/addon_guards.php',
