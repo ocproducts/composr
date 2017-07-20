@@ -208,7 +208,7 @@ function is_substantial_release($dotted)
 /**
  * Find whether a PHP version is still supported by the PHP developers.
  *
- * @param string The version
+ * @param string $v The version
  * @return ?boolean Whether it is (null: some kind of error)
  */
 function is_php_version_supported($v)
@@ -222,7 +222,7 @@ function is_php_version_supported($v)
 
     require_code('files2');
 
-    list($data) = cache_and_carry('http_download_file', array('https://raw.githubusercontent.com/php/web-php/master/include/branches.inc', null, false), 60 * 60 * 24 * 7);
+    list($data) = cache_and_carry('http_download_file', array('https://raw.githubusercontent.com/php/web-php/master/include/branches.inc', null, false), 60 * 60 * 24 * 7); // TODO: Add to maintenance spreadsheet in v11
 
     $matches = array();
 

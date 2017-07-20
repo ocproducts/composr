@@ -1282,7 +1282,7 @@ class _health_check_test_set extends cms_test_case
         );
         foreach ($directories as $dir => $max_contents_threshold) {
             if (file_exists(get_file_base() . '/' . $dir)) {
-                $count = count(get_directory_contents(get_file_base() . '/' . $dir, false, false));
+                $count = count(get_directory_contents(get_file_base() . '/' . $dir, '', false, false));
                 $this->assert_true($count < $max_contents_threshold, 'Directory ' . $dir . ' now contains ' . integer_format($count) . ' files, should hover only slightly over empty');
             }
         }
@@ -1538,7 +1538,7 @@ class _health_check_test_set extends cms_test_case
                 $_uptime = sys_getloadavg();
                 $uptime = $_uptime[0];
             } else {
-                if ((strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
+                if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
                     $data = shell_exec('uptime');
 
                     $matches = array();
@@ -1697,7 +1697,7 @@ class _health_check_test_set extends cms_test_case
     {
         // API https://developers.google.com/safe-browsing/v4/
 
-        // TODO: Document use of API in maintenance.csv in v11
+        // TODO: Document use of API in maintenance spreadsheet in v11
 
         $key = 'AIzaSyBJyvgYzg-moqMRBZwhiivNxhYvafqMWas'; // TODO: Make configurable
         if ($key == '') {
@@ -2376,7 +2376,7 @@ class _health_check_test_set extends cms_test_case
             return;
         }
 
-        // TODO: Document in maintenance.csv for v11 that we have these links here
+        // TODO: Document in maintenance spreadsheet for v11 that we have these links here
 
         $this->state_manual_check('Check HTML5 validation https://validator.w3.org/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
         $this->state_manual_check('Check CSS validation https://jigsaw.w3.org/css-validator/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
@@ -2404,11 +2404,18 @@ class _health_check_test_set extends cms_test_case
         $this->state_manual_check('Test in Google Chrome (mobile)');
         $this->state_manual_check('Test in Safari (mobile)');
 
-        $this->state_manual_check('Manually check the web server error logs, e.g. for 404 errors you may want to serve via a redirect');
+        $this->state_manual_check('Check the web server error logs, e.g. for 404 errors you may want to serve via a redirect');
 
-        $this->state_manual_check('Manually check the website would look good if printed');
+        $this->state_manual_check('Check the website would look good if printed');
 
-        $this->state_manual_check('Manually check the social media channels are being regularly updated');
+        $this->state_manual_check('Check the social media channels are being regularly updated');
+
+        $ga = get_option('google_analytics');
+        if (trim($ga) != '') {
+            $this->state_manual_check('Check Google Analytics to see how your site is performing');
+        } elseif (addon_installed('stats')) {
+            $this->state_manual_check('Check stats to see how your site is performing');
+        }
     }
 
     // -- integration --
