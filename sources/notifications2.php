@@ -240,7 +240,6 @@ function notifications_ui_advanced($notification_code, $enable_message = null, $
     require_code('notifications');
     require_lang('notifications');
     require_javascript('notifications');
-    require_javascript('notifications');
     require_all_lang();
 
     $test = $GLOBALS['SITE_DB']->query_select_value_if_there('notification_lockdown', 'l_setting', array(
