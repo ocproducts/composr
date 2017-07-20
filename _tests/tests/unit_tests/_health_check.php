@@ -183,6 +183,10 @@ class _health_check_test_set extends cms_test_case
     // Expired SSL certificate, or otherwise malfunctioning SSL (if enabled)
     public function testForSSLIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if ($is_test_site) {
+            return;
+        }
+
         if ((addon_installed('ssl')) || (substr(get_base_url(), 0, 7) == 'https://')) {
             // If it's a problem with SSL verification in general
             $data = http_download_file('https://www.google.com/', null, false);
@@ -230,13 +234,13 @@ class _health_check_test_set extends cms_test_case
     }
 
     // CRON not running at all
-    public function testForCRONNotRunning($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
+    public function testForCronNotRunning($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
         $this->assertTrue(cron_installed(), 'CRON not running, it is needed for various features to work');
     }
 
     // CRON taking more than 5 minutes to run
-    public function testForCRONSlow($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
+    public function testForCronSlow($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
         $last_cron_started = get_value('last_cron_started', null, true);
         $last_cron_finished = get_value('last_cron_finished', null, true);
@@ -268,6 +272,10 @@ class _health_check_test_set extends cms_test_case
     // Slow download speed
     public function testForSlowDownload($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if ($is_test_site) {
+            return;
+        }
+
         $time_before = microtime(true);
         $data = http_download_file('http://www.google.com/');
         $time_after = microtime(true);
@@ -282,13 +290,17 @@ class _health_check_test_set extends cms_test_case
     // Slow upload speed
     public function testForSlowUpload($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if ($is_test_site) {
+            return;
+        }
+
         $test_file_path = get_file_base() . '/data/curl-ca-bundle.crt';
 
         $data_to_send = str_repeat(file_get_contents($test_file_path), 5);
 
         $time_before = microtime(true);
         $post_params = array('test_data' => $data_to_send);
-        $data = http_download_file('https://compo.sr/uploads/website_specific/scripts/testing.php?type=test_upload', null, false, true, 'Composr', $post_params);
+        $data = http_download_file('https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=test_upload', null, false, true, 'Composr', $post_params);
         $time_after = microtime(true);
 
         $time = ($time_after - $time_before);
@@ -464,11 +476,24 @@ class _health_check_test_set extends cms_test_case
         $google_allowed = $this->robots_allowed($url, 'Googlebot', true);
         $other_allowed = $this->robots_allowed($url, 'Googlebot', false); // We'll still check for Google, just with the other way of doing precedence
 
-        if ($google_allowed == $other_allowed) {
-            $this->assertTrue($google_allowed, 'Site blocked by robots.txt');
+        if ($is_test_site) {
+            if ($this->is_localhost_domain()) {
+                return; // Google cannot access anyway
+            }
+
+            if ($google_allowed == $other_allowed) {
+                $this->assertTrue(!$google_allowed, 'Site not blocked by robots.txt');
+            } else {
+                $this->assertTrue(!$google_allowed, 'Site not blocked on Google by robots.txt as per Google\'s way of implementing robots standard');
+                $this->assertTrue(!$other_allowed, 'Site not blocked on Google by robots.txt as per standard (non-Google) way of implementing robots standard');
+            }
         } else {
-            $this->assertTrue($google_allowed, 'Site blocked on Google by robots.txt as per Google\'s way of implementing robots standard');
-            $this->assertTrue($other_allowed, 'Site blocked on Google by robots.txt as per standard (non-Google) way of implementing robots standard');
+            if ($google_allowed == $other_allowed) {
+                $this->assertTrue($google_allowed, 'Site blocked by robots.txt');
+            } else {
+                $this->assertTrue($google_allowed, 'Site blocked on Google by robots.txt as per Google\'s way of implementing robots standard');
+                $this->assertTrue($other_allowed, 'Site blocked on Google by robots.txt as per standard (non-Google) way of implementing robots standard');
+            }
         }
 
         /*
@@ -543,7 +568,9 @@ class _health_check_test_set extends cms_test_case
         }
         $this->assertTrue($ok, 'Sitemap URL is ' . $rule . ' but we expected ' . $expected_sitemap_url);
 
-        $this->assertTrue($found !== array(), 'No Sitemap directive found in robots.txt');
+        if (!$is_test_site) {
+            $this->assertTrue($found !== array(), 'No Sitemap directive found in robots.txt');
+        }
     }
 
     protected function robots_allowed($url, $user_agent, $google_style)
@@ -819,9 +846,13 @@ class _health_check_test_set extends cms_test_case
             return;
         }
 
+        if ($is_test_site) {
+            return;
+        }
+
         require_code('json'); // TODO: Fix in v11
 
-        $url = 'https://compo.sr/uploads/website_specific/scripts/testing.php?type=http_status_check&url=' . urlencode($this->get_page_url());
+        $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=http_status_check&url=' . urlencode($this->get_page_url());
         $data = http_download_file($url, null, false);
         $result = @json_decode($data, true);
         $this->assertTrue($result === '200', 'Cannot access website externally');
@@ -830,6 +861,10 @@ class _health_check_test_set extends cms_test_case
     // www/non-www redirect not handled well - either does not exist, or redirects deep to home page, and/or is not 301
     public function testForWWWRedirectingIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if ($is_test_site) {
+            return;
+        }
+
         $domain = $this->get_domain();
         $parts = explode('.', $domain);
 
@@ -869,6 +904,10 @@ class _health_check_test_set extends cms_test_case
     // non-https redirect not handled well - either does not exist, or redirects deep to home page, and/or is not 301
     public function testForHTTPSRedirectingIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if ($is_test_site) {
+            return;
+        }
+
         global $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE, $SITE_INFO;
 
         if (empty($SITE_INFO['base_url'])) {
@@ -1100,6 +1139,10 @@ class _health_check_test_set extends cms_test_case
     // E-mail queue piling up
     public function testForEmailQueueStuck($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if (get_option('mail_queue_debug') == '1') {
+            return;
+        }
+
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_queued=1 AND m_date_and_time<' . strval(time() - 60 * 60 * 1);
         $count = $GLOBALS['SITE_DB']->query_value_if_there($sql);
 
@@ -1232,6 +1275,10 @@ class _health_check_test_set extends cms_test_case
     // Admin account that has not logged in in months and should be deleted
     public function testForUnusedAdminAccounts($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if ($is_test_site) {
+            return;
+        }
+
         $threshold = time() - 60 * 60 * 24 * 90; // TODO: Make configurable
 
         $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
@@ -1652,6 +1699,27 @@ class _health_check_test_set extends cms_test_case
         }
     }
 
+    // SPF prohibits us sending
+    public function testForSPFBlock($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
+    {
+        if ((php_function_allowed('dns_get_record')) && (php_function_allowed('gethostbyname')) && ($manual_checks) && (get_option('smtp_sockets_use') == '0')) {
+            $self_domain = $this->get_domain();
+            $self_ip = gethostbyname($self_domain);
+
+            $domains = $this->get_mail_domains();
+
+            foreach ($domains as $domain => $email) {
+                $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
+
+                $this->assertTrue($passed !== null, 'SPF record is not set for ' . $domain . ', setting it will significantly reduce the chance of fraud and spam blockage');
+
+                if ($passed !== null) {
+                    $this->assertTrue($passed, 'SPF record for ' . $domain . ' does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
+                }
+            }
+        }
+    }
+
     protected function do_spf_check($domain, $self_domain, $self_ip)
     {
         $records = dns_get_record($domain, DNS_TXT);
@@ -1765,27 +1833,6 @@ class _health_check_test_set extends cms_test_case
         return false;
     }
 
-    // SPF prohibits us sending
-    public function testForSPFBlock($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
-    {
-        if ((php_function_allowed('dns_get_record')) && (php_function_allowed('gethostbyname')) && ($manual_checks) && (get_option('smtp_sockets_use') == '0')) {
-            $self_domain = $this->get_domain();
-            $self_ip = gethostbyname($self_domain);
-
-            $domains = $this->get_mail_domains();
-
-            foreach ($domains as $domain => $email) {
-                $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
-
-                $this->assertTrue($passed !== null, 'SPF record is not set for ' . $domain . ', setting it will significantly reduce the chance of fraud and spam blockage');
-
-                if ($passed !== null) {
-                    $this->assertTrue($passed, 'SPF record for ' . $domain . ' does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
-                }
-            }
-        }
-    }
-
     // Outgoing mail not working
     public function testForMailFailing($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
@@ -1874,30 +1921,34 @@ class _health_check_test_set extends cms_test_case
     // DNS not resolving
     public function testForDNSResolutionIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if ($this->is_localhost_domain()) {
+            return;
+        }
+
         if (php_function_allowed('checkdnsrr')) {
             $domain = $this->get_domain();
 
-            if (!$this->is_localhost_domain($domain)) {
-                $this->assertTrue(checkdnsrr($domain, 'A'), 'DNS does not seem to be setup properly for our domain');
-            }
+            $this->assertTrue(checkdnsrr($domain, 'A'), 'DNS does not seem to be set up properly for our domain');
         }
     }
 
     // Running on an expired domain name
     public function testForExpiringDomainName($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if ($this->is_localhost_domain()) {
+            return;
+        }
+
         if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {
             $domain = $this->get_domain();
 
-            if (!$this->is_localhost_domain($domain)) {
-                $data = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
+            $data = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
 
-                $matches = array();
-                if (preg_match('#(Expiry date|Expiration date|Expiration):\s*([^\s]*)#im', $data, $matches) != 0) {
-                    $expiry = strtotime($matches[2]);
-                    if ($expiry > 0) {
-                        $this->assertTrue($expiry > time() - 60 * 60 * 24 * 7, 'Domain seems to be expiring within a week or already expired');
-                    }
+            $matches = array();
+            if (preg_match('#(Expiry date|Expiration date|Expiration):\s*([^\s]*)#im', $data, $matches) != 0) {
+                $expiry = strtotime($matches[2]);
+                if ($expiry > 0) {
+                    $this->assertTrue($expiry > time() - 60 * 60 * 24 * 7, 'Domain seems to be expiring within a week or already expired');
                 }
             }
         }
@@ -2052,14 +2103,20 @@ class _health_check_test_set extends cms_test_case
     // Site is closed
     public function testForSiteClosed($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
-        if (!$is_test_site) {
-            $this->assertTrue(get_option('site_closed') == '1', 'The website is still closed');
+        if ($is_test_site) {
+            return;
         }
+
+        $this->assertTrue(get_option('site_closed') == '1', 'The website is still closed');
     }
 
     // Staff not doing their tasks as identified by items in the staff checklist
     public function testForStaffChecklistIgnoring($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
+        if ($is_test_site) {
+            return;
+        }
+
         if ($manual_checks) {
             require_code('blocks/main_staff_checklist');
 
@@ -2098,11 +2155,11 @@ class _health_check_test_set extends cms_test_case
     // Has links to local files.
     public function testForLocalLinks($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
-        if ($manual_checks) {
-            if ($this->is_localhost_domain()) {
-                return;
-            }
+        if ($this->is_localhost_domain()) {
+            return;
+        }
 
+        if ($manual_checks) {
             $data = $this->get_page_content();
             if ($data === null) {
                 return;
@@ -2192,6 +2249,8 @@ class _health_check_test_set extends cms_test_case
 
     // TODO: The checks should be initiated from a new "Health Check" item on the 'Tools' menu of the Admin Zone, which would call manual mode. There'd be checkboxes to say what tests to run, very similar to 'Website cleanup tools'.
     // TODO: Results would be shown in a table. Each failed check would quote the codename of the hook that failed, and there'd be a config option to list codenames of hooks to not run.
+
+    // TODO: Map $is_test_site to config option
 
     // TODO: Checks would also be runnable by a health_check.php script in data_custom. This would need http-authentication to run, or an explicit login as an admin. It would need to be documented in the codebook (which lists manually callable scripts). It should allow a parameter to filter which checks to run.
 
