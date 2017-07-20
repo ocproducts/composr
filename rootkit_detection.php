@@ -286,6 +286,8 @@ END;
 			.button_screen { padding: 0.5em 0.3em !important; }
 			a[target="_blank"], a[onclick$="window.open"] { padding-right: 0; }
 		/*]]>*/</style>
+
+		<meta name="robots" content="noindex, nofollow" />
 	</head>
 	<body class="website_body" style="margin: 1em"><div class="global_middle">
 		<h1 class="screen_title">Composr rootkit detector</h1>

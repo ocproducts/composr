@@ -102,6 +102,9 @@ function authors_script()
 
     $content = do_template('AUTHOR_POPUP', array('_GUID' => 'e18411d1bf24c6ed945b4d9064774884', 'AUTHORS' => $authors, 'NEXT_URL' => $next_url));
 
+    require_code('site');
+    attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
+
     $echo = do_template('STANDALONE_HTML_WRAP', array('_GUID' => 'ab8d8c9d276530d82ddd84202aacf32f', 'TITLE' => do_lang_tempcode('CHOOSE_AUTHOR'), 'CONTENT' => $content, 'POPUP' => true));
     $echo->handle_symbol_preprocessing();
     $echo->evaluate_echo();
