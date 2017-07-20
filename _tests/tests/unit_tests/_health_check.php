@@ -278,7 +278,7 @@ class _health_check_test_set extends cms_test_case
     public function testForPingIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
         if (php_function_allowed('shell_exec')) {
-            if (stripos(PHP_OS, 'Win') !== false) {
+            if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
                 $cmd = 'ping -n 10 8.8.8.8';
             } else {
                 $cmd = 'ping -c 10 8.8.8.8';
@@ -1538,7 +1538,7 @@ class _health_check_test_set extends cms_test_case
                 $_uptime = sys_getloadavg();
                 $uptime = $_uptime[0];
             } else {
-                if (stripos(PHP_OS, 'Win') === false) {
+                if ((strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
                     $data = shell_exec('uptime');
 
                     $matches = array();
@@ -1671,7 +1671,7 @@ class _health_check_test_set extends cms_test_case
                 if (preg_match('#^Mem:\s+(\d+)\s+(\d+)\s+(\d+)#m', $data, $matches) != 0) {
                     $bytes_free = intval($matches[3]) * 1024;
                 }
-            } elseif (stripos(PHP_OS, 'Win') !== false) {
+            } elseif (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
                 $data = shell_exec('wmic OS get FreePhysicalMemory /Value');
                 if (preg_match('#FreePhysicalMemory=(\d+)#m', $data, $matches) != 0) {
                     $bytes_free = intval($matches[1]);
@@ -2083,7 +2083,7 @@ class _health_check_test_set extends cms_test_case
         if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {
             $domain = $this->get_domain();
 
-            if (stripos(PHP_OS, 'Win') === false) {
+            if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
                 $data = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
             } else {
                 $this->state_skipped('No implementation for doing whois lookups on this platform');
@@ -2117,23 +2117,25 @@ class _health_check_test_set extends cms_test_case
         $this->assert_true($result === $data, 'Website does not seem to be running on the base URL that is configured');
         @unlink(get_custom_file_base() . '/' . $path);
 
-        if (php_function_allowed('shell_exec')) {
-            $domain = $this->get_domain();
-            $regexp = '#\nNon-authoritative answer:\nName:\s+' . $domain . '\nAddress:\s+(.*)\n#';
+        if (!$this->is_localhost_domain()) {
+            if (php_function_allowed('shell_exec')) {
+                $domain = $this->get_domain();
+                $regexp = '#\nNon-authoritative answer:\nName:\s+' . $domain . '\nAddress:\s+(.*)\n#';
 
-            $matches_local = array();
-            $dns_lookup_local = shell_exec('nslookup ' . $domain);
-            $matched_local = preg_match($regexp, $dns_lookup_local, $matches_local);
-            $matches_remote = array();
-            $dns_lookup_remote = shell_exec('nslookup ' . $domain . ' 8.8.8.8');
-            $matched_remote = preg_match($regexp, $dns_lookup_remote, $matches_remote);
-            if (($matched_local != 0) && ($matched_remote != 0)) {
-                $this->assert_true($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently (' . $matches_local[1] . ' vs ' . $matches_remote[1] . ')');
+                $matches_local = array();
+                $dns_lookup_local = shell_exec('nslookup ' . $domain);
+                $matched_local = preg_match($regexp, $dns_lookup_local, $matches_local);
+                $matches_remote = array();
+                $dns_lookup_remote = shell_exec('nslookup ' . $domain . ' 8.8.8.8');
+                $matched_remote = preg_match($regexp, $dns_lookup_remote, $matches_remote);
+                if (($matched_local != 0) && ($matched_remote != 0)) {
+                    $this->assert_true($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently (' . $matches_local[1] . ' vs ' . $matches_remote[1] . ')');
+                } else {
+                    $this->state_skipped('Failed to get a recognisable DNS resolution via the command line');
+                }
             } else {
-                $this->state_skipped('Failed to get a recognisable DNS resolution via the command line');
+                $this->state_skipped('PHP shell_exec function not available');
             }
-        } else {
-            $this->state_skipped('PHP shell_exec function not available');
         }
     }
 
