@@ -39,7 +39,7 @@ class _health_check_test_set extends cms_test_case
 
             // Server blocked to access itself
             if ($page_link == ':') {
-                $this->assertTrue($ret[$page_link] !== null, 'The server cannot download itself');
+                $this->assert_true($ret[$page_link] !== null, 'The server cannot download itself');
             }
         }
         return $ret[$page_link];
@@ -180,6 +180,22 @@ class _health_check_test_set extends cms_test_case
         return $urls_or_page_links;
     }
 
+    protected function assert_true($result, $message = '%s')
+    {
+        return parent::assertTrue($result, $message);
+    }
+
+    protected function state_manual_check($message)
+    {
+        return parent::assertTrue(false, $message);
+    }
+
+    // This is only called when we would like to run a check but something is stopping us; we do not call it for checks that don't make any sense to run for any reason
+    protected function state_skipped($reason)
+    {
+        return parent::assertTrue(false, $reason);
+    }
+
     // Expired SSL certificate, or otherwise malfunctioning SSL (if enabled)
     public function testForSSLIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
@@ -191,7 +207,7 @@ class _health_check_test_set extends cms_test_case
             // If it's a problem with SSL verification in general
             $data = http_download_file('https://www.google.com/', null, false);
             $ok = (($data !== null) && (strpos($data, '<html') !== false));
-            $this->assertTrue($ok, 'Problem downloading HTTP requests by SSL');
+            $this->assert_true($ok, 'Problem downloading HTTP requests by SSL');
 
             if ($ok) {
                 // If it's a problem with SSL verification on our domain specifically
@@ -203,16 +219,17 @@ class _health_check_test_set extends cms_test_case
                     $data = http_download_file($test_url, null, false);
                     $ok1 = (($data !== null) && (strpos($data, '<html') !== false));
 
+                    $msg = 'Problem detected with the ' . $domain . ' SSL certificate';
                     if (!$ok1) {
                         set_value('disable_ssl_for__' . $domain, '1');
                         $data = http_download_file($test_url, null, false);
                         $ok2 = (($data !== null) && (strpos($data, '<html') !== false));
 
-                        $this->assertTrue(!$ok2, 'Problem detected with the ' . $domain . ' SSL certificate'); // Issue with our SSL but not if verify is disabled, suggesting the problem is with verify
+                        $this->assert_true(!$ok2, $msg); // Issue with our SSL but not if verify is disabled, suggesting the problem is with verify
 
                         delete_value('disable_ssl_for__' . $domain);
                     } else {
-                        $this->assertTrue(true); // No issue with our SSL
+                        $this->assert_true(true, $msg); // No issue with our SSL
                     }
                 }
             }
@@ -225,18 +242,18 @@ class _health_check_test_set extends cms_test_case
         /*  TODO Enable in v11, currently can't work
         $url = get_base_url() . '/testing-for-404.html';
         $data = http_download_file($url, null, false); // TODO: In v11 set the parameter to return output even for 404
-        $this->assertTrue(($data === null) || (strpos($data, '<link') !== false) || (strpos($data, '<a ') !== false), '404 page is too basic looking, probably not helpful, suggest to display a sitemap');
+        $this->assert_true(($data === null) || (strpos($data, '<link') !== false) || (strpos($data, '<a ') !== false), '404 page is too basic looking, probably not helpful, suggest to display a sitemap');
 
         $url = get_base_url() . '/testing-for-404.png';
         $data = http_download_file($url, null, false); // TODO: In v11 set the parameter to return output even for 404
-        $this->assertTrue(($data === null) || (strpos($data, '<nav class="menu_type__sitemap">') === false), '404 page is too complex looking for broken images');
+        $this->assert_true(($data === null) || (strpos($data, '<nav class="menu_type__sitemap">') === false), '404 page is too complex looking for broken images');
         */
     }
 
     // CRON not running at all
     public function testForCronNotRunning($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
-        $this->assertTrue(cron_installed(), 'CRON not running, it is needed for various features to work');
+        $this->assert_true(cron_installed(), 'CRON not running, it is needed for various features to work');
     }
 
     // CRON taking more than 5 minutes to run
@@ -249,11 +266,11 @@ class _health_check_test_set extends cms_test_case
 
         if (($last_cron_started !== null) && ($last_cron_finished !== null)) {
             $time = intval($last_cron_finished) - intval($last_cron_started);
-            $this->assertTrue($time < $threshold, 'CRON is taking ' . display_time_period($time) . ' to run');
-        }
-
-        if (($last_cron_started !== null) && (intval($last_cron_started) < time() - 60 * $threshold) && ($last_cron_finished === null)) {
-            $this->assertTrue($time < $threshold, 'CRON has taken ' . display_time_period($time) . ' and not finished -- it is either running very slow, or it failed');
+            $this->assert_true($time < $threshold, 'CRON is taking ' . display_time_period($time) . ' to run');
+        } elseif (($last_cron_started !== null) && (intval($last_cron_started) < time() - 60 * $threshold) && ($last_cron_finished === null)) {
+            $this->assert_true($time < $threshold, 'CRON has taken ' . display_time_period($time) . ' and not finished -- it is either running very slow, or it failed');
+        } else {
+            $this->state_skipped('CRON never ran');
         }
     }
 
@@ -261,11 +278,19 @@ class _health_check_test_set extends cms_test_case
     public function testForPingIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
         if (php_function_allowed('shell_exec')) {
-            $data = shell_exec('ping -c 10 8.8.8.8');
+            if (stripos(PHP_OS, 'Win') !== false) {
+                $data = shell_exec('ping -n 10 8.8.8.8');
+            } else {
+                $data = shell_exec('ping -c 10 8.8.8.8');
+            }
             $matches = array();
             if (preg_match('# (\d(\.\d+)%) packet loss#', $data, $matches) != 0) {
-                $this->assertTrue(floatval($matches[1]) == 0.0, 'Unreliable Internet connection on server');
+                $this->assert_true(floatval($matches[1]) == 0.0, 'Unreliable Internet connection on server');
+            } else {
+                $this->state_skipped('Could not get a recognised ping response');
             }
+        } else {
+            $this->state_skipped('PHP shell_exec function not available');
         }
     }
 
@@ -284,7 +309,7 @@ class _health_check_test_set extends cms_test_case
 
         $threshold = 0.4;
 
-        $this->assertTrue($time < $threshold, 'Slow downloading speed @ ' . float_format($time) . ' seconds (downloading Google home page took over)');
+        $this->assert_true($time < $threshold, 'Slow downloading speed @ ' . float_format($time) . ' seconds (downloading Google home page took over)');
     }
 
     // Slow upload speed
@@ -309,7 +334,7 @@ class _health_check_test_set extends cms_test_case
 
         $threshold_in_megabits_per_second = 2.0;
 
-        $this->assertTrue($megabytes_per_second * 8.0 > $threshold_in_megabits_per_second, 'Slow uploading speed @ ' . float_format($megabytes_per_second) . ' Megabytes per second');
+        $this->assert_true($megabytes_per_second * 8.0 > $threshold_in_megabits_per_second, 'Slow uploading speed @ ' . float_format($megabytes_per_second) . ' Megabytes per second');
     }
 
     // A page takes more than a second to load
@@ -330,7 +355,7 @@ class _health_check_test_set extends cms_test_case
 
             $threshold = 1.0; // Threshold is pretty high because we may have stale caches etc; we're looking for major issues, not testing our overall optimisation
 
-            $this->assertTrue($time < $threshold, 'Slow page generation speed for "' . $page_link . '" page @ ' . float_format($time) . ' seconds)');
+            $this->assert_true($time < $threshold, 'Slow page generation speed for "' . $page_link . '" page @ ' . float_format($time) . ' seconds)');
         }
     }
 
@@ -339,6 +364,7 @@ class _health_check_test_set extends cms_test_case
     {
         $data = $this->get_page_content();
         if ($data === null) {
+            $this->state_skipped('Cannot download page from website');
             return;
         }
 
@@ -351,13 +377,13 @@ class _health_check_test_set extends cms_test_case
         }
 
         $ok = ($meta_description !== null);
-        $this->assertTrue($ok, 'Could not find a meta description');
+        $this->assert_true($ok, 'Could not find a meta description');
         if ($ok) {
             $len = strlen($meta_description);
             $min_threshold = 40;
             $max_threshold = 155;
-            $this->assertTrue($len >= $min_threshold, 'Meta description lengthis under ' . strval($min_threshold) . ' @ ' . strval(integer_format($len)) . ' characters');
-            $this->assertTrue($len <= $max_threshold, 'Meta description length is over ' . strval($max_threshold) . ' @ ' . strval(integer_format($len)) . ' characters');
+            $this->assert_true($len >= $min_threshold, 'Meta description length is under ' . strval($min_threshold) . ' @ ' . strval(integer_format($len)) . ' characters');
+            $this->assert_true($len <= $max_threshold, 'Meta description length is over ' . strval($max_threshold) . ' @ ' . strval(integer_format($len)) . ' characters');
         }
     }
 
@@ -366,6 +392,7 @@ class _health_check_test_set extends cms_test_case
     {
         $data = $this->get_page_content();
         if ($data === null) {
+            $this->state_skipped('Cannot download page from website');
             return;
         }
 
@@ -378,13 +405,13 @@ class _health_check_test_set extends cms_test_case
         }
 
         $ok = ($meta_keywords !== null);
-        $this->assertTrue($ok, 'Could not find any meta keywords');
+        $this->assert_true($ok, 'Could not find any meta keywords');
         if ($ok) {
             $count = count($meta_keywords);
             $min_threshold = 4;
             $max_threshold = 20;
-            $this->assertTrue($count >= $min_threshold, 'Meta keyword count is under ' . strval($min_threshold) . ' @ ' . strval(integer_format($count)));
-            $this->assertTrue($count <= $max_threshold, 'Meta keyword count is over ' . strval($max_threshold) . ' @ ' . strval(integer_format($count)));
+            $this->assert_true($count >= $min_threshold, 'Meta keyword count is under ' . strval($min_threshold) . ' @ ' . strval(integer_format($count)));
+            $this->assert_true($count <= $max_threshold, 'Meta keyword count is over ' . strval($max_threshold) . ' @ ' . strval(integer_format($count)));
         }
     }
 
@@ -393,6 +420,7 @@ class _health_check_test_set extends cms_test_case
     {
         $data = $this->get_page_content();
         if ($data === null) {
+            $this->state_skipped('Cannot download page from website');
             return;
         }
 
@@ -403,13 +431,13 @@ class _health_check_test_set extends cms_test_case
         }
 
         $ok = ($title !== null);
-        $this->assertTrue($ok, 'Could not find any <title>');
+        $this->assert_true($ok, 'Could not find any <title>');
         if ($ok) {
             $len = strlen($title);
             $min_threshold = 4;
             $max_threshold = 70;
-            $this->assertTrue($len >= $min_threshold, '<title> length is under ' . strval($min_threshold) . ' @ ' . strval(integer_format($len)));
-            $this->assertTrue($len <= $max_threshold, '<title> length is over ' . strval($max_threshold) . ' @ ' . strval(integer_format($len)));
+            $this->assert_true($len >= $min_threshold, '<title> length is under ' . strval($min_threshold) . ' @ ' . strval(integer_format($len)));
+            $this->assert_true($len <= $max_threshold, '<title> length is over ' . strval($max_threshold) . ' @ ' . strval(integer_format($len)));
         }
     }
 
@@ -418,6 +446,7 @@ class _health_check_test_set extends cms_test_case
     {
         $data = $this->get_page_content();
         if ($data === null) {
+            $this->state_skipped('Cannot download page from website');
             return;
         }
 
@@ -428,13 +457,14 @@ class _health_check_test_set extends cms_test_case
         }
 
         $ok = ($header !== null);
-        $this->assertTrue($ok, 'Could not find any <h1>');
+        $this->assert_true($ok, 'Could not find any <h1>');
     }
 
     // XML Sitemap not being extended
     public function testForXMLSitemapUpdating($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
         if (!cron_installed()) {
+            $this->state_skipped('CRON not running');
             return;
         }
 
@@ -442,7 +472,7 @@ class _health_check_test_set extends cms_test_case
 
         $last_updated_file = @filemtime($path . '/index.xml');
         $ok = ($last_updated_file !== false);
-        $this->assertTrue($ok, 'XML Sitemap does not seem to be building');
+        $this->assert_true($ok, 'XML Sitemap does not seem to be building');
 
         if ($ok) {
             $last_updated_file = 0;
@@ -455,7 +485,9 @@ class _health_check_test_set extends cms_test_case
             closedir($dh);
             $last_updated = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(last_updated)');
             if ($last_updated !== null) {
-                $this->assertTrue($last_updated_file > $last_updated - 60 * 60 * 24, 'XML Sitemap does not seem to be updating');
+                $this->assert_true($last_updated_file > $last_updated - 60 * 60 * 24, 'XML Sitemap does not seem to be updating');
+            } else {
+                $this->state_skipped('Nothing queued to go into the XML Sitemap');
             }
         }
     }
@@ -465,7 +497,7 @@ class _health_check_test_set extends cms_test_case
     {
         $rules = $this->robots_parse(null, true);
 
-        $this->assertTrue($rules !== null, 'robots.txt not found on domain root');
+        $this->assert_true($rules !== null, 'robots.txt not found on domain root');
     }
 
     // robots.txt blocking Google on a live site
@@ -482,17 +514,17 @@ class _health_check_test_set extends cms_test_case
             }
 
             if ($google_allowed == $other_allowed) {
-                $this->assertTrue(!$google_allowed, 'Site not blocked by robots.txt');
+                $this->assert_true(!$google_allowed, 'Site not blocked by robots.txt');
             } else {
-                $this->assertTrue(!$google_allowed, 'Site not blocked on Google by robots.txt as per Google\'s way of implementing robots standard');
-                $this->assertTrue(!$other_allowed, 'Site not blocked on Google by robots.txt as per standard (non-Google) way of implementing robots standard');
+                $this->assert_true(!$google_allowed, 'Site not blocked on Google by robots.txt as per Google\'s way of implementing robots standard');
+                $this->assert_true(!$other_allowed, 'Site not blocked on Google by robots.txt as per standard (non-Google) way of implementing robots standard');
             }
         } else {
             if ($google_allowed == $other_allowed) {
-                $this->assertTrue($google_allowed, 'Site blocked by robots.txt');
+                $this->assert_true($google_allowed, 'Site blocked by robots.txt');
             } else {
-                $this->assertTrue($google_allowed, 'Site blocked on Google by robots.txt as per Google\'s way of implementing robots standard');
-                $this->assertTrue($other_allowed, 'Site blocked on Google by robots.txt as per standard (non-Google) way of implementing robots standard');
+                $this->assert_true($google_allowed, 'Site blocked on Google by robots.txt as per Google\'s way of implementing robots standard');
+                $this->assert_true($other_allowed, 'Site blocked on Google by robots.txt as per standard (non-Google) way of implementing robots standard');
             }
         }
 
@@ -536,7 +568,7 @@ class _health_check_test_set extends cms_test_case
         foreach ($scripts as $script) {
             $url = get_base_url() . '/' . $script;
             $allowed = $this->robots_allowed($url, 'Googlebot', true);
-            $this->assertTrue(!$allowed, 'robots.txt should be blocking ' . $script);
+            $this->assert_true(!$allowed, 'robots.txt should be blocking ' . $script);
         }
     }
 
@@ -546,6 +578,7 @@ class _health_check_test_set extends cms_test_case
         $rules = $this->robots_parse(null);
 
         if ($rules === null) {
+            $this->state_skipped('No robots.txt file');
             return;
         }
 
@@ -562,14 +595,16 @@ class _health_check_test_set extends cms_test_case
 
         $ok = false;
         foreach ($found as $i => $rule) {
-            $this->assertTrue(strpos($rule, '://') !== false, 'Sitemap URL is relative, should be absolute');
+            $this->assert_true(strpos($rule, '://') !== false, 'Sitemap URL is relative, should be absolute');
 
             $ok = $ok || ($rule == $expected_sitemap_url);
         }
-        $this->assertTrue($ok, 'Sitemap URL is ' . $rule . ' but we expected ' . $expected_sitemap_url);
+        $this->assert_true($ok, 'Sitemap URL is ' . $rule . ' but we expected ' . $expected_sitemap_url);
 
         if (!$is_test_site) {
-            $this->assertTrue($found !== array(), 'No Sitemap directive found in robots.txt');
+            $this->assert_true($found !== array(), 'No Sitemap directive found in robots.txt');
+        } else {
+            $this->assert_true($found === array(), 'Sitemap directive found in robots.txt but this is a test site and we should not have one');
         }
     }
 
@@ -680,10 +715,10 @@ class _health_check_test_set extends cms_test_case
                 $core_rule = ($key == 'allow') || ($key == 'disallow');
 
                 if ($error_messages) {
-                    $this->assertTrue(in_array($key, array('allow', 'disallow', 'sitemap', 'crawl-delay')), 'Unrecognised robots.txt rule:' . $key);
+                    $this->assert_true(in_array($key, array('allow', 'disallow', 'sitemap', 'crawl-delay')), 'Unrecognised robots.txt rule:' . $key);
 
                     if ($core_rule) {
-                        $this->assertTrue($did_some_ua_line, 'Floating ' . ucwords($key) . ' outside of any User-Agent section of robots.txt');
+                        $this->assert_true($did_some_ua_line, 'Floating ' . ucwords($key) . ' outside of any User-Agent section of robots.txt');
                     }
                 }
 
@@ -707,7 +742,7 @@ class _health_check_test_set extends cms_test_case
 
             // Unrecognised line
             if ($error_messages) {
-                $this->assertTrue(false, 'Unrecognised line in robots.txt:' . $line);
+                $this->assert_true(false, 'Unrecognised line in robots.txt:' . $line);
             }
         }
 
@@ -729,7 +764,7 @@ class _health_check_test_set extends cms_test_case
                 cms_file_put_contents_safe($full_path, '');
             }
             http_download_file(get_custom_base_url() . '/' . $c, null, false);
-            $this->assertTrue($GLOBALS['HTTP_MESSAGE'] == '403', 'Should not be able to download ' . $c . ', should be secured by some kind of server configuration');
+            $this->assert_true($GLOBALS['HTTP_MESSAGE'] == '403', 'Should not be able to download ' . $c . ', should be secured by some kind of server configuration');
             if (!$exists) {
                 @unlink($full_path);
             }
@@ -745,8 +780,8 @@ class _health_check_test_set extends cms_test_case
                 $results = $GLOBALS['SITE_DB']->query('CHECK TABLE ' . get_table_prefix() . $table['m_table']);
                 $ok = $results[0]['Msg_text'] == 'OK';
 
+                $message = 'Corrupt table likely repairing: ' . $table['m_table'] . ' gave status ' . $results[0]['Msg_text'];
                 if (!$ok) {
-                    $message = 'Corrupt table likely repairing: ' . $table['m_table'] . ' gave status ' . $results[0]['Msg_text'];
                     if ($automatic_repair) {
                         $results_repair = $GLOBALS['SITE_DB']->query('REPAIR TABLE ' . get_table_prefix() . $table['m_table']);
                         $ok_repair = $results[0]['Msg_text'] == 'OK';
@@ -754,12 +789,11 @@ class _health_check_test_set extends cms_test_case
                             $message = 'Corrupt table automatically repaired: ' . $table['m_table'] . ' gave status ' . $results[0]['Msg_text'];
                         }
                     }
-
-                    $this->assertTrue($ok, $message);
-                } else {
-                    $this->assertTrue(true);
                 }
+                $this->assert_true($ok, $message);
             }
+        } else {
+            $this->state_skipped('Can only check when running MySQL');
         }
     }
 
@@ -773,10 +807,12 @@ class _health_check_test_set extends cms_test_case
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
+                $this->state_skipped('Cannot download page from website');
+
                 continue;
             }
 
-            $this->assertTrue(strpos($data, '</html>') !== false, '"' . $page_link . '" page appears broken, missing closing HTML tag');
+            $this->assert_true(strpos($data, '</html>') !== false, '"' . $page_link . '" page appears broken, missing closing HTML tag');
         }
     }
 
@@ -794,11 +830,13 @@ class _health_check_test_set extends cms_test_case
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
+                $this->state_skipped('Cannot download page from website');
+
                 continue;
             }
 
             $size = strlen($data);
-            $this->assertTrue($size < $threshold_page_size, '"' . $page_link . '" page is very large @ ' . clean_file_size($size));
+            $this->assert_true($size < $threshold_page_size, '"' . $page_link . '" page is very large @ ' . clean_file_size($size));
         }
     }
 
@@ -814,7 +852,7 @@ class _health_check_test_set extends cms_test_case
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
 
-            $this->assertTrue(!in_array($GLOBALS['HTTP_MESSAGE'], array('401', '403')), '"' . $page_link . '" page is not allowing guest access');
+            $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('401', '403')), '"' . $page_link . '" page is not allowing guest access');
         }
     }
 
@@ -835,7 +873,9 @@ class _health_check_test_set extends cms_test_case
             }
             closedir($dh);
 
-            $this->assertTrue($found, 'Cannot find a scheduled backup file that looks complete');
+            $this->assert_true($found, 'Cannot find a scheduled backup file that looks complete');
+        } else {
+            $this->state_skipped('Automatic backups never run');
         }
     }
 
@@ -855,7 +895,7 @@ class _health_check_test_set extends cms_test_case
         $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=http_status_check&url=' . urlencode($this->get_page_url());
         $data = http_download_file($url, null, false);
         $result = @json_decode($data, true);
-        $this->assertTrue($result === '200', 'Cannot access website externally');
+        $this->assert_true($result === '200', 'Cannot access website externally');
     }
 
     // www/non-www redirect not handled well - either does not exist, or redirects deep to home page, and/or is not 301
@@ -875,9 +915,9 @@ class _health_check_test_set extends cms_test_case
             $wrong_domain = 'www.' . $domain;
         }
 
-        $lookup = gethostbyname($wrong_domain);
+        $lookup = @gethostbyname($wrong_domain);
         $ok = ($lookup != $wrong_domain);
-        $this->assertTrue($ok, 'Could not lookup ' . $wrong_domain . ', should exist for it to redirect from ' . $domain);
+        $this->assert_true($ok, 'Could not lookup ' . $wrong_domain . ', should exist for it to redirect from ' . $domain);
         if (!$ok) {
             return;
         }
@@ -889,15 +929,15 @@ class _health_check_test_set extends cms_test_case
 
         http_download_file($wrong_url, null, false);
         $redirected = ($HTTP_DOWNLOAD_URL != $wrong_url);
-        $this->assertTrue($redirected, $wrong_domain . ' domain is not redirecting to ' . $domain);
+        $this->assert_true($redirected, $wrong_domain . ' domain is not redirecting to ' . $domain);
 
         if ($redirected) {
             $ok = ($HTTP_DOWNLOAD_URL == $url);
-            $this->assertTrue($ok, $wrong_domain . ' domain is not redirecting to deep URLs of ' . $domain);
+            $this->assert_true($ok, $wrong_domain . ' domain is not redirecting to deep URLs of ' . $domain);
 
             http_download_file($wrong_url, null, false, true);
             $ok = ($HTTP_MESSAGE == '301');
-            $this->assertTrue($ok, $wrong_domain . ' domain is not redirecting to ' . $domain . ' with a 301 code (' . $HTTP_MESSAGE . ' code used)');
+            $this->assert_true($ok, $wrong_domain . ' domain is not redirecting to ' . $domain . ' with a 301 code (' . $HTTP_MESSAGE . ' code used)');
         }
     }
 
@@ -927,15 +967,15 @@ class _health_check_test_set extends cms_test_case
 
         http_download_file($wrong_url, null, false);
         $redirected = ($HTTP_DOWNLOAD_URL != $wrong_url);
-        $this->assertTrue($redirected, $wrong_protocol . ' domain is not redirecting to ' . $protocol);
+        $this->assert_true($redirected, $wrong_protocol . ' domain is not redirecting to ' . $protocol);
 
         if ($redirected) {
             $ok = ($HTTP_DOWNLOAD_URL == $url);
-            $this->assertTrue($ok, $wrong_protocol . ' domain is not redirecting to deep URLs of ' . $protocol);
+            $this->assert_true($ok, $wrong_protocol . ' domain is not redirecting to deep URLs of ' . $protocol);
 
             http_download_file($wrong_url, null, false, true);
             $ok = ($HTTP_MESSAGE == '301');
-            $this->assertTrue($ok, $wrong_protocol . ' domain is not redirecting to ' . $protocol . ' with a 301 code (' . $HTTP_MESSAGE . ' code used)');
+            $this->assert_true($ok, $wrong_protocol . ' domain is not redirecting to ' . $protocol . ' with a 301 code (' . $HTTP_MESSAGE . ' code used)');
         }
     }
 
@@ -955,6 +995,8 @@ class _health_check_test_set extends cms_test_case
 
             $data = $this->get_page_content($page_link);
             if ($data === null) {
+                $this->state_skipped('Cannot download page from website');
+
                 continue;
             }
 
@@ -962,7 +1004,7 @@ class _health_check_test_set extends cms_test_case
 
             foreach ($urls as $url) {
                 // Check
-                $this->assertTrue(preg_match('#^http://#', $url) == 0, 'Embedding HTTP resources on HTTPS page: ' . $url . ' (on "' . $page_link . '")');
+                $this->assert_true(preg_match('#^http://#', $url) == 0, 'Embedding HTTP resources on HTTPS page: ' . $url . ' (on "' . $page_link . '")');
             }
         }
     }
@@ -990,6 +1032,8 @@ class _health_check_test_set extends cms_test_case
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
+                $this->state_skipped('Cannot download page from website');
+
                 continue;
             }
 
@@ -997,7 +1041,7 @@ class _health_check_test_set extends cms_test_case
 
             foreach ($urls as $url) {
                 // Check
-                $this->assertTrue(preg_match('#^http://' . preg_quote($domain, '#') . '#', $url) == 0, 'Linking to a local HTTP page on all-HTTPS site: ' . $url . ' (on "' . $page_link . '")');
+                $this->assert_true(preg_match('#^http://' . preg_quote($domain, '#') . '#', $url) == 0, 'Linking to a local HTTP page on all-HTTPS site: ' . $url . ' (on "' . $page_link . '")');
             }
         }
     }
@@ -1013,6 +1057,8 @@ class _health_check_test_set extends cms_test_case
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
+                $this->state_skipped('Cannot download page from website');
+
                 continue;
             }
 
@@ -1044,19 +1090,22 @@ class _health_check_test_set extends cms_test_case
         foreach ($_urls as $url) {
             // Check
             $data = http_download_file($url, 0, false);
-            $this->assertTrue($data !== null, 'Broken link: ' . $url);
+            $this->assert_true($data !== null, 'Broken link: ' . $url);
         }
     }
 
     // Inconsistent database state
-    public function testForInconsistentDBState($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
+    public function testForDatabaseIntegrityIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
-        if ($manual_checks) {
-            require_code('database_repair');
-            $repair_ob = new DatabaseRepair();
-            list($phase, $sql) = $repair_ob->search_for_database_issues();
-            $this->assertTrue($sql == '', 'There seem to be some inconsistencies in the database, run the "Correct MySQL schema issues (advanced)" Website Cleanup Tool');
+        if (!$manual_checks) {
+            $this->state_skipped('Will not check automatically due to possibility of intentional modifications');
+            return;
         }
+
+        require_code('database_repair');
+        $repair_ob = new DatabaseRepair();
+        list($phase, $sql) = $repair_ob->search_for_database_issues();
+        $this->assert_true($sql == '', 'There seem to be some inconsistencies in the database, run the "Correct MySQL schema issues (advanced)" Website Cleanup Tool');
     }
 
     // Outdated copyright date
@@ -1064,11 +1113,13 @@ class _health_check_test_set extends cms_test_case
     {
         $data = $this->get_page_content();
         if ($data === null) {
+            $this->state_skipped('Cannot download page from website');
             return;
         }
 
         if ((date('m-d') == '00-01') || (date('m-d') == '12-31')) {
             // Allow for inconsistencies around new year
+            $this->state_skipped('Too close to new year to run check');
             return;
         }
 
@@ -1090,7 +1141,7 @@ class _health_check_test_set extends cms_test_case
         }
 
         if ($year !== null) {
-            $this->assertTrue($year == $current_year, 'Copyright date seems outdated');
+            $this->assert_true($year == $current_year, 'Copyright date seems outdated');
         }
     }
 
@@ -1101,17 +1152,19 @@ class _health_check_test_set extends cms_test_case
         if (trim($ga) != '') {
             $data = $this->get_page_content();
             if ($data === null) {
+                $this->state_skipped('Cannot download page from website');
+
                 return;
             }
 
-            $this->assertTrue(strpos($data, $ga) !== false, 'Google Analytics enabled but not in page output (themeing issue?)');
+            $this->assert_true(strpos($data, $ga) !== false, 'Google Analytics enabled but not in page output (themeing issue?)');
         }
 
         // IDEA: Call Google Analytics API and see if data still being gathered (this is complex, needs working oAuth)
     }
 
     // Database upgrade pending
-    public function testForDatabaseIntegrityIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
+    public function testForDatabasePendingUpgrade($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
         require_code('upgrade');
 
@@ -1119,21 +1172,24 @@ class _health_check_test_set extends cms_test_case
 
         $_version_database = get_value('version');
         $version_database = floatval($_version_database);
-        $this->assertTrue($version_files <= $version_database, 'Database seems to need an upgrade (' . float_format($version_files, 1) . ' vs ' . float_format($version_database, 1) . '), run upgrader');
+        $this->assert_true($version_files <= $version_database, 'Database seems to need an upgrade (' . float_format($version_files, 1) . ' vs ' . float_format($version_database, 1) . '), run upgrader');
 
         $_version_database = get_value('cns_version');
         $version_database = floatval($_version_database);
-        $this->assertTrue($version_files <= $version_database, 'Database seems to need an upgrade (' . float_format($version_files, 1) . ' vs ' . float_format($version_database, 1) . '), run upgrader');
+        $this->assert_true($version_files <= $version_database, 'Database seems to need an upgrade (' . float_format($version_files, 1) . ' vs ' . float_format($version_database, 1) . '), run upgrader');
     }
 
     // Integrity checker fail
     public function testForFileIntegrityIssues($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
-        if ($manual_checks) {
-            require_code('upgrade');
-            $data = run_integrity_check(false, false, false);
-            $this->assertTrue($data == do_lang('NO_ISSUES_FOUND'), 'Integrity checker in upgrader reporting potential issues');
+        if (!$manual_checks) {
+            $this->state_skipped('Will not check automatically due to possibility of intentional modifications');
+            return;
         }
+
+        require_code('upgrade');
+        $data = run_integrity_check(false, false, false);
+        $this->assert_true($data == do_lang('NO_ISSUES_FOUND'), 'Integrity checker in upgrader reporting potential issues');
     }
 
     // E-mail queue piling up
@@ -1146,7 +1202,7 @@ class _health_check_test_set extends cms_test_case
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'logged_mail_messages WHERE m_queued=1 AND m_date_and_time<' . strval(time() - 60 * 60 * 1);
         $count = $GLOBALS['SITE_DB']->query_value_if_there($sql);
 
-        $this->assertTrue($count == 0, 'The e-mail queue has e-mails still not sent within the last hour');
+        $this->assert_true($count == 0, 'The e-mail queue has e-mails still not sent within the last hour');
     }
 
     // Newsletter queue piling up
@@ -1155,7 +1211,7 @@ class _health_check_test_set extends cms_test_case
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'newsletter_drip_send WHERE d_inject_time<' . strval(time() - 60 * 60 * 24 * 7);
         $count = $GLOBALS['SITE_DB']->query_value_if_there($sql);
 
-        $this->assertTrue($count == 0, 'The newsletter queue has e-mails still not sent within a week');
+        $this->assert_true($count == 0, 'The newsletter queue has e-mails still not sent within a week');
     }
 
     // Stuff going into error log fast
@@ -1188,7 +1244,9 @@ class _health_check_test_set extends cms_test_case
 
             fclose($myfile);
 
-            $this->assertTrue(count($dates) < $threshold_count, integer_format(count($dates)) . ' logged errors in the last day');
+            $this->assert_true(count($dates) < $threshold_count, integer_format(count($dates)) . ' logged errors in the last day');
+        } else {
+            $this->state_skipped('Cannot find the error log');
         }
     }
 
@@ -1211,7 +1269,7 @@ class _health_check_test_set extends cms_test_case
         foreach ($directories as $dir => $max_threshold_size_in_mb) {
             if (file_exists(get_file_base() . '/' . $dir)) {
                 $size = get_directory_size(get_file_base() . '/' . $dir);
-                $this->assertTrue($size < $mb * $max_threshold_size_in_mb, 'Directory ' . $dir . ' is very large @ ' . clean_file_size($size));
+                $this->assert_true($size < $mb * $max_threshold_size_in_mb, 'Directory ' . $dir . ' is very large @ ' . clean_file_size($size));
             }
         }
 
@@ -1221,8 +1279,10 @@ class _health_check_test_set extends cms_test_case
             'data_custom' => 100,
         );
         foreach ($directories as $dir => $max_contents_threshold) {
-            $count = count(get_directory_contents(get_file_base() . '/' . $dir));
-            $this->assertTrue($count < $max_contents_threshold, 'Directory ' . $dir . ' now contains ' . integer_format($count) . ' files, should hover only slightly over empty');
+            if (file_exists(get_file_base() . '/' . $dir)) {
+                $count = count(get_directory_contents(get_file_base() . '/' . $dir));
+                $this->assert_true($count < $max_contents_threshold, 'Directory ' . $dir . ' now contains ' . integer_format($count) . ' files, should hover only slightly over empty');
+            }
         }
     }
 
@@ -1236,7 +1296,7 @@ class _health_check_test_set extends cms_test_case
         while (($f = readdir($dh)) !== false) {
             if (strpos($f, 'log') !== false) {
                 $size = filesize($path . '/' . $f);
-                $this->assertTrue($size < 1000000, 'Size of ' . $f . ' log is very large @ ' . clean_file_size($size));
+                $this->assert_true($size < 1000000, 'Size of ' . $f . ' log is very large @ ' . clean_file_size($size));
             }
         }
         closedir($dh);
@@ -1268,7 +1328,7 @@ class _health_check_test_set extends cms_test_case
 
         foreach ($tables as $table => $max_threshold) {
             $cnt = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)');
-            $this->assertTrue($cnt < $max_threshold, 'Volatile-defined table now contains ' . integer_format($cnt) . ' records');
+            $this->assert_true($cnt < $max_threshold, 'Volatile-defined table now contains ' . integer_format($cnt) . ' records');
         }
     }
 
@@ -1286,7 +1346,7 @@ class _health_check_test_set extends cms_test_case
         foreach ($members as $member) {
             $last_visit = $GLOBALS['FORUM_DRIVER']->mrow_lastvisit($member);
             $username = $GLOBALS['FORUM_DRIVER']->mrow_username($member);
-            $this->assertTrue($last_visit > $threshold, 'Admin account "' . $username . '" not logged in for a long time @ ' . display_time_period(time() - $last_visit) . ', consider deleting');
+            $this->assert_true($last_visit > $threshold, 'Admin account "' . $username . '" not logged in for a long time @ ' . display_time_period(time() - $last_visit) . ', consider deleting');
         }
     }
 
@@ -1296,10 +1356,6 @@ class _health_check_test_set extends cms_test_case
         if (addon_installed('stats')) {
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
             $ok = ($test !== null);
-
-            if ($manual_checks) {
-                $this->assertTrue($ok, 'Geolocation data not installed so cannot do admin country checks');
-            }
 
             if ($ok) {
                 require_code('locations');
@@ -1319,9 +1375,13 @@ class _health_check_test_set extends cms_test_case
                         }
                     }
 
-                    $this->assertTrue(count($countries) <= 1, 'Admin account "' . $username . '" appears to have logged in from multiple countries (' . implode(', ', $countries) . ')');
+                    $this->assert_true(count($countries) <= 1, 'Admin account "' . $username . '" appears to have logged in from multiple countries (' . implode(', ', $countries) . ')');
                 }
+            } else {
+                $this->state_skipped('Geolocation data not installed so cannot do admin country checks');
             }
+        } else {
+            $this->state_skipped('Cannot find geolocation history without the stats addon being installed');
         }
     }
 
@@ -1330,7 +1390,7 @@ class _health_check_test_set extends cms_test_case
     {
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'hackattack WHERE date_and_time>' . strval(time() - 60 * 60 * 24);
         $num_failed = $GLOBALS['SITE_DB']->query_value_if_there($sql);
-        $this->assertTrue($num_failed < 100, integer_format($num_failed) . ' hack-attack alerts happened today');
+        $this->assert_true($num_failed < 100, integer_format($num_failed) . ' hack-attack alerts happened today');
 
         // TODO: For v11 add a 'percentage_score' field to the hackattack table
         //  insert rows in enforce_captcha with a low score
@@ -1344,7 +1404,7 @@ class _health_check_test_set extends cms_test_case
     {
         $sql = 'SELECT COUNT(*) FROM ' . get_table_prefix() . 'failedlogins WHERE date_and_time>' . strval(time() - 60 * 60 * 24);
         $num_failed = $GLOBALS['SITE_DB']->query_value_if_there($sql);
-        $this->assertTrue($num_failed < 100, integer_format($num_failed) . ' failed logins happened today');
+        $this->assert_true($num_failed < 100, integer_format($num_failed) . ' failed logins happened today');
     }
 
     // Unusual increase in rate limiting triggers (could indicate a DDOS)
@@ -1383,14 +1443,14 @@ class _health_check_test_set extends cms_test_case
             foreach ($RATE_LIMITING_DATA as $ip => $times) {
                 $requests_per_second = floatval(count($times)) / floatval($rate_limit_time_window);
                 $ok = (count($times) < $threshold_sample) || ($requests_per_second < $threshold_rps);
-                $this->assertTrue($ok, float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample) . ') requests from IP ' . $ip);
+                $this->assert_true($ok, float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample) . ') requests from IP ' . $ip);
 
                 $times_compound = array_merge($times_compound, $times);
             }
 
             $requests_per_second = floatval(count($times_compound)) / floatval($rate_limit_time_window);
             $ok = (count($times_compound) < $threshold_sample) || ($requests_per_second < $threshold_rps);
-            $this->assertTrue($ok, float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample_compound) . ') requests from all IPs together');
+            $this->assert_true($ok, float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample_compound) . ') requests from all IPs together');
         }
     }
 
@@ -1403,7 +1463,9 @@ class _health_check_test_set extends cms_test_case
             require_code('files');
 
             $free_space = disk_free_space(get_custom_file_base());
-            $this->assertTrue($free_space > $disk_space_threshold, 'Disk space very low @ ' . clean_file_size($free_space));
+            $this->assert_true($free_space > $disk_space_threshold, 'Disk space very low @ ' . clean_file_size($free_space));
+        } else {
+            $this->state_skipped('PHP disk_free_space function not available');
         }
 
         // TODO: In v11 remove page-load request, "Little disk space check" and it's independent notification
@@ -1425,9 +1487,7 @@ class _health_check_test_set extends cms_test_case
                         $cpu = floatval($matches[1]) + floatval($matches[2]);
                     }
                 }
-            }
-
-            if (strpos(PHP_OS, 'Linux') !== false) {
+            } elseif (strpos(PHP_OS, 'Linux') !== false) {
                 $result = explode("\n", shell_exec('iostat'));
                 array_shift($result);
                 array_shift($result);
@@ -1438,6 +1498,9 @@ class _health_check_test_set extends cms_test_case
                         $cpu = floatval($matches[1]) + floatval($matches[2]) + floatval($matches[3]);
                     }
                 }
+            } else {
+                $this->state_skipped('No implementation for finding CPU load on this platform');
+                return;
             }
 
             /*  This technique is okay in theory, but there's too much rounding when we're looking at a narrow threshold
@@ -1452,25 +1515,48 @@ class _health_check_test_set extends cms_test_case
             */
 
             if ($cpu !== null) {
-                $threshold = 97.0;
+                $threshold = 97.0; // TODO: Make a config option
 
-                $this->assertTrue($cpu < $threshold, 'CPU utilisation is very high @ ' . float_format($cpu) . '%');
+                $this->assert_true($cpu < $threshold, 'CPU utilisation is very high @ ' . float_format($cpu) . '%');
+            } else {
+                $this->state_skipped('Failed to detect CPU load');
             }
+        } else {
+            $this->state_skipped('PHP shell_exec function not available');
         }
-    } 
+    }
 
     // High server uptime value
     public function testForPoorUptimeValue($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
         if (php_function_allowed('shell_exec')) {
-            $data = shell_exec('uptime');
+            $uptime = null;
 
-            $matches = array();
-            if (preg_match('#load averages:\s*(\d+\.\d+)#', $data, $matches) != 0) {
-                $uptime = floatval($matches[1]);
-                $threshold = 20; // TODO: Make a config option
-                $this->assertTrue($uptime < floatval($threshold), '"uptime" (server load) is very high @ ' . float_format($uptime) . '%');
+            if (php_function_allowed('sys_getloadavg')) {
+                $_uptime = sys_getloadavg();
+                $uptime = $_uptime[0];
+            } else {
+                if (stripos(PHP_OS, 'Win') === false) {
+                    $data = shell_exec('uptime');
+
+                    $matches = array();
+                    if (preg_match('#load averages:\s*(\d+\.\d+)#', $data, $matches) != 0) {
+                        $uptime = floatval($matches[1]);
+                    }
+                } else {
+                    $this->state_skipped('No implementation for finding server load on this platform');
+                    return;
+                }
             }
+
+            if ($uptime !== null) {
+                $threshold = 20; // TODO: Make a config option
+                $this->assert_true($uptime < floatval($threshold), '"uptime" (server load) is very high @ ' . float_format($uptime) . '%');
+            } else {
+                $this->state_skipped('Failed to detect server load');
+            }
+        } else {
+            $this->state_skipped('PHP shell_exec function not available');
         }
     }
 
@@ -1491,13 +1577,20 @@ class _health_check_test_set extends cms_test_case
                         $load = floatval($matches[4]);
                     }
                 }
+            } else {
+                $this->state_skipped('No implementation for finding I/O load on this platform');
+                return;
             }
 
             if ($load !== null) {
                 $threshold = 80.0;
 
-                $this->assertTrue($load < $threshold, 'I/O load is causing high wait time @ ' . float_format($load) . '%');
+                $this->assert_true($load < $threshold, 'I/O load is causing high wait time @ ' . float_format($load) . '%');
+            } else {
+                $this->state_skipped('Failed to detect I/O load');
             }
+        } else {
+            $this->state_skipped('PHP shell_exec function not available');
         }
     }
 
@@ -1508,8 +1601,11 @@ class _health_check_test_set extends cms_test_case
             $commands_regexp = 'php\d*|php\d*-cgi|php\d*-fpm|php\d*.dSYM'; // TODO: Make configurable
             $threshold_minutes = 5; // TODO: Make configurable
 
+            $done = false;
             $ps_cmd = 'ps -ocomm,etime';
-            //$ps_cmd .= ' -A';
+            if ($use_test_data_for_pass !== null) {
+                $ps_cmd .= ' -A';
+            }
             $result = explode("\n", shell_exec($ps_cmd));
             foreach ($result as $r) {
                 $matches = array();
@@ -1541,9 +1637,17 @@ class _health_check_test_set extends cms_test_case
 
                     $cmd = $matches[1];
 
-                    $this->assertTrue($seconds < 60 * $threshold_minutes, 'Process "' . $cmd . '" has been running a long time @ ' . display_time_period($seconds));
+                    $this->assert_true($seconds < 60 * $threshold_minutes, 'Process "' . $cmd . '" has been running a long time @ ' . display_time_period($seconds));
+
+                    $done = true;
+                }
+
+                if (!$done) {
+                    $this->state_skipped('Failed to list running processes');
                 }
             }
+        } else {
+            $this->state_skipped('PHP shell_exec function not available');
         }
     }
 
@@ -1551,28 +1655,38 @@ class _health_check_test_set extends cms_test_case
     public function testForLowRAM($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
         if (php_function_allowed('shell_exec')) {
-            $kb_free = null;
+            $bytes_free = null;
 
             $matches = array();
 
             if (strpos(PHP_OS, 'Darwin') !== false) {
                 $data = shell_exec('vm_stat');
                 if (preg_match('#^Pages free:\s*(\d+)#m', $data, $matches) != 0) {
-                    $kb_free = intval($matches[1]) * 4;
+                    $bytes_free = intval($matches[1]) * 4 * 1024;
                 }
-            }
-
-            if (strpos(PHP_OS, 'Linux') !== false) {
+            } elseif (strpos(PHP_OS, 'Linux') !== false) {
                 $data = shell_exec('free');
                 if (preg_match('#^Mem:\s+(\d+)\s+(\d+)\s+(\d+)#m', $data, $matches) != 0) {
-                    $kb_free = intval($matches[3]);
+                    $bytes_free = intval($matches[3]) * 1024;
                 }
+            } elseif (stripos(PHP_OS, 'Win') !== false) {
+                $data = shell_exec('wmic OS get FreePhysicalMemory /Value');
+                if (preg_match('#FreePhysicalMemory=(\d+)#m', $data, $matches) != 0) {
+                    $bytes_free = intval($matches[1]);
+                }
+            } else {
+                $this->state_skipped('No implementation for finding free RAM on this platform');
+                return;
             }
 
-            if ($kb_free !== null) {
+            if ($bytes_free !== null) {
                 $mb_threshold = 200; // TODO: Make configurable
-                $this->assertTrue($kb_free > $mb_threshold * 1024, 'Server has less than 200MB of free RAM');
+                $this->assert_true($bytes_free > $mb_threshold * 1024 * 1024, 'Server has less than 200MB of free RAM');
+            } else {
+                $this->state_skipped('Failed to detect free RAM');
             }
+        } else {
+            $this->state_skipped('PHP shell_exec function not available');
         }
     }
 
@@ -1631,20 +1745,22 @@ class _health_check_test_set extends cms_test_case
         );
         $_result = http_download_file($url, null, false, false, 'Composr', array(json_encode($data)), null, null, null, null, null, null, null, 200.0, true, null, null, null, 'application/json');
 
-        $this->assertTrue(!in_array($GLOBALS['HTTP_MESSAGE'], array('401', '403')), 'Error with our Google Safe Browsing API key (' . $GLOBALS['HTTP_MESSAGE'] . ')');
-        $this->assertTrue(!in_array($GLOBALS['HTTP_MESSAGE'], array('400', '501', '503', '504')), 'Internal error with our Google Safe Browsing check (' . $GLOBALS['HTTP_MESSAGE'] . ')');
+        $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('401', '403')), 'Error with our Google Safe Browsing API key (' . $GLOBALS['HTTP_MESSAGE'] . ')');
+        $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('400', '501', '503', '504')), 'Internal error with our Google Safe Browsing check (' . $GLOBALS['HTTP_MESSAGE'] . ')');
 
         $ok = in_array($GLOBALS['HTTP_MESSAGE'], array('200'));
         if ($ok) {
             $result = json_decode($_result, true);
 
             if (empty($result['matches'])) {
-                $this->assertTrue(true);
+                $this->assert_true(true, 'Malware advisory provided by Google (https://developers.google.com/safe-browsing/v3/advisory)');
             } else {
                 foreach ($result['matches'] as $match) {
-                    $this->assertTrue(false, 'Malware advisory provided by Google ' . json_encode($match) . ' (https://developers.google.com/safe-browsing/v3/advisory)');
+                    $this->assert_true(false, 'Malware advisory provided by Google ' . json_encode($match) . ' (https://developers.google.com/safe-browsing/v3/advisory)');
                 }
             }
+        } else {
+            $this->state_skipped('Failed calling Google Safe Browsing API');
         }
     }
 
@@ -1657,16 +1773,16 @@ class _health_check_test_set extends cms_test_case
             foreach ($domains as $domain => $email) {
                 $mail_hosts = array();
                 $result = @getmxrr($domain, $mail_hosts);
-                $this->assertTrue($result, 'Cannot look up MX records for our ' . $email . ' e-mail address');
+                $this->assert_true($result, 'Cannot look up MX records for our ' . $email . ' e-mail address');
 
                 foreach ($mail_hosts as $host) {
-                    $this->assertTrue(checkdnsrr($host, 'A'), 'Mail server DNS does not seem to be setup properly for our ' . $email . ' e-mail address');
+                    $this->assert_true(@checkdnsrr($host, 'A'), 'Mail server MX DNS does not seem to be set up properly for our ' . $email . ' e-mail address');
 
-                    if ((php_function_allowed('fsockopen')) && (php_function_allowed('gethostbyname')) && (php_function_allowed('gethostbyaddr'))) {
+                    if ((php_function_allowed('fsockopen')) && (php_function_allowed('gethostbyname'))/* && (php_function_allowed('gethostbyaddr'))*/) {
                         // See if SMTP running
                         $socket = @fsockopen($host, 25);
                         $can_connect = ($socket !== false);
-                        $this->assertTrue($can_connect, 'Cannot connect to SMTP server for ' . $email . ' address');
+                        $this->assert_true($can_connect, 'Cannot connect to SMTP server for ' . $email . ' address');
                         if ($can_connect) {
                             fread($socket, 1024);
                             fwrite($socket, 'HELO ' . $domain . "\n");
@@ -1675,17 +1791,19 @@ class _health_check_test_set extends cms_test_case
 
                             $matches = array();
                             $has_helo = preg_match('#^250 ([^\s]*)#', $data, $matches) != 0;
-                            $this->assertTrue($has_helo, 'Cannot get HELO response from SMTP server for ' . $email . ' address');
+                            $this->assert_true($has_helo, 'Cannot get HELO response from SMTP server for ' . $email . ' address');
                             if ($has_helo) {
                                 $reported_host = $matches[1];
 
                                 /*
-                                $reverse_dns_host = gethostbyaddr(gethostbyname($host));  Fails way too much
+                                $reverse_dns_host = @gethostbyaddr(gethostbyname($host));  Fails way too much
 
-                                $this->assertTrue($reported_host == $reverse_dns_host, 'HELO response from SMTP server (' . $reported_host . ') not matching reverse DNS (' . $reverse_dns_host . ') for ' . $email . ' address');
+                                $this->assert_true($reported_host == $reverse_dns_host, 'HELO response from SMTP server (' . $reported_host . ') not matching reverse DNS (' . $reverse_dns_host . ') for ' . $email . ' address');
                                 */
                             }
                         }
+                    } else {
+                        $this->state_skipped('PHP fsockopen/gethostbyname function(s) not available'); // /gethostbyaddr
                     }
                 }
 
@@ -1693,36 +1811,47 @@ class _health_check_test_set extends cms_test_case
                 if ($manual_checks) {
                     require_code('mail');
                     mail_wrap('Test', 'Test e-mail from Health Check', array($email));
-                    $this->assertTrue(false, 'Manual check: An e-mail was sent to ' . $email . ', confirm it was received');
+                    $this->state_manual_check('An e-mail was sent to ' . $email . ', confirm it was received');
                 }
             }
+        } else {
+            $this->state_skipped('PHP getmxrr/checkdnsrr function(s) not available');
         }
     }
 
     // SPF prohibits us sending
     public function testForSPFBlock($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
-        if ((php_function_allowed('dns_get_record')) && (php_function_allowed('gethostbyname')) && ($manual_checks) && (get_option('smtp_sockets_use') == '0')) {
-            $self_domain = $this->get_domain();
-            $self_ip = gethostbyname($self_domain);
+        if (!$manual_checks) {
+            $this->state_skipped('Will not check automatically because we do not know if SMTP relaying would be in place');
+            return;
+        }
 
-            $domains = $this->get_mail_domains();
+        if (get_option('smtp_sockets_use') == '0') {
+            if ((php_function_allowed('dns_get_record')) && (php_function_allowed('gethostbyname'))) {
+                $self_domain = $this->get_domain();
+                $self_ip = @gethostbyname($self_domain);
 
-            foreach ($domains as $domain => $email) {
-                $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
+                $domains = $this->get_mail_domains();
 
-                $this->assertTrue($passed !== null, 'SPF record is not set for ' . $domain . ', setting it will significantly reduce the chance of fraud and spam blockage');
+                foreach ($domains as $domain => $email) {
+                    $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
 
-                if ($passed !== null) {
-                    $this->assertTrue($passed, 'SPF record for ' . $domain . ' does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
+                    $this->assert_true($passed !== null, 'SPF record is not set for ' . $domain . ', setting it will significantly reduce the chance of fraud and spam blockage');
+
+                    if ($passed !== null) {
+                        $this->assert_true($passed, 'SPF record for ' . $domain . ' does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
+                    }
                 }
+            } else {
+                $this->state_skipped('PHP dns_get_record/gethostbyname function(s) not available');
             }
         }
     }
 
     protected function do_spf_check($domain, $self_domain, $self_ip)
     {
-        $records = dns_get_record($domain, DNS_TXT);
+        $records = @dns_get_record($domain, DNS_TXT);
         foreach ($records as $record) {
             if (!isset($record['txt'])) {
                 continue;
@@ -1773,7 +1902,7 @@ class _health_check_test_set extends cms_test_case
                     }
                 }
 
-                $this->assertTrue(!$passed_wildcard, 'SPF record for ' . $domain . ' is wildcarded, so offers no real value');
+                $this->assert_true(!$passed_wildcard, 'SPF record for ' . $domain . ' is wildcarded, so offers no real value');
 
                 return ($passed || $passed_wildcard) && !$blocked;
             }
@@ -1810,7 +1939,7 @@ class _health_check_test_set extends cms_test_case
             $include = substr($part, 8);
             $ret = $this->do_spf_check($include, $self_domain, $self_ip);
 
-            $this->assertTrue($ret !== null, 'SPF include ' . $include . ' is broken');
+            $this->assert_true($ret !== null, 'SPF include ' . $include . ' is broken');
 
             if ($ret === null) {
                 $ret = false;
@@ -1822,7 +1951,7 @@ class _health_check_test_set extends cms_test_case
             $redirect = substr($part, 9);
             $ret = $this->do_spf_check($redirect, $self_domain, $self_ip);
 
-            $this->assertTrue($ret !== null, 'SPF redirect ' . $redirect . ' is broken');
+            $this->assert_true($ret !== null, 'SPF redirect ' . $redirect . ' is broken');
 
             if ($ret === null) {
                 $ret = false;
@@ -1861,7 +1990,9 @@ class _health_check_test_set extends cms_test_case
 
             $ref = _imap_server_spec($server, $port, $type);
             $resource = imap_open($ref . 'INBOX', $username, $password, CL_EXPUNGE);
-            if ($resource !== false) {
+            $ok = ($resource !== false);
+            $this->assertTrue($ok, 'Could not connect to IMAP server, ' . $server);
+            if ($ok) {
                 $list = imap_search($resource, 'FROM "' . get_site_name() . '"');
                 if ($list === false) {
                     $list = array();
@@ -1883,7 +2014,9 @@ class _health_check_test_set extends cms_test_case
                 imap_close($resource);
             }
 
-            $this->assertTrue($good, 'Did not receive test e-mail within ' . display_time_period($wait_time));
+            $this->assert_true($good, 'Did not receive test e-mail within ' . display_time_period($wait_time));
+        } else {
+            $this->state_skipped('PHP imap_open function not available');
         }
     }
 
@@ -1892,18 +2025,20 @@ class _health_check_test_set extends cms_test_case
     {
         require_code('antispam');
 
-        if ((php_function_allowed('getmxrr')) && (php_function_allowed('checkdnsrr')) && (php_function_allowed('gethostbyname'))) {
+        if ((php_function_allowed('getmxrr')) && (php_function_allowed('gethostbyname'))) {
             $domains = $this->get_mail_domains();
 
             foreach ($domains as $domain => $email) {
                 $mail_hosts = array();
                 $result = @getmxrr($domain, $mail_hosts);
-                if ($result === false) {
+                $ok = ($result !== false);
+                if (!$ok) {
+                    $this->state_skipped('Could not look up MX of ' . $domain);
                     continue;
                 }
 
                 foreach ($mail_hosts as $host) {
-                    $ip = gethostbyname($host);
+                    $ip = @gethostbyname($host);
                     $rbls = array(
                         '*.dnsbl.sorbs.net',
                         '*.bl.spamcop.net',
@@ -1911,10 +2046,12 @@ class _health_check_test_set extends cms_test_case
                     foreach ($rbls as $rbl) {
                         $response = rbl_resolve($ip, $rbl, true);
                         $blocked = ($response === array('127', '0', '0', '2'));
-                        $this->assertTrue(!$blocked, 'The ' . $host . ' SMTP server is blocked by ' . $rbl);
+                        $this->assert_true(!$blocked, 'The ' . $host . ' SMTP server is blocked by ' . $rbl);
                     }
                 }
             }
+        } else {
+            $this->state_skipped('PHP getmxrr/gethostbyname function(s) not available');
         }
     }
 
@@ -1928,7 +2065,9 @@ class _health_check_test_set extends cms_test_case
         if (php_function_allowed('checkdnsrr')) {
             $domain = $this->get_domain();
 
-            $this->assertTrue(checkdnsrr($domain, 'A'), 'DNS does not seem to be set up properly for our domain');
+            $this->assert_true(@checkdnsrr($domain, 'A'), 'DNS does not seem to be set up properly for our domain');
+        } else {
+            $this->state_skipped('PHP checkdnsrr function not available');
         }
     }
 
@@ -1942,15 +2081,26 @@ class _health_check_test_set extends cms_test_case
         if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {
             $domain = $this->get_domain();
 
-            $data = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
+            if (stripos(PHP_OS, 'Win') === false) {
+                $data = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
+            } else {
+                $this->state_skipped('No implementation for doing whois lookups on this platform');
+                return;
+            }
 
             $matches = array();
             if (preg_match('#(Expiry date|Expiration date|Expiration):\s*([^\s]*)#im', $data, $matches) != 0) {
                 $expiry = strtotime($matches[2]);
                 if ($expiry > 0) {
-                    $this->assertTrue($expiry > time() - 60 * 60 * 24 * 7, 'Domain seems to be expiring within a week or already expired');
+                    $this->assert_true($expiry > time() - 60 * 60 * 24 * 7, 'Domain name (' . $domain . ') seems to be expiring within a week or already expired');
+                } else {
+                    $this->state_skipped('Error reading expiry date for ' . $domain);
                 }
+            } else {
+                $this->state_skipped('Could not find expiry date for ' . $domain);
             }
+        } else {
+            $this->state_skipped('PHP shell_exec/escapeshellarg function(s) not available');
         }
     }
 
@@ -1962,7 +2112,7 @@ class _health_check_test_set extends cms_test_case
         $data = get_rand_password();
         cms_file_put_contents_safe(get_custom_file_base() . '/' . $path, $data);
         $result = http_download_file(get_custom_base_url() . '/' . $path, null, false);
-        $this->assertTrue($result === $data, 'Website does not seem to be running on the base URL that is configured');
+        $this->assert_true($result === $data, 'Website does not seem to be running on the base URL that is configured');
         @unlink(get_custom_file_base() . '/' . $path);
 
         if (php_function_allowed('shell_exec')) {
@@ -1976,8 +2126,12 @@ class _health_check_test_set extends cms_test_case
             $dns_lookup_remote = shell_exec('nslookup ' . $domain . ' 8.8.8.8');
             $matched_remote = preg_match($regexp, $dns_lookup_remote, $matches_remote);
             if (($matched_local != 0) && ($matched_remote != 0)) {
-                $this->assertTrue($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently (' . $matches_local[1] . ' vs ' . $matches_remote[1] . ')');
+                $this->assert_true($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently (' . $matches_local[1] . ' vs ' . $matches_remote[1] . ')');
+            } else {
+                $this->state_skipped('Failed to get a recognisable DNS resolution via the command line');
             }
+        } else {
+            $this->state_skipped('PHP shell_exec function not available');
         }
     }
 
@@ -2001,16 +2155,16 @@ class _health_check_test_set extends cms_test_case
 
                     // Large cookies set
                     $_val = preg_replace('#^.*=#U', '', preg_replace('#; .*$#s', '', $val));
-                    $this->assertTrue(strlen($_val) < 100, 'Cookie with over 100 bytes being set which is bad for performance');
+                    $this->assert_true(strlen($_val) < 100, 'Cookie with over 100 bytes being set which is bad for performance');
                 }
 
                 // Too many cookies set
-                $this->assertTrue(count($vals) < 8, '8 or more cookies are being set which is bad for performance');
+                $this->assert_true(count($vals) < 8, '8 or more cookies are being set which is bad for performance');
             }
         }
 
         // Composr cookies not set
-        $this->assertTrue($found_has_cookies_cookie, 'Cookies not being properly set');
+        $this->assert_true($found_has_cookies_cookie, 'Cookies not being properly set');
     }
 
     // Files/Pages are not gzipped or cached properly
@@ -2019,6 +2173,7 @@ class _health_check_test_set extends cms_test_case
         //set_option('gzip_output', '1');   To test
 
         if (!php_function_allowed('stream_context_set_default')) {
+            $this->state_skipped('PHP stream_context_set_default function not available');
             return;
         }
 
@@ -2033,6 +2188,7 @@ class _health_check_test_set extends cms_test_case
             stream_context_set_default(array('http' => array('header' => 'Accept-Encoding: gzip')));
             $headers = @get_headers($url, 1);
             if ($headers === false) {
+                $this->state_skipped('Could not find headers for URL ' . $url);
                 continue;
             }
 
@@ -2065,19 +2221,19 @@ class _health_check_test_set extends cms_test_case
 
             switch ($type) {
                 case 'page':
-                    $this->assertTrue(!$is_cached, 'Caching should not be given for pages (except for bots, which Composr will automatically do if the static cache is enabled)');
-                    $this->assertTrue($is_gzip, 'Gzip compression is not enabled/working for pages, significantly wasting bandwidth for page loads');
+                    $this->assert_true(!$is_cached, 'Caching should not be given for pages (except for bots, which Composr will automatically do if the static cache is enabled)');
+                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for pages, significantly wasting bandwidth for page loads');
                     break;
 
                 case 'css':
                 case 'js':
-                    $this->assertTrue($is_cached, 'Caching should be given for ' . $type . ' files (Composr will automatically make sure edited versions cache under different URLs via automatic timestamp parameters)');
-                    $this->assertTrue($is_gzip, 'Gzip compression is not enabled/working for ' . $type . ' files, significantly wasting bandwidth for page loads');
+                    $this->assert_true($is_cached, 'Caching should be given for ' . $type . ' files (Composr will automatically make sure edited versions cache under different URLs via automatic timestamp parameters)');
+                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for ' . $type . ' files, significantly wasting bandwidth for page loads');
                     break;
 
                 case 'png':
-                    $this->assertTrue($is_cached, 'Caching should be given for ' . $type . ' files');
-                    $this->assertTrue(!$is_gzip, 'Gzip compression should not be given for ' . $type . ' files, they are already compressed so it is a waste of CPU power');
+                    $this->assert_true($is_cached, 'Caching should be given for ' . $type . ' files');
+                    $this->assert_true(!$is_gzip, 'Gzip compression should not be given for ' . $type . ' files, they are already compressed so it is a waste of CPU power');
                     break;
             }
         }
@@ -2087,7 +2243,7 @@ class _health_check_test_set extends cms_test_case
     public function testForDiscontinuedComposr($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
         $is_discontinued = $this->call_composr_homesite_api('is_release_discontinued', array('version' => cms_version_number()));
-        $this->assertTrue($is_discontinued !== true, 'The ' . brand_name() . ' version is discontinued');
+        $this->assert_true($is_discontinued !== true, 'The ' . brand_name() . ' version is discontinued');
     }
 
     // PHP version no longer supported
@@ -2097,7 +2253,7 @@ class _health_check_test_set extends cms_test_case
 
         $v = strval(PHP_MAJOR_VERSION) . '.' . strval(PHP_MINOR_VERSION);
 
-        $this->assertTrue(is_php_version_supported($v), 'Unsupported PHP version ' . $v);
+        $this->assert_true(is_php_version_supported($v), 'Unsupported PHP version ' . $v);
     }
 
     // Site is closed
@@ -2107,7 +2263,7 @@ class _health_check_test_set extends cms_test_case
             return;
         }
 
-        $this->assertTrue(get_option('site_closed') == '1', 'The website is still closed');
+        $this->assert_true(get_option('site_closed') == '1', 'The website is still closed');
     }
 
     // Staff not doing their tasks as identified by items in the staff checklist
@@ -2134,7 +2290,7 @@ class _health_check_test_set extends cms_test_case
 
                     if ($seconds_due_in !== null) {
                         $ok = ($seconds_due_in > 0);
-                        $this->assertTrue($ok, 'Staff checklist items for ' . $hook . ' due ' . display_time_period($seconds_due_in) . ' ago');
+                        $this->assert_true($ok, 'Staff checklist items for ' . $hook . ' due ' . display_time_period($seconds_due_in) . ' ago');
                         if (!$ok) {
                             break;
                         }
@@ -2142,7 +2298,7 @@ class _health_check_test_set extends cms_test_case
 
                     if ($num_to_do !== null) {
                         $ok = ($num_to_do == 0);
-                        $this->assertTrue($ok, 'Staff checklist items for ' . $hook . ', ' . integer_format($num_to_do) . ' items');
+                        $this->assert_true($ok, 'Staff checklist items for ' . $hook . ', ' . integer_format($num_to_do) . ' items');
                         if (!$ok) {
                             break;
                         }
@@ -2159,73 +2315,39 @@ class _health_check_test_set extends cms_test_case
             return;
         }
 
-        if ($manual_checks) {
-            $data = $this->get_page_content();
-            if ($data === null) {
-                return;
-            }
-
-            $c = '#https?://(localhost|127\.|192\.168\.|10\.)#';
-            $this->assertTrue(preg_match($c, $data) == 0, 'Found links to a local URL');
+        if (!$manual_checks) {
+            $this->state_skipped('Will not check automatically because we do not know intent, a live site could be pointing to an Intranet');
+            return;
         }
+
+        $data = $this->get_page_content();
+        if ($data === null) {
+            $this->state_skipped('Cannot download page from website');
+            return;
+        }
+
+        $c = '#https?://(localhost|127\.|192\.168\.|10\.)#';
+        $this->assert_true(preg_match($c, $data) == 0, 'Found links to a local URL');
     }
 
     // Has lorem ipsum or similar
     public function testForIncomplete($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
     {
-        if ($manual_checks) {
-            $data = $this->get_page_content();
-            if ($data === null) {
-                return;
-            }
-
-            $check_for = array('TODO', 'FIXME', 'Lorem Ipsum');
-            foreach ($check_for as $c) {
-                $this->assertTrue(strpos($data, $c) === false, 'Found a suspicious "' . $c . '"');
-            }
-        }
-    }
-
-    // Things wrong found by checking manually
-    public function testForManualValidation($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
-    {
         if (!$manual_checks) {
+            $this->state_skipped('Will not check automatically because there could be false positives');
             return;
         }
 
-        // TODO: Document in maintenance.csv for v11 that we have these links here
+        $data = $this->get_page_content();
+        if ($data === null) {
+            $this->state_skipped('Cannot download page from website');
+            return;
+        }
 
-        $this->assertTrue(false, 'Check HTML5 validation https://validator.w3.org/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->assertTrue(false, 'Check CSS validation https://jigsaw.w3.org/css-validator/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->assertTrue(false, 'Check WCAG validation https://achecker.ca/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-
-        $this->assertTrue(false, 'Check schema.org/microformats validation on any key pages you want to be semantic https://search.google.com/structured-data/testing-tool/u/0/');
-        $this->assertTrue(false, 'Check OpenGraph metadata on any key pages you expect to be shared https://developers.facebook.com/tools/debug/sharing/');
-
-        $this->assertTrue(false, 'Check for speed issues https://developers.google.com/speed/pagespeed/insights (take warnings with a pinch of salt, not every suggestion is appropriate)');
-
-        $this->assertTrue(false, 'Check for SSL security issues https://www.ssllabs.com/ssltest/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-
-        $this->assertTrue(false, 'Check for SEO issues https://seositecheckup.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->assertTrue(false, 'Check for search issues in Google Webmaster Tools https://www.google.com/webmasters/tools/home');
-
-        $this->assertTrue(false, 'Do a general check https://www.woorank.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-        $this->assertTrue(false, 'Do a general check https://website.grader.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
-
-        $this->assertTrue(false, 'Test in Firefox');
-        $this->assertTrue(false, 'Test in Google Chrome');
-        $this->assertTrue(false, 'Test in IE10');
-        $this->assertTrue(false, 'Test in IE11');
-        $this->assertTrue(false, 'Test in Microsoft Edge');
-        $this->assertTrue(false, 'Test in Safari');
-        $this->assertTrue(false, 'Test in Google Chrome (mobile)');
-        $this->assertTrue(false, 'Test in Safari (mobile)');
-
-        $this->assertTrue(false, 'Manually check the web server error logs, e.g. for 404 errors you may want to serve via a redirect');
-
-        $this->assertTrue(false, 'Manually check the website would look good if printed');
-
-        $this->assertTrue(false, 'Manually check the social media channels are being regularly updated');
+        $check_for = array('TODO', 'FIXME', 'Lorem Ipsum');
+        foreach ($check_for as $c) {
+            $this->assert_true(strpos($data, $c) === false, 'Found a suspicious "' . $c . '"');
+        }
     }
 
     // Some block(s) not rendering
@@ -2239,8 +2361,50 @@ class _health_check_test_set extends cms_test_case
             }
 
             $test = do_block($block, array());
-            $this->assertTrue(is_object($test), 'Failed block ' . $block);
+            $this->assert_true(is_object($test), 'Failed block ' . $block);
         }
+    }
+
+    // Things wrong found by checking manually
+    public function testForManualValidation($manual_checks = false, $automatic_repair = false, $is_test_site = false, $use_test_data_for_pass = null)
+    {
+        if (!$manual_checks) {
+            return;
+        }
+
+        // TODO: Document in maintenance.csv for v11 that we have these links here
+
+        $this->state_manual_check('Check HTML5 validation https://validator.w3.org/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_manual_check('Check CSS validation https://jigsaw.w3.org/css-validator/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_manual_check('Check WCAG validation https://achecker.ca/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+
+        $this->state_manual_check('Check schema.org/microformats validation on any key pages you want to be semantic https://search.google.com/structured-data/testing-tool/u/0/');
+        $this->state_manual_check('Check OpenGraph metadata on any key pages you expect to be shared https://developers.facebook.com/tools/debug/sharing/');
+
+        $this->state_manual_check('Check for speed issues https://developers.google.com/speed/pagespeed/insights (take warnings with a pinch of salt, not every suggestion is appropriate)');
+
+        $this->state_manual_check('Check for SSL security issues https://www.ssllabs.com/ssltest/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+
+        $this->state_manual_check('Check for SEO issues https://seositecheckup.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_manual_check('Check for search issues in Google Webmaster Tools https://www.google.com/webmasters/tools/home');
+
+        $this->state_manual_check('Do a general check https://www.woorank.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_manual_check('Do a general check https://website.grader.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+
+        $this->state_manual_check('Test in Firefox');
+        $this->state_manual_check('Test in Google Chrome');
+        $this->state_manual_check('Test in IE10');
+        $this->state_manual_check('Test in IE11');
+        $this->state_manual_check('Test in Microsoft Edge');
+        $this->state_manual_check('Test in Safari');
+        $this->state_manual_check('Test in Google Chrome (mobile)');
+        $this->state_manual_check('Test in Safari (mobile)');
+
+        $this->state_manual_check('Manually check the web server error logs, e.g. for 404 errors you may want to serve via a redirect');
+
+        $this->state_manual_check('Manually check the website would look good if printed');
+
+        $this->state_manual_check('Manually check the social media channels are being regularly updated');
     }
 
     // -- integration --
@@ -2259,8 +2423,6 @@ class _health_check_test_set extends cms_test_case
     // TODO: Create new bridge unit test (out of this file)
 
     // -- testing --
-
-    // TODO: Windows support, and test
 
     // TODO: Test everything on compo.sr
 
@@ -2289,7 +2451,7 @@ class _health_check_test_set extends cms_test_case
 
     // TODO: Move over to bundled in Composr v11
 
-    // TODO: Drop database_integrity.php unit test
+    // TODO: Strewn TODOs
 
     // TODO: Strip from 'PHP-info' and the Admin Zone dashboard, where it runs currently.
 
