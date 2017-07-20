@@ -61,7 +61,7 @@ class _health_check_test_set extends cms_test_case
 
         foreach ($domains as $domain => $email) {
             if ($this->is_localhost_domain($domain)) {
-                unset($domains[$email]);
+                unset($domains[$domain]);
             }
         }
 
@@ -279,10 +279,12 @@ class _health_check_test_set extends cms_test_case
     {
         if (php_function_allowed('shell_exec')) {
             if (stripos(PHP_OS, 'Win') !== false) {
-                $data = shell_exec('ping -n 10 8.8.8.8');
+                $cmd = 'ping -n 10 8.8.8.8';
             } else {
-                $data = shell_exec('ping -c 10 8.8.8.8');
+                $cmd = 'ping -c 10 8.8.8.8';
             }
+            $data = shell_exec($cmd);
+
             $matches = array();
             if (preg_match('# (\d(\.\d+)%) packet loss#', $data, $matches) != 0) {
                 $this->assert_true(floatval($matches[1]) == 0.0, 'Unreliable Internet connection on server');
@@ -353,7 +355,7 @@ class _health_check_test_set extends cms_test_case
 
             $time = ($time_after - $time_before);
 
-            $threshold = 1.0; // Threshold is pretty high because we may have stale caches etc; we're looking for major issues, not testing our overall optimisation
+            $threshold = 5.0; // Threshold is pretty high because we may have stale caches etc; we're looking for major issues, not testing our overall optimisation
 
             $this->assert_true($time < $threshold, 'Slow page generation speed for "' . $page_link . '" page @ ' . float_format($time) . ' seconds)');
         }
@@ -1280,7 +1282,7 @@ class _health_check_test_set extends cms_test_case
         );
         foreach ($directories as $dir => $max_contents_threshold) {
             if (file_exists(get_file_base() . '/' . $dir)) {
-                $count = count(get_directory_contents(get_file_base() . '/' . $dir));
+                $count = count(get_directory_contents(get_file_base() . '/' . $dir, false, false));
                 $this->assert_true($count < $max_contents_threshold, 'Directory ' . $dir . ' now contains ' . integer_format($count) . ' files, should hover only slightly over empty');
             }
         }
@@ -1641,10 +1643,10 @@ class _health_check_test_set extends cms_test_case
 
                     $done = true;
                 }
+            }
 
-                if (!$done) {
-                    $this->state_skipped('Failed to list running processes');
-                }
+            if (!$done) {
+                $this->state_skipped('Failed to list running processes');
             }
         } else {
             $this->state_skipped('PHP shell_exec function not available');
