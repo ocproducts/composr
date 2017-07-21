@@ -85,7 +85,7 @@ class Hook_health_check_upkeep extends Hook_Health_Check
             return;
         }
 
-        $threshold = time() - 60 * 60 * 24 * 90; // TODO: Make configurable
+        $threshold = time() - 60 * 60 * 24 * intval(get_option('hc_admin_stale_threshold'));
 
         $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
         $members = $GLOBALS['FORUM_DRIVER']->member_group_query($admin_groups);

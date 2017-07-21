@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    sms
+ * @package    health_check
  */
 
 /**
  * Hook class.
  */
-class Hook_config_sms_username
+class Hook_config_hc_process_hang_threshold
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,17 @@ class Hook_config_sms_username
     public function get_details()
     {
         return array(
-            'human_name' => 'USERNAME',
-            'type' => 'line',
-            'category' => 'FEATURE',
-            'group' => 'SMS',
-            'explanation' => 'CONFIG_OPTION_sms_username',
+            'human_name' => 'HC_PROCESS_HANG_THRESHOLD',
+            'type' => 'integer',
+            'category' => 'HEALTH_CHECK',
+            'group' => 'PERFORMANCE',
+            'explanation' => 'CONFIG_OPTION_hc_process_hang_threshold',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 9,
+            'required' => true,
 
-            'addon' => 'sms',
+            'addon' => 'health_check',
         );
     }
 
@@ -51,6 +52,6 @@ class Hook_config_sms_username
      */
     public function get_default()
     {
-        return '';
+        return '5';
     }
 }

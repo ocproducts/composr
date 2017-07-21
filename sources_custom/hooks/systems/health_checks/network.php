@@ -33,8 +33,8 @@ class Hook_health_check_network extends Hook_Health_Check
     {
         $this->process_checks_section('testExternalAccess', 'External access', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testPacketLoss', 'Packet loss', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testDownloadSpeed', 'Download speed', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testUploadSpeed', 'Upload speed', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testTransferLatency', 'Transfer latency', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testTransferSpeed', 'Transfer speed', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -102,7 +102,7 @@ class Hook_health_check_network extends Hook_Health_Check
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
      */
-    public function testDownloadSpeed($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testTransferLatency($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
             return;
@@ -114,9 +114,9 @@ class Hook_health_check_network extends Hook_Health_Check
 
         $time = ($time_after - $time_before);
 
-        $threshold = 0.4;
+        $threshold = floatval(get_option('hc_transfer_latency_threshold'));
 
-        $this->assert_true($time < $threshold, 'Slow downloading speed @ ' . float_format($time) . ' seconds (downloading Google home page took over)');
+        $this->assert_true($time < $threshold, 'Slow transfer latency @ ' . float_format($time) . ' seconds (downloading Google home page took over)');
     }
 
     /**
@@ -127,7 +127,7 @@ class Hook_health_check_network extends Hook_Health_Check
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
      */
-    public function testUploadSpeed($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function testTransferSpeed($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
             return;
@@ -145,9 +145,11 @@ class Hook_health_check_network extends Hook_Health_Check
         $time = ($time_after - $time_before);
 
         $megabytes_per_second = floatval(strlen($data_to_send)) / (1024.0 * 1024.0 * $time);
+        $megabits_per_second = $megabytes_per_second * 8.0;
 
         $threshold_in_megabits_per_second = 2.0;
+        $threshold_in_megabits_per_second = floatval(get_option('hc_transfer_speed_threshold'));
 
-        $this->assert_true($megabytes_per_second * 8.0 > $threshold_in_megabits_per_second, 'Slow uploading speed @ ' . float_format($megabytes_per_second) . ' Megabytes per second');
+        $this->assert_true($megabits_per_second > $threshold_in_megabits_per_second, 'Slow speed transfering data to a remote machine @ ' . float_format($megabits_per_second) . ' Megabits per second');
     }
 }

@@ -76,9 +76,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
             return;
         }
 
-        $page_links = $this->process_urls_into_page_links(array( // TODO: Make configurable
-            ':',
-        ));
+        $page_links = $this->process_urls_into_page_links();
 
         foreach ($page_links as $page_link) {
             $url = page_link_to_url($page_link);
@@ -130,9 +128,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
 
         $domain = $this->get_domain();
 
-        $page_links = $this->process_urls_into_page_links(array( // TODO: Make configurable
-            ':',
-        ));
+        $page_links = $this->process_urls_into_page_links();
 
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);

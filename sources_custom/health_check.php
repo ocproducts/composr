@@ -183,6 +183,34 @@ abstract class Hook_Health_Check
     }
 
     /**
+     * Convert any URLs to page-links in the given array.
+     *
+     * @param  ?array $_urls_or_page_links List of URLs and/or page-links (null: those configured)
+     * @return array List of page-links
+     */
+    protected function process_urls_into_page_links($_urls_or_page_links = null)
+    {
+        if ($_urls_or_page_links === null) {
+            $__urls_or_page_links = get_option('hc_scan_page_links');
+            if ($__urls_or_page_links == '') {
+                $_urls_or_page_links = array();
+            } else {
+                $_urls_or_page_links = explode("\n", $__urls_or_page_links);
+            }
+        }
+
+        $urls_or_page_links = array();
+        foreach ($_urls_or_page_links as $url_or_page_link) {
+            if (looks_like_url($url_or_page_link)) {
+                $urls_or_page_links[] = url_to_page_link($url_or_page_link);
+            } else {
+                $urls_or_page_links[] = $url_or_page_link;
+            }
+        }
+        return $urls_or_page_links;
+    }
+
+    /**
      * Get the website domain name.
      *
      * @param  string Domain name
@@ -190,6 +218,21 @@ abstract class Hook_Health_Check
     protected function get_domain()
     {
         return parse_url(get_base_url(), PHP_URL_HOST);
+    }
+
+    /**
+     * Find whether a domain is local.
+     *
+     * @param  ?string $domain The domain (null: website domain)
+     * @param  boolean Whether it is local
+     */
+    protected function is_localhost_domain($domain = null)
+    {
+        if ($domain === null) {
+            $domain = parse_url(get_base_url(), PHP_URL_HOST);
+        }
+
+        return ($domain == 'localhost') || (trim($domain, '0123456789.') == '') || (strpos($domain, ':') !== false);
     }
 
     /**
@@ -213,40 +256,6 @@ abstract class Hook_Health_Check
         }
 
         return array_unique($domains);
-    }
-
-    /**
-     * Find whether a domain is local.
-     *
-     * @param  ?string $domain The domain (null: website domain)
-     * @param  boolean Whether it is local
-     */
-    protected function is_localhost_domain($domain = null)
-    {
-        if ($domain === null) {
-            $domain = parse_url(get_base_url(), PHP_URL_HOST);
-        }
-
-        return ($domain == 'localhost') || (trim($domain, '0123456789.') == '') || (strpos($domain, ':') !== false);
-    }
-
-    /**
-     * Convert any URLs to page-links in the given array.
-     *
-     * @param  array $_urls_or_page_links List of URLs and/or page-links
-     * @return array List of page-links
-     */
-    protected function process_urls_into_page_links($_urls_or_page_links)
-    {
-        $urls_or_page_links = array();
-        foreach ($_urls_or_page_links as $url_or_page_link) {
-            if (looks_like_url($url_or_page_link)) {
-                $urls_or_page_links[] = url_to_page_link($url_or_page_link);
-            } else {
-                $urls_or_page_links[] = $url_or_page_link;
-            }
-        }
-        return $urls_or_page_links;
     }
 
     /*

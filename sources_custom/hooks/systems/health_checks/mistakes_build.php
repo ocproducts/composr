@@ -96,9 +96,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             return;
         }
 
-        $page_links = $this->process_urls_into_page_links(array( // TODO: Make configurable
-            ':',
-        ));
+        $page_links = $this->process_urls_into_page_links();
 
         require_code('files');
 
@@ -123,9 +121,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             return;
         }
 
-        $page_links = $this->process_urls_into_page_links(array( // TODO: Make configurable
-            ':',
-        ));
+        $page_links = $this->process_urls_into_page_links();
 
         $urls = array();
         foreach ($page_links as $page_link) {

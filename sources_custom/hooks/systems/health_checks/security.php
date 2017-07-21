@@ -56,7 +56,11 @@ class Hook_health_check_security extends Hook_Health_Check
 
         // TODO: Document use of API in maintenance spreadsheet in v11
 
-        $key = 'AIzaSyBJyvgYzg-moqMRBZwhiivNxhYvafqMWas'; // TODO: Make configurable
+        if ($use_test_data_for_pass === null) {
+            $key = get_option('hc_google_safe_browsing_api_key');
+        } else {
+            $key = 'AIzaSyBJyvgYzg-moqMRBZwhiivNxhYvafqMWas';
+        }
         if ($key == '') {
             return;
         }
@@ -68,9 +72,7 @@ class Hook_health_check_security extends Hook_Health_Check
                 return;
             }
 
-            $page_links = $this->process_urls_into_page_links(array( // TODO: Make configurable
-                ':',
-            ));
+            $page_links = $this->process_urls_into_page_links();
 
             $urls = array();
             foreach ($page_links as $page_link) {

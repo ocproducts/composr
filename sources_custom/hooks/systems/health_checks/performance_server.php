@@ -56,7 +56,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
         }
 
         if (php_function_allowed('disk_free_space')) {
-            $disk_space_threshold = 500 * 1024 * 1024; // TODO: Make configurable
+            $disk_space_threshold = intval(get_option('hc_disk_space_threshold')) * 1024 * 1024;
 
             require_code('files');
 
@@ -124,7 +124,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             */
 
             if ($cpu !== null) {
-                $threshold = 97.0; // TODO: Make a config option
+                $threshold = floatval(get_option('hc_cpu_pct_threshold'));
 
                 $this->assert_true($cpu < $threshold, 'CPU utilisation is very high @ ' . float_format($cpu) . '%');
             } else {
@@ -170,7 +170,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             }
 
             if ($uptime !== null) {
-                $threshold = 20; // TODO: Make a config option
+                $threshold = intval(get_option('hc_uptime_threshold'));
                 $this->assert_true($uptime < floatval($threshold), '"uptime" (server load) is very high @ ' . float_format($uptime) . '%');
             } else {
                 $this->state_check_skipped('Failed to detect server load');
@@ -214,7 +214,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             }
 
             if ($load !== null) {
-                $threshold = 80.0;
+                $threshold = floatval(get_option('hc_io_pct_threshold'));
 
                 $this->assert_true($load < $threshold, 'I/O load is causing high wait time @ ' . float_format($load) . '%');
             } else {
@@ -240,8 +240,11 @@ class Hook_health_check_performance_server extends Hook_Health_Check
         }
 
         if (php_function_allowed('shell_exec')) {
-            $commands_regexp = 'php\d*|php\d*-cgi|php\d*-fpm|php\d*.dSYM'; // TODO: Make configurable
-            $threshold_minutes = 5; // TODO: Make configurable
+            $commands_regexp = get_option('hc_processes_to_monitor');
+            if ($commands_regexp == '') {
+                return;
+            }
+            $threshold_minutes = intval(get_option('hc_process_hang_threshold'));
 
             $done = false;
             $ps_cmd = 'ps -ocomm,etime';
@@ -308,6 +311,8 @@ class Hook_health_check_performance_server extends Hook_Health_Check
         }
 
         if (php_function_allowed('shell_exec')) {
+            require_code('files');
+
             $bytes_free = null;
 
             $matches = array();
@@ -333,8 +338,8 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             }
 
             if ($bytes_free !== null) {
-                $mb_threshold = 200; // TODO: Make configurable
-                $this->assert_true($bytes_free > $mb_threshold * 1024 * 1024, 'Server has less than 200MB of free RAM');
+                $mb_threshold = intval(get_option('hc_ram_threshold'));
+                $this->assert_true($bytes_free > $mb_threshold * 1024 * 1024, 'Server is low on RAM @ ' . clean_file_size($mb_threshold * 1024 * 1024));
             } else {
                 $this->state_check_skipped('Failed to detect free RAM');
             }

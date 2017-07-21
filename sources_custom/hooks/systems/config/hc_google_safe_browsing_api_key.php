@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    sms
+ * @package    health_check
  */
 
 /**
  * Hook class.
  */
-class Hook_config_sms_username
+class Hook_config_hc_google_safe_browsing_api_key
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,16 @@ class Hook_config_sms_username
     public function get_details()
     {
         return array(
-            'human_name' => 'USERNAME',
+            'human_name' => 'HC_GOOGLE_SAFE_BROWSING_API_KEY',
             'type' => 'line',
-            'category' => 'FEATURE',
-            'group' => 'SMS',
-            'explanation' => 'CONFIG_OPTION_sms_username',
+            'category' => 'HEALTH_CHECK',
+            'group' => 'SECURITY',
+            'explanation' => 'CONFIG_OPTION_hc_google_safe_browsing_api_key',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'required' => false,
 
-            'addon' => 'sms',
+            'addon' => 'health_check',
         );
     }
 

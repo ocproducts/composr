@@ -318,50 +318,71 @@ class Hook_health_check_email extends Hook_Health_Check
             require_code('mail');
             require_code('mail2');
 
-            $address = 'test@ocproducts.com'; // TODO: Make configurable
+            if ($use_test_data_for_pass === null) {
+                $address = get_option('hc_mail_address');
 
-            $server = 'imap.gmail.com'; // TODO: Make configurable
-            $port = 993; // TODO: Make configurable
-            $type = 'imaps'; // TODO: Make configurable
+                $server = get_option('hc_mail_server');
+                $port = intval(get_option('hc_mail_server_port'));
+                $type = get_option('hc_mail_server_type');
 
-            $username = 'test@ocproducts.com'; // TODO: Make configurable
-            $password = '!Xtest1234'; // TODO: Make configurable
+                $username = get_option('hc_mail_username');
+                $password = get_option('hc_mail_password');
+            } else {
+                $address = 'test@ocproducts.com';
+
+                $server = 'imap.gmail.com';
+                $port = 993;
+                $type = 'imaps';
+
+                $username = 'test@ocproducts.com';
+                $password = '!Xtest1234';
+            }
+
+            if (($address == '') || ($server == '') || ($username == '')) {
+                $this->state_check_skipped('Test e-mail account not fully configured');
+                return;
+            }
 
             $uniq = uniqid('', true);
             $subject = 'Composr Self-Test (' . $uniq . ')';
             mail_wrap($subject, 'Test', array($address), null, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
 
-            $wait_time = 5; // TODO: Make configurable
-
-            sleep($wait_time);
+            $wait_time = intval(get_option('hc_mail_wait_time'));
 
             $good = false;
-
+            $time_started = time();
             $ref = _imap_server_spec($server, $port, $type);
-            $resource = imap_open($ref . 'INBOX', $username, $password, CL_EXPUNGE);
-            $ok = ($resource !== false);
-            $this->assertTrue($ok, 'Could not connect to IMAP server, ' . $server);
-            if ($ok) {
-                $list = imap_search($resource, 'FROM "' . get_site_name() . '"');
-                if ($list === false) {
-                    $list = array();
-                }
-                foreach ($list as $l) {
-                    $header = imap_headerinfo($resource, $l);
+            do {
+                sleep(3);
 
-                    $_subject = $header->subject;
+                $resource = imap_open($ref . 'INBOX', $username, $password, CL_EXPUNGE);
+                $ok = ($resource !== false);
+                $this->assertTrue($ok, 'Could not connect to IMAP server, ' . $server);
+                if ($ok) {
+                    $list = imap_search($resource, 'FROM "' . get_site_name() . '"');
+                    if ($list === false) {
+                        $list = array();
+                    }
+                    foreach ($list as $l) {
+                        $header = imap_headerinfo($resource, $l);
 
-                    if (strpos($_subject, $uniq) !== false) {
-                        $good = true;
+                        $_subject = $header->subject;
+
+                        if (strpos($_subject, $uniq) !== false) {
+                            $good = true;
+                        }
+
+                        if (strpos($_subject, 'Composr Self-Test') !== false) {
+                            imap_delete($resource, $l); // Auto-clean-up
+                        }
                     }
 
-                    if (strpos($_subject, 'Composr Self-Test') !== false) {
-                        imap_delete($resource, $l); // Auto-clean-up
-                    }
+                    imap_close($resource);
                 }
 
-                imap_close($resource);
+                $time_taken = time() - $time_started;
             }
+            while ((!$good) && ($time_taken < $wait_time) && ($ok));
 
             $this->assert_true($good, 'Did not receive test e-mail within ' . display_time_period($wait_time));
         } else {

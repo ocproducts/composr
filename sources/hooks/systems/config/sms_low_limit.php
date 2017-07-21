@@ -34,7 +34,7 @@ class Hook_config_sms_low_limit
             'human_name' => 'SMS_LOW_LIMIT',
             'type' => 'integer',
             'category' => 'FEATURE',
-            'group' => 'sms:SMS',
+            'group' => 'SMS',
             'explanation' => 'CONFIG_OPTION_sms_low_limit',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

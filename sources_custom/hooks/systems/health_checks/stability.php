@@ -74,9 +74,7 @@ class Hook_health_check_stability extends Hook_Health_Check
             return;
         }
 
-        $page_links = $this->process_urls_into_page_links(array( // TODO: Make configurable
-            ':',
-        ));
+        $page_links = $this->process_urls_into_page_links();
 
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
@@ -89,11 +87,7 @@ class Hook_health_check_stability extends Hook_Health_Check
             $this->assert_true(strpos($data, '</html>') !== false, '"' . $page_link . '" page appears broken, missing closing HTML tag');
         }
 
-        $page_links = $this->process_urls_into_page_links(array( // TODO: Make configurable
-            ':',
-        ));
-
-        $threshold_page_size = 500000; // TODO: Make configurable
+        $threshold_page_size = intval(get_option('hc_page_size_threshold')) * 1024;
 
         require_code('files');
 
@@ -160,7 +154,7 @@ class Hook_health_check_stability extends Hook_Health_Check
             fgets($myfile); // Skip line part-way-through
 
             $threshold_time = time() - 60 * 60 * 24 * 1;
-            $threshold_count = 50; // TODO: Make configurable
+            $threshold_count = intval(get_option('hc_error_log_day_flood_threshold'));
 
             $dates = array();
             while (!feof($myfile)) {
@@ -177,7 +171,7 @@ class Hook_health_check_stability extends Hook_Health_Check
 
             fclose($myfile);
 
-            $this->assert_true(count($dates) < $threshold_count, integer_format(count($dates)) . ' logged errors in the last day');
+            $this->assert_true(count($dates) < $threshold_count, 'Large number of logged errors @ ' . integer_format(count($dates)) . ' in the last day');
         } else {
             $this->state_check_skipped('Cannot find the error log');
         }

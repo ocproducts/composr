@@ -71,11 +71,11 @@ class Hook_health_check_cron extends Hook_Health_Check
         $last_cron_started = get_value('last_cron_started', null, true);
         $last_cron_finished = get_value('last_cron_finished', null, true);
 
-        $threshold = 5 * 60; // TODO: Make configurable
+        $threshold = intval(get_option('hc_cron_threshold'));
 
         if (($last_cron_started !== null) && ($last_cron_finished !== null)) {
             $time = intval($last_cron_finished) - intval($last_cron_started);
-            $this->assert_true($time < $threshold, 'CRON is taking ' . display_time_period($time) . ' to run');
+            $this->assert_true($time < $threshold, 'CRON is running slow @ ' . display_time_period($time) . ' to run');
         } elseif (($last_cron_started !== null) && (intval($last_cron_started) < time() - 60 * $threshold) && ($last_cron_finished === null)) {
             $this->assert_true($time < $threshold, 'CRON has taken ' . display_time_period($time) . ' and not finished -- it is either running very slow, or it failed');
         } else {

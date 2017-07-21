@@ -34,10 +34,11 @@ class _health_check_test_set extends cms_test_case
     }
 
     // TODO: Add chmod test
+    // TODO: Automatically remove stale admins
+    // TODO: Logged slow queries
+    // TODO: Logged slow page loads
 
     // -- integration --
-
-    // TODO: Make lots of config options
 
     // TODO: The checks should be initiated from a new "Health Check" item on the 'Tools' menu of the Admin Zone, which would call manual mode. There'd be checkboxes to say what tests to run, very similar to 'Website cleanup tools'.
     // TODO: Results would be shown in a table, broken down into categories, then how how many tests passed in each section, and what failed. Each failed check would quote the codename of the hook that failed, and there'd be a config option to list codenames of hooks to not run.

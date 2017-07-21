@@ -228,9 +228,7 @@ class Hook_health_check_performance extends Hook_Health_Check
             return;
         }
 
-        $page_links = $this->process_urls_into_page_links(array( // TODO: Make configurable
-            ':',
-        ));
+        $page_links = $this->process_urls_into_page_links();
 
         foreach ($page_links as $page_link) {
             $url = page_link_to_url($page_link);
@@ -241,7 +239,7 @@ class Hook_health_check_performance extends Hook_Health_Check
 
             $time = ($time_after - $time_before);
 
-            $threshold = 5.0; // Threshold is pretty high because we may have stale caches etc; we're looking for major issues, not testing our overall optimisation
+            $threshold = floatval(get_option('hc_page_speed_threshold'));
 
             $this->assert_true($time < $threshold, 'Slow page generation speed for "' . $page_link . '" page @ ' . float_format($time) . ' seconds)');
         }

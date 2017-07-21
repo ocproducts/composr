@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    sms
+ * @package    health_check
  */
 
 /**
  * Hook class.
  */
-class Hook_config_sms_username
+class Hook_config_hc_compound_requests_window_size
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,17 @@ class Hook_config_sms_username
     public function get_details()
     {
         return array(
-            'human_name' => 'USERNAME',
-            'type' => 'line',
-            'category' => 'FEATURE',
-            'group' => 'SMS',
-            'explanation' => 'CONFIG_OPTION_sms_username',
+            'human_name' => 'HC_COMPOUND_REQUESTS_WINDOW_SIZE',
+            'type' => 'integer',
+            'category' => 'HEALTH_CHECK',
+            'group' => 'FLOOD_CONTROL',
+            'explanation' => 'CONFIG_OPTION_hc_compound_requests_window_size',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'order_in_category_group' => 3,
+            'required' => true,
 
-            'addon' => 'sms',
+            'addon' => 'health_check',
         );
     }
 
@@ -51,6 +52,6 @@ class Hook_config_sms_username
      */
     public function get_default()
     {
-        return '';
+        return '60';
     }
 }

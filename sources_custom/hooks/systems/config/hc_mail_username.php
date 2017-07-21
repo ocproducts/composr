@@ -15,13 +15,13 @@
 /**
  * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
  * @copyright  ocProducts Ltd
- * @package    sms
+ * @package    health_check
  */
 
 /**
  * Hook class.
  */
-class Hook_config_sms_username
+class Hook_config_hc_mail_username
 {
     /**
      * Gets the details relating to the config option.
@@ -31,16 +31,17 @@ class Hook_config_sms_username
     public function get_details()
     {
         return array(
-            'human_name' => 'USERNAME',
+            'human_name' => 'HC_MAIL_USERNAME',
             'type' => 'line',
-            'category' => 'FEATURE',
-            'group' => 'SMS',
-            'explanation' => 'CONFIG_OPTION_sms_username',
+            'category' => 'HEALTH_CHECK',
+            'group' => '_EMAIL',
+            'explanation' => 'CONFIG_OPTION_hc_mail_username',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 2,
+            'required' => false,
+            'order_in_category_group' => 4,
 
-            'addon' => 'sms',
+            'addon' => 'health_check',
         );
     }
 
@@ -51,6 +52,10 @@ class Hook_config_sms_username
      */
     public function get_default()
     {
+        if (!function_exists('imap_open')) {
+            return null;
+        }
+
         return '';
     }
 }

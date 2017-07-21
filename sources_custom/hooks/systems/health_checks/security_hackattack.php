@@ -155,11 +155,11 @@ class Hook_health_check_security_hackattack extends Hook_Health_Check
             fclose($fp);
         }
 
-        $threshold_sample = 20;
-        $threshold_rps = 1.0;
+        $threshold_sample = intval(get_option('hc_requests_window_size'));
+        $threshold_rps = floatval(get_option('hc_requests_per_second_threshold'));
 
-        $threshold_sample_compound = 60;
-        $threshold_rps_compound = 0.3;
+        $threshold_sample_compound = intval(get_option('hc_compound_requests_window_size'));
+        $threshold_rps_compound = floatval(get_option('hc_compound_requests_per_second_threshold'));
 
         /*  Test
         $RATE_LIMITING_DATA = array(
@@ -176,14 +176,14 @@ class Hook_health_check_security_hackattack extends Hook_Health_Check
             foreach ($RATE_LIMITING_DATA as $ip => $times) {
                 $requests_per_second = floatval(count($times)) / floatval($rate_limit_time_window);
                 $ok = (count($times) < $threshold_sample) || ($requests_per_second < $threshold_rps);
-                $this->assert_true($ok, float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample) . ') requests from IP ' . $ip);
+                $this->assert_true($ok, 'Heavy visitor load @ ' . float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample) . ') requests from IP ' . $ip);
 
                 $times_compound = array_merge($times_compound, $times);
             }
 
             $requests_per_second = floatval(count($times_compound)) / floatval($rate_limit_time_window);
             $ok = (count($times_compound) < $threshold_sample) || ($requests_per_second < $threshold_rps);
-            $this->assert_true($ok, float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample_compound) . ') requests from all IPs together');
+            $this->assert_true($ok, 'Heavy visitor load @ ' . float_format($requests_per_second, 2, true) . ' PHP requests per second (for a sample size over ' . integer_format($threshold_sample_compound) . ') requests from all IPs together');
         }
     }
 }
