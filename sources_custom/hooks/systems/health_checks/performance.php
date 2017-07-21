@@ -1,0 +1,249 @@
+<?php /*
+
+ Composr
+ Copyright (c) ocProducts, 2004-2016
+
+ See text/EN/licence.txt for full licencing information.
+
+*/
+
+/**
+ * @license    http://opensource.org/licenses/cpal_1.0 Common Public Attribution License
+ * @copyright  ocProducts Ltd
+ * @package    health_check
+ */
+
+/*EXTRA FUNCTIONS: stream_context_set_default*/
+
+/**
+ * Hook class.
+ */
+class Hook_health_check_performance extends Hook_Health_Check
+{
+    protected $category_label = 'Performance';
+
+    /**
+     * Standard hook run function to run this category of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     * @return array A pair: category label, list of results
+     */
+    public function run($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        $this->process_checks_section('testManualPerformance', 'Manual performance checks', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('test404Pages', '404 pages', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testCookies', 'Cookies', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testHTTPOptimisation', 'HTTP optimisation', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testPageSpeed', 'Page speed', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+
+        return array($this->category_label, $this->results);
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testManualPerformance($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        if (!$manual_checks) {
+            return;
+        }
+
+        // TODO: Document in maintenance spreadsheet for v11 that we have these links here
+
+        $this->state_check_manual('Check for speed issues https://developers.google.com/speed/pagespeed/insights (take warnings with a pinch of salt, not every suggestion is appropriate)');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function test404Pages($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        /*  TODO Enable in v11, currently can't work
+        if ($manual_checks) {
+            $url = get_base_url() . '/testing-for-404.png';
+            $data = http_download_file($url, null, false); // TODO: In v11 set the parameter to return output even for 404
+            $this->assert_true(($data === null) || (strpos($data, '<nav class="menu_type__sitemap">') === false), '404 page is too complex looking for broken images');
+        }
+        */
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testCookies($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $url = $this->get_page_url();
+
+        $headers = get_headers($url, 1);
+        $found_has_cookies_cookie = false;
+        foreach ($headers as $key => $vals) {
+            if (strtolower($key) == strtolower('Set-Cookie')) {
+                if (is_string($vals)) {
+                    $vals = array($vals);
+                }
+
+                foreach ($vals as $val) {
+                    if (preg_match('#^has_cookies=1;#', $val) != 0) {
+                        $found_has_cookies_cookie = true;
+                    }
+
+                    // Large cookies set
+                    $_val = preg_replace('#^.*=#U', '', preg_replace('#; .*$#s', '', $val));
+                    $this->assert_true(strlen($_val) < 100, 'Cookie with over 100 bytes being set which is bad for performance');
+                }
+
+                // Too many cookies set
+                $this->assert_true(count($vals) < 8, '8 or more cookies are being set which is bad for performance');
+            }
+        }
+
+        // Composr cookies not set
+        $this->assert_true($found_has_cookies_cookie, 'Cookies not being properly set');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testHTTPOptimisation($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        //set_option('gzip_output', '1');   To test
+
+        if (!php_function_allowed('stream_context_set_default')) {
+            $this->state_check_skipped('PHP stream_context_set_default function not available');
+            return;
+        }
+
+        $urls = array(
+            'page' => $this->get_page_url(),
+            'css' => get_base_url() . '/themes/default/templates_cached/EN/global.css',
+            'js' => get_base_url() . '/themes/default/templates_cached/EN/global.js',
+            'png' => get_base_url() . '/themes/default/images/button1.png',
+        );
+
+        foreach ($urls as $type => $url) {
+            stream_context_set_default(array('http' => array('header' => 'Accept-Encoding: gzip')));
+            $headers = @get_headers($url, 1);
+            if ($headers === false) {
+                $this->state_check_skipped('Could not find headers for URL ' . $url);
+                continue;
+            }
+
+            $is_gzip = false;
+            $is_cached = false;
+            foreach ($headers as $key => $vals) {
+                if (is_string($vals)) {
+                    $vals = array($vals);
+                }
+
+                switch (strtolower($key)) {
+                    case 'content-encoding':
+                        foreach ($vals as $val) {
+                            if ($val == 'gzip') {
+                                $is_gzip = true;
+                            }
+                        }
+
+                        break;
+
+                    case 'expires':
+                        $is_cached = (strtotime($vals[0]) > time());
+                        break;
+
+                    case 'last-modified':
+                        $is_cached = (strtotime($vals[0]) < time());
+                        break;
+                }
+            }
+
+            switch ($type) {
+                case 'page':
+                    $this->assert_true(!$is_cached, 'Caching should not be given for pages (except for bots, which Composr will automatically do if the static cache is enabled)');
+                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for pages, significantly wasting bandwidth for page loads');
+                    break;
+
+                case 'css':
+                case 'js':
+                    $this->assert_true($is_cached, 'Caching should be given for ' . $type . ' files (Composr will automatically make sure edited versions cache under different URLs via automatic timestamp parameters)');
+                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for ' . $type . ' files, significantly wasting bandwidth for page loads');
+                    break;
+
+                case 'png':
+                    $this->assert_true($is_cached, 'Caching should be given for ' . $type . ' files');
+                    $this->assert_true(!$is_gzip, 'Gzip compression should not be given for ' . $type . ' files, they are already compressed so it is a waste of CPU power');
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testPageSpeed($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        if ($check_context == CHECK_CONTEXT__INSTALL) {
+            return;
+        }
+
+        $page_links = $this->process_urls_into_page_links(array( // TODO: Make configurable
+            ':',
+        ));
+
+        foreach ($page_links as $page_link) {
+            $url = page_link_to_url($page_link);
+
+            $time_before = microtime(true);
+            $data = http_download_file($url);
+            $time_after = microtime(true);
+
+            $time = ($time_after - $time_before);
+
+            $threshold = 5.0; // Threshold is pretty high because we may have stale caches etc; we're looking for major issues, not testing our overall optimisation
+
+            $this->assert_true($time < $threshold, 'Slow page generation speed for "' . $page_link . '" page @ ' . float_format($time) . ' seconds)');
+        }
+    }
+}
