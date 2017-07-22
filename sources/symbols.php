@@ -614,6 +614,18 @@ function ecv($lang, $escaped, $type, $name, $param)
                     // Allow targeted CSS
                     $value = '<div class="make_mobile">' . $value . '</div>';
                 }
+
+                if (is_mobile()) {
+                    // Make details sections closed
+                    $value = str_replace('<details open="open">', '<details>', $value);
+                }
+
+                if (!is_mobile()) {
+                    // Make some sections disappear
+                    $value = preg_replace('#<details( class="[^"]*only-on-mobile[^"]*".*)</details>#Us', '<div$1</div>', $value);
+                    $value = preg_replace('#<summary( class="[^"]*only-on-mobile[^"]*".*)</summary>#Us', '<div$1</div>', $value);
+                }
+
                 break;
 
             default:
