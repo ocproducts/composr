@@ -33,21 +33,22 @@ class _health_check_test_set extends cms_test_case
         }
     }
 
+    // -- check changes/extensions --
+
     // TODO: Add chmod test
-    // TODO: Automatically remove stale admins
     // TODO: Logged slow queries
     // TODO: Logged slow page loads
 
+    // TODO: Automatically remove stale admins
+
     // -- integration --
 
-    // TODO: The checks should be initiated from a new "Health Check" item on the 'Tools' menu of the Admin Zone, which would call manual mode. There'd be checkboxes to say what tests to run, very similar to 'Website cleanup tools'.
+    // TODO: Finish CRON. It should run as the first CRON hook.
+
+    // TODO: Checks would also be runnable by a health_check.php script in data_custom. This would need http-authentication to run, or an explicit login as an admin. It should allow a parameter to filter which checks to run.
+
+    // TODO: The checks should be initiated from a new "Health Check" item on the 'Tools' menu of the Admin Zone, which would call manual mode. There'd be checkboxes to say what tests to run, very similar to 'Website cleanup tools', defaulting to those configured.
     // TODO: Results would be shown in a table, broken down into categories, then how how many tests passed in each section, and what failed. Each failed check would quote the codename of the hook that failed, and there'd be a config option to list codenames of hooks to not run.
-
-    // TODO: Map $is_test_site to config option
-
-    // TODO: Checks would also be runnable by a health_check.php script in data_custom. This would need http-authentication to run, or an explicit login as an admin. It would need to be documented in the codebook (which lists manually callable scripts). It should allow a parameter to filter which checks to run.
-
-    // TODO: Tie into CRON, but with a config option of whether it runs. It should run as the first CRON hook. E-mail results on a new notification type ("Automatic check failure"). A config option would allow specifying whether to get a daily "all is good" e-mail sent out.
 
     // -- testing --
 
@@ -69,6 +70,8 @@ class _health_check_test_set extends cms_test_case
      - Some kind of screw up
     The web is just far too complex and commoditised now for people to be able to intentionally check for everything that could go wrong. We need to get all the checks automated into the system.
     */
+
+    // TODO: The data_custom/health_check.php script would need to be documented in the codebook (which lists manually callable scripts). 
 
     // TODO: Document in the Code Book: Health Check vs Testing Platform vs Local web-standards checks vs PHP-Info vs Website Cleanup Tools vs Staff Checklist vs Health Check manual linking to external tools. Most tests will still be done in the dev cycle (testing platform) [due to needing extra code, or taking a long time to run, or being destructive]
 

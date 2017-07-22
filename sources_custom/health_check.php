@@ -33,11 +33,11 @@ function init__health_check()
 }
 
 /**
- * Find all the Health Check categories.
+ * Find all the Health Check categories and sections.
  *
  * @return array List of result categories
  */
-function find_health_check_categories()
+function find_health_check_categories_and_sections()
 {
     $check_context = CHECK_CONTEXT__PROBING_FOR_SECTIONS;
 
@@ -48,7 +48,7 @@ function find_health_check_categories()
         require_code('hooks/systems/health_checks/' . filter_naughty($hook));
         $ob = object_factory('Hook_health_check_' . $hook);
         list($category_label, $results) = $ob->run($check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $all_results[] = array($category_label, $results);
+        $all_results[$category_label] = $results;
     }
 
     return $all_results;
@@ -57,17 +57,22 @@ function find_health_check_categories()
 /**
  * Run a Health Check.
  *
+ * @param  ?array $sections_to_run Which check sections to run (null: configured)
  * @param  boolean $manual_checks Mention manual checks
  * @param  boolean $automatic_repair Do automatic repairs where possible
  * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
  * @return array List of result categories with results
  */
-function run_health_check($manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+function run_health_check($sections_to_run = null, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
 {
+    if ($sections_to_run === null) {
+        $sections_to_run = explode(',', get_option('hc_cron_sections_to_run'));
+    }
+
     if (running_script('install')) {
         $check_context = CHECK_CONTEXT__INSTALL;
     } else {
-        if (true) { // TODO: Make configurable
+        if ((get_option('hc_is_test_site') == '1') || ((get_option('hc_is_test_site') == '-1') && (get_option('site_closed') == '1'))) {
             $check_context = CHECK_CONTEXT__TEST_SITE;
         } else {
             $check_context = CHECK_CONTEXT__LIVE_SITE;
@@ -80,8 +85,8 @@ function run_health_check($manual_checks = false, $automatic_repair = false, $us
     foreach (array_keys($hooks) as $hook) {
         require_code('hooks/systems/health_checks/' . filter_naughty($hook));
         $ob = object_factory('Hook_health_check_' . $hook);
-        list($category_label, $results) = $ob->run($check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $all_results[] = array($category_label, $results);
+        list($category_label, $results) = $ob->run($sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $all_results[$category_label] = $results;
     }
 
     return $all_results;
@@ -107,19 +112,27 @@ abstract class Hook_Health_Check
      *
      * @param  string $method The method containing the checks
      * @param  string $section_label The section label
+     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
      */
-    protected function process_checks_section($method, $section_label, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    protected function process_checks_section($method, $section_label, $sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
+        if (($sections_to_run !== null) && (!in_array($section_label, $sections_to_run))) {
+            return;
+        }
+
         $this->current_section_label = $section_label;
 
         if ($check_context != CHECK_CONTEXT__PROBING_FOR_SECTIONS) {
             call_user_func(array($this, $method), $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         } else {
-            $this->results[] = array(HEALTH_CHECK__IDENTIFIED_SECTION, $section_label);
+            if (strpos($section_label, ',') !== false) {
+                fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // We cannot have commas in section labels because we store label sets in comma-separated lists
+            }
+            $this->results[$section_label] = array(HEALTH_CHECK__IDENTIFIED_SECTION);
         }
     }
 
@@ -136,9 +149,9 @@ abstract class Hook_Health_Check
     protected function assert_true($result, $message = '%s')
     {
         if ($result) {
-            $this->results[] = array($this->current_section_label, HEALTH_CHECK__PASS, $message);
+            $this->results[$this->current_section_label] = array(HEALTH_CHECK__PASS, $message);
         } else {
-            $this->results[] = array($this->current_section_label, HEALTH_CHECK__FAIL, $message);
+            $this->results[$this->current_section_label] = array(HEALTH_CHECK__FAIL, $message);
         }
     }
 
@@ -149,7 +162,7 @@ abstract class Hook_Health_Check
      */
     protected function state_check_manual($message)
     {
-        $this->results[] = array($this->current_section_label, HEALTH_CHECK__MANUAL, $message);
+        $this->results[$this->current_section_label] = array(HEALTH_CHECK__MANUAL, $message);
     }
 
     /**
@@ -160,7 +173,7 @@ abstract class Hook_Health_Check
      */
     protected function state_check_skipped($reason)
     {
-        $this->results[] = array($this->current_section_label, HEALTH_CHECK__SKIPPED, $reason);
+        $this->results[$this->current_section_label] = array(HEALTH_CHECK__SKIPPED, $reason);
     }
 
     /*

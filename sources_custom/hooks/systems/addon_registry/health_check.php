@@ -201,6 +201,12 @@ class Hook_addon_registry_health_check
             'sources_custom/hooks/systems/config/hc_scan_page_links.php',
             'sources_custom/hooks/systems/config/hc_transfer_latency_threshold.php',
             'sources_custom/hooks/systems/config/hc_uptime_threshold.php',
+            'sources_custom/hooks/systems/config/hc_cron_notify_regardless.php',
+            'sources_custom/hooks/systems/config/hc_cron_regularity.php',
+            'sources_custom/hooks/systems/config/hc_cron_sections_to_run.php',
+            'sources_custom/hooks/systems/config/hc_is_test_site.php',
+            'sources_custom/hooks/systems/cron/health_check.php',
+            'sources_custom/hooks/systems/notifications/health_check.php',
         );
     }
 }

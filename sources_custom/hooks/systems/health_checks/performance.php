@@ -25,19 +25,20 @@ class Hook_health_check_performance extends Hook_Health_Check
     /**
      * Standard hook run function to run this category of health checks.
      *
+     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
      * @return array A pair: category label, list of results
      */
-    public function run($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        $this->process_checks_section('testManualPerformance', 'Manual performance checks', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('test404Pages', '404 pages', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testCookies', 'Cookies', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testHTTPOptimisation', 'HTTP optimisation', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testPageSpeed', 'Page speed', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testManualPerformance', 'Manual performance checks', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('test404Pages', '404 pages', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testCookies', 'Cookies', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testHTTPOptimisation', 'HTTP optimisation', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testPageSpeed', 'Page speed', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }

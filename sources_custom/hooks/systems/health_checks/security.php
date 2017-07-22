@@ -23,17 +23,18 @@ class Hook_health_check_security extends Hook_Health_Check
     /**
      * Standard hook run function to run this category of health checks.
      *
+     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
      * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
      * @return array A pair: category label, list of results
      */
-    public function run($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        $this->process_checks_section('testMalware', 'Malware', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testDirectorySecuring', 'Directory securing', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testSiteOrphaned', 'Site orphaning', $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testMalware', 'Malware', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testDirectorySecuring', 'Directory securing', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testSiteOrphaned', 'Site orphaning', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -65,7 +66,7 @@ class Hook_health_check_security extends Hook_Health_Check
             return;
         }
 
-        require_code('json'); // Change in v11
+        require_code('json'); // TODO: Change in v11
 
         if ($use_test_data_for_pass === null) {
             if ($this->is_localhost_domain()) {
