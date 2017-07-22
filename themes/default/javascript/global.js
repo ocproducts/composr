@@ -19,12 +19,12 @@
         pushArray = Function.bind.call(Function.apply, emptyArr.push);
 
     // Too useful to not have globally!
-    window.intVal   = intVal;
-    window.numVal   = numVal;
-    window.boolVal  = boolVal;
-    window.strVal   = strVal;
-    window.arrVal   = arrVal;
-    window.objVal   = objVal;
+    window.intVal  = intVal;
+    window.numVal  = numVal;
+    window.boolVal = boolVal;
+    window.strVal  = strVal;
+    window.arrVal  = arrVal;
+    window.objVal  = objVal;
 
     (window.$cmsInit  || (window.$cmsInit = []));
     (window.$cmsReady || (window.$cmsReady = []));
@@ -205,14 +205,13 @@
          * @returns {boolean|string|number}
          */
         $CONFIG_OPTION: (function () {
-            var $PUBLIC_CONFIG_OPTIONS_JSON = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
+            if (window.IN_MINIKERNEL_VERSION) {
+                // Installer, likely executing global.js
+                return constant('');
+            }
             
+            var $PUBLIC_CONFIG_OPTIONS_JSON = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
             return function $CONFIG_OPTION(optionName) {
-                if (window.IN_MINIKERNEL_VERSION) {
-                    // Installer, likely executing global.js
-                    return '';
-                }
-
                 if (hasOwn($PUBLIC_CONFIG_OPTIONS_JSON, optionName)) {
                     return $PUBLIC_CONFIG_OPTIONS_JSON[optionName];
                 }
@@ -370,8 +369,6 @@
         warn: warn,
         /**@method*/
         fatal: fatal,
-        /**@method*/
-        exception: exception,
         /**
          * @method
          * @param resourceEls
@@ -1195,10 +1192,19 @@
     /**
      * Port of PHP's boolval() function
      * @param val
+     * @param [defaultValue]
      * @returns { Boolean }
      */
-    function boolVal(val) {
+    function boolVal(val, defaultValue) {
         var p;
+        if (defaultValue === undefined) {
+            defaultValue = false;
+        }
+        
+        if (val === undefined) {
+            return defaultValue;
+        }
+        
         return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
     }
 
@@ -1214,18 +1220,36 @@
 
     /**
      * @param val
+     * @param [defaultValue]
      * @returns { Number }
      */
-    function intVal(val) {
-        return ((val != null) && (val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    function intVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = 0;
+        }
+
+        if (val === undefined) {
+            return defaultValue;
+        }
+        
+        return ((val !== null) && (val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     /**
      * @param val
+     * @param [defaultValue]
      * @returns { Number }
      */
-    function numVal(val) {
-        return ((val != null) && (val = Number(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    function numVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = 0;
+        }
+
+        if (val === undefined) {
+            return defaultValue;
+        }
+        
+        return ((val !== null) && (val = Number(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     function numberFormat(num) {
@@ -1270,9 +1294,18 @@
     /**
      * Sensible PHP-like string coercion
      * @param val
+     * @param [defaultValue]
      * @returns { string }
      */
-    function strVal(val) {
+    function strVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = '';
+        }
+
+        if (val === undefined) {
+            return defaultValue;
+        }
+        
         if (!val) {
             return (val === 0) ? '0' : '';
         } else if (val === true) {
@@ -1545,16 +1578,7 @@
     function fatal() {
         return console.error.apply(undefined, arguments);
     }
-
-    function exception(ex) {
-        if ($cms.$DEV_MODE()) {
-            if (typeof ex === 'string') {
-                throw new Error(ex);
-            }
-            throw ex;
-        }
-    }
-
+    
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
 
     /**
@@ -1575,7 +1599,7 @@
             linkEl.id = 'css-' + sheetName;
             linkEl.rel = 'stylesheet';
             linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
-            linkEl.nonce = $cms.$CSP_NONCE;
+            linkEl.nonce = $cms.$CSP_NONCE();
             document.head.appendChild(linkEl);
         }
 
@@ -1618,7 +1642,7 @@
         }
 
         if (!scriptEl) {
-            $cms.inform('_requireJavascript', script);
+            //$cms.inform('_requireJavascript', script);
 
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
@@ -1628,7 +1652,7 @@
                 scriptEl.id = 'javascript-' + script;
                 scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
             }
-            scriptEl.nonce = $cms.$CSP_NONCE;
+            scriptEl.nonce = $cms.$CSP_NONCE();
 
             document.body.appendChild(scriptEl);
             requireJavascriptPromises[script] = $cms.waitForResources(scriptEl);
@@ -1742,7 +1766,7 @@
     // Inspired by cookie.js: https://github.com/js-cookie/js-cookie
     function CookieMonster() {}
 
-    properties(CookieMonster.prototype, /**@lends CookieMonster#*/ {
+    properties(CookieMonster.prototype, /**@lends CookieMonster#*/{
         /**@method*/
         get: function get(cookieName) {
             cookieName = strVal(cookieName);
@@ -1938,7 +1962,6 @@
 
                 if ((type === 'range') && (inputEl.style.WebkitAppearance !== undefined)) {
                     docEl.appendChild(inputEl);
-
                     bool = (getComputedStyle(inputEl).WebkitAppearance !== 'textfield') && (inputEl.offsetHeight !== 0);
                     docEl.removeChild(inputEl);
                 } else if ((type === 'url') || (type === 'email')) {
@@ -6157,18 +6180,22 @@
             for (i = 0; i < parts.length; i++) {
                 var bits = parts[i].split('=');
                 if (bits[1] !== undefined) {
-                    if ((bits[0] == 'dialogWidth') || (bits[0] == 'width'))
+                    if ((bits[0] === 'dialogWidth') || (bits[0] === 'width')) {
                         width = bits[1].replace(/px$/, '');
-                    if ((bits[0] == 'dialogHeight') || (bits[0] == 'height')) {
-                        if (bits[1] == '100%') {
+                    }
+                    if ((bits[0] === 'dialogHeight') || (bits[0] === 'height')) {
+                        if (bits[1] === '100%') {
                             height = '' + ($cms.dom.getWindowHeight() - 200);
                         } else {
                             height = bits[1].replace(/px$/, '');
                         }
                     }
-                    if (((bits[0] == 'resizable') || (bits[0] == 'scrollbars')) && scrollbars !== true)
-                        scrollbars = ((bits[1] == 'yes') || (bits[1] == '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
-                    if (bits[0] == 'unadorned') unadorned = ((bits[1] == 'yes') || (bits[1] == '1'));
+                    if (((bits[0] === 'resizable') || (bits[0] === 'scrollbars')) && scrollbars !== true) {
+                        scrollbars = ((bits[1] === 'yes') || (bits[1] === '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
+                    }
+                    if (bits[0] === 'unadorned') {
+                        unadorned = ((bits[1] === 'yes') || (bits[1] === '1'));
+                    }
                 }
             }
         }
@@ -6598,7 +6625,7 @@
             }
 
             // Auto width means full width
-            if (width == 'auto') {
+            if (width === 'auto') {
                 width = '' + (dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
             }
             // NB: auto height feeds through without a constraint (due to infinite growth space), with dynamic adjustment for iframes
@@ -6635,7 +6662,7 @@
 
             if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body)) { // Balance iframe height
                 iframe.style.width = '100%';
-                if (height == 'auto') {
+                if (height === 'auto') {
                     if (!init) {
                         detectedBoxHeight = $cms.dom.getWindowScrollHeight(iframe.contentWindow);
                         iframe.style.height = detectedBoxHeight + 'px';
@@ -6678,7 +6705,7 @@
 
             // Absolute positioning instead of fixed positioning
             if ($cms.$MOBILE() || (detectedBoxHeight > dim.window_height) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
-                var wasFixed = (this.boxWrapperEl.style.position == 'fixed');
+                var wasFixed = (this.boxWrapperEl.style.position === 'fixed');
 
                 this.boxWrapperEl.style.position = 'absolute';
                 this.boxWrapperEl.style.height = ((dim.page_height > (detectedBoxHeight + bottomGap + _boxPosLeft)) ? dim.page_height : (detectedBoxHeight + bottomGap + _boxPosLeft)) + 'px';
@@ -6753,7 +6780,7 @@
             });
 
             var overlayHeader = null;
-            if (this.title != '' || this.type == 'iframe') {
+            if (this.title != '' || this.type === 'iframe') {
                 overlayHeader = this.element('h3', {
                     'html': this.title,
                     'css': {
@@ -6797,11 +6824,9 @@
             this.keyup = function (e) {
                 var keyCode = (e) ? (e.which || e.keyCode) : null;
 
-                if (keyCode == 37) // Left arrow
-                {
+                if (keyCode == 37) {// Left arrow
                     that.option('left');
-                } else if (keyCode == 39) // Right arrow
-                {
+                } else if (keyCode == 39) {// Right arrow
                     that.option('right');
                 } else if ((keyCode == 13/*enter*/) && (that.yes)) {
                     that.option('yes');
@@ -7380,7 +7405,9 @@
             var xml;
             try {
                 xml = (new DOMParser()).parseFromString(xhr.responseText, 'application/xml');
-                if ((xml) && (xml.documentElement.nodeName == 'parsererror')) xml = null;
+                if ((xml) && (xml.documentElement.nodeName === 'parsererror')) {
+                    xml = null;
+                }
             } catch (ignore) {}
 
             if (xml) {
@@ -7824,7 +7851,7 @@
             document.body.appendChild($cms.dom.create('script', null, {
                 src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js',
                 defer: true,
-                nonce: $cms.$CSP_NONCE
+                nonce: $cms.$CSP_NONCE()
             }));
         }
 
@@ -8392,7 +8419,7 @@
                 $cms.setCookie('tray_' + trayCookie, $cms.dom.isDisplayed(trayEl) ? 'closed' : 'open');
             }
 
-            $cms.toggleableTray(trayEl);
+            $cms.ui.toggleableTray(trayEl);
         },
         
         
@@ -9113,7 +9140,7 @@
         toggleMenu: function (e, target) {
             var menuId = target.dataset.menuTreeToggle;
 
-            $cms.toggleableTray($cms.dom.$('#' + menuId));
+            $cms.ui.toggleableTray($cms.dom.$('#' + menuId));
         }
     });
 
@@ -9518,7 +9545,7 @@
                 $cms.setCookie('tray_' + this.trayCookie, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
             }
 
-            $cms.toggleableTray(this.el);
+            $cms.ui.toggleableTray(this.el);
         },
 
         /**@method*/
@@ -9527,11 +9554,11 @@
 
             nodes.forEach(function (node) {
                 if ((node.parentNode !== el) && $cms.dom.isDisplayed(node) && node.parentNode.classList.contains('js-tray-accordion-item')) {
-                    $cms.toggleableTray({ el: node, animate: false });
+                    $cms.ui.toggleableTray({ el: node, animate: false });
                 }
             });
 
-            $cms.toggleableTray(el);
+            $cms.ui.toggleableTray(el);
         },
 
         /**@method*/
@@ -9548,13 +9575,17 @@
             var cookieValue = $cms.readCookie('tray_' + this.trayCookie);
 
             if (($cms.dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($cms.dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
-                $cms.toggleableTray({ el: this.contentEl, animate: false });
+                $cms.ui.toggleableTray({ el: this.contentEl, animate: false });
             }
         }
     });
-
-    // Toggle a ToggleableTray
-    $cms.toggleableTray = function toggleableTray(elOrOptions) {
+    
+    /**
+     * Toggle a ToggleableTray
+     * @memberof $cms.ui
+     * @param elOrOptions
+     */
+    $cms.ui.toggleableTray = function toggleableTray(elOrOptions) {
         var options, el, animate,
             $IMG_expand = '{$IMG;,1x/trays/expand}',
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
@@ -9564,7 +9595,7 @@
         if ($cms.isPlainObj(elOrOptions)) {
             options = elOrOptions;
             el =  options.el;
-            animate = $cms.$CONFIG_OPTION('enable_animations') ? ((options.animate !== undefined) ? !!options.animate : true) : false;
+            animate = $cms.$CONFIG_OPTION('enable_animations') ? boolVal(options.animate, true) : false;
         } else {
             el = elOrOptions;
             animate = $cms.$CONFIG_OPTION('enable_animations');
@@ -9584,9 +9615,9 @@
 
         var pic = $cms.dom.$(el.parentNode, '.toggleable_tray_button img') || $cms.dom.$('img#e_' + el.id);
 
-        el.setAttribute('aria-expanded', 'true');
-
         if ($cms.dom.notDisplayed(el)) {
+            el.setAttribute('aria-expanded', 'true');
+            
             if (animate) {
                 $cms.dom.slideDown(el);
             } else {
@@ -9597,6 +9628,8 @@
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
             }
         } else {
+            el.setAttribute('aria-expanded', 'false');
+            
             if (animate) {
                 $cms.dom.slideUp();
             } else {
@@ -9986,7 +10019,6 @@
                             $cms.navigate(link);
                         }
                     );
-                    return false;
                 };
             });
         }
@@ -10141,7 +10173,7 @@
             e[i].addEventListener('click', function (_e) {
                 return function () {
                     var selected = false;
-                    if (_e.type != 'undefined' && _e.type == 'checkbox') {
+                    if (_e.type !== 'undefined' && _e.type === 'checkbox') {
                         selected = (_e.checked && _e.value == value) || (!_e.checked && '' == value);
                     } else {
                         selected = (_e.value == value);
@@ -10445,8 +10477,7 @@
         var scrollY = window.pageYOffset;
 
         // Scroll down -- load
-        if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-        {
+        if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
             return internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
         }
 

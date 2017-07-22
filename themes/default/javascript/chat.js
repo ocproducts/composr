@@ -33,7 +33,7 @@
         },
 
         toggleChatPanel: function () {
-            $cms.toggleableTray($cms.dom.$('#chat_comcode_panel'));
+            $cms.ui.toggleableTray($cms.dom.$('#chat_comcode_panel'));
         },
 
         fontChange: function (e, selectEl) {
