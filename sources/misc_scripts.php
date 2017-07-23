@@ -286,7 +286,9 @@ function cron_bridge_script($caller)
 
     // Call the hooks which do the real work
     set_value('last_cron', strval(time()));
+    set_value('last_cron_started', '-', true);
     $cron_hooks = find_all_hooks('systems', 'cron');
+    ksort($cron_hooks);
     foreach (array_keys($cron_hooks) as $hook) {
         if (($limit_hook != '') && ($limit_hook != $hook)) {
             continue;
@@ -311,7 +313,7 @@ function cron_bridge_script($caller)
 
             $object->run();
 
-            set_value('cron_currently_running__' . $hook, '0', true);
+            delete_value('cron_currently_running__' . $hook, true);
 
             if (!is_null($log_file)) {
                 flock($log_file, LOCK_EX);
@@ -328,6 +330,7 @@ function cron_bridge_script($caller)
             }
         }
     }
+    set_value('last_cron_finished', '-', true);
 
     if (!is_null($log_file)) {
         fclose($log_file);

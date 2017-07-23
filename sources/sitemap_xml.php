@@ -87,7 +87,7 @@ function rebuild_sitemap_set($set_number, $last_time)
         $page_link = $node['page_link'];
         list($zone, $attributes, $hash) = page_link_decode($page_link);
 
-        if (!has_actual_page_access(get_member(), $attributes['page'], $zone)) {
+        if (!has_actual_page_access($GLOBALS['FORUM_DRIVER']->get_guest_id(), $attributes['page'], $zone)) {
             continue;
         }
 
@@ -263,7 +263,7 @@ function build_sitemap_cache_table()
     }
 
     // Load ALL guest permissions (for efficiency)
-    load_up_all_module_category_permissions(get_member());
+    load_up_all_module_category_permissions($GLOBALS['FORUM_DRIVER']->get_guest_id());
 
     // Runs via a callback mechanism, so we don't need to load an arbitrary complex structure into memory.
     $callback = '_sitemap_cache_node';

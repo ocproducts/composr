@@ -1230,6 +1230,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
 
                                             // SSL prep
                                             $disabled_ssl_verify = ((function_exists('get_value')) && (get_value('disable_ssl_for__' . $url_parts['host']) === '1'));
+
                                             if ($disabled_ssl_verify) {
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -1853,6 +1854,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         return _detect_character_encoding($input);
     } else {
         // PHP streams method
+        //  Imperfect, does not support $HTTP_DOWNLOAD_URL
         if (($errno != 110) && (($errno != 10060) || (@ini_get('default_socket_timeout') == '1')) && ((@ini_get('allow_url_fopen')) || (php_function_allowed('ini_set')))) {
             // Perhaps fsockopen is restricted... try fread/file_get_contents
             safe_ini_set('allow_url_fopen', '1');
