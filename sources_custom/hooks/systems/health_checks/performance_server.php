@@ -283,7 +283,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
 
                     $cmd = $matches[1];
 
-                    $this->assert_true($seconds < 60 * $threshold_minutes, 'Process "' . $cmd . '" has been running a long time @ ' . display_time_period($seconds));
+                    $this->assert_true($seconds < 60 * $threshold_minutes, 'Process [tt]' . $cmd . '[/tt] has been running a long time @ ' . display_time_period($seconds));
 
                     $done = true;
                 }
@@ -322,6 +322,9 @@ class Hook_health_check_performance_server extends Hook_Health_Check
                 $data = shell_exec('vm_stat');
                 if (preg_match('#^Pages free:\s*(\d+)#m', $data, $matches) != 0) {
                     $bytes_free = intval($matches[1]) * 4 * 1024;
+                    if (preg_match('#^Pages inactive:\s*(\d+)#m', $data, $matches) != 0) { // We consider this free. Mac is going to try and use all RAM for something, so we have to use a weird definition
+                        $bytes_free += intval($matches[1]) * 4 * 1024;
+                    }
                 }
             } elseif (strpos(PHP_OS, 'Linux') !== false) {
                 $data = shell_exec('free');
@@ -340,7 +343,7 @@ class Hook_health_check_performance_server extends Hook_Health_Check
 
             if ($bytes_free !== null) {
                 $mb_threshold = intval(get_option('hc_ram_threshold'));
-                $this->assert_true($bytes_free > $mb_threshold * 1024 * 1024, 'Server is low on RAM @ ' . clean_file_size($mb_threshold * 1024 * 1024));
+                $this->assert_true($bytes_free > $mb_threshold * 1024 * 1024, 'Server is low on RAM @ ' . clean_file_size($bytes_free));
             } else {
                 $this->state_check_skipped('Failed to detect free RAM');
             }

@@ -76,7 +76,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
 
         foreach ($tables as $table => $max_threshold) {
             $cnt = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)');
-            $this->assert_true($cnt < $max_threshold, 'Volatile-defined table now contains ' . integer_format($cnt) . ' records');
+            $this->assert_true($cnt < $max_threshold, 'Volatile-defined table [tt]' . $table . '[/tt] is very large @ ' . integer_format($cnt) . ' records');
         }
     }
 
@@ -106,7 +106,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
         foreach ($directories as $dir => $max_threshold_size_in_mb) {
             if (file_exists(get_file_base() . '/' . $dir)) {
                 $size = get_directory_size(get_file_base() . '/' . $dir);
-                $this->assert_true($size < $mb * $max_threshold_size_in_mb, 'Directory ' . $dir . ' is very large @ ' . clean_file_size($size));
+                $this->assert_true($size < $mb * $max_threshold_size_in_mb, 'Directory [tt]' . $dir . '[/tt] is very large @ ' . clean_file_size($size));
             }
         }
 
@@ -118,7 +118,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
         foreach ($directories as $dir => $max_contents_threshold) {
             if (file_exists(get_file_base() . '/' . $dir)) {
                 $count = count(get_directory_contents(get_file_base() . '/' . $dir, '', false, false));
-                $this->assert_true($count < $max_contents_threshold, 'Directory ' . $dir . ' now contains ' . integer_format($count) . ' files, should hover only slightly over empty');
+                $this->assert_true($count < $max_contents_threshold, 'Directory [tt]' . $dir . '[/tt] now contains ' . integer_format($count) . ' files, should hover only slightly over empty');
             }
         }
     }
@@ -142,7 +142,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
         while (($f = readdir($dh)) !== false) {
             if (strpos($f, 'log') !== false) {
                 $size = filesize($path . '/' . $f);
-                $this->assert_true($size < $log_threshold, 'Size of ' . $f . ' log is very large @ ' . clean_file_size($size));
+                $this->assert_true($size < $log_threshold, 'Size of [tt]' . $f . '[/tt] log is very large @ ' . clean_file_size($size));
             }
         }
         closedir($dh);

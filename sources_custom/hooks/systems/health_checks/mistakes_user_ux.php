@@ -56,7 +56,7 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
         /*  TODO Enable in v11, currently can't work
         $url = get_base_url() . '/testing-for-404.html';
         $data = http_download_file($url, null, false); // TODO: In v11 set the parameter to return output even for 404
-        $this->assert_true(($data === null) || (strpos($data, '<link') !== false) || (strpos($data, '<a ') !== false), '404 page is too basic looking, probably not helpful, suggest to display a sitemap');
+        $this->assert_true(($data === null) || (strpos($data, '<link') !== false) || (strpos($data, '<a ') !== false), '[tt]404[/tt] status page is too basic looking, probably not helpful, suggest to display a sitemap');
         */
     }
 
@@ -86,7 +86,7 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
 
         $lookup = @gethostbyname($wrong_domain);
         $ok = ($lookup != $wrong_domain);
-        $this->assert_true($ok, 'Could not lookup ' . $wrong_domain . ', should exist for it to redirect from ' . $domain);
+        $this->assert_true($ok, 'Could not lookup [tt]' . $wrong_domain . '[/tt], should exist for it to redirect from [tt]' . $domain . '[/tt]');
         if (!$ok) {
             return;
         }
@@ -98,15 +98,15 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
 
         http_download_file($wrong_url, null, false);
         $redirected = ($HTTP_DOWNLOAD_URL != $wrong_url);
-        $this->assert_true($redirected, $wrong_domain . ' domain is not redirecting to ' . $domain);
+        $this->assert_true($redirected, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to [tt]' . $domain . '[/tt]');
 
         if ($redirected) {
             $ok = ($HTTP_DOWNLOAD_URL == $url);
-            $this->assert_true($ok, $wrong_domain . ' domain is not redirecting to deep URLs of ' . $domain);
+            $this->assert_true($ok, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to deep URLs of [tt]' . $domain . '[/tt]');
 
             http_download_file($wrong_url, null, false, true);
             $ok = ($HTTP_MESSAGE == '301');
-            $this->assert_true($ok, $wrong_domain . ' domain is not redirecting to ' . $domain . ' with a 301 code (' . $HTTP_MESSAGE . ' code used)');
+            $this->assert_true($ok, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to [tt]' . $domain . '[/tt] with a [tt]301[/tt] code ([tt]' . $HTTP_MESSAGE . '[/tt] code used)');
         }
     }
 
@@ -143,15 +143,15 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
 
         http_download_file($wrong_url, null, false);
         $redirected = ($HTTP_DOWNLOAD_URL != $wrong_url);
-        $this->assert_true($redirected, $wrong_protocol . ' domain is not redirecting to ' . $protocol);
+        $this->assert_true($redirected, 'Protocol [tt]' . $wrong_protocol . '[/tt] is not redirecting to [tt]' . $protocol . '[/tt] protocol');
 
         if ($redirected) {
             $ok = ($HTTP_DOWNLOAD_URL == $url);
-            $this->assert_true($ok, $wrong_protocol . ' domain is not redirecting to deep URLs of ' . $protocol);
+            $this->assert_true($ok, 'Protocol [tt]' . $wrong_protocol . '[/tt] is not redirecting to deep URLs of [tt]' . $protocol . '[/tt] protocol');
 
             http_download_file($wrong_url, null, false, true);
             $ok = ($HTTP_MESSAGE == '301');
-            $this->assert_true($ok, $wrong_protocol . ' domain is not redirecting to ' . $protocol . ' with a 301 code (' . $HTTP_MESSAGE . ' code used)');
+            $this->assert_true($ok, 'Protocol [tt]' . $wrong_protocol . '[/tt] is not redirecting to [tt]' . $protocol . '[/tt] protocol with a [tt]301[/tt] code ([tt]' . $HTTP_MESSAGE . '[/tt] code used)');
         }
     }
 }

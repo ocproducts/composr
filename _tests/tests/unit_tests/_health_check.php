@@ -22,7 +22,8 @@ class _health_check_test_set extends cms_test_case
     {
         require_code('health_check');
 
-        $all_results = run_health_check(false, false, false);
+        $has_fails = false;
+        $all_results = run_health_check($has_fails, false, false, false);
 
         foreach ($all_results as $_bits) {
             list($category_label, $results) = $_bits;
@@ -38,17 +39,9 @@ class _health_check_test_set extends cms_test_case
     // TODO: Add chmod test
     // TODO: Logged slow queries
     // TODO: Logged slow page loads
+    // TODO: Say to manually check error log
 
     // TODO: Automatically remove stale admins
-
-    // -- integration --
-
-    // TODO: Finish CRON. It should run as the first CRON hook.
-
-    // TODO: Checks would also be runnable by a health_check.php script in data_custom. This would need http-authentication to run, or an explicit login as an admin. It should allow a parameter to filter which checks to run.
-
-    // TODO: The checks should be initiated from a new "Health Check" item on the 'Tools' menu of the Admin Zone, which would call manual mode. There'd be checkboxes to say what tests to run, very similar to 'Website cleanup tools', defaulting to those configured.
-    // TODO: Results would be shown in a table, broken down into categories, then how how many tests passed in each section, and what failed. Each failed check would quote the codename of the hook that failed, and there'd be a config option to list codenames of hooks to not run.
 
     // -- testing --
 

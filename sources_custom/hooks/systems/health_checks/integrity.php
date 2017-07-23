@@ -60,6 +60,7 @@ class Hook_health_check_integrity extends Hook_Health_Check
         }
 
         require_code('upgrade');
+        require_lang('upgrade');
         $data = run_integrity_check(false, false, false);
         $this->assert_true($data == do_lang('NO_ISSUES_FOUND'), 'Integrity checker in upgrader reporting potential issues');
     }
@@ -109,13 +110,13 @@ class Hook_health_check_integrity extends Hook_Health_Check
                 $results = $GLOBALS['SITE_DB']->query('CHECK TABLE ' . get_table_prefix() . $table['m_table']);
                 $ok = $results[0]['Msg_text'] == 'OK';
 
-                $message = 'Corrupt table likely repairing: ' . $table['m_table'] . ' gave status ' . $results[0]['Msg_text'];
+                $message = 'Corrupt table likely needing repairing: [tt]' . $table['m_table'] . '[/tt] gave status "' . $results[0]['Msg_text'] . '"';
                 if (!$ok) {
                     if ($automatic_repair) {
                         $results_repair = $GLOBALS['SITE_DB']->query('REPAIR TABLE ' . get_table_prefix() . $table['m_table']);
                         $ok_repair = $results[0]['Msg_text'] == 'OK';
                         if ($ok_repair) {
-                            $message = 'Corrupt table automatically repaired: ' . $table['m_table'] . ' gave status ' . $results[0]['Msg_text'];
+                            $message = 'Corrupt table automatically repaired: [tt]' . $table['m_table'] . '[/tt] gave status "' . $results[0]['Msg_text'] . '"';
                         }
                     }
                 }

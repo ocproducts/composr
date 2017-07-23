@@ -60,7 +60,7 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
 
         $rules = $this->robots_parse(null, true);
 
-        $this->assert_true($rules !== null, 'robots.txt not found on domain root');
+        $this->assert_true($rules !== null, '[tt]robots.txt[/tt] not found on domain root');
     }
 
     /**
@@ -88,17 +88,17 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
             }
 
             if ($google_allowed == $other_allowed) {
-                $this->assert_true(!$google_allowed, 'Site not blocked by robots.txt');
+                $this->assert_true(!$google_allowed, 'Site not blocked by [tt]robots.txt[/tt]');
             } else {
-                $this->assert_true(!$google_allowed, 'Site not blocked on Google by robots.txt as per Google\'s way of implementing robots standard');
-                $this->assert_true(!$other_allowed, 'Site not blocked on Google by robots.txt as per standard (non-Google) way of implementing robots standard');
+                $this->assert_true(!$google_allowed, 'Site not blocked on Google by [tt]robots.txt[/tt] as per Google\'s way of implementing robots standard');
+                $this->assert_true(!$other_allowed, 'Site not blocked on Google by [tt]robots.txt[/tt] as per standard (non-Google) way of implementing robots standard');
             }
         } else {
             if ($google_allowed == $other_allowed) {
-                $this->assert_true($google_allowed, 'Site blocked by robots.txt');
+                $this->assert_true($google_allowed, 'Site blocked by [tt]robots.txt[/tt]');
             } else {
-                $this->assert_true($google_allowed, 'Site blocked on Google by robots.txt as per Google\'s way of implementing robots standard');
-                $this->assert_true($other_allowed, 'Site blocked on Google by robots.txt as per standard (non-Google) way of implementing robots standard');
+                $this->assert_true($google_allowed, 'Site blocked on Google by [tt]robots.txt[/tt] as per Google\'s way of implementing robots standard');
+                $this->assert_true($other_allowed, 'Site blocked on Google by [tt]robots.txt[/tt] as per standard (non-Google) way of implementing robots standard');
             }
         }
 
@@ -153,7 +153,7 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
         foreach ($scripts as $script) {
             $url = get_base_url() . '/' . $script;
             $allowed = $this->robots_allowed($url, 'Googlebot', true);
-            $this->assert_true(!$allowed, 'robots.txt should be blocking ' . $script);
+            $this->assert_true(!$allowed, 'robots.txt should be blocking [tt]' . $script . '[/tt]');
         }
     }
 
@@ -326,10 +326,10 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
                 $core_rule = ($key == 'allow') || ($key == 'disallow');
 
                 if ($error_messages) {
-                    $this->assert_true(in_array($key, array('allow', 'disallow', 'sitemap', 'crawl-delay')), 'Unrecognised robots.txt rule:' . $key);
+                    $this->assert_true(in_array($key, array('allow', 'disallow', 'sitemap', 'crawl-delay')), 'Unrecognised [tt]robots.txt[/tt] rule:' . $key);
 
                     if ($core_rule) {
-                        $this->assert_true($did_some_ua_line, 'Floating ' . ucwords($key) . ' outside of any User-Agent section of robots.txt');
+                        $this->assert_true($did_some_ua_line, 'Floating [tt]' . ucwords($key) . '[/tt] outside of any User-Agent section of [tt]robots.txt[/tt]');
                     }
                 }
 
@@ -353,7 +353,7 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
 
             // Unrecognised line
             if ($error_messages) {
-                $this->assert_true(false, 'Unrecognised line in robots.txt:' . $line);
+                $this->assert_true(false, 'Unrecognised line in [tt]robots.txt[/tt]:' . $line);
             }
         }
 

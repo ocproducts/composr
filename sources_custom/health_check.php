@@ -25,11 +25,35 @@ function init__health_check()
     define('CHECK_CONTEXT__LIVE_SITE', 2);
     define('CHECK_CONTEXT__PROBING_FOR_SECTIONS', 3);
 
-    define('HEALTH_CHECK__FAIL', 0);
-    define('HEALTH_CHECK__PASS', 1);
-    define('HEALTH_CHECK__MANUAL', 2);
-    define('HEALTH_CHECK__SKIPPED', 3);
-    define('HEALTH_CHECK__IDENTIFIED_SECTION', 4); // Only (and solely) used during the CHECK_CONTEXT__PROBING_FOR_SECTIONS context
+    define('HEALTH_CHECK__FAIL', 'FAIL');
+    define('HEALTH_CHECK__PASS', 'PASS');
+    define('HEALTH_CHECK__SKIP', 'SKIP');
+    define('HEALTH_CHECK__MANUAL', 'MANUAL');
+
+    require_lang('health_check');
+}
+
+/**
+ * Get a nice, formatted XHTML list to select Health Check sections.
+ *
+ * @param  array $current List of sections to select by default
+ * @return Tempcode The list of sections
+ */
+function create_selection_list_health_check_sections($default)
+{
+    $categories = find_health_check_categories_and_sections();
+
+    $list = new Tempcode();
+    foreach ($categories as $category_label => $results) {
+        foreach (array_keys($results) as $section_label) {
+            $compound_label = $category_label . ' \\ ' . $section_label;
+
+            $is_selected = in_array($compound_label, $default);
+
+            $list->attach(form_input_list_entry($compound_label, $is_selected));
+        }
+    }
+    return $list;
 }
 
 /**
@@ -41,32 +65,75 @@ function find_health_check_categories_and_sections()
 {
     $check_context = CHECK_CONTEXT__PROBING_FOR_SECTIONS;
 
-    $all_results = array();
+    $categories = array();
 
     $hooks = find_all_hooks('systems', 'health_checks'); // TODO: Fix in v11
     foreach (array_keys($hooks) as $hook) {
         require_code('hooks/systems/health_checks/' . filter_naughty($hook));
         $ob = object_factory('Hook_health_check_' . $hook);
-        list($category_label, $results) = $ob->run($check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $all_results[$category_label] = $results;
+
+        list($category_label, $sections) = $ob->run(null, $check_context, true);
+
+        $categories[$category_label] = $sections;
+    }
+    ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+
+    return $categories;
+}
+
+/**
+ * Script to run a Health Check.
+ *
+ * @ignore
+ */
+function health_check_script()
+{
+    if (!has_actual_page_access(get_member(), 'admin_health_check', 'adminzone')) {
+        require_lang('permissions');
+        fatal_exit(do_lang_tempcode('ACCESS_DENIED__PAGE_ACCESS', escape_html($GLOBALS['FORUM_DRIVER']->get_username(get_member()))));
     }
 
-    return $all_results;
+    $_sections_to_run = get_param_string('sections_to_run', null);
+    if ($_sections_to_run === null) {
+        $sections_to_run = (get_option('hc_cron_sections_to_run') == '') ? array() : explode(',', get_option('hc_cron_sections_to_run'));
+    } else {
+        $sections_to_run = ($_sections_to_run == '') ? array() : explode(',', $_sections_to_run);
+    }
+    $passes = (get_param_integer('passes', 0) == 1);
+    $skips = (get_param_integer('skips', 0) == 1);
+    $manual_checks = (get_param_integer('manual_checks', 0) == 1);
+
+    $has_fails = false;
+    $categories = run_health_check($has_fails, $sections_to_run, $passes, $skips, $manual_checks);
+
+    header('Content-type: text/plain; charset=' . get_charset());
+    safe_ini_set('ocproducts.xss_detect', '0');
+
+    foreach ($categories as $category_label => $sections) {
+        foreach ($sections['SECTIONS'] as $section_label => $results) {
+            foreach ($results['RESULTS'] as $result) {
+                echo $result['RESULT'] . ': ' . strip_html($result['MESSAGE']->evaluate()) . "\n";
+            }
+        }
+    }
 }
 
 /**
  * Run a Health Check.
  *
- * @param  ?array $sections_to_run Which check sections to run (null: configured)
+ * @param  boolean $has_fails Whether there are fails (returned by reference)
+ * @param  ?array $sections_to_run Which check sections to run (null: all)
+ * @param  boolean $passes Mention passed checks
+ * @param  boolean $skips Mention skipped checks
  * @param  boolean $manual_checks Mention manual checks
  * @param  boolean $automatic_repair Do automatic repairs where possible
  * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
- * @return array List of result categories with results
+ * @return array List of result categories with results, template-ready
  */
-function run_health_check($sections_to_run = null, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+function run_health_check(&$has_fails, $sections_to_run = null, $passes = false, $skips = false, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
 {
-    if ($sections_to_run === null) {
-        $sections_to_run = explode(',', get_option('hc_cron_sections_to_run'));
+    if (php_function_allowed('set_time_limit')) {
+        set_time_limit(180);
     }
 
     if (running_script('install')) {
@@ -79,17 +146,88 @@ function run_health_check($sections_to_run = null, $manual_checks = false, $auto
         }
     }
 
-    $all_results = array();
+    $categories = array();
 
     $hooks = find_all_hooks('systems', 'health_checks'); // TODO: Fix in v11
     foreach (array_keys($hooks) as $hook) {
         require_code('hooks/systems/health_checks/' . filter_naughty($hook));
         $ob = object_factory('Hook_health_check_' . $hook);
-        list($category_label, $results) = $ob->run($sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $all_results[$category_label] = $results;
-    }
 
-    return $all_results;
+        list($category_label, $sections) = $ob->run($sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+
+        $_sections = array();
+        foreach ($sections as $section_label => $results) {
+            $num_fails = 0;
+            $num_passes = 0;
+            $num_skipped = 0;
+            $num_manual = 0;
+            $_results = array();
+            foreach ($results as $_result) {
+                $result = array(
+                    'RESULT' => $_result[0],
+                    'MESSAGE' => comcode_to_tempcode($_result[1], $GLOBALS['FORUM_DRIVER']->get_guest_id()),
+                );
+
+                switch ($result['RESULT']) {
+                    case HEALTH_CHECK__FAIL:
+                        $has_fails = true;
+                        $_results[] = $result;
+                        $num_fails++;
+                        break;
+
+                    case HEALTH_CHECK__PASS:
+                        if ($passes) {
+                            $_results[] = $result;
+                            $num_passes++;
+                        }
+                        break;
+
+                    case HEALTH_CHECK__SKIP:
+                        if ($skips) {
+                            $_results[] = $result;
+                            $num_skipped++;
+                        }
+                        break;
+
+                    case HEALTH_CHECK__MANUAL:
+                        if ($manual_checks) {
+                            $_results[] = $result;
+                            $num_manual++;
+                        }
+                        break;
+
+                    default:
+                        $_results[] = $result;
+                        break;
+                }
+            };
+            if (count($_results) > 0) {
+                $_sections[$section_label] = array(
+                    'RESULTS' => $_results,
+
+                    'NUM_FAILS' => integer_format($num_fails),
+                    'NUM_PASSES' => integer_format($num_passes),
+                    'NUM_SKIPPED' => integer_format($num_skipped),
+                    'NUM_MANUAL' => integer_format($num_manual),
+
+                    '_NUM_FAILS' => strval($num_fails),
+                    '_NUM_PASSES' => strval($num_passes),
+                    '_NUM_SKIPPED' => strval($num_skipped),
+                    '_NUM_MANUAL' => strval($num_manual),
+                );
+            }
+        }
+
+        if (count($_sections) > 0) {
+            ksort($_sections, SORT_NATURAL | SORT_FLAG_CASE);
+            $categories[$category_label] = array(
+                'SECTIONS' => $_sections,
+            );
+        }
+    }
+    ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
+
+    return $categories;
 }
 
 /**
@@ -120,7 +258,7 @@ abstract class Hook_Health_Check
      */
     protected function process_checks_section($method, $section_label, $sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if (($sections_to_run !== null) && (!in_array($section_label, $sections_to_run))) {
+        if (($sections_to_run !== null) && (!in_array($this->category_label . ' \\ ' . $section_label, $sections_to_run))) {
             return;
         }
 
@@ -132,7 +270,7 @@ abstract class Hook_Health_Check
             if (strpos($section_label, ',') !== false) {
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // We cannot have commas in section labels because we store label sets in comma-separated lists
             }
-            $this->results[$section_label] = array(HEALTH_CHECK__IDENTIFIED_SECTION);
+            $this->results[$section_label] = null;
         }
     }
 
@@ -146,12 +284,15 @@ abstract class Hook_Health_Check
      * @param  boolean $result Whether the check passed
      * @param  string $message Failure message
      */
-    protected function assert_true($result, $message = '%s')
+    protected function assert_true($result, $message)
     {
+        if (!isset($this->results[$this->current_section_label])) {
+            $this->results[$this->current_section_label] = array();
+        }
         if ($result) {
-            $this->results[$this->current_section_label] = array(HEALTH_CHECK__PASS, $message);
+            $this->results[$this->current_section_label][] = array(HEALTH_CHECK__PASS, $message);
         } else {
-            $this->results[$this->current_section_label] = array(HEALTH_CHECK__FAIL, $message);
+            $this->results[$this->current_section_label][] = array(HEALTH_CHECK__FAIL, $message);
         }
     }
 
@@ -162,18 +303,24 @@ abstract class Hook_Health_Check
      */
     protected function state_check_manual($message)
     {
-        $this->results[$this->current_section_label] = array(HEALTH_CHECK__MANUAL, $message);
+        if (!isset($this->results[$this->current_section_label])) {
+            $this->results[$this->current_section_label] = array();
+        }
+        $this->results[$this->current_section_label][] = array(HEALTH_CHECK__MANUAL, $message);
     }
 
     /**
      * State that a check was skipped.
      * This is only called when we would like to run a check but something is stopping us; we do not call it for checks that don't make any sense to run for any reason.
      *
-     * @param  string $reason The reason for the skip, with possible details of exactly what was skipped
+     * @param  string $message The reason for the skip, with possible details of exactly what was skipped
      */
-    protected function state_check_skipped($reason)
+    protected function state_check_skipped($message)
     {
-        $this->results[$this->current_section_label] = array(HEALTH_CHECK__SKIPPED, $reason);
+        if (!isset($this->results[$this->current_section_label])) {
+            $this->results[$this->current_section_label] = array();
+        }
+        $this->results[$this->current_section_label][] = array(HEALTH_CHECK__SKIP, $message);
     }
 
     /*

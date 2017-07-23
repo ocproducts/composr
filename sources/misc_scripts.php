@@ -288,6 +288,7 @@ function cron_bridge_script($caller)
     set_value('last_cron', strval(time()));
     set_value('last_cron_started', '-', true);
     $cron_hooks = find_all_hooks('systems', 'cron');
+    ksort($cron_hooks);
     foreach (array_keys($cron_hooks) as $hook) {
         if (($limit_hook != '') && ($limit_hook != $hook)) {
             continue;

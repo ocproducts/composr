@@ -84,7 +84,7 @@ class Hook_health_check_performance extends Hook_Health_Check
         if ($manual_checks) {
             $url = get_base_url() . '/testing-for-404.png';
             $data = http_download_file($url, null, false); // TODO: In v11 set the parameter to return output even for 404
-            $this->assert_true(($data === null) || (strpos($data, '<nav class="menu_type__sitemap">') === false), '404 page is too complex looking for broken images');
+            $this->assert_true(($data === null) || (strpos($data, '<nav class="menu_type__sitemap">') === false), '[tt]404[/tt] status code page is too complex looking for broken images');
         }
         */
     }
@@ -105,6 +105,8 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         $url = $this->get_page_url();
 
+        require_code('files');
+
         $headers = get_headers($url, 1);
         $found_has_cookies_cookie = false;
         foreach ($headers as $key => $vals) {
@@ -120,11 +122,11 @@ class Hook_health_check_performance extends Hook_Health_Check
 
                     // Large cookies set
                     $_val = preg_replace('#^.*=#U', '', preg_replace('#; .*$#s', '', $val));
-                    $this->assert_true(strlen($_val) < 100, 'Cookie with over 100 bytes being set which is bad for performance');
+                    $this->assert_true(strlen($_val) < 100, 'Large cookie @ ' . clean_file_size(strlen($_val)));
                 }
 
                 // Too many cookies set
-                $this->assert_true(count($vals) < 8, '8 or more cookies are being set which is bad for performance');
+                $this->assert_true(count($vals) < 8, 'Many cookies are being set which is bad for performance @ ' . integer_format(count($vals)) . ' cookies');
             }
         }
 
@@ -152,6 +154,10 @@ class Hook_health_check_performance extends Hook_Health_Check
             $this->state_check_skipped('PHP stream_context_set_default function not available');
             return;
         }
+
+        css_enforce('global', 'default');
+        javascript_enforce('global', 'default');
+        sleep(1);
 
         $urls = array(
             'page' => $this->get_page_url(),
@@ -197,19 +203,19 @@ class Hook_health_check_performance extends Hook_Health_Check
 
             switch ($type) {
                 case 'page':
-                    $this->assert_true(!$is_cached, 'Caching should not be given for pages (except for bots, which Composr will automatically do if the static cache is enabled)');
+                    $this->assert_true(!$is_cached, 'Caching should not be given for pages (except for bots, which the software will automatically do if the static cache is enabled)');
                     $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for pages, significantly wasting bandwidth for page loads');
                     break;
 
                 case 'css':
                 case 'js':
-                    $this->assert_true($is_cached, 'Caching should be given for ' . $type . ' files (Composr will automatically make sure edited versions cache under different URLs via automatic timestamp parameters)');
-                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for ' . $type . ' files, significantly wasting bandwidth for page loads');
+                    $this->assert_true($is_cached, 'Caching should be given for [tt].' . $type . '[/tt] files (the software will automatically make sure edited versions cache under different URLs via automatic timestamp parameters)');
+                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for [tt].' . $type . '[/tt] files, significantly wasting bandwidth for page loads');
                     break;
 
                 case 'png':
-                    $this->assert_true($is_cached, 'Caching should be given for ' . $type . ' files');
-                    $this->assert_true(!$is_gzip, 'Gzip compression should not be given for ' . $type . ' files, they are already compressed so it is a waste of CPU power');
+                    $this->assert_true($is_cached, 'Caching should be given for [tt].' . $type . '[/tt] files');
+                    $this->assert_true(!$is_gzip, 'Gzip compression should not be given for [tt].' . $type . '[/tt] files, they are already compressed so it is a waste of CPU power');
                     break;
             }
         }

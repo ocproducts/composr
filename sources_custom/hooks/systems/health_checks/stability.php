@@ -127,7 +127,7 @@ class Hook_health_check_stability extends Hook_Health_Check
             }
 
             $test = do_block($block, array());
-            $this->assert_true(is_object($test), 'Failed block ' . $block);
+            $this->assert_true(is_object($test), 'Failed block [tt]' . $block . '[/tt]');
         }
     }
 

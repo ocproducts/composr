@@ -97,7 +97,7 @@ class Hook_health_check_domains extends Hook_Health_Check
             if (preg_match('#(Expiry date|Expiration date|Expiration):\s*([^\s]*)#im', $data, $matches) != 0) {
                 $expiry = strtotime($matches[2]);
                 if ($expiry > 0) {
-                    $this->assert_true($expiry > time() - 60 * 60 * 24 * 7, 'Domain name (' . $domain . ') seems to be expiring within a week or already expired');
+                    $this->assert_true($expiry > time() - 60 * 60 * 24 * 7, 'Domain name [tt]' . $domain . '[/tt] seems to be expiring within a week or already expired');
                 } else {
                     $this->state_check_skipped('Error reading expiry date for ' . $domain);
                 }

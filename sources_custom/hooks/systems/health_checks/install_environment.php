@@ -56,7 +56,7 @@ class Hook_health_check_install_environment extends Hook_Health_Check
             $ob = object_factory('Hook_check_' . $hook);
             $warning = $ob->run();
             foreach ($warning as $_warning) {
-                $this->assert_true(false, $_warning);
+                $this->assert_true(false, '[html]' . $_warning->evaluate() . '[/html]');
             }
         }
     }

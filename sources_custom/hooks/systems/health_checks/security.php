@@ -152,7 +152,7 @@ class Hook_health_check_security extends Hook_Health_Check
                 cms_file_put_contents_safe($full_path, '');
             }
             http_download_file(get_custom_base_url() . '/' . $c, null, false);
-            $this->assert_true($GLOBALS['HTTP_MESSAGE'] == '403', 'Should not be able to download ' . $c . ', should be secured by some kind of server configuration');
+            $this->assert_true($GLOBALS['HTTP_MESSAGE'] == '403', 'Should not be able to download [tt]' . $c . '[/tt], should be secured by some kind of server configuration');
             if (!$exists) {
                 @unlink($full_path);
             }
@@ -169,7 +169,7 @@ class Hook_health_check_security extends Hook_Health_Check
      */
     public function testSiteOrphaned($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if ($check_context != CHECK_CONTEXT__LIVE) {
+        if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
             return;
         }
 
@@ -193,7 +193,7 @@ class Hook_health_check_security extends Hook_Health_Check
                 $dns_lookup_remote = shell_exec('nslookup ' . $domain . ' 8.8.8.8');
                 $matched_remote = preg_match($regexp, $dns_lookup_remote, $matches_remote);
                 if (($matched_local != 0) && ($matched_remote != 0)) {
-                    $this->assert_true($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently (' . $matches_local[1] . ' vs ' . $matches_remote[1] . ')');
+                    $this->assert_true($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently ([tt]' . $matches_local[1] . '[/tt] vs [tt]' . $matches_remote[1] . '[/tt])');
                 } else {
                     $this->state_check_skipped('Failed to get a recognisable DNS resolution via the command line');
                 }

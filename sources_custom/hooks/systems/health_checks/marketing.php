@@ -49,7 +49,7 @@ class Hook_health_check_marketing extends Hook_Health_Check
      */
     public function testManualSocialMedia($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if ($check_context != CHECK_CONTEXT__LIVE) {
+        if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
             return;
         }
 
@@ -70,7 +70,7 @@ class Hook_health_check_marketing extends Hook_Health_Check
      */
     public function testManualAnalytics($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if ($check_context != CHECK_CONTEXT__LIVE) {
+        if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
             return;
         }
 
@@ -96,7 +96,7 @@ class Hook_health_check_marketing extends Hook_Health_Check
      */
     public function testGoogleAnalytics($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if ($check_context != CHECK_CONTEXT__LIVE) {
+        if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
             return;
         }
 

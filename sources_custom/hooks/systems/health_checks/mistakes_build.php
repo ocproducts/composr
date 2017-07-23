@@ -99,8 +99,6 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
 
         $page_links = $this->process_urls_into_page_links();
 
-        require_code('files');
-
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
 
@@ -161,7 +159,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         foreach ($_urls as $url) {
             // Check
             $data = http_download_file($url, 0, false);
-            $this->assert_true($data !== null, 'Broken link: ' . $url);
+            $this->assert_true($data !== null, 'Broken link: [tt]' . $url . '[/tt]');
         }
     }
 
@@ -184,15 +182,20 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             return;
         }
 
-        $data = $this->get_page_content();
-        if ($data === null) {
-            $this->state_check_skipped('Cannot download page from website');
-            return;
-        }
+        $page_links = $this->process_urls_into_page_links();
 
-        $check_for = array('TODO', 'FIXME', 'Lorem Ipsum');
-        foreach ($check_for as $c) {
-            $this->assert_true(strpos($data, $c) === false, 'Found a suspicious "' . $c . '"');
+        foreach ($page_links as $page_link) {
+            $data = $this->get_page_content($page_link);
+
+            if ($data === null) {
+                $this->state_check_skipped('Cannot download page from website');
+                return;
+            }
+
+            $check_for = array('TODO', 'FIXME', 'Lorem Ipsum');
+            foreach ($check_for as $c) {
+                $this->assert_true(strpos($data, $c) === false, 'Found a suspicious "' . $c . '" on "' . $page_link . '" page');
+            }
         }
     }
 
@@ -219,13 +222,18 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             return;
         }
 
-        $data = $this->get_page_content();
-        if ($data === null) {
-            $this->state_check_skipped('Cannot download page from website');
-            return;
-        }
+        $page_links = $this->process_urls_into_page_links();
 
-        $c = '#https?://(localhost|127\.|192\.168\.|10\.)#';
-        $this->assert_true(preg_match($c, $data) == 0, 'Found links to a local URL');
+        foreach ($page_links as $page_link) {
+            $data = $this->get_page_content($page_link);
+
+            if ($data === null) {
+                $this->state_check_skipped('Cannot download page from website');
+                return;
+            }
+
+            $c = '#https?://(localhost|127\.|192\.168\.|10\.)#';
+            $this->assert_true(preg_match($c, $data) == 0, 'Found links to a local URL on "' . $page_link . '" page');
+        }
     }
 }

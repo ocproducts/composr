@@ -87,16 +87,16 @@ class Hook_health_check_email extends Hook_Health_Check
             foreach ($domains as $domain => $email) {
                 $mail_hosts = array();
                 $result = @getmxrr($domain, $mail_hosts);
-                $this->assert_true($result, 'Cannot look up MX records for our ' . $email . ' e-mail address');
+                $this->assert_true($result, 'Cannot look up MX records for our [tt]' . $email . '[/tt] e-mail address');
 
                 foreach ($mail_hosts as $host) {
-                    $this->assert_true(@checkdnsrr($host, 'A'), 'Mail server MX DNS does not seem to be set up properly for our ' . $email . ' e-mail address');
+                    $this->assert_true(@checkdnsrr($host, 'A'), 'Mail server MX DNS does not seem to be set up properly for our [tt]' . $email . '[/tt] e-mail address');
 
                     if ((php_function_allowed('fsockopen')) && (php_function_allowed('gethostbyname'))/* && (php_function_allowed('gethostbyaddr'))*/) {
                         // See if SMTP running
                         $socket = @fsockopen($host, 25);
                         $can_connect = ($socket !== false);
-                        $this->assert_true($can_connect, 'Cannot connect to SMTP server for ' . $email . ' address');
+                        $this->assert_true($can_connect, 'Cannot connect to SMTP server for [tt]' . $email . '[/tt] address');
                         if ($can_connect) {
                             fread($socket, 1024);
                             fwrite($socket, 'HELO ' . $domain . "\n");
@@ -105,7 +105,7 @@ class Hook_health_check_email extends Hook_Health_Check
 
                             $matches = array();
                             $has_helo = preg_match('#^250 ([^\s]*)#', $data, $matches) != 0;
-                            $this->assert_true($has_helo, 'Cannot get HELO response from SMTP server for ' . $email . ' address');
+                            $this->assert_true($has_helo, 'Cannot get HELO response from SMTP server for [tt]' . $email . '[/tt] address');
                             if ($has_helo) {
                                 $reported_host = $matches[1];
 
@@ -162,10 +162,10 @@ class Hook_health_check_email extends Hook_Health_Check
                 foreach ($domains as $domain => $email) {
                     $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
 
-                    $this->assert_true($passed !== null, 'SPF record is not set for ' . $domain . ', setting it will significantly reduce the chance of fraud and spam blockage');
+                    $this->assert_true($passed !== null, 'SPF record is not set for [tt]' . $domain . '[/tt], setting it will significantly reduce the chance of fraud and spam blockage');
 
                     if ($passed !== null) {
-                        $this->assert_true($passed, 'SPF record for ' . $domain . ' does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
+                        $this->assert_true($passed, 'SPF record for [tt]' . $domain . '[/tt] does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
                     }
                 }
             } else {
@@ -234,7 +234,7 @@ class Hook_health_check_email extends Hook_Health_Check
                     }
                 }
 
-                $this->assert_true(!$passed_wildcard, 'SPF record for ' . $domain . ' is wildcarded, so offers no real value');
+                $this->assert_true(!$passed_wildcard, 'SPF record for [tt]' . $domain . '[/tt] is wildcarded, so offers no real value');
 
                 return ($passed || $passed_wildcard) && !$blocked;
             }
@@ -278,7 +278,7 @@ class Hook_health_check_email extends Hook_Health_Check
             $include = substr($part, 8);
             $ret = $this->do_spf_check($include, $self_domain, $self_ip);
 
-            $this->assert_true($ret !== null, 'SPF include ' . $include . ' is broken');
+            $this->assert_true($ret !== null, 'SPF include [tt]' . $include . '[/tt] is broken');
 
             if ($ret === null) {
                 $ret = false;
@@ -290,7 +290,7 @@ class Hook_health_check_email extends Hook_Health_Check
             $redirect = substr($part, 9);
             $ret = $this->do_spf_check($redirect, $self_domain, $self_ip);
 
-            $this->assert_true($ret !== null, 'SPF redirect ' . $redirect . ' is broken');
+            $this->assert_true($ret !== null, 'SPF redirect [tt]' . $redirect . '[/tt] is broken');
 
             if ($ret === null) {
                 $ret = false;
@@ -345,7 +345,7 @@ class Hook_health_check_email extends Hook_Health_Check
             }
 
             $uniq = uniqid('', true);
-            $subject = 'Composr Self-Test (' . $uniq . ')';
+            $subject = brand_name() . ' Self-Test (' . $uniq . ')';
             mail_wrap($subject, 'Test', array($address), null, '', '', 3, null, false, null, false, false, false, 'MAIL', true);
 
             $wait_time = intval(get_option('hc_mail_wait_time'));
@@ -373,7 +373,7 @@ class Hook_health_check_email extends Hook_Health_Check
                             $good = true;
                         }
 
-                        if (strpos($_subject, 'Composr Self-Test') !== false) {
+                        if (strpos($_subject, brand_name() . ' Self-Test') !== false) {
                             imap_delete($resource, $l); // Auto-clean-up
                         }
                     }
@@ -428,7 +428,7 @@ class Hook_health_check_email extends Hook_Health_Check
                     foreach ($rbls as $rbl) {
                         $response = rbl_resolve($ip, $rbl, true);
                         $blocked = ($response === array('127', '0', '0', '2'));
-                        $this->assert_true(!$blocked, 'The ' . $host . ' SMTP server is blocked by ' . $rbl);
+                        $this->assert_true(!$blocked, 'The [tt]' . $host . '[/tt] SMTP server is blocked by [tt]' . $rbl . '[/tt]');
                     }
                 }
             }

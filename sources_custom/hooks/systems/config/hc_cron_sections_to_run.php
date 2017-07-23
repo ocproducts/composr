@@ -66,18 +66,11 @@ class Hook_config_hc_cron_sections_to_run
      */
     public function field_inputter($name, $myrow, $human_name, $explanation)
     {
-        $current = explode(',', get_option($name));
-
-        $list = '';
         require_code('health_check');
-        $categories = find_health_check_categories_and_sections();
-        foreach ($categories as $category_label => $results) {
-            foreach (array_keys($results) as $section_label) {
-                $compound_label = $category_label . '/' . $section_label;
-                $is_selected = in_array($compound_label, $current);
-                $list .= static_evaluate_tempcode(form_input_list_entry($compound_label, $is_selected));
-            }
-        }
-        return form_input_list($human_name, $explanation, $name, make_string_tempcode($list), null, 15);
+
+        $current = (get_option($name) == '') ? array() : explode(',', get_option($name));
+        $list = create_selection_list_health_check_sections($current);
+
+        return form_input_multi_list($human_name, $explanation, $name, $list, null, 15);
     }
 }

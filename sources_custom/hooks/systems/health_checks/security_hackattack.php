@@ -72,7 +72,7 @@ class Hook_health_check_security_hackattack extends Hook_Health_Check
                     foreach ($rows as $row) {
                         $country = geolocate_ip($row['ip']);
                         if ($country !== null) {
-                            $countries[] = $country;
+                            $countries[] = '[tt]' . $country . '[/tt]';
                         }
                     }
 
@@ -140,7 +140,7 @@ class Hook_health_check_security_hackattack extends Hook_Health_Check
      */
     public function testRateLimitSpike($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        if ($check_context != CHECK_CONTEXT__LIVE) {
+        if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
             return;
         }
 

@@ -32,7 +32,7 @@ class Hook_health_check_upkeep extends Hook_Health_Check
      */
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        $this->process_checks_section('testComposrVersion', 'Composr version', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testComposrVersion', brand_name() . ' version', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testPHPVersion', 'PHP version', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testAdminAccountStaleness', 'Admin account staleness', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testCopyrightDate', 'Copyright date', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
@@ -176,7 +176,7 @@ class Hook_health_check_upkeep extends Hook_Health_Check
 
                     if ($seconds_due_in !== null) {
                         $ok = ($seconds_due_in > 0);
-                        $this->assert_true($ok, 'Staff checklist items for ' . $hook . ' due ' . display_time_period($seconds_due_in) . ' ago');
+                        $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt] due ' . display_time_period($seconds_due_in) . ' ago');
                         if (!$ok) {
                             break;
                         }
@@ -184,7 +184,7 @@ class Hook_health_check_upkeep extends Hook_Health_Check
 
                     if ($num_to_do !== null) {
                         $ok = ($num_to_do == 0);
-                        $this->assert_true($ok, 'Staff checklist items for ' . $hook . ', ' . integer_format($num_to_do) . ' items');
+                        $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt], ' . integer_format($num_to_do) . ' items');
                         if (!$ok) {
                             break;
                         }
