@@ -23,6 +23,8 @@ class Hook_cron__health_check
      */
     public function run()
     {
+        // Note that we have a leading "_" on the hook name so that it runs first (we run CRON hooks in sorted order)
+
         $last = get_value('last_health_check', null, true);
         $time = time();
         if (($last !== null) && (intval($last) > $time - intval(get_option('hc_cron_regularity')) * 60)) {

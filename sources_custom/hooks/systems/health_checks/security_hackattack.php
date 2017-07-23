@@ -33,7 +33,7 @@ class Hook_health_check_security_hackattack extends Hook_Health_Check
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         $this->process_checks_section('testOverseasAccess', 'Overseas access', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testHackAttacks', 'Hack-attacks', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testHackAttacks', 'Attack frequency', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testFailedLogins', 'Failed logins', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testRateLimitSpike', 'Rate-limit spiking', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 

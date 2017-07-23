@@ -34,49 +34,15 @@ class _health_check_test_set extends cms_test_case
         }
     }
 
-    // -- check changes/extensions --
-
-    // TODO: Add chmod test
-    // TODO: Logged slow queries
-    // TODO: Logged slow page loads
-    // TODO: Say to manually check error log
-
-    // TODO: Automatically remove stale admins
-
-    // -- testing --
-
-    // TODO: Test everything on compo.sr
-
-    // -- documentation in v11 --
-
-    // TODO: List feature in our features list.
-
-    // TODO: Document this Health Check system, including all the checks that run, and how it needs CRON, and how you can plug an external uptime checker tool into the health_check.php script. Maybe this would all be documented next to our advice about something like Uptime Robot.
-    /*
-    We want to be able to automatically detect when something goes wrong with a website.
-    This could be:
-     - Software compatibility issue arisen
-     - Upgrade fault
-     - Hardware failure
-     - Hack-attack
-     - Some important admin item forgotten
-     - Some kind of screw up
-    The web is just far too complex and commoditised now for people to be able to intentionally check for everything that could go wrong. We need to get all the checks automated into the system.
-    */
-
-    // TODO: The data_custom/health_check.php script would need to be documented in the codebook (which lists manually callable scripts). 
-
-    // TODO: Document in the Code Book: Health Check vs Testing Platform vs Local web-standards checks vs PHP-Info vs Website Cleanup Tools vs Staff Checklist vs Health Check manual linking to external tools. Most tests will still be done in the dev cycle (testing platform) [due to needing extra code, or taking a long time to run, or being destructive]
-
-    // TODO: Add running a Health Check to the sup_professional_upgrading and the codebook_standards tutorials.
-
-    // -- v11 --
-
-    // TODO: Move over to bundled in Composr v11
-
-    // TODO: Strewn TODOs
-
-    // TODO: Strip from 'PHP-info' and the Admin Zone dashboard, where it runs currently.
-
-    // TODO: Mark done on tracker https://compo.sr/tracker/view.php?id=3314
+    // TODO in v11:
+        // TODO: Strewn TODOs
+        // TODO: Move over to bundled
+        // TODO: Strip from 'PHP-info' and the Admin Zone dashboard, where it runs currently
+        // TODO: Documentation:
+            // TODO: List feature in composr_homesite_featuretray.php
+            // TODO: Move addon description mostly over to a tutorial, next to where uptime checking is documented; make sure /s/data_custom/data/
+            // TODO: Add to sup_professional_upgrading tutorial
+            // TODO: Add to codebook_standards tutorial near the bottom (agency standards)
+            // TODO: Add data/health_check.php "Scripts and tools" part of codebook_3 tutorial
+        // TODO: Mark done on tracker https://compo.sr/tracker/view.php?id=3314,
 }

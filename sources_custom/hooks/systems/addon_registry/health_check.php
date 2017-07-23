@@ -86,7 +86,137 @@ class Hook_addon_registry_health_check
      */
     public function get_description()
     {
-        return 'TODO';
+        return 'The Health Check addon automatically finds problems on your website and server, with over 100 checks.
+
+On the modern advanced web there is too much to keep in mind to check. All kinds of things could go wrong without you noticing, which could be embarassing.
+For example, what if:
+1) Your outgoing e-mail goes down, breaking sign-ups
+2) You forget to renew SSL
+3) You forget to renew your domain name
+4) A hacker takes control of the domain name and puts up a fake site
+5) You accidentally block Google from accessing the website
+All the above scenarios are auto-detectable.
+In fact, you can detect problems stemming from many kinds of situation, including:
+ - Quality issues after building a new site or theme
+ - Software compatibility issues
+ - Problems after a Composr upgrade
+ - Hardware failure
+ - Configuration issues
+ - Lack of server capacity
+ - Hack-attacks
+ - Lack of routine maintenance or website up-keep
+
+[title="2"]Operation[/title]
+
+The Health Check can be run manually, or regularly run in the background (requires CRON to be set up and for you to enable the "Health Check results" notification).
+
+[title="2"]Check sections[/title]
+
+At the time of writing the list of check sections is:
+ - Backups \ Backups
+ - Bloated data \ Directory size
+ - Bloated data \ Log size
+ - Bloated data \ Table size
+ - Build mistakes \ Broken links
+ - Build mistakes \ Guest access
+ - Build mistakes \ Incomplete content
+ - Build mistakes \ Local linking
+ - Build mistakes \ Manual checks for web standards
+ - CRON \ CRON set up
+ - CRON \ Slow CRON
+ - Deployment mistakes \ Site open-status
+ - Domains \ DNS resolution
+ - Domains \ Domain expiry
+ - E-mail \ E-mail configuration
+ - E-mail \ E-mail operation
+ - E-mail \ E-mail queue
+ - E-mail \ SMTP blacklisting
+ - E-mail \ SPF
+ - Hack-attacks \ Attack frequency
+ - Hack-attacks \ Failed logins
+ - Hack-attacks \ Overseas access
+ - Hack-attacks \ Rate-limit spiking
+ - Installation environment \ PHP functionality etc
+ - Marketing \ Analytics
+ - Marketing \ Google Analytics
+ - Marketing \ Social media
+ - Network \ External access
+ - Network \ Packet loss
+ - Network \ Transfer latency
+ - Network \ Transfer speed
+ - Newsletter \ Newsletter queue
+ - Performance \ 404 pages
+ - Performance \ Cookies
+ - Performance \ Manual performance checks
+ - Performance \ Page speed
+ - robots.txt \ robots.txt completeness
+ - robots.txt \ robots.txt correctness
+ - robots.txt \ robots.txt validity
+ - robots.txt \ Sitemap linkage
+ - Security \ Directory securing
+ - Security \ Malware
+ - Security \ Site orphaning
+ - SEO \ H1 tags
+ - SEO \ Manual SEO checks
+ - SEO \ Meta description
+ - SEO \ Meta keywords
+ - SEO \ Page titles
+ - SEO \ XML Sitemap
+ - Server performance \ CPU load
+ - Server performance \ Disk space
+ - Server performance \ Hanging processes
+ - Server performance \ I/O load
+ - Server performance \ RAM
+ - Server performance \ Server uptime
+ - Software integrity \ Database corruption
+ - Software integrity \ Database integrity
+ - Software integrity \ File integrity
+ - Software integrity \ File permissions integrity
+ - Software integrity \ Upgrade completion
+ - SSL \ Insecure embedding
+ - SSL \ Insecure linking
+ - SSL \ SSL correctness
+ - SSL \ SSL grading
+ - Stability \ Block integrity
+ - Stability \ Error log
+ - Stability \ Manual stability checks
+ - Stability \ Page integrity
+ - Upkeep \ Admin account staleness
+ - Upkeep \ Composr version
+ - Upkeep \ Copyright date
+ - Upkeep \ PHP version
+ - Upkeep \ Staff checklist
+ - User-experience for mistakes \ 404 pages
+ - User-experience for mistakes \ HTTPS redirection
+ - User-experience for mistakes \ www redirection
+
+[title="2"]Configuration[/title]
+
+There are a large number of configuration options available, under Admin Zone > Setup > Configuration > Health Check.
+This includes:
+ - setting which pages to do deep scans of
+ - calibrating the checks (setting thresholds)
+ - configuring background ("CRON") checks, including the frequency, and which check sections to run
+
+[title="2"]What if things break too badly for the Health Check to run?[/title]
+
+There are a couple of approaches you can take to make sure you know if the health checker is itself down:
+1) Feed an uptime checker into [tt]data_custom/health_check.php[/tt] -- if it gives an HTTP error or the server does not respond, then you know Health Checks do not run (and a none-blank result shows there is a failing health check)
+2) Enable the "Send full reports" option and check you receive the report each day (either manually or using some kind of third party e-mail scanning tool)
+
+[title="Philosophy[/title]
+
+There is a vast amount to check when it comes to web development. Even though we check over 100 things, we can not realistically check everything under the scope of the Health Check.
+The Health Check focuses on issues likely faced by end-users, and assumes Composr itself has been well programmed and tested.
+
+The Composr ecosystem also has:
+ - Unit testing. This is used for testing a huge array of low-level coding issues (too detailed for Health Check, possibly destructive, and requiring a lot of testing framework code). The tests are regularly run prior to Composr releases being made by the developers.
+ - Web standards checks (often called "Validation"). These checks are too detailed to be done within the Health Check (and any individual mistake is likely not going to hurt your site in practice). Composr has web standards checking functionality built in, which can be accessed from the default theme\'s footer and when previewing content (depending on configuration). We also have manual health checks linking out to 3rd party validators.
+ - PHP info. The Health Check is not intended as a way to report on all your settings, only problematic ones. If you want to list some information about the PHP environment, use Admin Zone > Tools > PHP info to do this.
+ - Cleanup tools. The Health Check does not attempt to "cleanup" caches and so on, only check for problems. The cleanup tools can be accessed from Admin Zone > Tools > Website cleanup tools.
+ - Staff checklist. The staff checklist (on the Admin Zone dashboard) has detailed information on staff actions that need performing. There is integration of this into the Health Check, but only at a high level.
+ - External scanning tools. The Health Check doesn\'t itself directly ensure your website is perfectly optimised, it just focuses on the more major issues, and does sign-posting to other tools. The Health Check will link to various external tools that can perform detailed scans, such as gauging your SSL security.
+';
     }
 
     /**

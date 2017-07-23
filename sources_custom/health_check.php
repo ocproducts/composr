@@ -74,6 +74,8 @@ function find_health_check_categories_and_sections()
 
         list($category_label, $sections) = $ob->run(null, $check_context, true);
 
+        ksort($sections, SORT_NATURAL | SORT_FLAG_CASE);
+
         $categories[$category_label] = $sections;
     }
     ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
