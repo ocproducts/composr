@@ -38,7 +38,7 @@ class Hook_health_check_performance extends Hook_Health_Check
         $this->process_checks_section('test404Pages', '404 pages', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testCookies', 'Cookies', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testHTTPOptimisation', 'HTTP optimisation', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testPageSpeed', 'Page speed', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testPageSpeed', 'Page speed (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -155,14 +155,14 @@ class Hook_health_check_performance extends Hook_Health_Check
             return;
         }
 
-        css_enforce('global', 'default');
-        javascript_enforce('global', 'default');
+        $css_basename = basename(css_enforce('global', 'default'));
+        $javascript_basename = basename(javascript_enforce('global', 'default'));
         sleep(1);
 
         $urls = array(
             'page' => $this->get_page_url(),
-            'css' => get_base_url() . '/themes/default/templates_cached/EN/global.css',
-            'js' => get_base_url() . '/themes/default/templates_cached/EN/global.js',
+            'css' => get_base_url() . '/themes/default/templates_cached/EN/' . $css_basename,
+            'js' => get_base_url() . '/themes/default/templates_cached/EN/' . $javascript_basename,
             'png' => get_base_url() . '/themes/default/images/button1.png',
         );
 
@@ -175,7 +175,7 @@ class Hook_health_check_performance extends Hook_Health_Check
             }
 
             $is_gzip = false;
-            $is_cached = false;
+            $is_cached = null;
             foreach ($headers as $key => $vals) {
                 if (is_string($vals)) {
                     $vals = array($vals);
@@ -196,26 +196,31 @@ class Hook_health_check_performance extends Hook_Health_Check
                         break;
 
                     case 'last-modified':
-                        $is_cached = (strtotime($vals[0]) < time());
+                        if ($is_cached === null) {
+                            $is_cached = (strtotime($vals[0]) < time());
+                        }
                         break;
                 }
+            }
+            if ($is_cached === null) {
+                $is_cached = false;
             }
 
             switch ($type) {
                 case 'page':
-                    $this->assert_true(!$is_cached, 'Caching should not be given for pages (except for bots, which the software will automatically do if the static cache is enabled)');
-                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for pages, significantly wasting bandwidth for page loads');
+                    $this->assert_true(!$is_cached, 'Caching should not be given for pages (except for bots, which the software will automatically do if the static cache is enabled). Full headers: ' . serialize($headers));
+                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for pages, significantly wasting bandwidth for page loads. Full headers: ' . serialize($headers));
                     break;
 
                 case 'css':
                 case 'js':
-                    $this->assert_true($is_cached, 'Caching should be given for [tt].' . $type . '[/tt] files (the software will automatically make sure edited versions cache under different URLs via automatic timestamp parameters)');
-                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for [tt].' . $type . '[/tt] files, significantly wasting bandwidth for page loads');
+                    $this->assert_true($is_cached, 'Caching should be given for [tt].' . $type . '[/tt] files (the software will automatically make sure edited versions cache under different URLs via automatic timestamp parameters). Full headers: ' . serialize($headers));
+                    $this->assert_true($is_gzip, 'Gzip compression is not enabled/working for [tt].' . $type . '[/tt] files, significantly wasting bandwidth for page loads. Full headers: ' . serialize($headers));
                     break;
 
                 case 'png':
-                    $this->assert_true($is_cached, 'Caching should be given for [tt].' . $type . '[/tt] files');
-                    $this->assert_true(!$is_gzip, 'Gzip compression should not be given for [tt].' . $type . '[/tt] files, they are already compressed so it is a waste of CPU power');
+                    $this->assert_true($is_cached, 'Caching should be given for [tt].' . $type . '[/tt] files. Full headers: ' . serialize($headers));
+                    $this->assert_true(!$is_gzip, 'Gzip compression should not be given for [tt].' . $type . '[/tt] files, they are already compressed so it is a waste of CPU power. Full headers: ' . serialize($headers));
                     break;
             }
         }

@@ -82,7 +82,7 @@ class Hook_health_check_security_hackattack extends Hook_Health_Check
                 $this->state_check_skipped('Geolocation data not installed so cannot do admin country checks');
             }
         } else {
-            $this->state_check_skipped('Cannot find geolocation history without the stats addon being installed');
+            $this->state_check_skipped('Could not find geolocation history without the stats addon being installed');
         }
     }
 

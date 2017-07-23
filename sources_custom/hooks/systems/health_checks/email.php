@@ -37,7 +37,7 @@ class Hook_health_check_email extends Hook_Health_Check
         $this->process_checks_section('testEmailQueue', 'E-mail queue', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testEmailConfiguration', 'E-mail configuration', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testSPF', 'SPF', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testEmailOperation', 'E-mail operation', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testEmailOperation', 'E-mail operation (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testSMTPBlacklisting', 'SMTP blacklisting', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
@@ -87,16 +87,18 @@ class Hook_health_check_email extends Hook_Health_Check
             foreach ($domains as $domain => $email) {
                 $mail_hosts = array();
                 $result = @getmxrr($domain, $mail_hosts);
-                $this->assert_true($result, 'Cannot look up MX records for our [tt]' . $email . '[/tt] e-mail address');
+                $this->assert_true($result, 'Could not look up MX records for our [tt]' . $email . '[/tt] e-mail address');
 
-                foreach ($mail_hosts as $host) {
-                    $this->assert_true(@checkdnsrr($host, 'A'), 'Mail server MX DNS does not seem to be set up properly for our [tt]' . $email . '[/tt] e-mail address');
+                foreach (array_unique($mail_hosts) as $host) {
+                    $this->assert_true(@checkdnsrr($host, 'A'), 'Mail server MX DNS does not seem to be set up properly for our [tt]' . $email . '[/tt] e-mail address (host=[tt]' . $host . '[/tt])');
 
                     if ((php_function_allowed('fsockopen')) && (php_function_allowed('gethostbyname'))/* && (php_function_allowed('gethostbyaddr'))*/) {
                         // See if SMTP running
-                        $socket = @fsockopen($host, 25);
+                        $errno = 0;
+                        $errstr = '';
+                        $socket = @fsockopen($host, 25, $errno, $errstr, 4.0);
                         $can_connect = ($socket !== false);
-                        $this->assert_true($can_connect, 'Cannot connect to SMTP server for [tt]' . $email . '[/tt] address');
+                        $this->assert_true($can_connect, 'Could not connect to SMTP server for [tt]' . $email . '[/tt] address (host=[tt]' . $host . '[/tt]); possibly server network is firewalled on this port though');
                         if ($can_connect) {
                             fread($socket, 1024);
                             fwrite($socket, 'HELO ' . $domain . "\n");
@@ -105,7 +107,7 @@ class Hook_health_check_email extends Hook_Health_Check
 
                             $matches = array();
                             $has_helo = preg_match('#^250 ([^\s]*)#', $data, $matches) != 0;
-                            $this->assert_true($has_helo, 'Cannot get HELO response from SMTP server for [tt]' . $email . '[/tt] address');
+                            $this->assert_true($has_helo, 'Could not get HELO response from SMTP server for [tt]' . $email . '[/tt] address (host=[tt]' . $host . '[/tt])');
                             if ($has_helo) {
                                 $reported_host = $matches[1];
 
@@ -353,12 +355,18 @@ class Hook_health_check_email extends Hook_Health_Check
             $good = false;
             $time_started = time();
             $ref = _imap_server_spec($server, $port, $type);
+            $i = 0;
             do {
                 sleep(3);
 
                 $resource = imap_open($ref . 'INBOX', $username, $password, CL_EXPUNGE);
                 $ok = ($resource !== false);
-                $this->assertTrue($ok, 'Could not connect to IMAP server, ' . $server);
+                if ($i == 0) {
+                    $this->assert_true($ok, 'Could not connect to IMAP server, [tt]' . $server . '[/tt]');
+                    if (!$ok) {
+                        return;
+                    }
+                }
                 if ($ok) {
                     $list = imap_search($resource, 'FROM "' . get_site_name() . '"');
                     if ($list === false) {
@@ -382,6 +390,8 @@ class Hook_health_check_email extends Hook_Health_Check
                 }
 
                 $time_taken = time() - $time_started;
+
+                $i++;
             }
             while ((!$good) && ($time_taken < $wait_time) && ($ok));
 

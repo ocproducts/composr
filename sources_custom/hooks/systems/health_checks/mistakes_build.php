@@ -126,7 +126,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
-                $this->state_check_skipped('Cannot download page from website');
+                $this->state_check_skipped('Could not download page from website');
 
                 continue;
             }
@@ -158,8 +158,12 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
 
         foreach ($_urls as $url) {
             // Check
+            /*
             $data = http_download_file($url, 0, false);
-            $this->assert_true($data !== null, 'Broken link: [tt]' . $url . '[/tt]');
+            $ok = ($data !== null);
+            */
+            $ok = check_url_exists($url, 60 * 60 * 24 * 1);
+            $this->assert_true($ok, 'Broken link: [tt]' . $url . '[/tt] (caching is 1 day on these checks)');
         }
     }
 
@@ -188,7 +192,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $data = $this->get_page_content($page_link);
 
             if ($data === null) {
-                $this->state_check_skipped('Cannot download page from website');
+                $this->state_check_skipped('Could not download page from website');
                 return;
             }
 
@@ -228,7 +232,7 @@ class Hook_health_check_mistakes_build extends Hook_Health_Check
             $data = $this->get_page_content($page_link);
 
             if ($data === null) {
-                $this->state_check_skipped('Cannot download page from website');
+                $this->state_check_skipped('Could not download page from website');
                 return;
             }
 

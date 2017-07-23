@@ -52,6 +52,11 @@ class Hook_config_hc_processes_to_monitor
      */
     public function get_default()
     {
-        return 'php\d*|php\d*-cgi|php\d*-fpm|php\d*.dSYM';
+        $processes = array(
+            'php\d*(\.dSYM)?',
+            //'php\d*-cgi(\.dSYM)?',    Might be FastCGI
+            'php\d*-fpm(\.dSYM)?',
+        );
+        return implode('|', $processes);
     }
 }

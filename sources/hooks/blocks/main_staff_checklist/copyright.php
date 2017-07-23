@@ -53,6 +53,6 @@ class Hook_checklist_copyright
 
         $tpl = do_template('BLOCK_MAIN_STAFF_CHECKLIST_ITEM', array('_GUID' => 'c65f89a7af3ce753fc7eada742891400', 'URL' => '', 'STATUS' => $_status, 'TASK' => do_lang_tempcode('NAG_COPYRIGHT_DATE', escape_html_tempcode($url))));
 
-        return array(array($tpl, ($status == 0) ? -1 : 0, null, null));
+        return array(array($tpl, ($status == 0) ? (mktime(0, 0, 0, 1, 1) - time()) : 0, null, null));
     }
 }

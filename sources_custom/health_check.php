@@ -31,6 +31,13 @@ function init__health_check()
     define('HEALTH_CHECK__MANUAL', 'MANUAL');
 
     require_lang('health_check');
+
+    global $HEALTH_CHECK_LOG_FILE;
+    $HEALTH_CHECK_LOG_FILE = null;
+
+    global $HEALTH_CHECK_PAGE_CONTENT_CACHE, $HEALTH_CHECK_PAGE_URLS_CACHE;
+    $HEALTH_CHECK_PAGE_CONTENT_CACHE = array();
+    $HEALTH_CHECK_PAGE_URLS_CACHE = array();
 }
 
 /**
@@ -148,6 +155,14 @@ function run_health_check(&$has_fails, $sections_to_run = null, $passes = false,
         }
     }
 
+    $_log_file = get_custom_file_base() . '/data_custom/health_check.log';
+    global $HEALTH_CHECK_LOG_FILE;
+    if (is_file($_log_file)) {
+        $HEALTH_CHECK_LOG_FILE = fopen($_log_file, 'at');
+
+        fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  (HEALTH CHECK STARTING)' . "\n");
+    }
+
     $categories = array();
 
     $hooks = find_all_hooks('systems', 'health_checks'); // TODO: Fix in v11
@@ -229,6 +244,12 @@ function run_health_check(&$has_fails, $sections_to_run = null, $passes = false,
     }
     ksort($categories, SORT_NATURAL | SORT_FLAG_CASE);
 
+    if ($HEALTH_CHECK_LOG_FILE !== null) {
+        fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  (HEALTH CHECK ENDING)' . "\n");
+
+        fclose($HEALTH_CHECK_LOG_FILE);
+    }
+
     return $categories;
 }
 
@@ -267,7 +288,14 @@ abstract class Hook_Health_Check
         $this->current_section_label = $section_label;
 
         if ($check_context != CHECK_CONTEXT__PROBING_FOR_SECTIONS) {
+            global $HEALTH_CHECK_LOG_FILE;
+            if ($HEALTH_CHECK_LOG_FILE !== null) {
+                fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  STARTING ' . $this->category_label . ' \\ ' . $section_label . "\n");
+            }
             call_user_func(array($this, $method), $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+            if ($HEALTH_CHECK_LOG_FILE !== null) {
+                fwrite($HEALTH_CHECK_LOG_FILE, date('Y-m-d H:i:s') . '  FINISHED ' . $this->category_label . ' \\ ' . $section_label . "\n");
+            }
         } else {
             if (strpos($section_label, ',') !== false) {
                 fatal_exit(do_lang_tempcode('INTERNAL_ERROR')); // We cannot have commas in section labels because we store label sets in comma-separated lists
@@ -337,11 +365,11 @@ abstract class Hook_Health_Check
      */
     protected function get_page_url($page_link = ':')
     {
-        static $urls = array();
-        if (!array_key_exists($page_link, $urls)) {
-            $urls[$page_link] = page_link_to_url($page_link);
+        global $HEALTH_CHECK_PAGE_URLS_CACHE;
+        if (!array_key_exists($page_link, $HEALTH_CHECK_PAGE_URLS_CACHE)) {
+            $HEALTH_CHECK_PAGE_URLS_CACHE[$page_link] = page_link_to_url($page_link);
         }
-        return $urls[$page_link];
+        return $HEALTH_CHECK_PAGE_URLS_CACHE[$page_link];
     }
 
     /**
@@ -432,16 +460,16 @@ abstract class Hook_Health_Check
      */
     protected function get_page_content($page_link = ':')
     {
-        static $ret = array();
-        if (!array_key_exists($page_link, $ret)) {
-            $ret[$page_link] = http_download_file($this->get_page_url($page_link), null, false, true);
+        global $HEALTH_CHECK_PAGE_CONTENT_CACHE;
+        if (!array_key_exists($page_link, $HEALTH_CHECK_PAGE_CONTENT_CACHE)) {
+            $HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link] = http_download_file($this->get_page_url($page_link), null, false, true);
 
             // Server blocked to access itself
             if ($page_link == ':') {
-                $this->assert_true($ret[$page_link] !== null, 'The server cannot download itself');
+                $this->assert_true($HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link] !== null, 'The server cannot download itself');
             }
         }
-        return $ret[$page_link];
+        return $HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link];
     }
 
     /*

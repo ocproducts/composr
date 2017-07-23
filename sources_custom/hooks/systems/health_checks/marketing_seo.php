@@ -82,7 +82,7 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
 
         $data = $this->get_page_content();
         if ($data === null) {
-            $this->state_check_skipped('Cannot download page from website');
+            $this->state_check_skipped('Could not download page from website');
             return;
         }
 
@@ -121,7 +121,7 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
 
         $data = $this->get_page_content();
         if ($data === null) {
-            $this->state_check_skipped('Cannot download page from website');
+            $this->state_check_skipped('Could not download page from website');
             return;
         }
 
@@ -160,7 +160,7 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
 
         $data = $this->get_page_content();
         if ($data === null) {
-            $this->state_check_skipped('Cannot download page from website');
+            $this->state_check_skipped('Could not download page from website');
             return;
         }
 
@@ -197,13 +197,13 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
 
         $data = $this->get_page_content();
         if ($data === null) {
-            $this->state_check_skipped('Cannot download page from website');
+            $this->state_check_skipped('Could not download page from website');
             return;
         }
 
         $header = null;
         $matches = array();
-        if (preg_match('#<h1[^<>]*>([^<>]*)</h1>#is', $data, $matches) != 0) {
+        if (preg_match('#<h1[^<>]*>(.*)</h1>#is', $data, $matches) != 0) {
             $header = $matches[1];
         }
 

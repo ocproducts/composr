@@ -56,6 +56,6 @@ class Hook_config_hc_mail_wait_time
             return null;
         }
 
-        return '6';
+        return '120';
     }
 }

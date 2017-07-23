@@ -61,7 +61,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
             'chat_active' => 100000,
             'chat_events' => 10000000,
             'cron_caching_requests' => 10000,
-            'post_tokens' => 10000,
+            'post_tokens' => 1000000,
             'edit_pings' => 10000,
             'hackattack' => 1000000,
             'incoming_uploads' => 10000,
@@ -100,7 +100,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
             'caches/persistent' => 500,
             'caches/self_learning' => 500,
             'uploads/incoming' => 500,
-            'safe_mode_temp' => 50, // TODO: temp in v11
+            'safe_mode_temp' => 500, // TODO: temp in v11
             'themes/' . $GLOBALS['FORUM_DRIVER']->get_theme('') . '/templates_cached' => 20,
         );
         foreach ($directories as $dir => $max_threshold_size_in_mb) {
@@ -112,7 +112,7 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
 
         $directories = array(
             'uploads/incoming' => 50,
-            'safe_mode_temp' => 50, // TODO: temp in v11
+            //'safe_mode_temp' => 50, Actually HTTP cache data may be in here. v11 make a separate cache directory
             'data_custom' => 100,
         );
         foreach ($directories as $dir => $max_contents_threshold) {

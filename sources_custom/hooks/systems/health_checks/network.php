@@ -33,7 +33,7 @@ class Hook_health_check_network extends Hook_Health_Check
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
         $this->process_checks_section('testExternalAccess', 'External access', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testPacketLoss', 'Packet loss', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testPacketLoss', 'Packet loss (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testTransferLatency', 'Transfer latency', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testTransferSpeed', 'Transfer speed', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
@@ -63,7 +63,7 @@ class Hook_health_check_network extends Hook_Health_Check
         $url = 'https://compo.sr/uploads/website_specific/compo.sr/scripts/testing.php?type=http_status_check&url=' . urlencode($this->get_page_url());
         $data = http_download_file($url, null, false);
         $result = @json_decode($data, true);
-        $this->assert_true($result === '200', 'Cannot access website externally');
+        $this->assert_true($result === '200', 'Could not access website externally');
     }
 
     /**
@@ -85,7 +85,7 @@ class Hook_health_check_network extends Hook_Health_Check
             $data = shell_exec($cmd);
 
             $matches = array();
-            if (preg_match('# (\d(\.\d+)%) packet loss#', $data, $matches) != 0) {
+            if (preg_match('# (\d(\.\d+)?%) packet loss#', $data, $matches) != 0) {
                 $this->assert_true(floatval($matches[1]) == 0.0, 'Unreliable Internet connection on server');
             } else {
                 $this->state_check_skipped('Could not get a recognised ping response');
