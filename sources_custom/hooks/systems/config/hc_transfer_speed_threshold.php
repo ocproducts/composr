@@ -52,6 +52,6 @@ class Hook_config_hc_transfer_speed_threshold
      */
     public function get_default()
     {
-        return '2.0';
+        return '1.5';
     }
 }

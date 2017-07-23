@@ -2027,7 +2027,7 @@ function log_stats($string, $pg_time)
         'referer' => $referer,
         's_get' => $get,
         'post' => $post,
-        'milliseconds' => intval($pg_time * 1000)
+        'milliseconds' => intval($pg_time),
     ), false, true);
     if (mt_rand(0, 100) == 1) {
         if (!$GLOBALS['SITE_DB']->table_is_locked('stats')) {

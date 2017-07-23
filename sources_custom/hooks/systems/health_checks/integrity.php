@@ -36,6 +36,7 @@ class Hook_health_check_integrity extends Hook_Health_Check
         $this->process_checks_section('testDatabaseIntegrity', 'Database integrity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testDatabaseCorruption', 'Database corruption', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testUpgradeCompletion', 'Upgrade completion', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testChmod', 'File permissions integrity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
     }
@@ -108,7 +109,7 @@ class Hook_health_check_integrity extends Hook_Health_Check
             $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
             foreach ($tables as $table) {
                 $results = $GLOBALS['SITE_DB']->query('CHECK TABLE ' . get_table_prefix() . $table['m_table']);
-                $ok = $results[0]['Msg_text'] == 'OK';
+                $ok = ($results[0]['Msg_text'] == 'OK') || (strpos($results[0]['Msg_text'], 'closed the table properly') !== false/*common false positive*/);
 
                 $message = 'Corrupt table likely needing repairing: [tt]' . $table['m_table'] . '[/tt] gave status "' . $results[0]['Msg_text'] . '"';
                 if (!$ok) {
@@ -152,5 +153,21 @@ class Hook_health_check_integrity extends Hook_Health_Check
         $_version_database = get_value('cns_version');
         $version_database = floatval($_version_database);
         $this->assert_true($version_files <= $version_database, 'Database seems to need an upgrade (' . float_format($version_files, 1) . ' vs ' . float_format($version_database, 1) . '), run upgrader');
+    }
+
+    /**
+     * Run a section of health checks.
+     *
+     * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
+     * @param  boolean $manual_checks Mention manual checks
+     * @param  boolean $automatic_repair Do automatic repairs where possible
+     * @param  ?boolean $use_test_data_for_pass Should test data be for a pass [if test data supported] (null: no test data)
+     */
+    public function testChmod($check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
+    {
+        require_code('upgrade');
+        require_lang('upgrade');
+
+        $this->assert_true(check_perms() == do_lang('FU_ALL_CHMODDED_GOOD'), 'File permissions (chmodding) are not complete');
     }
 }

@@ -54,7 +54,7 @@ class lang_spelling_test_set extends cms_test_case
             'site/pages/comcode/EN',
             'docs/pages/comcode_custom/EN',
         );
-        if (function_exists('git_repos') && git_repos() == 'composr_homesite') {
+        if ((function_exists('git_repos')) && (git_repos() == 'composr_homesite')) {
             $dirs = array_merge($dirs, array(
                 'text_custom',
                 'text_custom/EN',
@@ -113,7 +113,7 @@ class lang_spelling_test_set extends cms_test_case
         }
 
         // Hyphen wanted (we want our canonical way)
-        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) !=0) && ((is_null($key)) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false) && (basename($file) != 'tut_facebook.txt')) {
+        if ((preg_match('#([^\[\]\|"\'/\_])email#', $string, $matches) != 0) && ((is_null($key)) || (stripos($string, '/') === false) && (stripos($string, 'codename') === false)) && (stripos($string, 'Automatic code inserts after this') === false) && (basename($file) != 'tut_facebook.txt')) {
             $prefix = $matches[1];
             $this->assertTrue(false, 'The term \'email\' was used in ' . $file . '. (prefix is ' . $prefix . ') This should be changed to \'e-mail\'.');
         }

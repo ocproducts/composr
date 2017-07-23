@@ -140,7 +140,7 @@ function upgrade_script()
                         echo "
                             ";
                     }
-                    if (GOOGLE_APPENGINE) {
+                    if (!GOOGLE_APPENGINE) {
                         echo "
         <li>{$l_check_permissions}</li>
         <li>{$l_fix_permissions}</li>
@@ -924,7 +924,9 @@ function check_perms()
         }
         //}
     }
-    $out .= check_excess_perms($array);
+    if (!is_suexec_like()) {
+        $out .= check_excess_perms($array);
+    }
     if ($out == '') {
         $super_out = do_lang('FU_ALL_CHMODDED_GOOD');
     } else {

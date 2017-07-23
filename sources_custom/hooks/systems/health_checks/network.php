@@ -148,7 +148,6 @@ class Hook_health_check_network extends Hook_Health_Check
         $megabytes_per_second = floatval(strlen($data_to_send)) / (1024.0 * 1024.0 * $time);
         $megabits_per_second = $megabytes_per_second * 8.0;
 
-        $threshold_in_megabits_per_second = 2.0;
         $threshold_in_megabits_per_second = floatval(get_option('hc_transfer_speed_threshold'));
 
         $this->assert_true($megabits_per_second > $threshold_in_megabits_per_second, 'Slow speed transfering data to a remote machine @ ' . float_format($megabits_per_second) . ' Megabits per second');

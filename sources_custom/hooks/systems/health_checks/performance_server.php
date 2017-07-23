@@ -252,7 +252,8 @@ class Hook_health_check_performance_server extends Hook_Health_Check
             if ($use_test_data_for_pass !== null) {
                 $ps_cmd .= ' -A';
             }
-            $result = explode("\n", shell_exec($ps_cmd));
+            $_result = shell_exec($ps_cmd);
+            $result = explode("\n", $_result);
             foreach ($result as $r) {
                 $matches = array();
                 if (preg_match('#^(' . $commands_regexp . ')\s+(\d+(:(\d+))*)\s*$#', $r, $matches) != 0) {
@@ -284,12 +285,10 @@ class Hook_health_check_performance_server extends Hook_Health_Check
                     $cmd = $matches[1];
 
                     $this->assert_true($seconds < 60 * $threshold_minutes, 'Process [tt]' . $cmd . '[/tt] has been running a long time @ ' . display_time_period($seconds));
-
-                    $done = true;
                 }
             }
 
-            if (!$done) {
+            if (empty($_result)) {
                 $this->state_check_skipped('Failed to list running processes');
             }
         } else {

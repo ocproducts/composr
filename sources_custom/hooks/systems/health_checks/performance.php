@@ -235,6 +235,8 @@ class Hook_health_check_performance extends Hook_Health_Check
             return;
         }
 
+        $threshold = floatval(get_option('hc_page_speed_threshold'));
+
         $page_links = $this->process_urls_into_page_links();
 
         foreach ($page_links as $page_link) {
@@ -246,9 +248,19 @@ class Hook_health_check_performance extends Hook_Health_Check
 
             $time = ($time_after - $time_before);
 
-            $threshold = floatval(get_option('hc_page_speed_threshold'));
-
             $this->assert_true($time < $threshold, 'Slow page generation speed for "' . $page_link . '" page @ ' . float_format($time) . ' seconds)');
+        }
+
+        if (time() < mktime(0, 0, 0, 10, 1, 2017)) {
+            return; // LEGACY. Data was wrong in older versions, so we'll only activate this check after a while
+        }
+
+        if (addon_installed('stats')) {
+            $results = $GLOBALS['SITE_DB']->query_select('stats', array('the_page', 'AVG(milliseconds) AS milliseconds'), null, 'GROUP BY the_page');
+            foreach ($results as $result) {
+                $time = floatval($result['milliseconds']) / 1000.0;
+                $this->assert_true($time < $threshold, 'Slow page generation speed for [tt]' . $result['the_page'] . '[/tt] page @ ' . float_format($time) . ' seconds)');
+            }
         }
     }
 }

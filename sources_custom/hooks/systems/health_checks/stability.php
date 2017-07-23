@@ -173,6 +173,12 @@ class Hook_health_check_stability extends Hook_Health_Check
             fclose($myfile);
 
             $this->assert_true(count($dates) < $threshold_count, 'Large number of logged errors @ ' . integer_format(count($dates)) . ' in the last day');
+
+            if ($manual_checks) {
+                if (filesize($path) > 20) {
+                    $this->state_check_manual('Check the [page="adminzone:admin_errorlog"]error log[/page]');
+                }
+            }
         } else {
             $this->state_check_skipped('Cannot find the error log');
         }

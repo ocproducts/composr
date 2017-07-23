@@ -51,6 +51,6 @@ class Hook_health_check_mistakes_deploy extends Hook_Health_Check
             return;
         }
 
-        $this->assert_true(get_option('site_closed') == '1', 'The website is still closed');
+        $this->assert_true(get_option('site_closed') == '0', 'The website is still closed');
     }
 }

@@ -91,9 +91,16 @@ class Hook_health_check_upkeep extends Hook_Health_Check
         $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
         $members = $GLOBALS['FORUM_DRIVER']->member_group_query($admin_groups);
         foreach ($members as $member) {
+            $member_id = $GLOBALS['FORUM_DRIVER']->mrow_id($member);
             $last_visit = $GLOBALS['FORUM_DRIVER']->mrow_lastvisit($member);
             $username = $GLOBALS['FORUM_DRIVER']->mrow_username($member);
-            $this->assert_true($last_visit > $threshold, 'Admin account "' . $username . '" not logged in for a long time @ ' . display_time_period(time() - $last_visit) . ', consider deleting');
+
+            if (($automatic_repair) && (get_forum_type() == 'cns')) {
+                $GLOBALS['FORUM_DB']->query_update('f_members', array('m_validated' => 0), array('id' => $member_id), '', 1);
+                $this->assert_true($last_visit > $threshold, 'Admin account "' . $username . '" not logged in for a long time @ ' . display_time_period(time() - $last_visit) . ', automatically marked as non-validated');
+            } else {
+                $this->assert_true($last_visit > $threshold, 'Admin account "' . $username . '" not logged in for a long time @ ' . display_time_period(time() - $last_visit) . ', consider deleting');
+            }
         }
     }
 
@@ -159,35 +166,37 @@ class Hook_health_check_upkeep extends Hook_Health_Check
             return;
         }
 
-        if ($manual_checks) {
-            require_code('blocks/main_staff_checklist');
+        if (!$manual_checks) {
+            return;
+        }
 
-            $_hooks = find_all_hooks('blocks', 'main_staff_checklist'); // TODO: Change in v11
-            foreach (array_keys($_hooks) as $hook) {
-                require_code('hooks/blocks/main_staff_checklist/' . filter_naughty_harsh($hook));
-                $object = object_factory('Hook_checklist_' . filter_naughty_harsh($hook), true);
-                if (is_null($object)) {
-                    continue;
-                }
-                $ret = $object->run();
+        require_code('blocks/main_staff_checklist');
 
-                foreach ($ret as $r) {
-                    list(, $seconds_due_in, $num_to_do) = $r;
+        $_hooks = find_all_hooks('blocks', 'main_staff_checklist'); // TODO: Change in v11
+        foreach (array_keys($_hooks) as $hook) {
+            require_code('hooks/blocks/main_staff_checklist/' . filter_naughty_harsh($hook));
+            $object = object_factory('Hook_checklist_' . filter_naughty_harsh($hook), true);
+            if (is_null($object)) {
+                continue;
+            }
+            $ret = $object->run();
 
-                    if ($seconds_due_in !== null) {
-                        $ok = ($seconds_due_in > 0);
-                        $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt] due ' . display_time_period($seconds_due_in) . ' ago');
-                        if (!$ok) {
-                            break;
-                        }
+            foreach ($ret as $r) {
+                list(, $seconds_due_in, $num_to_do) = $r;
+
+                if ($seconds_due_in !== null) {
+                    $ok = ($seconds_due_in > 0);
+                    $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt] due ' . display_time_period($seconds_due_in) . ' ago');
+                    if (!$ok) {
+                        break;
                     }
+                }
 
-                    if ($num_to_do !== null) {
-                        $ok = ($num_to_do == 0);
-                        $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt], ' . integer_format($num_to_do) . ' items');
-                        if (!$ok) {
-                            break;
-                        }
+                if ($num_to_do !== null) {
+                    $ok = ($num_to_do == 0);
+                    $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt], ' . integer_format($num_to_do) . ' items');
+                    if (!$ok) {
+                        break;
                     }
                 }
             }

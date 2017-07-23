@@ -37,7 +37,7 @@ class Hook_config_hc_is_test_site
             'group' => 'GENERAL',
             'explanation' => 'CONFIG_OPTION_hc_is_test_site',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
+            'list_options' => '-1|0|1',
             'required' => true,
 
             'addon' => 'health_check',
