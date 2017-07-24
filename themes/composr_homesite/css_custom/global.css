@@ -2,7 +2,7 @@
 
 {+START,IF,{$MOBILE}}
 	.website_body_actual { width: 640px; }
-	.website_body { position:relative; background:url('{$IMG;,composr_homesite/mobile/body-bg}') no-repeat left top; margin:0; padding:0; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; }
+	.website_body { position:relative; background:url('{$IMG;,composr_homesite/mobile/body-bg}') no-repeat left top; margin:0; padding:0; }
 
 	/*Top*/
 	header { margin:0; padding:25px 0 0 0; overflow:hidden; background:url('{$IMG;,composr_homesite/mobile/colored-line}') repeat-x 0 0; }
@@ -36,7 +36,7 @@
 
 {+START,IF,{$NOT,{$MOBILE}}}
 	#main_website { background-image:url('{$IMG;,composr_homesite/body-bg}'); background-position:left top; background-repeat:repeat-x; }
-	.website_body { margin:0; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; }
+	.website_body { margin:0; }
 {+END}
 
 a, .button_hyperlink { text-decoration:none; color:#E5922C; }
@@ -180,9 +180,9 @@ ul.ftr {
 	padding:0;
 	padding-bottom:4px;
 }
-ul.ftr li { list-style:none; float:left; margin:0; padding:0px 22px; font-size:13px; color:#666; background-image:url('{$IMG;,composr_homesite/head-bullet}'); background-repeat:no-repeat; background-position:right 6px; font-weight:bold; }
+ul.ftr li { list-style:none; float:left; margin:0; padding:0px 22px; font-size:13px; color:#666; background-image:url('{$IMG;,composr_homesite/head-bullet}'); background-repeat:no-repeat; background-position:right 6px; }
 ul.ftr li:last-child { background-image:none; }
-ul.ftr li a, ul.ftr li .button_hyperlink { color:#666; text-decoration:none; }
+ul.ftr li a, ul.ftr li .button_hyperlink { color:#666; text-decoration:none; font-weight: bold; }
 ul.ftr li a:hover, ul.ftr li .button_hyperlink:hover { color:#E5922C; text-decoration:none; }
 
 {+START,IF,{$NOT,{$MOBILE}}}
@@ -601,8 +601,7 @@ html, body {
 }
 
 body, .email_body, textarea, input, td, th {
-	/* 'Open Sans' is a Google font, and only will be enabled if uncommented in HTML_HEAD.tpl -- so normally it is Segoe UI (Windows, newer version of Tahoma) or Tahoma that is active (available on Windows and Mac since Leopard) or a similar humanist sans-serif font */
-	font-family: 'Open Sans', 'Segoe UI', Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 
 tt, kbd, samp {
