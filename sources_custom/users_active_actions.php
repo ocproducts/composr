@@ -28,6 +28,12 @@ function handle_active_logout()
 
     if ($compat == 'facebook') {
         $GLOBALS['FACEBOOK_LOGOUT'] = true;
+        if (function_exists('cms_ob_end_clean')) {
+            cms_ob_end_clean();
+        } else {
+            // LEGACY TODO: Fix in v11 that this branch is not needed
+            @ob_end_clean();
+        }
         cms_ob_end_clean();
         echo ' ';
         flush(); // Force headers to be sent so it's not an HTTP header request so Facebook can do it's JS magic
