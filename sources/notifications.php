@@ -207,7 +207,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
 
     $dispatcher = new Notification_dispatcher($notification_code, $code_category, $subject, $message, $to_member_ids, $from_member_id, $priority, $store_in_staff_messaging_system, $no_cc, $no_notify_for__notification_code, $no_notify_for__code_category, $subject_prefix, $subject_suffix, $body_prefix, $body_suffix, $attachments, $use_real_from);
 
-    if ((get_param_integer('keep_debug_notifications', 0) == 1) || ($notification_code == 'task_completed')) {
+    if ((get_param_integer('keep_debug_notifications', 0) == 1) || ($notification_code == 'task_completed') || (running_script('cron_bridge'))) {
         $dispatcher->dispatch();
     } else {
         require_code('tasks');

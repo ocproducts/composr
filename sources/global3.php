@@ -1711,7 +1711,7 @@ function get_page_name()
     if (isset($PAGE_NAME_CACHE)) {
         return $PAGE_NAME_CACHE;
     }
-    global $ZONE, $GETTING_PAGE_NAME;
+    global $ZONE, $GETTING_PAGE_NAME, $BOOTSTRAPPING;
     if ($GETTING_PAGE_NAME) {
         return 'unknown';
     }
@@ -1729,14 +1729,16 @@ function get_page_name()
     if (strpos($page, '..') !== false) {
         $page = filter_naughty($page);
     }
-    if ($page !== '') {
-        $PAGE_NAME_CACHE = str_replace('-', '_', $page); // Temporary, good enough for site.php to finish loading
+    $simplified_algorithm = $BOOTSTRAPPING; // fix_page_name_dashing calls request_page, which won't work reliably during bootstrapping
+    if ($simplified_algorithm) {
+        $page = str_replace('-', '_', $page);
+    } else {
+        $page = fix_page_name_dashing(get_zone_name(), $page);
     }
-    $page = fix_page_name_dashing(get_zone_name(), $page);
     if (!$GETTING_PAGE_NAME) { // It's been changed by process_url_monikers, which was called indirectly by fix_page_name_dashing
         return $PAGE_NAME_CACHE;
     }
-    if ($ZONE !== null) {
+    if (($ZONE !== null) && (!$simplified_algorithm)) {
         $PAGE_NAME_CACHE = $page;
     }
     $GETTING_PAGE_NAME = false;

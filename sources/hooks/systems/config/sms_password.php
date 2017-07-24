@@ -34,7 +34,7 @@ class Hook_config_sms_password
             'human_name' => 'PASSWORD',
             'type' => 'line',
             'category' => 'FEATURE',
-            'group' => 'sms:SMS',
+            'group' => 'SMS',
             'explanation' => 'CONFIG_OPTION_sms_password',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

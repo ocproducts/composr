@@ -30,23 +30,23 @@ VirtualHost {
 		Disabled = false
 		Pattern = .*
 
-		RewriteRules {
+		RewriteRules {			
 			# Redirect away from modules called directly by URL. Helpful as it allows you to "run" a module file in a debugger and still see it running.
 			rule1 {
-				pattern = ^([^=]*)pages/(modules|modules\_custom)/([^/]*)\.php$
+				pattern = ^([^=]*)pages/(modules|modules_custom)/([^/]*)\.php$
 				to = $1index.php\?page=$3
 				qsa = true
 			}
-
-			# PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
+			
+			# PG STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
 			rule2 {
 				pattern = ^([^=]*)pg/s/([^\&\?]*)/index\.php$
 				to = $1index.php\?page=wiki&id=$2
 				qsa = true
 			}
-
+			
 			# PG STYLE: These are standard patterns
-			rule4 {
+			rule3 {
 				pattern = ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/([^\&\?]*)/index\.php(.*)$
 				to = $1index.php\?page=$2&type=$3&id=$4$5
 				qsa = true
@@ -58,172 +58,172 @@ VirtualHost {
 				qsa = true
 			}
 			
-			rule4 {
+			rule5 {
 				pattern = ^([^=]*)pg/([^/\&\?]*)/index\.php(.*)$
 				to = $1index.php\?page=$2$3
 				qsa = true
 			}
 			
-			rule4 {
+			rule6 {
 				pattern = ^([^=]*)pg/index\.php(.*)$
-				to = $1index.php\?page=$3
+				to = $1index.php\?page=$2
 				qsa = true
 			}
-
+			
 			# PG STYLE: Now the same as the above sets, but without any additional parameters (and thus no index.php)
-			rule5 {
+			rule7 {
 				pattern = ^([^=]*)pg/s/([^\&\?]*)$
 				to = $1index.php\?page=wiki&id=$2
 				qsa = true
 			}
 			
-			rule5 {
+			rule8 {
 				pattern = ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/([^\&\?]*)/$
 				to = $1index.php\?page=$2&type=$3&id=$4
 				qsa = true
 			}
 			
-			rule5 {
+			rule9 {
 				pattern = ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)/([^\&\?]*)$
 				to = $1index.php\?page=$2&type=$3&id=$4
 				qsa = true
 			}
 			
-			rule5 {
+			rule10 {
 				pattern = ^([^=]*)pg/([^/\&\?]*)/([^/\&\?]*)$
 				to = $1index.php\?page=$2&type=$3
 				qsa = true
 			}
 			
-			rule5 {
+			rule11 {
 				pattern = ^([^=]*)pg/([^/\&\?]*)$
 				to = $1index.php\?page=$2
 				qsa = true
 			}
-
+			
 			# PG STYLE: And these for those nasty situations where index.php was missing and we couldn't do anything about it (usually due to keep_session creeping into a semi-cached URL)
-			rule6 {
+			rule12 {
 				pattern = ^([^=]*)pg/s/([^\&\?\.]*)&(.*)$
 				to = $1index.php\?$3&page=wiki&id=$2
 				qsa = true
 			}
 			
-			rule6 {
+			rule13 {
 				pattern = ^([^=]*)pg/([^/\&\?\.]*)/([^/\&\?\.]*)/([^/\&\?\.]*)&(.*)$
 				to = $1index.php\?$5&page=$2&type=$3&id=$4
 				qsa = true
 			}
 			
-			rule6 {
+			rule14 {
 				pattern = ^([^=]*)pg/([^/\&\?\.]*)/([^/\&\?\.]*)&(.*)$
 				to = $1index.php\?$4&page=$2&type=$3
 				qsa = true
 			}
 			
-			rule6 {
+			rule15 {
 				pattern = ^([^=]*)pg/([^/\&\?\.]*)&(.*)$
 				to = $1index.php\?$3&page=$2
 				qsa = true
 			}
-
-			# HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
-			rule7 {
+			
+			# HTM STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
+			rule16 {
 				pattern = ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)\.htm$
 				to = $1/index.php\?page=wiki&id=$2
 				qsa = true
 			}
 			
-			rule7 {
+			rule17 {
 				pattern = ^s/([^\&\?]*)\.htm$
 				to = index\.php\?page=wiki&id=$1
 				qsa = true
 			}
-
+			
 			# HTM STYLE: These are standard patterns
-			rule9 {
+			rule18 {
 				pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$
 				to = $1/index.php\?page=$2&type=$3&id=$4
 				qsa = true
 			}
 			
-			rule9 {
+			rule19 {
 				pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)\.htm$
 				to = $1/index.php\?page=$2&type=$3
 				qsa = true
 			}
 			
-			rule9 {
+			rule20 {
 				pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)\.htm$
 				to = $1/index.php\?page=$2
 				qsa = true
 			}
 			
-			rule9 {
+			rule21 {
 				pattern = ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)\.htm$
 				to = index.php\?page=$1&type=$2&id=$3
 				qsa = true
 			}
 			
-			rule9 {
+			rule22 {
 				pattern = ^([^/\&\?]+)/([^/\&\?]*)\.htm$
 				to = index.php\?page=$1&type=$2
 				qsa = true
 			}
 			
-			rule9 {
+			rule23 {
 				pattern = ^([^/\&\?]+)\.htm$
 				to = index.php\?page=$1
 				qsa = true
 			}
-
-			# SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base url might conflict
-			#rule10 {
-				#pattern = ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)$
-				#to = $1/index.php\?page=wiki&id=$2
-				#qsa = true
+			
+			# SIMPLE STYLE: These have a specially reduced form (no need to make it too explicit that these are Wiki+). We shouldn't shorten them too much, or the actual zone or base URL might conflict
+			#rule24 {
+			#	pattern = ^(site|forum|adminzone|cms|collaboration)/s/([^\&\?]*)$
+			#	to = $1/index.php\?page=wiki&id=$2
+			#	qsa = true
 			#}
 			
-			#rule10 {
-				#pattern = ^s/([^\&\?]*)$
-				#to = index\.php\?page=wiki&id=$1
-				#qsa = true
+			#rule25 {
+			#	pattern = ^s/([^\&\?]*)$
+			#	to = index\.php\?page=wiki&id=$1
+			#	qsa = true
 			#}
-
+			
 			# SIMPLE STYLE: These are standard patterns
-			#rule12 {
-				#pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$
-				#to = $1/index.php\?page=$2&type=$3&id=$4
-				#qsa = true
+			#rule26 {
+			#	pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$
+			#	to = $1/index.php\?page=$2&type=$3&id=$4
+			#	qsa = true
 			#}
 			
-			#rule12 {
-				#pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)$
-				#to = $1/index.php\?page=$2&type=$3
-				#qsa = true
+			#rule27 {
+			#	pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)/([^/\&\?]*)$
+			#	to = $1/index.php\?page=$2&type=$3
+			#	qsa = true
 			#}
 			
-			#rule12 {
-				#pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)$
-				#to = $1/index.php\?page=$2
-				#qsa = true
+			#rule28 {
+			#	pattern = ^(site|forum|adminzone|cms|collaboration)/([^/\&\?]+)$
+			#	to = $1/index.php\?page=$2
+			#	qsa = true
 			#}
 			
-			#rule12 {
-				#pattern = ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$
-				#to = index.php\?page=$1&type=$2&id=$3
-				#qsa = true
+			#rule29 {
+			#	pattern = ^([^/\&\?]+)/([^/\&\?]*)/([^\&\?]*)$
+			#	to = index.php\?page=$1&type=$2&id=$3
+			#	qsa = true
 			#}
 			
-			#rule12 {
-				#pattern = ^([^/\&\?]+)/([^/\&\?]*)$
-				#to = index.php\?page=$1&type=$2
-				#qsa = true
+			#rule30 {
+			#	pattern = ^([^/\&\?]+)/([^/\&\?]*)$
+			#	to = index.php\?page=$1&type=$2
+			#	qsa = true
 			#}
 			
-			#rule12 {
-				#pattern = ^([^/\&\?]+)$
-				#to = index.php\?page=$1
-				#qsa = true
+			#rule31 {
+			#	pattern = ^([^/\&\?]+)$
+			#	to = index.php\?page=$1
+			#	qsa = true
 			#}
 		}
 	}

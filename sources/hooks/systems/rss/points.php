@@ -55,9 +55,9 @@ class Hook_rss_points
 
             $author = '';
             if ($row['anonymous'] == 0) {
-                $from = $GLOBALS['FORUM_DRIVER']->get_username($row['gift_from']);
+                $author = $GLOBALS['FORUM_DRIVER']->get_username($row['gift_from']);
                 if (is_null($from)) {
-                    $from = '';
+                    $author = '';
                 }
             }
 

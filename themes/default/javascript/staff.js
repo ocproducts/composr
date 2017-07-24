@@ -247,6 +247,20 @@ function find_css_sheets(win)
 						{
 							sheet=win.document.styleSheets[i].href.substring(l+('/templates_cached/'+window.cms_lang+'/').length,win.document.styleSheets[i].href.length).replace('_non_minified','').replace('_ssl','').replace('_mobile','').replace(/\?\d+/,'').replace('.css','');
 							possibilities.push(sheet);
+						} else {
+							l=win.document.styleSheets[i].href.lastIndexOf('/sheet.php?sheet=');
+							if (l!=-1)
+							{
+								var amp_pos=win.document.styleSheets[i].href.indexOf('&');
+								if (amp_pos==-1)
+								{
+									sheet=win.document.styleSheets[i].href.substring(l+'/sheet.php?sheet='.length,win.document.styleSheets[i].href.length);
+								} else
+								{
+									sheet=win.document.styleSheets[i].href.substring(l+'/sheet.php?sheet='.length,amp_pos);
+								}
+								possibilities.push(sheet);
+							}
 						}
 					}
 				}
@@ -285,7 +299,7 @@ function find_active_selectors(match,win)
 		{
 			try
 			{
-				if ((!match) || (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id=='style_for_'+match) || (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id=='style_for_'+match))) || (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/'+match)!=-1))
+				if ((!match) || (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id=='style_for_'+match) || (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id=='style_for_'+match))) || (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/'+match)!=-1) || (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('sheet='+match)!=-1))
 				{
 					classes=win.document.styleSheets[i].rules || win.document.styleSheets[i].cssRules;
 					for (j=0;j<classes.length;j++)

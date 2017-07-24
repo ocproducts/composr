@@ -23,7 +23,6 @@ class _cqc__function_sigs_test_set extends cms_test_case
         if (php_function_allowed('set_time_limit')) {
             @set_time_limit(0);
         }
-
         $result = http_download_file(get_base_url() . '/_tests/codechecker/phpdoc_parser.php', null, true, false, 'Composr', null, null, null, null, null, null, null, null, 10000.0);
         foreach (explode('<br />', $result) as $line) {
             $this->assertTrue($this->should_filter_cqc_line($line), $line);

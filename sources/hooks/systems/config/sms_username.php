@@ -34,7 +34,7 @@ class Hook_config_sms_username
             'human_name' => 'USERNAME',
             'type' => 'line',
             'category' => 'FEATURE',
-            'group' => 'sms:SMS',
+            'group' => 'SMS',
             'explanation' => 'CONFIG_OPTION_sms_username',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

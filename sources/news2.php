@@ -32,7 +32,7 @@ RSS IMPORT (works very well with Wordpress and Blogger, which use RSS as an inte
  * @param  ?AUTO_LINK $id Force an ID (null: don't force an ID)
  * @return AUTO_LINK The ID of our new news category
  */
-function add_news_category($title, $img, $notes, $owner = null, $id = null)
+function add_news_category($title, $img = 'newscats/general', $notes = '', $owner = null, $id = null)
 {
     require_code('global4');
     prevent_double_submit('ADD_NEWS_CATEGORY', null, $title);

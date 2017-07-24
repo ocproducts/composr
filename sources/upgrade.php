@@ -140,7 +140,7 @@ function upgrade_script()
                         echo "
                             ";
                     }
-                    if (GOOGLE_APPENGINE) {
+                    if (!GOOGLE_APPENGINE) {
                         echo "
         <li>{$l_check_permissions}</li>
         <li>{$l_fix_permissions}</li>
@@ -924,7 +924,9 @@ function check_perms()
         }
         //}
     }
-    $out .= check_excess_perms($array);
+    if (!is_suexec_like()) {
+        $out .= check_excess_perms($array);
+    }
     if ($out == '') {
         $super_out = do_lang('FU_ALL_CHMODDED_GOOD');
     } else {
@@ -1497,7 +1499,7 @@ function check_alien($addon_files, $old_files, $files, $dir, $rela = '', $raw = 
         }
         sort($dir_files);
         foreach ($dir_files as $file) {
-            if (should_ignore_file($rela . $file, IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE)) {
+            if (should_ignore_file($rela . $file, IGNORE_USER_CUSTOMISE | IGNORE_CUSTOM_THEMES | IGNORE_CUSTOM_ZONES |  IGNORE_NONBUNDLED_SCATTERED | IGNORE_BUNDLED_UNSHIPPED_VOLATILE | IGNORE_REVISION_FILES)) {
                 continue;
             }
 

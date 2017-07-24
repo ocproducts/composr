@@ -457,7 +457,7 @@ function should_ignore_file($filepath, $bitmask = 0, $bitmask_defaults = 0)
     $ignore_extensions = array( // Case insensitive, define in lower case
                                 // Exports (effectively these are like temporary files - only intended for file transmission)
                                 'tar' => '(imports|exports)/.*',
-                                'txt' => '(imports|exports)/.*',
+                                'txt' => '(safe_mode_temp|imports|exports)/.*',
 
                                 // Exports/Cache files
                                 'gz' => '(themes/[^/]*/templates_cached|imports|exports)/.*',
