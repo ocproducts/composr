@@ -1243,8 +1243,9 @@ body input.button_hyperlink, body input.button_hyperlink:hover {
 .non_link:visited,
 .non_link:hover {
 	color: inherit !important;
-	text-decoration: none;
-	cursor: inherit;
+	text-decoration: none !important;
+	cursor: inherit !important;
+	font-size: 1em !important;
 }
 
 .trinav_wrap {
