@@ -398,8 +398,9 @@
                 var branchId = 'sitemap_menu_branch_' + $cms.random();
 
                 var li = $cms.dom.create('li', {
-                    'id': branchId,
-                    'class': (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has_img' : 'has_no_img'),
+                    id: branchId,
+                    className: (node.current ? 'current' : 'non_current') + ' ' + (node.img ? 'has_img' : 'has_no_img')
+                }, {
                     'data-toggleable-tray': '{}'
                 });
 
@@ -425,15 +426,16 @@
 
                 if (node.children && node.children.length) {
                     var ul = $cms.dom.create('ul', {
-                        'id': 'sitemap_menu_children_' + $cms.random(),
-                        'class': 'toggleable_tray'
+                        id: 'sitemap_menu_children_' + $cms.random(),
+                        className: 'toggleable_tray'
                     });
                     // Show expand icon...
                     $cms.dom.append(span, document.createTextNode(' '));
 
                     var expand = $cms.dom.create('a', {
-                        'class': 'toggleable_tray_button',
-                        'href': '#!',
+                        className: 'toggleable_tray_button',
+                        href: '#!'
+                    }, {
                         'data-click-tray-toggle': branchId
                     });
 

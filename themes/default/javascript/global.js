@@ -2074,7 +2074,7 @@
     var rgxIdSelector = /^\#[\w\-]+$/,
         rgxSimpleSelector = /^[\#\.]?[\w\-]+$/,
         // Special attributes that should be set via method calls
-        methodAttributes = { val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1 },
+        methodAttributes = { val: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
         rgxNotWhite = /\S+/g;
 
     /** @namespace $cms */
@@ -2158,7 +2158,7 @@
          * @param selector
          * @returns { Element }
          */
-        $last: function last(context, selector) {
+        $last: function $last(context, selector) {
             return $cms.dom.$$(context, selector).pop();
         },
         /**
@@ -2188,25 +2188,29 @@
         /**
          * @memberof $cms.dom
          * @param tag
-         * @param attributes
          * @param properties
+         * @param attributes
          * @returns { Element }
          */
-        create: function create(tag, attributes, properties) {
+        create: function create(tag, properties, attributes) {
             var el = document.createElement(strVal(tag));
 
-            if (isObj(attributes)) {
-                each(attributes, function (key, value) {
+            if (isObj(properties)) {
+                each(properties, function (key, value) {
                     if (key in methodAttributes) {
                         $cms.dom[key](el, value);
+                    } else if (isObj(el[key]) && isObj(value)) {
+                        extendDeep(el[key], value);
                     } else {
-                        $cms.dom.attr(el, key, value)
+                        el[key] = value;
                     }
                 });
             }
 
-            if (isObj(properties)) {
-                extendDeep(el, properties);
+            if (isObj(attributes)) {
+                each(attributes, function (key, value) {
+                    $cms.dom.attr(el, key, value)
+                });
             }
 
             return el;
@@ -4709,6 +4713,7 @@
         postParams = (postParams !== undefined) ? postParams : null;
         inner = !!inner;
         showLoadingAnimation = (showLoadingAnimation !== undefined) ? !!showLoadingAnimation : true;
+        
         if ((_blockDataCache[url] === undefined) && (newBlockParams != '')) {
             // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
             _blockDataCache[url] = $cms.dom.html(targetDiv);
@@ -7856,7 +7861,7 @@
                 'link': '{$PAGE_LINK;,:privacy}',
                 'theme': 'dark-top'
             };
-            document.body.appendChild($cms.dom.create('script', null, {
+            document.body.appendChild($cms.dom.create('script', {
                 src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js',
                 defer: true,
                 nonce: $cms.$CSP_NONCE()
@@ -10400,18 +10405,19 @@
             return false;
         }
 
-        var moreLinks = [], foundNewLinks = null;
+        var moreLinks = [], foundNewLinks = null, _i, pagination, m;
 
-        for (var _i = 0; _i < _pagination.length; _i++) {
-            var pagination = _pagination[_i];
-
-            if (pagination.style.display != 'none') {
+        for (_i = 0; _i < _pagination.length; _i++) {
+            pagination = _pagination[_i];
+            if (pagination.style.display !== 'none') {
                 // Remove visibility of pagination, now we've replaced with AJAX load more link
                 var paginationParent = pagination.parentNode;
                 pagination.style.display = 'none';
                 var numNodeChildren = 0;
                 for (var i = 0; i < paginationParent.childNodes.length; i++) {
-                    if (paginationParent.childNodes[i].nodeName != '#text') numNodeChildren++;
+                    if (paginationParent.childNodes[i].nodeName != '#text') {
+                        numNodeChildren++;
+                    }
                 }
                 if (numNodeChildren == 0) { // Remove empty pagination wrapper
                     paginationParent.style.display = 'none';
@@ -10420,7 +10426,9 @@
                 // Add AJAX load more link before where the last pagination control was
                 // Remove old pagination_load_more's
                 var paginationLoadMore = wrapper.querySelectorAll('.pagination_load_more');
-                if (paginationLoadMore.length > 0) paginationLoadMore[0].parentNode.removeChild(paginationLoadMore[0]);
+                if (paginationLoadMore.length > 0) {
+                    paginationLoadMore[0].parentNode.removeChild(paginationLoadMore[0]);
+                }
 
                 // Add in new one
                 var loadMoreLink = document.createElement('div');
@@ -10439,8 +10447,8 @@
                 foundNewLinks = _i;
             }
         }
-        for (var _i = 0; _i < _pagination.length; _i++) {
-            var pagination = _pagination[_i];
+        for (_i = 0; _i < _pagination.length; _i++) {
+            pagination = _pagination[_i];
             if (foundNewLinks != null) {// Cleanup old pagination
                 if (_i != foundNewLinks) {
                     var _moreLinks = pagination.getElementsByTagName('a');
@@ -10460,8 +10468,8 @@
 
         // Is more scrolling possible?
         var rel, foundRel = false;
-        for (var i = 0; i < moreLinks.length; i++) {
-            rel = moreLinks[i].getAttribute('rel');
+        for (var k = 0; k < moreLinks.length; k++) {
+            rel = moreLinks[k].getAttribute('rel');
             if (rel && rel.indexOf('next') !== -1) {
                 foundRel = true;
             }
@@ -10477,12 +10485,12 @@
         }
 
         // Used for calculating if we need to scroll down
-        var wrapperPosY = $cms.dom.findPosY(wrapper);
-        var wrapperHeight = wrapper.offsetHeight;
-        var wrapperBottom = wrapperPosY + wrapperHeight;
-        var windowHeight = $cms.dom.getWindowHeight();
-        var pageHeight = $cms.dom.getWindowScrollHeight();
-        var scrollY = window.pageYOffset;
+        var wrapperPosY = $cms.dom.findPosY(wrapper),
+            wrapperHeight = wrapper.offsetHeight,
+            wrapperBottom = wrapperPosY + wrapperHeight,
+            windowHeight = $cms.dom.getWindowHeight(),
+            pageHeight = $cms.dom.getWindowScrollHeight(),
+            scrollY = window.pageYOffset;
 
         // Scroll down -- load
         if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
