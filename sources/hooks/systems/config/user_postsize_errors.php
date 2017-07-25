@@ -40,6 +40,8 @@ class Hook_config_user_postsize_errors
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

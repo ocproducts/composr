@@ -40,6 +40,8 @@ class Hook_config_wiki_enable_children
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'wiki',
         );
     }

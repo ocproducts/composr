@@ -41,6 +41,8 @@ class Hook_config_highlight_name_tax_code
             'order_in_category_group' => 3,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

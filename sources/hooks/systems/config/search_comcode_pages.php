@@ -40,6 +40,8 @@ class Hook_config_search_comcode_pages
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_comcode_pages',
         );
     }

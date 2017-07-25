@@ -40,6 +40,8 @@ class Hook_config_max_ip_addresses_per_subscriber
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

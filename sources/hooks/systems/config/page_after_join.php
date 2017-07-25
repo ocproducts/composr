@@ -41,6 +41,8 @@ class Hook_config_page_after_join
             'order_in_category_group' => 8,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

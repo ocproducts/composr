@@ -41,6 +41,8 @@ class Hook_config_intro_forum_id
             'order_in_category_group' => 9,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

@@ -41,6 +41,8 @@ class Hook_config_audio_bitrate
             'order_in_category_group' => 4,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

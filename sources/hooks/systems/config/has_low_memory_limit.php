@@ -40,6 +40,8 @@ class Hook_config_has_low_memory_limit
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

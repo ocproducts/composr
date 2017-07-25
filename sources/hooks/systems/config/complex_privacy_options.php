@@ -40,6 +40,8 @@ class Hook_config_complex_privacy_options
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_force_guest_names
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

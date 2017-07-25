@@ -41,6 +41,8 @@ class Hook_config_max_thread_depth
             'order_in_category_group' => 4,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_feedback_features',
         );
     }

@@ -41,6 +41,8 @@ class Hook_config_payment_gateway_vpn_password
             'order_in_category_group' => 6,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

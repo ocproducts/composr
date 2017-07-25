@@ -41,6 +41,8 @@ class Hook_config_banner_imp_price
             'order_in_category_group' => 6,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

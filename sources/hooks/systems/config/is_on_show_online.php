@@ -40,6 +40,8 @@ class Hook_config_is_on_show_online
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

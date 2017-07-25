@@ -40,6 +40,8 @@ class Hook_config_search_results_per_page
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'search',
         );
     }

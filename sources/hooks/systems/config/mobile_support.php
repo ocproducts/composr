@@ -42,6 +42,7 @@ class Hook_config_mobile_support
             'theme_override' => true,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_use_banner_permissions
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'banners',
         );
     }

@@ -41,6 +41,7 @@ class Hook_config_allow_ext_images
             'order_in_category_group' => 5,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

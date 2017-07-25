@@ -41,6 +41,8 @@ class Hook_config_spam_block_threshold
             'order_in_category_group' => 8,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

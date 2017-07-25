@@ -41,6 +41,8 @@ class Hook_config_spam_cache_time
             'order_in_category_group' => 9,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

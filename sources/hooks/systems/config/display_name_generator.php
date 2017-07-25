@@ -41,6 +41,8 @@ class Hook_config_display_name_generator
             'order_in_category_group' => 9,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

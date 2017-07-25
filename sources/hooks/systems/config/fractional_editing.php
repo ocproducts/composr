@@ -40,6 +40,8 @@ class Hook_config_fractional_editing
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_cns_show_profile_link
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

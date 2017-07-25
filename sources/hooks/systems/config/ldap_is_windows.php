@@ -41,6 +41,7 @@ class Hook_config_ldap_is_windows
             'order_in_category_group' => 13,
 
             'required' => true,
+            'public' => false,
             'addon' => 'ldap',
         );
     }

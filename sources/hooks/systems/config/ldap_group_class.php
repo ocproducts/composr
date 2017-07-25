@@ -41,6 +41,8 @@ class Hook_config_ldap_group_class
             'order_in_category_group' => 5,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ldap',
         );
     }

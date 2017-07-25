@@ -40,6 +40,7 @@ class Hook_config_simplified_attachments_ui
             'list_options' => '',
             'order_in_category_group' => 6,
             'required' => true,
+            'public' => false,
             'public' => true,
 
             'addon' => 'core_rich_media',

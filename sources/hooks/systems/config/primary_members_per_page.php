@@ -41,6 +41,8 @@ class Hook_config_primary_members_per_page
             'order_in_category_group' => 3,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

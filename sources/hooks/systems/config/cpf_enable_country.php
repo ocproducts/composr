@@ -40,6 +40,8 @@ class Hook_config_cpf_enable_country
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

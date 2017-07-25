@@ -41,6 +41,8 @@ class Hook_config_spam_heuristic_confidence_repetition
             'order_in_category_group' => 21,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

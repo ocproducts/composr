@@ -41,6 +41,7 @@ class Hook_config_error_handling_database_strict
             'order_in_category_group' => 2,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

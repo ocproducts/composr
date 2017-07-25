@@ -40,6 +40,8 @@ class Hook_config_show_gallery_counts
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

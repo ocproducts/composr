@@ -41,6 +41,8 @@ class Hook_config_news_categories_per_page
             'order_in_category_group' => 4,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'news',
         );
     }

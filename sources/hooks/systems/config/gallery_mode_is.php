@@ -40,6 +40,8 @@ class Hook_config_gallery_mode_is
             'list_options' => 'choice|flow|regular',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_network_links
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'msn',
         );
     }

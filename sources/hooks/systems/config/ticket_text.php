@@ -41,6 +41,8 @@ class Hook_config_ticket_text
             'order_in_category_group' => 1,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'tickets',
         );
     }

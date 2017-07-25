@@ -40,6 +40,8 @@ class Hook_config_chat_max_messages_to_show
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'chat',
         );
     }

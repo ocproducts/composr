@@ -40,6 +40,8 @@ class Hook_config_inline_pp_advertise
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

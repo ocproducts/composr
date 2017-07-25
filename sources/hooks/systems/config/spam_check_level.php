@@ -41,6 +41,8 @@ class Hook_config_spam_check_level
             'order_in_category_group' => 11,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

@@ -41,6 +41,8 @@ class Hook_config_quota_tax_code
             'order_in_category_group' => 7,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

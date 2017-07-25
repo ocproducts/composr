@@ -40,6 +40,8 @@ class Hook_config_immediate_downloads
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'downloads',
         );
     }

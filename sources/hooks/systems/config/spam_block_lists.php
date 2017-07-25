@@ -41,6 +41,8 @@ class Hook_config_spam_block_lists
             'order_in_category_group' => 4,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

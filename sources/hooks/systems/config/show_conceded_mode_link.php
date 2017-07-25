@@ -40,6 +40,8 @@ class Hook_config_show_conceded_mode_link
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

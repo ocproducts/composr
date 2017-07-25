@@ -41,6 +41,7 @@ class Hook_config_audio_captcha
             'order_in_category_group' => 6,
 
             'required' => true,
+            'public' => false,
             'addon' => 'captcha',
         );
     }

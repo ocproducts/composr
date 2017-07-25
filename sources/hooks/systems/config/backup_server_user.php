@@ -41,6 +41,8 @@ class Hook_config_backup_server_user
             'order_in_category_group' => 5,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'backup',
         );
     }

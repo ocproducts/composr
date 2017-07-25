@@ -40,6 +40,8 @@ class Hook_config_force_local_temp_dir
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

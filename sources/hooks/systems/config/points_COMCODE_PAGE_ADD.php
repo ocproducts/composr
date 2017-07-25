@@ -40,6 +40,8 @@ class Hook_config_points_COMCODE_PAGE_ADD
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_comcode_pages',
         );
     }

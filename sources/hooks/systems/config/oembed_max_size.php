@@ -41,6 +41,8 @@ class Hook_config_oembed_max_size
             'order_in_category_group' => 6,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_rich_media',
         );
     }

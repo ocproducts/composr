@@ -40,6 +40,8 @@ class Hook_config_max_member_title_length
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_member_titles',
         );
     }

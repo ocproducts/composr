@@ -41,6 +41,7 @@ class Hook_config_ip_strict_for_sessions
             'order_in_category_group' => 6,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

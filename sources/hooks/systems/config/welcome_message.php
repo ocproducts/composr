@@ -40,6 +40,8 @@ class Hook_config_welcome_message
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_minimum_autocomplete_length
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'search',
         );
     }

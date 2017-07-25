@@ -40,6 +40,8 @@ class Hook_config_valid_audios
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

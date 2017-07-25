@@ -40,6 +40,8 @@ class Hook_config_enable_staff_notes
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

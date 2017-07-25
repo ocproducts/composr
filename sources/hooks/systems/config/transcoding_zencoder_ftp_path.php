@@ -41,6 +41,8 @@ class Hook_config_transcoding_zencoder_ftp_path
             'order_in_category_group' => 7,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

@@ -41,6 +41,7 @@ class Hook_config_message_received_emails
             'order_in_category_group' => 11,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

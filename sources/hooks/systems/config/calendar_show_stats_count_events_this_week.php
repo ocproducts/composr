@@ -40,6 +40,8 @@ class Hook_config_calendar_show_stats_count_events_this_week
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'calendar',
         );
     }

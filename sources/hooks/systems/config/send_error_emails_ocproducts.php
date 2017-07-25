@@ -40,6 +40,8 @@ class Hook_config_send_error_emails_ocproducts
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

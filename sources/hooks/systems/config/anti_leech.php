@@ -41,6 +41,7 @@ class Hook_config_anti_leech
             'order_in_category_group' => 8,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

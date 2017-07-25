@@ -41,6 +41,8 @@ class Hook_config_taxcloud_api_id
             'order_in_category_group' => 7,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

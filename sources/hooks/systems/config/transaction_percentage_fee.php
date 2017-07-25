@@ -40,6 +40,8 @@ class Hook_config_transaction_percentage_fee
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

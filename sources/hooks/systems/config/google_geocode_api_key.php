@@ -40,6 +40,8 @@ class Hook_config_google_geocode_api_key
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
 
             'maintenance_code' => 'google_geocoding',

@@ -41,6 +41,7 @@ class Hook_config_zone_editor_enabled
             'theme_override' => true,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

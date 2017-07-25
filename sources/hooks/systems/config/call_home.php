@@ -40,6 +40,8 @@ class Hook_config_call_home
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_leader_board_start_date
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'points',
         );
     }

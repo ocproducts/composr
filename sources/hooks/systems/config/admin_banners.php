@@ -40,6 +40,8 @@ class Hook_config_admin_banners
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'banners',
         );
     }

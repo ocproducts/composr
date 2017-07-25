@@ -40,6 +40,8 @@ class Hook_config_enable_privacy_tab
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

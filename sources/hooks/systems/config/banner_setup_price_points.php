@@ -41,6 +41,8 @@ class Hook_config_banner_setup_price_points
             'order_in_category_group' => 5,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

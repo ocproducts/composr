@@ -40,6 +40,8 @@ class Hook_config_notification_enable_digests
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_notifications',
         );
     }

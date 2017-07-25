@@ -40,6 +40,8 @@ class Hook_config_remember_me_by_default
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

@@ -41,6 +41,7 @@ class Hook_config_dual_format_newsletters
             'order_in_category_group' => 3,
 
             'required' => true,
+            'public' => false,
             'addon' => 'newsletter',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_poll_update_time
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'polls',
         );
     }

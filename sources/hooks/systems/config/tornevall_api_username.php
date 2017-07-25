@@ -41,6 +41,8 @@ class Hook_config_tornevall_api_username
             'order_in_category_group' => 15,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

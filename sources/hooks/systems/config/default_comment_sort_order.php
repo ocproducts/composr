@@ -41,6 +41,8 @@ class Hook_config_default_comment_sort_order
             'order_in_category_group' => 7,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_feedback_features',
         );
     }

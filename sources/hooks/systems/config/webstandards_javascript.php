@@ -40,6 +40,8 @@ class Hook_config_webstandards_javascript
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_webstandards',
         );
     }

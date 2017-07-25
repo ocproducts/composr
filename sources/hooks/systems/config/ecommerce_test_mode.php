@@ -41,6 +41,7 @@ class Hook_config_ecommerce_test_mode
             'order_in_category_group' => 1,
 
             'required' => true,
+            'public' => false,
             'addon' => 'ecommerce',
         );
     }

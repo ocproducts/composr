@@ -40,6 +40,8 @@ class Hook_config_gallery_media_title_required
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

@@ -41,6 +41,8 @@ class Hook_config_video_bitrate
             'order_in_category_group' => 3,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

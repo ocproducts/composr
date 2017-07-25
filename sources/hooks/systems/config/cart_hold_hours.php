@@ -40,6 +40,8 @@ class Hook_config_cart_hold_hours
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'shopping',
         );
     }

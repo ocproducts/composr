@@ -41,6 +41,8 @@ class Hook_config_probation_usergroup
             'order_in_category_group' => 3,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

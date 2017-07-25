@@ -40,6 +40,8 @@ class Hook_config_wiki_show_stats_count_pages
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'wiki',
         );
     }

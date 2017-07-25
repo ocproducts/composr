@@ -40,6 +40,8 @@ class Hook_config_dload_search_index
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'downloads',
         );
     }

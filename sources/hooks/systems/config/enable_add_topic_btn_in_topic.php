@@ -40,6 +40,8 @@ class Hook_config_enable_add_topic_btn_in_topic
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

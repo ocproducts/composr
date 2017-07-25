@@ -41,6 +41,7 @@ class Hook_config_vote_member_ip_restrict
             'order_in_category_group' => 4,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

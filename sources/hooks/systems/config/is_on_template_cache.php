@@ -40,6 +40,8 @@ class Hook_config_is_on_template_cache
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cleanup_tools',
         );
     }

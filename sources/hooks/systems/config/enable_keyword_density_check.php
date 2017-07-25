@@ -41,6 +41,7 @@ class Hook_config_enable_keyword_density_check
             'order_in_category_group' => 6,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

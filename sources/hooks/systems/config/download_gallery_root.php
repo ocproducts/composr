@@ -40,6 +40,8 @@ class Hook_config_download_gallery_root
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'downloads',
         );
     }

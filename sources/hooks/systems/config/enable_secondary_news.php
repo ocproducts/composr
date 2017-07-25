@@ -41,6 +41,7 @@ class Hook_config_enable_secondary_news
             'order_in_category_group' => 2,
 
             'required' => true,
+            'public' => false,
             'addon' => 'news',
         );
     }

@@ -41,6 +41,8 @@ class Hook_config_ticket_mail_server_port
             'order_in_category_group' => 7,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'tickets',
         );
     }

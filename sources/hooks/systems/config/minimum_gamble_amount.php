@@ -41,6 +41,8 @@ class Hook_config_minimum_gamble_amount
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

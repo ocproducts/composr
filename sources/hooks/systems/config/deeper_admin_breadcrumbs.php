@@ -40,6 +40,8 @@ class Hook_config_deeper_admin_breadcrumbs
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

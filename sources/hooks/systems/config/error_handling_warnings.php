@@ -41,6 +41,8 @@ class Hook_config_error_handling_warnings
             'order_in_category_group' => 5,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

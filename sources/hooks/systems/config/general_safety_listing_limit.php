@@ -40,6 +40,8 @@ class Hook_config_general_safety_listing_limit
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

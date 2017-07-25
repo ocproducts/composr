@@ -40,6 +40,8 @@ class Hook_config_delete_trashed_pts
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

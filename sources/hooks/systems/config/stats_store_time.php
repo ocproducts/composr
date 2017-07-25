@@ -40,6 +40,8 @@ class Hook_config_stats_store_time
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'stats',
         );
     }

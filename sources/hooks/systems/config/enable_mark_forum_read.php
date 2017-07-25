@@ -40,6 +40,8 @@ class Hook_config_enable_mark_forum_read
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

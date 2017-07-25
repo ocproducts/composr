@@ -40,6 +40,8 @@ class Hook_config_catalogue_subcats_per_page
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'catalogues',
         );
     }

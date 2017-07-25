@@ -40,6 +40,8 @@ class Hook_config_username_profile_links
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

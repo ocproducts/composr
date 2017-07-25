@@ -40,6 +40,8 @@ class Hook_config_news_show_stats_count_blogs
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'news',
         );
     }

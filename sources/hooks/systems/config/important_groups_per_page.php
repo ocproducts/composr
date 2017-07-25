@@ -41,6 +41,8 @@ class Hook_config_important_groups_per_page
             'order_in_category_group' => 1,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

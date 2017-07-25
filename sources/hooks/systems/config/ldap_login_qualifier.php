@@ -41,6 +41,8 @@ class Hook_config_ldap_login_qualifier
             'order_in_category_group' => 12,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ldap',
         );
     }

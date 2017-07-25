@@ -41,6 +41,8 @@ class Hook_config_pop_url
             'order_in_category_group' => 3,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

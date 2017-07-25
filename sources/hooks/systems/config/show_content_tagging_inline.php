@@ -42,6 +42,7 @@ class Hook_config_show_content_tagging_inline
             'theme_override' => true,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

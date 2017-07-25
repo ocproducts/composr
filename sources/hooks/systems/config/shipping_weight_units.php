@@ -41,6 +41,8 @@ class Hook_config_shipping_weight_units
             'order_in_category_group' => 6,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

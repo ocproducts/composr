@@ -40,6 +40,8 @@ class Hook_config_max_chat_lobby_friends
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'chat',
         );
     }

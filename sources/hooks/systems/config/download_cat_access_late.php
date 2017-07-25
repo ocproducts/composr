@@ -40,6 +40,8 @@ class Hook_config_download_cat_access_late
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'downloads',
         );
     }

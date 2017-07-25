@@ -41,6 +41,7 @@ class Hook_config_ldap_none_bind_logins
             'order_in_category_group' => 10,
 
             'required' => true,
+            'public' => false,
             'addon' => 'ldap',
         );
     }

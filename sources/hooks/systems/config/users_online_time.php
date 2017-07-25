@@ -40,6 +40,8 @@ class Hook_config_users_online_time
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

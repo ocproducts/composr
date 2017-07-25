@@ -41,6 +41,7 @@ class Hook_config_smtp_sockets_use
             'order_in_category_group' => 1,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

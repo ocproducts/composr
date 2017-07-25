@@ -41,6 +41,8 @@ class Hook_config_tax_country_regexp
             'order_in_category_group' => 4,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

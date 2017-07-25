@@ -40,6 +40,8 @@ class Hook_config_downloads_show_stats_count_bandwidth
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'downloads',
         );
     }

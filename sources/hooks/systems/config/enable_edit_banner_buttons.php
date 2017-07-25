@@ -41,6 +41,7 @@ class Hook_config_enable_edit_banner_buttons
             'theme_override' => true,
 
             'required' => true,
+            'public' => false,
             'addon' => 'banners',
         );
     }

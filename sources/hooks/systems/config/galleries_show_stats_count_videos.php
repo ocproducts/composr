@@ -40,6 +40,8 @@ class Hook_config_galleries_show_stats_count_videos
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

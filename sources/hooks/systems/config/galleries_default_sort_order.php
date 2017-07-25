@@ -40,6 +40,8 @@ class Hook_config_galleries_default_sort_order
             'list_options' => 'add_date DESC|add_date ASC|average_rating DESC|compound_rating DESC|url DESC|url ASC|fixed_random ASC',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

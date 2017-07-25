@@ -41,6 +41,7 @@ class Hook_config_default_preview_guests
             'order_in_category_group' => 2,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

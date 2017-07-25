@@ -41,6 +41,8 @@ class Hook_config_sms_api_id
             'order_in_category_group' => 1,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'sms',
         );
     }

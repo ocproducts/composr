@@ -41,6 +41,7 @@ class Hook_config_is_on_comments
             'order_in_category_group' => 1,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_feedback_features',
         );
     }

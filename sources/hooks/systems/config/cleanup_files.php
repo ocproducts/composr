@@ -40,6 +40,8 @@ class Hook_config_cleanup_files
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

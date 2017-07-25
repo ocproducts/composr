@@ -41,6 +41,7 @@ class Hook_config_comment_topic_subject
             'order_in_category_group' => 8,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_feedback_features',
         );
     }
