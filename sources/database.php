@@ -1470,7 +1470,7 @@ class DatabaseConnector
         if (!$NO_QUERY_LIMIT) {
             $QUERY_COUNT++;
             /*if ($QUERY_COUNT > 10) {
-                @ob_end_clean();
+                cms_ob_end_clean();
             }
             @print('Query: ' . $query . "\n");*/
         }

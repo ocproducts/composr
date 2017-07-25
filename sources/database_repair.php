@@ -234,9 +234,9 @@ class DatabaseRepair
                         $bad_type = ($meta_field_type_raw != $existent_details['type']);
                         $bad_null_ok = ($meta_null_ok != $existent_details['null_ok']);
                         $bad_is_auto_increment = ($meta_is_auto_increment != $existent_details['is_auto_increment']);
-                        $bad_meta_type = (isset($expected_tables[$table_name][$field_name])) && (($field_type != $expected_tables[$table_name][$field_name]));
+                        $bad_meta_type = (isset($expected_tables[$table_name][$field_name])) && (($field_type != $expected_tables[$table_name][$field_name]) && ($table_name != 'f_member_custom_fields'));
                         if (/*$bad_type || MySQL may report in different ways so cannot compare so instead we will compare meta-type and expected-type as a special case and later compare existent type to meta type*/$bad_null_ok || $bad_is_auto_increment || $bad_meta_type) {
-                            $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, $field_type, false);
+                            $this->fix_table_inconsistent_in_db__bad_field_type($table_name, $field_name, isset($expected_tables[$table_name][$field_name]) ? $expected_tables[$table_name][$field_name] : $field_type, $bad_meta_type);
                             $needs_changes = true;
                         }
                         if ($meta_is_primary) {
@@ -287,7 +287,7 @@ class DatabaseRepair
                                 $this->fix_table_inconsistent_in_db__delete_field($table_name, $field_name, $field_type_raw, false);
                             } else {
                                 // It's not actually a translatable field in meta-DB, but it should be
-                                if (strpos($expected_tables[$table_name][$matches[1]], '_TRANS') !== false) {
+                                if ((isset($expected_tables[$table_name][$matches[1]])) && (strpos($expected_tables[$table_name][$matches[1]], '_TRANS') !== false)) {
                                     $expected_type = $expected_tables[$table_name][$matches[1]] . '__COMCODE';
                                 } else {
                                     $expected_type = 'SHORT_TRANS__COMCODE'; // Assumption, might be LONG_TRANS
@@ -812,13 +812,8 @@ class DatabaseRepair
             }
         }
 
-        $drop_key_query = 'ALTER TABLE ' . get_table_prefix() . $table_name . ' DROP PRIMARY KEY';
-        if (!$return_queries) {
-            $this->add_fixup_query($drop_key_query);
-        }
-
         $_key_fields = implode(', ', $key_fields);
-        $create_key_query = 'ALTER TABLE ' . get_table_prefix() . $table_name . ' ADD PRIMARY KEY (' . $_key_fields . ')';
+        $create_key_query = 'ALTER TABLE ' . get_table_prefix() . $table_name . ' DROP PRIMARY KEY, ADD PRIMARY KEY (' . $_key_fields . ')';
         if (!$return_queries) {
             $this->add_fixup_query($create_key_query);
         }

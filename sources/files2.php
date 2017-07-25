@@ -423,6 +423,8 @@ function make_csv($data, $filename = 'data.csv', $headers = true, $output_and_ex
         safe_ini_set('ocproducts.xss_detect', '0');
 
         if (!is_null($outfile)) {
+            cms_ob_end_clean();
+
             rewind($outfile);
             fpassthru($outfile);
             flock($outfile, LOCK_UN);
@@ -1227,11 +1229,18 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             }
 
                                             // SSL prep
-                                            $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
-                                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, !((function_exists('get_value')) && (get_value('disable_ssl_for__' . $url_parts['host']) === '1')));
+                                            $disabled_ssl_verify = ((function_exists('get_value')) && (get_value('disable_ssl_for__' . $url_parts['host']) === '1'));
+
+                                            if ($disabled_ssl_verify) {
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                                            } else {
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+                                            }
                                             if (ini_get('curl.cainfo') == '') {
+                                                $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
                                                 curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
-                                                curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
                                             }
                                             if (defined('CURL_SSLVERSION_TLSv1')) {
                                                 curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1); // https://jve.linuxwall.info/blog/index.php?post/TLS_Survey
@@ -1243,8 +1252,8 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 }
                                             }
                                             if ($do_ip_forwarding) {
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+                                                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
                                             }
 
                                             // Misc settings
@@ -1845,6 +1854,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         return _detect_character_encoding($input);
     } else {
         // PHP streams method
+        //  Imperfect, does not support $HTTP_DOWNLOAD_URL
         if (($errno != 110) && (($errno != 10060) || (@ini_get('default_socket_timeout') == '1')) && ((@ini_get('allow_url_fopen')) || (php_function_allowed('ini_set')))) {
             // Perhaps fsockopen is restricted... try fread/file_get_contents
             safe_ini_set('allow_url_fopen', '1');

@@ -15,7 +15,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 <body class="website_body zone_running_{$ZONE*} page_running_{$PAGE*}" id="main_website" itemscope="itemscope" itemtype="http://schema.org/WebPage">
 	<div id="main_website_inner">
 		{+START,IF,{$SHOW_HEADER}}
-			<header itemscope="itemscope" itemtype="http://schema.org/WPHeader" role="banner">
+			<header itemscope="itemscope" itemtype="http://schema.org/WPHeader">
 				{$,This allows screen-reader users (e.g. blind users) to jump past the panels etc to the main content}
 				<a accesskey="s" class="accessibility_hidden" href="#maincontent">{!SKIP_NAVIGATION}</a>
 

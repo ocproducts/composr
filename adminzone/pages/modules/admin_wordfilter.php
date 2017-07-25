@@ -66,7 +66,7 @@ class Module_admin_wordfilter
             ));
 
             $naughties = array(
-                'arsehole', 'asshole', 'arse', 'bastard', 'cock', 'cocked', 'cocksucker', 'crap', 'cunt', 'cum',
+                'arsehole', 'asshole', 'arse', 'bastard', 'cock', 'cocked', 'cocksucker', 'cunt', 'cum',
                 'blowjob', 'bollocks', 'bondage', 'bugger', 'buggery', 'dickhead', 'dildo', 'faggot', 'fuck', 'fucked', 'fucking',
                 'fucker', 'gayboy', 'jackoff', 'jerk-off', 'motherfucker', 'nigger', 'piss', 'pissed', 'puffter', 'pussy',
                 'queers', 'retard', 'shag', 'shagged',
@@ -79,6 +79,11 @@ class Module_admin_wordfilter
 
         if ((!is_null($upgrade_from)) && ($upgrade_from < 4)) {
             $GLOBALS['SITE_DB']->add_auto_key('wordfilter');
+
+            if ((strpos(get_db_type(), 'mysql') !== false) && (get_charset() == 'utf-8')) {
+                // Ccould not be made utf8mb4 in advance but can be now because 'id' fields was added as the key
+                $GLOBALS['SITE_DB']->query('ALTER TABLE ' . get_table_prefix() . 'wordfilter CONVERT TO CHARACTER SET utf8mb4');
+            }
         }
     }
 

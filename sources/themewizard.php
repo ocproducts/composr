@@ -655,6 +655,7 @@ function themewizard_script()
         sync_file($saveat);
         require_code('images_png');
         png_compress($saveat);
+        cms_ob_end_clean();
         readfile($saveat);
         @unlink($saveat);
     }

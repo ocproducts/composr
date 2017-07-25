@@ -215,6 +215,8 @@ function init__global2()
     $BASE_URL_HTTPS_CACHE = null;
 
     require_code_no_override('version');
+    @header('X-Content-Type-Options: nosniff');
+    @header('X-XSS-Protection: 1');
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
         // Marker that Composr running
         //@header('X-Powered-By: Composr ' . cms_version_pretty() . ' (PHP ' . phpversion() . ')');
@@ -1843,4 +1845,17 @@ function convert_data_encodings($known_utf8 = false)
 
     require_code('character_sets');
     _convert_data_encodings($known_utf8);
+}
+
+/**
+ * Recursively clean (erase) the output buffer and turn off output buffering.
+ */
+function cms_ob_end_clean()
+{
+    while (ob_get_level() > 0) {
+        if (!ob_end_clean()) {
+            safe_ini_set('zlib.output_compression', '0');
+            break;
+        }
+    }
 }

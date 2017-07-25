@@ -46,6 +46,8 @@ class Hook_commandr_command_untar
                 return array('', '', '', do_lang('MISSING_RESOURCE'));
             }
 
+            disable_php_memory_limit();
+
             require_code('tar');
 
             $myfile = tar_open(get_custom_file_base() . '/' . $path, 'rb');

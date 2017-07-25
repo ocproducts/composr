@@ -204,3 +204,56 @@ function is_substantial_release($dotted)
 
     return (substr($long_dotted_number, -2) == '.0') || (strpos($long_dotted_number, 'beta1') !== false) || (strpos($long_dotted_number, 'RC1') !== false);
 }
+
+/**
+ * Find whether a PHP version is still supported by the PHP developers.
+ *
+ * @param string $v The version
+ * @return ?boolean Whether it is (null: some kind of error)
+ */
+function is_php_version_supported($v)
+{
+    if (!defined('PHP_RELEASE_VERSION')) { // LEGACY
+        return false;
+    }
+    if (!defined('PHP_MINOR_VERSION')) { // LEGACY
+        return false;
+    }
+
+    require_code('files2');
+
+    list($data) = cache_and_carry('http_download_file', array('https://raw.githubusercontent.com/php/web-php/master/include/branches.inc', null, false), 60 * 60 * 24 * 7); // TODO: Add to maintenance spreadsheet in v11
+
+    $matches = array();
+
+    // Corruption?
+    if (preg_match('#\'\d+\.\d+\' => array\([^\(\)]*\'security\' => \'(\d\d\d\d-\d\d-\d\d)\'#Us', $data, $matches) == 0) {
+        return null;
+    }
+
+    // Do we have actual data?
+    $matches = array();
+    if (preg_match('#\'' . preg_quote($v, '#') . '\' => array\([^\(\)]*\'security\' => \'(\d\d\d\d)-(\d\d)-(\d\d)\'#is', $data, $matches) != 0) {
+        $eol = mktime(0, 0, 0, intval($matches[2]), intval($matches[3]), intval($matches[1]));
+        return ($eol > time());
+    }
+
+    // Is it older than all releases provided?
+    $matches = array();
+    $min_version = null;
+    $num_matches = preg_match_all('#\'(\d+\.\d+)\' => array\(#', $data, $matches);
+    for ($i = 0; $i < $num_matches; $i++) {
+        $version = floatval($matches[1][$i]);
+        if ($version != 3.0/*special case*/) {
+            if (($min_version === null) || ($version < $min_version)) {
+                $min_version = $version;
+            }
+        }
+    }
+    if (floatval($v) < $min_version) {
+        return false;
+    }
+
+    // If gets here we assume it is newer than releases provided
+    return true;
+}

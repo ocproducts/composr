@@ -816,7 +816,7 @@ function calendar_matches($auth_member_id, $member_id, $restrict, $period_start,
                         $full_url = '';
                     }
                     if ((array_key_exists('title', $item)) && (array_key_exists('clean_add_date', $item)) && ($full_url != '')) {
-                        $event = array('e_recurrence' => 'none', 'e_content' => array_key_exists('news', $item) ? $item['news'] : '', 'e_title' => $item['title'], 'e_id' => $full_url, 'e_priority' => 'na', 't_logo' => 'calendar/rss', 'e_recurrences' => 1, 'e_seg_recurrences' => '', 'e_timezone' => get_users_timezone());
+                        $event = array('e_recurrence' => 'none', 'e_content' => array_key_exists('news', $item) ? $item['news'] : '', 'e_title' => $item['title'], 'e_id' => $full_url, 'e_priority' => 'na', 't_logo' => 'calendar/rss', 'e_recurrences' => 1, 'e_seg_recurrences' => '', 'e_timezone' => get_users_timezone(), 'validated' => 1);
                         if (!is_null($event_type)) {
                             $event['t_logo'] = $_event_types[$event_type]['t_logo'];
                         }

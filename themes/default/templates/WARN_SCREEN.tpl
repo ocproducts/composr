@@ -2,7 +2,9 @@
 
 {$REQUIRE_CSS,messages}
 
-{+START,IF,{$NEQ,{TEXT},{!MISSING_RESOURCE}}}
+{$SET,show_sitemap,{$IN_STR,{TEXT},{!MISSING_RESOURCE_SUBSTRING}}}
+
+{+START,IF,{$NOT,{$GET,show_sitemap}}}
 	{+START,IF_PASSED,WEBSERVICE_RESULT}
 		<div class="box box___warn_screen"><div class="box_inner">
 			{TEXT*}
@@ -24,12 +26,14 @@
 		</div>
 	{+END}
 {+END}
-{+START,IF,{$EQ,{TEXT},{!MISSING_RESOURCE}}}
-	<p class="red_alert" role="error">{!MISSING_RESOURCE}</p>
+{+START,IF,{$GET,show_sitemap}}
+	<p class="red_alert" role="error">{TEXT*}</p>
 
 	<h2>{!SITEMAP}</h2>
 
-	{$BLOCK,block=menu,param=\,use_page_groupings=1,type=sitemap,quick_cache=1}
+	{$REQUIRE_CSS,menu__sitemap}
+	{$REQUIRE_JAVASCRIPT,menu_sitemap}
+	{$BLOCK-,block=menu,param=\,use_page_groupings=1,type=sitemap,quick_cache=1}
 
 	{+START,IF,{$ADDON_INSTALLED,search}}
 		<h2>{!SEARCH}</h2>

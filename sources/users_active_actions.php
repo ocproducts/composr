@@ -38,13 +38,19 @@ function restricted_manually_enabled_backdoor()
         }
         $su = $GLOBALS['FORUM_DRIVER']->get_member_from_username($ks);
 
+        // We don't want session ID cookie to keep changing if we have keep_su in a separate tab, so make this false to stop it oscillating
+        // It would break Commandr running.
+        // Better to let session regenerate on each refresh.
+        // For a non-backdoor SU we generate the session for the logged in admin account anyway, SU runs on top of that.
+        $create_cookie = false;
+
         if (!is_null($su)) {
             $ret = $su;
-            create_session($ret, 1);
+            create_session($ret, 1, false, $create_cookie);
             return $ret;
         } elseif (is_numeric($ks)) {
             $ret = intval($ks);
-            create_session($ret, 1);
+            create_session($ret, 1, false, $create_cookie);
             return $ret;
         }
     }
@@ -53,7 +59,7 @@ function restricted_manually_enabled_backdoor()
 
     $IS_VIA_BACKDOOR = true;
 
-    create_session($ret, 1);
+    create_session($ret, 1); // Will restore from previous session if possible
 
     return $ret;
 }

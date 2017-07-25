@@ -74,6 +74,7 @@ class Hook_cron_calendar
                                 }
                             } else {
                                 $GLOBALS['_EVENT_TIMESTAMP'] = array_key_exists(0, $recurrences) ? usertime_to_utctime($recurrences[0][0]) : mktime($job['e_start_hour'], $job['e_start_minute'], 0, $job['e_start_month'], $start_day_of_month, $job['e_start_year']);
+                                $GLOBALS['event_timestamp'] = $GLOBALS['_EVENT_TIMESTAMP']; // LEGACY with ocPortal go-live dates
 
                                 // Commandr code
                                 require_code('commandr');

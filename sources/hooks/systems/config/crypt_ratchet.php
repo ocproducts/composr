@@ -32,7 +32,7 @@ class Hook_config_crypt_ratchet
     {
         return array(
             'human_name' => 'CRYPT_RATCHET',
-            'type' => 'integer',
+            'type' => 'list',
             'category' => 'SECURITY',
             'group' => 'ADVANCED',
             'explanation' => 'CONFIG_OPTION_crypt_ratchet',

@@ -83,7 +83,16 @@ function init__site()
 
         $url_scheme = get_option('url_scheme');
         if (($url_scheme == 'PG') || ($url_scheme == 'HTM')) {
-            if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && (cms_srv('REQUEST_METHOD') != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
+            if (
+                (!headers_sent()) &&
+                (running_script('index')) &&
+                ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) &&
+                (cms_srv('REQUEST_METHOD') != 'POST') &&
+                (get_param_integer('keep_failover', null) !== 0) &&
+                ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) &&
+                ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM')) &&
+                ($ruri != '/')
+            ) {
                 require_code('permissions');
                 set_http_status_code('301'); // Direct ascending for URL Schemes - not possible, so should give 404's to avoid indexing
                 header('Location: ' . escape_header(get_self_url(true)));
@@ -122,7 +131,7 @@ function init__site()
 
         if (get_value('disable_cookie_checks') !== '1') {
             // Detect bad cookie domain (reasonable approximation)
-            $cookie_domain = ltrim(get_cookie_domain(), '.');
+            $cookie_domain = @ltrim(get_cookie_domain(), '.');
             if (!empty($cookie_domain) && !empty($access_host)) {
                 if (substr($access_host, -strlen($cookie_domain)) != $cookie_domain) {
                     attach_message(do_lang_tempcode('INCORRECT_COOKIE_DOMAIN', escape_html($cookie_domain), escape_html($access_host)), 'warn');
@@ -2018,7 +2027,7 @@ function log_stats($string, $pg_time)
         'referer' => $referer,
         's_get' => $get,
         'post' => $post,
-        'milliseconds' => intval($pg_time * 1000)
+        'milliseconds' => intval($pg_time),
     ), false, true);
     if (mt_rand(0, 100) == 1) {
         if (!$GLOBALS['SITE_DB']->table_is_locked('stats')) {

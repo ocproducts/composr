@@ -546,6 +546,7 @@ class Hook_addon_registry_core
             'themes/default/text/index.html',
             'themes/default/xml/.htaccess',
             'themes/default/xml/index.html',
+            'data/no_banning.txt',
             'data/editarea/edit_area.css',
             'data/editarea/edit_area_compressor.php',
             'data/editarea/edit_area_full.js',

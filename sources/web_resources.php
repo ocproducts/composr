@@ -75,6 +75,10 @@ function javascript_enforce($j, $theme = null, $allow_defer = false)
         return '';
     }
 
+    if ($j == 'custom_globals') {
+        $allow_defer = false;
+    }
+
     list($minify, $https, $mobile) = _get_web_resources_env();
 
     global $SITE_INFO;
