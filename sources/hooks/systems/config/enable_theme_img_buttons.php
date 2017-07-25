@@ -39,11 +39,10 @@ class Hook_config_enable_theme_img_buttons
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'theme_override' => true,
-
             'required' => true,
-            'addon' => 'core_themeing',
-
             'public' => true,
+
+            'addon' => 'core_themeing',
         );
     }
 

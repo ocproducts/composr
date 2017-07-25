@@ -39,11 +39,10 @@ class Hook_config_simplified_attachments_ui
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'order_in_category_group' => 6,
-
             'required' => true,
-            'addon' => 'core_rich_media',
-
             'public' => true,
+
+            'addon' => 'core_rich_media',
         );
     }
 

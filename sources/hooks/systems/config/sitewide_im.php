@@ -39,10 +39,9 @@ class Hook_config_sitewide_im
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
+            'public' => true,
 
             'addon' => 'chat',
-
-            'public' => true,
         );
     }
 

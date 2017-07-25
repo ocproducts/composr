@@ -39,10 +39,9 @@ class Hook_config_long_google_cookies
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
+            'public' => true,
 
             'addon' => 'core_configuration',
-
-            'public' => true,
         );
     }
 

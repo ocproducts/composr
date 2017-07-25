@@ -39,10 +39,9 @@ class Hook_config_js_overlays
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
+            'public' => true,
 
             'addon' => 'core_configuration',
-
-            'public' => true,
         );
     }
 

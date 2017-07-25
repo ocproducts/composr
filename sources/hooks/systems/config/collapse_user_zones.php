@@ -39,10 +39,9 @@ class Hook_config_collapse_user_zones
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
+            'public' => true,
 
             'addon' => 'core_configuration',
-
-            'public' => true,
         );
     }
 

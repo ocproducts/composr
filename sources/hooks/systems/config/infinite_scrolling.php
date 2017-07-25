@@ -39,11 +39,10 @@ class Hook_config_infinite_scrolling
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'theme_override' => true,
-
             'required' => true,
-            'addon' => 'core_configuration',
-
             'public' => true,
+
+            'addon' => 'core_configuration',
         );
     }
 
