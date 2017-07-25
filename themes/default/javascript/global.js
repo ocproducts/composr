@@ -8,14 +8,15 @@
         docEl = document.documentElement,
         emptyEl = document.createElement('div'),
         emptyElStyle = emptyEl.style,
-
-    // hasOwnProperty shorcut
+        
+        // hasOwnProperty shorcut
         hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
 
         toArray = Function.bind.call(Function.call, emptyArr.slice),
+        slice = toArray,
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
-        // Clever helper for merging arrays using `[].push`
+        // Clever helper for merging arrays in-place using `[].push`
         pushArray = Function.bind.call(Function.apply, emptyArr.push);
 
     // Too useful to not have globally!
@@ -116,7 +117,9 @@
          * @method
          * @returns {string}
          */
-        $FROM_TIMESTAMP: constant(symbols.FROM_TIMESTAMP),
+        $FROM_TIMESTAMP: function $FROM_TIMESTAMP() {
+            return strVal(symbols.FROM_TIMESTAMP);
+        },
         /**
          * @method
          * @returns {string}
@@ -141,7 +144,7 @@
          * @method
          * @returns {string}
          */
-        $SITE_NAME: constant(strVal(symbols.SITE_NAME)),
+        $SITE_NAME: constant(strVal('{$SITE_NAME;}')),
         /**
          * @method
          * @returns {string}
@@ -809,7 +812,7 @@
     /**
      * @param key
      * @param value
-     * @returns {{}}
+     * @returns {object}
      */
     function keyValue(key, value) {
         var obj = {};
@@ -1201,7 +1204,7 @@
             defaultValue = false;
         }
         
-        if (val === undefined) {
+        if (val == null) {
             return defaultValue;
         }
         
@@ -1228,7 +1231,7 @@
             defaultValue = 0;
         }
 
-        if (val === undefined) {
+        if (val == null) {
             return defaultValue;
         }
         
@@ -1245,7 +1248,7 @@
             defaultValue = 0;
         }
 
-        if (val === undefined) {
+        if (val == null) {
             return defaultValue;
         }
         
@@ -1259,20 +1262,20 @@
 
     /**
      * @param val
-     * @param clone
-     * @returns { Array } array or array-like object
+     * @param [defaultValue]
+     * @returns { Array }
      */
-    function arrVal(val, clone) {
-        var isArr = false;
-
-        clone = !!clone;
-
+    function arrVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = [];
+        }
+        
         if (val == null) {
-            return [];
+            return defaultValue;
         }
 
-        if ((typeof val === 'object') && ((isArr = Array.isArray(val)) || isArrayLike(val))) {
-            return (!isArr || clone) ? toArray(val) : val;
+        if ((typeof val === 'object') && (Array.isArray(val) || isArrayLike(val))) {
+            return toArray(val);
         }
 
         return [val];
@@ -1280,10 +1283,15 @@
 
     /**
      * @param val
-     * @param defaultPropertyName
+     * @param [defaultPropertyName]
+     * @param [defaultValue]
      * @returns { Object }
      */
-    function objVal(val, defaultPropertyName) {
+    function objVal(val, defaultPropertyName, defaultValue) {
+        if ((val == null) && (defaultValue !== undefined)) {
+            return defaultValue;
+        }
+        
         if (!isObj(val) || Array.isArray(val)) {
             val = (defaultPropertyName !== undefined) ? keyValue(defaultPropertyName, val) : {};
         }
@@ -1302,7 +1310,7 @@
             defaultValue = '';
         }
 
-        if (val === undefined) {
+        if (val == null) {
             return defaultValue;
         }
         
@@ -1678,7 +1686,7 @@
     }
 
     function sequentialPromises(funcs) {
-        funcs = arrVal(funcs, true);
+        funcs = arrVal(funcs);
 
         if (funcs.length < 1) {
             return Promise.resolve();
@@ -8334,7 +8342,7 @@
 
         // Implementation for [data-mouseover-activate-tooltip]
         mouseoverActivateTooltip: function (e, el) {
-            var args = arrVal($cms.dom.data(el, 'mouseoverActivateTooltip'), true);
+            var args = arrVal($cms.dom.data(el, 'mouseoverActivateTooltip'));
 
             args.unshift(el, e);
 
@@ -8348,7 +8356,7 @@
 
         // Implementation for [data-focus-activate-tooltip]
         focusActivateTooltip: function (e, el) {
-            var args = arrVal($cms.dom.data(el, 'focusActivateTooltip'), true);
+            var args = arrVal($cms.dom.data(el, 'focusActivateTooltip'));
 
             args.unshift(el, e);
 
