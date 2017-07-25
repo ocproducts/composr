@@ -63,6 +63,7 @@ class Hook_health_check_security extends Hook_Health_Check
             $key = 'AIzaSyBJyvgYzg-moqMRBZwhiivNxhYvafqMWas';
         }
         if ($key == '') {
+            $this->state_check_skipped('Google Safe Browsing API key not configured');
             return;
         }
 
@@ -70,6 +71,7 @@ class Hook_health_check_security extends Hook_Health_Check
 
         if ($use_test_data_for_pass === null) {
             if ($this->is_localhost_domain()) {
+                $this->state_check_skipped('Could not scan for Malware on local domain');
                 return;
             }
 

@@ -38,7 +38,7 @@ function get_staff_actions_list()
         'theme_images' => do_lang_tempcode('THEME_IMAGE_EDITING'),
         'code' => do_lang_tempcode('WEBSTANDARDS'),
     );
-    if (get_param_integer('keep_no_minify', 0) == 0) { // When minification on we need to hard-code CSS list as cannot be auto-detected
+    if (get_param_integer('keep_no_minify', 0) == 0) { // When minification is on we need to hard-code the CSS list as it cannot be auto-detected
         $is_admin = $GLOBALS['FORUM_DRIVER']->is_super_admin(get_member());
         $zone_name = get_zone_name();
         $grouping_codename = 'merged__';

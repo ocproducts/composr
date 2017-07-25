@@ -104,8 +104,7 @@ class Hook_health_check_marketing extends Hook_Health_Check
         if (trim($ga) != '') {
             $data = $this->get_page_content();
             if ($data === null) {
-                $this->state_check_skipped('Cannot download page from website');
-
+                $this->state_check_skipped('Could not download page from website');
                 return;
             }
 

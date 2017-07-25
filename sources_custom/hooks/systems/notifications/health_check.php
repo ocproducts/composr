@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_notification_health_check extends Hook_Notification_Staff
+class Hook_notification_health_check extends Hook_notification__Staff
 {
     /**
      * Get a list of all the notification codes this hook can handle.

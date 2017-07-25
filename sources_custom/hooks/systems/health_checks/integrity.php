@@ -32,9 +32,9 @@ class Hook_health_check_integrity extends Hook_Health_Check
      */
     public function run($sections_to_run, $check_context, $manual_checks = false, $automatic_repair = false, $use_test_data_for_pass = null)
     {
-        $this->process_checks_section('testFileIntegrity', 'File integrity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testFileIntegrity', 'File integrity (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testDatabaseIntegrity', 'Database integrity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testDatabaseCorruption', 'Database corruption', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testDatabaseCorruption', 'Database corruption (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testUpgradeCompletion', 'Upgrade completion', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testChmod', 'File permissions integrity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
@@ -109,7 +109,8 @@ class Hook_health_check_integrity extends Hook_Health_Check
             $tables = $GLOBALS['SITE_DB']->query_select('db_meta', array('DISTINCT m_table'));
             foreach ($tables as $table) {
                 $results = $GLOBALS['SITE_DB']->query('CHECK TABLE ' . get_table_prefix() . $table['m_table']);
-                $ok = ($results[0]['Msg_text'] == 'OK') || (strpos($results[0]['Msg_text'], 'closed the table properly') !== false/*common false positive*/);
+                $msg_text = $results[0]['Msg_text'];
+                $ok = ($msg_text == 'OK') || (strpos($msg_text, 'closed the table properly') !== false/*common false positive*/) || (strpos($msg_text, 'doesn\'t support check') !== false);
 
                 $message = 'Corrupt table likely needing repairing: [tt]' . $table['m_table'] . '[/tt] gave status "' . $results[0]['Msg_text'] . '"';
                 if (!$ok) {

@@ -34,7 +34,7 @@ class Hook_health_check_stability extends Hook_Health_Check
     {
         $this->process_checks_section('testManualLogs', 'Manual stability checks', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testPageIntegrity', 'Page integrity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
-        $this->process_checks_section('testBlockIntegrity', 'Block integrity', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
+        $this->process_checks_section('testBlockIntegrity', 'Block integrity (slow)', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
         $this->process_checks_section('testErrorLog', 'Error log', $sections_to_run, $check_context, $manual_checks, $automatic_repair, $use_test_data_for_pass);
 
         return array($this->category_label, $this->results);
@@ -80,7 +80,7 @@ class Hook_health_check_stability extends Hook_Health_Check
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
-                $this->state_check_skipped('Cannot download page from website');
+                $this->state_check_skipped('Could not download page from website');
 
                 continue;
             }
@@ -95,7 +95,7 @@ class Hook_health_check_stability extends Hook_Health_Check
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
-                $this->state_check_skipped('Cannot download page from website');
+                $this->state_check_skipped('Could not download page from website');
 
                 continue;
             }
@@ -127,7 +127,7 @@ class Hook_health_check_stability extends Hook_Health_Check
             }
 
             $test = do_block($block, array());
-            $this->assert_true(is_object($test), 'Failed block [tt]' . $block . '[/tt]');
+            $this->assert_true(is_object($test), 'Broken block [tt]' . $block . '[/tt]');
         }
     }
 
@@ -180,7 +180,7 @@ class Hook_health_check_stability extends Hook_Health_Check
                 }
             }
         } else {
-            $this->state_check_skipped('Cannot find the error log');
+            $this->state_check_skipped('Could not find the error log');
         }
     }
 }

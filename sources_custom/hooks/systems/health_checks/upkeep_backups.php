@@ -69,7 +69,7 @@ class Hook_health_check_upkeep_backups extends Hook_Health_Check
             }
             closedir($dh);
 
-            $this->assert_true($found, 'Cannot find a scheduled backup file that looks complete');
+            $this->assert_true($found, 'Could not find a scheduled backup file that looks complete');
         } else {
             $this->state_check_skipped('Automatic backups have never run');
         }

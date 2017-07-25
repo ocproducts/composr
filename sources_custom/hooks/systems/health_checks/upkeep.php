@@ -95,11 +95,12 @@ class Hook_health_check_upkeep extends Hook_Health_Check
             $last_visit = $GLOBALS['FORUM_DRIVER']->mrow_lastvisit($member);
             $username = $GLOBALS['FORUM_DRIVER']->mrow_username($member);
 
+            $diff = ($last_visit === null) ? '(never)' : display_time_period(time() - $last_visit);
             if (($automatic_repair) && (get_forum_type() == 'cns')) {
                 $GLOBALS['FORUM_DB']->query_update('f_members', array('m_validated' => 0), array('id' => $member_id), '', 1);
-                $this->assert_true($last_visit > $threshold, 'Admin account "' . $username . '" not logged in for a long time @ ' . display_time_period(time() - $last_visit) . ', automatically marked as non-validated');
+                $this->assert_true(($last_visit === null) || ($last_visit > $threshold), 'Admin account "' . $username . '" not logged in for a long time @ ' . $diff . ', automatically marked as non-validated');
             } else {
-                $this->assert_true($last_visit > $threshold, 'Admin account "' . $username . '" not logged in for a long time @ ' . display_time_period(time() - $last_visit) . ', consider deleting');
+                $this->assert_true(($last_visit === null) || ($last_visit > $threshold), 'Admin account "' . $username . '" not logged in for a long time @ ' . $diff . ', consider deleting');
             }
         }
     }
@@ -120,7 +121,7 @@ class Hook_health_check_upkeep extends Hook_Health_Check
 
         $data = $this->get_page_content();
         if ($data === null) {
-            $this->state_check_skipped('Cannot download page from website');
+            $this->state_check_skipped('Could not download page from website');
             return;
         }
 
@@ -185,19 +186,15 @@ class Hook_health_check_upkeep extends Hook_Health_Check
                 list(, $seconds_due_in, $num_to_do) = $r;
 
                 if ($seconds_due_in !== null) {
-                    $ok = ($seconds_due_in > 0);
+                    $ok = ($seconds_due_in >= 0);
                     $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt] due ' . display_time_period($seconds_due_in) . ' ago');
-                    if (!$ok) {
-                        break;
-                    }
+                    break;
                 }
 
                 if ($num_to_do !== null) {
                     $ok = ($num_to_do == 0);
-                    $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt], ' . integer_format($num_to_do) . ' items');
-                    if (!$ok) {
-                        break;
-                    }
+                    $this->assert_true($ok, 'Staff checklist items for [tt]' . $hook . '[/tt], ' . integer_format($num_to_do) . ' item(s)');
+                    break;
                 }
             }
         }

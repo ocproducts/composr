@@ -319,7 +319,7 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
             }
 
             // Record rules
-            if (preg_match('#^(\w+):\s*(.*)\s*$#i', $line, $matches) != 0) {
+            if (preg_match('#^([\w-]+):\s*(.*)\s*$#i', $line, $matches) != 0) {
                 $key = strtolower($matches[1]);
                 $value = trim($matches[2]);
 

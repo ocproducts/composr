@@ -88,7 +88,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
 
             $data = $this->get_page_content($page_link);
             if ($data === null) {
-                $this->state_check_skipped('Cannot download page from website');
+                $this->state_check_skipped('Could not download page from website');
 
                 continue;
             }
@@ -119,6 +119,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
         global $SITE_INFO;
 
         if (empty($SITE_INFO['base_url'])) {
+            $this->state_check_skipped('Base URL not configured');
             return;
         }
 
@@ -134,7 +135,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
         foreach ($page_links as $page_link) {
             $data = $this->get_page_content($page_link);
             if ($data === null) {
-                $this->state_check_skipped('Cannot download page from website');
+                $this->state_check_skipped('Could not download page from website');
 
                 continue;
             }

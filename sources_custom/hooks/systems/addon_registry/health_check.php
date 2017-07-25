@@ -282,7 +282,6 @@ The Composr ecosystem also has:
             'sources_custom/hooks/systems/health_checks/domains.php',
             'sources_custom/hooks/systems/health_checks/email.php',
             'sources_custom/hooks/systems/health_checks/email_newsletter.php',
-            'sources_custom/hooks/systems/health_checks/index.html',
             'sources_custom/hooks/systems/health_checks/integrity.php',
             'sources_custom/hooks/systems/health_checks/marketing.php',
             'sources_custom/hooks/systems/health_checks/marketing_seo.php',

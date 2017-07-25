@@ -282,6 +282,11 @@ function cron_bridge_script($caller)
     $log_file = mixed();
     if (is_file($_log_file)) {
         $log_file = fopen($_log_file, 'at');
+
+        flock($log_file, LOCK_EX);
+        fseek($log_file, 0, SEEK_END);
+        fwrite($log_file, date('Y-m-d H:i:s') . '  (CRON STARTING)' . "\n");
+        flock($log_file, LOCK_UN);
     }
 
     // Call the hooks which do the real work
@@ -333,6 +338,11 @@ function cron_bridge_script($caller)
     set_value('last_cron_finished', '-', true);
 
     if (!is_null($log_file)) {
+        flock($log_file, LOCK_EX);
+        fseek($log_file, 0, SEEK_END);
+        fwrite($log_file, date('Y-m-d H:i:s') . '  (CRON ENDING)' . "\n");
+        flock($log_file, LOCK_UN);
+
         fclose($log_file);
     }
 
