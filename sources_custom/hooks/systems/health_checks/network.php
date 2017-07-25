@@ -110,7 +110,7 @@ class Hook_health_check_network extends Hook_Health_Check
         }
 
         $time_before = microtime(true);
-        $data = http_download_file('http://www.google.com/');
+        $data = http_download_file('http://www.google.com/', null, false);
         $time_after = microtime(true);
 
         $time = ($time_after - $time_before);

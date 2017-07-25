@@ -248,7 +248,7 @@ class Hook_health_check_performance extends Hook_Health_Check
             $url = page_link_to_url($page_link);
 
             $time_before = microtime(true);
-            $data = http_download_file($url);
+            $data = http_download_file($url, null, false);
             $time_after = microtime(true);
 
             $time = ($time_after - $time_before);
