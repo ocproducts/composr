@@ -974,6 +974,7 @@ function _get_module_path($zone, $module)
 function find_all_hook_obs($type, $subtype, $classname_prefix)
 {
     $hooks = find_all_hooks($type, $subtype);
+    ksort($hooks);
     foreach (array_keys($hooks) as $hook) {
         require_code('hooks/' . $type . '/' . $subtype . '/' . $hook);
         $ob = object_factory($classname_prefix . $hook, true);

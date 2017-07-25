@@ -2924,7 +2924,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_log_php_errors
         CONFIG_OPTION_logo_map
         CONFIG_OPTION_long_google_cookies
-        CONFIG_OPTION_low_space_check
         CONFIG_OPTION_mail_queue
         CONFIG_OPTION_mail_queue_debug
         CONFIG_OPTION_mail_server
@@ -5157,8 +5156,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         LOGS
         LONG_GOOGLE_COOKIES
         LOWLEVEL_PERMISSIONS
-        LOW_DISK_SPACE_MAIL
-        LOW_DISK_SPACE_SUBJECT
         LOW_MEMORY_LIMIT
         MADE_IP_BANNABLE
         MADE_IP_UNBANNABLE
@@ -5619,7 +5616,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_TYPE_filedump
         NOTIFICATION_TYPE_hack_attack
         NOTIFICATION_TYPE_ip_address_sharing
-        NOTIFICATION_TYPE_low_disk_space
         NOTIFICATION_TYPE_low_stock
         NOTIFICATION_TYPE_needs_validation
         NOTIFICATION_TYPE_ecom_product_request_custom
@@ -5696,7 +5692,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_POSSIBLE_WINNERS
         NO_SANDBOX
         NO_SELECTABLE_THEME_IMAGES_MSN
-        NO_SERVER_ISSUES_FOUND
         NO_SESSION_SECURITY_CODE
         NO_SHELL_ZIP_POSSIBLE
         NO_SHELL_ZIP_POSSIBLE2

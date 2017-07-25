@@ -58,7 +58,11 @@ function get_comcode_page_title_from_disk($path, $include_subtitle = false, $in_
 
     if (preg_match('#^(.*\sparam)?=?"[2-9]"?#', $tag_attribute_stuff) != 0) {
         // Wrong title level
-        return $fallback_title;
+        if ($in_tempcode) {
+            return make_string_tempcode(escape_html($fallback_title));
+        } else {
+            return $fallback_title;
+        }
     }
 
     $start = strpos($page_contents, $matches[0]) + strlen($matches[0]);

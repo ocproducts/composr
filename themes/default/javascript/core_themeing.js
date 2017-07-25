@@ -452,7 +452,13 @@
                 try {
                     for (i = 0; i < win.document.styleSheets.length; i++) {
                         try {
-                            if ((!match) || (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id == 'style_for_' + match) || (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id == 'style_for_' + match))) || (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/' + match) != -1)) {
+                            if (
+                                (!match) ||
+                                (!win.document.styleSheets[i].href && ((win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].ownerNode.id == 'style_for_' + match) ||
+                                (!win.document.styleSheets[i].ownerNode && win.document.styleSheets[i].id == 'style_for_' + match))) ||
+                                (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('/' + match) != -1) ||
+                                (win.document.styleSheets[i].href && win.document.styleSheets[i].href.indexOf('sheet=' + match) != -1)
+                            ) {
                                 classes = win.document.styleSheets[i].rules || win.document.styleSheets[i].cssRules;
                                 for (j = 0; j < classes.length; j++) {
                                     selector = classes[j].selectorText;

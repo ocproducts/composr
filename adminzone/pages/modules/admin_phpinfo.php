@@ -69,20 +69,6 @@ class Module_admin_phpinfo
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
-        // Various checks
-        $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
-        $found_issues = false;
-        foreach ($hooks as $ob) {
-            $warning = $ob->run();
-            foreach ($warning as $_warning) {
-                attach_message($_warning, 'warn');
-                $found_issues = true;
-            }
-        }
-        if (!$found_issues) {
-            attach_message(do_lang_tempcode('menus:NO_SERVER_ISSUES_FOUND'), 'inform', true);
-        }
-
         require_lang('menus');
 
         get_screen_title('PHPINFO');

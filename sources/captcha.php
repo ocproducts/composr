@@ -166,6 +166,7 @@ function captcha_script()
         <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
             <title>' . do_lang('CONTACT_STAFF_TO_JOIN_IF_IMPAIRED') . '</title>
+            <meta name="robots" content="noindex" />
         </head>
         <body style="margin: 0">
         ';

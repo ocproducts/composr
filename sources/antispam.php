@@ -223,44 +223,6 @@ function check_rbl($rbl, $user_ip, $we_have_a_result_already = false, $page_leve
         return array(ANTISPAM_RESPONSE_UNLISTED, null); // Not listed / Not listed with a threat status
     }
 
-    // Blocking based on njabl.org settings (not used by default)
-    // http://njabl.org/use.html
-    if (strpos($rbl, 'njabl.org') !== false) {
-        $block = array(
-            'njabl_dialup' => false,                    // Njabl: Block dialups/dynamic ip-ranges (Be careful!)
-            'njabl_formmail' => true,                   // Njabl: Block systems with insecure scripts that make them into open relays
-            'njabl_multi' => false,                     // Njabl: Block multi-stage open relays (Don't know what this is? Leave it alone)
-            'njabl_openproxy' => true,                  // Njabl: Block open proxy servers
-            'njabl_passive' => false,                   // Njabl: Block passively detected 'bad hosts' (Don't know what this is? Leave it alone)
-            'njabl_relay' => false,                     // Njabl: Block open relays (as in e-mail-open-relays - be careful)
-            'njabl_spam' => false ,                     // Njabl: lock spam sources (Again, as in e-mail
-        );
-        $rnjabl = array(
-            'njabl_relay' => 2,
-            'njabl_dialup' => 3,
-            'njabl_spam' => 4,
-            'njabl_multi' => 5,
-            'njabl_passive' => 6,
-            'njabl_formmail' => 8,
-            'njabl_openproxy' => 9,
-        );
-
-        if ($we_have_a_result_already) {
-            return array(ANTISPAM_RESPONSE_SKIP, null); // We know better than this RBL can tell us, so stick with what we know
-        }
-        $rbl_response = rbl_resolve($user_ip, $rbl, $page_level);
-        if ($rbl_response === null) {
-            return array(ANTISPAM_RESPONSE_ERROR, null); // Error
-        }
-
-        foreach ($rnjabl as $njcheck => $value) {
-            if (($rbl_response[3] == $value) && ($block[$njcheck])) {
-                return array(ANTISPAM_RESPONSE_ACTIVE_UNKNOWN_STALE, null);
-            }
-        }
-        return array(ANTISPAM_RESPONSE_UNLISTED, null); // Not listed / Not listed with a threat status
-    }
-
     // Blocking based on efnet.org settings (not used by default)
     // http://efnetrbl.org/
     if (strpos($rbl, 'efnet.org') !== false) {

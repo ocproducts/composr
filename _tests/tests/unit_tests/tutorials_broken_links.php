@@ -74,9 +74,15 @@ class tutorials_broken_links_test_set extends cms_test_case
             $contents = file_get_contents($this->path . '/' . $f . '.txt');
 
             $matches = array();
-            $num_matches = preg_match_all('#\[page="(_SEARCH|_SELF|docs):((tut|sup)_[^"]+)"\]#', $contents, $matches);
+            $num_matches = preg_match_all('#\[page="(_SEARCH|_SELF|docs):([^"]+)"\]#', $contents, $matches);
             for ($i = 0; $i < $num_matches; $i++) {
                 $page = preg_replace('/#.*$/', '', $matches[2][$i]);
+
+                if ((substr($page, 0, 4) != 'sup_') && (substr($page, 0, 4) != 'tut_') && (!isset($this->pages['sup_' . $page])) && (!isset($this->pages['tut_' . $page]))) {
+                    // We don't concern ourselves with non-tutorial links, but we do first check it wasn't a tutorial link with a missing prefix
+                    continue;
+                }
+
                 $this->assertTrue(isset($this->pages[$page]), 'Bad tutorial link to ' . $page . ' from ' . $f);
             }
         }

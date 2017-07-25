@@ -58,6 +58,6 @@ class Hook_checklist_copyright
             'TASK' => do_lang_tempcode('NAG_COPYRIGHT_DATE', escape_html_tempcode($url)),
         ));
 
-        return array(array($tpl, ($status == 0) ? -1 : 0, null, null));
+        return array(array($tpl, ($status == 0) ? (mktime(0, 0, 0, 1, 1) - time()) : 0, null, null));
     }
 }

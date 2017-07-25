@@ -38,18 +38,6 @@ function adminzone_special_cases($codename)
         set_helper_panel_tutorial('tut_msn');
     }
     */
-
-    if ($codename == DEFAULT_ZONE_PAGE_NAME && get_option('site_closed') == '1'/*can be checked on PHP-info page after site is open*/) {
-        // Various checks
-        $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
-        $found_issues = false;
-        foreach ($hooks as $ob) {
-            $warning = $ob->run();
-            foreach ($warning as $_warning) {
-                attach_message($_warning, 'warn');
-            }
-        }
-    }
 }
 
 /**

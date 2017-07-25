@@ -167,22 +167,22 @@ function assign_refresh($url, $multiplier = 0.0)
 
     global $FORCE_META_REFRESH;
 
-    // Redirect via meta tag in standard Composr output
-    if ($must_show_message || $FORCE_META_REFRESH) {
+    if ((!running_script('index')) || ($must_show_message)) {
+        $FORCE_META_REFRESH = true;
+    }
+
+    if ($FORCE_META_REFRESH) {
+        // Redirect via meta tag in standard Composr output
         global $REFRESH_URL;
         $REFRESH_URL[0] = $url;
         $REFRESH_URL[1] = 2.5 * $multiplier;
-        return;
-    }
-
-    // HTTP redirect
-    if ((running_script('index')) && (!$FORCE_META_REFRESH)) {
+    } else {
+        // HTTP redirect
         header('Location: ' . escape_header($url));
         if (strpos($url, '#') === false) {
             $GLOBALS['QUICK_REDIRECT'] = true;
         }
     }
-    return;
 }
 
 /**

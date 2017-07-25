@@ -65,7 +65,7 @@ function init__global2()
 
     global $BOOTSTRAPPING, $CHECKING_SAFEMODE, $RELATIVE_PATH, $RUNNING_SCRIPT_CACHE, $SERVER_TIMEZONE_CACHE, $HAS_SET_ERROR_HANDLER, $DYING_BADLY, $XSS_DETECT, $SITE_INFO, $IN_MINIKERNEL_VERSION, $EXITING, $FILE_BASE, $CACHE_TEMPLATES, $WORDS_TO_FILTER_CACHE, $FIELD_RESTRICTIONS, $VALID_ENCODING, $CONVERTED_ENCODING, $MICRO_BOOTUP, $MICRO_AJAX_BOOTUP, $QUERY_LOG, $CURRENT_SHARE_USER, $WHAT_IS_RUNNING_CACHE, $DEV_MODE, $SEMI_DEV_MODE, $IS_VIRTUALISED_REQUEST, $FILE_ARRAY, $DIR_ARRAY, $JAVASCRIPTS_DEFAULT, $JAVASCRIPTS, $KNOWN_AJAX, $KNOWN_UTF8, $CSRF_TOKENS, $STATIC_CACHE_ENABLED, $IN_SELF_ROUTING_SCRIPT;
 
-    @ob_end_clean(); // Reset to have no output buffering by default (we'll use it internally, taking complete control)
+    cms_ob_end_clean(); // Reset to have no output buffering by default (we'll use it internally, taking complete control)
 
     // Don't want the browser caching PHP output, explicitly say this
     set_http_caching(null);
@@ -258,6 +258,8 @@ function init__global2()
     }
 
     require_code_no_override('version');
+    @header('X-Content-Type-Options: nosniff');
+    @header('X-XSS-Protection: 1');
     if ((!$MICRO_BOOTUP) && (!$MICRO_AJAX_BOOTUP)) {
         // Marker that Composr running
         //@header('X-Powered-By: Composr ' . cms_version_pretty() . ' (PHP ' . phpversion() . ')');
@@ -1984,6 +1986,9 @@ function convert_request_data_encodings($known_utf8 = false)
 function cms_ob_end_clean()
 {
     while (ob_get_level() > 0) {
-        ob_end_clean();
+        if (!ob_end_clean()) {
+            safe_ini_set('zlib.output_compression', '0');
+            break;
+        }
     }
 }

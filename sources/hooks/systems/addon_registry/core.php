@@ -487,7 +487,6 @@ class Hook_addon_registry_core
             'sources/antispam.php',
             'sources/static_cache.php',
             'sources/hooks/systems/notifications/spam_check_block.php',
-            'sources/hooks/systems/notifications/low_disk_space.php',
             'sources/hooks/systems/notifications/hack_attack.php',
             'sources/hooks/systems/notifications/auto_ban.php',
             'sources/hooks/systems/notifications/error_occurred.php',

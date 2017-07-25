@@ -13,6 +13,11 @@ For example:
 */
 
 
+/* For a Comcode page we probably don't want to fit it alongside other stuff, so wrap the floats */
+.comcode_page .menu_type__dropdown {
+	overflow: hidden;
+}
+
 .global_navigation .menu_type__dropdown {
 	float: left;
 }

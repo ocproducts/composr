@@ -39,18 +39,4 @@ class blocks_test_set extends cms_test_case
             }
         }
     }
-
-    public function testBlocksRender()
-    {
-        require_code('zones2');
-        $blocks = find_all_blocks();
-        foreach ($blocks as $block => $type) {
-            if (strpos($type, '_custom') !== false) {
-                continue;
-            }
-
-            $test = do_block($block, array());
-            $this->assertTrue(is_object($test), 'Failed block ' . $block);
-        }
-    }
 }

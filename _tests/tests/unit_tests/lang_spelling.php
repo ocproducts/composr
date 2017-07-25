@@ -54,7 +54,7 @@ class lang_spelling_test_set extends cms_test_case
             'site/pages/comcode/EN',
             'docs/pages/comcode_custom/EN',
         );
-        if (function_exists('git_repos') && git_repos() == 'composr_homesite') {
+        if ((function_exists('git_repos')) && (git_repos() == 'composr_homesite')) {
             $dirs = array_merge($dirs, array(
                 'text_custom',
                 'text_custom/EN',
@@ -170,6 +170,9 @@ class lang_spelling_test_set extends cms_test_case
             if (stripos($string, 'lowercase') !== false) {
                 $this->assertTrue(false, 'The word \'lowercase\' was used in ' . $file . '. This should be changed to \'lower case\'.');
             }
+        }
+        if (stripos($string, 'PHP-info') !== false) {
+            $this->assertTrue(false, 'The word \'PHP-info\' was used in ' . $file . '. This should be changed to \'PHP info\'.');
         }
 
         // No space or hyphen wanted (we want our canonical way)

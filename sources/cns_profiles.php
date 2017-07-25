@@ -69,6 +69,23 @@ function render_profile_tabset($title, $member_id_of, $member_id_viewing = null,
 
     require_javascript('profile');
 
+    // AJAX should load up any scripts embedding in tabs without an issue, but some browsers or optimisers (e.g. Cloudflare) may have issues - so we'll load stuff here
+    $scripts = array(
+        'ajax_people_lists',
+        'checking',
+        'editing',
+        'core_form_interfaces',
+        'core_notifications',
+        'posting',
+        'tree_list',
+        'modernizr',
+        'widget_color',
+        'widget_date',
+    );
+    foreach ($scripts as $script) {
+        require_javascript($script);
+    }
+
     $_tabs = array();
     $i = 0;
     foreach ($tabs as $hook => $tab) {

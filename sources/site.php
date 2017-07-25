@@ -84,7 +84,15 @@ function init__site()
 
         $url_scheme = get_option('url_scheme');
         if (($url_scheme == 'PG') || ($url_scheme == 'HTM')) {
-            if ((!headers_sent()) && (running_script('index')) && ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && ($_SERVER['REQUEST_METHOD'] != 'POST') && (get_param_integer('keep_failover', null) !== 0) && ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) && ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM'))) {
+            if (
+                (!headers_sent()) &&
+                (running_script('index')) &&
+                ($GLOBALS['RELATIVE_PATH'] == get_zone_name()/*i.e. a proper zone*/) && ($_SERVER['REQUEST_METHOD'] != 'POST') &&
+                (get_param_integer('keep_failover', null) !== 0) &&
+                ((strpos($ruri, '/pg/') === false) || ($url_scheme != 'PG')) &&
+                ((strpos($ruri, '.htm') === false) || ($url_scheme != 'HTM')) &&
+                ($ruri != '/')
+            ) {
                 require_code('permissions');
                 set_http_status_code(301);
                 header('Location: ' . escape_header(get_self_url(true)));
@@ -123,7 +131,7 @@ function init__site()
 
         if (get_value('disable_cookie_checks') !== '1') {
             // Detect bad cookie domain (reasonable approximation)
-            $cookie_domain = ltrim(get_cookie_domain(), '.');
+            $cookie_domain = @ltrim(get_cookie_domain(), '.');
             if (!empty($cookie_domain) && !empty($access_host)) {
                 if (substr($access_host, -strlen($cookie_domain)) != $cookie_domain) {
                     attach_message(do_lang_tempcode('INCORRECT_COOKIE_DOMAIN', escape_html($cookie_domain), escape_html($access_host)), 'warn');
@@ -1053,25 +1061,6 @@ function do_site()
             require_code('http');
             cache_and_carry('cms_http_request', array('http://compo.sr/uploads/website_specific/compo.sr/scripts/user.php?url=' . urlencode(static_evaluate_tempcode(protect_url_parameter(get_base_url()))) . '&name=' . urlencode(get_site_name()) . '&version=' . urlencode(get_version_dotted()), array('trigger_error' => false)), 60 * 24/*once a day*/);
             safe_ini_set('default_socket_timeout', $timeout_before);
-        }
-    }
-
-    // Little disk space check
-    $last_space_check = get_value('last_space_check');
-    if (($last_space_check === null) || (intval($last_space_check) < time() - 60 * 60 * 3)) {
-        if (!$GLOBALS['SITE_DB']->table_is_locked('values')) {
-            set_value('last_space_check', strval(time()));
-        }
-
-        if (php_function_allowed('disk_free_space')) {
-            $low_space_check = intval(get_option('low_space_check')) * 1024 * 1024;
-            $disk_space = @disk_free_space(get_file_base());
-            if ((is_integer($disk_space)) && ($disk_space < $low_space_check)) {
-                require_code('notifications');
-                $subject = do_lang('LOW_DISK_SPACE_SUBJECT', null, null, null, get_site_default_lang());
-                $message = do_notification_lang('LOW_DISK_SPACE_MAIL', strval(intval(round($disk_space / 1024 / 1024))), null, null, get_site_default_lang());
-                dispatch_notification('low_disk_space', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
-            }
         }
     }
 }
@@ -2100,7 +2089,7 @@ function log_stats($string, $pg_time)
         'referer' => $referer,
         's_get' => $get,
         'post' => $post,
-        'milliseconds' => intval($pg_time * 1000),
+        'milliseconds' => intval($pg_time),
     ), false, true);
     if (mt_rand(0, 100) == 1) {
         if (!$GLOBALS['SITE_DB']->table_is_locked('stats')) {
