@@ -204,7 +204,7 @@ There are a couple of approaches you can take to make sure you know if the healt
 1) Feed an uptime checker into [tt]data_custom/health_check.php[/tt] -- if it gives an HTTP error or the server does not respond, then you know Health Checks do not run (and a none-blank result shows there is a failing health check)
 2) Enable the "Send full reports" option and check you receive the report each day (either manually or using some kind of third party e-mail scanning tool)
 
-[title="Philosophy[/title]
+[title="2"]Philosophy[/title]
 
 There is a vast amount to check when it comes to web development. Even though we check over 100 things, we can not realistically check everything under the scope of the Health Check.
 The Health Check focuses on issues likely faced by end-users, and assumes Composr itself has been well programmed and tested.
@@ -308,6 +308,7 @@ The Composr ecosystem also has:
             'sources_custom/hooks/systems/config/hc_compound_requests_per_second_threshold.php',
             'sources_custom/hooks/systems/config/hc_compound_requests_window_size.php',
             'sources_custom/hooks/systems/config/hc_cpu_pct_threshold.php',
+            'sources_custom/hooks/systems/config/hc_transfer_speed_threshold.php',
             'sources_custom/hooks/systems/config/hc_cron_threshold.php',
             'sources_custom/hooks/systems/config/hc_disk_space_threshold.php',
             'sources_custom/hooks/systems/config/hc_error_log_day_flood_threshold.php',
@@ -341,78 +342,6 @@ The Composr ecosystem also has:
             'data_custom/health_check.php',
             'adminzone/pages/modules_custom/admin_health_check.php',
             'sources_custom/hooks/systems/page_groupings/health_check.php',
-        );
-    }
-
-    /**
-     * Get mapping between template names and the method of this class that can render a preview of them
-     *
-     * @return array The mapping
-     */
-    public function tpl_previews()
-    {
-        return array(
-            'templates/HEALTH_CHECK_RESULTS.tpl' => 'health_check_screen',
-            'templates/HEALTH_CHECK_SCREEN.tpl' => 'health_check_screen',
-        );
-    }
-
-    /**
-     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
-     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
-     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
-     *
-     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
-     */
-    public function tpl_preview__health_check_screen()
-    {
-        $categories = array(
-            'CATEGORIES' => array(
-                lorem_phrase() => array(
-                    'SECTIONS' => array(
-                        lorem_phrase() . ' 1' => array(
-                            'RESULTS' => array(
-                                array(
-                                    'RESULT' => 'PASS',
-                                    'MESSAGE' => lorem_sentence_html(),
-                                ),
-                                array(
-                                    'RESULT' => 'MANUAL',
-                                    'MESSAGE' => lorem_sentence_html(),
-                                ),
-                            ),
-                        ),
-                        lorem_phrase() . ' 2' => array(
-                            'RESULTS' => array(
-                                array(
-                                    'RESULT' => 'FAIL',
-                                    'MESSAGE' => lorem_sentence_html(),
-                                ),
-                            ),
-                        ),
-                        lorem_phrase() . ' 3' => array(
-                            'RESULTS' => array(
-                                array(
-                                    'RESULT' => 'SKIP',
-                                    'MESSAGE' => lorem_sentence_html(),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
-        $results = do_lorem_template('HEALTH_CHECK_RESULTS', array('CATEGORIES' => $categories));
-
-        return array(
-            lorem_globalise(do_lorem_template('HEALTH_CHECK_SCREEN', array(
-                'TITLE' => lorem_title(),
-                'SECTIONS' => placeholder_options(),
-                'PASSES' => true,
-                'SKIPS' => true,
-                'MANUAL_CHECKS' => true,
-                'RESULTS' => $results,
-            )), null, '', true)
         );
     }
 }

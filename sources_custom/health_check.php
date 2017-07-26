@@ -361,7 +361,7 @@ abstract class Hook_Health_Check
      * Get the URL for a page-link.
      *
      * @param  string $page_link The page-link
-     * @param  string The URL
+     * @return string The URL
      */
     protected function get_page_url($page_link = ':')
     {
@@ -401,20 +401,32 @@ abstract class Hook_Health_Check
     }
 
     /**
-     * Get the website domain name.
+     * Get the website domain names.
      *
-     * @param  string Domain name
+     * @return array Domain names
      */
-    protected function get_domain()
+    protected function get_domains()
     {
-        return parse_url(get_base_url(), PHP_URL_HOST);
+        $domains = array();
+
+        $domains[] = parse_url(get_base_url(), PHP_URL_HOST);
+
+        global $SITE_INFO;
+        $zl = strlen('ZONE_MAPPING_');
+        foreach ($SITE_INFO as $key => $_val) {
+            if ($key !== '' && $key[0] === 'Z' && substr($key, 0, $zl) === 'ZONE_MAPPING_') {
+                $domains[] = $_val[0];
+            }
+        }
+
+        return array_unique($domains);
     }
 
     /**
      * Find whether a domain is local.
      *
      * @param  ?string $domain The domain (null: website domain)
-     * @param  boolean Whether it is local
+     * @return boolean Whether it is local
      */
     protected function is_localhost_domain($domain = null)
     {
@@ -428,7 +440,7 @@ abstract class Hook_Health_Check
     /**
      * Get a list of e-mail domains the site uses.
      *
-     * @param  array List of e-mail domains
+     * @return array List of e-mail domains
      */
     protected function get_mail_domains()
     {
@@ -456,7 +468,7 @@ abstract class Hook_Health_Check
      * Download a page by page-link.
      *
      * @param  string $page_link Page-link
-     * @param  string Page content
+     * @return string Page content
      */
     protected function get_page_content($page_link = ':')
     {
@@ -549,7 +561,7 @@ abstract class Hook_Health_Check
      *
      * @param  string $type API type
      * @param  array $params Map of parameters
-     * @param  mixed API result
+     * @return mixed API result
      */
     protected function call_composr_homesite_api($type, $params)
     {

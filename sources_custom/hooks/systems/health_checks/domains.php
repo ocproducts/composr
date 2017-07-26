@@ -57,9 +57,11 @@ class Hook_health_check_domains extends Hook_Health_Check
         }
 
         if (php_function_allowed('checkdnsrr')) {
-            $domain = $this->get_domain();
+            $domains = $this->get_domains();
 
-            $this->assert_true(@checkdnsrr($domain, 'A'), 'DNS does not seem to be set up properly for our domain');
+            foreach ($domains as $domain) {
+                $this->assert_true(@checkdnsrr($domain, 'A'), 'DNS does not seem to be set up properly for [tt]' . $domain . '[/tt]');
+            }
         } else {
             $this->state_check_skipped('PHP checkdnsrr function not available');
         }
@@ -84,25 +86,27 @@ class Hook_health_check_domains extends Hook_Health_Check
         }
 
         if ((php_function_allowed('shell_exec')) && (php_function_allowed('escapeshellarg'))) {
-            $domain = $this->get_domain();
+            $domains = $this->get_domains();
 
-            if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
-                $data = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
-            } else {
-                $this->state_check_skipped('No implementation for doing whois lookups on this platform');
-                return;
-            }
-
-            $matches = array();
-            if (preg_match('#(Expiry date|Expiration date|Expiration):\s*([^\s]*)#im', $data, $matches) != 0) {
-                $expiry = strtotime($matches[2]);
-                if ($expiry > 0) {
-                    $this->assert_true($expiry > time() - 60 * 60 * 24 * 7, 'Domain name [tt]' . $domain . '[/tt] seems to be expiring within a week or already expired');
+            foreach ($domains as $domain) {
+                if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
+                    $data = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
                 } else {
-                    $this->state_check_skipped('Error reading expiry date for ' . $domain);
+                    $this->state_check_skipped('No implementation for doing whois lookups on this platform');
+                    return;
                 }
-            } else {
-                $this->state_check_skipped('Could not find expiry date for ' . $domain);
+
+                $matches = array();
+                if (preg_match('#(Expiry date|Expiration date|Expiration):\s*([^\s]*)#im', $data, $matches) != 0) {
+                    $expiry = strtotime($matches[2]);
+                    if ($expiry > 0) {
+                        $this->assert_true($expiry > time() - 60 * 60 * 24 * 7, 'Domain name [tt]' . $domain . '[/tt] seems to be expiring within a week or already expired');
+                    } else {
+                        $this->state_check_skipped('Error reading expiry date for ' . $domain);
+                    }
+                } else {
+                    $this->state_check_skipped('Could not find expiry date for ' . $domain);
+                }
             }
         } else {
             $this->state_check_skipped('PHP shell_exec/escapeshellarg function(s) not available');

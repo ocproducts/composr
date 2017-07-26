@@ -212,6 +212,7 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
      * @param  URLPATH $url The URL
      * @param  string $user_agent The user-agent
      * @param  boolean $google_style Whether to evaluate robots.txt like Google would (Google is slightly non-standard)
+     * @return boolean Whether robots access is allowed
      */
     protected function robots_allowed($url, $user_agent, $google_style)
     {
@@ -257,6 +258,7 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
      *
      * @param  string $user_agent The user-agent
      * @param  boolean $error_messages Show error messages for any parsing issues
+     * @return ?array List of rules (null: could not parse)
      */
     protected function robots_parse($user_agent, $error_messages = false)
     {
