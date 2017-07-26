@@ -201,6 +201,7 @@ If you are going to go down the SEO route, make sure that you have someone who w
  - [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page]
  - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
  - [page="_SEARCH:tut_metadata"]Metadata[/page]
+ - [page="_SEARCH:tut_website_health"]Website Health[/page]
  - [url="Submit to Google"]https://www.google.com/webmasters/tools/submit-url[/url]
  - [url="Submit to Bing"]http://www.bing.com/toolbox/submit-site-url[/url]
  - [url="Sitemaps specification"]http://www.sitemaps.org/[/url]

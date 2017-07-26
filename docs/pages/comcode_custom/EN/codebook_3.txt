@@ -472,16 +472,25 @@ Having full reporting of all PHP notices, and display of them on screen, helps g
 
 [title="4"]Debugging on live servers[/title]
 
-Composr keeps a number of logs, which can be very helpful for debugging things. Try and build up a model of what happened via careful analysis of logs, like Sherlock Holmes.
+Composr keeps a number of logs, which can be very helpful for debugging low-level back-end activities. Try and build up a model of what happened via careful analysis of logs, like Sherlock Holmes.
+
 Useful Composr logs include:
- - The error log ([tt]data_custom/errorlog.php[/tt])
+ - Run-time error logging (using the PHP error logging system) ([tt]data_custom/errorlog.php[/tt]; can view from Admin Zone > Audit > Error log)
  - The logged page activity, available via 'Investigate user' on an IP address / member ID / username (useful also for finding all a member's recent IP addresses)
  - The {$IS_MAINTAINED,extra_logging,eCommerce log}, if enabled (enable it via creating an empty writable [tt]data_custom/ecommerce.log[/tt] file)
- - The mail log
+ - The CRON log, if enabled (enable it via creating an empty writable [tt]data_custom/cron.log[/tt] file)
+ - The Health Check log, if enabled (enable it via creating an empty writable [tt]data_custom/health_check.log[/tt] file)
+ - Permission checks, if enabled (useful for debugging why accessing is failing) (enable it via creating an empty writable [tt]data_custom/permission_checks.log[/tt] file; can view from Admin Zone > Audit > Error log)
+ - Queries running (debugging), if enabled (enable it via creating an empty writable [tt]data_custom/queries.log[/tt] file)
+ - Slow queries running (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/big_query_screens.log[/tt] file)
+ - Profiling (debugging performance), if enabled (enable it via creating an empty writable [tt]data_custom/profiling*.log[/tt] file)
+ - Resource-fs operations (debugging and audit), if enabled (enable it via creating an empty writable [tt]data_custom/resource_fs.log[/tt] file)
+ - The mail log (view from Admin Zone > Audit > E-mail queue/log)
 Other very useful logs:
  - The web server's own access log; look carefully in it and you are likely to see things like HTTP response codes (e.g. 500 means Internal Server Error)
  - Any [tt]errorlog[/tt] files the web server may leave behind (native PHP error logs, which may or may not be enabled)
 Correlate times and IP addresses to get a model of what happened.
+
 Also the Compsor 'SU' feature (see the [page="_SEARCH:tut_permissions"]Testing access and privileges[/page] tutorial, Access control and privileges section) can be very useful for testing under different users without having to know their passwords.
 
 If it is acceptable to debug code on a live server, putting [tt]exit[/tt] and [tt]var_dump[/tt] commands to only run for your own IP address can be useful ([tt]if (get_ip_address()=='...') { ... }[/tt]). This is not recommended for a high-traffic site though, you're likely to make an occasional mistake that'll get spotted. So for this case, you'll just have to clone the database back to a development server and test like that.
@@ -851,20 +860,6 @@ We also have some special cases coded up directly. These are often referenced be
 
 All default parameters are flagged as 'non-canonical' to search engines, so that the search engine knows that variations in value are not indicative of entirely separate web pages.
 
-[title="3"]Log files[/title]
-
-These log files exist by default in [tt]data_custom[/tt]:
- - [tt]errorlog.php[/tt] -- Run-time error logging (using the PHP error logging system) [shown in Composr Error log page]
-
-The follow log files can be created in [tt]data_custom[/tt], and will then be appended to as Composr runs:
- - [tt]permission_checks.log[/tt] -- Permisison checks (useful for debugging why accessing is failing) [shown in Composr Error log page]
- - [tt]ecommerce.log[/tt] -- raw eCommerce transaction data (useful for debugging IPN)
- - [tt]queries.log[/tt] -- queries running (debugging)
- - [tt]big_query_screens.log[/tt] -- slow queries running (debugging performance)
- - [tt]profiling*.log[/tt] -- profiling [if enabled] (debugging performance)
- - [tt]resource_fs.log[/tt] -- resource-fs operations (debugging and audit)
-If you create these files it is your responsibility to make sure users cannot download their contents. We supply a default Apache [tt]data_custom/.htaccess[/tt] file for this, but this requires Apache and [tt].htaccess[/tt] files to be enabled; we also supply some rules in [tt]web.config[/tt] for IIS.
-
 [title="3"]Overriding files[/title]
 
 If you change an original Composr file for a client project you must save it into the [tt]_custom[/tt] equivalent of its original directory. E.g. if you change [tt]site/pages/modules/calendar.php[/tt] you need to save into [tt]site/pages/modules_custom/calendar.php[/tt]. Otherwise if the client ever upgrades their website chances are all the customisations you've made would be lost when a newer version of the original file is placed.
@@ -1051,6 +1046,11 @@ This section is not designed as primary documentation for the tools. Those tools
 | Compile Composr overrides against originals, for a slight performance improvement
 | [tt]performance_compile[/tt]
 | Command-line via PHP interpretor
+|-
+| [tt]data_custom/health_check.php[/tt]
+| Run a Health Check.
+| [tt]health_check[/tt]
+| Command-line via Bash or Web browser
 |}
 
 [title="3"]Theme development[/title]

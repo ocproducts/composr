@@ -69,6 +69,7 @@ class css_and_js_test_set extends cms_test_case
             'jquery_ui.js',
             'modernizr.js',
             'plupload.js',
+            'base64.js',
 
             // Third-party code not confirming to Composr standards
             'widget_color.js',
@@ -89,51 +90,54 @@ class css_and_js_test_set extends cms_test_case
             unset($exceptions[array_search($only, $exceptions)]);
         }
 
-        $dh = opendir(get_file_base() . '/themes/' . $theme . '/' . $dir);
-        while (($f = readdir($dh)) !== false) {
-            if (substr($f, -3) == '.js') {
-                if (in_array($f, $exceptions)) {
-                    continue;
-                }
-
-                if ($only !== null) {
-                    if ($f != $only) {
+        $dh = @opendir(get_file_base() . '/themes/' . $theme . '/' . $dir);
+        if ($dh !== false) {
+            while (($f = readdir($dh)) !== false) {
+                if (substr($f, -3) == '.js') {
+                    if (in_array($f, $exceptions)) {
                         continue;
                     }
-                }
 
-                if (!is_file(get_file_base() . '/themes/' . $theme . '/' . $dir . '/' . $f)) {
-                    continue;
-                }
-
-                $path = javascript_enforce(basename($f, '.js'), $theme);
-                if ($path == '') {
-                    continue; // Empty file, so skipped
-                }
-
-                $contents = file_get_contents($path);
-                $errors = check_js($contents);
-                if ($errors !== null) {
-                    foreach ($errors['errors'] as $i => $e) {
-                        $e['line'] += 3;
-                        $errors['errors'][$i] = $e;
+                    if ($only !== null) {
+                        if ($f != $only) {
+                            continue;
+                        }
                     }
-                }
-                if (($errors !== null) && ($errors['errors'] == array())) {
-                    $errors = null; // Normalise
-                }
-                $this->assertTrue(($errors === null), 'Bad JS in ' . $f);
-                if ($errors !== null) {
-                    if (get_param_integer('debug', 0) == 1) {
-                        unset($errors['tag_ranges']);
-                        unset($errors['value_ranges']);
-                        unset($errors['level_ranges']);
-                        echo '<pre>';
-                        var_dump($errors['errors']);
-                        echo '</pre>';
+
+                    if (!is_file(get_file_base() . '/themes/' . $theme . '/' . $dir . '/' . $f)) {
+                        continue;
+                    }
+
+                    $path = javascript_enforce(basename($f, '.js'), $theme);
+                    if ($path == '') {
+                        continue; // Empty file, so skipped
+                    }
+
+                    $contents = file_get_contents($path);
+                    $errors = check_js($contents);
+                    if ($errors !== null) {
+                        foreach ($errors['errors'] as $i => $e) {
+                            $e['line'] += 3;
+                            $errors['errors'][$i] = $e;
+                        }
+                    }
+                    if (($errors !== null) && ($errors['errors'] == array())) {
+                        $errors = null; // Normalise
+                    }
+                    $this->assertTrue(($errors === null), 'Bad JS in ' . $f);
+                    if ($errors !== null) {
+                        if (get_param_integer('debug', 0) == 1) {
+                            unset($errors['tag_ranges']);
+                            unset($errors['value_ranges']);
+                            unset($errors['level_ranges']);
+                            echo '<pre>';
+                            var_dump($errors['errors']);
+                            echo '</pre>';
+                        }
                     }
                 }
             }
+            closedir($dh);
         }
     }
 
@@ -168,35 +172,37 @@ class css_and_js_test_set extends cms_test_case
             unset($exceptions[array_search($only, $exceptions)]);
         }
 
-        $dh = opendir(get_file_base() . '/themes/' . $theme . '/' . $dir);
-        while (($f = readdir($dh)) !== false) {
-            if ((substr($f, -4) == '.css') && ($f != 'svg.css'/*SVG-CSS*/) && ($f != 'no_cache.css')) {
-                if (in_array($f, $exceptions)) {
-                    continue;
-                }
-
-                $path = css_enforce(basename($f, '.css'), $theme);
-                if ($path == '') {
-                    continue; // Nothing in file after minimisation
-                }
-
-                if ($only !== null) {
-                    if ($f != $only) {
+        $dh = @opendir(get_file_base() . '/themes/' . $theme . '/' . $dir);
+        if ($dh !== false) {
+            while (($f = readdir($dh)) !== false) {
+                if ((substr($f, -4) == '.css') && ($f != 'svg.css'/*SVG-CSS*/) && ($f != 'no_cache.css')) {
+                    if (in_array($f, $exceptions)) {
                         continue;
                     }
-                }
 
-                $contents = file_get_contents($path);
-                $errors = check_css($contents);
-                if (($errors !== null) && ($errors['errors'] == array())) {
-                    $errors = null; // Normalise
-                }
-                $this->assertTrue(($errors === null), 'Bad CSS in ' . $f);
-                if ($errors !== null) {
-                    if (get_param_integer('debug', 0) == 1) {
-                        echo '<pre>';
-                        var_dump($errors['errors']);
-                        echo '</pre>';
+                    $path = css_enforce(basename($f, '.css'), $theme);
+                    if ($path == '') {
+                        continue; // Nothing in file after minimisation
+                    }
+
+                    if ($only !== null) {
+                        if ($f != $only) {
+                            continue;
+                        }
+                    }
+
+                    $contents = file_get_contents($path);
+                    $errors = check_css($contents);
+                    if (($errors !== null) && ($errors['errors'] == array())) {
+                        $errors = null; // Normalise
+                    }
+                    $this->assertTrue(($errors === null), 'Bad CSS in ' . $f);
+                    if ($errors !== null) {
+                        if (get_param_integer('debug', 0) == 1) {
+                            echo '<pre>';
+                            var_dump($errors['errors']);
+                            echo '</pre>';
+                        }
                     }
                 }
             }

@@ -387,6 +387,7 @@ function do_work()
             'reason' => 'ASCII_ENTITY_URL_HACK',
             'reason_param_a' => '',
             'reason_param_b' => '',
+            'percentage_score' => 100,
         ));
     }
     // logged hits in one day

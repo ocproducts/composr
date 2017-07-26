@@ -118,5 +118,6 @@ To find where mail traffic is sent, do a DNS lookup of type 'MX'.
  - [page="_SEARCH:tut_how_internet_works"]How the Internet works[/page]
  - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions (and JavaScript)[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
+ - [page="_SEARCH:tut_website_health"]Website Health[/page]
 
 {$SET,tutorial_tags,Internet Technology,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,A full explanation of domain names, and DNS - for agencies who need to work with previously registered domain names.}[block]main_tutorial_rating[/block]

@@ -273,7 +273,7 @@ function get_category_permissions_for_environment($module, $category, $page = nu
 function get_permissions_matrix($server_id, $access, $overridables, $privileges, $default_access, $no_outer = false, $pinterface_view = null)
 {
     require_lang('permissions');
-    require_javascript('permissions');
+    require_javascript('core_permission_management');
 
     $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
     $groups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(true, true);

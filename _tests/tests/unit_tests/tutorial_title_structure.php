@@ -41,6 +41,7 @@ class tutorial_title_structure_test_set extends cms_test_case
                 }
             }
         }
+        closedir($dh);
     }
 
     public function testTitlesAscendence()
@@ -65,6 +66,7 @@ class tutorial_title_structure_test_set extends cms_test_case
                 }
             }
         }
+        closedir($dh);
     }
 
     public function testTitlesNoEmptySections()
@@ -80,5 +82,6 @@ class tutorial_title_structure_test_set extends cms_test_case
                 $this->assertTrue($test, 'There seems to be an empty title section; likely it\'s misnumering, ' . $f . ', ' . @$matches[2]);
             }
         }
+        closedir($dh);
     }
 }

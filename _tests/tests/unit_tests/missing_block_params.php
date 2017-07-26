@@ -57,6 +57,7 @@ class missing_block_params_test_set extends cms_test_case
                 }
             }
         }
+        closedir($dh);
 
         $dh = opendir(get_file_base() . '/lang/EN');
         while (($f = readdir($dh)) !== false) {
@@ -70,6 +71,8 @@ class missing_block_params_test_set extends cms_test_case
                 }
             }
         }
+        closedir($dh);
+
         foreach ($need as $i => $x) {
             $this->assertTrue(false, 'Missing language string: ' . $x);
         }

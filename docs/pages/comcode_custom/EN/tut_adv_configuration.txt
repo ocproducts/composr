@@ -113,7 +113,7 @@ You may use the config editor to:
  - Change the database driver
  - Change the forum driver
  - Change the e-mail domain
- - Change the base-URL
+ - Change the base URL
  - Change forum and site database details
  - Change cookie details
  - Force 'URL Schemes' to be disabled, if you enabled it, but it failed to function correctly, locking you out of Composr

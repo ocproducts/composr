@@ -47,6 +47,7 @@ class js_lang_references_test_set extends cms_test_case
                     }
                 }
             }
+            closedir($dh);
         }
     }
 }

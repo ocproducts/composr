@@ -47,34 +47,38 @@ class template_xss_test_set extends cms_test_case
         }
 
         foreach ($paths as $path) {
-            $dh = opendir($path);
-            while (($f = readdir($dh)) !== false) {
-                if (strtolower(substr($f, -4)) == '.tpl') {
-                    $file = file_get_contents($path . '/' . $f);
-                    $file_orig = $file;
+            $dh = @opendir($path);
+            if ($dh !== false) {
+                while (($f = readdir($dh)) !== false) {
+                    if (strtolower(substr($f, -4)) == '.tpl') {
+                        $file = file_get_contents($path . '/' . $f);
+                        $file_orig = $file;
 
-                    $file = $this->stripDownTemplate($file);
+                        $file = $this->stripDownTemplate($file);
 
-                    // Search
-                    $matches = array();
-                    $num_matches = preg_match_all('#\{(\w+)([*=;\#~^\'&.@+-]*)\}#U', $file, $matches);
-                    $params_found = array();
-                    for ($i = 0; $i < $num_matches; $i++) {
-                        $match = $matches[0][$i];
-                        $params_found[$match] = $matches;
-                    }
-                    foreach ($params_found as $match => $matches) {
-                        $matches2 = array();
-                        if (preg_match('#<script[^<>]*>(?:(?!</script>).)*(?<!\\\\)' . preg_quote($match, '#') . '(?:(?!</script>)).*</script>#Us', $file, $matches2) != 0) {
-                            $this->assertTrue(false, 'Unsafe embedded parameter within JavaScript block, needing "/" escaper (' . $match . ') in ' . $f);
+                        // Search
+                        $matches = array();
+                        $num_matches = preg_match_all('#\{(\w+)([*=;\#~^\'&.@+-]*)\}#U', $file, $matches);
+                        $params_found = array();
+                        for ($i = 0; $i < $num_matches; $i++) {
+                            $match = $matches[0][$i];
+                            $params_found[$match] = $matches;
+                        }
+                        foreach ($params_found as $match => $matches) {
+                            $matches2 = array();
+                            if (preg_match('#<script[^<>]*>(?:(?!</script>).)*(?<!\\\\)' . preg_quote($match, '#') . '(?:(?!</script>)).*</script>#Us', $file, $matches2) != 0) {
+                                $this->assertTrue(false, 'Unsafe embedded parameter within JavaScript block, needing "/" escaper (' . $match . ') in ' . $f);
 
-                            if (get_param_integer('save', 0) == 1) {
-                                $file_orig = str_replace($match, '{' . $matches[1][$i] . $matches[2][$i] . '/' . '}', $file_orig);
-                                cms_file_put_contents_safe($path . '/' . $f, $file_orig, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                                if (get_param_integer('save', 0) == 1) {
+                                    $file_orig = str_replace($match, '{' . $matches[1][$i] . $matches[2][$i] . '/' . '}', $file_orig);
+                                    cms_file_put_contents_safe($path . '/' . $f, $file_orig, FILE_WRITE_FIX_PERMISSIONS | FILE_WRITE_SYNC_FILE);
+                                }
                             }
                         }
                     }
                 }
+
+                closedir($dh);
             }
         }
     }
@@ -128,22 +132,25 @@ class template_xss_test_set extends cms_test_case
         }
 
         foreach ($paths as $path) {
-            $dh = opendir($path);
-            while (($f = readdir($dh)) !== false) {
-                if (strtolower(substr($f, -4)) == '.tpl') {
-                    $file = file_get_contents($path . '/' . $f);
-                    $file_orig = $file;
+            $dh = @opendir($path);
+            if ($dh !== false) {
+                while (($f = readdir($dh)) !== false) {
+                    if (strtolower(substr($f, -4)) == '.tpl') {
+                        $file = file_get_contents($path . '/' . $f);
+                        $file_orig = $file;
 
-                    $file = $this->stripDownTemplate($file);
+                        $file = $this->stripDownTemplate($file);
 
-                    // Search
-                    $matches = array();
-                    $num_matches = preg_match_all('#\s\w+="[^"]*\{(\w+)[^\|\w\'=%"`\{\}\*]\}#Us', $file, $matches);
-                    for ($i = 0; $i < $num_matches; $i++) {
-                        $match = $matches[1][$i];
-                        $this->assertTrue(false, 'Unsafe embedded parameter within HTML attribute, needing "*" escaper (' . $match . ') in ' . $f); // To stop HTML script tag breaking out of "escaped" quotes, due to working on higher level of the parser
+                        // Search
+                        $matches = array();
+                        $num_matches = preg_match_all('#\s\w+="[^"]*\{(\w+)[^\|\w\'=%"`\{\}\*]\}#Us', $file, $matches);
+                        for ($i = 0; $i < $num_matches; $i++) {
+                            $match = $matches[1][$i];
+                            $this->assertTrue(false, 'Unsafe embedded parameter within HTML attribute, needing "*" escaper (' . $match . ') in ' . $f); // To stop HTML script tag breaking out of "escaped" quotes, due to working on higher level of the parser
+                        }
                     }
                 }
+                closedir($dh);
             }
         }
     }

@@ -47,6 +47,7 @@ class tutorial_quality_test_set extends cms_test_case
                 check_comcode($c);
             }
         }
+        closedir($dh);
     }
 
     public function testHaveFullMetaData()
@@ -78,6 +79,7 @@ class tutorial_quality_test_set extends cms_test_case
                 $this->assertTrue(strpos(file_get_contents($path . '/' . $f), 'Composr Tutorial: ') !== false, $f . ' has wrong title stub');
             }
         }
+        closedir($dh);
     }
 
     public function testHasNoIncorrectLinking()
@@ -93,6 +95,7 @@ class tutorial_quality_test_set extends cms_test_case
             $this->assertTrue(strpos($c, '[page="_SELF:') === false, $f . ' uses _SELF linking, should use _SEARCH linking');
             $this->assertTrue(strpos($c, '[page="docs:') === false, $f . ' uses docs-zone linking, should use _SEARCH linking');
         }
+        closedir($dh);
     }
 
     public function skip_tutorial($f)
@@ -130,6 +133,7 @@ class tutorial_quality_test_set extends cms_test_case
                 $this->assertTrue($has_image, $f . ' has no images or code samples (pixabay.com has public domain no-attribution images)');
             }
         }
+        closedir($dh);
     }
 
     public function testImageDensity()
@@ -161,6 +165,7 @@ class tutorial_quality_test_set extends cms_test_case
                 );
             }
         }
+        closedir($dh);
 
         foreach ($data as $d) {
             $f = $d['file'];

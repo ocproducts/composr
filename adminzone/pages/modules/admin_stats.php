@@ -1222,7 +1222,7 @@ class Module_admin_stats
             'TITLE' => $this->title,
             'STATS_VIEWS' => $list_views,
             'GRAPH_VIEWS_MONTHLY' => $graph_views_monthly,
-            'STATS_VIEWS_MONTHLY' => $list_views_monthly,,
+            'STATS_VIEWS_MONTHLY' => $list_views_monthly,
         ));
 
         require_code('templates_internalise_screen');

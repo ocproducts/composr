@@ -2492,6 +2492,13 @@ Provide addon screenshots
 | The [page="_SEARCH:sup_staging_servers"]Staging Servers[/page] tutorial lays out processes for deploying in a professional way.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
+[color="red"]Run Health Check[/color]
+| Deployment, stability
+| Projects
+| Manually
+| Run Admin Zone > Tools > Health Check to confirm things are good.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
 [color="red"]Use a good upgrade and maintenance process[/color]
 | Deployment, collaboration
 | Projects

@@ -586,7 +586,7 @@ function ecv($lang, $escaped, $type, $name, $param)
                         if ((isset($param[1])) && (is_numeric($param[0]))) {
                             $viewport_switch = intval($param[0]);
                         } else {
-                            $viewport_switch = 641; // TODO: Change to 983px in v10
+                            $viewport_switch = 983;
                         }
 
                         // Responsive design code for desktop
@@ -4514,7 +4514,7 @@ function ecv_INSERT_SPAMMER_BLACKHOLE($lang, $escaped, $param)
         if (get_option('spam_blackhole_detection') == '1' && !$done_once && get_page_name() != 'members'/*in case of some weird autocomplete issue when changing your password*/) {
             $field_name = 'y' . md5(get_site_name() . ': antispam');
             $tag = ((isset($param[0])) && ($param[0] == '1')) ? 'span' : 'div';
-            $value .= '<' . $tag . ' id="' . escape_html($field_name) . '_wrap" style="display:none" ' . ($GLOBALS['SEMI_DEV_MODE'] ? '' : 'data-remove-if-js-enabled="1"') . '>'.
+            $value .= '<' . $tag . ' id="' . escape_html($field_name) . '_wrap" style="display:none" ' . ($GLOBALS['SEMI_DEV_MODE'] ? '' : 'data-remove-if-js-enabled="1"') . '>' .
                 '<label for="' . escape_html($field_name) . '">' . do_lang('DO_NOT_FILL_ME_SPAMMER_BLACKHOLE') . '</label><input autocomplete="off" id="' . escape_html($field_name) . '" name="' . escape_html($field_name) . '" value="" type="text" /></' . $tag . '>';
             $done_once = true;
         }
@@ -5655,22 +5655,26 @@ function ecv_PROTECT_URL_PARAMETER($lang, $escaped, $param)
  */
 function ecv_PUBLIC_CONFIG_OPTIONS_JSON($lang, $escaped, $param)
 {
-    $value = array();
+    $_value = array();
     $hooks = find_all_hook_obs('systems', 'config', 'Hook_config_');
 
     foreach ($hooks as $hook => $ob) {
         $details = $ob->get_details();
 
-        if (isset($details['public']) && $details['public']) {
-            if (isset($details['theme_override']) && $details['theme_override']) {
-                $value[$hook] = get_theme_option($hook);
-            } else {
-                $value[$hook] = get_option($hook);
+        if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // Installer, likely executing global.js. We need a saner default for JavaScript
+            $_value[$hook] = '0';
+        } else {
+            if (isset($details['public']) && $details['public']) {
+                if (isset($details['theme_override']) && $details['theme_override']) {
+                    $_value[$hook] = get_theme_option($hook);
+                } else {
+                    $_value[$hook] = get_option($hook);
+                }
             }
         }
     }
 
-    $value = json_encode($value, JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
+    $value = json_encode($_value, JSON_FORCE_OBJECT | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK);
 
     if ($escaped !== array()) {
         apply_tempcode_escaping($escaped, $value);

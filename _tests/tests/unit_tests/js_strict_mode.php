@@ -45,5 +45,6 @@ class js_strict_mode_test_set extends cms_test_case
                 $this->assertTrue(strpos($c, 'use strict') !== false, 'Strict mode not enabled for ' . $f);
             }
         }
+        closedir($dh);
     }
 }

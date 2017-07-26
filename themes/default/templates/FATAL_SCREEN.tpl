@@ -1,6 +1,4 @@
-{$REQUIRE_JAVASCRIPT,core_abstract_interfaces}
-
-<div data-require-javascript="core_abstract_interfaces" data-tpl="fatalScreen">
+<div data-tpl="fatalScreen">
 	{TITLE}
 
 	<p role="alert">

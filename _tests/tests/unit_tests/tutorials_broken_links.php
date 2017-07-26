@@ -34,6 +34,7 @@ class tutorials_broken_links_test_set extends cms_test_case
                 $this->pages[basename($f, '.txt')] = true;
             }
         }
+        closedir($dh);
     }
 
     public function testSelfLinks()

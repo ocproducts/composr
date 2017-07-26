@@ -18,7 +18,7 @@
 				{$SET,i,0}
 				<tr class="zebra_{$CYCLE*,emoticon_rows,0,1}">
 				{+START,LOOP,EMOTICONS}
-					{$SET,needs_new_row,{$EQ,{$REM,{$GET,i},{$GET,num_columns}},0}}
+					{$SET,needs_new_row,{$AND,{$NEQ,{$GET,i},0},{$EQ,{$REM,{$GET,i},{$GET,num_columns}},0}}}
 					{+START,IF,{$GET,needs_new_row}}
 					</tr>
 					<tr class="zebra_{$CYCLE*,emoticon_rows,0,1}">

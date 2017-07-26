@@ -83,13 +83,13 @@ class Module_admin_phpinfo
 
         ob_start();
         if (php_function_allowed('phpinfo')) {
-            // PHP-info...
+            // PHP-Info...
 
             echo '<div style="overflow: auto; width: 100%">';
             phpinfo();
             echo '</div>';
         } else {
-            // Alternative to PHP-info...
+            // Alternative to PHP-Info...
 
             var_dump(PHP_VERSION);
             var_dump($_SERVER);

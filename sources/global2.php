@@ -1175,12 +1175,13 @@ function fatal_exit($text, $log_error = true)
  * @param  SHORT_TEXT $reason_param_b A more illustrative parameter, which may be anything (e.g. a title)
  * @param  boolean $silent Whether to silently log the hack rather than also exiting
  * @param  boolean $instant_ban Whether a ban should be immediate
+ * @param  integer $percentage_score The risk factor
  * @return mixed Never returns (i.e. exits)
  */
-function log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b = '', $silent = false, $instant_ban = false)
+function log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b = '', $silent = false, $instant_ban = false, $percentage_score = 100)
 {
     require_code('failure');
-    _log_hack_attack_and_exit($reason, $reason_param_a, $reason_param_b, $silent, $instant_ban);
+    _log_hack_attack_and_exit($reason, $reason_param_a, $reason_param_b, $silent, $instant_ban, $percentage_score);
 }
 
 /**

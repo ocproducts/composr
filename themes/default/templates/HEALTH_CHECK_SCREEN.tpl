@@ -1,6 +1,6 @@
 {TITLE}
 
-<form action="{$SELF_URL*}" method="post">
+<form action="{$SELF_URL*}" method="post" title="{!PRIMARY_PAGE_FORM}" autocomplete="off">
 	{$INSERT_SPAMMER_BLACKHOLE}
 
 	<div>
@@ -35,7 +35,7 @@
 	<p class="proceed_button">
 		<input class="button_screen buttons__proceed" type="submit" value="{!HEALTH_CHECK}" />
 	</p>
-</p>
+</form>
 
 {+START,IF_PASSED,RESULTS}
 	{RESULTS}

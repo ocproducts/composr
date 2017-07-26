@@ -95,7 +95,7 @@ $feature_tree = array(
             array(
                 array('Quick installer', 'Our self-extractor allows faster uploads and will automatically set permissions'),
                 array('Wizard-based installation'),
-                array('Auto-scans for compatibility problems'),
+                array('Advanced feature to scan for over 100 website-health problems'),
                 array('Get your site up and running in just a few minutes'),
                 null, // divider
                 array('Keep your site closed to regular visitors until you\'re happy to open it'),

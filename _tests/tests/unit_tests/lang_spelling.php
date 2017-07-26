@@ -171,8 +171,8 @@ class lang_spelling_test_set extends cms_test_case
                 $this->assertTrue(false, 'The word \'lowercase\' was used in ' . $file . '. This should be changed to \'lower case\'.');
             }
         }
-        if (stripos($string, 'PHP-info') !== false) {
-            $this->assertTrue(false, 'The word \'PHP-info\' was used in ' . $file . '. This should be changed to \'PHP info\'.');
+        if (stripos($string, 'PHP info') !== false) {
+            $this->assertTrue(false, 'The word \'PHP info\' was used in ' . $file . '. This should be changed to \'PHP-Info\'.');
         }
 
         // No space or hyphen wanted (we want our canonical way)
@@ -199,7 +199,7 @@ class lang_spelling_test_set extends cms_test_case
         if ((stripos($string, 'unvalidated') !== false) && ($file !== 'tut_addon_index.txt') && ($file !== 'sup_set_up_a_workflow_in_composr.txt')) {
             $this->assertTrue(false, 'The word \'unvalidated\' was used in ' . $file . '. This should be changed to \'non-validated\'.');
         }
-        if (preg_match('#([^\]/A-Za-z"_<]+)comcode([^A-Za-z"]+)#', $string) != 0) {
+        if (preg_match('#([^\]/A-Za-z"_<\']+)comcode([^A-Za-z"\']+)#', $string) != 0) {
             $this->assertTrue(false, 'The term \'comcode\' was used in ' . $file . '. This should be changed to \'Comcode\'.');
         }
         if (strpos($string, 'wiki+') !== false) {

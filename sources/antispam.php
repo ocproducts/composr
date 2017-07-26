@@ -373,6 +373,8 @@ function handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $bl
             dispatch_notification('spam_check_block', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
         }
 
+        log_hack_attack_and_exit('ANTISPAM', '', '', true, false, 0); // Zero low-scored, because it may well just be false-positive from an anti-spam partner
+
         warn_exit(do_lang_tempcode('STOPPED_BY_ANTISPAM', escape_html($user_ip), escape_html($blocked_by)));
     }
 
@@ -384,6 +386,8 @@ function handle_perceived_spammer_by_confidence($user_ip, $confidence_level, $bl
             $subject = do_lang('NOTIFICATION_SPAM_CHECK_BLOCK_SUBJECT_BLOCK', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
             $message = do_notification_lang('NOTIFICATION_SPAM_CHECK_BLOCK_BODY_BLOCK', $user_ip, $blocked_by, float_format($confidence_level), get_site_default_lang());
             dispatch_notification('spam_check_block', null, $subject, $message, null, A_FROM_SYSTEM_PRIVILEGED);
+
+            log_hack_attack_and_exit('ANTISPAM', '', '', true, false, 0); // Zero low-scored, because it may well just be false-positive from an anti-spam partner
 
             warn_exit(do_lang_tempcode('STOPPED_BY_ANTISPAM', escape_html($user_ip), escape_html($blocked_by)));
         }

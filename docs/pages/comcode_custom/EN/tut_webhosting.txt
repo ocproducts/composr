@@ -288,26 +288,6 @@ Composr detects the account owner by seeing who owns the [tt]index.php[/tt] file
 So, the main take-away is:
 [indent]If you do not have suEXEC, any files the web server needs to be able to write to need to be either reassigned to be owned by the web server (if you are a server admin you can do that, it's more secure if other users have login access to your web server) or given world-write permissions (what most Composr users would have to do)[/indent]
 
-[title="2"]PHP-Info[/title]
-
-{!menus:DOC_PHPINFO}
-
-PHP-Info can be reached from:
-Admin Zone > Tools > PHP-Info / Server Checks
-
-[title="2"]{$IS_MAINTAINED,failover_mode,Failover mode}[/title]
-
-You may configure a special failover mode via the [tt]config_editor[/tt] script. This mode serves cached versions of page if your server seems to be failing. It is not a perfect system because:
-1) it serves hits as guests
-2) it can only work if the static cache is populated
-3) it assumes that your server is only failing for performance/database reasons, not totally failed (however most failures in practice are like this)
-
-However, it's still a great system because it lets your site content continue to be available even under massive load.
-
-Failover can automatically fall into place based on a number of criteria.
-
-Note that the failover status messages ([tt]failover_message_place_after[/tt] and [tt]failover_message_place_before[/tt] options) are put in place at the caching stage, not dynamically. So you would need to empty the static cache if you change these messages to something else.
-
 [concepts
  1_key="Webhost"            1_value="A provider of Internet server facilities"
  2_key="Dedicated server"   2_value="A server that is not shared with others"
@@ -327,5 +307,7 @@ Note that the failover status messages ([tt]failover_message_place_after[/tt] an
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_browsers"]Browser version requirements[/page]
  - [page="_SEARCH:tut_optimisation"]Optimising Performance[/page]
+ - [page="_SEARCH:tut_security"]Security[/page]
+ - [page="_SEARCH:tut_website_health"]Website Health[/page]
 
-{$SET,tutorial_tags,Webhosting,phpinfo,core_database_drivers,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An overview of how the webhosting industry works, and the general requirements and compatibility for Composr.}[block]main_tutorial_rating[/block]
+{$SET,tutorial_tags,Webhosting,core_database_drivers,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,An overview of how the webhosting industry works, and the general requirements and compatibility for Composr.}[block]main_tutorial_rating[/block]

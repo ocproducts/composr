@@ -38,7 +38,8 @@ class standard_dir_files_test_set extends cms_test_case
 
         require_code('files');
 
-        if (($dh = opendir($dir)) !== false) {
+        $dh = opendir($dir);
+        if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
                 if (should_ignore_file(preg_replace('#^' . preg_quote(get_file_base() . '/', '#') . '#', '', $dir . '/') . $file, IGNORE_NONBUNDLED_VERY_SCATTERED | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_THEMES, 0)) {
                     continue;
@@ -54,6 +55,7 @@ class standard_dir_files_test_set extends cms_test_case
                     $contents++;
                 }
             }
+            closedir($dh);
         }
 
         if ($contents > 0) {

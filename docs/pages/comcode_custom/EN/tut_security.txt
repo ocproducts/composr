@@ -744,8 +744,8 @@ If you have sensitive material that might be in a URL moniker, you should either
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
  - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
- - [url="http://www.robotstxt.org/robotstxt.html"]robots.txt help[/url]
  - [url="https://internethealthreport.org"]The Internet Health Report[/url]
  - [page="_SEARCH:codebook_standards"]Code Book, part 4 (Coding Standards)[/page]
+ - [page="_SEARCH:tut_website_health"]Website Health[/page]
 
 {$SET,tutorial_tags,ssl,securitylogging,rootkit_detector,Security,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details and guidance on the advanced security protections available in Composr.}[block]main_tutorial_rating[/block]

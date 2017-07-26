@@ -30,7 +30,7 @@ class phpstub_accuracy_test_set extends cms_test_case
         }
         sort($declared_functions);
 
-        $c = file_get_contents(get_file_base() . '/sources/hooks/systems/checks/functions_needed.php');
+        $c = file_get_contents(get_file_base() . '/sources/hooks/systems/health_checks/install_env_php_lock_down.php');
         $num_matches = preg_match_all('#<<<END(.*)END;#Us', $c, $matches);
         $c = '';
         for ($i = 0; $i < $num_matches; $i++) {
@@ -42,7 +42,7 @@ class phpstub_accuracy_test_set extends cms_test_case
         sort($required_functions);
 
         foreach ($declared_functions as $function) {
-            $this->assertTrue(in_array($function, $required_functions), 'Missing from functions_needed.php? ' . $function);
+            $this->assertTrue(in_array($function, $required_functions), 'Missing from install_env_php_lock_down.php? ' . $function);
         }
 
         foreach ($required_functions as $function) {

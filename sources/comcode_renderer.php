@@ -53,6 +53,10 @@ function init__comcode_renderer()
  */
 function _apply_emoticons($text)
 {
+    if (!isset($GLOBALS['FORUM_DRIVER'])) {
+        return $text;
+    }
+
     $_emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons(); // Sorted in descending length order
 
     if ($GLOBALS['XSS_DETECT']) {

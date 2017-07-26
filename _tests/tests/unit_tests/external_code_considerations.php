@@ -112,6 +112,7 @@ class external_code_considerations_test_set extends cms_test_case
                 'themes/default/javascript_custom/shake.js',
                 'themes/default/javascript_custom/text_ghosts.js',
                 'themes/default/javascript_custom/facebook.js',
+                'themes/default/javascript_custom/calculatr.js',
                 'themes/default/javascript_custom/global.js',
                 'themes/default/css_custom/activities.css',
                 'themes/default/css_custom/buildr.css',

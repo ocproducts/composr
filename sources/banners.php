@@ -458,7 +458,7 @@ function show_banner($name, $title_text, $caption, $direct_code, $img_url, $sour
             if (has_privilege($submitter, 'use_html_banner')) {
                 if ($GLOBALS['CURRENT_SHARE_USER'] === null) { // Only allow PHP code if not a shared install
                     $matches = array();
-                    $num_matches = preg_match_all('#<\?(.*)\?>#U', $direct_code, $matches);
+                    $num_matches = preg_match_all('#<\?(.*)\?' . '>#U', $direct_code, $matches);
                     for ($i = 0; $i < $num_matches; $i++) {
                         if (has_privilege($submitter, 'use_php_banner')) {
                             $php_code = $matches[1][$i];

@@ -100,7 +100,7 @@ class Hook_fields_member_multi
 
         $out = array();
         foreach (($ev == '') ? array() : explode("\n", $ev) as $ev) {
-            $out[intval($ev)] = $GLOBALS['FORUM_DRIVER']->get_username(intval($ev, false, USERNAME_DEFAULT_BLANK), true);
+            $out[intval($ev)] = $GLOBALS['FORUM_DRIVER']->get_username(intval($ev), false, USERNAME_DEFAULT_BLANK);
         }
 
         $auto_sort = option_value_from_field_array($field, 'auto_sort', 'off');

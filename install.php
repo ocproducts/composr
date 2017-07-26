@@ -147,7 +147,7 @@ handle_self_referencing_embedment();
 // Requirements check
 $phpv = PHP_VERSION;
 if ((substr($phpv, 0, 2) == '3.') || (substr($phpv, 0, 2) == '4.') || (substr($phpv, 0, 4) == '5.0.') || (substr($phpv, 0, 4) == '5.1.') || (substr($phpv, 0, 4) == '5.2.') || (substr($phpv, 0, 4) == '5.3.') || (substr($phpv, 0, 4) == '5.4.') || (substr($phpv, 0, 4) == '5.5.')) {
-    exit(do_lang('PHP_OLD'));
+    exit(do_lang('PHP_TOO_OLD'));
 }
 
 // Set up some globals
@@ -391,13 +391,10 @@ function step_1()
         }
     }
 
-    // Various checks
-    $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
-    foreach ($hooks as $ob) {
-        $warning = $ob->run();
-        foreach ($warning as $_warning) {
-            $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)));
-        }
+    // Health Checks
+    $_warnings = installer_health_checks();
+    foreach ($_warnings as $_warning) {
+        $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)));
     }
 
     // Some checks relating to installation permissions
@@ -409,7 +406,7 @@ function step_1()
             $warnings->attach(do_template('INSTALLER_NOTICE', array('MESSAGE' => do_lang_tempcode('RECURSIVE_SERVER'))));
         }
     }
-    if ((file_exists(get_file_base() . '/_config.php')) && (!cms_is_writable(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((stripos(PHP_OS, 'win') === 0))) {
+    if ((file_exists(get_file_base() . '/_config.php')) && (!cms_is_writable(get_file_base() . '/_config.php')) && (!php_function_allowed('posix_getuid')) && ((strtoupper(substr(PHP_OS, 0, 3)) == 'WIN'))) {
         $warnings->attach(do_template('INSTALLER_WARNING', array('MESSAGE' => do_lang_tempcode('TROUBLESOME_WINDOWS_SERVER', escape_html(get_tutorial_url('tut_adv_install'))))));
     }
 
@@ -767,7 +764,7 @@ function step_4()
     $use_persistent = false;
     require_code('version');
     $table_prefix = get_default_table_prefix();
-    if (stripos(PHP_OS, 'win') === 0) {
+    if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
         $db_site_host = '127.0.0.1';
     } else {
         $db_site_host = 'localhost';
@@ -1658,17 +1655,39 @@ function step_5_checks_b()
     $log = new Tempcode();
 
     // MySQL check (could not be checked earlier due to lack of active connection)
-    $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
-    foreach ($hooks as $hook => $ob) {
-        if ($hook == 'mysql') {
-            $warning = $ob->run();
-            foreach ($warning as $_warning) {
-                $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('SOMETHING' => do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)))));
-            }
-        }
+    $_warnings = installer_health_checks(array('Installation environment \\ MySQL version'));
+    foreach ($_warnings as $_warning) {
+        $log->attach(do_template('INSTALLER_DONE_SOMETHING', array('SOMETHING' => do_template('INSTALLER_WARNING', array('MESSAGE' => $_warning)))));
     }
 
     return $log;
+}
+
+/**
+ * Run installer Health Checks.
+ *
+ * @param  ?array $sections_to_run Which check sections to run (null: all)
+ * @return array Warnings
+ */
+function installer_health_checks($sections_to_run = null)
+{
+    $_warnings = array();
+    if (addon_installed('health_check')) {
+        require_code('health_check');
+        $hook_obs = find_all_hook_obs('systems', 'health_checks', 'Hook_health_check_');
+        foreach ($hook_obs as $ob) {
+            list(, $sections) = $ob->run($sections_to_run, CHECK_CONTEXT__INSTALL);
+            foreach ($sections as $results) {
+                foreach ($results as $_result) {
+                    if ($_result[0] == HEALTH_CHECK__FAIL) {
+                        $_warning = comcode_to_tempcode($_result[1]);
+                        $_warnings[] = $_warning;
+                    }
+                }
+            }
+        }
+    }
+    return $_warnings;
 }
 
 /**

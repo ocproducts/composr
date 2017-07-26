@@ -819,7 +819,7 @@ class DatabaseRepair
         }
 
         if ($return_queries) {
-            return array($drop_key_query, $create_key_query);
+            return array($create_key_query);
         }
         return null;
     }

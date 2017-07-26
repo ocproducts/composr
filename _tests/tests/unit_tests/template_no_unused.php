@@ -196,17 +196,20 @@ class template_no_unused_test_set extends cms_test_case
                 get_file_base() . '/themes/' . $theme . '/templates_custom',
             );
             foreach ($paths as $path) {
-                $dh = opendir($path);
-                while (($f = readdir($dh)) !== false) {
-                    if (strtolower(substr($f, -4)) == '.tpl') {
-                        $f = basename($f, '.tpl');
+                $dh = @opendir($path);
+                if ($dh !== false) {
+                    while (($f = readdir($dh)) !== false) {
+                        if (strtolower(substr($f, -4)) == '.tpl') {
+                            $f = basename($f, '.tpl');
 
-                        if (in_array($f, $exceptions)) {
-                            continue;
+                            if (in_array($f, $exceptions)) {
+                                continue;
+                            }
+
+                            $this->assertTrue(strpos($all_code, 'do_template(\'' . $f . '\'') !== false, 'Cannot find use of ' . $f . ' template');
                         }
-
-                        $this->assertTrue(strpos($all_code, 'do_template(\'' . $f . '\'') !== false, 'Cannot find use of ' . $f . ' template');
                     }
+                    closedir($dh);
                 }
             }
         }
@@ -216,7 +219,8 @@ class template_no_unused_test_set extends cms_test_case
     {
         $files = array();
 
-        if (($dh = opendir($dir)) !== false) {
+        $dh = @opendir($dir);
+        if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
                 if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE))) {
                     if (is_file($dir . '/' . $file)) {

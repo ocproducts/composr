@@ -70,7 +70,7 @@ function init__caches()
             require_code('persistent_caching/filesystem');
             $PERSISTENT_CACHE = new Persistent_caching_filesystem();
         }
-        // NB: sources/hooks/systems/checks/persistent_cache.php also references some of this ^
+        // NB: sources/hooks/systems/health_checks/persistent_cache.php also references some of this ^
     }
 
     /** The smart cache (self-learning cache).

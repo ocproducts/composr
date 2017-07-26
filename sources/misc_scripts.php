@@ -285,7 +285,7 @@ function cron_bridge_script($caller)
 
     $limit_hook = get_param_string('limit_hook', '');
 
-    $_log_file = get_custom_file_base() . '/data_custom/cron_log.txt';
+    $_log_file = get_custom_file_base() . '/data_custom/cron.log';
     $log_file = mixed();
     if (is_file($_log_file)) {
         $log_file = fopen($_log_file, 'ab');

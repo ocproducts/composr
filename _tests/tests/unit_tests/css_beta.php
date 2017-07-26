@@ -58,37 +58,39 @@ class css_beta_test_set extends cms_test_case
             // ^ Also keep in sync with BETA_CSS_PROPERTY.php comment
 
             foreach ($directories as $dir) {
-                $d = opendir($dir);
-                while (($e = readdir($d)) !== false) {
-                    if (substr($e, -4) == '.css') {
-                        $contents = file_get_contents($dir . '/' . $e);
+                $d = @opendir($dir);
+                if ($d !== false) {
+                    while (($e = readdir($d)) !== false) {
+                        if (substr($e, -4) == '.css') {
+                            $contents = file_get_contents($dir . '/' . $e);
 
-                        $matches = array();
-                        $found = preg_match_all('#\{\$BETA_CSS_PROPERTY,(.*)\}#i', $contents, $matches);
-                        for ($i = 0; $i < $found; $i++) {
-                            $property_line = $matches[1][$i];
+                            $matches = array();
+                            $found = preg_match_all('#\{\$BETA_CSS_PROPERTY,(.*)\}#i', $contents, $matches);
+                            for ($i = 0; $i < $found; $i++) {
+                                $property_line = $matches[1][$i];
 
-                            $is_in_beta = false;
-                            foreach ($in_beta as $_property) {
-                                if (substr($property_line, 0, strlen($_property)) == $_property) {
-                                    $is_in_beta = true;
+                                $is_in_beta = false;
+                                foreach ($in_beta as $_property) {
+                                    if (substr($property_line, 0, strlen($_property)) == $_property) {
+                                        $is_in_beta = true;
+                                    }
                                 }
+
+                                $this->assertTrue($is_in_beta, 'Property ' . $property_line . ' should *not* be defined as beta in ' . $e . ' for theme ' . $theme);
                             }
 
-                            $this->assertTrue($is_in_beta, 'Property ' . $property_line . ' should *not* be defined as beta in ' . $e . ' for theme ' . $theme);
-                        }
+                            foreach ($in_beta as $property) {
+                                if ($property == 'display') {
+                                    continue;
+                                }
 
-                        foreach ($in_beta as $property) {
-                            if ($property == 'display') {
-                                continue;
+                                $is_as_beta = (strpos($contents, "\t" . $property) === false) || (strpos($contents, ' ' . $property) === false);
+                                $this->assertTrue($is_as_beta, 'Property ' . $property . ' should be defined as beta in ' . $e . ' for theme ' . $theme);
                             }
-
-                            $is_as_beta = (strpos($contents, "\t" . $property) === false) || (strpos($contents, ' ' . $property) === false);
-                            $this->assertTrue($is_as_beta, 'Property ' . $property . ' should be defined as beta in ' . $e . ' for theme ' . $theme);
                         }
                     }
+                    closedir($d);
                 }
-                closedir($d);
             }
         }
     }

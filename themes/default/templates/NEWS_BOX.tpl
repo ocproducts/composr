@@ -41,7 +41,7 @@
 
 			{+START,IF,{$CNS}}{+START,IF_NON_EMPTY,{$CNS_RANK_IMAGE,{SUBMITTER}}}
 				<p>{$CNS_RANK_IMAGE,{SUBMITTER}}</p>
-			{+END}
+			{+END}{+END}
 		</div>
 	{+END}{+END}
 

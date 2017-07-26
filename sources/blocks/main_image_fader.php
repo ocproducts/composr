@@ -74,7 +74,7 @@ class Block_main_image_fader
         $block_id = get_block_id($map);
 
         if (empty($map['param'])) {
-            $cat = $GLOBALS['SITE_DB']->query_select_value('images', 'cat', array(), 'GROUP BY cat ORDER BY COUNT(*) DESC');
+            $cat = $GLOBALS['SITE_DB']->query_select_value_if_there('images', 'cat', array(), 'GROUP BY cat ORDER BY COUNT(*) DESC');
             if ($cat === null) {
                 $cat = 'root';
             }

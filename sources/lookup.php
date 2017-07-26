@@ -183,9 +183,9 @@ function find_security_alerts($where = array())
 {
     require_lang('security');
 
-    // Alerts
     $start = get_param_integer('alert_start', 0);
     $max = get_param_integer('alert_max', 50);
+
     $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'), 'ip' => do_lang_tempcode('IP_ADDRESS'));
     $test = explode(' ', get_param_string('alert_sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX));
     if (count($test) == 1) {
@@ -195,16 +195,24 @@ function find_security_alerts($where = array())
     if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($sortable, $sortables))) {
         log_hack_attack_and_exit('ORDERBY_HACK');
     }
-    $_fields = array(do_lang_tempcode('FROM'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('IP_ADDRESS'), do_lang_tempcode('REASON'), new Tempcode());
+
+    $_fields = array(do_lang_tempcode('FROM'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('RISK'), do_lang_tempcode('IP_ADDRESS'), do_lang_tempcode('REASON'), new Tempcode());
     $fields_title = results_field_title($_fields, $sortables, 'alert_sort', $sortable . ' ' . $sort_order);
+
     $max_rows = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', $where);
-    $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), $where, 'ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
+
+    $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), $where, 'AND percentage_score>=80 ORDER BY ' . $sortable . ' ' . $sort_order, $max, $start);
+
     $fields = new Tempcode();
     foreach ($rows as $row) {
         $date = get_timezoned_date_time($row['date_and_time']);
+
         $lookup_url = build_url(array('page' => 'admin_lookup', 'param' => $row['ip']), '_SELF');
+
         $member_url = build_url(array('page' => 'admin_lookup', 'param' => $row['member_id']), '_SELF');
+
         $full_url = build_url(array('page' => 'admin_security', 'type' => 'view', 'id' => $row['id']), '_SELF');
+
         $reason = do_lang($row['reason'], $row['reason_param_a'], $row['reason_param_b'], null, null, false);
         if ($reason === null) {
             $reason = $row['reason'];
@@ -213,13 +221,20 @@ function find_security_alerts($where = array())
 
         $username = $GLOBALS['FORUM_DRIVER']->get_username($row['member_id']);
 
-        $_row = array(hyperlink($member_url, $username, false, true), hyperlink($full_url, $date, false, true), hyperlink($lookup_url, $row['ip'], false, true), $reason);
+        $_row = array(
+            hyperlink($member_url, $username, false, true),
+            hyperlink($full_url, $date, false, true),
+            integer_format($row['percentage_score']),
+            hyperlink($lookup_url, $row['ip'], false, true),
+            $reason
+        );
 
         $deletion_tick = do_template('RESULTS_TABLE_TICK', array('_GUID' => '9d310a90afa8bd1817452e476385bc57', 'ID' => strval($row['id'])));
         $_row[] = $deletion_tick;
 
         $fields->attach(results_entry($_row, false));
     }
+
     return array(results_table(do_lang_tempcode('SECURITY_ALERTS'), $start, 'alert_start', $max, 'alert_max', $max_rows, $fields_title, $fields, $sortables, $sortable, $sort_order, 'alert_sort'), count($rows));
 }
 

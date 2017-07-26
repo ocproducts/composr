@@ -1059,7 +1059,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             }
         } else {
             if (window.getAttention !== undefined) {
-                getAttention();
+                window.getAttention();
             }
             if (window.focus !== undefined) {
                 try {

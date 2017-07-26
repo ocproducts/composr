@@ -163,4 +163,20 @@ class broken_includes_test_set extends cms_test_case
             }
         }
     }
+
+    public function testRequireJavascriptC()
+    {
+        foreach ($this->contents as $c) {
+            if (substr($c, -4) == '.tpl') {
+                $_c = file_get_contents(get_file_base() . '/' . $c);
+                $matches = array();
+                $num_matches = preg_match_all('#\sdata-require-javascript="(\w+)"#', $_c, $matches);
+                for ($i = 0; $i < $num_matches; $i++) {
+                    $dependency = $matches[1][$i];
+                    $okay = file_exists(get_file_base() . '/themes/default/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/admin/javascript/' . $dependency . '.js') || file_exists(get_file_base() . '/themes/default/javascript_custom/' . $dependency . '.js');
+                    $this->assertTrue($okay, 'Could not find target of data-require-javascript, ' . $dependency);
+                }
+            }
+        }
+    }
 }

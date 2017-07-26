@@ -26,9 +26,9 @@ function do_install_to($database, $username, $password, $table_prefix, $safe_mod
 
         if ((!$success) && (isset($_GET['debug']))) {
             @var_dump($http_result->message);
-            @var_dump(escape_html($data));
+            @var_dump(escape_html($http_result->data));
 
-            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($data));
+            $error = $url . ' : ' . preg_replace('#^.*An error has occurred#s', 'An error has occurred', strip_tags($http_result->data));
             @print(escape_html($error));
             @ob_end_flush();
         }

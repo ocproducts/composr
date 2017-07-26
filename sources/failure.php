@@ -583,11 +583,14 @@ function _inet_pton($ip)
  * @param  SHORT_TEXT $reason_param_b A more illustrative parameter, which may be anything (e.g. a title)
  * @param  boolean $silent Whether to silently log the hack rather than also exiting
  * @param  boolean $instant_ban Whether a ban should be immediate
+ * @param  integer $percentage_score The risk factor
  * @return mixed Never returns (i.e. exits)
  * @ignore
  */
-function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b = '', $silent = false, $instant_ban = false)
+function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_b = '', $silent = false, $instant_ban = false, $percentage_score = 100)
 {
+    // HTTP statuses...
+
     require_code('site');
     attach_to_screen_header('<meta name="robots" content="noindex" />'); // XHTMLXHTML
 
@@ -596,12 +599,16 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         set_http_status_code(403); // Stop spiders ever storing the URL that caused this
     }
 
+    // Special case: no securitylogging addon...
+
     if (!addon_installed('securitylogging')) {
         if ($silent) {
             return;
         }
         warn_exit(do_lang_tempcode('HACK_ATTACK_USER'));
     }
+
+    // Work out basic metadata...
 
     $ip = get_ip_address();
     $ip2 = $_SERVER['REMOTE_ADDR'];
@@ -628,10 +635,12 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         $post .= $key . ' => ' . $val . "\n\n";
     }
 
-    $count = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', array('ip' => $ip));
+    // Automatic ban needed?...
+
+    $count = (float)$GLOBALS['SITE_DB']->query_select_value('hackattack', 'SUM(percentage_score)', array('ip' => $ip)) / 100.0;
     $alt_ip = false;
     if ($ip2 !== null) {
-        $count2 = $GLOBALS['SITE_DB']->query_select_value('hackattack', 'COUNT(*)', array('ip' => $ip2));
+        $count2 = (float)$GLOBALS['SITE_DB']->query_select_value('hackattack', 'SUM(percentage_score)', array('ip' => $ip2)) / 100.0;
         if ($count2 > $count) {
             $count = $count2;
             $alt_ip = true;
@@ -639,8 +648,9 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
     }
     $hack_threshold = intval(get_option('hack_ban_threshold'));
     if ((array_key_exists('FORUM_DRIVER', $GLOBALS)) && (function_exists('get_member')) && ($GLOBALS['FORUM_DRIVER']->is_super_admin(get_member()))) {
-        $count = 0;
+        $count = 0.0;
     }
+
     $new_row = array(
         'user_agent' => cms_mb_substr(get_browser_string(), 0, 255),
         'referer' => cms_mb_substr($_SERVER['HTTP_REFERER'], 0, 255),
@@ -653,14 +663,18 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
         'member_id' => $id,
         'date_and_time' => time(),
         'ip' => $ip,
+        'percentage_score' => $percentage_score,
     );
+
     $ip_ban_todo = null;
-    if ((($count >= $hack_threshold) || ($instant_ban)) && (get_option('autoban') != '0') && ($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip)) === null)) {
-        // Test we're not banning a good bot
+    if ((($count >= floatval($hack_threshold)) || ($instant_ban)) && (get_option('autoban') != '0') && ($GLOBALS['SITE_DB']->query_select_value_if_there('unbannable_ip', 'ip', array('ip' => $alt_ip ? $ip2 : $ip)) === null)) {
+        // Test we're not banning a good bot...
+
         $se_ip_lists = array(
             get_file_base() . '/custom/no_banning.txt',
             get_file_base() . '/data_custom/no_banning.txt',
         );
+
         $ip_stack = array();
         $ip_bits = explode((strpos($alt_ip ? $ip2 : $ip, '.') !== false) ? '.' : ':', $alt_ip ? $ip2 : $ip);
         foreach ($ip_bits as $i => $ip_bit) {
@@ -673,10 +687,11 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             }
             $ip_stack[] = $buildup;
         }
+
         $is_se = false;
         foreach ($se_ip_lists as $ip_list) {
             if (is_file($ip_list)) {
-                $ip_list_file = file_get_contents($se_ip_lists);
+                $ip_list_file = file_get_contents($ip_list);
                 $ip_list_array = explode("\n", $ip_list_file);
                 foreach ($ip_stack as $ip_s) {
                     foreach ($ip_list_array as $_ip_list_array) {
@@ -690,6 +705,7 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 }
             }
         }
+
         $dns = @gethostbyaddr($alt_ip ? $ip2 : $ip);
         if ((php_function_allowed('gethostbyname')) || (@gethostbyname($dns) === ($alt_ip ? $ip2 : $ip))) { // Verify it's not faking the DNS
             $se_domain_names = array('googlebot.com', 'google.com', 'msn.com', 'yahoo.com', 'ask.com', 'aol.com');
@@ -700,9 +716,13 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 }
             }
         }
+
         if ((!$is_se) && (($alt_ip ? $ip2 : $ip) != '127.0.0.1')) {
+            // Prepare message about a ban...
+
             $rows = $GLOBALS['SITE_DB']->query_select('hackattack', array('*'), array('ip' => $alt_ip ? $ip2 : $ip), 'ORDER BY date_and_time');
             $rows[] = $new_row;
+
             $summary = '[list]';
             $is_spammer = false;
             foreach ($rows as $row) {
@@ -717,31 +737,49 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
                 $summary .= "\n" . '[*]' . $full_reason . "\n" . $row['url'] . "\n" . get_timezoned_date_time($row['date_and_time']);
             }
             $summary .= "\n" . '[/list]';
+
+            // Send report to anti-spam partners...
+
             if ($is_spammer) {
                 require_code('failure_spammers');
                 syndicate_spammer_report($alt_ip ? $ip2 : $ip, is_guest() ? '' : $GLOBALS['FORUM_DRIVER']->get_username(get_member()), $GLOBALS['FORUM_DRIVER']->get_member_email_address(get_member()), do_lang('SPAM_REPORT_TRIGGERED_SPAM_HEURISTICS'));
             }
+
+            // Add ban...
+
             $ban_happened = add_ip_ban($alt_ip ? $ip2 : $ip, $full_reason);
+
+            // Prepare notification text...
+
             $_ip_ban_url = build_url(array('page' => 'admin_ip_ban', 'type' => 'browse'), get_module_zone('admin_ip_ban'), array(), false, false, true);
             $ip_ban_url = $_ip_ban_url->evaluate();
+
             if ($ban_happened) {
                 $ip_ban_todo = do_lang('AUTO_BAN_HACK_MESSAGE', $alt_ip ? $ip2 : $ip, integer_format($hack_threshold), array($summary, $ip_ban_url), get_site_default_lang());
             }
         }
     }
+
+    // Add hackattack...
+
     $GLOBALS['SITE_DB']->query_insert('hackattack', $new_row);
     if ($ip2 !== null) {
         $new_row['ip'] = $ip2;
         $GLOBALS['SITE_DB']->query_insert('hackattack', $new_row);
     }
 
+    // Send notification...
+
     if (function_exists('do_lang')) {
         require_code('notifications');
 
         $reason_full = do_lang($reason, $reason_param_a, $reason_param_b, null, get_site_default_lang());
+
         $_stack_trace = get_html_trace();
         $stack_trace = str_replace('html', '&#104;tml', $_stack_trace->evaluate());
+
         $date = get_timezoned_date_time(time(), false, false, $GLOBALS['FORUM_DRIVER']->get_guest_id());
+
         $message = do_notification_template(
             'HACK_ATTEMPT_MAIL',
             array(
@@ -766,16 +804,22 @@ function _log_hack_attack_and_exit($reason, $reason_param_a = '', $reason_param_
             'text'
         );
 
-        if (($reason != 'CAPTCHAFAIL_HACK') && ($reason != 'LAME_SPAM_HACK')) {
+        // Hack-attack notification...
+
+        if (!in_array($reason, array('CAPTCHAFAIL', 'CAPTCHAFAIL_HACK', 'LAME_SPAM_HACK')/*Don't generate notification noise from very common bot behaviours*/)) {
             $subject = do_lang('HACK_ATTACK_SUBJECT', $ip, null, null, get_site_default_lang());
             dispatch_notification('hack_attack', null, $subject, $message->evaluate(get_site_default_lang()), null, A_FROM_SYSTEM_PRIVILEGED);
         }
+
+        // IP ban notification (if applicable)...
 
         if ($ip_ban_todo !== null) {
             $subject = do_lang('AUTO_BAN_SUBJECT', $ip, null, null, get_site_default_lang());
             dispatch_notification('auto_ban', null, $subject, $ip_ban_todo, null, A_FROM_SYSTEM_PRIVILEGED);
         }
     }
+
+    // Finish...
 
     if ($silent) {
         return;

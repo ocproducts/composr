@@ -35,7 +35,7 @@ class Module_admin_security
         $info['organisation'] = 'ocProducts';
         $info['hacked_by'] = null;
         $info['hack_version'] = null;
-        $info['version'] = 4;
+        $info['version'] = 5;
         $info['update_require_upgrade'] = true;
         $info['locked'] = true;
         return $info;
@@ -71,6 +71,7 @@ class Module_admin_security
                 'reason' => 'ID_TEXT',
                 'reason_param_a' => 'SHORT_TEXT',
                 'reason_param_b' => 'SHORT_TEXT',
+                'percentage_score' => 'INTEGER',
             ));
             $GLOBALS['SITE_DB']->create_index('hackattack', 'otherhacksby', array('ip'));
             $GLOBALS['SITE_DB']->create_index('hackattack', 'h_date_and_time', array('date_and_time'));
@@ -84,6 +85,10 @@ class Module_admin_security
 
         if (($upgrade_from !== null) && ($upgrade_from < 4)) { // LEGACY
             $GLOBALS['SITE_DB']->alter_table_field('hackattack', 'the_user', 'MEMBER', 'member_id');
+        }
+
+        if (($upgrade_from !== null) && ($upgrade_from < 5)) { // LEGACY
+            $GLOBALS['SITE_DB']->add_table_field('hackattack', 'percentage_score', 'INTEGER', 100);
         }
     }
 
@@ -181,9 +186,11 @@ class Module_admin_security
      */
     public function security_interface()
     {
-        // Failed logins
+        // Failed logins...
+
         $start = get_param_integer('failed_start', 0);
         $max = get_param_integer('failed_max', 50);
+
         $sortables = array('date_and_time' => do_lang_tempcode('DATE_TIME'), 'ip' => do_lang_tempcode('IP_ADDRESS'));
         $test = explode(' ', get_param_string('failed_sort', 'date_and_time DESC', INPUT_FILTER_GET_COMPLEX));
         if (count($test) == 1) {
@@ -193,23 +200,34 @@ class Module_admin_security
         if (((strtoupper($sort_order) != 'ASC') && (strtoupper($sort_order) != 'DESC')) || (!array_key_exists($_sortable, $sortables))) {
             log_hack_attack_and_exit('ORDERBY_HACK');
         }
+
         require_code('templates_results_table');
-        $fields_title = results_field_title(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('IP_ADDRESS')), $sortables, 'failed_sort', $_sortable . ' ' . $sort_order);
+
+        $fields_title = results_field_title(array(do_lang_tempcode('USERNAME'), do_lang_tempcode('DATE_TIME'), do_lang_tempcode('RISK'), do_lang_tempcode('IP_ADDRESS')), $sortables, 'failed_sort', $_sortable . ' ' . $sort_order);
+
         $member_id = post_param_integer('member_id', null);
         $map = ($member_id !== null) ? array('failed_account' => $GLOBALS['FORUM_DRIVER']->get_username($member_id, false, USERNAME_DEFAULT_NULL)) : null;
+
         $max_rows = $GLOBALS['SITE_DB']->query_select_value('failedlogins', 'COUNT(*)', $map);
+
         $rows = $GLOBALS['SITE_DB']->query_select('failedlogins', array('*'), $map, 'ORDER BY ' . $_sortable . ' ' . $sort_order, $max, $start);
+
         $fields = new Tempcode();
         foreach ($rows as $row) {
             $date = get_timezoned_date_time($row['date_and_time']);
             $lookup_url = build_url(array('page' => 'admin_lookup', 'param' => $row['ip']), '_SELF');
             $fields->attach(results_entry(array($row['failed_account'], $date, hyperlink($lookup_url, $row['ip'], false, true)), true));
         }
+
         $failed_logins = results_table(do_lang_tempcode('FAILED_LOGINS'), $start, 'failed_start', $max, 'failed_max', $max_rows, $fields_title, $fields, $sortables, $_sortable, $sort_order, 'failed_sort', new Tempcode());
+
+        // Hack-attacks...
 
         $member_id = post_param_integer('member_id', null);
         $map = ($member_id !== null) ? array('member_id' => $member_id) : null;
         list($alerts, $num_alerts) = find_security_alerts($map);
+
+        // Render UI...
 
         $post_url = build_url(array('page' => '_SELF', 'type' => 'clean', 'start' => $start, 'max' => $max), '_SELF');
 
@@ -281,6 +299,7 @@ class Module_admin_security
             'USERNAME' => hyperlink($member_url, $username, false, true),
             'POST' => $post,
             'URL' => $row['url'],
+            'PERCENTAGE_SCORE' => integer_format($row['percentage_score']),
         ));
     }
 }

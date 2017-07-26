@@ -372,4 +372,3 @@ function sUpdateRemoveShow(data, stat) {
         }
     }
 }
-

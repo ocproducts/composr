@@ -7,7 +7,7 @@
 	<input type="hidden" name="cancel_return" value="{$PAGE_LINK*,_SEARCH:purchase:finish:cancel=1:from=paypal}" />
 	<input type="hidden" name="no_shipping" value="1" />
 	<input type="hidden" name="currency_code" value="{CURRENCY*}" />
-	<input type="hidden" name="custom" value="{TRANS_ID*}" />
+	<input type="hidden" name="custom" value="{TRANS_EXPECTING_ID*}" />
 	<input type="hidden" name="item_name" value="{ITEM_NAME*}" />
 	<input type="hidden" name="item_number" value="1" />
 	<input type="hidden" name="amount" value="{AMOUNT*}" />

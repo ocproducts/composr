@@ -7505,6 +7505,7 @@
         //        }
         //    }
         //},
+        // TODO: Is this dead code? Is data-require-javascript in use or should be stripped? What's the purpose verses Tempcode method?
 
         // Implementation for [data-view]
         initializeViews: {

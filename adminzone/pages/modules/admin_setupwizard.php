@@ -512,6 +512,7 @@ class Module_admin_setupwizard
             'counting_blocks',
             'custom_comcode',
             'errorlog',
+            'health_check',
             'help_page',
             'import',
             'language_block',

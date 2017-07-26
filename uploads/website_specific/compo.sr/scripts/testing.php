@@ -1,7 +1,7 @@
 <?php /*
 
  Composr
- Copyright (c) ocProducts, 2004-2016
+ Copyright (c) ocProducts, 2004-2017
 
  You may not distribute a modified version of this file, unless it is solely as a Composr modification.
  See text/EN/licence.txt for full licencing information.
@@ -48,8 +48,8 @@ switch (get_param_string('type')) {
         break;
 
     case 'http_status_check':
-        http_get_contents(get_param_string('url', false, INPUT_FILTER_URL_GENERAL), array('bytes_limit' => 0));
-        $result = $GLOBALS['HTTP_MESSAGE'];
+        $http_result = cms_http_request(get_param_string('url', false, INPUT_FILTER_URL_GENERAL), array('bytes_limit' => 0));
+        $result = $http_result->message;
         break;
 
     default:

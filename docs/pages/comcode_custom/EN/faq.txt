@@ -479,7 +479,7 @@ It is recommended that you set the cookie names to be different between the CMS 
 
 There are many factors to cookie integration, and it is renowned to be problematic. These problems include: strange and inconsistent browser/privacy behaviour, the trickiness of getting exactly matching and correct paths and domains, the change of format between forum versions, secondary usage to forum session cookies, and old cookies masking new cookies. Due to all these problems, we cannot provide personal support for cookie integration except under our paid professional support.
 
-[title="3"]How do I change the forum base-URL (because my forum links and emoticons are broken)?[/title]
+[title="3"]How do I change the forum base URL (because my forum links and emoticons are broken)?[/title]
 
 You must correct it using the config editor script, available under Admin Zone > Setup > Configuration > Installation Options. The installer asked for this value, but many users (wrongly) do not change it from the default auto-detected value.
 Note that once the value in the config editor is changed, the 'Comcode page cache' must be cleared so as to update the value. Clearing the caches manually is only necessary when using the config editor, as it is separated from Composr for fail-safe reasons.

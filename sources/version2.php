@@ -208,21 +208,13 @@ function is_substantial_release($dotted)
 /**
  * Find whether a PHP version is still supported by the PHP developers.
  *
- * @param string $v The version
+ * @param  string $v The version
  * @return ?boolean Whether it is (null: some kind of error)
  */
 function is_php_version_supported($v)
 {
-    if (!defined('PHP_RELEASE_VERSION')) { // LEGACY
-        return false;
-    }
-    if (!defined('PHP_MINOR_VERSION')) { // LEGACY
-        return false;
-    }
-
-    require_code('files2');
-
-    list($data) = cache_and_carry('http_get_contents', array('https://raw.githubusercontent.com/php/web-php/master/include/branches.inc', null, false), 60 * 60 * 24 * 7);
+    require_code('http');
+    $data = cache_and_carry('http_get_contents', array('https://raw.githubusercontent.com/php/web-php/master/include/branches.inc', array('trigger_error' => false)), 60 * 60 * 24 * 7);
 
     $matches = array();
 

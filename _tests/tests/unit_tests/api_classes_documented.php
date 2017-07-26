@@ -26,7 +26,7 @@ class api_classes_documented_test_set extends cms_test_case
 
         foreach (array('sources', 'sources/database', 'sources/database/shared', 'sources/forum') as $d) {
             $path = get_file_base() . '/' . $d;
-            $dh = opendir($path);
+            $dh = @opendir($path);
             if ($dh !== false) {
                 while (($f = readdir($dh)) !== false) {
                     if (substr($f, -4) != '.php') {
@@ -51,6 +51,8 @@ class api_classes_documented_test_set extends cms_test_case
                         );
                     }
                 }
+
+                closedir($dh);
             }
         }
     }
