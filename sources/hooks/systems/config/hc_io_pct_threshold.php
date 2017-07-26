@@ -41,6 +41,8 @@ class Hook_config_hc_io_pct_threshold
             'order_in_category_group' => 6,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

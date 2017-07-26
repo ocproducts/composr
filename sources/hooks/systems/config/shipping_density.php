@@ -41,6 +41,8 @@ class Hook_config_shipping_density
             'order_in_category_group' => 7,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

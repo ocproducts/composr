@@ -41,6 +41,8 @@ class Hook_config_pd_email
             'order_in_category_group' => 8,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

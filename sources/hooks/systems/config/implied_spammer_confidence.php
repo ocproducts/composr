@@ -41,6 +41,8 @@ class Hook_config_implied_spammer_confidence
             'order_in_category_group' => 5,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

@@ -41,6 +41,7 @@ class Hook_config_backup_overwrite
             'order_in_category_group' => 6,
 
             'required' => true,
+            'public' => false,
             'addon' => 'backup',
         );
     }

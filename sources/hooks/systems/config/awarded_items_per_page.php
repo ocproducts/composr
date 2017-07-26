@@ -40,6 +40,8 @@ class Hook_config_awarded_items_per_page
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'awards',
         );
     }

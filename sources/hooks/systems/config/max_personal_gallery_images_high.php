@@ -41,6 +41,8 @@ class Hook_config_max_personal_gallery_images_high
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

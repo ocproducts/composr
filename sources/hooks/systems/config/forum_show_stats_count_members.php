@@ -40,6 +40,8 @@ class Hook_config_forum_show_stats_count_members
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'stats_block',
         );
     }

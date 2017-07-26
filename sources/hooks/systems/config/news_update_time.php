@@ -40,6 +40,8 @@ class Hook_config_news_update_time
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'news',
         );
     }

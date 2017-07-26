@@ -40,6 +40,8 @@ class Hook_config_show_avatar
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

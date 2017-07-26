@@ -40,6 +40,8 @@ class Hook_config_enable_multi_quote
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

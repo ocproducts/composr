@@ -41,6 +41,8 @@ class Hook_config_maximum_password_length
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

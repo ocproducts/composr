@@ -40,6 +40,8 @@ class Hook_config_decryption_key
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

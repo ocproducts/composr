@@ -40,6 +40,8 @@ class Hook_config_maximum_autocomplete_suggestions
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'search',
         );
     }

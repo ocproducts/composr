@@ -40,6 +40,8 @@ class Hook_config_gzip_output
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

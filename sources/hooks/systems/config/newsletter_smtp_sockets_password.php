@@ -41,6 +41,8 @@ class Hook_config_newsletter_smtp_sockets_password
             'order_in_category_group' => 5,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'newsletter',
         );
     }

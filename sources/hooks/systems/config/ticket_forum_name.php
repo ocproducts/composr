@@ -41,6 +41,8 @@ class Hook_config_ticket_forum_name
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'tickets',
         );
     }

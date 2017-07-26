@@ -40,6 +40,8 @@ class Hook_config_points_if_liked
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'points',
         );
     }

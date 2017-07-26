@@ -40,6 +40,8 @@ class Hook_config_post_read_history_days
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

@@ -41,6 +41,8 @@ class Hook_config_imap_username
             'order_in_category_group' => 4,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

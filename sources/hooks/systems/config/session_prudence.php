@@ -40,6 +40,8 @@ class Hook_config_session_prudence
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

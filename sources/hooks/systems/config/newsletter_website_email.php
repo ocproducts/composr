@@ -41,6 +41,8 @@ class Hook_config_newsletter_website_email
             'order_in_category_group' => 11,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'newsletter',
         );
     }

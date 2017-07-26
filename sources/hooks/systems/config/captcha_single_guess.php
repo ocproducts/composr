@@ -41,6 +41,7 @@ class Hook_config_captcha_single_guess
             'order_in_category_group' => 2,
 
             'required' => true,
+            'public' => false,
             'addon' => 'captcha',
         );
     }

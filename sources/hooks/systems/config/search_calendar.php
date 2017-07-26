@@ -40,6 +40,8 @@ class Hook_config_search_calendar
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'calendar',
         );
     }

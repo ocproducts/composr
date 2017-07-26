@@ -41,6 +41,8 @@ class Hook_config_cc_address
             'order_in_category_group' => 3,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

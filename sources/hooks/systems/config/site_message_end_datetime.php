@@ -41,6 +41,8 @@ class Hook_config_site_message_end_datetime
             'order_in_category_group' => 3,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

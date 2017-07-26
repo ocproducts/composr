@@ -8,23 +8,24 @@
         docEl = document.documentElement,
         emptyEl = document.createElement('div'),
         emptyElStyle = emptyEl.style,
-
-    // hasOwnProperty shorcut
+        
+        // hasOwnProperty shorcut
         hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
 
         toArray = Function.bind.call(Function.call, emptyArr.slice),
+        slice = toArray,
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
-        // Clever helper for merging arrays using `[].push`
+        // Clever helper for merging arrays in-place using `[].push`
         pushArray = Function.bind.call(Function.apply, emptyArr.push);
 
     // Too useful to not have globally!
-    window.intVal   = intVal;
-    window.numVal   = numVal;
-    window.boolVal  = boolVal;
-    window.strVal   = strVal;
-    window.arrVal   = arrVal;
-    window.objVal   = objVal;
+    window.intVal  = intVal;
+    window.numVal  = numVal;
+    window.boolVal = boolVal;
+    window.strVal  = strVal;
+    window.arrVal  = arrVal;
+    window.objVal  = objVal;
 
     (window.$cmsInit  || (window.$cmsInit = []));
     (window.$cmsReady || (window.$cmsReady = []));
@@ -116,7 +117,9 @@
          * @method
          * @returns {string}
          */
-        $FROM_TIMESTAMP: constant(symbols.FROM_TIMESTAMP),
+        $FROM_TIMESTAMP: function $FROM_TIMESTAMP() {
+            return strVal(symbols.FROM_TIMESTAMP);
+        },
         /**
          * @method
          * @returns {string}
@@ -141,7 +144,7 @@
          * @method
          * @returns {string}
          */
-        $SITE_NAME: constant(strVal(symbols.SITE_NAME)),
+        $SITE_NAME: constant(strVal('{$SITE_NAME;}')),
         /**
          * @method
          * @returns {string}
@@ -205,19 +208,18 @@
          * @returns {boolean|string|number}
          */
         $CONFIG_OPTION: (function () {
-            var $PUBLIC_CONFIG_OPTIONS_JSON = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
+            if (window.IN_MINIKERNEL_VERSION) {
+                // Installer, likely executing global.js
+                return constant('');
+            }
             
+            var $PUBLIC_CONFIG_OPTIONS_JSON = JSON.parse('{$PUBLIC_CONFIG_OPTIONS_JSON;}');
             return function $CONFIG_OPTION(optionName) {
-                if (window.IN_MINIKERNEL_VERSION) {
-                    // Installer, likely executing global.js
-                    return '';
-                }
-
                 if (hasOwn($PUBLIC_CONFIG_OPTIONS_JSON, optionName)) {
                     return $PUBLIC_CONFIG_OPTIONS_JSON[optionName];
                 }
 
-                $cms.error('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
+                $cms.fatal('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
             };
         }()),
         /**
@@ -236,7 +238,7 @@
                 return symbols['HAS_PRIVILEGE'][optionName];
             }
 
-            $cms.error('$cms.$HAS_PRIVILEGE(): Privilege "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
+            $cms.fatal('$cms.$HAS_PRIVILEGE(): Privilege "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
         },
 
         // Just some more useful stuff, (not tempcode symbols)
@@ -365,21 +367,11 @@
         /**@method*/
         navigate: navigate,
         /**@method*/
-        log: log,
-        /**@method*/
-        info: info,
+        inform: inform,
         /**@method*/
         warn: warn,
         /**@method*/
-        dir: dir,
-        /**@method*/
-        assert: assert,
-        /**@method*/
-        verbose: verbose,
-        /**@method*/
-        error: error,
-        /**@method*/
-        exception: exception,
+        fatal: fatal,
         /**
          * @method
          * @param resourceEls
@@ -394,19 +386,19 @@
             }
 
             if (!Array.isArray(resourceEls)) {
-                $cms.error('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+                $cms.fatal('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
             }
 
             if (resourceEls.length < 1) {
                 return Promise.resolve();
             }
 
-            $cms.verbose('$cms.waitForResources(): Waiting for resources', resourceEls);
+            //$cms.inform('$cms.waitForResources(): Waiting for resources', resourceEls);
 
             var scriptsToLoad = [];
             resourceEls.forEach(function (el) {
                 if (!isEl(el)) {
-                    $cms.error('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
+                    $cms.fatal('$cms.waitForResources(): Invalid item of type "' + typeName(resourceEls) + '" in the `resourceEls` parameter.');
                     return;
                 }
 
@@ -430,9 +422,9 @@
                     }
 
                     if (event.type === 'load') {
-                        $cms.verbose('$cms.waitForResources(): Resource loaded successfully', loadedEl);
+                        //$cms.inform('$cms.waitForResources(): Resource loaded successfully', loadedEl);
                     } else {
-                        $cms.error('$cms.waitForResources(): Resource failed to load', loadedEl);
+                        $cms.fatal('$cms.waitForResources(): Resource failed to load', loadedEl);
                     }
 
                     scriptsToLoad = scriptsToLoad.filter(function (el) {
@@ -820,7 +812,7 @@
     /**
      * @param key
      * @param value
-     * @returns {{}}
+     * @returns {object}
      */
     function keyValue(key, value) {
         var obj = {};
@@ -1203,10 +1195,19 @@
     /**
      * Port of PHP's boolval() function
      * @param val
+     * @param [defaultValue]
      * @returns { Boolean }
      */
-    function boolVal(val) {
+    function boolVal(val, defaultValue) {
         var p;
+        if (defaultValue === undefined) {
+            defaultValue = false;
+        }
+        
+        if (val == null) {
+            return defaultValue;
+        }
+        
         return !!val && (val !== '0'); //&& ((typeof val !== 'object') || !((p = isPlainObj(val)) || isArrayLike(val)) || (p ? hasEnumerable(val) : (val.length > 0)));
     }
 
@@ -1222,18 +1223,36 @@
 
     /**
      * @param val
+     * @param [defaultValue]
      * @returns { Number }
      */
-    function intVal(val) {
-        return ((val != null) && (val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    function intVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = 0;
+        }
+
+        if (val == null) {
+            return defaultValue;
+        }
+        
+        return ((val !== null) && (val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     /**
      * @param val
+     * @param [defaultValue]
      * @returns { Number }
      */
-    function numVal(val) {
-        return ((val != null) && (val = Number(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+    function numVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = 0;
+        }
+
+        if (val == null) {
+            return defaultValue;
+        }
+        
+        return ((val !== null) && (val = Number(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     function numberFormat(num) {
@@ -1243,20 +1262,20 @@
 
     /**
      * @param val
-     * @param clone
-     * @returns { Array } array or array-like object
+     * @param [defaultValue]
+     * @returns { Array }
      */
-    function arrVal(val, clone) {
-        var isArr = false;
-
-        clone = !!clone;
-
+    function arrVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = [];
+        }
+        
         if (val == null) {
-            return [];
+            return defaultValue;
         }
 
-        if ((typeof val === 'object') && ((isArr = Array.isArray(val)) || isArrayLike(val))) {
-            return (!isArr || clone) ? toArray(val) : val;
+        if ((typeof val === 'object') && (Array.isArray(val) || isArrayLike(val))) {
+            return toArray(val);
         }
 
         return [val];
@@ -1264,10 +1283,15 @@
 
     /**
      * @param val
-     * @param defaultPropertyName
+     * @param [defaultPropertyName]
+     * @param [defaultValue]
      * @returns { Object }
      */
-    function objVal(val, defaultPropertyName) {
+    function objVal(val, defaultPropertyName, defaultValue) {
+        if ((val == null) && (defaultValue !== undefined)) {
+            return defaultValue;
+        }
+        
         if (!isObj(val) || Array.isArray(val)) {
             val = (defaultPropertyName !== undefined) ? keyValue(defaultPropertyName, val) : {};
         }
@@ -1278,9 +1302,18 @@
     /**
      * Sensible PHP-like string coercion
      * @param val
+     * @param [defaultValue]
      * @returns { string }
      */
-    function strVal(val) {
+    function strVal(val, defaultValue) {
+        if (defaultValue === undefined) {
+            defaultValue = '';
+        }
+
+        if (val == null) {
+            return defaultValue;
+        }
+        
         if (!val) {
             return (val === 0) ? '0' : '';
         } else if (val === true) {
@@ -1456,7 +1489,7 @@
             return window.location.protocol + relativeUrl;
         }
 
-        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : $cms.$BASE_URL() + '/') + relativeUrl;
+        return ((relativeUrl.startsWith('/')) ? $cms.$BASE_URL() : ($cms.$BASE_URL() + '/')) + relativeUrl;
     }
 
     function isAbsolute(url) {
@@ -1540,57 +1573,20 @@
         return window.JSON5.parse(strVal(source));
     }
 
-    function log() {
+    function inform() {
         if ($cms.$DEV_MODE()) {
             return console.log.apply(undefined, arguments);
-        }
-    }
-
-    function info() {
-        if ($cms.$DEV_MODE()) {
-            return console.info.apply(undefined, arguments);
         }
     }
 
     function warn() {
-        if ($cms.$DEV_MODE()) {
-            return console.warn.apply(undefined, arguments);
-        }
+        return console.warn.apply(undefined, arguments);
     }
-
-    function dir() {
-        if ($cms.$DEV_MODE()) {
-            return console.dir.apply(undefined, arguments);
-        }
+    
+    function fatal() {
+        return console.error.apply(undefined, arguments);
     }
-
-    function assert() {
-        if ($cms.$DEV_MODE()) {
-            return console.assert.apply(undefined, arguments);
-        }
-    }
-
-    function error() {
-        if ($cms.$DEV_MODE()) {
-            return console.error.apply(undefined, arguments);
-        }
-    }
-
-    function verbose() {
-        if ($cms.$DEV_MODE()) {
-            return console.log.apply(undefined, arguments);
-        }
-    }
-
-    function exception(ex) {
-        if ($cms.$DEV_MODE()) {
-            if (typeof ex === 'string') {
-                throw new Error(ex);
-            }
-            throw ex;
-        }
-    }
-
+    
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
 
     /**
@@ -1611,7 +1607,7 @@
             linkEl.id = 'css-' + sheetName;
             linkEl.rel = 'stylesheet';
             linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
-            linkEl.nonce = $cms.$CSP_NONCE;
+            linkEl.nonce = $cms.$CSP_NONCE();
             document.head.appendChild(linkEl);
         }
 
@@ -1654,7 +1650,7 @@
         }
 
         if (!scriptEl) {
-            $cms.log('_requireJavascript', script);
+            //$cms.inform('_requireJavascript', script);
 
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
@@ -1664,7 +1660,7 @@
                 scriptEl.id = 'javascript-' + script;
                 scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
             }
-            scriptEl.nonce = $cms.$CSP_NONCE;
+            scriptEl.nonce = $cms.$CSP_NONCE();
 
             document.body.appendChild(scriptEl);
             requireJavascriptPromises[script] = $cms.waitForResources(scriptEl);
@@ -1690,7 +1686,7 @@
     }
 
     function sequentialPromises(funcs) {
-        funcs = arrVal(funcs, true);
+        funcs = arrVal(funcs);
 
         if (funcs.length < 1) {
             return Promise.resolve();
@@ -1703,7 +1699,7 @@
         }
         return promise.then(function(val){
             return (funcs.length > 0) ? sequentialPromises(funcs) : val;
-        }, function () {
+        }, function (val) {
             return (funcs.length > 0) ? sequentialPromises(funcs) : val;
         });
     }
@@ -1778,7 +1774,7 @@
     // Inspired by cookie.js: https://github.com/js-cookie/js-cookie
     function CookieMonster() {}
 
-    properties(CookieMonster.prototype, /**@lends CookieMonster#*/ {
+    properties(CookieMonster.prototype, /**@lends CookieMonster#*/{
         /**@method*/
         get: function get(cookieName) {
             cookieName = strVal(cookieName);
@@ -1974,7 +1970,6 @@
 
                 if ((type === 'range') && (inputEl.style.WebkitAppearance !== undefined)) {
                     docEl.appendChild(inputEl);
-
                     bool = (getComputedStyle(inputEl).WebkitAppearance !== 'textfield') && (inputEl.offsetHeight !== 0);
                     docEl.removeChild(inputEl);
                 } else if ((type === 'url') || (type === 'email')) {
@@ -2079,7 +2074,7 @@
     var rgxIdSelector = /^\#[\w\-]+$/,
         rgxSimpleSelector = /^[\#\.]?[\w\-]+$/,
         // Special attributes that should be set via method calls
-        methodAttributes = { val: 1, css: 1, html: 1, text: 1, data: 1, width: 1, height: 1, offset: 1 },
+        methodAttributes = { val: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
         rgxNotWhite = /\S+/g;
 
     /** @namespace $cms */
@@ -2163,7 +2158,7 @@
          * @param selector
          * @returns { Element }
          */
-        $last: function last(context, selector) {
+        $last: function $last(context, selector) {
             return $cms.dom.$$(context, selector).pop();
         },
         /**
@@ -2193,25 +2188,29 @@
         /**
          * @memberof $cms.dom
          * @param tag
-         * @param attributes
          * @param properties
+         * @param attributes
          * @returns { Element }
          */
-        create: function create(tag, attributes, properties) {
+        create: function create(tag, properties, attributes) {
             var el = document.createElement(strVal(tag));
 
-            if (isObj(attributes)) {
-                each(attributes, function (key, value) {
+            if (isObj(properties)) {
+                each(properties, function (key, value) {
                     if (key in methodAttributes) {
                         $cms.dom[key](el, value);
+                    } else if (isObj(el[key]) && isObj(value)) {
+                        extendDeep(el[key], value);
                     } else {
-                        $cms.dom.attr(el, key, value)
+                        el[key] = value;
                     }
                 });
             }
 
-            if (isObj(properties)) {
-                extendDeep(el, properties);
+            if (isObj(attributes)) {
+                each(attributes, function (key, value) {
+                    $cms.dom.attr(el, key, value)
+                });
             }
 
             return el;
@@ -2444,7 +2443,7 @@
             try {
                 data = dataAttr(el, key);
             } catch (e) {
-                $cms.error('$cms.dom.data(): Exception thrown while parsing JSON in data attribute "' + key + '" of', el, e);
+                $cms.fatal('$cms.dom.data(): Exception thrown while parsing JSON in data attribute "' + key + '" of', el, e);
             }
 
             if (data !== undefined) {
@@ -4642,9 +4641,9 @@
                 if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].attach === 'function')) {
                     try {
                         ret = $cms.behaviors[name].attach(context, settings);
-                        $cms.verbose('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
+                        //$cms.inform('$cms.attachBehaviors(): attached behavior "' + name + '" to context', context);
                     } catch (e) {
-                        $cms.error('$cms.attachBehaviors(): Error while attaching behavior "' + name + '"  to', context, '\n', e);
+                        $cms.fatal('$cms.attachBehaviors(): Error while attaching behavior "' + name + '"  to', context, '\n', e);
                     }
                 }
 
@@ -4685,9 +4684,9 @@
             if (isObj($cms.behaviors[name]) && (typeof $cms.behaviors[name].detach === 'function')) {
                 try {
                     $cms.behaviors[name].detach(context, settings, trigger);
-                    $cms.verbose('$cms.detachBehaviors(): detached behavior "' + name + '" from context', context);
+                    //$cms.inform('$cms.detachBehaviors(): detached behavior "' + name + '" from context', context);
                 } catch (e) {
-                    $cms.error('$cms.detachBehaviors(): Error while detaching behavior \'' + name + '\' from', context, '\n', e);
+                    $cms.fatal('$cms.detachBehaviors(): Error while detaching behavior \'' + name + '\' from', context, '\n', e);
                 }
             }
         }
@@ -4714,6 +4713,7 @@
         postParams = (postParams !== undefined) ? postParams : null;
         inner = !!inner;
         showLoadingAnimation = (showLoadingAnimation !== undefined) ? !!showLoadingAnimation : true;
+        
         if ((_blockDataCache[url] === undefined) && (newBlockParams != '')) {
             // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
             _blockDataCache[url] = $cms.dom.html(targetDiv);
@@ -4924,7 +4924,7 @@
 
             var okay = true;
             try {
-                $cms.info('Beacon', 'send', 'event', category, action);
+                $cms.inform('Beacon', 'send', 'event', category, action);
 
                 window.ga(
                     'send',
@@ -5033,7 +5033,7 @@
      */
     function executeJsFunctionCalls(functionCallsArray) {
         if (!Array.isArray(functionCallsArray)) {
-            $cms.error('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + typeName(functionCallsArray) + '" passed');
+            $cms.fatal('$cms.executeJsFunctionCalls(): Argument 1 must be an array, "' + typeName(functionCallsArray) + '" passed');
             return;
         }
 
@@ -5045,7 +5045,7 @@
             }
 
             if (!Array.isArray(func) || (func.length < 1)) {
-                $cms.error('$cms.executeJsFunctionCalls(): Invalid function call format', func);
+                $cms.fatal('$cms.executeJsFunctionCalls(): Invalid function call format', func);
                 return;
             }
 
@@ -5055,7 +5055,7 @@
             if (typeof $cms.functions[funcName] === 'function') {
                 $cms.functions[funcName].apply(undefined, args);
             } else {
-                $cms.error('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
+                $cms.fatal('$cms.executeJsFunctionCalls(): Function not found: $cms.functions.' + funcName);
             }
         });
     }
@@ -5340,7 +5340,7 @@
          * @method
          */
         delegate: function (eventName, selector, listener) {
-            //$cms.verbose('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
+            //$cms.inform('$cms.View#delegate(): delegating event "' + eventName + '" for selector "' + selector + '" with listener', listener, 'and view', this);
             $cms.dom.on(this.el, (eventName + '.delegateEvents' + uid(this)), selector, listener);
             return this;
         },
@@ -6193,18 +6193,22 @@
             for (i = 0; i < parts.length; i++) {
                 var bits = parts[i].split('=');
                 if (bits[1] !== undefined) {
-                    if ((bits[0] == 'dialogWidth') || (bits[0] == 'width'))
+                    if ((bits[0] === 'dialogWidth') || (bits[0] === 'width')) {
                         width = bits[1].replace(/px$/, '');
-                    if ((bits[0] == 'dialogHeight') || (bits[0] == 'height')) {
-                        if (bits[1] == '100%') {
+                    }
+                    if ((bits[0] === 'dialogHeight') || (bits[0] === 'height')) {
+                        if (bits[1] === '100%') {
                             height = '' + ($cms.dom.getWindowHeight() - 200);
                         } else {
                             height = bits[1].replace(/px$/, '');
                         }
                     }
-                    if (((bits[0] == 'resizable') || (bits[0] == 'scrollbars')) && scrollbars !== true)
-                        scrollbars = ((bits[1] == 'yes') || (bits[1] == '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
-                    if (bits[0] == 'unadorned') unadorned = ((bits[1] == 'yes') || (bits[1] == '1'));
+                    if (((bits[0] === 'resizable') || (bits[0] === 'scrollbars')) && scrollbars !== true) {
+                        scrollbars = ((bits[1] === 'yes') || (bits[1] === '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
+                    }
+                    if (bits[0] === 'unadorned') {
+                        unadorned = ((bits[1] === 'yes') || (bits[1] === '1'));
+                    }
                 }
             }
         }
@@ -6634,7 +6638,7 @@
             }
 
             // Auto width means full width
-            if (width == 'auto') {
+            if (width === 'auto') {
                 width = '' + (dim.window_width - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
             }
             // NB: auto height feeds through without a constraint (due to infinite growth space), with dynamic adjustment for iframes
@@ -6671,7 +6675,7 @@
 
             if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body)) { // Balance iframe height
                 iframe.style.width = '100%';
-                if (height == 'auto') {
+                if (height === 'auto') {
                     if (!init) {
                         detectedBoxHeight = $cms.dom.getWindowScrollHeight(iframe.contentWindow);
                         iframe.style.height = detectedBoxHeight + 'px';
@@ -6714,7 +6718,7 @@
 
             // Absolute positioning instead of fixed positioning
             if ($cms.$MOBILE() || (detectedBoxHeight > dim.window_height) || (this.boxWrapperEl.style.position === 'absolute'/*don't switch back to fixed*/)) {
-                var wasFixed = (this.boxWrapperEl.style.position == 'fixed');
+                var wasFixed = (this.boxWrapperEl.style.position === 'fixed');
 
                 this.boxWrapperEl.style.position = 'absolute';
                 this.boxWrapperEl.style.height = ((dim.page_height > (detectedBoxHeight + bottomGap + _boxPosLeft)) ? dim.page_height : (detectedBoxHeight + bottomGap + _boxPosLeft)) + 'px';
@@ -6789,7 +6793,7 @@
             });
 
             var overlayHeader = null;
-            if (this.title != '' || this.type == 'iframe') {
+            if (this.title != '' || this.type === 'iframe') {
                 overlayHeader = this.element('h3', {
                     'html': this.title,
                     'css': {
@@ -6833,11 +6837,9 @@
             this.keyup = function (e) {
                 var keyCode = (e) ? (e.which || e.keyCode) : null;
 
-                if (keyCode == 37) // Left arrow
-                {
+                if (keyCode == 37) {// Left arrow
                     that.option('left');
-                } else if (keyCode == 39) // Right arrow
-                {
+                } else if (keyCode == 39) {// Right arrow
                     that.option('right');
                 } else if ((keyCode == 13/*enter*/) && (that.yes)) {
                     that.option('yes');
@@ -7370,10 +7372,10 @@
                             networkDownAlerted = true;
                         }
                     } else {
-                        $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + ajaxInstance.status + ': ' + ajaxInstance.statusText + '.', ajaxInstance);
+                        $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + ajaxInstance.status + ': ' + ajaxInstance.statusText + '.', ajaxInstance);
                     }
                 } catch (e) {
-                    $cms.error('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
+                    $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
                 }
             }
         }
@@ -7416,7 +7418,9 @@
             var xml;
             try {
                 xml = (new DOMParser()).parseFromString(xhr.responseText, 'application/xml');
-                if ((xml) && (xml.documentElement.nodeName == 'parsererror')) xml = null;
+                if ((xml) && (xml.documentElement.nodeName === 'parsererror')) {
+                    xml = null;
+                }
             } catch (ignore) {}
 
             if (xml) {
@@ -7424,7 +7428,7 @@
             }
 
             if (xhr.responseText && xhr.responseText.includes('<html')) {
-                $cms.error('$cms.doAjaxRequest(): ', xhr);
+                $cms.fatal('$cms.doAjaxRequest(): ', xhr);
                 $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
         }
@@ -7462,7 +7466,7 @@
                 if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
                     if (xhr.responseText !== 'false') {
                         if (xhr.responseText.length > 1000) {
-                            $cms.log('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
+                            $cms.inform('$cms.form.doAjaxFieldTest()', 'xhr.responseText:', xhr.responseText);
                             $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
                         } else {
                             $cms.ui.alert(xhr.responseText);
@@ -7515,16 +7519,16 @@
                         view, viewOptions = { el: el };
 
                     if (typeof $cms.views[el.dataset.view] !== 'function') {
-                        $cms.error('$cms.behaviors.initializeViews.attach(): Missing view constructor "' + el.dataset.view + '" for', el);
+                        $cms.fatal('$cms.behaviors.initializeViews.attach(): Missing view constructor "' + el.dataset.view + '" for', el);
                         return;
                     }
 
                     try {
                         view = new $cms.views[el.dataset.view](params, viewOptions);
                         $cms.viewInstances[$cms.uid(view)] = view;
-                        $cms.verbose('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
+                        //$cms.inform('$cms.behaviors.initializeViews.attach(): Initialized view "' + el.dataset.view + '" for', el, view);
                     } catch (ex) {
-                        $cms.error('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
+                        $cms.fatal('$cms.behaviors.initializeViews.attach(): Exception thrown while initializing view "' + el.dataset.view + '" for', el, ex);
                     }
                 });
             }
@@ -7538,15 +7542,15 @@
                         params = objVal($cms.dom.data(el, 'tplParams'));
 
                     if (typeof $cms.templates[template] !== 'function') {
-                        $cms.error('$cms.behaviors.initializeTemplates.attach(): Missing template function "' + template + '" for', el);
+                        $cms.fatal('$cms.behaviors.initializeTemplates.attach(): Missing template function "' + template + '" for', el);
                         return;
                     }
 
                     try {
                         $cms.templates[template].call(el, params, el);
-                        $cms.verbose('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
+                        //$cms.inform('$cms.behaviors.initializeTemplates.attach(): Initialized template "' + template + '" for', el);
                     } catch (ex) {
-                        $cms.error('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
+                        $cms.fatal('$cms.behaviors.initializeTemplates.attach(): Exception thrown while calling the template function "' + template + '" for', el, ex);
                     }
                 });
             }
@@ -7858,10 +7862,10 @@
                 'link': '{$PAGE_LINK;,:privacy}',
                 'theme': 'dark-top'
             };
-            document.body.appendChild($cms.dom.create('script', null, {
+            document.body.appendChild($cms.dom.create('script', {
                 src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js',
                 defer: true,
-                nonce: $cms.$CSP_NONCE
+                nonce: $cms.$CSP_NONCE()
             }));
         }
 
@@ -8344,7 +8348,7 @@
 
         // Implementation for [data-mouseover-activate-tooltip]
         mouseoverActivateTooltip: function (e, el) {
-            var args = arrVal($cms.dom.data(el, 'mouseoverActivateTooltip'), true);
+            var args = arrVal($cms.dom.data(el, 'mouseoverActivateTooltip'));
 
             args.unshift(el, e);
 
@@ -8352,13 +8356,13 @@
                 //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                $cms.fatal('$cms.views.Global#mouseoverActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
         // Implementation for [data-focus-activate-tooltip]
         focusActivateTooltip: function (e, el) {
-            var args = arrVal($cms.dom.data(el, 'focusActivateTooltip'), true);
+            var args = arrVal($cms.dom.data(el, 'focusActivateTooltip'));
 
             args.unshift(el, e);
 
@@ -8366,7 +8370,7 @@
                 //arguments: el, event, tooltip, width, pic, height, bottom, no_delay, lights_off, force_width, win, have_links
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                $cms.fatal('$cms.views.Global#focusActivateTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -8394,7 +8398,7 @@
             try {
                 $cms.ui.activateTooltip.apply(undefined, args);
             } catch (ex) {
-                $cms.error('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
+                $cms.fatal('$cms.views.Global#activateRichTooltip(): Exception thrown by $cms.ui.activateTooltip()', ex, 'called with args:', args);
             }
         },
 
@@ -8429,7 +8433,7 @@
                 $cms.setCookie('tray_' + trayCookie, $cms.dom.isDisplayed(trayEl) ? 'closed' : 'open');
             }
 
-            $cms.toggleableTray(trayEl);
+            $cms.ui.toggleableTray(trayEl);
         },
         
         
@@ -9150,7 +9154,7 @@
         toggleMenu: function (e, target) {
             var menuId = target.dataset.menuTreeToggle;
 
-            $cms.toggleableTray($cms.dom.$('#' + menuId));
+            $cms.ui.toggleableTray($cms.dom.$('#' + menuId));
         }
     });
 
@@ -9555,7 +9559,7 @@
                 $cms.setCookie('tray_' + this.trayCookie, $cms.dom.isDisplayed(this.el) ? 'closed' : 'open');
             }
 
-            $cms.toggleableTray(this.el);
+            $cms.ui.toggleableTray(this.el);
         },
 
         /**@method*/
@@ -9564,11 +9568,11 @@
 
             nodes.forEach(function (node) {
                 if ((node.parentNode !== el) && $cms.dom.isDisplayed(node) && node.parentNode.classList.contains('js-tray-accordion-item')) {
-                    $cms.toggleableTray({ el: node, animate: false });
+                    $cms.ui.toggleableTray({ el: node, animate: false });
                 }
             });
 
-            $cms.toggleableTray(el);
+            $cms.ui.toggleableTray(el);
         },
 
         /**@method*/
@@ -9585,13 +9589,17 @@
             var cookieValue = $cms.readCookie('tray_' + this.trayCookie);
 
             if (($cms.dom.notDisplayed(this.contentEl) && (cookieValue === 'open')) || ($cms.dom.isDisplayed(this.contentEl) && (cookieValue === 'closed'))) {
-                $cms.toggleableTray({ el: this.contentEl, animate: false });
+                $cms.ui.toggleableTray({ el: this.contentEl, animate: false });
             }
         }
     });
-
-    // Toggle a ToggleableTray
-    $cms.toggleableTray = function toggleableTray(elOrOptions) {
+    
+    /**
+     * Toggle a ToggleableTray
+     * @memberof $cms.ui
+     * @param elOrOptions
+     */
+    $cms.ui.toggleableTray = function toggleableTray(elOrOptions) {
         var options, el, animate,
             $IMG_expand = '{$IMG;,1x/trays/expand}',
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
@@ -9601,7 +9609,7 @@
         if ($cms.isPlainObj(elOrOptions)) {
             options = elOrOptions;
             el =  options.el;
-            animate = $cms.$CONFIG_OPTION('enable_animations') ? ((options.animate !== undefined) ? !!options.animate : true) : false;
+            animate = $cms.$CONFIG_OPTION('enable_animations') ? boolVal(options.animate, true) : false;
         } else {
             el = elOrOptions;
             animate = $cms.$CONFIG_OPTION('enable_animations');
@@ -9621,9 +9629,9 @@
 
         var pic = $cms.dom.$(el.parentNode, '.toggleable_tray_button img') || $cms.dom.$('img#e_' + el.id);
 
-        el.setAttribute('aria-expanded', 'true');
-
         if ($cms.dom.notDisplayed(el)) {
+            el.setAttribute('aria-expanded', 'true');
+            
             if (animate) {
                 $cms.dom.slideDown(el);
             } else {
@@ -9634,6 +9642,8 @@
                 setTrayThemeImage('expand', 'contract', $IMG_expand, $IMG_contract, $IMG_contract2);
             }
         } else {
+            el.setAttribute('aria-expanded', 'false');
+            
             if (animate) {
                 $cms.dom.slideUp();
             } else {
@@ -10023,7 +10033,6 @@
                             $cms.navigate(link);
                         }
                     );
-                    return false;
                 };
             });
         }
@@ -10145,14 +10154,14 @@
             var response = strVal(result.responseText);
             if (response === '1') {
                 clearInterval(window.detect_interval);
-                $cms.log('detectChange(): Change detected');
+                $cms.inform('detectChange(): Change detected');
                 callback();
             }
         }, 'refresh_if_changed=' + encodeURIComponent(refreshIfChanged));
     }
 
     function detectedChange() {
-        $cms.log('detectedChange(): Change notification running');
+        $cms.inform('detectedChange(): Change notification running');
 
         try {
             focus();
@@ -10178,7 +10187,7 @@
             e[i].addEventListener('click', function (_e) {
                 return function () {
                     var selected = false;
-                    if (_e.type != 'undefined' && _e.type == 'checkbox') {
+                    if (_e.type !== 'undefined' && _e.type === 'checkbox') {
                         selected = (_e.checked && _e.value == value) || (!_e.checked && '' == value);
                     } else {
                         selected = (_e.value == value);
@@ -10397,18 +10406,19 @@
             return false;
         }
 
-        var moreLinks = [], foundNewLinks = null;
+        var moreLinks = [], foundNewLinks = null, _i, pagination, m;
 
-        for (var _i = 0; _i < _pagination.length; _i++) {
-            var pagination = _pagination[_i];
-
-            if (pagination.style.display != 'none') {
+        for (_i = 0; _i < _pagination.length; _i++) {
+            pagination = _pagination[_i];
+            if (pagination.style.display !== 'none') {
                 // Remove visibility of pagination, now we've replaced with AJAX load more link
                 var paginationParent = pagination.parentNode;
                 pagination.style.display = 'none';
                 var numNodeChildren = 0;
                 for (var i = 0; i < paginationParent.childNodes.length; i++) {
-                    if (paginationParent.childNodes[i].nodeName != '#text') numNodeChildren++;
+                    if (paginationParent.childNodes[i].nodeName != '#text') {
+                        numNodeChildren++;
+                    }
                 }
                 if (numNodeChildren == 0) { // Remove empty pagination wrapper
                     paginationParent.style.display = 'none';
@@ -10417,7 +10427,9 @@
                 // Add AJAX load more link before where the last pagination control was
                 // Remove old pagination_load_more's
                 var paginationLoadMore = wrapper.querySelectorAll('.pagination_load_more');
-                if (paginationLoadMore.length > 0) paginationLoadMore[0].parentNode.removeChild(paginationLoadMore[0]);
+                if (paginationLoadMore.length > 0) {
+                    paginationLoadMore[0].parentNode.removeChild(paginationLoadMore[0]);
+                }
 
                 // Add in new one
                 var loadMoreLink = document.createElement('div');
@@ -10436,8 +10448,8 @@
                 foundNewLinks = _i;
             }
         }
-        for (var _i = 0; _i < _pagination.length; _i++) {
-            var pagination = _pagination[_i];
+        for (_i = 0; _i < _pagination.length; _i++) {
+            pagination = _pagination[_i];
             if (foundNewLinks != null) {// Cleanup old pagination
                 if (_i != foundNewLinks) {
                     var _moreLinks = pagination.getElementsByTagName('a');
@@ -10457,8 +10469,8 @@
 
         // Is more scrolling possible?
         var rel, foundRel = false;
-        for (var i = 0; i < moreLinks.length; i++) {
-            rel = moreLinks[i].getAttribute('rel');
+        for (var k = 0; k < moreLinks.length; k++) {
+            rel = moreLinks[k].getAttribute('rel');
             if (rel && rel.indexOf('next') !== -1) {
                 foundRel = true;
             }
@@ -10474,16 +10486,15 @@
         }
 
         // Used for calculating if we need to scroll down
-        var wrapperPosY = $cms.dom.findPosY(wrapper);
-        var wrapperHeight = wrapper.offsetHeight;
-        var wrapperBottom = wrapperPosY + wrapperHeight;
-        var windowHeight = $cms.dom.getWindowHeight();
-        var pageHeight = $cms.dom.getWindowScrollHeight();
-        var scrollY = window.pageYOffset;
+        var wrapperPosY = $cms.dom.findPosY(wrapper),
+            wrapperHeight = wrapper.offsetHeight,
+            wrapperBottom = wrapperPosY + wrapperHeight,
+            windowHeight = $cms.dom.getWindowHeight(),
+            pageHeight = $cms.dom.getWindowScrollHeight(),
+            scrollY = window.pageYOffset;
 
         // Scroll down -- load
-        if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) // If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
-        {
+        if ((scrollY + windowHeight > wrapperBottom - windowHeight * 2) && (scrollY + windowHeight < pageHeight - 30)) {// If within window_height*2 pixels of load area and not within 30 pixels of window bottom (so you can press End key)
             return internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
         }
 

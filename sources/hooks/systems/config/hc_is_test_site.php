@@ -40,6 +40,8 @@ class Hook_config_hc_is_test_site
             'list_options' => '-1|0|1',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

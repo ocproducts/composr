@@ -41,6 +41,8 @@ class Hook_config_shipping_cost_base
             'order_in_category_group' => 1,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

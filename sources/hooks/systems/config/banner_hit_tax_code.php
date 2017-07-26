@@ -41,6 +41,8 @@ class Hook_config_banner_hit_tax_code
             'order_in_category_group' => 10,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

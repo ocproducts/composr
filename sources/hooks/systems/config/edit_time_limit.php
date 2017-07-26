@@ -40,6 +40,8 @@ class Hook_config_edit_time_limit
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

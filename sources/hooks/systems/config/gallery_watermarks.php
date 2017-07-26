@@ -40,6 +40,8 @@ class Hook_config_gallery_watermarks
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

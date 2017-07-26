@@ -42,6 +42,7 @@ class Hook_config_show_screen_actions
             'theme_override' => true,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

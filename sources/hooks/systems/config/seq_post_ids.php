@@ -40,6 +40,8 @@ class Hook_config_seq_post_ids
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

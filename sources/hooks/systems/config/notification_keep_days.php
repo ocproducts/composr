@@ -40,6 +40,8 @@ class Hook_config_notification_keep_days
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_notifications',
         );
     }

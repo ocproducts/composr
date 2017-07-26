@@ -40,6 +40,8 @@ class Hook_config_points_per_currency_unit
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'points',
         );
     }

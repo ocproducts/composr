@@ -40,6 +40,8 @@ class Hook_config_store_revisions
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'actionlog',
         );
     }

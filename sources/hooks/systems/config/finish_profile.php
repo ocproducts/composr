@@ -40,6 +40,8 @@ class Hook_config_finish_profile
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

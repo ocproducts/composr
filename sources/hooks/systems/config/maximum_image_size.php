@@ -41,6 +41,8 @@ class Hook_config_maximum_image_size
             'order_in_category_group' => 1,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

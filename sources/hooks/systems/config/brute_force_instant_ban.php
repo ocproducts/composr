@@ -41,6 +41,7 @@ class Hook_config_brute_force_instant_ban
             'order_in_category_group' => 1,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

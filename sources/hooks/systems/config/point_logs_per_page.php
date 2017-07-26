@@ -40,6 +40,8 @@ class Hook_config_point_logs_per_page
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'points',
         );
     }

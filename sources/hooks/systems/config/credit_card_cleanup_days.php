@@ -41,6 +41,8 @@ class Hook_config_credit_card_cleanup_days
             'order_in_category_group' => 7,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

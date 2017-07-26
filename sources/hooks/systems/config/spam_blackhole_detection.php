@@ -41,6 +41,7 @@ class Hook_config_spam_blackhole_detection
             'order_in_category_group' => 3,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

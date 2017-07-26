@@ -41,6 +41,8 @@ class Hook_config_sms_low_limit
             'order_in_category_group' => 4,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'sms',
         );
     }

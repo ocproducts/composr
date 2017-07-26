@@ -41,6 +41,8 @@ class Hook_config_csp_allowed_iframe_ancestors
             'order_in_category_group' => 4,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

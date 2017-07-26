@@ -40,6 +40,8 @@ class Hook_config_enable_boolean_search
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'search',
         );
     }

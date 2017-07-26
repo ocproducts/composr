@@ -87,12 +87,12 @@
     };
 
     $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
-        $cms.log('Executing $cms.templates.cnsMemberProfileEdit()');
+        $cms.inform('Executing $cms.templates.cnsMemberProfileEdit()');
 
         $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function (e, clicked) {
             var tabSet = 'edit__',
                 tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();
-            $cms.log('Select tab', tabSet + tabCode);
+            $cms.inform('Select tab', tabSet + tabCode);
             if (tabCode) {
                 $cms.ui.selectTab('g', tabSet + tabCode)
             }

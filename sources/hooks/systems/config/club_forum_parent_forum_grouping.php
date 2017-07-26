@@ -40,6 +40,8 @@ class Hook_config_club_forum_parent_forum_grouping
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_clubs',
         );
     }

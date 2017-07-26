@@ -41,6 +41,8 @@ class Hook_config_proxy
             'order_in_category_group' => 1,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

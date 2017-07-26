@@ -40,6 +40,8 @@ class Hook_config_hc_admin_stale_threshold
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

@@ -41,6 +41,8 @@ class Hook_config_hc_cron_notify_regardless
             'order_in_category_group' => 3,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

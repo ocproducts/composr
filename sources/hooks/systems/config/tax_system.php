@@ -41,6 +41,8 @@ class Hook_config_tax_system
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

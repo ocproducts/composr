@@ -40,6 +40,8 @@ class Hook_config_chat_transitory_alert_time
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'chat',
         );
     }

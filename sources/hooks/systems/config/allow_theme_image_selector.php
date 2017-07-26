@@ -40,6 +40,8 @@ class Hook_config_allow_theme_image_selector
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

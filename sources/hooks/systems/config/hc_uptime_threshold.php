@@ -41,6 +41,8 @@ class Hook_config_hc_uptime_threshold
             'order_in_category_group' => 5,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

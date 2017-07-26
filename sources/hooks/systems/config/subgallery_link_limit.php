@@ -40,6 +40,8 @@ class Hook_config_subgallery_link_limit
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

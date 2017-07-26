@@ -40,6 +40,8 @@ class Hook_config_hc_scan_page_links
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

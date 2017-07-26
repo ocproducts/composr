@@ -40,6 +40,8 @@ class Hook_config_show_empty_cpfs
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

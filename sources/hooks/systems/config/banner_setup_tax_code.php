@@ -41,6 +41,8 @@ class Hook_config_banner_setup_tax_code
             'order_in_category_group' => 4,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

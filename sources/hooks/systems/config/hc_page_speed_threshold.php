@@ -41,6 +41,8 @@ class Hook_config_hc_page_speed_threshold
             'order_in_category_group' => 3,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

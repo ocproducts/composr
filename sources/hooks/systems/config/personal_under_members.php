@@ -41,6 +41,7 @@ class Hook_config_personal_under_members
             'order_in_category_group' => 5,
 
             'required' => true,
+            'public' => false,
             'addon' => 'galleries',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_page_after_login
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

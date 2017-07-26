@@ -40,6 +40,8 @@ class Hook_config_keyset_pagination
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

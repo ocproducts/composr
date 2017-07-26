@@ -40,6 +40,8 @@ class Hook_config_cdn
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
 
             'maintenance_code' => 'cdn_theme_image',

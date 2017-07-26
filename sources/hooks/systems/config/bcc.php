@@ -41,6 +41,7 @@ class Hook_config_bcc
             'order_in_category_group' => 4,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

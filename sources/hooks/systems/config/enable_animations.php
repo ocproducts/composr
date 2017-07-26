@@ -39,11 +39,11 @@ class Hook_config_enable_animations
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'theme_override' => true,
-
             'required' => true,
-            'addon' => 'core_configuration',
-
+            'public' => false,
             'public' => true,
+
+            'addon' => 'core_configuration',
         );
     }
 

@@ -40,6 +40,8 @@ class Hook_config_activity_show_stats_count_page_views_this_month
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'stats_block',
         );
     }

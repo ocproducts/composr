@@ -40,6 +40,8 @@ class Hook_config_search_cns_clubs
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_clubs',
         );
     }

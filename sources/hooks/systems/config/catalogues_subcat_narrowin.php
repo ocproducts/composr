@@ -40,6 +40,8 @@ class Hook_config_catalogues_subcat_narrowin
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'catalogues',
         );
     }

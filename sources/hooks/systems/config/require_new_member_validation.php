@@ -41,6 +41,7 @@ class Hook_config_require_new_member_validation
             'order_in_category_group' => 5,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_cns',
         );
     }

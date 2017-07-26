@@ -41,6 +41,8 @@ class Hook_config_spam_heuristic_confidence_autonomous
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

@@ -41,6 +41,8 @@ class Hook_config_hc_mail_password
             'required' => false,
             'order_in_category_group' => 5,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

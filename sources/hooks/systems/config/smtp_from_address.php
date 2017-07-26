@@ -41,6 +41,8 @@ class Hook_config_smtp_from_address
             'order_in_category_group' => 6,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

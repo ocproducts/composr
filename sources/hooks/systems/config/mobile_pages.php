@@ -42,6 +42,8 @@ class Hook_config_mobile_pages
             'theme_override' => true,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

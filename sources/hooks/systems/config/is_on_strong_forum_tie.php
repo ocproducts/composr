@@ -41,6 +41,7 @@ class Hook_config_is_on_strong_forum_tie
             'order_in_category_group' => 6,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

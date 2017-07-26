@@ -40,6 +40,8 @@ class Hook_config_chat_default_post_colour
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'chat',
         );
     }

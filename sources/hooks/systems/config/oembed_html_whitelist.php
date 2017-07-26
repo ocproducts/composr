@@ -41,6 +41,8 @@ class Hook_config_oembed_html_whitelist
             'order_in_category_group' => 4,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_rich_media',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_gallery_rep_image
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

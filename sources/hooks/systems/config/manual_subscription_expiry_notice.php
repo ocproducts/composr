@@ -41,6 +41,8 @@ class Hook_config_manual_subscription_expiry_notice
             'order_in_category_group' => 8,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

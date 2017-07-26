@@ -206,9 +206,9 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
         } catch (ignore) {}
 
         clonedMessage = $cms.dom.create('div', {
-            'id': _clonedMessage.getAttribute('id'),
-            'class': _clonedMessage.getAttribute('class'),
-            'html': $cms.dom.html(_clonedMessage)
+            id: _clonedMessage.getAttribute('id'),
+            className: _clonedMessage.getAttribute('class'),
+            html: $cms.dom.html(_clonedMessage)
         });
 
         leftPos += (windowWidth > 900) ? 200 : 20;
@@ -229,16 +229,16 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
 
             // JS events, for pausing and changing z-index
             clonedMessage.addEventListener('mouseover', function () {
-                this.style.zIndex = 160;
+                clonedMessage.style.zIndex = 160;
                 if (!window.paused) {
-                    this.pausing = true;
+                    clonedMessage.pausing = true;
                     window.paused = true;
                 }
             });
             clonedMessage.addEventListener('mouseout', function () {
-                this.style.zIndex = 50;
-                if (this.pausing) {
-                    this.pausing = false;
+                clonedMessage.style.zIndex = 50;
+                if (clonedMessage.pausing) {
+                    clonedMessage.pausing = false;
                     window.paused = false;
                 }
             });

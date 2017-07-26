@@ -41,6 +41,8 @@ class Hook_config_comments_forum_name
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

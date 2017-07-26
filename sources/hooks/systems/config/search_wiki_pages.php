@@ -40,6 +40,8 @@ class Hook_config_search_wiki_pages
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'wiki',
         );
     }

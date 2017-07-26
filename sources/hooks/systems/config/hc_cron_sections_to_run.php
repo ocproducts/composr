@@ -41,6 +41,8 @@ class Hook_config_hc_cron_sections_to_run
             'order_in_category_group' => 1,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

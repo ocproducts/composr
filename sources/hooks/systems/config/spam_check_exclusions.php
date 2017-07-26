@@ -41,6 +41,8 @@ class Hook_config_spam_check_exclusions
             'order_in_category_group' => 10,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

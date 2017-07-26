@@ -40,6 +40,8 @@ class Hook_config_chat_default_post_font
             'list_options' => 'Arial|Courier|Georgia|Impact|Times| Trebuchet|Verdana|Tahoma|Geneva|Helvetica',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'chat',
         );
     }

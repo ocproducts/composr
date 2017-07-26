@@ -41,6 +41,7 @@ class Hook_config_enable_menu_editor_buttons
             'theme_override' => true,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

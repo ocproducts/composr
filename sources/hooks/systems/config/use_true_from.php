@@ -41,6 +41,8 @@ class Hook_config_use_true_from
             'order_in_category_group' => 9,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

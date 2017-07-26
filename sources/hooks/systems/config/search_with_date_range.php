@@ -40,6 +40,8 @@ class Hook_config_search_with_date_range
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'search',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_download_cat_buy_max_emailed_size
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

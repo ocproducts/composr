@@ -40,6 +40,8 @@ class Hook_config_threaded_buttons
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

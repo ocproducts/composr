@@ -40,6 +40,8 @@ class Hook_config_breadcrumb_crop_length
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

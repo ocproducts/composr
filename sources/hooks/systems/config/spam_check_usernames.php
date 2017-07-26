@@ -41,6 +41,7 @@ class Hook_config_spam_check_usernames
             'order_in_category_group' => 12,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

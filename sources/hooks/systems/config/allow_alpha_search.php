@@ -40,6 +40,8 @@ class Hook_config_allow_alpha_search
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

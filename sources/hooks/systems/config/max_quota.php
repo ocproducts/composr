@@ -41,6 +41,8 @@ class Hook_config_max_quota
             'order_in_category_group' => 9,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

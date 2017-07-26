@@ -40,6 +40,8 @@ class Hook_config_cpf_enable_phone
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

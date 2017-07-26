@@ -41,6 +41,8 @@ class Hook_config_payment_gateway_username
             'order_in_category_group' => 2,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

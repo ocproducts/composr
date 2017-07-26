@@ -40,6 +40,8 @@ class Hook_config_reported_times
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'tickets',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_bottom_show_commandr_button
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'commandr',
         );
     }

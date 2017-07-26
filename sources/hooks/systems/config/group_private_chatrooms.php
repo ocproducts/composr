@@ -40,6 +40,8 @@ class Hook_config_group_private_chatrooms
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'chat',
         );
     }

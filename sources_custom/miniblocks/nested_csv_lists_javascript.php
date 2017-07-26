@@ -112,7 +112,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                             if ((csvData[i]['deprecated'] === undefined) || (csvData[i]['deprecated'] == '0') || (window.handle_csv_deprecation === undefined) || (!window.window.handle_csv_deprecation)) {
 
                                 if (csvData[i][cpfField.csv_heading] === undefined) {
-                                    $cms.log('Configured linker table does not include child field');
+                                    $cms.inform('Configured linker table does not include child field');
                                 }
                                 possibilities.push(csvData[i][cpfField.csv_heading]);
                             }
@@ -176,20 +176,20 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
         if (initialRun) { // This may effectively be called on non-initial runs, but it would be due to the list filter changes causing a selection change that propagates
             var allRefreshFunctions = [];
 
-            $cms.log('Looking for children of ' + cpfField.csv_heading + '...');
+            $cms.inform('Looking for children of ' + cpfField.csv_heading + '...');
 
             for (var i in cpfFields) {
 
                 var childCpfField = cpfFields[i], refreshFunction, childCpfFieldElement;
 
                 if (childCpfField.csv_parent_heading == cpfField.csv_heading) {
-                    $cms.log(' ' + cpfField.csv_heading + ' has child ' + childCpfField.csv_heading);
+                    $cms.inform(' ' + cpfField.csv_heading + ' has child ' + childCpfField.csv_heading);
 
                     childCpfFieldElement = findCpfFieldElement(element.form, childCpfField);
 
                     refreshFunction = function (childCpfFieldElement, childCpfField) {
                         return function () {
-                            $cms.log('UPDATING: ' + childCpfField.csv_heading);
+                            $cms.inform('UPDATING: ' + childCpfField.csv_heading);
 
                             if (childCpfFieldElement) {
                                 injectFormSelectChainingElement(childCpfFieldElement, childCpfField, false);

@@ -41,6 +41,8 @@ class Hook_config_one_per_email_address
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

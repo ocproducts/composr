@@ -41,6 +41,8 @@ class Hook_config_site_scope
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

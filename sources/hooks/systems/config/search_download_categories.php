@@ -40,6 +40,8 @@ class Hook_config_search_download_categories
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'downloads',
         );
     }

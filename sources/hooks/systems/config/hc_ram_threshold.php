@@ -41,6 +41,8 @@ class Hook_config_hc_ram_threshold
             'order_in_category_group' => 7,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

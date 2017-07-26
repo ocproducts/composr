@@ -41,6 +41,8 @@ class Hook_config_shipping_distance_units
             'order_in_category_group' => 5,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

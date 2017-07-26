@@ -41,6 +41,8 @@ class Hook_config_initial_banner_hits
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

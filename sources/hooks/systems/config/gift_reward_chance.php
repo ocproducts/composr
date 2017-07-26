@@ -41,6 +41,8 @@ class Hook_config_gift_reward_chance
             'order_in_category_group' => 1,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'points',
         );
     }

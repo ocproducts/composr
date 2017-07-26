@@ -41,6 +41,8 @@ class Hook_config_quota_url
             'order_in_category_group' => 4,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

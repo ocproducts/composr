@@ -40,6 +40,8 @@ class Hook_config_force_meta_refresh
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

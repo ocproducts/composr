@@ -41,6 +41,8 @@ class Hook_config_brute_force_threshold
             'order_in_category_group' => 3,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

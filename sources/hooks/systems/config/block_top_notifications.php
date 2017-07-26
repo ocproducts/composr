@@ -40,6 +40,8 @@ class Hook_config_block_top_notifications
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_notifications',
         );
     }

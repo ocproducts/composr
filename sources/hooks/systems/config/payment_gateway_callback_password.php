@@ -41,6 +41,8 @@ class Hook_config_payment_gateway_callback_password
             'order_in_category_group' => 7,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

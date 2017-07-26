@@ -41,6 +41,8 @@ class Hook_config_privacy_fax
             'order_in_category_group' => 2,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

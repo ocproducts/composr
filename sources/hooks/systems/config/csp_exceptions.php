@@ -41,6 +41,8 @@ class Hook_config_csp_exceptions
             'order_in_category_group' => 2,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

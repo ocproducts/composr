@@ -50,6 +50,8 @@ class Hook_config_site_message_usergroup_select
             'order_in_category_group' => 5,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

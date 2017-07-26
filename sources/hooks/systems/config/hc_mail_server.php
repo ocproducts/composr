@@ -41,6 +41,8 @@ class Hook_config_hc_mail_server
             'required' => false,
             'order_in_category_group' => 2,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

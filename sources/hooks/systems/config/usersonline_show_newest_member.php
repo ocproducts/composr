@@ -40,6 +40,8 @@ class Hook_config_usersonline_show_newest_member
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'users_online_block',
         );
     }

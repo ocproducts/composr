@@ -40,6 +40,8 @@ class Hook_config_quiz_show_stats_count_total_open
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'quizzes',
         );
     }

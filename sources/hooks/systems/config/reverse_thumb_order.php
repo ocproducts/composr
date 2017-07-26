@@ -40,6 +40,8 @@ class Hook_config_reverse_thumb_order
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

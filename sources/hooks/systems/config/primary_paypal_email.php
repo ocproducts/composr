@@ -40,6 +40,8 @@ class Hook_config_primary_paypal_email
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_filedump_show_stats_count_total_space
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'filedump',
         );
     }

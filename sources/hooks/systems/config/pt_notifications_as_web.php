@@ -40,6 +40,8 @@ class Hook_config_pt_notifications_as_web
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_notifications',
         );
     }

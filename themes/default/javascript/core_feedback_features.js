@@ -412,7 +412,7 @@
                         // Collapse, so user can see what happening
                         var outer = $cms.dom.$id('comments_posting_form_outer');
                         if (outer && outer.classList.contains('toggleable_tray')) {
-                            $cms.toggleableTray(outer);
+                            $cms.ui.toggleableTray(outer);
                         }
 
                         // Set fade for posts not shown before
@@ -548,7 +548,7 @@
 
         var outer = $cms.dom.$('#comments_posting_form_outer');
         if (outer && $cms.dom.notDisplayed(outer)) {
-            $cms.toggleableTray(outer);
+            $cms.ui.toggleableTray(outer);
         }
 
         if (isThreaded) {

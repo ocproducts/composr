@@ -41,6 +41,8 @@ class Hook_config_hc_mail_wait_time
             'required' => true,
             'order_in_category_group' => 7,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

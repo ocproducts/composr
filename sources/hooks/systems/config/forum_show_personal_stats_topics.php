@@ -40,6 +40,8 @@ class Hook_config_forum_show_personal_stats_topics
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

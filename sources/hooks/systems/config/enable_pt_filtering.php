@@ -40,6 +40,8 @@ class Hook_config_enable_pt_filtering
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'cns_forum',
         );
     }

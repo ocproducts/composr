@@ -40,6 +40,8 @@ class Hook_config_web_notifications_enabled
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_notifications',
         );
     }

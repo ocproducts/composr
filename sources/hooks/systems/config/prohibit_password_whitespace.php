@@ -41,6 +41,7 @@ class Hook_config_prohibit_password_whitespace
             'order_in_category_group' => 10,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_cns',
         );
     }

@@ -40,6 +40,8 @@ class Hook_config_points_show_personal_stats_total_points
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'points',
         );
     }

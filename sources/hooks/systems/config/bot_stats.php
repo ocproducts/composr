@@ -40,6 +40,8 @@ class Hook_config_bot_stats
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'stats',
         );
     }

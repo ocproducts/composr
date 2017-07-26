@@ -40,6 +40,8 @@ class Hook_config_points_RECOMMEND_SITE
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'recommend',
         );
     }

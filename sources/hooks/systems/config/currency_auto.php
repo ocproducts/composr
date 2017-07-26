@@ -41,6 +41,7 @@ class Hook_config_currency_auto
             'order_in_category_group' => 2,
 
             'required' => true,
+            'public' => false,
             'addon' => 'ecommerce',
         );
     }

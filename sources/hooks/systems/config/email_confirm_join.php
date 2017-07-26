@@ -41,6 +41,7 @@ class Hook_config_email_confirm_join
             'order_in_category_group' => 4,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_cns',
         );
     }

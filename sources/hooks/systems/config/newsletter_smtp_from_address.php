@@ -41,6 +41,8 @@ class Hook_config_newsletter_smtp_from_address
             'order_in_category_group' => 25,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'newsletter',
         );
     }

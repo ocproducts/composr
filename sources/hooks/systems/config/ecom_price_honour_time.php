@@ -41,6 +41,8 @@ class Hook_config_ecom_price_honour_time
             'order_in_category_group' => 3,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

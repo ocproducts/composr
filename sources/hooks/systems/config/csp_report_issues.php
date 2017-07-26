@@ -41,6 +41,7 @@ class Hook_config_csp_report_issues
             'order_in_category_group' => 9,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

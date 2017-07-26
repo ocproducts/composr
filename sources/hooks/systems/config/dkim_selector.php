@@ -41,6 +41,8 @@ class Hook_config_dkim_selector
             'order_in_category_group' => 13,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

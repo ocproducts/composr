@@ -41,6 +41,8 @@ class Hook_config_attachment_default_width
             'order_in_category_group' => 1,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_rich_media',
         );
     }

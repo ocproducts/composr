@@ -41,6 +41,8 @@ class Hook_config_spam_heuristic_confidence_pasting
             'order_in_category_group' => 17,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

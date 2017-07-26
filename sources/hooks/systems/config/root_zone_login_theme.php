@@ -40,6 +40,8 @@ class Hook_config_root_zone_login_theme
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

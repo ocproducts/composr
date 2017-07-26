@@ -41,6 +41,8 @@ class Hook_config_email_log_days
             'order_in_category_group' => 14,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

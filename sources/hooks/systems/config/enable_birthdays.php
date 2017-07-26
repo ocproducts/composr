@@ -40,6 +40,8 @@ class Hook_config_enable_birthdays
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

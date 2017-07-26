@@ -40,6 +40,8 @@ class Hook_config_global_donext_icons
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

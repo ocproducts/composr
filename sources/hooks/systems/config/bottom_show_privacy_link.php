@@ -40,6 +40,8 @@ class Hook_config_bottom_show_privacy_link
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

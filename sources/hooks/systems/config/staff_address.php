@@ -41,6 +41,8 @@ class Hook_config_staff_address
             'order_in_category_group' => 1,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

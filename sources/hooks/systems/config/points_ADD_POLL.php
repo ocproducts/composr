@@ -40,6 +40,8 @@ class Hook_config_points_ADD_POLL
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'polls',
         );
     }

@@ -41,6 +41,7 @@ class Hook_config_attachment_cleanup
             'order_in_category_group' => 3,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_rich_media',
         );
     }

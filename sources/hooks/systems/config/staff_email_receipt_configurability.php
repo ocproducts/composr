@@ -40,6 +40,8 @@ class Hook_config_staff_email_receipt_configurability
             'list_options' => '0|1|2',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

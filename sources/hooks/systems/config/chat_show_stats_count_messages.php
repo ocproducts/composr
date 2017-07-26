@@ -40,6 +40,8 @@ class Hook_config_chat_show_stats_count_messages
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'chat',
         );
     }

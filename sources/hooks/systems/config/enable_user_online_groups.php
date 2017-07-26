@@ -40,6 +40,8 @@ class Hook_config_enable_user_online_groups
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_cns',
         );
     }

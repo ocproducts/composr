@@ -41,6 +41,8 @@ class Hook_config_business_state
             'order_in_category_group' => 5,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

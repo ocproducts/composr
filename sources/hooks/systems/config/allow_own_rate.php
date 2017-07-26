@@ -41,6 +41,7 @@ class Hook_config_allow_own_rate
             'order_in_category_group' => 2,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_feedback_features',
         );
     }

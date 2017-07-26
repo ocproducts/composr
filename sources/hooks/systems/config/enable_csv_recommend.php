@@ -40,6 +40,8 @@ class Hook_config_enable_csv_recommend
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'recommend',
         );
     }

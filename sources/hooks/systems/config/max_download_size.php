@@ -40,6 +40,8 @@ class Hook_config_max_download_size
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

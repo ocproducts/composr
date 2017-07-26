@@ -41,6 +41,7 @@ class Hook_config_store_credit_card_numbers
             'order_in_category_group' => 6,
 
             'required' => true,
+            'public' => false,
             'addon' => 'ecommerce',
         );
     }

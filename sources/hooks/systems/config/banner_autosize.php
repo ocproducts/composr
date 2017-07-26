@@ -40,6 +40,8 @@ class Hook_config_banner_autosize
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'banners',
         );
     }

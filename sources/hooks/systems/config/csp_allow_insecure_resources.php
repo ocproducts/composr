@@ -41,6 +41,7 @@ class Hook_config_csp_allow_insecure_resources
             'order_in_category_group' => 8,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

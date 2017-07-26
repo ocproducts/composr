@@ -40,6 +40,8 @@ class Hook_config_hc_error_log_day_flood_threshold
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'health_check',
         );
     }

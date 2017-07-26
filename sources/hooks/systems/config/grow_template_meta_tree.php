@@ -40,6 +40,8 @@ class Hook_config_grow_template_meta_tree
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

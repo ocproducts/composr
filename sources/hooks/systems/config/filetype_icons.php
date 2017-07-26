@@ -42,6 +42,7 @@ class Hook_config_filetype_icons
             'theme_override' => true,
 
             'required' => true,
+            'public' => false,
             'addon' => 'core_configuration',
         );
     }

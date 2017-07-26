@@ -41,6 +41,8 @@ class Hook_config_csrf_token_expire_fresh
             'order_in_category_group' => 3,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'core_configuration',
         );
     }

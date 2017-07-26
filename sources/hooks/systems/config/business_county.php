@@ -41,6 +41,8 @@ class Hook_config_business_county
             'order_in_category_group' => 4,
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

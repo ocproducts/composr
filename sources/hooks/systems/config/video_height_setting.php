@@ -41,6 +41,8 @@ class Hook_config_video_height_setting
             'order_in_category_group' => 2,
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'galleries',
         );
     }

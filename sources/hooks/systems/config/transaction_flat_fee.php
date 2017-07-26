@@ -40,6 +40,8 @@ class Hook_config_transaction_flat_fee
             'list_options' => '',
             'required' => false,
 
+            'public' => false,
+
             'addon' => 'ecommerce',
         );
     }

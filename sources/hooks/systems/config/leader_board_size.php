@@ -40,6 +40,8 @@ class Hook_config_leader_board_size
             'list_options' => '',
             'required' => true,
 
+            'public' => false,
+
             'addon' => 'points',
         );
     }
