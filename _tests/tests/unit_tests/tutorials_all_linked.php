@@ -137,11 +137,20 @@ class tutorials_all_linked_test_set extends cms_test_case
             if (substr($f, -4) == '.txt') {
                 $c = file_get_contents($path . '/' . $f);
 
-                $see_also_pos = strpos($c, '[title="2"]See also[/title]');
+                if (get_param_integer('full', 0) == 1) {
+                    $see_also_pos = 0;
+                } else {
+                    $see_also_pos = strpos($c, '[title="2"]See also[/title]');
+                }
 
                 if ($see_also_pos !== false) {
                     $matches = array();
-                    $num_matches = preg_match_all('#^ - \[page="_SEARCH:(\w+)"\](.*)\[/page\]#m', $c, $matches);
+                    if (get_param_integer('full', 0) == 1) {
+                        $regexp = '#^\[page="_SEARCH:(\w+)"\](.*)\[/page\]#';
+                    } else {
+                        $regexp = '#^ - \[page="_SEARCH:(\w+)"\](.*)\[/page\]#m';
+                    }
+                    $num_matches = preg_match_all($regexp, $c, $matches);
 
                     for ($i = 0; $i < $num_matches; $i++) {
                         $page_name = $matches[1][$i];
