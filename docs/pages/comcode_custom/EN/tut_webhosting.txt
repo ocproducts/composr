@@ -22,7 +22,7 @@ You have the following options for hosting Composr (roughly):
  - Hosting on your own Mac desktop (for development purposes)
  - [concept]IaaS[/concept] cloud hosting (e.g. Amazon EC2, Azure, Rackspace)
  - [concept]PaaS[/concept] cloud hosting (e.g. AppFog, Heroku, Rackspace Cloud, Engine Yard, OpenShift)
- - Google App Engine, which is a special case of PaaS due to the high-level of organisation you need to work within. It is covered in [page="_SEARCH:tut_google_appengine"]its own tutorial[/page].
+ - Google App Engine, which is a special case of PaaS due to the high-level of organisation you need to work within. It is covered in [page="_SEARCH:tut_google_appengine"]its own[/page] tutorial.
 
 The vast majority of users will choose traditional shared webhosting, or traditional VPS webhosting with a control panel.
 
@@ -256,7 +256,7 @@ As previously mentioned, this file system is merely illustrative. Different serv
 
 [title="2"]Server security[/title]
 
-(Optimal configuration advice is provided in the [page="_SEARCH:tut_security"]Security tutorial[/page] -- we just cover some practical implications of configuration here)
+(Optimal configuration advice is provided in the [page="_SEARCH:tut_security"]Security[/page] tutorial -- we just cover some practical implications of configuration here)
 
 There are two ways that webhosts may use to manage web application on the server:
 1) Shared user

@@ -135,12 +135,12 @@ The Setup Wizard ("Configure my Composr first") will guide you through some basi
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_configuration"]Basic Configuration[/page]
+ - [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page]
  - The user-focused help page within Composr (linked from the menus)
- - [page="_SEARCH:tut_webapp"]Web applications information[/page]
- - [page="_SEARCH:tut_webhosting"]Webhosting information[/page] (including Composr minimum requirements)
+ - [page="_SEARCH:tut_webapp"]Web-applications, Composr, and PHP[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] (including Composr minimum requirements)
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
- - [page="_SEARCH:tut_uninstall"]Uninstalling Composr[/page]
+ - [page="_SEARCH:tut_uninstall"]Uninstalling Composr from a server[/page]
 
 {$SET,tutorial_tags,installer,core_database_drivers,Installation,novice,pinned}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,We explain what you need to do to install Composr. This tutorial is particularly important if you use the manual installer.}[block]main_tutorial_rating[/block]

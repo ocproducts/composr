@@ -35,7 +35,7 @@ Composr is built on top of standard web/Internet protocols, languages and [abbr=
 		<tr>
 			<td>[abbr="Transfer Control Protocol / Internet Protocol"][url="https://tools.ietf.org/html/rfc793"]TCP[/url]/[url="https://tools.ietf.org/html/rfc1700"]IP[/url][/abbr]</td>
 			<td>This is the protocol for transmitting Internet data.</td>
-			<td>You won't need much awareness except knowing what IP addresses are and are used for (explained in the [page="_SEARCH:tut_trace"]Using IP addresses to trace users tutorial[/page]).</td>
+			<td>You won't need much awareness except knowing what IP addresses are and are used for (explained in the [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page] tutorial).</td>
 		</tr>
 		<tr>
 			<td>[abbr="Domain Name System"][url="https://tools.ietf.org/html/rfc1101"]DNS[/url][/abbr]</td>

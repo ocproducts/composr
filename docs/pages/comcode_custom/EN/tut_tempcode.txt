@@ -207,7 +207,7 @@ If you're wondering what the characters refer to: nothing. They are just charact
 
 [title="3"]The Tempcode tree (advanced)[/title]
 
-Templates are composed together into a tree structure, and then the tree structure is output. This is discussed in further detail in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page].
+Templates are composed together into a tree structure, and then the tree structure is output. This is discussed in further detail in the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial.
 
 [title="2"]Philosophy[/title]
 
@@ -1909,7 +1909,7 @@ Note that you cannot use directives for symbol parameters because directives con
 		</tr>
 		<tr style="background: #DDFFDD">
 			<td>MAKE_MOBILE</td>
-			<td>On mobile mode perform some basic conversions on the enclosed HTML to make it mobile-friendly. Covered in the [page="_SEARCH:tut_mobile"]Mobile design tutorial[/page].</td>
+			<td>On mobile mode perform some basic conversions on the enclosed HTML to make it mobile-friendly. Covered in the [page="_SEARCH:tut_mobile"]Mobile design[/page] tutorial.</td>
 		</tr>
 	</tbody>
 </table>
@@ -2337,6 +2337,6 @@ If you enter the template editor from the 'Template tree' screen then you will b
  - [page="_SEARCH:tut_releasing_themes"]Releasing a theme[/page]
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
- - [page="_SEARCH:codebook"]Composr Code Book[/page]
+ - [page="_SEARCH:codebook"]Code Book, contents and introduction[/page]
 
 {$SET,tutorial_tags,core_themeing,Design & Themeing,Power tools,regular}{$SET,tutorial_add_date,Sep 2008}{$SET,tutorial_summary,You'll be shocked at how much themeing control you can muster using Tempcode. Learn all about it...}[block]main_tutorial_rating[/block]

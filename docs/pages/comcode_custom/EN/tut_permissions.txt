@@ -4,7 +4,7 @@ Any large site will have areas that it wants certain members to be able to acces
  - Categories of information that are visible to the eyes of members from only one usergroup
  - Pages available only if you're new to the site
 Composr has a powerful access control and privilege system built into its core
-For an overview of the Composr permission system, see the [page="_SEARCH:tut_adv_configuration"]Advanced configuration tutorial[/page]. This tutorial goes into more detail.
+For an overview of the Composr permission system, see the [page="_SEARCH:tut_adv_configuration"]Advanced configuration[/page] tutorial. This tutorial goes into more detail.
 
 [contents]decimal,lower-alpha[/contents]
 

@@ -162,7 +162,7 @@ Where [tt]example[/tt] is changed for whatever type string you've used for the b
 
 If you wish to use your banner space, in part of full, for showing third-party banners, then you may wish to enable sale via the eCommerce system, to allow either customers to buy banners or for members to buy banners using points.
 
-More information on eCommerce is provided in the [page="_SEARCH:tut_ecommerce"]eCommerce tutorial[/page].
+More information on eCommerce is provided in the [page="_SEARCH:tut_ecommerce"]eCommerce[/page] tutorial.
 
 Alternatively, members may directly submit banners (i.e. without using eCommerce), and you may choose to validate them without requiring the members to spend their points.
 

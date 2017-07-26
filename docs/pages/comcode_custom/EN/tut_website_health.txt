@@ -198,7 +198,7 @@ Frankly most of these optimisers are not useful. We provide them for very rare s
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_webhosting"]Webhosting information[/page] (including Composr minimum requirements)
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page] (including Composr minimum requirements)
  - [page="_SEARCH:tut_adv_install"]Advanced installation[/page]
  - [page="_SEARCH:tut_optimisation"]Optimising Performance[/page]
  - [page="_SEARCH:tut_security"]Security[/page]

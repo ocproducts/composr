@@ -98,8 +98,8 @@ The Composr [tt]wide_print[/tt] parameter is activated from either:
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_accessibility"]Making an accessible website with Composr[/page]
- - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions[/page]
+ - [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page]
+ - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions (and JavaScript)[/page]
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
  - [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page]
  - [page="_SEARCH:sup_chrome_tools"]Using Chrome development tools to help with themeing[/page]

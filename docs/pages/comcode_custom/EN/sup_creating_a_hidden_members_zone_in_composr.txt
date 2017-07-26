@@ -20,7 +20,7 @@ Now you have your usergroup set up you will need to create the new members zone.
 
 You will need to set the zone permissions so only the Members usergroup can see the zone and be able to access it. You must set the other usergroups so they can't view the zone. Administrators by default will have full access to the zone.
 
-[b][i]Note:[/i][/b] If you have set up the "Use .htm to identify CMS pages" URL scheme for your Composr site you must make sure you follow the process detailed in the short URLs tutorial or your new zone will not work. You can read the [page="_SEARCH:sup_set_up_short_urls_in_composr"]Setting up short URLs in Composr tutorial[/page] here before going any further with this process.
+[b][i]Note:[/i][/b] If you have set up the "Use .htm to identify CMS pages" URL scheme for your Composr site you must make sure you follow the process detailed in the short URLs tutorial or your new zone will not work. You can read the [page="_SEARCH:sup_set_up_short_urls_in_composr"]Setting up short URLs in Composr[/page] tutorial here before going any further with this process.
 
 [title="2"]Adding a link to the hidden zone for your members[/title]
 

@@ -23,7 +23,7 @@ Catalogues are initially defined by the fields in them. 'Categories' are then ma
 [media float="right" thumb="0" framed="0"]data_custom/images/docs/dont.png[/media]
 In some way we give you enough rope to hang yourself with via catalogues. In most cases, catalogues are great, but if you're not creating a pretty simple set of records you'll probably want a programmer.
 
-For a more detailed discussion, see the [page="_SEARCH:sup_complex_projects"]How to approach complex projects tutorial[/page].
+For a more detailed discussion, see the [page="_SEARCH:sup_complex_projects"]How to approach complex projects[/page] tutorial.
 I also highly advise reading the [page=":antifeatures"]what Composr is not[/page] page which tries to spell out the practical realities of how to work with Composr (or any CMS really).
 
 There are loads of features within the catalogue system, and there are more we could add to give yet further power that could be sponsored. Just proceed with caution, considering the cases laid out below.
@@ -57,7 +57,7 @@ The first field in a catalogue is used as the title field for entries in that ca
 
 You may also specify which fields may be used to search the catalogue (searching is performed with the regular Composr [tt]search[/tt] module).
 
-For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields tutorial[/page].
+For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields[/page] tutorial.
 
 [title="2"]Modes of display[/title]
 
@@ -408,7 +408,7 @@ A similar caveat holds true for custom profile fields, which share the same fiel
 
 [title="3"]eCommerce catalogues[/title]
 
-Composr can have special eCommerce catalogues, which integrate with the Composr shopping cart. This is explained in the [page="_SEARCH:tut_ecommerce"]eCommerce tutorial[/page].
+Composr can have special eCommerce catalogues, which integrate with the Composr shopping cart. This is explained in the [page="_SEARCH:tut_ecommerce"]eCommerce[/page] tutorial.
 
 [title="3"]Classified ads[/title]
 

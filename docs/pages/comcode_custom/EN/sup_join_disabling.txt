@@ -39,7 +39,7 @@ Now, the page will display your error message and a login screen.
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_members"]Feedback and user interaction[/page]
+ - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
  - [page="_SEARCH:tut_users"]People in their roles[/page]
 

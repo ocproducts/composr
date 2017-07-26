@@ -44,7 +44,7 @@ It is arguable that under discrimination laws, your website must satisfy the web
 
 As a site-maintainer however, there are accessibility guidelines that apply to content that the developers can not arrange-for on your behalf. Also, if you modify the default Composr templates, it is very easy to degrade the inbuilt accessibility.
 
-For more information, see the [page="_SEARCH:tut_accessibility"]accessibility tutorial[/page].
+For more information, see the [page="_SEARCH:tut_accessibility"]accessibility[/page] tutorial.
 
 [title="3"]Sales[/title]
 

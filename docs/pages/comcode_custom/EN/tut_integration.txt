@@ -192,7 +192,7 @@ This form of integration is most appropriate for news and calendars, although ot
 
 You can also export Composr data using RSS.
 
-Use of RSS is documented in the [page="_SEARCH:tut_adv_news"]Advanced News tutorial[/page].
+Use of RSS is documented in the [page="_SEARCH:tut_adv_news"]Advanced News[/page] tutorial.
 
 [title="2"]Integrating JavaScript libraries into Composr[/title]
 
@@ -387,7 +387,7 @@ New endpoint hooks can be created by a PHP programmer easily, providing whatever
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_mobile_sdk"]Mobile apps via Composr Mobile SDK[/page]
- - [page="_SEARCH:tut_nuances"]Nuances of the forum driver system[/page]
+ - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]
  - [page="_SEARCH:tut_ldap"]Integrating Composr into a corporate network via LDAP[/page]

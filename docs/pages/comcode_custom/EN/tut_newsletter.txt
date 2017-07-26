@@ -219,11 +219,11 @@ There is a newsletter archive available (from under Admin Zone > Tools > Newslet
 
 [title="2"]Welcome e-mails[/title]
 
-Welcome e-mails allow you to automatically send out e-mails to new members. This is described in the [page="_SEARCH:tut_adv_members"]Advanced Composr member system tutorial[/page].
+Welcome e-mails allow you to automatically send out e-mails to new members. This is described in the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial.
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_news"]Releasing news & running a blog[/page]
+ - [page="_SEARCH:tut_news"]Releasing news & running a Blog[/page]
  - [page="_SEARCH:tut_email"]Understanding and configuring e-mail[/page]
  - https://litmus.com/
 

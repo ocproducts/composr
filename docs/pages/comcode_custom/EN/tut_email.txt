@@ -202,7 +202,7 @@ mail('you@example.com','Test','Test');
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_how_internet_works"]How the Internet works[/page]
+ - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page]
  - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions (and JavaScript)[/page]
  - [page="_SEARCH:tut_domain_names"]How domain names work[/page]
  - [page="_SEARCH:tut_notifications"]Notifications[/page]

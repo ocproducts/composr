@@ -121,7 +121,7 @@ Note I had to add a little CSS to stop Google trying to render parts of its layo
 
  - [page="_SEARCH:sup_hardcore_1"]Making an addon (part 1)[/page]
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
- - [page="_SEARCH:codebook"]Composr Code Book[/page]
+ - [page="_SEARCH:codebook"]Code Book, contents and introduction[/page]
  - [page="_SEARCH:sup_hardcore_blocks"]A PHP/Composr coding primer[/page]
  - [url="PHP website"]http://www.php.net[/url]
 

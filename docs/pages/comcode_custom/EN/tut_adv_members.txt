@@ -72,7 +72,7 @@ There are a number of custom profile field options that you may set that allow C
  - Forcing members to specify certain additional details (for example, on a forum for staff of a company, you could make members enter their job role, so as to reduce the chance of a non-employee from joining and remaining an active member)
  - Allowing members of a certain sub-communities (via their usergroup) to specify details appropriate to that sub-community (for example, those in the 'Football' usergroup of a school discussion forum could specify the position they play, while those in the 'Music' usergroup could specify the instrument they play).
 
-For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields tutorial[/page].
+For details about the actual field types you can use, see the [page="_SEARCH:tut_fields"]Custom fields[/page] tutorial.
 [/surround]
 
 [title="3"]Limitations (don't go nuts!)[/title]
@@ -207,12 +207,12 @@ You can delete a Welcome E-mail from the bottom of its edit form.
 
 The purpose of this feature is to gradually advertise the features of your website to your members in a way that reinforces awareness. As most members will not usually return to a website, welcome e-mails provide a strong tool to keep them aware and entice them to fully embrace whatever service you are providing.
 
-For welcome e-mails to work the CRON bridge scheduler must be configured as discussed in the [page="_SEARCH:tut_configuration"]Configuration tutorial[/page]
+For welcome e-mails to work the CRON bridge scheduler must be configured as discussed in the [page="_SEARCH:tut_configuration"]Configuration[/page] tutorial
 [/surround]
 
 [title="3"]Referencing member-specific data[/title]
 
-As long as you have the newsletters addon installed, welcome e-mails will piggy-back off the newsletters templating code (regardless of whether the welcome e-mail is being sent to members or to a newsletter). This functionality is as described in the [page="_SEARCH:tut_newsletter"]Newsletters tutorial[/page] ("Templated newsletters"); essentially it means you can use things like [tt]{name}[/tt] in there.
+As long as you have the newsletters addon installed, welcome e-mails will piggy-back off the newsletters templating code (regardless of whether the welcome e-mail is being sent to members or to a newsletter). This functionality is as described in the [page="_SEARCH:tut_newsletter"]Newsletters[/page] tutorial ("Templated newsletters"); essentially it means you can use things like [tt]{name}[/tt] in there.
 
 [title="2"]Importing/exporting members[/title]
 
@@ -326,7 +326,7 @@ UPDATE cms_f_members SET m_password_compat_scheme='temporary' WHERE m_password_c
 
  - [page="_SEARCH:tut_fields"]Custom fields[/page]
  - [page="_SEARCH:tut_members"]Composr member system[/page]
- - [page="_SEARCH:tut_subcom"]Creating sub-communities[/page]
+ - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
 
 {$SET,tutorial_tags,Members,welcome_emails,cns_cpfs,core_cns,Social,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to create custom profile fields, manually add members, and set up welcome e-mails for new members.}[block]main_tutorial_rating[/block]

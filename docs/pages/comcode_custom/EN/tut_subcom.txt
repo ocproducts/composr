@@ -10,7 +10,7 @@ Composr is designed to be able to support large websites, and a common features 
  - [b]Themes[/b] (different themes may be applied to different zones, giving subsites individual looks)
  - [b]Usergroups and access privileges[/b] (members of subcommunities may be grouped by usergroup, and permissions assigned accordingly)
  - [b]Custom profile fields[/b] [[concept]Conversr[/concept] users only] (custom profile fields can be made so that they only apply to a single usergroup: thus allowing specification of user data that applies only to specific subcommunities)
- - [i]More advanced techniques discussed in the [page="_SEARCH:tut_msn"]Advanced techniques for multi-site-networks tutorial[/page][/i]
+ - [i]More advanced techniques discussed in the [page="_SEARCH:tut_msn"]Advanced techniques for multi-site-networks[/page] tutorial[/i]
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -105,7 +105,7 @@ The parent forum and forum grouping for new club forums is configurable.
 [surround]
 [media width="150" description="To finalise the zone, FTP details may be needed so Composr can create the directory structure properly -- depending on server architecture" float="right"]data_custom/images/docs/tut_subcom/subcom_zone_afm.png[/media]
 [media width="150" description="Adding a new zone for our Church Of Santa subcommunity" float="right"]data_custom/images/docs/tut_subcom/subcom_zone_add.png[/media]
-An introduction to zones is covered in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page].
+An introduction to zones is covered in the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial.
 
 You may add new zones, edit zones, delete zones, and move pages between zones from:
 Admin Zone > Structure > Zones.
@@ -232,7 +232,7 @@ Now we have the [tt]downloads[/tt] module running from the [tt]staff[/tt] zone. 
 
 Obviously the above is not much of a trick because it allows users to then navigate up via the breadcrumbs. Fortunately we have another trick to adjust the breadcrumbs...
 
-You need to edit the breadcrumbs XML file (documented in the [page="_SEARCH:tut_structure"]Composr site structure tutorial[/page]) through "Adminzone > Structure > Breadcrumb Overrides" so that [tt]site:downloads:browse:5[/tt] maps straight back to the [tt]staff[/tt] zone front page. Do this by adding in a new substitution rule:
+You need to edit the breadcrumbs XML file (documented in the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutorial) through "Adminzone > Structure > Breadcrumb Overrides" so that [tt]site:downloads:browse:5[/tt] maps straight back to the [tt]staff[/tt] zone front page. Do this by adding in a new substitution rule:
 [code="XML"]
 <substitution match_key="site:downloads:browse:5">
 	<link label="Staff">staff:</link>

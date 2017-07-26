@@ -155,6 +155,11 @@ class tutorials_all_linked_test_set extends cms_test_case
                             $correct = ($tutorial_title == $title);
 
                             $this->assertTrue($correct, '"' . $page_name . '" linked to with "' . $title . '" but should be "' . $tutorial_title . '" in ' . $f);
+
+                            if (get_param_integer('fix', 0) == 1) {
+                                $c = str_replace($title, $tutorial_title, $c);
+                                file_put_contents($path . '/' . $f, $c);
+                            }
                         } else {
                             $this->assertTrue(false, 'Missing title for ' . $page_name);
                         }

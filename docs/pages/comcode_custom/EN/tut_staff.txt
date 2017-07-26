@@ -36,7 +36,7 @@ On the Admin Zone dashboard is a checklist of tasks to be performed. This combin
 
 You can also share links and notes on the Admin Zone dashboard.
 
-More can be read on the Admin Zone in the [page="_SEARCH:tut_adminzone"]Admin Zone overview tutorial[/page].
+More can be read on the Admin Zone in the [page="_SEARCH:tut_adminzone"]Admin Zone overview[/page] tutorial.
 
 [title="3"]Staff notifications, and the tickets system[/title]
 
@@ -111,7 +111,7 @@ We have found it often to be the case that staff will report content themselves,
 
 [title="2"]Warning members[/title]
 
-Conversr provides a facility for warning members. This is just one example of a punitive measure that may be taken out against a member. For full details, see the 'Tools for punishment' section of the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
+Conversr provides a facility for warning members. This is just one example of a punitive measure that may be taken out against a member. For full details, see the 'Tools for punishment' section of the [page="_SEARCH:tut_censor"]Dealing with annoying users[/page] tutorial.
 
 [title="2"]Whispering[/title]
 
@@ -122,10 +122,10 @@ When members use the Conversr whisper feature to make inline-personal-posts, the
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_adminzone"]Admin Zone overview[/page]
- - [page="_SEARCH:tut_censor"]Policing a community site[/page]
+ - [page="_SEARCH:tut_censor"]Dealing with annoying users[/page]
  - [page="_SEARCH:tut_users"]People in their roles[/page]
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
- - [page="_SEARCH:tut_correspondance"]Correspondence between users[/page]
+ - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
  - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]
  - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]

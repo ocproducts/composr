@@ -2,7 +2,7 @@
 
 If you find there is malicious activity on your website, you may feel the need to try and trace this activity back to a real world source, or the very least, to identify a troublesome computer.
 
-This tutorial focuses on IP addresses. A member-focused view is taken in the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
+This tutorial focuses on IP addresses. A member-focused view is taken in the [page="_SEARCH:tut_censor"]Dealing with annoying users[/page] tutorial.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -66,7 +66,7 @@ Note that banned IP addresses are restricted from accessing Composr from a very 
 
 [title="2"]Other kinds of banning[/title]
 
-Composr ([concept]Conversr[/concept]) does also support many other types of banning, and other punitive tools. See the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page] for more information.
+Composr ([concept]Conversr[/concept]) does also support many other types of banning, and other punitive tools. See the [page="_SEARCH:tut_censor"]Dealing with annoying users[/page] tutorial for more information.
 
 [title="2"]A closer look at the Investigate User module[/title]
 
@@ -98,7 +98,7 @@ Composr ([concept]Conversr[/concept]) does also support many other types of bann
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_security"]Security[/page]
- - [page="_SEARCH:tut_censor"]Policing a community site[/page]
+ - [page="_SEARCH:tut_censor"]Dealing with annoying users[/page]
  - [page="_SEARCH:tut_moderation"]Basic forum moderation[/page]
  - [page="_SEARCH:tut_members"]Composr member system[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]

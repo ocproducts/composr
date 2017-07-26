@@ -75,7 +75,7 @@ This system allows:
  - staff to artificially limited access, to ensure members participate before they can use site resources.
  - members to earn points to compensate themselves for the work contained within a download.
 
-This is covered in the [page="_SEARCH:tut_adv_downloads"]Advanced provision of downloads tutorial[/page].
+This is covered in the [page="_SEARCH:tut_adv_downloads"]Advanced provision of downloads[/page] tutorial.
 
 [title="3"]The real world[/title]
 

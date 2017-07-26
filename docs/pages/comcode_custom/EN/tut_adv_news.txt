@@ -185,7 +185,7 @@ The default news archive screen shows just the news headlines. By adding [tt]:in
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_news"]Releasing news & running a blog[/page]
+ - [page="_SEARCH:tut_news"]Releasing news & running a Blog[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
  - [url="Feedly"]http://feedly.com/[/url]
 

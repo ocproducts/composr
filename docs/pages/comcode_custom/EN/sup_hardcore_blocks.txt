@@ -101,7 +101,7 @@ I've attached a screenshot of this mini-block embedded on the homepage of a test
 
 [title="3"]Bundling as an addon[/title]
 
-If you wish to turn your mini-block into a Composr addon that anyone can install then you can follow the instructions and diagrams in this section of the [page="_SEARCH:tut_framework#title__9"]Composr programming framework tutorial[/page]. Composr, by default, gives administrators access to a "tree view" of all the addons which have been published on {$BRAND_BASE_URL}. This means that, if you upload your addon to {$BRAND_BASE_URL}, it will appear inside (almost) every Composr installation in the world, and can be downloaded and installed automatically with just a few clicks!
+If you wish to turn your mini-block into a Composr addon that anyone can install then you can follow the instructions and diagrams in this section of the [page="_SEARCH:tut_framework#title__9"]Composr programming framework[/page] tutorial. Composr, by default, gives administrators access to a "tree view" of all the addons which have been published on {$BRAND_BASE_URL}. This means that, if you upload your addon to {$BRAND_BASE_URL}, it will appear inside (almost) every Composr installation in the world, and can be downloaded and installed automatically with just a few clicks!
 
 [title="2"]More Useful mini-blocks via functions[/title]
 
@@ -637,7 +637,7 @@ Although types are very useful for finding programming mistakes, like most of PH
 
  - [page="_SEARCH:sup_hardcore_1"]Making an addon (part 1)[/page]
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
- - [page="_SEARCH:codebook"]Composr Code Book[/page]
+ - [page="_SEARCH:codebook"]Code Book, contents and introduction[/page]
  - [page="_SEARCH:tut_hardcore_minimodules"]Writing mini-modules[/page]
  - [url="PHP website"]http://www.php.net[/url]
 

@@ -58,7 +58,7 @@ Composr has two main types of permission:
 
 Composr uses a "best of" permission system, meaning that a member has the best possible access that the combination of all usergroups that they are in could give them. The one exception to this is when permissions are overridden for a page/catalogue/category the user will be limited by the override even if only a subset of their usergroup set is overridden at that level.
 
-Setting permissions is described in detail in the [page="_SEARCH:tut_permissions"]Access Control and Privileges tutorial[/page].
+Setting permissions is described in detail in the [page="_SEARCH:tut_permissions"]Access control and privileges[/page] tutorial.
 
 [title="3"]Privileges[/title]
 
@@ -122,7 +122,7 @@ You may use the config editor to:
 
 You may delete, and move pages using the [concept]Sitemap editor[/concept].
 
-If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via [tt]page[/tt] tags) will become invalid, unless they were specified as being in the zone named [tt]_SEARCH[/tt] (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page]. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
+If you are moving a page from one zone to another, any page-links to that page (for example, in the menus or via [tt]page[/tt] tags) will become invalid, unless they were specified as being in the zone named [tt]_SEARCH[/tt] (which is used to create a link by dynamically searching all zones for the named page). You may wish to temporarily set up a redirection from the page as named in its original zone, to the page as named in the new zone. Details of this are given in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page] tutorial. Setting up a redirection is also advisable if the page being moved is already well-indexed on search engines.
 
 It is recommended that you never move default Composr pages because it complicates the upgrade process. Instead it is advisable to use the redirects feature instead (Admin Zone > Structure > Redirects).
 
@@ -159,10 +159,10 @@ The final step is to configure Composr to use the key pair to encrypt data. In t
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_configuration"]Basic Configuration[/page]
+ - [page="_SEARCH:tut_configuration"]Basic configuration and getting started[/page]
  - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
- - [page="_SEARCH:tut_msn"]Tools for subsites and subcommunities[/page]
- - [page="_SEARCH:tut_permissions"]Access Control and Privileges[/page]
+ - [page="_SEARCH:tut_msn"]Advanced techniques for multi-site-networks[/page]
+ - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
  - [page="_SEARCH:tut_url_schemes"]URL Schemes in Composr[/page]
 
 {$SET,tutorial_tags,core_configuration,apache_config_files,Configuration,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Setting permissions. Search-Engine-Friendly URLs. Addons. Changing Installation Options.}[block]main_tutorial_rating[/block]

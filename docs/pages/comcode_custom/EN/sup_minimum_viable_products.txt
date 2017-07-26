@@ -9,7 +9,7 @@ Users create sites in Composr that continue to amaze me. There is great variety.
 
 [title="2"]Unintended consequences -- underestimation[/title]
 
-Sometimes great successes can lead to unintended consequences. Sometimes users get 90% of required feature points easily and for free, but can underestimate the challenge of the remaining 10% :$. The intent of this tutorial is to help users navigate through, or around, this challenge. The [page="_SEARCH:sup_complex_projects"]How to approach complex projects tutorial[/page] covers similar ground, but from a different perspective.
+Sometimes great successes can lead to unintended consequences. Sometimes users get 90% of required feature points easily and for free, but can underestimate the challenge of the remaining 10% :$. The intent of this tutorial is to help users navigate through, or around, this challenge. The [page="_SEARCH:sup_complex_projects"]How to approach complex projects[/page] tutorial covers similar ground, but from a different perspective.
 
 Because we give Composr away for free rather than selling it for a high figure, Composr can seem like something that was put together relatively easily. The same applies to many free websites, or other web systems. We have avoided taking venture capital to create Composr because we felt it would encumber the value of what we were creating and/or cause enormous distraction (it has actually been brought to us as an option, even though none of us are based near London or Silicon Valley). Instead, Composr is built on a lot of very hard work and sacrifices over a decade now. Again, this makes it hard for users to quantify the real investment made in the project. We are also grateful for the feature sponsorships that many valued and loyal users have made, to help push things forward even further.
 
@@ -59,7 +59,7 @@ MVP simplicity is not only something to save you money/effort, it also makes thi
 
 I would like to note that the MVP approach fits very well within a model of agile (iterative) development. This significantly cuts down your upfront costs, and general risk (trying too much all at once --> likely failure), and lets you switch around your plans based on what you learn during development and experience in the market.
 
-There is a section in the [page="_SEARCH:sup_pricing"]Project pricing tutorial[/page] that covers how agile works with project pricing.
+There is a section in the [page="_SEARCH:sup_pricing"]Project pricing[/page] tutorial that covers how agile works with project pricing.
 
 [title="3"]I can hear your objections already[/title]
 

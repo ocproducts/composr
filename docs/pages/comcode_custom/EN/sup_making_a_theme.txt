@@ -32,7 +32,7 @@ Here are the images used:
  - [page="_SEARCH:tut_themes"]Themeing your site[/page]
  - [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design[/page]
  - [page="_SEARCH:tut_releasing_themes"]Releasing a theme[/page]
- - [page="_SEARCH:tut_theme_lifecycle"]Theme lifecycle[/page]
+ - [page="_SEARCH:tut_theme_lifecycle"]Theme Lifecycle[/page]
  - [page="_SEARCH:sup_chrome_tools"]Using Chrome development tools to help with themeing[/page]
 
 {$SET,tutorial_tags,themewizard,core_themeing,core_primary_layout,core_html_abstractions,core_form_interfaces,core_abstract_interfaces,core_abstract_components,Design & Themeing,novice}{$SET,tutorial_add_date,May 2012}{$SET,tutorial_summary,An illustrated step-by-step tutorial on making a new theme.}[block]main_tutorial_rating[/block]

@@ -294,7 +294,7 @@ It is worth noting that the 'tag contents' of certain tags is of no visual signi
 
 [title="3"]Accessibility[/title]
 
-There are some accessibility issues with certain Comcode tags, and these are described in the [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users tutorial[/page].
+There are some accessibility issues with certain Comcode tags, and these are described in the [page="_SEARCH:tut_accessibility"]Helping improve site accessibility for disabled users[/page] tutorial.
 
 [concepts
  1_key="Wiki-Code"   1_value="The mark-up language used on most Wiki systems"

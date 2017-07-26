@@ -193,7 +193,7 @@ The quick installer handles this automatically.
 
 This section mostly only applies if you are using Microsoft's web server, Internet Information Server (IIS).
 
-See the [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop tutorial[/page] if you just want to install on your own computer and you are just using your website locally, behind a firewall -- or if you are installing via the Microsoft Web Application Gallery (which will set permissions for you).
+See the [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page] tutorial if you just want to install on your own computer and you are just using your website locally, behind a firewall -- or if you are installing via the Microsoft Web Application Gallery (which will set permissions for you).
 
 There are two problems relating to file permissions, that complicate the installation on Windows. Unfortunately these problems are completely out of our control, and apply to any PHP system installed on a Windows server: all we can do is help you get through them. Most home systems have full permissions set by default, so are actually easier to install on than Linux. However, webhosting companies often impose a more rigid permission scheme due to their shared hosting environments.
 
@@ -203,7 +203,7 @@ A generic trick is to use the username 'Network' as the username to grant permis
 The second problem is that there is no automated way to set file permissions on a Windows machine from a PHP script. This leaves three possibilities for a Windows machine user:
 1) Set it so the Composr installation directory has full permissions for the PHP-user before extraction. Whether this is secure or not really depends upon your environment; if CGI is disabled, and PHP has [tt]open_base_dir[/tt] enabled, then it may be secure from tampering by other server users. Also, if there are no other server users, then it shouldn't be a problem. This trick assumes that the directory has been set to have files created in it inherit permissions; this is usually so, and perhaps something you can ensure is true yourself.
 2) Ask the server administrator to execute, or find a way to execute yourself, the [tt]fixperms.bat[/tt] file. This will set the file permissions for you, but this is an advanced option and may be prone to environmental issues. If using the quick installer, the bat file will need running at the point the installer complains about file permissions; otherwise it should be executed before installation.
-3) Manually set the file permissions. See the [page="_SEARCH:tut_install"]Installation tutorial[/page] for a list of file permissions that need to be set. Where Linux would require '666' (for a file) or '777' (for a directory) permissions, you would need to assign write permissions as specified above.
+3) Manually set the file permissions. See the [page="_SEARCH:tut_install"]Installation[/page] tutorial for a list of file permissions that need to be set. Where Linux would require '666' (for a file) or '777' (for a directory) permissions, you would need to assign write permissions as specified above.
 
 Due to these problems, we would have to recommend that if you have a choice, that you don't use a Windows webhost unless you are experienced with the Windows security model. It is more complex, less standard, and less documented, than the Linux model (although, actually a lot more powerful).
 
@@ -237,9 +237,9 @@ Here is some specific advice for people working from our git repository:
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_install"]Installation[/page]
+ - [page="_SEARCH:tut_install"]Basic Installation[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
- - [page="_SEARCH:tut_webhosting"]Webhosting[/page]
+ - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
  - [page="_SEARCH:tut_windows"]Installing Composr on a Windows desktop[/page]
  - [page="_SEARCH:tut_google_appengine"]Installing on Google App Engine[/page]
  - [page="_SEARCH:tut_website_health"]Website Health[/page]

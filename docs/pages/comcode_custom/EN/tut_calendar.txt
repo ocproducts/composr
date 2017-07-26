@@ -139,7 +139,7 @@ Users may choose to overlay [concept]RSS[/concept] or [concept]Atom[/concept] fe
 
 [title="2"]Internationalisation / Culture[/title]
 
-It is possible to customise the calendar to have a different start-of-week-day, or to use a 24 hour clock. This is done by editing the time strings in the [tt]global[/tt] language file. For more information, see the [page="_SEARCH:tut_intl"]Localisation and internationalisation tutorial[/page].
+It is possible to customise the calendar to have a different start-of-week-day, or to use a 24 hour clock. This is done by editing the time strings in the [tt]global[/tt] language file. For more information, see the [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page] tutorial.
 
 [concepts
  1_key="Event"                1_value="An entry in the calendar system that may recur"
@@ -150,7 +150,7 @@ It is possible to customise the calendar to have a different start-of-week-day, 
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_news"]Providing news[/page]
+ - [page="_SEARCH:tut_news"]Releasing news & running a Blog[/page]
  - [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page]
 
 {$SET,tutorial_tags,Calendar,calendar,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,How to create a community calendar, or let your members maintain online diaries.}[block]main_tutorial_rating[/block]

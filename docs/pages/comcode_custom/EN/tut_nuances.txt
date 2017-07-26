@@ -31,7 +31,7 @@ Frankly speaking, using a third-party forum is far too clunky for the modern use
 
 [surround]
 [media float="right" framed="0" thumb="0"]data_custom/images/docs/dont.png[/media]
-Once you have installed Composr, you cannot easily switch forums, as the member and usergroup IDs referenced by Composr would lose their association. Please see the [page="_SEARCH:tut_importer"]Importing data into Composr tutorial[/page] for more information on this.
+Once you have installed Composr, you cannot easily switch forums, as the member and usergroup IDs referenced by Composr would lose their association. Please see the [page="_SEARCH:tut_importer"]Importing data into Composr[/page] tutorial for more information on this.
 
 Also: if you upgrade your forum after installing be sure to check Composr supports the version you are upgrading to before doing it.
 [/surround]
@@ -39,7 +39,7 @@ Also: if you upgrade your forum after installing be sure to check Composr suppor
 [title="2"]A note about character sets[/title]
 
 If your forum and Composr are not using the same character set there may be problems.
-You can change Composr's character set if needed (see the [page="_SEARCH:tut_intl"]Localisation and internationalisation tutorial[/page] for needed).
+You can change Composr's character set if needed (see the [page="_SEARCH:tut_intl"]Localisation and internationalisation[/page] tutorial for needed).
 A good example -- if your login password has weird symbols (ones that don't appear on most keyboards), those symbols may not be the same in Composr's character set, and thus that log in would not work.
 
 [title="2"]Comment topics[/title]

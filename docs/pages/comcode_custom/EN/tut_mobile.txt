@@ -97,7 +97,7 @@ For CSS you can also use the [tt]CSS_MODE[/tt] directive. For example:
 [/code]
 This will mark sections to use full responsive-design on desktop mode (media rules) and do rule filtering on mobile mode so that only the mobile-relevant bit is output.
 
-The particular modes ([tt]mobile[/tt], [tt]desktop[/tt]) can be configured in [tt]global.css[/tt] with particular width ranges, and to define the exact rules to apply on mobile mode. This is discussed more in the [page="_SEARCH:tut_tempcode"]Tempcode programming tutorial[/page].
+The particular modes ([tt]mobile[/tt], [tt]desktop[/tt]) can be configured in [tt]global.css[/tt] with particular width ranges, and to define the exact rules to apply on mobile mode. This is discussed more in the [page="_SEARCH:tut_tempcode"]Tempcode programming[/page] tutorial.
 
 [title="3"]Cleanup directive[/title]
 

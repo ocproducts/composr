@@ -41,7 +41,7 @@ No honest and competent company can guarantee their web application to be comple
  - have a written set of security standards that all developers comply with
  - have designed the Composr architecture to abstract away common security problems, such as 'SQL injections'
  - have written our code to pro-actively detect suspicious activity, alerting the user to it
- - have prepared a [page="_SEARCH:tut_security"]Security tutorial[/page] giving a high level of technical detail on how to 'lock down' Composr beyond the high level of security provided by default
+ - have prepared a [page="_SEARCH:tut_security"]Security[/page] tutorial giving a high level of technical detail on how to 'lock down' Composr beyond the high level of security provided by default
 
 If there does turn out to be a security flaw in Composr, we will endeavour to fix it as quickly as we possibly can.
 
@@ -57,7 +57,7 @@ As web standards are evolving and we often need to make use of ones that are not
 
 [title="3"]Is Composr available in (some language)?[/title]
 
-The developers do not officially get involved in the translation of Composr. Please check the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page] for more information on specific languages and if you would like to get involved with translation (please do!). We provide an [page="_SEARCH:tut_intl"]Internationalisation tutorial[/page], and tools, to translate Composr, and Composr has excellent internationalisation support.
+The developers do not officially get involved in the translation of Composr. Please check the [page="forum:forumview:browse:internationalisation"]Internationalisation forum[/page] for more information on specific languages and if you would like to get involved with translation (please do!). We provide an [page="_SEARCH:tut_intl"]Internationalisation[/page] tutorial, and tools, to translate Composr, and Composr has excellent internationalisation support.
 
 [title="3"]What's with your funky domain name?[/title]
 
@@ -104,7 +104,7 @@ There are huge risks with commercial and/or closed-source solutions, and these r
 
 This is a bit like asking how much a home costs. You could live in a tent, an apartment, a house, or a mansion. At the very bottom end, you'll find people can put together something in a few hours, but it'll be very poorly designed, generic, and simple. At the high end, you'll get large web companies investing millions of dollars in development each year.
 
-To start a new successful 'web property' (i.e. something for a medium-to-large business), you'll probably want a highly-experienced/qualified team working with a range of skills over a scale of months or years (at least one designer, copywriter, developer, SEO, marketer, PR agent, and user testers); some of these roles can be shared, and some take less time than others. Usually it will be in the range of $10,000-$200,000, with post-launch maintenance costs of $500-$5000 per month. We go into a lot of detail in our [page="_SEARCH:sup_pricing"]Project pricing tutorial[/page].
+To start a new successful 'web property' (i.e. something for a medium-to-large business), you'll probably want a highly-experienced/qualified team working with a range of skills over a scale of months or years (at least one designer, copywriter, developer, SEO, marketer, PR agent, and user testers); some of these roles can be shared, and some take less time than others. Usually it will be in the range of $10,000-$200,000, with post-launch maintenance costs of $500-$5000 per month. We go into a lot of detail in our [page="_SEARCH:sup_pricing"]Project pricing[/page] tutorial.
 
 [title="3"]Can I make something without a budget?[/title]
 
@@ -167,7 +167,7 @@ Composr is extremely compatible with different server configurations, tuned to w
 
 [title="3"]What are the host requirements for Composr?[/title]
 
-Read about Composr's minimum requirements in our [page="_SEARCH:tut_webhosting"]Webhosting requirements tutorial[/page]. Composr is designed to run well on almost all webhosts.
+Read about Composr's minimum requirements in our [page="_SEARCH:tut_webhosting"]Webhosting requirements[/page] tutorial. Composr is designed to run well on almost all webhosts.
 
 We don't have a recommended host at this time.
 
@@ -177,7 +177,7 @@ We feel Linux is more suited for PHP purposes than Windows. Composr will work fi
 
 [title="3"]Does Composr support (some forum vendor and version)?[/title]
 
-Compatible forum software is listed in the [page="_SEARCH:tut_webhosting"]Webhosting requirements tutorial[/page], and any issues are listed in the [page="_SEARCH:tut_nuances"]Nuances of forum integration tutorial[/page].
+Compatible forum software is listed in the [page="_SEARCH:tut_webhosting"]Webhosting requirements[/page] tutorial, and any issues are listed in the [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page] tutorial.
 
 [title="3"]Can you import this particular product?[/title]
 
@@ -319,7 +319,7 @@ Panels are just Comcode pages. Whenever you save a change, a revision is saved. 
 
 [title="3"]How do I open my site?[/title]
 
-This is available in the configuration. Please read our [page="_SEARCH:tut_configuration"]'Basic Configuration' tutorial[/page].
+This is available in the configuration. Please read our [page="_SEARCH:tut_configuration"]'Basic Configuration'[/page] tutorial.
 
 [title="3"]I turned on a URL Scheme, but they won't work, and now Composr links are all broken. How do I fix it?[/title]
 
@@ -416,7 +416,7 @@ Hold the mouse over it for a few seconds and an edit button will appear.
 
 [title="3"]A template is used in two aspects of the system, but I need it to work differently in each?[/title]
 
-Please read about the GUID feature in our [page="_SEARCH:tut_tempcode"]Tempcode programming tutorial[/page].
+Please read about the GUID feature in our [page="_SEARCH:tut_tempcode"]Tempcode programming[/page] tutorial.
 
 [b]Can I put PHP in templates?[/b]
 This is not supported for security and architectural reasons. We could have very easily allowed this, but it would mean that themes could essentially be distributed that delete files, for instance. Templates could still be abused, to steal password cookies, for example: but direct server attacks are less likely.

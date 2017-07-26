@@ -1138,6 +1138,6 @@ Programmers may add new field types by writing new [tt]systems/fields[/tt] hook 
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_catalogues"]Catalogues[/page]
+ - [page="_SEARCH:tut_catalogues"]Custom structured content (via catalogues)[/page]
 
 {$SET,tutorial_tags,core_fields,catalogues,Power tools,novice}{$SET,tutorial_add_date,Apr 2015}{$SET,tutorial_summary,Detailed information on the different field types supported by Composr.}[block]main_tutorial_rating[/block]

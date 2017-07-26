@@ -15,7 +15,7 @@ The main uses/advantages of Comcode are:
 
 Many fields in Composr support Comcode, and 'Comcode pages' may be used to layout pages and panels of your site without having to do complex template editing, and without needing to use a restrictive layout configurer. The front pages and panels of Composr are, by default, Comcode pages. When we say "support Comcode", we mean you can just directly use Comcode in those fields. For example, most post/body fields for content are written in Comcode (e.g. the main body of a news article).
 
-Unlike HTML, you do not need to use any complex syntax for Comcode -- Comcode is written more naturally, and is converted into HTML for you (combining in whatever Composr content/data is needed to make things work). Comcode adds a lot of power that HTML cannot itself provide; for example, with Comcode you can easily add an automatically-generated table of contents, or draw on the power from any of our pre-designed dynamic 'blocks' (blocks are described in our [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode) tutorial[/page]).
+Unlike HTML, you do not need to use any complex syntax for Comcode -- Comcode is written more naturally, and is converted into HTML for you (combining in whatever Composr content/data is needed to make things work). Comcode adds a lot of power that HTML cannot itself provide; for example, with Comcode you can easily add an automatically-generated table of contents, or draw on the power from any of our pre-designed dynamic 'blocks' (blocks are described in our [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page] tutorial).
 
 To be clear, Comcode is not a general language for designing websites. It is not in general an HTML-substitute, it is designed to work alongside it (it can embed HTML within it / mix with HTML). Your primary design would still be done using standard technologies (HTML, CSS, JavaScript). The Composr panels and front page are, by default, Comcode pages, so you can lay it out all in Comcode, but not much more than a block-block-block kind of sequential layout -- you'll drop to the level of HTML (via the Comcode [tt]semihtml[/tt] or [tt]html[/tt] tags) for fine-tuned layout.
 
@@ -102,7 +102,7 @@ Further examples are available within the [page="_SEARCH:userguide_comcode"]Comc
 
 Comcode is primarily written and laid out as plain-text. Special tags (and other codes) are then interpreted with meanings:
 [list="1"]
-[*] [b]Emoticon[/b] codes may be used (for Conversr, these are listed in the [page="_SEARCH:tut_emoticons"]The Composr emoticon system tutorial[/page]).
+[*] [b]Emoticon[/b] codes may be used (for Conversr, these are listed in the [page="_SEARCH:tut_emoticons"]The Composr emoticon system[/page] tutorial).
 [*] Comcode [b]tags[/b] may be used for [b]text formatting[/b], such as [tt][b]text[/b][/tt] to make some text bold.
 [*] Comcode tags may be used to [b]embed content[/b], such as  [tt][block]main_contact_us[/block][/tt] to add a dynamic comments box.
 [*] [b]Horizontal lines[/b] may be added by placing a few [tt]-[/tt]s on their own line.
@@ -111,7 +111,7 @@ Comcode is primarily written and laid out as plain-text. Special tags (and other
 [*] [b][concept]Wiki+[/concept] page links[/b] can be placed by typing [tt][[pagename-goes-here]][/tt], or [tt][[pagename-goes-here#anchor]][/tt].
 [*] [b]Table[/b] syntax (described in separate section below).
 [*] [b]List[/b] syntax (described in separate section below).
-[*] [b][concept]Tempcode[/concept][/b] symbols and directives may be used, such as [tt]{$USERNAME}[/tt] to display the username of the current user (described in the [page="_SEARCH:tut_tempcode"]Tempcode Programming tutorial[/page]).
+[*] [b][concept]Tempcode[/concept][/b] symbols and directives may be used, such as [tt]{$USERNAME}[/tt] to display the username of the current user (described in the [page="_SEARCH:tut_tempcode"]Tempcode programming[/page] tutorial).
 [*] Certain [b]shortcuts[/b] may be used, such as [tt](c)[/tt] for (c) (described in separate section).
 [/list]
 
@@ -338,13 +338,13 @@ Symbols let you:
 
 Directives let you do logic tests (for example, [tt]{+START,IF,{$IS_ADMIN}}You are admin{+END}[/tt]) and programming loops.
 
-For a list of symbols/directives, see the [page="_SEARCH:tut_tempcode"]Tempcode Programming tutorial[/page].
+For a list of symbols/directives, see the [page="_SEARCH:tut_tempcode"]Tempcode programming[/page] tutorial.
 
 [title="2"]WYSIWYG[/title]
 
 Composr provides a [page="_SEARCH:tut_wysiwyg"]WYSIWYG[/page] editor for those who would rather not type Comcode directly. You may mix in raw Comcode tags with the normal formatted text of the WYSIWYG editor if you wish; this is necessary if you need to insert things that don't have a regular appearance, such as blocks.
 
-Composr uses the Comcode [tt]semihtml[/tt] tag is used in order to mix HTML and Comcode. You don't see this within the editor, but it is used when saving. Any HTML is subjected to Composr's whitelist/blacklist filter when it is being parsed for final output (see the "Security" section of the [page="_SEARCH:tut_adv_comcode"]Advanced Comcode tutorial[/page]), unless the Comcode was submitted by staff in which case it would not be filtered.
+Composr uses the Comcode [tt]semihtml[/tt] tag is used in order to mix HTML and Comcode. You don't see this within the editor, but it is used when saving. Any HTML is subjected to Composr's whitelist/blacklist filter when it is being parsed for final output (see the "Security" section of the [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page] tutorial), unless the Comcode was submitted by staff in which case it would not be filtered.
 
 [title="2"]Spacing[/title]
 
@@ -365,7 +365,7 @@ For tags where generated-HTML would add automatic blank lines (visually speaking
 [media width="150" description="Comcode Tag Assistant button (WYSIWYG off)" float="right"]data_custom/images/docs/tut_comcode/tag_non_wysiwyg.png[/media]
 Tags may be easily added via the "Comcode Tag Assistant" feature in Composr, which lists all tags and provides an input mechanism for each.
 
-In addition, new tags may be created (discussed in the [page="_SEARCH:tut_adv_comcode"]Advanced Comcode tutorial[/page]).
+In addition, new tags may be created (discussed in the [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page] tutorial).
 [/surround]
 
 [title="2"]Attachments[/title]
@@ -380,7 +380,7 @@ If the "Simplified attachments UI" option is on you just click the image button 
 
 Using attachments couldn't be easier: you just choose a file (or many files) from your computer, and Composr will automatically add an [tt]attachment[/tt] tag into the Comcode you are writing. You may then move that tag to any location you want, for placement of the actual attachment when the content is viewed.
 
-There is special built-in support for in-line display of various media, and support of download of other types of file; any file can be added so long as the file type is in the allowed list of file types defined in the Admin Zone (see the [page="_SEARCH:tut_security"]Security tutorial[/page] for a discussion on  this).
+There is special built-in support for in-line display of various media, and support of download of other types of file; any file can be added so long as the file type is in the allowed list of file types defined in the Admin Zone (see the [page="_SEARCH:tut_security"]Security[/page] tutorial for a discussion on  this).
 
 Attachments may be given special captions, which are usually displayed as a part of the attachment box.
 
@@ -466,7 +466,7 @@ Note that the auto-save assumes that you are not switching browsers, as it store
  - [page="_SEARCH:tut_emoticons"]The Composr emoticon system[/page]
  - [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page]
  - [page="_SEARCH:tut_wysiwyg"]WYSIWYG editing[/page]
- - [page="_SEARCH:tut_tempcode"]Tempcode Programming[/page]
+ - [page="_SEARCH:tut_tempcode"]Tempcode programming[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_selectcode"]Filtering using Selectcode syntax[/page]
  - [page="site:userguide_comcode"]Comcode User-guide[/page]

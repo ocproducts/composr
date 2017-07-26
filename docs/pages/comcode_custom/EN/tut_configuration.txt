@@ -51,7 +51,7 @@ Chances are that you'll want e-mailing whenever things happen on your site. You 
 
 In particular you'll probably want to know about content needing validation, various kinds of messaging activity (e.g. support ticket posting), and eCommerce activity.
 
-This is described in more detail in the [page="_SEARCH:tut_notifications"]Notifications tutorial[/page].
+This is described in more detail in the [page="_SEARCH:tut_notifications"]Notifications[/page] tutorial.
 
 [title="2"]Editing configuration[/title]
 
@@ -77,7 +77,7 @@ We don't list all the options in the documentation because they are often either
 
 There are a number of default pages on your site. Standalone editable pages within Composr are called "Comcode pages".
 
-For details on how Comcode pages work and what the default ones are, see the [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode) tutorial[/page].
+For details on how Comcode pages work and what the default ones are, see the [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page] tutorial.
 
 [title="2"]Default banners[/title]
 
@@ -110,7 +110,7 @@ Your choice of image file formats:
 [media width="150" description="The default menu" float="right"]data_custom/images/docs/tut_configuration/menu_edit_link.png[/media]
 You may wish to remove some of the links from the default menus on your installation. To do this, log in as an administrator and click the 'Edit menu' link.
 
-The menu editor is covered in the [page="_SEARCH:tut_menus"]Customising what's on the menus tutorial[/page].
+The menu editor is covered in the [page="_SEARCH:tut_menus"]Customising what's on the menus[/page] tutorial.
 [/surround]
 
 [title="2"]Scheduling[/title]
@@ -215,15 +215,15 @@ It's not advertised in the interface, but it is possible for a user to join a cl
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_install"]Basic installation[/page]
+ - [page="_SEARCH:tut_install"]Basic Installation[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
- - [page="_SEARCH:tut_themes"]Themeing your website[/page]
+ - [page="_SEARCH:tut_themes"]Themeing your site[/page]
  - [page="_SEARCH:tut_staff_advice"]Advice for choosing and managing staff[/page]
  - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
  - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
  - [page="_SEARCH:tut_menus"]Customising what's on the menus[/page]
- - [page="_SEARCH:tut_adv_configuration"]Advanced Configuration[/page]
+ - [page="_SEARCH:tut_adv_configuration"]Advanced configuration[/page]
  - [page="_SEARCH:tut_notifications"]Notifications[/page]
 
 {$SET,tutorial_tags,zone_logos,setupwizard,help_page,core_configuration,Configuration,Installation,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Once Composr is installed, there is some basic configuration to do before your website is ready to open. We discuss it here.}[block]main_tutorial_rating[/block]

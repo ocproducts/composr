@@ -135,7 +135,7 @@ The race is on.
  - [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page]
  - [page="_SEARCH:tut_tempcode"]Tempcode programming[/page]
  - [page="_SEARCH:tut_sql"]Manually editing your database with phpMyAdmin[/page]
- - [page="_SEARCH:codebook"]Composr Code Book[/page]
+ - [page="_SEARCH:codebook"]Code Book, contents and introduction[/page]
  - [url="PHP website"]http://www.php.net[/url]
 
 {$SET,tutorial_tags,Development,PHP,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,The first in a series of practical tutorials showing how to create addons.}[block]main_tutorial_rating[/block]

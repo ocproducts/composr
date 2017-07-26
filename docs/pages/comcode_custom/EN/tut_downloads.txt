@@ -25,7 +25,7 @@ Manage downloads from Admin Zone > Content > Downloads.
 
 [title="3"]Upload vs URL[/title]
 
-When you add a download you have a choice as to whether to specify a URL or to attach a file. There are other options actually, explained in more detail in the [page="_SEARCH:tut_adv_downloads"]Advanced provision of downloads tutorial[/page].
+When you add a download you have a choice as to whether to specify a URL or to attach a file. There are other options actually, explained in more detail in the [page="_SEARCH:tut_adv_downloads"]Advanced provision of downloads[/page] tutorial.
 
 We recommend that you attach a file, as Composr can then manage it without risk of the URL being broken by something outside of the Composr control.
 
@@ -99,7 +99,7 @@ In addition, the [tt]search[/tt] module is able to search within the actual down
  - [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page]
  - [page="_SEARCH:tut_featured"]Providing featured content[/page]
  - [page="_SEARCH:tut_adv_downloads"]Advanced provision of downloads[/page]
- - [page="_SEARCH:tut_news"]News[/page]
+ - [page="_SEARCH:tut_news"]Releasing news & running a Blog[/page]
  - [page="_SEARCH:tut_information"]Choosing how to publish[/page]
 
 {$SET,tutorial_tags,Downloads,downloads,Content,novice}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,You can make large files available to your visitors using the Composr downloads system. Read about it.}[block]main_tutorial_rating[/block]
