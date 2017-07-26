@@ -166,9 +166,9 @@ class Hook_health_check_email extends Hook_Health_Check
                 foreach ($domains as $self_domain) {
                     $self_ip = @gethostbyname($self_domain);
 
-                    $domains = $this->get_mail_domains();
+                    $mail_domains = $this->get_mail_domains();
 
-                    foreach ($domains as $domain => $email) {
+                    foreach ($mail_domains as $domain => $email) {
                         $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
 
                         $this->assertTrue($passed !== null, 'SPF record is not set for [tt]' . $domain . '[/tt], setting it will significantly reduce the chance of fraud and spam blockage');
