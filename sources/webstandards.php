@@ -353,6 +353,7 @@ function init__webstandards()
         'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
         'overflow-scrolling' => '(touch|auto)',
         'text-size-adjust' => '(none|auto|\d%|\d\d%|100%)',
+        'appearance' => '([\w-]+)',
     );
 
     global $POSSIBLY_EMPTY_TAGS;

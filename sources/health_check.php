@@ -410,7 +410,9 @@ abstract class Hook_Health_Check
      */
     protected function get_domains()
     {
-        $domains = parse_url(get_base_url(), PHP_URL_HOST);
+        $domains = array();
+
+        $domains[] = parse_url(get_base_url(), PHP_URL_HOST);
 
         global $SITE_INFO;
         $zl = strlen('ZONE_MAPPING_');

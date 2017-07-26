@@ -1861,10 +1861,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_CATEGORY_DESCRIPTION__USER_INTERACTION
         CONFIG_CATEGORY_MESSAGES
         CONFIG_CATEGORY_USER_INTERACTION
-        CONFIG_OPTION_transaction_flat_cost
-        CONFIG_OPTION_transaction_percentage_cost
-        TRANSACTION_FLAT_COST
-        TRANSACTION_PERCENTAGE_COST
         HELP_THRESHOLDS
         CAPTCHA_NOISE
         CAPTCHA_ON_FEEDBACK

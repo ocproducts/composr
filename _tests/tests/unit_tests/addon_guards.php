@@ -37,6 +37,10 @@ class addon_guards_test_set extends cms_test_case
             $requires = $dependencies['requires'];
 
             foreach ($files as $file) {
+                if ($file == 'data_custom/execute_temp.php') {
+                    continue;
+                }
+
                 if (!is_file(get_file_base() . '/' . $file)) {
                     continue;
                 }

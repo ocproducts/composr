@@ -116,6 +116,6 @@ class Hook_health_check_marketing extends Hook_Health_Check
             $this->assertTrue(strpos($data, $ga) !== false, 'Google Analytics enabled but not in page output (themeing issue?)');
         }
 
-        // IDEA: Call Google Analytics API and see if data still being gathered (this is complex, needs working oAuth)
+        // IDEA: Call Google Analytics API and see if data still being gathered (this is complex, needs working oAuth) #974
     }
 }

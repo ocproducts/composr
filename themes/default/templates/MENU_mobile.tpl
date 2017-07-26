@@ -8,7 +8,7 @@
 
 		<nav class="menu_type__mobile js-el-menu-content" style="display: none" aria-expanded="false">
 			<div class="mobile_search">
-				{$BLOCK,block=top_search,failsafe=1}
+				{$BLOCK,block=top_search,failsafe=1,block_id=mobile}
 			</div>
 
 			<ul class="nl" id="{$GET,menu_id}">
