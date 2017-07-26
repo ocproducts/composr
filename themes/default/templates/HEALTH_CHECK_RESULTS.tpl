@@ -15,6 +15,17 @@
 				<col style="width: 8em" />
 			</colgroup>
 
+			<thead>
+				<tr>
+					<th>
+						{!SECTION}
+					</th>
+					<th colspan="2">
+						{!RESULTS}
+					</th>
+				</tr>
+			</thead>
+
 			<tbody>
 				{+START,LOOP,SECTIONS}
 					<tr>
@@ -39,7 +50,7 @@
 									{+START,CASES,{RESULT}}
 										FAIL=<strong>{!CHECK_FAILED}</strong>: <span style="color: red">{MESSAGE}</span>
 										PASS=<strong>{!CHECK_PASSED}</strong>: <span style="color: green">{MESSAGE}</span>
-										SKIP=<strong>{!CHECK_SKIPPED}</strong>: <span style="color: grey">{MESSAGE}</span>
+										SKIP=<strong>{!CHECK_SKIPPED}</strong>: <span style="color: gray">{MESSAGE}</span>
 										MANUAL=<strong>{!CHECK_MANUAL}</strong>: <span style="color: orange">{MESSAGE}</span>
 									{+END}
 								</div>

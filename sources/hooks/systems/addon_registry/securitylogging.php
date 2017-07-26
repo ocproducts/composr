@@ -233,6 +233,7 @@ class Hook_addon_registry_securitylogging
                 'USERNAME' => lorem_word_html(),
                 'POST' => lorem_phrase(),
                 'URL' => placeholder_url(),
+                'PERCENTAGE_SCORE' => placeholder_number(),
             )), null, '', true)
         );
     }

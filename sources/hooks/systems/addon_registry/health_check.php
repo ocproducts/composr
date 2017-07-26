@@ -233,37 +233,59 @@ class Hook_addon_registry_health_check
     public function tpl_preview__health_check_screen()
     {
         $categories = array(
-            'CATEGORIES' => array(
-                lorem_phrase() => array(
-                    'SECTIONS' => array(
-                        lorem_phrase() . ' 1' => array(
-                            'RESULTS' => array(
-                                array(
-                                    'RESULT' => 'PASS',
-                                    'MESSAGE' => lorem_sentence_html(),
-                                ),
-                                array(
-                                    'RESULT' => 'MANUAL',
-                                    'MESSAGE' => lorem_sentence_html(),
-                                ),
+            lorem_phrase() => array(
+                'SECTIONS' => array(
+                    lorem_phrase() . ' 1' => array(
+                        'RESULTS' => array(
+                            array(
+                                'RESULT' => 'PASS',
+                                'MESSAGE' => lorem_sentence_html(),
+                            ),
+                            array(
+                                'RESULT' => 'MANUAL',
+                                'MESSAGE' => lorem_sentence_html(),
                             ),
                         ),
-                        lorem_phrase() . ' 2' => array(
-                            'RESULTS' => array(
-                                array(
-                                    'RESULT' => 'FAIL',
-                                    'MESSAGE' => lorem_sentence_html(),
-                                ),
+                        'NUM_FAILS' => placeholder_number(),
+                        'NUM_PASSES' => placeholder_number(),
+                        'NUM_SKIPPED' => placeholder_number(),
+                        'NUM_MANUAL' => placeholder_number(),
+                        '_NUM_FAILS' => '1',
+                        '_NUM_PASSES' => '1',
+                        '_NUM_SKIPPED' => '1',
+                        '_NUM_MANUAL' => '1',
+                    ),
+                    lorem_phrase() . ' 2' => array(
+                        'RESULTS' => array(
+                            array(
+                                'RESULT' => 'FAIL',
+                                'MESSAGE' => lorem_sentence_html(),
                             ),
                         ),
-                        lorem_phrase() . ' 3' => array(
-                            'RESULTS' => array(
-                                array(
-                                    'RESULT' => 'SKIP',
-                                    'MESSAGE' => lorem_sentence_html(),
-                                ),
+                        'NUM_FAILS' => placeholder_number(),
+                        'NUM_PASSES' => placeholder_number(),
+                        'NUM_SKIPPED' => placeholder_number(),
+                        'NUM_MANUAL' => placeholder_number(),
+                        '_NUM_FAILS' => '1',
+                        '_NUM_PASSES' => '1',
+                        '_NUM_SKIPPED' => '1',
+                        '_NUM_MANUAL' => '1',
+                    ),
+                    lorem_phrase() . ' 3' => array(
+                        'RESULTS' => array(
+                            array(
+                                'RESULT' => 'SKIP',
+                                'MESSAGE' => lorem_sentence_html(),
                             ),
                         ),
+                        'NUM_FAILS' => placeholder_number(),
+                        'NUM_PASSES' => placeholder_number(),
+                        'NUM_SKIPPED' => placeholder_number(),
+                        'NUM_MANUAL' => placeholder_number(),
+                        '_NUM_FAILS' => '1',
+                        '_NUM_PASSES' => '1',
+                        '_NUM_SKIPPED' => '1',
+                        '_NUM_MANUAL' => '1',
                     ),
                 ),
             ),

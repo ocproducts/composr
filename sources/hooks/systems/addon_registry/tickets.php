@@ -441,7 +441,7 @@ class Hook_addon_registry_tickets
             'DISPLAY' => 'block',
             'FIRST_POST_URL' => '',
             'FIRST_POST' => '',
-            'COMMENT_URL' => '',
+            'COMMENT_URL' => placeholder_url(),
         ));
 
         return array(

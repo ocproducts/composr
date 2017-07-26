@@ -64,7 +64,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
     global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_CSP;
 
     // CSP violation
-    if ($WEBSTANDARDS_CSP) {
+    if ($WEBSTANDARDS_CSP && false/*TODO: Re-enable once installer follows CSP too*/) {
         if (!$close) {
             if (($tag === 'script') && (empty($attributes['nonce']))) {
                 $errors[] = array('CSP_SCRIPT_TAG');
