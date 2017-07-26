@@ -52,9 +52,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -93,9 +92,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -109,9 +107,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -123,9 +120,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -178,9 +174,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -203,9 +198,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -236,9 +230,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -290,9 +283,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -311,9 +303,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -339,9 +330,8 @@ class Hook_health_check_install_env extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible

@@ -404,13 +404,23 @@ abstract class Hook_Health_Check
     }
 
     /**
-     * Get the website domain name.
+     * Get the website domain names.
      *
-     * @return string Domain name
+     * @return array Domain names
      */
-    protected function get_domain()
+    protected function get_domains()
     {
-        return parse_url(get_base_url(), PHP_URL_HOST);
+        $domains = parse_url(get_base_url(), PHP_URL_HOST);
+
+        global $SITE_INFO;
+        $zl = strlen('ZONE_MAPPING_');
+        foreach ($SITE_INFO as $key => $_val) {
+            if ($key !== '' && $key[0] === 'Z' && substr($key, 0, $zl) === 'ZONE_MAPPING_') {
+                $domains[] = $_val[0];
+            }
+        }
+
+        return array_unique($domains);
     }
 
     /**
@@ -473,7 +483,7 @@ abstract class Hook_Health_Check
      * @param  string $page_link Page-link
      * @return object Response data
      */
-    function get_page_http_content($page_link = ':')
+    protected function get_page_http_content($page_link = ':')
     {
         global $HEALTH_CHECK_PAGE_RESPONSE_CACHE;
         if (!array_key_exists($page_link, $HEALTH_CHECK_PAGE_RESPONSE_CACHE)) {

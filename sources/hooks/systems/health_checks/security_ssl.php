@@ -47,9 +47,8 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
     }
 
     /**
-     * Standard hook run function to run this category of health checks.
+     * Run a section of health checks.
      *
-     * @param  ?array $sections_to_run Which check sections to run (null: all)
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
      * @param  boolean $manual_checks Mention manual checks
      * @param  boolean $automatic_repair Do automatic repairs where possible
@@ -148,7 +147,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
             return;
         }
 
-        $domain = $this->get_domain();
+        $domains = $this->get_domains();
 
         $page_links = $this->process_urls_into_page_links();
 
@@ -164,7 +163,15 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
 
             foreach ($urls as $url) {
                 // Check
-                $this->assertTrue(preg_match('#^http://' . preg_quote($domain, '#') . '#', $url) == 0, 'Linking to a local HTTP page on all-HTTPS site: ' . $url . ' (on "' . $page_link . '")');
+                $regexp = '#^http://(';
+                foreach ($domains as $i => $domain) {
+                    if ($i != 0) {
+                        $regexp .= '|';
+                    }
+                    $regexp .= preg_quote($domain, '#');
+                }
+                $regexp .= ')[:/]#';
+                $this->assertTrue(preg_match($regexp, $url) == 0, 'Linking to a local HTTP page on all-HTTPS site: ' . $url . ' (on "' . $page_link . '")');
             }
         }
     }
@@ -191,25 +198,27 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
 
             if ($ok) {
                 // If it's a problem with SSL verification on our domain specifically
-                $domain = $this->get_domain();
-                if (get_value('disable_ssl_for__' . $domain) !== '1') {
-                    $test_url = get_base_url(true) . '/uploads/index.html';
-
-                    delete_value('disable_ssl_for__' . $domain);
-                    $data = http_get_contents($test_url, array('trigger_error' => false));
-                    $ok1 = (($data !== null) && (strpos($data, '<html') !== false));
-
-                    $msg = 'Problem detected with the ' . $domain . ' SSL certificate';
-                    if (!$ok1) {
-                        set_value('disable_ssl_for__' . $domain, '1');
-                        $data = http_get_contents($test_url, array('trigger_error' => false));
-                        $ok2 = (($data !== null) && (strpos($data, '<html') !== false));
-
-                        $this->assertTrue(!$ok2, $msg); // Issue with our SSL but not if verify is disabled, suggesting the problem is with verify
+                $domains = $this->get_domains();
+                foreach ($domains as $domain) {
+                    if (get_value('disable_ssl_for__' . $domain) !== '1') {
+                        $test_url = get_base_url(true) . '/uploads/index.html';
 
                         delete_value('disable_ssl_for__' . $domain);
-                    } else {
-                        $this->assertTrue(true, $msg); // No issue with our SSL
+                        $data = http_get_contents($test_url, array('trigger_error' => false));
+                        $ok1 = (($data !== null) && (strpos($data, '<html') !== false));
+
+                        $msg = 'Problem detected with the ' . $domain . ' SSL certificate';
+                        if (!$ok1) {
+                            set_value('disable_ssl_for__' . $domain, '1');
+                            $data = http_get_contents($test_url, array('trigger_error' => false));
+                            $ok2 = (($data !== null) && (strpos($data, '<html') !== false));
+
+                            $this->assertTrue(!$ok2, $msg); // Issue with our SSL but not if verify is disabled, suggesting the problem is with verify
+
+                            delete_value('disable_ssl_for__' . $domain);
+                        } else {
+                            $this->assertTrue(true, $msg); // No issue with our SSL
+                        }
                     }
                 }
             }

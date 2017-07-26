@@ -161,18 +161,21 @@ class Hook_health_check_email extends Hook_Health_Check
 
         if (get_option('smtp_sockets_use') == '0') {
             if ((php_function_allowed('dns_get_record')) && (php_function_allowed('gethostbyname'))) {
-                $self_domain = $this->get_domain();
-                $self_ip = @gethostbyname($self_domain);
+                $domains = $this->get_domains();
 
-                $domains = $this->get_mail_domains();
+                foreach ($domains as $self_domain) {
+                    $self_ip = @gethostbyname($self_domain);
 
-                foreach ($domains as $domain => $email) {
-                    $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
+                    $domains = $this->get_mail_domains();
 
-                    $this->assertTrue($passed !== null, 'SPF record is not set for [tt]' . $domain . '[/tt], setting it will significantly reduce the chance of fraud and spam blockage');
+                    foreach ($domains as $domain => $email) {
+                        $passed = $this->do_spf_check($domain, $self_domain, $self_ip);
 
-                    if ($passed !== null) {
-                        $this->assertTrue($passed, 'SPF record for [tt]' . $domain . '[/tt] does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
+                        $this->assertTrue($passed !== null, 'SPF record is not set for [tt]' . $domain . '[/tt], setting it will significantly reduce the chance of fraud and spam blockage');
+
+                        if ($passed !== null) {
+                            $this->assertTrue($passed, 'SPF record for [tt]' . $domain . '[/tt] does not allow the server to send (either blocked or neutral). Maybe your local SMTP is relaying via another server, but check that.');
+                        }
                     }
                 }
             } else {

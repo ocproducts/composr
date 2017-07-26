@@ -186,19 +186,22 @@ class Hook_health_check_security extends Hook_Health_Check
 
         if (!$this->is_localhost_domain()) {
             if (php_function_allowed('shell_exec')) {
-                $domain = $this->get_domain();
-                $regexp = '#\nNon-authoritative answer:\nName:\s+' . $domain . '\nAddress:\s+(.*)\n#';
+                $domains = $this->get_domains();
 
-                $matches_local = array();
-                $dns_lookup_local = shell_exec('nslookup ' . $domain);
-                $matched_local = preg_match($regexp, $dns_lookup_local, $matches_local);
-                $matches_remote = array();
-                $dns_lookup_remote = shell_exec('nslookup ' . $domain . ' 8.8.8.8');
-                $matched_remote = preg_match($regexp, $dns_lookup_remote, $matches_remote);
-                if (($matched_local != 0) && ($matched_remote != 0)) {
-                    $this->assertTrue($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently ([tt]' . $matches_local[1] . '[/tt] vs [tt]' . $matches_remote[1] . '[/tt])');
-                } else {
-                    $this->stateCheckSkipped('Failed to get a recognisable DNS resolution via the command line');
+                foreach ($domains as $domain) {
+                    $regexp = '#\nNon-authoritative answer:\nName:\s+' . $domain . '\nAddress:\s+(.*)\n#';
+
+                    $matches_local = array();
+                    $dns_lookup_local = shell_exec('nslookup ' . $domain);
+                    $matched_local = preg_match($regexp, $dns_lookup_local, $matches_local);
+                    $matches_remote = array();
+                    $dns_lookup_remote = shell_exec('nslookup ' . $domain . ' 8.8.8.8');
+                    $matched_remote = preg_match($regexp, $dns_lookup_remote, $matches_remote);
+                    if (($matched_local != 0) && ($matched_remote != 0)) {
+                        $this->assertTrue($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently ([tt]' . $matches_local[1] . '[/tt] vs [tt]' . $matches_remote[1] . '[/tt])');
+                    } else {
+                        $this->stateCheckSkipped('Failed to get a recognisable DNS resolution via the command line');
+                    }
                 }
             } else {
                 $this->stateCheckSkipped('PHP shell_exec function not available');
