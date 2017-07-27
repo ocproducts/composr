@@ -1288,17 +1288,17 @@ CREATE TABLE cms_staff_checklist_cus_tasks (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1498612222, 0, '', NULL);
-INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1498612222, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (1, 'Set up website configuration and structure', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (2, 'Make/install custom theme', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (3, '[page=\"adminzone:admin_themes:edit_image:favicon\"]Make \'favicon\' theme image[/page]', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (4, '[page=\"adminzone:admin_themes:edit_image:webclipicon\"]Make \'webclipicon\' theme image[/page]', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (5, 'Add your content', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (6, '[page=\"adminzone:admin_themes:edit_image:logo/standalone_logo:theme=default\"]Customise your mail/RSS logo[/page]', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (7, '[page=\"adminzone:admin_themes:_edit_templates:theme=default:f0file=templates/MAIL.tpl\"]Customise your \'MAIL\' template[/page]', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (8, '[url=\"Sign up for Google Webmaster Tools\"]https://www.google.com/webmasters/tools/[/url]', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (9, '[url=\"Set up up-time monitor\"]https://uptimerobot.com/[/url]', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (10, '[html]<p style=\"margin: 0\">Facebook user? Like Composr on Facebook:</p><iframe src=\"https://compo.sr/uploads/website_specific/compo.sr/facebook.html\" scrolling=\"no\" frameborder=\"0\" style=\"border:none; overflow:hidden; width:430px; height:20px;\" allowTransparency=\"true\"></iframe>[/html]', 1501187970, 0, '', NULL);
+INSERT INTO cms_staff_checklist_cus_tasks (id, task_title, add_date, recur_interval, recur_every, task_is_done) VALUES (11, '[url=\"Consider helping out with the Composr project\"]http://compo.sr/site/contributions.htm[/url]', 1501187970, 0, '', NULL);
 
 DROP TABLE IF EXISTS cms_staff_links;
 
@@ -1314,25 +1314,23 @@ INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (1, 'http:/
 INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (2, 'http://compo.sr/forum/vforums.htm', 'compo.sr (topics with unread posts)', 'compo.sr (topics with unread posts)');
 INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (3, 'http://ocproducts.com/', 'ocProducts (web development services)', 'ocProducts (web development services)');
 INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (4, 'https://www.transifex.com/organization/ocproducts/dashboard', 'Transifex (Composr language translations)', 'Transifex (Composr language translations)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (5, 'http://www.google.com/alerts', 'Google Alerts', 'Google Alerts');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (6, 'http://www.google.com/analytics/', 'Google Analytics', 'Google Analytics');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (7, 'https://www.google.com/webmasters/tools', 'Google Webmaster Tools', 'Google Webmaster Tools');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (5, 'http://www.google.com/chrome', 'Google Chrome (web browser)', 'Google Chrome (web browser)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (6, 'https://chrome.google.com/extensions/featured/web_dev', 'Google Chrome addons', 'Google Chrome addons');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (7, 'http://www.google.com/alerts', 'Google Alerts', 'Google Alerts');
 INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (8, 'http://www.google.com/apps/intl/en/group/index.html', 'Google Apps (gmail for domains, etc)', 'Google Apps (gmail for domains, etc)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (9, 'http://www.google.com/chrome', 'Google Chrome (web browser)', 'Google Chrome (web browser)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (10, 'https://chrome.google.com/extensions/featured/web_dev', 'Google Chrome addons', 'Google Chrome addons');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (11, 'http://www.sharedcount.com/', 'SharedCount (social sharing stats)', 'SharedCount (social sharing stats)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (12, 'https://developers.facebook.com/docs/insights/', 'Facebook Insights (Facebook Analytics)', 'Facebook Insights (Facebook Analytics)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (13, 'http://www.getpaint.net/', 'Paint.net (free graphics tool, Windows)', 'Paint.net (free graphics tool, Windows)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (14, 'http://benhollis.net/software/pnggauntlet/', 'PNGGauntlet (compress PNG files, Windows)', 'PNGGauntlet (compress PNG files, Windows)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (15, 'http://imageoptim.pornel.net/', 'ImageOptim (compress PNG files, Mac)', 'ImageOptim (compress PNG files, Mac)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (16, 'http://findicons.com/', 'Find Icons (free icons)', 'Find Icons (free icons)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (17, 'http://sxc.hu/', 'stock.xchng (free stock art)', 'stock.xchng (free stock art)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (18, 'http://www.kompozer.net/', 'Kompozer (Web design tool)', 'Kompozer (Web design tool)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (19, 'http://www.sourcegear.com/diffmerge/', 'DiffMerge', 'DiffMerge');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (20, 'http://www.jingproject.com/', 'Jing (record screencasts)', 'Jing (record screencasts)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (21, 'http://www.silktide.com/siteray', 'SiteRay (site quality auditing)', 'SiteRay (site quality auditing)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (22, 'http://www.smashingmagazine.com/', 'Smashing Magazine (web design articles)', 'Smashing Magazine (web design articles)');
-INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (23, 'http://www.w3schools.com/', 'w3schools (learn web technologies)', 'w3schools (learn web technologies)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (9, 'http://www.google.com/analytics/', 'Google Analytics', 'Google Analytics');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (10, 'http://www.sharedcount.com/', 'SharedCount (social sharing stats)', 'SharedCount (social sharing stats)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (11, 'https://developers.facebook.com/docs/insights/', 'Facebook Insights (Facebook Analytics)', 'Facebook Insights (Facebook Analytics)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (12, 'http://www.getpaint.net/', 'Paint.net (free graphics tool, Windows)', 'Paint.net (free graphics tool, Windows)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (13, 'http://benhollis.net/software/pnggauntlet/', 'PNGGauntlet (compress PNG files, Windows)', 'PNGGauntlet (compress PNG files, Windows)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (14, 'http://imageoptim.pornel.net/', 'ImageOptim (compress PNG files, Mac)', 'ImageOptim (compress PNG files, Mac)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (15, 'http://findicons.com/', 'Find Icons (free icons)', 'Find Icons (free icons)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (16, 'http://www.freeimages.com/', 'FreeImages (free stock art)', 'FreeImages (free stock art)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (17, 'http://www.kompozer.net/', 'Kompozer (Web design tool)', 'Kompozer (Web design tool)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (18, 'http://www.sourcegear.com/diffmerge/', 'DiffMerge', 'DiffMerge');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (19, 'http://www.jingproject.com/', 'Jing (record screencasts)', 'Jing (record screencasts)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (20, 'http://www.smashingmagazine.com/', 'Smashing Magazine (web design articles)', 'Smashing Magazine (web design articles)');
+INSERT INTO cms_staff_links (id, link, link_title, link_desc) VALUES (21, 'http://www.w3schools.com/', 'w3schools (learn web technologies)', 'w3schools (learn web technologies)');
 
 DROP TABLE IF EXISTS cms_staff_tips_dismissed;
 
@@ -1424,7 +1422,7 @@ CREATE TABLE cms_task_queue (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, 'c1bd1820743f2', 0, 0);
+INSERT INTO cms_task_queue (id, t_title, t_hook, t_args, t_member_id, t_secure_ref, t_send_notification, t_locked) VALUES (1, 'Install geolocation data', 'install_geolocation_data', 'a:0:{}', 1, 'e62318cc3aa8b', 0, 0);
 
 DROP TABLE IF EXISTS cms_temp_block_permissions;
 
@@ -1659,14 +1657,14 @@ CREATE TABLE cms_values (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1498612199);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1498612199);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1498612200);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1498612200);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1498612200);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('users_online', '0', 1498612206);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak', '0', 1498612206);
-INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak_week', '0', 1498612206);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_topic_count', '1', 1501187954);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_member_count', '1', 1501187954);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_post_count', '1', 1501187955);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('version', '10.00', 1501187955);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('cns_version', '10.00', 1501187955);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('users_online', '0', 1501187961);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak', '0', 1501187961);
+INSERT INTO cms_values (the_name, the_value, date_and_time) VALUES ('user_peak_week', '0', 1501187961);
 
 ALTER TABLE cms10_values ADD INDEX date_and_time (date_and_time);
 
@@ -1679,7 +1677,7 @@ CREATE TABLE cms_values_elective (
     PRIMARY KEY (the_name)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1498612200);
+INSERT INTO cms_values_elective (the_name, the_value, date_and_time) VALUES ('call_home', '0', 1501187955);
 
 DROP TABLE IF EXISTS cms_video_transcoding;
 
@@ -1780,7 +1778,7 @@ CREATE TABLE cms_wiki_pages (
     PRIMARY KEY (id)
 ) CHARACTER SET=utf8mb4 engine=MyISAM;
 
-INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1498612221, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_595301f69ceda1.52818081_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_595301f69ceda1.52818081_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_595301f69ceda1.52818081_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
+INSERT INTO cms_wiki_pages (id, title, notes, description, add_date, edit_date, wiki_views, hide_posts, submitter, description__text_parsed, description__source_user) VALUES (1, 'Wiki+ home', '', '', 1501187970, NULL, 0, 0, 2, 'return unserialize(\"a:5:{i:0;a:1:{i:0;a:1:{i:0;a:5:{i:0;s:40:\\\"string_attach_597a4f7cc851f7.38414785_24\\\";i:1;a:0:{}i:2;i:1;i:3;s:0:\\\"\\\";i:4;s:0:\\\"\\\";}}}i:1;a:0:{}i:2;s:10:\\\":container\\\";i:3;N;i:4;a:1:{s:40:\\\"string_attach_597a4f7cc851f7.38414785_24\\\";s:69:\\\"\\$tpl_funcs[\'string_attach_597a4f7cc851f7.38414785_24\']=\\\"echo \\\\\\\"\\\\\\\";\\\";\\n\\\";}}\");
 ', 1);
 
 ALTER TABLE cms10_wiki_pages ADD FULLTEXT description (description);
@@ -1846,41 +1844,40 @@ INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (4, 'basta
 INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (5, 'cock', '', 0);
 INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (6, 'cocked', '', 0);
 INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (7, 'cocksucker', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (8, 'crap', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (9, 'cunt', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (10, 'cum', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (11, 'blowjob', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (12, 'bollocks', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (13, 'bondage', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (14, 'bugger', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (15, 'buggery', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (16, 'dickhead', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (17, 'dildo', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (18, 'faggot', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (19, 'fuck', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (20, 'fucked', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (21, 'fucking', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (22, 'fucker', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (23, 'gayboy', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (24, 'jackoff', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (25, 'jerk-off', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (26, 'motherfucker', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (27, 'nigger', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (28, 'piss', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (29, 'pissed', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (30, 'puffter', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (31, 'pussy', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (32, 'queers', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (33, 'retard', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (34, 'shag', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (35, 'shagged', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (36, 'shat', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (37, 'shit', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (38, 'slut', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (39, 'twat', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (40, 'wank', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (41, 'wanker', '', 0);
-INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (42, 'whore', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (8, 'cunt', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (9, 'cum', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (10, 'blowjob', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (11, 'bollocks', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (12, 'bondage', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (13, 'bugger', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (14, 'buggery', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (15, 'dickhead', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (16, 'dildo', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (17, 'faggot', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (18, 'fuck', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (19, 'fucked', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (20, 'fucking', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (21, 'fucker', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (22, 'gayboy', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (23, 'jackoff', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (24, 'jerk-off', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (25, 'motherfucker', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (26, 'nigger', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (27, 'piss', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (28, 'pissed', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (29, 'puffter', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (30, 'pussy', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (31, 'queers', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (32, 'retard', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (33, 'shag', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (34, 'shagged', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (35, 'shat', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (36, 'shit', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (37, 'slut', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (38, 'twat', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (39, 'wank', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (40, 'wanker', '', 0);
+INSERT INTO cms_wordfilter (id, word, w_replacement, w_substr) VALUES (41, 'whore', '', 0);
 
 DROP TABLE IF EXISTS cms_zones;
 
