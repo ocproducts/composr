@@ -87,7 +87,6 @@ class Block_main_staff_links
                 'Google Chrome (web browser)' => 'http://www.google.com/chrome',
                 'Google Chrome addons' => 'https://chrome.google.com/extensions/featured/web_dev',
                 'Google Alerts' => 'http://www.google.com/alerts',
-                'Google Webmaster Tools' => 'https://www.google.com/webmasters/tools/home', // TODO: Remove in v11 (as Health Check will point to here)
                 'Google Apps (gmail for domains, etc)' => 'http://www.google.com/apps/intl/en/group/index.html',
                 'Google Analytics' => 'http://www.google.com/analytics/',
                 'SharedCount (social sharing stats)' => 'http://www.sharedcount.com/',

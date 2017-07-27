@@ -75,6 +75,8 @@ class css_and_js_test_set extends cms_test_case
             'unslider.js',
             'tag_cloud.js',
             'mediaelement-and-player.js',
+            'sound.js',
+            'base64.js',
 
             // Partial code that will give errors
             'ATTACHMENT_UI_DEFAULTS.js',

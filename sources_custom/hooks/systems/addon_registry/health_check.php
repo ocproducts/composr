@@ -226,19 +226,7 @@ The Composr ecosystem also has:
      */
     public function get_applicable_tutorials()
     {
-        return array(
-            'tut_security',
-            'tut_configuration',
-            'tut_adv_configuration',
-            'tut_markup',
-            'tut_seo',
-            'tut_email',
-            'tut_optimisation',
-            'tut_fringe',
-            'tut_metadata',
-            'tut_cookies',
-            'tut_accessibility',
-        );
+        return array();
     }
 
     /**

@@ -197,7 +197,7 @@ function rebuild_sitemap_index()
     fclose($sitemaps_out_file);
     @unlink($sitemaps_out_path);
     if (!file_exists(dirname($sitemaps_out_path))) {
-        @mkdir(dirname($sitemaps_out_path));
+        @mkdir(dirname($sitemaps_out_path), 0777);
         fix_permissions(dirname($sitemaps_out_path));
     }
     rename($sitemaps_out_temppath, $sitemaps_out_path);

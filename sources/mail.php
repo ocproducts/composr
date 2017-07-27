@@ -1495,7 +1495,7 @@ function form_to_email_entry_script()
     $redirect = get_param_string('redirect', null);
     if (!is_null($redirect)) {
         require_code('site2');
-        assign_refresh($url, 0.0);
+        assign_refresh($redirect, 0.0);
         $tpl = redirect_screen($title, $redirect, $text);
     } else {
         $tpl = do_template('INFORM_SCREEN', array('_GUID' => 'e577a4df79eefd9064c14240cc99e947', 'TITLE' => $title, 'TEXT' => $text));

@@ -1,5 +1,5 @@
 {+START,IF_EMPTY,{CATEGORIES}}
-	<p class="nothing_here">{!NO_ISSUES_FOUND}</p>
+	<p class="nothing_here">{!NO_HEALTH_ISSUES_FOUND}</p>
 {+END}
 
 {+START,IF_NON_EMPTY,{CATEGORIES}}
