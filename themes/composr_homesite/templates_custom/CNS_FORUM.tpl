@@ -1,5 +1,7 @@
-{+START,IF,{$NOT,{$_GET,overlay}}}
-	{$BLOCK,block=main_member_bar}
+{+START,IF_PASSED,ID}
+	{+START,IF,{$NOT,{$_GET,overlay}}}
+		{$BLOCK,block=main_member_bar}
+	{+END}
 {+END}
 
 {+START,IF_PASSED,DESCRIPTION}{+START,IF_NON_EMPTY,{DESCRIPTION}}
@@ -32,7 +34,7 @@
 
 {+START,IF_EMPTY,{TOPIC_WRAPPER}{FORUM_GROUPINGS}}
 	<p class="nothing_here">
-		{!NO_ENTRIES}
+		{!NO_ENTRIES,topic}
 	</p>
 {+END}
 
