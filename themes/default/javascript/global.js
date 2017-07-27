@@ -139,7 +139,16 @@
          * @method
          * @returns {string}
          */
-        $PREVIEW_URL: constant(strVal(symbols.PREVIEW_URL)),
+        $_GET: function $_GET(name) {
+            return strVal($cms.usp.get(name));
+        },
+        /**
+         * @method
+         * @returns {string}
+         */
+        $PREVIEW_URL: function $PREVIEW_URL() {
+            return strVal(symbols.PREVIEW_URL);
+        },
         /**
          * @method
          * @returns {string}
@@ -626,7 +635,14 @@
         });
     }
 
+    /**
+     * @type { URLSearchParams }
+     */
     $cms.usp = uspFromUrl(window.location.href);
+    
+    window.addEventListener('popstate', function () {
+        $cms.usp = uspFromUrl(window.location.href);
+    });
 
     // usp with only the `keep_*` parameters
     $cms.uspKeep = new URLSearchParams();
@@ -704,7 +720,7 @@
      * @returns { function }
      */
     function constant(value) {
-        return function () {
+        return function _constant() {
             return value;
         };
     }
@@ -933,7 +949,7 @@
      */
     function isArrayLike(obj, minLength) {
         var len;
-        minLength = Number.isFinite(+minLength) ? +minLength : 0;
+        minLength = intVal(minLength);
 
         return (obj != null)
             && (typeof obj === 'object')
@@ -951,8 +967,8 @@
      * @returns {*}
      */
     function random(min, max) {
-        min = Number.isFinite(+min) ? +min : 0;
-        max = Number.isFinite(+max) ? +max : 1000000000000; // 1 Trillion
+        min = intVal(min, 0);
+        max = intVal(max, 1000000000000); // 1 Trillion
 
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
@@ -1418,7 +1434,7 @@
     }
 
     /**
-     * @param usp
+     * @param usp { URLSearchParams }
      * @returns {object}
      */
     function entriesFromUsp(usp) {
@@ -1461,9 +1477,17 @@
 
     /* Generate url */
 
-    $cms.url = function () {
-        return baseUrl.apply(undefined, arguments);
+    $cms.url = function (relativeUrl) {
+        return baseUrl(relativeUrl);
     };
+
+    extendDeep($cms.url, /**@lends $cms.url*/{
+        isAbsolute: isAbsolute,
+        isRelative: isRelative,
+        isSchemeRelative: isSchemeRelative,
+        isAbsoluteOrSchemeRelative: isAbsoluteOrSchemeRelative,
+        toSchemeRelative: toSchemeRelative
+    });
 
     var rgxProtocol = /^[a-z0-9\-\.]+:(?=\/\/)/i,
         rgxHttp = /^https?:(?=\/\/)/i,
@@ -1519,7 +1543,7 @@
     function toSchemeRelative(absoluteUrl) {
         return strVal(absoluteUrl).replace(rgxProtocol, '');
     }
-
+    
     /**
      * Dynamically fixes the protocol for image URLs
      * @param url
@@ -5422,7 +5446,7 @@
     };
 
     /**
-     * JavaScript port of php's urlencode function
+     * 1:1 JavaScript port of PHP's urlencode function
      * Credit: http://locutus.io/php/url/urlencode/
      * @param str
      * @returns {string}
@@ -9907,8 +9931,7 @@
             }
         });
     };
-
-
+    
     $cms.templates.memberTooltip = function (params, container) {
         var submitter = strVal(params.submitter);
 
