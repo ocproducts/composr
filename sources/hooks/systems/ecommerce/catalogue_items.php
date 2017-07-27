@@ -165,6 +165,10 @@ class Hook_ecommerce_catalogue_items
 
         $field_rows = get_catalogue_entry_field_values($entry_row['c_name'], $entry_row['id'], null, null, true);
 
+        if (!isset($field_rows[8])) {
+            warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
+        }
+
         $stock_maintained = ($field_rows[5]['effective_value_pure'] == do_lang('YES'));
         if ($stock_maintained) {
             return null;
