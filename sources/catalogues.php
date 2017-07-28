@@ -1174,8 +1174,8 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
         case 'short_trans':
             $temp = _get_catalogue_entry_field($field['id'], $entry_id, 'short_trans', $only_field_ids);
             if ($temp['cv_value'] === null) {
-                $target['effective_value'] = do_lang_tempcode('INTERNAL_ERROR');
-                $target['effective_value_pure'] = do_lang('INTERNAL_ERROR');
+                $target['effective_value'] = '';
+                $target['effective_value_pure'] = '';
             } else {
                 $just_row = db_map_restrict($temp, array('cv_value')) + array('ce_id' => is_array($entry_id) ? $entry_id['id'] : $entry_id, 'cf_id' => $field['id']);
                 if (multi_lang_content()) {
@@ -1191,8 +1191,8 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
         case 'short_unescaped':
             $temp = _get_catalogue_entry_field($field['id'], $entry_id, $type, $only_field_ids);
             if ($temp['cv_value'] === null) {
-                $target['effective_value'] = do_lang_tempcode('INTERNAL_ERROR');
-                $target['effective_value_pure'] = do_lang('INTERNAL_ERROR');
+                $target['effective_value'] = '';
+                $target['effective_value_pure'] = '';
                 break;
             } else {
                 $target['effective_value'] = $temp['cv_value'];

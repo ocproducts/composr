@@ -51,7 +51,8 @@ class Hook_health_check_security extends Hook_Health_Check
     {
         // API https://developers.google.com/safe-browsing/v4/
 
-        if ($check_context == CHECK_CONTEXT__INSTALL) {
+        if ($check_context != CHECK_CONTEXT__LIVE_SITE) {
+            // Google can't index a non-live site, and thus won't report Safe Browsing results
             return;
         }
 
@@ -110,7 +111,7 @@ class Hook_health_check_security extends Hook_Health_Check
         $_result = http_download_file($url, null, false, false, 'Composr', array(json_encode($data)), null, null, null, null, null, null, null, 200.0, true, null, null, null, 'application/json');
 
         $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('401', '403')), 'Error with our Google Safe Browsing API key (' . $GLOBALS['HTTP_MESSAGE'] . ')');
-        $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('400', '501', '503', '504')), 'Internal error with our Google Safe Browsing check (' . $GLOBALS['HTTP_MESSAGE'] . ')');
+        $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('400', '501', '503', '504')), 'Internal error with our Google Safe Browsing check (' . $GLOBALS['HTTP_MESSAGE'] . '); only works on pages that have been indexed by Google');
 
         $ok = in_array($GLOBALS['HTTP_MESSAGE'], array('200'));
         if ($ok) {

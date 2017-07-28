@@ -478,7 +478,7 @@ abstract class Hook_Health_Check
 
             // Server blocked to access itself
             if ($page_link == ':') {
-                $this->assert_true($HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link] !== null, 'The server cannot download itself');
+                $this->assert_true($HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link] !== null, 'The server could not download from itself, try setting the "Work-around IP forwarding" server option to [tt]1[/tt]');
             }
         }
         return $HEALTH_CHECK_PAGE_CONTENT_CACHE[$page_link];

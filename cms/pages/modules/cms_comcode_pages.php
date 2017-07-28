@@ -852,9 +852,6 @@ class Module_cms_comcode_pages
             $order++;
         }
 
-        require_code('fields');
-        append_form_custom_fields('comcode_page', $zone . ':' . $file, $fields2, $hidden_fields);
-
         if (!$validated) {
             $validated = (get_param_integer('validated', 0) == 1);
         }
@@ -889,6 +886,9 @@ class Module_cms_comcode_pages
         $fields2->attach(form_input_tick(do_lang_tempcode('SHOW_AS_EDITED'), do_lang_tempcode('DESCRIPTION_SHOW_AS_EDITED'), 'show_as_edit', $show_as_edit));
 
         $fields2->attach(get_order_field('comcode_page', 'zone', $order));
+
+        require_code('fields');
+        append_form_custom_fields('comcode_page', $zone . ':' . $file, $fields2, $hidden_fields);
 
         $meta_keywords = post_param_string('meta_keywords', '');
         $meta_description = post_param_string('meta_description', '');

@@ -184,12 +184,22 @@ function _intelligent_write_error($path)
  */
 function _intelligent_write_error_inline($path)
 {
-    if (file_exists($path)) {
-        return do_lang_tempcode('WRITE_ERROR', escape_html($path));
-    } elseif (file_exists(dirname($path))) {
-        return do_lang_tempcode('WRITE_ERROR_CREATE', escape_html($path), escape_html(dirname($path)));
+    static $looping = false;
+    if ($looping) { // In case do_lang_tempcode below spawns a recursive failure, due to the file being the language cache itself
+        critical_error('PASSON', 'Could not write to ' . htmlentities($path)); // Bail out hard if would cause a loop
     }
-    return do_lang_tempcode('WRITE_ERROR_MISSING_DIRECTORY', escape_html(dirname($path)), escape_html(dirname(dirname($path))));
+    $looping = true;
+
+    if (file_exists($path)) {
+        $ret = do_lang_tempcode('WRITE_ERROR', escape_html($path));
+    } elseif (file_exists(dirname($path))) {
+        $ret = do_lang_tempcode('WRITE_ERROR_CREATE', escape_html($path), escape_html(dirname($path)));
+    }
+    $ret = do_lang_tempcode('WRITE_ERROR_MISSING_DIRECTORY', escape_html(dirname($path)), escape_html(dirname(dirname($path))));
+
+    $looping = false;
+
+    return $ret;
 }
 
 /**

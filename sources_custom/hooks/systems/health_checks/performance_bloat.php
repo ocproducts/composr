@@ -75,8 +75,10 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
         );
 
         foreach ($tables as $table => $max_threshold) {
-            $cnt = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)');
-            $this->assert_true($cnt < $max_threshold, 'Volatile-defined table [tt]' . $table . '[/tt] is very large @ ' . integer_format($cnt) . ' records');
+            if ($GLOBALS['SITE_DB']->table_exists($table)) {
+                $cnt = $GLOBALS['SITE_DB']->query_select_value($table, 'COUNT(*)');
+                $this->assert_true($cnt < $max_threshold, 'Volatile-defined table [tt]' . $table . '[/tt] is very large @ ' . integer_format($cnt) . ' records');
+            }
         }
     }
 
@@ -137,14 +139,32 @@ class Hook_health_check_performance_bloat extends Hook_Health_Check
 
         $log_threshold = 1000000;
 
-        $path = get_file_base() . '/data_custom';
-        $dh = opendir($path);
-        while (($f = readdir($dh)) !== false) {
-            if (strpos($f, 'log') !== false) {
-                $size = filesize($path . '/' . $f);
-                $this->assert_true($size < $log_threshold, 'Size of [tt]' . $f . '[/tt] log is very large @ ' . clean_file_size($size));
+        $log_files = array();
+
+        $log_files[] = 'error_log'; // PHP may auto-create these at startup
+
+        $path = get_file_base();
+        foreach (array_merge(find_all_zones(), array('data_custom', 'data')) as $dir) {
+            $dh = @opendir($path . '/' . $dir);
+            if ($dh !== false) {
+                while (($f = readdir($dh)) !== false) {
+                    if ((substr($f, -4) == '.log') || (substr($f, -7) == 'log.php') || (substr($f, -7) == 'log.txt')) {
+                        $log_files[] = $dir . '/' . $f;
+                    }
+                }
+                closedir($dh);
             }
         }
-        closedir($dh);
+
+        foreach ($log_files as $f) {
+            $_path = $path . '/' . $f;
+
+            if (!is_file($_path)) {
+                continue;
+            }
+
+            $size = filesize($_path);
+            $this->assert_true($size < $log_threshold, 'Size of [tt]' . $f . '[/tt] log is very large @ ' . clean_file_size($size));
+        }
     }
 }

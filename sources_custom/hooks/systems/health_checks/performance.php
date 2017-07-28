@@ -107,7 +107,12 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         require_code('files');
 
-        $headers = get_headers($url, 1);
+        $headers = @get_headers($url, 1);
+        if ($headers === false) {
+            $this->state_check_skipped('Could not find headers for URL ' . $url);
+            return;
+        }
+
         $found_has_cookies_cookie = false;
         foreach ($headers as $key => $vals) {
             if (strtolower($key) == strtolower('Set-Cookie')) {

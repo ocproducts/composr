@@ -264,6 +264,7 @@ function upgrade_script()
 
                     // Download file
                     require_code('tar');
+                    $local_temp_path = false;
                     if ((post_param_string('url', '') == '') && ((cms_srv('HTTP_HOST') == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
                         $temp_path = $_FILES['upload']['tmp_name'];
                     } else {
@@ -271,12 +272,12 @@ function upgrade_script()
                             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
                         }
 
-                        $temp_path = cms_tempnam();
                         $url = post_param_string('url');
                         if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
-                            unlink($temp_path);
-                            copy(get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/'))), $temp_path);
+                            $local_temp_path = true;
+                            $temp_path = get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
                         } else {
+                            $temp_path = cms_tempnam();
                             $myfile = fopen($temp_path, 'wb');
                             http_download_file($url, null, true, false, 'Composr', null, null, null, null, null, $myfile);
                             fclose($myfile);
@@ -317,7 +318,12 @@ function upgrade_script()
                     $files_for_tar_updating = array();
 
                     // Process files
+                    $i = 0;
+                    $cnt = count($directory);
                     foreach ($directory as $offset => $upgrade_file) {
+                        $i++;
+                        echo '<!-- Looking at ' . escape_html($upgrade_file['path']) . ' (' . strval($i) . ' / ' . strval($cnt) . ') -->';
+
                         // Skip over these, from manual installer package (which may be used for an upgrade)
                         if ($upgrade_file['path'] == '_config.php') {
                             continue;
@@ -459,12 +465,14 @@ function upgrade_script()
                     if ($popup_simple_extract) {
                         @unlink(get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
                         @unlink(get_custom_file_base() . '/data_custom/upgrader.tmp');
-                        $test = @copy($temp_path, get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
-                        if ($test === false) {
-                            fatal_exit(do_lang_tempcode('FU_FTP_NEEDED'));
+                        if (!$local_temp_path) {
+                            $test = @copy($temp_path, get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
+                            if ($test === false) {
+                                fatal_exit(do_lang_tempcode('FU_FTP_NEEDED'));
+                            }
+                            @unlink($temp_path);
+                            $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
                         }
-                        @unlink($temp_path);
-                        $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
                         require_code('files');
                         $tmp_data_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
                         cms_file_put_contents_safe($tmp_data_path, serialize($data));
@@ -487,7 +495,9 @@ function upgrade_script()
                         }
                     } else {
                         echo '<p>' . do_lang('SUCCESS') . '</p>';
-                        @unlink($temp_path);
+                        if (!$local_temp_path) {
+                            @unlink($temp_path);
+                        }
                     }
 
                     unset($_POST['news_id']);

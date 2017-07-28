@@ -64,6 +64,7 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
 
         $this->state_check_manual('Check for SEO issues https://seositecheckup.com/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
         $this->state_check_manual('Check for search issues in Google Webmaster Tools https://www.google.com/webmasters/tools/home');
+        $this->state_check_manual('Analyse what popular keywords you rank for (https://www.thehoth.com/) and what you could try and rank for (https://serps.com/tools/)');
     }
 
     /**
@@ -89,9 +90,9 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
         $meta_description = null;
         $matches = array();
         if (preg_match('#<meta\s+[^<>]*name="description"[^<>]*content="([^"]*)"#is', $data, $matches) != 0) {
-            $meta_description = $matches[1];
+            $meta_description = html_entity_decode($matches[1], ENT_QUOTES);
         } elseif (preg_match('#<meta\s+[^<>]*content="([^"]*)"[^<>]*name="description"#is', $data, $matches) != 0) {
-            $meta_description = $matches[1];
+            $meta_description = html_entity_decode($matches[1], ENT_QUOTES);
         }
 
         $ok = ($meta_description !== null);
@@ -167,7 +168,7 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
         $title = null;
         $matches = array();
         if (preg_match('#<title[^<>]*>([^<>]*)</title>#is', $data, $matches) != 0) {
-            $title = $matches[1];
+            $title = html_entity_decode($matches[1], ENT_QUOTES);
         }
 
         $ok = ($title !== null);
