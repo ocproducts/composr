@@ -229,30 +229,23 @@
                 $cms.fatal('$cms.$CONFIG_OPTION(): Option "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
             };
         }()),
+        // Just some more useful stuff, (not tempcode symbols)
         /**
-         * WARNING: This is a very limited subset of the $HAS_PRIVILEGE tempcode symbol
          * @method
-         * @param {string} optionName
          * @returns {boolean}
          */
-        $HAS_PRIVILEGE: function $HAS_PRIVILEGE(optionName) {
-            if (window.IN_MINIKERNEL_VERSION) {
-                // Installer, likely executing global.js
-                return false;
-            }
-
-            if (hasOwn(symbols['HAS_PRIVILEGE'], optionName)) {
-                return symbols['HAS_PRIVILEGE'][optionName];
-            }
-
-            $cms.fatal('$cms.$HAS_PRIVILEGE(): Privilege "' + optionName + '" is either unsupported in JS or doesn\'t exist. Please try using the actual Tempcode symbol.');
-        },
-
-        // Just some more useful stuff, (not tempcode symbols)
-        /**@member {boolean}*/
-        canTryUrlSchemes: boolVal(symbols['can_try_url_schemes']),
-        /**@member {object}*/
-        staffTooltipsUrlPatterns: objVal(symbols['staff_tooltips_url_patterns'])
+        seesJavascriptErrorAlerts: constant(boolVal(symbols['sees_javascript_error_alerts'])),
+        /**
+         * @method
+         * @returns {boolean}
+         */
+        canTryUrlSchemes: constant(boolVal(symbols['can_try_url_schemes'])),
+        
+        /**
+         * @method
+         * @returns {object}
+         */
+        staffTooltipsUrlPatterns: constant(objVal(symbols['staff_tooltips_url_patterns']))
     });
 
     extendDeep($cms, /**@lends $cms*/{
@@ -1365,12 +1358,14 @@
         if ((values == null) || (typeof values !== 'object')) {
             // values provided as multiple arguments?
             values = toArray(arguments, 1);
-            values.unshift(''); // Add empty string at index 0 so that interpolation starts from '{1}'
         } else if (isArrayLike(values)) {
             // Array(-ish?) object provided with values
-            values = toArray(values);
-            values.unshift(''); // Add empty string at index 0 so that interpolation starts from '{1}'
-        }
+            values = toArray(values);}
+
+        str = str.replace(/\{(\d+)\}/g, function (match, key) {
+            key--; // So that interpolation starts from '{1}'
+            return (key in values) ? strVal(values[key]) : match;
+        });
 
         return str.replace(/\{(\w+)\}/g, function (match, key) {
             return (key in values) ? strVal(values[key]) : match;
@@ -1480,7 +1475,7 @@
 
     /* Generate url */
 
-    $cms.url = function (relativeUrl) {
+    $cms.url = function url(relativeUrl) {
         return baseUrl(relativeUrl);
     };
 
@@ -1581,10 +1576,13 @@
             }
         }
 
+        url = strVal(url);
+        target = strVal(target, '_self');
+        
         if (!url) {
             return;
         }
-        target || (target = '_self');
+        
         if (target === '_self') {
             window.location = url;
         } else {
@@ -1677,8 +1675,6 @@
         }
 
         if (!scriptEl) {
-            //$cms.inform('_requireJavascript', script);
-
             scriptEl = document.createElement('script');
             scriptEl.defer = true;
             if (isAbsoluteOrSchemeRelative(script)) {
@@ -1906,7 +1902,7 @@
 
     $cms.cookies || ($cms.cookies = new CookieMonster());
 
-    var alertedCookieConflict;
+    var alertedCookieConflict = false;
 
     /**
      * @param cookieName
@@ -5472,7 +5468,7 @@
     $cms.filter.url = function url(urlPart, canTryUrlSchemes) {
         urlPart = strVal(urlPart);
         var urlPartEncoded = urlencode(urlPart);
-        canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.canTryUrlSchemes;
+        canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.canTryUrlSchemes();
 
         if ((urlPartEncoded !== urlPart) && canTryUrlSchemes) {
             // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous
@@ -6958,7 +6954,9 @@
                             baseElement.target = that.target;
 
                             // Set frame name
-                            if (name && iframe.contentWindow.name != name) iframe.contentWindow.name = name;
+                            if (name && iframe.contentWindow.name != name) {
+                                iframe.contentWindow.name = name;
+                            }
 
                             // Create close function
                             if (iframe.contentWindow.faux_close === undefined) {
@@ -6973,11 +6971,10 @@
                             if ($cms.dom.html(iframe.contentWindow.document.body).length > 300) { // Loaded now
                                 iframe.contentWindow.document.body.done_popup_trans = true;
                             }
-                        } else
-                        {
+                        } else {
                             if (hasIframeLoaded(iframe) && !hasIframeOwnership(iframe)) {
-                                iframe.scrolling='yes';
-                                iframe.style.height='500px';
+                                iframe.scrolling = 'yes';
+                                iframe.style.height = '500px';
                             }
                         }
 
@@ -7240,7 +7237,7 @@
             return;
         }
 
-        if (buttonSet.length == 1) {
+        if (buttonSet.length === 1) {
             $cms.ui.alert(
                 fallbackMessage ? fallbackMessage : message,
                 function () {
@@ -7248,7 +7245,7 @@
                 },
                 windowTitle
             );
-        } else if (buttonSet.length == 2) {
+        } else if (buttonSet.length === 2) {
             $cms.ui.confirm(
                 fallbackMessage ? fallbackMessage : message,
                 function (result) {
@@ -7456,6 +7453,8 @@
      * @returns {string}
      */
     function protectURLParameter(parameter) {
+        parameter = strVal(parameter);
+        
         var baseUrl = $cms.$BASE_URL();
 
         if (parameter.startsWith('https://')) {
@@ -7927,7 +7926,7 @@
             document.body.classList.add('touch_enabled');
         }
 
-        if ($cms.$HAS_PRIVILEGE('sees_javascript_error_alerts')) {
+        if ($cms.seesJavascriptErrorAlerts()) {
             this.initialiseErrorMechanism();
         }
 
@@ -8643,7 +8642,7 @@
 
             /* Thumbnail tooltips */
             if ($cms.$DEV_MODE() || loc.replace($cms.$BASE_URL_NOHTTP(), '').includes('/cms/')) {
-                var urlPatterns = $cms.staffTooltipsUrlPatterns,
+                var urlPatterns = $cms.staffTooltipsUrlPatterns(),
                     links, pattern, hook, patternRgx;
 
                 links = $cms.dom.$$('td a');
@@ -9551,7 +9550,7 @@
     $cms.views.ToggleableTray = ToggleableTray;
     /**
      * @memberof $cms.views
-     * @class
+     * @class ToggleableTray
      * @extends $cms.View
      */
     function ToggleableTray() {
@@ -9565,7 +9564,7 @@
         }
     }
 
-    $cms.inherits(ToggleableTray, $cms.View, /** @lends $cms.views.ToggleableTray# */{
+    $cms.inherits(ToggleableTray, $cms.View, /**@lends $cms.views.ToggleableTray#*/{
         /**@method*/
         events: function () {
             return {
