@@ -497,6 +497,8 @@
         executeJsFunctionCalls: executeJsFunctionCalls,
         /**@method*/
         doAjaxRequest: doAjaxRequest,
+        /**@method*/
+        protectURLParameter: protectURLParameter,
         /**
          * Addons will add template related methods under this object
          * @namespace $cms.templates
@@ -1969,14 +1971,6 @@
     
     // Web animations API support (https://developer.mozilla.org/de/docs/Web/API/Element/animate)
     $cms.support.animation = ('animate' in emptyEl);
-
-    /**
-     * If the browser has support for CSS transitions
-     * @memberof $cms.support
-     * @type {boolean}
-     */
-    $cms.support.cssTransitions = ('transition' in emptyElStyle) || ('WebkitTransition' in emptyElStyle) || ('msTransition' in emptyElStyle);
-
     /**
      * If the browser has support for an input[type=???]
      * @memberof $cms.support
@@ -5468,30 +5462,6 @@
             : '';
     }
 
-   /**
-    * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on
-    * @memberof $cms.filter
-    * @param {string} parameter
-    * @returns {string}
-    */
-    $cms.protectURLParameter = function protectURLParameter(parameter) {
-        var baseURL = $cms.$BASE_URL();
-
-        if (parameter.startsWith('https://')) {
-            baseURL = baseURL.replace(/^http:\/\//, 'https://');
-            if (parameter.startsWith(baseURL + '/')) {
-                return 'https-cms:' + parameter.substr(baseURL.length + 1);
-            }
-        } else if (parameter.startsWith('http://')) {
-            baseURL = baseURL.replace(/^https:\/\//, 'http://');
-            if (parameter.startsWith(baseURL + '/')) {
-                return 'http-cms:' + parameter.substr(baseURL.length + 1);
-            }
-        }
-
-        return parameter;
-    };
-
     /**
      * JS port of the cms_url_encode function used by the tempcode filter '&' (UL_ESCAPED)
      * @memberof $cms.filter
@@ -7478,6 +7448,31 @@
         }
     }
 
+
+    /**
+     * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on
+     * @memberof $cms
+     * @param {string} parameter
+     * @returns {string}
+     */
+    function protectURLParameter(parameter) {
+        var baseUrl = $cms.$BASE_URL();
+
+        if (parameter.startsWith('https://')) {
+            baseUrl = baseUrl.replace(/^http:\/\//, 'https://');
+            if (parameter.startsWith(baseUrl + '/')) {
+                return 'https-cms:' + parameter.substr(baseUrl.length + 1);
+            }
+        } else if (parameter.startsWith('http://')) {
+            baseUrl = baseUrl.replace(/^https:\/\//, 'http://');
+            if (parameter.startsWith(baseUrl + '/')) {
+                return 'http-cms:' + parameter.substr(baseUrl.length + 1);
+            }
+        }
+
+        return parameter;
+    }
+
     /**
      * Calls up a URL to check something, giving any 'feedback' as an error (or if just 'false' then returning false with no message)
      * @memberof $cms.form
@@ -7640,7 +7635,7 @@
                             }
                         }
 
-                        elements = form.querySelectorAll('input[type="image"][title]'); // JS DOM does not include type="image" ones in form.elements
+                        elements = form.querySelectorAll('input[type="image"][title]'); // JS DOM does not include input[type="image"] ones in form.elements
                         for (j = 0; j < elements.length; j++) {
                             if ((elements[j]['original-title'] === undefined/*check tipsy not used*/) && !elements[j].classList.contains('no_tooltip')) {
                                 convertTooltip(elements[j]);
@@ -7656,11 +7651,11 @@
                     }
 
                     // This "proves" that JS is running, which is an anti-spam heuristic (bots rarely have working JS)
-                    if (form.elements['csrf_token'] != undefined && form.elements['js_token'] == undefined) {
+                    if ((form.elements['csrf_token'] != null) && (form.elements['js_token'] == null)) {
                         var jsToken = document.createElement('input');
-                        jsToken.name = 'js_token';
-                        jsToken.value = form.elements['csrf_token'].value.split("").reverse().join(""); // Reverse the CSRF token for our JS token
                         jsToken.type = 'hidden';
+                        jsToken.name = 'js_token';
+                        jsToken.value = form.elements['csrf_token'].value.split('').reverse().join(''); // Reverse the CSRF token for our JS token
                         form.appendChild(jsToken);
                     }
                 });
