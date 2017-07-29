@@ -552,7 +552,7 @@
         }
 
         if (isThreaded) {
-            post.value = $cms.format('{!QUOTED_REPLY_MESSAGE;^}', replyingToUsername, replyingToPostPlain);
+            post.value = $cms.format('{!QUOTED_REPLY_MESSAGE;^}', [replyingToUsername, replyingToPostPlain]);
             post.strip_on_focus = post.value;
             post.classList.add('field_input_non_filled');
         } else {

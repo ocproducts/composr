@@ -146,9 +146,7 @@
          * @method
          * @returns {string}
          */
-        $PREVIEW_URL: function $PREVIEW_URL() {
-            return strVal(symbols.PREVIEW_URL);
-        },
+        $PREVIEW_URL: constant(strVal(symbols.PREVIEW_URL)),
         /**
          * @method
          * @returns {string}
@@ -396,6 +394,7 @@
 
             if (!Array.isArray(resourceEls)) {
                 $cms.fatal('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
+                return;
             }
 
             if (resourceEls.length < 1) {
@@ -1156,6 +1155,8 @@
             obj = mask;
             mask = 'cw';
         }
+        
+        mask = strVal(mask);
 
         var configurable = mask.includes('c'),
             enumerable = mask.includes('e'),
@@ -1709,6 +1710,10 @@
         return sequentialPromises(calls);
     }
 
+    /**
+     * @param {function[]} funcs
+     * @returns {*}
+     */
     function sequentialPromises(funcs) {
         funcs = arrVal(funcs);
 
@@ -1741,13 +1746,14 @@
 
             if (form.elements['post_data'] == null) {
                 post_data = document.createElement('input');
+                post_data.type = 'hidden';
+                post_data.name = 'post_data';
                 post_data.value = '';
             } else {
                 post_data = form.elements['post_data'];
                 post_data.value += ',';
             }
-            post_data.type = 'hidden';
-            post_data.name = 'post_data';
+
             post_data.value += flag;
             form.appendChild(post_data);
         }
@@ -3672,8 +3678,7 @@
                     var rules = [];
                     try {
                         rules = stylesheet.cssRules ? stylesheet.cssRules : stylesheet.rules;
-                    } catch (ignore) {
-                    }
+                    } catch (ignore) {}
 
                     if (rules) {
                         for (var j = 0; j < rules.length; j++) {
@@ -3760,8 +3765,8 @@
         if (((dir === 1) && (scrollY + dist >= destY)) || ((dir === -1) && (scrollY + dist <= destY)) || (distanceToGo > 2000)) {
             try {
                 scrollTo(0, destY);
-            } catch (e) {
-            }
+            } catch (e) {}
+            
             if (eventAfter) {
                 eventAfter();
             }
@@ -4338,8 +4343,7 @@
 
             if ($cms.dom.$id('g_' + tab)) {
                 $cms.ui.selectTab('g', tab);
-            }
-            else if ((tab.indexOf('__') != -1) && ($cms.dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
+            } else if ((tab.indexOf('__') !== -1) && ($cms.dom.$id('g_' + tab.substr(0, tab.indexOf('__'))))) {
                 var old = hash;
                 $cms.ui.selectTab('g', tab.substr(0, tab.indexOf('__')));
                 window.location.hash = old;
@@ -4776,7 +4780,7 @@
             }
 
             var loadingImage = $cms.dom.create('img', {
-                'class': 'ajax_loading_block',
+                'className': 'ajax_loading_block',
                 'src': $cms.img('{$IMG;,loading}'),
                 'css': {
                     position: 'absolute',
@@ -5478,8 +5482,7 @@
             if (parameter.startsWith(baseURL + '/')) {
                 return 'https-cms:' + parameter.substr(baseURL.length + 1);
             }
-        }
-        else if (parameter.startsWith('http://')) {
+        } else if (parameter.startsWith('http://')) {
             baseURL = baseURL.replace(/^https:\/\//, 'http://');
             if (parameter.startsWith(baseURL + '/')) {
                 return 'http-cms:' + parameter.substr(baseURL.length + 1);
@@ -7956,19 +7959,19 @@
         this.stuckNavs();
 
         // If back button pressed back from an AJAX-generated page variant we need to refresh page because we aren't doing full JS state management
-        window.onpopstate = function () {
+        window.addEventListener('popstate', function () {
             setTimeout(function () {
                 if (!window.location.hash && window.has_js_state) {
                     window.location.reload();
                 }
             });
-        };
+        });
 
         // Monitor pasting, for anti-spam reasons
         window.addEventListener('paste', function (event) {
             var clipboardData = event.clipboardData || window.clipboardData;
             var pastedData = clipboardData.getData('Text');
-            if (pastedData && pastedData.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting')) {
+            if (pastedData && (pastedData.length > $cms.$CONFIG_OPTION('spam_heuristic_pasting'))) {
                 $cms.setPostDataFlag('paste');
             }
         });
@@ -8854,9 +8857,7 @@
         /* Staff JS error display */
         initialiseErrorMechanism: function () {
             window.onerror = function (msg, file, code) {
-                if (msg.includes === undefined) {
-                    return null;
-                }
+                msg = strVal(msg);
 
                 if (window.document.readyState !== 'complete') {
                     // Probably not loaded yet
@@ -8887,8 +8888,10 @@
                     (msg.includes('extension.')) || // E.g. "Uncaught Error: Invocation of form extension.getURL() doesn't match definition extension.getURL(string path) schema_generated_bindings"
 
                     false // Just to allow above lines to be reordered
-                )
-                    return null; // Comes up on due to various Firefox/extension/etc bugs
+                ) {
+                    // Comes up on due to various Firefox/extension/etc bugs
+                    return null;
+                } 
 
                 if (!window.done_one_error) {
                     window.done_one_error = true;
@@ -8942,7 +8945,6 @@
                 }
 
                 helperPanelToggle.firstElementChild.src = $cms.img('{$IMG;,icons/14x14/helper_panel_hide}');
-
                 if (helperPanelToggle.firstElementChild.srcset !== undefined) {
                     helperPanelToggle.firstElementChild.srcset = $cms.img('{$IMG;,icons/28x28/helper_panel_hide} 2x');
                 }
@@ -8986,7 +8988,6 @@
 
         /** @var {string} */
         this.menu = strVal(params.menu);
-
         /** @var {string} */
         this.menuId = strVal(params.menuId);
 
@@ -9497,9 +9498,11 @@
             if (e) {
                 t = e;
                 do {
-                    if (tags[i].id == t.id) hideable = false;
+                    if (tags[i].id == t.id) {
+                        hideable = false;
+                    }
                     t = t.parentNode.parentNode;
-                } while (t.id != 'r_' + lastActiveMenu);
+                } while (t.id !== 'r_' + lastActiveMenu);
             }
             if (hideable) {
                 tags[i].style.left = '-999px';
