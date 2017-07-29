@@ -240,7 +240,7 @@
             var i, checklistRows = document.querySelectorAll('.checklist_row'), rowImgs, src;
 
             for (i = 0; i < checklistRows.length; i++) {
-                rowImgs = checklistRows[i].getElementsByTagName('img');
+                rowImgs = checklistRows[i].querySelectorAll('img');
                 if (hideEnable) {
                     src = rowImgs[rowImgs.length - 1].getAttribute('src');
                     if (rowImgs[rowImgs.length - 1].origsrc) {

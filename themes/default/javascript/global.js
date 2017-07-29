@@ -956,9 +956,9 @@
     /**
      * Returns a random integer between min (inclusive) and max (inclusive)
      * Using Math.round() will give you a non-uniform distribution!
-     * @param min {number}
-     * @param max {number}
-     * @returns {*}
+     * @param [min] {number}
+     * @param [max] {number}
+     * @returns {number}
      */
     function random(min, max) {
         min = intVal(min, 0);
@@ -973,7 +973,7 @@
      * defined on an object belong to it.
      * @param obj
      * @param methodNames
-     * @returns {*}
+     * @returns {object}
      */
     function bindAll(obj, /*...*/methodNames) {
         var i, len = arguments.length, methodName;
@@ -1676,6 +1676,7 @@
 
         if (!scriptEl) {
             scriptEl = document.createElement('script');
+            
             scriptEl.defer = true;
             if (isAbsoluteOrSchemeRelative(script)) {
                 scriptEl.src = script;
@@ -1683,8 +1684,7 @@
                 scriptEl.id = 'javascript-' + script;
                 scriptEl.src = '{$FIND_SCRIPT_NOHTTP;,javascript}?script=' + script + $cms.keepStub();
             }
-            scriptEl.nonce = $cms.$CSP_NONCE();
-
+            
             document.body.appendChild(scriptEl);
             requireJavascriptPromises[script] = $cms.waitForResources(scriptEl);
         }
@@ -1817,12 +1817,14 @@
             // in case there are no cookies at all. Also prevents odd result when
             // calling "get()"
             var cookies = document.cookie ? document.cookie.split('; ') : [],
-                rdecode = /(%[0-9A-Z]{2})+/g,
+                rgxDecode = /(%[0-9A-Z]{2})+/g,
                 cookieName = arguments[0], // (internal use only)
                 result, i;
 
             if (cookieName == null) {
                 result = {};
+            } else {
+                cookieName = strVal(cookieName);
             }
 
             for (i = 0; i < cookies.length; i++) {
@@ -1833,8 +1835,8 @@
                     cookie = cookie.slice(1, -1);
                 }
 
-                var name = parts[0].replace(rdecode, decodeURIComponent);
-                cookie = cookie.replace(rdecode, decodeURIComponent);
+                var name = parts[0].replace(rgxDecode, decodeURIComponent);
+                cookie = cookie.replace(rgxDecode, decodeURIComponent);
 
                 if (cookieName == null) {
                     result[name] = cookie;
@@ -1869,7 +1871,7 @@
             if (!isDate(details.expires)) {
                 // Expiry specified in days
                 var expires = new Date();
-                expires.setDate(expires.getDate() + (Number.isFinite(+details.expires) ? +details.expires : 0)); // Add days to date
+                expires.setDate(expires.getDate() + intVal(details.expires)); // Add days to date
                 details.expires = expires;
             }
 
@@ -1970,7 +1972,6 @@
     /**
      * If the browser has support for an input[type=???]
      * @memberof $cms.support
-     * @type {{search: boolean, tel: boolean, url: boolean, email: boolean, datetime: boolean, date: boolean, month: boolean, week: boolean, time: boolean, datetime-local: boolean, number: boolean, range: boolean, color: boolean}}
      */
     $cms.support.inputTypes = {
         search: false, tel: false, url: false, email: false, datetime: false, date: false, month: false,
@@ -2842,7 +2843,7 @@
                 return sibling;
             }
 
-            sibling = el.nextElementSibling;
+            sibling = sibling.nextElementSibling;
         }
 
         return null;
@@ -2868,7 +2869,7 @@
                 return sibling;
             }
 
-            sibling = el.previousElementSibling;
+            sibling = sibling.previousElementSibling;
         }
 
         return null;
@@ -5177,7 +5178,7 @@
 
         switch (code) {
             case 'simplified_attachments_ui':
-                return !isIe8 && !isIe9 && $cms.$CONFIG_OPTION('simplified_attachments_ui') && $cms.$CONFIG_OPTION('complex_uploader');
+                return boolVal($cms.$CONFIG_OPTION('simplified_attachments_ui') && $cms.$CONFIG_OPTION('complex_uploader'));
             case 'non_concurrent':
                 return browser.includes('iphone') || browser.includes('ipad') || browser.includes('android') || browser.includes('phone') || browser.includes('tablet');
             case 'ios':
@@ -5185,7 +5186,7 @@
             case 'android':
                 return browser.includes('android');
             case 'wysiwyg':
-                return $cms.$CONFIG_OPTION('wysiwyg');
+                return !!$cms.$CONFIG_OPTION('wysiwyg');
             case 'windows':
                 return os.includes('windows') || os.includes('win32');
             case 'mac':
@@ -7322,7 +7323,7 @@
         }
 
         if (typeof post === 'string') {
-            if (!post.includes('&csrf_token')) { // For CSRF prevention
+            if (!post.includes('&csrf_token=')) { // For CSRF prevention
                 post += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken());
             }
 
@@ -8836,7 +8837,7 @@
 
                     if (event.preventDefault !== undefined) event.preventDefault();
 
-                    if (src.includes('{$BASE_URL_NOHTTP;^}/themes/')) {
+                    if (src.includes($cms.$BASE_URL_NOHTTP() + '/themes/')) {
                         ob.edit_window = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.keepStub(), 'edit_theme_image_' + ob.id);
                     } else {
                         $cms.ui.alert('{!NOT_THEME_IMAGE;^}');
