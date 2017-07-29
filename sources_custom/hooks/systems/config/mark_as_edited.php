@@ -34,6 +34,7 @@ class Hook_config_mark_as_edited
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
+            'public' => false,
 
             'addon' => 'cns_tapatalk',
         );

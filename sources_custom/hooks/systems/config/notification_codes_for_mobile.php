@@ -34,6 +34,7 @@ class Hook_config_notification_codes_for_mobile
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
+            'public' => false,
 
             'addon' => 'composr_mobile_sdk',
         );

@@ -34,6 +34,7 @@ class Hook_config_cloudinary_api_key
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
+            'public' => false,
 
             'addon' => 'cloudinary',
         );

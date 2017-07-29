@@ -35,6 +35,7 @@ class Hook_config_gallery_sync_selectcode
             'list_options' => '',
             'order_in_category_group' => 1,
             'required' => false,
+            'public' => false,
 
             'addon' => 'gallery_syndication',
         );

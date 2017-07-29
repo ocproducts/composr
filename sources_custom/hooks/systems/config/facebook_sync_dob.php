@@ -36,6 +36,7 @@ class Hook_config_facebook_sync_dob
             'order_in_category_group' => 8,
 
             'required' => true,
+            'public' => false,
             'addon' => 'facebook_support',
         );
     }

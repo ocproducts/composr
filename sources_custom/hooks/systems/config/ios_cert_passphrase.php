@@ -34,6 +34,7 @@ class Hook_config_ios_cert_passphrase
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
+            'public' => false,
 
             'addon' => 'composr_mobile_sdk',
         );

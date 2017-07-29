@@ -36,6 +36,7 @@ class Hook_config_is_on_community_billboard_buy
             'order_in_category_group' => 1,
 
             'required' => true,
+            'public' => false,
             'addon' => 'community_billboard',
         );
     }

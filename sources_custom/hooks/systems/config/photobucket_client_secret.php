@@ -34,6 +34,7 @@ class Hook_config_photobucket_client_secret
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
+            'public' => false,
 
             'addon' => 'image_syndication',
         );

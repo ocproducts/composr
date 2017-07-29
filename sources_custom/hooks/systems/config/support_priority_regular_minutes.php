@@ -35,6 +35,7 @@ class Hook_config_support_priority_regular_minutes
             'list_options' => '',
             'order_in_category_group' => 4,
             'required' => true,
+            'public' => false,
 
             'addon' => 'composr_homesite_support_credits',
         );

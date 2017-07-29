@@ -36,6 +36,7 @@ class Hook_config_sugarcrm_exclusive_messaging
             'order_in_category_group' => 4,
 
             'required' => true,
+            'public' => false,
             'addon' => 'sugarcrm',
         );
     }

@@ -36,6 +36,7 @@ class Hook_config_facebook_sync_email
             'order_in_category_group' => 7,
 
             'required' => true,
+            'public' => false,
             'addon' => 'facebook_support',
         );
     }

@@ -34,6 +34,7 @@ class Hook_config_bookings_max_ahead_months
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
+            'public' => false,
 
             'addon' => 'booking',
         );

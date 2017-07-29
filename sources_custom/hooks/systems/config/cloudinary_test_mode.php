@@ -34,6 +34,7 @@ class Hook_config_cloudinary_test_mode
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
+            'public' => false,
 
             'addon' => 'cloudinary',
         );

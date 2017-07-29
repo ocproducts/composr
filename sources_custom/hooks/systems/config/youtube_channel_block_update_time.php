@@ -34,6 +34,7 @@ class Hook_config_youtube_channel_block_update_time
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
+            'public' => false,
 
             'addon' => 'youtube_channel_integration_block',
         );

@@ -36,6 +36,7 @@ class Hook_config_facebook_sync_avatar
             'order_in_category_group' => 6,
 
             'required' => true,
+            'public' => false,
             'addon' => 'facebook_support',
         );
     }

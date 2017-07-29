@@ -34,6 +34,7 @@ class Hook_config_jestr_string_changes
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
+            'public' => false,
 
             'addon' => 'jestr',
         );

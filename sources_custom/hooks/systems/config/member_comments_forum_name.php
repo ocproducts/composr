@@ -40,6 +40,7 @@ class Hook_config_member_comments_forum_name
             'list_options' => '',
             'order_in_category_group' => 2,
             'required' => true,
+            'public' => false,
 
             'addon' => 'member_comments',
         );

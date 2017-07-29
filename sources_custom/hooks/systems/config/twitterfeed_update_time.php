@@ -34,6 +34,7 @@ class Hook_config_twitterfeed_update_time
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
+            'public' => false,
 
             'addon' => 'twitter_feed_integration_block',
         );

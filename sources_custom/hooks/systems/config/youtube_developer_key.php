@@ -35,6 +35,7 @@ class Hook_config_youtube_developer_key
             'list_options' => '',
             'order_in_category_group' => 6,
             'required' => false,
+            'public' => false,
 
             'addon' => 'gallery_syndication',
         );

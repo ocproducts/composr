@@ -36,6 +36,7 @@ class Hook_config_facebook_sync_username
             'order_in_category_group' => 5,
 
             'required' => true,
+            'public' => false,
             'addon' => 'facebook_support',
         );
     }

@@ -34,6 +34,7 @@ class Hook_config_system_community_billboard
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
+            'public' => false,
 
             'addon' => 'community_billboard',
         );

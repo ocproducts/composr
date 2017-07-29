@@ -35,6 +35,7 @@ class Hook_config_sugarcrm_default_company
             'list_options' => '',
             'order_in_category_group' => 7,
             'required' => true,
+            'public' => false,
 
             'addon' => 'sugarcrm',
         );

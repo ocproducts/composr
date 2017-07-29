@@ -36,6 +36,7 @@ class Hook_config_facebook_allow_signups
             'order_in_category_group' => 4,
 
             'required' => true,
+            'public' => false,
             'addon' => 'facebook_support',
         );
     }

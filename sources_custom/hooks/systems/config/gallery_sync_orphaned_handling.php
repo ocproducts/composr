@@ -35,6 +35,7 @@ class Hook_config_gallery_sync_orphaned_handling
             'list_options' => '1|2|3',
             'order_in_category_group' => 2,
             'required' => true,
+            'public' => false,
 
             'addon' => 'gallery_syndication',
         );

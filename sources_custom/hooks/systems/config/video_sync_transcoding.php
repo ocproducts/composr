@@ -35,6 +35,7 @@ class Hook_config_video_sync_transcoding
             'list_options' => '',
             'order_in_category_group' => 3,
             'required' => false,
+            'public' => false,
 
             'addon' => 'gallery_syndication',
         );

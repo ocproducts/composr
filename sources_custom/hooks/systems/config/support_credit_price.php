@@ -35,6 +35,7 @@ class Hook_config_support_credit_price
             'list_options' => '',
             'order_in_category_group' => 1,
             'required' => true,
+            'public' => false,
 
             'addon' => 'composr_homesite_support_credits',
         );

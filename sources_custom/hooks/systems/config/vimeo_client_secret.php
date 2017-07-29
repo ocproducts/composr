@@ -35,6 +35,7 @@ class Hook_config_vimeo_client_secret
             'list_options' => '',
             'order_in_category_group' => 8,
             'required' => false,
+            'public' => false,
 
             'addon' => 'gallery_syndication',
         );

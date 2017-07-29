@@ -35,6 +35,7 @@ class Hook_config_community_billboard_price_points
             'list_options' => '',
             'order_in_category_group' => 3,
             'required' => false,
+            'public' => false,
 
             'addon' => 'community_billboard',
         );

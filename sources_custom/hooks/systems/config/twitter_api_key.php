@@ -35,6 +35,7 @@ class Hook_config_twitter_api_key
             'list_options' => '',
             'order_in_category_group' => 1,
             'required' => false,
+            'public' => false,
 
             'addon' => 'twitter_support',
         );
