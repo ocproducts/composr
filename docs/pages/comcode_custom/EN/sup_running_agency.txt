@@ -31,7 +31,7 @@ You will need to decide what software you are going to use internally. Standardi
 Here are some areas to consider, and suggestions:
  - Internal chat (e.g. Skype, HipChat, IRC)
  - Sharing files (e.g. Dropbox)
- - Writing documents (e.g. Microsoft Office, LibreOffice) -- sadly, no Open Source tool can currently match Microsoft Office in terms of stability, ease of use, and performance
+ - Writing documents (e.g. Microsoft Office, LibreOffice, Google Docs) -- sadly, no Open Source tool can currently match Microsoft Office in terms of stability, ease of use, and performance
  - Source code control system (e.g. Git, Bitbucket)
  - Issue tracker (e.g. MantisBT, Bitbucket issues, Github issues, JIRA)
  - Standard IDE (e.g. PhpStorm, Netbeans, TextMate)
@@ -65,7 +65,7 @@ Here is some infrastructure you will likely need:
  - Internal servers (if any, probably not necessary nowadays)
  - External servers (e.g. staging server)
  - Hosting environment (e.g. dedicated server with multiple sites, VPNs via Amazon EC2, separate shared hosting accounts)
- - Social media accounts (e.g. Twitter Profile, Facebook Page, Google Plus Page, Youtube Channel) [see the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc) tutorial[/page]]
+ - Social media accounts (e.g. Twitter Profile, Facebook Page, Google Plus Page, Youtube Channel) [see the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page] tutorial]
  - Your own website (duh!)
 
 For your infrastructure you will need:

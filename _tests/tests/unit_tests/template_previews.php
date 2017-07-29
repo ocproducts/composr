@@ -54,6 +54,7 @@ class template_previews_test_set extends cms_test_case
                 $templates[] = 'templates/' . $f;
             }
         }
+        closedir($dh);
 
         $all_previews = find_all_previews__by_template();
 

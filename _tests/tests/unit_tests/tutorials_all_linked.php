@@ -128,4 +128,53 @@ class tutorials_all_linked_test_set extends cms_test_case
             $this->assertTrue(find_theme_image('tutorial_icons/' . _find_tutorial_image_for_tag($tag), true) != '', 'Tag ' . $tag . ' has no defined image');
         }
     }
+
+    public function testCorrectSeeAlsoTitling()
+    {
+        $path = get_custom_file_base() . '/docs/pages/comcode_custom/EN';
+        $dh = opendir($path);
+        while (($f = readdir($dh)) !== false) {
+            if (substr($f, -4) == '.txt') {
+                $c = file_get_contents($path . '/' . $f);
+
+                if (get_param_integer('full', 0) == 1) {
+                    $see_also_pos = 0;
+                } else {
+                    $see_also_pos = strpos($c, '[title="2"]See also[/title]');
+                }
+
+                if ($see_also_pos !== false) {
+                    $matches = array();
+                    if (get_param_integer('full', 0) == 1) {
+                        $regexp = '#^\[page="_SEARCH:(\w+)"\](.*)\[/page\]#';
+                    } else {
+                        $regexp = '#^ - \[page="_SEARCH:(\w+)"\](.*)\[/page\]#m';
+                    }
+                    $num_matches = preg_match_all($regexp, $c, $matches);
+
+                    for ($i = 0; $i < $num_matches; $i++) {
+                        $page_name = $matches[1][$i];
+                        $title = $matches[2][$i];
+
+                        $c2 = file_get_contents($path . '/' . $page_name . '.txt');
+                        $regexp = '\[title sub="[^"]*"\]([^:]*: )?([^\[\]]*)\[/title\]';
+                        $matches2 = array();
+                        if (preg_match('#' . $regexp . '#', $c2, $matches2) != 0) {
+                            $tutorial_title = $matches2[2];
+                            $correct = ($tutorial_title == $title);
+
+                            $this->assertTrue($correct, '"' . $page_name . '" linked to with "' . $title . '" but should be "' . $tutorial_title . '" in ' . $f);
+
+                            if (get_param_integer('fix', 0) == 1) {
+                                $c = str_replace($title, $tutorial_title, $c);
+                                file_put_contents($path . '/' . $f, $c);
+                            }
+                        } else {
+                            $this->assertTrue(false, 'Missing title for ' . $page_name);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

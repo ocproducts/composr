@@ -36,7 +36,7 @@ The next section of the add event screen is a large text area where you can incl
 
 The Advanced section allows you to set the timezone for the event and whether you want Composr to convert the time of the event for other timezones. You can also set whether the event is shared content with the calendar or is for a personal diary as well as setting the priority of the event.
 
-I will cover the [page="_SEARCH:sup_set_a_recurring_event_in_composr"]recurrences section in more detail in another tutorial[/page].
+I will cover the [page="_SEARCH:sup_set_a_recurring_event_in_composr"]recurrences section in more detail in another[/page] tutorial.
 
 The next section deals with setting reminders both for the person creating the event and also set automatic reminders for specific usergroups. You can also set how many hours before the event the reminder is sent.
 

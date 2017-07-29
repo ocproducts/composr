@@ -226,6 +226,9 @@ function cns_delete_topic($topic_id, $reason = '', $post_target_topic_id = null,
     if ($forum_id !== null) {
         // Update member post counts if we've switched between post-count countable forums
         $post_count_info = $GLOBALS['FORUM_DB']->query('SELECT id,f_post_count_increment FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_forums WHERE id=' . strval($forum_id) . (($post_target_topic_id !== null) ? (' OR id=' . strval($to)) : ''), 2, 0, false, true);
+        if (!array_key_exists(0, $post_count_info)) {
+            $post_count_info = array(array('id' => $forum_id, 'f_post_count_increment' => 1));
+        }
         if ($post_count_info[0]['id'] == $forum_id) {
             $from_cnt = $post_count_info[0]['f_post_count_increment'];
             $to_cnt = (array_key_exists(1, $post_count_info)) ? $post_count_info[1]['f_post_count_increment'] : 0;

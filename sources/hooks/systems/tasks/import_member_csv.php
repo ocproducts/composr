@@ -319,7 +319,7 @@ class Hook_task_import_member_csv
             }
             $custom_fields = array();
             foreach ($all_cpfs as $cpf) {
-                $custom_fields[$cpf['id']] = array_key_exists($cpf['_cf_name'], $line) ? $line[$cpf['_cf_name']] : $cpf['_cf_default'];
+                $custom_fields[$cpf['id']] = array_key_exists($cpf['_cf_name'], $line) ? $line[$cpf['_cf_name']] : $cpf['cf_default'];
 
                 if ($cpf['cf_type'] == 'integer') {
                     $custom_fields[$cpf['id']] = intval($custom_fields[$cpf['id']]);

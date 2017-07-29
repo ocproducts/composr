@@ -18,7 +18,7 @@ The default zones in Composr are for the following purposes:
 And if you are using Conversr, the following additional zones are usable:
  - [b]Forum[/b]: this is where the forum resides
 
-Some further information about zones is covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page].
+Some further information about zones is covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page] tutorial.
 
 [title="2"]Pages[/title]
 
@@ -101,7 +101,7 @@ For more information on how page-links are turned into URLs, see the [page="_SEA
 
 Panel pages rest around your main page. They are nothing more than pages given special names in the same zone as the pages that they surround.
 
-Panels are typically Comcode pages and are used to arrange blocks. Blocks inject dynamic functionality (such as a menu, a login box, a search box, etc): Composr has a large selection to choose from. Blocks are documented in the [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode pages) tutorial[/page].
+Panels are typically Comcode pages and are used to arrange blocks. Blocks inject dynamic functionality (such as a menu, a login box, a search box, etc): Composr has a large selection to choose from. Blocks are documented in the [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode pages)[/page] tutorial.
 
 [title="4"]Display rules[/title]
 
@@ -358,7 +358,7 @@ The main forms of navigation are:
 
 [title="2"]Redirects and virtual roots[/title]
 
-Information about redirects and virtual roots is covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page]. These features are also relevant to structural management of your website.
+Information about redirects and virtual roots is covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page] tutorial. These features are also relevant to structural management of your website.
 
 [concepts
  1_key="Page-link"      1_value="A special syntax that is like 'a Composr URL' that is written in a simplified form, local, and not tied to PHP/Composr URL reality (so if Composr URLs start to look different, Page-links still work)"

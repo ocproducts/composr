@@ -192,7 +192,7 @@ The code editor is very useful for making ad hoc changes to a live-site, but is 
 
 [surround]
 [media width="150" description="PHP has an excellent reference manual" float="right"]data_custom/images/docs/tut_framework/framework_phphelp.png[/media]
-It is beyond the scope of the Composr documentation to explain how to program in PHP (although we do have a stab at it in the [page="_SEARCH:tut_programming"]Introduction to programming tutorial[/page]), or other languages that are used such as SQL or HTML. PHP includes an excellent reference guide, and there are many good tutorials on the web for HTML. Composr uses a very minimalistic form of SQL, and usually code does not need to use any directly, due to our database abstraction functions, so this should not be a problem.
+It is beyond the scope of the Composr documentation to explain how to program in PHP (although we do have a stab at it in the [page="_SEARCH:tut_programming"]Introduction to programming[/page] tutorial), or other languages that are used such as SQL or HTML. PHP includes an excellent reference guide, and there are many good tutorials on the web for HTML. Composr uses a very minimalistic form of SQL, and usually code does not need to use any directly, due to our database abstraction functions, so this should not be a problem.
 
 The Composr API guide does actually include a PHP reference that defines a subset of PHP that we allow ourselves to use in Composr. The subset is specially limited so as to avoid PHP version conflicts, and the need for PHP extensions that may not be installed.
 [/surround]
@@ -230,7 +230,7 @@ If you still are not convinced that Composr is the right choice for you, conside
  - [url="MySQL documentation"]http://dev.mysql.com/doc/mysql/en/[/url]
  - [page="_SEARCH:tut_programming"]Introduction to programming[/page]
  - [url="API guide"]{$BRAND_BASE_URL}/docs/api/[/url]
- - [page="_SEARCH:codebook"]Composr Code Book[/page]
+ - [page="_SEARCH:codebook"]Code Book, contents and introduction[/page]
  - [url="PHP website"]http://www.php.net[/url]
 
 {$SET,tutorial_tags,core_addon_management,code_editor,Development,PHP,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr is not just a web application, but also a programming framework. Find out how the puzzle pieces fit together.}[block]main_tutorial_rating[/block]

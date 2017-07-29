@@ -498,6 +498,7 @@ class Hook_addon_registry_core_cns
             'templates/CNS_POST_MAP_ITEM.tpl' => 'cns_post_map',
             'templates/BLOCK_MAIN_JOIN_DONE.tpl' => 'block_main_join_done',
             'templates/BLOCK_MAIN_JOIN.tpl' => 'block_main_join',
+            'templates/JOIN_FORM.tpl' => 'join_form',
         );
     }
 
@@ -1347,6 +1348,34 @@ class Hook_addon_registry_core_cns
                 'HAS_EMAIL_ADDRESS' => true,
                 'EMAIL_SENT' => true,
                 'EMAIL_ADDRESS' => lorem_word(),
+            )), null, '', true)
+        );
+    }
+
+    /**
+     * Get a preview(s) of a (group of) template(s), as a full standalone piece of HTML in Tempcode format.
+     * Uses sources/lorem.php functions to place appropriate stock-text. Should not hard-code things, as the code is intended to be declaritive.
+     * Assumptions: You can assume all Lang/CSS/JavaScript files in this addon have been pre-required.
+     *
+     * @return array Array of previews, each is Tempcode. Normally we have just one preview, but occasionally it is good to test templates are flexible (e.g. if they use IF_EMPTY, we can test with and without blank data).
+     */
+    public function tpl_preview__join_form()
+    {
+        return array(
+            lorem_globalise(do_lorem_template('JOIN_FORM', array(
+                'SKIP_WEBSTANDARDS' => true,
+                'HIDDEN' => '',
+                'TITLE' => lorem_title(),
+                'URL' => placeholder_url(),
+                'FIELDS' => placeholder_fields(),
+                'SUBMIT_ICON' => 'menu__site_meta__user_actions__join',
+                'SUBMIT_NAME' => lorem_word(),
+                'TEXT' => lorem_sentence_html(),
+                'USERNAME_CHECK_SCRIPT' => placeholder_url(),
+                'SNIPPET_SCRIPT' => placeholder_url(),
+                'INVITES_ENABLED' => true,
+                'ONE_PER_EMAIL_ADDRESS' => true,
+                'USE_CAPTCHA' => true,
             )), null, '', true)
         );
     }

@@ -185,7 +185,7 @@ function dispatch_notification($notification_code, $code_category, $subject, $me
     $dispatcher->attachments = $attachments;
     $dispatcher->use_real_from = $use_real_from;
 
-    if ((get_param_integer('keep_debug_notifications', 0) == 1) || ($send_immediately)) {
+    if ((get_param_integer('keep_debug_notifications', 0) == 1) || ($send_immediately) || (running_script('cron_bridge'))) {
         $dispatcher->dispatch();
     } else {
         require_code('tasks');

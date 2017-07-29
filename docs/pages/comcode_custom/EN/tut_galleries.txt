@@ -14,7 +14,7 @@
 [media width="150" description="Galleries are structured. Here is a gallery that has a subgallery" float="right"]data_custom/images/docs/tut_galleries/gallery_subcat.png[/media]
 A gallery is a category of the gallery system, and is used to hold images and videos (together, gallery entries). Galleries can also hold audio files which are treated in the same way as videos.
 
-Galleries are organised in a hierarchical (tree) structure. For more information of these tree structures, see the [page="_SEARCH:tut_downloads"]Providing downloads tutorial[/page], as the download system is the perfect clean example of a Composr tree-structured system. The gallery structure is more complex than that of the download structure, and additional information on it is given in the [page="_SEARCH:tut_adv_galleries"]Advanced galleries tutorial[/page].
+Galleries are organised in a hierarchical (tree) structure. For more information of these tree structures, see the [page="_SEARCH:tut_downloads"]Providing downloads[/page] tutorial, as the download system is the perfect clean example of a Composr tree-structured system. The gallery structure is more complex than that of the download structure, and additional information on it is given in the [page="_SEARCH:tut_adv_galleries"]Advanced galleries[/page] tutorial.
 
 Galleries are given a name, and a title. The name should be a code-name that can easily be typed in a URL, rather than a cleanly readable name. For example, 'holiday2004' would be a good gallery name for a gallery with title, 'Holiday Pictures, 2004 (Sweden)'.
 
@@ -86,7 +86,7 @@ The following common formats are not safe:
  - [tt].rm[/tt]/[tt].ram[/tt] (requires RealPlayer plugin, not available on Linux)
  - [tt].qt[/tt] (Old quicktime format)
 
-Further documentation is provided in the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc) tutorial[/page].
+Further documentation is provided in the [page="_SEARCH:tut_fringe"]Supplementary web technologies (media, social networking, etc)[/page] tutorial.
 
 At the end of the day it may be best just to use the galleries on your site as a wrapper around YouTube. Read on.
 
@@ -116,7 +116,7 @@ However, if you install the non-bundled getid3 addon then this can work much mor
 
 [title="2"]Ordering[/title]
 
-Gallery entries are ordered in the same order they were added to the system. If you are batch importing (covered in the [page="_SEARCH:tut_adv_galleries"]Advanced galleries tutorial[/page]), then you may want to define a custom ordering. To do this, you just need to give all the images in the batch names that are consistent with a numbering scheme of your choice. Composr will detect numbering schemes automatically, and order by them.
+Gallery entries are ordered in the same order they were added to the system. If you are batch importing (covered in the [page="_SEARCH:tut_adv_galleries"]Advanced galleries[/page] tutorial), then you may want to define a custom ordering. To do this, you just need to give all the images in the batch names that are consistent with a numbering scheme of your choice. Composr will detect numbering schemes automatically, and order by them.
 
 The rule is very simple: Composr will order by filename if when taking all numbers out of all filenames in the gallery, the filenames are all the same.
 

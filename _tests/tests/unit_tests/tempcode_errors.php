@@ -39,6 +39,7 @@ class tempcode_errors_test_set extends cms_test_case
                     $this->assertTrue(preg_match('#\{\+START,IF,[A-Z]#', $c) == 0, 'Bad IF parameter in ' . $f . ' template');
                 }
             }
+            closedir($dh);
         }
     }
 }

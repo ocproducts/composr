@@ -70,7 +70,7 @@ function init__caches()
             require_code('persistent_caching/filesystem');
             $PERSISTENT_CACHE = new Persistent_caching_filesystem();
         }
-        // NB: sources/hooks/systems/checks/persistent_cache.php also references some of this ^
+        // NB: sources/hooks/systems/health_checks/persistent_cache.php also references some of this ^
     }
 
     /** The smart cache (self-learning cache).
@@ -849,7 +849,7 @@ function _get_cache_entries($dets, $special_cache_flags = null)
             $langs_required = explode(':', $bits[0]); // Sometimes lang has got intertwinded with non cacheable stuff (and thus was itself not cached), so we need the lang files
             foreach ($langs_required as $lang) {
                 if ($lang != '') {
-                    require_lang($lang);
+                    require_lang($lang, null, null, true);
                 }
             }
             if (isset($bits[1])) {

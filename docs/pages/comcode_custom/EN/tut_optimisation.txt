@@ -29,7 +29,7 @@ Limiting factors could be:
 
 Speed can be approximately doubled if an "[b]opcode cache[/b]" is installed as a PHP extension. These caches cache compiled PHP code so that PHP does not need to re-compile scripts on every page view. The main solutions for this are:
  - Zend OpCache (this is bundled by default in PHP 5.6 and higher, recommended)
- - APC (free)  (or APCU compiled with APC compatibility)
+ - APC (free) (or APCU compiled with APC compatibility)
  - wincache (free, Windows only)
  - xcache (free)
 
@@ -82,7 +82,7 @@ Composr is not designed to "cache everything as it will be displayed" because th
  - If you make very heavy use of large and complex tooltips then you may want to consider loading these via AJAX. This will require some fairly advanced coding skills, but it may be worth doing. Look at the [tt]COMCODE_MEMBER.tpl[/tt] template for an example of AJAX tooltip code.
  - Disabling URL monikers can help with performance; however this will also impact SEO if you think your URL paths are key to that.
  - [b]Block unwanted bots[/b] you see in your logs using [tt]robots.txt[/tt], and set a [tt]Crawl-delay[/tt] value in there.
- - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]Search tutorial[/page]).
+ - Automatically kill slow searches (see "Auto-kill slow searches" in the [page="_SEARCH:tut_search"]Search[/page] tutorial).
  - Enable the "Gzipped output" option. Unless you're using Cloudflare's optimisation features, in which case disable it so Cloudflare can do that instead.
  - Sometimes you may be flooded with random traffic. For example, the chinese "great firewall" has been observed to randomly reroute traffic to avoid it reaching certain sites. If this happens, you may want to use a [tt].htaccess[/tt] file (Apache only) to spot undesired request patterns and terminate those requests.
  - Don't allow thousands of posts in forum topics, as navigating within becomes very inefficient for the database.
@@ -300,7 +300,7 @@ If you have outgrown normal shared hosting / a single VPS or server, you can do 
 1) Composr runs perfectly on Rackspace Cloud Sites hosting, where you can set up quite large instances (we have been told that behind-the-scenes there is database replication, to share database load).
 2) You can run on Amazon EC2 Instances (or pretty much any cloud service that supports custom images, or PHP). There is a Composr Bitnami image for easy installation on Amazon's infrastructure. Bitnami also provide their own Amazon-based hosting service. If you want to use multiple instances you will need to set up your own MySQL replication and file-synching, but Composr does have support for it (see "Server farms"). There are some solutions to auto-scale out cloud instances, although many companies handle it manually.
 3) You can set up your own cloud system on your own servers, or cheap dedicated servers. You could look at using something like OpenStack to achieve this, and you could use HHVM for great performance. This is similar to Facebook's infrastructure and a very challenging option, but perhaps the best from a huge-scale cost perspective.
-4) You can use Google App Engine, to get automated scaling, with a tradeoff that it is a bit harder to initially set up. This is the most elegant and maintainable option and we generally prefer it over '1' and '2' if you are seriously investing in a maintainable infrastructure. We discuss this in the separate [page="_SEARCH:tut_google_appengine"]Google App Engine tutorial[/page]. [i]At the time of writing Google App Engine PHP support is unstable and won't run Composr properly -- this is outside our control, and we have been discussing it with Google directly.[/i]
+4) You can use Google App Engine, to get automated scaling, with a tradeoff that it is a bit harder to initially set up. This is the most elegant and maintainable option and we generally prefer it over '1' and '2' if you are seriously investing in a maintainable infrastructure. We discuss this in the separate [page="_SEARCH:tut_google_appengine"]Google App Engine[/page] tutorial. [i]At the time of writing Google App Engine PHP support is unstable and won't run Composr properly -- this is outside our control, and we have been discussing it with Google directly.[/i]
 
 [title="3"]Amazon EC2[/title]
 
@@ -600,7 +600,7 @@ Find the hooks that run by looking in [tt]sources/hooks/systems/cron[/tt].
  - [page="_SEARCH:tut_moving"]Moving sites[/page]
  - [page="_SEARCH:tut_google_appengine"]Installing on Google App Engine[/page]
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
- - https://www.woorank.com
+ - [page="_SEARCH:tut_website_health"]Website Health[/page]
  - https://compo.sr/tracker/tag_view_page.php?tag_id=16
 
 {$SET,tutorial_tags,Performance,filebased_persistent_caching,cloudinary,failover,hphp_buildkit,Maintenance,Development,Power tools,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Composr is very heavily optimised for high performance out-of-the-box, but here are some advanced performance tips.}[block]main_tutorial_rating[/block]

@@ -27,7 +27,7 @@ class web_platform_test_set extends cms_test_case
     public function testNoBadComments()
     {
         $c = file_get_contents(get_file_base() . '/web.config');
-        $this->assertTrue(strpos($c, '<--') === false, 'Comments must be <!--');
+        $this->assertTrue(strpos($c, '<--') === false, 'Comments must be <!-- in web.config');
     }
 
     public function testNoDuplicateNames()

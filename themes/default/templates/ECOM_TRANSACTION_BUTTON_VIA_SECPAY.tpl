@@ -1,5 +1,5 @@
 <form title="{!MAKE_PAYMENT}" class="ecommerce_button" action="{FORM_URL*}" method="post" autocomplete="off">
-	<input type="hidden" name="trans_id" value="{TRANS_ID*}" />
+	<input type="hidden" name="trans_id" value="{TRANS_EXPECTING_ID*}" />
 	<input type="hidden" name="merchant" value="{USERNAME*}" />
 	<input type="hidden" name="digest" value="{DIGEST*}" />
 	<input type="hidden" name="amount" value="{AMOUNT*}" />

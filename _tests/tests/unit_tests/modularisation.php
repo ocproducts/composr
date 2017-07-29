@@ -132,5 +132,6 @@ class modularisation_test_set extends cms_test_case
                 $GFILE_ARRAY[] = $dir . $file;
             }
         }
+        closedir($dh);
     }
 }

@@ -41,7 +41,7 @@
 							<div class="block_mobile">
 								<p><strong>{TITLE*}</strong></p>
 								<p><kbd>{NAME*}</kbd></p>
-								<p>{!BY_SIMPLE,<em>{AUTHOR`}</em></p>
+								<p>{!BY_SIMPLE,<em>{AUTHOR`}</em>}</p>
 								{+START,IF,{$NEQ,{DATE},{!NA_EM}}}
 									<p>{DATE*}</p>
 								{+END}

@@ -269,7 +269,7 @@ This generally protects against:
  - Request parameters that look like particularly dangerous HTML, or miscellaneous vectors for injecting CSS or JavaScript code
 It is generally a good idea to not given untrusted users this privilege, as the need for such users to be able to post text that looks like file paths, dangerous HTML, or JavaScript, is not very high.
 
-There are many privileges relating to Comcode filtering. These are detailed in the [page="_SEARCH:tut_adv_comcode"]Advanced Comcode tutorial[/page].
+There are many privileges relating to Comcode filtering. These are detailed in the [page="_SEARCH:tut_adv_comcode"]Advanced Comcode[/page] tutorial.
 
 We also have of internal checks that always run, many related to "Alert types" (see above), including:
 [list="a"]
@@ -740,12 +740,12 @@ If you have sensitive material that might be in a URL moniker, you should either
  - [page="_SEARCH:tut_webhosting"]Webhosting for Composr[/page]
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]
  - [page="_SEARCH:tut_ldap"]Integrating Composr into a corporate network via LDAP[/page]
- - [page="_SEARCH:tut_censor"]Policing a community site[/page]
+ - [page="_SEARCH:tut_censor"]Dealing with annoying users[/page]
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
  - [page="_SEARCH:tut_antispam"]Anti-spam settings[/page]
  - [page="_SEARCH:tut_software_feedback"]Problem and feedback reports, and development policies[/page]
- - [url="http://www.robotstxt.org/robotstxt.html"]robots.txt help[/url]
  - [url="https://internethealthreport.org"]The Internet Health Report[/url]
  - [page="_SEARCH:codebook_standards"]Code Book, part 4 (Coding Standards)[/page]
+ - [page="_SEARCH:tut_website_health"]Website Health[/page]
 
 {$SET,tutorial_tags,ssl,securitylogging,rootkit_detector,Security,expert}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Details and guidance on the advanced security protections available in Composr.}[block]main_tutorial_rating[/block]

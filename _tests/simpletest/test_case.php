@@ -307,11 +307,11 @@ class SimpleTestCase {
      */
     function assert($expectation, $compare, $message = '%s') {
         if ($expectation->test($compare)) {
-            return $this->pass(sprintf(
+            return $this->pass(@sprintf(
                     $message,
                     $expectation->overlayMessage($compare, $this->_reporter->getDumper())));
         } else {
-            return $this->fail(sprintf(
+            return $this->fail(@sprintf(
                     $message,
                     $expectation->overlayMessage($compare, $this->_reporter->getDumper())));
         }

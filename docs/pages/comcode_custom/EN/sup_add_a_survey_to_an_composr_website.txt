@@ -10,7 +10,7 @@ The survey system is under Quizzes within the system. There are actually three t
  - tests, which can have right or wrong answers so someone can either pass or fail the test
  - competitions, which can award a winner to the person who completes the quiz the best
 
-The other types will be covered in [page="_SEARCH:sup_explaining_the_composr_quiz_module"]my broader tutorial[/page].
+The other types will be covered in [page="_SEARCH:sup_explaining_the_composr_quiz_module"]my broader[/page] tutorial.
 
 To begin to create your survey you need to go to Admin Zone > Content > Quizzes > Add quiz.
 

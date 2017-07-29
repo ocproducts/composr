@@ -155,7 +155,8 @@ class lang_misc_test_set extends cms_test_case
     {
         $files = array();
 
-        if (($dh = opendir($dir)) !== false) {
+        $dh = @opendir($dir);
+        if ($dh !== false) {
             while (($file = readdir($dh)) !== false) {
                 if (($file[0] != '.') && (!should_ignore_file((($dir_stub == '') ? '' : ($dir_stub . '/')) . $file, IGNORE_BUNDLED_VOLATILE | IGNORE_CUSTOM_DIR_SUPPLIED_CONTENTS | IGNORE_CUSTOM_DIR_GROWN_CONTENTS))) {
                     if (is_file($dir . '/' . $file)) {

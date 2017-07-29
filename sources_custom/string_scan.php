@@ -202,6 +202,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_payment_gateway_vpn_password
         DESCRIPTION_INVOICE_AMOUNT
         DESCRIPTION_INVOICE_TAX_CODE
+        RISK
         PURCHASE_ID
         PAYMENT_GATEWAY_USERNAME
         PAYMENT_GATEWAY_TEST_USERNAME
@@ -1766,6 +1767,101 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CANT_TRACK
         CAN_MASS_UPLOAD
         CAPTCHAFAIL_HACK
+        CAPTCHAFAIL
+        ANTISPAM
+        HEALTH_CHECK
+        DOC_HEALTH_CHECK
+        CONFIG_CATEGORY_HEALTH_CHECK
+        CONFIG_CATEGORY_DESCRIPTION__HEALTH_CHECK
+        PERFORMANCE
+        AUTOMATIC_CHECKS
+        CONFIG_GROUP_DEFAULT_DESCRIP_FLOOD_CONTROL
+        HC_IS_TEST_SITE
+        CONFIG_OPTION_hc_is_test_site
+        CONFIG_OPTION_hc_is_test_site_VALUE_-1
+        CONFIG_OPTION_hc_is_test_site_VALUE_0
+        CONFIG_OPTION_hc_is_test_site_VALUE_1
+        HC_SCAN_PAGE_LINKS
+        CONFIG_OPTION_hc_scan_page_links
+        HC_DISK_SPACE_THRESHOLD
+        CONFIG_OPTION_hc_disk_space_threshold
+        HC_ERROR_LOG_DAY_FLOOD_THRESHOLD
+        CONFIG_OPTION_hc_error_log_day_flood_threshold
+        HC_PAGE_SIZE_THRESHOLD
+        CONFIG_OPTION_hc_page_size_threshold
+        HC_ADMIN_STALE_THRESHOLD
+        CONFIG_OPTION_hc_admin_stale_threshold
+        HC_GOOGLE_SAFE_BROWSING_API_KEY
+        CONFIG_OPTION_hc_google_safe_browsing_api_key
+        HC_CRON_THRESHOLD
+        CONFIG_OPTION_hc_cron_threshold
+        HC_CPU_PCT_THRESHOLD
+        CONFIG_OPTION_hc_cpu_pct_threshold
+        HC_IO_PCT_THRESHOLD
+        CONFIG_OPTION_hc_io_pct_threshold
+        HC_PAGE_SPEED_THRESHOLD
+        CONFIG_OPTION_hc_page_speed_threshold
+        HC_PROCESS_HANG_THRESHOLD
+        CONFIG_OPTION_hc_process_hang_threshold
+        HC_PROCESSES_TO_MONITOR
+        CONFIG_OPTION_hc_processes_to_monitor
+        HC_RAM_THRESHOLD
+        CONFIG_OPTION_hc_ram_threshold
+        HC_TRANSFER_LATENCY_THRESHOLD
+        CONFIG_OPTION_hc_transfer_latency_threshold
+        HC_TRANSFER_SPEED_THRESHOLD
+        CONFIG_OPTION_hc_transfer_speed_threshold
+        HC_UPTIME_THRESHOLD
+        CONFIG_OPTION_hc_uptime_threshold
+        HC_REQUESTS_PER_SECOND_THRESHOLD
+        CONFIG_OPTION_hc_requests_per_second_threshold
+        HC_REQUESTS_WINDOW_SIZE
+        CONFIG_OPTION_hc_requests_window_size
+        HC_COMPOUND_REQUESTS_PER_SECOND_THRESHOLD
+        CONFIG_OPTION_hc_compound_requests_per_second_threshold
+        HC_COMPOUND_REQUESTS_WINDOW_SIZE
+        CONFIG_OPTION_hc_compound_requests_window_size
+        HC_MAIL_ADDRESS
+        CONFIG_OPTION_hc_mail_address
+        HC_MAIL_SERVER
+        CONFIG_OPTION_hc_mail_server
+        HC_MAIL_SERVER_TYPE
+        CONFIG_OPTION_hc_mail_server_type
+        HC_MAIL_SERVER_PORT
+        CONFIG_OPTION_hc_mail_server_port
+        HC_MAIL_USERNAME
+        CONFIG_OPTION_hc_mail_username
+        HC_MAIL_PASSWORD
+        CONFIG_OPTION_hc_mail_password
+        HC_MAIL_WAIT_TIME
+        CONFIG_OPTION_hc_mail_wait_time
+        HC_CRON_SECTIONS_TO_RUN
+        CONFIG_OPTION_hc_cron_sections_to_run
+        HC_CRON_REGULARITY
+        CONFIG_OPTION_hc_cron_regularity
+        HC_CRON_NOTIFY_REGARDLESS
+        CONFIG_OPTION_hc_cron_notify_regardless
+        NOTIFICATION_TYPE_health_check
+        HEALTH_CHECK_SUBJECT_fail
+        HEALTH_CHECK_SUBJECT_misc
+        HEALTH_CHECK_BODY
+        NO_HEALTH_ISSUES_FOUND
+        SHOW_FAILS
+        SHOW_PASSES
+        SHOW_SKIPS
+        SHOW_MANUAL_CHECKS
+        REASONS
+        CHECK_FAILED
+        CHECK_PASSED
+        CHECK_SKIPPED
+        CHECK_MANUAL
+        PASSES
+        FAILS
+        CONFIG_CATEGORY_DESCRIPTION__MESSAGES
+        CONFIG_CATEGORY_DESCRIPTION__USER_INTERACTION
+        CONFIG_CATEGORY_MESSAGES
+        CONFIG_CATEGORY_USER_INTERACTION
+        HELP_THRESHOLDS
         CAPTCHA_NOISE
         CAPTCHA_ON_FEEDBACK
         CAPTCHA_SINGLE_GUESS
@@ -2924,7 +3020,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         CONFIG_OPTION_log_php_errors
         CONFIG_OPTION_logo_map
         CONFIG_OPTION_long_google_cookies
-        CONFIG_OPTION_low_space_check
         CONFIG_OPTION_mail_queue
         CONFIG_OPTION_mail_queue_debug
         CONFIG_OPTION_mail_server
@@ -5157,8 +5252,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         LOGS
         LONG_GOOGLE_COOKIES
         LOWLEVEL_PERMISSIONS
-        LOW_DISK_SPACE_MAIL
-        LOW_DISK_SPACE_SUBJECT
         LOW_MEMORY_LIMIT
         MADE_IP_BANNABLE
         MADE_IP_UNBANNABLE
@@ -5458,7 +5551,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MODULE_TRANS_NAME_cms_quiz
         MODULE_TRANS_NAME_cms_wiki
         MODULE_TRANS_NAME_filedump
-        MOD_SECURITY
+        MODSECURITY
         DESCRIPTION_MONEY_AMOUNT
         MONTHLY_SPEC_TYPE
         MOST_COMMON
@@ -5495,6 +5588,8 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         MYSQL_QUERY_CHANGES_MAKE_1
         MYSQL_QUERY_CHANGES_MAKE_2
         MYSQL_TOO_OLD
+        MYSQL_TOO_NEW
+        PHP_TOO_NEW
         MY_PROFILE_LINK
         M_INTEREST_MINUS
         M_INTEREST_PLUS
@@ -5619,7 +5714,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NOTIFICATION_TYPE_filedump
         NOTIFICATION_TYPE_hack_attack
         NOTIFICATION_TYPE_ip_address_sharing
-        NOTIFICATION_TYPE_low_disk_space
         NOTIFICATION_TYPE_low_stock
         NOTIFICATION_TYPE_needs_validation
         NOTIFICATION_TYPE_ecom_product_request_custom
@@ -5696,7 +5790,6 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         NO_POSSIBLE_WINNERS
         NO_SANDBOX
         NO_SELECTABLE_THEME_IMAGES_MSN
-        NO_SERVER_ISSUES_FOUND
         NO_SESSION_SECURITY_CODE
         NO_SHELL_ZIP_POSSIBLE
         NO_SHELL_ZIP_POSSIBLE2
@@ -5888,7 +5981,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         PHONE_NUMBER
         PHPINFO
         PHP_DOWNLOAD_INNOCENT
-        PHP_OLD
+        PHP_TOO_OLD
         PING_URL
         PINTERACE_HELP
         PINTERFACE_LEVEL_0

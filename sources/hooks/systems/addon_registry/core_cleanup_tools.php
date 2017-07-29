@@ -62,7 +62,7 @@ class Hook_addon_registry_core_cleanup_tools
     public function get_applicable_tutorials()
     {
         return array(
-            'tut_cleanup',
+            'tut_website_health',
         );
     }
 

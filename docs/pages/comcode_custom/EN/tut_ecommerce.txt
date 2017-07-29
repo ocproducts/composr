@@ -453,7 +453,7 @@ By default the catalogue is configured to allow product reviews, but you may tur
 
 [title="3"]Categories and entries (i.e. the contents of your product catalogue)[/title]
 
-Once you are happy with your set of fields, you can add categories and entries to your catalogue. As this is exactly the same as adding entries to a normal catalogue, I'll refer you to the [page="_SEARCH:tut_catalogues"]Custom structured content (via catalogues) tutorial[/page].
+Once you are happy with your set of fields, you can add categories and entries to your catalogue. As this is exactly the same as adding entries to a normal catalogue, I'll refer you to the [page="_SEARCH:tut_catalogues"]Custom structured content (via catalogues)[/page] tutorial.
 
 [title="4"]Deleting shopping cart items[/title]
 

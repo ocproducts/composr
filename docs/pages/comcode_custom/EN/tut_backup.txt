@@ -96,7 +96,7 @@ If you only wish to backup a database, then for those who have access to phpMyAd
 
 [title="2"]File permissions[/title]
 
-It is important to understand that file permissions are not backed up in archives alongside the files. Therefore upon restoration of your site, such permissions would need re-setting. Please see the [page="_SEARCH:tut_moving"]Moving sites tutorial[/page] for more information on this.
+It is important to understand that file permissions are not backed up in archives alongside the files. Therefore upon restoration of your site, such permissions would need re-setting. Please see the [page="_SEARCH:tut_moving"]Moving sites[/page] tutorial for more information on this.
 
 [concepts
  1_key="Incremental backup"   1_value="A backup where only new or changed files (since the last backup) are backed up"

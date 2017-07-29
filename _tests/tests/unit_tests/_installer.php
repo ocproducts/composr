@@ -49,9 +49,16 @@ class _installer_test_set extends cms_test_case
 
     public function testDoesNotFullyCrash()
     {
-        $http_result = cms_http_request(get_base_url() . '/install.php', array('trigger_error' => false));
-        $this->assertTrue($http_result->message == '200');
-        $this->assertTrue(strpos($http_result->data, 'type="submit"') !== false); // Has start button: meaning something worked
+        $http_result = cms_http_request(get_base_url() . '/install.php?skip_disk_checks=1', array('trigger_error' => false, 'timeout' => 60));
+
+        $this->assertTrue($http_result->message == '200', 'Wrong HTTP status code ' . $http_result->message);
+
+        $success = (strpos($http_result->data, 'type="submit"') !== false);
+        if ((!$success) && (isset($_GET['debug']))) {
+            @var_dump($http_result->data);
+            exit();
+        }
+        $this->assertTrue($success, 'No submit button found'); // Has start button: meaning something worked
     }
 
     public function testFullInstallSafeMode()

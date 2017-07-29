@@ -116,33 +116,35 @@ class theme_images_test_set extends cms_test_case
             }
 
             foreach ($directories as $dir) {
-                $dh = opendir($dir);
-                while (($f = readdir($dh)) !== false) {
-                    $is_css_file = (substr($f, -4) == '.css');
-                    $is_tpl_file = (substr($f, -4) == '.tpl') || (substr($f, -3) == '.js');
-                    $is_comcode_page = ((substr($f, -4) == '.txt') && ((count($themes) < 5) || (substr($f, 0, strlen($theme . '__')) == $theme . '__')));
+                $dh = @opendir($dir);
+                if ($dh !== false) {
+                    while (($f = readdir($dh)) !== false) {
+                        $is_css_file = (substr($f, -4) == '.css');
+                        $is_tpl_file = (substr($f, -4) == '.tpl') || (substr($f, -3) == '.js');
+                        $is_comcode_page = ((substr($f, -4) == '.txt') && ((count($themes) < 5) || (substr($f, 0, strlen($theme . '__')) == $theme . '__')));
 
-                    if ($is_css_file || $is_tpl_file || $is_comcode_page) {
-                        $contents = file_get_contents($dir . '/' . $f);
+                        if ($is_css_file || $is_tpl_file || $is_comcode_page) {
+                            $contents = file_get_contents($dir . '/' . $f);
 
-                        // Find referenced images
-                        $matches = array();
-                        $num_matches = preg_match_all('#\{\$(IMG|IMG_INLINE)[^\w,]*,([^{},]+)\}#', $contents, $matches);
-                        for ($i = 0; $i < $num_matches; $i++) {
-                            $images_referenced[$matches[2][$i]] = isset($images_there[$matches[2][$i]]);
-                        }
+                            // Find referenced images
+                            $matches = array();
+                            $num_matches = preg_match_all('#\{\$(IMG|IMG_INLINE)[^\w,]*,([^{},]+)\}#', $contents, $matches);
+                            for ($i = 0; $i < $num_matches; $i++) {
+                                $images_referenced[$matches[2][$i]] = isset($images_there[$matches[2][$i]]);
+                            }
 
-                        // See if any of the theme images were used
-                        foreach ($images_there as $image => $is_there) {
-                            if (!$is_there) {
-                                if (preg_match('#\{\$(IMG|IMG_INLINE)[^\w,]*,' . preg_quote($image, '#') . '\}#', $contents) != 0) {
-                                    $images_there[$image] = true;
+                            // See if any of the theme images were used
+                            foreach ($images_there as $image => $is_there) {
+                                if (!$is_there) {
+                                    if (preg_match('#\{\$(IMG|IMG_INLINE)[^\w,]*,' . preg_quote($image, '#') . '\}#', $contents) != 0) {
+                                        $images_there[$image] = true;
+                                    }
                                 }
                             }
                         }
                     }
+                    closedir($dh);
                 }
-                closedir($dh);
             }
 
             foreach ($images_there as $image => $is_used) {

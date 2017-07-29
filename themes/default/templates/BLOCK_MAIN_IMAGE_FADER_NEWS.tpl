@@ -65,7 +65,7 @@
 		</div>
 
 		<div class="image_fader_news_html" id="image_fader_news_html_{$GET%,RAND_FADER_NEWS}">
-			<span aria-busy="true"><img id="loading_image" alt="" src="{$IMG*,loading}" /></span>
+			<span aria-busy="true"><img alt="" src="{$IMG*,loading}" /></span>
 		</div>
 	</div>
 </section>

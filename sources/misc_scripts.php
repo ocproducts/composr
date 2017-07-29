@@ -285,14 +285,20 @@ function cron_bridge_script($caller)
 
     $limit_hook = get_param_string('limit_hook', '');
 
-    $_log_file = get_custom_file_base() . '/data_custom/cron_log.txt';
+    $_log_file = get_custom_file_base() . '/data_custom/cron.log';
     $log_file = mixed();
     if (is_file($_log_file)) {
         $log_file = fopen($_log_file, 'ab');
+
+        flock($log_file, LOCK_EX);
+        fseek($log_file, 0, SEEK_END);
+        fwrite($log_file, date('Y-m-d H:i:s') . '  (CRON STARTING)' . "\n");
+        flock($log_file, LOCK_UN);
     }
 
     // Call the hooks which do the real work
     set_value('last_cron', strval(time()));
+    set_value('last_cron_started', '-', true);
     $cron_hooks = find_all_hook_obs('systems', 'cron', 'Hook_cron_');
     foreach ($cron_hooks as $hook => $object) {
         if (($limit_hook != '') && ($limit_hook != $hook)) {
@@ -312,7 +318,7 @@ function cron_bridge_script($caller)
 
             $object->run();
 
-            set_value('cron_currently_running__' . $hook, '0', true);
+            delete_value('cron_currently_running__' . $hook, true);
 
             if ($log_file !== null) {
                 flock($log_file, LOCK_EX);
@@ -329,8 +335,14 @@ function cron_bridge_script($caller)
             }
         }
     }
+    set_value('last_cron_finished', '-', true);
 
     if ($log_file !== null) {
+        flock($log_file, LOCK_EX);
+        fseek($log_file, 0, SEEK_END);
+        fwrite($log_file, date('Y-m-d H:i:s') . '  (CRON ENDING)' . "\n");
+        flock($log_file, LOCK_UN);
+
         fclose($log_file);
     }
 

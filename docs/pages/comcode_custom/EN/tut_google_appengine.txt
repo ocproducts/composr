@@ -170,7 +170,7 @@ You may also wish to consider doing the following locally, for reasons of perfor
  - Language editing
 (remote Composr custom files will go through Cloud Storage, which may have increased latency than if stored directly in the deployed application)
 
-Things like menu editing, or adding content, would primarily be done on the live site directly. With investment we would/will continue to improve Composr's staging tools (see the [page="_SEARCH:tut_repository"]Repository tutorial[/page]), but at this time we cannot necessarily confirm they will work with GAE or fit into a smooth staging to live publishing process. Our primary aim has been getting the challenge of basic support working so that we can then work on smoothing over daily usage as we find useful.
+Things like menu editing, or adding content, would primarily be done on the live site directly. With investment we would/will continue to improve Composr's staging tools (see the [page="_SEARCH:tut_repository"]Repository[/page] tutorial), but at this time we cannot necessarily confirm they will work with GAE or fit into a smooth staging to live publishing process. Our primary aim has been getting the challenge of basic support working so that we can then work on smoothing over daily usage as we find useful.
 You could consider regularly copying the live Cloud Database back to your staging site and testing new content locally, before repeating your actions manually onto the live site. This isn't as bad as it sounds for most kinds of content, as the actual clicks are minimal compared to the time actually producing quality content.
 
 [title="2"]Deployment[/title]
@@ -344,6 +344,6 @@ Be advised that Google cannot provide automated "sharding" of data. This means t
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_optimisation"]Optimising Performance[/page]
- - [page="_SEARCH:tut_repository"]The Repository[/page]
+ - [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page]
 
 {$SET,tutorial_tags,google_appengine,Installation,Webhosting,expert}{$SET,tutorial_add_date,Oct 2013}{$SET,tutorial_summary,How to install Composr on Google App Engine, for automatic cloud scaling.}[block]main_tutorial_rating[/block]

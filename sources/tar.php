@@ -583,6 +583,7 @@ function tar_add_file(&$resource, $target_path, $data, $_mode = 0644, $_mtime = 
                 if ($return_on_errors) {
                     return $offset + 512;
                 }
+                tar_close($resource);
                 warn_exit(do_lang_tempcode('FILE_IN_ARCHIVE_TWICE', escape_html($target_path)), false, true);
             }
         }

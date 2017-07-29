@@ -83,25 +83,27 @@ class css_file_test_set extends cms_test_case
         );
 
         foreach ($directories as $dir) {
-            $d = opendir($dir);
-            while (($e = readdir($d)) !== false) {
-                if (substr($e, -4) == '.css') {
-                    // Exceptions
-                    if ($e == 'svg.css') {
-                        continue;
-                    }
+            $d = @opendir($dir);
+            if ($d !== false) {
+                while (($e = readdir($d)) !== false) {
+                    if (substr($e, -4) == '.css') {
+                        // Exceptions
+                        if ($e == 'svg.css') {
+                            continue;
+                        }
 
-                    $contents = file_get_contents($dir . '/' . $e);
-                    $matches = array();
-                    $found = preg_match_all('#\.([a-z][\w\-]*)[ ,:]#i', $contents, $matches);
-                    for ($i = 0; $i < $found; $i++) {
-                        if ($matches[1][$i] != 'txt') {
-                            $out[] = $matches[1][$i];
+                        $contents = file_get_contents($dir . '/' . $e);
+                        $matches = array();
+                        $found = preg_match_all('#\.([a-z][\w\-]*)[ ,:]#i', $contents, $matches);
+                        for ($i = 0; $i < $found; $i++) {
+                            if ($matches[1][$i] != 'txt') {
+                                $out[] = $matches[1][$i];
+                            }
                         }
                     }
                 }
+                closedir($d);
             }
-            closedir($d);
         }
 
         return array_unique($out);
@@ -119,18 +121,20 @@ class css_file_test_set extends cms_test_case
         );
 
         foreach ($directories as $dir) {
-            $d = opendir($dir);
-            while (($e = readdir($d)) !== false) {
-                if (substr($e, -4) == '.tpl' || substr($e, -3) == '.js') {
-                    $contents = file_get_contents($dir . '/' . $e);
-                    $matches = array();
-                    $found = preg_match_all('#class="([\w\- ]+)"#', $contents, $matches);
-                    for ($i = 0; $i < $found; $i++) {
-                        $out = array_merge($out, explode(' ', $matches[1][$i]));
+            $d = @opendir($dir);
+            if ($d !== false) {
+                while (($e = readdir($d)) !== false) {
+                    if (substr($e, -4) == '.tpl' || substr($e, -3) == '.js') {
+                        $contents = file_get_contents($dir . '/' . $e);
+                        $matches = array();
+                        $found = preg_match_all('#class="([\w\- ]+)"#', $contents, $matches);
+                        for ($i = 0; $i < $found; $i++) {
+                            $out = array_merge($out, explode(' ', $matches[1][$i]));
+                        }
                     }
                 }
+                closedir($d);
             }
-            closedir($d);
         }
 
         return array_unique($out);
@@ -173,70 +177,72 @@ class css_file_test_set extends cms_test_case
             $selector_files = array();
 
             foreach ($directories as $dir => $to_use) {
-                $dh = opendir($dir);
-                while (($f = readdir($dh)) !== false) {
-                    // Exceptions
-                    $exceptions = array(
-                        'columns.css',
-                        'google_search.css',
-                        'jquery_ui.css',
-                        'mediaelementplayer.css',
-                        'openid.css',
-                        'skitter.css',
-                        'svg.css',
-                        'widget_color.css',
-                        'widget_date.css',
-                        'widget_select2.css',
-                    );
-                    if (in_array($f, $exceptions)) {
-                        continue;
-                    }
-
-                    $contents = file_get_contents($dir . '/' . $f);
-
-                    $is_css_file = (substr($f, -4) == '.css');
-
-                    if ($is_css_file) {
-                        if (!$to_use) {
+                $dh = @opendir($dir);
+                if ($dh !== false) {
+                    while (($f = readdir($dh)) !== false) {
+                        // Exceptions
+                        $exceptions = array(
+                            'columns.css',
+                            'google_search.css',
+                            'jquery_ui.css',
+                            'mediaelementplayer.css',
+                            'openid.css',
+                            'skitter.css',
+                            'svg.css',
+                            'widget_color.css',
+                            'widget_date.css',
+                            'widget_select2.css',
+                        );
+                        if (in_array($f, $exceptions)) {
                             continue;
                         }
 
-                        // Let's do a few simple CSS checks, less than a proper validator would do
-                        if (($is_css_file) && (strpos($contents, '{$,parser hint: pure}') === false)) {
-                            // Test comment/brace balancing
-                            $a = substr_count($contents, '{');
-                            $b = substr_count($contents, '}');
-                            $this->assertTrue($a == $b, 'Mismatched braces in ' . $f . ' in ' . $theme . ', ' . integer_format($a) . ' vs ' . integer_format($b));
-                            $a = substr_count($contents, '/*');
-                            $b = substr_count($contents, '*/');
-                            $this->assertTrue($a == $b, 'Mismatched comments in ' . $f . ' in ' . $theme . ', ' . integer_format($a) . ' vs ' . integer_format($b));
+                        $contents = file_get_contents($dir . '/' . $f);
 
-                            // Strip comments
-                            $contents = preg_replace('#/\*.*\*/#s', '', $contents);
+                        $is_css_file = (substr($f, -4) == '.css');
 
-                            // Test selectors
-                            $matches = array();
-                            $num_matches = preg_match_all('#^\s*[^@\s].*[^%\s]\s*\{$#m', $contents, $matches); // Finds selectors. However NB: @ is media rules, % is keyframe rules, neither are selectors.
-                            for ($i = 0; $i < $num_matches; $i++) {
-                                $matches2 = array();
-                                $current = $matches[0][$i];
-                                $current = /*strip CSS syntax*/preg_replace('#[:@][\w\-]+#', '', $current);
-                                $current = /*strip quotes*/preg_replace('#"[^"]*"#', '', $current);
-                                $current = /*strip bracketed section*/preg_replace('#\([^\(\)]*\)#', '', $current);
-                                $num_matches2 = /*find class/ID words*/preg_match_all('#[\w\-]+#', $current, $matches2);
-                                for ($j = 0; $j < $num_matches2; $j++) {
-                                    if (!isset($selector_files[$f])) {
-                                        $selector_files[$f] = array();
+                        if ($is_css_file) {
+                            if (!$to_use) {
+                                continue;
+                            }
+
+                            // Let's do a few simple CSS checks, less than a proper validator would do
+                            if (($is_css_file) && (strpos($contents, '{$,parser hint: pure}') === false)) {
+                                // Test comment/brace balancing
+                                $a = substr_count($contents, '{');
+                                $b = substr_count($contents, '}');
+                                $this->assertTrue($a == $b, 'Mismatched braces in ' . $f . ' in ' . $theme . ', ' . integer_format($a) . ' vs ' . integer_format($b));
+                                $a = substr_count($contents, '/*');
+                                $b = substr_count($contents, '*/');
+                                $this->assertTrue($a == $b, 'Mismatched comments in ' . $f . ' in ' . $theme . ', ' . integer_format($a) . ' vs ' . integer_format($b));
+
+                                // Strip comments
+                                $contents = preg_replace('#/\*.*\*/#s', '', $contents);
+
+                                // Test selectors
+                                $matches = array();
+                                $num_matches = preg_match_all('#^\s*[^@\s].*[^%\s]\s*\{$#m', $contents, $matches); // Finds selectors. However NB: @ is media rules, % is keyframe rules, neither are selectors.
+                                for ($i = 0; $i < $num_matches; $i++) {
+                                    $matches2 = array();
+                                    $current = $matches[0][$i];
+                                    $current = /*strip CSS syntax*/preg_replace('#[:@][\w\-]+#', '', $current);
+                                    $current = /*strip quotes*/preg_replace('#"[^"]*"#', '', $current);
+                                    $current = /*strip bracketed section*/preg_replace('#\([^\(\)]*\)#', '', $current);
+                                    $num_matches2 = /*find class/ID words*/preg_match_all('#[\w\-]+#', $current, $matches2);
+                                    for ($j = 0; $j < $num_matches2; $j++) {
+                                        if (!isset($selector_files[$f])) {
+                                            $selector_files[$f] = array();
+                                        }
+                                        $selector_files[$f][$matches2[0][$j]] = true;
                                     }
-                                    $selector_files[$f][$matches2[0][$j]] = true;
                                 }
                             }
+                        } else {
+                            $non_css_contents .= $contents;
                         }
-                    } else {
-                        $non_css_contents .= $contents;
                     }
+                    closedir($dh);
                 }
-                closedir($dh);
             }
 
             foreach ($selector_files as $file => $selectors) {

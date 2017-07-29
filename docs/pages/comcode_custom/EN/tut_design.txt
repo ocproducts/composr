@@ -101,7 +101,7 @@ To decide on a colour scheme consider an online tool like [url="http://www.color
 
 [title="2"]Web Technologies[/title]
 
-Web designs are implemented primarily in [abbr="Cascading Style Sheets"]CSS[/abbr]. We cover CSS in our [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript) tutorial[/page].
+Web designs are implemented primarily in [abbr="Cascading Style Sheets"]CSS[/abbr]. We cover CSS in our [page="_SEARCH:tut_markup"]Guide to web technologies (including HTML, CSS, and JavaScript)[/page] tutorial.
 
 [title="2"]Software[/title]
 

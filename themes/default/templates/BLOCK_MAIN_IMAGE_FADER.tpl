@@ -26,7 +26,7 @@
 				<h2 id="image_fader_title_{$GET%,RAND_FADER_IMAGE}">{!MEDIA}</h2>
 
 				<div class="gallery_tease_pic_teaser" id="image_fader_scrolling_text_{$GET%,RAND_FADER_IMAGE}">
-					<span aria-busy="true"><img id="loading_image" alt="" src="{$IMG*,loading}" /></span>
+					<span aria-busy="true"><img alt="" src="{$IMG*,loading}" /></span>
 				</div>
 			</div>
 		</div></div>

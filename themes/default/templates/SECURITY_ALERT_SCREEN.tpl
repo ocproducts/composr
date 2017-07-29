@@ -47,6 +47,10 @@
 			<th>{!USER_OS}</th>
 			<td><kbd>{USER_OS*}</kbd></td>
 		</tr>
+		<tr>
+			<th>{!RISK}</th>
+			<td>{PERCENTAGE_SCORE*}%</td>
+		</tr>
 	</tbody>
 </table></div>
 

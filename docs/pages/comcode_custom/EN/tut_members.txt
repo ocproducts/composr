@@ -14,7 +14,7 @@ During installing Composr, there will be two usernames provided by default:
 
 The test username is intended for testing permissions for non-administrators, which is a very important task, as it is easy to make mistakes during configuration.
 
-Information about testing permissions is available in the [page="_SEARCH:tut_permissions"]Access control and privileges tutorial[/page] ("Testing access and privileges").
+Information about testing permissions is available in the [page="_SEARCH:tut_permissions"]Access control and privileges[/page] tutorial ("Testing access and privileges").
 
 [title="2"]Usernames and display names[/title]
 
@@ -31,7 +31,7 @@ There are a number of ways a member might join an [concept]Conversr[/concept] we
 [media width="150" description="Joining a Composr powered site" float="right"]data_custom/images/docs/tut_members/members_join.png[/media]
 Users that were not created during installation will need to join your site before they may login, and by default, to actually access most of the website. This is made very easy, with join links placed in various positions, such as (by default) the front page, and the forum-view.
 
-To join, users will have to agree to your rules, which are actually the same as those defined in your [tt]:rules[/tt] Comcode page. In other words, to edit your rules, you need to edit this page. Once the rules are agreed to, they get a form to fill in with various details; for information on how to require additional details at joining, see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system tutorial[/page].
+To join, users will have to agree to your rules, which are actually the same as those defined in your [tt]:rules[/tt] Comcode page. In other words, to edit your rules, you need to edit this page. Once the rules are agreed to, they get a form to fill in with various details; for information on how to require additional details at joining, see the [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page] tutorial.
 
 The form includes, if enabled in the configuration, a security image ([concept]CAPTCHA[/concept]) that they must enter a numeric code from. There is also an audio equivalent to the image. Users with special needs might have difficulty with CAPTCHA: therefore you may, on occasion, need to add a member manually from the Admin Zone, and give them the details personally. The purpose of CAPTCHA is to prevent 'bots' (computer programs usually designed to wreak some form of havoc) from joining your site and abusing it.
 
@@ -279,7 +279,7 @@ If the "Extended privacy option control" option is enabled then it can be set in
 
 [title="2"]Usergroups[/title]
 
-Usergroups (and clubs) are covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page].
+Usergroups (and clubs) are covered in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page] tutorial.
 [/surround]
 
 [title="2"]Last visit dates[/title]
@@ -300,12 +300,12 @@ Essentially member profiles contain a last request date (in the database), which
 
  - [page="_SEARCH:tut_adv_members"]Advanced Composr member system[/page]
  - [page="_SEARCH:tut_permissions"]Access control and privileges[/page]
- - [page="_SEARCH:tut_legal"]Legal and social issues[/page]
- - [page="_SEARCH:tut_correspondance"]Correspondence between users[/page]
+ - [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page]
+ - [page="_SEARCH:tut_correspondance"]Correspondence between members[/page]
  - [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page]
  - [page="_SEARCH:tut_users"]People in their roles[/page]
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
- - [page="_SEARCH:tut_censor"]Policing a community site[/page]
+ - [page="_SEARCH:tut_censor"]Dealing with annoying users[/page]
  - [page="_SEARCH:tut_ldap"]Integrating Composr into a corporate network via LDAP[/page]
  - [page="_SEARCH:tut_httpauth"]Integrating Composr into a network via HTTP authentication[/page]
  - [page="_SEARCH:tut_notifications"]Notifications[/page]

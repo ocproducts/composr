@@ -12,7 +12,7 @@
 	
 		<p>
 			<label for="filter">{!FILTER}:</label>
-			<input type="text" id="filter" name="filter" value="{FILTER*}" data-submit-on-enter />
+			<input type="text" id="filter" name="filter" value="{FILTER*}" data-submit-on-enter="true" />
 			<input class="button_micro buttons__filter" type="submit" value="{!FILTER}" />
 		</p>
 	</form>

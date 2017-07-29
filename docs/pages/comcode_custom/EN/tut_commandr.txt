@@ -90,7 +90,7 @@ It is quite simple to write more as hooks if you know how to program.
 
 To use the repository, simply navigate around using the standard UNIX filesystem commands ([tt]cd[/tt], [tt]pwd[/tt], [tt]ls[/tt], etc.), and modify files in a similar fashion to change the appropriate behind-the-scenes value.
 
-To learn more about the filesystem, which is also used by other parts of Composr, see the [page="_SEARCH:tut_repository"]The Composr Enterprise Repository tutorial[/page].
+To learn more about the filesystem, which is also used by other parts of Composr, see the [page="_SEARCH:tut_repository"]The Composr Enterprise Repository[/page] tutorial.
 
 [title="2"]Running from a normal operating system command prompt[/title]
 

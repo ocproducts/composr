@@ -333,9 +333,9 @@ There is an option "Infinite scrolling" if you wish to enable infinite scrolling
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_drinking"]Drinking from the feature pool[/page]
- - [page="_SEARCH:tut_catalogues"]Catalogues[/page]
+ - [page="_SEARCH:tut_catalogues"]Custom structured content (via catalogues)[/page]
  - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
- - [page="_SEARCH:tut_news"]Releasing news & running a blog[/page]
+ - [page="_SEARCH:tut_news"]Releasing news & running a Blog[/page]
  - [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page]
  - [page="_SEARCH:tut_wiki"]Custom structured content (via Wiki+)[/page]
  - [page="_SEARCH:tut_forums"]Discussion forums[/page]

@@ -22,7 +22,7 @@ function loadRealtimeRain() {
         return false;
     }
     if ((window.realtimeRainButtonLoadHandler !== undefined)) {
-        return realtimeRainButtonLoadHandler();
+        return window.realtimeRainButtonLoadHandler();
     }
     window.location.href = document.getElementById('realtime_rain_button').href;
     return false;

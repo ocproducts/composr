@@ -166,6 +166,7 @@ function captcha_script()
         <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
             <title>' . do_lang('CONTACT_STAFF_TO_JOIN_IF_IMPAIRED') . '</title>
+            <meta name="robots" content="noindex" />
         </head>
         <body style="margin: 0">
         ';
@@ -295,12 +296,15 @@ function check_captcha($code_entered, $regenerate_on_error = true)
         if (!$passes) {
             $data = serialize($_POST);
 
+            // Log hack-attack
             if (
                 (strpos($data, '[url=http://') !== false) ||
                 (strpos($data, '[link=') !== false) ||
                 ((strpos($data, ' href="') !== false) && (strpos($data, '[html') === false) && (strpos($data, '[semihtml') === false) && (strpos($data, '__is_wysiwyg') === false))
             ) {
-                log_hack_attack_and_exit('CAPTCHAFAIL_HACK', '', '', true); // This is done to stop spammers hogging server resources via repeatedly re-trying CAPTCHAs
+                log_hack_attack_and_exit('CAPTCHAFAIL_HACK', '', '', true);
+            } else {
+                log_hack_attack_and_exit('CAPTCHAFAIL', '', '', true, false, 1); // Very low-scored, because it may well just be user-error
             }
         }
         return $passes;

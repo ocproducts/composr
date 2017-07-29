@@ -227,7 +227,7 @@ The "Template names as HTML comments" HTML comments look something like this...
 
 [title="3"]Understanding Templates Code (Tempcode)[/title]
 
-There are many sections of code in your templates that you'll need to be aware of in order to be effective in your editing. The code is written in our templating language, which is known as Tempcode. For more information see the [page="_SEARCH:tut_tempcode"]Tempcode programming tutorial[/page].
+There are many sections of code in your templates that you'll need to be aware of in order to be effective in your editing. The code is written in our templating language, which is known as Tempcode. For more information see the [page="_SEARCH:tut_tempcode"]Tempcode programming[/page] tutorial.
 
 [title="3"]Hand-editing (advanced)[/title]
 
@@ -353,7 +353,7 @@ You can delete a theme from the bottom of its edit form.
 13) If you are more comfortable copying individual files and editing them within your favourite text editor, this may well be a better approach than using the inbuilt template and CSS editors -- especially if you are a developer
 14) If you get stuck or make a mistake, don't feel bad -- this happens to the best developers too
 
-Many more tips and points of guidance are included in the [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design tutorial[/page].
+Many more tips and points of guidance are included in the [page="_SEARCH:tut_designer_themes"]Designer themes, implementing a clean-room design[/page] tutorial.
 
 [title="2"]Copying themes[/title]
 
@@ -374,7 +374,7 @@ You may copy themes between sites, or duplicate them, but make sure you empty th
  - [page="_SEARCH:tut_mobile"]Mobile design[/page]
  - [page="_SEARCH:tut_tempcode"]Tempcode programming[/page]
  - [page="_SEARCH:tut_releasing_themes"]Releasing a theme[/page]
- - [page="_SEARCH:tut_theme_lifecycle"]Theme lifecycle[/page]
+ - [page="_SEARCH:tut_theme_lifecycle"]Theme Lifecycle[/page]
  - [page="_SEARCH:tut_structure"]Composr site structure[/page]
  - [page="_SEARCH:sup_making_a_theme"]Making a new theme[/page]
  - [page="_SEARCH:sup_chrome_tools"]Using Chrome development tools to help with themeing[/page]

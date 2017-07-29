@@ -45,7 +45,7 @@ class Hook_spam_heuristics_header_absence
             'HTTP_CONNECTION',
         );
         foreach ($headers as $header) {
-            if (empty($_SERVER[$header]) == '') {
+            if (empty($_SERVER[$header])) {
                 return $score;
             }
         }

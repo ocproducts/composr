@@ -63,7 +63,7 @@ If you wish to access the topic again, you can do so from under the "Trash" cate
 [title="3"]Administrating Private Topics[/title]
 
 [concept]Super administrators[/concept] may access the Private Topics of any member from that member's [concept]Account[/concept].
-As Private Topics behave in a similar fashion to normal topics, they are moderated and administrated in the same way. There are a set of global privileges relating to Private Topics, that define who may moderate/administrate them. Please see the [page="_SEARCH:tut_moderation"]Basic forum moderation tutorial[/page] for information on forum moderation.
+As Private Topics behave in a similar fashion to normal topics, they are moderated and administrated in the same way. There are a set of global privileges relating to Private Topics, that define who may moderate/administrate them. Please see the [page="_SEARCH:tut_moderation"]Basic forum moderation[/page] tutorial for information on forum moderation.
 
 [title="2"]Inline personal posts (whispers)[/title]
 
@@ -84,7 +84,7 @@ When somebody sends you a whisper, you would be notified on receipt just as you 
 
 [title="3"]Administrating whispers[/title]
 
-As inline personal posts are just enhanced posts, they are moderated and administrated in the same way as posts. Please see the [page="_SEARCH:tut_moderation"]Basic forum moderation tutorial[/page] for information on forum moderation.
+As inline personal posts are just enhanced posts, they are moderated and administrated in the same way as posts. Please see the [page="_SEARCH:tut_moderation"]Basic forum moderation[/page] tutorial for information on forum moderation.
 
 [title="2"]Off-forum contact[/title]
 

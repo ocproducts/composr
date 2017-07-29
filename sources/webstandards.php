@@ -353,6 +353,7 @@ function init__webstandards()
         'word-wrap' => '(normal|break-word)', // Was renamed to overflow-wrap, but that name is not supported widely
         'overflow-scrolling' => '(touch|auto)',
         'text-size-adjust' => '(none|auto|\d%|\d\d%|100%)',
+        'appearance' => '([\w-]+)',
     );
 
     global $POSSIBLY_EMPTY_TAGS;
@@ -753,7 +754,7 @@ function init__webstandards()
         'audio.controls' => '(controls)',
         'audio.loop' => '(loop)',
         'audio.preload' => '(auto|metadata|none)',
-        'audio.src' => '.*',
+        'audio.src' => $enforce_link,
         'base.href' => $enforce_link,
         'base.target' => '.+',
         'blockquote.cite' => '.+',
@@ -816,7 +817,7 @@ function init__webstandards()
         'iframe.name' => $enforce_name,
         'iframe.sandbox' => '(allow-forms|allow-same-origin|allow-scripts|allow-top-navigation)',
         'iframe.seamless' => '(seamless)',
-        'iframe.src' => '.+',
+        'iframe.src' => $enforce_link,
         'iframe.srcdoc' => '.+',
         'img.alt' => '.*', // Have to allow this really, for non-semantic images
         'img.height' => $enforce_inumber,
@@ -856,7 +857,7 @@ function init__webstandards()
         'input.readonly' => 'readonly',
         'input.required' => '(required)',
         'input.size' => '.+',
-        'input.src' => '.+',
+        'input.src' => $enforce_link,
         'input.step' => 'any|(-?[0-9]+(\.[0-9]+)?)',
         'input.tabindex' => $enforce_inumber,
         'input.type' => '(text|password|checkbox|radio|submit|reset|file|hidden|image|button|color|date|datetime|datetime-local|email|month|number|range|search|tel|time|url|week)',
@@ -937,7 +938,7 @@ function init__webstandards()
         'script.defer' => 'defer',
         'script.event' => '.+',
         'script.for' => '.+',
-        'script.src' => '.+',
+        'script.src' => $enforce_link,
         'script.nonce' => '\w+',
         'script.type' => 'text/javascript',
         'select.autofocus' => '(autofocus)',
@@ -951,7 +952,7 @@ function init__webstandards()
         'select.size' => $enforce_inumber,
         'select.tabindex' => $enforce_inumber,
         'source.media' => '.*',
-        'source.src' => '.*',
+        'source.src' => $enforce_link,
         'source.type' => '.*',
         'span.xml:lang' => $enforce_lang,
         'style.media' => '.+',
@@ -1005,7 +1006,7 @@ function init__webstandards()
         'track.kind' => '(subtitles|captions|descriptions|chapters|metadata)',
         'track.label' => '.*',
         'track.lang' => $enforce_lang,
-        'track.src' => '.*',
+        'track.src' => $enforce_link,
         'video.audio' => '(muted)',
         'video.autoplay' => '(autoplay)',
         'video.controls' => '(controls)',
@@ -1013,7 +1014,7 @@ function init__webstandards()
         'video.loop' => '(loop)',
         'video.poster' => '.*',
         'video.preload' => '(auto|metadata|none)',
-        'video.src' => '.*',
+        'video.src' => $enforce_link,
         'video.width' => $enforce_length,
 
         // These are needed in IE, so we will have to browser sniff and output if IE being used, but not check them as okay

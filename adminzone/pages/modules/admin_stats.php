@@ -164,7 +164,7 @@ class Module_admin_stats
             $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
             $has_geolocation_data = ($test !== null);
         }
-        if ($has_geolocation_data) {
+        if (!$has_geolocation_data) {
             $ret['install_data'] = array('INSTALL_GEOLOCATION_DATA', 'menu/adminzone/audit/statistics/geolocate');
         }
 
@@ -351,7 +351,7 @@ class Module_admin_stats
         }
 
         $test = $GLOBALS['SITE_DB']->query_select_value_if_there('ip_country', 'id');
-        if ($test !== null) {
+        if ($test === null) {
             $actions[] = array('menu/adminzone/audit/statistics/geolocate', array('_SELF', array('type' => 'install_data'), '_SELF'), do_lang('INSTALL_GEOLOCATION_DATA'), 'DOC_INSTALL_GEOLOCATION_DATA');
         }
 
@@ -1222,7 +1222,7 @@ class Module_admin_stats
             'TITLE' => $this->title,
             'STATS_VIEWS' => $list_views,
             'GRAPH_VIEWS_MONTHLY' => $graph_views_monthly,
-            'STATS_VIEWS_MONTHLY' => $list_views_monthly,,
+            'STATS_VIEWS_MONTHLY' => $list_views_monthly,
         ));
 
         require_code('templates_internalise_screen');

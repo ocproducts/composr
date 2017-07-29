@@ -123,3 +123,6 @@ eu_digital_tax,Download of EU digital tax rates,ocProducts,,Could potentially br
 cloudflare_changes,Cloudflare optimisations (potentially-disruptive optimisations Cloudflare may try and make when proxying the site),,,Not regularly Tested.,No,
 cloudflare_ip_lists,Cloudflare true IP detection (a list of Cloudflare IPs to trust),ocProducts,,Not regularly Tested.,No,
 non_block_ip_list,Lists of IPs to not block,ocProducts,,Not regularly Tested.,No,Part of release process.
+php_unsupported,Detect if a PHP version is used that is no longer maintained by PHP developers.,ocProducts,,Not regularly Tested.,No,Automated test.
+external_health_check,Various tools that the Health Check will link out to when manual checks are enabled.,ocProducts,,Not regularly Tested.,No,Automated test to make sure links are not broken.
+google_safe_browsing_api,The Google Safe Browsing API.,ocProducts,,Not regularly Tested.,No,Automated test to run Health Checks.

@@ -8,7 +8,7 @@ Composr provides features to allow Comcode pages to be very feature rich. This t
 
 [surround]
 [media width="150" description="An illustration to how blocks work" float="right"]data_custom/images/docs/tut_adv_comcode_pages/comcode_pages_blocks.png[/media]
-If you have read the [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode) tutorial[/page], you will know that using Comcode pages, you can type in text that visually resembles the look of the page (unlike HTML, which can look very complicated). This is a very powerful tool, but it is ultimately limited by the fact that you are only producing a document, not an interactive data-bound part of a website. If this was all you could do (forgetting modules for a minute) then Composr would not be much more powerful than a word processor.
+If you have read the [page="_SEARCH:tut_comcode_pages"]Adding standalone pages of content (via Comcode)[/page] tutorial, you will know that using Comcode pages, you can type in text that visually resembles the look of the page (unlike HTML, which can look very complicated). This is a very powerful tool, but it is ultimately limited by the fact that you are only producing a document, not an interactive data-bound part of a website. If this was all you could do (forgetting modules for a minute) then Composr would not be much more powerful than a word processor.
 
 Composr has a concept called a 'block'. Blocks are building blocks that can be inserted into a Comcode page in order to add the aforementioned interactive and data-bound functionality that is so important to a modern website.
 Put another way, blocks are dynamic elements, elements that automatically generate content that could not be pre-prepared. For example:
@@ -187,7 +187,7 @@ That's it :).
 
 It's worth pointing out that there are some other similar approaches for similar situations:
 1) Using the [tt]MATCH_KEY_MATCH[/tt] or [tt]_GET[/tt] symbols to distinguish by URL parameter, if the different block layouts are for different URLs. This doesn't apply to the above example as in the above case the block is looking different within a single page. If it's looking different between different pages then this is a great approach.
-2) If the issue is with a shared template rather than a block, the [tt]_GUID[/tt] parameter is usually passed in different for each different place the template is used, so you can base logic around that value. GUIDs are explained in the [page="_SEARCH:tut_tempcode"]Tempcode Programming tutorial[/page].
+2) If the issue is with a shared template rather than a block, the [tt]_GUID[/tt] parameter is usually passed in different for each different place the template is used, so you can base logic around that value. GUIDs are explained in the [page="_SEARCH:tut_tempcode"]Tempcode Programming[/page] tutorial.
 3) If the particular block supports template sets, you can differentiate based on this. For example, the menu block allows you to specify the 'type' of the menu, which determines which templates will be used. You can therefore invent your own new 'type' of menu and store the HTML for it in a new set of templates. Not much in Composr template sets though.
 4) Sometimes there is a particular template parameter value that you can tie your logic into. For example, if we are making the [tt]NEWS_BOX.tpl[/tt] template look a little different for a particular news category, we could latch on to the [tt]CATEGORY[/tt] parameter carrying the name of that news category.
 
@@ -243,7 +243,7 @@ You can even give Comcode pages multi-part paths to simulate a directory structu
 
 [title="3"]Embedding entries[/title]
 
-To embed entries in a Comcode page you may use the [tt]main_content[/tt] block. This is described in more detail in the [page="_SEARCH:tut_featured"]Providing featured content tutorial[/page].
+To embed entries in a Comcode page you may use the [tt]main_content[/tt] block. This is described in more detail in the [page="_SEARCH:tut_featured"]Providing featured content[/page] tutorial.
 
 [title="3"]Embedding categories[/title]
 
@@ -251,7 +251,7 @@ The [tt]main_multi_content[/tt], [tt]main_cc_embed[/tt], [tt]main_gallery_embed[
 
 [title="3"]Embedding anything[/title]
 
-We provide a special module-->block feature to integrate any module screen into a Comcode page. This is done using the [tt]main_include_module[/tt] block. Further details in the [page="_SEARCH:tut_featured"]Providing featured content tutorial[/page].
+We provide a special module-->block feature to integrate any module screen into a Comcode page. This is done using the [tt]main_include_module[/tt] block. Further details in the [page="_SEARCH:tut_featured"]Providing featured content[/page] tutorial.
 
 [concepts
  1_key="Block"   1_value="Building blocks that can be inserted into a Comcode page, in order to add interactive and data-bound functionality"

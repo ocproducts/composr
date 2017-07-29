@@ -30,6 +30,10 @@ class Hook_checklist_content_reviews
      */
     public function run()
     {
+        if (!addon_installed('content_reviews')) {
+            return array();
+        }
+
         $num_to_review = $GLOBALS['SITE_DB']->query_value_if_there('SELECT COUNT(*) FROM ' . get_table_prefix() . 'content_reviews WHERE next_review_time<=' . strval(time()));
         if ($num_to_review >= 1) {
             $status = 0;

@@ -420,7 +420,7 @@ abstract class HttpDownloader
                 $_postdetails_params = $this->post_params[0];
             } else {
                 $_postdetails_params = '';//$this->url_parts['scheme'] . '://' . $this->url_parts['host'] . $url2 . '?';
-                if (array_keys($this->post_params) == array('_')) {
+                if (array_keys($this->post_params) === array('_')) {
                     $_postdetails_params = $this->post_params['_'];
                 } else {
                     if (count($this->post_params) > 0) {
@@ -897,17 +897,22 @@ class HttpDownloaderCurl extends HttpDownloader
         }
 
         // SSL prep
-        $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
         $verifypeer_disabled = ((function_exists('get_value')) && (get_value('disable_ssl_for__' . $this->url_parts['host']) === '1'));
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, !$verifypeer_disabled);
+        if ($verifypeer_disabled) {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        } else {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        }
         if (ini_get('curl.cainfo') == '') {
+            $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
             curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
-            curl_setopt($ch, CURLOPT_CAPATH, $crt_path);
         }
         curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1); // https://jve.linuxwall.info/blog/index.php?post/TLS_Survey
         if ($this->do_ip_forwarding) {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         }
 
         // Misc settings
@@ -1592,6 +1597,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
     protected function _run($url, $options)
     {
         // PHP streams method
+        //  Imperfect, does not support $this->download_url
         $errno = 0;
         $errstr = '';
         if (($errno != 110) && (($errno != 10060) || (ini_get('default_socket_timeout') == '1')) && ((ini_get('allow_url_fopen') == '1') || (php_function_allowed('ini_set')))) {

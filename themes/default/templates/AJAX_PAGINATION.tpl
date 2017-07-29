@@ -1,5 +1,3 @@
-{$REQUIRE_JAVASCRIPT,core_abstract_interfaces}
-
 {$SET,block_call_url,{$FACILITATE_AJAX_BLOCK_CALL,{BLOCK_PARAMS}}{+START,IF_PASSED,EXTRA_GET_PARAMS}{EXTRA_GET_PARAMS}{+END}&page={$PAGE&}}
 
 {$,Infinite scrolling hides the pagination when it comes into view, and auto-loads the next link, appending below the current results}

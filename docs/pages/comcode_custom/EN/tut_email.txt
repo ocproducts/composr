@@ -96,7 +96,7 @@ Some specific things to look out for when writing your content:[list="a"]
 [*] Don't use a [b]broken reply-to address[/tt] that nobody can reply on such as a [tt]noreply[/tt].
 [/list]
 [*] Something subtle is triggering spam analysers:[list="a"]
-[*] The PHP [b][tt]mail.add_x_header[/tt] option is on[/b] (it flags up on SpamAssassin, a common spam analysers that companies use). You can check this from Admin Zone > Tools > PHP info.
+[*] The PHP [b][tt]mail.add_x_header[/tt] option is on[/b] (it flags up on SpamAssassin, a common spam analysers that companies use). You can check this from Admin Zone > Tools > PHP-Info.
 [*] [b]Inconsistent text and HTML versions[/b]. If you've customised the [tt]MAIL.tpl[/tt] template but you've not also customised the [tt]MAIL.txt[/tt] template to have the same text (it flags up on SpamAssassin if the words are inconsistent).
 [/list]
 [*] [b]Your "Website e-mail address" is for an e-mail address hosted on another server[/b] and an SPF record exists for the domain does not grant your web server permission to use the address for sending out mail. Common e-mail services like gmail often have this problem. If this might be the case, you either need to get the SPF record amended to cover your server (impossible for a common service), or use a different "Website e-mail address". Note that Composr uses the "Website e-mail address" as the "From" address in all outgoing e-mails, but by default the reply addresses depend on context (often they are the "Staff address", but they could also be the address of the member who caused the e-mail to be sent.
@@ -202,10 +202,11 @@ mail('you@example.com','Test','Test');
 
 [title="2"]See also[/title]
 
- - [page="_SEARCH:tut_how_internet_works"]How the Internet works[/page]
+ - [page="_SEARCH:tut_how_internet_works"]How the Internet actually works[/page]
  - [page="_SEARCH:tut_cookies"]Introduction to Cookies and sessions (and JavaScript)[/page]
  - [page="_SEARCH:tut_domain_names"]How domain names work[/page]
  - [page="_SEARCH:tut_notifications"]Notifications[/page]
  - [page="_SEARCH:tut_newsletter"]Running a newsletter[/page]
+ - [page="_SEARCH:tut_website_health"]Website Health[/page]
 
 {$SET,tutorial_tags,Configuration,core,Internet Technology,regular}{$SET,tutorial_add_date,Aug 2008}{$SET,tutorial_summary,Setting up e-mail servers can be complex with all the protocols/standards out there. Let's cut through the confusion.}[block]main_tutorial_rating[/block]

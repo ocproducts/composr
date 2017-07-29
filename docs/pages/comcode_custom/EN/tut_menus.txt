@@ -146,7 +146,7 @@ Please see the [page="_SEARCH:tut_structure"]Composr site structure[/page] tutor
 
 The default header-menu in Composr 10+ is actually not in a panel at all, it's coded directly into the [tt]GLOBAL_HTML_WRAP.tpl[/tt] template.
 
-Your panel pages by default are just Comcode pages that use the block tag for arrangement of blocks, such as the menu block, [tt]menu[/tt]. Blocks are described in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page], but basically, you can use any of the blocks that begin with the name [tt]side_[/tt] on your panel pages to add dynamic elements, as well as any Comcode. To edit a panel page, go to Admin Zone > Structure > Panel/layout editor (Zone editor).
+Your panel pages by default are just Comcode pages that use the block tag for arrangement of blocks, such as the menu block, [tt]menu[/tt]. Blocks are described in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page] tutorial, but basically, you can use any of the blocks that begin with the name [tt]side_[/tt] on your panel pages to add dynamic elements, as well as any Comcode. To edit a panel page, go to Admin Zone > Structure > Panel/layout editor (Zone editor).
 
 Menus are not used in any of the default panels, as we use drop-down menus in the main site header. However, most of the menu types are designed for use in panels.
 
@@ -188,7 +188,7 @@ When you add a new branch to a menu, you can choose to include the Sitemap at th
 There are two ways to define menus:
 [list="1"]
 [*] Editable menus. These are what we are mostly describing in this tutorial and the usual approach.
-[*] Comcode menus. These are described in the [page="_SEARCH:tut_comcode"]Comcode and the attachment system tutorial[/page]. They are created using the Comcode [tt]menu[/tt] tag.
+[*] Comcode menus. These are described in the [page="_SEARCH:tut_comcode"]Comcode and the attachment system[/page] tutorial. They are created using the Comcode [tt]menu[/tt] tag.
 [/list]
 
 Comcode menus and editable menus are alternatives to each other: both produce the same visual interface, using the same templates, but one is written and laid out in plain-text (Comcode menus) and one is constructed in an editor (editable menus).

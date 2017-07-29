@@ -9,7 +9,7 @@ Benefits of providing featured content include:
  - Drawing users in, such that they regularly re-visit to see what new content is featured
  - Putting content in a prime position to draw attention to it, perhaps as a reward for the content creator, perhaps for its relevancy, or perhaps to recommend it
 
-Many of these systems work via blocks. The block construction assistant will help you add a block, accessible from the 'Add block' button on the Comcode page editing screen. This is covered in much more detail in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks tutorial[/page].
+Many of these systems work via blocks. The block construction assistant will help you add a block, accessible from the 'Add block' button on the Comcode page editing screen. This is covered in much more detail in the [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page] tutorial.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -103,7 +103,7 @@ For example:
 [/code]
 would show Conversr topic #1 in a block, without running permission checks, and with the title removed.
 
-The first parameter is the page-link to what we are embedding, which in the above example was the [tt]topicview[/tt] module, in whatever zone it is in, the [tt]browse[/tt] screen of it, and ID [tt]1[/tt]. You can usually work out page-links from the URL once you understand them. Page-links are described in the [page="_SEARCH:tut_menus"]Customising what's on the menus tutorial[/page].
+The first parameter is the page-link to what we are embedding, which in the above example was the [tt]topicview[/tt] module, in whatever zone it is in, the [tt]browse[/tt] screen of it, and ID [tt]1[/tt]. You can usually work out page-links from the URL once you understand them. Page-links are described in the [page="_SEARCH:tut_menus"]Customising what's on the menus[/page] tutorial.
 
 In the screenshots on the right I have shown a quirky example where I am embedding the recommend page directly into a news post.
 [/surround]
@@ -172,7 +172,7 @@ You may place as many independent hit counters as you like.
 
 [title="2"]Community billboard[/title]
 
-Community billboard messages are covered in the [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points tutorial[/page].
+Community billboard messages are covered in the [page="_SEARCH:tut_points"]Creating an economy/reward-system for members via points[/page] tutorial.
 
 [concepts
  1_key="IOTD"   1_value="[Image of the day]. An image and associated caption, generally shown on your front page, intended for regular changing"
@@ -185,7 +185,7 @@ Community billboard messages are covered in the [page="_SEARCH:tut_points"]Creat
 
  - [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page]
  - [page="_SEARCH:tut_downloads"]Providing downloads[/page]
- - [page="_SEARCH:tut_adv_galleries"]Providing galleries[/page]
+ - [page="_SEARCH:tut_adv_galleries"]Advanced galleries[/page]
  - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]
  - [page="_SEARCH:tut_selectcode"]Filtering using Selectcode syntax[/page]
 

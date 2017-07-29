@@ -30,8 +30,12 @@ class Hook_config_site_message_usergroup_select
      */
     public function get_details()
     {
-        $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
-        $guest_group_id = $guest_groups[0];
+        if (isset($GLOBALS['FORUM_DRIVER'])) {
+            $guest_groups = $GLOBALS['FORUM_DRIVER']->get_members_groups($GLOBALS['FORUM_DRIVER']->get_guest_id());
+            $guest_group_id = $guest_groups[0];
+        } else {
+            $guest_group_id = 1;
+        }
 
         return array(
             'human_name' => 'SITE_MESSAGE_USERGROUP_SELECT',

@@ -633,6 +633,10 @@ switch (gethostname()) {
 |
 |-
 ! {$INC,step_num}{$GET,step_num}
+| Run Health Check
+|
+|-
+! {$INC,step_num}{$GET,step_num}
 | Final live testing
 |
 |-

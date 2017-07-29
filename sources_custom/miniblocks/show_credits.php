@@ -63,6 +63,7 @@ $tpl = do_template('SHOW_CREDITS_BAR', array(
 
     'CREDITS_MSG' => $credits_msg,
     'CREDITS' => integer_format($credits),
+    '_CREDITS' => strval($credits),
     'NO_CREDITS_LINK' => $no_credits_link,
 
     'TICKETS_OPEN_MSG' => $tickets_open_msg,

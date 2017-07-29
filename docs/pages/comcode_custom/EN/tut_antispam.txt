@@ -5,7 +5,7 @@ Attack by spam-bots can be a major problem for a website. Fortunately Composr pr
 This tutorial will go through the tools available, and our philosophy regarding them.
 The actual configuration options are under Admin Zone > Setup > Configuration > Security options, and should be reasonably intuitive.
 
-This tutorial does not cover validation, which is covered in the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
+This tutorial does not cover validation, which is covered in the [page="_SEARCH:tut_censor"]Dealing with annoying users[/page] tutorial.
 
 [contents]decimal,lower-alpha[/contents]
 
@@ -72,7 +72,7 @@ You need to specifically configure the options for Honey Pot -- it requires you 
 [title="2"]Reported content/posts[/title]
 
 If someone spams then they can use the 'report content'/'report post' feature to alert the staff to the spammer activity.
-This is described in the [page="_SEARCH:tut_censor"]Policing a community site tutorial[/page].
+This is described in the [page="_SEARCH:tut_censor"]Dealing with annoying users[/page] tutorial.
 
 [title="2"]What we don't do[/title]
 
@@ -115,7 +115,7 @@ Once you've made your report hopefully someone can then tell you what case categ
 [title="2"]See also[/title]
 
  - [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page]
- - [page="_SEARCH:tut_censor"]Policing a community site[/page]
+ - [page="_SEARCH:tut_censor"]Dealing with annoying users[/page]
  - [page="_SEARCH:tut_security"]Security[/page]
  - [page="_SEARCH:tut_moderation"]Basic forum moderation[/page]
 

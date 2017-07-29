@@ -135,6 +135,7 @@ class config_test_set extends cms_test_case
             'list_options' => 'string',
             'addon' => 'string',
             'required' => 'boolean',
+            'public' => 'boolean',
         );
         $settings_optional = array(
             'theme_override' => 'boolean',

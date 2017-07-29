@@ -1,6 +1,6 @@
 [title sub="Written by Chris Graham (ocProducts)"]Composr Tutorial: Dealing with annoying users[/title]
 
-Composr provides a number of ways to deal with the annoying users or the users who do not adhere to your site policies (for a good discussion of site policies see the [page="_SEARCH:tut_legal"]Legal and social responsibilities tutorial[/page]).
+Composr provides a number of ways to deal with the annoying users or the users who do not adhere to your site policies (for a good discussion of site policies see the [page="_SEARCH:tut_legal"]Legal and social responsibilities[/page] tutorial).
 
 Some of these tools actively enforce your policy, some of them allow you to 'moderate' to maintain your own policy, and some of them provide punishment for users that abuse policy (such that they may be removed from causing further harm, or made an example of such that other users do not 'follow suit').
 
@@ -29,7 +29,7 @@ By default, the forum, the chatrooms, and Wiki+, are the main exceptions where v
 
 Naturally, privileged users may edit and delete any content on the system; by default, these privileged users are those in the staff usergroups. It is possible to configure Composr so that users may edit/delete their own content though, or even all content if you like.
 
-It's a common practice to use rank to automatically grant additional access, such as bypassing validation. Rank is discussed in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities tutorial[/page].
+It's a common practice to use rank to automatically grant additional access, such as bypassing validation. Rank is discussed in the [page="_SEARCH:tut_subcom"]Tools for subsites and subcommunities[/page] tutorial.
 
 [title="2"]Content privacy[/title]
 
@@ -72,7 +72,7 @@ If you use the punishment system to put a user in probation, Composr automatical
 [media width="150" description="Banning a member via editing their member account" float="right"]data_custom/images/docs/tut_censor/censor_member.png[/media]
 There are many methods for banning a Composr user:
  - [b]Banning a member[/b] via editing their member account. This is perhaps the most useful method of banning and shows them an error when they next log in telling them they've been banned. Note that there is no way to prevent a user re-joining with a new username.
- - [b]Banning an IP address[/b], or IP address range. {!submitban:DOC_IP_BAN} More information about IP addresses is given in the [page="_SEARCH:tut_trace"]Using IP addresses to trace users tutorial[/page].
+ - [b]Banning an IP address[/b], or IP address range. {!submitban:DOC_IP_BAN} More information about IP addresses is given in the [page="_SEARCH:tut_trace"]Using IP addresses to trace users[/page] tutorial.
  - Banning a member via [b]changing their usergroup[/b] to one with virtually no privileges. This is useful if you want to reduce access in a highly customised fashion.
  - [b]Banning member submission[/b]. This is useful if you only want to ban a member from making submissions, and not the whole site; it is done from the Action Logs module (accessed from Admin Zone > Audit > Action logs). This feature is also useful if you are not using [concept]Conversr[/concept], and want to ban a member in Composr, but not in the forum.
 [/surround]

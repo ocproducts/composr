@@ -50,7 +50,7 @@ chmod +x fixperms.sh
 If you do not have such access:
 1) Try asking the webhost to do it
 2) You can get Composr to set the permissions for you using a special feature you'll find in the [tt]http://yourbaseurl/upgrader.php[/tt] script.
-3) If all else fails, you need to change any permissions described in the [page="_SEARCH:tut_adv_install"]Advanced installation tutorial[/page] and any files that were created/uploaded during running the site. This could be incredibly time-consuming, so is not recommended.
+3) If all else fails, you need to change any permissions described in the [page="_SEARCH:tut_adv_install"]Advanced installation[/page] tutorial and any files that were created/uploaded during running the site. This could be incredibly time-consuming, so is not recommended.
 
 [title="2"]Database contents[/title]
 

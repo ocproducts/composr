@@ -153,7 +153,7 @@ class Hook_notification_types_extended_composr_mobile_sdk
             }
         }
 
-        if (get_option('enable_notifications_instant_android') === '1') {
+        if (get_option('enable_notifications_instant_android') !== '') {
             if (_notification_setting_available(A_INSTANT_ANDROID, $to_member_id)) {
                 $message = strip_comcode($message);
                 $properties = $this->improve_message_for_mobile($message);

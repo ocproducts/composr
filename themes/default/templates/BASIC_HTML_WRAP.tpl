@@ -6,6 +6,10 @@
 		{$,The character set of the page}
 		<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 
+		{+START,IF_PASSED_AND_TRUE,NOINDEX}
+			<meta name="robots" content="noindex" />
+		{+END}
+
 		{$,Page title}
 		<title>{+START,IF_NON_PASSED,TITLE}{+START,IF_NON_EMPTY,{$HEADER_TEXT}}{$HEADER_TEXT*} &ndash; {+END}{$SITE_NAME*}{+END}{+START,IF_PASSED,TITLE}{TITLE}{+END}</title>
 	</head>

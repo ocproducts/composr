@@ -223,7 +223,7 @@ The advantage of the feedback system over the Discussion Forums is simply that t
 
 To use the feedback commenting system, you must not be using the [tt]none[/tt] forum driver, and you must have created the comment topic forum that is referenced in the Composr configuration (for [concept]Conversr[/concept] it's auto-created).
 
-For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and user interaction tutorial[/page].
+For more information on this, see the [page="_SEARCH:tut_feedback"]Feedback and user interaction[/page] tutorial.
 
 [title="3"]Approach to support functions[/title]
 

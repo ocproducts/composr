@@ -36,8 +36,13 @@ class Hook_page_groupings_help_page
             return array();
         }
 
+        $zone = get_comcode_zone('help', false);
+        if ($zone === null) {
+            return array();
+        }
+
         return array(
-            array('site_meta', 'menu/pages/help', array('help', array(), get_comcode_zone('help')), do_lang_tempcode('HELP')),
+            array('site_meta', 'menu/pages/help', array('help', array(), $zone), do_lang_tempcode('HELP')),
         );
     }
 }

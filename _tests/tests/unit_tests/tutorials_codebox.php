@@ -34,6 +34,7 @@ class tutorials_codebox_test_set extends cms_test_case
                 $this->assertTrue(strpos($contents, '[codebox]') === false, 'Has non-specified [codebox]-tag language in ' . $f);
             }
         }
+        closedir($dh);
     }
 
     public function testTutorialLangConsistency()
@@ -86,5 +87,6 @@ class tutorials_codebox_test_set extends cms_test_case
                 }
             }
         }
+        closedir($dh);
     }
 }

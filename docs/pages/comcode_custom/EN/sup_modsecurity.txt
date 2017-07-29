@@ -60,12 +60,12 @@ Importing XML data via [b]Admin Zone > Tools > XML data management > XML Import[
 
 We try and automatically 'scramble' the more problematic pages via a special encoding scheme to workaround this. If that is not working then report it as a bug.
 
-[title="2"]380800 -- PHP Info[/title]
-Using the [b]Tools > PHP Info[/b] feature.
+[title="2"]380800 -- PHP-Info[/title]
+Using the [b]Tools > PHP-Info[/b] feature.
 
 ModSecurity may block URLs with "phpinfo" in, because it thinks it will leak privileged information.
 
-We have no workaround for this because the rule is doing what it is designed to do. We don't intend to rename our PHP Info page just to force our way around the rule.
+We have no workaround for this because the rule is doing what it is designed to do. We don't intend to rename our PHP-Info page just to force our way around the rule.
 
 [title="2"]340009 -- Site options[/title]
 Saving changes on [b]Admin Zone > Configuration > Site options[/b] page.

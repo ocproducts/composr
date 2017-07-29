@@ -5,7 +5,7 @@ Composr allows you to create a highly interactive site if you desire, with numer
 Most major content in Composr can be:
  - [b]Commented[/b] upon
  - [b]Rated[/b]
- - Given [b]track-backs[/b] (this is defined and discussed in the [page="_SEARCH:tut_adv_news"]Advanced news tutorial[/page])
+ - Given [b]track-backs[/b] (this is defined and discussed in the [page="_SEARCH:tut_adv_news"]Advanced news[/page] tutorial)
 
 These features are known together as the Composr 'feedback system'.
 
@@ -35,7 +35,7 @@ There is a [tt]main_rating[/tt] block that you may use to allow any Comcode page
 
 [title="3"]Trackbacks[/title]
 
-Trackbacks are described in the [page="_SEARCH:tut_adv_news"]Advanced news tutorial[/page].
+Trackbacks are described in the [page="_SEARCH:tut_adv_news"]Advanced news[/page] tutorial.
 
 [title="3"]Comments[/title]
 
@@ -222,7 +222,7 @@ Content usually has a "Staff notes" field, which can be used to put notes intend
 [title="2"]See also[/title]
 
  - http://www.futurelab.net/blog/2012/05/1990-rule-outdated
- - [page="_SEARCH:tut_support_desk"]Running an on-line help desk with Composr[/page]
+ - [page="_SEARCH:tut_support_desk"]Running a virtual support desk[/page]
  - [page="_SEARCH:tut_nuances"]Nuances of forum integration[/page]
  - [page="_SEARCH:tut_adv_news"]Advanced news[/page]
  - [page="_SEARCH:tut_adv_comcode_pages"]Using blocks[/page]

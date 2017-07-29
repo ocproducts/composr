@@ -69,20 +69,6 @@ class Module_admin_phpinfo
             warn_exit(do_lang_tempcode('SHARED_INSTALL_PROHIBIT'));
         }
 
-        // Various checks
-        $hooks = find_all_hook_obs('systems', 'checks', 'Hook_check_');
-        $found_issues = false;
-        foreach ($hooks as $ob) {
-            $warning = $ob->run();
-            foreach ($warning as $_warning) {
-                attach_message($_warning, 'warn');
-                $found_issues = true;
-            }
-        }
-        if (!$found_issues) {
-            attach_message(do_lang_tempcode('menus:NO_SERVER_ISSUES_FOUND'), 'inform', true);
-        }
-
         require_lang('menus');
 
         get_screen_title('PHPINFO');
@@ -97,13 +83,13 @@ class Module_admin_phpinfo
 
         ob_start();
         if (php_function_allowed('phpinfo')) {
-            // PHP-info...
+            // PHP-Info...
 
             echo '<div style="overflow: auto; width: 100%">';
             phpinfo();
             echo '</div>';
         } else {
-            // Alternative to PHP-info...
+            // Alternative to PHP-Info...
 
             var_dump(PHP_VERSION);
             var_dump($_SERVER);

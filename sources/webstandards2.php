@@ -64,7 +64,7 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
     global $XML_CONSTRAIN, $TAG_STACK, $ATT_STACK, $TABS_SEEN, $KEYS_SEEN, $IDS_SO_FAR, $ANCESTER_BLOCK, $ANCESTER_INLINE, $EXPECTING_TAG, $OUT, $POS, $LAST_A_TAG, $TAG_RANGES, $WEBSTANDARDS_CSP;
 
     // CSP violation
-    if ($WEBSTANDARDS_CSP) {
+    if ($WEBSTANDARDS_CSP && false/*TODO: Re-enable once installer follows CSP too*/) {
         if (!$close) {
             if (($tag === 'script') && (empty($attributes['nonce']))) {
                 $errors[] = array('CSP_SCRIPT_TAG');
@@ -344,15 +344,17 @@ function __check_tag($tag, $attributes, $self_close, $close, $errors)
                 break;
 
             case 'table':
-                $content = strtolower(substr($OUT, $POS, strpos($OUT, '</table>', $POS) - $POS)); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
-                $th_count = substr_count($content, '<th');
-                if (($th_count == 0) && (trim($content) != 'x')) {
-                    $errors[] = array('WCAG_MISSING_TH');
-                } else {
-                    if (strpos($content, '<thead') === false) {
-                        $tr_count = substr_count($content, '<tr');
-                        if ($th_count > $tr_count) {
-                            $errors[] = array('WCAG_HD_SPECIAL');
+                if (!isset($attributes['class']) || (strpos($attributes['class'], 'layout_table') === false)) {
+                    $content = strtolower(substr($OUT, $POS, strpos($OUT, '</table>', $POS) - $POS)); // While the </table> found may not be the closing tag to our table, we do know a <th> should occur before any such one (unless it's a really weird table layout)
+                    $th_count = substr_count($content, '<th');
+                    if (($th_count == 0) && (trim($content) != 'x')) {
+                        $errors[] = array('WCAG_MISSING_TH');
+                    } else {
+                        if (strpos($content, '<thead') === false) {
+                            $tr_count = substr_count($content, '<tr');
+                            if ($th_count > $tr_count) {
+                                $errors[] = array('WCAG_HD_SPECIAL');
+                            }
                         }
                     }
                 }

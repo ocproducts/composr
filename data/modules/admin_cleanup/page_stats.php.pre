@@ -56,7 +56,7 @@ if (($shl === false) || ($shl == '') || ($shl == '0')) {
 // Requirements check
 $phpv = PHP_VERSION;
 if ((substr($phpv, 0, 2) == '3.') || (substr($phpv, 0, 2) == '4.') || (substr($phpv, 0, 4) == '5.0.')) {
-    exit(do_lang('PHP_OLD'));
+    exit(do_lang('PHP_TOO_OLD'));
 }
 
 // Tunnel into some Composr code we can use
