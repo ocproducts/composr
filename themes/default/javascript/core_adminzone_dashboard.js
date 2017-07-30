@@ -78,7 +78,7 @@
 
     /**
      * @memberof $cms.views
-     * @class
+     * @class BlockMainStaffLinks
      * @extends $cms.View
      */
     function BlockMainStaffLinks() {
@@ -118,7 +118,7 @@
 
     /**
      * @memberof $cms.views
-     * @class
+     * @class BlockMainStaffWebsiteMonitoring
      * @extends $cms.View
      */
     function BlockMainStaffWebsiteMonitoring() {
@@ -161,7 +161,7 @@
 
     /**
      * @memberof $cms.views
-     * @class
+     * @class BlockMainNotes
      * @extends $cms.View
      */
     function BlockMainNotes() {
@@ -198,13 +198,13 @@
         },
 
         textareaContract: function (e, textarea){
-            if (!this.formEl.disable_size_change) {
+            if (!this.formEl.disableSizeChange) {
                 textarea.setAttribute('rows', '10');
             }
         },
 
         disableTextareaSizeChange: function (e) {
-            this.formEl.disable_size_change = (e.type === 'mouseover');
+            this.formEl.disableSizeChange = (e.type === 'mouseover');
         }
     });
 
@@ -269,9 +269,9 @@
         function submitCustomTask(form) {
             var newTask = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value));
 
-            form.elements.recur_every.value = '';
-            form.elements.recur_interval.value = '';
-            form.elements.new_task.value = '';
+            form.elements['recur_every'].value = '';
+            form.elements['recur_interval'].value = '';
+            form.elements['new_task'].value = '';
 
             $cms.dom.append(document.getElementById('custom_tasks_go_here'), newTask);
         }
@@ -328,7 +328,9 @@
                         while (elementReplace.className !== 'form_ajax_target') {
                             elementReplace = elementReplace.parentNode;
                             if (!elementReplace) {
-                                return true;  // Oh dear, target not found
+                                // Oh dear, target not found
+                                resolve(/*submitForm: */true);
+                                return; 
                             }
                         }
 

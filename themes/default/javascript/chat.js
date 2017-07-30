@@ -717,7 +717,9 @@ function chatCheckTimeout(backlog, messageId, eventId) {
 // Deal with the new messages response. Wraps around processChatXmlMessages as it also adds timers to ensure the message check continues to function even if background errors might have happened.
 function chatCheckResponse(ajaxResultFrame, ajaxResult, skipIncomingSound) {
     if (ajaxResult != null) {
-        if (skipIncomingSound === undefined) skipIncomingSound = false;
+        if (skipIncomingSound === undefined) {
+            skipIncomingSound = false;
+        }
 
         var temp = processChatXmlMessages(ajaxResult, skipIncomingSound);
         if (temp == -2) {
@@ -763,7 +765,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
     // Look through our messages
     for (var i = 0; i < messages.length; i++) {
-        if (messages[i].localName == 'div')  { // MESSAGE
+        if (messages[i].localName === 'div')  { // MESSAGE
             // Find out about our message
             id = messages[i].getAttribute('id');
             timestamp = messages[i].getAttribute('timestamp');
@@ -797,7 +799,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
             // If we got this far, recognise the message as received
             newestIdHere = parseInt(id);
-            if ((newestTimestampHere = null) || (newestTimestampHere < parseInt(timestamp))) newestTimestampHere = parseInt(timestamp);
+            if ((newestTimestampHere = null) || (newestTimestampHere < parseInt(timestamp))) {
+                newestTimestampHere = parseInt(timestamp);
+            }
 
             var doc = document;
             if (window.opened_popups['room_' + currentRoomId] !== undefined) {
@@ -857,12 +861,10 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             if (!messageContainerGlobal) {
                 currentRoomId = -1; // We'll be gathering for all rooms we're in now, because this messaging is coming through the master control window
             }
-        } else if (messages[i].nodeName == 'chat_members_update') { // UPDATE MEMBERS LIST IN ROOM
+        } else if (messages[i].nodeName.toLowerCase() === 'chat_members_update') { // UPDATE MEMBERS LIST IN ROOM
             var membersElement = document.getElementById('chat_members_update');
             if (membersElement) $cms.dom.html(membersElement, messages[i].textContent);
-        }
-
-        else if ((messages[i].nodeName == 'chat_event') && (window.im_participant_template !== undefined)) { // Some kind of transitory event
+        } else if ((messages[i].nodeName.toLowerCase() === 'chat_event') && (window.im_participant_template !== undefined)) { // Some kind of transitory event
             eventType = messages[i].getAttribute('event_type');
             roomId = messages[i].getAttribute('room_id');
             memberId = messages[i].getAttribute('member_id');
@@ -1006,9 +1008,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     }
                     break;
             }
-        }
-
-        else if ((messages[i].nodeName == 'chat_invite') && (window.im_participant_template !== undefined)) { // INVITES
+        } else if ((messages[i].nodeName.toLowerCase() == 'chat_invite') && (window.im_participant_template !== undefined)) { // INVITES
             roomId = messages[i].textContent;
 
             if ((!document.getElementById('room_' + roomId)) && ((window.opened_popups['room_' + roomId] === undefined) || (window.opened_popups['room_' + roomId].is_shutdown))) {
@@ -1030,7 +1030,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 flashableAlert = true;
             }
 
-        } else if (messages[i].nodeName == 'chat_tracking') { // TRACKING
+        } else if (messages[i].nodeName.toLowerCase() == 'chat_tracking') { // TRACKING
             window.top_window.last_message_id = messages[i].getAttribute('last_msg');
             window.top_window.last_event_id = messages[i].getAttribute('last_event');
         }
@@ -1075,8 +1075,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
         }
     }
 
-    if (window.top_window.last_timestamp < newestTimestampHere)
+    if (window.top_window.last_timestamp < newestTimestampHere) {
         window.top_window.last_timestamp = newestTimestampHere;
+    }
 
     return currentRoomId;
 
@@ -1105,8 +1106,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             $cms.dom.html(newParticipant, newParticipantInner);
             newParticipant.setAttribute('id', 'participant__' + roomId + '__' + memberId);
             var element = doc.getElementById('participants__' + roomId);
-            if (element) // If we've actually got the HTML for the room setup
-            {
+            if (element) {// If we've actually got the HTML for the room setup
                 var pList = $cms.dom.html(element).toLowerCase();
 
                 if ((pList.indexOf('<em class="none">') != -1) || (pList.indexOf('<em class="loading">') != -1)) {
@@ -1126,8 +1126,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
         var areas = document.getElementById('chat_lobby_convos_areas');
         var tabs = document.getElementById('chat_lobby_convos_tabs');
         var lobby;
-        if (tabs) // Chat lobby
-        {
+        if (tabs) {// Chat lobby
             tabs.style.display = 'block';
             if (document.getElementById('invite_ongoing_im_button')) document.getElementById('invite_ongoing_im_button').disabled = false;
             var count = countImConvos();
@@ -1139,8 +1138,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             }
 
             lobby = true;
-        } else // Not chat lobby (sitewide IM)
-        {
+        } else {// Not chat lobby (sitewide IM)
             lobby = false;
         }
 
@@ -1209,9 +1207,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
                         try {
                             newWindow.focus();
-                        }
-                        catch (e) {
-                        }
+                        } catch (e) {}
 
                         // Tell server we have joined
                         $cms.doAjaxRequest(url, function (ajaxResultFrame, ajaxResult) {
@@ -1220,8 +1216,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
 
                         // Set title
                         var domTitle = newWindow.document.querySelector('title');
-                        if (domTitle != null)
-                            newWindow.document.title = $cms.dom.html(domTitle).replace(/<.*?>/g, ''); // For Safari
+                        if (domTitle != null) {
+                            newWindow.document.title = $cms.dom.html(domTitle).replace(/<.*?>/g, '');
+                        } // For Safari
 
                     }, 500);
                     /* Could be 60 except for Firefox which is slow */

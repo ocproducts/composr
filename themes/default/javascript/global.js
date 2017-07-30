@@ -249,49 +249,6 @@
     });
 
     extendDeep($cms, /**@lends $cms*/{
-        // Browser detection. Credit: http://stackoverflow.com/a/9851769/362006
-        // Opera 8.0+
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isOpera: constant((!!window.opr && !!window.opr.addons) || !!window.opera || (navigator.userAgent.includes(' OPR/'))),
-        // Firefox 1.0+
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isFirefox: constant(window.InstallTrigger !== undefined),
-        // At least Safari 3+: HTMLElement's constructor's name is HTMLElementConstructor
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isSafari: constant(internalName(window.HTMLElement) === 'HTMLElementConstructor'),
-        // Internet Explorer 6-11
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isIE: constant(/*@cc_on!@*/0 || (typeof document.documentMode === 'number')),
-        // Edge 20+
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isEdge: constant(!(/*@cc_on!@*/0 || (typeof document.documentMode === 'number')) && !!window.StyleMedia),
-        // Chrome 1+
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isChrome: constant(!!window.chrome && !!window.chrome.webstore),
-        /**
-         * @method
-         * @returns {boolean}
-         */
-        isTouchEnabled: constant('ontouchstart' in docEl),
-
         // Export useful stuff
         /**@method*/
         toArray: toArray,
@@ -1799,113 +1756,7 @@
 
     /* Cookies */
 
-    // Inspired by cookie.js: https://github.com/js-cookie/js-cookie
-    function CookieMonster() {}
-
-    properties(CookieMonster.prototype, /**@lends CookieMonster#*/{
-        /**@method*/
-        get: function get(cookieName) {
-            cookieName = strVal(cookieName);
-            if (cookieName) {
-                return this.getAll(cookieName);
-            }
-        },
-
-        /**@method*/
-        getAll: function getAll() {
-            // To prevent the for loop in the first place assign an empty array
-            // in case there are no cookies at all. Also prevents odd result when
-            // calling "get()"
-            var cookies = document.cookie ? document.cookie.split('; ') : [],
-                rgxDecode = /(%[0-9A-Z]{2})+/g,
-                cookieName = arguments[0], // (internal use only)
-                result, i;
-
-            if (cookieName == null) {
-                result = {};
-            } else {
-                cookieName = strVal(cookieName);
-            }
-
-            for (i = 0; i < cookies.length; i++) {
-                var parts = cookies[i].split('='),
-                    cookie = parts.slice(1).join('=');
-
-                if (cookie.startsWith('"') && cookie.endsWith('"')) {
-                    cookie = cookie.slice(1, -1);
-                }
-
-                var name = parts[0].replace(rgxDecode, decodeURIComponent);
-                cookie = cookie.replace(rgxDecode, decodeURIComponent);
-
-                if (cookieName == null) {
-                    result[name] = cookie;
-                } else if (cookieName === name) {
-                    result = cookie;
-                    break;
-                }
-            }
-
-            return result;
-        },
-
-        /**@method*/
-        set: function set(details, value) {
-            var defaults = {
-                value: '',
-                expires: 1, // 1 day
-                path: $cms.$COOKIE_PATH(),
-                domain: $cms.$COOKIE_DOMAIN(),
-                secure: false
-            };
-
-            if (!isObj(details)) {
-                // `details` is a cookie name
-                details = {
-                    name: details,
-                    value: value
-                };
-            }
-            details = Object.assign(defaults, details);
-
-            if (!isDate(details.expires)) {
-                // Expiry specified in days
-                var expires = new Date();
-                expires.setDate(expires.getDate() + intVal(details.expires)); // Add days to date
-                details.expires = expires;
-            }
-
-            value = encodeURIComponent(strVal(details.value)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
-
-            var cookieName = strVal(details.name);
-            cookieName = encodeURIComponent(cookieName);
-            cookieName = cookieName.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
-            cookieName = cookieName.replace(/[\(\)]/g, escape);
-
-            document.cookie = [
-                cookieName + '=' + value,
-                details.expires ? '; expires=' + details.expires.toUTCString() : '', // use expires attribute, max-age is not supported by all browsers
-                details.path ? '; path=' + details.path : '',
-                details.domain ? '; domain=' + details.domain : '',
-                details.secure ? '; secure' : ''
-            ].join('');
-        },
-
-        /**@method*/
-        remove: function remove(cookieName) {
-            var details = {
-                name: cookieName,
-                expiry: -1
-            };
-
-            this.set(details);
-        }
-    });
-
-    $cms.cookies || ($cms.cookies = new CookieMonster());
-
     var alertedCookieConflict = false;
-
     /**
      * @param cookieName
      * @param cookieValue
@@ -3859,8 +3710,7 @@
         if (value != null) {
             try {
                 el.setAttribute(name, value);
-            }
-            catch (e) {};
+            } catch (e) {};
         } else {
             el.removeAttribute(name);
         }
@@ -4103,8 +3953,8 @@
             }
         }
 
-        clone.defer = !!scriptEl.defer;
-        clone.async = !!scriptEl.async;
+        clone.defer = scriptEl.defer;
+        clone.async = scriptEl.async;
         clone.src = strVal(scriptEl.src);
 
         return clone;
@@ -4355,44 +4205,38 @@
     /**
      * Dimension functions
      * @memberof $cms.dom
-     * @param e
      */
-    $cms.dom.registerMouseListener = function registerMouseListener(e) {
+    $cms.dom.registerMouseListener = function registerMouseListener() {
         $cms.dom.registerMouseListener = noop; // ensure this function is only executed once
-
-        if (e) {
+        
+        document.documentElement.addEventListener('mousemove', function (e) {
             window.mouse_x = getMouseX(e);
             window.mouse_y = getMouseY(e);
-        }
 
-        document.documentElement.addEventListener('mousemove', function (event) {
-            window.mouse_x = getMouseX(event);
-            window.mouse_y = getMouseY(event);
+            function getMouseX(event) {
+                try {
+                    if (event.pageX) {
+                        return event.pageX;
+                    } else if (event.clientX) {
+                        return event.clientX + window.pageXOffset;
+                    }
+                } catch (ignore) {}
+
+                return 0;
+            }
+
+            function getMouseY(event) {
+                try {
+                    if (event.pageY) {
+                        return event.pageY;
+                    } else if (event.clientY) {
+                        return event.clientY + window.pageYOffset
+                    }
+                } catch (ignore) {}
+
+                return 0;
+            }
         });
-
-        function getMouseX(event) {
-            try {
-                if (event.pageX) {
-                    return event.pageX;
-                } else if (event.clientX) {
-                    return event.clientX + window.pageXOffset;
-                }
-            } catch (ignore) {}
-
-            return 0;
-        }
-
-        function getMouseY(event) {
-            try {
-                if (event.pageY) {
-                    return event.pageY;
-                } else if (event.clientY) {
-                    return event.clientY + window.pageYOffset
-                }
-            } catch (ignore) {}
-
-            return 0;
-        }
     };
 
     /**
@@ -4431,12 +4275,14 @@
                 }
             }
 
-            if (h + 'px' != frameElement.style.height) {
+            if ((h + 'px') !== frameElement.style.height) {
                 if ((frameElement.scrolling !== 'auto' && frameElement.scrolling !== 'yes') || (frameElement.style.height == '0px')) {
                     frameElement.style.height = ((h >= minHeight) ? h : minHeight) + 'px';
                     if (frameWindow.parent) {
                         setTimeout(function () {
-                            if (frameWindow.parent) frameWindow.parent.$cms.dom.triggerResize();
+                            if (frameWindow.parent) {
+                                frameWindow.parent.$cms.dom.triggerResize();
+                            }
                         });
                     }
                     frameElement.scrolling = 'no';
@@ -4488,7 +4334,7 @@
     };
 
     // <{element's uid}, {setTimeout id}>
-    var timeouts = {};
+    var fadeTimeouts = {};
 
     /**
      * @memberof $cms.dom
@@ -4534,23 +4380,23 @@
                 newIncrement = Math.max(direction * diff, increment / 100.0);
             }
 
-            var temp = parseFloat(el.style.opacity) + (direction * newIncrement);
+            var opacity = parseFloat(el.style.opacity) + (direction * newIncrement);
 
-            if (temp < 0.0) {
-                temp = 0.0;
-            } else if (temp > 1.0) {
-                temp = 1.0;
+            if (opacity < 0.0) {
+                opacity = 0.0;
+            } else if (opacity > 1.0) {
+                opacity = 1.0;
             }
 
-            el.style.opacity = temp;
-            again = (Math.round(temp * 100) !== Math.round(destPercentOpacity));
+            el.style.opacity = opacity;
+            again = (Math.round(opacity * 100) !== Math.round(destPercentOpacity));
         } else {
             // Opacity not set yet, need to call back in an event timer
             again = true;
         }
 
         if (again) {
-            timeouts[$cms.uid(el)] = setTimeout(function () {
+            fadeTimeouts[$cms.uid(el)] = setTimeout(function () {
                 $cms.dom.fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter);
             }, periodInMsecs);
         } else if (destroyAfter && el.parentNode) {
@@ -4566,7 +4412,7 @@
      * @returns {*|boolean}
      */
     $cms.dom.hasFadeTransition = function hasFadeTransition(el) {
-        return $cms.isEl(el) && ($cms.uid(el) in timeouts);
+        return $cms.isEl(el) && ($cms.uid(el) in fadeTimeouts);
     };
 
     /**
@@ -4576,11 +4422,11 @@
     $cms.dom.clearTransition = function clearTransition(el) {
         var uid = $cms.isEl(el) && $cms.uid(el);
 
-        if (uid && timeouts[uid]) {
+        if (uid && fadeTimeouts[uid]) {
             try { // Cross-frame issues may cause error
-                clearTimeout(timeouts[uid]);
+                clearTimeout(fadeTimeouts[uid]);
             } catch (ignore) {}
-            delete timeouts[uid];
+            delete fadeTimeouts[uid];
         }
     };
 
@@ -5177,6 +5023,8 @@
             _isIe = browser.includes('msie') || browser.includes('trident') || browser.includes('edge/');
 
         switch (code) {
+            case 'touch_enabled':
+                return ('ontouchstart' in docEl);
             case 'simplified_attachments_ui':
                 return boolVal($cms.$CONFIG_OPTION('simplified_attachments_ui') && $cms.$CONFIG_OPTION('complex_uploader'));
             case 'non_concurrent':
@@ -5732,7 +5580,7 @@
             return;
         }
         
-        if (!haveLinks && $cms.isTouchEnabled()) {
+        if (!haveLinks && $cms.browserMatches('touch_enabled')) {
             return; // Too erratic
         }
 
@@ -6846,8 +6694,8 @@
             };
 
             this.mousemove = function (e) {
-                if (that.boxWrapperEl && !that.boxWrapperEl.firstElementChild.classList.contains(' mousemove')) {
-                    that.boxWrapperEl.firstElementChild.className += ' mousemove';
+                if (that.boxWrapperEl && !that.boxWrapperEl.firstElementChild.classList.contains('mousemove')) {
+                    that.boxWrapperEl.firstElementChild.classList.add('mousemove');
                     setTimeout(function () {
                         if (that.boxWrapperEl) {
                             that.boxWrapperEl.firstElementChild.classList.remove('mousemove');
@@ -7858,18 +7706,22 @@
             })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
             var aConfig = {};
-            if ($cms.$COOKIE_DOMAIN() != '') {
+            
+            if ($cms.$COOKIE_DOMAIN() !== '') {
                 aConfig.cookieDomain = $cms.$COOKIE_DOMAIN();
             }
             if (!$cms.$CONFIG_OPTION('long_google_cookies')) {
                 aConfig.cookieExpires = 0;
             }
+            
             window.ga('create', $cms.$CONFIG_OPTION('google_analytics').trim(), aConfig);
-            if (!$cms.$IS_GUEST) {
+            
+            if (!$cms.$IS_GUEST()) {
                 window.ga('set', 'userId', strVal($cms.$MEMBER()));
             }
-            if ($cms.usp.get('_t') != '') {
-                window.ga('send', 'event', 'tracking__' + $cms.usp.get('_t'), window.location.href);
+            
+            if ($cms.usp.has('_t')) {
+                window.ga('send', 'event', 'tracking__' + strVal($cms.usp.get('_t')), window.location.href);
             }
 
             window.ga('send', 'pageview');
@@ -7885,9 +7737,9 @@
                 'theme': 'dark-top'
             };
             document.body.appendChild($cms.dom.create('script', {
-                src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js',
+                nonce: $cms.$CSP_NONCE(),
                 defer: true,
-                nonce: $cms.$CSP_NONCE()
+                src: 'https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js'
             }));
         }
 
@@ -7910,7 +7762,7 @@
 
         if ($cms.usp.get('wide_print') && ($cms.usp.get('wide_print') !== '0')) {
             try {
-                print();
+                window.print();
             } catch (ignore) {}
         }
 
@@ -7924,7 +7776,7 @@
         }
 
         // Are we dealing with a touch device?
-        if ($cms.isTouchEnabled()) {
+        if ($cms.browserMatches('touch_enabled')) {
             document.body.classList.add('touch_enabled');
         }
 
@@ -8747,7 +8599,7 @@
              */
             function handleImageMouseOver(event) {
                 var target = event.target;
-                if (target.previousSibling && target.previousSibling.classList && (target.previousSibling.classList.contains('magic_image_edit_link'))) {
+                if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic_image_edit_link'))) {
                     return;
                 }
                 if (target.offsetWidth < 130) {
@@ -8801,20 +8653,21 @@
                 var target = event.target;
 
                 if ($cms.$CONFIG_OPTION('enable_theme_img_buttons')) {
-                    if (target.previousSibling && target.previousSibling.classList && (target.previousSibling.classList.contains('magic_image_edit_link'))) {
-                        if ((target.mo_link !== undefined) && (target.mo_link)) // Clear timed display of new edit button
-                        {
+                    if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic_image_edit_link'))) {
+                        if ((target.mo_link !== undefined) && (target.mo_link)) {// Clear timed display of new edit button
                             clearTimeout(target.mo_link);
                             target.mo_link = null;
                         }
 
                         // Time removal of edit button
-                        if (target.mo_link)
+                        if (target.mo_link) {
                             clearTimeout(target.mo_link);
+                        }
+                        
                         target.mo_link = setTimeout(function () {
                             if ((target.edit_window === undefined) || (!target.edit_window) || (target.edit_window.closed)) {
-                                if (target.previousSibling && target.previousSibling.classList && (target.previousSibling.classList.contains('magic_image_edit_link'))) {
-                                    target.parentNode.removeChild(target.previousSibling);
+                                if (target.previousElementSibling && (target.previousElementSibling.classList.contains('magic_image_edit_link'))) {
+                                    target.parentNode.removeChild(target.previousElementSibling);
                                 }
                             }
                         }, 3000);
@@ -8830,7 +8683,7 @@
             function handleImageClick(event, ob, force) {
                 ob || (ob = this);
 
-                var src = ob.origsrc ? ob.origsrc : ((ob.src === undefined) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
+                var src = ob.origsrc ? ob.origsrc : ((ob.src == null) ? $cms.dom.css(ob, 'background-image').replace(/.*url\(['"]?(.*)['"]?\).*/, '$1') : ob.src);
                 if (src && (force || ($cms.magicKeypress(event)))) {
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in Firefox anyway)
                     event.stopPropagation();
@@ -8853,12 +8706,12 @@
         /* Staff JS error display */
         initialiseErrorMechanism: function () {
             window.onerror = function (msg, file, code) {
-                msg = strVal(msg);
-
-                if (window.document.readyState !== 'complete') {
+                if (document.readyState !== 'complete') {
                     // Probably not loaded yet
                     return null;
                 }
+
+                msg = strVal(msg);
 
                 if (
                     (msg.includes('AJAX_REQUESTS is not defined')) || // Intermittent during page out-clicks
@@ -8892,7 +8745,7 @@
                 if (!window.done_one_error) {
                     window.done_one_error = true;
                     var alert = '{!JAVASCRIPT_ERROR;^}\n\n' + code + ': ' + msg + '\n' + file;
-                    if (window.document.body) { // i.e. if loaded
+                    if (document.body) { // i.e. if loaded
                         $cms.ui.alert(alert, null, '{!ERROR_OCCURRED;^}');
                     }
                 }
@@ -8953,7 +8806,6 @@
                     });
                 } else {
                     _hideHelperPanel(panelRight, helperPanelContents, helperPanelToggle);
-
                 }
             }
 
@@ -10284,7 +10136,7 @@
     function convertTooltip(el) {
         var title = el.title;
 
-        if (!title || $cms.isTouchEnabled() || el.classList.contains('leave_native_tooltip')) {
+        if (!title || $cms.browserMatches('touch_enabled') || el.classList.contains('leave_native_tooltip')) {
             return;
         }
 

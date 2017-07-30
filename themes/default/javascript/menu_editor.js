@@ -123,7 +123,6 @@ function checkMenu() {
             } while (theParent.parentNode);
 
             if (!ignore) { // It's the real deal
-
                 // Check we have a caption
                 caption = $cms.dom.$id('caption_' + id);
                 url = $cms.dom.$id('url_' + id);
@@ -134,7 +133,7 @@ function checkMenu() {
 
                 // If we are a page, check we have a URL
                 branchType = $cms.dom.$id('branch_type_' + id);
-                if (branchType.options[branchType.selectedIndex].value == 'page') {
+                if (branchType.options[branchType.selectedIndex].value === 'page') {
                     if ((caption.value != '') && (url.value == '')) {
                         $cms.ui.alert('{!menus:MISSING_URL_ERROR;^}');
                         return false;
