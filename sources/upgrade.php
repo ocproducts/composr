@@ -276,6 +276,9 @@ function upgrade_script()
                         if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
                             $local_temp_path = true;
                             $temp_path = get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
+                            if (!is_file($temp_path)) {
+                                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                            }
                         } else {
                             $temp_path = cms_tempnam();
                             $myfile = fopen($temp_path, 'wb');
@@ -296,7 +299,7 @@ function upgrade_script()
                     // Open up TAR
                     $upgrade_resource = tar_open($temp_path, 'rb');
                     //tar_extract_to_folder($upgrade_resource, '', true);
-                    $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB
+                    $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB of RAM
 
                     // Hopefully $popup_simple_extract will be true (i.e. suEXEC mode), as it is safer
                     $popup_simple_extract = (_ftp_info() === false);
@@ -377,10 +380,9 @@ function upgrade_script()
                                 }
                             }
 
-                            // Install if either of the following is true:
-                            //  - it's some file not in any addon (shouldn't actually happen)
-                            //  - it's a file in an addon we have installed
-                            if ((is_null($found)) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
+                            // Install if it's a file in an addon we have installed
+                            //  (if we couldn't find the addon for it we have to assume a corrupt upgrade TAR and must skip the file)
+                            if (($found !== null) && (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {
                                     if (!$dry_run) {
                                         afm_make_directory($upgrade_file['path'], false, true);
@@ -425,10 +427,6 @@ function upgrade_script()
                                     continue;
                                 }
 
-                                if ($d['path'] == 'addon.inf') {
-                                    continue; // Should not even be in the TAR, but maybe installer is being used to install addons (weird, but would work)
-                                }
-
                                 $file_data = tar_get_file($old_addon_file, $d['path']);
 
                                 $file_data['data'] = preg_replace('#^version=.*#m', 'version=(version-synched)', $file_data['data']);
@@ -443,6 +441,8 @@ function upgrade_script()
                                 $file_data = tar_get_file($upgrade_resource, $file_to_update);
 
                                 tar_add_file($new_addon_file, $file_to_update, $file_data['data'], $upgrade_file['mode'], $upgrade_file['mtime']);
+
+                                echo do_lang('U_PACKING_MESSAGE', escape_html($file_to_update)) . '<br />';
                             }
 
                             tar_close($new_addon_file);
@@ -454,8 +454,6 @@ function upgrade_script()
                                 unlink(get_file_base() . '/imports/addons/' . $found . '.new.tar');
                             }
                             sync_file(get_file_base() . '/imports/addons/' . $found . '.tar');
-
-                            echo do_lang('U_PACKING_MESSAGE', escape_html($file_to_update)) . '<br />';
                         }
                     }
 
