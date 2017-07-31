@@ -29,6 +29,9 @@
  */
 function render_profile_tabset($title, $member_id_of, $member_id_viewing = null, $username = null)
 {
+    // Force-disable CSP as CKEditor (used in tabs) doesn't yet support CSP (#651)
+    load_csp(array('csp_enabled' => '0')); // TODO: Remove once CKEditor supports CSP
+
     if ($member_id_viewing === null) {
         $member_id_viewing = get_member();
     }
