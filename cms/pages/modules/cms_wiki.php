@@ -297,7 +297,7 @@ class Module_cms_wiki
 
         list($fields, $fields2, $hidden) = $this->get_page_fields(null, $_title);
 
-        require_code('seo2');
+        require_code('content2');
         $fields2->attach(seo_get_fields('wiki_page'));
 
         // Awards?
@@ -429,7 +429,7 @@ class Module_cms_wiki
         $edit_url = build_url(array('page' => '_SELF', 'redirect' => protect_url_parameter($redir_url), 'type' => '_edit_page', 'id' => get_param_string('id', false, INPUT_FILTER_GET_COMPLEX)), '_SELF');
 
         list($fields, $fields2, $hidden) = $this->get_page_fields($id, $page_title, $page['notes'], $page['hide_posts'], $id);
-        require_code('seo2');
+        require_code('content2');
         $fields2->attach(seo_get_fields('wiki_page', strval($id)));
 
         if (addon_installed('awards')) {
@@ -633,7 +633,7 @@ class Module_cms_wiki
         }
         $start = 0;
         $GLOBALS['SITE_DB']->query_delete('wiki_children', array('parent_id' => $id));
-        require_code('seo2');
+        require_code('content2');
         for ($i = 0; $i < $no_children; $i++) {
             $length = strpos($child_links, "\n", $start) - $start;
             $new_link = trim(substr($child_links, $start, $length));

@@ -467,7 +467,7 @@ function add_image($title, $cat, $description, $url, $thumb_url, $validated, $al
         generate_resource_fs_moniker('image', strval($id), null, null, true);
     }
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('image', strval($id), array($description), $description);
     } else {
@@ -612,7 +612,7 @@ function edit_image($id, $title, $cat, $description, $url, $thumb_url, $validate
         generate_resource_fs_moniker('image', strval($id));
     }
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_explicit('image', strval($id), $meta_keywords, $meta_description);
 
     delete_cache_entry('main_image_fader');
@@ -671,7 +671,7 @@ function delete_image($id, $delete_full = true)
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'images_' . strval($id));
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('image', strval($id));
 
     delete_cache_entry('side_galleries');
@@ -953,7 +953,7 @@ function add_video($title, $cat, $description, $url, $thumb_url, $validated, $al
         dispatch_notification('gallery_entry', $cat, $subject, $mail, $privacy_limits);
     }
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('video', strval($id), array($description), $description);
     } else {
@@ -1096,7 +1096,7 @@ function edit_video($id, $title, $cat, $description, $url, $thumb_url, $validate
         generate_resource_fs_moniker('video', strval($id));
     }
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_explicit('video', strval($id), $meta_keywords, $meta_description);
 
     delete_cache_entry('main_gallery_embed');
@@ -1158,7 +1158,7 @@ function delete_video($id, $delete_full = true)
     require_code('notifications');
     delete_all_notifications_on('comment_posted', 'videos_' . strval($id));
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('video', strval($id));
 
     delete_cache_entry('side_galleries');
@@ -1383,10 +1383,9 @@ function add_gallery($name, $fullname, $description, $notes, $parent_id, $accept
         copy_notifications_to_new_child('gallery_entry', $parent_id, $name);
     }
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_implicit('gallery', $name, array($fullname, $description), $description);
 
-    require_code('seo2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('gallery', $name, array($description), $description);
     } else {
@@ -1456,7 +1455,7 @@ function edit_gallery($old_name, $name, $fullname, $description, $notes, $parent
         $parent_id = '';
     }
 
-    require_code('seo2');
+    require_code('content2');
 
     if ($old_name != $name) {
         require_code('type_sanitisation');
@@ -1627,7 +1626,7 @@ function delete_gallery($name)
     $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'images', 'rating_for_id' => $name));
     $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'videos', 'rating_for_id' => $name));
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('gallery', $name);
 
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'galleries', 'category_name' => $name));

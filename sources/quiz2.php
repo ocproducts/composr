@@ -381,7 +381,7 @@ function add_quiz($name, $timeout, $start_text, $end_text, $end_text_fail, $note
 
     _save_available_quiz_answers($id, $text, $type);
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('quiz', strval($id), array($name, $start_text), $start_text);
     } else {
@@ -493,7 +493,7 @@ function edit_quiz($id, $name, $timeout, $start_text, $end_text, $end_text_fail,
     require_code('urls2');
     suggest_new_idmoniker_for('quiz', 'do', strval($id), '', $name);
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_explicit('quiz', strval($id), $meta_keywords, $meta_description);
 
     log_it('EDIT_QUIZ', strval($id), $name);
@@ -529,7 +529,7 @@ function delete_quiz($id)
     delete_lang($_end_text);
     delete_lang($_end_text_fail);
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('quiz', strval($id));
 
     $GLOBALS['SITE_DB']->query_delete('quizzes', array('id' => $id), '', 1);

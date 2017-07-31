@@ -454,7 +454,7 @@ class Module_cms_downloads extends Standard_crud_module
         }
 
         // Metadata
-        require_code('seo2');
+        require_code('content2');
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
@@ -931,7 +931,7 @@ class Module_cms_downloads_cat extends Standard_crud_module
         $fields->attach(form_input_upload_multi_source(do_lang_tempcode('REPRESENTATIVE_IMAGE'), do_lang_tempcode('DESCRIPTION_REPRESENTATIVE_IMAGE', 'download_category'), $hidden, 'image', null, false, $rep_image));
 
         $fields->attach(metadata_get_fields('download_category', ($id === null) ? null : strval($id)));
-        require_code('seo2');
+        require_code('content2');
         $fields->attach(seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false));
 
         if (addon_installed('content_reviews')) {

@@ -1250,7 +1250,6 @@ class Hook_addon_registry_core
             'sources/misc_scripts.php',
             'sources/hooks/systems/preview/block_comcode.php',
             'sources/m_zip.php',
-            'sources/seo2.php',
             'sources/site.php',
             'sources/site_adminzone.php',
             'sources/site_html_pages.php',

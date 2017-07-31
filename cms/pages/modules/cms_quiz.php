@@ -336,7 +336,7 @@ class Module_cms_quiz extends Standard_crud_module
         }
 
         $fields->attach(metadata_get_fields('quiz', ($id === null) ? null : strval($id)));
-        require_code('seo2');
+        require_code('content2');
         $fields->attach(seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false));
 
         if (addon_installed('content_reviews')) {

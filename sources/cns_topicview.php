@@ -284,7 +284,7 @@ function cns_read_in_topic($topic_id, $start, $max, $view_poll_results = false, 
         }
 
         // Some general info
-        require_code('seo2');
+        require_code('content2');
         list(, $meta_description) = _seo_meta_find_data(array(), get_translated_text($topic_info['p_post'], $GLOBALS['FORUM_DB']));
         $out = array(
             'num_views' => $topic_info['t_num_views'],

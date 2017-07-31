@@ -330,7 +330,7 @@ function add_download_category($category, $parent_id, $description, $notes = '',
         generate_resource_fs_moniker('download_category', strval($id), null, null, true);
     }
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('downloads_category', strval($id), array($category, $description), $description);
     } else {
@@ -404,7 +404,7 @@ function edit_download_category($category_id, $category, $parent_id, $descriptio
     }
     $GLOBALS['SITE_DB']->query_update('download_categories', $update_map, array('id' => $category_id), '', 1);
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_explicit('downloads_category', strval($category_id), $meta_keywords, $meta_description);
 
     log_it('EDIT_DOWNLOAD_CATEGORY', strval($category_id), $category);
@@ -451,7 +451,7 @@ function delete_download_category($category_id)
     delete_lang($category);
     delete_lang($description);
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('downloads_category', strval($category_id));
 
     $GLOBALS['SITE_DB']->query_delete('group_category_access', array('module_the_name' => 'downloads', 'category_name' => strval($category_id)));
@@ -925,7 +925,7 @@ function add_download($category_id, $name, $url, $description, $author, $additio
     require_lang('downloads');
     call_user_func_array__long_task(do_lang('INDEX_DOWNLOAD'), get_screen_title('INDEX_DOWNLOAD', true, array(), null, array(), false), 'index_download', array($id, $url, $original_filename), false, false, false);
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('downloads_download', strval($id), array($name, $description, $additional_details), $description);
     } else {
@@ -1079,7 +1079,7 @@ function edit_download($id, $category_id, $name, $url, $description, $author, $a
     }
     $myrow = $myrows[0];
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_explicit('downloads_download', strval($id), $meta_keywords, $meta_description);
 
     require_code('files2');
@@ -1210,7 +1210,7 @@ function delete_download($id, $leave = false)
     delete_lang($myrow['description']);
     delete_lang($myrow['additional_details']);
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('downloads_download', strval($id));
 
     if (!$leave) {

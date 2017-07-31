@@ -262,7 +262,7 @@ class Module_cms_authors
             append_form_custom_fields('author', $author, $specialisation2, $hidden);
         }
 
-        require_code('seo2');
+        require_code('content2');
         $specialisation2->attach(seo_get_fields('authors', $author));
 
         // Awards?

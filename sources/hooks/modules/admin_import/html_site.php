@@ -431,7 +431,7 @@ class Hook_import_html_site
                 if (preg_match('#<meta name="description" content="([^"]*)"#', $filtered, $matches) != 0) {
                     $page_description = $matches[1];
                 }
-                require_code('seo2');
+                require_code('content2');
                 seo_meta_set_for_explicit('comcode_page', $zone . ':' . $page, $page_keywords, $page_description);
 
                 // Strip cruft off for htm/html files

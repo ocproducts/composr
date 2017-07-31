@@ -137,7 +137,7 @@ function add_calendar_event($type, $recurrence, $recurrences, $seg_recurrences, 
         $GLOBALS['SITE_DB']->query_insert('content_regions', array('content_type' => 'event', 'content_id' => strval($id), 'region' => $region));
     }
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('event', strval($id), array($title, $content), $content);
     } else {
@@ -252,7 +252,7 @@ function edit_calendar_event($id, $type, $recurrence, $recurrences, $seg_recurre
     require_code('urls2');
     suggest_new_idmoniker_for('calendar', 'view', strval($id), '', $title);
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_explicit('event', strval($id), $meta_keywords, $meta_description);
 
     require_code('attachments2');
@@ -405,7 +405,7 @@ function delete_calendar_event($id)
     $GLOBALS['SITE_DB']->query_delete('calendar_jobs', array('j_event_id' => $id));
     $GLOBALS['SITE_DB']->query_delete('calendar_reminders', array('e_id' => $id));
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('event', strval($id));
 
     $GLOBALS['SITE_DB']->query_delete('rating', array('rating_for_type' => 'events', 'rating_for_id' => strval($id)));

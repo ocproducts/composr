@@ -562,7 +562,7 @@ class Module_cms_catalogues extends Standard_crud_module
         }
 
         // Metadata
-        require_code('seo2');
+        require_code('content2');
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
@@ -1277,7 +1277,7 @@ class Module_cms_catalogues_cat extends Standard_crud_module
         }
 
         $fields->attach(metadata_get_fields('catalogue_category', ($id === null) ? null : strval($id)));
-        require_code('seo2');
+        require_code('content2');
         $fields->attach(seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false));
 
         if (addon_installed('content_reviews')) {

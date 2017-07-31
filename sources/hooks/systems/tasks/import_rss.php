@@ -233,7 +233,7 @@ class Hook_task_import_rss
                     null,
                     $rep_image
                 );
-                require_code('seo2');
+                require_code('content2');
                 seo_meta_set_for_explicit('news', strval($id), implode(',', $cats_to_process), $news);
 
                 // Track import IDs
@@ -296,7 +296,7 @@ class Hook_task_import_rss
                 }
 
                 // Meta
-                require_code('seo2');
+                require_code('content2');
                 seo_meta_set_for_explicit('comcode_page', $zone . ':' . $file, implode(',', $cats_to_process), '');
 
                 // Track import IDs etc

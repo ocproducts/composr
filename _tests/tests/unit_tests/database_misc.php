@@ -262,7 +262,7 @@ class database_misc_test_set extends cms_test_case
                 'test_data_1' => ($i == 0) ? 'abacus, this is a test' : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
                 'test_data_2' => 'cheese',
             ), true);
-            require_code('seo2');
+            require_code('content2');
             seo_meta_set_for_explicit('test', strval($id), 'sample', '');
         }
 

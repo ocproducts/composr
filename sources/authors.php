@@ -177,7 +177,7 @@ function add_author($author, $url, $member_id, $description, $skills, $meta_keyw
         notify_sitemap_node_add('SEARCH:authors:browse:' . $author, null, null, SITEMAP_IMPORTANCE_LOW, 'yearly', false);
     }
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('authors', $author, array($author, $description, $skills), $description);
     } else {

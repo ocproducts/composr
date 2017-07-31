@@ -355,7 +355,7 @@ class Hook_task_import_catalogue
             } else { // Add
                 $id = actual_add_catalogue_entry($category_id, 1, $notes, $allow_rating ? 1 : 0, $allow_comments ? 1 : 0, $allow_trackbacks ? 1 : 0, $map);
 
-                require_code('seo2');
+                require_code('content2');
                 seo_meta_set_for_explicit('catalogue_entry', strval($id), $meta_keywords, $meta_description);
             }
 
