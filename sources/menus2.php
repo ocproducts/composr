@@ -32,7 +32,7 @@ function init__menus2()
 /**
  * Export a menu structure to a CSV file.
  *
- * @param  ?PATH $file_path The path to the CSV file (null: uploads/website_specific/cms_menu_items.csv).
+ * @param  ?PATH $file_path The path to the CSV file (null: uploads/website_specific/cms_menu_items.csv)
  */
 function export_menu_csv($file_path = null)
 {
@@ -59,7 +59,7 @@ function export_menu_csv($file_path = null)
  * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
  * Assumes CSV was generated with export_menu_csv.
  *
- * @param  ?PATH $file_path The path to the CSV file (null: uploads/website_specific/cms_menu_items.csv).
+ * @param  ?PATH $file_path The path to the CSV file (null: uploads/website_specific/cms_menu_items.csv)
  */
 function import_menu_csv($file_path = null)
 {
@@ -101,6 +101,63 @@ function import_menu_csv($file_path = null)
     fclose($myfile);
 
     delete_cache_entry('menu');
+}
+
+/**
+ * Create a menu structure programmatically.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  array $structure Menu structure (see function code for an example)
+ * @param  ID_TEXT $menu_name Menu name to use
+ * @param  boolean $reset Whether to delete the current menu contents
+ * @param  ?AUTO_LINK $parent Parent of current node in recursion (null: no parent)
+ */
+function create_menu_structure($structure, $menu_name = 'main_menu', $reset = true, $parent = null)
+{
+    /*
+        CALLING SAMPLE:
+
+        $structure = array(
+            array(
+                ':example1', // Page-link
+                'Example 1', // Caption
+                true, // Check permissions
+                array( // Children
+                    array(
+                        ':example2', // Page-link
+                        'Example 2', // Caption
+                        true, // Check permissions
+                        // No children
+                    ),
+                ),
+            ),
+
+            array(
+                ':example3', // Page-link
+                'Example 3', // Caption
+                false, // Check permissions
+                // No children
+            ),
+        );
+        create_menu_structure($structure);
+    */
+
+    if ($reset) {
+        delete_menu($menu_name);
+    }
+
+    foreach ($structure as $menu_item) {
+        list($page_link, $caption, $check_permissions) = $menu_item;
+        if (isset($menu_item[3])) {
+            $_structure = $menu_item[3];
+        } else {
+            $_structure = array();
+        }
+
+        $_parent = add_menu_item_simple($menu_name, $parent, $caption, $page_link, 0, $check_permissions ? 1 : 0);
+
+        create_menu_structure($_structure, $menu_name, false, $_parent);
+    }
 }
 
 /**

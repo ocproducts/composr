@@ -1473,6 +1473,7 @@ function require_all_core_cms_code()
     require_code('submit');
     require_code('config2');
     require_code('attachments3');
+    require_code('zones3');
 }
 
 /**

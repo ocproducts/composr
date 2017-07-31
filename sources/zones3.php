@@ -21,6 +21,128 @@
 /*EXTRA FUNCTIONS: fileinode*/
 
 /**
+ * Define a Comcode page structure programmatically.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  array $structure Comcode Page structure (see function code for an example)
+ * @param  string $zone The zone to do this in
+ * @param  ID_TEXT $parent Parent of current node in recursion (blank: no parent)
+ * @param  boolean $overwrite_all Whether to flush out all existing data
+ */
+function define_comcode_page_structure($structure, $zone = '', $parent = '', $overwrite_all = false)
+{
+    /*
+        CALLING SAMPLE:
+
+        $structure = array(
+            'product' => array(
+                'trial',
+                'pricing' => array(
+                    'tier1',
+                    'tier2',
+                    'tier3',
+                ),
+            ),
+
+            'about' => array(
+                'contact_us',
+                'team',
+                'partners',
+            ),
+        );
+        define_comcode_page_structure($structure);
+    */
+
+    if ($parent == '') {
+        if ($overwrite_all) {
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages');
+        }
+    }
+
+    static $admin_user = null;
+    if ($admin_user === null) {
+        require_code('users_active_actions');
+        $admin_user = get_first_admin_user();
+    }
+
+    $i = 0;
+
+    foreach ($structure as $page => $_structure) {
+        if (is_numeric($page)) {
+            $page = $_structure;
+            $_structure = array();
+        }
+
+        if (!$overwrite_all) {
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => $zone,
+                'the_page' => $page,
+            ), '', 1);
+        }
+
+        $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
+            'the_zone' => $zone,
+            'the_page' => $page,
+            'p_parent_page' => $parent,
+            'p_validated' => 1,
+            'p_edit_date' => null,
+            'p_add_date' => time(),
+            'p_submitter' => $admin_user,
+            'p_show_as_edit' => 0,
+            'p_order' => $i,
+        ));
+
+        define_comcode_page_structure($_structure, $zone, $page);
+
+        $i++;
+    }
+}
+
+/**
+ * Define a Comcode page structure programmatically.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  array $redirects Simple redirect map between page names (see function code for an example)
+ * @param  string $zone The zone to do this in
+ * @param  boolean $overwrite_all Whether to flush out all existing data
+ */
+function define_redirects($redirects, $zone = '', $overwrite_all = false)
+{
+    /*
+        CALLING SAMPLE:
+
+        $redirects = array(
+            'old_name' => 'new_name',
+        );
+        define_redirects($redirects);
+    }
+    */
+
+    if ($overwrite_all) {
+        $GLOBALS['SITE_DB']->query_delete('redirects');
+    }
+
+    foreach ($redirects as $old_page => $new_page) {
+        if (!$overwrite_all) {
+            $GLOBALS['SITE_DB']->query_delete('redirects', array(
+                'r_from_page' => $old_page,
+                'r_from_zone' => $zone,
+                'r_to_page' => $new_page,
+                'r_to_zone' => $zone,
+            ), '', 1);
+        }
+
+        $GLOBALS['SITE_DB']->query_insert('redirects', array(
+            'r_from_page' => $old_page,
+            'r_from_zone' => $zone,
+            'r_to_page' => $new_page,
+            'r_to_zone' => $zone,
+            'r_is_transparent' => 0,
+        ));
+    }
+}
+
+/**
  * Edit a zone.
  *
  * @param  ID_TEXT $zone The current name of the zone
