@@ -1465,13 +1465,15 @@ function require_all_core_cms_code()
     require_code('content2');
     require_code('menus2');
     require_code('permissions2');
+    require_code('permissions3');
     require_code('fields');
     if (addon_installed('awards')) {
         require_code('awards');
     }
     require_code('submit');
     require_code('config2');
-    require_code('database_action');
+    require_code('attachments3');
+    require_code('zones3');
 }
 
 /**

@@ -1349,8 +1349,6 @@ function cns_edit_custom_field($id, $name, $description, $default, $public_view,
 
     list($_type, $index) = get_cpf_storage_for($type);
 
-    require_code('database_action');
-
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', 'mcf' . strval($id));
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf_ft_' . strval($id));
 
@@ -1397,7 +1395,6 @@ function cns_delete_custom_field($id)
     $_name = $info[0]['cf_name'];
     $_description = $info[0]['cf_description'];
 
-    require_code('database_action');
     delete_lang($_name, $GLOBALS['FORUM_DB']);
     delete_lang($_description, $GLOBALS['FORUM_DB']);
     $GLOBALS['FORUM_DB']->delete_index_if_exists('f_member_custom_fields', '#mcf' . strval($id));

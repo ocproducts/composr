@@ -21,4 +21,8 @@
 	1_TITLE={$?,{BLOG},{!ADD_NEWS_BLOG},{!ADD_NEWS}}
 	1_REL=add
 	1_ICON=menu/_generic_admin/add_one
+	2_URL={EDIT_CAT_URL*}
+	2_TITLE={!EDIT_NEWS_CATEGORY}
+	2_REL=edit
+	2_ICON=menu/_generic_admin/edit_this_category
 {+END}

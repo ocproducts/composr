@@ -117,7 +117,8 @@ function uninstall_cns()
     delete_attachments('cns_post');
     delete_attachments('cns_signature');
 
-    require_code('database_action');
+    require_all_core_cms_code();
+
     $GLOBALS['FORUM_DB']->drop_table_if_exists('f_emoticons');
     $GLOBALS['FORUM_DB']->drop_table_if_exists('f_forum_group_access');
     $GLOBALS['FORUM_DB']->drop_table_if_exists('f_custom_fields');
@@ -189,7 +190,8 @@ function install_cns($upgrade_from = null)
     require_code('cns_general_action');
     require_code('cns_forums_action');
     require_code('cns_topics_action');
-    require_code('database_action');
+
+    require_all_core_cms_code();
 
     if ($upgrade_from === null) {
         uninstall_cns(); // Remove if already installed

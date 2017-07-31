@@ -371,8 +371,7 @@ function upgrade_module($zone, $module)
     $ret = 0;
     if (($functions[1] !== null) && (!empty($info['update_require_upgrade']))) {
         if ((($upgrade_from < $info['version']) && (!empty($info['update_require_upgrade']))) || (($upgrade_from_hack < $info['hack_version']) && (!empty($info['hack_require_upgrade'])))) {
-            require_code('database_action');
-            require_code('config2');
+            require_all_core_cms_code();
             require_code('files2');
 
             if (is_array($functions[1])) {
@@ -405,8 +404,7 @@ function reinstall_module($zone, $module)
 
     $module_path = get_file_base() . '/' . _get_module_path($zone, $module);
 
-    require_code('database_action');
-    require_code('config2');
+    require_all_core_cms_code();
     require_code('files2');
 
     $GLOBALS['SITE_DB']->query_delete('modules', array('module_the_name' => $module), '', 1);
@@ -464,8 +462,7 @@ function uninstall_module($zone, $module)
 {
     $module_path = get_file_base() . '/' . _get_module_path($zone, $module);
 
-    require_code('database_action');
-    require_code('config2');
+    require_all_core_cms_code();
     require_code('files2');
 
     $GLOBALS['SITE_DB']->query_delete('modules', array('module_the_name' => $module), '', 1);
@@ -615,8 +612,7 @@ function upgrade_block($block)
     $info = is_array($functions[0]) ? call_user_func_array($functions[0][0], $functions[0][1]) : eval($functions[0]);
     if (($functions[1] !== null) && (array_key_exists('update_require_upgrade', $info))) {
         if ((($upgrade_from < $info['version']) && (array_key_exists('update_require_upgrade', $info))) || (($upgrade_from_hack < $info['hack_version']) && (array_key_exists('hack_require_upgrade', $info)))) {
-            require_code('database_action');
-            require_code('config2');
+            require_all_core_cms_code();
             require_code('files2');
 
             if (is_array($functions[1])) {
@@ -647,8 +643,7 @@ function reinstall_block($block)
 
     $GLOBALS['SITE_DB']->query_delete('blocks', array('block_name' => $block), '', 1);
 
-    require_code('database_action');
-    require_code('config2');
+    require_all_core_cms_code();
     require_code('files2');
 
     $functions = extract_module_functions($block_path, array('info', 'install', 'uninstall'));
@@ -692,8 +687,7 @@ function uninstall_block($block)
 {
     $block_path = _get_block_path($block);
 
-    require_code('database_action');
-    require_code('config2');
+    require_all_core_cms_code();
     require_code('files2');
 
     $GLOBALS['SITE_DB']->query_delete('blocks', array('block_name' => $block), '', 1);

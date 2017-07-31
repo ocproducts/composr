@@ -21,6 +21,128 @@
 /*EXTRA FUNCTIONS: fileinode*/
 
 /**
+ * Define a Comcode page structure programmatically.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  array $structure Comcode Page structure (see function code for an example)
+ * @param  string $zone The zone to do this in
+ * @param  ID_TEXT $parent Parent of current node in recursion (blank: no parent)
+ * @param  boolean $overwrite_all Whether to flush out all existing data
+ */
+function define_comcode_page_structure($structure, $zone = '', $parent = '', $overwrite_all = false)
+{
+    /*
+        CALLING SAMPLE:
+
+        $structure = array(
+            'product' => array(
+                'trial',
+                'pricing' => array(
+                    'tier1',
+                    'tier2',
+                    'tier3',
+                ),
+            ),
+
+            'about' => array(
+                'contact_us',
+                'team',
+                'partners',
+            ),
+        );
+        define_comcode_page_structure($structure);
+    */
+
+    if ($parent == '') {
+        if ($overwrite_all) {
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages');
+        }
+    }
+
+    static $admin_user = null;
+    if ($admin_user === null) {
+        require_code('users_active_actions');
+        $admin_user = get_first_admin_user();
+    }
+
+    $i = 0;
+
+    foreach ($structure as $page => $_structure) {
+        if (is_numeric($page)) {
+            $page = $_structure;
+            $_structure = array();
+        }
+
+        if (!$overwrite_all) {
+            $GLOBALS['SITE_DB']->query_delete('comcode_pages', array(
+                'the_zone' => $zone,
+                'the_page' => $page,
+            ), '', 1);
+        }
+
+        $GLOBALS['SITE_DB']->query_insert('comcode_pages', array(
+            'the_zone' => $zone,
+            'the_page' => $page,
+            'p_parent_page' => $parent,
+            'p_validated' => 1,
+            'p_edit_date' => null,
+            'p_add_date' => time(),
+            'p_submitter' => $admin_user,
+            'p_show_as_edit' => 0,
+            'p_order' => $i,
+        ));
+
+        define_comcode_page_structure($_structure, $zone, $page);
+
+        $i++;
+    }
+}
+
+/**
+ * Define a Comcode page structure programmatically.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  array $redirects Simple redirect map between page names (see function code for an example)
+ * @param  string $zone The zone to do this in
+ * @param  boolean $overwrite_all Whether to flush out all existing data
+ */
+function define_redirects($redirects, $zone = '', $overwrite_all = false)
+{
+    /*
+        CALLING SAMPLE:
+
+        $redirects = array(
+            'old_name' => 'new_name',
+        );
+        define_redirects($redirects);
+    }
+    */
+
+    if ($overwrite_all) {
+        $GLOBALS['SITE_DB']->query_delete('redirects');
+    }
+
+    foreach ($redirects as $old_page => $new_page) {
+        if (!$overwrite_all) {
+            $GLOBALS['SITE_DB']->query_delete('redirects', array(
+                'r_from_page' => $old_page,
+                'r_from_zone' => $zone,
+                'r_to_page' => $new_page,
+                'r_to_zone' => $zone,
+            ), '', 1);
+        }
+
+        $GLOBALS['SITE_DB']->query_insert('redirects', array(
+            'r_from_page' => $old_page,
+            'r_from_zone' => $zone,
+            'r_to_page' => $new_page,
+            'r_to_zone' => $zone,
+            'r_is_transparent' => 0,
+        ));
+    }
+}
+
+/**
  * Edit a zone.
  *
  * @param  ID_TEXT $zone The current name of the zone
@@ -343,6 +465,27 @@ function create_selection_list_zones($sel = null, $no_go = array(), $reorder = n
 }
 
 /**
+ * Get a nice, formatted XHTML list of page templates.
+ *
+ * @param  ?ID_TEXT $it The currently selected entry (null: none selected)
+ * @return Tempcode The list of page templates
+ */
+function create_selection_list_page_templates($it = null)
+{
+    if ($it === null) {
+        $it = get_value('page_template_default', '', true);
+    }
+
+    $template_list = new Tempcode();
+    $template_list->attach(form_input_list_entry('', ($it == ''), do_lang_tempcode('NONE_EM')));
+    $templates = get_templates_list();
+    foreach ($templates as $template => $template_title) {
+        $template_list->attach(form_input_list_entry($template, ($template === $it), $template_title));
+    }
+    return $template_list;
+}
+
+/**
  * Get the map of names/titles of the available templates.
  *
  * @return array The names and titles of all available templates (title refers to the text within the first [title] tag in the template file)
@@ -351,10 +494,11 @@ function get_templates_list()
 {
     require_code('zones2');
 
-    $templates_dirs = array(
-        get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/',
-        get_file_base() . '/data_custom/modules/cms_comcode_pages/' . fallback_lang() . '/',
-    );
+    $templates_dirs = array();
+    if (get_value('page_template_restrict_to_custom', '0', true) !== '1') {
+        $templates_dirs[] = get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/';
+    }
+    $templates_dirs[] = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . fallback_lang() . '/';
     $templates = array();
     foreach ($templates_dirs as $templates_dir) {
         if (($handle = @opendir($templates_dir)) !== false) {
@@ -378,11 +522,15 @@ function get_templates_list()
 /**
  * Read the contents of a template file.
  *
- * @param  string $name The name of the template (based on the filename)
+ * @param  string $name The name of the template (based on the filename) (blank: explicit no template)
  * @return string The contents of the file (blank if it does not exist)
  */
 function get_template_contents($name)
 {
+    if ($name == '') {
+        return '';
+    }
+
     $templates_dir = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . either_param_string('lang', user_lang()) . '/';
     $template_path = $templates_dir . $name . '.txt';
     if (!is_file($template_path)) {
@@ -398,13 +546,15 @@ function get_template_contents($name)
         $template_path = $templates_dir . $name . '.txt';
     }
     if (!is_file($template_path)) {
+        $page_template_default = get_value('page_template_default', '', true);
+        if (($page_template_default != '') && ($name != $page_template_default)) {
+            return get_template_contents($page_template_default);
+        }
+
         return '';
     }
 
     $ret = file_get_contents($template_path);
-
-    $ret = str_replace('{$BASE_URL*}', escape_html(get_base_url()), $ret);
-    $ret = str_replace('{$BASE_URL}', get_base_url(), $ret);
 
     return $ret;
 }

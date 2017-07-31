@@ -739,17 +739,15 @@ function load_module_page($string, $codename, &$out = null)
 
             // See if we need to do an upgrade
             if (($installed_version < $this_version) && (array_key_exists('update_require_upgrade', $info))) {
-                require_code('database_action');
-                require_code('config2');
-                require_code('menus2');
+                require_code('files2');
+                require_all_core_cms_code();
                 $GLOBALS['SITE_DB']->query_update('modules', array('module_version' => $this_version, 'module_hack_version' => $this_hack_version, 'module_hacked_by' => $this_hacked_by), array('module_the_name' => $codename), '', 1); // Happens first so if there is an error it won't loop (if we updated install code manually there will be an error)
                 $object->install($installed_version, $installed_hack_version, $installed_hacked_by);
 
                 persistent_cache_delete('MODULES');
             } elseif (($installed_hack_version < $this_hack_version) && (array_key_exists('hack_require_upgrade', $info))) {
-                require_code('database_action');
-                require_code('config2');
-                require_code('menus2');
+                require_code('files2');
+                require_all_core_cms_code();
                 /*if (($installed_hacked_by!=$this_hacked_by) && ($installed_hacked_by !== null))
                     {
                             fatal_exit('Managed by different author');

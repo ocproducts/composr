@@ -364,6 +364,7 @@ class Block_main_sortable_table
 
             $rows->attach(do_template('SORTABLE_TABLE_ROW', array(
                 '_GUID' => $guid,
+                'HEADERS' => $headers,
                 'VALUES' => $row,
                 'TOOLTIP_VALUES' => $tooltip_values,
                 'RAW_DATA' => json_encode($_rows_raw[$i]),

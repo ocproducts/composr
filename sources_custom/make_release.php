@@ -755,7 +755,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 
             if ($file == 'sources/cns_install.php') {
                 $privilege_regexp = '#\'(\w+)\'#';
-            } elseif ($file == 'sources/database_action.php') {
+            } elseif ($file == 'sources/permissions3.php') {
                 $privilege_regexp = '#array\(\'\w+\',\s*\'(\w+)\'\)#';
             } else {
                 $privilege_regexp = '#add_privilege\(\'\w+\',\s*\'(\w+)\'#';

@@ -201,6 +201,49 @@ function catalogue_file_script()
 }
 
 /**
+ * Create a custom field programmatically, or return existing if exists.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  string $name Field name
+ * @param  string $description Field description
+ * @param  integer $order Field order
+ * @param  string $content_type Content type
+ * @return AUTO_LINK Field ID
+ */
+function define_custom_field($name, $description = '', $order = 0, $content_type = 'comcode_page')
+{
+    $settings_map = array(
+        'c_name' => '_' . $content_type,
+        'cf_put_in_category' => 1,
+        'cf_order' => $order,
+        'cf_type' => 'short_text',
+        'cf_required' => 0,
+        'cf_searchable' => 0,
+        'cf_defines_order' => 0,
+        'cf_visible' => 1,
+        'cf_put_in_search' => 0,
+        'cf_default' => '',
+    );
+
+    $db = $GLOBALS['SITE_DB'];
+
+    $field_details = $db->query_select('catalogue_fields', 'id', array($db->translate_field_ref('cf_name') => $name, 'c_name' => '_' . $content_type), '', 1);
+    if (count($field_details) == 0) {
+        $settings_map += insert_lang('cf_name', $name, 2);
+        $settings_map += insert_lang('cf_description', $description, 2);
+        $field_id = $db->query_insert('catalogue_fields', $settings_map);
+    } else {
+        $settings_map += lang_remap('cf_name', $field_details[0]['cf_name'], $name);
+        $settings_map += lang_remap_comcode('cf_description', $field_details[0]['cf_description'], $description);
+        $db->query_update('catalogue_fields', $settings_map, array('id' => $field_id), '', 1);
+
+        $db->query_delete('catalogue_efv_short', array('cf_id' => $field_id));
+    }
+
+    return $field_id;
+}
+
+/**
  * Parse field options into a setting map and return a specific value from it.
  *
  * @param  array $field Field map
@@ -389,6 +432,37 @@ function has_tied_catalogue($content_type)
         }
     }
     return false;
+}
+
+/**
+ * Get catalogue entry ID bound to a content entry, with auto-creation.
+ *
+ * @param  ID_TEXT $content_type Content type hook codename
+ * @param  ID_TEXT $id Content entry ID
+ * @return ?AUTO_LINK Bound catalogue entry ID (null: none)
+ */
+function get_bound_content_entry_wrap($content_type, $id)
+{
+    $catalogue_entry_id = get_bound_content_entry($content_type, $id);
+
+    if ($catalogue_entry_id === null) {
+        require_code('catalogues2');
+
+        $first_cat = $GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'MIN(id)', array('c_name' => '_' . $content_type));
+        if ($first_cat === null) {
+            $first_cat = actual_add_catalogue_category('_' . $content_type, do_lang('DEFAULT'), '', '', null);
+        }
+
+        $catalogue_entry_id = actual_add_catalogue_entry($first_cat, 1, '', 0, 0, 0, array());
+
+        $GLOBALS['SITE_DB']->query_insert('catalogue_entry_linkage', array(
+            'catalogue_entry_id' => $catalogue_entry_id,
+            'content_type' => $content_type,
+            'content_id' => $id,
+        ));
+    }
+
+    return $catalogue_entry_id;
 }
 
 /**

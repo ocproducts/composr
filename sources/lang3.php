@@ -656,3 +656,36 @@ function _comcode_lang_string($lang_code)
 
     return $parsed;
 }
+
+/**
+ * Deletes all language strings linked to by the specified table and attribute identifiers, if they exist.
+ *
+ * @param  ID_TEXT $table The table
+ * @param  array $attrs The attributes
+ * @param  ?object $db The database connector to use (null: standard site connector)
+ */
+function mass_delete_lang($table, $attrs, $db)
+{
+    if (count($attrs) == 0) {
+        return;
+    }
+
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
+    }
+
+    $start = 0;
+    do {
+        $rows = $db->query_select($table, $attrs, array(), '', 1000, $start, true);
+        if ($rows !== null) {
+            foreach ($rows as $row) {
+                foreach ($attrs as $attr) {
+                    if ($row[$attr] !== null) {
+                        delete_lang($row[$attr], $db);
+                    }
+                }
+            }
+        }
+        $start += 1000;
+    } while (($rows !== null) && (count($rows) > 0));
+}

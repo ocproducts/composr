@@ -158,7 +158,7 @@ function find_addon_category_download_category($category_name, $parent_id = null
 
 function set_privilege_access($category_type, $category_name, $permission, $value)
 {
-    require_code('database_action');
+    require_code('permissions3');
 
     if (is_integer($category_name)) {
         $category_name = strval($category_name);

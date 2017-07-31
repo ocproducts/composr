@@ -1909,8 +1909,9 @@ if (appengine_is_live()) {
 function step_5_uninstall()
 {
     $log = new Tempcode();
-    require_code('database_action');
+
     require_code('config');
+    require_all_core_cms_code();
 
     if (post_param_string('forum_type') != 'none') {
         $tmp = new DatabaseConnector(get_db_forums(), get_db_forums_host(), get_db_forums_user(), get_db_forums_password(), '');
@@ -2176,9 +2177,8 @@ function step_6()
     $config_file = '_config.php';
     require_once(get_file_base() . '/' . $config_file);
     require_code('database');
-    require_code('database_action');
-    require_code('menus2');
     require_code('config');
+    require_all_core_cms_code();
     include_cns();
 
     require_code('cns_install');
@@ -2227,10 +2227,9 @@ function big_installation_common()
         }
     }
 
-    require_code('database_action');
-    require_code('menus2');
     require_code('config');
     require_code('zones2');
+    require_all_core_cms_code();
 }
 
 /**

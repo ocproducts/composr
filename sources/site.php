@@ -647,7 +647,7 @@ function set_feed_url($url)
  *
  * @sets_output_state
  *
- * @param  Tempcode $text The text
+ * @param  ?Tempcode $text The text (null: none)
  * @param  boolean $append Whether to append
  * @param  boolean $put_in_box Whether to add a box around the parameter
  */
@@ -673,7 +673,7 @@ function set_helper_panel_text($text, $append = true, $put_in_box = true)
  *
  * @sets_output_state
  *
- * @param  ID_TEXT $tutorial The page name of the tutorial (must be an existing one on the brand site, i.e. compo.sr)
+ * @param  ?ID_TEXT $tutorial The page name of the tutorial (must be an existing one on the brand site, i.e. compo.sr) (null: none)
  */
 function set_helper_panel_tutorial($tutorial)
 {
@@ -1888,7 +1888,7 @@ function load_comcode_page($string, $zone, $codename, $file_base = null, $being_
     $add_child_url = new Tempcode();
     if (has_add_comcode_page_permission($zone)) {
         if (strpos($raw_comcode, 'main_comcode_page_children') !== false) {
-            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow , 'lang' => user_lang()*//*, 'redirect' => protect_url_parameter($redirect)*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
+            $add_child_url = (get_option('is_on_comcode_page_children') == '1') ? build_url(array('page' => 'cms_comcode_pages', 'type' => '_edit', 'may_choose_template' => '1', 'parent_page' => $codename, 'page_link' => $zone . ':'/*Don't make too many assumptions about user flow , 'lang' => user_lang()*//*, 'redirect' => protect_url_parameter($redirect)*/), get_module_zone('cms_comcode_pages')) : new Tempcode();
         }
     }
 

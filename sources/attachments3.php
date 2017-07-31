@@ -101,6 +101,39 @@ function update_lang_comcode_attachments($field_name, $lang_id, $text, $type, $i
 }
 
 /**
+ * Delete attachments solely used by the specified hook.
+ *
+ * @param  ID_TEXT $type The hook
+ * @param  ?object $db The database connector to use (null: standard site connector)
+ */
+function delete_attachments($type, $db = null)
+{
+    if (get_option('attachment_cleanup') == '0') {
+        return;
+    }
+
+    if ($db === null) {
+        $db = $GLOBALS['SITE_DB'];
+    }
+
+    require_code('attachments2');
+    require_code('attachments3');
+
+    // Clear any de-referenced attachments
+    $before = $db->query_select('attachment_refs', array('a_id', 'id'), array('r_referer_type' => $type));
+    foreach ($before as $ref) {
+        // Delete reference (as it's not actually in the new comcode!)
+        $db->query_delete('attachment_refs', array('id' => $ref['id']), '', 1);
+
+        // Was that the last reference to this attachment? (if so -- delete attachment)
+        $test = $db->query_select_value_if_there('attachment_refs', 'id', array('a_id' => $ref['a_id']));
+        if ($test === null) {
+            _delete_attachment($ref['a_id'], $db);
+        }
+    }
+}
+
+/**
  * Delete the specified attachment.
  *
  * @param  AUTO_LINK $id The attachment ID to delete

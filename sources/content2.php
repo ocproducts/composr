@@ -35,6 +35,55 @@ function init__content2()
 }
 
 /**
+ * Define page metadata.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  array $page_metadata Page metadata for multiple pages (see function code for an example; description and keywords go to SEO metadata, rest goes to custom fields which will auto-create as needed)
+ * @param  string $zone The zone to do this in
+ */
+function define_page_metadata($page_metadata, $zone = '')
+{
+    /*
+        CALLING SAMPLE:
+
+        $page_metadata = array(
+            'start' => array(
+                'Title' => 'Page title goes here',
+                'description' => 'Page description goes here.',
+                'keywords' => 'page, keywords, go here',
+            ),
+        );
+        define_page_metadata($page_metadata);
+    }
+    */
+
+    foreach ($page_metadata as $page_name => $metadata) {
+        $catalogue_entry_id = null;
+        $order = 0;
+
+        foreach ($metadata as $key => $val) {
+            if (in_array($key, array('description', 'keywords'))) {
+                continue;
+            }
+
+            require_code('fields');
+
+            if ($catalogue_entry_id === null) {
+                $catalogue_entry_id = get_bound_content_entry_wrap('comcode_page', ':' . $page_name);
+            }
+
+            $field_id = define_custom_field($key, '', $order);
+            $order++;
+
+            $GLOBALS['SITE_DB']->query_delete('catalogue_efv_short', array('cf_id' => $field_id, 'ce_id' => $catalogue_entry_id));
+            $GLOBALS['SITE_DB']->query_insert('catalogue_efv_short', array('cf_id' => $field_id, 'ce_id' => $catalogue_entry_id, 'cv_value' => $val));
+        }
+
+        seo_meta_set_for_explicit('comcode_page', ':' . $page_name, isset($metadata['keywords']) ? $metadata['keywords'] : '', isset($metadata['description']) ? $metadata['description'] : '');
+    }
+}
+
+/**
  * Get an order inputter.
  *
  * @param  ID_TEXT $entry_type The type of resource being ordered

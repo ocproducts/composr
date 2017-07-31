@@ -428,6 +428,7 @@ class Hook_addon_registry_news
                 'TITLE' => lorem_title(),
                 'CONTENT' => $content,
                 'SUBMIT_URL' => placeholder_url(),
+                'EDIT_CAT_URL' => placeholder_url(),
                 'BLOG' => false,
             )), null, '', true)
         );

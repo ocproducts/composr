@@ -46,7 +46,7 @@ class clean_reinstall_test_set extends cms_test_case
                 }
             }
 
-            $c1 = file_get_contents(get_file_base() . '/sources/database_action.php');
+            $c1 = file_get_contents(get_file_base() . '/sources/permissions3.php');
             $c2 = file_get_contents(get_file_base() . '/sources/cns_install.php');
             $_c2 = substr($c2, 0, strpos($c2, 'Uninstall Conversr'));
             $is_listed = (strpos($c1, '\'' . $privilege['the_name'] . '\'') !== false) || (strpos($_c2, '\'' . $privilege['the_name'] . '\'') !== false);

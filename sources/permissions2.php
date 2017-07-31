@@ -45,6 +45,44 @@ function set_global_category_access($module, $category)
 }
 
 /**
+ * Define page permissions programmatically.
+ * Assumes Conversr.
+ * This function is intended for programmers, writing upgrade scripts for a custom site (dev>staging>live).
+ *
+ * @param  array $no_guest_permissions Simple list of pages that only logged in users can see
+ * @param  array $only_admin_permissions Simple list of pages that only administrators can see
+ * @param  string $zone The zone to do this in
+ * @param  boolean $overwrite_all Whether to flush out all existing data
+ */
+function mass_set_page_access($no_guest_permissions, $only_admin_permissions, $zone, $overwrite_all = false)
+{
+    if ($overwrite_all) {
+        $GLOBALS['SITE_DB']->query_delete('group_page_access');
+
+        foreach ($no_guest_permissions as $page) {
+            $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => $page, 'zone_name' => $zone));
+
+            $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => $page, 'zone_name' => $zone, 'group_id' => db_get_first_id()));
+        }
+
+        $usergroups = $GLOBALS['FORUM_DRIVER']->get_usergroup_list(false, true);
+        $admin_groups = $GLOBALS['FORUM_DRIVER']->get_super_admin_groups();
+
+        foreach ($only_admin_permissions as $page) {
+            $GLOBALS['SITE_DB']->query_delete('group_page_access', array('page_name' => $page, 'zone_name' => $zone));
+
+            foreach (array_keys($usergroups) as $id) {
+                if (in_array($id, $admin_groups)) {
+                    continue;
+                }
+
+                $GLOBALS['SITE_DB']->query_insert('group_page_access', array('page_name' => $page, 'zone_name' => $zone, 'group_id' => $id));
+            }
+        }
+    }
+}
+
+/**
  * Log permission checks to the permission_checks.log file.
  *
  * @param  MEMBER $member_id The user checking against

@@ -818,9 +818,8 @@ function reinstall_addon_soft($addon, $ini_info = null)
 {
     push_query_limiting(false);
 
-    require_code('database_action');
-    require_code('config2');
     require_code('files2');
+    require_all_core_cms_code();
 
     $hook_path = 'hooks/systems/addon_registry/' . filter_naughty($addon);
     if (is_file(get_file_base() . '/sources/' . $hook_path . '.php') || is_file(get_file_base() . '/sources_custom/' . $hook_path . '.php')) {
@@ -973,9 +972,8 @@ function find_addon_effective_mtime($addon_name)
  */
 function upgrade_addon_soft($addon)
 {
-    require_code('database_action');
-    require_code('config2');
     require_code('files2');
+    require_all_core_cms_code();
 
     $rows = $GLOBALS['SITE_DB']->query_select('addons', array('*'), array('addon_name' => $addon), '', 1);
     if (!array_key_exists(0, $rows)) {
@@ -1214,9 +1212,8 @@ function uninstall_addon_soft($addon)
     $GLOBALS['SITE_DB']->query_delete('addons_dependencies', array('addon_name' => $addon));
     $GLOBALS['SITE_DB']->query_delete('addons', array('addon_name' => $addon), '', 1);
 
-    require_code('database_action');
-    require_code('config2');
     require_code('files2');
+    require_all_core_cms_code();
 
     if (addon_installed($addon)) {
         $code_file = 'hooks/systems/addon_registry/' . filter_naughty($addon);
