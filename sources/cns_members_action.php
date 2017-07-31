@@ -662,8 +662,6 @@ function cns_make_custom_field($name, $locked = 0, $description = '', $default =
 
     list($_type, $index, $_default) = get_cpf_storage_for($type, $encrypted, $default);
 
-    require_code('database_action');
-
     $GLOBALS['FORUM_DB']->add_table_field('f_member_custom_fields', 'field_' . strval($id), $_type, $_default);
 
     build_cpf_indices($id, $index, $type, $_type);

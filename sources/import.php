@@ -34,7 +34,6 @@ function init__import()
 function load_import_deps()
 {
     require_all_lang();
-    require_code('config2');
     require_code('cns_groups');
     require_code('cns_members');
     require_code('cns_moderation_action');
@@ -54,7 +53,7 @@ function load_import_deps()
     require_code('cns_forums_action2');
     require_code('cns_topics_action2');
     require_css('importing');
-    require_code('database_action');
+    require_all_core_cms_code();
 }
 
 /**

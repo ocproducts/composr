@@ -32,7 +32,7 @@ function init__database_helper()
     }
 
     if (!defined('DB_MAX_KEY_SIZE')) {
-        // Limits (we also limit field names to not conflict with keywords - those defined in database_action.php)
+        // Limits (we also limit field names to not conflict with keywords - those defined in get_db_keywords)
         define('DB_MAX_KEY_SIZE', 500);
         define('DB_MAX_PRIMARY_KEY_SIZE', 251);
         define('DB_MAX_ROW_SIZE', 8000);
@@ -61,8 +61,6 @@ function init__database_helper()
  */
 function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_check = false, $skip_null_check = false, $save_bytes = false, $return_on_error = false)
 {
-    require_code('database_action');
-
     // Check constraints
     $take_unicode_into_account = $save_bytes ? 3 : 4;
     $data_sizes = array(
@@ -195,8 +193,6 @@ function _check_sizes($table_name, $primary_key, $fields, $id_name, $skip_size_c
  */
 function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check = false, $skip_null_check = false, $save_bytes = false)
 {
-    require_code('database_action');
-
     if (preg_match('#^[\w]+$#', $table_name) == 0) {
         fatal_exit('Inappropriate identifier: ' . $table_name); // (the +7 is for prefix: max length of 7 chars allocated for prefix)
     }
@@ -285,8 +281,6 @@ function _helper_create_table($this_ref, $table_name, $fields, $skip_size_check 
  */
 function _helper_create_index($this_ref, $table_name, $index_name, $fields, $unique_key_fields = null)
 {
-    require_code('database_action');
-
     $fields_with_types = array();
     if ($table_name != 'db_meta') {
         $db_types = collapse_2d_complexity('m_name', 'm_type', $this_ref->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table_name)));
@@ -453,7 +447,8 @@ function _helper_delete_index_if_exists($this_ref, $table_name, $index_name)
 function _helper_drop_table_if_exists($this_ref, $table)
 {
     if (($table != 'db_meta') && ($table != 'db_meta_indices')) {
-        if ((function_exists('mass_delete_lang')) && (multi_lang_content())) {
+        if ((!running_script('install')) && (multi_lang_content())) {
+            require_code('lang3');
             $attrs = $this_ref->query_select('db_meta', array('m_name', 'm_type'), array('m_table' => $table));
             $_attrs = array();
             foreach ($attrs as $attr) {
@@ -915,7 +910,7 @@ function _helper_delete_table_field($this_ref, $table_name, $name)
     }
 
     if ((strpos($type, '_TRANS') !== false) && (multi_lang_content())) {
-        require_code('database_action');
+        require_code('lang3');
         mass_delete_lang($table_name, array($name), $this_ref);
     }
 
@@ -959,4 +954,142 @@ function _helper_refresh_field_definition($this_ref, $type)
     foreach ($do as $it) {
         $this_ref->alter_table_field($it[0], $it[1], $type);
     }
+}
+
+/**
+ * Returns a list of keywords for all databases we might some day support.
+ *
+ * @return array List of pairs
+ */
+function get_db_keywords()
+{
+    $words = array(
+        'ABSOLUTE', 'ACCESS', 'ACCESSIBLE', 'ACTION', 'ACTIVE', 'ADA', 'ADD', 'ADMIN',
+        'AFTER', 'ALIAS', 'ALL', 'ALLOCATE', 'ALLOW', 'ALPHANUMERIC', 'ALTER', 'ANALYSE',
+        'ANALYZE', 'AND', 'ANY', 'APPLICATION', 'ARE', 'ARITH_OVERFLOW', 'ARRAY', 'AS',
+        'ASC', 'ASCENDING', 'ASENSITIVE', 'ASSERTION', 'ASSISTANT', 'ASSOCIATE', 'ASUTIME', 'ASYMMETRIC',
+        'ASYNC', 'AT', 'ATOMIC', 'AUDIT', 'AUTHORIZATION', 'AUTO', 'AUTODDL', 'AUTOINCREMENT',
+        'AUX', 'AUXILIARY', 'AVG', 'BACKUP', 'BASED', 'BASENAME', 'BASE_NAME', 'BEFORE',
+        'BEGIN', 'BETWEEN', 'BIGINT', 'BINARY', 'BIT', 'BIT_LENGTH', 'BLOB', 'BLOBEDIT',
+        'BOOLEAN', 'BOTH', 'BOTTOM', 'BREADTH', 'BREAK', 'BROWSE', 'BUFFER', 'BUFFERPOOL',
+        'BULK', 'BY', 'BYTE', 'CACHE', 'CALL', 'CALLED', 'CAPABILITY', 'CAPTURE',
+        'CASCADE', 'CASCADED', 'CASE', 'CAST', 'CATALOG', 'CCSID', 'CHANGE', 'CHAR',
+        'CHARACTER', 'CHARACTER_LENGTH', 'CHAR_CONVERT', 'CHAR_LENGTH', 'CHECK', 'CHECKPOINT', 'CHECK_POINT_LEN', 'CHECK_POINT_LENGTH',
+        'CLOB', 'CLOSE', 'CLUSTER', 'CLUSTERED', 'COALESCE', 'COLLATE', 'COLLATION', 'COLLECTION',
+        'COLLID', 'COLUMN', 'COLUMNS', 'COMMENT', 'COMMIT', 'COMMITTED', 'COMPACTDATABASE', 'COMPILETIME',
+        'COMPLETION', 'COMPRESS', 'COMPUTE', 'COMPUTED', 'CONCAT', 'CONDITION', 'CONDITIONAL', 'CONFIRM',
+        'CONFLICT', 'CONNECT', 'CONNECTION', 'CONSTRAINT', 'CONSTRAINTS', 'CONSTRUCTOR', 'CONTAINER', 'CONTAINING',
+        'CONTAINS', 'CONTAINSTABLE', 'CONTINUE', 'CONTROLROW', 'CONVERT', 'CORRESPONDING', 'COUNT', 'COUNTER',
+        'CREATE', 'CREATEDATABASE', 'CREATEFIELD', 'CREATEGROUP', 'CREATEINDEX', 'CREATEOBJECT', 'CREATEPROPERTY', 'CREATERELATION',
+        'CREATETABLEDEF', 'CREATEUSER', 'CREATEWORKSPACE', 'CROSS', 'CSTRING', 'CUBE', 'CURRENCY', 'CURRENT',
+        'CURRENTUSER', 'CURRENT_DATE', 'CURRENT_DEFAULT_TRANSFORM_GROUP', 'CURRENT_LC_CTYPE', 'CURRENT_PATH', 'CURRENT_ROLE', 'CURRENT_TIME', 'CURRENT_TIMESTAMP',
+        'CURRENT_TRANSFORM_GROUP_FOR_TYPE', 'CURRENT_USER', 'CURSOR', 'CYCLE', 'DATA', 'DATABASE', 'DATABASES', 'DATA_PGS',
+        'DATE', 'DATETIME', 'DAY',/*'DAYS',*/
+        'DAY_HOUR', 'DAY_MICROSECOND', 'DAY_MINUTE', 'DAY_SECOND',
+        'DB2SQL', 'DBCC', 'DBINFO', 'DBSPACE', 'DB_KEY', 'DEALLOCATE', 'DEBUG', 'DEC',
+        'DECIMAL', 'DECLARE', 'DEFAULT', 'DEFERRABLE', 'DEFERRED', 'DELAYED', 'DELETE', 'DELETING',
+        'DENY', 'DEPTH', 'DEREF', 'DESC', 'DESCENDING', 'DESCRIBE',/*'DESCRIPTION',*/
+        'DESCRIPTOR',
+        'DETERMINISTIC', 'DIAGNOSTICS', 'DICTIONARY', 'DISALLOW', 'DISCONNECT', 'DISK', 'DISPLAY', 'DISTINCT',
+        'DISTINCTROW', 'DISTRIBUTED', 'DIV', 'DO', 'DOCUMENT', 'DOMAIN', 'DOUBLE', 'DROP',
+        'DSNHATTR', 'DSSIZE', 'DUAL', 'DUMMY', 'DUMP', 'DYNAMIC', 'EACH', 'ECHO',
+        'EDIT', 'EDITPROC', 'ELEMENT', 'ELSE', 'ELSEIF', 'ENCLOSED', 'ENCODING', 'ENCRYPTED',
+        'ENCRYPTION', 'END', 'END-EXEC', 'ENDIF', 'ENDING', 'ENDTRAN', 'ENTRY_POINT', 'EQUALS',
+        'EQV', 'ERASE', 'ERRLVL', 'ERROR', 'ERROREXIT', 'ESCAPE', 'ESCAPED', 'EVENT',
+        'EXCEPT', 'EXCEPTION', 'EXCLUSIVE', 'EXEC', 'EXECUTE', 'EXISTING', 'EXISTS', 'EXIT',
+        'EXPLAIN', 'EXTERN', 'EXTERNAL', 'EXTERNLOGIN', 'EXTRACT', 'FALSE', 'FENCED', 'FETCH',
+        'FIELD', 'FIELDPROC', 'FIELDS', 'FILE', 'FILLCACHE', 'FILLFACTOR', 'FILTER', 'FINAL',
+        'FIRST', 'FLOAT', 'FLOAT4', 'FLOAT8', 'FLOPPY', 'FOR', 'FORCE', 'FOREIGN',
+        'FORM', 'FORMS', 'FORTRAN', 'FORWARD', 'FOUND', 'FREE', 'FREETEXT', 'FREETEXTTABLE',
+        'FREEZE', 'FREE_IT', 'FROM', 'FULL', 'FULLTEXT', 'FUNCTION', 'GDSCODE', 'GENERAL',
+        'GENERATED', 'GENERATOR', 'GEN_ID',/*'GET',*/
+        'GETOBJECT', 'GETOPTION', 'GLOB', 'GLOBAL',
+        'GO', 'GOTO', 'GOTOPAGE', 'GRANT', 'GROUP', 'GROUPING', 'GROUP_COMMIT_WAIT', 'GROUP_COMMIT_WAIT_TIME',
+        'GUID', 'HANDLER', 'HAVING', 'HELP', 'HIGH_PRIORITY', 'HOLD', 'HOLDLOCK', 'HOUR',
+        'HOURS', 'HOUR_MICROSECOND', 'HOUR_MINUTE', 'HOUR_SECOND', 'IDENTIFIED', 'IDENTITY', 'IDENTITYCOL', 'IDENTITY_INSERT',
+        'IDLE', 'IEEEDOUBLE', 'IEEESINGLE', 'IF', 'IGNORE', 'ILIKE', 'IMMEDIATE', 'IMP',
+        'IN', 'INACTIVE', 'INCLUDE', 'INCLUSIVE', 'INCREMENT', 'INDEX', 'INDEXES', 'INDEX_LPAREN',
+        'INDICATOR', 'INFILE', 'INHERIT', 'INIT', 'INITIAL', 'INITIALLY', 'INNER', 'INOUT',
+        'INPUT', 'INPUT_TYPE', 'INSENSITIVE', 'INSERT', 'INSERTING', 'INSERTTEXT', 'INSTALL', 'INSTEAD',
+        'INT', 'INT1', 'INT2', 'INT3', 'INT4', 'INT8', 'INTEGER', 'INTEGER1',
+        'INTEGER2', 'INTEGER4', 'INTEGRATED', 'INTERSECT', 'INTERVAL', 'INTO', 'IQ', 'IS',
+        'ISNULL', 'ISOBID', 'ISOLATION', 'ISQL', 'ITERATE', 'JAR', 'JAVA', 'JOIN',
+        'KEY', 'KEYS', 'KILL', 'LABEL',/*'LANGUAGE',*/
+        'LARGE', 'LAST', 'LASTMODIFIED',
+        'LATERAL', 'LC_CTYPE', 'LC_MESSAGES', 'LC_TYPE', 'LEADING', 'LEAVE', 'LEFT', 'LENGTH',
+        'LESS', 'LEV', 'LEVEL', 'LIKE', 'LIMIT', 'LINEAR', 'LINENO', 'LINES',
+        'LOAD', 'LOCAL', 'LOCALE', 'LOCALTIME', 'LOCALTIMESTAMP', 'LOCATOR', 'LOCATORS', 'LOCK',
+        'LOCKMAX', 'LOCKSIZE', 'LOGFILE', 'LOGICAL', 'LOGICAL1', 'LOGIN', 'LOG_BUFFER_SIZE', 'LOG_BUF_SIZE',
+        'LONG', 'LONGBINARY', 'LONGBLOB', 'LONGTEXT', 'LOOP', 'LOWER', 'LOW_PRIORITY', 'MACRO',
+        'MAINTAINED', 'MANUAL', 'MAP', 'MATCH', 'MATERIALIZED', 'MAX', 'MAXEXTENTS', 'MAXIMUM',
+        'MAXIMUM_SEGMENT', 'MAX_SEGMENT', 'MEDIUMBLOB', 'MEDIUMINT', 'MEDIUMTEXT', 'MEMBER', 'MEMBERSHIP', 'MEMO',
+        'MERGE', 'MESSAGE', 'METHOD', 'MICROSECOND', 'MICROSECONDS', 'MIDDLEINT', 'MIN', 'MINIMUM',
+        'MINUS', 'MINUTE', 'MINUTES', 'MINUTE_MICROSECOND', 'MINUTE_SECOND', 'MIRROR', 'MIRROREXIT', 'MLSLABEL',
+        'MOD', 'MODE', 'MODIFIES', 'MODIFY', 'MODULE', 'MODULE_NAME', 'MONEY', 'MONTH',
+        'MONTHS', 'MOVE', 'MULTISET',/*'NAME',*/
+        'NAMES', 'NATIONAL', 'NATURAL', 'NCHAR',
+        'NCLOB', 'NEW', 'NEWPASSWORD', 'NEXT', 'NEXTVAL', 'NO', 'NOAUDIT', 'NOAUTO',
+        'NOCHECK', 'NOCOMPRESS', 'NOHOLDLOCK', 'NONCLUSTERED', 'NONE', 'NOT', 'NOTIFY', 'NOTNULL',
+        'NOWAIT', 'NO_WRITE_TO_BINLOG', 'NULL', 'NULLIF', 'NULLS', 'NUMBER', 'NUMERIC', 'NUMERIC_TRUNCATION',
+        'NUMPARTS', 'NUM_LOG_BUFFERS', 'NUM_LOG_BUFS', 'OBID', 'OBJECT', 'OCTET_LENGTH', 'OF', 'OFF',
+        'OFFLINE', 'OFFSET', 'OFFSETS', 'OID', 'OLD', 'OLEOBJECT', 'ON', 'ONCE',
+        'ONLINE', 'ONLY', 'OPEN', 'OPENDATASOURCE', 'OPENQUERY', 'OPENRECORDSET', 'OPENROWSET', 'OPENXML',
+        'OPERATION', 'OPERATORS', 'OPTIMIZATION', 'OPTIMIZE', 'OPTION', 'OPTIONALLY', 'OPTIONS', 'OR',
+        'ORDER', 'ORDINALITY', 'OTHERS', 'OUT', 'OUTER', 'OUTFILE', 'OUTPUT', 'OUTPUT_TYPE',
+        'OVER', 'OVERFLOW', 'OVERLAPS', 'OWNERACCESS', 'PACKAGE', 'PAD', 'PADDED', 'PAGE',
+        'PAGELENGTH',/*'PAGES',*/
+        'PAGE_SIZE', 'PARAMETER', 'PARAMETERS', 'PART', 'PARTIAL', 'PARTITION',
+        'PARTITIONED', 'PARTITIONING', 'PASCAL', 'PASSTHROUGH', 'PASSWORD',/*'PATH',*/
+        'PCTFREE', 'PENDANT',
+        'PERCENT', 'PERM', 'PERMANENT', 'PIECESIZE', 'PIPE', 'PIVOT', 'PLACING', 'PLAN',
+        'POSITION', 'POST_EVENT', 'PRECISION', 'PREORDER', 'PREPARE', 'PRESERVE', 'PREVVAL', 'PRIMARY',
+        'PRINT', 'PRIOR', 'PRIQTY', 'PRIVATE', 'PRIVILEGES', 'PROC', 'PROCEDURE', 'PROCESSEXIT',
+        'PROGRAM', 'PROPERTY', 'PROTECTED', 'PSID', 'PUBLIC', 'PUBLICATION', 'PURGE', 'QUERIES',
+        'QUERY', 'QUERYNO', 'QUIT', 'RAID0', 'RAISERROR', 'RANGE', 'RAW', 'RAW_PARTITIONS',
+        'READ', 'READS', 'READTEXT', 'READ_ONLY', 'READ_WRITE', 'REAL', 'RECALC', 'RECONFIGURE',
+        'RECORDSET', 'RECORD_VERSION', 'RECURSIVE', 'REF', 'REFERENCE', 'REFERENCES', 'REFERENCING', 'REFRESH',
+        'REFRESHLINK', 'REGEXP', 'REGISTERDATABASE', 'RELATION', 'RELATIVE', 'RELEASE', 'REMOTE', 'REMOVE',
+        'RENAME', 'REORGANIZE', 'REPAINT', 'REPAIRDATABASE', 'REPEAT', 'REPEATABLE', 'REPLACE', 'REPLICATION',
+        'REPORT', 'REPORTS', 'REQUERY', 'REQUIRE', 'RESERV', 'RESERVED_PGS', 'RESERVING', 'RESIGNAL',
+        'RESOURCE', 'RESTORE', 'RESTRICT', 'RESULT', 'RESULT_SET_LOCATOR', 'RETAIN', 'RETURN', 'RETURNING_VALUES',
+        'RETURNS', 'REVOKE', 'RIGHT', 'RLIKE', 'ROLE', 'ROLLBACK', 'ROLLUP', 'ROUTINE',
+        'ROW', 'ROWCNT', 'ROWCOUNT', 'ROWGUIDCOL', 'ROWID', 'ROWLABEL', 'ROWNUM', 'ROWS',
+        'ROWSET', 'RULE', 'RUN', 'RUNTIME', 'SAVE', 'SAVEPOINT', 'SCHEMA', 'SCHEMAS',
+        'SCOPE', 'SCRATCHPAD', 'SCREEN', 'SCROLL', 'SEARCH', 'SECOND', 'SECONDS', 'SECOND_MICROSECOND',
+        'SECQTY',/*'SECTION',*/
+        'SECURITY', 'SELECT', 'SENSITIVE', 'SEPARATOR', 'SEQUENCE', 'SERIALIZABLE',
+        'SESSION', 'SESSION_USER', 'SET', 'SETFOCUS', 'SETOPTION', 'SETS', 'SETUSER', 'SHADOW',
+        'SHARE', 'SHARED', 'SHELL', 'SHORT', 'SHOW', 'SHUTDOWN', 'SIGNAL', 'SIMILAR',
+        'SIMPLE', 'SINGLE', 'SINGULAR', 'SIZE', 'SMALLINT', 'SNAPSHOT', 'SOME', 'SONAME',
+        'SORT', 'SOURCE', 'SPACE', 'SPATIAL', 'SPECIFIC', 'SPECIFICTYPE', 'SQL', 'SQLCA',
+        'SQLCODE', 'SQLERROR', 'SQLEXCEPTION', 'SQLSTATE', 'SQLWARNING', 'SQL_BIG_RESULT', 'SQL_CALC_FOUND_ROWS', 'SQL_SMALL_RESULT',
+        'SSL', 'STABILITY', 'STANDARD', 'START', 'STARTING', 'STARTS', 'STATE', 'STATEMENT',
+        'STATIC', 'STATISTICS', 'STAY', 'STDEV', 'STDEVP', 'STOGROUP', 'STOP', 'STORES',
+        'STRAIGHT_JOIN', 'STRING', 'STRIPE', 'STRUCTURE', 'STYLE', 'SUBMULTISET', 'SUBPAGES', 'SUBSTRING',
+        'SUBTRANS', 'SUBTRANSACTION', 'SUB_TYPE', 'SUCCESSFUL', 'SUM', 'SUMMARY', 'SUSPEND', 'SYB_IDENTITY',
+        'SYB_RESTREE', 'SYMMETRIC', 'SYNCHRONIZE', 'SYNONYM', 'SYNTAX_ERROR', 'SYSDATE', 'SYSFUN', 'SYSIBM',
+        'SYSPROC', 'SYSTEM', 'SYSTEM_USER', 'TABLE', 'TABLEDEF', 'TABLEDEFS', 'TABLEID', 'TABLES',
+        'TABLESAMPLE', 'TABLESPACE', 'TAPE', 'TEMP', 'TEMPORARY', 'TERMINATED', 'TERMINATOR', 'TEST',
+        'TEXT', 'TEXTSIZE', 'THEN', 'THERE', 'TIME', 'TIMESTAMP', 'TIMEZONE_HOUR', 'TIMEZONE_MINUTE',
+        'TINYBLOB', 'TINYINT', 'TINYTEXT', 'TO', 'TOP', 'TRAILING', 'TRAN', 'TRANSACTION',
+        'TRANSFORM', 'TRANSLATE', 'TRANSLATION', 'TREAT', 'TRIGGER', 'TRIM', 'TRUE', 'TRUNCATE',
+        'TSEQUAL', 'TYPE', 'UID', 'UNBOUNDED', 'UNCOMMITTED', 'UNDER', 'UNDO', 'UNION',
+        'UNIQUE', 'UNIQUEIDENTIFIER', 'UNKNOWN', 'UNLOCK', 'UNNEST', 'UNSIGNED', 'UNTIL', 'UPDATE',
+        'UPDATETEXT', 'UPDATING', 'UPGRADE', 'UPPER', 'USAGE', 'USE', 'USED_PGS', 'USER',
+        'USER_OPTION', 'USING', 'UTC_DATE', 'UTC_TIME', 'UTC_TIMESTAMP', 'VALIDATE', 'VALIDPROC', 'VALUE',
+        'VALUES', 'VAR', 'VARBINARY', 'VARCHAR', 'VARCHAR2', 'VARCHARACTER', 'VARIABLE', 'VARIANT',
+        'VARP', 'VARYING', 'VCAT', 'VERBOSE', 'VERSION', 'VIEW', 'VIRTUAL', 'VISIBLE',
+        'VOLATILE', 'VOLUMES', 'WAIT', 'WAITFOR', 'WEEKDAY', 'WHEN', 'WHENEVER', 'WHERE',
+        'WHILE', 'WINDOW', 'WITH', 'WITHIN', 'WITHOUT', 'WITH_CUBE', 'WITH_LPAREN', 'WITH_ROLLUP',
+        'WLM', 'WORK', 'WORKSPACE', 'WRITE', 'WRITETEXT', 'X509', 'XMLELEMENT', 'XOR',
+        'YEAR', 'YEARDAY', 'YEARS', 'YEAR_MONTH', 'YES', 'YESNO', 'ZEROFILL', 'ZONE', 'GET',
+
+        // Added in MySQL 5.7
+        'ACCOUNT', 'ALWAYS', 'CHANNEL', 'COMPRESSION', 'ENCRYPTION', 'FILE_BLOCK_SIZE', 'FILTER', 'FOLLOWS', 'GENERATED',
+        'GROUP_REPLICATION', 'INSTANCE', 'JSON', 'MASTER_TLS_VERSION', 'MAX_STATEMENT_TIME', 'NEVER', 'OPTIMIZER_COSTS',
+        'PARSE_GCOL_EXPR', 'PRECEDES', 'REPLICATE_DO_DB', 'REPLICATE_DO_TABLE', 'REPLICATE_IGNORE_DB', 'REPLICATE_IGNORE_TABLE',
+        'REPLICATE_REWRITE_DB', 'REPLICATE_WILD_DO_TABLE', 'REPLICATE_WILD_IGNORE_TABLE', 'ROTATE', 'STORED', 'VALIDATION',
+        'VIRTUAL', 'WITHOUT', 'XID',
+    );
+    return $words;
 }

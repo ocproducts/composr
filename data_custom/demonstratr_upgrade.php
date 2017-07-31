@@ -85,8 +85,7 @@ if (get_base_url() != 'http://shareddemo.composr.info') {
 require_code('upgrade');
 require_lang('upgrade');
 require_code('shared_installs');
-require_code('database_action');
-require_code('config2');
+require_all_core_cms_code();
 
 // Integrity check only?
 if (get_param_integer('integrity', 0) == 1) {

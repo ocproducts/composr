@@ -2322,7 +2322,7 @@ insert into `cms_addons_files` values('core','themes/default/templates/LOOKUP_IP
  ('core','sources/database_security_filter.php','2139'),
  ('core','sources/database_helper.php','2140'),
  ('core','sources/database_repair.php','2141'),
- ('core','sources/database_action.php','2142'),
+ ('core','sources/permissions3.php','2142'),
  ('core','sources/database_search.php','2143'),
  ('core','sources/diff.php','2144'),
  ('core','sources/encryption.php','2145'),

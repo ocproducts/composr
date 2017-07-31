@@ -176,7 +176,6 @@ class Module_admin_debrand
     public function actual()
     {
         require_code('config2');
-        require_code('database_action');
         require_code('files');
 
         if ($GLOBALS['CURRENT_SHARE_USER'] === null) { // Only if not a shared install

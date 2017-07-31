@@ -30,7 +30,7 @@ class xss_test_set extends cms_test_case
 
         $comcode = '[html]<iframe></iframe><Iframe></iframe>test<test>test</test><script></script><span onclick=""></span><span onClick=""></span><span on' . chr(0) . 'click=""></span><a href="&#115;cript:">x</a><a href="&#0115;cript:">x</a><a href="&#x73;cript:">x</a><a href="&#x73cript:">x</a><a href="j	a	v	a	s	c	r	i	p	t	:">x</a>[/html]';
 
-        require_code('database_action');
+        require_code('permissions3');
 
         set_privilege(1, 'allow_html', true);
 

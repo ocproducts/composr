@@ -26,8 +26,7 @@ function upgrade_script()
     safe_ini_set('ocproducts.xss_detect', '0');
 
     require_lang('upgrade');
-    require_code('database_action');
-    require_code('config2');
+    require_all_core_cms_code();
     if (php_function_allowed('set_time_limit')) {
         @set_time_limit(180);
     }

@@ -37,13 +37,6 @@ if (!is_file($FILE_BASE . '/sources/global.php')) {
 }
 require($FILE_BASE . '/sources/global.php');
 
-// Put code that you temporarily want executed into the function. DELETE THE CODE WHEN YOU'RE DONE.
-// This is useful when performing quick and dirty upgrades (e.g. adding tables to avoid a reinstall)
-
-require_code('database_action');
-require_code('config2');
-require_code('menus2');
-
 run();
 
 function run()

@@ -84,7 +84,6 @@ require_code('zones');
 require_code('version');
 require_code('comcode');
 require_code('database');
-require_code('database_action');
 
 // No restoration (needed) on XML DB driver
 if (get_db_type() == 'xml') {

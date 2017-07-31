@@ -151,7 +151,7 @@ class calendar_event_test_set extends cms_test_case
     public function testApiWeekNumbersConsistent()
     {
         foreach (array('0', '1') as $ssw) {
-            require_code('database_action');
+            require_code('config2');
             set_option('ssw', $ssw);
 
             $year = 2000;

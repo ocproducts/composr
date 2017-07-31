@@ -1211,8 +1211,7 @@ class Virtual_shell
 
             // Run command...
 
-            require_code('database_action');
-            require_code('config2');
+            require_all_core_cms_code();
 
             global $SITE_DB, $FORUM_DB, $FORUM_DRIVER;
 
