@@ -188,7 +188,7 @@ function wrap_probe_ip($ip)
  * @param  IP $ip The IP address to ban
  * @param  LONG_TEXT $descrip Explanation for ban
  */
-function ban_ip($ip, $descrip = '')
+function wrap_add_ip_ban($ip, $descrip = '')
 {
     $ban = trim($ip);
     if (($ban != '') && (!compare_ip_address($ban, get_ip_address()))) {
@@ -209,7 +209,7 @@ function ban_ip($ip, $descrip = '')
  *
  * @param  IP $ip The IP address to unban
  */
-function unban_ip($ip)
+function wrap_remove_ip_ban($ip)
 {
     require_code('failure');
 

@@ -1457,6 +1457,24 @@ function cns_require_all_forum_stuff()
 }
 
 /**
+ * Require all code relating to the core content management.
+ * This is a useful shortcut when writing code to create content, e.g. when preparing content to push live programmatically.
+ */
+function require_all_core_cms_code()
+{
+    require_code('content2');
+    require_code('menus2');
+    require_code('permissions2');
+    require_code('fields');
+    if (addon_installed('awards')) {
+        require_code('awards');
+    }
+    require_code('submit');
+    require_code('config2');
+    require_code('database_action');
+}
+
+/**
  * Create file with unique file name, but works around compatibility issues between servers. Note that the file is NOT automatically deleted. You should also delete it using "@unlink", as some servers have problems with permissions.
  *
  * @param  string $prefix The prefix of the temporary file name

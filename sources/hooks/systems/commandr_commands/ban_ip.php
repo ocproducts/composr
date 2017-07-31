@@ -42,9 +42,9 @@ class Hook_commandr_command_ban_ip
 
             require_code('submit');
             if ((array_key_exists('u', $options)) || (array_key_exists('unban', $options))) {
-                unban_ip($parameters[0]);
+                wrap_remove_ip_ban($parameters[0]);
             } else {
-                ban_ip($parameters[0], array_key_exists(1, $parameters) ? $parameters[1] : '');
+                wrap_add_ip_ban($parameters[0], array_key_exists(1, $parameters) ? $parameters[1] : '');
             }
             return array('', '', do_lang('SUCCESS'), '');
         }
