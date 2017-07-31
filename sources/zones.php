@@ -1278,7 +1278,7 @@ function apply_quick_caching($_cache)
     }
 
     $matches = array();
-    $num_matches = preg_match_all('#(((\?)|(&(amp;)?))keep\_[^="\']*=[^&"\']*)+#', $cache, $matches, PREG_OFFSET_CAPTURE); // We assume that the keep_* parameters always come last, which holds true in Composr
+    $num_matches = preg_match_all('#(((\?)|(&(amp;)?))keep\_[^="\']*=[^\#&"\']*)+#', $cache, $matches, PREG_OFFSET_CAPTURE); // We assume that the keep_* parameters always come last, which holds true in Composr
     for ($i = 0; $i < $num_matches; $i++) {
         $new_offset = $matches[0][$i][1];
 

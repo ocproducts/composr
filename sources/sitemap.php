@@ -394,7 +394,7 @@ abstract class Hook_sitemap_base
                     break;
 
                 case 'page':
-                    if (!has_page_access(get_member(), $permission['zone_name'], $permission['page_name'])) {
+                    if (!has_page_access(get_member(), $permission['page_name'], $permission['zone_name'])) {
                         return false;
                     }
                     break;

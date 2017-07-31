@@ -117,7 +117,7 @@ attach	embed
 smf	simple machines forum
 ipb	invision
 random_quotes	testimonials
-join	register	signup	sign-up
+join	register	signup	sign-up	create-account
 logout	log-out	sign-out	sign-off
 login	log-in	sign-in	sign-on	logon	log-on	authorize
 credentials	password
