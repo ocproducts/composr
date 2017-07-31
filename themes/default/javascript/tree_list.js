@@ -151,8 +151,9 @@
                     if (el) {
                         htmlNode = $cms.dom.$id(that.name + 'tree_list_c_' + $cms.dom.html(node));
                         expanding = (htmlNode.style.display !== 'block');
-                        if (expanding)
+                        if (expanding) {
                             el.onclick(null, true);
+                        }
                     } else {
                         // Now try against serverid
                         var xmlNode = that.getElementByIdHack($cms.dom.html(node), 'c', null, true);

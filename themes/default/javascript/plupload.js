@@ -13595,7 +13595,7 @@ function prepareSimplifiedFileInput(pageType, name, _btnSubmitId, postingFieldNa
         var buttonParent = button.parentNode;
         var sibling = button.nextSibling.nextSibling;
         buttonParent.removeChild(button);
-        button_parent.insertBefore(newButton, sibling);
+        buttonParent.insertBefore(newButton, sibling);
     }
 
     // Remove shiv code from old instances too

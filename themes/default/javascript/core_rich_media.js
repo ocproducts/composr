@@ -433,7 +433,7 @@
 
             window.$cmsLoad.push(function () {
                 var aub = document.getElementById('attachment_upload_button');
-                if ((aub) && (aub.classList.contains('for_field_' + params.postingFieldName + ' '))) {
+                if ((aub) && (aub.classList.contains('for_field_' + params.postingFieldName))) {
                     window.rebuildAttachmentButtonForNext(params.postingFieldName, 'attachment_upload_button');
                 }
             });
@@ -1054,7 +1054,6 @@
                         x.parentNode.style.position = 'relative';
                     }
                     x.style.display = 'block';
-                    //x.style.width=width+'px';
                 } else {
                     x.style.display = (i == currentPos) ? 'block' : 'none';
 

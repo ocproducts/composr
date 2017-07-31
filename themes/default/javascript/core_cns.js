@@ -14,13 +14,12 @@
         this.tabs = arrVal(params.tabs);
 
         this.tabs.forEach((function (tab) {
-            var tabCode = strVal(tab.tabCode),
-                tabFunc = 'load_tab__' + tabCode;
+            var tabCode = strVal(tab.tabCode);
 
             if (tab.tabContent == null) {
-                window[tabFunc] = (function (automated) {
+                window['load_tab__' + tabCode] = (function (automated) {
                     // Self destruct loader after this first run
-                    window[tabFunc] = function () {};
+                    window['load_tab__' + tabCode] = function () {};
 
                     if (automated) {
                         scrollTo(0, 0);

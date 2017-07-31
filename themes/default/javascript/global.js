@@ -4435,7 +4435,6 @@
     };
 
     /**
-     * Set opacity, without interfering with the thumbnail timer
      * @memberof $cms.dom
      * @deprecated
      * @param el
@@ -7636,7 +7635,9 @@
                     // Select2 plugin hook
                     els.forEach(function (el) {
                         var options = objVal($cms.dom.data(el, 'cmsSelect2'));
-                        window.jQuery(el).select2(options);
+                        if (window.jQuery && window.jQuery.fn.select2) {
+                            window.jQuery(el).select2(options);
+                        }
                     });
                 });
             }
@@ -7766,7 +7767,7 @@
             m2.parentNode.removeChild(m2);
         }
 
-        if ($cms.usp.get('wide_print') && ($cms.usp.get('wide_print') !== '0')) {
+        if (boolVal($cms.usp.get('wide_print'))) {
             try {
                 window.print();
             } catch (ignore) {}

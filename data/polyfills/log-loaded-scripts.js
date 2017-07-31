@@ -92,5 +92,17 @@
             //console.log('Script error\'d', loadedEl);
         }
     }, /*useCapture*/true);
+    
+    window.addEventListener('click', function (e) {
+        if (e.target && (e.target.localName === 'a') && (e.target.getAttribute('href') === '#!')) {
+            e.preventDefault();
+        }
+    }, /*useCapture*/true);
+
+    window.addEventListener('submit', function (e) {
+        if (e.target && (e.target.localName === 'form') && (e.target.getAttribute('action') === '#!')) {
+            e.preventDefault();
+        }
+    }, /*useCapture*/true);
 
 }(window.$cms || (window.$cms = {})));

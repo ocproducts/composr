@@ -1625,8 +1625,9 @@
             // Update things
             for (i = 0; i < fieldNames.length; i++) {
                 field = fields[i];
-                if ((default_set == '') && (_standardAlternateFieldIsFilledIn(field, secondRun, false)) || (default_set != '') && (fieldNames[i].indexOf('_' + defaultSet) != -1))
+                if ((defaultSet == '') && (_standardAlternateFieldIsFilledIn(field, secondRun, false)) || (defaultSet != '') && (fieldNames[i].indexOf('_' + defaultSet) != -1)) {
                     return _standardAlternateFieldUpdateEditability(field, fields, somethingRequired);
+                }
             }
 
             // Hmm, force first one chosen then

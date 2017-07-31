@@ -270,12 +270,14 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
                         nextIcon.opacity = 1.0;
                         iconSpot.appendChild(nextIcon);
                         nextIcon.animationTimer = setInterval(function () {
-                            if (window.paused) return;
+                            if (window.paused) {
+                                return;
+                            }
 
                             var _left = ((parseInt(nextIcon.style.left) || 0) + nextIcon.xVector);
                             nextIcon.style.left = _left + 'px';
                             var _top = ((parseInt(nextIcon.style.top) || 0) + nextIcon.yVector);
-                            nextIcon.style._top = _top + 'px';
+                            nextIcon.style.top = _top + 'px';
                             $cms.dom.clearTransitionAndSetOpacity(nextIcon, nextIcon.opacity);
                             nextIcon.opacity *= 0.98;
                             nextIcon.yVector += 0.2;

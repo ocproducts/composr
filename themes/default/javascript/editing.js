@@ -279,16 +279,20 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             thoseDone[id] = 1;
 
             count++;
-            if (document.getElementById('toggle_wysiwyg_' + id))
+            if (document.getElementById('toggle_wysiwyg_' + id)) {
                 $cms.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical_alignment" />');
+            }
 
             window.wysiwygOriginalComcode[id] = e.value;
             if (!ajaxCopy) {
-                if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value != '') && ((e.defaultValue == ''/*LEGACY IE bug*/) || (e.defaultValue == e.value))) // The extra conditionals are for if back button used
+                if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value != '') && ((e.defaultValue == ''/*LEGACY IE bug*/) || (e.defaultValue == e.value))) {// The extra conditionals are for if back button used
                     e.value = postingForm.elements[id + '_parsed'].value;
+                }
             } else {
                 var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keepStub());
-                if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
+                if (window.location.href.indexOf('topics') != -1) {
+                    url += '&forum_db=1';
+                }
                 var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(postingForm.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
                 if (!request.responseXML) {
                     postingForm.elements[counter].value = '';
@@ -312,11 +316,14 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
 
     function wysiwygEditorInitFor(element, id) {
         var pageStylesheets = [];
-        if (!document) return;
+        if (!document) {
+            return;
+        }
         var linkedSheets = document.getElementsByTagName('link');
         for (var counter = 0; counter < linkedSheets.length; counter++) {
-            if (linkedSheets[counter].getAttribute('rel') == 'stylesheet')
+            if (linkedSheets[counter].getAttribute('rel') == 'stylesheet') {
                 pageStylesheets.push(linkedSheets[counter].getAttribute('href'));
+            }
         }
 
         // Fiddly procedure to find our colour
@@ -683,7 +690,9 @@ function insertTextbox(element, text, sel, plainInsert, html) {
             insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
         } else {
             var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
-            if (window.location.href.indexOf('topics') != -1) url += '&forum_db=1';
+            if (window.location.href.indexOf('topics') != -1) {
+                url += '&forum_db=1';
+            }
             /*TODO: Synchronous XHR*/
             var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
             if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
@@ -699,8 +708,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
             editor.focus(); // Needed on some browsers
             var selectedHtml = getSelectedHtml(editor);
 
-            if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() == 'kbd')) // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
-            {
+            if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() == 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
                 editor.document.getBody().appendHtml(insert);
             } else {
                 //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
