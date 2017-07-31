@@ -426,6 +426,8 @@
         /**@method*/
         gaTrack: gaTrack,
         /**@method*/
+        googlePlusTrack: googlePlusTrack,
+        /**@method*/
         playSelfAudioLink: playSelfAudioLink,
         /**@method*/
         setCookie: setCookie,
@@ -4576,6 +4578,8 @@
      * @returns { Promise }
      */
     function callBlock(url, newBlockParams, targetDiv, append, scrollToTopOfWrapper, postParams, inner, showLoadingAnimation) {
+        url = strVal(url);
+        newBlockParams = strVal(newBlockParams);
         scrollToTopOfWrapper = !!scrollToTopOfWrapper;
         postParams = (postParams !== undefined) ? postParams : null;
         inner = !!inner;
@@ -4587,7 +4591,7 @@
         }
 
         var ajaxUrl = url;
-        if (newBlockParams != '') {
+        if (newBlockParams !== '') {
             ajaxUrl += '&block_map_sup=' + encodeURIComponent(newBlockParams);
         }
 
@@ -9539,9 +9543,9 @@
 
         var isThemeWizard = !!(pic && pic.src && pic.src.includes('themewizard.php'));
         function setTrayThemeImage(beforeThemeImg, afterThemeImg, before1Url, after1Url, after2Url) {
-            var is_1 = $cms.dom.matchesThemeImage(pic.src, before1Url);
+            var is1 = $cms.dom.matchesThemeImage(pic.src, before1Url);
 
-            if (is_1) {
+            if (is1) {
                 if (isThemeWizard) {
                     pic.src = pic.src.replace(beforeThemeImg, afterThemeImg);
                 } else {

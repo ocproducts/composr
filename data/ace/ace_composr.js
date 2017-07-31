@@ -9,33 +9,33 @@ function aceComposrLoader(textareaId, programmingLanguage, autoRefresh) {
     var textarea = document.getElementById(textareaId);
     var val = textarea.value;
     var div = document.createElement('div');
-    var ace_id = textareaId + '__ace';
-    div.id = ace_id;
+    var aceId = textareaId + '__ace';
+    div.id = aceId;
     div.style.height = (textarea.rows * 20) + 'px';
     textarea.style.display = 'none';
     textarea.parentNode.insertBefore(div, textarea);
 
     // Initialise Ace editor
-    var editor = window.ace.edit(ace_id);
+    var editor = window.ace.edit(aceId);
     editor.setTheme('ace/theme/textmate');
-    var editor_session = editor.getSession();
-    editor_session.setMode('ace/mode/' + programmingLanguage);
-    editor_session.setUseWrapMode(false);
+    var editorSession = editor.getSession();
+    editorSession.setMode('ace/mode/' + programmingLanguage);
+    editorSession.setUseWrapMode(false);
     editor.setHighlightActiveLine(true);
     editor.setShowPrintMargin(false);
     editor.$blockScrolling = Infinity;
     if (val.indexOf('{+') !== -1 || val.indexOf('{$') !== -1) {
         // Troublesome Tempcode, so no syntax validation
-        editor_session.setOption('useWorker', false);
+        editorSession.setOption('useWorker', false);
     }
 
     // Save reference
     window.aceEditors[textareaId] = editor;
 
     // Keep textarea in sync with the Ace editor
-    editor_session.setValue(val);
+    editorSession.setValue(val);
     if (autoRefresh) {
-        editor_session.on('change', function () {
+        editorSession.on('change', function () {
             editareaReverseRefresh(textareaId);
         });
     }

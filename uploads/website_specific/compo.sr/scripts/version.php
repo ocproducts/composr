@@ -193,8 +193,8 @@ function display_version_upgrade_path($higher_version)
         <span class=\"version_button\" id=\"link_pos_" . strval($i) . "\"></span>
         <script>
             var div=document.getElementById('link_pos_" . strval($i) . "');
-            var upgrader_link=get_base_url()+'/" . $upgrade_script . "';
-            var h='<form style=\"display: inline\" action=\"'+upgrader_link+'\" target=\"_blank\" method=\"post\"><input class=\"menu__adminzone__tools__upgrade button_micro\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_version['version_pretty']) . "\" value=\"Launch upgrader\" /><\/form>';
+            var upgraderLink=get_base_url()+'/" . $upgrade_script . "';
+            var h='<form style=\"display: inline\" action=\"'+upgraderLink+'\" target=\"_blank\" method=\"post\"><input class=\"menu__adminzone__tools__upgrade button_micro\" type=\"submit\" title=\"Upgrade to " . escape_html($higher_version['version_pretty']) . "\" value=\"Launch upgrader\" /><\/form>';
             div.innerHTML=h;
         </script>
         ";

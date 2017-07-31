@@ -1015,17 +1015,17 @@ function step_4()
             $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('HIDDEN' => '', 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
 
             $js->attach(/**@lang JavaScript*/
-                'var gae_application = document.getElementById(\'gae_application\');
-gae_application.addEventListener(\'change\', gaeOnChange);
+                'var gaeApplication = document.getElementById(\'gae_application\');
+gaeApplication.addEventListener(\'change\', gaeOnChange);
 gaeOnChange();
 
 function gaeOnChange() {
-    var gae_live_db_site = document.getElementById(\'gae_live_db_site\');
-    gae_live_db_site.value = gae_live_db_site.value.replace(/(<application>|composr)/g, gae_application.value);
-    var gae_live_db_site_host = document.getElementById(\'gae_live_db_site_host\');
-    gae_live_db_site_host.value = gae_live_db_site_host.value.replace(/(<application>|composr)/g, gae_application.value);
-    var gae_bucket_name = document.getElementById(\'gae_bucket_name\');
-    gae_bucket_name.value = gae_bucket_name.value.replace(/(<application>|composr)/g, gae_application.value);
+    var gaeLiveDbSite = document.getElementById(\'gae_live_db_site\');
+    gaeLiveDbSite.value = gaeLiveDbSite.value.replace(/(<application>|composr)/g, gaeApplication.value);
+    var gaeLiveDbSiteHost = document.getElementById(\'gae_live_db_site_host\');
+    gaeLiveDbSiteHost.value = gaeLiveDbSiteHost.value.replace(/(<application>|composr)/g, gaeApplication.value);
+    var gaeBucketName = document.getElementById(\'gae_bucket_name\');
+    gaeBucketName.value = gaeBucketName.value.replace(/(<application>|composr)/g, gaeApplication.value);
 }
             ');
         } else {

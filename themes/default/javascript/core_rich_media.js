@@ -918,15 +918,15 @@
         // If we select an image we want to have good defaults for an image, but only if the defaults weren't already changed
         document.getElementById('tag_contents__b').onchange = function () {
             var ext = this.value.substring(this.value.indexOf('.') + 1);
-            var is_image = ',{$CONFIG_OPTION;,valid_images}'.indexOf(',' + ext + ',') !== -1;
-            if (is_image) {
+            var isImage = ',{$CONFIG_OPTION;,valid_images}'.indexOf(',' + ext + ',') !== -1;
+            if (isImage) {
                 var framed = document.getElementById('framed');
-                var wysiwyg_editable = document.getElementById('wysiwyg_editable');
+                var wysiwygEditable = document.getElementById('wysiwyg_editable');
                 var thumb = document.getElementById('thumb');
 
-                if (framed.defaultChecked == framed.checked && wysiwyg_editable.defaultChecked == wysiwyg_editable.checked && thumb.defaultChecked == thumb.checked) {
+                if (framed.defaultChecked == framed.checked && wysiwygEditable.defaultChecked == wysiwygEditable.checked && thumb.defaultChecked == thumb.checked) {
                     framed.checked = false;
-                    wysiwyg_editable.checked = true;
+                    wysiwygEditable.checked = true;
                     thumb.checked = false;
                 }
             }

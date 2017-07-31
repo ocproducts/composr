@@ -3,10 +3,10 @@
     
     // This is from the v10.1 branch, merged into the new JS framework...
     window.$cmsReady.push(function () {
-        var address_fields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
-        for (var i = 0; i < address_fields.length; i++) {
-            var billing = document.getElementById('billing_' + address_fields[i]);
-            var shipping = document.getElementById('shipping_' + address_fields[i]);
+        var addressFields = ['street_address', 'city', 'county', 'state', 'post_code', 'country'];
+        for (var i = 0; i < addressFields.length; i++) {
+            var billing = document.getElementById('billing_' + addressFields[i]);
+            var shipping = document.getElementById('shipping_' + addressFields[i]);
             if (billing && shipping) {
                 billing.onchange = (function (billing, shipping) {
                     return function () {
