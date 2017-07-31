@@ -345,6 +345,11 @@ function css_enforce($c, $theme = null, $allow_defer = false)
         return '';
     }
 
+    if (get_page_name() == 'cms_comcode_pages') {
+        // Allows WYSIWYG to load correct theme into WYSIWYG via URL search and replace
+        return 'defer';
+    }
+
     return $css_cache_path;
 }
 

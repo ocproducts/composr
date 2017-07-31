@@ -285,12 +285,7 @@ class Module_cms_comcode_pages
             }
             $fields->attach(form_input_line(do_lang_tempcode('PAGE'), do_lang_tempcode('DESCRIPTION_NEW_COMCODE_PAGE'), 'page_link_2', '', true, null, null, 'text', $sample_page_name, '([' . URL_CONTENT_REGEXP_JS . ']*:)?[' . URL_CONTENT_REGEXP_JS . ']+'));
 
-            $template_list = new Tempcode();
-            $template_list->attach(form_input_list_entry('', true, do_lang('NA')));
-            $templates = get_templates_list();
-            foreach ($templates as $template => $template_title) {
-                $template_list->attach(form_input_list_entry($template, false, $template_title));
-            }
+            $template_list = create_selection_list_page_templates();
             if (!$template_list->is_empty()) {
                 $fields->attach(form_input_list(do_lang_tempcode('PAGE_TEMPLATE'), do_lang_tempcode('PAGE_TEMPLATE_DESCRIPTION'), 'page_template', $template_list, null, false, false));
             }
@@ -728,6 +723,28 @@ class Module_cms_comcode_pages
         $lang = choose_language(get_screen_title(($file == '') ? 'COMCODE_PAGE_ADD' : 'COMCODE_PAGE_EDIT'), true);
         if (is_object($lang)) {
             return $lang;
+        }
+
+        if ((get_param_string('page_template', null) === null) && (get_param_integer('may_choose_template', 0) == 1) && (get_value('page_template_always_ask', '0', true) == '1')) {
+             $template_list = create_selection_list_page_templates();
+
+             $fields = new Tempcode();
+             $fields->attach(form_input_huge_list(do_lang_tempcode('PAGE_TEMPLATE'), do_lang_tempcode('PAGE_TEMPLATE_DESCRIPTION'), 'page_template', $template_list, null, true, false));
+
+             $hidden = build_keep_post_fields();
+             $url = get_self_url();
+
+             return do_template('FORM_SCREEN', array(
+                 'SKIP_WEBSTANDARDS' => true,
+                 'GET' => true,
+                 'HIDDEN' => $hidden,
+                 'SUBMIT_ICON' => 'buttons__proceed',
+                 'SUBMIT_NAME' => do_lang_tempcode('PROCEED'),
+                 'TITLE' => $this->title,
+                 'FIELDS' => $fields,
+                 'URL' => $url,
+                 'TEXT' => do_lang_tempcode('SELECT_PAGE_TEMPLATE'),
+             ));
         }
 
         $resource_owner = $GLOBALS['SITE_DB']->query_select_value_if_there('comcode_pages', 'p_submitter', array('the_zone' => $zone, 'the_page' => $file));

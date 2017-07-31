@@ -15,6 +15,7 @@
 
 <tr{+START,IF_NON_EMPTY,{$TRIM,{$GET,tooltip}}} style="cursor: pointer" data-mouseover-activate-tooltip="['{$GET*;^,tooltip}','auto']"{+END}>
 	{+START,LOOP,VALUES}
-		<td>{_loop_var*}</td>
+		{$SET,header,{+START,OF,{_loop_key}}HEADERS{+END}}
+		<td data-th="{$GET*,header}">{_loop_var*}</td>
 	{+END}
 </tr>

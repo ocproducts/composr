@@ -352,6 +352,10 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         $preparse_ob->preparse($comcode);
     }
 
+    if ($semiparse_mode) {
+        $comcode = simplify_static_tempcode($comcode);
+    }
+
     // Fix smart quote problems (may be added unintentionally by other software)
     if (get_charset() === 'utf-8') {
         $comcode = preg_replace('#=\xE2\x80\x9C(.*)\xE2\x80\x9D#U', '="$1"', $comcode);

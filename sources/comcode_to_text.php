@@ -118,8 +118,7 @@ function _strip_comcode($in, $for_extract = false, $tags_to_preserve = array())
             $text = preg_replace("#\[media[^\[\]]*\](.*)\[/media\]#Usi", '[url="\1"]' . do_lang('VIEW') . '[/url]', $text);
         }
     }
-    $text = str_replace('{$BASE_URL*}', escape_html(get_base_url()), $text);
-    $text = str_replace('{$BASE_URL}', get_base_url(), $text);
+    $text = simplify_static_tempcode($text);
     if (!in_array('thumb', $tags_to_preserve)) {
         $text = str_replace('[/thumb', '[/img', str_replace('[thumb', '[img', $text));
     }

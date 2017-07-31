@@ -8,7 +8,7 @@
 	{+START,LOOP,CATEGORIES}
 		<h2>{_loop_key*}</h2>
 
-		<table class="wide_table results_table columned_table responsive_table">
+		<table class="wide_table results_table columned_table">
 			<colgroup>
 				<col />
 				<col style="width: 8em" />

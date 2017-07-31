@@ -463,9 +463,6 @@ function wysiwygify_media_set($semihtml)
  */
 function semihtml_to_comcode($semihtml, $force = false, $quick = false)
 {
-    // Links should be kept from being base URL-specific
-    $semihtml = str_replace(escape_html(get_base_url() . '/'), '{$BASE_URL*}/', $semihtml);
-
     // Optimisations
     $matches = array();
     if (preg_match('#^\[semihtml\]([^\[\]<>]*)\[\/semihtml\]$#', $semihtml, $matches) != 0) {
@@ -495,6 +492,9 @@ function semihtml_to_comcode($semihtml, $force = false, $quick = false)
 
     // Composr markers
     remove_wysiwyg_comcode_markup($semihtml);
+
+    // Links should be kept from being base URL-specific
+    $semihtml = reinstate_static_tempcode($semihtml);
 
     // Empty comments
     $semihtml = str_replace('<!-- >', '', $semihtml);

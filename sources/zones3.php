@@ -465,6 +465,27 @@ function create_selection_list_zones($sel = null, $no_go = array(), $reorder = n
 }
 
 /**
+ * Get a nice, formatted XHTML list of page templates.
+ *
+ * @param  ?ID_TEXT $it The currently selected entry (null: none selected)
+ * @return Tempcode The list of page templates
+ */
+function create_selection_list_page_templates($it = null)
+{
+    if ($it === null) {
+        $it = get_value('page_template_default', '', true);
+    }
+
+    $template_list = new Tempcode();
+    $template_list->attach(form_input_list_entry('', ($it == ''), do_lang_tempcode('NONE_EM')));
+    $templates = get_templates_list();
+    foreach ($templates as $template => $template_title) {
+        $template_list->attach(form_input_list_entry($template, ($template === $it), $template_title));
+    }
+    return $template_list;
+}
+
+/**
  * Get the map of names/titles of the available templates.
  *
  * @return array The names and titles of all available templates (title refers to the text within the first [title] tag in the template file)
@@ -473,10 +494,11 @@ function get_templates_list()
 {
     require_code('zones2');
 
-    $templates_dirs = array(
-        get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/',
-        get_file_base() . '/data_custom/modules/cms_comcode_pages/' . fallback_lang() . '/',
-    );
+    $templates_dirs = array();
+    if (get_value('page_template_restrict_to_custom', '0', true) !== '1') {
+        $templates_dirs[] = get_file_base() . '/data/modules/cms_comcode_pages/' . fallback_lang() . '/';
+    }
+    $templates_dirs[] = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . fallback_lang() . '/';
     $templates = array();
     foreach ($templates_dirs as $templates_dir) {
         if (($handle = @opendir($templates_dir)) !== false) {
@@ -500,11 +522,15 @@ function get_templates_list()
 /**
  * Read the contents of a template file.
  *
- * @param  string $name The name of the template (based on the filename)
+ * @param  string $name The name of the template (based on the filename) (blank: explicit no template)
  * @return string The contents of the file (blank if it does not exist)
  */
 function get_template_contents($name)
 {
+    if ($name == '') {
+        return '';
+    }
+
     $templates_dir = get_file_base() . '/data_custom/modules/cms_comcode_pages/' . either_param_string('lang', user_lang()) . '/';
     $template_path = $templates_dir . $name . '.txt';
     if (!is_file($template_path)) {
@@ -520,13 +546,15 @@ function get_template_contents($name)
         $template_path = $templates_dir . $name . '.txt';
     }
     if (!is_file($template_path)) {
+        $page_template_default = get_value('page_template_default', '', true);
+        if (($page_template_default != '') && ($name != $page_template_default)) {
+            return get_template_contents($page_template_default);
+        }
+
         return '';
     }
 
     $ret = file_get_contents($template_path);
-
-    $ret = str_replace('{$BASE_URL*}', escape_html(get_base_url()), $ret);
-    $ret = str_replace('{$BASE_URL}', get_base_url(), $ret);
 
     return $ret;
 }

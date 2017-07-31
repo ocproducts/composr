@@ -2519,3 +2519,60 @@ function record_template_used($tpl_path_descrip)
 
     $called_once = true;
 }
+
+/**
+ * Simplify some Tempcode-within-Comcode for use in WYSIWYG and e-mails.
+ *
+ * @param  string $text Comcode
+ * @return string Simplified Comcode
+ */
+function simplify_static_tempcode($text)
+{
+    $symbols = array(
+        'PAGE_LINK',
+        'BASE_URL',
+        'IMG',
+    );
+
+    foreach ($symbols as $symbol) {
+        $new_text = '';
+
+        $matches = array();
+        $regexp = '#\{\$' . preg_quote($symbol, '#') . '[\.`%\*=\;\#\-~\^\|\'&/@+]*(,[^{}]+)?\}#';
+        $num_matches = preg_match_all($regexp, $text, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+        $last_offset = 0;
+        for ($i = 0; $i < $num_matches; $i++) {
+            $new_offset = $matches[$i][0][1];
+            $tempcode_portion = $matches[$i][0][0];
+            $len = strlen($tempcode_portion);
+
+            $new_text .= substr($text, $last_offset, $new_offset - $last_offset);
+
+            require_code('tempcode_compiler');
+            $temp = template_to_tempcode(substr($text, $new_offset, $len), 0, false, '');
+            $new_text .= $temp->evaluate();
+
+            $last_offset = $new_offset + $len;
+        }
+
+        $new_text .= substr($text, $last_offset);
+
+        $text = $new_text;
+    }
+
+    return $text;
+}
+
+/**
+ * Make edited Comcode more portable between sites by putting the base URL symbol back in.
+ *
+ * @param  string $text Comcode
+ * @return string Tempcode-enhanced Comcode
+ */
+function reinstate_static_tempcode($text)
+{
+    $text = str_replace(escape_html(get_base_url() . '/'), '{$BASE_URL*}/', $text);
+    $text = str_replace(get_base_url() . '/', '{$BASE_URL}/', $text);
+
+    return $text;
+}
