@@ -520,7 +520,7 @@ function save_comcode_page($zone, $new_file, $lang, $text, $validated = null, $p
 
     // Set metadata
     if ($meta_keywords !== null) {
-        require_code('seo2');
+        require_code('content2');
         if (($meta_keywords == '') && ($meta_description == '')) {
             seo_meta_set_for_implicit('comcode_page', $zone . ':' . $new_file, array($text), $text);
         } else {
@@ -666,7 +666,7 @@ function delete_cms_page($zone, $page, $type = null, $use_afm = false)
             erase_persistent_cache();
             delete_cache_entry('main_comcode_page_children');
 
-            require_code('seo2');
+            require_code('content2');
             seo_meta_erase_storage('comcode_page', $zone . ':' . $page);
         }
     } else {

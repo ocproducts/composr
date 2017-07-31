@@ -373,7 +373,7 @@ function add_news($title, $news, $author = null, $validated = 1, $allow_rating =
         } while (array_key_exists(0, $listeners));
     }
 
-    require_code('seo2');
+    require_code('content2');
     if (get_option('enable_seo_fields') === '0') {
         $meta_keywords = '';
         foreach (array_unique(array_merge(($news_categories === null) ? array() : $news_categories, array($main_news_category_id))) as $news_category_id) {
@@ -563,7 +563,7 @@ function edit_news($id, $title, $news, $author, $validated, $allow_rating, $allo
         dispatch_news_notification($id, $title, $main_news_category);
     }
 
-    require_code('seo2');
+    require_code('content2');
     if (get_option('enable_seo_fields') === '0') {
         $meta_description = ($news == '') ? $news_article : $news;
         $meta_keywords = '';
@@ -675,7 +675,7 @@ function delete_news($id)
         delete_lang_comcode_attachments($news_article, 'news', strval($id));
     }
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('news', strval($id));
 
     delete_cache_entry('main_news');

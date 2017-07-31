@@ -425,7 +425,7 @@ function wiki_add_page($title, $description, $notes, $hide_posts, $member_id = n
 
     log_it('WIKI_ADD_PAGE', strval($page_id), $title);
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         seo_meta_set_for_implicit('wiki_page', strval($page_id), array($title, $description), $description);
     } else {
@@ -521,7 +521,7 @@ function wiki_edit_page($page_id, $title, $description, $notes, $hide_posts, $me
 
     $GLOBALS['SITE_DB']->query_update('wiki_pages', $update_map, array('id' => $page_id), '', 1);
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_explicit('wiki_page', strval($page_id), $meta_keywords, $meta_description);
 
     if (post_param_integer('send_notification', null) !== 0) {

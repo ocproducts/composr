@@ -53,7 +53,7 @@ if (php_function_allowed('set_time_limit')) {
 
 require_code('news');
 require_code('news2');
-require_code('seo2');
+require_code('content2');
 
 if (!$GLOBALS['FORUM_DRIVER']->is_super_admin(get_member())) {
     access_denied();

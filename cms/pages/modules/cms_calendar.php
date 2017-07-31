@@ -516,7 +516,7 @@ class Module_cms_calendar extends Standard_crud_module
         $fields2->attach(get_syndication_option_fields('event'));
 
         // Metadata
-        require_code('seo2');
+        require_code('content2');
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, false, $notes, $allow_comments == 2, false, true, false);
@@ -1286,7 +1286,7 @@ class Module_cms_calendar_cat extends Standard_crud_module
         }
 
         $fields->attach(metadata_get_fields('calendar_type', ($id === null) ? null : strval($id)));
-        require_code('seo2');
+        require_code('content2');
 
         // Permissions
         $fields->attach($this->get_permission_fields(($id === null) ? null : strval($id), null, ($title == '')));

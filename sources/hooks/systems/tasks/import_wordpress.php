@@ -197,7 +197,7 @@ class Hook_task_import_wordpress
                             ''
                         );
                         if (array_key_exists('category', $post)) {
-                            require_code('seo2');
+                            require_code('content2');
                             seo_meta_set_for_explicit('news', strval($id), implode(',', $post['category']), $news);
                         }
 
@@ -276,7 +276,7 @@ class Hook_task_import_wordpress
 
                         // Meta
                         if (array_key_exists('category', $post)) {
-                            require_code('seo2');
+                            require_code('content2');
                             seo_meta_set_for_explicit('comcode_page', $zone . ':' . $file, implode(',', $post['category']), '');
                         }
 

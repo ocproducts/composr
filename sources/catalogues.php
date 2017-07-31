@@ -1902,7 +1902,7 @@ function render_catalogue_entry_screen($id, $no_title = false, $attach_to_url_fi
     }
     $map['SUBMITTER'] = strval($entry['ce_submitter']);
 
-    require_code('seo2');
+    require_code('content2');
     if (is_object($title_to_use_2)) {
         $title_to_use_2 = $title_to_use_2->evaluate();
     }

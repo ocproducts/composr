@@ -970,7 +970,7 @@ class Module_cms_galleries extends Standard_crud_module
         }
 
         // Metadata
-        require_code('seo2');
+        require_code('content2');
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         if (get_option('gallery_feedback_fields') == '1') {
             require_code('feedback2');
@@ -1588,7 +1588,7 @@ class Module_cms_galleries_alt extends Standard_crud_module
         }
 
         // Metadata
-        require_code('seo2');
+        require_code('content2');
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         if (get_option('gallery_feedback_fields') == '1') {
             require_code('feedback2');
@@ -2072,7 +2072,7 @@ class Module_cms_galleries_cat extends Standard_crud_module
         }
 
         // Metadata
-        require_code('seo2');
+        require_code('content2');
         $seo_fields = seo_get_fields($this->seo_type, ($name == '') ? null : $name, false);
         if (get_option('gallery_feedback_fields') == '1') {
             require_code('feedback2');

@@ -1193,7 +1193,6 @@ class Module_wiki
             require_code('content2');
             $metadata = actual_metadata_get_fields('wiki_post', null);
 
-            require_code('content2');
             $post_id = wiki_add_post($id, $message, $validated, $metadata['submitter'], true, $metadata['add_time'], $metadata['views']);
 
             set_url_moniker('wiki_post', strval($post_id));

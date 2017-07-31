@@ -606,7 +606,7 @@ function actual_add_catalogue_category($catalogue_name, $title, $description, $n
 
     log_it('ADD_CATALOGUE_CATEGORY', strval($id), get_translated_text($map['cc_title']));
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         if (!is_array($title)) {
             seo_meta_set_for_implicit('catalogue_category', strval($id), array($title, $description), $title);
@@ -824,7 +824,7 @@ function actual_edit_catalogue_category($id, $title, $description, $notes, $pare
     require_code('urls2');
     suggest_new_idmoniker_for('catalogues', 'category', strval($id), '', $title);
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_explicit('catalogue_category', strval($id), $meta_keywords, $meta_description);
 
     if ($old_parent_id !== $parent_id) {
@@ -910,7 +910,7 @@ function actual_delete_catalogue_category($id, $deleting_all = false)
 
     update_catalogue_content_ref('catalogue_category', strval($id), '');
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('catalogue_category', strval($id));
 
     $_title = get_translated_text($myrow['cc_title']);
@@ -1058,7 +1058,7 @@ function actual_add_catalogue_entry($category_id, $validated, $notes, $allow_rat
         $GLOBALS['SITE_DB']->query_insert('catalogue_efv_' . $sup_table_name, $smap);
     }
 
-    require_code('seo2');
+    require_code('content2');
     if (($meta_keywords == '') && ($meta_description == '')) {
         $seo_source_map = $map;
         $seo_source_map__specific = get_value('catalogue_seo_source_map__' . $catalogue_name);
@@ -1253,7 +1253,7 @@ function actual_edit_catalogue_entry($id, $category_id, $validated, $notes, $all
     require_code('urls2');
     suggest_new_idmoniker_for('catalogues', 'entry', strval($id), '', strip_comcode($title));
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_set_for_explicit('catalogue_entry', strval($id), $meta_keywords, $meta_description);
 
     $self_url = build_url(array('page' => 'catalogues', 'type' => 'entry', 'id' => $id), get_module_zone('catalogues'), array(), false, false, true);
@@ -1373,7 +1373,7 @@ function actual_delete_catalogue_entry($id)
     update_catalogue_content_ref('ck_' . $catalogue_name, strval($id), '');
     update_catalogue_content_ref('catalogue_entry', strval($id), '');
 
-    require_code('seo2');
+    require_code('content2');
     seo_meta_erase_storage('catalogue_entry', strval($id));
 
     calculate_category_child_count_cache($old_category_id);

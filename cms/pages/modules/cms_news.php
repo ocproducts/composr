@@ -414,7 +414,7 @@ class Module_cms_news extends Standard_crud_module
         $fields2->attach(get_syndication_option_fields('news'));
 
         // Metadata
-        require_code('seo2');
+        require_code('content2');
         $seo_fields = seo_get_fields($this->seo_type, ($id === null) ? null : strval($id), false);
         require_code('feedback2');
         $feedback_fields = feedback_fields($this->content_type, $allow_rating == 1, $allow_comments == 1, $allow_trackbacks == 1, $send_trackbacks == 1, $notes, $allow_comments == 2, false, true, false);
