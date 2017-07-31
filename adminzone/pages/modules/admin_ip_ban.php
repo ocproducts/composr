@@ -287,7 +287,7 @@ class Module_admin_ip_ban
                     } elseif ($ip == $_SERVER['SERVER_ADDR']) {
                         attach_message(do_lang_tempcode('WONT_BAN_SERVER', escape_html($ip)), 'warn');
                     } else {
-                        ban_ip($ip, isset($matches[2]) ? trim($matches[2]) : '');
+                        wrap_add_ip_ban($ip, isset($matches[2]) ? trim($matches[2]) : '');
                         $old_bans[] = $ip;
                     }
                 } else {
