@@ -319,7 +319,7 @@ function add_wysiwyg_comcode_markup($tag, $attributes, $embed, $semihtml, $metho
  * @param  MEMBER $source_member The member the evaluation is running as. This is a security issue, and you should only run as an administrator if you have considered where the Comcode came from carefully
  * @param  boolean $as_admin Whether to explicitly execute this with admin rights. There are a few rare situations where this should be done, for data you know didn't come from a member, but is being evaluated by one.
  * @param  ?string $pass_id A special identifier that can identify this resource in a sea of our resources of this class; usually this can be ignored, but may be used to provide a binding between JavaScript in evaluated Comcode, and the surrounding environment (null: no explicit binding)
- * @param  object $db The database connector to use
+ * @param  ?object $db The database connector to use (null: none; only do this for very simple Comcode)
  * @param  integer $flags A bitmask of COMCODE_* flags
  * @param  array $highlight_bits A list of words to highlight
  * @param  ?MEMBER $on_behalf_of_member The member we are running on behalf of, with respect to how attachments are handled; we may use this members attachments that are already within this post, and our new attachments will be handed to this member (null: member evaluating)
@@ -497,7 +497,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     $queued_tempcode = new Tempcode();
 
     // Silliness
-    $stupidity_mode = get_value('stupidity_mode'); // bork or leet
+    $stupidity_mode = function_exists('get_value') ? get_value('stupidity_mode') : null; // bork or leet
     if ($comcode_dangerous) {
         $stupidity_mode = get_param_string('stupidity_mode', '');
     }
@@ -521,7 +521,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
     $has_banners = addon_installed('banners');
 
     // Special textcode
-    $emoticons = $GLOBALS['FORUM_DRIVER']->find_emoticons(); // We'll be needing the emoticon array
+    $emoticons = isset($GLOBALS['FORUM_DRIVER']) ? $GLOBALS['FORUM_DRIVER']->find_emoticons() : array(); // We'll be needing the emoticon array
     $emoticon_start_chars = array();
     foreach (array_keys($emoticons) as $emoticon) {
         $emoticon_start_chars[$emoticon[0]] = true;

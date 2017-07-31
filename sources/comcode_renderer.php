@@ -293,7 +293,7 @@ function _comcode_to_tempcode($comcode, $source_member = null, $as_admin = false
     }
 
     if ($db === null) {
-        $db = $GLOBALS['SITE_DB'];
+        $db = isset($GLOBALS['SITE_DB']) ? $GLOBALS['SITE_DB'] : null;
     }
 
     if ($source_member === null) {
