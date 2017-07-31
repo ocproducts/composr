@@ -9,8 +9,8 @@
 
     $cms.templates.supportTicketScreen = function supportTicketScreen(params, container) {
         if ((params.serializedOptions != null) && (params.hash != null)) {
-            window.comments_serialized_options = strVal(params.serializedOptions);
-            window.comments_hash = strVal(params.hash);
+            window.commentsSerializedOptions = strVal(params.serializedOptions);
+            window.commentsHash = strVal(params.hash);
         }
 
         $cms.dom.on(container, 'focus', '.js-focus-update-ajax-member-list', function (e, input) {

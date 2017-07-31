@@ -7,17 +7,17 @@
 // ===========
 
 function addAttachment(startNum, postingFieldName) {
-    if (window.num_attachments === undefined) return;
-    if (window.max_attachments === undefined) return;
+    if (window.numAttachments === undefined) return;
+    if (window.maxAttachments === undefined) return;
 
     var addTo = document.getElementById('attachment_store');
 
-    window.num_attachments++;
+    window.numAttachments++;
 
     // Add new file input, if we are using naked file inputs
-    if (window.attachment_template.replace(/\s/, '') != '') {
+    if (window.attachmentTemplate.replace(/\s/, '') !== '') {
         var newDiv = document.createElement('div');
-        $cms.dom.html(newDiv, window.attachment_template.replace(/\_\_num_attachments\_\_/g, window.num_attachments));
+        $cms.dom.html(newDiv, window.attachmentTemplate.replace(/\_\_numAttachments\_\_/g, window.numAttachments));
         addTo.appendChild(newDiv);
     }
 
@@ -27,7 +27,7 @@ function addAttachment(startNum, postingFieldName) {
     }
 
     // Previous file input cannot be used anymore, if it exists
-    var element = document.getElementById('file' + window.num_attachments);
+    var element = document.getElementById('file' + window.numAttachments);
     if (element) {
         element.setAttribute('unselectable', 'on');
     }
@@ -36,15 +36,15 @@ function addAttachment(startNum, postingFieldName) {
 }
 
 function attachmentPresent(postValue, number) {
-    return !(postValue.indexOf('[attachment]new_' + number + '[/attachment]') == -1) && (postValue.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') == -1) && (postValue.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') == -1) && (postValue.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') == -1) && (postValue.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') == -1) && (postValue.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') == -1);
+    return !(postValue.indexOf('[attachment]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') === -1);
 }
 
 function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
     multi = !!multi;
 
     if (window.insertTextbox === undefined) return;
-    if (window.num_attachments === undefined) return;
-    if (window.max_attachments === undefined) return;
+    if (window.numAttachments === undefined) return;
+    if (window.maxAttachments === undefined) return;
 
     var post = document.getElementById(fieldName);
 
@@ -69,9 +69,9 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
 
         var ext = filepath.replace(/^.*\./, '').toLowerCase();
 
-        var isImage = (',{$CONFIG_OPTION;,valid_images},'.indexOf(',' + ext + ',') != -1);
-        var isVideo = (',{$CONFIG_OPTION;,valid_videos},'.indexOf(',' + ext + ',') != -1);
-        var isAudio = (',{$CONFIG_OPTION;,valid_audios},'.indexOf(',' + ext + ',') != -1);
+        var isImage = (',{$CONFIG_OPTION;,valid_images},'.indexOf(',' + ext + ',') !== -1);
+        var isVideo = (',{$CONFIG_OPTION;,valid_videos},'.indexOf(',' + ext + ',') !== -1);
+        var isAudio = (',{$CONFIG_OPTION;,valid_audios},'.indexOf(',' + ext + ',') !== -1);
         var isArchive = (ext == 'tar') || (ext == 'zip');
 
         var prefix = '', suffix = '';
@@ -89,9 +89,9 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
 
         if (trueAttachmentUi) {
             // Add field for next one
-            var addAnotherField = (number == window.num_attachments) && (window.num_attachments < window.max_attachments); // Needs running late, in case something happened inbetween
+            var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
             if (addAnotherField) {
-                addAttachment(window.num_attachments + 1, fieldName);
+                addAttachment(window.numAttachments + 1, fieldName);
             }
             return;
         }
@@ -106,12 +106,12 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                 window.insertTextbox(post, prefix);
             }
             if (multi) {
-                var splitFilename = document.getElementById('txtFileName_file' + window.num_attachments).value.split(/:/);
+                var splitFilename = document.getElementById('txtFileName_file' + window.numAttachments).value.split(/:/);
                 for (var i = 0; i < splitFilename.length; i++) {
-                    if (i != 0) window.num_attachments++;
+                    if (i != 0) window.numAttachments++;
                     window.insertTextbox(
                         post,
-                        comcode.replace(']new_' + number + '[', ']new_' + window.num_attachments + '[')
+                        comcode.replace(']new_' + number + '[', ']new_' + window.numAttachments + '[')
                     );
                 }
                 number = '' + (parseInt(number) + splitFilename.length - 1);
@@ -127,9 +127,9 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
             }
 
             // Add field for next one
-            var addAnotherField = (number == window.num_attachments) && (window.num_attachments < window.max_attachments); // Needs running late, in case something happened inbetween
+            var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
             if (addAnotherField) {
-                addAttachment(window.num_attachments + 1, fieldName);
+                addAttachment(window.numAttachments + 1, fieldName);
             }
 
             if (uploaderSettings !== undefined) {
@@ -171,10 +171,10 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                         // Add in additional Comcode buttons for the other files selected at the same time
                         if (multi) {
                             var comcodeSemihtml = '', comcode = '';
-                            var splitFilename = document.getElementById('txtFileName_file' + window.num_attachments).value.split(/:/);
+                            var splitFilename = document.getElementById('txtFileName_file' + window.numAttachments).value.split(/:/);
                             for (var i = 1; i < splitFilename.length; i++) {
-                                window.num_attachments++;
-                                var tmp = window.insert_comcode_tag(']new_' + number + '[', ']new_' + window.num_attachments + '[', true);
+                                window.numAttachments++;
+                                var tmp = window.insertComcodeTag(']new_' + number + '[', ']new_' + window.numAttachments + '[', true);
                                 comcodeSemihtml += tmp[0];
                                 comcode += tmp[1];
                             }
@@ -189,9 +189,9 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                         }
 
                         // Add field for next one
-                        var addAnotherField = (number == window.num_attachments) && (window.num_attachments < window.max_attachments); // Needs running late, in case something happened inbetween
+                        var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments); // Needs running late, in case something happened inbetween
                         if (addAnotherField) {
-                            addAttachment(window.num_attachments + 1, fieldName);
+                            addAttachment(window.numAttachments + 1, fieldName);
                         }
 
                         // Do insta-preview
@@ -209,9 +209,9 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
         }, 800); // In a timeout to disassociate possible 'enter' keypress which could have led to this function being called [enter on the file selection dialogue] and could propagate through (on Google Chrome anyways, maybe a browser bug)
     } else {
         // Add field for next one
-        var addAnotherField = (number == window.num_attachments) && (window.num_attachments < window.max_attachments);
+        var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments);
         if (addAnotherField)
-            addAttachment(window.num_attachments + 1, fieldName);
+            addAttachment(window.numAttachments + 1, fieldName);
     }
 }
 
@@ -231,7 +231,7 @@ function generateBackgroundPreview(post) {
     }
     formPost = $cms.form.modSecurityWorkaroundAjax(formPost.substr(1));
 
-    var previewRet = $cms.doAjaxRequest(window.form_preview_url + '&js_only=1&known_utf8=1', function () {
+    var previewRet = $cms.doAjaxRequest(window.formPreviewUrl + '&js_only=1&known_utf8=1', function () {
         $cms.dom.append(document.body, previewRet.responseText);
     }, formPost);
 }
@@ -240,21 +240,21 @@ function generateBackgroundPreview(post) {
 // COMCODE UI FUNCTIONS
 // ====================
 
-function do_input_html(fieldName) {
+function doInputHtml(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var post = document.getElementById(fieldName);
     window.insertTextboxWrapping(post, 'semihtml', '');
 }
 
-function do_input_code(fieldName) {
+function doInputCode(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var post = document.getElementById(fieldName);
     window.insertTextboxWrapping(post, (post.name == 'message') ? 'tt' : 'codebox', '');
 }
 
-function do_input_quote(fieldName) {
+function doInputQuote(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var post = document.getElementById(fieldName);
@@ -270,7 +270,7 @@ function do_input_quote(fieldName) {
     );
 }
 
-function do_input_box(fieldName) {
+function doInputBox(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var post = document.getElementById(fieldName);
@@ -286,7 +286,7 @@ function do_input_box(fieldName) {
     );
 }
 
-function do_input_menu(fieldName) {
+function doInputMenu(fieldName) {
     if (window.insertTextbox === undefined) return;
 
     $cms.ui.prompt(
@@ -315,13 +315,13 @@ function do_input_menu(fieldName) {
     );
 }
 
-function do_input_block(fieldName) {
+function doInputBlock(fieldName) {
     var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.keepStub();
     url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
     $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
-function do_input_comcode(fieldName, tag) {
+function doInputComcode(fieldName, tag) {
     var attributes = {};
     var defaultEmbed = null;
     var saveToId = null;
@@ -329,7 +329,7 @@ function do_input_comcode(fieldName, tag) {
     if (tag == null) {
         var element = document.getElementById(fieldName);
         if ($cms.form.isWysiwygField(element)) {
-            var selection = window.wysiwyg_editors[fieldName].getSelection();
+            var selection = window.wysiwygEditors[fieldName].getSelection();
             var ranges = selection.getRanges();
             if ( ranges[0] !== undefined) {
                 var comcodeElement = ranges[0].startContainer.$;
@@ -373,7 +373,10 @@ function do_input_comcode(fieldName, tag) {
             url += '&type=step2';
         }
     }
-    if ($cms.form.isWysiwygField(document.getElementById(fieldName))) url += '&in_wysiwyg=1';
+    if ($cms.form.isWysiwygField(document.getElementById(fieldName))) {
+        url += '&in_wysiwyg=1';
+    }
+    
     for (var key in attributes) {
         url += '&default_' + key + '=' + encodeURIComponent(attributes[key]);
     }
@@ -388,7 +391,7 @@ function do_input_comcode(fieldName, tag) {
     $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
-function do_input_list(fieldName, add) {
+function doInputList(fieldName, add) {
     if (window.insertTextbox === undefined) return;
 
     if (add === undefined) add = [];
@@ -401,21 +404,21 @@ function do_input_list(fieldName, add) {
         function (va) {
             if ((va != null) && (va != '')) {
                 add.push(va);
-                return do_input_list(fieldName, add)
+                return doInputList(fieldName, add)
             }
             if (add.length == 0) return;
             var i;
-            if (post.value.indexOf('[semihtml') != -1) {
+            if (post.value.indexOf('[semihtml') !== -1) {
                 window.insertTextbox(post, '[list]\n');
             }
             for (i = 0; i < add.length; i++) {
-                if (post.value.indexOf('[semihtml') != -1) {
+                if (post.value.indexOf('[semihtml') !== -1) {
                     window.insertTextbox(post, '[*]' + add[i] + '\n')
                 } else {
                     window.insertTextbox(post, ' - ' + add[i] + '\n')
                 }
             }
-            if (post.value.indexOf('[semihtml') != -1) {
+            if (post.value.indexOf('[semihtml') !== -1) {
                 window.insertTextbox(post, '[/list]\n')
             }
         },
@@ -423,7 +426,7 @@ function do_input_list(fieldName, add) {
     );
 }
 
-function do_input_hide(fieldName) {
+function doInputHide(fieldName) {
     if (window.insertTextbox === undefined) return;
 
     $cms.ui.prompt(
@@ -448,13 +451,13 @@ function do_input_hide(fieldName) {
     );
 }
 
-function do_input_thumb(fieldName, va) {
+function doInputThumb(fieldName, va) {
     if (window.insertTextbox === undefined) {
         return;
     }
 
-    if ((window.start_simplified_upload !== undefined) && (document.getElementById(fieldName).name != 'message')) {
-        var test = window.start_simplified_upload(fieldName);
+    if ((window.startSimplifiedUpload !== undefined) && (document.getElementById(fieldName).name != 'message')) {
+        var test = window.startSimplifiedUpload(fieldName);
         if (test) return;
     }
 
@@ -462,9 +465,9 @@ function do_input_thumb(fieldName, va) {
         '{!javascript:ENTER_URL;^}',
         va,
         function (va) {
-            if ((va != null) && (va.indexOf('://') == -1)) {
+            if ((va != null) && (va.indexOf('://') === -1)) {
                 $cms.ui.alert('{!javascript:NOT_A_URL;^}', function () {
-                    do_input_url(fieldName, va);
+                    doInputUrl(fieldName, va);
                 });
                 return;
             }
@@ -499,7 +502,7 @@ function do_input_thumb(fieldName, va) {
     );
 }
 
-function do_input_attachment(fieldName) {
+function doInputAttachment(fieldName) {
     if (window.insertTextbox === undefined) {
         return;
     }
@@ -532,7 +535,7 @@ function do_input_attachment(fieldName) {
     }
 }
 
-function do_input_url(fieldName, va) {
+function doInputUrl(fieldName, va) {
     if (window.insertTextbox === undefined) {
         return;
     }
@@ -543,7 +546,7 @@ function do_input_url(fieldName, va) {
         function (va) {
             if ((va != null) && (va.indexOf('://') == -1)) {
                 $cms.ui.alert('{!javascript:NOT_A_URL;^}', function () {
-                    do_input_url(fieldName, va);
+                    doInputUrl(fieldName, va);
                 });
                 return;
             }
@@ -566,7 +569,7 @@ function do_input_url(fieldName, va) {
     );
 }
 
-function do_input_page(fieldName) {
+function doInputPage(fieldName) {
     if (window.insertTextbox === undefined) {
         return;
     }
@@ -579,7 +582,9 @@ function do_input_page(fieldName) {
             null,
             'dialogWidth=600;dialogHeight=400;status=no;unadorned=yes',
             function (result) {
-                if ((result === undefined) || (result === null)) return;
+                if (result == null) {
+                    return;
+                }
 
                 $cms.ui.prompt(
                     '{!javascript:ENTER_CAPTION;^}',
@@ -627,7 +632,7 @@ function do_input_page(fieldName) {
     }
 }
 
-function do_input_email(fieldName, va) {
+function doInputEmail(fieldName, va) {
     if (window.insertTextbox === undefined) return;
 
     $cms.ui.prompt(
@@ -636,7 +641,7 @@ function do_input_email(fieldName, va) {
         function (va) {
             if ((va != null) && (va.indexOf('@') == -1)) {
                 $cms.ui.alert('{!javascript:NOT_A_EMAIL;^}', function () {
-                    do_input_url(fieldName, va);
+                    doInputUrl(fieldName, va);
                 });
                 return;
             }
@@ -659,21 +664,21 @@ function do_input_email(fieldName, va) {
     );
 }
 
-function do_input_b(fieldName) {
+function doInputB(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var element = document.getElementById(fieldName);
     window.insertTextboxWrapping(element, 'b', '');
 }
 
-function do_input_i(fieldName) {
+function doInputI(fieldName) {
     if (window.insertTextboxWrapping === undefined) return;
 
     var element = document.getElementById(fieldName);
     window.insertTextboxWrapping(element, 'i', '');
 }
 
-function do_input_font(fieldName) {
+function doInputFont(fieldName) {
     if (window.insertTextboxWrapping === undefined) {
         return;
     }
@@ -704,7 +709,7 @@ function do_input_font(fieldName) {
  */
 
 function initFormSaving(formId) {
-    window.last_autosave = new Date();
+    window.lastAutosave = new Date();
 
     $cms.inform('Initialising auto-save subsystem');
 
@@ -1031,7 +1036,7 @@ function _handleFormSaving(event, element, force) {
 
     var thisDate = new Date();
     if (!force) {
-        if ((thisDate.getTime() - window.last_autosave.getTime()) < 20 * 1000) return null; // Only save every 20 seconds
+        if ((thisDate.getTime() - window.lastAutosave.getTime()) < 20 * 1000) return null; // Only save every 20 seconds
     }
 
     if (element === undefined) {
@@ -1051,7 +1056,7 @@ function _handleFormSaving(event, element, force) {
     var autosaveName = getAutosaveName(elementName);
     $cms.setCookie(encodeURIComponent(getAutosaveUrlStem()), '1', 0.167/*4 hours*/);
 
-    window.last_autosave = thisDate;
+    window.lastAutosave = thisDate;
 
     // Save locally
     if (window.localStorage !== undefined) {

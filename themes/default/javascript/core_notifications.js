@@ -292,7 +292,7 @@ function _pollForNotifications(rawAjaxResult) {
             sound = 'off';
         }
         var notificationCode = notification.getAttribute('notification_code');
-        if (sound === 'on' && window.detect_change == undefined || notificationCode != 'ticket_reply' && notificationCode != 'ticket_reply_staff') {
+        if (sound === 'on' && window.detectChange == undefined || notificationCode != 'ticket_reply' && notificationCode != 'ticket_reply_staff') {
             if (window.soundManager !== undefined) {
                 var goFunc = function () {
                     var soundUrl = 'data/sounds/message_received.mp3';
@@ -348,7 +348,7 @@ function _toggleMessagingBox(event, name, hide) {
         return;
     }
 
-    event.within_message_box = true;
+    event.withinMessageBox = true;
     event.stopPropagation();
 
     var body = document.body;
@@ -357,10 +357,10 @@ function _toggleMessagingBox(event, name, hide) {
         body.appendChild(el);
 
         el.addEventListener('click', function (event) {
-            event.within_message_box = true;
+            event.withinMessageBox = true;
         });
         body.addEventListener('click', function (event) {
-            if (event.within_message_box !== undefined) {
+            if (event.withinMessageBox !== undefined) {
                 return;
             }
             _toggleMessagingBox(event, 'top_personal_stats', true);

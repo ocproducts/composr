@@ -5,7 +5,7 @@
 // ==============
 
 function copyFieldsIntoBottom(i, changed) {
-    window.current_selection = i;
+    window.currentSelection = i;
     var form = $cms.dom.$id('edit_form');
 
     form.elements['caption_long'].value = $cms.dom.$id('caption_long_' + i).value;

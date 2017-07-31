@@ -15,13 +15,13 @@
     $cms.ui.createTreeList = function createTreeList(name, ajaxUrl, rootId, opts, multiSelection, tabindex, allNodesSelectable, useServerId) {
         var options = {
                 name: name,
-                ajax_url: ajaxUrl,
-                root_id: rootId,
+                ajaxUrl: ajaxUrl,
+                rootId: rootId,
                 options: opts,
-                multi_selection: multiSelection,
+                multiSelection: multiSelection,
                 tabindex: tabindex,
-                all_nodes_selectable: allNodesSelectable,
-                use_server_id: useServerId
+                allNodesSelectable: allNodesSelectable,
+                useServerId: useServerId
             },
             el = $cms.dom.$id('tree_list__root_' + name);
 
@@ -38,19 +38,19 @@
         TreeList.base(this, 'constructor', arguments);
 
         this.name = params.name;
-        this.ajax_url = params.ajax_url;
+        this.ajaxUrl = params.ajaxUrl;
         this.options = params.options;
-        this.multi_selection = !!params.multi_selection;
+        this.multiSelection = !!params.multiSelection;
         this.tabindex = params.tabindex || null;
-        this.all_nodes_selectable = !!params.all_nodes_selectable;
-        this.use_server_id = !!params.use_server_id;
+        this.allNodesSelectable = !!params.allNodesSelectable;
+        this.useServerId = !!params.useServerId;
 
         $cms.dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
-        var url = $cms.baseUrl(this.ajax_url);
-        if (params.root_id) {
-            url += '&id=' + encodeURIComponent(params.root_id);
+        var url = $cms.baseUrl(this.ajaxUrl);
+        if (params.rootId) {
+            url += '&id=' + encodeURIComponent(params.rootId);
         }
         url += '&options=' + this.options;
         url += '&default=' + encodeURIComponent($cms.dom.$id(this.name).value);
@@ -64,14 +64,14 @@
 
     $cms.inherits(TreeList, $cms.View, /**@lends TreeList#*/ {
         specialKeyPressed: false,
-        tree_list_data: '',
+        treeListData: '',
         busy: false,
-        last_clicked: null, // The hyperlink object that was last clicked (usage during multi selection when holding down shift)
+        lastClicked: null, // The hyperlink object that was last clicked (usage during multi selection when holding down shift)
 
         /* Go through our tree list looking for a particular XML node */
         getElementByIdHack: function getElementByIdHack(id, type, ob, serverid) {
             type = strVal(type) || 'c';
-            ob = ob || this.tree_list_data;
+            ob = ob || this.treeListData;
             serverid = !!serverid;
 
             var results = ob.getElementsByTagName((type === 'c') ? 'category' : 'entry');
@@ -98,8 +98,8 @@
                 html = $cms.dom.$id('tree_list__root_' + this.name);
                 $cms.dom.html(html, '');
 
-                this.tree_list_data = ajaxResult.cloneNode(true);
-                xml = this.tree_list_data;
+                this.treeListData = ajaxResult.cloneNode(true);
+                xml = this.treeListData;
 
                 if (!xml.firstElementChild) {
                     var error = document.createTextNode((this.name.indexOf('category') === -1 && window.location.href.indexOf('category') === -1) ? '{!NO_ENTRIES;^}' : '{!NO_CATEGORIES;^}');
@@ -118,7 +118,7 @@
 
             attributesFullFixup(xml);
 
-            this.root_element = this.renderTree(xml, html);
+            this.rootElement = this.renderTree(xml, html);
 
             var name = this.name;
             fixupNodePositions(name);
@@ -193,8 +193,8 @@
                 nodeSelf.className = 'tree_list_node';
                 nodeSelfWrap.appendChild(nodeSelf);
                 nodeSelf.object = that;
-                colour = (node.getAttribute('selectable') == 'true' || that.all_nodes_selectable) ? 'native_ui_foreground' : 'locked_input_field';
-                selectable = (node.getAttribute('selectable') == 'true' || that.all_nodes_selectable);
+                colour = (node.getAttribute('selectable') == 'true' || that.allNodesSelectable) ? 'native_ui_foreground' : 'locked_input_field';
+                selectable = (node.getAttribute('selectable') == 'true' || that.allNodesSelectable);
                 if (node.localName === 'category') {
                     // Render self
                     nodeSelf.className = (node.getAttribute('highlighted') == 'true') ? 'tree_list_highlighted' : 'tree_list_nonhighlighted';
@@ -273,15 +273,15 @@
                     newHtml.id = that.name + 'tree_list_c_' + node.getAttribute('id');
                     newHtml.style.display = ((!initiallyExpanded) || (node.getAttribute('has_children') != 'true')) ? 'none' : 'block';
                     newHtml.style.paddingLeft = '15px';
-                    var selected = ((that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value && element.value != '') || node.getAttribute('selected') == 'yes';
+                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value && element.value != '') || node.getAttribute('selected') == 'yes';
                     if (selectable) {
                         that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_c_' + node.getAttribute('id')), selected);
                         if (selected) {
-                            element.value = (that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')); // Copy in proper ID for what is selected, not relying on what we currently have as accurate
+                            element.value = (that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')); // Copy in proper ID for what is selected, not relying on what we currently have as accurate
                             if (element.value != '') {
-                                if (element.selected_title === undefined) element.selected_title = '';
-                                if (element.selected_title != '') element.selected_title += ',';
-                                element.selected_title += node.getAttribute('title');
+                                if (element.selectedTitle === undefined) element.selectedTitle = '';
+                                if (element.selectedTitle != '') element.selectedTitle += ',';
+                                element.selectedTitle += node.getAttribute('title');
                             }
                             if (element.onchange) element.onchange();
                             if (element.fakeonchange !== undefined && element.fakeonchange) element.fakeonchange();
@@ -340,8 +340,8 @@
                         }
                     });
                     html.appendChild(nodeSelfWrap);
-                    var selected = ((that.use_server_id ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') == 'yes';
-                    if ((that.multi_selection) && (!selected)) {
+                    var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') == 'yes';
+                    if ((that.multiSelection) && (!selected)) {
                         selected = ((',' + element.value + ',').indexOf(',' + node.getAttribute('id') + ',') != -1);
                     }
                     that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_e_' + node.getAttribute('id')), selected);
@@ -350,46 +350,46 @@
                 if ((node.getAttribute('draggable')) && (node.getAttribute('draggable') !== 'false')) {
                     masterHtml = $cms.dom.$id('tree_list__root_' + that.name);
                     fixUpNodePosition(nodeSelf);
-                    nodeSelf.cms_draggable = node.getAttribute('draggable');
+                    nodeSelf.cmsDraggable = node.getAttribute('draggable');
                     nodeSelf.draggable = true;
                     nodeSelf.ondragstart = function (event) {
                         $cms.ui.clearOutTooltips();
 
                         this.className += ' being_dragged';
 
-                        window.is_doing_a_drag = true;
+                        window.isDoingADrag = true;
                     };
                     nodeSelf.ondrag = function (event) {
                         if (!event.clientY) return;
-                        var hit = findOverlappingSelectable(event.clientY + window.pageYOffset, this, this.object.tree_list_data, this.object.name);
-                        if (this.last_hit != null) {
-                            this.last_hit.parentNode.parentNode.style.border = '0px';
+                        var hit = findOverlappingSelectable(event.clientY + window.pageYOffset, this, this.object.treeListData, this.object.name);
+                        if (this.lastHit != null) {
+                            this.lastHit.parentNode.parentNode.style.border = '0px';
                         }
                         if (hit != null) {
                             hit.parentNode.parentNode.style.border = '1px dotted green';
-                            this.last_hit = hit;
+                            this.lastHit = hit;
                         }
                     };
                     nodeSelf.ondragend = function (event) {
-                        window.is_doing_a_drag = false;
+                        window.isDoingADrag = false;
 
                         this.classList.remove('being_dragged');
 
-                        if (this.last_hit != null) {
-                            this.last_hit.parentNode.parentNode.style.border = '0px';
+                        if (this.lastHit != null) {
+                            this.lastHit.parentNode.parentNode.style.border = '0px';
 
-                            if (this.parentNode.parentNode != this.last_hit) {
+                            if (this.parentNode.parentNode != this.lastHit) {
                                 var xmlNode = this.object.getElementByIdHack(this.querySelector('input').id.substr(7 + this.object.name.length));
-                                var targetXmlNode = this.object.getElementByIdHack(this.last_hit.id.substr(12 + this.object.name.length));
+                                var targetXmlNode = this.object.getElementByIdHack(this.lastHit.id.substr(12 + this.object.name.length));
 
-                                if ((this.last_hit.childNodes.length === 1) && (this.last_hit.childNodes[0].nodeName === '#text')) {
-                                    $cms.dom.html(this.last_hit, '');
-                                    this.object.renderTree(targetXmlNode, this.last_hit);
+                                if ((this.lastHit.childNodes.length === 1) && (this.lastHit.childNodes[0].nodeName === '#text')) {
+                                    $cms.dom.html(this.lastHit, '');
+                                    this.object.renderTree(targetXmlNode, this.lastHit);
                                 }
 
                                 // Change HTML
                                 this.parentNode.parentNode.removeChild(this.parentNode);
-                                this.last_hit.appendChild(this.parentNode);
+                                this.lastHit.appendChild(this.parentNode);
 
                                 // Change node structure
                                 xmlNode.parentNode.removeChild(xmlNode);
@@ -416,7 +416,7 @@
                         if (event.cancelable) {
                             event.preventDefault();
                         }
-                        // ondragend will call with last_hit set, we don't track the drop spots using this event handler, we track it in real time using mouse coordinate analysis
+                        // ondragend will call with lastHit set, we don't track the drop spots using this event handler, we track it in real time using mouse coordinate analysis
                     };
                 }
 
@@ -472,7 +472,7 @@
                 }
 
                 if ((xmlNode.getAttribute('has_children') === 'true') && !xmlNode.firstElementChild) {
-                    var url = $cms.baseUrl(this.object.ajax_url + '&id=' + encodeURIComponent(realClickedId) + '&options=' + this.object.options + '&default=' + encodeURIComponent(element.value));
+                    var url = $cms.baseUrl(this.object.ajaxUrl + '&id=' + encodeURIComponent(realClickedId) + '&options=' + this.object.options + '&default=' + encodeURIComponent(element.value));
                     var ob = this.object;
                     $cms.doAjaxRequest(url, function (ajaxResultFrame, ajaxResult) {
                         $cms.dom.html(htmlNode, '');
@@ -523,23 +523,22 @@
                 return;
             }
             var i,
-                selectedBefore = (element.value == '') ? [] : (this.object.multi_selection ? element.value.split(',') : [element.value]);
+                selectedBefore = (element.value == '') ? [] : (this.object.multiSelection ? element.value.split(',') : [element.value]);
 
             event.stopPropagation();
             event.preventDefault();
 
-            if (!assumeCtrl && event.shiftKey && this.object.multi_selection) {
+            if (!assumeCtrl && event.shiftKey && this.object.multiSelection) {
                 // We're holding down shift so we need to force selection of everything bounded between our last click spot and here
                 var allA = $cms.dom.$id('tree_list__root_' + this.object.name).getElementsByTagName('label');
                 var posLast = -1;
                 var posUs = -1;
-                if (this.object.last_clicked == null) this.object.last_clicked = allA[0];
+                if (this.object.lastClicked == null) this.object.lastClicked = allA[0];
                 for (i = 0; i < allA.length; i++) {
                     if (allA[i] == this || allA[i] == this.parentNode) posUs = i;
-                    if (allA[i] == this.object.last_clicked || allA[i] == this.object.last_clicked.parentNode) posLast = i;
+                    if (allA[i] == this.object.lastClicked || allA[i] == this.object.lastClicked.parentNode) posLast = i;
                 }
-                if (posUs < posLast) // ReOrder them
-                {
+                if (posUs < posLast) {// ReOrder them
                     var temp = posUs;
                     posUs = posLast;
                     posLast = temp;
@@ -555,9 +554,9 @@
                     }
 
                     if (allA[i].getAttribute('id').substr(5 + this.object.name.length, thatType.length) == thatType) {
-                        thatSelectedId = (this.object.use_server_id) ? allA[i].getAttribute('serverid') : allA[i].getAttribute('id').substr(7 + this.object.name.length);
+                        thatSelectedId = (this.object.useServerId) ? allA[i].getAttribute('serverid') : allA[i].getAttribute('id').substr(7 + this.object.name.length);
                         thatXmlNode = this.object.getElementByIdHack(thatSelectedId, thatType);
-                        if ((thatXmlNode.getAttribute('selectable') == 'true') || (this.object.all_nodes_selectable)) {
+                        if ((thatXmlNode.getAttribute('selectable') == 'true') || (this.object.allNodesSelectable)) {
                             if ((i >= posLast) && (i <= posUs)) {
                                 if (selectedBefore.indexOf(thatSelectedId) == -1)
                                     allA[i].handleSelection(event, true);
@@ -579,14 +578,14 @@
             }
             var realSelectedId = this.getAttribute('id').substr(7 + this.object.name.length),
                 xmlNode = this.object.getElementByIdHack(realSelectedId, type),
-                selectedId = (this.object.use_server_id) ? xmlNode.getAttribute('serverid') : realSelectedId;
+                selectedId = (this.object.useServerId) ? xmlNode.getAttribute('serverid') : realSelectedId;
 
-            if (xmlNode.getAttribute('selectable') == 'true' || this.object.all_nodes_selectable) {
+            if (xmlNode.getAttribute('selectable') == 'true' || this.object.allNodesSelectable) {
                 var selectedAfter = selectedBefore;
                 for (i = 0; i < selectedBefore.length; i++) {
                     this.object.makeElementLookSelected($cms.dom.$id(this.object.name + 'tsel_' + type + '_' + selectedBefore[i]), false);
                 }
-                if ((!this.object.multi_selection) || (((!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) && (!assumeCtrl))) {
+                if ((!this.object.multiSelection) || (((!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) && (!assumeCtrl))) {
                     selectedAfter = [];
                 }
                 if ((selectedBefore.indexOf(selectedId) != -1) && (((selectedBefore.length == 1) && (selectedBefore[0] != selectedId)) || ((event.ctrlKey) || (event.metaKey) || (event.altKey)) || (assumeCtrl))) {
@@ -596,7 +595,7 @@
                     }
                 } else if (selectedAfter.indexOf(selectedId) == -1) {
                     selectedAfter.push(selectedId);
-                    if (!this.object.multi_selection) { // This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
+                    if (!this.object.multiSelection) { // This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
                         var anchors = $cms.dom.$id('tree_list__root_' + this.object.name).getElementsByTagName('label');
                         for (i = 0; i < anchors.length; i++) {
                             this.object.makeElementLookSelected(anchors[i], false);
@@ -609,10 +608,10 @@
                 }
 
                 element.value = selectedAfter.join(',');
-                element.selected_title = (selectedAfter.length == 1) ? xmlNode.getAttribute('title') : element.value;
-                element.selected_editlink = xmlNode.getAttribute('edit');
+                element.selectedTitle = (selectedAfter.length == 1) ? xmlNode.getAttribute('title') : element.value;
+                element.selectedEditlink = xmlNode.getAttribute('edit');
                 if (element.value == '') {
-                    element.selected_title = '';
+                    element.selectedTitle = '';
                 }
                 if (element.onchange) {
                     element.onchange();
@@ -623,7 +622,7 @@
             }
 
             if (!assumeCtrl) {
-                this.object.last_clicked = this;
+                this.object.lastClicked = this;
             }
         },
 
@@ -640,11 +639,11 @@
         var node, i,
             id = xml.getAttribute('id');
 
-        window.attributes_full || (window.attributes_full = {});
-        window.attributes_full[id] || (window.attributes_full[id] = {});
+        window.attributesFull || (window.attributesFull = {});
+        window.attributesFull[id] || (window.attributesFull[id] = {});
 
         for (i = 0; i < xml.attributes.length; i++) {
-            window.attributes_full[id][xml.attributes[i].name] = xml.attributes[i].value;
+            window.attributesFull[id][xml.attributes[i].name] = xml.attributes[i].value;
         }
         for (i = 0; i < xml.children.length; i++) {
             node = xml.children[i];
@@ -685,7 +684,7 @@
             }
         }
 
-        if (node.getAttribute('droppable') == element.cms_draggable) {
+        if (node.getAttribute('droppable') == element.cmsDraggable) {
             childNodeElement = $cms.dom.$id(name + 'tree_list_' + ((node.localName === 'category') ? 'c' : 'e') + '_' + node.getAttribute('id'));
             y = $cms.dom.findPosY(childNodeElement.parentNode.parentNode, true);
             height = childNodeElement.parentNode.parentNode.offsetHeight;

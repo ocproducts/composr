@@ -29,12 +29,12 @@
     };
 }(window.$cms));
 
-window.sb_cc_timer = null;
-window.sb_last_message_id = null;
+window.sbCcTimer = null;
+window.sbLastMessageId = null;
 
 function sbChatCheck(roomId, lastMessageId, lastEventId) {
-    window.sb_room_id = roomId;
-    window.sb_last_message_id = lastMessageId;
+    window.sbRoomId = roomId;
+    window.sbLastMessageId = lastMessageId;
 
     function sbChatCheckResponse(ajaxResultFrame, ajaxResult) {
         if (!ajaxResult) return; // Some server side glitch. As this polls, lets ignore it
@@ -42,14 +42,14 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
         sbHandleSignals(ajaxResult);
 
         // Schedule the next check
-        if (window.sb_cc_timer) {
-            clearTimeout(window.sb_cc_timer);
-            window.sb_cc_timer = null;
+        if (window.sbCcTimer) {
+            clearTimeout(window.sbCcTimer);
+            window.sbCcTimer = null;
         }
-        window.sb_cc_timer = setTimeout(function () {
-            var messageId = window.sb_last_message_id;
+        window.sbCcTimer = setTimeout(function () {
+            var messageId = window.sbLastMessageId;
             return function () {
-                sbChatCheck(window.sb_room_id, messageId, -1)
+                sbChatCheck(window.sbRoomId, messageId, -1)
             }
         }(), 10000);
 
@@ -61,8 +61,8 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
             for (var i = 0; i < messages.length; i++) {
                 if (messages[i].localName === 'div') {
                     var id = messages[i].getAttribute("id");
-                    if (id > window.sb_last_message_id && window.sb_last_message_id != -1) {
-                        window.sb_last_message_id = id;
+                    if (id > window.sbLastMessageId && window.sbLastMessageId != -1) {
+                        window.sbLastMessageId = id;
                         if ($cms.dom.html(messages[i]).indexOf('((SHAKE))') != -1) {
                             window.doShake();
                         } else {

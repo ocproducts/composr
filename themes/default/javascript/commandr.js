@@ -1,7 +1,7 @@
 'use strict';
 
-window.previous_commands || (window.previous_commands = []);
-(window.current_command !== undefined) ||  (window.current_command = null);
+window.previousCommands || (window.previousCommands = []);
+(window.currentCommand !== undefined) ||  (window.currentCommand = null);
 
 (function ($cms) {
     'use strict';
@@ -62,48 +62,48 @@ window.previous_commands || (window.previous_commands = []);
         var file = strVal(params.file);
 
         $cms.dom.on(container, 'submit', '.js-submit-commandr-form-submission', function (e, form) {
-            var command = 'write "' + file + '" "' + form.elements.edit_content.value.replace(/\\/g, '\\\\').replace(/</g, '\\<').replace(/>/g, '\\>').replace(/"/g, '\\"') + '"';
+            var command = 'write "' + file + '" "' + form.elements['edit_content'].value.replace(/\\/g, '\\\\').replace(/</g, '\\<').replace(/>/g, '\\>').replace(/"/g, '\\"') + '"';
             commandrFormSubmission(command, form);
         });
     };
 
     // Deal with Commandr history
     function commandrHandleHistory(element, keyCode, e) {
-        if ((keyCode == 38) && (window.previous_commands.length > 0)) { // Up button
+        if ((keyCode == 38) && (window.previousCommands.length > 0)) { // Up button
             e && event.stopPropagation();
             if (e.cancelable) {
                 e.preventDefault();
             }
 
-            if (window.current_command == null) {
-                window.current_command = window.previous_commands.length - 1;
-                element.value = window.previous_commands[window.current_command];
+            if (window.currentCommand == null) {
+                window.currentCommand = window.previousCommands.length - 1;
+                element.value = window.previousCommands[window.currentCommand];
             }
-            else if (window.current_command > 0) {
-                window.current_command--;
-                element.value = window.previous_commands[window.current_command];
+            else if (window.currentCommand > 0) {
+                window.currentCommand--;
+                element.value = window.previousCommands[window.currentCommand];
             }
             return false;
-        } else if ((keyCode == 40) && (window.previous_commands.length > 0)) { // Down button
+        } else if ((keyCode == 40) && (window.previousCommands.length > 0)) { // Down button
 
             e && e.stopPropagation();
             if (e.cancelable) {
                 e.preventDefault();
             }
 
-            if (window.current_command != null) {
-                if (window.current_command < window.previous_commands.length - 1) {
-                    window.current_command++;
-                    element.value = window.previous_commands[window.current_command];
+            if (window.currentCommand != null) {
+                if (window.currentCommand < window.previousCommands.length - 1) {
+                    window.currentCommand++;
+                    element.value = window.previousCommands[window.currentCommand];
                 }
                 else {
-                    window.current_command = null;
+                    window.currentCommand = null;
                     element.value = '';
                 }
             }
             return false;
         } else {
-            window.current_command = null;
+            window.currentCommand = null;
             return true;
         }
     }
@@ -120,15 +120,15 @@ window.previous_commands || (window.previous_commands = []);
         post = $cms.form.modSecurityWorkaroundAjax(post);
         $cms.doAjaxRequest('{$FIND_SCRIPT;,commandr}' + $cms.keepStub(true), commandrCommandResponse, post);
 
-        window.disable_timeout = setTimeout(function () {
+        window.disableTimeout = setTimeout(function () {
             document.getElementById('commandr_command').disabled = false;
             document.getElementById('commandr_command').focus();
-            if (window.disable_timeout) {
-                clearTimeout(window.disable_timeout);
-                window.disable_timeout = null;
+            if (window.disableTimeout) {
+                clearTimeout(window.disableTimeout);
+                window.disableTimeout = null;
             }
         }, 5000);
-        window.previous_commands.push(command);
+        window.previousCommands.push(command);
 
         return false;
     }
@@ -136,9 +136,9 @@ window.previous_commands || (window.previous_commands = []);
 
 // Deal with the response to a command
 function commandrCommandResponse(ajaxResultFrame, ajaxResult) {
-    if (window.disable_timeout) {
-        clearTimeout(window.disable_timeout);
-        window.disable_timeout = null;
+    if (window.disableTimeout) {
+        clearTimeout(window.disableTimeout);
+        window.disableTimeout = null;
     }
 
     document.getElementById('commandr_command').disabled = false;

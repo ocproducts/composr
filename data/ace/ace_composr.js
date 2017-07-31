@@ -1,7 +1,9 @@
-window.ace_editors || (window.ace_editors = {});
+window.aceEditors || (window.aceEditors = {});
 
 function aceComposrLoader(textareaId, programmingLanguage, autoRefresh) {
-    if (typeof autoRefresh == 'undefined') autoRefresh = true;
+    if (typeof autoRefresh === 'undefined') {
+        autoRefresh = true;
+    }
 
     // Create Ace editor div from textarea
     var textarea = document.getElementById(textareaId);
@@ -14,7 +16,7 @@ function aceComposrLoader(textareaId, programmingLanguage, autoRefresh) {
     textarea.parentNode.insertBefore(div, textarea);
 
     // Initialise Ace editor
-    var editor = ace.edit(ace_id);
+    var editor = window.ace.edit(ace_id);
     editor.setTheme('ace/theme/textmate');
     var editor_session = editor.getSession();
     editor_session.setMode('ace/mode/' + programmingLanguage);
@@ -22,13 +24,13 @@ function aceComposrLoader(textareaId, programmingLanguage, autoRefresh) {
     editor.setHighlightActiveLine(true);
     editor.setShowPrintMargin(false);
     editor.$blockScrolling = Infinity;
-    if (val.indexOf('{+') != -1 || val.indexOf('{$') != -1) {
+    if (val.indexOf('{+') !== -1 || val.indexOf('{$') !== -1) {
         // Troublesome Tempcode, so no syntax validation
         editor_session.setOption('useWorker', false);
     }
 
     // Save reference
-    window.ace_editors[textareaId] = editor;
+    window.aceEditors[textareaId] = editor;
 
     // Keep textarea in sync with the Ace editor
     editor_session.setValue(val);
@@ -40,11 +42,11 @@ function aceComposrLoader(textareaId, programmingLanguage, autoRefresh) {
 }
 
 function editareaIsLoaded(textareaId) {
-    return (typeof window.ace_editors[textareaId] != 'undefined');
+    return (typeof window.aceEditors[textareaId] !== 'undefined');
 }
 
 function editareaDoSearch(textareaId, regexp) {
-    var editor = window.ace_editors[textareaId];
+    var editor = window.aceEditors[textareaId];
 
     editor.find(regexp, {
         wrap: true,
@@ -58,14 +60,16 @@ function editareaDoSearch(textareaId, regexp) {
 }
 
 function editareaReverseRefresh(textareaId) {
-    var editor = window.ace_editors[textareaId];
-    if (typeof editor == 'undefined') return;
+    var editor = window.aceEditors[textareaId];
+    if (typeof editor === 'undefined') {
+        return;
+    }
 
     document.getElementById(textareaId).value = editor.getValue();
 }
 
 function editareaRefresh(textareaId) {
-    var editor = window.ace_editors[textareaId];
+    var editor = window.aceEditors[textareaId];
     if (editor == null) {
         return;
     }
@@ -74,7 +78,7 @@ function editareaRefresh(textareaId) {
 }
 
 function editareaGetValue(textareaId) {
-    var editor = window.ace_editors[textareaId];
+    var editor = window.aceEditors[textareaId];
 
     return editor.getValue();
 }

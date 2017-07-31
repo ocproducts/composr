@@ -10,7 +10,7 @@
 
         $cms.dom.on(container, 'change', '.js-change-input-tree-update-children-value', function (e, input) {
             if (input.value != '') {
-                $cms.dom.$('#children').value += input.value + '=' + input.selected_title + '\n';
+                $cms.dom.$('#children').value += input.value + '=' + input.selectedTitle + '\n';
             }
         });
     };

@@ -4,12 +4,12 @@
     'use strict';
 
     $cms.templates.realtimeRainOverlay = function (params, container) {
-        window.min_time = +params.minTime || 0;
+        window.minTime = +params.minTime || 0;
         window.paused = false;
-        window.bubble_groups = {};
-        window.total_lines = 0;
-        window.bubble_timer_1 = null;
-        window.bubble_timer_2 = null;
+        window.bubbleGroups = {};
+        window.totalLines = 0;
+        window.bubbleTimer1 = null;
+        window.bubbleTimer2 = null;
 
         startRealtimeRain();
 
@@ -32,7 +32,7 @@
         });
 
         $cms.dom.on(container, 'mouseover', '.js-mouseover-set-time-line-position', function () {
-            setTimeLinePosition(window.current_time);
+            setTimeLinePosition(window.currentTime);
         });
 
         $cms.dom.on(container, 'click', '.js-click-toggle-window-pausing', function (e, btn) {
@@ -50,36 +50,36 @@
 
         $cms.dom.on(container, 'mouseover mouseout', '.js-hover-toggle-real-time-indicator', function (e, target) {
             if (!target.contains(e.relatedTarget)) {
-                window.disable_real_time_indicator = (e.type === 'mouseover');
+                window.disableRealTimeIndicator = (e.type === 'mouseover');
             }
         });
 
         $cms.dom.on(container, 'click', '.js-click-rain-slow-down', function () {
-            window.time_window = window.time_window / 1.2;
+            window.timeWindow = window.timeWindow / 1.2;
         });
 
         $cms.dom.on(container, 'click', '.js-click-rain-slow-up', function () {
-            window.time_window = window.time_window * 1.2;
+            window.timeWindow = window.timeWindow * 1.2;
         });
     };
 
     $cms.templates.realtimeRainBubble = function (params, container) {
-        window.pending_eval_function = function (el) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
+        window.pendingEvalFunction = function (el) { // In webkit you can't get a node until it's been closed, so we need to set our code into a function and THEN run it
             if (params.tickerText !== undefined) {
                 setTimeout(function () {
                     $cms.dom.html(document.getElementById('news_go_here'), params.tickerText);
                 }, params.relativeTimestamp * 1000);
             }
             // Set up extra attributes
-            el.time_offset = params.relativeTimestamp;
-            el.lines_for = [];
+            el.timeOffset = params.relativeTimestamp;
+            el.linesFor = [];
 
             if (params.groupId !== undefined){
-                el.lines_for.push(params.groupId);
+                el.linesFor.push(params.groupId);
             }
 
             if ((params.specialIcon !== undefined) && (params.specialIcon === 'email-icon')) {
-                el.icon_multiplicity = params.multiplicity;
+                el.iconMultiplicity = params.multiplicity;
             }
         };
     };
@@ -92,14 +92,14 @@ function realtimeRainButtonLoadHandler() {
     var e = $cms.dom.$('#real_time_surround');
     if (e) { // Clicked twice - so now we close it
         bubblesTidyUp();
-        if (window.bubble_timer_1) {
-            clearInterval(window.bubble_timer_1);
-            window.bubble_timer_1 = null;
+        if (window.bubbleTimer1) {
+            clearInterval(window.bubbleTimer1);
+            window.bubbleTimer1 = null;
         }
 
-        if (window.bubble_timer_2) {
-            clearInterval(window.bubble_timer_2);
-            window.bubble_timer_2 = null;
+        if (window.bubbleTimer2) {
+            clearInterval(window.bubbleTimer2);
+            window.bubbleTimer2 = null;
         }
 
         if (e.parentNode) {
@@ -151,21 +151,21 @@ function startRealtimeRain() {
 
     document.getElementById('loading_icon').style.display = 'block';
 
-    window.current_time = timeNow() - 10;
-    window.time_window = 10;
-    getMoreEvents(window.current_time + 1, window.current_time + window.time_window); // note the +1 is because the time window is inclusive
-    window.bubble_timer_1 = setInterval(function () {
+    window.currentTime = timeNow() - 10;
+    window.timeWindow = 10;
+    getMoreEvents(window.currentTime + 1, window.currentTime + window.timeWindow); // note the +1 is because the time window is inclusive
+    window.bubbleTimer1 = setInterval(function () {
         if (window.paused) return;
-        getMoreEvents(window.current_time + 1, window.current_time + window.time_window);
+        getMoreEvents(window.currentTime + 1, window.currentTime + window.timeWindow);
     }, 10000);
-    window.bubble_timer_2 = setInterval(function () {
+    window.bubbleTimer2 = setInterval(function () {
         if (window.paused) return;
-        if (window.time_window + window.current_time > timeNow()) {
-            window.time_window = 10;
-            window.current_time = timeNow() - 10;
+        if (window.timeWindow + window.currentTime > timeNow()) {
+            window.timeWindow = 10;
+            window.currentTime = timeNow() - 10;
         }
-        if ((window.disable_real_time_indicator === undefined) || (!window.disable_real_time_indicator)) setTimeLinePosition(window.current_time);
-        window.current_time += window.time_window / 10.0;
+        if ((window.disableRealTimeIndicator === undefined) || (!window.disableRealTimeIndicator)) setTimeLinePosition(window.currentTime);
+        window.currentTime += window.timeWindow / 10.0;
     }, 1000);
 }
 
@@ -217,14 +217,14 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
             return true; // (break)
         }
         setTimeout(function () {
-            window.pending_eval_function(clonedMessage);
+            window.pendingEvalFunction(clonedMessage);
 
             // Set positioning (or break-out if we have too many bubbles to show)
             clonedMessage.style.position = 'absolute';
             clonedMessage.style.zIndex = 50;
             clonedMessage.style.left = leftPos + 'px';
             bubbles.appendChild(clonedMessage);
-            var verticalSlot = Math.round(totalVerticalSlots * clonedMessage.time_offset / window.time_window);
+            var verticalSlot = Math.round(totalVerticalSlots * clonedMessage.timeOffset / window.timeWindow);
             clonedMessage.style.top = (-(verticalSlot + 1) * clonedMessage.offsetHeight) + 'px';
 
             // JS events, for pausing and changing z-index
@@ -245,11 +245,11 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
 
             // Draw lines and emails animation (after delay, so that we know it's rendered by then and hence knows full coordinates)
             setTimeout(function () {
-                if ((clonedMessage.lines_for === undefined) || (clonedMessage.icon_multiplicity === undefined)) {
+                if ((clonedMessage.linesFor === undefined) || (clonedMessage.iconMultiplicity === undefined)) {
                     return;
                 }
 
-                var num = clonedMessage.icon_multiplicity,
+                var num = clonedMessage.iconMultiplicity,
                     mainIcon = clonedMessage.querySelector('.email-icon'),
                     iconSpot = $cms.dom.$('#real_time_surround');
 
@@ -265,23 +265,23 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
                         nextIcon.style.left = $cms.dom.findPosX(mainIcon, true) + 'px';
                         nextIcon.style.top = $cms.dom.findPosY(mainIcon, true) + 'px';
                         nextIcon.style.zIndex = 80;
-                        nextIcon.x_vector = 5 - Math.random() * 10;
-                        nextIcon.y_vector = -Math.random() * 6;
+                        nextIcon.xVector = 5 - Math.random() * 10;
+                        nextIcon.yVector = -Math.random() * 6;
                         nextIcon.opacity = 1.0;
                         iconSpot.appendChild(nextIcon);
-                        nextIcon.animation_timer = setInterval(function () {
+                        nextIcon.animationTimer = setInterval(function () {
                             if (window.paused) return;
 
-                            var _left = ((parseInt(nextIcon.style.left) || 0) + nextIcon.x_vector);
+                            var _left = ((parseInt(nextIcon.style.left) || 0) + nextIcon.xVector);
                             nextIcon.style.left = _left + 'px';
-                            var _top = ((parseInt(nextIcon.style.top) || 0) + nextIcon.y_vector);
+                            var _top = ((parseInt(nextIcon.style.top) || 0) + nextIcon.yVector);
                             nextIcon.style._top = _top + 'px';
                             $cms.dom.clearTransitionAndSetOpacity(nextIcon, nextIcon.opacity);
                             nextIcon.opacity *= 0.98;
-                            nextIcon.y_vector += 0.2;
+                            nextIcon.yVector += 0.2;
                             if ((_top > maxHeight) || (nextIcon.opacity < 0.05) || (_left + 50 > windowWidth) || (_left < 0)) {
-                                clearInterval(nextIcon.animation_timer);
-                                nextIcon.animation_timer = null;
+                                clearInterval(nextIcon.animationTimer);
+                                nextIcon.animationTimer = null;
                                 nextIcon.parentNode.removeChild(nextIcon);
                             }
                         }, 50);
@@ -313,7 +313,7 @@ function animateDown(el, avoidRemove) {
     if ((newPos > maxHeight) || (!el.parentNode)) {
         if (!avoidRemove) {
             if (el.parentNode) {
-                window.total_lines -= el.querySelectorAll('.line').length;
+                window.totalLines -= el.querySelectorAll('.line').length;
                 el.parentNode.removeChild(el);
             }
             clearInterval(el.timer);
@@ -329,13 +329,13 @@ function timeNow() {
 function timelineClick(prospective) {
     prospective = !!prospective;
 
-    var pos = window.mouse_x - $cms.dom.findPosX(document.getElementById('time_line_image'), true);
+    var pos = window.currentMouseX - $cms.dom.findPosX(document.getElementById('time_line_image'), true);
     var timelineLength = 808;
-    var minTime = window.min_time;
+    var minTime = window.minTime;
     var maxTime = timeNow();
     var time = minTime + pos * (maxTime - minTime) / timelineLength;
     if (!prospective) {
-        window.current_time = time;
+        window.currentTime = time;
         bubblesTidyUp();
         $cms.dom.html(document.getElementById('real_time_date'), '{!SET;^}');
         $cms.dom.html(document.getElementById('real_time_time'), '');
@@ -356,13 +356,13 @@ function bubblesTidyUp() {
         }
     }
     $cms.dom.html(bubblesGoHere, '');
-    window.bubble_groups = [];
-    window.total_lines = 0;
+    window.bubbleGroups = [];
+    window.totalLines = 0;
     var icons = document.getElementById('real_time_surround').parentNode.querySelectorAll('.email_icon');
     for (var i = 0; i < icons.length; i++) {
-        if (icons[i].animation_timer) {
-            clearInterval(icons[i].animation_timer);
-            icons[i].animation_timer = null;
+        if (icons[i].animationTimer) {
+            clearInterval(icons[i].animationTimer);
+            icons[i].animationTimer = null;
         }
         icons[i].parentNode.removeChild(icons[i]);
     }
@@ -373,7 +373,7 @@ function setTimeLinePosition(time) {
 
     var marker = document.getElementById('real_time_indicator');
     var timelineLength = 808;
-    var minTime = window.min_time;
+    var minTime = window.minTime;
     var maxTime = timeNow();
     var timelineRange = maxTime - minTime;
     var timelineOffsetTime = time - minTime;

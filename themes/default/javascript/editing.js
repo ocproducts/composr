@@ -79,15 +79,15 @@ function toggleWysiwyg(name) {
             for (var fid = 0; fid < forms.length; fid++) {
                 for (var counter = 0; counter < forms[fid].elements.length; counter++) {
                     var id = forms[fid].elements[counter].id;
-                    if (window.wysiwyg_editors[id] !== undefined) {
-                        if (window.wysiwyg_editors[id].getData().replace(myregexp, '') != '') allEmpty = false;
+                    if (window.wysiwygEditors[id] !== undefined) {
+                        if (window.wysiwygEditors[id].getData().replace(myregexp, '') != '') allEmpty = false;
                     }
                 }
             }
 
             if (allEmpty) {
                 disableWysiwyg(forms, so, so2, true);
-            } else if ((window.wysiwyg_original_comcode[id] === undefined) || (window.wysiwyg_original_comcode[id].indexOf('&#8203;') != -1) || (window.wysiwyg_original_comcode[id].indexOf('cms_keep') != -1)) {
+            } else if ((window.wysiwygOriginalComcode[id] === undefined) || (window.wysiwygOriginalComcode[id].indexOf('&#8203;') != -1) || (window.wysiwygOriginalComcode[id].indexOf('cms_keep') != -1)) {
                 disableWysiwyg(forms, so, so2, false);
             } else {
                 $cms.ui.generateQuestionUi(
@@ -132,7 +132,7 @@ function toggleWysiwyg(name) {
         for (var fid = 0; fid < forms.length; fid++) {
             for (var counter = 0; counter < forms[fid].elements.length; counter++) {
                 var id = forms[fid].elements[counter].id;
-                if (window.wysiwyg_editors[id] !== undefined) {
+                if (window.wysiwygEditors[id] !== undefined) {
                     var textarea = forms[fid].elements[counter];
 
                     // Mark as non-WYSIWYG
@@ -147,15 +147,15 @@ function toggleWysiwyg(name) {
                     }
 
                     // Unload editor
-                    var wysiwygData = window.wysiwyg_editors[id].getData();
+                    var wysiwygData = window.wysiwygEditors[id].getData();
                     try {
-                        window.wysiwyg_editors[id].destroy();
+                        window.wysiwygEditors[id].destroy();
                     } catch (e) {}
-                    delete window.wysiwyg_editors[id];
+                    delete window.wysiwygEditors[id];
 
                     // Comcode conversion
-                    if ((discard) && (window.wysiwyg_original_comcode[id])) {
-                        textarea.value = window.wysiwyg_original_comcode[id];
+                    if ((discard) && (window.wysiwygOriginalComcode[id])) {
+                        textarea.value = window.wysiwygOriginalComcode[id];
                     } else {
                         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keepStub());
                         if (window.location.href.indexOf('topics') != -1) {
@@ -181,7 +181,7 @@ function toggleWysiwyg(name) {
 
                     // Unload editor
                     try {
-                        window.wysiwyg_editors[id].destroy();
+                        window.wysiwygEditors[id].destroy();
                     } catch (e) {}
                 }
             }
@@ -199,13 +199,13 @@ function toggleWysiwyg(name) {
     }
 }
 
-window.wysiwyg_readonly_timer || (window.wysiwyg_readonly_timer = {});
+window.wysiwygReadonlyTimer || (window.wysiwygReadonlyTimer = {});
 function wysiwygSetReadonly(name, readonly) {
-    if (window.wysiwyg_editors[name] === undefined) {
+    if (window.wysiwygEditors[name] === undefined) {
         return;
     }
 
-    var editor = window.wysiwyg_editors[name];
+    var editor = window.wysiwygEditors[name];
     if (editor.document && editor.document.$ && editor.document.$.body) {
         editor.document.$.body.readOnly = readonly;
         editor.document.$.body.contentEditable = !readonly;
@@ -213,20 +213,20 @@ function wysiwygSetReadonly(name, readonly) {
     }
 
     // In case it sticks as read only we need a timer to put it back. But only if not already back.
-    if (window.wysiwyg_readonly_timer[name] !== undefined && window.wysiwyg_readonly_timer[name]) {
-        clearTimeout(window.wysiwyg_readonly_timer[name]);
-        window.wysiwyg_readonly_timer[name] = null;
+    if (window.wysiwygReadonlyTimer[name] !== undefined && window.wysiwygReadonlyTimer[name]) {
+        clearTimeout(window.wysiwygReadonlyTimer[name]);
+        window.wysiwygReadonlyTimer[name] = null;
     }
     if (readonly) {
-        window.wysiwyg_readonly_timer[name] = setTimeout(function () {
+        window.wysiwygReadonlyTimer[name] = setTimeout(function () {
             wysiwygSetReadonly(name, false);
         }, 5000);
     }
 }
 
 // Initialising the HTML editor if requested later (i.e. toggling it to on)
-window.wysiwyg_editors || (window.wysiwyg_editors = {});
-window.wysiwyg_original_comcode || (window.wysiwyg_original_comcode = {});
+window.wysiwygEditors || (window.wysiwygEditors = {});
+window.wysiwygOriginalComcode || (window.wysiwygOriginalComcode = {});
 
 function loadHtmlEdit(postingForm, ajaxCopy) {
     if ((!postingForm.method) || (postingForm.method.toLowerCase() !== 'post')) {
@@ -282,7 +282,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             if (document.getElementById('toggle_wysiwyg_' + id))
                 $cms.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical_alignment" />');
 
-            window.wysiwyg_original_comcode[id] = e.value;
+            window.wysiwygOriginalComcode[id] = e.value;
             if (!ajaxCopy) {
                 if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value != '') && ((e.defaultValue == ''/*LEGACY IE bug*/) || (e.defaultValue == e.value))) // The extra conditionals are for if back button used
                     e.value = postingForm.elements[id + '_parsed'].value;
@@ -357,7 +357,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         }
         var editor = window.CKEDITOR.replace(element.id, editorSettings);
         if (!editor) return; // Not supported on this platform
-        window.wysiwyg_editors[id] = editor;
+        window.wysiwygEditors[id] = editor;
 
         element.parentNode.className += ' ' + editorSettings.skin; // Used for us to target per-skin CSS
 
@@ -466,7 +466,7 @@ function findTagsInEditor(editor, element) {
             continue;
         }
 
-        comcodes[i].orig_title = comcodes[i].title;
+        comcodes[i].origTitle = comcodes[i].title;
         comcodes[i].onmouseout = function () {
             $cms.ui.deactivateTooltip(this);
         };
@@ -482,9 +482,9 @@ function findTagsInEditor(editor, element) {
                 if (event.pageY) eventCopy.pageY = 3000;
                 if (event.clientY) eventCopy.clientY = 3000;
 
-                if (this.orig_title != undefined) {
+                if (this.origTitle != undefined) {
                     $cms.ui.repositionTooltip(this, eventCopy);
-                    this.title = this.orig_title;
+                    this.title = this.origTitle;
                 }
             }
         };
@@ -536,7 +536,7 @@ function findTagsInEditor(editor, element) {
             if (window.$cms.ui.activateTooltip) {
                 var tagText = '';
                 if (this.nodeName.toLowerCase() === 'input') {
-                    tagText = this.orig_title;
+                    tagText = this.origTitle;
                 } else {
                     tagText = $cms.dom.html(this);
                 }
@@ -551,12 +551,12 @@ function findTagsInEditor(editor, element) {
                     if (event.clientY) eventCopy.clientY = 3000;
 
                     var selfOb = this;
-                    if ((this.rendered_tooltip === undefined && !selfOb.is_over) || (selfOb.tag_text != tagText)) {
-                        selfOb.tag_text = tagText;
-                        selfOb.is_over = true;
+                    if ((this.renderedTooltip === undefined && !selfOb.isOver) || (selfOb.tagText != tagText)) {
+                        selfOb.tagText = tagText;
+                        selfOb.isOver = true;
 
                         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keepStub());
-                        if (window.location.href.indexOf('topics') != -1) {
+                        if (window.location.href.indexOf('topics') !== -1) {
                             url += '&forum_db=1';
                         }
 
@@ -564,18 +564,18 @@ function findTagsInEditor(editor, element) {
                             if (ajaxResult) {
                                 var tmpRendered = ajaxResult.textConten;
                                 if (tmpRendered.indexOf('{!CCP_ERROR_STUB;^}') == -1) {
-                                    selfOb.rendered_tooltip = tmpRendered;
+                                    selfOb.renderedTooltip = tmpRendered;
                                 }
                             }
-                            if (selfOb.rendered_tooltip !== undefined) {
-                                if (selfOb.is_over) {
-                                    $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.rendered_tooltip, 'auto', null, null, false, true);
-                                    selfOb.title = selfOb.orig_title;
+                            if (selfOb.renderedTooltip !== undefined) {
+                                if (selfOb.isOver) {
+                                    $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.renderedTooltip, 'auto', null, null, false, true);
+                                    selfOb.title = selfOb.origTitle;
                                 }
                             }
                         }, 'data=' + encodeURIComponent('[semihtml]' + tagText.replace(/<\/?span[^>]*>/gi, '')).substr(0, 1000).replace(new RegExp(String.fromCharCode(8203), 'g'), '') + '[/semihtml]');
-                    } else if (this.rendered_tooltip !== undefined) {
-                        $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.rendered_tooltip, '400px', null, null, false, true);
+                    } else if (this.renderedTooltip !== undefined) {
+                        $cms.ui.activateTooltip(selfOb, eventCopy, selfOb.renderedTooltip, '400px', null, null, false, true);
                     }
                 }
             }
@@ -619,7 +619,7 @@ function doEmoticon(fieldName, callerEl, isOpener) {
 }
 
 function doAttachment(fieldName, id, description) {
-    if (!$cms.getMainCmsWindow().wysiwyg_editors) {
+    if (!$cms.getMainCmsWindow().wysiwygEditors) {
         return;
     }
 
@@ -634,7 +634,7 @@ function doAttachment(fieldName, id, description) {
 
 function getTextbox(element) {
     if ($cms.form.isWysiwygField(element)) {
-        var ret = window.wysiwyg_editors[element.id].getData();
+        var ret = window.wysiwygEditors[element.id].getData();
         if ((ret === '\n') || (ret === '<br />')) {
             ret = '';
         }
@@ -649,11 +649,11 @@ function setTextbox(element, text, html) {
             html = $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />');
         }
 
-        window.wysiwyg_editors[element.id].setData(html);
-        window.wysiwyg_editors[element.id].updateElement();
+        window.wysiwygEditors[element.id].setData(html);
+        window.wysiwygEditors[element.id].updateElement();
 
         setTimeout(function () {
-            findTagsInEditor(window.wysiwyg_editors[element.id], element);
+            findTagsInEditor(window.wysiwygEditors[element.id], element);
         }, 100);
     } else {
         element.value = text;
@@ -676,7 +676,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
     html = strVal(html);
 
     if ($cms.form.isWysiwygField(element)) {
-        var editor = window.wysiwyg_editors[element.id];
+        var editor = window.wysiwygEditors[element.id];
 
         var insert = '';
         if (plainInsert) {
@@ -786,7 +786,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
     }
 
     if ($cms.form.isWysiwygField(element)) {
-        var editor = window.wysiwyg_editors[element.id];
+        var editor = window.wysiwygEditors[element.id];
 
         editor.focus();
         var selectedHtml = getSelectedHtml(editor);

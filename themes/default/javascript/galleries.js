@@ -1,10 +1,10 @@
 (function ($cms) {
     'use strict';
 
-    if (window.slideshow_timer === undefined) {
-        window.slideshow_timer = null;
-        window.slideshow_slides = {};
-        window.slideshow_time = null;
+    if (window.slideshowTimer === undefined) {
+        window.slideshowTimer = null;
+        window.slideshowSlides = {};
+        window.slideshowTime = null;
     }
 
     $cms.views.BlockMainImageFader = BlockMainImageFader;
@@ -20,16 +20,16 @@
             id = params.randFaderImage,
             key;
 
-        data.fp_animation = document.getElementById('image_fader_' + id);
-        data.fp_animation_fader = document.createElement('img');
-        data.tease_title = document.getElementById('image_fader_title_' + id);
-        data.tease_scrolling_text = document.getElementById('image_fader_scrolling_text_' + id);
-        data.fp_animation_fader.className = 'img_thumb';
-        data.fp_animation.parentNode.insertBefore(data.fp_animation_fader, data.fp_animation);
-        data.fp_animation.parentNode.style.position = 'relative';
-        data.fp_animation.parentNode.style.display = 'block';
-        data.fp_animation_fader.style.position = 'absolute';
-        data.fp_animation_fader.src = $cms.img('{$IMG;,blank}');
+        data.fpAnimation = document.getElementById('image_fader_' + id);
+        data.fpAnimationFader = document.createElement('img');
+        data.teaseTitle = document.getElementById('image_fader_title_' + id);
+        data.teaseScrollingText = document.getElementById('image_fader_scrolling_text_' + id);
+        data.fpAnimationFader.className = 'img_thumb';
+        data.fpAnimation.parentNode.insertBefore(data.fpAnimationFader, data.fpAnimation);
+        data.fpAnimation.parentNode.style.position = 'relative';
+        data.fpAnimation.parentNode.style.display = 'block';
+        data.fpAnimationFader.style.position = 'absolute';
+        data.fpAnimationFader.src = $cms.img('{$IMG;,blank}');
 
         for (key in params.titles) {
             this.initializeTitle(data, params.titles[key], key);
@@ -48,16 +48,16 @@
         initializeTitle: function (data, v, k) {
             data['title' + k] = v;
             if (k == 0) {
-                if (data.tease_title) {
-                    $cms.dom.html(data.tease_title, data['title' + k]);
+                if (data.teaseTitle) {
+                    $cms.dom.html(data.teaseTitle, data['title' + k]);
                 }
             }
         },
         initializeHtml: function (data, v, k) {
             data['html' + k] = v;
             if (k == 0) {
-                if (data.tease_scrolling_text) {
-                    $cms.dom.html(data.tease_scrolling_text, (data['html' + k] == '') ? '{!MEDIA;^}' : data['html' + k]);
+                if (data.teaseScrollingText) {
+                    $cms.dom.html(data.teaseScrollingText, (data['html' + k] == '') ? '{!MEDIA;^}' : data['html' + k]);
                 }
             }
         },
@@ -73,19 +73,19 @@
             new Image().src = data['url' + k]; // precache
             setTimeout(function () {
                 function func() {
-                    data.fp_animation_fader.src = data.fp_animation.src;
-                    $cms.dom.clearTransitionAndSetOpacity(data.fp_animation_fader, 1.0);
-                    $cms.dom.fadeTransition(data.fp_animation_fader, 0, periodInMsecs, increment * -1);
-                    $cms.dom.clearTransitionAndSetOpacity(data.fp_animation, 0.0);
-                    $cms.dom.fadeTransition(data.fp_animation, 100, periodInMsecs, increment);
-                    data.fp_animation.src = data['url' + k];
-                    data.fp_animation_fader.style.left = ((data.fp_animation_fader.parentNode.offsetWidth - data.fp_animation_fader.offsetWidth) / 2) + 'px';
-                    data.fp_animation_fader.style.top = ((data.fp_animation_fader.parentNode.offsetHeight - data.fp_animation_fader.offsetHeight) / 2) + 'px';
-                    if (data.tease_title) {
-                        $cms.dom.html(data.tease_title, data['title' + k]);
+                    data.fpAnimationFader.src = data.fpAnimation.src;
+                    $cms.dom.clearTransitionAndSetOpacity(data.fpAnimationFader, 1.0);
+                    $cms.dom.fadeTransition(data.fpAnimationFader, 0, periodInMsecs, increment * -1);
+                    $cms.dom.clearTransitionAndSetOpacity(data.fpAnimation, 0.0);
+                    $cms.dom.fadeTransition(data.fpAnimation, 100, periodInMsecs, increment);
+                    data.fpAnimation.src = data['url' + k];
+                    data.fpAnimationFader.style.left = ((data.fpAnimationFader.parentNode.offsetWidth - data.fpAnimationFader.offsetWidth) / 2) + 'px';
+                    data.fpAnimationFader.style.top = ((data.fpAnimationFader.parentNode.offsetHeight - data.fpAnimationFader.offsetHeight) / 2) + 'px';
+                    if (data.teaseTitle) {
+                        $cms.dom.html(data.teaseTitle, data['title' + k]);
                     }
-                    if (data.tease_scrolling_text) {
-                        $cms.dom.html(data.tease_scrolling_text, data['html' + k]);
+                    if (data.teaseScrollingText) {
+                        $cms.dom.html(data.teaseScrollingText, data['html' + k]);
                     }
                 }
 
@@ -107,8 +107,8 @@
     function GalleryNav(params) {
         GalleryNav.base(this, 'constructor', arguments);
 
-        window.slideshow_current_position = params._x - 1;
-        window.slideshow_total_slides = params._n;
+        window.slideshowCurrentPosition = params._x - 1;
+        window.slideshowTotalSlides = params._n;
 
         if (params.slideshow) {
             this.initializeSlideshow();
@@ -139,7 +139,7 @@
                 }
             });
 
-            slideshowShowSlide(window.slideshow_current_position); // To ensure next is preloaded
+            slideshowShowSlide(window.slideshowCurrentPosition); // To ensure next is preloaded
         },
         events: function () {
             return {
@@ -239,18 +239,18 @@
     };
 
     function startSlideshowTimer() {
-        if (!window.slideshow_timer) {
-            window.slideshow_timer = setInterval(function () {
-                window.slideshow_time--;
+        if (!window.slideshowTimer) {
+            window.slideshowTimer = setInterval(function () {
+                window.slideshowTime--;
                 showCurrentSlideshowTime();
 
-                if (window.slideshow_time == 0) {
+                if (window.slideshowTime == 0) {
                     slideshowForward();
                 }
             }, 1000);
         }
 
-        if (window.slideshow_current_position !== (window.slideshow_total_slides - 1)) {
+        if (window.slideshowCurrentPosition !== (window.slideshowTotalSlides - 1)) {
             document.getElementById('gallery_entry_screen').style.cursor = 'progress';
         }
     }
@@ -258,23 +258,23 @@
     function showCurrentSlideshowTime() {
         var changer = document.getElementById('changer_wrap');
         if (changer) {
-            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', Math.max(0, window.slideshow_time)));
+            $cms.dom.html(changer, $cms.format('{!galleries:CHANGING_IN;^}', Math.max(0, window.slideshowTime)));
         }
     }
 
     function resetSlideshowCountdown() {
         var slideshowFrom = document.getElementById('slideshow_from');
-        window.slideshow_time = slideshowFrom ? parseInt(slideshowFrom.value) : 5;
+        window.slideshowTime = slideshowFrom ? parseInt(slideshowFrom.value) : 5;
 
         showCurrentSlideshowTime();
 
-        if (window.slideshow_current_position == window.slideshow_total_slides - 1) {
-            window.slideshow_time = 0;
+        if (window.slideshowCurrentPosition == window.slideshowTotalSlides - 1) {
+            window.slideshowTime = 0;
         }
     }
 
     function toggleSlideshowTimer() {
-        if (window.slideshow_timer) {
+        if (window.slideshowTimer) {
             stopSlideshowTimer();
         } else {
             showCurrentSlideshowTime();
@@ -290,19 +290,19 @@
         if (changer) {
             $cms.dom.html(changer, message);
         }
-        if (window.slideshow_timer) {
-            clearInterval(window.slideshow_timer);
+        if (window.slideshowTimer) {
+            clearInterval(window.slideshowTimer);
         }
-        window.slideshow_timer = null;
+        window.slideshowTimer = null;
         document.getElementById('gallery_entry_screen').style.cursor = '';
     }
 
     function slideshowBackward() {
-        if (window.slideshow_current_position === 0) {
+        if (window.slideshowCurrentPosition === 0) {
             return;
         }
 
-        slideshowShowSlide(window.slideshow_current_position - 1);
+        slideshowShowSlide(window.slideshowCurrentPosition - 1);
     }
 
     function playerStopped() {
@@ -310,33 +310,33 @@
     }
 
     function slideshowForward() {
-        if (window.slideshow_current_position === (window.slideshow_total_slides - 1)) {
+        if (window.slideshowCurrentPosition === (window.slideshowTotalSlides - 1)) {
             stopSlideshowTimer('{!galleries:LAST_SLIDE;^}');
             return;
         }
 
-        slideshowShowSlide(window.slideshow_current_position + 1);
+        slideshowShowSlide(window.slideshowCurrentPosition + 1);
     }
 
     function slideshowEnsureLoaded(slide, callback) {
-        if (window.slideshow_slides[slide] !== undefined) {
+        if (window.slideshowSlides[slide] !== undefined) {
             if (callback !== undefined) {
                 callback();
             }
             return; // Already have it
         }
 
-        if (window.slideshow_current_position === slide) { // Ah, it's where we are, so save that in
-            window.slideshow_slides[slide] = $cms.dom.html(document.getElementById('gallery_entry_screen'));
+        if (window.slideshowCurrentPosition === slide) { // Ah, it's where we are, so save that in
+            window.slideshowSlides[slide] = $cms.dom.html(document.getElementById('gallery_entry_screen'));
             return;
         }
 
-        if ((slide == window.slideshow_current_position - 1) || (slide == window.slideshow_current_position + 1)) {
+        if ((slide == window.slideshowCurrentPosition - 1) || (slide == window.slideshowCurrentPosition + 1)) {
             var url;
-            if (slide == window.slideshow_current_position + 1) {
+            if (slide == window.slideshowCurrentPosition + 1) {
                 url = document.getElementById('next_slide').value;
             }
-            if (slide == window.slideshow_current_position - 1) {
+            if (slide == window.slideshowCurrentPosition - 1) {
                 url = document.getElementById('previous_slide').value;
             }
 
@@ -356,14 +356,14 @@
     }
 
     function _slideshowReadInSlide(ajaxResultRaw, slide) {
-        window.slideshow_slides[slide] = ajaxResultRaw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
+        window.slideshowSlides[slide] = ajaxResultRaw.responseText.replace(/(.|\n)*<div class="gallery_entry_screen"[^<>]*>/i, '').replace(/<!--DO_NOT_REMOVE_THIS_COMMENT-->\s*<\/div>(.|\n)*/i, ''); // FUDGE
     }
 
     function slideshowShowSlide(slide) {
         slideshowEnsureLoaded(slide, function () {
             var fadeElements;
 
-            if (window.slideshow_current_position !== slide) { // If not already here
+            if (window.slideshowCurrentPosition !== slide) { // If not already here
                 var slideshowFrom = document.getElementById('slideshow_from');
 
                 var fadeElementsOld = document.body.querySelectorAll('.scale_down');
@@ -374,7 +374,7 @@
                     fadeElementOld.style.position = 'absolute';
                 } // else probably a video
 
-                var cleanedSlideHtml = window.slideshow_slides[slide].replace(/<!DOCTYPE [^>]*>/i, ''); // FUDGE
+                var cleanedSlideHtml = window.slideshowSlides[slide].replace(/<!DOCTYPE [^>]*>/i, ''); // FUDGE
                 $cms.dom.html(document.getElementById('gallery_entry_screen'), cleanedSlideHtml);
 
                 fadeElements = document.body.querySelectorAll('.scale_down');
@@ -393,7 +393,7 @@
                     document.getElementById('slideshow_from').value = slideshowFrom.value;
                 }
 
-                window.slideshow_current_position = slide;
+                window.slideshowCurrentPosition = slide;
             }
 
             fadeElements = document.body.querySelectorAll('.scale_down');
@@ -404,7 +404,7 @@
                 stopSlideshowTimer('{!galleries:WILL_CONTINUE_AFTER_VIDEO_FINISHED;^}');
             }
 
-            if (window.slideshow_current_position != window.slideshow_total_slides - 1) {
+            if (window.slideshowCurrentPosition != window.slideshowTotalSlides - 1) {
                 slideshowEnsureLoaded(slide + 1);
             } else {
                 document.getElementById('gallery_entry_screen').style.cursor = '';

@@ -8,7 +8,7 @@ function doShake() {
     for (var i = 0; i < divs.length; i++) {
         currentPositioning = window.getComputedStyle(divs[i]).getPropertyValue('position');
         if ((currentPositioning == '') || (currentPositioning == 'static')) {
-            divs[i].vector_speed = Math.round(Math.random() * 2);
+            divs[i].vectorSpeed = Math.round(Math.random() * 2);
             divs[i].style.position = 'relative';
         }
     }
@@ -22,7 +22,7 @@ function doShake() {
 
     window.setTimeout(function () {
         for (var i = 0; i < divs.length; i++) {
-            if (typeof divs[i].vector_speed != 'undefined') {
+            if (typeof divs[i].vectorSpeed !== 'undefined') {
                 divs[i].style.left = '0';
                 divs[i].style.top = '0';
                 divs[i].style.position = 'static';
@@ -35,11 +35,11 @@ function doShake() {
     function shakeAnimateFunc(times, divs, amount) {
         return function () {
             for (var i = 0; i < divs.length; i++) {
-                if (typeof divs[i].vector_speed != 'undefined') {
-                    divs[i].vector_target = [Math.round(amount - Math.random() * amount * 2), Math.round(amount - Math.random() * amount * 2)];
+                if (typeof divs[i].vectorSpeed !== 'undefined') {
+                    divs[i].vectorTarget = [Math.round(amount - Math.random() * amount * 2), Math.round(amount - Math.random() * amount * 2)];
 
-                    divs[i].style.left = Math.round(divs[i].vector_target[0] * times / 10.0) + 'px';
-                    divs[i].style.top = Math.round(divs[i].vector_target[1] * times / 10.0) + 'px';
+                    divs[i].style.left = Math.round(divs[i].vectorTarget[0] * times / 10.0) + 'px';
+                    divs[i].style.top = Math.round(divs[i].vectorTarget[1] * times / 10.0) + 'px';
                 }
             }
         };

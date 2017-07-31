@@ -44,7 +44,7 @@
 
     $cms.templates.cnsGuestBar = function cnsGuestBar(params, container) {
         $cms.dom.on(container, 'submit', '.js-submit-check-field-login-username', function (e, form) {
-            if ($cms.form.checkFieldForBlankness(form.elements.login_username)) {
+            if ($cms.form.checkFieldForBlankness(form.elements['login_username'])) {
                 $cms.ui.disableFormButtons(form);
             } else {
                 e.preventDefault();
@@ -87,8 +87,6 @@
     };
 
     $cms.templates.cnsMemberProfileEdit = function cnsMemberProfileEdit(params, container) {
-        $cms.inform('Executing $cms.templates.cnsMemberProfileEdit()');
-
         $cms.dom.on(container, 'click', '.js-click-select-edit-tab', function (e, clicked) {
             var tabSet = 'edit__',
                 tabCode = $cms.filter.id(clicked.dataset.tpTabCode).toLowerCase();

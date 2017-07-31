@@ -107,13 +107,13 @@
 
         permissionRepeating: function (e, button) {
             var name = this.prefix,
-                oldPermissionCopying = window.permission_copying,
+                oldPermissionCopying = window.permissionCopying,
                 tr = button.parentNode.parentNode,
                 trs = tr.parentNode.getElementsByTagName('tr');
 
-            if (window.permission_copying) { // Undo current copying
-                document.getElementById('copy_button_' + window.permission_copying).style.textDecoration = 'none';
-                window.permission_copying = null;
+            if (window.permissionCopying) { // Undo current copying
+                document.getElementById('copy_button_' + window.permissionCopying).style.textDecoration = 'none';
+                window.permissionCopying = null;
                 for (var i = 0; i < trs.length; i++) {
                     trs[i].onclick = function () {};
                 }
@@ -121,7 +121,7 @@
 
             if (oldPermissionCopying !== name) { // Starting a new copying session
                 button.style.textDecoration = 'blink';
-                window.permission_copying = name;
+                window.permissionCopying = name;
                 $cms.ui.alert('{!permissions:REPEAT_PERMISSION_NOTICE;^}');
                 for (var j = 0; j < trs.length; j++) {
                     if (trs[j] !== tr) {
@@ -220,7 +220,7 @@
         this.form = $cms.dom.closest(this.el, 'form');
         this.btnSubmit = this.$('#submit_button');
 
-        window.form_preview_url = params.previewUrl;
+        window.formPreviewUrl = params.previewUrl;
 
         if (params.forcePreviews) {
             this.btnSubmit.style.display = 'none';
@@ -256,7 +256,7 @@
             var form = this.form,
                 separatePreview = !!this.params.separatePreview;
 
-            if ($cms.form.doFormPreview(e, form, window.form_preview_url, separatePreview) && !window.just_checking_requirements) {
+            if ($cms.form.doFormPreview(e, form, window.formPreviewUrl, separatePreview) && !window.justCheckingRequirements) {
                 form.submit();
             }
         },
@@ -352,7 +352,7 @@
         var postingField = strVal(params.postingField);
 
         $cms.dom.on(container, 'click', '.js-click-do-input-font-posting-field', function () {
-            do_input_font(postingField);
+            doInputFont(postingField);
         });
     };
 
@@ -517,15 +517,15 @@
         $cms.dom.on(container, 'change', '.js-input-change-update-mirror', function (e, input) {
             var mirror = document.getElementById(name + '_mirror');
             if (mirror) {
-                $cms.dom.toggle(mirror.parentElement, !!input.selected_title);
-                $cms.dom.html(mirror, input.selected_title ? $cms.filter.html(input.selected_title) : '{!NA_EM;}');
+                $cms.dom.toggle(mirror.parentElement, !!input.selectedTitle);
+                $cms.dom.html(mirror, input.selectedTitle ? $cms.filter.html(input.selectedTitle) : '{!NA_EM;}');
             }
         });
     };
 
     $cms.templates.formScreenInputPermissionMatrix = function (params) {
         var container = this;
-        window.perm_serverid = params.serverId;
+        window.permServerid = params.serverId;
 
         $cms.dom.on(container, 'click', '.js-click-permissions-toggle', function (e, clicked) {
             permissionsToggle(clicked.parentNode)
@@ -717,7 +717,7 @@
         function clickFunc(event) {
             choosePicture('j_' + stem, img, name, event);
 
-            if (window.main_form_very_simple !== undefined) {
+            if (window.mainFormVerySimple !== undefined) {
                 form.submit();
             }
 
@@ -737,7 +737,7 @@
 
             deselectAltUrl(this.form);
 
-            if (window.main_form_very_simple !== undefined) {
+            if (window.mainFormVerySimple !== undefined) {
                 this.form.submit();
             }
             event.stopPropagation();
@@ -795,7 +795,7 @@
                     window.parent.scrollTo(0, $cms.dom.findPosY(window.parent.document.getElementById('preview_iframe')));
                 } catch (e) {
                 }
-                window.parent.mobile_version_for_preview = !!el.checked;
+                window.parent.mobileVersionForPreview = !!el.checked;
                 $cms.dom.trigger(window.parent.document.getElementById('preview_button'), 'click');
                 return;
             }
@@ -879,7 +879,7 @@
         var i, done_one = false;
         for (i = 0; i < inputs.length; i++) {
             if (((inputs[i].type == 'file') || ((inputs[i].type == 'text') && (inputs[i].disabled))) && (inputs[i].value != '') && (inputs[i].name.match(/file\d+/))) {
-                if (inputs[i].plupload_object !== undefined) {
+                if (inputs[i].pluploadObject !== undefined) {
                     if ((inputs[i].value != '-1') && (inputs[i].value != '')) {
                         if (!done_one) {
                             if (oldComcode.indexOf('attachment_safe') == -1) {
@@ -892,8 +892,8 @@
                         done_one = true;
                     }
 
-                    if (inputs[i].plupload_object.setButtonDisabled !== undefined) {
-                        inputs[i].plupload_object.setButtonDisabled(false);
+                    if (inputs[i].pluploadObject.setButtonDisabled !== undefined) {
+                        inputs[i].pluploadObject.setButtonDisabled(false);
                     } else {
                         uploadButton = mainWindow.document.getElementById('uploadButton_' + inputs[i].name);
                         if (uploadButton) uploadButton.disabled = true;
@@ -931,8 +931,8 @@
 
         function shutdownOverlay() {
             setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
-                if (window.faux_close !== undefined) {
-                    window.faux_close();
+                if (window.fauxClose !== undefined) {
+                    window.fauxClose();
                 } else {
                     window.close();
                 }
@@ -941,7 +941,7 @@
 
         function dispatchBlockHelper() {
             if ((typeof params.saveToId === 'string') && (params.saveToId !== '')) {
-                var ob = targetWindow.wysiwyg_editors[element.id].document.$.getElementById(params.saveToId);
+                var ob = targetWindow.wysiwygEditors[element.id].document.$.getElementById(params.saveToId);
 
                 if (params.delete) {
                     ob.parentNode.removeChild(ob);
@@ -951,7 +951,7 @@
                     ob.parentNode.replaceChild(inputContainer.firstElementChild, ob);
                 }
 
-                targetWindow.wysiwyg_editors[element.id].updateElement();
+                targetWindow.wysiwygEditors[element.id].updateElement();
 
                 shutdownOverlay();
             } else {
@@ -964,7 +964,7 @@
                     }
                 }
 
-                targetWindow.insert_comcode_tag = function (repFrom, repTo, ret) { // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
+                targetWindow.insertComcodeTag = function insertComcodeTag(repFrom, repTo, ret) { // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
                     var _comcodeSemihtml = comcodeSemihtml;
                     var _comcode = comcode;
                     if (repFrom !== undefined) {
@@ -986,7 +986,7 @@
                 if (params.prefix !== undefined) {
                     targetWindow.insertTextbox(element, params.prefix, targetWindow.document.selection ? targetWindow.document.selection : null, true);
                 }
-                targetWindow.insert_comcode_tag();
+                targetWindow.insertComcodeTag();
 
                 if (message != '') {
                     $cms.ui.alert(message, function () {
@@ -1005,8 +1005,8 @@
             var field = 'file' + params.tagContents.substr(4);
             var uploadElement = targetWindow.document.getElementById(field);
             if (!uploadElement) uploadElement = targetWindow.document.getElementById('hidFileID_' + field);
-            if ((uploadElement.plupload_object !== undefined) && (isWysiwyg)) {
-                var ob = uploadElement.plupload_object;
+            if ((uploadElement.pluploadObject !== undefined) && (isWysiwyg)) {
+                var ob = uploadElement.pluploadObject;
                 if (ob.state == targetWindow.plupload.STARTED) {
                     ob.bind('UploadComplete', function () {
                         setTimeout(dispatchBlockHelper, 100);
@@ -1030,7 +1030,7 @@
         }
 
         if (!attachedEventAction) {
-            setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux popup it can set up faux_close
+            setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux popup it can set up fauxClose
         }
     };
 
@@ -1722,7 +1722,7 @@
             function _standardAlternateFieldIsFilledIn(field, secondRun, force) {
                 if (!field) return false; // N/A input is considered unset
 
-                var isSet = force || ((field.value != '') && (field.value != '-1')) || ((field.virtual_value !== undefined) && (field.virtual_value != '') && (field.virtual_value != '-1'));
+                var isSet = force || ((field.value != '') && (field.value != '-1')) || ((field.virtualValue !== undefined) && (field.virtualValue != '') && (field.virtualValue != '-1'));
 
                 var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
                 if (!radioButton) radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));

@@ -104,12 +104,14 @@
             }
 
             var i, item, displaytext;
+            
             for (i = 0; i < listContents.children.length; i++) {
                 item = document.createElement('option');
                 item.value = listContents.children[i].getAttribute('value');
                 displaytext = item.value;
-                if (listContents.children[i].getAttribute('displayname') != '')
+                if (listContents.children[i].getAttribute('displayname') != '') {
                     displaytext = listContents.children[i].getAttribute('displayname');
+                }
                 item.text = displaytext;
                 item.textContent = displaytext;
                 list.appendChild(item);
@@ -130,15 +132,15 @@
 
             var currentListForCopy = currentListForEl;
 
-            if (currentListForEl.old_onkeyup === undefined) {
-                currentListForEl.old_onkeyup = currentListForEl.onkeyup;
+            if (currentListForEl.oldOnkeyup === undefined) {
+                currentListForEl.oldOnkeyup = currentListForEl.onkeyup;
             }
 
-            if (currentListForEl.old_onchange === undefined) {
-                currentListForEl.old_onchange = currentListForEl.onchange;
+            if (currentListForEl.oldOnchange === undefined) {
+                currentListForEl.oldOnchange = currentListForEl.onchange;
             }
 
-            currentListForEl.down_once = false;
+            currentListForEl.downOnce = false;
 
             currentListForEl.onkeyup = function (event) {
                 var ret = handleArrowUsage(event);
@@ -148,8 +150,8 @@
                 return $cms.form.updateAjaxMemberList(currentListForCopy, currentListForCopy.special, false, event);
             };
             currentListForEl.onchange = function (event) {
-                currentListForCopy.onkeyup = currentListForCopy.old_onkeyup;
-                currentListForCopy.onchange = currentListForCopy.old_onchange;
+                currentListForCopy.onkeyup = currentListForCopy.oldOnkeyup;
+                currentListForCopy.onchange = currentListForCopy.oldOnchange;
                 if (currentListForCopy.onchange) {
                     currentListForCopy.onchange(event);
                 }
@@ -215,8 +217,8 @@
                     };
                     list.focus();
                     currentListForCopy.onblur = temp;
-                    if (!currentListForCopy.down_once) {
-                        currentListForCopy.down_once = true;
+                    if (!currentListForCopy.downOnce) {
+                        currentListForCopy.downOnce = true;
                         list.selectedIndex = 0;
                     } else {
                         if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
@@ -235,8 +237,8 @@
                     currentListForCopy.onblur = function () {};
                     list.focus();
                     currentListForCopy.onblur = temp;
-                    if (!currentListForCopy.down_once) {
-                        currentListForCopy.down_once = true;
+                    if (!currentListForCopy.downOnce) {
+                        currentListForCopy.downOnce = true;
                         list.selectedIndex = 0;
                     } else {
                         if (list.selectedIndex > 0) {
@@ -253,8 +255,8 @@
                 var el = e.target;
 
                 currentListForCopy.value = el.value;
-                currentListForCopy.onkeyup = currentListForCopy.old_onkeyup;
-                currentListForCopy.onchange = currentListForCopy.old_onchange;
+                currentListForCopy.onkeyup = currentListForCopy.oldOnkeyup;
+                currentListForCopy.onchange = currentListForCopy.oldOnchange;
                 currentListForCopy.onkeypress = function () {
                 };
                 if (currentListForCopy.onrealchange) {

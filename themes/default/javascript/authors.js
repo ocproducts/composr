@@ -14,7 +14,9 @@
 
             author = form.elements[fieldName];
             author.value = fieldValue;
-            window.faux_close();
+            if (window.fauxClose !== undefined) {
+                window.fauxClose();
+            }
         });
     };
 }(window.$cms));

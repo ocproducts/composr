@@ -81,7 +81,7 @@
         var form = document.getElementById('pass1').form;
         form.onsubmit = function() {
             if (form.elements['pass1'].value !== form.elements['pass2'].value) {
-                window.fauxmodal_alert('{!PASSWORD_MISMATCH;}');
+                $cms.ui.alert('{!PASSWORD_MISMATCH;}');
                 return false;
             }
         };

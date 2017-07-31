@@ -182,14 +182,14 @@
 
     $cms.templates.blockMainActivities = function blockMainActivities(params) {
         if (!params.isBlockRaw) {
-            window.activities_mode = strVal(params.mode);
-            window.activities_member_ids = strVal(params.memberIds);
+            window.activitiesMode = strVal(params.mode);
+            window.activitiesMemberIds = strVal(params.memberIds);
 
             if (params.start === 0) {
                 // "Grow" means we should keep stacking new content on top of old. If not
                 // then we should allow old content to "fall off" the bottom of the feed.
-                window.activities_feed_grow = !!params.grow;
-                window.activities_feed_max = params.max;
+                window.activitiesFeedGrow = !!params.grow;
+                window.activitiesFeedMax = params.max;
                 if (document.getElementById('activities_feed')) {
                     setInterval(sUpdateGetData, params.refreshTime * 1000);
                 }
@@ -201,34 +201,34 @@
 
 
 // Assume that our activity feed needs updating to start with
-if (window.latest_activity === undefined) {
-    window.latest_activity = 0;
-    window.s_ajax_update_locking = 0;
-    window.activities_feed_grow = true;
+if (window.latestActivity === undefined) {
+    window.latestActivity = 0;
+    window.sAjaxUpdateLocking = 0;
+    window.activitiesFeedGrow = true;
 }
 
 function sUpdateGetData() {
-    // Lock feed updates by setting s_ajax_update_locking to 1
-    if ((++window.s_ajax_update_locking) > 1) {
-        window.s_ajax_update_locking = 1;
+    // Lock feed updates by setting sAjaxUpdateLocking to 1
+    if ((++window.sAjaxUpdateLocking) > 1) {
+        window.sAjaxUpdateLocking = 1;
     } else {
         // First we check whether our feed is already up to date
         jQuery.ajax({
             url: $cms.baseUrl('data_custom/latest_activity.txt?cache_break=' + Math.floor(Math.random() * 10000)),
             data: {},
             success: function (data) {
-                if (parseInt(data) != window.latest_activity) {
+                if (parseInt(data) != window.latestActivity) {
                     // If not then remember the new value
-                    window.latest_activity = parseInt(data);
+                    window.latestActivity = parseInt(data);
 
                     // Now grab whatever updates are available
                     var url = $cms.baseUrl('data_custom/activities_updater.php' + $cms.keepStub(true)),
                         listElements = jQuery('li', '#activities_feed'),
                         lastId = ((listElements.attr('id') == undefined) ? '-1' : listElements.attr('id').replace(/^activity_/, '')),
-                        postVal = 'last_id=' + lastId + '&mode=' + window.activities_mode;
+                        postVal = 'last_id=' + lastId + '&mode=' + window.activitiesMode;
 
-                    if ((window.activities_member_ids != null) && (window.activities_member_ids !== '')) {
-                        postVal = postVal + '&member_ids=' + window.activities_member_ids;
+                    if ((window.activitiesMemberIds != null) && (window.activitiesMemberIds !== '')) {
+                        postVal = postVal + '&member_ids=' + window.activitiesMemberIds;
                     }
 
                     postVal += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken()); // For CSRF prevention
@@ -248,7 +248,7 @@ function sUpdateGetData() {
                     });
                 } else {
                     // Allow feed updates
-                    window.s_ajax_update_locking = 0;
+                    window.sAjaxUpdateLocking = 0;
                 }
             },
             dataType: 'text'
@@ -260,8 +260,8 @@ function sUpdateGetData() {
  * Receive and parse data for the activities activities feed
  */
 function sUpdateShow(data, stat) {
-    if (window.s_ajax_update_locking > 1) {
-        window.s_ajax_update_locking = 1;
+    if (window.sAjaxUpdateLocking > 1) {
+        window.sAjaxUpdateLocking = 1;
     } else {
         var succeeded = false;
         if (stat == 'success') {
@@ -287,9 +287,8 @@ function sUpdateShow(data, stat) {
 
                 listElements = jQuery('li', '#activities_feed'); // Refresh, so as to include the new activity nodes
 
-                if ((!window.activities_feed_grow) && (listElements.length > window.activities_feed_max)) // Remove anything passed the grow length
-                {
-                    for (var i = window.activities_feed_max; i < listElements.length; i++) {
+                if ((!window.activitiesFeedGrow) && (listElements.length > window.activitiesFeedMax)) {// Remove anything passed the grow length
+                    for (var i = window.activitiesFeedMax; i < listElements.length; i++) {
                         listElements.last().remove();
                     }
                 }
@@ -307,7 +306,7 @@ function sUpdateShow(data, stat) {
         if (!succeeded) {
             jQuery('#activities_general_notify').text('{!INTERNAL_ERROR;^}');
         }
-        window.s_ajax_update_locking = 0;
+        window.sAjaxUpdateLocking = 0;
     }
 }
 

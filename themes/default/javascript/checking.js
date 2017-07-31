@@ -96,11 +96,11 @@
             return false;
         }
 
-        if (form.old_action) {
-            form.setAttribute('action', form.old_action);
+        if (form.oldAction) {
+            form.setAttribute('action', form.oldAction);
         }
-        if (form.old_target) {
-            form.setAttribute('target', form.old_target);
+        if (form.oldTarget) {
+            form.setAttribute('target', form.oldTarget);
         }
         if (!form.getAttribute('target')) {
             form.setAttribute('target', '_top');
@@ -127,7 +127,7 @@
             }
         }
 
-        if (!window.just_checking_requirements) {
+        if (!window.justCheckingRequirements) {
             if (analyticEventCategory) {
                 $cms.gaTrack(null, analyticEventCategory, null, function () {
                     form.submit();
@@ -139,9 +139,9 @@
 
         $cms.ui.disableSubmitAndPreviewButtons();
 
-        if (window.detect_interval !== undefined) {
-            clearInterval(window.detect_interval);
-            delete window.detect_interval;
+        if (window.detectInterval !== undefined) {
+            clearInterval(window.detectInterval);
+            delete window.detectInterval;
         }
 
         return true;
@@ -163,21 +163,21 @@
             return false;
         }
 
-        previewUrl += ((window.mobile_version_for_preview === undefined) ? '' : ('&keep_mobile=' + (window.mobile_version_for_preview ? '1' : '0')));
+        previewUrl += ((window.mobileVersionForPreview === undefined) ? '' : ('&keep_mobile=' + (window.mobileVersionForPreview ? '1' : '0')));
 
         var oldAction = form.getAttribute('action');
 
-        if (!form.old_action) {
-            form.old_action = oldAction;
+        if (!form.oldAction) {
+            form.oldAction = oldAction;
         }
-        form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(previewUrl) + ((form.old_action.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
+        form.setAttribute('action', /*$cms.maintainThemeInLink - no, we want correct theme images to work*/(previewUrl) + ((form.oldAction.indexOf('&uploading=1') != -1) ? '&uploading=1' : ''));
         var oldTarget = form.getAttribute('target');
         if (!oldTarget) {
             oldTarget = '_top';
         }
         /* not _self due to edit screen being a frame itself */
-        if (!form.old_target) {
-            form.old_target = oldTarget;
+        if (!form.oldTarget) {
+            form.oldTarget = oldTarget;
         }
         form.setAttribute('target', 'preview_iframe');
 
@@ -193,14 +193,14 @@
         }
 
         if (hasSeparatePreview) {
-            form.setAttribute('action', form.old_action + ((form.old_action.indexOf('?') == -1) ? '?' : '&') + 'preview=1');
+            form.setAttribute('action', form.oldAction + ((form.oldAction.indexOf('?') == -1) ? '?' : '&') + 'preview=1');
             return true;
         }
 
         $cms.dom.$id('submit_button').style.display = 'inline';
 
         /* Do our loading-animation */
-        if (!window.just_checking_requirements) {
+        if (!window.justCheckingRequirements) {
             setInterval($cms.dom.triggerResize, 500);
             /* In case its running in an iframe itself */
             $cms.dom.illustrateFrameLoad('preview_iframe');
@@ -223,7 +223,7 @@
      */
     $cms.form.isWysiwygField = function isWysiwygField(theElement) {
         var id = theElement.id;
-        return window.wysiwyg_editors && (typeof window.wysiwyg_editors === 'object') && (typeof window.wysiwyg_editors[id] === 'object');
+        return window.wysiwygEditors && (typeof window.wysiwygEditors === 'object') && (typeof window.wysiwygEditors[id] === 'object');
     };
 
     /**
@@ -648,8 +648,8 @@
                 element.className = element.className.replace(/(input_[a-z_]+)/g, '$1_required');
             }
 
-            if (element.plupload_object) {
-                element.plupload_object.settings.required = isRequired;
+            if (element.pluploadObject) {
+                element.pluploadObject.settings.required = isRequired;
             }
         }
 

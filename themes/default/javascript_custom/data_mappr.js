@@ -123,8 +123,8 @@
             options.region = region;
         }
 
-        if (window.data_map === undefined) {
-            window.data_map = null;
+        if (window.dataMap === undefined) {
+            window.dataMap = null;
         }
 
         $cms.requireJavascript(scripts).then(function () {
@@ -145,13 +145,13 @@
                 gOptions.center = specifiedCenter;
             }
 
-            window.data_map = new google.maps.Map(document.getElementById(divId), gOptions);
+            window.dataMap = new google.maps.Map(document.getElementById(divId), gOptions);
 
 
             var infoWindow = new google.maps.InfoWindow();
 
             // Close InfoWindow when clicking anywhere on the map
-            google.maps.event.addListener(data_map, 'click', function () {
+            google.maps.event.addListener(dataMap, 'click', function () {
                 infoWindow.close();
             });
 
@@ -216,7 +216,7 @@
                 if (cluster) {
                     markers.push(marker);
                 } else {
-                    marker.setMap(data_map);
+                    marker.setMap(dataMap);
                 }
 
                 google.maps.event.addListener(marker, 'click', (function (argMarker, entryTitle, entryId, entryContent) {
@@ -225,32 +225,32 @@
                         var content = entryContent.replace(/<colgroup>(.|\n)*<\/colgroup>/, '').replace(/&nbsp;/g, ' ');
                         if (content != '') {
                             infoWindow.setContent('<div class="global_middle_faux float_surrounder">' + content + '<\/div>');
-                            infoWindow.open(data_map, argMarker);
+                            infoWindow.open(dataMap, argMarker);
                         }
                     };
                 })(marker, data[i][0], data[i][4], data[i][5])); // These are the args passed to the dynamic function above
             }
 
             if (cluster) {
-                var markerCluster = new MarkerClusterer(data_map, markers);
+                var markerCluster = new MarkerClusterer(dataMap, markers);
             }
 
             // Autofit the map around the markers
             if (center) {
                 if (boundLength == 0) { // We may have to center at given lat/long after all if there are no pins
-                    data_map.setCenter(specifiedCenter);
+                    dataMap.setCenter(specifiedCenter);
                 } else if (boundLength == 1) { // Center around the only pin
-                    data_map.setCenter(new google.maps.LatLng(data[0][1], data[0][2]));
+                    dataMap.setCenter(new google.maps.LatLng(data[0][1], data[0][2]));
                 } else { // Good - autofit lots of pins
-                    data_map.fitBounds(bounds);
+                    dataMap.fitBounds(bounds);
                 }
             }
             // Sample code to grab clicked positions
             var lastPoint;
-            google.maps.event.addListener(data_map, 'mousemove', function (point) {
+            google.maps.event.addListener(dataMap, 'mousemove', function (point) {
                 lastPoint = point.latLng;
             });
-            google.maps.event.addListener(data_map, 'click', function () {
+            google.maps.event.addListener(dataMap, 'click', function () {
                 $cms.inform(lastPoint.lat() + ', ' + lastPoint.lng());
             });
         }

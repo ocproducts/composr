@@ -151,8 +151,8 @@
         var markedPostActionsForm = container.querySelector('form.js-form-marked-post-actions');
 
         if ((params.serializedOptions !== undefined) && (params.hash !== undefined)) {
-            window.comments_serialized_options = params.serializedOptions;
-            window.comments_hash = params.hash;
+            window.commentsSerializedOptions = params.serializedOptions;
+            window.commentsHash = params.hash;
         }
 
         $cms.dom.on(container, 'click', '.js-click-check-marked-form-and-submit', function (e, clicked) {

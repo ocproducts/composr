@@ -4,20 +4,20 @@
     $cms.templates.menuEditorScreen = function (params, container) {
         var menuEditorWrapEl = $cms.dom.$(container, '.js-el-menu-editor-wrap');
 
-        window.all_menus = params.allMenus;
+        window.allMenus = params.allMenus;
 
         $cms.dom.$('#url').addEventListener('dblclick', doubleClick);
         $cms.dom.$('#caption_long').addEventListener('dblclick', doubleClick);
         $cms.dom.$('#page_only').addEventListener('dblclick', doubleClick);
 
-        window.current_selection = '';
+        window.currentSelection = '';
         $cms.requireJavascript('tree_list').then(function () {
             window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?get_perms=0' + $cms.$KEEP() + '&start_links=1', null, '', false, null, false, true);
         });
 
         function doubleClick() {
             if (!menuEditorWrapEl.classList.contains('docked')) {
-                $cms.dom.smoothScroll($cms.dom.findPosY(document.getElementById('caption_' + window.current_selection)));
+                $cms.dom.smoothScroll($cms.dom.findPosY(document.getElementById('caption_' + window.currentSelection)));
             }
         }
 
@@ -50,17 +50,17 @@
         });
 
         $cms.dom.on(container, 'change', '.js-input-change-update-selection', function (e, input) {
-            var el = $cms.dom.$('#url_' + window.current_selection);
+            var el = $cms.dom.$('#url_' + window.currentSelection);
             if (!el) {
                 return;
             }
             el.value = input.value;
             el = $cms.dom.$('#edit_form').elements['url'];
             el.value = input.value;
-            el = $cms.dom.$('#edit_form').elements['caption_' + window.current_selection];
+            el = $cms.dom.$('#edit_form').elements['caption_' + window.currentSelection];
 
-            if ((el.value == '') && input.selected_title) {
-                el.value = input.selected_title.replace(/^.*:\s*/, '');
+            if ((el.value == '') && input.selectedTitle) {
+                el.value = input.selectedTitle.replace(/^.*:\s*/, '');
             }
         });
 
@@ -258,8 +258,8 @@
                             deleteBranch('branch_wrap_' + ob.name.substr(4, ob.name.length));
                         } else if (result.toLowerCase() === '{!menus:MOVETO_MENU;^}'.toLowerCase()) {
                             var choices = {buttons__cancel: '{!INPUTSYSTEM_CANCEL;^}'};
-                            for (var i = 0; i < window.all_menus.length; i++) {
-                                choices['buttons__choose___' + i] = window.all_menus[i];
+                            for (var i = 0; i < window.allMenus.length; i++) {
+                                choices['buttons__choose___' + i] = window.allMenus[i];
                             }
                             $cms.ui.generateQuestionUi(
                                 '{!menus:CONFIRM_MOVE_LINK_NICE;^,xxxx}'.replace('xxxx', document.getElementById('caption_' + id).value),
@@ -475,19 +475,19 @@
 
         $cms.dom.on(container, 'change', '.js-input-page-link-chooser', function (e, input) {
             if (!params.asField) {
-                if (window.faux_close) {
-                    window.faux_close();
+                if (window.fauxClose) {
+                    window.fauxClose();
                 } else {
                     window.close();
                 }
             }
 
             if (params.getTitleToo) {
-                if (input.selected_title === undefined) {
+                if (input.selectedTitle === undefined) {
                     input.value = '';
                     /*was autocomplete, unwanted*/
                 } else {
-                    input.value += ' ' + input.selected_title;
+                    input.value += ' ' + input.selectedTitle;
                 }
             }
         });

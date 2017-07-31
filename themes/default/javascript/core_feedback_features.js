@@ -101,7 +101,7 @@
         },
 
         focusTexareaPost: function (e, textarea) {
-            if (((textarea.value.replace(/\s/g, '') === '{!POST_WARNING;^}'.replace(/\s/g, '')) && ('{!POST_WARNING;^}' !== '')) || ((textarea.strip_on_focus != null) && (textarea.value == textarea.strip_on_focus))) {
+            if (((textarea.value.replace(/\s/g, '') === '{!POST_WARNING;^}'.replace(/\s/g, '')) && ('{!POST_WARNING;^}' !== '')) || ((textarea.stripOnFocus != null) && (textarea.value == textarea.stripOnFocus))) {
                 textarea.value = '';
             }
 
@@ -118,8 +118,8 @@
 
             form.setAttribute('target', '_self');
 
-            if (form.old_action !== undefined) {
-                form.setAttribute('action', form.old_action);
+            if (form.oldAction !== undefined) {
+                form.setAttribute('action', form.oldAction);
             }
 
             if (form.onsubmit && form.onsubmit.call(form, e)) {
@@ -150,7 +150,7 @@
                 return;
             }
 
-            if (opts.getName && !$cms.form.checkFieldForBlankness(form.elements.poster_name_if_guest, e)) {
+            if (opts.getName && !$cms.form.checkFieldForBlankness(form.elements['poster_name_if_guest'], e)) {
                 e.preventDefault();
                 return;
             }
@@ -179,16 +179,16 @@
                 form = this.form;
 
             // Tell next screen what the stub to trim is
-            if (form.elements['post'].default_substring_to_strip !== undefined) {
+            if (form.elements['post'].defaultSubstringToStrip !== undefined) {
                 if (form.elements['stub'] !== undefined) {
-                    form.elements['stub'].value = form.elements['post'].default_substring_to_strip;
+                    form.elements['stub'].value = form.elements['post'].defaultSubstringToStrip;
                 } else {
                     if (moreUrl.indexOf('?') == -1) {
                         moreUrl += '?';
                     } else {
                         moreUrl += '&';
                     }
-                    moreUrl += 'stub=' + encodeURIComponent(form.elements['post'].default_substring_to_strip);
+                    moreUrl += 'stub=' + encodeURIComponent(form.elements['post'].defaultSubstringToStrip);
                 }
             }
 
@@ -204,11 +204,11 @@
 
             // Reset form target
             form.setAttribute('target', '_top');
-            if (form.old_action !== undefined) form.old_action = form.getAttribute('action');
+            if (form.oldAction !== undefined) form.oldAction = form.getAttribute('action');
             form.setAttribute('action', moreUrl);
 
             // Handle threaded strip-on-focus
-            if ((form.elements['post'].strip_on_focus !== undefined) && (form.elements['post'].value == form.elements['post'].strip_on_focus)) {
+            if ((form.elements['post'].stripOnFocus !== undefined) && (form.elements['post'].value == form.elements['post'].stripOnFocus)) {
                 form.elements['post'].value = '';
             }
 
@@ -261,8 +261,8 @@
 
         commentsWrapper: function (params, container) {
             if ((params.serializedOptions !== undefined) && (params.hash !== undefined)) {
-                window.comments_serialized_options = params.serializedOptions;
-                window.comments_hash = params.hash;
+                window.commentsSerializedOptions = params.serializedOptions;
+                window.commentsHash = params.hash;
             }
 
             $cms.dom.on(container, 'change', '.js-change-select-submit-form', function (e, select) {
@@ -305,7 +305,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
             /* Load more from a threaded topic */
-            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.comments_serialized_options) + '&hash=' + encodeURIComponent(window.comments_hash), null, true).then(function (ajaxResult) {
+            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.commentsSerializedOptions) + '&hash=' + encodeURIComponent(window.commentsHash), null, true).then(function (ajaxResult) {
                 var wrapper;
                 if (id !== '') {
                     wrapper = $cms.dom.$('#post_children_' + id);
@@ -341,7 +341,7 @@
     function replaceCommentsFormWithAjax(options, hash, commentsFormId, commentsWrapperId) {
         var commentsForm = $cms.dom.$id(commentsFormId);
         if (commentsForm) {
-            commentsForm.old_onsubmit = commentsForm.onsubmit;
+            commentsForm.oldOnsubmit = commentsForm.onsubmit;
 
             commentsForm.onsubmit = function (event, isPreview) {
                 isPreview = !!isPreview;
@@ -355,7 +355,7 @@
                     event.preventDefault();
                 }
 
-                if (!commentsForm.old_onsubmit(event)) {
+                if (!commentsForm.oldOnsubmit(event)) {
                     return false;
                 }
 
@@ -381,10 +381,10 @@
                 var post = 'options=' + encodeURIComponent(options) + '&hash=' + encodeURIComponent(hash);
                 var postElement = commentsForm.elements['post'];
                 var postValue = postElement.value;
-                if (postElement.default_substring_to_strip !== undefined) // Strip off prefix if unchanged
+                if (postElement.defaultSubstringToStrip !== undefined) // Strip off prefix if unchanged
                 {
-                    if (postValue.substring(0, postElement.default_substring_to_strip.length) == postElement.default_substring_to_strip)
-                        postValue = postValue.substring(postElement.default_substring_to_strip.length, postValue.length);
+                    if (postValue.substring(0, postElement.defaultSubstringToStrip.length) == postElement.defaultSubstringToStrip)
+                        postValue = postValue.substring(postElement.defaultSubstringToStrip.length, postValue.length);
                 }
                 for (var i = 0; i < commentsForm.elements.length; i++) {
                     if ((commentsForm.elements[i].name) && (commentsForm.elements[i].name != 'post')) {
@@ -526,18 +526,18 @@
         var form = $cms.dom.$('form#comments_form');
 
         var parentIdField;
-        if (form.elements.parent_id === undefined) {
+        if (form.elements['parent_id'] === undefined) {
             parentIdField = document.createElement('input');
             parentIdField.type = 'hidden';
             parentIdField.name = 'parent_id';
             form.appendChild(parentIdField);
         } else {
             parentIdField = form.elements['parent_id'];
-            if (window.last_reply_to !== undefined) {
-                $cms.dom.clearTransitionAndSetOpacity(window.last_reply_to, 1.0);
+            if (window.lastReplyTo !== undefined) {
+                $cms.dom.clearTransitionAndSetOpacity(window.lastReplyTo, 1.0);
             }
         }
-        window.last_reply_to = el;
+        window.lastReplyTo = el;
         parentIdField.value = isThreaded ? id : '';
 
         el.classList.add('activated_quote_button');
@@ -553,10 +553,10 @@
 
         if (isThreaded) {
             post.value = $cms.format('{!QUOTED_REPLY_MESSAGE;^}', [replyingToUsername, replyingToPostPlain]);
-            post.strip_on_focus = post.value;
+            post.stripOnFocus = post.value;
             post.classList.add('field_input_non_filled');
         } else {
-            if ((post.strip_on_focus !== undefined) && (post.value == post.strip_on_focus)) {
+            if ((post.stripOnFocus !== undefined) && (post.value == post.stripOnFocus)) {
                 post.value = '';
             } else if (post.value != '') {
                 post.value += '\n\n';
@@ -566,7 +566,7 @@
             post.value += '[quote="' + replyingToUsername + '"]\n' + replyingToPost + '\n[snapback]' + id + '[/snapback][/quote]\n\n';
 
             if (!isExplicitQuote) {
-                post.default_substring_to_strip = post.value;
+                post.defaultSubstringToStrip = post.value;
             }
         }
 

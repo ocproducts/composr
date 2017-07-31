@@ -20,12 +20,12 @@
                 }
 
                 if (e.type === 'mouseover') {
-                    window.old_status = window.status;
+                    window.oldStatus = window.status;
                     window.status = '{!SPECIAL_CLICK_TO_EDIT;}';
                     el.classList.add('fractional_edit');
                     el.classList.remove('fractional_edit_nonover');
                 } else {
-                    window.status = window.old_status;
+                    window.status = window.oldStatus;
                     el.classList.remove('fractional_edit');
                     el.classList.add('fractional_edit_nonover');
                 }
@@ -63,9 +63,9 @@
         var y = $cms.dom.findPosY(object, true) - 8;
 
         // Record old JS events
-        object.old_onclick = object.onclick;
-        object.old_ondblclick = object.ondblclick;
-        object.old_onkeypress = object.onkeypress;
+        object.oldOnclick = object.onclick;
+        object.oldOndblclick = object.ondblclick;
+        object.oldOnkeypress = object.onkeypress;
 
         // Create form
         var form = document.createElement('form'); // The form is never submitted actually: we use XMLHttpRequest
@@ -73,10 +73,10 @@
         form.action = url;
         form.style.display = 'inline';
         var populatedValue;
-        if (object.raw_text !== undefined) {
-            populatedValue = object.raw_text; // Our previous text edited in this JS session
+        if (object.rawText !== undefined) {
+            populatedValue = object.rawText; // Our previous text edited in this JS session
         } else {
-            object.raw_text = rawText;
+            object.rawText = rawText;
             populatedValue = rawText; // What was in the DB when the screen loaded
         }
         var input;
@@ -133,9 +133,9 @@
         }
 
         function cleanupFunction() {
-            object.onclick = object.old_onclick;
-            object.ondblclick = object.old_ondblclick;
-            object.onkeypress = object.old_onkeypress;
+            object.onclick = object.oldOnclick;
+            object.ondblclick = object.oldOndblclick;
+            object.onkeypress = object.oldOnkeypress;
 
             if (input.form.parentNode) {
                 input.onblur = null; // So don't get recursion
@@ -189,7 +189,7 @@
                         $cms.ui.alert((response.status == 500) ? response.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', null, '{!FRACTIONAL_EDIT;^}');
                     }
                 } else { // Success
-                    object.raw_text = input.value;
+                    object.rawText = input.value;
                     $cms.dom.html(object, response.responseText);
 
                     cleanupFunction();

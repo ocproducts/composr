@@ -63,18 +63,18 @@
         updateKeySettings();
 
         function updateKeySettings() {
-            var hasKey = (keyField.value != '');
+            var hasKey = (keyField.value !== '');
 
-            form.elements.new_handling[0].disabled = !hasKey;
-            form.elements.new_handling[1].disabled = !hasKey;
+            form.elements['new_handling'][0].disabled = !hasKey;
+            form.elements['new_handling'][1].disabled = !hasKey;
 
-            form.elements.delete_handling[0].disabled = !hasKey;
-            form.elements.delete_handling[1].disabled = !hasKey;
+            form.elements['delete_handling'][0].disabled = !hasKey;
+            form.elements['delete_handling'][1].disabled = !hasKey;
 
-            form.elements.update_handling[0].disabled = !hasKey;
-            form.elements.update_handling[1].disabled = !hasKey;
-            form.elements.update_handling[2].disabled = !hasKey;
-            form.elements.update_handling[3].disabled = !hasKey;
+            form.elements['update_handling'][0].disabled = !hasKey;
+            form.elements['update_handling'][1].disabled = !hasKey;
+            form.elements['update_handling'][2].disabled = !hasKey;
+            form.elements['update_handling'][3].disabled = !hasKey;
         }
     };
 
@@ -101,7 +101,7 @@
             var mt = document.getElementById('move_target');
             var form = mt.form;
             var crf = function () {
-                var s = (mt.selectedIndex == 0);
+                var s = (mt.selectedIndex === 0);
                 form.elements['move_days_lower'].disabled = s;
                 form.elements['move_days_higher'].disabled = s;
             };

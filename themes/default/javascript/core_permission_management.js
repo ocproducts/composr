@@ -10,8 +10,8 @@
     function PermissionsTreeEditorScreen(params) {
         PermissionsTreeEditorScreen.base(this, 'constructor', arguments);
 
-        window.column_color = params.color;
-        window.usergroup_titles = params.usergroups;
+        window.columnColor = params.color;
+        window.usergroupTitles = params.usergroups;
 
         $cms.requireJavascript('tree_list').then(function () {
             window.sitemap = $cms.ui.createTreeList('tree_list', 'data/sitemap.php?start_links=1&get_perms=1&label_content_types=1&keep_full_structure=1' + $cms.$KEEP(), null, '', true);
@@ -29,10 +29,10 @@
         },
 
         updateGroupDisplayer: function (e, select) {
-            $cms.dom.html(document.getElementById('group_name'), $cms.filter.html(window.usergroup_titles[select.options[select.selectedIndex].value]));
+            $cms.dom.html(document.getElementById('group_name'), $cms.filter.html(window.usergroupTitles[select.options[select.selectedIndex].value]));
             var tree = document.getElementById('tree_list__root_tree_list');
             $cms.dom.html(tree, '');
-            window.sitemap.renderTree(window.sitemap.tree_list_data, tree);
+            window.sitemap.renderTree(window.sitemap.treeListData, tree);
         },
 
         setPermissions: function () {
@@ -56,7 +56,7 @@
         });
 
         $cms.dom.on(container, 'blur', '.js-blur-textarea-contract', function (e, textarea) {
-            if (!textarea.form.disable_size_change) {
+            if (!textarea.form.disableSizeChange) {
                 textarea.setAttribute('rows', '2');
             }
         });
@@ -70,7 +70,7 @@
 
     $cms.templates.permissionKeysPermissionsScreen = function permissionKeysPermissionsScreen(params, container) {
         $cms.dom.on(container, 'mouseover mouseout', '.js-btn-hover-toggle-disable-size-change', function (e, btn) {
-            btn.form.disable_size_change = (e.type === 'mouseover');
+            btn.form.disableSizeChange = (e.type === 'mouseover');
         });
     };
 
@@ -164,16 +164,16 @@
             numPrivilege = 0;
             knownPrivileges = [];
             id = node.getAttribute('id');
-            if (window.attributes_full === undefined) window.attributes_full = [];
-            if (window.attributes_full[id] === undefined) window.attributes_full[id] = node.attributes;
-            for (name in window.attributes_full[id]) {
-                value = window.attributes_full[id][name];
-                if (name.substr(0, 'privilege_'.length) == 'privilege_') {
+            if (window.attributesFull === undefined) window.attributesFull = [];
+            if (window.attributesFull[id] === undefined) window.attributesFull[id] = node.attributes;
+            for (name in window.attributesFull[id]) {
+                value = window.attributesFull[id][name];
+                if (name.substr(0, 'privilege_'.length) === 'privilege_') {
                     privilege = name.substr('privilege_'.length);
                     privilegeTitle = value;
                     doneHeader = false;
                     for (k = 0; k < rows.length; k++) {
-                        if (rows[k].id.substr(0, 7) != 'access_') continue;
+                        if (rows[k].id.substr(0, 7) !== 'access_') continue;
 
                         group = rows[k].id.substring(7, rows[k].id.indexOf('_privilege_container'));
 
@@ -185,7 +185,7 @@
                                 newCell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
                                 newCell.className = 'privilege_header';
                                 newCell.id = 'privilege_header_' + privilege;
-                                $cms.dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.column_color + '&amp;text=' + encodeURIComponent(privilegeTitle) + $cms.filter.html($cms.keepStub()) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
+                                $cms.dom.html(newCell, '<img class="gd_text" data-gd-text="1" src="' + $cms.baseUrl() + 'data/gd_text.php?color=' + window.columnColor + '&amp;text=' + encodeURIComponent(privilegeTitle) + $cms.filter.html($cms.keepStub()) + '" title="' + $cms.filter.html(privilegeTitle) + '" alt="' + $cms.filter.html(privilegeTitle) + '" />');
 
                                 rows[rows.length - 1].appendChild(document.createElement('td')).className = 'form_table_field_input privilege_footer'; // Footer cell
 
@@ -221,8 +221,8 @@
             }
 
             // Set privileges for all usergroups (to highest permissions from all usergroups selected)
-            for (name in window.attributes_full[id]) {
-                value = window.attributes_full[id][name];
+            for (name in window.attributesFull[id]) {
+                value = window.attributesFull[id][name];
                 if (name.substr(0, 'group_privileges_'.length) == 'group_privileges_') {
                     group = name.substr(name.lastIndexOf('_') + 1);
                     privilege = name.substr('group_privileges_'.length, name.length - group.length - 1 - ('group_privileges_'.length));
@@ -332,25 +332,25 @@
 
             // Set privileges for all usergroups
             id = node.getAttribute('id');
-            if (window.attributes_full === undefined) {
-                window.attributes_full = [];
+            if (window.attributesFull === undefined) {
+                window.attributesFull = [];
             }
-            if (window.attributes_full[id] === undefined) {
-                window.attributes_full[id] = node.attributes;
+            if (window.attributesFull[id] === undefined) {
+                window.attributesFull[id] = node.attributes;
             }
-            for (var name in window.attributes_full[id]) {
-                var value = window.attributes_full[id][name];
+            for (var name in window.attributesFull[id]) {
+                var value = window.attributesFull[id][name];
                 if (name.substr(0, 'privilege_'.length) == 'privilege_') {
                     for (j = 0; j < knownGroups.length; j++) {
                         group = knownGroups[j];
                         privilege = name.substr('privilege_'.length);
-                        value = window.attributes_full[id]['group_privileges_' + privilege + '_' + group];
+                        value = window.attributesFull[id]['group_privileges_' + privilege + '_' + group];
                         if (!value) value = -1;
                         element = document.getElementById('access_' + group + '_privilege_' + privilege);
                         if (element) {
                             newValue = element.selectedIndex - 1;
                             if (newValue != value) {
-                                window.attributes_full[id]['group_privileges_' + privilege + '_' + group] = newValue;
+                                window.attributesFull[id]['group_privileges_' + privilege + '_' + group] = newValue;
                                 setRequestB = setRequestB + '&' + i + 'group_privileges_' + privilege + '_' + group + '=' + newValue;
                             }
                         }
@@ -386,7 +386,7 @@ function showPermissionSetting(ob, event) {
     }
     ob.done = true;
 
-    if (!ob.full_setting) {
+    if (!ob.fullSetting) {
         var serverid;
 
         if (window.sitemap != null) {
@@ -399,7 +399,7 @@ function showPermissionSetting(ob, event) {
             var node = window.sitemap.getElementByIdHack(value);
             serverid = node.getAttribute('serverid');
         } else {
-            serverid = window.perm_serverid + ':_new_';
+            serverid = window.permServerid + ':_new_';
         }
 
         var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
@@ -407,13 +407,13 @@ function showPermissionSetting(ob, event) {
             if (!ret) {
                 return;
             }
-            ob.full_setting = ret.responseText;
-            ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.full_setting + ']';
+            ob.fullSetting = ret.responseText;
+            ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.fullSetting + ']';
         });
         return;
     }
 
-    ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.full_setting + ']';
+    ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.fullSetting + ']';
 }
 
 function cleanupPermissionList(name) {
@@ -528,29 +528,29 @@ function permissionsImgFunc1(node, id) {
             id = node.getAttribute('id');
         }
 
-        if (window.attributes_full === undefined) {
-            window.attributes_full = [];
+        if (window.attributesFull === undefined) {
+            window.attributesFull = [];
         }
 
-        if (window.attributes_full[id] === undefined) {
-            window.attributes_full[id] = node.attributes;
+        if (window.attributesFull[id] === undefined) {
+            window.attributesFull[id] = node.attributes;
         }
 
-        if (((window.attributes_full[id]['group_privileges_delete_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_highrange_content_' + group] == '1')) ||
-            ((window.attributes_full[id]['group_privileges_delete_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_midrange_content_' + group] == '1')) ||
-            ((window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_delete_lowrange_content_' + group] == '1')))
+        if (((window.attributesFull[id]['group_privileges_delete_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_highrange_content_' + group] == '1')) ||
+            ((window.attributesFull[id]['group_privileges_delete_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_midrange_content_' + group] == '1')) ||
+            ((window.attributesFull[id]['group_privileges_delete_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_delete_lowrange_content_' + group] == '1')))
             return [$cms.img('{$IMG;,permlevels/3}'), '{!permissions:PINTERFACE_LEVEL_3;^}'];
-        else if (((window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_highrange_content_' + group] == '1')) ||
-            ((window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_midrange_content_' + group] == '1')) ||
-            ((window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_bypass_validation_lowrange_content_' + group] == '1')))
+        else if (((window.attributesFull[id]['group_privileges_bypass_validation_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_highrange_content_' + group] == '1')) ||
+            ((window.attributesFull[id]['group_privileges_bypass_validation_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_midrange_content_' + group] == '1')) ||
+            ((window.attributesFull[id]['group_privileges_bypass_validation_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_bypass_validation_lowrange_content_' + group] == '1')))
             return [$cms.img('{$IMG;,permlevels/2}'), '{!permissions:PINTERFACE_LEVEL_2;^}'];
-        else if (((window.attributes_full[id]['group_privileges_submit_highrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_highrange_content_' + group] == '1')) ||
-            ((window.attributes_full[id]['group_privileges_submit_midrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_midrange_content_' + group] == '1')) ||
-            ((window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group]) && (window.attributes_full[id]['group_privileges_submit_lowrange_content_' + group] == '1')))
+        else if (((window.attributesFull[id]['group_privileges_submit_highrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_highrange_content_' + group] == '1')) ||
+            ((window.attributesFull[id]['group_privileges_submit_midrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_midrange_content_' + group] == '1')) ||
+            ((window.attributesFull[id]['group_privileges_submit_lowrange_content_' + group]) && (window.attributesFull[id]['group_privileges_submit_lowrange_content_' + group] == '1')))
             return [$cms.img('{$IMG;,permlevels/1}'), '{!permissions:PINTERFACE_LEVEL_1;^}'];
-        else if (window.attributes_full[id]['inherits_something'])
+        else if (window.attributesFull[id]['inherits_something'])
             return [$cms.img('{$IMG;,permlevels/inherit}'), '{!permissions:PINTERFACE_LEVEL_GLOBAL;^}'];
-        else if (window.attributes_full[id]['no_privileges']) return [$cms.img('{$IMG;,blank}'), ''];
+        else if (window.attributesFull[id]['no_privileges']) return [$cms.img('{$IMG;,blank}'), ''];
 
         return [$cms.img('{$IMG;,permlevels/0}'), '{!permissions:PINTERFACE_LEVEL_0;^}'];
     }

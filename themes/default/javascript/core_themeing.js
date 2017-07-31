@@ -11,8 +11,8 @@
      */
 
     // INIT CODE
-    window.template_editor_open_files || (window.template_editor_open_files = {});
-    window.done_cleanup_template_markers = window.done_cleanup_template_markers !== undefined ? !!window.done_cleanup_template_markers : false;
+    window.templateEditorOpenFiles || (window.templateEditorOpenFiles = {});
+    window.doneCleanupTemplateMarkers = window.doneCleanupTemplateMarkers !== undefined ? !!window.doneCleanupTemplateMarkers : false;
 
     if (window.location.href.includes('keep_template_magic_markers=1')) {
         window.$cmsReady.push(function () {
@@ -93,7 +93,7 @@
             function templateEditorTabSaveContent(file) {
                 var url = 'template_editor_save';
                 url += '&file=' + encodeURIComponent(file);
-                url += '&theme=' + encodeURIComponent(window.template_editor_theme);
+                url += '&theme=' + encodeURIComponent(window.templateEditorTheme);
 
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
@@ -105,7 +105,7 @@
             }
 
             function templateEditorTabMarkNonchangedContent(file) {
-                window.template_editor_open_files[file].unsaved_changes = false;
+                window.templateEditorOpenFiles[file].unsavedChanges = false;
 
                 var fileId = fileToFileId(file);
                 var ob = document.getElementById('t_' + fileId);
@@ -229,18 +229,18 @@
         // Set up background compiles
         var textareaId = 'e_' + fileId;
         if (editareaIsLoaded(textareaId)) {
-            var editor = window.ace_editors[textareaId];
+            var editor = window.aceEditors[textareaId];
 
             var lastCss = editareaGetValue(textareaId);
 
-            editor.css_recompiler_timer = setInterval(function () {
+            editor.cssRecompilerTimer = setInterval(function () {
                 if ((window.opener) && (window.opener.document)) {
-                    if (editor.last_change === undefined) return; // No change made at all
+                    if (editor.lastChange === undefined) return; // No change made at all
 
-                    var millisecondsAgo = (new Date()).getTime() - editor.last_change;
+                    var millisecondsAgo = (new Date()).getTime() - editor.lastChange;
                     if (millisecondsAgo > 3 * 1000) return; // Not changed recently enough (within last 3 seconds)
 
-                    if (window.opener.have_set_up_parent_page_highlighting === undefined) {
+                    if (window.opener.haveSetUpParentPageHighlighting === undefined) {
                         setUpParentPageHighlighting(file, fileId);
                         lastCss = '';
                         /*force new CSS to apply*/
@@ -310,7 +310,7 @@
         }
 
         function setUpParentPageHighlighting(file, fileId) {
-            window.opener.have_set_up_parent_page_highlighting = true;
+            window.opener.haveSetUpParentPageHighlighting = true;
 
             var doingCssFor = file.replace(/^css\//, '').replace('.css', '');
 
@@ -399,13 +399,11 @@
                                 var target = event.target;
                                 var targetDistance = 0;
                                 var elementRecurse = element;
-                                do
-                                {
+                                do {
                                     if (elementRecurse == target) break;
                                     elementRecurse = elementRecurse.parentNode;
                                     targetDistance++;
-                                }
-                                while (elementRecurse);
+                                } while (elementRecurse);
                                 if (targetDistance > 10) targetDistance = 10; // Max range
 
                                 a.style.outline = '1px dotted green';
@@ -685,14 +683,14 @@
     };
 
     $cms.templates.themeTemplateEditorScreen = function themeTemplateEditorScreen(params, container) {
-        window.template_editor_theme = params.theme;
+        window.templateEditorTheme = params.theme;
 
         if (params.activeGuid !== undefined) {
-            window.template_editor_active_guid = params.activeGuid;
+            window.templateEditorActiveGuid = params.activeGuid;
         }
 
         if (params.livePreviewUrl !== undefined) {
-            window.template_editor_live_preview_url = params.livePreviewUrl;
+            window.templateEditorLivePreviewUrl = params.livePreviewUrl;
         }
 
         templateEditorCleanTabs();
@@ -787,7 +785,7 @@
     };
 
     $cms.templates.themeImageManageScreen = function () {
-        window.main_form_very_simple = true;
+        window.mainFormVerySimple = true;
     };
 
     $cms.templates.themeTemplateEditorRestoreRevision = function (params, container) {
@@ -835,13 +833,13 @@
     };
 
     function cleanupTemplateMarkers(win) {
-        if (window.done_cleanup_template_markers) {
+        if (window.doneCleanupTemplateMarkers) {
             return;
         }
 
         _cleanupTemplateMarkers(win.document.body, 0);
 
-        window.done_cleanup_template_markers = true;
+        window.doneCleanupTemplateMarkers = true;
 
         function _cleanupTemplateMarkers(node, depth) {
             var inside = [];
@@ -982,7 +980,7 @@
                 event.preventDefault();
             }
 
-            if (window.template_editor_open_files[file].unsaved_changes) {
+            if (window.templateEditorOpenFiles[file].unsavedChanges) {
                 $cms.ui.confirm('{!themes:UNSAVED_CHANGES;^}'.replace('\{1\}', file), function (result) {
                     if (result) {
                         templateEditorTabUnloadContent(file);
@@ -1027,7 +1025,7 @@
             var fileId = fileToFileId(file);
             var wasActive = templateEditorRemoveTab(fileId);
 
-            delete window.template_editor_open_files[file];
+            delete window.templateEditorOpenFiles[file];
 
             if (wasActive) {
                 // Select tab
@@ -1063,12 +1061,12 @@
     function templateEditorLoadingUrl(file, revisionId) {
         var url = 'template_editor_load';
         url += '&file=' + encodeURIComponent(file);
-        url += '&theme=' + encodeURIComponent(window.template_editor_theme);
-        if (window.template_editor_active_guid !== undefined) {
-            url += '&active_guid=' + encodeURIComponent(window.template_editor_active_guid);
+        url += '&theme=' + encodeURIComponent(window.templateEditorTheme);
+        if (window.templateEditorActiveGuid !== undefined) {
+            url += '&active_guid=' + encodeURIComponent(window.templateEditorActiveGuid);
         }
-        if (window.template_editor_live_preview_url !== undefined) {
-            url += '&live_preview_url=' + encodeURIComponent($cms.protectURLParameter(window.template_editor_live_preview_url));
+        if (window.templateEditorLivePreviewUrl !== undefined) {
+            url += '&live_preview_url=' + encodeURIComponent($cms.protectURLParameter(window.templateEditorLivePreviewUrl));
         }
         if (revisionId !== undefined) {
             url += '&undo_revision=' + encodeURIComponent(revisionId);
@@ -1103,11 +1101,11 @@
         setTimeout(function () {
             var textareaId = 'e_' + fileId;
             if (editareaIsLoaded(textareaId)) {
-                var editor = window.ace_editors[textareaId];
+                var editor = window.aceEditors[textareaId];
                 var editorSession = editor.getSession();
                 editorSession.on('change', function () {
                     templateEditorTabMarkChangedContent(file);
-                    editor.last_change = (new Date()).getTime();
+                    editor.lastChange = (new Date()).getTime();
                 });
             } else {
                 getFileTextbox(file).addEventListener('change', function () {
@@ -1116,12 +1114,12 @@
             }
         }, 1000);
 
-        window.template_editor_open_files[file] = {
-            unsaved_changes: false
+        window.templateEditorOpenFiles[file] = {
+            unsavedChanges: false
         };
 
         function templateEditorTabMarkChangedContent(file) {
-            window.template_editor_open_files[file].unsaved_changes = true;
+            window.templateEditorOpenFiles[file].unsavedChanges = true;
 
             var fileId = fileToFileId(file);
             var ob = document.getElementById('t_' + fileId);
@@ -1137,12 +1135,13 @@
                 return;
             }
 
-            if (window.opener) // If anchored
+            if (window.opener) {// If anchored
                 highlightTemplate(window.opener, fileIdToFile(fileId));
+            }
 
             window.jQuery('#e_' + fileId.replace(/\./g, '\\.') + '_wrap').resizable({
                 resize: function (event, ui) {
-                    var editor = window.ace_editors['e_' + fileId];
+                    var editor = window.aceEditors['e_' + fileId];
                     if (editor !== undefined) {
                         $cms.dom.$('#e_' + fileId.replace(/\./g, '\\.') + '__ace').style.height = '100%';
                         $cms.dom.$('#e_' + fileId.replace(/\./g, '\\.') + '__ace').parentNode.style.height = '100%';
@@ -1154,7 +1153,7 @@
         }, 1000);
 
         function fileIdToFile(fileId) {
-            for (var file in window.template_editor_open_files) {
+            for (var file in window.templateEditorOpenFiles) {
                 if (fileToFileId(file) == fileId) return file;
             }
             return null;

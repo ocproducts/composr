@@ -4,10 +4,9 @@
 // COLOUR CHOOSER
 // ==============
 
-
-window.names_to_numbers || (window.names_to_numbers = {});
-window.last_cc || (window.last_cc = {});
-window.last_cc_i || (window.last_cc_i = {});
+window.namesToNumbers || (window.namesToNumbers = {});
+window.lastCc || (window.lastCc = {});
+window.lastCcI || (window.lastCcI = {});
 
 function decToHex(number) {
     var hexbase = '0123456789ABCDEF';
@@ -19,16 +18,18 @@ function hexToDec(number) {
 }
 
 function makeColourChooser(name, color, context, tabindex, label, className) {
-    label || (label = '&lt;color-' + name + '&gt;');
+    name = strVal(name);
+    color = strVal(color);
+    context = strVal(context);
+    label = strVal(label, '&lt;color-' + name + '&gt;');
+    className = strVal(className);
 
-    if (className === undefined) {
-        className = '';
-    } else {
+    if (className !== '') {
         className = 'class="' + className + '" ';
     }
 
-    window.names_to_numbers[name] = window.names_to_numbers.length;
-    window.names_to_numbers.length++;
+    window.namesToNumbers[name] = window.namesToNumbers.length;
+    window.namesToNumbers.length++;
 
     var p = document.getElementById('colours_go_here_' + name);
     if (!p) {
@@ -66,7 +67,7 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
     t = t + '	</div>';
     t = t + '</div>';
 
-    if (context != '') {
+    if (context !== '') {
         t = t + '<div class="css_colour_chooser_context">' + context + '</div>';
     }
 
@@ -80,10 +81,10 @@ function makeColourChooser(name, color, context, tabindex, label, className) {
         updateChooser(target.id);
     });
 
-    if (jQuery("#"+name).spectrum != undefined) {
+    if (jQuery.fn.spectrum !== undefined) {
         var test = document.createElement('input');
         test.type = 'color';
-        if (test.type == 'text') {
+        if (test.type === 'text') {
             jQuery("#" + name).spectrum({
                 color: color
             });
@@ -95,7 +96,7 @@ function doColorChooser() {
     var elements = document.getElementsByTagName('div');
     var ce, a = 0, myElements = [];
     for (ce = 0; ce < elements.length; ce++) {
-        if (elements[ce].id.substring(0, 10) == 'cc_target_') {
+        if (elements[ce].id.substring(0, 10) === 'cc_target_') {
             myElements[a] = elements[ce];
             a++;
         }
@@ -104,13 +105,12 @@ function doColorChooser() {
         doColorChooserElement(myElements[ce]);
     }
 
-
     function doColorChooserElement(element) {
         var id = element.id.substring(10),
             source = document.getElementById('cc_source_' + id),
             bgColor = source.style.backgroundColor;
 
-        if ((bgColor.substr(0, 1) !== '#') && (bgColor.substr(0, 3) != 'rgb')) {
+        if ((bgColor.substr(0, 1) !== '#') && (bgColor.substr(0, 3) !== 'rgb')) {
             bgColor = '#000000';
         }
         if (bgColor.substr(0, 1) === '#') {
@@ -144,7 +144,7 @@ function doColorChooser() {
 
         var d, i, _rgb = [], bg, innert, tid, selected, style;
         for (d = 0; d <= 2; d++) {
-            window.last_cc_i[d + window.names_to_numbers[id] * 3] = 0;
+            window.lastCcI[d + window.namesToNumbers[id] * 3] = 0;
             innert = '';
 
             for (i = 0; i < 256; i += 4) {
@@ -158,7 +158,7 @@ function doColorChooser() {
                     _rgb[0] = 255;
                     _rgb[1] = 255;
                     _rgb[2] = 255;
-                    window.last_cc_i[d + window.names_to_numbers[id] * 3] = i;
+                    window.lastCcI[d + window.namesToNumbers[id] * 3] = i;
                 }
                 bg = 'rgb(' + _rgb[0] + ',' + _rgb[1] + ',' + _rgb[2] + ')';
                 tid = 'cc_col_' + d + '_' + i + '#' + id;
@@ -202,14 +202,14 @@ function doColorChange(e) {
     rgb[0] = 0;
     rgb[1] = 0;
     rgb[2] = 0;
-    rgb[d] = window.last_cc_i[d + window.names_to_numbers[_id] * 3];
+    rgb[d] = window.lastCcI[d + window.namesToNumbers[_id] * 3];
     var tempLastCc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + _id);
     if (tempLastCc !== targ) {
         tempLastCc.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]);
         tempLastCc.style.cursor = 'pointer';
         tempLastCc.style.outline = 'none';
         tempLastCc.style.position = 'static';
-        window.last_cc_i[d + window.names_to_numbers[_id] * 3] = i;
+        window.lastCcI[d + window.namesToNumbers[_id] * 3] = i;
 
         // Show a white line over the colour we clicked
         targ.style.backgroundColor = '#FFFFFF';
@@ -252,16 +252,18 @@ function updateChooser(chooser) {
         rgb[0] = 0;
         rgb[1] = 0;
         rgb[2] = 0;
-        rgb[d] = window.last_cc_i[d + window.names_to_numbers[id] * 3];
+        rgb[d] = window.lastCcI[d + window.namesToNumbers[id] * 3];
         var tempLastCc = document.getElementById('cc_col_' + d + '_' + rgb[d] + '#' + id);
         tempLastCc.style.backgroundColor = '#' + decToHex(rgb[0]) + decToHex(rgb[1]) + decToHex(rgb[2]); // Reset old
         tempLastCc.style.outline = 'none';
         tempLastCc.style.position = 'static';
-        window.last_cc_i[d + window.names_to_numbers[id] * 3] = i;
+        window.lastCcI[d + window.namesToNumbers[id] * 3] = i;
 
         var element = document.getElementById('cc_target_' + id);
         var bgColor = element.style.backgroundColor;
-        if (bgColor.substr(0, 1) == '#') bgColor = 'rgb(' + hexToDec(bgColor.substr(1, 2)) + ',' + hexToDec(bgColor.substr(3, 2)) + ',' + hexToDec(bgColor.substr(5, 2)) + ')';
+        if (bgColor.substr(0, 1) === '#') {
+            bgColor = 'rgb(' + hexToDec(bgColor.substr(1, 2)) + ',' + hexToDec(bgColor.substr(3, 2)) + ',' + hexToDec(bgColor.substr(5, 2)) + ')';
+        }
         var sRgb = bgColor.replace(new RegExp('(r|g|b|(\\()|(\\))|(\\s))*', 'gi'), '');
         rgb = sRgb.split(',');
         rgb[d] = i;

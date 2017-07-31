@@ -20,8 +20,8 @@
             var message = win.document.getElementById('message');
             win.insertTextbox(message, params.message, null, false, params.messageHtml);
 
-            if (window.faux_close !== undefined) {
-                window.faux_close();
+            if (window.fauxClose !== undefined) {
+                window.fauxClose();
             } else {
                 window.close();
             }

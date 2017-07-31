@@ -76,7 +76,7 @@
             data.push({
                 html: itemsHtml[i],
                 url:  news[i].url,
-                image_url: news[i].imageUrl
+                imageUrl: news[i].imageUrl
             });
 
             new Image().src = news[i].imageUrl; // precache
@@ -122,7 +122,7 @@
             $cms.dom.fadeTransition(fpAnimationNews, 0, 30, -4);
             $cms.dom.clearTransitionAndSetOpacity(fpAnimation, 0.0);
             $cms.dom.fadeTransition(fpAnimation, 100, 30, 4);
-            fpAnimation.src = data[j].image_url;
+            fpAnimation.src = data[j].imageUrl;
             setTimeout(function () { // Will know dimensions by the time the timeout happens
                 fpAnimationNews.style.left = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetWidth) / 2) + 'px';
                 fpAnimationNews.style.top = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetHeight) / 2) + 'px';
@@ -158,18 +158,17 @@
     };
 
     $cms.templates.blockBottomNews = function blockBottomNews(params) {
-        window.tick_pos = window.tick_pos || [];
+        window.tickPos = window.tickPos || {};
 
         var newsTickerText = $cms.filter.nl(params.newsTickerText),
             ticktickticker = $cms.dom.$('#ticktickticker_news' + params.bottomNewsId),
             myId = $cms.random();
 
-        window.tick_pos[myId] = 400;
+        window.tickPos[myId] = 400;
         $cms.dom.html(ticktickticker, '<div class="ticker" style="text-indent: 400px; width: 400px;" id="' + myId + '"><span>' + newsTickerText + '</span></div>');
 
         setInterval(function () {
-            ticker_tick(myId, 400);
+            tickerTick(myId, 400);
         }, 50);
-
     };
 }(window.$cms));
