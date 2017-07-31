@@ -278,7 +278,7 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
                             nextIcon.style.left = _left + 'px';
                             var _top = ((parseInt(nextIcon.style.top) || 0) + nextIcon.yVector);
                             nextIcon.style.top = _top + 'px';
-                            $cms.dom.clearTransitionAndSetOpacity(nextIcon, nextIcon.opacity);
+                            nextIcon.style.opacity = nextIcon.opacity;
                             nextIcon.opacity *= 0.98;
                             nextIcon.yVector += 0.2;
                             if ((_top > maxHeight) || (nextIcon.opacity < 0.05) || (_left + 50 > windowWidth) || (_left < 0)) {

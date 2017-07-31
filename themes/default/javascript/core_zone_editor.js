@@ -113,8 +113,7 @@
                             }
                         }
                         if (tabs[i] === tab) {
-                            $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
-                            $cms.dom.fadeTransition(element, 100, 30, 4);
+                            $cms.dom.fadeIn(element);
 
                             elementh.classList.add('tab_active');
                         } else {

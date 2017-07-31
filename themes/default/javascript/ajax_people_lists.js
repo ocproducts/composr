@@ -126,9 +126,8 @@
             if (isDataList) {
                 return;
             }
-
-            $cms.dom.clearTransitionAndSetOpacity(list, 0.0);
-            $cms.dom.fadeTransition(list, 100, 30, 8);
+            
+            $cms.dom.fadeIn(list);
 
             var currentListForCopy = currentListForEl;
 
@@ -221,7 +220,9 @@
                         currentListForCopy.downOnce = true;
                         list.selectedIndex = 0;
                     } else {
-                        if (list.selectedIndex < list.options.length - 1) list.selectedIndex++;
+                        if (list.selectedIndex < list.options.length - 1) {
+                            list.selectedIndex++;
+                        }
                     }
                     list.options[list.selectedIndex].selected = true;
                     return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
@@ -257,8 +258,7 @@
                 currentListForCopy.value = el.value;
                 currentListForCopy.onkeyup = currentListForCopy.oldOnkeyup;
                 currentListForCopy.onchange = currentListForCopy.oldOnchange;
-                currentListForCopy.onkeypress = function () {
-                };
+                currentListForCopy.onkeypress = function () {};
                 if (currentListForCopy.onrealchange) {
                     currentListForCopy.onrealchange(e);
                 }

@@ -1518,8 +1518,7 @@
             fieldInput.style.display = newDisplayState;
 
             if ((newDisplayState2 !== 'none') && (count < 50/*Performance*/)) {
-                $cms.dom.clearTransitionAndSetOpacity(fieldInput, 0.0);
-                $cms.dom.fadeTransition(fieldInput, 100, 30, 20);
+                $cms.dom.fadeIn(fieldInput);
                 count++;
             }
         }

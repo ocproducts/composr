@@ -55,8 +55,7 @@
                         errormsgElement.setAttribute('role', 'alert');
 
                         // Fade in
-                        $cms.dom.clearTransitionAndSetOpacity(errormsgElement, 0.0);
-                        $cms.dom.fadeTransition(errormsgElement, 100, 30, 4);
+                        $cms.dom.fadeIn(errormsgElement);
 
                     } else {
                         theElement.setAttribute('aria-invalid', 'false');

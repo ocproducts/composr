@@ -3211,7 +3211,7 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param callback
+     * @param {function} [callback]
      */
     $cms.dom.fadeIn = function fadeIn(el, duration, callback) {
         el = elArg(el);
@@ -3221,7 +3221,7 @@
             duration = undefined;
         }
 
-        duration = Number.isFinite(+duration) ? +duration : 400;
+        duration = intVal(duration, 400);
 
         var target = $cms.dom.css(el, 'opacity');
 
@@ -3248,7 +3248,7 @@
         } else {
             el.style.opacity = target;
             if (callback) {
-                callback.call(el, {}, el);
+                callback.call(el, null, el);
             }
         }
     };
@@ -3257,7 +3257,7 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param callback
+     * @param {function} [callback]
      */
     $cms.dom.fadeOut = function fadeOut(el, duration, callback) {
         el = elArg(el);
@@ -3267,9 +3267,9 @@
             duration = undefined;
         }
 
-        duration = Number.isFinite(+duration) ? +duration : 400;
+        duration = intVal(duration, 400);
 
-        if ($cms.support.animation) { // Progressive enhancement using the web animations API
+        if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
                 options = { duration: duration },
                 animation = el.animate(keyFrames, options);
@@ -3283,7 +3283,7 @@
         } else {
             $cms.dom.hide(el);
             if (callback) {
-                callback.call(el, {}, el);
+                callback.call(el, null, el);
             }
         }
     };
@@ -3292,7 +3292,46 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param callback
+     * @param opacity
+     * @param {function} [callback]
+     */
+    $cms.dom.fadeTo = function fadeTo(el, duration, opacity, callback) {
+        el = elArg(el);
+
+        if (opacity == null) { // Required argument
+            $cms.fatal('$cms.dom.fadeTo(): Argument "opacity" is required.');
+            return;
+        }
+
+        duration = intVal(duration, 400);
+        opacity = intVal(opacity);
+
+        $cms.dom.show(el);
+        
+        if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
+            var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: opacity }],
+                options = { duration: duration },
+                animation = el.animate(keyFrames, options);
+
+            animation.onfinish = function (e) {
+                el.style.opacity = opacity;
+                if (callback) {
+                    callback.call(el, e, el);
+                }
+            };
+        } else {
+            el.style.opacity = opacity;
+            if (callback) {
+                callback.call(el, null, el);
+            }
+        }
+    };
+
+    /**
+     * @memberof $cms.dom
+     * @param el
+     * @param duration
+     * @param {function} [callback]
      */
     $cms.dom.fadeToggle = function fadeToggle(el, duration, callback) {
         el = elArg(el);
@@ -3310,7 +3349,7 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param callback
+     * @param {function} [callback]
      */
     $cms.dom.slideDown = function slideDown(el, duration, callback) {
         el = elArg(el);
@@ -3320,7 +3359,7 @@
             duration = undefined;
         }
 
-        duration = Number.isFinite(+duration) ? +duration : 400;
+        duration = intVal(duration, 400);
         
         // Show element if it is hidden
         $cms.dom.show(el);
@@ -3370,7 +3409,7 @@
         } else {
             el.style.overflow = prevOverflow;
             if (callback) {
-                callback.call(el, {}, el);
+                callback.call(el, null, el);
             }
         }
     };
@@ -3379,7 +3418,7 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param callback
+     * @param {function} [callback]
      */
     $cms.dom.slideUp = function slideUp(el, duration, callback) {
         el = elArg(el);
@@ -3389,7 +3428,7 @@
             duration = undefined;
         }
 
-        duration = Number.isFinite(+duration) ? +duration : 400;
+        duration = intVal(duration, 400);
         
         if ($cms.dom.notDisplayed(el)) {
             // Already hidden
@@ -3430,7 +3469,7 @@
             el.style.overflow = prevOverflow;
             $cms.dom.hide(el);
             if (callback) {
-                callback.call(el, {}, el);
+                callback.call(el, null, el);
             }
         }
     };
@@ -3439,7 +3478,7 @@
      * @memberof $cms.dom
      * @param el
      * @param duration
-     * @param callback
+     * @param {function} [callback]
      */
     $cms.dom.slideToggle = function slideToggle(el, duration, callback) {
         el = elArg(el);
@@ -4336,115 +4375,7 @@
             }
         }
     };
-
-    // <{element's uid}, {setTimeout id}>
-    var fadeTimeouts = {};
-
-    /**
-     * @memberof $cms.dom
-     * @deprecated
-     * @param el
-     * @param destPercentOpacity
-     * @param periodInMsecs
-     * @param increment
-     * @param destroyAfter
-     */
-    $cms.dom.fadeTransition = function fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter) {
-        if (!$cms.isEl(el)) {
-            return;
-        }
-
-        destPercentOpacity = +destPercentOpacity || 0;
-        periodInMsecs = +periodInMsecs || 0;
-        increment = +increment || 0;
-        destroyAfter = !!destroyAfter;
-
-        if (!$cms.$CONFIG_OPTION('enable_animations')) {
-            el.style.opacity = destPercentOpacity / 100.0;
-            return;
-        }
-
-        $cms.dom.clearTransition(el);
-
-        var again, newIncrement;
-
-        if (el.style.opacity) {
-            var diff = (destPercentOpacity / 100.0) - el.style.opacity,
-                direction = 1;
-
-            if (increment > 0) {
-                if (el.style.opacity > (destPercentOpacity / 100.0)) {
-                    direction = -1;
-                }
-                newIncrement = Math.min(direction * diff, increment / 100.0);
-            } else {
-                if (el.style.opacity < (destPercentOpacity / 100.0)) {
-                    direction = -1;
-                }
-                newIncrement = Math.max(direction * diff, increment / 100.0);
-            }
-
-            var opacity = parseFloat(el.style.opacity) + (direction * newIncrement);
-
-            if (opacity < 0.0) {
-                opacity = 0.0;
-            } else if (opacity > 1.0) {
-                opacity = 1.0;
-            }
-
-            el.style.opacity = opacity;
-            again = (Math.round(opacity * 100) !== Math.round(destPercentOpacity));
-        } else {
-            // Opacity not set yet, need to call back in an event timer
-            again = true;
-        }
-
-        if (again) {
-            fadeTimeouts[$cms.uid(el)] = setTimeout(function () {
-                $cms.dom.fadeTransition(el, destPercentOpacity, periodInMsecs, increment, destroyAfter);
-            }, periodInMsecs);
-        } else if (destroyAfter && el.parentNode) {
-            $cms.dom.clearTransition(el);
-            el.parentNode.removeChild(el);
-        }
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @deprecated
-     * @param el
-     * @returns {*|boolean}
-     */
-    $cms.dom.hasFadeTransition = function hasFadeTransition(el) {
-        return $cms.isEl(el) && ($cms.uid(el) in fadeTimeouts);
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @param el
-     */
-    $cms.dom.clearTransition = function clearTransition(el) {
-        var uid = $cms.isEl(el) && $cms.uid(el);
-
-        if (uid && fadeTimeouts[uid]) {
-            try { // Cross-frame issues may cause error
-                clearTimeout(fadeTimeouts[uid]);
-            } catch (ignore) {}
-            delete fadeTimeouts[uid];
-        }
-    };
-
-    /**
-     * @memberof $cms.dom
-     * @deprecated
-     * @param el
-     * @param fraction
-     */
-    $cms.dom.clearTransitionAndSetOpacity = function clearTransitionAndSetOpacity(el, fraction) {
-        $cms.dom.clearTransition(el);
-        el.style.opacity = fraction;
-    };
-
+    
     /**
      * @param behaviors
      */
@@ -4866,7 +4797,6 @@
         }
         var bi = $cms.dom.$id('main_website_inner');
         if (bi) {
-            $cms.dom.clearTransition(bi);
             bi.classList.remove('site_unloading');
         }
     }
@@ -5520,8 +5450,7 @@
 
                 if (tabs[i] === tab) {
                     if (window['load_tab__' + tab] === undefined) {
-                        $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
-                        $cms.dom.fadeTransition(element, 100, 30, 8);
+                        $cms.dom.fadeIn(element);
                     }
                 }
             }
@@ -5901,7 +5830,7 @@
      * @param unescaped
      */
     $cms.ui.confirm = function confirm(question, callback, title, unescaped) {
-        title || (title = '{!Q_SURE;^}');
+        title = strVal(title, '{!Q_SURE;^}');
         unescaped = !!unescaped;
 
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
@@ -5938,7 +5867,7 @@
     $cms.ui.alert = function alert(notice, callback, title, unescaped) {
         notice = strVal(notice);
         callback || (callback = noop);
-        title = strVal(title) || '{!MESSAGE;^}';
+        title = strVal(title, '{!MESSAGE;^}');
         unescaped = !!unescaped;
 
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
@@ -8393,7 +8322,7 @@
                 box.parentNode.removeChild(box);
 
                 img = $cms.dom.$('#software_chat_img');
-                $cms.dom.clearTransitionAndSetOpacity(img, 1.0);
+                img.style.opacity = 1;
             } else {
                 var width = 950,
                     height = 550;
@@ -8420,7 +8349,7 @@
                 $cms.dom.smoothScroll(0);
 
                 img = $cms.dom.$('#software_chat_img');
-                $cms.dom.clearTransitionAndSetOpacity(img, 0.5);
+                img.style.opacity = 0.5;
             }
         },
 
@@ -8543,7 +8472,7 @@
                 var bi = $cms.dom.$id('main_website_inner');
                 if (bi) {
                     bi.classList.add('site_unloading');
-                    $cms.dom.fadeTransition(bi, 20, 30, -4);
+                    $cms.dom.fadeTo(bi, null, 0.2);
                 }
                 var div = document.createElement('div');
                 div.className = 'unload_action';
@@ -8793,8 +8722,7 @@
                 panelRight.classList.add('helper_panel_visible');
                 helperPanelContents.setAttribute('aria-expanded', 'true');
                 helperPanelContents.style.display = 'block';
-                $cms.dom.clearTransitionAndSetOpacity(helperPanelContents, 0.0);
-                $cms.dom.fadeTransition(helperPanelContents, 100, 30, 4);
+                $cms.dom.fadeIn(helperPanelContents);
 
                 if ($cms.readCookie('hide_helper_panel') === '1') {
                     $cms.setCookie('hide_helper_panel', '0', 100);
@@ -9290,8 +9218,7 @@
         el.style.position = 'absolute';
         el.style.left = '0'; // Setting this lets the browser calculate a more appropriate (larger) width, before we set the correct left for that width will fit
         el.style.display = 'block';
-        $cms.dom.clearTransitionAndSetOpacity(el, 0.0);
-        $cms.dom.fadeTransition(el, 100, 30, 8);
+        $cms.dom.fadeIn(el);
 
         var fullWidth = (window.scrollX == 0) ? $cms.dom.getWindowWidth() : window.document.body.scrollWidth;
 
@@ -9875,8 +9802,7 @@
                 if ($cms.dom.html(docEl) !== '') {
                     window.origHelperText = $cms.dom.html(helpEl);
                     $cms.dom.html(helpEl, $cms.dom.html(docEl));
-                    $cms.dom.clearTransitionAndSetOpacity(helpEl, 0.0);
-                    $cms.dom.fadeTransition(helpEl, 100, 30, 4);
+                    $cms.dom.fadeIn(helpEl);
 
                     helpEl.classList.remove('global_helper_panel_text');
                     helpEl.classList.add('global_helper_panel_text_over');
@@ -9886,8 +9812,7 @@
             $cms.dom.on(container, 'mouseout', function () {
                 if (window.origHelperText !== undefined) {
                     $cms.dom.html(helpEl, window.origHelperText);
-                    $cms.dom.clearTransitionAndSetOpacity(helpEl, 0.0);
-                    $cms.dom.fadeTransition(helpEl, 100, 30, 4);
+                    $cms.dom.fadeIn(helpEl);
 
                     helpEl.classList.remove('global_helper_panel_text_over');
                     helpEl.classList.add('global_helper_panel_text');

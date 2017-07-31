@@ -118,10 +118,8 @@
 
             // Set up fade
             fpAnimationNews.src = fpAnimation.src;
-            $cms.dom.clearTransitionAndSetOpacity(fpAnimationNews, 1.0);
-            $cms.dom.fadeTransition(fpAnimationNews, 0, 30, -4);
-            $cms.dom.clearTransitionAndSetOpacity(fpAnimation, 0.0);
-            $cms.dom.fadeTransition(fpAnimation, 100, 30, 4);
+            $cms.dom.fadeOut(fpAnimationNews);
+            $cms.dom.fadeIn(fpAnimation);
             fpAnimation.src = data[j].imageUrl;
             setTimeout(function () { // Will know dimensions by the time the timeout happens
                 fpAnimationNews.style.left = ((fpAnimationNews.parentNode.offsetHeight - fpAnimationNews.offsetWidth) / 2) + 'px';

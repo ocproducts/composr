@@ -15,7 +15,7 @@ function showGhost(htmlMessage) {
     function buildGhostFunc(div, counter, limit) {
         return function () {
             div.style.fontSize = (1 + 0.05 * counter) + 'em';
-            $cms.dom.clearTransitionAndSetOpacity(div, 1.0 - counter / limit / 1.3);
+            div.style.opacity = 1.0 - counter / limit / 1.3;
             div.style.left = (($cms.dom.getWindowWidth() - div.offsetWidth) / 2 + window.pageXOffset) + 'px';
             div.style.top = (($cms.dom.getWindowHeight() - div.offsetHeight) / 2 - 20 + window.pageYOffset) + 'px';
         }

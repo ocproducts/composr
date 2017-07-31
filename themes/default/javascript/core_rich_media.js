@@ -565,7 +565,7 @@
         $cms.dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
             var bi = document.getElementById('main_website_inner');
             if (bi) {
-                $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
+                bi.style.opacity = 1;
             }
 
             document.getElementById(params.randIdOverlay).style.display = 'none';
@@ -589,17 +589,16 @@
                 bi = document.getElementById('main_website_inner');
 
                 if (bi) {
-                    $cms.dom.clearTransitionAndSetOpacity(bi, 0.4);
+                    bi.style.opacity = 0.4;
                 }
-
-                $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
-                $cms.dom.fadeTransition(element, 100, 30, 3);
+                
+                $cms.dom.fadeIn(element);
 
 
                 if (params.timeout !== '-1') {
                     setTimeout(function () {
                         if (bi) {
-                            $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
+                            bi.style.opacity = 1;
                         }
 
                         if (element) {
@@ -936,20 +935,20 @@
     function shockerTick(id, time, minColor, maxColor) {
         if ((document.hidden !== undefined) && (document.hidden)) return;
 
-        if (window.shockerPos[id] == window.shockerParts[id].length - 1) window.shockerPos[id] = 0;
+        if (window.shockerPos[id] == window.shockerParts[id].length - 1) {
+            window.shockerPos[id] = 0;
+        }
         var eLeft = document.getElementById('comcodeshocker' + id + '_left');
-        if (!eLeft) return;
+        if (!eLeft) {
+            return;
+        }
         $cms.dom.html(eLeft, window.shockerParts[id][window.shockerPos[id]][0]);
-        $cms.dom.clearTransitionAndSetOpacity(eLeft, 0.6);
-        $cms.dom.clearTransitionAndSetOpacity(eLeft, 0.0);
-        $cms.dom.fadeTransition(eLeft, 100, time / 40, 5);
+        $cms.dom.fadeIn(eLeft);
 
         var eRight = document.getElementById('comcodeshocker' + id + '_right');
         if (!eRight) return;
         $cms.dom.html(eRight, window.shockerParts[id][window.shockerPos[id]][1]);
-        $cms.dom.clearTransitionAndSetOpacity(eRight, 0);
-        $cms.dom.clearTransitionAndSetOpacity(eRight, 0.0);
-        $cms.dom.fadeTransition(eRight, 100, time / 20, 5);
+        $cms.dom.fadeIn(eRight);
 
         window.shockerPos[id]++;
 
@@ -1032,21 +1031,19 @@
             if (x) {
                 if (x.className === 'comcode_big_tab') {
                     if (i == currentPos) {
-                        $cms.dom.clearTransition(x);
                         x.style.width = '';
                         x.style.position = 'static';
                         x.style.zIndex = 10;
-                        $cms.dom.clearTransitionAndSetOpacity(x, 1.0);
+                        x.style.opacity = 1;
                     } else {
                         if (x.style.position !== 'static') {
-                            $cms.dom.clearTransitionAndSetOpacity(x, 0.0);
+                            x.style.opacity = 0;
                         } else {
-                            $cms.dom.clearTransitionAndSetOpacity(x, 1.0);
+                            x.style.opacity = 1;
                         }
-
-                        if (!$cms.dom.hasFadeTransition(x)) {
-                            $cms.dom.fadeTransition(x, 0, 30, -5);
-                        }
+                        
+                        $cms.dom.fadeOut(x);
+                        
                         x.style.width = (x.offsetWidth - 24) + 'px'; // 24=lhs padding+rhs padding+lhs border+rhs border
                         x.style.position = 'absolute';
                         x.style.zIndex = -10;
@@ -1058,8 +1055,7 @@
                     x.style.display = (i == currentPos) ? 'block' : 'none';
 
                     if (i == currentPos) {
-                        $cms.dom.clearTransitionAndSetOpacity(x, 0.0);
-                        $cms.dom.fadeTransition(x, 100, 30, 4);
+                        $cms.dom.fadeIn(x);
                     }
                 }
             }

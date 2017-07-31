@@ -131,8 +131,7 @@
 
             element || (element = $cms.dom.$id(this.name));
 
-            $cms.dom.clearTransitionAndSetOpacity(html, 0.0);
-            $cms.dom.fadeTransition(html, 100, 30, 4);
+            $cms.dom.fadeIn(html);
 
             html.style.display = xml.firstElementChild ? 'block' : 'none';
 
@@ -489,8 +488,7 @@
                 }
 
                 htmlNode.style.display = 'block';
-                $cms.dom.clearTransitionAndSetOpacity(htmlNode, 0.0);
-                $cms.dom.fadeTransition(htmlNode, 100, 30, 4);
+                $cms.dom.fadeIn(htmlNode);
 
                 expandButton.src = $cms.img('{$IMG;,1x/treefield/collapse}');
                 expandButton.srcset = $cms.img('{$IMG;,2x/treefield/collapse}') + ' 2x';

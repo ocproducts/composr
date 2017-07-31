@@ -178,7 +178,7 @@ Scene3D.prototype.renderCamera = function (camera) {
                 currItem.style.left = currItem._x + 'px';
                 currItem.style.fontSize = 100 * currItem.scale + '%';
 
-                $cms.dom.clearTransitionAndSetOpacity(currItem, (currItem.scale - 0.75) * 2);
+                currItem.style.opacity = (currItem.scale - 0.75) * 2;
 
             }
 

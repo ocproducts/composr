@@ -254,8 +254,7 @@
                     }
                 } else {
                     if (!$cms.dom.isDisplayed(checklistRows[i])) {
-                        $cms.dom.clearTransitionAndSetOpacity(checklistRows[i], 0.0);
-                        $cms.dom.fadeTransition(checklistRows[i], 100, 30, 4);
+                        $cms.dom.fadeIn(checklistRows[i]);
                     }
                     $cms.dom.show(checklistRows[i]);
                     checklistRows[i].classList.remove('task_hidden');

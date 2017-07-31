@@ -321,8 +321,7 @@
                     for (var i = 0; i < _ids.length; i++) {
                         var element = document.getElementById('post_wrap_' + _ids[i]);
                         if (element) {
-                            $cms.dom.clearTransitionAndSetOpacity(element, 0);
-                            $cms.dom.fadeTransition(element, 100, 30, 10);
+                            $cms.dom.fadeIn(element);
                         }
                     }
                 }, 0);
@@ -419,8 +418,7 @@
                         var knownPosts = commentsWrapper.querySelectorAll('.post');
                         for (var i = 0; i < knownPosts.length; i++) {
                             if (!knownTimes.includes(knownPosts[i].className.replace(/^post /, ''))) {
-                                $cms.dom.clearTransitionAndSetOpacity(knownPosts[i], 0.0);
-                                $cms.dom.fadeTransition(knownPosts[i], 100, 20, 5);
+                                $cms.dom.fadeIn(knownPosts[i]);
                             }
                         }
 
@@ -534,7 +532,7 @@
         } else {
             parentIdField = form.elements['parent_id'];
             if (window.lastReplyTo !== undefined) {
-                $cms.dom.clearTransitionAndSetOpacity(window.lastReplyTo, 1.0);
+                window.lastReplyTo.style.opacity = 1;
             }
         }
         window.lastReplyTo = el;

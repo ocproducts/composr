@@ -65,16 +65,13 @@ function loadCommandr() {
                     });
 
                     var cmdLine = document.getElementById('command_line');
-                    $cms.dom.clearTransition(cmdLine);
                     cmdLine.style.opacity = 0.0;
-                    $cms.dom.fadeTransition(document.getElementById('command_line'), 90, 30, 5);
-
-
+                    $cms.dom.fadeTo(cmdLine, null, 0.9);
+                    
                     bi = document.getElementById('main_website_inner');
                     if (bi) {
-                        $cms.dom.clearTransition(bi);
                         bi.style.opacity = 1.0;
-                        $cms.dom.fadeTransition(bi, 30, 30, -5);
+                        $cms.dom.fadeTo(bi, null, 0.3);
                     }
 
                     document.getElementById('commandr_command').focus();
@@ -84,14 +81,13 @@ function loadCommandr() {
                         if (img.srcset !== undefined) {
                             img.srcset = $cms.img('{$IMG;,icons/48x48/tool_buttons/commandr_on}') + ' 2x';
                         }
-                        $cms.dom.clearTransition(img);
                         img.style.opacity = 1.0;
                     }
 
                     commandrBox.style.display = 'none';
                     bi = document.getElementById('main_website_inner');
                     if (bi) {
-                        $cms.dom.fadeTransition(bi, 100, 30, 5);
+                        $cms.dom.fadeIn(bi);
                     }
                 }
             }
