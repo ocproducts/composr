@@ -1416,7 +1416,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
  */
 function create_selection_list_catalogue_category_tree($catalogue_name, $it = null, $addable_filter = false, $use_compound_list = false)
 {
-    if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > 1000) {
+    if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > intval(get_option('general_safety_listing_limit'))) {
         return new Tempcode(); // Too many!
     }
 
@@ -1583,7 +1583,7 @@ function create_selection_list_catalogue_entries_tree($catalogue_name, $it = nul
 function get_catalogue_entries_tree($catalogue_name, $submitter = null, $category_id = null, $breadcrumbs = null, $title = null, $levels = null, $editable_filter = false)
 {
     if (($category_id === null) && ($levels === null)) {
-        if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > 1000) {
+        if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > intval(get_option('general_safety_listing_limit'))) {
             return array(); // Too many!
         }
     }

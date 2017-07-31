@@ -103,6 +103,9 @@ function init__sitemap()
         // Other constants
         define('SITEMAP_MAX_ROWS_PER_LOOP', 500);
     }
+
+    global $IS_SITEMAP_STRUCTURE_LOOPING;
+    $IS_SITEMAP_STRUCTURE_LOOPING = array();
 }
 
 /**
@@ -124,11 +127,22 @@ function retrieve_sitemap_node($page_link = '', $callback = null, $valid_node_ty
 
     cms_profile_start_for('retrieve_sitemap_node');
 
+    global $IS_SITEMAP_STRUCTURE_LOOPING;
+    $IS_SITEMAP_STRUCTURE_LOOPING = array();
+
     $test = find_sitemap_object($page_link);
     if (is_null($test)) {
         return null;
     }
     list($ob, $is_virtual) = $test;
+
+    $disable_sitemap = get_value('disable_sitemap');
+    if ($disable_sitemap === '2') {
+        $valid_node_types = array('page_grouping', 'page', 'entry_point');
+    }
+    if ($disable_sitemap === '1') {
+        return null;
+    }
 
     if ($is_virtual) {
         $children = $ob->get_virtual_nodes($page_link, $callback, $valid_node_types, $child_cutoff, $max_recurse_depth, 0, $options, $zone, $meta_gather);
@@ -369,6 +383,26 @@ abstract class Hook_sitemap_base
      * @return ?array Node structure (null: working via callback / error).
      */
     abstract public function get_node($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $row = null, $return_anyway = false);
+
+    /**
+     * Make sure a Sitemap page-link is not recursively being evaluated due to some kind of issue (e.g. a cyclic category structure or a bug).
+     *
+     * @param  ID_TEXT $page_link The page-link we are finding.
+     * @return boolean Whether are are okay, not looping.
+     */
+    protected function check_for_looping($page_link)
+    {
+        global $IS_SITEMAP_STRUCTURE_LOOPING;
+
+        $sz = serialize(array($page_link, get_class($this)));
+
+        if (isset($IS_SITEMAP_STRUCTURE_LOOPING[$sz])) {
+            return false;
+        }
+
+        $IS_SITEMAP_STRUCTURE_LOOPING[$sz] = true;
+        return true;
+    }
 
     /**
      * Check the permissions of the node structure, returning false if they fail for the current user.

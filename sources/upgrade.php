@@ -351,7 +351,7 @@ function upgrade_script()
                         }
 
                         // What kind of file did we find?
-                        if ((strpos($upgrade_file['path'], '/addon_registry/') !== false) && (file_exists(get_file_base() . '/' . $upgrade_file['path']))) {
+                        if ((strpos($upgrade_file['path'], '/addon_registry/') !== false) && ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) || (strpos($upgrade_file['path'], '/core_') !== false))) {
                             // Addon registry file, for installed addon...
 
                             if (substr($upgrade_file['path'], -1) != '/') {
@@ -380,9 +380,9 @@ function upgrade_script()
                                 }
                             }
 
-                            // Install if it's a file in an addon we have installed
+                            // Install if it's a file in an addon we have installed or for a core addon
                             //  (if we couldn't find the addon for it we have to assume a corrupt upgrade TAR and must skip the file)
-                            if (($found !== null) && (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
+                            if (($found !== null) && ((file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php')) || (substr($found, 0, 5) == 'core_'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {
                                     if (!$dry_run) {
                                         afm_make_directory($upgrade_file['path'], false, true);
