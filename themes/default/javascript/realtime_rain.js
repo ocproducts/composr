@@ -349,7 +349,9 @@ function timelineClick(prospective) {
 
 function bubblesTidyUp() {
     var bubblesGoHere = document.getElementById('bubbles_go_here');
-    if (!bubblesGoHere) return;
+    if (!bubblesGoHere) {
+        return;
+    }
     var bubbles = document.getElementById('real_time_surround').parentNode.querySelectorAll('.bubble_wrap');
     for (var i = 0; i < bubbles.length; i++) {
         if (bubbles[i].timer) {

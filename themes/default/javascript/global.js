@@ -533,7 +533,7 @@
     function executeCmsInitQueue() {
         var fn;
 
-        while (window.$cmsInit.length) {
+        while (window.$cmsInit.length > 0) {
             fn = window.$cmsInit.shift();
             if (typeof fn === 'function') {
                 fn();
@@ -553,7 +553,7 @@
     function executeCmsReadyQueue() {
         var fn;
 
-        while (window.$cmsReady.length) {
+        while (window.$cmsReady.length > 0) {
             fn = window.$cmsReady.shift();
             if (typeof fn === 'function') {
                 fn();
@@ -573,7 +573,7 @@
     function executeCmsLoadQueue() {
         var fn;
 
-        while (window.$cmsLoad.length) {
+        while (window.$cmsLoad.length > 0) {
             fn = window.$cmsLoad.shift();
             if (typeof fn === 'function') {
                 fn();
@@ -1592,8 +1592,8 @@
             linkEl = document.createElement('link');
             linkEl.id = 'css-' + sheetName;
             linkEl.rel = 'stylesheet';
-            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
             linkEl.nonce = $cms.$CSP_NONCE();
+            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
             document.head.appendChild(linkEl);
         }
 
@@ -2879,11 +2879,11 @@
 
     /**
      * @memberof $cms.dom
-     * @param el { Window|Document|Element }
-     * @param event {string|object}
-     * @param selector {string|function}
-     * @param [data] {object|function}
-     * @param [callback] {function}
+     * @param { Window|Document|Element } el 
+     * @param {string|object} event 
+     * @param {string|function} selector 
+     * @param {object|function} [data] 
+     * @param {function} [callback] 
      */
     $cms.dom.one = function one(el, event, selector, data, callback) {
         el = domArg(el);
@@ -2893,10 +2893,10 @@
 
     /**
      * @memberof $cms.dom
-     * @param el { Window|Document|Element }
-     * @param event {string|object}
-     * @param [selector] {string|function}
-     * @param [callback] {function}
+     * @param { Window|Document|Element } el 
+     * @param {string|object} event 
+     * @param {string|function} [selector] 
+     * @param {function} [callback] 
      */
     $cms.dom.off = function off(el, event, selector, callback) {
         el = domArg(el);
@@ -3753,7 +3753,7 @@
         if (value != null) {
             try {
                 el.setAttribute(name, value);
-            } catch (e) {};
+            } catch (e) {}
         } else {
             el.removeAttribute(name);
         }
@@ -4553,9 +4553,9 @@
             }
 
             var loadingImage = $cms.dom.create('img', {
-                'className': 'ajax_loading_block',
-                'src': $cms.img('{$IMG;,loading}'),
-                'css': {
+                className: 'ajax_loading_block',
+                src: $cms.img('{$IMG;,loading}'),
+                css: {
                     position: 'absolute',
                     zIndex: 1000,
                     left: (targetDiv.offsetWidth / 2 - 10) + 'px'
@@ -5487,9 +5487,9 @@
      */
     $cms.ui.activateTooltip = function activateTooltip(el, event, tooltip, width, pic, height, bottom, noDelay, lightsOff, forceWidth, win, haveLinks) {
         event || (event = {});
-        width || (width = 'auto');
-        pic || (pic = '');
-        height || (height = 'auto');
+        width = strVal(width, 'auto');
+        pic = strVal(pic);
+        height = strVal(height, 'auto');
         bottom = !!bottom;
         noDelay = !!noDelay;
         lightsOff = !!lightsOff;
@@ -6705,19 +6705,23 @@
 
                             // Allow scrolling, if we want it
                             //iframe.scrolling=(_this.scrollbars===false)?'no':'auto';  Actually, not wanting this now
+                            
+                            // Remove fixed width
+                            var mainWebsiteInner = iframe.contentWindow.document.getElementById('main_website_inner');
+                            if (mainWebsiteInner) {
+                                mainWebsiteInner.id = '';
+                            }
 
-                            if (iframe.contentWindow.$cms != undefined) {
-                                // Remove fixed width
-                                var mainWebsiteInner = iframe.contentWindow.$cms.dom.$id('main_website_inner');
-                                if (mainWebsiteInner) mainWebsiteInner.id = '';
+                            // Remove main_website marker
+                            var mainWebsite = iframe.contentWindow.document.getElementById('main_website');
+                            if (mainWebsite) {
+                                mainWebsite.id = '';
+                            }
 
-                                // Remove main_website marker
-                                var mainWebsite = iframe.contentWindow.$cms.dom.$id('main_website');
-                                if (mainWebsite) mainWebsite.id = '';
-
-                                // Remove popup spacing
-                                var popupSpacer = iframe.contentWindow.$cms.dom.$id('popup_spacer');
-                                if (popupSpacer) popupSpacer.id = '';
+                            // Remove popup spacing
+                            var popupSpacer = iframe.contentWindow.document.getElementById('popup_spacer');
+                            if (popupSpacer) {
+                                popupSpacer.id = '';
                             }
 
                             // Set linking scheme
@@ -6762,7 +6766,7 @@
                         }
 
                         // Handle iframe sizing
-                        if (that.height == 'auto') {
+                        if (that.height === 'auto') {
                             that.resetDimensions(that.width, that.height, false);
                         }
                     };
@@ -6771,8 +6775,9 @@
                         iframe.src = that.href;
                         makeFrameLikePopup();
 
-                        if (that.iframeRestyleTimer == null)
-                            that.iframeRestyleTimer = setInterval(makeFrameLikePopup, 300); // In case internal nav changes
+                        if (that.iframeRestyleTimer == null) { // In case internal nav changes
+                            that.iframeRestyleTimer = setInterval(makeFrameLikePopup, 300);
+                        } 
                     }, 0);
                     break;
 
@@ -6998,10 +7003,10 @@
 
             // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
             var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.keepStub());
-            if (dialogWidth === undefined) {
+            if (dialogWidth == null) {
                 dialogWidth = 440;
             }
-            if (dialogHeight === undefined) {
+            if (dialogHeight == null) {
                 dialogHeight = 180;
             }
             $cms.ui.showModalDialog(
@@ -7051,7 +7056,7 @@
                 message,
                 '',
                 function (result) {
-                    if ((result === undefined) || (result === null)) {
+                    if (result == null) {
                         callback(buttonSet[0]); // just pressed 'cancel', so assume option 0
                         return;
                     } else {
@@ -8574,10 +8579,13 @@
                     ml.style.display = 'none';
                     target.parentNode.insertBefore(ml, target);
 
-                    if (target.moLink)
+                    if (target.moLink) {
                         clearTimeout(target.moLink);
+                    }
                     target.moLink = setTimeout(function () {
-                        if (ml) ml.style.display = 'block';
+                        if (ml) {
+                            ml.style.display = 'block';
+                        }
                     }, 2000);
                 }
 
@@ -8623,8 +8631,7 @@
                 if (src && (force || ($cms.magicKeypress(event)))) {
                     // Bubbling needs to be stopped because shift+click will open a new window on some lower event handler (in Firefox anyway)
                     event.stopPropagation();
-
-                    if (event.preventDefault !== undefined) event.preventDefault();
+                    event.preventDefault();
 
                     if (src.includes($cms.$BASE_URL_NOHTTP() + '/themes/')) {
                         ob.editWindow = window.open('{$BASE_URL;,0}/adminzone/index.php?page=admin_themes&type=edit_image&lang=' + encodeURIComponent($cms.$LANG()) + '&theme=' + encodeURIComponent($cms.$THEME()) + '&url=' + encodeURIComponent($cms.protectURLParameter(src.replace('{$BASE_URL;,0}/', ''))) + $cms.keepStub(), 'edit_theme_image_' + ob.id);
@@ -9048,7 +9055,7 @@
 
     function menuActiveSelection(menuId) {
         var menuElement = $cms.dom.$('#' + menuId),
-            possibilities = [], isSelected, url, min_score, i;
+            possibilities = [], isSelected, url, minScore, i;
 
         if (menuElement.localName === 'select') {
             for (i = 0; i < menuElement.options.length; i++) {
@@ -9068,9 +9075,9 @@
                     return a.score - b.score
                 });
 
-                min_score = possibilities[0].score;
+                minScore = possibilities[0].score;
                 for (i = 0; i < possibilities.length; i++) {
-                    if (possibilities[i].score != min_score) {
+                    if (possibilities[i].score != minScore) {
                         break;
                     }
                     possibilities[i].element.selected = true;
@@ -9105,9 +9112,9 @@
                     return a.score - b.score
                 });
 
-                min_score = possibilities[0].score;
+                minScore = possibilities[0].score;
                 for (i = 0; i < possibilities.length; i++) {
-                    if (possibilities[i].score != min_score) {
+                    if (possibilities[i].score != minScore) {
                         break;
                     }
                     possibilities[i].element.classList.remove('non_current');
@@ -9164,7 +9171,7 @@
     }
 
     function popUpMenu(id, place, menu, outsideFixedWidth) {
-        place || (place = 'right');
+        place = strVal(place, 'right');
         outsideFixedWidth = !!outsideFixedWidth;
 
         var el = $cms.dom.$('#' + id);
@@ -9969,7 +9976,7 @@
         $cms.inform('detectedChange(): Change notification running');
 
         try {
-            focus();
+            window.focus();
         } catch (e) {}
 
         if (window.soundManager !== undefined) {
@@ -9984,12 +9991,12 @@
     }
 
     $cms.functions.decisionTreeRender = function decisionTreeRender(parameter, value, notice, noticeTitle) {
-        var e = document.getElementById('main_form').elements[parameter];
-        if (e.length === undefined) {
-            e = [e];
+        var els = document.getElementById('main_form').elements[parameter];
+        if (els.length === undefined) {
+            els = [els];
         }
-        for (var i = 0; i < e.length; i++) {
-            e[i].addEventListener('click', function (_e) {
+        for (var i = 0; i < els.length; i++) {
+            els[i].addEventListener('click', function (_e) {
                 return function () {
                     var selected = false;
                     if (_e.type !== 'undefined' && _e.type === 'checkbox') {
@@ -10001,7 +10008,7 @@
                         $cms.ui.alert(notice, null, noticeTitle, true);
                     }
                 }
-            }(e[i]));
+            }(els[i]));
         }
     };
 
@@ -10088,8 +10095,7 @@
             var prefix = el.textContent + ': ';
             if (title.substr(0, prefix.length) === prefix) {
                 title = title.substring(prefix.length, title.length);
-            }
-            else if (title === el.textContent) {
+            } else if (title === el.textContent) {
                 return;
             }
         }
@@ -10318,7 +10324,9 @@
         }
 
         var wrapperInner = $cms.dom.$id(wrapper.id + '_inner');
-        if (!wrapperInner) wrapperInner = wrapper;
+        if (!wrapperInner) {
+            wrapperInner = wrapper;
+        }
 
         var rel;
         for (var i = 0; i < moreLinks.length; i++) {
