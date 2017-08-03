@@ -46,7 +46,7 @@ class Hook_ajax_tree_choose_wiki_page
 
         $out = '';
 
-        $out .= '<options>' . serialize($options) . '</options>';
+        $out .= '<options>' . xmlentities(json_encode($options)) . '</options>';
 
         if (!has_actual_page_access(null, 'wiki')) {
             $tree = array();

@@ -51,7 +51,7 @@ class Hook_ajax_tree_choose_forum
 
         $out = '';
 
-        $out .= '<options>' . serialize($options) . '</options>';
+        $out .= '<options>' . xmlentities(json_encode($options)) . '</options>';
 
         $categories = collapse_2d_complexity('id', 'c_title', $GLOBALS['FORUM_DB']->query_select('f_forum_groupings', array('id', 'c_title')));
 

@@ -677,7 +677,7 @@ function chatCheck(backlog, messageId, eventId) {
         return null;
     }
 
-    eventId = +eventId || -1;  // -1 Means, we don't want to look at events, but the server will give us a null event
+    eventId = intVal(eventId, -1);  // -1 Means, we don't want to look at events, but the server will give us a null event
 
     // Check for new messages on the server the new or old way
     setTimeout(function () {

@@ -418,7 +418,7 @@ function ajax_tree_script()
         $_options = json_encode(array());
     }
     $options = @json_decode($_options, true);
-    if ($options === false) {
+    if (($options === false) || ($options === null)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     $val = $object->run($id, $options, get_param_string('default', null, INPUT_FILTER_GET_COMPLEX));

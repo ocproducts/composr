@@ -31,6 +31,7 @@
 
 window.sbCcTimer = null;
 window.sbLastMessageId = null;
+window.MESSAGE_CHECK_INTERVAL = +'{$ROUND%,{$MAX,3000,{$CONFIG_OPTION,chat_message_check_interval}}}';
 
 function sbChatCheck(roomId, lastMessageId, lastEventId) {
     window.sbRoomId = roomId;
@@ -51,7 +52,7 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
             return function () {
                 sbChatCheck(window.sbRoomId, messageId, -1)
             }
-        }(), 10000);
+        }(), window.MESSAGE_CHECK_INTERVAL);
 
 
         function sbHandleSignals(ajaxResult) {

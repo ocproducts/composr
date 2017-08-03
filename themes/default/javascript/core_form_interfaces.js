@@ -1057,10 +1057,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-clear-name-stub-input', function (e) {
             var input = $cms.dom.$('#' + nameStub + '_' + index);
-            input.value = '';
-            if (input.fakeonchange) {
-                input.fakeonchange(e);
-            }
+            $cms.dom.changeVal(input, '');
         });
 
 
@@ -1568,10 +1565,8 @@
             return;
         }
         j.checked = true;
-        //if (j.onclick) j.onclick(); causes loop
-        if (j.fakeonchange) {
-            j.fakeonchange(event);
-        }
+        $cms.dom.trigger(j, 'change');
+        
         imgOb.parentNode.classList.add('selected');
         imgOb.style.outline = '1px dotted';
     }
@@ -1727,9 +1722,13 @@
                 var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
                 if (!radioButton) radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
                 if (secondRun) {
-                    if (radioButton) return radioButton.checked;
+                    if (radioButton) {
+                        return radioButton.checked;
+                    }
                 } else {
-                    if (radioButton) radioButton.checked = isSet;
+                    if (radioButton) {
+                        radioButton.checked = isSet;
+                    }
                 }
                 return isSet;
             }
@@ -1759,7 +1758,6 @@
                         if (field) {
                             field.addEventListener('keyup', refreshFunction);
                             field.addEventListener('change', refreshFunction);
-                            field.fakeonchange = refreshFunction;
                         }
                     }
                     if (field) {

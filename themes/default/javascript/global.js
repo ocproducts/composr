@@ -1953,6 +1953,9 @@
         methodAttributes = { val: true, css: true, html: true, text: true, data: true, width: true, height: true, offset: true },
         rgxNotWhite = /\S+/g;
 
+    var DOM_ANIMATE_DEFAULT_DURATION = 400, // Milliseconds
+        DOM_ANIMATE_DEFAULT_EASING = 'ease-in-out'; // Possible values: https://developer.mozilla.org/en-US/docs/Web/API/AnimationEffectTimingProperties/easing
+    
     /** @namespace $cms */
     $cms.dom = extendDeep($cms.dom, /**@lends $cms.dom*/{
         /**
@@ -2118,6 +2121,21 @@
 
             el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
         },
+
+        /**
+         * Also triggers the 'change' event
+         * @memberof $cms.dom
+         * @param el
+         * @param value
+         * @returns {*}
+         */
+        changeVal: function changeVal(el, value) {
+            el = elArg(el);
+            
+            el.value = strVal((typeof value === 'function') ? value.call(el, $cms.dom.val(el), el) : value);
+            $cms.dom.trigger(el, 'change');
+        },
+        
         /**
          * @memberof $cms.dom
          * @param node
@@ -2384,10 +2402,10 @@
      * @memberof $cms.dom
      * @deprecated
      * @param el
-     * @param notRelative
+     * @param {boolean} notRelative - If true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree.
      * @returns {number}
      */
-    $cms.dom.findPosX = function findPosX(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+    $cms.dom.findPosX = function findPosX(el, notRelative) {
         if (!el) {
             return 0;
         }
@@ -2415,10 +2433,10 @@
      * @memberof $cms.dom
      * @deprecated
      * @param el
-     * @param notRelative
+     * @param {boolean} notRelative - If true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree.
      * @returns {number}
      */
-    $cms.dom.findPosY = function findPosY(el, notRelative) {/* if not_relative is true it gets the position relative to the browser window, else it will be relative to the most recent position:absolute/relative going up the element tree */
+    $cms.dom.findPosY = function findPosY(el, notRelative) {
         if (!el) {
             return 0;
         }
@@ -3221,7 +3239,7 @@
             duration = undefined;
         }
 
-        duration = intVal(duration, 400);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
         var target = $cms.dom.css(el, 'opacity');
 
@@ -3239,14 +3257,19 @@
                 animation = el.animate(keyFrames, options);
 
             animation.onfinish = function (e) {
-                el.style.opacity = target;
-
+                if (Number($cms.dom.css(el, 'opacity')) !== target) {
+                    el.style.opacity = target;
+                }
+                
                 if (callback) {
                     callback.call(el, e, el);
                 }
             };
         } else {
-            el.style.opacity = target;
+            if (Number($cms.dom.css(el, 'opacity')) !== target) {
+                el.style.opacity = target;
+            }
+            
             if (callback) {
                 callback.call(el, null, el);
             }
@@ -3267,11 +3290,11 @@
             duration = undefined;
         }
 
-        duration = intVal(duration, 400);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
         if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: 0 }],
-                options = { duration: duration },
+                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                 animation = el.animate(keyFrames, options);
 
             animation.onfinish = function (e) {
@@ -3303,14 +3326,14 @@
             return;
         }
 
-        duration = intVal(duration, 400);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
         opacity = intVal(opacity);
 
         $cms.dom.show(el);
         
         if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: $cms.dom.css(el, 'opacity')}, { opacity: opacity }],
-                options = { duration: duration },
+                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                 animation = el.animate(keyFrames, options);
 
             animation.onfinish = function (e) {
@@ -3359,7 +3382,7 @@
             duration = undefined;
         }
 
-        duration = intVal(duration, 400);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
         
         // Show element if it is hidden
         $cms.dom.show(el);
@@ -3397,7 +3420,7 @@
 
         if ($cms.support.animation) { // Progressive enhancement using the web animations API
             var keyFrames = [startKeyframe, endKeyframe],
-                options = { duration: duration },
+                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                 animation = el.animate(keyFrames, options);
 
             animation.onfinish = function (e) {
@@ -3428,7 +3451,7 @@
             duration = undefined;
         }
 
-        duration = intVal(duration, 400);
+        duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
         
         if ($cms.dom.notDisplayed(el)) {
             // Already hidden
@@ -3455,7 +3478,7 @@
         
         if ($cms.support.animation) { // Progressive enhancement using the web animations API
             var keyFrames = [startKeyframe, endKeyframe],
-                options = { duration: duration },
+                options = { duration: duration, easing: DOM_ANIMATE_DEFAULT_EASING },
                 animation = el.animate(keyFrames, options);
 
             animation.onfinish = function (e) {
@@ -9257,7 +9280,9 @@
             var posTop = t;
             if (posTop + el.offsetHeight + 10 > fullHeight) {
                 var abovePosTop = posTop - $cms.dom.contentHeight(el) + eParentHeight - 10;
-                if (abovePosTop > 0) posTop = abovePosTop;
+                if (abovePosTop > 0) {
+                    posTop = abovePosTop;
+                }
             }
             el.style.top = posTop + 'px';
         }
@@ -9311,8 +9336,10 @@
             m2.parentNode.removeChild(m2);
         }
 
-        if ($cms.usp.has('wide_print')) {
-            try { print(); } catch (ignore) {}
+        if (boolVal($cms.usp.get('wide_print'))) {
+            try {
+                window.print();
+            } catch (ignore) {}
         }
     };
     
@@ -9460,7 +9487,7 @@
             el.setAttribute('aria-expanded', 'false');
             
             if (animate) {
-                $cms.dom.slideUp();
+                $cms.dom.slideUp(el);
             } else {
                 $cms.dom.hide(el);    
             }
@@ -9553,9 +9580,8 @@
         }, 500);
     };
 
-    $cms.templates.massSelectFormButtons = function (params) {
-        var delBtn = this,
-            form = delBtn.form;
+    $cms.templates.massSelectFormButtons = function (params, delBtn) {
+        var form = delBtn.form;
 
         $cms.dom.on(delBtn, 'click', function () {
             confirmDelete(form, true, function () {
@@ -9573,7 +9599,7 @@
             });
         });
 
-        $cms.dom.$id('id').fakeonchange = initialiseButtonVisibility;
+        $cms.dom.on('#id', 'change', initialiseButtonVisibility);
         initialiseButtonVisibility();
 
         function initialiseButtonVisibility() {
@@ -9585,8 +9611,7 @@
         }
     };
 
-    $cms.templates.massSelectDeleteForm = function () {
-        var form = this;
+    $cms.templates.massSelectDeleteForm = function (e, form) {
         $cms.dom.on(form, 'submit', function (e) {
             e.preventDefault();
             confirmDelete(form, true);

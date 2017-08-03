@@ -210,8 +210,9 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
     } else {
         // Add field for next one
         var addAnotherField = (number == window.numAttachments) && (window.numAttachments < window.maxAttachments);
-        if (addAnotherField)
+        if (addAnotherField) {
             addAttachment(window.numAttachments + 1, fieldName);
+        }
     }
 }
 
@@ -392,9 +393,13 @@ function doInputComcode(fieldName, tag) {
 }
 
 function doInputList(fieldName, add) {
-    if (window.insertTextbox === undefined) return;
+    if (window.insertTextbox === undefined) {
+        return;
+    }
 
-    if (add === undefined) add = [];
+    if (add === undefined) {
+        add = [];
+    }
 
     var post = document.getElementById(fieldName);
     window.insertTextbox(post, '\n');
@@ -406,7 +411,9 @@ function doInputList(fieldName, add) {
                 add.push(va);
                 return doInputList(fieldName, add)
             }
-            if (add.length == 0) return;
+            if (add.length === 0) {
+                return;
+            }
             var i;
             if (post.value.indexOf('[semihtml') !== -1) {
                 window.insertTextbox(post, '[list]\n');
@@ -965,7 +972,7 @@ function initFormSaving(formId) {
                 }
         }
 
-        if (element.onchange) element.onchange();
+        $cms.dom.trigger(element, 'change');
     }
 
     function fieldSupportsAutosave(element) {

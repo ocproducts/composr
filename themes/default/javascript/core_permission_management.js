@@ -31,7 +31,7 @@
         updateGroupDisplayer: function (e, select) {
             $cms.dom.html(document.getElementById('group_name'), $cms.filter.html(window.usergroupTitles[select.options[select.selectedIndex].value]));
             var tree = document.getElementById('tree_list__root_tree_list');
-            $cms.dom.html(tree, '');
+            $cms.dom.empty(tree);
             window.sitemap.renderTree(window.sitemap.treeListData, tree);
         },
 
@@ -89,7 +89,9 @@
 
         // Go through and set maximum permissions/override from those selected
         var values = setting.value.split(',');
-        var id, name, value, i, node, j, group, element, privilege, privilegeTitle, knownGroups = [], knownPrivileges = [], k, html, newOption, numPrivilegeDefault, numPrivilege, ths, tds, cells, newCell, row;
+        var id, name, value, i, node, j, group, element, privilege, privilegeTitle, 
+            knownGroups = [], knownPrivileges = [], k, html, newOption, 
+            numPrivilegeDefault, numPrivilege, ths, tds, cells, newCell, row;
         var matrix = document.getElementById('enter_the_matrix').querySelector('table');
         var numPrivilegeTotal = 0;
         var isCms = null;
@@ -102,7 +104,7 @@
 
                 // Find usergroups
                 for (j = 0; j < node.attributes.length; j++) {
-                    if (node.attributes[j].name.substr(0, 7) == 'g_view_') {
+                    if (node.attributes[j].name.substr(0, 7) === 'g_view_') {
                         group = node.attributes[j].name.substr(7);
                         knownGroups.push(group);
                     }
@@ -114,7 +116,7 @@
                     element = document.getElementById('access_' + group);
                     element.checked = false;
                     element = document.getElementById('access_' + group + '_presets');
-                    if (element.options[0].id != 'access_' + group + '_custom_option') {
+                    if (element.options[0].id !== 'access_' + group + '_custom_option') {
                         newOption = document.createElement('option');
                         $cms.dom.html(newOption, '{!permissions:PINTERFACE_LEVEL_CUSTOM;^}');
                         newOption.id = 'access_' + group + '_custom_option';
@@ -141,22 +143,22 @@
 
             // Set view access
             for (j = 0; j < node.attributes.length; j++) {
-                if (node.attributes[j].name.substr(0, 7) == 'g_view_') {
+                if (node.attributes[j].name.substr(0, 7) === 'g_view_') {
                     group = node.attributes[j].name.substr(7);
                     element = document.getElementById('access_' + group);
                     if (!element.checked) {
-                        element.checked = (node.attributes[j].value == 'true');
+                        element.checked = (node.attributes[j].value === 'true');
                     }
                     element = document.getElementById('access_' + group);
                 }
             }
             var form = document.getElementById('permissions_form');
-            var noViewSettings = (node.getAttribute('serverid') == '_root') || (node.getAttribute('serverid').substr(0, 22) == 'cms:cms_comcode_pages:');
+            var noViewSettings = (node.getAttribute('serverid') === '_root') || (node.getAttribute('serverid').substr(0, 22) === 'cms:cms_comcode_pages:');
             for (j = 0; j < form.elements.length; j++) {
                 element = form.elements[j];
-                if (element.id.substr(0, 7) == 'access_') {
-                    element.style.display = ((values.length == 1) && (noViewSettings)) ? 'none' : 'inline';
-                    element.disabled = (element.name == '_ignore') || ((values.length == 1) && (noViewSettings));
+                if (element.id.substr(0, 7) === 'access_') {
+                    element.style.display = ((values.length === 1) && (noViewSettings)) ? 'none' : 'inline';
+                    element.disabled = (element.name === '_ignore') || ((values.length === 1) && (noViewSettings));
                 }
             }
 
@@ -178,8 +180,7 @@
                         group = rows[k].id.substring(7, rows[k].id.indexOf('_privilege_container'));
 
                         element = document.getElementById('access_' + group + '_privilege_' + privilege);
-                        if ((!element) && (!document.getElementById('privilege_cell_' + group + '_' + privilege))) // We haven't added it yet for one of the resources we're doing permissions for
-                        {
+                        if ((!element) && (!document.getElementById('privilege_cell_' + group + '_' + privilege))) { // We haven't added it yet for one of the resources we're doing permissions for
                             if (!doneHeader) {
                                 row = rows[0];
                                 newCell = row.insertBefore(document.createElement('th'), row.cells[row.cells.length]);
@@ -199,7 +200,7 @@
                             newCell = row.insertBefore(document.createElement('td'), row.cells[row.cells.length - 1]);
                             newCell.className = 'form_table_field_input privilege_cell';
                             new_cell.id = 'privilege_cell_' + group + '_' + privilege;
-                            if (document.getElementById('access_' + group).name != '_ignore') {
+                            if (document.getElementById('access_' + group).name !== '_ignore') {
                                 $cms.dom.html(newCell, '<div class="accessibility_hidden"><label for="access_' + group + '_privilege_' + privilege + '">{!permissions:OVERRIDE;^}</label></div><select title="' + $cms.filter.html(privilegeTitle) + '" id="access_' + group + '_privilege_' + privilege + '" name="access_' + group + '_privilege_' + privilege + '"><option selected="selected" value="-1">/</option><option value="0">{!permissions:NO_COMPACT;^}</option><option value="1">{!permissions:YES_COMPACT;^}</option></select>');
                                 $cms.dom.on(newCell, 'mouseover', '.js-mouseover-show-permission-setting', function (e, select) {
                                     if (select.value === '-1') {
@@ -212,8 +213,9 @@
                                 setupPrivilegeOverrideSelector('access_' + group, '-1', privilege, privilegeTitle, false);
                             }
                         }
-                        if (element)
-                            element.options[0].disabled = ((values.length == 1) && (node.getAttribute('serverid') == '_root'));
+                        if (element) {
+                            element.options[0].disabled = ((values.length === 1) && (node.getAttribute('serverid') === '_root'));
+                        }
                     }
                     knownPrivileges.push(privilege);
                     numPrivilege++;
@@ -223,12 +225,13 @@
             // Set privileges for all usergroups (to highest permissions from all usergroups selected)
             for (name in window.attributesFull[id]) {
                 value = window.attributesFull[id][name];
-                if (name.substr(0, 'group_privileges_'.length) == 'group_privileges_') {
+                if (name.substr(0, 'group_privileges_'.length) === 'group_privileges_') {
                     group = name.substr(name.lastIndexOf('_') + 1);
                     privilege = name.substr('group_privileges_'.length, name.length - group.length - 1 - ('group_privileges_'.length));
                     element = document.getElementById('access_' + group + '_privilege_' + privilege);
-                    if (element.selectedIndex < parseInt(value) + 1)
-                        element.selectedIndex = parseInt(value) + 1; // -1 corresponds to 0.
+                    if (element.selectedIndex < parseInt(value) + 1) { // -1 corresponds to 0.
+                        element.selectedIndex = parseInt(value) + 1;
+                    } 
                 }
             }
 
@@ -238,7 +241,9 @@
                 numPrivilegeDefault = 0;
                 for (j = 0; j < knownPrivileges.length; j++) {
                     element = document.getElementById('access_' + group + '_privilege_' + knownPrivileges[j]);
-                    if (element.selectedIndex == 0) numPrivilegeDefault++;
+                    if (element.selectedIndex === 0) {
+                        numPrivilegeDefault++;
+                    }
                 }
                 if (numPrivilegeDefault == numPrivilege) {
                     element = document.getElementById('access_' + group + '_presets');
@@ -246,7 +251,9 @@
                     cleanupPermissionList('access_' + group);
                     for (j = 0; j < knownPrivileges.length; j++) {
                         element = document.getElementById('access_' + group + '_privilege_' + knownPrivileges[j]);
-                        if (window.sitemap === undefined) element.disabled = true;
+                        if (window.sitemap == null) {
+                            element.disabled = true;
+                        }
                     }
                 }
             }
@@ -285,7 +292,7 @@
 
         // Set correct admin colspan
         for (i = 0; i < matrix.rows.length; i++) {
-            if (matrix.rows[i].cells.length == 3) {
+            if (matrix.rows[i].cells.length === 3) {
                 matrix.rows[i].cells[2].colSpan = numPrivilegeTotal + 1;
             }
         }
@@ -340,7 +347,7 @@
             }
             for (var name in window.attributesFull[id]) {
                 var value = window.attributesFull[id][name];
-                if (name.substr(0, 'privilege_'.length) == 'privilege_') {
+                if (name.substr(0, 'privilege_'.length) === 'privilege_') {
                     for (j = 0; j < knownGroups.length; j++) {
                         group = knownGroups[j];
                         privilege = name.substr('privilege_'.length);
@@ -361,7 +368,9 @@
                 $cms.dom.html(document.getElementById('tree_listextra_' + id), permissionsImgFunc1(node, id) + permissionsImgFunc2(node, id));
             }
 
-            if (setRequestB != '') setRequest = setRequest + '&map_' + i + '=' + encodeURIComponent(serverid) + setRequestB;
+            if (setRequestB != '') {
+                setRequest = setRequest + '&map_' + i + '=' + encodeURIComponent(serverid) + setRequestB;
+            }
         }
 
         // Send AJAX request
@@ -441,7 +450,7 @@ function copyPermissionPresets(name, value, justTrack) {
     var i, j, test, stub = name + '_privilege_', name2, x;
 
     var node = null;
-    if (window.sitemap !== undefined) {
+    if (window.sitemap != null) {
         node = window.sitemap.getElementByIdHack(document.getElementById('tree_list').value.split(',')[0]);
     }
 
@@ -451,7 +460,7 @@ function copyPermissionPresets(name, value, justTrack) {
                 continue;
             }
 
-            if (window.sitemap === undefined) {
+            if (window.sitemap == null) {
                 elements[i].disabled = false;
             }
             test = -1;
@@ -482,7 +491,7 @@ function copyPermissionPresets(name, value, justTrack) {
                 continue;
             }
 
-            if (window.sitemap === undefined) {
+            if (window.sitemap == null) {
                 elements[i].disabled = true;
             }
             // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
@@ -490,7 +499,7 @@ function copyPermissionPresets(name, value, justTrack) {
         }
     }
 
-    if ((!justTrack) && (elements.length === 2) && (madeChange)) {
+    if (!justTrack && (elements.length === 2) && (madeChange)) {
         $cms.ui.alert('{!permissions:JUST_PRESETS;^}');
     }
 
@@ -499,11 +508,12 @@ function copyPermissionPresets(name, value, justTrack) {
 
 function setupPrivilegeOverrideSelector(name, defaultAccess, privilege, title, allGlobal) {
     window[name + '_privilege_' + privilege] = defaultAccess;
+    
     var selectElement = document.getElementById(name + '_privilege_' + privilege);
     if (allGlobal) {
         // Any disabled ones will be set to show the default permission rather than the "use-default" one, WHILST all-global is on
         selectElement.selectedIndex = window[name + '_privilege_' + privilege] + 1; // -1 is at index 0
-        if (window.sitemap === undefined) {
+        if (window.sitemap == null) {
             selectElement.disabled = true;
         }
     }
@@ -512,7 +522,6 @@ function setupPrivilegeOverrideSelector(name, defaultAccess, privilege, title, a
 // =========================================
 // These are for the Permissions Tree Editor
 // =========================================
-
 
 function permissionsImgFunc1(node, id) {
     var temp = permissionsImgFunc1b(node, id);

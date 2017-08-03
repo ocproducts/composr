@@ -50,17 +50,22 @@
         });
 
         $cms.dom.on(container, 'change', '.js-input-change-update-selection', function (e, input) {
-            var el = $cms.dom.$('#url_' + window.currentSelection);
+            var el = $cms.dom.$('#url_' + window.currentSelection),
+                urlEl,
+                captionEl;
+            
             if (!el) {
                 return;
             }
+            
             el.value = input.value;
-            el = $cms.dom.$('#edit_form').elements['url'];
-            el.value = input.value;
-            el = $cms.dom.$('#edit_form').elements['caption_' + window.currentSelection];
 
-            if ((el.value == '') && input.selectedTitle) {
-                el.value = input.selectedTitle.replace(/^.*:\s*/, '');
+            urlEl = $cms.dom.$('#edit_form').elements['url'];
+            urlEl.value = input.value;
+
+            captionEl = $cms.dom.$('#edit_form').elements['caption_' + window.currentSelection];
+            if ((captionEl.value === '') && input.selectedTitle) {
+                captionEl.value = input.selectedTitle.replace(/^.*:\s*/, '');
             }
         });
 

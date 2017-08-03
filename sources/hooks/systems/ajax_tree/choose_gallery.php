@@ -63,7 +63,7 @@ class Hook_ajax_tree_choose_gallery
 
         $out = '';
 
-        $out .= '<options>' . serialize($options) . '</options>';
+        $out .= '<options>' . xmlentities(json_encode($options)) . '</options>';
 
         for ($i = 0; $i < count($tree); $i++) {
             $t = $tree[$i];

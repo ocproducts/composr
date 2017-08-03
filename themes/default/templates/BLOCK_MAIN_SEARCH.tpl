@@ -10,7 +10,7 @@
 			{+START,IF,{$EQ,{INPUT_FIELDS},1}}
 				<div>
 					<label class="accessibility_hidden" for="main_search_content">{!SEARCH}</label>
-					<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide_field js-keyup-update-ajax-search-list-with-type" type="search" id="main_search_content" name="content" />
+					<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="wide_field js-keyup-update-ajax-search-list-with-type" type="search" id="main_search_content" name="content" />
 				</div>
 			{+END}
 			{+START,IF,{$NEQ,{INPUT_FIELDS},1}}
@@ -19,10 +19,10 @@
 						<div class="search_option float_surrounder">
 							<label for="search_{_loop_key*}">{LABEL*}:</label><br />
 							{+START,IF,{$EQ,{_loop_key},content}}
-								<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="js-keyup-update-ajax-search-list" type="text" id="search_{_loop_key*}" name="content" value="{$_GET*,content}" />
+								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" class="js-keyup-update-ajax-search-list" type="text" id="search_{_loop_key*}" name="content" value="{$_GET*,content}" />
 							{+END}
 							{+START,IF,{$NEQ,{_loop_key},content}}
-								<input{+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" type="text" id="search_{_loop_key*}" name="option_{_loop_key*}" value="{$_GET*,option_{_loop_key}}" />
+								<input {+START,IF,{$MOBILE}} autocorrect="off"{+END} autocomplete="off" maxlength="255" type="text" id="search_{_loop_key*}" name="option_{_loop_key*}" value="{$_GET*,option_{_loop_key}}" />
 							{+END}
 						</div>
 					{+END}

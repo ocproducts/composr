@@ -13251,15 +13251,12 @@ function fireFakeUploadFieldChange(name, value) {
     var element = document.getElementById(name);
 
     if (element) {
-        if (element.onchange) {
-            element.onchange();
-        }
         element.value = value;
         element.virtualValue = value;
-
-        element.dispatchEvent(new CustomEvent('change', {bubbles: true}));
+        
+        $cms.dom.trigger(element, 'change');
         if (element.oldElement) {
-            element.oldElement.dispatchEvent(new CustomEvent('change', {bubbles: true}))
+            $cms.dom.trigger(element.oldElement, 'change');
         }
     } else {
         // Simplifed attachments probably
@@ -13584,7 +13581,7 @@ function prepareSimplifiedFileInput(pageType, name, _btnSubmitId, postingFieldNa
     }
 
     var mfs = form.elements['MAX_FILE_SIZE'];
-    if (( mfs != undefined) && ( mfs.value == undefined)) {
+    if ((mfs != undefined) && (mfs.value == undefined)) {
         mfs = mfs[0];
     }
 

@@ -314,7 +314,7 @@ class Module_search
                         'DEFAULT' => $under,
                         'HOOK' => $ajax_hook,
                         'ROOT_ID' => '',
-                        'OPTIONS' => serialize($ajax_options),
+                        'OPTIONS' => json_encode($ajax_options),
                         'DESCRIPTION' => '',
                         'CONTENT_TYPE' => $content_type,
                     ));
