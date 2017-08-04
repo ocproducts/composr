@@ -132,8 +132,7 @@
             element || (element = $cms.dom.$id(this.name));
 
             $cms.dom.fadeIn(html);
-
-            html.style.display = xml.firstElementChild ? 'block' : 'none';
+            $cms.dom.toggle(html, !!xml.firstElementChild);
 
             $cms.forEach(xml.children, function (node) {
                 var nodeSelfWrap, nodeSelf, el, label, htmlNode, expanding;
@@ -238,18 +237,14 @@
                             event.preventDefault();
                         }
                         that.handleTreeClick(event, automated, expandButton);
-                        return false;
-
                     };
                     
                     label = nodeSelf.querySelector('label');
-                    expandButton.onkeypress = label.onkeypress = label.firstElementChild.onkeypress = function (expandButton) {
-                        return function (event) {
-                            if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
-                                expandButton.onclick(event);
-                            }
+                    expandButton.onkeypress = label.onkeypress = label.firstElementChild.onkeypress = function (event) {
+                        if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
+                            expandButton.onclick(event);
                         }
-                    }(expandButton);
+                    };
                     label.oncontextmenu = $cms.returnFalse;
                     label.firstElementChild.addEventListener('focus', function () {
                         label.style.outline = '1px dotted';
@@ -316,7 +311,9 @@
                         description = node.getAttribute('description_html');
                         descriptionInUse = $cms.filter.html(description);
                     } else {
-                        if (node.getAttribute('description')) description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        if (node.getAttribute('description')) {
+                            description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        }
                         descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
 
@@ -592,7 +589,7 @@
                 xmlNode = this.getElementByIdHack(realSelectedId, type),
                 selectedId = this.useServerId ? xmlNode.getAttribute('serverid') : realSelectedId;
 
-            if (xmlNode.getAttribute('selectable') === 'true' || this.allNodesSelectable) {
+            if ((xmlNode.getAttribute('selectable') === 'true') || this.allNodesSelectable) {
                 var selectedAfter = selectedBefore;
                 for (i = 0; i < selectedBefore.length; i++) {
                     this.makeElementLookSelected($cms.dom.$id(this.name + 'tsel_' + type + '_' + selectedBefore[i]), false);
@@ -614,12 +611,12 @@
                             this.makeElementLookSelected(anchors[i], false);
                         }
                         this.makeElementLookSelected($cms.dom.$id(this.name + 'tsel_' + type + '_' + realSelectedId), true);
-                    }
-                }
-                
+                    } 
+                } 
+                 
                 for (i = 0; i < selectedAfter.length; i++) {
                     this.makeElementLookSelected($cms.dom.$id(this.name + 'tsel_' + type + '_' + selectedAfter[i]), true);
-                }
+                } 
                 
                 var newVal = selectedAfter.join(',');
                 element.selectedTitle = (selectedAfter.length === 1) ? xmlNode.getAttribute('title') : newVal;
@@ -627,6 +624,7 @@
                 if (newVal === '') {
                     element.selectedTitle = '';
                 }
+                
                 $cms.dom.changeVal(element, newVal);
             }
 

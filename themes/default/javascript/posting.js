@@ -760,8 +760,7 @@ function initFormSaving(formId) {
 
                     fieldsToDoCounter++;
 
-                    if (value.length > biggestLengthData.length) // The longest is what we quote to the user as being restored
-                    {
+                    if (value.length > biggestLengthData.length) {// The longest is what we quote to the user as being restored
                         biggestLengthData = value;
                     }
 
@@ -981,7 +980,9 @@ function initFormSaving(formId) {
             element = element[0];
         }
 
-        if (element.name === undefined) return false;
+        if (element.name === undefined) {
+            return false;
+        }
 
         var name = element.name;
         if (name == '') return false;

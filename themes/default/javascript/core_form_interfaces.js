@@ -24,8 +24,8 @@
         events: function () {
             return {
                 'submit .js-submit-modsec-workaround': 'workaround',
-                'click .js-click-toggle-subord-fields': 'toggleSubordinateFields',
-                'keypress .js-keypress-toggle-subord-fields': 'toggleSubordinateFields'
+                'click .js-click-pf-toggle-subord-fields': 'toggleSubordFields',
+                'keypress .js-keypress-pf-toggle-subord-fields': 'toggleSubordFields'
             };
         },
 
@@ -34,7 +34,7 @@
             $cms.form.modSecurityWorkaround(target);
         },
 
-        toggleSubordinateFields: function (e, target) {
+        toggleSubordFields: function (e, target) {
             toggleSubordinateFields(target.parentNode.querySelector('img'), 'fes_attachments_help');
         }
     });
@@ -209,7 +209,7 @@
     $cms.views.FormStandardEnd = FormStandardEnd;
     /**
      * @memberof $cms.views
-     * @class
+     * @class FormStandardEnd
      * @extends $cms.View
      */
     function FormStandardEnd(params) {
@@ -281,13 +281,15 @@
             var submit = document.getElementById('submit_button');
             var inputs = form.getElementsByTagName('input');
             var type;
+            var types = ['text', 'password', 'color', 'email', 'number', 'range', 'search',  'tel', 'url'];
+            
             for (var i = 0; i < inputs.length; i++) {
                 type = inputs[i].type;
-                if (((type == 'text') || (type == 'password') || (type == 'color') || (type == 'email') || (type == 'number') || (type == 'range') || (type == 'search') || (type == 'tel') || (type == 'url'))
-                    && (submit.onclick !== undefined) && (submit.onclick)
-                    && ((inputs[i].onkeypress === undefined) || (!inputs[i].onkeypress)))
+                if (types.includes(type) && submit.onclick && !inputs[i].onkeypress)
                     inputs[i].onkeypress = function (event) {
-                        if ($cms.dom.keyPressed(event, 'Enter')) submit.onclick(event);
+                        if ($cms.dom.keyPressed(event, 'Enter')) {
+                            submit.onclick(event);
+                        }
                     };
             }
         }
@@ -576,10 +578,9 @@
         }
     };
 
-    $cms.templates.formScreenFieldSpacer = function (params) {
+    $cms.templates.formScreenFieldSpacer = function (params, container) {
         params || (params = {});
-        var container = this,
-            title = $cms.filter.id(params.title);
+        var title = $cms.filter.id(params.title);
 
         if (title && params.sectionHidden) {
             $cms.dom.$id('fes' + title).click();
@@ -598,12 +599,10 @@
         });
     };
 
-    $cms.templates.formScreenInputTick = function (params) {
-        var el = this;
-
+    $cms.templates.formScreenInputTick = function (params, el) {
         if (params.name === 'validated') {
             $cms.dom.on(el, 'click', function () {
-                el.previousSibling.className = 'validated_checkbox' + (el.checked ? ' checked' : '');
+                el.previousElementSibling.className = 'validated_checkbox' + (el.checked ? ' checked' : '');
             });
         }
 
@@ -657,8 +656,10 @@
         }
 
         function formatSelectSimple(o) {
-            if (!o.id) return o.text; // optgroup
-            return '<span title="' + escape_html(o.element[0].title) + '">' + escape_html(o.text) + '</span>';
+            if (!o.id) { // optgroup
+                return o.text;
+            }
+            return '<span title="' + $cms.filter.html(o.element[0].title) + '">' + $cms.filter.html(o.text) + '</span>';
         }
 
         selectEl = $cms.dom.$id(params.name);
@@ -673,7 +674,7 @@
             imageSources = JSON.parse(params.imageSources || '{}');
         }
 
-        if (window.jQuery && (window.jQuery(selectEl).select2 != undefined) && (selectEl.options.length > 20)/*only for long lists*/ && (!$cms.dom.html(selectEl.options[1]).match(/^\d+$/)/*not for lists of numbers*/)) {
+        if (window.jQuery && (window.jQuery.fn.select2 != null) && (selectEl.options.length > 20)/*only for long lists*/ && (!$cms.dom.html(selectEl.options[1]).match(/^\d+$/)/*not for lists of numbers*/)) {
             window.jQuery(selectEl).select2(select2Options);
         }
 
@@ -708,7 +709,7 @@
 
         el.onkeypress = function (event) {
             if ($cms.dom.keyPressed(event, 'Enter')) {
-                return el.onclick.call([event]);
+                return clickFunc(event);
             }
 
             return null;
@@ -882,7 +883,7 @@
                 if (inputs[i].pluploadObject !== undefined) {
                     if ((inputs[i].value != '-1') && (inputs[i].value != '')) {
                         if (!done_one) {
-                            if (oldComcode.indexOf('attachment_safe') == -1) {
+                            if (oldComcode.indexOf('attachment_safe') === -1) {
                                 $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             } else {
                                 if (!mainWindow.$cms.form.isWysiwygField(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
@@ -896,7 +897,9 @@
                         inputs[i].pluploadObject.setButtonDisabled(false);
                     } else {
                         uploadButton = mainWindow.document.getElementById('uploadButton_' + inputs[i].name);
-                        if (uploadButton) uploadButton.disabled = true;
+                        if (uploadButton) {
+                            uploadButton.disabled = true;
+                        }
                     }
                     inputs[i].value = '-1';
                 } else {
@@ -1381,7 +1384,7 @@
             var iframe = document.getElementById('iframe_under');
             found.onchange = function () {
                 if (iframe) {
-                    if ((iframe.contentDocument) && (iframe.contentDocument.getElementsByTagName('form').length != 0)) {
+                    if (iframe.contentDocument && (iframe.contentDocument.getElementsByTagName('form').length !== 0)) {
                         $cms.ui.confirm(
                             '{!Q_SURE_LOSE;^}',
                             function (result) {
@@ -1399,7 +1402,9 @@
 
                 return null;
             };
-            if ((found.getAttribute('size') > 1) || (found.multiple)) found.onclick = found.onchange;
+            if ((found.getAttribute('size') > 1) || (found.multiple)) {
+                found.onclick = found.onchange;
+            }
             if (iframe) {
                 foundButton.style.display = 'none';
             }
@@ -1437,7 +1442,9 @@
 
                 $cms.doAjaxRequest(geocodeUrl, function (ajaxResult) {
                     var parsed = JSON.parse(ajaxResult.responseText);
-                    if (parsed === null) return;
+                    if (parsed === null) {
+                        return;
+                    }
                     var labels = document.getElementsByTagName('label'), label, fieldName, field;
                     for (var i = 0; i < labels.length; i++) {
                         label = $cms.dom.html(labels[i]);
@@ -1449,7 +1456,7 @@
                                 field = document.getElementById(fieldName);
                                 if (field.localName === 'select') {
                                     field.value = parsed[j + 1];
-                                    if (jQuery(field).select2 !== undefined) {
+                                    if (jQuery.fn.select2 !== undefined) {
                                         jQuery(field).trigger('change');
                                     }
                                 } else {
@@ -1465,7 +1472,7 @@
 
     // Hide a 'tray' of trs in a form
     function toggleSubordinateFields(pic, helpId) {
-        var fieldInput = pic.parentElement.parentElement.parentElement,
+        var fieldInput = $cms.dom.parent(pic, '.form_table_field_spacer'),
             next = fieldInput.nextElementSibling,
             newDisplayState, newDisplayState2;
 
@@ -1484,7 +1491,7 @@
         if ((!next && (pic.src.includes('expand'))) || (next && (next.style.display === 'none'))) {/* Expanding now */
             pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('expand', 'contract') : $cms.img('{$IMG;,1x/trays/contract}');
             if (pic.srcset !== undefined) {
-                pic.srcset = pic.srcset.includes('themewizard.php') ? pic.srcset.replace('expand', 'contract') : ($cms.img('{$IMG;,2x/trays/contract}') + ' 2x');
+                pic.srcset.includes('themewizard.php') ? pic.srcset.replace('expand', 'contract') : ($cms.img('{$IMG;,2x/trays/contract}') + ' 2x');
             }
             pic.alt = '{!CONTRACT;^}';
             pic.title = '{!CONTRACT;^}';
@@ -1519,9 +1526,11 @@
                 count++;
             }
         }
+        
         if (helpId === undefined) {
             helpId = pic.parentNode.id + '_help';
         }
+        
         var help = document.getElementById(helpId);
 
         while (help !== null) {
@@ -1694,15 +1703,18 @@
                 for (i = 0; i < document.forms.length; i++) {
                     for (j = 0; j < document.forms[i].elements.length; j++) {
                         e = document.forms[i].elements[j];
-                        if (!e.name) continue;
+                        if (!e.name) {
+                            continue;
+                        }
 
                         if ((e.name.replace(/\[\]$/, '') == fieldName) || (e.name.replace(/\_\d+$/, '_') == fieldName)) {
                             radioButtons.push(e);
-                            if (e.checked) // This is the checked radio equivalent to our text field, copy the value through to the text field
-                            {
+                            if (e.checked) {// This is the checked radio equivalent to our text field, copy the value through to the text field
                                 radioButtons['value'] = e.value;
                             }
-                            if (e.alternating) radioButtons.alternating = true;
+                            if (e.alternating) {
+                                radioButtons.alternating = true;
+                            }
                         }
                     }
                 }
@@ -1715,7 +1727,9 @@
             }
 
             function _standardAlternateFieldIsFilledIn(field, secondRun, force) {
-                if (!field) return false; // N/A input is considered unset
+                if (!field) { // N/A input is considered unset
+                    return false; 
+                } 
 
                 var isSet = force || ((field.value != '') && (field.value != '-1')) || ((field.virtualValue !== undefined) && (field.virtualValue != '') && (field.virtualValue != '-1'));
 

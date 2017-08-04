@@ -3241,22 +3241,18 @@
 
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
 
-        var target = $cms.dom.css(el, 'opacity');
-
-        if (target > 0) {
-            $cms.dom.css(el, 'opacity', 0);
-        } else {
-            target = 1;
-        }
-
+        var target = /*Number($cms.dom.css(el, 'opacity')) || */1;
+        
         $cms.dom.show(el);
-
+        
         if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
             var keyFrames = [{ opacity: 0 }, { opacity: target }],
                 options = { duration : duration },
                 animation = el.animate(keyFrames, options);
 
             animation.onfinish = function (e) {
+                el.style.removeProperty('opacity');
+                
                 if (Number($cms.dom.css(el, 'opacity')) !== target) {
                     el.style.opacity = target;
                 }
@@ -3266,6 +3262,8 @@
                 }
             };
         } else {
+            el.style.removeProperty('opacity');
+            
             if (Number($cms.dom.css(el, 'opacity')) !== target) {
                 el.style.opacity = target;
             }
@@ -3328,7 +3326,7 @@
 
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
         opacity = intVal(opacity);
-
+        
         $cms.dom.show(el);
         
         if ($cms.support.animation && (duration > 0)) { // Progressive enhancement using the web animations API
@@ -3337,13 +3335,21 @@
                 animation = el.animate(keyFrames, options);
 
             animation.onfinish = function (e) {
-                el.style.opacity = opacity;
+                el.style.removeProperty('opacity');
+                
+                if (Number($cms.dom.css(el, 'opacity')) !== opacity) {
+                    el.style.opacity = opacity;
+                }
                 if (callback) {
                     callback.call(el, e, el);
                 }
             };
         } else {
-            el.style.opacity = opacity;
+            el.style.removeProperty('opacity');
+            
+            if (Number($cms.dom.css(el, 'opacity')) !== opacity) {
+                el.style.opacity = opacity;
+            }
             if (callback) {
                 callback.call(el, null, el);
             }
@@ -9637,12 +9643,11 @@
 
         el.checked = true;
 
-        var win = window;
         setTimeout(function () {
-            if (win.fauxClose !== undefined) {
-                win.fauxClose();
+            if (window.fauxClose !== undefined) {
+                window.fauxClose();
             } else {
-                win.close();
+                window.close();
             }
         }, 4000);
     };

@@ -105,6 +105,7 @@ class Hook_media_rendering_youtube extends Media_renderer_with_fallback
             $url = $url->evaluate();
         }
         $attributes['remote_id'] = preg_replace('#^(https?://(www|m)\.youtube\.com/watch\?v=|https?://youtu\.be/)([\w\-]+)#', '${3}', $url);
+        require_javascript('core_rich_media');
         return do_template('MEDIA_YOUTUBE', array('_GUID' => 'f7c4c015b208e13bf0cd9326d9133175', 'HOOK' => 'youtube') + _create_media_template_parameters($url, $attributes, $as_admin, $source_member));
     }
 }
