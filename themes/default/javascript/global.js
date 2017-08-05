@@ -7159,7 +7159,7 @@
             if (xhr.status && okStatusCodes.includes(xhr.status)) {
                 // Process the result
                 if (!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild) {
-                    return callAjaxMethod(ajaxCallback, xhr);
+                    return callAjaxMethod(ajaxCallback, null, xhr);
                 }
 
                 // XML result. Handle with a potentially complex call
@@ -7167,14 +7167,14 @@
 
                 if (xml) {
                     xml.validateOnParse = false;
-                    processRequestChange(xml.documentElement || xml, ajaxCallback);
+                    processRequestChange(ajaxCallback, xml.documentElement || xml, xhr);
                 } else {
                     // Error parsing
-                    return callAjaxMethod(ajaxCallback);
+                    return callAjaxMethod(ajaxCallback, null, xhr);
                 }
             } else {
                 // HTTP error...
-                callAjaxMethod(ajaxCallback);
+                callAjaxMethod(ajaxCallback, null, xhr);
 
                 try {
                     if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
@@ -7191,26 +7191,26 @@
             }
         }
 
-        function callAjaxMethod(method, responseXml, xhr) {
-            if (Array.isArray(method)) {
-                method = (responseXml != null) ? method[0] : method[1];
+        function callAjaxMethod(ajaxCallback, responseXml, xhr) {
+            if (Array.isArray(ajaxCallback)) {
+                ajaxCallback = (responseXml != null) ? ajaxCallback[0] : ajaxCallback[1];
             } else if (responseXml == null)  {
                 // No failure method given, so don't call
                 return;
             }
 
-            if (typeof method === 'function') {
-                method(responseXml, xhr);
+            if (typeof ajaxCallback === 'function') {
+                ajaxCallback(responseXml, xhr);
             }
         }
 
-        function processRequestChange(responseXml, ajaxCallback) {
+        function processRequestChange(ajaxCallback, responseXml, xhr) {
             var messageEl = responseXml.querySelector('message');
             if (messageEl) {
                 // Either an error or a message was returned. :(
                 var message = messageEl.firstChild.textContent;
 
-                callAjaxMethod(ajaxCallback);
+                callAjaxMethod(ajaxCallback, responseXml, xhr);
 
                 if (responseXml.querySelector('error')) {
                     // It's an error :|
@@ -7228,7 +7228,7 @@
                 return;
             }
 
-            callAjaxMethod(ajaxCallback);
+            callAjaxMethod(ajaxCallback, responseXml, xhr);
         }
 
         /**
