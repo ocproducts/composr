@@ -142,7 +142,9 @@
                 post = $cms.form.modSecurityWorkaroundAjax(post);
                 $cms.doAjaxRequest(url, reloadedPreview, post);
 
-                function reloadedPreview(ajaxResultFrame, ajaxResult) {
+                function reloadedPreview(responseXml) {
+                    var ajaxResult = responseXml && responseXml.querySelector('result');
+                    
                     if (!loadingPreviewOf) {
                         return;
                     }

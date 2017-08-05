@@ -56,8 +56,8 @@
         url += '&options=' + this.options;
         url += '&default=' + encodeURIComponent($cms.dom.$id(this.name).value);
         
-        $cms.doAjaxRequest(url, function (ajaxResultFrame, ajaxResult) {
-            that.response(ajaxResultFrame, ajaxResult);
+        $cms.doAjaxRequest(url, function (responseXml, xhr) {
+            that.response(responseXml, xhr);
         });
 
         $cms.dom.on(document.documentElement, 'mousemove', function (event) {
@@ -65,7 +65,7 @@
         });
     }
 
-    $cms.inherits(TreeList, $cms.View, /**@lends TreeList#*/ {
+    $cms.inherits(TreeList, $cms.View, /**@lends TreeList#*/{
         specialKeyPressed: false,
         /**@type { Node }*/
         treeListData: null,
@@ -88,7 +88,9 @@
             return null;
         },
 
-        response: function response(ajaxResultFrame, ajaxResult, expandingId) {
+        response: function response(responseXml, xhr, expandingId) {
+            var ajaxResult = responseXml && responseXml.querySelector('result');
+            
             if (!ajaxResult) {
                 return;
             }
@@ -475,9 +477,9 @@
                 if ((xmlNode.getAttribute('has_children') === 'true') && !xmlNode.firstElementChild) {
                     var url = $cms.baseUrl(this.ajaxUrl + '&id=' + encodeURIComponent(realClickedId) + '&options=' + this.options + '&default=' + encodeURIComponent(element.value));
                     var ob = this;
-                    $cms.doAjaxRequest(url, function (ajaxResultFrame, ajaxResult) {
+                    $cms.doAjaxRequest(url, function (responseXml, xhr) {
                         $cms.dom.empty(htmlNode);
-                        ob.response(ajaxResultFrame, ajaxResult, clickedId);
+                        ob.response(responseXml, xhr, clickedId);
                     });
                     $cms.dom.html(htmlNode, '<div aria-busy="true" class="vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
                     var container = $cms.dom.$id('tree_list__root_' + ob.name);

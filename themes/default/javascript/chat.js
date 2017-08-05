@@ -629,10 +629,10 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
         var url = '{$FIND_SCRIPT;,messages}?action=post';
         element.disabled = true;
         window.topWindow.currentlySendingMessage = true;
-        var func = function (result) {
+        var func = function (responseXml) {
             window.topWindow.currentlySendingMessage = false;
             element.disabled = false;
-            var responses = result.getElementsByTagName('result');
+            var responses = responseXml.getElementsByTagName('result');
             if (responses[0]) {
                 processChatXmlMessages(responses[0], true);
 
@@ -665,8 +665,8 @@ function chatPost(event, currentRoomId, fieldName, fontName, fontColour) {
 
 // Check for new messages
 function chatCheck(backlog, messageId, eventId) {
-    function func(ajaxResultFrame, ajaxResult) {
-        chatCheckResponse(ajaxResultFrame, ajaxResult, backlog/*backlog = skip_incoming_sound*/);
+    function func(responseXml, xhr) {
+        chatCheckResponse(responseXml, xhr, backlog/*backlog = skip_incoming_sound*/);
     }
 
     function errorFunc() {
@@ -715,7 +715,9 @@ function chatCheckTimeout(backlog, messageId, eventId) {
 }
 
 // Deal with the new messages response. Wraps around processChatXmlMessages as it also adds timers to ensure the message check continues to function even if background errors might have happened.
-function chatCheckResponse(ajaxResultFrame, ajaxResult, skipIncomingSound) {
+function chatCheckResponse(responseXml, xhr, skipIncomingSound) {
+    var ajaxResult = responseXml && responseXml.querySelector('result');
+    
     if (ajaxResult != null) {
         if (skipIncomingSound === undefined) {
             skipIncomingSound = false;
@@ -1168,7 +1170,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             chatSelectTab(newDiv);
 
             // Tell server we've joined
-            $cms.doAjaxRequest(url, function (ajaxResultFrame, ajaxResult) {
+            $cms.doAjaxRequest(url, function (responseXml) {
+                var ajaxResult = responseXml && responseXml.querySelector('result');
                 processChatXmlMessages(ajaxResult, true);
             }, post);
         } else {
@@ -1210,7 +1213,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                         } catch (e) {}
 
                         // Tell server we have joined
-                        $cms.doAjaxRequest(url, function (ajaxResultFrame, ajaxResult) {
+                        $cms.doAjaxRequest(url, function (responseXml) {
+                            var ajaxResult = responseXml && responseXml.querySelector('result');
                             processChatXmlMessages(ajaxResult, true);
                         }, post);
 
@@ -1389,8 +1393,8 @@ function startIm(people, justRefocus) {
         div.className = 'loading_overlay';
         $cms.dom.html(div, '{!LOADING;^}');
         document.body.appendChild(div);
-        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.keepStub(false)), function (result) {
-            var responses = result.getElementsByTagName('result');
+        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.keepStub(false)), function (responseXml) {
+            var responses = responseXml.getElementsByTagName('result');
             if (responses[0]) {
                 window.instantGo = true;
                 processChatXmlMessages(responses[0], true);

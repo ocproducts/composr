@@ -72,7 +72,9 @@
             }
         }
 
-        function updateAjaxNemberListResponse(result, listContents) {
+        function updateAjaxNemberListResponse(responseXml) {
+            var listContents = responseXml && responseXml.querySelector('result');
+            
             if (!listContents || !currentListForEl) {
                 return;
             }

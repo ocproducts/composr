@@ -135,7 +135,9 @@ window.previousCommands || (window.previousCommands = []);
 }(window.$cms));
 
 // Deal with the response to a command
-function commandrCommandResponse(ajaxResultFrame, ajaxResult) {
+function commandrCommandResponse(responseXml) {
+    var ajaxResult = responseXml && responseXml.querySelector('result');
+    
     if (window.disableTimeout) {
         clearTimeout(window.disableTimeout);
         window.disableTimeout = null;

@@ -164,7 +164,7 @@ function toggleWysiwyg(name) {
                         var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
                         post = $cms.form.modSecurityWorkaroundAjax(post);
                         /*TODO: Synchronous XHR*/
-                        var request = $cms.doAjaxRequest(url, null, post);
+                        var request = $cms.doAjaxRequest(url, false, post);
                         if (!request.responseXML || (!request.responseXML.documentElement.querySelector('result'))) {
                             textarea.value = '[semihtml]' + wysiwygData + '[/semihtml]';
                         } else {
@@ -172,7 +172,7 @@ function toggleWysiwyg(name) {
                             var result = resultTags[0];
                             textarea.value = result.textContent.replace(/\s*$/, '');
                         }
-                        if ((textarea.value.indexOf('{\$,page hint: no_wysiwyg}') == -1) && (textarea.value != '')) {
+                        if ((textarea.value.indexOf('{\$,page hint: no_wysiwyg}') === -1) && (textarea.value !== '')) {
                             textarea.value += '{\$,page hint: no_wysiwyg}';
                         }
                     }
@@ -293,7 +293,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
                 if (window.location.href.indexOf('topics') != -1) {
                     url += '&forum_db=1';
                 }
-                var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(postingForm.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
+                var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(postingForm.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
                 if (!request.responseXML) {
                     postingForm.elements[counter].value = '';
                 } else {
@@ -567,9 +567,11 @@ function findTagsInEditor(editor, element) {
                             url += '&forum_db=1';
                         }
 
-                        $cms.doAjaxRequest(url, function (ajaxResultFrame, ajaxResult) {
+                        $cms.doAjaxRequest(url, function (responseXml) {
+                            var ajaxResult = responseXml && responseXml.querySelector('result');
+                            
                             if (ajaxResult) {
-                                var tmpRendered = ajaxResult.textConten;
+                                var tmpRendered = ajaxResult.textContent;
                                 if (tmpRendered.indexOf('{!CCP_ERROR_STUB;^}') == -1) {
                                     selfOb.renderedTooltip = tmpRendered;
                                 }
@@ -694,7 +696,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
                 url += '&forum_db=1';
             }
             /*TODO: Synchronous XHR*/
-            var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+            var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
             if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
                 var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
                 var result = resultTags[0];
@@ -810,7 +812,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
             url += '&forum_db=1';
         }
         /*TODO: Synchronous XHR*/
-        var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+        var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
         if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
             var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
             var result = resultTags[0];

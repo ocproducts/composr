@@ -37,7 +37,9 @@ function sbChatCheck(roomId, lastMessageId, lastEventId) {
     window.sbRoomId = roomId;
     window.sbLastMessageId = lastMessageId;
 
-    function sbChatCheckResponse(ajaxResultFrame, ajaxResult) {
+    function sbChatCheckResponse(responseXml) {
+        var ajaxResult = responseXml && responseXml.querySelector('result');
+        
         if (!ajaxResult) return; // Some server side glitch. As this polls, lets ignore it
 
         sbHandleSignals(ajaxResult);

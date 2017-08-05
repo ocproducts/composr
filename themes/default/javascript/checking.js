@@ -113,7 +113,7 @@
             }
             for (i = 0; i < elements.length; i++) {
                 name = elements[i].name;
-                if (name && ((name.substr(0, 11) == 'label_for__') || (name.substr(0, 14) == 'tick_on_form__') || (name.substr(0, 9) == 'comcode__') || (name.substr(0, 9) == 'require__'))) {
+                if (name && ((name.substr(0, 11) === 'label_for__') || (name.substr(0, 14) === 'tick_on_form__') || (name.substr(0, 9) === 'comcode__') || (name.substr(0, 9) === 'require__'))) {
                     elements[i].parentNode.removeChild(elements[i]);
                 }
             }

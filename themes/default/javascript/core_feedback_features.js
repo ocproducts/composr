@@ -391,11 +391,11 @@
                     }
                 }
                 post += '&post=' + encodeURIComponent(postValue);
-                $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), function (ajaxResult) {
-                    if ((ajaxResult.responseText != '') && (ajaxResult.status != 500)) {
+                $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), function (_, xhr) {
+                    if ((xhr.responseText != '') && (xhr.status != 500)) {
                         // Display
                         var oldAction = commentsForm.action;
-                        $cms.dom.outerHtml(commentsWrapper, ajaxResult.responseText);
+                        $cms.dom.outerHtml(commentsWrapper, xhr.responseText);
                         commentsForm = $cms.dom.$id(commentsFormId);
                         oldAction = commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
 

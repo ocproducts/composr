@@ -89,7 +89,7 @@
                 if (navigator.geolocation !== undefined) {
                     try {
                         navigator.geolocation.getCurrentPosition(function(position) {
-                            $cms.doAjaxRequest(setCoordUrl + position.coords.latitude + '_' + position.coords.longitude + $cms.keepStub(), function () {});
+                            $cms.doAjaxRequest(setCoordUrl + position.coords.latitude + '_' + position.coords.longitude + $cms.keepStub(), true);
                             var initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
                             map.setCenter(initialLocation);
                             addDataPoint([username, position.coords.latitude, position.coords.longitude, ''], bounds, markers, infoWindow, map);

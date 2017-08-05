@@ -339,13 +339,13 @@
             }
 
             if (callback !== undefined) {
-                $cms.doAjaxRequest(url, function (ajaxResultRaw) {
-                    _slideshowReadInSlide(ajaxResultRaw, slide);
+                $cms.doAjaxRequest(url, function (_, xhr) {
+                    _slideshowReadInSlide(xhr, slide);
                     callback();
                 });
             } else {
-                $cms.doAjaxRequest(url, function (ajaxResultRaw) {
-                    _slideshowReadInSlide(ajaxResultRaw, slide);
+                $cms.doAjaxRequest(url, function (_, xhr) {
+                    _slideshowReadInSlide(xhr, slide);
                 });
             }
         } else {

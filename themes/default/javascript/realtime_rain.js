@@ -177,7 +177,9 @@ function getMoreEvents(from, to) {
     $cms.doAjaxRequest(url, receivedEvents);
 }
 
-function receivedEvents(ajaxResultFrame, ajaxResult) {
+function receivedEvents(responseXml) {
+    var ajaxResult = responseXml && responseXml.querySelector('result');
+    
     document.getElementById('loading_icon').style.display = 'none';
 
     var bubbles = document.getElementById('bubbles_go_here');

@@ -250,8 +250,8 @@
                     if (newCss == lastCss) return; // Not changed
 
                     var url = $cms.baseUrl('data/snippet.php?snippet=css_compile__text' + $cms.keepStub());
-                    $cms.doAjaxRequest(url, function (ajaxResultFrame) {
-                        receiveCompiledCss(ajaxResultFrame, file);
+                    $cms.doAjaxRequest(url, function (_, xhr) {
+                        receiveCompiledCss(xhr, file);
                     }, $cms.form.modSecurityWorkaroundAjax('css=' + encodeURIComponent(newCss)));
 
                     lastCss = newCss;
@@ -534,13 +534,13 @@
                 request += encodeURIComponent(btn.form.elements[i].name) + '=' + encodeURIComponent(btn.form.elements[i].value) + '&';
             }
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keepStub(true), function (ajaxResult) {
-                $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(ajaxResult.responseText));
-                $cms.dom.html(document.getElementById('preview_html'), ajaxResult.responseText);
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}' + $cms.keepStub(true), function (_, xhr) {
+                $cms.dom.html(document.getElementById('preview_raw'), $cms.filter.html(xhr.responseText));
+                $cms.dom.html(document.getElementById('preview_html'), xhr.responseText);
             }, request);
 
-            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keepStub(), function (ajaxResult) {
-                $cms.dom.html(document.getElementById('preview_comcode'), ajaxResult.responseText);
+            $cms.doAjaxRequest('{$FIND_SCRIPT;,tempcode_tester}?comcode=1' + $cms.keepStub(), function (_, xhr) {
+                $cms.dom.html(document.getElementById('preview_comcode'), xhr.responseText);
             }, request);
         });
     };

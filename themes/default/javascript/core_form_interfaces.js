@@ -1440,8 +1440,8 @@
                 geocodeUrl += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
                 geocodeUrl += $cms.keepStub();
 
-                $cms.doAjaxRequest(geocodeUrl, function (ajaxResult) {
-                    var parsed = JSON.parse(ajaxResult.responseText);
+                $cms.doAjaxRequest(geocodeUrl, function (_, xhr) {
+                    var parsed = JSON.parse(xhr.responseText);
                     if (parsed === null) {
                         return;
                     }

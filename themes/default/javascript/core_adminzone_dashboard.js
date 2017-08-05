@@ -316,9 +316,9 @@
         }
 
         return new Promise(function (resolve) {
-            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), function (request) {
-                if (request.responseText && (request.responseText !== 'false')) {
-                    var result = request.responseXML.documentElement.querySelector('result');
+            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), function (_, xhr) {
+                if (xhr.responseText && (xhr.responseText !== 'false')) {
+                    var result = xhr.responseXML.documentElement.querySelector('result');
 
                     if (result) {
                         var xhtml = result.textContent;

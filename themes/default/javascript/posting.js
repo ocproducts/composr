@@ -789,7 +789,8 @@ function initFormSaving(formId) {
         url += '&stem=' + encodeURIComponent(getAutosaveUrlStem());
         url += $cms.keepStub();
         var callback = function (form) {
-            return function (result) {
+            return function (responseXml) {
+                var result = responseXml && responseXml.querySelector('result');
                 $cms.inform('Auto-save AJAX says', result);
                 _retrieveFormAutosave(result, form);
             }
@@ -824,7 +825,9 @@ function initFormSaving(formId) {
                 if (navigator.onLine) {
                     post = $cms.form.modSecurityWorkaroundAjax(post);
                     $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
-                        if (document.body.style.cursor == 'wait') document.body.style.cursor = '';
+                        if (document.body.style.cursor === 'wait') {
+                            document.body.style.cursor = '';
+                        }
 
                         var message = foundValidatedField ? '{!javascript:DRAFT_SAVED_WITH_VALIDATION;^}' : '{!javascript:DRAFT_SAVED_WITHOUT_VALIDATION;^}';
                         $cms.ui.alert(message, null, '{!javascript:DRAFT_SAVE;^}');
@@ -1033,8 +1036,7 @@ function handleFormSaving(event, element, force) {
             }
 
             post = $cms.form.modSecurityWorkaroundAjax(post);
-            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), function () {
-            }, post);
+            $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), true, post);
         }
     }
 }

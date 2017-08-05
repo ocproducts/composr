@@ -412,11 +412,11 @@ function showPermissionSetting(ob, event) {
         }
 
         var url = '{$FIND_SCRIPT_NOHTTP;,find_permissions}?serverid=' + encodeURIComponent(serverid) + '&x=' + encodeURIComponent(ob.name);
-        $cms.doAjaxRequest(url + $cms.keepStub(), function (ret) {
-            if (!ret) {
+        $cms.doAjaxRequest(url + $cms.keepStub(), function (_, xhr) {
+            if (!xhr) {
                 return;
             }
-            ob.fullSetting = ret.responseText;
+            ob.fullSetting = xhr.responseText;
             ob.title += ' [{!permissions:DEFAULT_PERMISSION;^} ' + ob.fullSetting + ']';
         });
         return;

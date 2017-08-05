@@ -4605,8 +4605,8 @@
             // Make AJAX call
             $cms.doAjaxRequest(
                 ajaxUrl + $cms.keepStub(),
-                function (rawAjaxResult) { // Show results when available
-                    _callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, function () {
+                function (_, xhr) { // Show results when available
+                    _callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
                         resolve();
                     }, scrollToTopOfWrapper, inner);
                 },
@@ -4686,15 +4686,15 @@
 
         if (async) {
             return new Promise(function (resolve) {
-                $cms.doAjaxRequest($cms.maintainThemeInLink(url2), function (ajaxResult) {
-                    resolve(ajaxResult);
+                $cms.doAjaxRequest($cms.maintainThemeInLink(url2), function (_, xhr) {
+                    resolve(xhr);
                 }, post);
             });
         }
 
         /*TODO: Synchronous XHR*/
-        var html = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), null, post);
-        return html.responseText;
+        var xhr = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), false, post);
+        return xhr.responseText;
     }
 
     /**
@@ -5391,18 +5391,18 @@
     $cms.ui.confirmSession = function confirmSession(callback) {
         var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
 
-        $cms.doAjaxRequest(url, function (ret) {
-            if (!ret) {
+        $cms.doAjaxRequest(url, function (_, xhr) {
+            if (!xhr) {
                 return;
             }
 
-            if (ret.responseText === '') { // Blank means success, no error - so we can call callback
+            if (xhr.responseText === '') { // Blank means success, no error - so we can call callback
                 callback(true);
                 return;
             }
 
             // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-            if (ret.responseText === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
+            if (xhr.responseText === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
                 $cms.ui.prompt(
                     '{!USERNAME;^}',
                     '',
@@ -5414,7 +5414,7 @@
                 return;
             }
 
-            _confirmSession(callback, ret.responseText, url);
+            _confirmSession(callback, xhr.responseText, url);
         });
 
         function _confirmSession(callback, username, url) {
@@ -5423,8 +5423,8 @@
                 '',
                 function (promptt) {
                     if (promptt !== null) {
-                        $cms.doAjaxRequest(url, function (ret) {
-                            if (ret && ret.responseText === '') { // Blank means success, no error - so we can call callback
+                        $cms.doAjaxRequest(url, function (_, xhr) {
+                            if (xhr && xhr.responseText === '') { // Blank means success, no error - so we can call callback
                                 callback(true);
                             } else {
                                 _confirmSession(callback, username, url); // Recurse
@@ -7115,7 +7115,7 @@
 
     /**
      * @param url
-     * @param ajaxCallback
+     * @param {boolean|function|array} ajaxCallback - Dictates sync or async
      * @param post - Note that 'post' is not an array, it's a string (a=b)
      * @returns {*}
      */
@@ -7128,12 +7128,12 @@
             url = window.location.protocol + '//' + window.location.host + url;
         }
 
-        var ajaxInstance = new XMLHttpRequest();
+        var xhr = new XMLHttpRequest();
 
         if (async) {
-            ajaxInstance.onreadystatechange = function () {
-                if ((ajaxInstance.readyState === XMLHttpRequest.DONE) && (typeof ajaxCallback === 'function')) {
-                    readyStateChangeListener(ajaxInstance, ajaxCallback);
+            xhr.onreadystatechange = function () {
+                if ((xhr.readyState === XMLHttpRequest.DONE) && ((typeof ajaxCallback === 'function') || Array.isArray(ajaxCallback))) {
+                    readyStateChangeListener(xhr, ajaxCallback);
                 }
             };
         }
@@ -7143,27 +7143,27 @@
                 post += '&csrf_token=' + encodeURIComponent($cms.getCsrfToken());
             }
 
-            ajaxInstance.open('POST', url, async);
-            ajaxInstance.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            ajaxInstance.send(post);
+            xhr.open('POST', url, async);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send(post);
         } else {
-            ajaxInstance.open('GET', url, async);
-            ajaxInstance.send(null);
+            xhr.open('GET', url, async);
+            xhr.send(null);
         }
 
-        return ajaxInstance;
+        return xhr;
 
-        function readyStateChangeListener(ajaxInstance, ajaxCallback) {
+        function readyStateChangeListener(xhr, ajaxCallback) {
             var okStatusCodes = [200, 500, 400, 401];
             // If status is 'OK'
-            if (ajaxInstance.status && okStatusCodes.includes(ajaxInstance.status)) {
+            if (xhr.status && okStatusCodes.includes(xhr.status)) {
                 // Process the result
-                if ((!ajaxInstance.responseXML/*Not payload handler and not stack trace*/ || !ajaxInstance.responseXML.firstChild)) {
-                    return callAjaxMethod(ajaxCallback, ajaxInstance);
+                if (!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild) {
+                    return callAjaxMethod(ajaxCallback, xhr);
                 }
 
                 // XML result. Handle with a potentially complex call
-                var xml = (ajaxInstance.responseXML && ajaxInstance.responseXML.firstChild) ? ajaxInstance.responseXML : handleErrorsInResult(ajaxInstance);
+                var xml = retrieveXmlDocument(xhr);
 
                 if (xml) {
                     xml.validateOnParse = false;
@@ -7177,13 +7177,13 @@
                 callAjaxMethod(ajaxCallback);
 
                 try {
-                    if ((ajaxInstance.status === 0) || (ajaxInstance.status > 10000)) { // implies site down, or network down
+                    if ((xhr.status === 0) || (xhr.status > 10000)) { // implies site down, or network down
                         if (!networkDownAlerted && !window.unloaded) {
                             //$cms.ui.alert('{!NETWORK_DOWN;^}');   Annoying because it happens when unsleeping a laptop (for example)
                             networkDownAlerted = true;
                         }
                     } else {
-                        $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + ajaxInstance.status + ': ' + ajaxInstance.statusText + '.', ajaxInstance);
+                        $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}\n' + xhr.status + ': ' + xhr.statusText + '.', xhr);
                     }
                 } catch (e) {
                     $cms.fatal('$cms.doAjaxRequest(): {!PROBLEM_RETRIEVING_XML;^}', e); // This is probably clicking back
@@ -7191,23 +7191,30 @@
             }
         }
 
-        function processRequestChange(ajaxResultFrame, ajaxCallback) {
-            var method = null;
-
-            if (ajaxCallback) {
-                method = ajaxCallback;
+        function callAjaxMethod(method, responseXml, xhr) {
+            if (Array.isArray(method)) {
+                method = (responseXml != null) ? method[0] : method[1];
+            } else if (responseXml == null)  {
+                // No failure method given, so don't call
+                return;
             }
 
-            var messageEl = ajaxResultFrame.querySelector('message');
+            if (typeof method === 'function') {
+                method(responseXml, xhr);
+            }
+        }
+
+        function processRequestChange(responseXml, ajaxCallback) {
+            var messageEl = responseXml.querySelector('message');
             if (messageEl) {
                 // Either an error or a message was returned. :(
                 var message = messageEl.firstChild.textContent;
 
-                callAjaxMethod(method);
+                callAjaxMethod(ajaxCallback);
 
-                if (ajaxResultFrame.querySelector('error')) {
+                if (responseXml.querySelector('error')) {
                     // It's an error :|
-                    $cms.ui.alert('An error (' + ajaxResultFrame.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message);
+                    $cms.ui.alert('An error (' + responseXml.querySelector('error').firstChild.textContent + ') message was returned by the server: ' + message);
                     return;
                 }
 
@@ -7215,21 +7222,30 @@
                 return;
             }
 
-            var ajaxResultEl = ajaxResultFrame.querySelector('result');
+            var ajaxResultEl = responseXml.querySelector('result');
             if (ajaxResultEl) {
-                callAjaxMethod(method, ajaxResultFrame, ajaxResultEl);
+                callAjaxMethod(ajaxCallback, responseXml, xhr);
                 return;
             }
 
-            callAjaxMethod(method);
+            callAjaxMethod(ajaxCallback);
         }
 
-        function handleErrorsInResult(xhr) {
-            // Try and parse again. Firefox can be weird.
+        /**
+         * @param xhr
+         * @returns { Document }
+         */
+        function retrieveXmlDocument(xhr) {
             var xml;
+            
+            if (xhr.responseXML && xhr.responseXML.firstChild) {
+                return xhr.responseXML;
+            }
+
+            // Try and parse again. Firefox can be weird.
             try {
                 xml = (new DOMParser()).parseFromString(xhr.responseText, 'application/xml');
-                if ((xml) && (xml.documentElement.nodeName === 'parsererror')) {
+                if (xml && (xml.documentElement.nodeName === 'parsererror')) {
                     xml = null;
                 }
             } catch (ignore) {}
@@ -7239,26 +7255,11 @@
             }
 
             if (xhr.responseText && xhr.responseText.includes('<html')) {
-                $cms.fatal('$cms.doAjaxRequest(): ', xhr);
+                $cms.fatal('$cms.doAjaxRequest() -> retrieveXmlDocument(): Failed', xhr);
                 $cms.ui.alert(xhr.responseText, null, '{!ERROR_OCCURRED;^}', true);
             }
-        }
-
-        function callAjaxMethod(method, ajaxResultFrame, ajaxResult) {
-            if (Array.isArray(method)) {
-                if (ajaxResultFrame != null) {
-                    method = (method[0] !== undefined) ? method[0] : null;
-                } else {
-                    method = (method[1] !== undefined) ? method[1] : null;
-                }
-            } else if (ajaxResultFrame == null)  {
-                // No failure method given, so don't call
-                method = null;
-            }
-
-            if (typeof method === 'function') {
-                method(ajaxResultFrame, ajaxResult);
-            }
+            
+            return null;
         }
     }
 
@@ -7300,7 +7301,7 @@
         url = strVal(url);
 
         return new Promise(function (resolve) {
-            $cms.doAjaxRequest(url, function (xhr) {
+            $cms.doAjaxRequest(url, function (_, xhr) {
                 if ((xhr.responseText !== '') && (xhr.responseText.replace(/[ \t\n\r]/g, '') !== '0'/*some cache layers may change blank to zero*/)) {
                     if (xhr.responseText !== 'false') {
                         if (xhr.responseText.length > 1000) {
@@ -8548,9 +8549,9 @@
                     if (link.renderedTooltip === undefined) {
                         link.isOver = true;
 
-                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), function (ajaxResultFrame) {
-                            if (ajaxResultFrame && ajaxResultFrame.responseText) {
-                                link.renderedTooltip = ajaxResultFrame.responseText;
+                        $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&raw_output=1&box_title={!PREVIEW;&}' + $cms.keepStub()), function (_, xhr) {
+                            if (xhr && xhr.responseText) {
+                                link.renderedTooltip = xhr.responseText;
                             }
                             if (link.renderedTooltip !== undefined) {
                                 if (link.isOver) {
@@ -9979,10 +9980,10 @@
 
     $cms.templates.handleConflictResolution = function (params) {
         if (params.pingUrl) {
-            $cms.doAjaxRequest(params.pingUrl, /*async*/function () {});
+            $cms.doAjaxRequest(params.pingUrl, true);
 
             setInterval(function () {
-                $cms.doAjaxRequest(params.pingUrl, /*async*/function () {});
+                $cms.doAjaxRequest(params.pingUrl, true);
             }, 12000);
         }
     };
@@ -9992,8 +9993,8 @@
     };
 
     function detectChange(changeDetectionUrl, refreshIfChanged, callback) {
-        $cms.doAjaxRequest(changeDetectionUrl, function (result) {
-            var response = strVal(result.responseText);
+        $cms.doAjaxRequest(changeDetectionUrl, function (_, xhr) {
+            var response = strVal(xhr.responseText);
             if (response === '1') {
                 clearInterval(window.detectInterval);
                 $cms.inform('detectChange(): Change detected');
