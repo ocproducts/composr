@@ -171,8 +171,8 @@
             url += '&theme=' + encodeURIComponent(params.theme);
             url += '&css_equation=' + encodeURIComponent(document.getElementById('css_equation_' + params.fileId).value);
 
+            /*TODO: Synchronous XHR*/
             result = $cms.loadSnippet(url);
-
             if (!result || result.includes('<html')) {
                 $cms.ui.alert('{!ERROR_OCCURRED;^}');
             } else {

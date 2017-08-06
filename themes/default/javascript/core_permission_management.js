@@ -310,14 +310,17 @@
 
         // Go through and set maximum permissions/override from those selected
         var values = setting.value.split(',');
-        var id, i, node, j, group, element, privilege, knownGroups = [], k, serverid, setRequest = '', setRequestB, newValue;
+        var id, i, node, j, group, element, privilege, 
+            knownGroups = [], k, serverid, setRequest = '', 
+            setRequestB, newValue;
+        
         for (i = 0; i < values.length; i++) {
             node = window.sitemap.getElementByIdHack(values[i]);
             serverid = node.getAttribute('serverid');
 
             // Find usergroups
             for (j = 0; j < node.attributes.length; j++) {
-                if (node.attributes[j].name.substr(0, 7) == 'g_view_') {
+                if (node.attributes[j].name.substr(0, 7) === 'g_view_') {
                     group = node.attributes[j].name.substr(7);
                     knownGroups.push(group);
                 }

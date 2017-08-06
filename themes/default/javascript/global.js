@@ -7205,10 +7205,10 @@
         }
 
         function processRequestChange(ajaxCallback, responseXml, xhr) {
-            var messageEl = responseXml.querySelector('message');
+            var messageEl = responseXml.querySelector('message'), message;
             if (messageEl) {
                 // Either an error or a message was returned. :(
-                var message = messageEl.firstChild.textContent;
+                message = messageEl.firstChild.textContent;
 
                 callAjaxMethod(ajaxCallback, responseXml, xhr);
 

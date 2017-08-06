@@ -46,6 +46,7 @@ function loadCommandr() {
                     commandrBox.style.width = '800px';
                     commandrBox.style.height = '500px';
                     document.body.appendChild(commandrBox);
+                    /*TODO: Synchronous XHR*/
                     $cms.dom.html(commandrBox, $cms.loadSnippet('commandr'));
                 }
 

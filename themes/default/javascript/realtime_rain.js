@@ -128,6 +128,7 @@ function realtimeRainButtonLoadHandler() {
 
     var x = document.createElement('div');
     document.body.appendChild(x);
+    /*TODO: Synchronous XHR*/
     $cms.dom.html(x, $cms.loadSnippet('realtime_rain_load'));
     e = document.getElementById('real_time_surround');
     e.style.position = 'absolute';
@@ -341,8 +342,8 @@ function timelineClick(prospective) {
     if (!prospective) {
         window.currentTime = time;
         bubblesTidyUp();
-        $cms.dom.html(document.getElementById('real_time_date'), '{!SET;^}');
-        $cms.dom.html(document.getElementById('real_time_time'), '');
+        $cms.dom.html('#real_time_date', '{!SET;^}');
+        $cms.dom.html('#real_time_time', '');
         document.getElementById('loading_icon').style.display = 'block';
     } else {
         setTimeLinePosition(time);
@@ -377,20 +378,22 @@ function bubblesTidyUp() {
 function setTimeLinePosition(time) {
     time = Math.round(time);
 
-    var marker = document.getElementById('real_time_indicator');
-    var timelineLength = 808;
-    var minTime = window.minTime;
-    var maxTime = timeNow();
-    var timelineRange = maxTime - minTime;
-    var timelineOffsetTime = time - minTime;
-    var timelineOffsetPosition = timelineOffsetTime * timelineLength / timelineRange;
+    var marker = document.getElementById('real_time_indicator'),
+        timelineLength = 808,
+        minTime = window.minTime,
+        maxTime = timeNow(),
+        timelineRange = maxTime - minTime,
+        timelineOffsetTime = time - minTime,
+        timelineOffsetPosition = timelineOffsetTime * timelineLength / timelineRange;
     marker.style.marginLeft = (50 + timelineOffsetPosition) + 'px';
 
     var dateObject = new Date();
     dateObject.setTime(time * 1000);
     var realtimedate = document.getElementById('real_time_date');
     var realtimetime = document.getElementById('real_time_time');
-    if (!realtimedate) return;
+    if (!realtimedate) {
+        return;
+    }
     $cms.dom.html(realtimedate, dateObject.getFullYear() + '/' + ('' + dateObject.getMonth()) + '/' + ('' + dateObject.getDate()));
     $cms.dom.html(realtimetime, ('' + dateObject.getHours()) + ':' + ('' + dateObject.getMinutes()) + ':' + ('' + dateObject.getSeconds()));
 }

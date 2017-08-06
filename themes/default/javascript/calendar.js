@@ -87,6 +87,7 @@
                 }
                 url += '&do_timezone_conv=' + (doTimezoneConv.checked ? '1' : '0');
                 url += '&all_day_event=' + (allDayEvent.checked ? '1' : '0');
+                /*TODO: Synchronous XHR*/
                 var newData = $cms.loadSnippet(url);
                 var tr = form.elements['monthly_spec_type'][0];
                 while (tr.nodeName.toLowerCase() !== 'tr') {

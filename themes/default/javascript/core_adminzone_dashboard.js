@@ -266,6 +266,7 @@
         }
 
         function submitCustomTask(form) {
+            /*TODO: Synchronous XHR*/
             var newTask = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value));
 
             form.elements['recur_every'].value = '';
