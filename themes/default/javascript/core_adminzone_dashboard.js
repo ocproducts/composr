@@ -319,12 +319,12 @@
         return new Promise(function (resolve) {
             $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), function (_, xhr) {
                 if (xhr.responseText && (xhr.responseText !== 'false')) {
-                    var result = xhr.responseXML.documentElement.querySelector('result');
+                    var result = xhr.responseXML && xhr.responseXML.querySelector('result');
 
                     if (result) {
-                        var xhtml = result.textContent;
-
-                        var elementReplace = form;
+                        var xhtml = result.textContent,
+                            elementReplace = form;
+                        
                         while (elementReplace.className !== 'form_ajax_target') {
                             elementReplace = elementReplace.parentNode;
                             if (!elementReplace) {
@@ -335,9 +335,7 @@
                         }
 
                         $cms.dom.html(elementReplace, xhtml);
-
                         $cms.ui.alert('{!SUCCESS;^}');
-
                         resolve(/*submitForm: */false); // We've handled it internally
                         return;
                     }

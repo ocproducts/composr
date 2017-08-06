@@ -234,8 +234,8 @@
         });
 
         $cms.dom.on(container, 'submit', '.js-form-submit-add-friend', function (e, form) {
-            $cms.loadSnippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements['friend_username'].value), true).then(function (ajaxResult) {
-                $cms.dom.html($cms.dom.$('#friends_wrap'), ajaxResult.responseText);
+            $cms.loadSnippet('im_friends_rejig&member_id=' + params.memberId, 'add=' + encodeURIComponent(form.elements['friend_username'].value), true).then(function (html) {
+                $cms.dom.html($cms.dom.$('#friends_wrap'), html);
                 form.elements['friend_username'].value = '';
             });
         });

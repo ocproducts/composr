@@ -1574,7 +1574,7 @@
     }
     
     var validIdRE = /^[a-zA-Z][\w:.-]*$/;
-
+    var requireCssPromises = Object.create(null);
     /**
      * @private
      * @param sheetName
@@ -1582,10 +1582,13 @@
     function _requireCss(sheetName) {
         var linkEl;
 
-        linkEl = $cms.dom.$('link[id^="css-' + sheetName + '"]');
-
-        if (linkEl && !(new RegExp('^css-' + sheetName + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(linkEl.id)) {
-            linkEl = null;
+        if (isAbsoluteOrSchemeRelative(sheetName) && $cms.dom.hasScriptLoaded(sheetName)) {
+            return (requireCssPromises[sheetName] = Promise.resolve());
+        } else if (validIdRE.test(sheetName)) {
+            linkEl = $cms.dom.$('link[id^="css-' + sheetName + '"]');
+            if (linkEl && !(new RegExp('^css-' + sheetName + '(?:_non_minified)?(?:_ssl)?(?:_mobile)?$', 'i')).test(linkEl.id)) {
+                linkEl = null;
+            }
         }
 
         if (!linkEl) {
@@ -1593,11 +1596,12 @@
             linkEl.id = 'css-' + sheetName;
             linkEl.rel = 'stylesheet';
             linkEl.nonce = $cms.$CSP_NONCE();
-            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheetName}?sheetName=' + sheetName + $cms.keepStub();
+            linkEl.href = '{$FIND_SCRIPT_NOHTTP;,sheet}?sheet=' + sheetName + $cms.keepStub();
             document.head.appendChild(linkEl);
+            requireCssPromises[sheetName] = $cms.waitForResources(linkEl);
         }
 
-        return Promise.resolve();
+        return requireCssPromises[sheetName];
     }
 
     /**
@@ -1611,7 +1615,6 @@
     }
 
     var requireJavascriptPromises = Object.create(null);
-
     /**
      * @private
      * @param script
@@ -3325,7 +3328,7 @@
         }
 
         duration = intVal(duration, DOM_ANIMATE_DEFAULT_DURATION);
-        opacity = intVal(opacity);
+        opacity = numVal(opacity);
         
         $cms.dom.show(el);
         
@@ -3335,21 +3338,13 @@
                 animation = el.animate(keyFrames, options);
 
             animation.onfinish = function (e) {
-                el.style.removeProperty('opacity');
-                
-                if (Number($cms.dom.css(el, 'opacity')) !== opacity) {
-                    el.style.opacity = opacity;
-                }
+                el.style.opacity = opacity;
                 if (callback) {
                     callback.call(el, e, el);
                 }
             };
         } else {
-            el.style.removeProperty('opacity');
-            
-            if (Number($cms.dom.css(el, 'opacity')) !== opacity) {
-                el.style.opacity = opacity;
-            }
+            el.style.opacity = opacity;
             if (callback) {
                 callback.call(el, null, el);
             }
@@ -4672,22 +4667,14 @@
         }
 
         var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
-            metas = document.getElementsByTagName('link'), i, url;
-
-        for (i = 0; i < metas.length; i++) {
-            if (metas[i].getAttribute('rel') === 'canonical') {
-                url = metas[i].getAttribute('href');
-            }
-        }
-        if (!url) {
-            url = window.location.href;
-        }
-        var url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
+            canonical = document.querySelector('link[rel="canonical"]'),
+            url = canonical ? canonical.getAttribute('href') : window.location.href,
+            url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
 
         if (async) {
             return new Promise(function (resolve) {
                 $cms.doAjaxRequest($cms.maintainThemeInLink(url2), function (_, xhr) {
-                    resolve(xhr);
+                    resolve(xhr.responseText);
                 }, post);
             });
         }
@@ -5386,50 +5373,48 @@
     /**
      * Enforcing a session using AJAX
      * @memberof $cms.ui
-     * @param callback
+     * @param callback - Called with boolean indicating whether session confirmed or not
      */
     $cms.ui.confirmSession = function confirmSession(callback) {
-        var url = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
+        var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
 
-        $cms.doAjaxRequest(url, function (_, xhr) {
-            if (!xhr) {
-                return;
-            }
-
-            if (xhr.responseText === '') { // Blank means success, no error - so we can call callback
+        $cms.doAjaxRequest(scriptUrl, function (_, xhr) {
+            var username = xhr.responseText;
+            
+            if (username === '') { // Blank means success, no error - so we can call callback
                 callback(true);
                 return;
             }
 
             // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-            if (xhr.responseText === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
+            if (username === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
                 $cms.ui.prompt(
                     '{!USERNAME;^}',
                     '',
-                    function (promptt) {
-                        _confirmSession(callback, promptt, url);
+                    function (prompt) {
+                        _confirmSession(callback, prompt);
                     },
                     '{!_LOGIN;^}'
                 );
                 return;
             }
 
-            _confirmSession(callback, xhr.responseText, url);
+            _confirmSession(callback, username);
         });
 
-        function _confirmSession(callback, username, url) {
+        function _confirmSession(callback, username) {
             $cms.ui.prompt(
                 $cms.$CONFIG_OPTION('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
                 '',
-                function (promptt) {
-                    if (promptt !== null) {
-                        $cms.doAjaxRequest(url, function (_, xhr) {
-                            if (xhr && xhr.responseText === '') { // Blank means success, no error - so we can call callback
+                function (prompt) {
+                    if (prompt !== null) {
+                        $cms.doAjaxRequest(scriptUrl, function (_, xhr) {
+                            if (xhr.responseText === '') { // Blank means success, no error - so we can call callback
                                 callback(true);
                             } else {
-                                _confirmSession(callback, username, url); // Recurse
+                                _confirmSession(callback, username); // Recurse
                             }
-                        }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(promptt));
+                        }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(prompt));
                     } else {
                         callback(false);
                     }
@@ -7109,8 +7094,6 @@
         }
     };
 
-    // ---
-
     var networkDownAlerted = false;
 
     /**
@@ -7159,18 +7142,24 @@
             if (xhr.status && okStatusCodes.includes(xhr.status)) {
                 // Process the result
                 if (!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild) {
-                    return callAjaxMethod(ajaxCallback, null, xhr);
+                    if (Array.isArray(ajaxCallback)) {
+                        ajaxCallback = ajaxCallback[0];
+                    }
+                    if (typeof ajaxCallback === 'function') {
+                        ajaxCallback(null, xhr);
+                    }
+                    return;
                 }
 
                 // XML result. Handle with a potentially complex call
                 var xml = retrieveXmlDocument(xhr);
 
                 if (xml) {
-                    xml.validateOnParse = false;
-                    processRequestChange(ajaxCallback, xml.documentElement || xml, xhr);
+                    processRequestChange(ajaxCallback, xml, xhr);
                 } else {
                     // Error parsing
-                    return callAjaxMethod(ajaxCallback, null, xhr);
+                    callAjaxMethod(ajaxCallback, null, xhr);
+                    return;
                 }
             } else {
                 // HTTP error...
@@ -8434,7 +8423,7 @@
 
         loadCommandr: function () {
             if (window.loadCommandr) {
-                loadCommandr();
+                window.loadCommandr();
             }
         },
 
@@ -9762,7 +9751,7 @@
             el.cancelled = false;
             $cms.loadSnippet('member_tooltip&member_id=' + submitter, null, true).then(function (result) {
                 if (!el.cancelled) {
-                    $cms.ui.activateTooltip(el, e, result.responseText, 'auto', null, null, false, true);
+                    $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, true);
                 }
             });
         });

@@ -99,7 +99,7 @@
 
                 var post = 'contents=' + encodeURIComponent(getFileTextbox(file).value);
                 $cms.loadSnippet(url, post, true).then(function (ajaxResult) {
-                    $cms.ui.alert(ajaxResult.responseText, null, null, true);
+                    $cms.ui.alert(ajaxResult, null, null, true);
                     templateEditorTabMarkNonchangedContent(file);
                 });
             }
@@ -801,10 +801,10 @@
 
             // Set content from revision
             var url = templateEditorLoadingUrl(file, revisionId);
-            $cms.loadSnippet(url, null, true).then(function (ajaxResult) {
+            $cms.loadSnippet(url, null, true).then(function (html) {
                 document.getElementById('t_' + fileId).className = 'tab tab_active';
 
-                templateEditorTabLoadedContent(ajaxResult, file);
+                templateEditorTabLoadedContent(html, file);
             });
 
             return false;
@@ -1009,8 +1009,8 @@
 
         // Set content
         var url = templateEditorLoadingUrl(file);
-        $cms.loadSnippet(url, null, true).then(function (ajaxResult) {
-            templateEditorTabLoadedContent(ajaxResult, file);
+        $cms.loadSnippet(url, null, true).then(function (html) {
+            templateEditorTabLoadedContent(html, file);
         });
 
         // Cleanup
@@ -1093,10 +1093,10 @@
         }
     }
 
-    function templateEditorTabLoadedContent(ajaxResult, file) {
+    function templateEditorTabLoadedContent(html, file) {
         var fileId = fileToFileId(file);
 
-        $cms.dom.html('#g_' + fileId, ajaxResult.responseText);
+        $cms.dom.html('#g_' + fileId, html);
 
         setTimeout(function () {
             var textareaId = 'e_' + fileId;
