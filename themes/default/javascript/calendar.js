@@ -58,9 +58,15 @@
 
         function crf(event) {
             var s = (form.elements['recurrence'][0].checked);
-            if (form.elements['recurrence_pattern']) form.elements['recurrence_pattern'].disabled = s;
-            if (form.elements['recurrences']) form.elements['recurrences'].disabled = s;
-            if (form.elements['seg_recurrences']) form.elements['seg_recurrences'].disabled = s;
+            if (form.elements['recurrence_pattern']) {
+                form.elements['recurrence_pattern'].disabled = s;
+            }
+            if (form.elements['recurrences']) {
+                form.elements['recurrences'].disabled = s;
+            }
+            if (form.elements['seg_recurrences']) {
+                form.elements['seg_recurrences'].disabled = s;
+            }
 
             var hasDateSet = false;
             if (startDay) {

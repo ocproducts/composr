@@ -1022,16 +1022,16 @@
         templateEditorShowTab(fileId);
 
         function templateEditorTabUnloadContent(file) {
-            var fileId = fileToFileId(file);
-            var wasActive = templateEditorRemoveTab(fileId);
+            var fileId = fileToFileId(file),
+                wasActive = templateEditorRemoveTab(fileId);
 
             delete window.templateEditorOpenFiles[file];
 
             if (wasActive) {
                 // Select tab
-                var c = document.getElementById('template_editor_tab_headers').childNodes;
-                if (c[0] !== undefined) {
-                    var nextFileId = c[0].id.substr(2);
+                var c = document.getElementById('template_editor_tab_headers').firstElementChild;
+                if (c != null) {
+                    var nextFileId = c.id.substr(2);
 
                     $cms.ui.selectTab('g', nextFileId);
 
@@ -1046,7 +1046,9 @@
 
                     header.parentNode.removeChild(header);
                     var body = document.getElementById('g_' + fileId);
-                    if (body) body.parentNode.removeChild(body);
+                    if (body) {
+                        body.parentNode.removeChild(body);
+                    }
 
                     templateEditorCleanTabs();
 
@@ -1087,7 +1089,7 @@
             body.parentNode.removeChild(body);
         }
 
-        if (numTabs == 0) {
+        if (numTabs === 0) {
             $cms.dom.html(headers, '<a href="#!" id="t_default" class="tab"><span>&mdash;</span></a>');
             $cms.dom.html(bodies, '<div id="g_default"><p class="nothing_here">{!NA}</p></div>');
         }

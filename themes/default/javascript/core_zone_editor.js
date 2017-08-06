@@ -151,7 +151,6 @@
 
                     var element = $cms.dom.$id('view_' + loadingPreviewOf);
                     $cms.dom.html(element, ajaxResult.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
-
                     $cms.form.disablePreviewScripts(element);
                 }
             }

@@ -7098,7 +7098,7 @@
 
     /**
      * @param url
-     * @param {boolean|function|array} ajaxCallback - Dictates sync or async
+     * @param {boolean|function} ajaxCallback - Dictates sync or async
      * @param post - Note that 'post' is not an array, it's a string (a=b)
      * @returns {*}
      */
@@ -7115,7 +7115,7 @@
 
         if (async) {
             xhr.onreadystatechange = function () {
-                if ((xhr.readyState === XMLHttpRequest.DONE) && ((typeof ajaxCallback === 'function') || Array.isArray(ajaxCallback))) {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
                     readyStateChangeListener(xhr, ajaxCallback);
                 }
             };
@@ -7141,16 +7141,6 @@
             // If status is 'OK'
             if (xhr.status && okStatusCodes.includes(xhr.status)) {
                 // Process the result
-                if (!xhr.responseXML/*Not payload handler and not stack trace*/ || !xhr.responseXML.firstChild) {
-                    if (Array.isArray(ajaxCallback)) {
-                        ajaxCallback = ajaxCallback[0];
-                    }
-                    if (typeof ajaxCallback === 'function') {
-                        ajaxCallback(null, xhr);
-                    }
-                    return;
-                }
-
                 // XML result. Handle with a potentially complex call
                 var xml = retrieveXmlDocument(xhr);
 
@@ -7159,7 +7149,6 @@
                 } else {
                     // Error parsing
                     callAjaxMethod(ajaxCallback, null, xhr);
-                    return;
                 }
             } else {
                 // HTTP error...
@@ -7181,13 +7170,6 @@
         }
 
         function callAjaxMethod(ajaxCallback, responseXml, xhr) {
-            if (Array.isArray(ajaxCallback)) {
-                ajaxCallback = (responseXml != null) ? ajaxCallback[0] : ajaxCallback[1];
-            } else if (responseXml == null)  {
-                // No failure method given, so don't call
-                return;
-            }
-
             if (typeof ajaxCallback === 'function') {
                 ajaxCallback(responseXml, xhr);
             }
