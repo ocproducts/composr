@@ -43,7 +43,6 @@ function loadCommandr() {
                     }
                 });
                 document.body.appendChild(commandrBox);
-                /*TODO: Synchronous XHR*/
                 $cms.loadSnippet('commandr', null, true).then(function (xhr) {
                     $cms.dom.html(commandrBox, xhr.responseText);
                     doCommandrBox();

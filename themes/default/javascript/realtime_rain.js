@@ -128,20 +128,20 @@ function realtimeRainButtonLoadHandler() {
 
     var x = document.createElement('div');
     document.body.appendChild(x);
-    /*TODO: Synchronous XHR*/
-    $cms.dom.html(x, $cms.loadSnippet('realtime_rain_load'));
-    e = document.getElementById('real_time_surround');
-    e.style.position = 'absolute';
-    e.style.zIndex = 100;
-    e.style.left = 0;
-    e.style.top = 0;
-    e.style.width = '100%';
-    e.style.height = ($cms.dom.getWindowScrollHeight() - 40) + 'px';
-    $cms.dom.smoothScroll(0);
 
-    startRealtimeRain();
+    $cms.loadSnippet('realtime_rain_load', null, true).then(function (html) {
+        $cms.dom.html(x, html);
+        e = document.getElementById('real_time_surround');
+        e.style.position = 'absolute';
+        e.style.zIndex = 100;
+        e.style.left = 0;
+        e.style.top = 0;
+        e.style.width = '100%';
+        e.style.height = ($cms.dom.getWindowScrollHeight() - 40) + 'px';
+        $cms.dom.smoothScroll(0);
 
-    return false; // No need to load link now, because we've done an overlay
+        startRealtimeRain();
+    });
 }
 
 // Called to start the animation

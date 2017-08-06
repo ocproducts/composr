@@ -266,14 +266,13 @@
         }
 
         function submitCustomTask(form) {
-            /*TODO: Synchronous XHR*/
-            var newTask = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value));
+            $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value), true).then(function (newTask) {
+                form.elements['recur_every'].value = '';
+                form.elements['recur_interval'].value = '';
+                form.elements['new_task'].value = '';
 
-            form.elements['recur_every'].value = '';
-            form.elements['recur_interval'].value = '';
-            form.elements['new_task'].value = '';
-
-            $cms.dom.append(document.getElementById('custom_tasks_go_here'), newTask);
+                $cms.dom.append(document.getElementById('custom_tasks_go_here'), newTask);
+            });
         }
     };
 

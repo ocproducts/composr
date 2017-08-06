@@ -331,23 +331,24 @@
                     post += '&username=' + input.form.elements['edit_username'].value;
                 }
             }
-            /*TODO: Synchronous XHR*/
-            var strength = $cms.loadSnippet('password_strength', post);
-            strength *= 2;
-            if (strength > 10) {  // Normally too harsh!
-                strength = 10;
-            }
-            ind.style.width = (strength * 10) + 'px';
 
-            if (strength >= 6) {
-                ind.style.backgroundColor = 'green';
-            } else if (strength < 4) {
-                ind.style.backgroundColor = 'red';
-            } else {
-                ind.style.backgroundColor = 'orange';
-            }
+            $cms.loadSnippet('password_strength', post, true).then(function (strength) {
+                strength = Number(strength);
+                strength *= 2;
+                if (strength > 10) {  // Normally too harsh!
+                    strength = 10;
+                }
+                ind.style.width = (strength * 10) + 'px';
+                if (strength >= 6) {
+                    ind.style.backgroundColor = 'green';
+                } else if (strength < 4) {
+                    ind.style.backgroundColor = 'red';
+                } else {
+                    ind.style.backgroundColor = 'orange';
+                }
 
-            ind.parentNode.style.display = (input.value.length === 0) ? 'none' : 'block';
+                ind.parentNode.style.display = (input.value.length === 0) ? 'none' : 'block';
+            });
         });
     };
 

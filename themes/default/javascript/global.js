@@ -9962,6 +9962,10 @@
     $cms.templates.indexScreenFancierScreen = function indexScreenFancierScreen(params) {
         document.getElementById('search_content').value = strVal(params.rawSearchString);
     };
+    
+    $cms.templates.doNextScreen = function doNextScreen(params) {
+        
+    };
 
     function detectChange(changeDetectionUrl, refreshIfChanged, callback) {
         $cms.doAjaxRequest(changeDetectionUrl, function (_, xhr) {

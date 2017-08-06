@@ -2,6 +2,8 @@
     'use strict';
 
     $cms.functions.cmsCalendarRunStart = function cmsCalendarRunStart() {
+        console.log('$cms.functions.cmsCalendarRunStart()');
+        
         var form = document.getElementById('recurrence_pattern').form,
             start = document.getElementById('start'),
             startDay = document.getElementById('start_day'),
@@ -16,30 +18,30 @@
             doTimezoneConv = document.getElementById('do_timezone_conv'),
             allDayEvent = document.getElementById('all_day_event');
 
-        crf();
+        updateForm();
         for (var i = 0; i < form.elements['recurrence'].length; i++) {
-            form.elements['recurrence'][i].addEventListener('click', crf);
+            form.elements['recurrence'][i].addEventListener('click', updateForm);
         }
 
         if (startDay) {
-            startDay.addEventListener('change', crf);
-            startMonth.addEventListener('change', crf);
-            startYear.addEventListener('change', crf);
+            startDay.addEventListener('change', updateForm);
+            startMonth.addEventListener('change', updateForm);
+            startYear.addEventListener('change', updateForm);
         } else {
-            start.addEventListener('change', crf);
+            start.addEventListener('change', updateForm);
         }
         if (startHour) {
-            startHour.addEventListener('change', crf);
-            startMinute.addEventListener('change', crf);
+            startHour.addEventListener('change', updateForm);
+            startMinute.addEventListener('change', updateForm);
         } else {
-            startTime.addEventListener('change', crf);
+            startTime.addEventListener('change', updateForm);
         }
 
-        crf2();
-        document.getElementById('all_day_event').onclick = crf2;
+        updateForm2();
+        allDayEvent.onclick = updateForm2;
 
         form.addEventListener('submit', function () {
-            if (form.elements['end_day'] != undefined && form.elements['end_day'].selectedIndex != 0 || form.elements['end'] != undefined && form.elements['end'].value != '') {
+            if ((form.elements['end_day'] != null) && (form.elements['end_day'].selectedIndex !== 0) || (form.elements['end'] != null) && (form.elements['end'].value !== '')) {
                 var startDate, endDate;
                 if (startDay) {
                     startDate = new Date(parseInt(form.elements['startYear'].value), parseInt(form.elements['startMonth'].value) - 1, parseInt(form.elements['startDay'].value), parseInt(form.elements['startHour'].value), parseInt(form.elements['startMinute'].value));
@@ -56,8 +58,9 @@
             }
         });
 
-        function crf(event) {
+        function updateForm(event) {
             var s = (form.elements['recurrence'][0].checked);
+            
             if (form.elements['recurrence_pattern']) {
                 form.elements['recurrence_pattern'].disabled = s;
             }
@@ -70,12 +73,12 @@
 
             var hasDateSet = false;
             if (startDay) {
-                hasDateSet = (startDay.selectedIndex != 0) && (startMonth.selectedIndex != 0) && (startYear.selectedIndex != 0);
+                hasDateSet = (startDay.selectedIndex !== 0) && (startMonth.selectedIndex !== 0) && (startYear.selectedIndex !== 0);
             } else {
-                hasDateSet = (start.value != '');
+                hasDateSet = (start.value !== '');
             }
 
-            if ((event !== undefined) && (hasDateSet)) { // Something changed
+            if ((event !== undefined) && hasDateSet) { // Something changed
                 var url = 'calendar_recurrence_suggest';
                 url += '&monthly_spec_type=' + encodeURIComponent($cms.form.radioValue(form.elements['monthly_spec_type']));
                 if (startDay) {
@@ -93,22 +96,19 @@
                 }
                 url += '&do_timezone_conv=' + (doTimezoneConv.checked ? '1' : '0');
                 url += '&all_day_event=' + (allDayEvent.checked ? '1' : '0');
-                /*TODO: Synchronous XHR*/
-                var newData = $cms.loadSnippet(url);
-                var tr = form.elements['monthly_spec_type'][0];
-                while (tr.nodeName.toLowerCase() !== 'tr') {
-                    tr = tr.parentNode;
-                }
-                $cms.dom.html(tr, newData.replace(/<tr [^>]*>/, '').replace(/<\/tr>/, ''));
-            }
-            var monthlyRecurrence = form.elements['recurrence'][3].checked;
-            for (var i = 0; i < form.elements['monthly_spec_type'].length; i++) {
-                form.elements['monthly_spec_type'][i].disabled = !monthlyRecurrence;
+                
+                $cms.loadSnippet(url, null, true).then(function (newData) {
+                    var tr = $cms.dom.closest(form.elements['monthly_spec_type'][0], 'tr');
+                    $cms.dom.html(tr, newData.replace(/<tr [^>]*>/, '').replace(/<\/tr>/, ''));
+                    updateMonthlyRecurrence();
+                });
+            } else {
+                updateMonthlyRecurrence();
             }
         }
 
-        function crf2() {
-            var s = document.getElementById('all_day_event').checked;
+        function updateForm2() {
+            var s = allDayEvent.checked;
             if (startHour) {
                 startHour.disabled = s;
                 startMinute.disabled = s;
@@ -122,6 +122,13 @@
                 endTime.disabled = s;
             }
         }
+        
+        function updateMonthlyRecurrence() {
+            var monthlyRecurrence = form.elements['recurrence'][3].checked;
+            for (var i = 0; i < form.elements['monthly_spec_type'].length; i++) {
+                form.elements['monthly_spec_type'][i].disabled = !monthlyRecurrence;
+            }
+        }
     };
 
     $cms.templates.calendarEventType = function calendarEventType(params, container) {
@@ -131,7 +138,6 @@
             if (e.target !== checkbox) {
                 $cms.dom.toggleChecked(checkbox);
             }
-
         });
     };
 }(window.$cms));
