@@ -42,9 +42,15 @@ function attachmentPresent(postValue, number) {
 function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
     multi = !!multi;
 
-    if (window.insertTextbox === undefined) return;
-    if (window.numAttachments === undefined) return;
-    if (window.maxAttachments === undefined) return;
+    if (window.insertTextbox === undefined) {
+        return;
+    }
+    if (window.numAttachments === undefined) {
+        return;
+    }
+    if (window.maxAttachments === undefined) {
+        return;
+    }
 
     var post = document.getElementById(fieldName);
 
@@ -318,7 +324,7 @@ function doInputMenu(fieldName) {
 
 function doInputBlock(fieldName) {
     var url = '{$FIND_SCRIPT;,block_helper}?field_name=' + fieldName + $cms.keepStub();
-    url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
+    url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
     $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
 }
 
@@ -340,7 +346,7 @@ function doInputComcode(fieldName, tag) {
                         tag = matches[1];
 
                         for (var i = 0; i < comcodeElement.attributes.length; i++) {
-                            if (comcodeElement.attributes[i].name != 'id') {
+                            if (comcodeElement.attributes[i].name !== 'id') {
                                 attributes[comcodeElement.attributes[i].name] = comcodeElement.attributes[i].value;
                             }
                         }

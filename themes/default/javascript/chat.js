@@ -561,7 +561,9 @@ function doInputInvite(fieldName) {
                     '{!chat:ENTER_CHATROOM;^}',
                     '',
                     function (vb) {
-                        if (vb != null) insertTextbox(document.getElementById(fieldName), '[invite="' + va + '"]' + vb + '[/invite]');
+                        if (vb != null) {
+                            insertTextbox(document.getElementById(fieldName), '[invite="' + va + '"]' + vb + '[/invite]');
+                        }
                     },
                     '{!chat:INPUT_CHATCODE_invite;^}'
                 );

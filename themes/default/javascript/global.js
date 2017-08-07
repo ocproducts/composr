@@ -4656,10 +4656,9 @@
      * @memberof $cms
      * @param snippetHook
      * @param [post]
-     * @param {boolean} [async]
      * @returns { Promise|string }
      */
-    function loadSnippet(snippetHook, post, async) {
+    function loadSnippet(snippetHook, post) {
         snippetHook = strVal(snippetHook);
 
         if (!window.location) { // In middle of page navigation away
@@ -4670,18 +4669,12 @@
             canonical = document.querySelector('link[rel="canonical"]'),
             url = canonical ? canonical.getAttribute('href') : window.location.href,
             url2 = '{$FIND_SCRIPT_NOHTTP;,snippet}?snippet=' + snippetHook + '&url=' + encodeURIComponent($cms.protectURLParameter(url)) + '&title=' + encodeURIComponent(title) + $cms.keepStub();
-
-        if (async) {
-            return new Promise(function (resolve) {
-                $cms.doAjaxRequest($cms.maintainThemeInLink(url2), function (_, xhr) {
-                    resolve(xhr.responseText);
-                }, post);
-            });
-        }
-
-        /*TODO: Synchronous XHR*/
-        var xhr = $cms.doAjaxRequest($cms.maintainThemeInLink(url2), false, post);
-        return xhr.responseText;
+        
+        return new Promise(function (resolve) {
+            $cms.doAjaxRequest($cms.maintainThemeInLink(url2), function (_, xhr) {
+                resolve(xhr.responseText);
+            }, post);
+        });
     }
 
     /**

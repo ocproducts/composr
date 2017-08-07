@@ -217,12 +217,11 @@
 
     /**
      * @memberof $cms.form
-     * @param theElement
-     * @returns {*|boolean}
+     * @param el
+     * @returns {boolean}
      */
-    $cms.form.isWysiwygField = function isWysiwygField(theElement) {
-        var id = theElement.id;
-        return window.wysiwygEditors && (typeof window.wysiwygEditors === 'object') && (typeof window.wysiwygEditors[id] === 'object');
+    $cms.form.isWysiwygField = function isWysiwygField(el) {
+        return (window.wysiwygEditors != null) && (typeof window.wysiwygEditors === 'object') && (window.wysiwygEditors[el.id] != null) && (typeof window.wysiwygEditors[el.id] === 'object');
     };
 
     /**

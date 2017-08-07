@@ -154,30 +154,30 @@ function toggleWysiwyg(name) {
                     delete window.wysiwygEditors[id];
 
                     // Comcode conversion
-                    if ((discard) && (window.wysiwygOriginalComcode[id])) {
+                    if (discard && (window.wysiwygOriginalComcode[id])) {
                         textarea.value = window.wysiwygOriginalComcode[id];
                     } else {
                         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keepStub());
-                        if (window.location.href.indexOf('topics') != -1) {
+                        if (window.location.href.indexOf('topics') !== -1) {
                             url += '&forum_db=1';
                         }
                         var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
                         post = $cms.form.modSecurityWorkaroundAjax(post);
                         /*TODO: Synchronous XHR*/
                         var request = $cms.doAjaxRequest(url, false, post);
-                        if (!request.responseXML || (!request.responseXML.documentElement.querySelector('result'))) {
+                        if (!request.responseXML || (!request.responseXML.querySelector('result'))) {
                             textarea.value = '[semihtml]' + wysiwygData + '[/semihtml]';
                         } else {
-                            var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
-                            var result = resultTags[0];
+                            var result = request.responseXML.querySelector('result');
                             textarea.value = result.textContent.replace(/\s*$/, '');
                         }
                         if ((textarea.value.indexOf('{\$,page hint: no_wysiwyg}') === -1) && (textarea.value !== '')) {
                             textarea.value += '{\$,page hint: no_wysiwyg}';
                         }
                     }
-                    if (document.getElementById('toggle_wysiwyg_' + id))
+                    if (document.getElementById('toggle_wysiwyg_' + id)) {
                         $cms.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
+                    }
 
                     // Unload editor
                     try {
@@ -187,10 +187,10 @@ function toggleWysiwyg(name) {
             }
         }
         if (so) {
-            so.style.display = 'block';
+            $cms.dom.show(so);
         }
         if (so2) {
-            so2.style.display = 'none';
+            $cms.dom.hide(so2);
         }
 
         window.wysiwygOn = function () {
@@ -290,20 +290,15 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
                 }
             } else {
                 var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keepStub());
-                if (window.location.href.indexOf('topics') != -1) {
+                if (window.location.href.indexOf('topics') !== -1) {
                     url += '&forum_db=1';
                 }
                 var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(postingForm.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
                 if (!request.responseXML) {
                     postingForm.elements[counter].value = '';
                 } else {
-                    var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
-                    if ((!resultTags) || (resultTags.length == 0)) {
-                        postingForm.elements[counter].value = '';
-                    } else {
-                        var result = resultTags[0];
-                        postingForm.elements[counter].value = result.textContent;
-                    }
+                    var result = request.responseXML.querySelector('result');
+                    postingForm.elements[counter].value = result ? result.textContent : '';
                 }
             }
             setTimeout(function (e, id) {
@@ -517,12 +512,14 @@ function findTagsInEditor(editor, element) {
                     this.onmouseout();
                 }
                 var fieldName = editor.name;
-                if (this.id == '') this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
+                if (this.id == '') {
+                    this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
+                }
                 var tagType = this.title.replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
                 if (tagType == 'block') {
                     var blockName = this.title.replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
                     var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
-                    url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
+                    url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
                     $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 } else {
                     var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
@@ -669,16 +666,15 @@ function setTextbox(element, text, html) {
     }
 }
 
-/*
- Insert some text, with WYSIWYG support...
-
- element: non-WYSIWYG element
- text: text to insert (non-HTML)
- sel: Selection DOM object so we know what to *overwrite* with the inserted text (or NULL)
- plain_insert: Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation
- html: HTML to insert (if not passed then 'text' will be escaped)
-
- (Use insertTextboxWrapping to wrap Comcode tags around a selection)
+/**
+ * Insert some text, with WYSIWYG support...
+ * (Use insertTextboxWrapping to wrap Comcode tags around a selection)
+ * 
+ * @param element - non-WYSIWYG element
+ * @param text - text to insert (non-HTML)
+ * @param sel - Selection DOM object so we know what to *overwrite* with the inserted text (or NULL)
+ * @param plainInsert - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
+ * @param html - HTML to insert (if not passed then 'text' will be escaped)
  */
 function insertTextbox(element, text, sel, plainInsert, html) {
     plainInsert = !!plainInsert;
@@ -692,25 +688,24 @@ function insertTextbox(element, text, sel, plainInsert, html) {
             insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
         } else {
             var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
-            if (window.location.href.indexOf('topics') != -1) {
+            if (window.location.href.includes('topics')) {
                 url += '&forum_db=1';
             }
             /*TODO: Synchronous XHR*/
-            var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-            if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
-                var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
-                var result = resultTags[0];
+            var xhr = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+            if (xhr.responseXML && (xhr.responseXML.querySelector('result'))) {
+                var result = xhr.responseXML.querySelector('result');
                 insert = result.textContent.replace(/\s*$/, '');
             }
         }
 
-        var before = editor.getData();
+        var before = editor.getData(), after;
 
         try {
             editor.focus(); // Needed on some browsers
-            var selectedHtml = getSelectedHtml(editor);
+            getSelectedHtml(editor);
 
-            if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() == 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
+            if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
                 editor.document.getBody().appendHtml(insert);
             } else {
                 //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
@@ -718,32 +713,26 @@ function insertTextbox(element, text, sel, plainInsert, html) {
                 editor.insertElement(elementForInserting);
             }
 
-            var after = editor.getData();
+            after = editor.getData();
             if (after == before) {
-                throw 'Failed to insert';
+                throw new Error('Failed to insert');
             }
 
             findTagsInEditor(editor, element);
         } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
-
-            var after = editor.getData();
+            after = editor.getData();
             if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
                 editor.document.getBody().appendHtml(insert);
             }
         }
 
         editor.updateElement();
-
         return;
     }
 
     var from = element.value.length, to;
 
     element.focus();
-
-    if ((sel === undefined) || (sel === null)) {
-        sel = document.selection ? document.selection : null;
-    }
 
     if (element.selectionEnd !== undefined) {
         from = element.selectionStart;
@@ -762,10 +751,6 @@ function insertTextbox(element, text, sel, plainInsert, html) {
     }
  }
 function insertTextboxOpener(element, text, sel, plainInsert, html) {
-    if (!sel) {
-        sel = $cms.getMainCmsWindow().document.selection || null;
-    }
-
     $cms.getMainCmsWindow().insertTextbox(element, text, sel, plainInsert, html);
 }
 
@@ -808,21 +793,20 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         var newHtml = '';
 
         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
-        if (window.location.href.indexOf('topics') != -1) {
+        if (window.location.href.includes('topics')) {
             url += '&forum_db=1';
         }
         /*TODO: Synchronous XHR*/
         var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-        if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
-            var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
-            var result = resultTags[0];
+        if (request.responseXML && (request.responseXML.querySelector('result'))) {
+            var result = request.responseXML.querySelector('result');
             newHtml = result.textContent.replace(/\s*$/, '');
             /* result is an XML-escaped string of HTML, so we get via looking at the node text */
         } else {
             newHtml = selectedHtml;
         }
 
-        if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() == 'kbd')) { // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
+        if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() === 'kbd')) { // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
             editor.document.getBody().appendHtml(newHtml);
         } else {
             editor.insertHtml(newHtml);
