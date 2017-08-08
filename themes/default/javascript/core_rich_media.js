@@ -554,13 +554,16 @@
     $cms.templates.emoticonClickCode = function emoticonClickCode(params, container) {
         var fieldName = strVal(params.fieldName);
 
-        $cms.dom.on(container, 'click', function () {
+        $cms.dom.on(container, 'click', function (e) {
+            e.preventDefault();
             doEmoticon(fieldName, container, false)
         });
     };
 
-    $cms.templates.comcodeOverlay = function comcodeOverlay(params) {
-        var container = this, id = params.id;
+    $cms.templates.comcodeOverlay = function comcodeOverlay(params, container) {
+        var id = strVal(params.id),
+            timeout = Number(params.timeout),
+            timein = Number(params.timein);
 
         $cms.dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
             var bi = document.getElementById('main_website_inner');
@@ -595,7 +598,7 @@
                 $cms.dom.fadeIn(element);
 
 
-                if (params.timeout !== '-1') {
+                if (timeout !== -1) {
                     setTimeout(function () {
                         if (bi) {
                             bi.style.opacity = 1;
@@ -604,15 +607,14 @@
                         if (element) {
                             element.style.display = 'none';
                         }
-                    }, params.timeout);
+                    }, timeout);
                 }
-            }, params.timein + 100);
+            }, timein + 100);
         }
     };
 
-    $cms.templates.comcodeBigTabsController = function (params) {
-        var container = this,
-            passId = $cms.filter.id(params.passId),
+    $cms.templates.comcodeBigTabsController = function (params, container) {
+        var passId = $cms.filter.id(params.passId),
             id = passId + '_' + params.bigTabSets,
             fullId = 'a' + id + '_big_tab',
             tabs = params.tabs,

@@ -983,13 +983,13 @@
                         return [_comcodeSemihtml, _comcode];
                     }
 
-                    if ((element.value.indexOf(comcodeSemihtml) == -1) || (comcode.indexOf('[attachment') == -1)) { // Don't allow attachments to add twice
-                        targetWindow.insertTextbox(element, _comcode, targetWindow.document.selection ? targetWindow.document.selection : null, true, _comcodeSemihtml);
+                    if ((element.value.indexOf(comcodeSemihtml) === -1) || (comcode.indexOf('[attachment') === -1)) { // Don't allow attachments to add twice
+                        targetWindow.insertTextbox(element, _comcode, null, true, _comcodeSemihtml);
                     }
                 };
 
                 if (params.prefix !== undefined) {
-                    targetWindow.insertTextbox(element, params.prefix, targetWindow.document.selection ? targetWindow.document.selection : null, true);
+                    targetWindow.insertTextbox(element, params.prefix, null, true);
                 }
                 targetWindow.insertComcodeTag();
 

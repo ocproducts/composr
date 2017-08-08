@@ -1208,7 +1208,7 @@
             return defaultValue;
         }
         
-        return ((val !== null) && (val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+        return ((val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     /**
@@ -1225,7 +1225,7 @@
             return defaultValue;
         }
         
-        return ((val !== null) && (val = Number(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+        return ((val = Number(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     function numberFormat(num) {
@@ -1321,7 +1321,8 @@
             values = toArray(arguments, 1);
         } else if (isArrayLike(values)) {
             // Array(-ish?) object provided with values
-            values = toArray(values);}
+            values = toArray(values);
+        }
 
         str = str.replace(/\{(\d+)\}/g, function (match, key) {
             key--; // So that interpolation starts from '{1}'
@@ -4022,8 +4023,10 @@
 
         clone.defer = scriptEl.defer;
         clone.async = scriptEl.async;
-        clone.src = strVal(scriptEl.src);
-
+        if (scriptEl.src !== '') {
+            clone.src = scriptEl.src;
+        }
+        
         return clone;
     }
 
@@ -4147,6 +4150,11 @@
 
         if (html === undefined) {
             return el.outerHTML;
+        }
+        
+        if (parent == null) {
+            $cms.fatal('$cms.dom.outerHtml(): Element passed as argument "el" must have a parentNode.');
+            return;
         }
 
         parent.removeChild(el);
@@ -9851,7 +9859,7 @@
         if (params.changeDetectionUrl && (Number(params.refreshTime) > 0)) {
             window.detectInterval = setInterval(function () {
                 detectChange(params.changeDetectionUrl, params.refreshIfChanged, function () {
-                    if ((!document.getElementById('post')) || (document.getElementById('post').value === '')) {
+                    if (!document.getElementById('post') || (document.getElementById('post').value === '')) {
                         $cms.callBlock(params.url, '', element, false, true, null, true).then(function () {
                             detectedChange();
                         });
@@ -10363,11 +10371,12 @@
      * @param scrollToTop
      */
     function internaliseAjaxBlockWrapperLinks(urlStem, blockElement, lookFor, extraParams, append, formsToo, scrollToTop) {
+        urlStem = strVal(urlStem);
         lookFor || (lookFor = []);
         extraParams || (extraParams = []);
         append = !!append;
         formsToo = !!formsToo;
-        scrollToTop = (scrollToTop !== undefined) ? !!scrollToTop : true;
+        scrollToTop = boolVal(scrollToTop, true);
 
         if (!blockElement) {
             return;
@@ -10379,47 +10388,49 @@
             scrollToTop = false;
         }
 
-        var _linkWrappers = blockElement.querySelectorAll('.ajax_block_wrapper_links');
-        if (_linkWrappers.length === 0) {
-            _linkWrappers = [blockElement];
+        var linkWrappers = blockElement.querySelectorAll('.ajax_block_wrapper_links');
+        if (linkWrappers.length === 0) {
+            linkWrappers = [blockElement];
         }
-        var links = [];
-        for (var i = 0; i < _linkWrappers.length; i++) {
-            var _links = _linkWrappers[i].getElementsByTagName('a');
+        var targets = [];
+        for (var i = 0; i < linkWrappers.length; i++) {
+            var linkWrapper = linkWrappers[i],
+                _links = linkWrapper.getElementsByTagName('a');
 
             for (var j = 0; j < _links.length; j++) {
-                links.push(_links[j]);
+                targets.push(_links[j]);
             }
 
             if (formsToo) {
-                _links = _linkWrappers[i].getElementsByTagName('form');
+                var forms = linkWrapper.getElementsByTagName('form');
 
-                for (var k = 0; k < _links.length; k++) {
-                    links.push(_links[k]);
+                for (var k = 0; k < forms.length; k++) {
+                    targets.push(forms[k]);
                 }
 
-                if (_linkWrappers[i].localName === 'form') {
-                    links.push(_linkWrappers[i]);
+                if (linkWrapper.localName === 'form') {
+                    targets.push(linkWrapper);
                 }
             }
         }
 
-        links.forEach(function (link) {
-            if (!link.target || (link.target !== '_self') || (link.href && link.href.startsWith('#'))) {
+        targets.forEach(function (target) {
+            if (!target.target || (target.target !== '_self')|| (target.href && target.getAttribute('href').startsWith('#')) || (target.action && target.getAttribute('action').startsWith('#'))) {
                 return; // (continue)
             }
 
-            if (link.localName === 'a') {
-                $cms.dom.on(link, 'click', submitFunc);
+            if (target.localName === 'a') {
+                $cms.dom.on(target, 'click', submitFunc);
             } else {
-                $cms.dom.on(link, 'submit', submitFunc);
+                $cms.dom.on(target, 'submit', submitFunc);
             }
         });
 
-        function submitFunc() {
-            var urlStub = '', j;
-
-            var href = (this.localName === 'a') ? this.href : this.action;
+        function submitFunc(e) {
+            var urlStub = '', j, key,
+                href = (this.localName === 'a') ? this.href : this.action;
+            
+            e.preventDefault();
 
             // Any parameters matching a pattern must be sent in the URL to the AJAX block call
             for (j = 0; j < lookFor.length; j++) {
@@ -10429,21 +10440,22 @@
                     urlStub += matches[1] + '=' + matches[2];
                 }
             }
-            for (j in extraParams) {
+            for (key in extraParams) {
                 urlStub += (urlStem.indexOf('?') === -1) ? '?' : '&';
-                urlStub += j + '=' + encodeURIComponent(extraParams[j]);
+                urlStub += key + '=' + encodeURIComponent(extraParams[key]);
             }
 
             // Any POST parameters?
             var postParams = null, param;
+            
             if (this.localName === 'form') {
                 postParams = '';
                 for (j = 0; j < this.elements.length; j++) {
                     if (this.elements[j].name) {
                         param = this.elements[j].name + '=' + encodeURIComponent($cms.form.cleverFindValue(this, this.elements[j]));
 
-                        if ((!this.method) || (this.method.toLowerCase() !== 'get')) {
-                            if (postParams != '') {
+                        if (!this.method || (this.method.toLowerCase() !== 'get')) {
+                            if (postParams !== '') {
                                 postParams += '&';
                             }
                             postParams += param;
@@ -10470,10 +10482,9 @@
             // Make AJAX block call
             $cms.callBlock(urlStem + urlStub, '', blockElement, append, false, postParams).then(function () {
                 if (scrollToTop) {
-                    scrollTo(0, blockPosY);
+                    window.scrollTo(0, blockPosY);
                 }
             });
-            return false;
         }
     }
 }());

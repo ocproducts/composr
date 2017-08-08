@@ -122,11 +122,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                 }
                 number = '' + (parseInt(number) + splitFilename.length - 1);
             } else {
-                window.insertTextbox(
-                    post,
-                    comcode,
-                    document.selection ? document.selection : null
-                );
+                window.insertTextbox(post, comcode);
             }
             if (suffix != '') {
                 window.insertTextbox(post, suffix);
@@ -496,7 +492,9 @@ function doInputThumb(fieldName, va) {
                             '{!javascript:ENTER_IMAGE_CAPTION;^}',
                             '',
                             function (vc) {
-                                if (!vc) vc = '';
+                                if (!vc) {
+                                    vc = '';
+                                }
 
                                 var element = document.getElementById(fieldName);
                                 if (vb.toLowerCase() == '{!IMAGE;^}'.toLowerCase()) {
@@ -941,7 +939,7 @@ function initFormSaving(formId) {
                 for (var i = 0; i < element.options.length; i++) {
                     if (element.options[i].value == value) {
                         element.selectedIndex = i;
-                        if (jQuery(element).select2 !== undefined) {
+                        if (jQuery.fn.select2 !== undefined) {
                             jQuery(element).trigger('change');
                         }
                     }
@@ -1048,7 +1046,9 @@ function handleFormSaving(event, element, force) {
 }
 
 function _handleFormSaving(event, element, force) {
-    if (force === undefined) force = (event.type == 'blur');
+    if (force === undefined) {
+        force = (event.type == 'blur');
+    }
 
     var thisDate = new Date();
     if (!force) {
@@ -1122,7 +1122,7 @@ function _handleFormSaving(event, element, force) {
 
 function getAutosaveUrlStem() {
     var name = 'cms_autosave_' + window.location.pathname;
-    if (window.location.search.indexOf('type=') != -1) {
+    if (window.location.search.indexOf('type=') !== -1) {
         name += window.location.search.replace(/[\?&]redirect=.*/, '').replace(/[\?&]keep_\w+=.*/, '').replace(/[\?&]cat=.*/, '');
     }
     name = name.replace(/\./, '_'); // PHP can't use dots in field names

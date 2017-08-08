@@ -158,7 +158,7 @@ function toggleWysiwyg(name) {
                         textarea.value = window.wysiwygOriginalComcode[id];
                     } else {
                         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keepStub());
-                        if (window.location.href.indexOf('topics') !== -1) {
+                        if (window.location.href.includes('topics')) {
                             url += '&forum_db=1';
                         }
                         var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
@@ -316,7 +316,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         }
         var linkedSheets = document.getElementsByTagName('link');
         for (var counter = 0; counter < linkedSheets.length; counter++) {
-            if (linkedSheets[counter].getAttribute('rel') == 'stylesheet') {
+            if (linkedSheets[counter].getAttribute('rel') === 'stylesheet') {
                 pageStylesheets.push(linkedSheets[counter].getAttribute('href'));
             }
         }
@@ -333,13 +333,19 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             wysiwygColor = '#';
             var hex;
             hex = (parseInt(matches[1]).toString(16)) + '';
-            if (hex.length == 1) hex = '0' + hex;
+            if (hex.length == 1) {
+                hex = '0' + hex;
+            }
             wysiwygColor += hex;
             hex = (parseInt(matches[2]).toString(16)) + '';
-            if (hex.length == 1) hex = '0' + hex;
+            if (hex.length == 1) {
+                hex = '0' + hex;
+            }
             wysiwygColor += hex;
             hex = (parseInt(matches[3]).toString(16)) + '';
-            if (hex.length == 1) hex = '0' + hex;
+            if (hex.length == 1) {
+                hex = '0' + hex;
+            }
             wysiwygColor += hex;
         }
         // CKEditor doesn't allow low saturation, so raise up if we need to
@@ -358,7 +364,9 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             delete window.CKEDITOR.instances[element.id];
         }
         var editor = window.CKEDITOR.replace(element.id, editorSettings);
-        if (!editor) return; // Not supported on this platform
+        if (!editor) { // Not supported on this platform
+            return;
+        } 
         window.wysiwygEditors[id] = editor;
 
         element.parentNode.className += ' ' + editorSettings.skin; // Used for us to target per-skin CSS
@@ -405,7 +413,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         editor.on('change', sync);
         editor.on('mode', function () {
             var ta = editor.container.$.getElementsByTagName('textarea');
-            if (ta[0] != undefined) {
+            if (ta[0] != null) {
                 ta[0].onchange = sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
             }
         });
@@ -484,7 +492,7 @@ function findTagsInEditor(editor, element) {
                 if (event.pageY) eventCopy.pageY = 3000;
                 if (event.clientY) eventCopy.clientY = 3000;
 
-                if (this.origTitle != undefined) {
+                if (this.origTitle != null) {
                     $cms.ui.repositionTooltip(this, eventCopy);
                     this.title = this.origTitle;
                 }
@@ -516,7 +524,7 @@ function findTagsInEditor(editor, element) {
                     this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
                 }
                 var tagType = this.title.replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
-                if (tagType == 'block') {
+                if (tagType === 'block') {
                     var blockName = this.title.replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
                     var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
                     url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
@@ -757,7 +765,9 @@ function insertTextboxOpener(element, text, sel, plainInsert, html) {
 // Get selected HTML from CKEditor
 function getSelectedHtml(editor) {
     var mySelection = editor.getSelection();
-    if (!mySelection || mySelection.getType() == window.CKEDITOR.SELECTION_NONE) return '';
+    if (!mySelection || mySelection.getType() == window.CKEDITOR.SELECTION_NONE) {
+        return '';
+    }
 
     var selectedText = '';
     if (mySelection.getNative()) {
@@ -841,11 +851,9 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
 
 // From http://www.faqts.com/knowledge_base/view.phtml/aid/13562
 function setSelectionRange(input, selectionStart, selectionEnd) {
+    input.focus();
     if (input.setSelectionRange !== undefined) {
-        input.focus();
         input.setSelectionRange(selectionStart, selectionEnd);
-    } else {
-        input.focus();
     }
 }
 

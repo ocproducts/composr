@@ -532,7 +532,7 @@ function doInputPrivate_message(fieldName) {
         '',
         function (va) {
             if (va != null) {
-                var vb = $cms.ui.prompt(
+                $cms.ui.prompt(
                     '{!MESSAGE;^}',
                     '',
                     function (vb) {
@@ -557,7 +557,7 @@ function doInputInvite(fieldName) {
         '',
         function (va) {
             if (va != null) {
-                var vb = $cms.ui.prompt(
+                $cms.ui.prompt(
                     '{!chat:ENTER_CHATROOM;^}',
                     '',
                     function (vb) {
@@ -582,7 +582,7 @@ function doInputNew_room(fieldName) {
         '',
         function (va) {
             if (va != null) {
-                var vb = prompt(
+                $cms.ui.prompt(
                     '{!chat:ENTER_ALLOW;^}',
                     '',
                     function (vb) {
@@ -957,7 +957,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     }
                     tmpElement = doc.getElementById('participant_online__' + roomId + '__' + memberId);
                     if (tmpElement) {
-                        if ($cms.dom.html(tmpElement).toLowerCase() == '{!chat:ACTIVE;^}'.toLowerCase()) {
+                        if ($cms.dom.html(tmpElement).toLowerCase() === '{!chat:ACTIVE;^}'.toLowerCase()) {
                             break;
                         }
                         $cms.dom.html(tmpElement, '{!chat:ACTIVE;^}');
@@ -1130,7 +1130,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
         var lobby;
         if (tabs) {// Chat lobby
             tabs.style.display = 'block';
-            if (document.getElementById('invite_ongoing_im_button')) document.getElementById('invite_ongoing_im_button').disabled = false;
+            if (document.getElementById('invite_ongoing_im_button')) {
+                document.getElementById('invite_ongoing_im_button').disabled = false;
+            }
             var count = countImConvos();
             // First one?
             if (count == 0) {
@@ -1417,8 +1419,9 @@ function inviteIm(people) {
 }
 
 function countImConvos() {
-    var chatLobbyConvosTabs = document.getElementById('chat_lobby_convos_tabs');
-    var count = 0, i;
+    var chatLobbyConvosTabs = document.getElementById('chat_lobby_convos_tabs'),
+        count = 0, i;
+    
     for (i = 0; i < chatLobbyConvosTabs.children.length; i++) {
         if (chatLobbyConvosTabs.children[i].id.substr(0, 4) === 'tab_') {
             count++;
@@ -1451,7 +1454,7 @@ function closeChatConversation(roomId) {
     /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
     $cms.ui.generateQuestionUi(
         '{!chat:WANT_TO_DOWNLOAD_LOGS*;^}',
-        {buttons__cancel: '{!INPUTSYSTEM_CANCEL*;^}', buttons__yes: '{!YES*;^}', buttons__no: '{!NO*;^}'},
+        { buttons__cancel: '{!INPUTSYSTEM_CANCEL*;^}', buttons__yes: '{!YES*;^}', buttons__no: '{!NO*;^}' },
         '{!chat:CHAT_DOWNLOAD_LOGS*;^}',
         null,
         function (logs) {
