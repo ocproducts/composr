@@ -8268,7 +8268,7 @@
                 type = strVal(args[0]),
                 fieldName = strVal(args[1]),
                 tag = strVal(args[2]),
-                fnName = 'doInput' + $cms.ucFirst(type);
+                fnName = 'doInput' + $cms.ucFirst($cms.camelCase(type));
                 
             if (typeof window[fnName] === 'function') {
                 window[fnName](fieldName, tag);

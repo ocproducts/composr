@@ -116,30 +116,11 @@
         });
     };
 
-    $cms.templates.chatcodeEditorButton = function chatcodeEditorButton(params, btn) {
-        var b = strVal(params.b);
+    $cms.templates.chatcodeEditorButton = function chatcodeEditorButton(params, btn) {};
 
-        $cms.dom.on(btn, 'click', function () {
-            window['doInput' + $cms.ucFirst(b)]('post');
-        });
-    };
+    $cms.templates.chatcodeEditorMicroButton = function chatcodeEditorMicroButton(params, btn) {};
 
-    $cms.templates.chatcodeEditorMicroButton = function chatcodeEditorMicroButton(params, btn) {
-        var b = strVal(params.b);
-
-        $cms.dom.on(btn, 'click', function () {
-            window['doInput' + $cms.ucFirst(b)]('post');
-        });
-    };
-
-    $cms.templates.comcodeEditorMicroButton = function comcodeEditorMicroButton(params, btn) {
-        var b = strVal(params.b),
-            fieldName = strVal(params.fieldName);
-
-        $cms.dom.on(btn, 'click', function () {
-            window['doInput' + $cms.ucFirst(b)](fieldName);
-        });
-    };
+    $cms.templates.comcodeEditorMicroButton = function comcodeEditorMicroButton(params, btn) {};
 
     $cms.templates.chatLobbyImArea = function chatLobbyImArea(params, container) {
         var chatroomId = strVal(params.chatroomId);
@@ -523,7 +504,7 @@ function getTickedPeople(form) {
     return people;
 }
 
-function doInputPrivate_message(fieldName) {
+function doInputPrivateMessage(fieldName) {
     $cms.ui.prompt(
         '{!chat:ENTER_RECIPIENT;^}',
         '',
@@ -567,7 +548,7 @@ function doInputInvite(fieldName) {
     );
 }
 
-function doInputNew_room(fieldName) {
+function doInputNewRoom(fieldName) {
     $cms.ui.prompt(
         '{!chat:ENTER_CHATROOM;^}',
         '',

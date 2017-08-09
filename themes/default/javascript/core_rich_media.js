@@ -467,14 +467,14 @@
     };
 
     $cms.templates.comcodeEditorButton = function comcodeEditorButton(params, btn) {
-        var isPostingField = !!params.isPostingField && (params.isPostingField !== '0'),
+        var isPostingField = boolVal(params.isPostingField),
             b = strVal(params.b),
             fieldName = strVal(params.fieldName);
 
         $cms.dom.on(btn, 'click', function () {
-            var mainWindow = btn.ownerDocument.defaultView || btn.ownerDocument.parentWindow;
+            var mainWindow = btn.ownerDocument.defaultView;
             if (!($cms.browserMatches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img')))) {
-                mainWindow['doInput' + $cms.ucFirst(b)](fieldName);
+                mainWindow['doInput' + $cms.ucFirst($cms.camelCase(b))](fieldName);
             }
         });
     };

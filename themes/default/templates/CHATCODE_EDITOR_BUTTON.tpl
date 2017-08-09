@@ -1,2 +1,2 @@
 {$REQUIRE_JAVASCRIPT,chat}
-{+START,IF,{$NEQ,{B},invite,new_room}}<input data-tpl="chatcodeEditorButton" data-tpl-params="{+START,PARAMS_JSON,B}{_*}{+END}" type="image" data-click-pd="1" title="{TITLE}" alt="{TITLE}" src="{$IMG*,chatcodeeditor/{B}}" />{+END}
+{+START,IF,{$NEQ,{B},invite,new_room}}<input data-click-do-input="['{B;}', 'post']" data-tpl="chatcodeEditorButton" data-tpl-params="{+START,PARAMS_JSON,B}{_*}{+END}" type="image" data-click-pd="1" title="{TITLE}" alt="{TITLE}" src="{$IMG*,chatcodeeditor/{B}}" />{+END}
