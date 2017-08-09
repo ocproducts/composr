@@ -4882,7 +4882,7 @@
     /**
      * Find the main Composr window
      * @param anyLargeOk
-     * @returns {*}
+     * @returns { Window }
      */
     function getMainCmsWindow(anyLargeOk) {
         anyLargeOk = !!anyLargeOk;
@@ -8254,22 +8254,26 @@
 
             $cms.ui.toggleableTray(trayEl);
         },
-        
-        
+
+        // Implementation for [data-click-ui-open]
         clickUiOpen: function (e, clicked) {
             var args = arrVal($cms.dom.data(clicked, 'clickUiOpen'));
             args[0] = $cms.maintainThemeInLink(args[0]);
             $cms.ui.open.apply(undefined, args);
         },
         
+        // Implementation for [data-click-do-input]
         clickDoInput: function (e, clicked) {
             var args = arrVal($cms.dom.data(clicked, 'clickDoInput')),
                 type = strVal(args[0]),
                 fieldName = strVal(args[1]),
-                tag = strVal(args[2]);
+                tag = strVal(args[2]),
+                fnName = 'doInput' + $cms.ucFirst(type);
                 
-            if (typeof window['doInput' + $cms.ucFirst(type)] === 'function') {
-                window['doInput' + $cms.ucFirst(type)](fieldName, tag);
+            if (typeof window[fnName] === 'function') {
+                window[fnName](fieldName, tag);
+            } else {
+                $cms.fatal('$cms.views.Global#clickDoInput(): Function not found "window.' + fnName + '()"');
             }
         },
         

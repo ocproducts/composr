@@ -534,7 +534,7 @@ function doInputPrivate_message(fieldName) {
                     '',
                     function (vb) {
                         if (vb != null) {
-                            insertTextbox(document.getElementById(fieldName), '[private="' + va + '"]' + vb + '[/private]');
+                            window.insertTextbox(document.getElementById(fieldName), '[private="' + va + '"]' + vb + '[/private]');
                         }
                     },
                     '{!chat:INPUT_CHATCODE_private_message;^}'
@@ -556,7 +556,7 @@ function doInputInvite(fieldName) {
                     '',
                     function (vb) {
                         if (vb != null) {
-                            insertTextbox(document.getElementById(fieldName), '[invite="' + va + '"]' + vb + '[/invite]');
+                            window.insertTextbox(document.getElementById(fieldName), '[invite="' + va + '"]' + vb + '[/invite]');
                         }
                     },
                     '{!chat:INPUT_CHATCODE_invite;^}'
@@ -578,7 +578,7 @@ function doInputNew_room(fieldName) {
                     '',
                     function (vb) {
                         if (vb != null) {
-                            insertTextbox(document.getElementById(fieldName), '[newroom="' + va + '"]' + vb + '[/newroom]');
+                            window.insertTextbox(document.getElementById(fieldName), '[newroom="' + va + '"]' + vb + '[/newroom]');
                         }
                     },
                     '{!chat:INPUT_CHATCODE_new_room;^}'

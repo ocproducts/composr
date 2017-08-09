@@ -6,9 +6,9 @@
             var form = button.form,
                 ins = form.elements['post_template'].value;
             if (params.resets) {
-                setTextbox(form.elements.post, '');
+                window.setTextbox(form.elements['post'], '');
             }
-            insertTextbox(form.elements.post, ins.replace(/\\n/g, '\n'), null, true, $cms.filter.html(ins).replace(/\\n/g, '<br />'));
+            window.insertTextbox(form.elements['post'], ins.replace(/\\n/g, '\n'), null, true, $cms.filter.html(ins).replace(/\\n/g, '<br />'));
         });
     };
 }(window.$cms));

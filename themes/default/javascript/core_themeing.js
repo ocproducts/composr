@@ -72,17 +72,10 @@
             };
         },
 
-        editorKeyPress: function (e) {
-            if (!templateEditorKeypress(e)) {
-                e.preventDefault();
-            }
-
-            function templateEditorKeypress(event) {
-                if ($cms.dom.keyPressed(event, 'Tab')) {
-                    insertTextbox(this, "\t");
-                    return false;
-                }
-                return true;
+        editorKeyPress: function (e, textarea) {
+            if ($cms.dom.keyPressed(e, 'Tab')) {
+                window.insertTextbox(textarea, "\t");
+                return false;
             }
         },
 
@@ -146,7 +139,7 @@
 
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
-                insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}');
+                window.insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}');
                 if (hasEditarea) {
                     editareaRefresh(textbox.id);
                 }
@@ -604,11 +597,11 @@
                 0,
                 '',
                 function (textbox, name, value, params) {
-                    if (name.indexOf('ppdirective') != -1) {
-                        insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}');
+                    if (name.indexOf('ppdirective') !== -1) {
+                        window.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}');
                     } else {
                         var stValue;
-                        if (name.indexOf('ppparameter') == -1) {
+                        if (name.indexOf('ppparameter') === -1) {
                             stValue = '{' + '$';
                         } else {
                             stValue = '{';
@@ -616,10 +609,12 @@
 
                         value = stValue + value + '*' + params + '}';
 
-                        insertTextbox(textbox, value);
+                        window.insertTextbox(textbox, value);
                     }
 
-                    if (hasEditarea) editareaRefresh(textbox.name);
+                    if (hasEditarea) {
+                        editareaRefresh(textbox.name);
+                    }
                 }
             );
 

@@ -151,6 +151,7 @@ function toggleWysiwyg(name) {
                     try {
                         window.wysiwygEditors[id].destroy();
                     } catch (e) {}
+                    
                     delete window.wysiwygEditors[id];
 
                     // Comcode conversion
@@ -233,7 +234,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         return;
     }
 
-    if (!postingForm.elements['httpReferer']) {
+    if (!postingForm.elements['http_referer']) {
         var httpReferer = document.createElement('input');
         httpReferer.name = 'http_referer';
         httpReferer.value = window.location.href;
@@ -293,6 +294,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
                 if (window.location.href.indexOf('topics') !== -1) {
                     url += '&forum_db=1';
                 }
+                /*TODO: Synchronous XHR*/
                 var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(postingForm.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
                 if (!request.responseXML) {
                     postingForm.elements[counter].value = '';
@@ -384,7 +386,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             var dialogName = ev.data.name;
             var dialogDefinition = ev.data.definition;
 
-            if (dialogName == 'table') {
+            if (dialogName === 'table') {
                 var info = dialogDefinition.getContents('info');
 
                 info.get('txtWidth')['default'] = '100%';
@@ -512,6 +514,7 @@ function findTagsInEditor(editor, element) {
                 document.selection.selectRanges([range]);
             }
         };
+        
         if (comcodes[i].localName === 'input') {
             comcodes[i].readOnly = true;
             comcodes[i].contentEditable = true; // Undoes what ckeditor sets. Fixes weirdness with copy and paste in Chrome (adding extra block on end)
@@ -536,6 +539,7 @@ function findTagsInEditor(editor, element) {
                 return false;
             }
         }
+        
         comcodes[i].onmouseover = function (event) { // Shows preview
             if (event === undefined) {
                 event = editor.window.$.event;
@@ -640,7 +644,6 @@ function doAttachment(fieldName, id, description) {
     description = strVal(description);
 
     var element = $cms.getMainCmsWindow().document.getElementById(fieldName);
-
     var comcode = '\n\n[attachment description="' + $cms.filter.comcode(description) + '"]' + id + '[/attachment]';
 
     insertTextboxOpener(element, comcode);
@@ -680,17 +683,19 @@ function setTextbox(element, text, html) {
  * 
  * @param { Element } element - non-WYSIWYG element
  * @param text - text to insert (non-HTML)
- * @param sel - Selection DOM object so we know what to *overwrite* with the inserted text (or NULL)
+ * @param sel - NOT USED ANYMORE Selection DOM object so we know what to *overwrite* with the inserted text (or NULL)
  * @param plainInsert - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
  * @param html - HTML to insert (if not passed then 'text' will be escaped)
+ * @param {boolean} async
  */
-function insertTextbox(element, text, sel, plainInsert, html) {
+function insertTextbox(element, text, sel, plainInsert, html, async) {
     text = strVal(text);
     plainInsert = boolVal(plainInsert);
     html = strVal(html);
+    async = boolVal(async);
 
     if ($cms.form.isWysiwygField(element)) {
-        return insertTextboxWysiwyg(element, text, plainInsert, html);
+        return insertTextboxWysiwyg(element, text, plainInsert, html, async);
     } else {
         return insertTextboxVanilla(element, text);
     }
@@ -719,7 +724,7 @@ function insertTextbox(element, text, sel, plainInsert, html) {
         return Promise.resolve();
     }
     
-    function insertTextboxWysiwyg(element, text, plainInsert, html) {
+    function insertTextboxWysiwyg(element, text, plainInsert, html, async) {
         return new Promise(function (resolvePromise) {
             var editor = window.wysiwygEditors[element.id],
                 insert = '';
@@ -734,15 +739,28 @@ function insertTextbox(element, text, sel, plainInsert, html) {
                 if (window.location.href.includes('topics')) {
                     url += '&forum_db=1';
                 }
-                /*TODO: Synchronous XHR*/
-                var xhr = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-                if (xhr.responseXML && (xhr.responseXML.querySelector('result'))) {
-                    var result = xhr.responseXML.querySelector('result');
-                    insert = result.textContent.replace(/\s*$/, '');
-                }
+                
+                if (async) {
+                    $cms.doAjaxRequest(url, function (responseXML) {
+                        if (responseXML && (responseXML.querySelector('result'))) {
+                            var result = responseXML.querySelector('result');
+                            insert = result.textContent.replace(/\s*$/, '');
+                        }
 
-                _insertTextboxWysiwyg(editor, insert);
-                resolvePromise();
+                        _insertTextboxWysiwyg(editor, insert);
+                        resolvePromise();
+                    }, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+                } else {
+                    /*TODO: Synchronous XHR*/
+                    var xhr = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+                    if (xhr.responseXML && (xhr.responseXML.querySelector('result'))) {
+                        var result = xhr.responseXML.querySelector('result');
+                        insert = result.textContent.replace(/\s*$/, '');
+                    }
+
+                    _insertTextboxWysiwyg(editor, insert);
+                    resolvePromise();
+                }
             }
         });
 
@@ -779,41 +797,9 @@ function insertTextbox(element, text, sel, plainInsert, html) {
         }
     }
 }
-
-function asdsad() {
-    var before = editor.getData(),
-        after;
-
-    try {
-        editor.focus(); // Needed on some browsers
-        getSelectedHtml(editor);
-
-        if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
-            editor.document.getBody().appendHtml(insert);
-        } else {
-            //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
-            var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
-            editor.insertElement(elementForInserting);
-        }
-
-        after = editor.getData();
-        if (after == before) {
-            throw new Error('Failed to insert');
-        }
-
-        findTagsInEditor(editor, element);
-    } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
-        after = editor.getData();
-        if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
-            editor.document.getBody().appendHtml(insert);
-        }
-    }
-
-    editor.updateElement();
-}
  
-function insertTextboxOpener(element, text, sel, plainInsert, html) {
-    $cms.getMainCmsWindow().insertTextbox(element, text, sel, plainInsert, html);
+function insertTextboxOpener(element, text, sel, plainInsert, html, async) {
+    return $cms.getMainCmsWindow().insertTextbox(element, text, sel, plainInsert, html, async);
 }
 
 // Get selected HTML from CKEditor
@@ -834,8 +820,6 @@ function getSelectedHtml(editor) {
 
 // Insert into the editor such as to *wrap* the current selection with something new (typically a new Comcode tag)
 function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
-    var from, to;
-
     beforeWrapTag = strVal(beforeWrapTag);
     afterWrapTag = strVal(afterWrapTag);
 
@@ -845,12 +829,43 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
     }
 
     if ($cms.form.isWysiwygField(element)) {
+        return insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag);
+    } else {
+        return insertTextboxWrappingVanilla(element, beforeWrapTag, afterWrapTag);
+    }
+    
+    function insertTextboxWrappingVanilla(element, beforeWrapTag, afterWrapTag) {
+        var from, to;
+        
+        if (element.selectionEnd != null) {
+            from = element.selectionStart;
+            to = element.selectionEnd;
+
+            var start = element.value.substring(0, from);
+            var end = element.value.substring(to, element.value.length);
+
+            if (to > from) {
+                element.value = start + beforeWrapTag + element.value.substring(from, to) + afterWrapTag + end;
+            } else {
+                element.value = start + beforeWrapTag + afterWrapTag + end;
+            }
+            setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
+        } else {
+            // :(
+            element.value += beforeWrapTag + afterWrapTag;
+            setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
+        }
+        
+        return Promise.resolve();
+    }
+    
+    function insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag) {
         var editor = window.wysiwygEditors[element.id];
 
         editor.focus();
         var selectedHtml = getSelectedHtml(editor);
 
-        if (selectedHtml == '') {
+        if (selectedHtml === '') {
             selectedHtml = '{!comcode:TEXT_OR_COMCODE_GOES_HERE;^}'.toUpperCase();
         }
 
@@ -878,27 +893,8 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         findTagsInEditor(editor, element);
 
         editor.updateElement();
-        
-        return;
-    }
 
-    if (element.selectionEnd != null) {
-        from = element.selectionStart;
-        to = element.selectionEnd;
-
-        var start = element.value.substring(0, from);
-        var end = element.value.substring(to, element.value.length);
-
-        if (to > from) {
-            element.value = start + beforeWrapTag + element.value.substring(from, to) + afterWrapTag + end;
-        } else {
-            element.value = start + beforeWrapTag + afterWrapTag + end;
-        }
-        setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
-    } else {
-        // :(
-        element.value += beforeWrapTag + afterWrapTag;
-        setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
+        return Promise.resolve();
     }
 }
 

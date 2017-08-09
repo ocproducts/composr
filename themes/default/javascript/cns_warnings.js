@@ -12,6 +12,7 @@
         var id = $cms.filter.id(params.title);
 
         document.getElementById('saved_use__' + id).addEventListener('submit', function () {
+            /**@alias window*/
             var win = $cms.getMainCmsWindow();
 
             var explanation = win.document.getElementById('explanation');

@@ -14013,7 +14013,7 @@ function buildHtml5UploadHandler(request, fileProgress, attachmentBase, fieldNam
                 } else {
                     var element = document.getElementById(fieldName);
 
-                    insertTextbox(element, "[attachment_safe framed=\"0\" description=\"" + fileProgress.name.replace(/"/g, '\'') + "\"]new_" + attachmentBase + "[/attachment_safe]\n");
+                    window.insertTextbox(element, "[attachment_safe framed=\"0\" description=\"" + fileProgress.name.replace(/"/g, '\'') + "\"]new_" + attachmentBase + "[/attachment_safe]\n");
 
                     var progress = new FileProgress(fileProgress, 'container_for_' + fieldName);
                     progress.setProgress(100);
