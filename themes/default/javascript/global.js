@@ -2797,7 +2797,7 @@
             var callback = delegator || fn;
             handler.proxy = function (e) {
                 var args = [e, el];
-                e.data = data;
+                //e.data = data;
                 if (Array.isArray(e._args)) {
                     args = args.concat(e._args);
                 }

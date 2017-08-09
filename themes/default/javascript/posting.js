@@ -260,7 +260,7 @@ function doInputQuote(fieldName) {
         '{!javascript:ENTER_QUOTE_BY;^}',
         '',
         function (va) {
-            if (va !== null) {
+            if (va != null) {
                 window.insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]');
             }
         },
@@ -274,7 +274,7 @@ function doInputBox(fieldName) {
         '{!javascript:ENTER_BOX_TITLE;^}',
         '',
         function (va) {
-            if (va !== null) {
+            if (va != null) {
                 window.insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]');
             }
         },
@@ -298,7 +298,7 @@ function doInputMenu(fieldName) {
 
                         var add;
                         var element = document.getElementById(fieldName);
-                        add = '[block=\""+$cms.filter.comcode(va)+"\" caption=\""+$cms.filter.comcode(vb)+"\" type=\"tree\"]menu[/block]';
+                        add = '[block=\"' + $cms.filter.comcode(va) + '\" caption=\"' + $cms.filter.comcode(vb) + '\" type=\"tree\"]menu[/block]';
                         window.insertTextbox(element, add);
                     },
                     '{!comcode:INPUT_COMCODE_menu;^}'

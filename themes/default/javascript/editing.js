@@ -572,7 +572,7 @@ function findTagsInEditor(editor, element) {
                         selfOb.isOver = true;
 
                         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keepStub());
-                        if (window.location.href.indexOf('topics') !== -1) {
+                        if (window.location.href.includes('topics')) {
                             url += '&forum_db=1';
                         }
 
@@ -581,7 +581,7 @@ function findTagsInEditor(editor, element) {
                             
                             if (ajaxResult) {
                                 var tmpRendered = ajaxResult.textContent;
-                                if (tmpRendered.indexOf('{!CCP_ERROR_STUB;^}') == -1) {
+                                if (tmpRendered.indexOf('{!CCP_ERROR_STUB;^}') === -1) {
                                     selfOb.renderedTooltip = tmpRendered;
                                 }
                             }
@@ -680,15 +680,17 @@ function setTextbox(element, text, html) {
 /**
  * Insert some text, with WYSIWYG support...
  * (Use insertTextboxWrapping to wrap Comcode tags around a selection)
- * 
+ *
  * @param { Element } element - non-WYSIWYG element
- * @param text - text to insert (non-HTML)
- * @param sel - NOT USED ANYMORE Selection DOM object so we know what to *overwrite* with the inserted text (or NULL)
- * @param plainInsert - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
- * @param html - HTML to insert (if not passed then 'text' will be escaped)
- * @param {boolean} async
+ * @param {string} text - text to insert (non-HTML)
+ * @param {string} [sel] - NOT USED ANYMORE Selection DOM object so we know what to *overwrite* with the inserted text (or NULL)
+ * @param {boolean} [plainInsert] - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
+ * @param {string} [html] - HTML to insert (if not passed then 'text' will be escaped)
+ * @param {boolean} [async]
  */
 function insertTextbox(element, text, sel, plainInsert, html, async) {
+    console.log('insertTextbox()', element, text, sel, plainInsert, html, async);
+    
     text = strVal(text);
     plainInsert = boolVal(plainInsert);
     html = strVal(html);
@@ -747,7 +749,7 @@ function insertTextbox(element, text, sel, plainInsert, html, async) {
                             insert = result.textContent.replace(/\s*$/, '');
                         }
 
-                        _insertTextboxWysiwyg(editor, insert);
+                        _insertTextboxWysiwyg(element, editor, insert);
                         resolvePromise();
                     }, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
                 } else {
@@ -758,43 +760,43 @@ function insertTextbox(element, text, sel, plainInsert, html, async) {
                         insert = result.textContent.replace(/\s*$/, '');
                     }
 
-                    _insertTextboxWysiwyg(editor, insert);
+                    _insertTextboxWysiwyg(element, editor, insert);
                     resolvePromise();
                 }
             }
         });
+    }
 
-        function _insertTextboxWysiwyg(editor, insert) {
-            var before = editor.getData(),
-                after;
+    function _insertTextboxWysiwyg(element, editor, insert) {
+        var before = editor.getData(),
+            after;
 
-            try {
-                editor.focus(); // Needed on some browsers
-                getSelectedHtml(editor);
+        try {
+            editor.focus(); // Needed on some browsers
+            getSelectedHtml(editor);
 
-                if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
-                    editor.document.getBody().appendHtml(insert);
-                } else {
-                    //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
-                    var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
-                    editor.insertElement(elementForInserting);
-                }
-
-                after = editor.getData();
-                if (after == before) {
-                    throw new Error('Failed to insert');
-                }
-
-                findTagsInEditor(editor, element);
-            } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
-                after = editor.getData();
-                if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
-                    editor.document.getBody().appendHtml(insert);
-                }
+            if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
+                editor.document.getBody().appendHtml(insert);
+            } else {
+                //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
+                var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
+                editor.insertElement(elementForInserting);
             }
 
-            editor.updateElement();
+            after = editor.getData();
+            if (after == before) {
+                throw new Error('Failed to insert');
+            }
+
+            findTagsInEditor(editor, element);
+        } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
+            after = editor.getData();
+            if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
+                editor.document.getBody().appendHtml(insert);
+            }
         }
+
+        editor.updateElement();
     }
 }
  
@@ -819,9 +821,12 @@ function getSelectedHtml(editor) {
 }
 
 // Insert into the editor such as to *wrap* the current selection with something new (typically a new Comcode tag)
-function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
+function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag, async) {
+    console.log('insertTextboxWrapping()', element, beforeWrapTag, afterWrapTag);
+    
     beforeWrapTag = strVal(beforeWrapTag);
     afterWrapTag = strVal(afterWrapTag);
+    async = boolVal(async);
 
     if (afterWrapTag === '') {
         afterWrapTag = '[/' + beforeWrapTag + ']';
@@ -829,20 +834,19 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
     }
 
     if ($cms.form.isWysiwygField(element)) {
-        return insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag);
+        return insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag, async);
     } else {
         return insertTextboxWrappingVanilla(element, beforeWrapTag, afterWrapTag);
     }
     
     function insertTextboxWrappingVanilla(element, beforeWrapTag, afterWrapTag) {
-        var from, to;
+        var from, to, start, end;
         
-        if (element.selectionEnd != null) {
+        if (element.selectionEnd !== undefined) {
             from = element.selectionStart;
             to = element.selectionEnd;
-
-            var start = element.value.substring(0, from);
-            var end = element.value.substring(to, element.value.length);
+            start = element.value.substring(0, from);
+            end = element.value.substring(to, element.value.length);
 
             if (to > from) {
                 element.value = start + beforeWrapTag + element.value.substring(from, to) + afterWrapTag + end;
@@ -859,31 +863,56 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         return Promise.resolve();
     }
     
-    function insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag) {
-        var editor = window.wysiwygEditors[element.id];
+    function insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag, async) {
+        return new Promise(function (resolvePromise) {
 
-        editor.focus();
-        var selectedHtml = getSelectedHtml(editor);
+            var editor = window.wysiwygEditors[element.id];
 
-        if (selectedHtml === '') {
-            selectedHtml = '{!comcode:TEXT_OR_COMCODE_GOES_HERE;^}'.toUpperCase();
-        }
+            editor.focus();
+            var selectedHtml = getSelectedHtml(editor);
 
-        var newHtml = '';
-        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
-        if (window.location.href.includes('topics')) {
-            url += '&forum_db=1';
-        }
-        /*TODO: Synchronous XHR*/
-        var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-        if (request.responseXML && (request.responseXML.querySelector('result'))) {
-            var result = request.responseXML.querySelector('result');
-            newHtml = result.textContent.replace(/\s*$/, '');
-            /* result is an XML-escaped string of HTML, so we get via looking at the node text */
-        } else {
-            newHtml = selectedHtml;
-        }
+            if (selectedHtml === '') {
+                selectedHtml = '{!comcode:TEXT_OR_COMCODE_GOES_HERE;^}'.toUpperCase();
+            }
 
+            var newHtml = '',
+                url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
+
+            if (window.location.href.includes('topics')) {
+                url += '&forum_db=1';
+            }
+            
+            if (async) {
+                $cms.doAjaxRequest(url, function (responseXml) {
+                    if (responseXml && (responseXml.querySelector('result'))) {
+                        var result = responseXml.querySelector('result');
+                        newHtml = result.textContent.replace(/\s*$/, '');
+                        /* result is an XML-escaped string of HTML, so we get via looking at the node text */
+                    } else {
+                        newHtml = selectedHtml;
+                    }
+
+                    _insertTextboxWrappingWysiwyg(element, editor, newHtml);
+                    resolvePromise();
+                }, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')))
+            } else {
+                /*TODO: Synchronous XHR*/
+                var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+                if (request.responseXML && (request.responseXML.querySelector('result'))) {
+                    var result = request.responseXML.querySelector('result');
+                    newHtml = result.textContent.replace(/\s*$/, '');
+                    /* result is an XML-escaped string of HTML, so we get via looking at the node text */
+                } else {
+                    newHtml = selectedHtml;
+                }
+
+                _insertTextboxWrappingWysiwyg(element, editor, newHtml);
+                resolvePromise();
+            }
+        });
+    }
+
+    function _insertTextboxWrappingWysiwyg(element, editor, newHtml) {
         if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() === 'kbd')) { // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
             editor.document.getBody().appendHtml(newHtml);
         } else {
@@ -893,8 +922,6 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         findTagsInEditor(editor, element);
 
         editor.updateElement();
-
-        return Promise.resolve();
     }
 }
 
