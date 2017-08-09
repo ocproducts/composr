@@ -19,7 +19,7 @@
             explanation.value = params.explanation;
 
             var message = win.document.getElementById('message');
-            win.insertTextbox(message, params.message, null, false, params.messageHtml);
+            win.insertTextbox(message, params.message, false, params.messageHtml);
 
             if (window.fauxClose !== undefined) {
                 window.fauxClose();

@@ -8,7 +8,7 @@
             if (params.resets) {
                 window.setTextbox(form.elements['post'], '');
             }
-            window.insertTextbox(form.elements['post'], ins.replace(/\\n/g, '\n'), null, true, $cms.filter.html(ins).replace(/\\n/g, '<br />'));
+            window.insertTextbox(form.elements['post'], ins.replace(/\\n/g, '\n'), true, $cms.filter.html(ins).replace(/\\n/g, '<br />'));
         });
     };
 }(window.$cms));

@@ -114,10 +114,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                     if (i != 0) {
                         window.numAttachments++;
                     }
-                    window.insertTextbox(
-                        post,
-                        comcode.replace(']new_' + number + '[', ']new_' + window.numAttachments + '[')
-                    );
+                    window.insertTextbox(post, comcode.replace(']new_' + number + '[', ']new_' + window.numAttachments + '['));
                 }
                 number = '' + (parseInt(number) + splitFilename.length - 1);
             } else {
@@ -188,7 +185,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
                                 comcodeSemihtml += suffix;
                             }
 
-                            window.insertTextbox(post, comcode, null, true, comcodeSemihtml);
+                            window.insertTextbox(post, comcode, true, comcodeSemihtml);
                         }
 
                         // Add field for next one

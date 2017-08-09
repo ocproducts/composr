@@ -630,9 +630,9 @@ function doEmoticon(fieldName, callerEl, isOpener) {
     text = ' ' + title + ' ';
 
     if (isOpener) {
-        insertTextboxOpener(element, text, null, true, $cms.dom.html(callerEl));
+        insertTextboxOpener(element, text, true, $cms.dom.html(callerEl));
     } else {
-        insertTextbox(element, text, null, true, $cms.dom.html(callerEl));
+        insertTextbox(element, text, true, $cms.dom.html(callerEl));
     }
 }
 
@@ -683,13 +683,12 @@ function setTextbox(element, text, html) {
  *
  * @param { Element } element - non-WYSIWYG element
  * @param {string} text - text to insert (non-HTML)
- * @param {string} [sel] - NOT USED ANYMORE Selection DOM object so we know what to *overwrite* with the inserted text (or NULL)
  * @param {boolean} [plainInsert] - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
  * @param {string} [html] - HTML to insert (if not passed then 'text' will be escaped)
  * @param {boolean} [async]
  */
-function insertTextbox(element, text, sel, plainInsert, html, async) {
-    console.log('insertTextbox()', element, text, sel, plainInsert, html, async);
+function insertTextbox(element, text, plainInsert, html, async) {
+    console.log('insertTextbox()', element, text, plainInsert, html, async);
     
     text = strVal(text);
     plainInsert = boolVal(plainInsert);
@@ -800,8 +799,8 @@ function insertTextbox(element, text, sel, plainInsert, html, async) {
     }
 }
  
-function insertTextboxOpener(element, text, sel, plainInsert, html, async) {
-    return $cms.getMainCmsWindow().insertTextbox(element, text, sel, plainInsert, html, async);
+function insertTextboxOpener(element, text, plainInsert, html, async) {
+    return $cms.getMainCmsWindow().insertTextbox(element, text, plainInsert, html, async);
 }
 
 // Get selected HTML from CKEditor
