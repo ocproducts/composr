@@ -555,7 +555,9 @@
             var value = dropdown.options[dropdown.selectedIndex].value;
             var valueParts = value.split('__');
             value = valueParts[0];
-            if (value == '---') return false;
+            if (value === '---') {
+                return false;
+            }
 
             var hasEditarea = editareaIsLoaded(textbox.name);
 
@@ -598,7 +600,7 @@
                 '',
                 function (textbox, name, value, params) {
                     if (name.indexOf('ppdirective') !== -1) {
-                        window.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}');
+                        window.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}', true);
                     } else {
                         var stValue;
                         if (name.indexOf('ppparameter') === -1) {

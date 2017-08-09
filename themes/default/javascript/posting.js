@@ -243,12 +243,12 @@ function generateBackgroundPreview(post) {
 
 function doInputHtml(fieldName) {
     var post = document.getElementById(fieldName);
-    window.insertTextboxWrapping(post, 'semihtml', '');
+    return window.insertTextboxWrapping(post, 'semihtml', '', true);
 }
 
 function doInputCode(fieldName) {
     var post = document.getElementById(fieldName);
-    window.insertTextboxWrapping(post, (post.name === 'message') ? 'tt' : 'codebox', '');
+    return window.insertTextboxWrapping(post, (post.name === 'message') ? 'tt' : 'codebox', '', true);
 }
 
 function doInputQuote(fieldName) {
@@ -258,7 +258,7 @@ function doInputQuote(fieldName) {
         '',
         function (va) {
             if (va != null) {
-                window.insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]');
+                window.insertTextboxWrapping(post, '[quote=\"' + va + '\"]', '[/quote]', true);
             }
         },
         '{!comcode:INPUT_COMCODE_quote;^}'
@@ -272,7 +272,7 @@ function doInputBox(fieldName) {
         '',
         function (va) {
             if (va != null) {
-                window.insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]');
+                window.insertTextboxWrapping(post, '[box=\"' + va + '\"]', '[/box]', true);
             }
         },
         '{!comcode:INPUT_COMCODE_box;^}'
@@ -642,12 +642,12 @@ function doInputEmail(fieldName, va) {
 
 function doInputB(fieldName) {
     var element = document.getElementById(fieldName);
-    window.insertTextboxWrapping(element, 'b', '');
+    return window.insertTextboxWrapping(element, 'b', '', true);
 }
 
 function doInputI(fieldName) {
     var element = document.getElementById(fieldName);
-    window.insertTextboxWrapping(element, 'i', '');
+    return window.insertTextboxWrapping(element, 'i', '', true);
 }
 
 function doInputFont(fieldName) {
@@ -660,7 +660,7 @@ function doInputFont(fieldName) {
         $cms.ui.alert('{!javascript:NO_FONT_SELECTED;^}');
         return;
     }
-    window.insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]');
+    return window.insertTextboxWrapping(document.getElementById(fieldName), '[font=\"' + $cms.filter.comcode(face.value) + '\" color=\"' + $cms.filter.comcode(colour.value) + '\" size=\"' + $cms.filter.comcode(size.value) + '\"]', '[/font]', true);
 }
 
 // ==================

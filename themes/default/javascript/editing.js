@@ -683,20 +683,20 @@ function setTextbox(element, text, html) {
  *
  * @param { Element } element - non-WYSIWYG element
  * @param {string} text - text to insert (non-HTML)
- * @param {boolean} [plainInsert] - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
+ * @param {boolean} [isPlainInsert] - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
  * @param {string} [html] - HTML to insert (if not passed then 'text' will be escaped)
  * @param {boolean} [async]
  */
-function insertTextbox(element, text, plainInsert, html, async) {
-    console.log('insertTextbox()', element, text, plainInsert, html, async);
+function insertTextbox(element, text, isPlainInsert, html, async) {
+    console.log('insertTextbox()', element, text, isPlainInsert, html, async);
     
     text = strVal(text);
-    plainInsert = boolVal(plainInsert);
+    isPlainInsert = boolVal(isPlainInsert);
     html = strVal(html);
     async = boolVal(async);
 
     if ($cms.form.isWysiwygField(element)) {
-        return insertTextboxWysiwyg(element, text, plainInsert, html, async);
+        return insertTextboxWysiwyg(element, text, isPlainInsert, html, async);
     } else {
         return insertTextboxVanilla(element, text);
     }
@@ -725,12 +725,12 @@ function insertTextbox(element, text, plainInsert, html, async) {
         return Promise.resolve();
     }
     
-    function insertTextboxWysiwyg(element, text, plainInsert, html, async) {
+    function insertTextboxWysiwyg(element, text, isPlainInsert, html, async) {
         return new Promise(function (resolvePromise) {
             var editor = window.wysiwygEditors[element.id],
                 insert = '';
 
-            if (plainInsert) {
+            if (isPlainInsert) {
                 insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
 
                 _insertTextboxWysiwyg(editor, insert);
@@ -799,8 +799,8 @@ function insertTextbox(element, text, plainInsert, html, async) {
     }
 }
  
-function insertTextboxOpener(element, text, plainInsert, html, async) {
-    return $cms.getMainCmsWindow().insertTextbox(element, text, plainInsert, html, async);
+function insertTextboxOpener(element, text, isPlainInsert, html, async) {
+    return $cms.getMainCmsWindow().insertTextbox(element, text, isPlainInsert, html, async);
 }
 
 // Get selected HTML from CKEditor
@@ -819,7 +819,14 @@ function getSelectedHtml(editor) {
     return selectedText;
 }
 
-// Insert into the editor such as to *wrap* the current selection with something new (typically a new Comcode tag)
+/**
+ * Insert into the editor such as to *wrap* the current selection with something new (typically a new Comcode tag)
+ * @param element
+ * @param beforeWrapTag
+ * @param afterWrapTag
+ * @param async
+ * @return { Promise }
+ */
 function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag, async) {
     console.log('insertTextboxWrapping()', element, beforeWrapTag, afterWrapTag);
     
