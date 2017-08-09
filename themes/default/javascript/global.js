@@ -4691,6 +4691,8 @@
      * @returns {string}
      */
     function maintainThemeInLink(url) {
+        url = strVal(url);
+        
         var usp = $cms.uspFromUrl(url),
             theme = encodeURIComponent($cms.$THEME());
 
@@ -5952,8 +5954,13 @@
      */
     $cms.ui.showModalDialog = function showModalDialog(url, name, options, callback, target, cancelText) {
         callback = callback || noop;
-
+        cancelText = strVal(cancelText, '{!INPUTSYSTEM_CANCEL;^}');
+        
         if (!$cms.$CONFIG_OPTION('js_overlays')) {
+            if (!window.showModalDialog) {
+                throw new Error('$cms.ui.showModalDialog(): window.showModalDialog is not supported by the current browser');
+            }
+            
             options = options.replace('height=auto', 'height=520');
 
             var timer = new Date().getTime();
@@ -5964,7 +5971,7 @@
             }
             var timerNow = new Date().getTime();
             if (timerNow - 100 > timer) { // Not popup blocked
-                if ((result === undefined) || (result === null)) {
+                if (result == null) {
                     callback(null);
                 } else {
                     callback(result);
@@ -5974,10 +5981,6 @@
         }
 
         var width = null, height = null, scrollbars = null, unadorned = null;
-
-        if (cancelText === undefined) {
-            cancelText = '{!INPUTSYSTEM_CANCEL;^}';
-        }
 
         if (options) {
             var parts = options.split(/[;,]/g), i;
@@ -6017,9 +6020,9 @@
             width: width,
             height: height,
             scrollbars: scrollbars,
-            href: url.replace(/^https?:/, window.location.protocol)
+            href: url.replace(/^https?:/, window.location.protocol),
+            cancelButton: (unadorned !== true) ? cancelText : null
         };
-        myFrame.cancelButton = (unadorned !== true) ? cancelText : null;
         if (target) {
             myFrame.target = target;
         }
@@ -6423,7 +6426,7 @@
 
             // Constrain to window width
             if (width.match(/^\d+$/) !== null) {
-                if ((parseInt(width) > dim.windowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width == 'auto')) {
+                if ((parseInt(width) > dim.windowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY) || (width === 'auto')) {
                     width = '' + (dim.windowWidth - this.WINDOW_SIDE_GAP * 2 - this.BOX_EAST_PERIPHERARY - this.BOX_WEST_PERIPHERARY);
                 }
             }
@@ -6464,7 +6467,7 @@
             this.boxWrapperEl.firstElementChild.style.height = boxHeight;
             var iframe = this.boxWrapperEl.querySelector('iframe');
 
-            if (($cms.dom.hasIframeAccess(iframe)) && (iframe.contentWindow.document.body)) { // Balance iframe height
+            if ($cms.dom.hasIframeAccess(iframe) && (iframe.contentWindow.document.body)) { // Balance iframe height
                 iframe.style.width = '100%';
                 if (height === 'auto') {
                     if (!init) {
@@ -7234,8 +7237,7 @@
             return null;
         }
     }
-
-
+    
     /**
      * Convert the format of a URL so it can be embedded as a parameter that ModSecurity will not trigger security errors on
      * @memberof $cms
@@ -7475,14 +7477,14 @@
                     // Responsive table prep work
                     if (table.classList.contains('responsive_table')) {
                         var trs = table.getElementsByTagName('tr'),
-                            ths_first_row = trs[0].cells,
+                            thsFirstRow = trs[0].cells,
                             i, tds, j, data;
                         
                         for (i = 0; i < trs.length; i++) {
                             tds = trs[i].cells;
                             for (j = 0; j < tds.length; j++) {
                                 if (!tds[j].classList.contains('responsive_table_no_prefix')) {
-                                    data = (ths_first_row[j] === undefined) ? '' : ths_first_row[j].textContent.replace(/^\s+/, '').replace(/\s+$/, '');
+                                    data = (thsFirstRow[j] === undefined) ? '' : thsFirstRow[j].textContent.replace(/^\s+/, '').replace(/\s+$/, '');
                                     if (data !== '') {
                                         tds[j].setAttribute('data-th', data);
                                     }
@@ -7504,7 +7506,7 @@
                     for (j = 0; j < cols.length; j++) {
                         if (cols[i].className === cols[j].className) {
                             height = cols[j].offsetHeight;
-                            if (max === null || height > max) {
+                            if ((max === null) || (height > max)) {
                                 max = height;
                             }
                         }

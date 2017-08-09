@@ -524,9 +524,6 @@ function getTickedPeople(form) {
 }
 
 function doInputPrivate_message(fieldName) {
-    if (window.insertTextbox === undefined) {
-        return;
-    }
     $cms.ui.prompt(
         '{!chat:ENTER_RECIPIENT;^}',
         '',
@@ -549,9 +546,6 @@ function doInputPrivate_message(fieldName) {
 }
 
 function doInputInvite(fieldName) {
-    if (window.insertTextbox === undefined) {
-        return;
-    }
     $cms.ui.prompt(
         '{!chat:ENTER_RECIPIENT;^}',
         '',
@@ -574,9 +568,6 @@ function doInputInvite(fieldName) {
 }
 
 function doInputNew_room(fieldName) {
-    if (window.insertTextbox === undefined) {
-        return;
-    }
     $cms.ui.prompt(
         '{!chat:ENTER_CHATROOM;^}',
         '',

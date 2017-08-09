@@ -5,19 +5,20 @@
 		icons: 'composr_block,composr_comcode,composr_page,composr_quote,composr_box,composr_code,composr_image',
 
 		init: function (editor) {
-			var possibles = ['block', 'comcode', 'page', 'quote', 'box', 'code'];
+			var possibles = ['block', 'comcode', 'page', 'quote', 'box', 'code'], func;
+			
 			for (var i = 0; i < possibles.length; i++) {
-				var buttonName = possibles[i];
-				var elements = editor.element.$.parentNode.parentNode.querySelectorAll('.comcode_button_' + buttonName);
-				if (typeof elements[0] != 'undefined') {
-					var func = {
-						exec: function (e) {
-							return function () {
-								e.onclick.call(e);
-							}
-						}(elements[0])
+				var buttonName = possibles[i],
+                    element = editor.element.$.parentNode.parentNode.querySelector('.comcode_button_' + buttonName),
+                    label;
+				
+				if (element != null) {
+					func = {
+                        exec: (function (element) {
+                            $cms.dom.trigger(element, 'click');
+                        }).bind(undefined, element)
 					};
-					var label = elements[0].alt;
+                    label = element.alt;
 
 					editor.addCommand('composr_' + buttonName, func);
 					editor.ui.addButton && editor.ui.addButton('composr_' + buttonName, {
@@ -25,7 +26,7 @@
 						command: 'composr_' + buttonName
 					});
 
-					elements[0].parentNode.parentNode.style.display = 'none';
+					element.parentNode.parentNode.style.display = 'none';
 				}
 			}
 
@@ -34,9 +35,8 @@
 			var aub = document.getElementById('attachment_upload_button');
 			var doingAttachmentUploads = (aub) && (aub.classList.contains('for_field_' + editor.element.$.id));
 
-			if ((typeof window.rebuildAttachmentButtonForNext != 'undefined') && (doingAttachmentUploads)) {
-				if ((!aub) || (aub.parentNode.parentNode.style.display == 'none')) // If attachment button was not placed elsewhere
-				{
+			if ((typeof window.rebuildAttachmentButtonForNext !== 'undefined') && (doingAttachmentUploads)) {
+				if (!aub || (aub.parentNode.parentNode.style.display === 'none')) { // If attachment button was not placed elsewhere
 					window.setTimeout(function () {
 						rebuildAttachmentButtonForNext(editor.element.$.id, document.getElementById('cke_' + editor.element.$.id).getElementsByClassName('cke_button__composr_image')[0].id);
 					}, 0);
@@ -45,14 +45,16 @@
 				}
 			}
 
-			var func = {
+			func = {
 				exec: function (e) {
 					if (doingAttachmentUploads) {
 						var hasSelection = (e.getSelection().getSelectedElement() != null);
-						if (usesPlupload && !hasSelection) return; // Not selected an image for editing, so don't show an edit dialogue
+						if (usesPlupload && !hasSelection) { // Not selected an image for editing, so don't show an edit dialogue
+						    return;
+                        } 
 					}
 
-					if (typeof window.lang_PREFER_CMS_ATTACHMENTS == 'undefined' || hasSelection || !doingAttachmentUploads) {
+					if ((typeof window.lang_PREFER_CMS_ATTACHMENTS === 'undefined') || hasSelection || !doingAttachmentUploads) {
 						editor.execCommand('image');
 					} else {
 						$cms.ui.alert(window.lang_PREFER_CMS_ATTACHMENTS, function () {

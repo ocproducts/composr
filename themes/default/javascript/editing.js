@@ -678,86 +678,140 @@ function setTextbox(element, text, html) {
  * Insert some text, with WYSIWYG support...
  * (Use insertTextboxWrapping to wrap Comcode tags around a selection)
  * 
- * @param element - non-WYSIWYG element
+ * @param { Element } element - non-WYSIWYG element
  * @param text - text to insert (non-HTML)
  * @param sel - Selection DOM object so we know what to *overwrite* with the inserted text (or NULL)
  * @param plainInsert - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
  * @param html - HTML to insert (if not passed then 'text' will be escaped)
  */
 function insertTextbox(element, text, sel, plainInsert, html) {
-    plainInsert = !!plainInsert;
+    text = strVal(text);
+    plainInsert = boolVal(plainInsert);
     html = strVal(html);
 
     if ($cms.form.isWysiwygField(element)) {
-        var editor = window.wysiwygEditors[element.id];
-
-        var insert = '';
-        if (plainInsert) {
-            insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
-        } else {
-            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
-            if (window.location.href.includes('topics')) {
-                url += '&forum_db=1';
-            }
-            /*TODO: Synchronous XHR*/
-            var xhr = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-            if (xhr.responseXML && (xhr.responseXML.querySelector('result'))) {
-                var result = xhr.responseXML.querySelector('result');
-                insert = result.textContent.replace(/\s*$/, '');
-            }
-        }
-
-        var before = editor.getData(), after;
-
-        try {
-            editor.focus(); // Needed on some browsers
-            getSelectedHtml(editor);
-
-            if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
-                editor.document.getBody().appendHtml(insert);
-            } else {
-                //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
-                var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
-                editor.insertElement(elementForInserting);
-            }
-
-            after = editor.getData();
-            if (after == before) {
-                throw new Error('Failed to insert');
-            }
-
-            findTagsInEditor(editor, element);
-        } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
-            after = editor.getData();
-            if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
-                editor.document.getBody().appendHtml(insert);
-            }
-        }
-
-        editor.updateElement();
-        return;
-    }
-
-    var from = element.value.length, to;
-
-    element.focus();
-
-    if (element.selectionEnd !== undefined) {
-        from = element.selectionStart;
-        to = element.selectionEnd;
-
-        var start = element.value.substring(0, from);
-        var end = element.value.substring(to, element.value.length);
-
-        element.value = start + element.value.substring(from, to) + text + end;
-        setSelectionRange(element, from + text.length, from + text.length);
+        return insertTextboxWysiwyg(element, text, plainInsert, html);
     } else {
-        // :(
-        from += 2;
-        element.value += text;
-        setSelectionRange(element, from + text.length, from + text.length);
+        return insertTextboxVanilla(element, text);
     }
- }
+    
+    function insertTextboxVanilla(element, text) {
+        var from = element.value.length,
+            to, start, end;
+
+        element.focus();
+
+        if (element.selectionEnd !== undefined) {
+            from = element.selectionStart;
+            to = element.selectionEnd;
+            start = element.value.substring(0, from);
+            end = element.value.substring(to, element.value.length);
+
+            element.value = start + element.value.substring(from, to) + text + end;
+            setSelectionRange(element, from + text.length, from + text.length);
+        } else {
+            // :(
+            from += 2;
+            element.value += text;
+            setSelectionRange(element, from + text.length, from + text.length);
+        }
+
+        return Promise.resolve();
+    }
+    
+    function insertTextboxWysiwyg(element, text, plainInsert, html) {
+        return new Promise(function (resolvePromise) {
+            var editor = window.wysiwygEditors[element.id],
+                insert = '';
+
+            if (plainInsert) {
+                insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
+
+                _insertTextboxWysiwyg(editor, insert);
+                resolvePromise();
+            } else {
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
+                if (window.location.href.includes('topics')) {
+                    url += '&forum_db=1';
+                }
+                /*TODO: Synchronous XHR*/
+                var xhr = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+                if (xhr.responseXML && (xhr.responseXML.querySelector('result'))) {
+                    var result = xhr.responseXML.querySelector('result');
+                    insert = result.textContent.replace(/\s*$/, '');
+                }
+
+                _insertTextboxWysiwyg(editor, insert);
+                resolvePromise();
+            }
+        });
+
+        function _insertTextboxWysiwyg(editor, insert) {
+            var before = editor.getData(),
+                after;
+
+            try {
+                editor.focus(); // Needed on some browsers
+                getSelectedHtml(editor);
+
+                if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
+                    editor.document.getBody().appendHtml(insert);
+                } else {
+                    //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
+                    var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
+                    editor.insertElement(elementForInserting);
+                }
+
+                after = editor.getData();
+                if (after == before) {
+                    throw new Error('Failed to insert');
+                }
+
+                findTagsInEditor(editor, element);
+            } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
+                after = editor.getData();
+                if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
+                    editor.document.getBody().appendHtml(insert);
+                }
+            }
+
+            editor.updateElement();
+        }
+    }
+}
+
+function asdsad() {
+    var before = editor.getData(),
+        after;
+
+    try {
+        editor.focus(); // Needed on some browsers
+        getSelectedHtml(editor);
+
+        if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
+            editor.document.getBody().appendHtml(insert);
+        } else {
+            //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
+            var elementForInserting = window.CKEDITOR.dom.element.createFromHtml(insert);
+            editor.insertElement(elementForInserting);
+        }
+
+        after = editor.getData();
+        if (after == before) {
+            throw new Error('Failed to insert');
+        }
+
+        findTagsInEditor(editor, element);
+    } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
+        after = editor.getData();
+        if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
+            editor.document.getBody().appendHtml(insert);
+        }
+    }
+
+    editor.updateElement();
+}
+ 
 function insertTextboxOpener(element, text, sel, plainInsert, html) {
     $cms.getMainCmsWindow().insertTextbox(element, text, sel, plainInsert, html);
 }
@@ -801,7 +855,6 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         }
 
         var newHtml = '';
-
         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
         if (window.location.href.includes('topics')) {
             url += '&forum_db=1';
@@ -825,7 +878,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         findTagsInEditor(editor, element);
 
         editor.updateElement();
-
+        
         return;
     }
 
