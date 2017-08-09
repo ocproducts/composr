@@ -1,3 +1,3 @@
 {$REQUIRE_JAVASCRIPT,chat}
 
-<input data-click-do-input="['{B;}', 'post']" data-tpl="chatcodeEditorMicroButton" data-tpl-params="{+START,PARAMS_JSON,B}{_*}{+END}" type="image" data-click-pd="1" title="{TITLE*}" alt="{TITLE*}" src="{$IMG*,chatcodeeditor/{B}}" />
+<input data-click-do-input="['{B;}', 'post']" type="image" data-click-pd="1" title="{TITLE*}" alt="{TITLE*}" src="{$IMG*,chatcodeeditor/{B}}" />

@@ -116,12 +116,6 @@
         });
     };
 
-    $cms.templates.chatcodeEditorButton = function chatcodeEditorButton(params, btn) {};
-
-    $cms.templates.chatcodeEditorMicroButton = function chatcodeEditorMicroButton(params, btn) {};
-
-    $cms.templates.comcodeEditorMicroButton = function comcodeEditorMicroButton(params, btn) {};
-
     $cms.templates.chatLobbyImArea = function chatLobbyImArea(params, container) {
         var chatroomId = strVal(params.chatroomId);
 
