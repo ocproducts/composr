@@ -7091,96 +7091,105 @@
      * @param dialogHeight
      */
     $cms.ui.generateQuestionUi = function generateQuestionUi(message, buttonSet, windowTitle, fallbackMessage, callback, dialogWidth, dialogHeight) {
-        var imageSet = [];
-        var newButtonSet = [];
-        for (var s in buttonSet) {
-            newButtonSet.push(buttonSet[s]);
-            imageSet.push(s);
-        }
-        buttonSet = newButtonSet;
+        message = strVal(message);
+        
+        return new Promise(function (resolvePromise) {
+            var imageSet = [],
+                newButtonSet = [];
+            for (var s in buttonSet) {
+                newButtonSet.push(buttonSet[s]);
+                imageSet.push(s);
+            }
+            buttonSet = newButtonSet;
 
-        if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
-            if (buttonSet.length > 4) {
-                dialogHeight += 5 * (buttonSet.length - 4);
-            }
+            if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
+                if (buttonSet.length > 4) {
+                    dialogHeight += 5 * (buttonSet.length - 4);
+                }
 
-            // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
-            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.keepStub());
-            if (dialogWidth == null) {
-                dialogWidth = 440;
-            }
-            if (dialogHeight == null) {
-                dialogHeight = 180;
-            }
-            $cms.ui.showModalDialog(
-                url,
-                null,
-                'dialogWidth=' + dialogWidth + ';dialogHeight=' + dialogHeight + ';status=no;unadorned=yes',
-                function (result) {
+                // Intentionally FIND_SCRIPT and not FIND_SCRIPT_NOHTTP, because no needs-HTTPS security restriction applies to popups, yet popups do not know if they run on HTTPS if behind a transparent reverse proxy
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT;,question_ui}?message=' + encodeURIComponent(message) + '&image_set=' + encodeURIComponent(imageSet.join(',')) + '&button_set=' + encodeURIComponent(buttonSet.join(',')) + '&window_title=' + encodeURIComponent(windowTitle) + $cms.keepStub());
+                if (dialogWidth == null) {
+                    dialogWidth = 440;
+                }
+                if (dialogHeight == null) {
+                    dialogHeight = 180;
+                }
+                $cms.ui.showModalDialog(url, null, 'dialogWidth=' + dialogWidth + ';dialogHeight=' + dialogHeight + ';status=no;unadorned=yes').then(function (result) {
                     if (result == null) {
-                        callback(buttonSet[0]); // just pressed 'cancel', so assume option 0
+                        if (callback != null) {
+                            callback(buttonSet[0]); // just pressed 'cancel', so assume option 0
+                        }
+                        resolvePromise(buttonSet[0]);
                     } else {
-                        callback(result);
+                        if (callback != null) {
+                            callback(result);
+                        }
+                        resolvePromise(result);
                     }
-                }
-            );
-
-            return;
-        }
-
-        if (buttonSet.length === 1) {
-            $cms.ui.alert(
-                fallbackMessage ? fallbackMessage : message,
-                function () {
-                    callback(buttonSet[0]);
-                },
-                windowTitle
-            );
-        } else if (buttonSet.length === 2) {
-            $cms.ui.confirm(
-                fallbackMessage ? fallbackMessage : message,
-                function (result) {
-                    callback(result ? buttonSet[1] : buttonSet[0]);
-                },
-                windowTitle
-            );
-        } else {
-            if (!fallbackMessage) {
-                message += '\n\n{!INPUTSYSTEM_TYPE_EITHER;^}';
-                for (var i = 0; i < buttonSet.length; i++) {
-                    message += buttonSet[i] + ',';
-                }
-                message = message.substr(0, message.length - 1);
-            } else {
-                message = fallbackMessage;
+                });
+                return;
             }
 
-            $cms.ui.prompt(
-                message,
-                '',
-                function (result) {
+            if (buttonSet.length === 1) {
+                $cms.ui.alert(fallbackMessage ? fallbackMessage : message, null, windowTitle).then(function () {
+                    if (callback != null) {
+                        callback(buttonSet[0]);
+                    }
+                    resolvePromise(buttonSet[0]);
+                });
+            } else if (buttonSet.length === 2) {
+                $cms.ui.confirm(fallbackMessage ? fallbackMessage : message, null, windowTitle).then(function (result) {
+                    if (callback != null) {
+                        callback(result ? buttonSet[1] : buttonSet[0]);
+                    }
+                    resolvePromise(result ? buttonSet[1] : buttonSet[0]);
+                });
+            } else {
+                if (!fallbackMessage) {
+                    message += '\n\n{!INPUTSYSTEM_TYPE_EITHER;^}';
+                    for (var i = 0; i < buttonSet.length; i++) {
+                        message += buttonSet[i] + ',';
+                    }
+                    message = message.substr(0, message.length - 1);
+                } else {
+                    message = fallbackMessage;
+                }
+
+                $cms.ui.prompt(message, '', null, windowTitle).then(function (result) {
                     if (result == null) {
-                        callback(buttonSet[0]); // just pressed 'cancel', so assume option 0
+                        if (callback != null) {
+                            callback(buttonSet[0]); // just pressed 'cancel', so assume option 0
+                        }
+                        resolvePromise(buttonSet[0]);
                         return;
                     } else {
-                        if (result == '') {
-                            callback(buttonSet[1]); // just pressed 'ok', so assume option 1
+                        if (result === '') {
+                            if (callback != null) {
+                                callback(buttonSet[1]); // just pressed 'ok', so assume option 1
+                            }
+                            resolvePromise(buttonSet[1]);
                             return;
                         }
                         for (var i = 0; i < buttonSet.length; i++) {
                             if (result.toLowerCase() === buttonSet[i].toLowerCase()) { // match
-                                callback(result);
+                                if (callback != null) {
+                                    callback(result);
+                                }
+                                resolvePromise(result);
                                 return;
                             }
                         }
                     }
 
                     // unknown
-                    callback(buttonSet[0]);
-                },
-                windowTitle
-            );
-        }
+                    if (callback != null) {
+                        callback(buttonSet[0]);
+                    }
+                    resolvePromise(buttonSet[0]);
+                });
+            }
+        });
     };
 
     var networkDownAlerted = false;
@@ -7495,7 +7504,7 @@
                 forms.forEach(function (form) {
                     // HTML editor
                     if (window.loadHtmlEdit !== undefined) {
-                        loadHtmlEdit(form);
+                        window.loadHtmlEdit(form);
                     }
 
                     // Remove tooltips from forms as they are for screenreader accessibility only
