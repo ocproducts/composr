@@ -6309,9 +6309,8 @@
             lightboxMeta = modal.topWindow.$cms.dom.$id('lightbox_meta'),
             lightboxDescription = modal.topWindow.$cms.dom.$id('lightbox_description'),
             lightboxPositionInSet = modal.topWindow.$cms.dom.$id('lightbox_position_in_set'),
-            lightboxFullLink = modal.topWindow.$cms.dom.$id('lightbox_full_link');
-
-        var sup = lightboxImage.parentNode;
+            lightboxFullLink = modal.topWindow.$cms.dom.$id('lightbox_full_link'),
+            sup = lightboxImage.parentNode;
         sup.removeChild(lightboxImage);
         if (sup.firstChild) {
             sup.insertBefore(img, sup.firstChild);
@@ -7089,6 +7088,7 @@
      * @param callback
      * @param dialogWidth
      * @param dialogHeight
+     * @returns { Promise }
      */
     $cms.ui.generateQuestionUi = function generateQuestionUi(message, buttonSet, windowTitle, fallbackMessage, callback, dialogWidth, dialogHeight) {
         message = strVal(message);
