@@ -918,98 +918,31 @@
     };
 
     $cms.templates.blockHelperDone = function (params) {
-        var element;
-        var targetWindow = window.opener ? window.opener : window.parent;
-        element = targetWindow.document.getElementById(params.fieldName);
+        var targetWindow = window.opener ? window.opener : window.parent,
+            element = targetWindow.document.getElementById(params.fieldName);
+        
         if (!element) {
             targetWindow = targetWindow.frames['iframe_page'];
             element = targetWindow.document.getElementById(params.fieldName);
         }
-        var isWysiwyg = targetWindow.$cms.form.isWysiwygField(element);
-
-        var comcode, comcodeSemihtml;
-        comcode = params.comcode;
+        
+        var isWysiwyg = targetWindow.$cms.form.isWysiwygField(element),
+            comcode = strVal(params.comcode),
+            comcodeSemihtml = strVal(params.comcodeSemihtml),
+            loadingSpace = document.getElementById('loading_space'),
+            attachedEventAction = false;
+        
         window.returnValue = comcode;
-        comcodeSemihtml = params.comcodeSemihtml;
-
-        var loadingSpace = document.getElementById('loading_space');
-
-        function shutdownOverlay() {
-            setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
-                if (window.fauxClose !== undefined) {
-                    window.fauxClose();
-                } else {
-                    window.close();
-                }
-            }, 200);
-        }
-
-        function dispatchBlockHelper() {
-            if ((typeof params.saveToId === 'string') && (params.saveToId !== '')) {
-                var ob = targetWindow.wysiwygEditors[element.id].document.$.getElementById(params.saveToId);
-
-                if (params.delete) {
-                    ob.parentNode.removeChild(ob);
-                } else {
-                    var inputContainer = document.createElement('div');
-                    $cms.dom.html(inputContainer, comcodeSemihtml.replace(/^\s*/, ''));
-                    ob.parentNode.replaceChild(inputContainer.firstElementChild, ob);
-                }
-
-                targetWindow.wysiwygEditors[element.id].updateElement();
-
-                shutdownOverlay();
-            } else {
-                var message = '';
-                if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
-                    if (isWysiwyg) {
-                        message = '';
-                    } else {
-                        message = '{!comcode:ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
-                    }
-                }
-
-                targetWindow.insertComcodeTag = function insertComcodeTag(repFrom, repTo, ret) { // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
-                    var _comcodeSemihtml = comcodeSemihtml;
-                    var _comcode = comcode;
-                    if (repFrom !== undefined) {
-                        for (var i = 0; i < rep_from.length; i++) {
-                            _comcodeSemihtml = _comcodeSemihtml.replace(repFrom[i], repTo[i]);
-                            _comcode = _comcode.replace(repFrom[i], repTo[i]);
-                        }
-                    }
-
-                    if (ret !== undefined && ret) {
-                        return [_comcodeSemihtml, _comcode];
-                    }
-
-                    if ((element.value.indexOf(comcodeSemihtml) === -1) || (comcode.indexOf('[attachment') === -1)) { // Don't allow attachments to add twice
-                        targetWindow.insertTextbox(element, _comcode, true, _comcodeSemihtml);
-                    }
-                };
-
-                if (params.prefix !== undefined) {
-                    targetWindow.insertTextbox(element, params.prefix, true);
-                }
-                targetWindow.insertComcodeTag();
-
-                if (message != '') {
-                    $cms.ui.alert(message, function () {
-                        shutdownOverlay();
-                    });
-                } else {
-                    shutdownOverlay();
-                }
-            }
-        }
-
-        var attachedEventAction = false;
 
         if (params.syncWysiwygAttachments) {
             // WYSIWYG-editable attachments must be synched
             var field = 'file' + params.tagContents.substr(4);
             var uploadElement = targetWindow.document.getElementById(field);
-            if (!uploadElement) uploadElement = targetWindow.document.getElementById('hidFileID_' + field);
+            
+            if (!uploadElement) {
+                uploadElement = targetWindow.document.getElementById('hidFileID_' + field);
+            }
+            
             if ((uploadElement.pluploadObject !== undefined) && (isWysiwyg)) {
                 var ob = uploadElement.pluploadObject;
                 if (ob.state == targetWindow.plupload.STARTED) {
@@ -1031,11 +964,87 @@
                     attachedEventAction = true;
                 }
             }
-
         }
 
         if (!attachedEventAction) {
             setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux popup it can set up fauxClose
+        }
+
+        function shutdownOverlay() {
+            setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
+                if (window.fauxClose !== undefined) {
+                    window.fauxClose();
+                } else {
+                    window.close();
+                }
+            }, 200);
+        }
+
+        function dispatchBlockHelper() {
+            var saveToId = strVal(params.saveToId);
+            
+            if (saveToId !== '') {
+                var ob = targetWindow.wysiwygEditors[element.id].document.$.getElementById(saveToId);
+
+                if (params.delete) {
+                    ob.parentNode.removeChild(ob);
+                } else {
+                    var inputContainer = document.createElement('div');
+                    $cms.dom.html(inputContainer, comcodeSemihtml.replace(/^\s*/, ''));
+                    ob.parentNode.replaceChild(inputContainer.firstElementChild, ob);
+                }
+
+                targetWindow.wysiwygEditors[element.id].updateElement();
+
+                shutdownOverlay();
+                return;
+            }
+            
+            var message = '';
+            if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
+                if (isWysiwyg) {
+                    message = '';
+                } else {
+                    message = '{!comcode:ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
+                }
+            }
+
+            // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
+            targetWindow.insertComcodeTag = function insertComcodeTag(repFrom, repTo, ret) { 
+                var _comcodeSemihtml = comcodeSemihtml,
+                    _comcode = comcode;
+                
+                if (repFrom !== undefined) {
+                    for (var i = 0; i < repFrom.length; i++) {
+                        _comcodeSemihtml = _comcodeSemihtml.replace(repFrom[i], repTo[i]);
+                        _comcode = _comcode.replace(repFrom[i], repTo[i]);
+                    }
+                }
+
+                if (ret) {
+                    return [_comcodeSemihtml, _comcode];
+                }
+
+                if (element.value.includes(comcodeSemihtml) || comcode.includes('[attachment')) { // Don't allow attachments to add twice
+                    return targetWindow.insertTextbox(element, _comcode, true, _comcodeSemihtml, true);
+                }
+            };
+
+            var promise = Promise.resolve();
+            if (params.prefix !== undefined) {
+                promise = targetWindow.insertTextbox(element, params.prefix, true, '', true);
+            }
+            promise.then(function () {
+                return targetWindow.insertComcodeTag();
+            }).then(function () {
+                if (message !== '') {
+                    $cms.ui.alert(message).then(function () {
+                        shutdownOverlay();
+                    });
+                } else {
+                    shutdownOverlay();
+                }
+            });
         }
     };
 

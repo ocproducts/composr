@@ -331,8 +331,9 @@
                 id = params.id || '',
                 description = params.description || '';
 
-            doAttachment(fieldName, id, description);
-            (window.fauxClose !== undefined) ? window.fauxClose() :  window.close();
+            doAttachment(fieldName, id, description).then(function () {
+                window.fauxClose ? window.fauxClose() :  window.close();
+            });
         }
     });
 

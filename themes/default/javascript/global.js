@@ -402,6 +402,10 @@
         /**@method*/
         requireJavascript: requireJavascript,
         /**@method*/
+        promiseSequence: promiseSequence,
+        /**@method*/
+        promiseHalt: promiseHalt,
+        /**@method*/
         setPostDataFlag: setPostDataFlag,
         /**@method*/
         parseJson: parseJson,
@@ -1667,33 +1671,53 @@
         scripts = arrVal(scripts);
 
         scripts.forEach(function (script) {
-            calls.push(_requireJavascript.bind(undefined, script));
+            calls.push(function () { 
+                return _requireJavascript(script) 
+            });
         });
 
-        return sequentialPromises(calls);
+        return promiseSequence(calls);
     }
 
     /**
-     * @param {function[]} funcs
+     * Used to execute a series promises one after another, in a sequence.
+     * @see https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
+     * @param {function[]} promiseFactories
      * @returns {*}
      */
-    function sequentialPromises(funcs) {
-        funcs = arrVal(funcs);
+    function promiseSequence(promiseFactories) {
+        promiseFactories = arrVal(promiseFactories);
 
-        if (funcs.length < 1) {
-            return Promise.resolve();
-        }
-
-        var func = funcs.shift(),
-            promise = func();
-        if (!isPromise(promise)) {
-            promise = Promise.resolve(promise);
-        }
-        return promise.then(function(val){
-            return (funcs.length > 0) ? sequentialPromises(funcs) : val;
-        }, function (val) {
-            return (funcs.length > 0) ? sequentialPromises(funcs) : val;
+        var result = Promise.resolve();
+        promiseFactories.forEach(function (promiseFactory) {
+            result = result.then(promiseFactory);
         });
+        
+        return result;
+    }
+    
+    var _haltedPromise;
+    /**
+     * Use this to halt promise chain execution since using unresolved promises used to stop the execution chain can cause memory leaks.
+     * This will simply keep a single unresolved promise around, which will be the only promise that isn't garbage collected. 
+     * Since then() and catch() are overridden in this new promise, the chain should not build up, and old parts of the chain should be garbage collected.
+     * @see https://github.com/elastic/kibana/issues/3015
+     * @return { Promise }
+     */
+    function promiseHalt() {
+        if (_haltedPromise === undefined) {
+            _haltedPromise = new Promise();
+            properties(_haltedPromise, {
+                then: function then() {
+                    return _haltedPromise;
+                },
+                catch: function _catch() {
+                    return _haltedPromise;
+                }
+            });
+        }
+        
+        return _haltedPromise;
     }
 
     /**
@@ -6039,6 +6063,7 @@
                         if ((bits[0] === 'dialogWidth') || (bits[0] === 'width')) {
                             width = bits[1].replace(/px$/, '');
                         }
+                        
                         if ((bits[0] === 'dialogHeight') || (bits[0] === 'height')) {
                             if (bits[1] === '100%') {
                                 height = '' + ($cms.dom.getWindowHeight() - 200);
@@ -6046,9 +6071,11 @@
                                 height = bits[1].replace(/px$/, '');
                             }
                         }
+                        
                         if (((bits[0] === 'resizable') || (bits[0] === 'scrollbars')) && scrollbars !== true) {
                             scrollbars = ((bits[1] === 'yes') || (bits[1] === '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
                         }
+                        
                         if (bits[0] === 'unadorned') {
                             unadorned = ((bits[1] === 'yes') || (bits[1] === '1'));
                         }

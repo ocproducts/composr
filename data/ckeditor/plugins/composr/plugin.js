@@ -21,10 +21,13 @@
                     label = element.alt;
 
 					editor.addCommand('composr_' + buttonName, func);
-					editor.ui.addButton && editor.ui.addButton('composr_' + buttonName, {
-						label: label,
-						command: 'composr_' + buttonName
-					});
+					
+					if (editor.ui.addButton) {
+                        editor.ui.addButton('composr_' + buttonName, {
+                            label: label,
+                            command: 'composr_' + buttonName
+                        });
+                    }
 
 					element.parentNode.parentNode.style.display = 'none';
 				}
@@ -57,7 +60,7 @@
 					if ((typeof window.lang_PREFER_CMS_ATTACHMENTS === 'undefined') || hasSelection || !doingAttachmentUploads) {
 						editor.execCommand('image');
 					} else {
-						$cms.ui.alert(window.lang_PREFER_CMS_ATTACHMENTS, function () {
+						$cms.ui.alert(window.lang_PREFER_CMS_ATTACHMENTS).then(function () {
 							editor.execCommand('image');
 						});
 					}

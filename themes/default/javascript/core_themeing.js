@@ -75,7 +75,7 @@
         editorKeyPress: function (e, textarea) {
             if ($cms.dom.keyPressed(e, 'Tab')) {
                 e.preventDefault();
-                window.insertTextbox(textarea, "\t", false, '', true);
+                window.insertTextbox(textarea, "\t");
             }
         },
 
@@ -139,7 +139,7 @@
 
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
-                window.insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}', false, '', true).then(function () {
+                window.insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}').then(function () {
                     if (hasEditarea) {
                         editareaRefresh(textbox.id);
                     }
@@ -608,7 +608,7 @@
 
                         value = stValue + value + '*' + params + '}';
 
-                        window.insertTextbox(textbox, value, false, '', true).then(function () {
+                        window.insertTextbox(textbox, value).then(function () {
                             if (hasEditarea) {
                                 editareaRefresh(textbox.name);
                             }

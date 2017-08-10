@@ -251,15 +251,15 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
 
     if (!postingForm.elements['post'] || postingForm.elements['post'].className.includes('wysiwyg')) {
         if (so) {
-            so.style.display = 'none';
+            $cms.dom.hide(so);
         }
-
         if (so2) {
-            so2.style.display = 'block';
+            $cms.dom.show(so2);
         }
     }
 
     var counter, count = 0, e, indicator, thoseDone = [], id;
+    
     for (counter = 0; counter < postingForm.elements.length; counter++) {
         e = postingForm.elements[counter];
         id = e.id;
@@ -518,12 +518,12 @@ function findTagsInEditor(editor, element) {
         if (comcodes[i].localName === 'input') {
             comcodes[i].readOnly = true;
             comcodes[i].contentEditable = true; // Undoes what ckeditor sets. Fixes weirdness with copy and paste in Chrome (adding extra block on end)
-            comcodes[i].ondblclick = function (event) {
+            comcodes[i].ondblclick = function () {
                 if (this.onmouseout) {
                     this.onmouseout();
                 }
                 var fieldName = editor.name;
-                if (this.id == '') {
+                if (this.id === '') {
                     this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
                 }
                 var tagType = this.title.replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
@@ -537,7 +537,7 @@ function findTagsInEditor(editor, element) {
                     $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 }
                 return false;
-            }
+            };
         }
         
         comcodes[i].onmouseover = function (event) { // Shows preview
@@ -561,10 +561,18 @@ function findTagsInEditor(editor, element) {
 
                 var eventCopy = {};
                 if (event) {
-                    if (event.pageX) eventCopy.pageX = 3000;
-                    if (event.clientX) eventCopy.clientX = 3000;
-                    if (event.pageY) eventCopy.pageY = 3000;
-                    if (event.clientY) eventCopy.clientY = 3000;
+                    if (event.pageX) {
+                        eventCopy.pageX = 3000;
+                    }
+                    if (event.clientX) {
+                        eventCopy.clientX = 3000;
+                    }
+                    if (event.pageY) {
+                        eventCopy.pageY = 3000;
+                    }
+                    if (event.clientY) {
+                        eventCopy.clientY = 3000;
+                    }
 
                     var selfOb = this;
                     if ((this.renderedTooltip === undefined && !selfOb.isOver) || (selfOb.tagText != tagText)) {
@@ -638,7 +646,7 @@ function doEmoticon(fieldName, callerEl, isOpener) {
 
 function doAttachment(fieldName, id, description) {
     if (!$cms.getMainCmsWindow().wysiwygEditors) {
-        return;
+        return Promise.resolve();
     }
 
     description = strVal(description);
@@ -646,7 +654,7 @@ function doAttachment(fieldName, id, description) {
     var element = $cms.getMainCmsWindow().document.getElementById(fieldName);
     var comcode = '\n\n[attachment description="' + $cms.filter.comcode(description) + '"]' + id + '[/attachment]';
 
-    insertTextboxOpener(element, comcode);
+    return insertTextboxOpener(element, comcode);
 }
 
 function getTextbox(element) {
@@ -685,18 +693,14 @@ function setTextbox(element, text, html) {
  * @param {string} text - text to insert (non-HTML)
  * @param {boolean} [isPlainInsert] - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
  * @param {string} [html] - HTML to insert (if not passed then 'text' will be escaped)
- * @param {boolean} [async]
  */
-function insertTextbox(element, text, isPlainInsert, html, async) {
-    console.log('insertTextbox()', element, text, isPlainInsert, html, async);
-    
+function insertTextbox(element, text, isPlainInsert, html) {
     text = strVal(text);
     isPlainInsert = boolVal(isPlainInsert);
     html = strVal(html);
-    async = boolVal(async);
 
     if ($cms.form.isWysiwygField(element)) {
-        return insertTextboxWysiwyg(element, text, isPlainInsert, html, async);
+        return insertTextboxWysiwyg(element, text, isPlainInsert, html);
     } else {
         return insertTextboxVanilla(element, text);
     }
@@ -725,7 +729,7 @@ function insertTextbox(element, text, isPlainInsert, html, async) {
         return Promise.resolve();
     }
     
-    function insertTextboxWysiwyg(element, text, isPlainInsert, html, async) {
+    function insertTextboxWysiwyg(element, text, isPlainInsert, html) {
         return new Promise(function (resolvePromise) {
             var editor = window.wysiwygEditors[element.id],
                 insert = '';
@@ -741,27 +745,15 @@ function insertTextbox(element, text, isPlainInsert, html, async) {
                     url += '&forum_db=1';
                 }
                 
-                if (async) {
-                    $cms.doAjaxRequest(url, function (responseXML) {
-                        if (responseXML && (responseXML.querySelector('result'))) {
-                            var result = responseXML.querySelector('result');
-                            insert = result.textContent.replace(/\s*$/, '');
-                        }
-
-                        _insertTextboxWysiwyg(element, editor, insert);
-                        resolvePromise();
-                    }, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-                } else {
-                    /*TODO: Synchronous XHR*/
-                    var xhr = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-                    if (xhr.responseXML && (xhr.responseXML.querySelector('result'))) {
-                        var result = xhr.responseXML.querySelector('result');
+                $cms.doAjaxRequest(url, function (responseXML) {
+                    if (responseXML && (responseXML.querySelector('result'))) {
+                        var result = responseXML.querySelector('result');
                         insert = result.textContent.replace(/\s*$/, '');
                     }
 
                     _insertTextboxWysiwyg(element, editor, insert);
                     resolvePromise();
-                }
+                }, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
             }
         });
     }
@@ -799,8 +791,8 @@ function insertTextbox(element, text, isPlainInsert, html, async) {
     }
 }
  
-function insertTextboxOpener(element, text, isPlainInsert, html, async) {
-    return $cms.getMainCmsWindow().insertTextbox(element, text, isPlainInsert, html, async);
+function insertTextboxOpener(element, text, isPlainInsert, html) {
+    return $cms.getMainCmsWindow().insertTextbox(element, text, isPlainInsert, html);
 }
 
 // Get selected HTML from CKEditor
@@ -824,15 +816,11 @@ function getSelectedHtml(editor) {
  * @param element
  * @param beforeWrapTag
  * @param afterWrapTag
- * @param async
  * @return { Promise }
  */
-function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag, async) {
-    console.log('insertTextboxWrapping()', element, beforeWrapTag, afterWrapTag);
-    
+function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
     beforeWrapTag = strVal(beforeWrapTag);
     afterWrapTag = strVal(afterWrapTag);
-    async = boolVal(async);
 
     if (afterWrapTag === '') {
         afterWrapTag = '[/' + beforeWrapTag + ']';
@@ -840,7 +828,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag, async) {
     }
 
     if ($cms.form.isWysiwygField(element)) {
-        return insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag, async);
+        return insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag);
     } else {
         return insertTextboxWrappingVanilla(element, beforeWrapTag, afterWrapTag);
     }
@@ -869,7 +857,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag, async) {
         return Promise.resolve();
     }
     
-    function insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag, async) {
+    function insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag) {
         return new Promise(function (resolvePromise) {
 
             var editor = window.wysiwygEditors[element.id];
@@ -888,24 +876,9 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag, async) {
                 url += '&forum_db=1';
             }
             
-            if (async) {
-                $cms.doAjaxRequest(url, function (responseXml) {
-                    if (responseXml && (responseXml.querySelector('result'))) {
-                        var result = responseXml.querySelector('result');
-                        newHtml = result.textContent.replace(/\s*$/, '');
-                        /* result is an XML-escaped string of HTML, so we get via looking at the node text */
-                    } else {
-                        newHtml = selectedHtml;
-                    }
-
-                    _insertTextboxWrappingWysiwyg(element, editor, newHtml);
-                    resolvePromise();
-                }, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')))
-            } else {
-                /*TODO: Synchronous XHR*/
-                var request = $cms.doAjaxRequest(url, false, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-                if (request.responseXML && (request.responseXML.querySelector('result'))) {
-                    var result = request.responseXML.querySelector('result');
+            $cms.doAjaxRequest(url, function (responseXml) {
+                if (responseXml && (responseXml.querySelector('result'))) {
+                    var result = responseXml.querySelector('result');
                     newHtml = result.textContent.replace(/\s*$/, '');
                     /* result is an XML-escaped string of HTML, so we get via looking at the node text */
                 } else {
@@ -914,7 +887,7 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag, async) {
 
                 _insertTextboxWrappingWysiwyg(element, editor, newHtml);
                 resolvePromise();
-            }
+            }, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
         });
     }
 

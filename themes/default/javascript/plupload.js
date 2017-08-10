@@ -13191,29 +13191,34 @@ function submitFormWithTheUpload(btnSubmit) {
 }
 
 function dispatchForPageType(pageType, name, fileName, postingFieldName, numFiles) {
-    postingFieldName || (postingFieldName = 'post');
+    pageType = strVal(pageType);
+    name = strVal(name);
+    postingFieldName = strVal(postingFieldName, 'post');
+    numFiles = Number(numFiles);
 
-    if (pageType.includes('attachment')) {
-        var multi = ((pageType.includes('_multi')) && (numFiles > 1));
-
-        var element = document.getElementById(name);
-        if (element) {
-            if ( element.determinedAttachmentProperties === undefined) {
-                var currentNum = name.replace('file', '');
-                setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
-                element.onchange = null;
-                if (multi) {
-                    element.determinedAttachmentProperties = true;
-                }
+    if (!pageType.includes('attachment')) {
+        return;
+    }
+    
+    var multi = (pageType.includes('_multi') && (numFiles > 1)),
+        element = document.getElementById(name), alternateEl = false, currentNum;
+    
+    if (element) {
+        if (element.determinedAttachmentProperties === undefined) {
+            currentNum = name.replace('file', '');
+            setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
+            element.onchange = null;
+            if (multi) {
+                element.determinedAttachmentProperties = true;
             }
-        } else { // Simplified style, which has no real upload fields to replace
-            element = document.getElementById('hidFileID_' + name);
-            if ( element.determinedAttachmentProperties === undefined) {
-                var currentNum = name.replace('file', '');
-                setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
-                if (multi) {
-                    element.determinedAttachmentProperties = true;
-                }
+        }
+    } else { // Simplified style, which has no real upload fields to replace
+        element = document.getElementById('hidFileID_' + name);
+        if (element.determinedAttachmentProperties === undefined) {
+            currentNum = name.replace('file', '');
+            setAttachment(postingFieldName, currentNum, fileName, multi, element.pluploadObject.settings);
+            if (multi) {
+                element.determinedAttachmentProperties = true;
             }
         }
     }
@@ -14006,26 +14011,25 @@ function buildHtml5UploadHandler(request, fileProgress, attachmentBase, fieldNam
             case 4:
                 if (request.responseText == '') {
                     // We should have got an ID back
-
                     var progress = new FileProgress(fileProgress, 'container_for_' + fieldName);
                     progress.setProgress(100);
                     progress.setStatus('{!javascript:PLUPLOAD_FAILED^;}');
                 } else {
                     var element = document.getElementById(fieldName);
 
-                    window.insertTextbox(element, "[attachment_safe framed=\"0\" description=\"" + fileProgress.name.replace(/"/g, '\'') + "\"]new_" + attachmentBase + "[/attachment_safe]\n");
+                    window.insertTextbox(element, "[attachment_safe framed=\"0\" description=\"" + fileProgress.name.replace(/"/g, '\'') + "\"]new_" + attachmentBase + "[/attachment_safe]\n", false, '', true).then(function () {
+                        var progress = new FileProgress(fileProgress, 'container_for_' + fieldName);
+                        progress.setProgress(100);
+                        progress.setComplete();
+                        progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
 
-                    var progress = new FileProgress(fileProgress, 'container_for_' + fieldName);
-                    progress.setProgress(100);
-                    progress.setComplete();
-                    progress.setStatus('{!javascript:PLUPLOAD_COMPLETE^;}');
-                    
-                    var decodedData = $cms.parseJson(request.responseText);
-                    document.getElementById('hidFileID_file' + attachmentBase).value = decodedData['upload_id'];
+                        var decodedData = $cms.parseJson(request.responseText);
+                        document.getElementById('hidFileID_file' + attachmentBase).value = decodedData['upload_id'];
 
-                    if ($cms.form.isWysiwygField(element)) {
-                        generateBackgroundPreview(element);
-                    }
+                        if ($cms.form.isWysiwygField(element)) {
+                            generateBackgroundPreview(element);
+                        }
+                    });
                 }
 
                 break;
