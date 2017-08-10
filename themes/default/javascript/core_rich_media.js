@@ -413,6 +413,17 @@
             $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
         });
 
+        if (params.simpleUi) {
+            window.numAttachments = 1;
+
+            window.$cmsLoad.push(function () {
+                var aub = document.getElementById('attachment_upload_button');
+                if (aub && (aub.classList.contains('for_field_' + params.postingFieldName))) {
+                    window.rebuildAttachmentButtonForNext(params.postingFieldName, 'attachment_upload_button');
+                }
+            });
+        }
+
         window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
         function rebuildAttachmentButtonForNext(postingFieldName, attachmentUploadButton) {
             if (postingFieldName !== params.postingFieldName) {
@@ -426,17 +437,6 @@
 
             $cms.requireJavascript('plupload').then(function () {
                 prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, params.postingFieldName, strVal(params.filter), window.attachmentUploadButton);
-            });
-        }
-
-        if (params.simpleUi) {
-            window.numAttachments = 1;
-
-            window.$cmsLoad.push(function () {
-                var aub = document.getElementById('attachment_upload_button');
-                if ((aub) && (aub.classList.contains('for_field_' + params.postingFieldName))) {
-                    window.rebuildAttachmentButtonForNext(params.postingFieldName, 'attachment_upload_button');
-                }
             });
         }
     };

@@ -577,15 +577,15 @@
 
             var arity = valueParts[1];
             var definiteGets = 0;
-            if (arity == '1') definiteGets = 1;
-            else if (arity == '2') definiteGets = 2;
-            else if (arity == '3') definiteGets = 3;
-            else if (arity == '4') definiteGets = 4;
-            else if (arity == '5') definiteGets = 5;
-            else if (arity == '0-1') definiteGets = 0;
-            else if (arity == '3-4') definiteGets = 3;
-            else if (arity == '0+') definiteGets = 0;
-            else if (arity == '1+') definiteGets = 1;
+            if (arity === '1') definiteGets = 1;
+            else if (arity === '2') definiteGets = 2;
+            else if (arity === '3') definiteGets = 3;
+            else if (arity === '4') definiteGets = 4;
+            else if (arity === '5') definiteGets = 5;
+            else if (arity === '0-1') definiteGets = 0;
+            else if (arity === '3-4') definiteGets = 3;
+            else if (arity === '0+') definiteGets = 0;
+            else if (arity === '1+') definiteGets = 1;
             var parameter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 
             _getParameterParameters(
@@ -593,7 +593,7 @@
                 dropdownName, value, 0, '',
                 function (textbox, name, value, params) {
                     if (name.indexOf('ppdirective') !== -1) {
-                        window.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}', true).then(function () {
+                        window.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}').then(function () {
                             if (hasEditarea) {
                                 editareaRefresh(textbox.name);
                             }
@@ -722,7 +722,7 @@
                 'templates',
                 function (subdir) {
                     if (subdir !== null) {
-                        if (subdir != 'templates' && subdir != 'css' && subdir != 'javascript' && subdir != 'text' && subdir != 'xml') {
+                        if (subdir !== 'templates' && subdir !== 'css' && subdir !== 'javascript' && subdir !== 'text' && subdir !== 'xml') {
                             $cms.ui.alert('{!themes:BAD_TEMPLATE_TYPE;^}');
                             return;
                         }
@@ -764,8 +764,6 @@
                 },
                 '{!themes:ADD_TEMPLATE;^}'
             );
-
-            return false;
         }
 
         function templateEditorAssignUnloadEvent() {

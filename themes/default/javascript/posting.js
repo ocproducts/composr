@@ -698,7 +698,7 @@ function doInputFont(fieldName) {
 function initFormSaving(formId) {
     window.lastAutosave = new Date();
 
-    $cms.inform('Initialising auto-save subsystem');
+    //$cms.inform('Initialising auto-save subsystem');
 
     // Go through all forms/elements
     var form = document.getElementById(formId);
@@ -744,9 +744,9 @@ function initFormSaving(formId) {
                         biggestLengthData = value;
                     }
 
-                    $cms.inform('+ Has autosave for ' + elementName + ' (' + autosaveName + ')');
+                    //$cms.inform('+ Has autosave for ' + elementName + ' (' + autosaveName + ')');
                 } else {
-                    $cms.inform('- Has no autosave for ' + elementName);
+                    //$cms.inform('- Has no autosave for ' + elementName);
                 }
             }
 
@@ -754,16 +754,16 @@ function initFormSaving(formId) {
                 _restoreFormAutosave(form, fieldsToDo, biggestLengthData);
                 return; // If we had it locally, we won't let it continue on to try via AJAX
             } else {
-                $cms.inform('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
+                //$cms.inform('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
             }
         }
     } else {
-        $cms.inform('Nothing in local storage');
+        //$cms.inform('Nothing in local storage');
     }
 
     // Load via AJAX (if issue happened on another machine, or if we do not support local storage)
     if (navigator.onLine) {
-        $cms.inform('Searching AJAX for auto-save');
+        //$cms.inform('Searching AJAX for auto-save');
 
         var url = '{$FIND_SCRIPT_NOHTTP;,autosave}?type=retrieve';
         url += '&stem=' + encodeURIComponent(getAutosaveUrlStem());
@@ -771,7 +771,7 @@ function initFormSaving(formId) {
         var callback = function (form) {
             return function (responseXml) {
                 var result = responseXml && responseXml.querySelector('result');
-                $cms.inform('Auto-save AJAX says', result);
+                //$cms.inform('Auto-save AJAX says', result);
                 _retrieveFormAutosave(result, form);
             }
         }(form);
@@ -780,7 +780,7 @@ function initFormSaving(formId) {
 
     function handleFormSavingExplicit(event, form) {
         if (event.keyCode == 83/*s*/ && (navigator.platform.match('Mac') ? event.metaKey : event.ctrlKey) && (!navigator.platform.match('Mac') ? event.ctrlKey : event.metaKey) && (!event.altKey)) {
-            $cms.inform('Doing explicit auto-save');
+            //$cms.inform('Doing explicit auto-save');
 
             event.preventDefault(); // Prevent browser save dialog
 
@@ -855,7 +855,7 @@ function initFormSaving(formId) {
         if ((fieldsToDoCounter != 0) && (biggestLengthData.length > 25)) {
             _restoreFormAutosave(form, fieldsToDo, biggestLengthData);
         } else {
-            $cms.inform('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
+            //$cms.inform('No auto-save, fields found was ' + fieldsToDoCounter + ', largest length was ' + biggestLengthData.length);
         }
     }
 
@@ -876,7 +876,7 @@ function initFormSaving(formId) {
                         if (typeof fieldsToDo[key] != 'string') continue;
 
                         if (form.elements[key] !== undefined) {
-                            $cms.inform('Restoring ' + key);
+                            //$cms.inform('Restoring ' + key);
                             cleverSetValue(form, form.elements[key], fieldsToDo[key]);
                         }
                     }
@@ -1020,9 +1020,7 @@ function handleFormSaving(event, element, force) {
 
         // Save remotely
         if (navigator.onLine) {
-            if ($cms.$DEV_MODE()) {
-                $cms.inform('Doing AJAX auto-save');
-            }
+            //$cms.inform('Doing AJAX auto-save');
 
             post = $cms.form.modSecurityWorkaroundAjax(post);
             $cms.doAjaxRequest('{$FIND_SCRIPT_NOHTTP;,autosave}?type=store' + $cms.keepStub(), true, post);
@@ -1062,7 +1060,7 @@ function _handleFormSaving(event, element, force) {
     // Save locally
     if (window.localStorage !== undefined) {
         if ($cms.$DEV_MODE()) {
-            $cms.inform('Doing local storage auto-save for ' + elementName + ' (' + autosaveName + ')');
+            //$cms.inform('Doing local storage auto-save for ' + elementName + ' (' + autosaveName + ')');
         }
 
         try {

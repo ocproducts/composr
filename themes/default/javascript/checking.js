@@ -88,6 +88,7 @@
      * @memberof $cms.form
      * @param form
      * @param event
+     * @param analyticEventCategory
      * @returns {boolean}
      */
     $cms.form.doFormSubmit = function doFormSubmit(form, event, analyticEventCategory) {

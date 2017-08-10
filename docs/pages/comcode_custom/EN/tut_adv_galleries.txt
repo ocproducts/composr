@@ -32,7 +32,7 @@ Additionally, the EXIF caption is used for the title. i.e. the caption goes into
 
 For non-gallery-import, the user is expected to manually fill in the form.
 
-JavaScript developers may also make use of the fact that the uploader will return EXIF details when it finishes. The JavaScript programmer has to define a [tt]handle_metadata_receipt[/tt] function and do something with the data.
+JavaScript developers may also make use of the fact that the uploader will return EXIF details when it finishes. The JavaScript programmer has to define a [tt]handleMetadataReceipt[/tt] function and do something with the data.
 
 [title="2"]Exporting[/title]
 

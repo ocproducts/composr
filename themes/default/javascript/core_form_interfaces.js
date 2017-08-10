@@ -223,7 +223,7 @@
         window.formPreviewUrl = params.previewUrl;
 
         if (params.forcePreviews) {
-            this.btnSubmit.style.display = 'none';
+            $cms.dom.hide(this.btnSubmit);
         }
 
         if (params.jsFunctionCalls != null) {

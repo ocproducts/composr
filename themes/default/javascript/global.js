@@ -2802,7 +2802,7 @@
     }
 
     function eventCapture(handler, captureSetting) {
-        return !!handler.del && (!focusinSupported && (handler.e in focusEvents)) || !!captureSetting;
+        return (!!handler.del && (!focusinSupported && (handler.e in focusEvents))) || !!captureSetting;
     }
 
     function realEvent(type) {
@@ -2819,7 +2819,7 @@
             handler.sel = selector;
             handler.del = delegator;
             var callback = delegator || fn;
-            handler.proxy = function (e) {
+            handler.proxy = function proxy(e) {
                 var args = [e, el];
                 //e.data = data;
                 if (Array.isArray(e._args)) {
