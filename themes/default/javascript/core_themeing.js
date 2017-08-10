@@ -74,8 +74,8 @@
 
         editorKeyPress: function (e, textarea) {
             if ($cms.dom.keyPressed(e, 'Tab')) {
-                window.insertTextbox(textarea, "\t");
-                return false;
+                e.preventDefault();
+                window.insertTextbox(textarea, "\t", false, '', true);
             }
         },
 
@@ -139,12 +139,11 @@
 
                 editareaReverseRefresh('e_' + fileToFileId(file));
 
-                window.insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}');
-                if (hasEditarea) {
-                    editareaRefresh(textbox.id);
-                }
-
-                return false;
+                window.insertTextbox(textbox, '{' + '+START,IF,{' + '$EQ,{' + '_GUID},' + guid + '}}\n{' + '+END}', false, '', true).then(function () {
+                    if (hasEditarea) {
+                        editareaRefresh(textbox.id);
+                    }
+                });
             }
         },
 
@@ -561,7 +560,7 @@
 
             var hasEditarea = editareaIsLoaded(textbox.name);
 
-            if ((value == 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays'))) {
+            if ((value === 'BLOCK') && (($cms.ui.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays'))) {
                 var url = '{$FIND_SCRIPT_NOHTTP;,block_helper}?field_name=' + textbox.name + '&block_type=template' + $cms.keepStub();
                 $cms.ui.showModalDialog(
                     $cms.maintainThemeInLink(url),
@@ -590,17 +589,15 @@
             var parameter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
 
             _getParameterParameters(
-                definiteGets,
-                parameter,
-                arity,
-                textbox,
-                name,
-                value,
-                0,
-                '',
+                definiteGets, parameter, arity, textbox,
+                dropdownName, value, 0, '',
                 function (textbox, name, value, params) {
                     if (name.indexOf('ppdirective') !== -1) {
-                        window.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}', true);
+                        window.insertTextboxWrapping(textbox, '{' + '+START,' + value + params + '}', '{' + '+END}', true).then(function () {
+                            if (hasEditarea) {
+                                editareaRefresh(textbox.name);
+                            }
+                        });
                     } else {
                         var stValue;
                         if (name.indexOf('ppparameter') === -1) {
@@ -611,11 +608,11 @@
 
                         value = stValue + value + '*' + params + '}';
 
-                        window.insertTextbox(textbox, value);
-                    }
-
-                    if (hasEditarea) {
-                        editareaRefresh(textbox.name);
+                        window.insertTextbox(textbox, value, false, '', true).then(function () {
+                            if (hasEditarea) {
+                                editareaRefresh(textbox.name);
+                            }
+                        });
                     }
                 }
             );
@@ -644,7 +641,9 @@
                                 if (v !== null) {
                                     params = params + ',' + v;
                                     _getParameterParameters(definiteGets, parameter, arity, box, name, value, numDone + 1, params, callback);
-                                } else callback(box, name, value, params);
+                                } else {
+                                    callback(box, name, value, params);
+                                }
                             },
                             '{!themes:INSERT_PARAMETER;^}'
                         );
@@ -654,14 +653,17 @@
                             '{!themes:INPUT_OPTIONAL_PARAMETER;^}',
                             '',
                             function (v) {
-                                if (v != null)
+                                if (v != null) {
                                     params = params + ',' + v;
+                                }
+                                
                                 callback(box, name, value, params);
                             },
                             '{!themes:INSERT_PARAMETER;^}'
                         );
+                    } else {
+                        callback(box, name, value, params);
                     }
-                    else callback(box, name, value, params);
                 }
             }
         }

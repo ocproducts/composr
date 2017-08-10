@@ -111,7 +111,7 @@ function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
             if (multi) {
                 var splitFilename = document.getElementById('txtFileName_file' + window.numAttachments).value.split(/:/);
                 for (var i = 0; i < splitFilename.length; i++) {
-                    if (i != 0) {
+                    if (i > 0) {
                         window.numAttachments++;
                     }
                     window.insertTextbox(post, comcode.replace(']new_' + number + '[', ']new_' + window.numAttachments + '['));
@@ -296,7 +296,7 @@ function doInputMenu(fieldName) {
                         var add;
                         var element = document.getElementById(fieldName);
                         add = '[block=\"' + $cms.filter.comcode(va) + '\" caption=\"' + $cms.filter.comcode(vb) + '\" type=\"tree\"]menu[/block]';
-                        window.insertTextbox(element, add);
+                        window.insertTextbox(element, add, false, '', true);
                     },
                     '{!comcode:INPUT_COMCODE_menu;^}'
                 );
@@ -388,64 +388,61 @@ function doInputList(fieldName, add) {
     }
 
     var post = document.getElementById(fieldName);
-    window.insertTextbox(post, '\n');
-    $cms.ui.prompt(
-        '{!javascript:ENTER_LIST_ENTRY;^}',
-        '',
-        function (va) {
-            if ((va != null) && (va != '')) {
-                add.push(va);
-                return doInputList(fieldName, add)
+
+    window.insertTextbox(post, '\n', false, '', true).then(function () {
+        return $cms.ui.prompt('{!javascript:ENTER_LIST_ENTRY;^}', '', null, '{!comcode:INPUT_COMCODE_list;^}');
+    }).then(function (va) {
+        if (va) {
+            add.push(va);
+            return doInputList(fieldName, add)
+        }
+        
+        if (add.length === 0) {
+            return;
+        }
+        
+        if (post.value.includes('[semihtml')) {
+            window.insertTextbox(post, '[list]\n');
+        }
+        
+        for (var i = 0; i < add.length; i++) {
+            if (post.value.includes('[semihtml')) {
+                window.insertTextbox(post, '[*]' + add[i] + '\n')
+            } else {
+                window.insertTextbox(post, ' - ' + add[i] + '\n')
             }
-            if (add.length === 0) {
-                return;
-            }
-            var i;
-            if (post.value.indexOf('[semihtml') !== -1) {
-                window.insertTextbox(post, '[list]\n');
-            }
-            for (i = 0; i < add.length; i++) {
-                if (post.value.indexOf('[semihtml') !== -1) {
-                    window.insertTextbox(post, '[*]' + add[i] + '\n')
-                } else {
-                    window.insertTextbox(post, ' - ' + add[i] + '\n')
-                }
-            }
-            if (post.value.indexOf('[semihtml') !== -1) {
-                window.insertTextbox(post, '[/list]\n')
-            }
-        },
-        '{!comcode:INPUT_COMCODE_list;^}'
-    );
+        }
+        
+        if (post.value.includes('[semihtml')) {
+            window.insertTextbox(post, '[/list]\n')
+        }
+    });
 }
 
 function doInputHide(fieldName) {
-    $cms.ui.prompt(
-        '{!javascript:ENTER_WARNING;^}',
-        '',
-        function (va) {
-            if (va) {
-                $cms.ui.prompt(
-                    '{!javascript:ENTER_HIDDEN_TEXT;^}',
-                    '',
-                    function (vb) {
+    $cms.ui.prompt('{!javascript:ENTER_WARNING;^}', '', null, '{!comcode:INPUT_COMCODE_hide;^}').then(function (va) {
+        if (va) {
+            $cms.ui.prompt(
+                '{!javascript:ENTER_HIDDEN_TEXT;^}',
+                '',
+                function (vb) {
+                    if (vb) {
                         var element = document.getElementById(fieldName);
-                        if (vb) {
-                            window.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]');
-                        }
-                    },
-                    '{!comcode:INPUT_COMCODE_hide;^}'
-                );
-            }
-        },
-        '{!comcode:INPUT_COMCODE_hide;^}'
-    );
+                        window.insertTextbox(element, '[hide=\"' + $cms.filter.comcode(va) + '\"]' + $cms.filter.comcode(vb) + '[/hide]', false, '', true);
+                    }
+                },
+                '{!comcode:INPUT_COMCODE_hide;^}'
+            );
+        }
+    })
 }
 
 function doInputThumb(fieldName, va) {
     if ((window.startSimplifiedUpload !== undefined) && (document.getElementById(fieldName).name !== 'message')) {
         var test = window.startSimplifiedUpload(fieldName);
-        if (test) return;
+        if (test) {
+            return;
+        }
     }
 
     $cms.ui.prompt(
@@ -475,9 +472,9 @@ function doInputThumb(fieldName, va) {
                                 }
                                 var element = document.getElementById(fieldName);
                                 if (vb.toLowerCase() === '{!IMAGE;^}'.toLowerCase()) {
-                                    window.insertTextbox(element, '[img=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/img]');
+                                    window.insertTextbox(element, '[img=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/img]', false, '', true);
                                 } else {
-                                    window.insertTextbox(element, '[thumb caption=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/thumb]');
+                                    window.insertTextbox(element, '[thumb caption=\"' + $cms.filter.comcode(vc) + '\"]' + $cms.filter.comcode(va) + '[/thumb]', false, '', true);
                                 }
                             },
                             '{!comcode:INPUT_COMCODE_img;^}'
@@ -499,7 +496,7 @@ function doInputAttachment(fieldName) {
                 $cms.ui.alert('{!javascript:NOT_VALID_ATTACHMENT;^}');
             } else {
                 var element = document.getElementById(fieldName);
-                window.insertTextbox(element, '[attachment]new_' + val + '[/attachment]');
+                window.insertTextbox(element, '[attachment]new_' + val + '[/attachment]', false, '', true);
             }
         },
         '{!comcode:INPUT_COMCODE_attachment;^}'
@@ -540,7 +537,7 @@ function doInputUrl(fieldName, va) {
                     function (vb) {
                         var element = document.getElementById(fieldName);
                         if (vb != null) {
-                            window.insertTextbox(element, '[url=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/url]');
+                            window.insertTextbox(element, '[url=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/url]', false, '', true);
                         }
                     },
                     '{!comcode:INPUT_COMCODE_url;^}'
@@ -606,7 +603,7 @@ function doInputPage(fieldName) {
 
     function _doInputPage(fieldName, result, vc) {
         var element = document.getElementById(fieldName);
-        window.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]');
+        window.insertTextbox(element, '[page=\"' + $cms.filter.comcode(result) + '\"]' + $cms.filter.comcode(vc) + '[/page]', false, '', true);
     }
 }
 
@@ -629,7 +626,7 @@ function doInputEmail(fieldName, va) {
                     function (vb) {
                         var element = document.getElementById(fieldName);
                         if (vb !== null) {
-                            window.insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]');
+                            window.insertTextbox(element, '[email=\"' + $cms.filter.comcode(vb) + '\"]' + $cms.filter.comcode(va) + '[/email]', false, '', true);
                         }
                     },
                     '{!comcode:INPUT_COMCODE_email;^}'

@@ -480,7 +480,8 @@
 
         $cms.dom.on(container, 'change', '.js-input-page-link-chooser', function (e, input) {
             if (!params.asField) {
-                if (window.fauxClose) {
+                window.returnValue = input.value;
+                if (window.fauxClose !== undefined) {
                     window.fauxClose();
                 } else {
                     window.close();

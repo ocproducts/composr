@@ -19,14 +19,15 @@
             explanation.value = params.explanation;
 
             var message = win.document.getElementById('message');
-            win.insertTextbox(message, params.message, false, params.messageHtml);
+            win.insertTextbox(message, params.message, false, params.messageHtml, true).then(function () {
+                if (window.fauxClose !== undefined) {
+                    window.fauxClose();
+                } else {
+                    window.close();
+                }
 
-            if (window.fauxClose !== undefined) {
-                window.fauxClose();
-            } else {
-                window.close();
-            }
-
+            });
+            
             return false;
         });
 

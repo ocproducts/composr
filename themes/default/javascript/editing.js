@@ -630,9 +630,9 @@ function doEmoticon(fieldName, callerEl, isOpener) {
     text = ' ' + title + ' ';
 
     if (isOpener) {
-        insertTextboxOpener(element, text, true, $cms.dom.html(callerEl));
+        return insertTextboxOpener(element, text, true, $cms.dom.html(callerEl), true);
     } else {
-        insertTextbox(element, text, true, $cms.dom.html(callerEl));
+        return insertTextbox(element, text, true, $cms.dom.html(callerEl), true);
     }
 }
 
@@ -733,7 +733,7 @@ function insertTextbox(element, text, isPlainInsert, html, async) {
             if (isPlainInsert) {
                 insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
 
-                _insertTextboxWysiwyg(editor, insert);
+                _insertTextboxWysiwyg(element, editor, insert);
                 resolvePromise();
             } else {
                 var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());

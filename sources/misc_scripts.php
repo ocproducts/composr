@@ -455,6 +455,7 @@ function page_link_chooser_script()
 
     require_lang('menus');
 
+    require_javascript('core_menus');
     require_javascript('tree_list');
 
     require_code('site');
