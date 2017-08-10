@@ -13382,7 +13382,7 @@ function uploadFinished(ob, file, data) {
         window.justCheckingRequirements = false;
 
         if (ob.originalClickHandler != null) {
-            if (ob.originalClickHandler(null, ob, btnSubmit.form, true)) {
+            if (ob.originalClickHandler(null, ob, btnSubmit.form, true) !== false) {
                 submitFormWithTheUpload(btnSubmit);
                 return true;
             }
