@@ -12,20 +12,22 @@
         var id = $cms.filter.id(params.title);
 
         document.getElementById('saved_use__' + id).addEventListener('submit', function () {
+            /**@alias window*/
             var win = $cms.getMainCmsWindow();
 
             var explanation = win.document.getElementById('explanation');
             explanation.value = params.explanation;
 
             var message = win.document.getElementById('message');
-            win.insertTextbox(message, params.message, null, false, params.messageHtml);
+            win.insertTextbox(message, params.message, false, params.messageHtml, true).then(function () {
+                if (window.fauxClose !== undefined) {
+                    window.fauxClose();
+                } else {
+                    window.close();
+                }
 
-            if (window.fauxClose !== undefined) {
-                window.fauxClose();
-            } else {
-                window.close();
-            }
-
+            });
+            
             return false;
         });
 

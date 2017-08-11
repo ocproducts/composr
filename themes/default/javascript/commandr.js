@@ -8,7 +8,9 @@ window.previousCommands || (window.previousCommands = []);
 
     $cms.templates.commandrMain = function commandrMain(params, container) {
         $cms.dom.on(container, 'submit', '.js-submit-commandr-form-submission', function (e, form) {
-            commandrFormSubmission($cms.dom.$('#commandr_command').value, form);
+            $cms.requireJavascript('core_form_interfaces').then(function () {
+                commandrFormSubmission($cms.dom.$('#commandr_command').value, form);
+            });
         });
 
         $cms.dom.on(container, 'keyup', '.js-keyup-input-commandr-handle-history', function (e, input) {
@@ -63,7 +65,9 @@ window.previousCommands || (window.previousCommands = []);
 
         $cms.dom.on(container, 'submit', '.js-submit-commandr-form-submission', function (e, form) {
             var command = 'write "' + file + '" "' + form.elements['edit_content'].value.replace(/\\/g, '\\\\').replace(/</g, '\\<').replace(/>/g, '\\>').replace(/"/g, '\\"') + '"';
-            commandrFormSubmission(command, form);
+            $cms.requireJavascript('core_form_interfaces').then(function () {
+                commandrFormSubmission(command, form);
+            });
         });
     };
 
@@ -129,13 +133,13 @@ window.previousCommands || (window.previousCommands = []);
             }
         }, 5000);
         window.previousCommands.push(command);
-
-        return false;
     }
 }(window.$cms));
 
 // Deal with the response to a command
-function commandrCommandResponse(ajaxResultFrame, ajaxResult) {
+function commandrCommandResponse(responseXml) {
+    var ajaxResult = responseXml && responseXml.querySelector('result');
+    
     if (window.disableTimeout) {
         clearTimeout(window.disableTimeout);
         window.disableTimeout = null;

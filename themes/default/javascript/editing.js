@@ -14,7 +14,7 @@ function wysiwygOn() {
 function toggleWysiwyg(name) {
     if (!$cms.$CONFIG_OPTION('wysiwyg')) {
         $cms.ui.alert('{!comcode:TOGGLE_WYSIWYG_ERROR;^}');
-        return false;
+        return;
     }
 
     var isWysiwygOn = wysiwygOn();
@@ -55,39 +55,40 @@ function toggleWysiwyg(name) {
                 140
             );
         }
-        return false;
+        return;
     }
 
     _toggleWysiwyg(name);
 
-    if ($cms.readCookie('use_wysiwyg') != '-1') {
+    if ($cms.readCookie('use_wysiwyg') !== '-1') {
         $cms.setCookie('use_wysiwyg', '1', 3000);
     }
 
-    return false;
-
     function _toggleWysiwyg(name) {
-        var isWysiwygOn = wysiwygOn();
-
-        var forms = document.getElementsByTagName('form');
-        var so = document.getElementById('post_special_options');
-        var so2 = document.getElementById('post_special_options2');
+        var isWysiwygOn = wysiwygOn(),
+            forms = document.getElementsByTagName('form'),
+            so = document.getElementById('post_special_options'),
+            so2 = document.getElementById('post_special_options2');
 
         if (isWysiwygOn) {
             // Find if the WYSIWYG has anything in it - if not, discard
-            var allEmpty = true, myregexp = new RegExp(/((\s)|(<p\d*\/>)|(<\/p>)|(<p>)|(&nbsp;)|(<br[^>]*>))*/);
+            var allEmpty = true, 
+                myregexp = new RegExp(/((\s)|(<p\d*\/>)|(<\/p>)|(<p>)|(&nbsp;)|(<br[^>]*>))*/);
+            
             for (var fid = 0; fid < forms.length; fid++) {
                 for (var counter = 0; counter < forms[fid].elements.length; counter++) {
                     var id = forms[fid].elements[counter].id;
                     if (window.wysiwygEditors[id] !== undefined) {
-                        if (window.wysiwygEditors[id].getData().replace(myregexp, '') != '') allEmpty = false;
+                        if (window.wysiwygEditors[id].getData().replace(myregexp, '') !== '') {
+                            allEmpty = false;
+                        }
                     }
                 }
             }
 
             if (allEmpty) {
                 disableWysiwyg(forms, so, so2, true);
-            } else if ((window.wysiwygOriginalComcode[id] === undefined) || (window.wysiwygOriginalComcode[id].indexOf('&#8203;') != -1) || (window.wysiwygOriginalComcode[id].indexOf('cms_keep') != -1)) {
+            } else if ((window.wysiwygOriginalComcode[id] === undefined) || (window.wysiwygOriginalComcode[id].indexOf('&#8203;') !== -1) || (window.wysiwygOriginalComcode[id].indexOf('cms_keep') !== -1)) {
                 disableWysiwyg(forms, so, so2, false);
             } else {
                 $cms.ui.generateQuestionUi(
@@ -98,104 +99,137 @@ function toggleWysiwyg(name) {
                         buttons__no: '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'
                     },
                     '{!comcode:DISABLE_WYSIWYG;^}',
-                    '{!javascript:DISCARD_WYSIWYG_CHANGES;^}',
-                    function (prompt) {
-                        if ((!prompt) || (prompt.toLowerCase() == '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase())) {
-                            if ($cms.readCookie('use_wysiwyg') == '0')
-                                $cms.setCookie('use_wysiwyg', '1', 3000);
-                            return false;
+                    '{!javascript:DISCARD_WYSIWYG_CHANGES;^}'
+                ).then(function (prompt) {
+                    if (!prompt || (prompt.toLowerCase() === '{!INPUTSYSTEM_CANCEL;^}'.toLowerCase())) {
+                        if ($cms.readCookie('use_wysiwyg') === '0') {
+                            $cms.setCookie('use_wysiwyg', '1', 3000);
                         }
-                        var discard = (prompt.toLowerCase() == '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
-
-                        disableWysiwyg(forms, so, so2, discard);
+                        return;
                     }
-                );
+
+                    var discard = (prompt.toLowerCase() === '{!javascript:DISCARD_WYSIWYG_CHANGES_LINE;^}'.toLowerCase());
+                    disableWysiwyg(forms, so, so2, discard);
+                });
             }
         } else {
             enableWysiwyg(forms, so, so2);
         }
-
-        return false;
     }
 
     function enableWysiwyg(forms, so, so2) {
+        forms = arrVal(forms);
+        
         window.wysiwygOn = function () {
             return true;
         };
 
-        for (var fid = 0; fid < forms.length; fid++) {
-            loadHtmlEdit(forms[fid], true);
-        }
+        var promiseCalls = [];
+        forms.forEach(function (form) {
+            promiseCalls.push(function () {
+                return window.loadHtmlEdit(form, true);
+            });
+        });
+        
+        return $cms.promiseSequence(promiseCalls);
     }
 
     function disableWysiwyg(forms, so, so2, discard) {
+        var promiseCalls = [];
+        
         for (var fid = 0; fid < forms.length; fid++) {
-            for (var counter = 0; counter < forms[fid].elements.length; counter++) {
-                var id = forms[fid].elements[counter].id;
-                if (window.wysiwygEditors[id] !== undefined) {
-                    var textarea = forms[fid].elements[counter];
-
-                    // Mark as non-WYSIWYG
-                    document.getElementById(id + '__is_wysiwyg').value = '0';
-                    textarea.style.display = 'block';
-                    textarea.style.visibility = 'visible';
-                    textarea.disabled = false;
-                    textarea.readOnly = false;
-
-                    if (window.rebuildAttachmentButtonForNext !== undefined) {
-                        window.rebuildAttachmentButtonForNext(id, 'attachment_upload_button');
-                    }
-
-                    // Unload editor
-                    var wysiwygData = window.wysiwygEditors[id].getData();
-                    try {
-                        window.wysiwygEditors[id].destroy();
-                    } catch (e) {}
-                    delete window.wysiwygEditors[id];
-
-                    // Comcode conversion
-                    if ((discard) && (window.wysiwygOriginalComcode[id])) {
-                        textarea.value = window.wysiwygOriginalComcode[id];
-                    } else {
-                        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keepStub());
-                        if (window.location.href.indexOf('topics') != -1) {
-                            url += '&forum_db=1';
-                        }
-                        var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
-                        post = $cms.form.modSecurityWorkaroundAjax(post);
-                        /*TODO: Synchronous XHR*/
-                        var request = $cms.doAjaxRequest(url, null, post);
-                        if (!request.responseXML || (!request.responseXML.documentElement.querySelector('result'))) {
-                            textarea.value = '[semihtml]' + wysiwygData + '[/semihtml]';
-                        } else {
-                            var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
-                            var result = resultTags[0];
-                            textarea.value = result.textContent.replace(/\s*$/, '');
-                        }
-                        if ((textarea.value.indexOf('{\$,page hint: no_wysiwyg}') == -1) && (textarea.value != '')) {
-                            textarea.value += '{\$,page hint: no_wysiwyg}';
-                        }
-                    }
-                    if (document.getElementById('toggle_wysiwyg_' + id))
-                        $cms.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
-
-                    // Unload editor
-                    try {
-                        window.wysiwygEditors[id].destroy();
-                    } catch (e) {}
+            var form = forms[fid];
+            
+            for (var counter = 0; counter < form.elements.length; counter++) {
+                var textarea = form.elements[counter];
+                
+                if (window.wysiwygEditors[textarea.id] === undefined) {
+                    continue;
                 }
+
+                promiseCalls.push((function (textarea) {
+                    return function () {
+                        return disableWysiwygTextarea(textarea, discard);
+                    }
+                }(textarea)));
             }
         }
-        if (so) {
-            so.style.display = 'block';
-        }
-        if (so2) {
-            so2.style.display = 'none';
-        }
+        
+        return $cms.promiseSequence(promiseCalls).then(function () {
+            if (so) {
+                $cms.dom.show(so);
+            }
+            if (so2) {
+                $cms.dom.hide(so2);
+            }
 
-        window.wysiwygOn = function () {
-            return false;
-        };
+            window.wysiwygOn = function () {
+                return false;
+            };
+        });
+    }
+    
+    function disableWysiwygTextarea(textarea, discard) {
+        return new Promise(function (resolvePromise) {
+            var id = textarea.id;
+
+            // Mark as non-WYSIWYG
+            document.getElementById(id + '__is_wysiwyg').value = '0';
+            textarea.style.display = 'block';
+            textarea.style.visibility = 'visible';
+            textarea.disabled = false;
+            textarea.readOnly = false;
+
+            if (window.rebuildAttachmentButtonForNext !== undefined) {
+                window.rebuildAttachmentButtonForNext(id, 'attachment_upload_button');
+            }
+
+            // Unload editor
+            var wysiwygData = window.wysiwygEditors[id].getData();
+            try {
+                window.wysiwygEditors[id].destroy();
+            } catch (ignore) {}
+
+            delete window.wysiwygEditors[id];
+
+            // Comcode conversion
+            if (discard && window.wysiwygOriginalComcode[id]) {
+                textarea.value = window.wysiwygOriginalComcode[id];
+                postWysiwygDisable(textarea);
+                return resolvePromise();
+            }
+            
+            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?from_html=1' + $cms.keepStub());
+            if (window.location.href.includes('topics')) {
+                url += '&forum_db=1';
+            }
+            var post = 'data=' + encodeURIComponent(wysiwygData.replace(new RegExp(String.fromCharCode(8203), 'g'), ''));
+            post = $cms.form.modSecurityWorkaroundAjax(post);
+            $cms.doAjaxRequest(url, function (_, xhr) {
+                if (!xhr.responseXML || !xhr.responseXML.querySelector('result')) {
+                    textarea.value = '[semihtml]' + wysiwygData + '[/semihtml]';
+                } else {
+                    var result = xhr.responseXML.querySelector('result');
+                    textarea.value = result.textContent.replace(/\s*$/, '');
+                }
+                if (textarea.value.includes('{\$,page hint: no_wysiwyg}') && (textarea.value !== '')) {
+                    textarea.value += '{\$,page hint: no_wysiwyg}';
+                }
+
+                postWysiwygDisable(textarea);
+                resolvePromise();
+            }, post);
+        });
+        
+        function postWysiwygDisable(textarea) {
+            if (document.getElementById('toggle_wysiwyg_' + textarea.id)) {
+                $cms.dom.html('#toggle_wysiwyg_' + textarea.id, '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG;^,icons/16x16/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG;^}" title="{!comcode:ENABLE_WYSIWYG;^}" class="vertical_alignment" />');
+            }
+
+            try {  // Unload editor 
+                window.wysiwygEditors[textarea.id].destroy();
+            } catch (ignore) {}
+        }
     }
 }
 
@@ -228,12 +262,17 @@ function wysiwygSetReadonly(name, readonly) {
 window.wysiwygEditors || (window.wysiwygEditors = {});
 window.wysiwygOriginalComcode || (window.wysiwygOriginalComcode = {});
 
+/**
+ * @param { HTMLFormElement } postingForm
+ * @param {boolean} ajaxCopy
+ * @return { Promise }
+ */
 function loadHtmlEdit(postingForm, ajaxCopy) {
-    if ((!postingForm.method) || (postingForm.method.toLowerCase() !== 'post')) {
-        return;
+    if (!postingForm.method || (postingForm.method.toLowerCase() !== 'post')) {
+        return Promise.resolve();
     }
 
-    if (!postingForm.elements['httpReferer']) {
+    if (!postingForm.elements['http_referer']) {
         var httpReferer = document.createElement('input');
         httpReferer.name = 'http_referer';
         httpReferer.value = window.location.href;
@@ -242,7 +281,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
     }
 
     if (!window.CKEDITOR || !$cms.$CONFIG_OPTION('wysiwyg') || !wysiwygOn()) {
-        return;
+        return Promise.resolve();
     }
 
     var so = document.getElementById('post_special_options'),
@@ -250,80 +289,83 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
 
     if (!postingForm.elements['post'] || postingForm.elements['post'].className.includes('wysiwyg')) {
         if (so) {
-            so.style.display = 'none';
+            $cms.dom.hide(so);
         }
-
         if (so2) {
-            so2.style.display = 'block';
+            $cms.dom.show(so2);
         }
     }
 
-    var counter, count = 0, e, indicator, thoseDone = [], id;
-    for (counter = 0; counter < postingForm.elements.length; counter++) {
-        e = postingForm.elements[counter];
-        id = e.id;
-
-        if ((e.type === 'textarea') && (e.classList.contains('wysiwyg'))) {
+    var promiseCalls = [];
+    arrVal(postingForm.elements).forEach(function (el) {
+        if ((el.type === 'textarea') && el.classList.contains('wysiwyg')) {
+            promiseCalls.push(function () {
+                return loadHtmlForTextarea(postingForm, el, ajaxCopy);
+            });
+        }
+    });
+    
+    return $cms.promiseSequence(promiseCalls);
+    
+    function loadHtmlForTextarea(postingForm, textarea, ajaxCopy) {
+        return new Promise(function (resolvePromise) {
+            var id = textarea.id, indicator;
+            
             if (document.getElementById(id + '__is_wysiwyg')) {
                 indicator = document.getElementById(id + '__is_wysiwyg');
             } else {
                 indicator = document.createElement('input');
                 indicator.setAttribute('type', 'hidden');
-                indicator.id = e.id + '__is_wysiwyg';
-                indicator.name = e.name + '__is_wysiwyg';
+                indicator.id = textarea.id + '__is_wysiwyg';
+                indicator.name = textarea.name + '__is_wysiwyg';
                 postingForm.appendChild(indicator);
             }
             indicator.value = '1';
 
-            if (thoseDone[id]) continue;
-            thoseDone[id] = 1;
-
-            count++;
             if (document.getElementById('toggle_wysiwyg_' + id)) {
                 $cms.dom.html(document.getElementById('toggle_wysiwyg_' + id), '<img src="{$IMG*;^,icons/16x16/editor/wysiwyg_off}" srcset="{$IMG;^,icons/32x32/editor/wysiwyg_off} 2x" alt="{!comcode:DISABLE_WYSIWYG;^}" title="{!comcode:DISABLE_WYSIWYG;^}" class="vertical_alignment" />');
             }
 
-            window.wysiwygOriginalComcode[id] = e.value;
+            window.wysiwygOriginalComcode[id] = textarea.value;
             if (!ajaxCopy) {
-                if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value != '') && ((e.defaultValue == ''/*LEGACY IE bug*/) || (e.defaultValue == e.value))) {// The extra conditionals are for if back button used
-                    e.value = postingForm.elements[id + '_parsed'].value;
+                if ((postingForm.elements[id + '_parsed'] !== undefined) && (postingForm.elements[id + '_parsed'].value !== '') && ((textarea.defaultValue == ''/*LEGACY IE bug*/) || (textarea.defaultValue == textarea.value))) {// The extra conditionals are for if back button used
+                    textarea.value = postingForm.elements[id + '_parsed'].value;
                 }
-            } else {
-                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keepStub());
-                if (window.location.href.indexOf('topics') != -1) {
-                    url += '&forum_db=1';
-                }
-                var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(postingForm.elements[counter].value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
-                if (!request.responseXML) {
-                    postingForm.elements[counter].value = '';
-                } else {
-                    var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
-                    if ((!resultTags) || (resultTags.length == 0)) {
-                        postingForm.elements[counter].value = '';
-                    } else {
-                        var result = resultTags[0];
-                        postingForm.elements[counter].value = result.textContent;
-                    }
-                }
+
+                setTimeout(function () {
+                    wysiwygEditorInitFor(textarea);
+                }, 1000);
+                return resolvePromise();
             }
-            setTimeout(function (e, id) {
-                return function () {
-                    wysiwygEditorInitFor(e, id);
+
+            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1&from_html=0' + $cms.keepStub());
+            if (window.location.href.includes('topics')) {
+                url += '&forum_db=1';
+            }
+
+            $cms.doAjaxRequest(url, function (_, xhr) {
+                if (!xhr.responseXML) {
+                    textarea.value = '';
+                } else {
+                    var result = xhr.responseXML.querySelector('result');
+                    textarea.value = result ? result.textContent : '';
                 }
-            }(e, id), 1000);
-        }
+
+                setTimeout(function () {
+                    wysiwygEditorInitFor(textarea);
+                }, 1000);
+
+                resolvePromise();
+            }, 'data=' + encodeURIComponent(textarea.value.replace(new RegExp(String.fromCharCode(8203), 'g'), '').replace('{' + '$,page hint: no_wysiwyg}', '')));
+        });
     }
 
-    function wysiwygEditorInitFor(element, id) {
-        var pageStylesheets = [];
-        if (!document) {
-            return;
-        }
-        var linkedSheets = document.getElementsByTagName('link');
+    function wysiwygEditorInitFor(element) {
+        var pageStylesheets = []; // NB: Used by WYSIWYG_SETTINGS.js
+        var linkedSheets = document.querySelectorAll('link[rel="stylesheet"]');
+        
         for (var counter = 0; counter < linkedSheets.length; counter++) {
-            if (linkedSheets[counter].getAttribute('rel') == 'stylesheet') {
-                pageStylesheets.push(linkedSheets[counter].getAttribute('href'));
-            }
+            pageStylesheets.push(linkedSheets[counter].getAttribute('href'));
         }
 
         // Fiddly procedure to find our colour
@@ -331,20 +373,26 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         document.body.appendChild(testDiv);
         testDiv.className = 'wysiwyg_toolbar_color_finder';
         var matches;
-        var wysiwygColor = window.getComputedStyle(testDiv).getPropertyValue('color');
+        var wysiwygColor = window.getComputedStyle(testDiv).getPropertyValue('color');  // NB: Used by WYSIWYG_SETTINGS.js
         testDiv.parentNode.removeChild(testDiv);
         matches = wysiwygColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/, matches);
         if (matches) {
             wysiwygColor = '#';
             var hex;
             hex = (parseInt(matches[1]).toString(16)) + '';
-            if (hex.length == 1) hex = '0' + hex;
+            if (hex.length === 1) {
+                hex = '0' + hex;
+            }
             wysiwygColor += hex;
             hex = (parseInt(matches[2]).toString(16)) + '';
-            if (hex.length == 1) hex = '0' + hex;
+            if (hex.length === 1) {
+                hex = '0' + hex;
+            }
             wysiwygColor += hex;
             hex = (parseInt(matches[3]).toString(16)) + '';
-            if (hex.length == 1) hex = '0' + hex;
+            if (hex.length === 1) {
+                hex = '0' + hex;
+            }
             wysiwygColor += hex;
         }
         // CKEditor doesn't allow low saturation, so raise up if we need to
@@ -363,8 +411,10 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             delete window.CKEDITOR.instances[element.id];
         }
         var editor = window.CKEDITOR.replace(element.id, editorSettings);
-        if (!editor) return; // Not supported on this platform
-        window.wysiwygEditors[id] = editor;
+        if (!editor) { // Not supported on this platform
+            return;
+        } 
+        window.wysiwygEditors[element.id] = editor;
 
         element.parentNode.className += ' ' + editorSettings.skin; // Used for us to target per-skin CSS
 
@@ -381,7 +431,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             var dialogName = ev.data.name;
             var dialogDefinition = ev.data.definition;
 
-            if (dialogName == 'table') {
+            if (dialogName === 'table') {
                 var info = dialogDefinition.getContents('info');
 
                 info.get('txtWidth')['default'] = '100%';
@@ -410,7 +460,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
         editor.on('change', sync);
         editor.on('mode', function () {
             var ta = editor.container.$.getElementsByTagName('textarea');
-            if (ta[0] != undefined) {
+            if (ta[0] != null) {
                 ta[0].onchange = sync; // The source view doesn't fire the 'change' event and we don't want to use the 'key' event
             }
         });
@@ -419,7 +469,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
             editor.setReadOnly(false); // Workaround for CKEditor bug found in 4.5.6, where it started sometimes without contentEditable=true
 
             if (window.setUpComcodeAutocomplete !== undefined) {
-                window.setUpComcodeAutocomplete(id);
+                window.setUpComcodeAutocomplete(element.id);
             }
 
             // Instant preview of Comcode
@@ -489,7 +539,7 @@ function findTagsInEditor(editor, element) {
                 if (event.pageY) eventCopy.pageY = 3000;
                 if (event.clientY) eventCopy.clientY = 3000;
 
-                if (this.origTitle != undefined) {
+                if (this.origTitle != null) {
                     $cms.ui.repositionTooltip(this, eventCopy);
                     this.title = this.origTitle;
                 }
@@ -509,28 +559,33 @@ function findTagsInEditor(editor, element) {
                 document.selection.selectRanges([range]);
             }
         };
+        
         if (comcodes[i].localName === 'input') {
             comcodes[i].readOnly = true;
             comcodes[i].contentEditable = true; // Undoes what ckeditor sets. Fixes weirdness with copy and paste in Chrome (adding extra block on end)
-            comcodes[i].ondblclick = function (event) {
+            comcodes[i].ondblclick = function (e) {
+                e.preventDefault();
+                
                 if (this.onmouseout) {
                     this.onmouseout();
                 }
                 var fieldName = editor.name;
-                if (this.id == '') this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
+                if (this.id === '') {
+                    this.id = 'comcode_tag_' + Math.round(Math.random() * 10000000);
+                }
                 var tagType = this.title.replace(/^\[/, '').replace(/[= \]](.|\n)*$/, '');
-                if (tagType == 'block') {
+                if (tagType === 'block') {
                     var blockName = this.title.replace(/\[\/block\]$/, '').replace(/^(.|\s)*\]/, '');
                     var url = '{$FIND_SCRIPT;,block_helper}?type=step2&block=' + encodeURIComponent(blockName) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
-                    url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') == -1) && (window.location.href.indexOf(':panel_') == -1)) ? 'main' : 'side');
+                    url = url + '&block_type=' + (((fieldName.indexOf('edit_panel_') === -1) && (window.location.href.indexOf(':panel_') === -1)) ? 'main' : 'side');
                     $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 } else {
                     var url = '{$FIND_SCRIPT;,comcode_helper}?type=step2&tag=' + encodeURIComponent(tagType) + '&field_name=' + fieldName + '&parse_defaults=' + encodeURIComponent(this.title) + '&save_to_id=' + encodeURIComponent(this.id) + $cms.keepStub();
                     $cms.ui.open($cms.maintainThemeInLink(url), '', 'width=750,height=auto,status=no,resizable=yes,scrollbars=yes', null, '{!INPUTSYSTEM_CANCEL;^}');
                 }
-                return false;
-            }
+            };
         }
+        
         comcodes[i].onmouseover = function (event) { // Shows preview
             if (event === undefined) {
                 event = editor.window.$.event;
@@ -552,10 +607,18 @@ function findTagsInEditor(editor, element) {
 
                 var eventCopy = {};
                 if (event) {
-                    if (event.pageX) eventCopy.pageX = 3000;
-                    if (event.clientX) eventCopy.clientX = 3000;
-                    if (event.pageY) eventCopy.pageY = 3000;
-                    if (event.clientY) eventCopy.clientY = 3000;
+                    if (event.pageX) {
+                        eventCopy.pageX = 3000;
+                    }
+                    if (event.clientX) {
+                        eventCopy.clientX = 3000;
+                    }
+                    if (event.pageY) {
+                        eventCopy.pageY = 3000;
+                    }
+                    if (event.clientY) {
+                        eventCopy.clientY = 3000;
+                    }
 
                     var selfOb = this;
                     if ((this.renderedTooltip === undefined && !selfOb.isOver) || (selfOb.tagText != tagText)) {
@@ -563,14 +626,16 @@ function findTagsInEditor(editor, element) {
                         selfOb.isOver = true;
 
                         var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?css=1&javascript=1&box_title={!PREVIEW&;^}' + $cms.keepStub());
-                        if (window.location.href.indexOf('topics') !== -1) {
+                        if (window.location.href.includes('topics')) {
                             url += '&forum_db=1';
                         }
 
-                        $cms.doAjaxRequest(url, function (ajaxResultFrame, ajaxResult) {
+                        $cms.doAjaxRequest(url, function (responseXml) {
+                            var ajaxResult = responseXml && responseXml.querySelector('result');
+                            
                             if (ajaxResult) {
-                                var tmpRendered = ajaxResult.textConten;
-                                if (tmpRendered.indexOf('{!CCP_ERROR_STUB;^}') == -1) {
+                                var tmpRendered = ajaxResult.textContent;
+                                if (tmpRendered.indexOf('{!CCP_ERROR_STUB;^}') === -1) {
                                     selfOb.renderedTooltip = tmpRendered;
                                 }
                             }
@@ -619,24 +684,23 @@ function doEmoticon(fieldName, callerEl, isOpener) {
     text = ' ' + title + ' ';
 
     if (isOpener) {
-        insertTextboxOpener(element, text, null, true, $cms.dom.html(callerEl));
+        return insertTextboxOpener(element, text, true, $cms.dom.html(callerEl), true);
     } else {
-        insertTextbox(element, text, null, true, $cms.dom.html(callerEl));
+        return insertTextbox(element, text, true, $cms.dom.html(callerEl), true);
     }
 }
 
 function doAttachment(fieldName, id, description) {
     if (!$cms.getMainCmsWindow().wysiwygEditors) {
-        return;
+        return Promise.resolve();
     }
 
     description = strVal(description);
 
     var element = $cms.getMainCmsWindow().document.getElementById(fieldName);
-
     var comcode = '\n\n[attachment description="' + $cms.filter.comcode(description) + '"]' + id + '[/attachment]';
 
-    insertTextboxOpener(element, comcode);
+    return insertTextboxOpener(element, comcode);
 }
 
 function getTextbox(element) {
@@ -667,48 +731,89 @@ function setTextbox(element, text, html) {
     }
 }
 
-/*
- Insert some text, with WYSIWYG support...
-
- element: non-WYSIWYG element
- text: text to insert (non-HTML)
- sel: Selection DOM object so we know what to *overwrite* with the inserted text (or NULL)
- plain_insert: Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation
- html: HTML to insert (if not passed then 'text' will be escaped)
-
- (Use insertTextboxWrapping to wrap Comcode tags around a selection)
+/**
+ * Insert some text, with WYSIWYG support...
+ * (Use insertTextboxWrapping to wrap Comcode tags around a selection)
+ *
+ * @param { Element } element - non-WYSIWYG element
+ * @param {string} text - text to insert (non-HTML)
+ * @param {boolean} [isPlainInsert] - Set to true if we are doing a simple insert, not inserting complex Comcode that needs to have editing representation.
+ * @param {string} [html] - HTML to insert (if not passed then 'text' will be escaped)
+ * @returns { Promise }
  */
-function insertTextbox(element, text, sel, plainInsert, html) {
-    plainInsert = !!plainInsert;
+function insertTextbox(element, text, isPlainInsert, html) {
+    text = strVal(text);
+    isPlainInsert = boolVal(isPlainInsert);
     html = strVal(html);
 
     if ($cms.form.isWysiwygField(element)) {
-        var editor = window.wysiwygEditors[element.id];
+        return insertTextboxWysiwyg(element, text, isPlainInsert, html);
+    } else {
+        return insertTextboxVanilla(element, text);
+    }
+    
+    function insertTextboxVanilla(element, text) {
+        var from = element.value.length,
+            to, start, end;
 
-        var insert = '';
-        if (plainInsert) {
-            insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
+        element.focus();
+
+        if (element.selectionEnd !== undefined) {
+            from = element.selectionStart;
+            to = element.selectionEnd;
+            start = element.value.substring(0, from);
+            end = element.value.substring(to, element.value.length);
+
+            element.value = start + element.value.substring(from, to) + text + end;
+            setSelectionRange(element, from + text.length, from + text.length);
         } else {
-            var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
-            if (window.location.href.indexOf('topics') != -1) {
-                url += '&forum_db=1';
-            }
-            /*TODO: Synchronous XHR*/
-            var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-            if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
-                var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
-                var result = resultTags[0];
-                insert = result.textContent.replace(/\s*$/, '');
-            }
+            // :(
+            from += 2;
+            element.value += text;
+            setSelectionRange(element, from + text.length, from + text.length);
         }
 
-        var before = editor.getData();
+        return Promise.resolve();
+    }
+    
+    function insertTextboxWysiwyg(element, text, isPlainInsert, html) {
+        return new Promise(function (resolvePromise) {
+            var editor = window.wysiwygEditors[element.id],
+                insert = '';
+
+            if (isPlainInsert) {
+                insert = getSelectedHtml(editor) + (html ? html : $cms.filter.html(text).replace(new RegExp('\\\\n', 'gi'), '<br />'));
+
+                _insertTextboxWysiwyg(element, editor, insert);
+                resolvePromise();
+            } else {
+                var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
+                if (window.location.href.includes('topics')) {
+                    url += '&forum_db=1';
+                }
+                
+                $cms.doAjaxRequest(url, function (responseXML) {
+                    if (responseXML && (responseXML.querySelector('result'))) {
+                        var result = responseXML.querySelector('result');
+                        insert = result.textContent.replace(/\s*$/, '');
+                    }
+
+                    _insertTextboxWysiwyg(element, editor, insert);
+                    resolvePromise();
+                }, 'data=' + encodeURIComponent(text.replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+            }
+        });
+    }
+
+    function _insertTextboxWysiwyg(element, editor, insert) {
+        var before = editor.getData(),
+            after;
 
         try {
             editor.focus(); // Needed on some browsers
-            var selectedHtml = getSelectedHtml(editor);
+            getSelectedHtml(editor);
 
-            if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() == 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
+            if (editor.getSelection() && (editor.getSelection().getStartElement().getName() === 'kbd')) {// Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
                 editor.document.getBody().appendHtml(insert);
             } else {
                 //editor.insertHtml(insert); Actually may break up the parent tag, we want it to nest nicely
@@ -716,61 +821,39 @@ function insertTextbox(element, text, sel, plainInsert, html) {
                 editor.insertElement(elementForInserting);
             }
 
-            var after = editor.getData();
+            after = editor.getData();
             if (after == before) {
-                throw 'Failed to insert';
+                throw new Error('Failed to insert');
             }
 
             findTagsInEditor(editor, element);
         } catch (e) { // Sometimes happens on Firefox in Windows, appending is a bit tamer (e.g. you cannot insert if you have the start of a h1 at cursor)
-
-            var after = editor.getData();
+            after = editor.getData();
             if (after === before) { // Could have just been a window.scrollBy popup-blocker exception, so only do this if the op definitely failed
                 editor.document.getBody().appendHtml(insert);
             }
         }
 
         editor.updateElement();
-
-        return;
     }
-
-    var from = element.value.length, to;
-
-    element.focus();
-
-    if ((sel === undefined) || (sel === null)) {
-        sel = document.selection ? document.selection : null;
-    }
-
-    if (element.selectionEnd !== undefined) {
-        from = element.selectionStart;
-        to = element.selectionEnd;
-
-        var start = element.value.substring(0, from);
-        var end = element.value.substring(to, element.value.length);
-
-        element.value = start + element.value.substring(from, to) + text + end;
-        setSelectionRange(element, from + text.length, from + text.length);
-    } else {
-        // :(
-        from += 2;
-        element.value += text;
-        setSelectionRange(element, from + text.length, from + text.length);
-    }
- }
-function insertTextboxOpener(element, text, sel, plainInsert, html) {
-    if (!sel) {
-        sel = $cms.getMainCmsWindow().document.selection || null;
-    }
-
-    $cms.getMainCmsWindow().insertTextbox(element, text, sel, plainInsert, html);
+}
+/**
+ * @param element
+ * @param text
+ * @param isPlainInsert
+ * @param html
+ * @return { Promise }
+ */
+function insertTextboxOpener(element, text, isPlainInsert, html) {
+    return $cms.getMainCmsWindow().insertTextbox(element, text, isPlainInsert, html);
 }
 
 // Get selected HTML from CKEditor
 function getSelectedHtml(editor) {
     var mySelection = editor.getSelection();
-    if (!mySelection || mySelection.getType() == window.CKEDITOR.SELECTION_NONE) return '';
+    if (!mySelection || mySelection.getType() == window.CKEDITOR.SELECTION_NONE) {
+        return '';
+    }
 
     var selectedText = '';
     if (mySelection.getNative()) {
@@ -781,10 +864,14 @@ function getSelectedHtml(editor) {
     return selectedText;
 }
 
-// Insert into the editor such as to *wrap* the current selection with something new (typically a new Comcode tag)
+/**
+ * Insert into the editor such as to *wrap* the current selection with something new (typically a new Comcode tag)
+ * @param element
+ * @param beforeWrapTag
+ * @param afterWrapTag
+ * @return { Promise }
+ */
 function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
-    var from, to;
-
     beforeWrapTag = strVal(beforeWrapTag);
     afterWrapTag = strVal(afterWrapTag);
 
@@ -794,33 +881,71 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
     }
 
     if ($cms.form.isWysiwygField(element)) {
-        var editor = window.wysiwygEditors[element.id];
+        return insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag);
+    } else {
+        return insertTextboxWrappingVanilla(element, beforeWrapTag, afterWrapTag);
+    }
+    
+    function insertTextboxWrappingVanilla(element, beforeWrapTag, afterWrapTag) {
+        var from, to, start, end;
+        
+        if (element.selectionEnd !== undefined) {
+            from = element.selectionStart;
+            to = element.selectionEnd;
+            start = element.value.substring(0, from);
+            end = element.value.substring(to, element.value.length);
 
-        editor.focus();
-        var selectedHtml = getSelectedHtml(editor);
-
-        if (selectedHtml == '') {
-            selectedHtml = '{!comcode:TEXT_OR_COMCODE_GOES_HERE;^}'.toUpperCase();
-        }
-
-        var newHtml = '';
-
-        var url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
-        if (window.location.href.indexOf('topics') != -1) {
-            url += '&forum_db=1';
-        }
-        /*TODO: Synchronous XHR*/
-        var request = $cms.doAjaxRequest(url, null, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
-        if ((request.responseXML) && (request.responseXML.documentElement.querySelector('result'))) {
-            var resultTags = request.responseXML.documentElement.getElementsByTagName('result');
-            var result = resultTags[0];
-            newHtml = result.textContent.replace(/\s*$/, '');
-            /* result is an XML-escaped string of HTML, so we get via looking at the node text */
+            if (to > from) {
+                element.value = start + beforeWrapTag + element.value.substring(from, to) + afterWrapTag + end;
+            } else {
+                element.value = start + beforeWrapTag + afterWrapTag + end;
+            }
+            setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
         } else {
-            newHtml = selectedHtml;
+            // :(
+            element.value += beforeWrapTag + afterWrapTag;
+            setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
         }
+        
+        return Promise.resolve();
+    }
+    
+    function insertTextboxWrappingWysiwyg(element, beforeWrapTag, afterWrapTag) {
+        return new Promise(function (resolvePromise) {
 
-        if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() == 'kbd')) { // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
+            var editor = window.wysiwygEditors[element.id];
+
+            editor.focus();
+            var selectedHtml = getSelectedHtml(editor);
+
+            if (selectedHtml === '') {
+                selectedHtml = '{!comcode:TEXT_OR_COMCODE_GOES_HERE;^}'.toUpperCase();
+            }
+
+            var newHtml = '',
+                url = $cms.maintainThemeInLink('{$FIND_SCRIPT_NOHTTP;,comcode_convert}?semihtml=1' + $cms.keepStub());
+
+            if (window.location.href.includes('topics')) {
+                url += '&forum_db=1';
+            }
+            
+            $cms.doAjaxRequest(url, function (responseXml) {
+                if (responseXml && (responseXml.querySelector('result'))) {
+                    var result = responseXml.querySelector('result');
+                    newHtml = result.textContent.replace(/\s*$/, '');
+                    /* result is an XML-escaped string of HTML, so we get via looking at the node text */
+                } else {
+                    newHtml = selectedHtml;
+                }
+
+                _insertTextboxWrappingWysiwyg(element, editor, newHtml);
+                resolvePromise();
+            }, 'data=' + encodeURIComponent((beforeWrapTag + selectedHtml + afterWrapTag).replace(new RegExp(String.fromCharCode(8203), 'g'), '')));
+        });
+    }
+
+    function _insertTextboxWrappingWysiwyg(element, editor, newHtml) {
+        if ((editor.getSelection()) && (editor.getSelection().getStartElement().getName() === 'kbd')) { // Danger Danger - don't want to insert into another Comcode tag. Put it after. They can cut+paste back if they need.
             editor.document.getBody().appendHtml(newHtml);
         } else {
             editor.insertHtml(newHtml);
@@ -829,37 +954,14 @@ function insertTextboxWrapping(element, beforeWrapTag, afterWrapTag) {
         findTagsInEditor(editor, element);
 
         editor.updateElement();
-
-        return;
-    }
-
-    if (element.selectionEnd != null) {
-        from = element.selectionStart;
-        to = element.selectionEnd;
-
-        var start = element.value.substring(0, from);
-        var end = element.value.substring(to, element.value.length);
-
-        if (to > from) {
-            element.value = start + beforeWrapTag + element.value.substring(from, to) + afterWrapTag + end;
-        } else {
-            element.value = start + beforeWrapTag + afterWrapTag + end;
-        }
-        setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
-    } else {
-        // :(
-        element.value += beforeWrapTag + afterWrapTag;
-        setSelectionRange(element, from, to + beforeWrapTag.length + afterWrapTag.length);
     }
 }
 
 // From http://www.faqts.com/knowledge_base/view.phtml/aid/13562
 function setSelectionRange(input, selectionStart, selectionEnd) {
+    input.focus();
     if (input.setSelectionRange !== undefined) {
-        input.focus();
         input.setSelectionRange(selectionStart, selectionEnd);
-    } else {
-        input.focus();
     }
 }
 

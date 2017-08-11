@@ -113,8 +113,7 @@
                             }
                         }
                         if (tabs[i] === tab) {
-                            $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
-                            $cms.dom.fadeTransition(element, 100, 30, 4);
+                            $cms.dom.fadeIn(element);
 
                             elementh.classList.add('tab_active');
                         } else {
@@ -143,14 +142,15 @@
                 post = $cms.form.modSecurityWorkaroundAjax(post);
                 $cms.doAjaxRequest(url, reloadedPreview, post);
 
-                function reloadedPreview(ajaxResultFrame, ajaxResult) {
+                function reloadedPreview(responseXml) {
+                    var ajaxResult = responseXml && responseXml.querySelector('result');
+                    
                     if (!loadingPreviewOf) {
                         return;
                     }
 
                     var element = $cms.dom.$id('view_' + loadingPreviewOf);
                     $cms.dom.html(element, ajaxResult.textContent.replace(/^((\s)|(\<br\s*\>)|(&nbsp;))*/, '').replace(/((\s)|(\<br\s*\>)|(&nbsp;))*$/, ''));
-
                     $cms.form.disablePreviewScripts(element);
                 }
             }

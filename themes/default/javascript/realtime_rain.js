@@ -128,19 +128,20 @@ function realtimeRainButtonLoadHandler() {
 
     var x = document.createElement('div');
     document.body.appendChild(x);
-    $cms.dom.html(x, $cms.loadSnippet('realtime_rain_load'));
-    e = document.getElementById('real_time_surround');
-    e.style.position = 'absolute';
-    e.style.zIndex = 100;
-    e.style.left = 0;
-    e.style.top = 0;
-    e.style.width = '100%';
-    e.style.height = ($cms.dom.getWindowScrollHeight() - 40) + 'px';
-    $cms.dom.smoothScroll(0);
 
-    startRealtimeRain();
+    $cms.loadSnippet('realtime_rain_load', null, true).then(function (html) {
+        $cms.dom.html(x, html);
+        e = document.getElementById('real_time_surround');
+        e.style.position = 'absolute';
+        e.style.zIndex = 100;
+        e.style.left = 0;
+        e.style.top = 0;
+        e.style.width = '100%';
+        e.style.height = ($cms.dom.getWindowScrollHeight() - 40) + 'px';
+        $cms.dom.smoothScroll(0);
 
-    return false; // No need to load link now, because we've done an overlay
+        startRealtimeRain();
+    });
 }
 
 // Called to start the animation
@@ -177,7 +178,9 @@ function getMoreEvents(from, to) {
     $cms.doAjaxRequest(url, receivedEvents);
 }
 
-function receivedEvents(ajaxResultFrame, ajaxResult) {
+function receivedEvents(responseXml) {
+    var ajaxResult = responseXml && responseXml.querySelector('result');
+    
     document.getElementById('loading_icon').style.display = 'none';
 
     var bubbles = document.getElementById('bubbles_go_here');
@@ -278,7 +281,7 @@ function receivedEvents(ajaxResultFrame, ajaxResult) {
                             nextIcon.style.left = _left + 'px';
                             var _top = ((parseInt(nextIcon.style.top) || 0) + nextIcon.yVector);
                             nextIcon.style.top = _top + 'px';
-                            $cms.dom.clearTransitionAndSetOpacity(nextIcon, nextIcon.opacity);
+                            nextIcon.style.opacity = nextIcon.opacity;
                             nextIcon.opacity *= 0.98;
                             nextIcon.yVector += 0.2;
                             if ((_top > maxHeight) || (nextIcon.opacity < 0.05) || (_left + 50 > windowWidth) || (_left < 0)) {
@@ -339,8 +342,8 @@ function timelineClick(prospective) {
     if (!prospective) {
         window.currentTime = time;
         bubblesTidyUp();
-        $cms.dom.html(document.getElementById('real_time_date'), '{!SET;^}');
-        $cms.dom.html(document.getElementById('real_time_time'), '');
+        $cms.dom.html('#real_time_date', '{!SET;^}');
+        $cms.dom.html('#real_time_time', '');
         document.getElementById('loading_icon').style.display = 'block';
     } else {
         setTimeLinePosition(time);
@@ -349,7 +352,9 @@ function timelineClick(prospective) {
 
 function bubblesTidyUp() {
     var bubblesGoHere = document.getElementById('bubbles_go_here');
-    if (!bubblesGoHere) return;
+    if (!bubblesGoHere) {
+        return;
+    }
     var bubbles = document.getElementById('real_time_surround').parentNode.querySelectorAll('.bubble_wrap');
     for (var i = 0; i < bubbles.length; i++) {
         if (bubbles[i].timer) {
@@ -373,20 +378,22 @@ function bubblesTidyUp() {
 function setTimeLinePosition(time) {
     time = Math.round(time);
 
-    var marker = document.getElementById('real_time_indicator');
-    var timelineLength = 808;
-    var minTime = window.minTime;
-    var maxTime = timeNow();
-    var timelineRange = maxTime - minTime;
-    var timelineOffsetTime = time - minTime;
-    var timelineOffsetPosition = timelineOffsetTime * timelineLength / timelineRange;
+    var marker = document.getElementById('real_time_indicator'),
+        timelineLength = 808,
+        minTime = window.minTime,
+        maxTime = timeNow(),
+        timelineRange = maxTime - minTime,
+        timelineOffsetTime = time - minTime,
+        timelineOffsetPosition = timelineOffsetTime * timelineLength / timelineRange;
     marker.style.marginLeft = (50 + timelineOffsetPosition) + 'px';
 
     var dateObject = new Date();
     dateObject.setTime(time * 1000);
     var realtimedate = document.getElementById('real_time_date');
     var realtimetime = document.getElementById('real_time_time');
-    if (!realtimedate) return;
+    if (!realtimedate) {
+        return;
+    }
     $cms.dom.html(realtimedate, dateObject.getFullYear() + '/' + ('' + dateObject.getMonth()) + '/' + ('' + dateObject.getDate()));
     $cms.dom.html(realtimetime, ('' + dateObject.getHours()) + ':' + ('' + dateObject.getMinutes()) + ':' + ('' + dateObject.getSeconds()));
 }

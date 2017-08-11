@@ -26,7 +26,7 @@
                     }
 
                     $cms.loadSnippet('profile_tab&tab=' + tabCode + '&member_id=' + this.memberId + window.location.search.replace('?', '&'), null, true).then(function (result) {
-                        $cms.dom.html('#g_' + tabCode, result.responseText);
+                        $cms.dom.html('#g_' + tabCode, result);
                         $cms.dom.findUrlTab();
                     });
                 }).bind(this);

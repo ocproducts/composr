@@ -55,8 +55,7 @@
                         errormsgElement.setAttribute('role', 'alert');
 
                         // Fade in
-                        $cms.dom.clearTransitionAndSetOpacity(errormsgElement, 0.0);
-                        $cms.dom.fadeTransition(errormsgElement, 100, 30, 4);
+                        $cms.dom.fadeIn(errormsgElement);
 
                     } else {
                         theElement.setAttribute('aria-invalid', 'false');
@@ -89,6 +88,7 @@
      * @memberof $cms.form
      * @param form
      * @param event
+     * @param analyticEventCategory
      * @returns {boolean}
      */
     $cms.form.doFormSubmit = function doFormSubmit(form, event, analyticEventCategory) {
@@ -114,7 +114,7 @@
             }
             for (i = 0; i < elements.length; i++) {
                 name = elements[i].name;
-                if (name && ((name.substr(0, 11) == 'label_for__') || (name.substr(0, 14) == 'tick_on_form__') || (name.substr(0, 9) == 'comcode__') || (name.substr(0, 9) == 'require__'))) {
+                if (name && ((name.substr(0, 11) === 'label_for__') || (name.substr(0, 14) === 'tick_on_form__') || (name.substr(0, 9) === 'comcode__') || (name.substr(0, 9) === 'require__'))) {
                     elements[i].parentNode.removeChild(elements[i]);
                 }
             }
@@ -218,12 +218,11 @@
 
     /**
      * @memberof $cms.form
-     * @param theElement
-     * @returns {*|boolean}
+     * @param el
+     * @returns {boolean}
      */
-    $cms.form.isWysiwygField = function isWysiwygField(theElement) {
-        var id = theElement.id;
-        return window.wysiwygEditors && (typeof window.wysiwygEditors === 'object') && (typeof window.wysiwygEditors[id] === 'object');
+    $cms.form.isWysiwygField = function isWysiwygField(el) {
+        return (window.wysiwygEditors != null) && (typeof window.wysiwygEditors === 'object') && (window.wysiwygEditors[el.id] != null) && (typeof window.wysiwygEditors[el.id] === 'object');
     };
 
     /**

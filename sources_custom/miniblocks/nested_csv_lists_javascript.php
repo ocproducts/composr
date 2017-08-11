@@ -43,7 +43,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
     'use strict';
 
     /** @type {Object} */
-    window.nested_csv_structure = <?= json_encode((array)$csv_structure) ?>;
+    window.nestedCsvStructure = <?= json_encode((array)$csv_structure) ?>;
 
     (window.$cmsReady || (window.$cmsReady = [])).push(function () {
         var forms = document.getElementsByTagName('form');
@@ -54,13 +54,17 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
     });
 
     function injectFormSelectChainingForm(form) {
-        var cpfFields = window.nested_csv_structure.cpf_fields;
+        var cpfFields = window.nestedCsvStructure.cpf_fields;
         for (var i in cpfFields) {
             var cpfField = cpfFields[i];
-            if (cpfField.possible_fields === undefined) continue; // Is not part of list
+            if (cpfField.possible_fields === undefined) { // Is not part of list
+                continue;
+            }
 
             var element = findCpfFieldElement(form, cpfField);
-            if (element) injectFormSelectChainingElement(element, cpfField, true);
+            if (element) {
+                injectFormSelectChainingElement(element, cpfField, true);
+            }
         }
     }
 
@@ -82,7 +86,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
     }
 
     function injectFormSelectChainingElement(element, cpfField, initialRun) {
-        var cpfFields = window.nested_csv_structure.cpf_fields;
+        var cpfFields = window.nestedCsvStructure.cpf_fields;
 
         var changesMadeAlready = true;
 
@@ -102,7 +106,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                 option.value = '';
             } else { // Parent is set, so we need to filter possibilities
                 // Work out available (filtered) possibilities
-                var csvData = window.nested_csv_structure.csv_files[cpfField.csv_parent_filename].data;
+                var csvData = window.nestedCsvStructure.csv_files[cpfField.csv_parent_filename].data;
                 var possibilities = [];
                 for (var i = 0; i < csvData.length; i++) { // This is going through parent table. Note that the parent table must contain both the child and parent IDs, as essentially it is a linker table. Field names are defined as unique across all CSV files, so you don't need to use the same actual CSV file as the parent field was drawn from.
 
@@ -120,7 +124,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                     }
                 }
                 if (cpfField.csv_parent_filename != cpfField.csv_filename) {
-                    csvData = window.nested_csv_structure.csv_files[cpfField.csv_filename].data;
+                    csvData = window.nestedCsvStructure.csv_files[cpfField.csv_filename].data;
                     for (var i = 0; i < csvData.length; i++) {
                         if ((csvData[i]['deprecated'] !== undefined) && (csvData[i]['deprecated'] == '1') && (window.handle_csv_deprecation !== undefined) && (window.window.handle_csv_deprecation)) {
                             for (var j = 0; j < possibilities.length; j++) {
@@ -142,17 +146,18 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                 }
                 var previousOne = null;
                 for (var i = 0; i < possibilities.length; i++) {
-                    if (possibilities[i] === null) continue;
+                    if (possibilities[i] === null) {
+                        continue;
+                    }
 
-                    if (previousOne != possibilities[i]) // don't allow dupes (which we know are sequential due to sorting)
-                    { // not a dupe
+                    if (previousOne != possibilities[i]) { // don't allow dupes (which we know are sequential due to sorting)
+                        // not a dupe
                         option = document.createElement('option');
                         element.add(option, null);
                         $cms.dom.html(option, escape_html(possibilities[i]));
                         option.value = possibilities[i];
                         if (currentValue.length == 0) {
-                            if (element.multiple) // Pre-select all, if multiple input
-                            {
+                            if (element.multiple) { // Pre-select all, if multiple input
                                 option.selected = true;
                             }
                         } else {
@@ -164,7 +169,9 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                     }
                 }
                 if (!element.multiple) {
-                    if (element.options.length == 2) element.selectedIndex = 1; // Only one thing to select, so may as well auto-select it
+                    if (element.options.length == 2) { // Only one thing to select, so may as well auto-select it
+                        element.selectedIndex = 1;
+                    }
                 }
             }
 
@@ -207,7 +214,7 @@ foreach ($csv_structure['csv_files'] as $csv_filename => $csv_file) {
                 }
             };
         } else {
-            element.onchange(); // Cascade
+            $cms.dom.trigger(element, 'change');  // Cascade
         }
     }
 

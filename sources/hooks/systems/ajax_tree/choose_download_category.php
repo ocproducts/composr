@@ -51,7 +51,7 @@ class Hook_ajax_tree_choose_download_category
 
         $out = '';
 
-        $out .= '<options>' . serialize($options) . '</options>';
+        $out .= '<options>' . xmlentities(json_encode($options)) . '</options>';
 
         if ($compound_list) {
             list($tree,) = $tree;

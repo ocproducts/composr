@@ -166,31 +166,30 @@
 
         function saveFunction() {
             // Call AJAX request
-            $cms.doAjaxRequest(input.form.action, function (response) {
+            $cms.doAjaxRequest(input.form.action, function (_, xhr) {
                 // Some kind of error?
-                if (((response.responseText == '') && (input.value != '')) || (response.status != 200)) {
+                if (((xhr.responseText === '') && (input.value !== '')) || (xhr.status !== 200)) {
                     var sessionTestUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}';
-                    /*TODO: Synchronous XHR*/
-                    var sessionTestRet = $cms.doAjaxRequest(sessionTestUrl + $cms.keepStub(true));
 
-                    if (sessionTestRet.responseText) { // If it failed, see if it is due to a non-confirmed session
-                        $cms.ui.confirmSession(
-                            function (result) {
-                                if (result) {
-                                    saveFunction();
-                                } else {
-                                    cleanupFunction();
+                    $cms.doAjaxRequest(sessionTestUrl + $cms.keepStub(true), function (_, sessionXhr) {
+                        if (sessionXhr.responseText) { // If it failed, see if it is due to a non-confirmed session
+                            $cms.ui.confirmSession(
+                                function (result) {
+                                    if (result) {
+                                        saveFunction();
+                                    } else {
+                                        cleanupFunction();
+                                    }
                                 }
-                            }
-                        );
-                    } else {
-                        cleanupFunction(); // Has to happen before, as that would cause defocus then refocus, causing a second save attempt
-
-                        $cms.ui.alert((response.status == 500) ? response.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', null, '{!FRACTIONAL_EDIT;^}');
-                    }
+                            );
+                        } else {
+                            cleanupFunction(); // Has to happen before, as that would cause defocus then refocus, causing a second save attempt
+                            $cms.ui.alert((xhr.status === 500) ? xhr.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', null, '{!FRACTIONAL_EDIT;^}');
+                        }
+                    });
                 } else { // Success
                     object.rawText = input.value;
-                    $cms.dom.html(object, response.responseText);
+                    $cms.dom.html(object, xhr.responseText);
 
                     cleanupFunction();
                 }

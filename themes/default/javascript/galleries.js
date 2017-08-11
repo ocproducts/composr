@@ -74,10 +74,8 @@
             setTimeout(function () {
                 function func() {
                     data.fpAnimationFader.src = data.fpAnimation.src;
-                    $cms.dom.clearTransitionAndSetOpacity(data.fpAnimationFader, 1.0);
-                    $cms.dom.fadeTransition(data.fpAnimationFader, 0, periodInMsecs, increment * -1);
-                    $cms.dom.clearTransitionAndSetOpacity(data.fpAnimation, 0.0);
-                    $cms.dom.fadeTransition(data.fpAnimation, 100, periodInMsecs, increment);
+                    $cms.dom.fadeOut(data.fpAnimationFader);
+                    $cms.dom.fadeIn(data.fpAnimation);
                     data.fpAnimation.src = data['url' + k];
                     data.fpAnimationFader.style.left = ((data.fpAnimationFader.parentNode.offsetWidth - data.fpAnimationFader.offsetWidth) / 2) + 'px';
                     data.fpAnimationFader.style.top = ((data.fpAnimationFader.parentNode.offsetHeight - data.fpAnimationFader.offsetHeight) / 2) + 'px';
@@ -341,13 +339,13 @@
             }
 
             if (callback !== undefined) {
-                $cms.doAjaxRequest(url, function (ajaxResultRaw) {
-                    _slideshowReadInSlide(ajaxResultRaw, slide);
+                $cms.doAjaxRequest(url, function (_, xhr) {
+                    _slideshowReadInSlide(xhr, slide);
                     callback();
                 });
             } else {
-                $cms.doAjaxRequest(url, function (ajaxResultRaw) {
-                    _slideshowReadInSlide(ajaxResultRaw, slide);
+                $cms.doAjaxRequest(url, function (_, xhr) {
+                    _slideshowReadInSlide(xhr, slide);
                 });
             }
         } else {
@@ -380,12 +378,12 @@
                 fadeElements = document.body.querySelectorAll('.scale_down');
                 if ((fadeElements[0] !== undefined) && (fadeElementsOld[0] !== undefined)) {
                     var fadeElement = fadeElements[0];
-                    $cms.dom.clearTransitionAndSetOpacity(fadeElement, 0);
                     fadeElement.parentNode.insertBefore(fadeElementOld, fadeElement);
                     fadeElement.parentNode.style.position = 'relative';
-                    $cms.dom.fadeTransition(fadeElement, 100.0, 30, 10);
-                    $cms.dom.clearTransitionAndSetOpacity(fadeElementOld, 1.0);
-                    $cms.dom.fadeTransition(fadeElementOld, 0.0, 30, -10, true);
+                    $cms.dom.fadeIn(fadeElement);
+                    $cms.dom.fadeOut(fadeElementOld, null, function () {
+                        $cms.dom.remove(fadeElementOld);
+                    });
                 } // else probably a video
 
                 if (slideshowFrom){

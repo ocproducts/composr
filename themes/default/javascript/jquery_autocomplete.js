@@ -677,7 +677,9 @@ function setUpComcodeAutocomplete(name, wysiwyg) {
         onFilterChanged: function (sew, token, expression) {
             $cms.doAjaxRequest(
                 '{$FIND_SCRIPT_NOHTTP;,namelike}?id=' + encodeURIComponent(token) + $cms.keepStub(),
-                function (result, listContents) {
+                function (responseXml) {
+                    var listContents = responseXml && responseXml.querySelector('result');
+                    
                     var newValues = [];
                     for (var i = 0; i < listContents.childNodes.length; i++) {
                         newValues.push({

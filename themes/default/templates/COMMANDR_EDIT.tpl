@@ -1,4 +1,5 @@
 {$SET,rndx,{$RAND}}
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$REQUIRE_JAVASCRIPT,commandr}
 
 <div data-tpl="commandrEdit" data-tpl-params="{+START,PARAMS_JSON,FILE}{_*}{+END}">

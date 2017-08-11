@@ -36,41 +36,45 @@
      */
     function TreeList(params) {
         TreeList.base(this, 'constructor', arguments);
-
-        this.name = params.name;
-        this.ajaxUrl = params.ajaxUrl;
-        this.options = params.options;
+        
+        this.name = strVal(params.name);
+        this.ajaxUrl = strVal(params.ajaxUrl);
+        this.options = strVal(params.options);
         this.multiSelection = !!params.multiSelection;
-        this.tabindex = params.tabindex || null;
+        this.tabindex = strVal(params.tabindex, null);
         this.allNodesSelectable = !!params.allNodesSelectable;
         this.useServerId = !!params.useServerId;
 
         $cms.dom.html(this.el, '<div class="ajax_loading vertical_alignment"><img src="' + $cms.img('{$IMG*;^,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
 
         // Initial rendering
-        var url = $cms.baseUrl(this.ajaxUrl);
+        var url = $cms.baseUrl(this.ajaxUrl), 
+            that = this;
         if (params.rootId) {
             url += '&id=' + encodeURIComponent(params.rootId);
         }
         url += '&options=' + this.options;
         url += '&default=' + encodeURIComponent($cms.dom.$id(this.name).value);
+        
+        $cms.doAjaxRequest(url, function (responseXml, xhr) {
+            that.response(responseXml, xhr);
+        });
 
-        $cms.doAjaxRequest(url, this.response.bind(this));
-
-        $cms.dom.on(document.documentElement, 'mousemove', (function (event) {
-            this.specialKeyPressed = !!(event.ctrlKey || event.altKey || event.metaKey || event.shiftKey)
-        }).bind(this));
+        $cms.dom.on(document.documentElement, 'mousemove', function (event) {
+            that.specialKeyPressed = !!(event.ctrlKey || event.altKey || event.metaKey || event.shiftKey)
+        });
     }
 
-    $cms.inherits(TreeList, $cms.View, /**@lends TreeList#*/ {
+    $cms.inherits(TreeList, $cms.View, /**@lends TreeList#*/{
         specialKeyPressed: false,
-        treeListData: '',
+        /**@type { Node }*/
+        treeListData: null,
         busy: false,
         lastClicked: null, // The hyperlink object that was last clicked (usage during multi selection when holding down shift)
 
         /* Go through our tree list looking for a particular XML node */
         getElementByIdHack: function getElementByIdHack(id, type, ob, serverid) {
-            type = strVal(type) || 'c';
+            type = strVal(type, 'c');
             ob = ob || this.treeListData;
             serverid = !!serverid;
 
@@ -84,7 +88,9 @@
             return null;
         },
 
-        response: function response(ajaxResultFrame, ajaxResult, expandingId) {
+        response: function response(responseXml, xhr, expandingId) {
+            var ajaxResult = responseXml && responseXml.querySelector('result');
+            
             if (!ajaxResult) {
                 return;
             }
@@ -117,27 +123,21 @@
             }
 
             attributesFullFixup(xml);
-
-            this.rootElement = this.renderTree(xml, html);
-
-            var name = this.name;
-            fixupNodePositions(name);
+            this.renderTree(xml, html);
+            fixupNodePositions(this.name);
         },
 
         renderTree: function renderTree(xml, html, element) {
-            var that = this, i, colour, newHtml, url, escapedTitle,
-                initiallyExpanded, selectable, extra, title, func,
-                temp, masterHtml, node, nodeSelfWrap, nodeSelf, a;
+            var that = this, colour, newHtml, escapedTitle, initiallyExpanded, 
+                selectable, extra, title, func, masterHtml;
 
             element || (element = $cms.dom.$id(this.name));
 
-            $cms.dom.clearTransitionAndSetOpacity(html, 0.0);
-            $cms.dom.fadeTransition(html, 100, 30, 4);
-
-            html.style.display = xml.firstElementChild ? 'block' : 'none';
+            $cms.dom.fadeIn(html);
+            $cms.dom.toggle(html, !!xml.firstElementChild);
 
             $cms.forEach(xml.children, function (node) {
-                var el, htmlNode, expanding;
+                var nodeSelfWrap, nodeSelf, el, label, htmlNode, expanding;
 
                 // Special handling of 'options' nodes, inject new options
                 if (node.localName === 'options') {
@@ -171,7 +171,7 @@
                     return;
                 }
 
-                // Category or entry nodes
+                /* Category or entry nodes */
                 extra = ' ';
                 func = node.getAttribute('img_func_1');
                 if (func) {
@@ -193,22 +193,26 @@
                 nodeSelf = document.createElement('div');
                 nodeSelf.className = 'tree_list_node';
                 nodeSelfWrap.appendChild(nodeSelf);
-                nodeSelf.object = that;
-                colour = (node.getAttribute('selectable') == 'true' || that.allNodesSelectable) ? 'native_ui_foreground' : 'locked_input_field';
-                selectable = (node.getAttribute('selectable') == 'true' || that.allNodesSelectable);
+                colour = (node.getAttribute('selectable') === 'true' || that.allNodesSelectable) ? 'native_ui_foreground' : 'locked_input_field';
+                selectable = (node.getAttribute('selectable') === 'true' || that.allNodesSelectable);
+                
                 if (node.localName === 'category') {
                     // Render self
-                    nodeSelf.className = (node.getAttribute('highlighted') == 'true') ? 'tree_list_highlighted' : 'tree_list_nonhighlighted';
-                    initiallyExpanded = (node.getAttribute('has_children') != 'true') || (node.getAttribute('expanded') == 'true');
+                    nodeSelf.className = (node.getAttribute('highlighted') === 'true') ? 'tree_list_highlighted' : 'tree_list_nonhighlighted';
+                    initiallyExpanded = (node.getAttribute('has_children') !== 'true') || (node.getAttribute('expanded') === 'true');
                     escapedTitle = $cms.filter.html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
-                    if (escapedTitle == '') escapedTitle = '{!NA_EM;^}';
+                    if (escapedTitle == '') {
+                        escapedTitle = '{!NA_EM;^}';
+                    }
                     var description = '';
                     var descriptionInUse = '';
                     if (node.getAttribute('description_html')) {
                         description = node.getAttribute('description_html');
                         descriptionInUse = $cms.filter.html(description);
                     } else {
-                        if (node.getAttribute('description')) description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        if (node.getAttribute('description')) {
+                            description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        }
                         descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
                     var imgUrl = $cms.img('{$IMG;,1x/treefield/category}');
@@ -221,12 +225,11 @@
                         <div> \
                             <input class="ajax_tree_expand_icon"' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' type="image" alt="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + ': ' + escapedTitle + '" title="' + ((!initiallyExpanded) ? '{!EXPAND;^}' : '{!CONTRACT;^}') + '" id="' + that.name + 'texp_c_' + node.getAttribute('id') + '" src="' + $cms.url(!initiallyExpanded ? '{$IMG*;,1x/treefield/expand}' : '{$IMG*;,1x/treefield/collapse}') + '" srcset="' + $cms.url(!initiallyExpanded ? '{$IMG*;,2x/treefield/expand}' : '{$IMG*;,2x/treefield/collapse}') + ' 2x" /> \
                             <img class="ajax_tree_cat_icon" alt="{!CATEGORY;^}" src="' + $cms.filter.html(imgUrl) + '" srcset="' + $cms.filter.html(imgUrl2) + ' 2x" /> \
-                            <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(descriptionInUse)) + '\', \'auto\']" class="ajax_tree_magic_button ' + colour + '"><input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label> \
+                            <label id="' + that.name + 'tsel_c_' + node.getAttribute('id') + '" for="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : $cms.filter.html(descriptionInUse)) + '\', \'auto\']" class="ajax_tree_magic_button ' + colour + '">\ <input ' + (that.tabindex ? ('tabindex="' + that.tabindex + '" ') : '') + 'id="' + that.name + 'tsel_r_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" title="' + descriptionInUse + '" />' + escapedTitle + '</label> \
                             <span id="' + that.name + 'extra_' + node.getAttribute('id') + '">' + extra + '</span> \
                         </div>');
                     var expandButton = nodeSelf.querySelector('input');
                     expandButton.oncontextmenu = $cms.returnFalse;
-                    expandButton.object = that;
                     expandButton.onclick = function (event, automated) {
                         if ($cms.dom.$id('choose_' + that.name)) {
                             $cms.dom.$id('choose_' + that.name).click();
@@ -235,35 +238,31 @@
                         if (event) {
                             event.preventDefault();
                         }
-                        that.handleTreeClick.call(expandButton, event, automated);
-                        return false;
-
+                        that.handleTreeClick(event, automated, expandButton);
                     };
-                    a = nodeSelf.querySelector('label');
-                    expandButton.onkeypress = a.onkeypress = a.firstElementChild.onkeypress = function (expandButton) {
-                        return function (event) {
-                            if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
-                                expandButton.onclick(event);
-                            }
+                    
+                    label = nodeSelf.querySelector('label');
+                    expandButton.onkeypress = label.onkeypress = label.firstElementChild.onkeypress = function (event) {
+                        if (((event.keyCode ? event.keyCode : event.charCode) == 13) || ['+', '-', '='].includes(String.fromCharCode(event.keyCode ? event.keyCode : event.charCode))) {
+                            expandButton.onclick(event);
                         }
-                    }(expandButton);
-                    a.oncontextmenu = $cms.returnFalse;
-                    a.handleSelection = that.handleSelection;
-                    a.firstElementChild.addEventListener('focus', function () {
-                        this.parentNode.style.outline = '1px dotted';
+                    };
+                    label.oncontextmenu = $cms.returnFalse;
+                    label.firstElementChild.addEventListener('focus', function () {
+                        label.style.outline = '1px dotted';
                     });
-                    a.firstElementChild.addEventListener('blur', function () {
-                        this.parentNode.style.outline = '';
+                    label.firstElementChild.addEventListener('blur', function () {
+                        label.style.outline = '';
                     });
-                    a.firstElementChild.addEventListener('click', a.handleSelection);
-                    a.addEventListener('click', a.handleSelection); // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
-                    a.firstElementChild.object = this;
-                    a.object = this;
-                    a.addEventListener('mousedown', function (event) { // To disable selection of text when holding shift or control
+                    label.firstElementChild.addEventListener('click', function (e) {
+                        that.handleSelection(e, false, label.firstElementChild);
+                    });
+                    label.addEventListener('click', function (e) { // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
+                        that.handleSelection(e, false, label);
+                    });
+                    label.addEventListener('mousedown', function (event) { // To disable selection of text when holding shift or control
                         if (event.ctrlKey || event.metaKey || event.shiftKey) {
-                            if (event.cancelable) {
-                                event.preventDefault();
-                            }
+                            event.preventDefault();
                         }
                     });
                     html.appendChild(nodeSelfWrap);
@@ -278,14 +277,20 @@
                     if (selectable) {
                         that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_c_' + node.getAttribute('id')), selected);
                         if (selected) {
-                            element.value = (that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')); // Copy in proper ID for what is selected, not relying on what we currently have as accurate
-                            if (element.value != '') {
-                                if (element.selectedTitle === undefined) element.selectedTitle = '';
-                                if (element.selectedTitle != '') element.selectedTitle += ',';
+                            // Copy in proper ID for what is selected, not relying on what we currently have as accurate
+                            var newVal = strVal(that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id'));
+
+                            if (newVal !== '') {
+                                if (element.selectedTitle == null) {
+                                    element.selectedTitle = '';
+                                }
+                                if (element.selectedTitle !== '') {
+                                    element.selectedTitle += ',';
+                                }
                                 element.selectedTitle += node.getAttribute('title');
                             }
-                            if (element.onchange) element.onchange();
-                            if (element.fakeonchange !== undefined && element.fakeonchange) element.fakeonchange();
+                            
+                            $cms.dom.changeVal(element, newVal);
                         }
                     }
                     nodeSelf.appendChild(newHtml);
@@ -294,11 +299,13 @@
                     if (that.specialKeyPressed && !initiallyExpanded) {
                         expandButton.onclick();
                     }
-                } else { // Assume entry
+                } else { // Assume <entry>
                     newHtml = null;
 
                     escapedTitle = $cms.filter.html((node.getAttribute('title') !== undefined) ? node.getAttribute('title') : '');
-                    if (escapedTitle === '') escapedTitle = '{!NA_EM;^}';
+                    if (escapedTitle === '') {
+                        escapedTitle = '{!NA_EM;^}';
+                    }
 
                     var description = '';
                     var descriptionInUse = '';
@@ -306,7 +313,9 @@
                         description = node.getAttribute('description_html');
                         descriptionInUse = $cms.filter.html(description);
                     } else {
-                        if (node.getAttribute('description')) description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        if (node.getAttribute('description')) {
+                            description = $cms.filter.html('. ' + node.getAttribute('description'));
+                        }
                         descriptionInUse = escapedTitle + ': {!TREE_LIST_SELECT*;^}' + description + ((node.getAttribute('serverid') == '') ? (' (' + $cms.filter.html(node.getAttribute('serverid')) + ')') : '');
                     }
 
@@ -319,78 +328,78 @@
                         imgUrl2 = node.getAttribute('img_url_2');
                     }
                     $cms.dom.html(nodeSelf, '<div><img alt="{!ENTRY;^}" src="' + $cms.filter.html(imgUrl) + '" srcset="' + $cms.filter.html(imgUrl2) + ' 2x" style="width: 14px; height: 14px" /> ' +
-                        '<label id="' + this.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (descriptionInUse.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
-                        '<input' + (this.tabindex ? (' tabindex="' + this.tabindex + '"') : '') + ' id="' + this.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + this.name + '" value="1" />' + escapedTitle + '</label>' + extra + '</div>');
-                    var a = nodeSelf.querySelector('label');
-                    a.handleSelection = that.handleSelection;
-                    a.firstElementChild.addEventListener('focus', function () {
-                        this.parentNode.style.outline = '1px dotted';
+                        '<label id="' + that.name + 'tsel_e_' + node.getAttribute('id') + '" class="ajax_tree_magic_button ' + colour + '" for="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" data-mouseover-activate-tooltip="[\'' + (node.getAttribute('description_html') ? '' : (descriptionInUse.replace(/\n/g, '').replace(/'/g, '\\\''))) + '\', \'800px\']">' +
+                        '<input' + (that.tabindex ? (' tabindex="' + that.tabindex + '"') : '') + ' id="' + that.name + 'tsel_s_' + node.getAttribute('id') + '" style="position: absolute; left: -10000px" type="radio" name="_' + that.name + '" value="1" />' + escapedTitle + '</label>' + extra + '</div>');
+                    
+                    label = nodeSelf.querySelector('label');
+                    label.firstElementChild.addEventListener('focus', function () {
+                        label.style.outline = '1px dotted';
                     });
-                    a.firstElementChild.addEventListener('blur', function () {
-                        this.parentNode.style.outline = '';
+                    label.firstElementChild.addEventListener('blur', function () {
+                        label.style.outline = '';
                     });
-                    a.firstElementChild.addEventListener('click', a.handleSelection);
-                    a.addEventListener('click', a.handleSelection); // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
-                    a.firstElementChild.object = that;
-                    a.object = that;
-                    a.addEventListener('mousedown', function (event) { // To disable selection of text when holding shift or control
+                    label.firstElementChild.addEventListener('click', function (e) {
+                        that.handleSelection(e, false, label.firstElementChild);
+                    });
+                    label.addEventListener('click', function (e) { // Needed by Firefox, the radio button's onclick will not be called if shift/ctrl held
+                        that.handleSelection(e, false, label);
+                    });
+                    label.addEventListener('mousedown', function (event) { // To disable selection of text when holding shift or control
                         if (event.ctrlKey || event.metaKey || event.shiftKey) {
-                            if (event.cancelable) {
-                                event.preventDefault();
-                            }
+                            event.preventDefault();
                         }
                     });
                     html.appendChild(nodeSelfWrap);
                     var selected = ((that.useServerId ? node.getAttribute('serverid') : node.getAttribute('id')) == element.value) || node.getAttribute('selected') == 'yes';
-                    if ((that.multiSelection) && (!selected)) {
-                        selected = ((',' + element.value + ',').indexOf(',' + node.getAttribute('id') + ',') != -1);
+                    if ((that.multiSelection) && !selected) {
+                        selected = (',' + element.value + ',').indexOf(',' + node.getAttribute('id') + ',') !== -1;
                     }
                     that.makeElementLookSelected($cms.dom.$id(that.name + 'tsel_e_' + node.getAttribute('id')), selected);
                 }
 
-                if ((node.getAttribute('draggable')) && (node.getAttribute('draggable') !== 'false')) {
+                if (node.getAttribute('draggable') && (node.getAttribute('draggable') !== 'false')) {
                     masterHtml = $cms.dom.$id('tree_list__root_' + that.name);
                     fixUpNodePosition(nodeSelf);
                     nodeSelf.cmsDraggable = node.getAttribute('draggable');
                     nodeSelf.draggable = true;
-                    nodeSelf.ondragstart = function (event) {
+                    nodeSelf.ondragstart = function () {
                         $cms.ui.clearOutTooltips();
-
-                        this.className += ' being_dragged';
-
+                        nodeSelf.classList.add('being_dragged');
                         window.isDoingADrag = true;
                     };
                     nodeSelf.ondrag = function (event) {
-                        if (!event.clientY) return;
-                        var hit = findOverlappingSelectable(event.clientY + window.pageYOffset, this, this.object.treeListData, this.object.name);
-                        if (this.lastHit != null) {
-                            this.lastHit.parentNode.parentNode.style.border = '0px';
+                        if (!event.clientY) {
+                            return;
+                        }
+                        var hit = findOverlappingSelectable(event.clientY + window.pageYOffset, nodeSelf, that.treeListData, that.name);
+                        if (nodeSelf.lastHit != null) {
+                            nodeSelf.lastHit.parentNode.parentNode.style.border = '0px';
                         }
                         if (hit != null) {
                             hit.parentNode.parentNode.style.border = '1px dotted green';
-                            this.lastHit = hit;
+                            nodeSelf.lastHit = hit;
                         }
                     };
-                    nodeSelf.ondragend = function (event) {
+                    nodeSelf.ondragend = function () {
                         window.isDoingADrag = false;
 
-                        this.classList.remove('being_dragged');
+                        nodeSelf.classList.remove('being_dragged');
 
-                        if (this.lastHit != null) {
-                            this.lastHit.parentNode.parentNode.style.border = '0px';
+                        if (nodeSelf.lastHit != null) {
+                            nodeSelf.lastHit.parentNode.parentNode.style.border = '0px';
 
-                            if (this.parentNode.parentNode != this.lastHit) {
-                                var xmlNode = this.object.getElementByIdHack(this.querySelector('input').id.substr(7 + this.object.name.length));
-                                var targetXmlNode = this.object.getElementByIdHack(this.lastHit.id.substr(12 + this.object.name.length));
+                            if (nodeSelf.parentNode.parentNode !== nodeSelf.lastHit) {
+                                var xmlNode = that.getElementByIdHack(nodeSelf.querySelector('input').id.substr(7 + that.name.length));
+                                var targetXmlNode = that.getElementByIdHack(nodeSelf.lastHit.id.substr(12 + that.name.length));
 
-                                if ((this.lastHit.childNodes.length === 1) && (this.lastHit.childNodes[0].nodeName === '#text')) {
-                                    $cms.dom.html(this.lastHit, '');
-                                    this.object.renderTree(targetXmlNode, this.lastHit);
+                                if ((nodeSelf.lastHit.childNodes.length === 1) && (nodeSelf.lastHit.childNodes[0].nodeName === '#text')) {
+                                    $cms.dom.empty(nodeSelf.lastHit);
+                                    that.renderTree(targetXmlNode, nodeSelf.lastHit);
                                 }
 
                                 // Change HTML
-                                this.parentNode.parentNode.removeChild(this.parentNode);
-                                this.lastHit.appendChild(this.parentNode);
+                                nodeSelf.parentNode.parentNode.removeChild(nodeSelf.parentNode);
+                                nodeSelf.lastHit.appendChild(nodeSelf.parentNode);
 
                                 // Change node structure
                                 xmlNode.parentNode.removeChild(xmlNode);
@@ -401,7 +410,7 @@
                                     dragPage(xmlNode.getAttribute('serverid'), targetXmlNode.getAttribute('serverid'));
                                 }
                                 
-                                fixupNodePositions(this.object.name);
+                                fixupNodePositions(that.name);
                             }
                         }
                     };
@@ -409,14 +418,10 @@
 
                 if ((node.getAttribute('droppable')) && (node.getAttribute('droppable') !== 'false')) {
                     nodeSelf.ondragover = function (event) {
-                        if (event.cancelable) {
-                            event.preventDefault();
-                        }
+                        event.preventDefault();
                     };
                     nodeSelf.ondrop = function (event) {
-                        if (event.cancelable) {
-                            event.preventDefault();
-                        }
+                        event.preventDefault();
                         // ondragend will call with lastHit set, we don't track the drop spots using this event handler, we track it in real time using mouse coordinate analysis
                     };
                 }
@@ -429,8 +434,6 @@
             });
 
             $cms.dom.triggerResize();
-
-            return a;
 
             function dragPage(from, to) {
                 var newZone = to.replace(/:/, ''),
@@ -448,24 +451,23 @@
             }
         },
 
-        handleTreeClick: function handleTreeClick(event, automated) { // Not called as a method
-            var element = $cms.dom.$id(this.object.name),
+        handleTreeClick: function handleTreeClick(event, automated, target) {
+            var element = $cms.dom.$id(this.name),
                 xmlNode;
-            if (element.disabled || this.object.busy) {
+            if (element.disabled || this.busy) {
                 return false;
             }
 
-            this.object.busy = true;
+            this.busy = true;
 
-            var clickedId = this.getAttribute('id').substr(7 + this.object.name.length);
-
-            var htmlNode = $cms.dom.$id(this.object.name + 'tree_list_c_' + clickedId);
-            var expandButton = $cms.dom.$id(this.object.name + 'texp_c_' + clickedId);
+            var clickedId = target.getAttribute('id').substr(7 + this.name.length);
+            var htmlNode = $cms.dom.$id(this.name + 'tree_list_c_' + clickedId);
+            var expandBtn = $cms.dom.$id(this.name + 'texp_c_' + clickedId);
 
             var expanding = (htmlNode.style.display !== 'block');
 
             if (expanding) {
-                xmlNode = this.object.getElementByIdHack(clickedId, 'c');
+                xmlNode = this.getElementByIdHack(clickedId, 'c');
                 xmlNode.setAttribute('expanded', 'true');
                 var realClickedId = xmlNode.getAttribute('serverid');
                 if (typeof realClickedId !== 'string') {
@@ -473,71 +475,76 @@
                 }
 
                 if ((xmlNode.getAttribute('has_children') === 'true') && !xmlNode.firstElementChild) {
-                    var url = $cms.baseUrl(this.object.ajaxUrl + '&id=' + encodeURIComponent(realClickedId) + '&options=' + this.object.options + '&default=' + encodeURIComponent(element.value));
-                    var ob = this.object;
-                    $cms.doAjaxRequest(url, function (ajaxResultFrame, ajaxResult) {
-                        $cms.dom.html(htmlNode, '');
-                        ob.response(ajaxResultFrame, ajaxResult, clickedId);
+                    var url = $cms.baseUrl(this.ajaxUrl + '&id=' + encodeURIComponent(realClickedId) + '&options=' + this.options + '&default=' + encodeURIComponent(element.value));
+                    var ob = this;
+                    $cms.doAjaxRequest(url, function (responseXml, xhr) {
+                        $cms.dom.empty(htmlNode);
+                        ob.response(responseXml, xhr, clickedId);
                     });
                     $cms.dom.html(htmlNode, '<div aria-busy="true" class="vertical_alignment"><img src="' + $cms.img('{$IMG*;,loading}') + '" alt="" /> <span>{!LOADING;^}</span></div>');
                     var container = $cms.dom.$id('tree_list__root_' + ob.name);
-                    if ((automated) && (container) && (container.style.overflowY == 'auto')) {
+                    if (automated && container && (container.style.overflowY === 'auto')) {
                         setTimeout(function () {
                             container.scrollTop = $cms.dom.findPosY(htmlNode) - 20;
                         }, 0);
                     }
                 }
+                
+                $cms.dom.fadeIn(htmlNode);
 
-                htmlNode.style.display = 'block';
-                $cms.dom.clearTransitionAndSetOpacity(htmlNode, 0.0);
-                $cms.dom.fadeTransition(htmlNode, 100, 30, 4);
-
-                expandButton.src = $cms.img('{$IMG;,1x/treefield/collapse}');
-                expandButton.srcset = $cms.img('{$IMG;,2x/treefield/collapse}') + ' 2x';
-                expandButton.title = expandButton.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
-                expandButton.alt = expandButton.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
+                expandBtn.src = $cms.img('{$IMG;,1x/treefield/collapse}');
+                expandBtn.srcset = $cms.img('{$IMG;,2x/treefield/collapse}') + ' 2x';
+                expandBtn.title = expandBtn.title.replace('{!EXPAND;^}', '{!CONTRACT;^}');
+                expandBtn.alt = expandBtn.alt.replace('{!EXPAND;^}', '{!CONTRACT;^}');
             } else {
-                xmlNode = this.object.getElementByIdHack(clickedId, 'c');
+                xmlNode = this.getElementByIdHack(clickedId, 'c');
                 xmlNode.setAttribute('expanded', 'false');
                 htmlNode.style.display = 'none';
 
-                expandButton.src = $cms.img('{$IMG;,1x/treefield/expand}');
-                expandButton.srcset = $cms.img('{$IMG;,2x/treefield/expand}') + ' 2x';
-                expandButton.title = expandButton.title.replace('{!CONTRACT;^}', '{!EXPAND;^}');
-                expandButton.alt = expandButton.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
+                expandBtn.src = $cms.img('{$IMG;,1x/treefield/expand}');
+                expandBtn.srcset = $cms.img('{$IMG;,2x/treefield/expand}') + ' 2x';
+                expandBtn.title = expandBtn.title.replace('{!CONTRACT;^}', '{!EXPAND;^}');
+                expandBtn.alt = expandBtn.alt.replace('{!CONTRACT;^}', '{!EXPAND;^}');
             }
 
-            fixupNodePositions(this.object.name);
+            fixupNodePositions(this.name);
 
             $cms.dom.triggerResize();
 
-            this.object.busy = false;
-
-            return true;
+            this.busy = false;
         },
 
-        handleSelection: function handleSelection(event, assumeCtrl) { // Not called as a method
+        handleSelection: function handleSelection(event, assumeCtrl, target) {
+            var that = this;
+
             assumeCtrl = !!assumeCtrl;
 
-            var element = $cms.dom.$id(this.object.name);
+            var element = $cms.dom.$id(this.name);
+            
             if (element.disabled) {
                 return;
             }
-            var i,
-                selectedBefore = (element.value == '') ? [] : (this.object.multiSelection ? element.value.split(',') : [element.value]);
+            
+            var i, selectedBefore = (element.value === '') ? [] : (this.multiSelection ? element.value.split(',') : [element.value]);
 
             event.stopPropagation();
             event.preventDefault();
 
-            if (!assumeCtrl && event.shiftKey && this.object.multiSelection) {
+            if (!assumeCtrl && event.shiftKey && this.multiSelection) {
                 // We're holding down shift so we need to force selection of everything bounded between our last click spot and here
-                var allA = $cms.dom.$id('tree_list__root_' + this.object.name).getElementsByTagName('label');
+                var allLabels = $cms.dom.$id('tree_list__root_' + this.name).getElementsByTagName('label');
                 var posLast = -1;
                 var posUs = -1;
-                if (this.object.lastClicked == null) this.object.lastClicked = allA[0];
-                for (i = 0; i < allA.length; i++) {
-                    if (allA[i] == this || allA[i] == this.parentNode) posUs = i;
-                    if (allA[i] == this.object.lastClicked || allA[i] == this.object.lastClicked.parentNode) posLast = i;
+                if (this.lastClicked == null) {
+                    this.lastClicked = allLabels[0];
+                }
+                for (i = 0; i < allLabels.length; i++) {
+                    if (allLabels[i] == target || allLabels[i] == target.parentNode) {
+                        posUs = i;
+                    }
+                    if (allLabels[i] == this.lastClicked || allLabels[i] == this.lastClicked.parentNode) {
+                        posLast = i;
+                    }
                 }
                 if (posUs < posLast) {// ReOrder them
                     var temp = posUs;
@@ -545,25 +552,27 @@
                     posLast = temp;
                 }
                 var thatSelectedId, thatXmlNode, thatType;
-                for (i = 0; i < allA.length; i++) {
-                    thatType = this.getAttribute('id').charAt(5 + this.object.name.length);
-                    if (thatType == 'r') {
+                for (i = 0; i < allLabels.length; i++) {
+                    thatType = target.getAttribute('id').charAt(5 + this.name.length);
+                    if (thatType === 'r') {
                         thatType = 'c';
                     }
-                    if (thatType == 's') {
+                    if (thatType === 's') {
                         thatType = 'e';
                     }
 
-                    if (allA[i].getAttribute('id').substr(5 + this.object.name.length, thatType.length) == thatType) {
-                        thatSelectedId = (this.object.useServerId) ? allA[i].getAttribute('serverid') : allA[i].getAttribute('id').substr(7 + this.object.name.length);
-                        thatXmlNode = this.object.getElementByIdHack(thatSelectedId, thatType);
-                        if ((thatXmlNode.getAttribute('selectable') == 'true') || (this.object.allNodesSelectable)) {
+                    if (allLabels[i].getAttribute('id').substr(5 + this.name.length, thatType.length) == thatType) {
+                        thatSelectedId = (this.useServerId) ? allLabels[i].getAttribute('serverid') : allLabels[i].getAttribute('id').substr(7 + this.name.length);
+                        thatXmlNode = this.getElementByIdHack(thatSelectedId, thatType);
+                        if ((thatXmlNode.getAttribute('selectable') === 'true') || (this.allNodesSelectable)) {
                             if ((i >= posLast) && (i <= posUs)) {
-                                if (selectedBefore.indexOf(thatSelectedId) == -1)
-                                    allA[i].handleSelection(event, true);
+                                if (selectedBefore.indexOf(thatSelectedId) === -1) {
+                                    that.handleSelection(event, true, allLabels[i]);
+                                }
                             } else {
-                                if (selectedBefore.indexOf(thatSelectedId) != -1)
-                                    allA[i].handleSelection(event, true);
+                                if (selectedBefore.indexOf(thatSelectedId) !== -1) {
+                                    that.handleSelection(event, true, allLabels[i]);
+                                }
                             }
                         }
                     }
@@ -571,59 +580,58 @@
 
                 return;
             }
-            var type = this.getAttribute('id').charAt(5 + this.object.name.length);
+            
+            var type = target.getAttribute('id').charAt(5 + this.name.length);
             if (type === 'r') {
                 type = 'c';
             } else if (type === 's') {
                 type = 'e';
             }
-            var realSelectedId = this.getAttribute('id').substr(7 + this.object.name.length),
-                xmlNode = this.object.getElementByIdHack(realSelectedId, type),
-                selectedId = (this.object.useServerId) ? xmlNode.getAttribute('serverid') : realSelectedId;
+            var realSelectedId = target.getAttribute('id').substr(7 + this.name.length),
+                xmlNode = this.getElementByIdHack(realSelectedId, type),
+                selectedId = this.useServerId ? xmlNode.getAttribute('serverid') : realSelectedId;
 
-            if (xmlNode.getAttribute('selectable') == 'true' || this.object.allNodesSelectable) {
+            if ((xmlNode.getAttribute('selectable') === 'true') || this.allNodesSelectable) {
                 var selectedAfter = selectedBefore;
                 for (i = 0; i < selectedBefore.length; i++) {
-                    this.object.makeElementLookSelected($cms.dom.$id(this.object.name + 'tsel_' + type + '_' + selectedBefore[i]), false);
+                    this.makeElementLookSelected($cms.dom.$id(this.name + 'tsel_' + type + '_' + selectedBefore[i]), false);
                 }
-                if ((!this.object.multiSelection) || (((!event.ctrlKey) && (!event.metaKey) && (!event.altKey)) && (!assumeCtrl))) {
+                if (!this.multiSelection || ((!event.ctrlKey && !event.metaKey && !event.altKey) && !assumeCtrl)) {
                     selectedAfter = [];
                 }
-                if ((selectedBefore.indexOf(selectedId) != -1) && (((selectedBefore.length == 1) && (selectedBefore[0] != selectedId)) || ((event.ctrlKey) || (event.metaKey) || (event.altKey)) || (assumeCtrl))) {
+                if ((selectedBefore.indexOf(selectedId) !== -1) && (((selectedBefore.length === 1) && (selectedBefore[0] != selectedId)) || ((event.ctrlKey) || (event.metaKey) || (event.altKey)) || (assumeCtrl))) {
                     for (var key in selectedAfter) {
-                        if (selectedAfter[key] == selectedId)
+                        if (selectedAfter[key] == selectedId) {
                             selectedAfter.splice(key, 1);
-                    }
-                } else if (selectedAfter.indexOf(selectedId) == -1) {
-                    selectedAfter.push(selectedId);
-                    if (!this.object.multiSelection) { // This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
-                        var anchors = $cms.dom.$id('tree_list__root_' + this.object.name).getElementsByTagName('label');
-                        for (i = 0; i < anchors.length; i++) {
-                            this.object.makeElementLookSelected(anchors[i], false);
                         }
-                        this.object.makeElementLookSelected($cms.dom.$id(this.object.name + 'tsel_' + type + '_' + realSelectedId), true);
                     }
-                }
+                } else if (selectedAfter.indexOf(selectedId) === -1) {
+                    selectedAfter.push(selectedId);
+                    if (!this.multiSelection) { // This is a bit of a hack to make selection look nice, even though we aren't storing natural IDs of what is selected
+                        var anchors = $cms.dom.$id('tree_list__root_' + this.name).getElementsByTagName('label');
+                        for (i = 0; i < anchors.length; i++) {
+                            this.makeElementLookSelected(anchors[i], false);
+                        }
+                        this.makeElementLookSelected($cms.dom.$id(this.name + 'tsel_' + type + '_' + realSelectedId), true);
+                    } 
+                } 
+                 
                 for (i = 0; i < selectedAfter.length; i++) {
-                    this.object.makeElementLookSelected($cms.dom.$id(this.object.name + 'tsel_' + type + '_' + selectedAfter[i]), true);
-                }
-
-                element.value = selectedAfter.join(',');
-                element.selectedTitle = (selectedAfter.length == 1) ? xmlNode.getAttribute('title') : element.value;
+                    this.makeElementLookSelected($cms.dom.$id(this.name + 'tsel_' + type + '_' + selectedAfter[i]), true);
+                } 
+                
+                var newVal = selectedAfter.join(',');
+                element.selectedTitle = (selectedAfter.length === 1) ? xmlNode.getAttribute('title') : newVal;
                 element.selectedEditlink = xmlNode.getAttribute('edit');
-                if (element.value == '') {
+                if (newVal === '') {
                     element.selectedTitle = '';
                 }
-                if (element.onchange) {
-                    element.onchange();
-                }
-                if (element.fakeonchange !== undefined && element.fakeonchange) {
-                    element.fakeonchange();
-                }
+                
+                $cms.dom.changeVal(element, newVal);
             }
 
             if (!assumeCtrl) {
-                this.object.lastClicked = this;
+                this.lastClicked = target;
             }
         },
 
@@ -637,8 +645,7 @@
     });
 
     function attributesFullFixup(xml) {
-        var node, i,
-            id = xml.getAttribute('id');
+        var node, i, id = xml.getAttribute('id');
 
         window.attributesFull || (window.attributesFull = {});
         window.attributesFull[id] || (window.attributesFull[id] = {});
@@ -656,9 +663,9 @@
     }
 
     function fixupNodePositions(name) {
-        var html = $cms.dom.$id('tree_list__root_' + name);
-        var toFix = html.getElementsByTagName('div');
-        var i;
+        var html = $cms.dom.$id('tree_list__root_' + name),
+            toFix = html.getElementsByTagName('div'), i;
+        
         for (i = 0; i < toFix.length; i++) {
             if (toFix[i].style.position === 'absolute') {
                 fixUpNodePosition(toFix[i]);

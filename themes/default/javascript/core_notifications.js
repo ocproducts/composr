@@ -226,23 +226,23 @@ function pollForNotifications(forcedUpdate, delay) {
     $cms.doAjaxRequest(url, window._pollForNotifications);
 }
 
-function _pollForNotifications(rawAjaxResult) {
-    if (rawAjaxResult.getElementsByTagName === undefined)
+function _pollForNotifications(responseXml) {
+    if (!responseXml || responseXml.getElementsByTagName === undefined)
         return; // Some kind of error
 
-    var timeNode = rawAjaxResult.querySelector('time');
+    var timeNode = responseXml.querySelector('time');
     window.notificationsTimeBarrier = parseInt($cms.dom.html(timeNode));
 
     // HTML5 notification API
 
     var alerts;
 
-    alerts = rawAjaxResult.getElementsByTagName('web_notification');
+    alerts = responseXml.getElementsByTagName('web_notification');
     for (var i = 0; i < alerts.length; i++) {
         displayAlert(alerts[i]);
     }
 
-    alerts = rawAjaxResult.getElementsByTagName('pt');
+    alerts = responseXml.getElementsByTagName('pt');
     for (var i = 0; i < alerts.length; i++) {
         displayAlert(alerts[i]);
     }
@@ -253,10 +253,10 @@ function _pollForNotifications(rawAjaxResult) {
 
     spot = document.getElementById('web_notifications_spot');
     if (spot) {
-        display = rawAjaxResult.getElementsByTagName('display_web_notifications');
+        display = responseXml.getElementsByTagName('display_web_notifications');
         button = document.getElementById('web_notifications_button');
         if (display[0]) {
-            unread = rawAjaxResult.getElementsByTagName('unread_web_notifications');
+            unread = responseXml.getElementsByTagName('unread_web_notifications');
             $cms.dom.html(spot, $cms.dom.html(display[0]));
             $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
             button.className = 'count_' + $cms.dom.html(unread[0]);
@@ -265,10 +265,10 @@ function _pollForNotifications(rawAjaxResult) {
 
     spot = document.getElementById('pts_spot');
     if (spot) {
-        display = rawAjaxResult.getElementsByTagName('display_pts');
+        display = responseXml.getElementsByTagName('display_pts');
         button = document.getElementById('pts_button');
         if (display[0]) {
-            unread = rawAjaxResult.getElementsByTagName('unread_pts');
+            unread = responseXml.getElementsByTagName('unread_pts');
             $cms.dom.html(spot, $cms.dom.html(display[0]));
             $cms.dom.html(button.firstElementChild, $cms.dom.html(unread[0]));
             button.className = 'count_' + $cms.dom.html(unread[0]);

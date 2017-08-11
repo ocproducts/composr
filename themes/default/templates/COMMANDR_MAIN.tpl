@@ -1,3 +1,4 @@
+{$REQUIRE_JAVASCRIPT,core_form_interfaces}
 {$REQUIRE_JAVASCRIPT,commandr}
 
 <div id="command_line" data-tpl="commandrMain">

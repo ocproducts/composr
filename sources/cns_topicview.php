@@ -671,6 +671,7 @@ function cns_render_post_buttons($topic_info, $_postdetails, $may_reply, $render
         $javascript_explicit_quote = null;
 
         if ((array_key_exists('message_comcode', $_postdetails)) && ($_postdetails['message_comcode'] !== null) && (strlen($_postdetails['message_comcode']) < 1024 * 10/*10kb limit, for reasonable performance*/) && (array_key_exists('may_use_quick_reply', $topic_info)) && (!array_key_exists('intended_solely_for', $map))) {
+            require_code('comcode_cleanup');
             $replying_to_post = json_encode(comcode_censored_raw_code_access($_postdetails['message_comcode']));
             $replying_to_post_plain = json_encode(($topic_info['is_threaded'] == 0) ? '' : strip_comcode($_postdetails['message_comcode']));
             require_javascript('cns_forum');

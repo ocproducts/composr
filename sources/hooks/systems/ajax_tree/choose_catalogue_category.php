@@ -118,7 +118,7 @@ class Hook_ajax_tree_choose_catalogue_category
         if ($catalogue_name === null) {
             $out = '';
 
-            $out .= '<options>' . serialize($options) . '</options>';
+            $out .= '<options>' . xmlentities(json_encode($options)) . '</options>';
 
             $catalogues = $GLOBALS['SITE_DB']->query_select('catalogues', array('c_name'));
             foreach ($catalogues as $catalogue) {

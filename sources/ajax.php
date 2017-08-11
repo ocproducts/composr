@@ -418,7 +418,7 @@ function ajax_tree_script()
         $_options = json_encode(array());
     }
     $options = @json_decode($_options, true);
-    if ($options === false) {
+    if (($options === false) || ($options === null)) {
         warn_exit(do_lang_tempcode('INTERNAL_ERROR'));
     }
     $val = $object->run($id, $options, get_param_string('default', null, INPUT_FILTER_GET_COMPLEX));
@@ -513,7 +513,7 @@ function script_script()
     if ($script != '') {
         $path = javascript_enforce(filter_naughty($script), get_param_string('theme', null));
         if ($path != '') {
-            header('Content-Type: application/javascript');
+            @header('Content-Type: application/javascript');
             echo str_replace('../../../', '', cms_file_get_contents_safe($path));
         }
     }

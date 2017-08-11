@@ -80,11 +80,9 @@ function copyFieldsIntoBottom(i, changed) {
     mfh.style.display = 'block';
 
     if (!changed) {
-        $cms.dom.clearTransitionAndSetOpacity(mfh, 0.0);
-        $cms.dom.fadeTransition(mfh, 100, 30, 4);
+        $cms.dom.fadeIn(mfh);
     } else {
-        $cms.dom.clearTransitionAndSetOpacity(form.elements.url, 0.0);
-        $cms.dom.fadeTransition(form.elements.url, 100, 30, 4);
+        $cms.dom.fadeIn(form.elements.url);
     }
 }
 

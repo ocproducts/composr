@@ -1,3 +1,4 @@
+<div data-tpl="doNextScreen">
 {+START,IF,{$EQ,{$PAGE},admin,cms}}
 	{+START,IF,{$DESKTOP}}
 		<div class="block_desktop">
@@ -20,3 +21,4 @@
 </p>
 
 {SECTIONS}
+</div>

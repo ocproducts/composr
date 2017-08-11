@@ -254,8 +254,7 @@
                     }
                 } else {
                     if (!$cms.dom.isDisplayed(checklistRows[i])) {
-                        $cms.dom.clearTransitionAndSetOpacity(checklistRows[i], 0.0);
-                        $cms.dom.fadeTransition(checklistRows[i], 100, 30, 4);
+                        $cms.dom.fadeIn(checklistRows[i]);
                     }
                     $cms.dom.show(checklistRows[i]);
                     checklistRows[i].classList.remove('task_hidden');
@@ -267,13 +266,13 @@
         }
 
         function submitCustomTask(form) {
-            var newTask = $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value));
+            $cms.loadSnippet('checklist_task_manage', 'type=add&recur_every=' + encodeURIComponent(form.elements['recur_every'].value) + '&recur_interval=' + encodeURIComponent(form.elements['recur_interval'].value) + '&task_title=' + encodeURIComponent(form.elements['newTask'].value), true).then(function (newTask) {
+                form.elements['recur_every'].value = '';
+                form.elements['recur_interval'].value = '';
+                form.elements['new_task'].value = '';
 
-            form.elements['recur_every'].value = '';
-            form.elements['recur_interval'].value = '';
-            form.elements['new_task'].value = '';
-
-            $cms.dom.append(document.getElementById('custom_tasks_go_here'), newTask);
+                $cms.dom.append(document.getElementById('custom_tasks_go_here'), newTask);
+            });
         }
     };
 
@@ -317,14 +316,14 @@
         }
 
         return new Promise(function (resolve) {
-            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), function (request) {
-                if (request.responseText && (request.responseText !== 'false')) {
-                    var result = request.responseXML.documentElement.querySelector('result');
+            $cms.doAjaxRequest($cms.maintainThemeInLink($SCRIPT_comcode_convert + $cms.keepStub(true)), function (_, xhr) {
+                if (xhr.responseText && (xhr.responseText !== 'false')) {
+                    var result = xhr.responseXML && xhr.responseXML.querySelector('result');
 
                     if (result) {
-                        var xhtml = result.textContent;
-
-                        var elementReplace = form;
+                        var xhtml = result.textContent,
+                            elementReplace = form;
+                        
                         while (elementReplace.className !== 'form_ajax_target') {
                             elementReplace = elementReplace.parentNode;
                             if (!elementReplace) {
@@ -335,9 +334,7 @@
                         }
 
                         $cms.dom.html(elementReplace, xhtml);
-
                         $cms.ui.alert('{!SUCCESS;^}');
-
                         resolve(/*submitForm: */false); // We've handled it internally
                         return;
                     }

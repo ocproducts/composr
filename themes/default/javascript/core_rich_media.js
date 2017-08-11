@@ -331,8 +331,9 @@
                 id = params.id || '',
                 description = params.description || '';
 
-            doAttachment(fieldName, id, description);
-            (window.fauxClose !== undefined) ? window.fauxClose() :  window.close();
+            doAttachment(fieldName, id, description).then(function () {
+                window.fauxClose ? window.fauxClose() :  window.close();
+            });
         }
     });
 
@@ -369,7 +370,7 @@
             el.cancelled = false;
             $cms.loadSnippet('member_tooltip&member_id=' + params.memberId, null, true).then(function (result) {
                 if (!el.cancelled) {
-                    $cms.ui.activateTooltip(el, e, result.responseText, 'auto', null, null, false, true);
+                    $cms.ui.activateTooltip(el, e, result, 'auto', null, null, false, true);
                 }
             })
         }
@@ -412,6 +413,17 @@
             $cms.ui.open($cms.maintainThemeInLink(link.href), 'site_attachment_chooser', 'width=550,height=600,status=no,resizable=yes,scrollbars=yes');
         });
 
+        if (params.simpleUi) {
+            window.numAttachments = 1;
+
+            window.$cmsLoad.push(function () {
+                var aub = document.getElementById('attachment_upload_button');
+                if (aub && (aub.classList.contains('for_field_' + params.postingFieldName))) {
+                    window.rebuildAttachmentButtonForNext(params.postingFieldName, 'attachment_upload_button');
+                }
+            });
+        }
+
         window.rebuildAttachmentButtonForNext = rebuildAttachmentButtonForNext;
         function rebuildAttachmentButtonForNext(postingFieldName, attachmentUploadButton) {
             if (postingFieldName !== params.postingFieldName) {
@@ -425,17 +437,6 @@
 
             $cms.requireJavascript('plupload').then(function () {
                 prepareSimplifiedFileInput('attachment_multi', 'file' + window.numAttachments, null, params.postingFieldName, strVal(params.filter), window.attachmentUploadButton);
-            });
-        }
-
-        if (params.simpleUi) {
-            window.numAttachments = 1;
-
-            window.$cmsLoad.push(function () {
-                var aub = document.getElementById('attachment_upload_button');
-                if ((aub) && (aub.classList.contains('for_field_' + params.postingFieldName))) {
-                    window.rebuildAttachmentButtonForNext(params.postingFieldName, 'attachment_upload_button');
-                }
             });
         }
     };
@@ -467,14 +468,14 @@
     };
 
     $cms.templates.comcodeEditorButton = function comcodeEditorButton(params, btn) {
-        var isPostingField = !!params.isPostingField && (params.isPostingField !== '0'),
+        var isPostingField = boolVal(params.isPostingField),
             b = strVal(params.b),
             fieldName = strVal(params.fieldName);
 
         $cms.dom.on(btn, 'click', function () {
-            var mainWindow = btn.ownerDocument.defaultView || btn.ownerDocument.parentWindow;
+            var mainWindow = btn.ownerDocument.defaultView;
             if (!($cms.browserMatches('simplified_attachments_ui') && isPostingField && ((b === 'thumb') || (b === 'img')))) {
-                mainWindow['doInput' + $cms.ucFirst(b)](fieldName);
+                mainWindow['doInput' + $cms.ucFirst($cms.camelCase(b))](fieldName);
             }
         });
     };
@@ -554,18 +555,21 @@
     $cms.templates.emoticonClickCode = function emoticonClickCode(params, container) {
         var fieldName = strVal(params.fieldName);
 
-        $cms.dom.on(container, 'click', function () {
+        $cms.dom.on(container, 'click', function (e) {
+            e.preventDefault();
             doEmoticon(fieldName, container, false)
         });
     };
 
-    $cms.templates.comcodeOverlay = function comcodeOverlay(params) {
-        var container = this, id = params.id;
+    $cms.templates.comcodeOverlay = function comcodeOverlay(params, container) {
+        var id = strVal(params.id),
+            timeout = Number(params.timeout),
+            timein = Number(params.timein);
 
         $cms.dom.on(container, 'click', '.js-click-dismiss-overlay', function () {
             var bi = document.getElementById('main_website_inner');
             if (bi) {
-                $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
+                bi.style.opacity = 1;
             }
 
             document.getElementById(params.randIdOverlay).style.display = 'none';
@@ -589,31 +593,29 @@
                 bi = document.getElementById('main_website_inner');
 
                 if (bi) {
-                    $cms.dom.clearTransitionAndSetOpacity(bi, 0.4);
+                    bi.style.opacity = 0.4;
                 }
+                
+                $cms.dom.fadeIn(element);
 
-                $cms.dom.clearTransitionAndSetOpacity(element, 0.0);
-                $cms.dom.fadeTransition(element, 100, 30, 3);
 
-
-                if (params.timeout !== '-1') {
+                if (timeout !== -1) {
                     setTimeout(function () {
                         if (bi) {
-                            $cms.dom.clearTransitionAndSetOpacity(bi, 1.0);
+                            bi.style.opacity = 1;
                         }
 
                         if (element) {
                             element.style.display = 'none';
                         }
-                    }, params.timeout);
+                    }, timeout);
                 }
-            }, params.timein + 100);
+            }, timein + 100);
         }
     };
 
-    $cms.templates.comcodeBigTabsController = function (params) {
-        var container = this,
-            passId = $cms.filter.id(params.passId),
+    $cms.templates.comcodeBigTabsController = function (params, container) {
+        var passId = $cms.filter.id(params.passId),
             id = passId + '_' + params.bigTabSets,
             fullId = 'a' + id + '_big_tab',
             tabs = params.tabs,
@@ -936,20 +938,20 @@
     function shockerTick(id, time, minColor, maxColor) {
         if ((document.hidden !== undefined) && (document.hidden)) return;
 
-        if (window.shockerPos[id] == window.shockerParts[id].length - 1) window.shockerPos[id] = 0;
+        if (window.shockerPos[id] == window.shockerParts[id].length - 1) {
+            window.shockerPos[id] = 0;
+        }
         var eLeft = document.getElementById('comcodeshocker' + id + '_left');
-        if (!eLeft) return;
+        if (!eLeft) {
+            return;
+        }
         $cms.dom.html(eLeft, window.shockerParts[id][window.shockerPos[id]][0]);
-        $cms.dom.clearTransitionAndSetOpacity(eLeft, 0.6);
-        $cms.dom.clearTransitionAndSetOpacity(eLeft, 0.0);
-        $cms.dom.fadeTransition(eLeft, 100, time / 40, 5);
+        $cms.dom.fadeIn(eLeft);
 
         var eRight = document.getElementById('comcodeshocker' + id + '_right');
         if (!eRight) return;
         $cms.dom.html(eRight, window.shockerParts[id][window.shockerPos[id]][1]);
-        $cms.dom.clearTransitionAndSetOpacity(eRight, 0);
-        $cms.dom.clearTransitionAndSetOpacity(eRight, 0.0);
-        $cms.dom.fadeTransition(eRight, 100, time / 20, 5);
+        $cms.dom.fadeIn(eRight);
 
         window.shockerPos[id]++;
 
@@ -1032,21 +1034,19 @@
             if (x) {
                 if (x.className === 'comcode_big_tab') {
                     if (i == currentPos) {
-                        $cms.dom.clearTransition(x);
                         x.style.width = '';
                         x.style.position = 'static';
                         x.style.zIndex = 10;
-                        $cms.dom.clearTransitionAndSetOpacity(x, 1.0);
+                        x.style.opacity = 1;
                     } else {
                         if (x.style.position !== 'static') {
-                            $cms.dom.clearTransitionAndSetOpacity(x, 0.0);
+                            x.style.opacity = 0;
                         } else {
-                            $cms.dom.clearTransitionAndSetOpacity(x, 1.0);
+                            x.style.opacity = 1;
                         }
-
-                        if (!$cms.dom.hasFadeTransition(x)) {
-                            $cms.dom.fadeTransition(x, 0, 30, -5);
-                        }
+                        
+                        $cms.dom.fadeOut(x);
+                        
                         x.style.width = (x.offsetWidth - 24) + 'px'; // 24=lhs padding+rhs padding+lhs border+rhs border
                         x.style.position = 'absolute';
                         x.style.zIndex = -10;
@@ -1058,8 +1058,7 @@
                     x.style.display = (i == currentPos) ? 'block' : 'none';
 
                     if (i == currentPos) {
-                        $cms.dom.clearTransitionAndSetOpacity(x, 0.0);
-                        $cms.dom.fadeTransition(x, 100, 30, 4);
+                        $cms.dom.fadeIn(x);
                     }
                 }
             }

@@ -71,7 +71,7 @@ class Hook_ajax_tree_choose_download
 
         $out = '';
 
-        $out .= '<options>' . xmlentities(serialize($options)) . '</options>';
+        $out .= '<options>' . xmlentities(json_encode($options)) . '</options>';
 
         foreach ($tree as $t) {
             $_id = $t['id'];

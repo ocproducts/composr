@@ -53,7 +53,7 @@ class Hook_ajax_tree_choose_filedump_file
 
         $out = '';
 
-        $out .= '<options>' . serialize($options) . '</options>';
+        $out .= '<options>' . xmlentities(json_encode($options)) . '</options>';
 
         if ((has_actual_page_access(null, 'filedump')) && (file_exists($full_path))) {
             $files = get_directory_contents($full_path, '', IGNORE_ACCESS_CONTROLLERS, false);

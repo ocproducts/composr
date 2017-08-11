@@ -47,7 +47,7 @@ class Hook_ajax_tree_choose_topic
 
         $out = '';
 
-        $out .= '<options>' . serialize($options) . '</options>';
+        $out .= '<options>' . xmlentities(json_encode($options)) . '</options>';
 
         foreach ($tree as $t) {
             $_id = $t['id'];

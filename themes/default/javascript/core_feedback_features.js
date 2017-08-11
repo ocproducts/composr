@@ -305,7 +305,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-threaded-load-more', function () {
             /* Load more from a threaded topic */
-            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.commentsSerializedOptions) + '&hash=' + encodeURIComponent(window.commentsHash), null, true).then(function (ajaxResult) {
+            $cms.loadSnippet('comments&id=' + encodeURIComponent(id) + '&ids=' + encodeURIComponent(ids) + '&serialized_options=' + encodeURIComponent(window.commentsSerializedOptions) + '&hash=' + encodeURIComponent(window.commentsHash), null, true).then(function (html) {
                 var wrapper;
                 if (id !== '') {
                     wrapper = $cms.dom.$('#post_children_' + id);
@@ -314,15 +314,14 @@
                 }
                 container.parentNode.removeChild(container);
 
-                $cms.dom.append(wrapper, ajaxResult.responseText);
+                $cms.dom.append(wrapper, html);
 
                 setTimeout(function () {
                     var _ids = ids.split(',');
                     for (var i = 0; i < _ids.length; i++) {
                         var element = document.getElementById('post_wrap_' + _ids[i]);
                         if (element) {
-                            $cms.dom.clearTransitionAndSetOpacity(element, 0);
-                            $cms.dom.fadeTransition(element, 100, 30, 10);
+                            $cms.dom.fadeIn(element);
                         }
                     }
                 }, 0);
@@ -392,11 +391,11 @@
                     }
                 }
                 post += '&post=' + encodeURIComponent(postValue);
-                $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), function (ajaxResult) {
-                    if ((ajaxResult.responseText != '') && (ajaxResult.status != 500)) {
+                $cms.doAjaxRequest('{$FIND_SCRIPT;,post_comment}' + $cms.keepStub(true), function (_, xhr) {
+                    if ((xhr.responseText != '') && (xhr.status != 500)) {
                         // Display
                         var oldAction = commentsForm.action;
-                        $cms.dom.outerHtml(commentsWrapper, ajaxResult.responseText);
+                        $cms.dom.outerHtml(commentsWrapper, xhr.responseText);
                         commentsForm = $cms.dom.$id(commentsFormId);
                         oldAction = commentsForm.action = oldAction; // AJAX will have mangled URL (as was not running in a page context), this will fix it back
 
@@ -419,8 +418,7 @@
                         var knownPosts = commentsWrapper.querySelectorAll('.post');
                         for (var i = 0; i < knownPosts.length; i++) {
                             if (!knownTimes.includes(knownPosts[i].className.replace(/^post /, ''))) {
-                                $cms.dom.clearTransitionAndSetOpacity(knownPosts[i], 0.0);
-                                $cms.dom.fadeTransition(knownPosts[i], 100, 20, 5);
+                                $cms.dom.fadeIn(knownPosts[i]);
                             }
                         }
 
@@ -499,8 +497,7 @@
                 // AJAX call
                 var snippetRequest = 'rating&type=' + encodeURIComponent(type) + '&id=' + encodeURIComponent(id) + '&content_type=' + encodeURIComponent(contentType) + '&template=' + encodeURIComponent(template) + '&content_url=' + encodeURIComponent($cms.protectURLParameter(contentUrl)) + '&content_title=' + encodeURIComponent(contentTitle);
 
-                $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number), true).then(function (ajaxResult) {
-                    var message = ajaxResult.responseText;
+                $cms.loadSnippet(snippetRequest, 'rating=' + encodeURIComponent(number), true).then(function (message) {
                     $cms.dom.outerHtml(_replaceSpot, (template === '') ? ('<strong>' + message + '</strong>') : message);
                 });
 
@@ -534,7 +531,7 @@
         } else {
             parentIdField = form.elements['parent_id'];
             if (window.lastReplyTo !== undefined) {
-                $cms.dom.clearTransitionAndSetOpacity(window.lastReplyTo, 1.0);
+                window.lastReplyTo.style.opacity = 1;
             }
         }
         window.lastReplyTo = el;

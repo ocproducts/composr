@@ -24,8 +24,8 @@
         events: function () {
             return {
                 'submit .js-submit-modsec-workaround': 'workaround',
-                'click .js-click-toggle-subord-fields': 'toggleSubordinateFields',
-                'keypress .js-keypress-toggle-subord-fields': 'toggleSubordinateFields'
+                'click .js-click-pf-toggle-subord-fields': 'toggleSubordFields',
+                'keypress .js-keypress-pf-toggle-subord-fields': 'toggleSubordFields'
             };
         },
 
@@ -34,7 +34,7 @@
             $cms.form.modSecurityWorkaround(target);
         },
 
-        toggleSubordinateFields: function (e, target) {
+        toggleSubordFields: function (e, target) {
             toggleSubordinateFields(target.parentNode.querySelector('img'), 'fes_attachments_help');
         }
     });
@@ -209,7 +209,7 @@
     $cms.views.FormStandardEnd = FormStandardEnd;
     /**
      * @memberof $cms.views
-     * @class
+     * @class FormStandardEnd
      * @extends $cms.View
      */
     function FormStandardEnd(params) {
@@ -223,7 +223,7 @@
         window.formPreviewUrl = params.previewUrl;
 
         if (params.forcePreviews) {
-            this.btnSubmit.style.display = 'none';
+            $cms.dom.hide(this.btnSubmit);
         }
 
         if (params.jsFunctionCalls != null) {
@@ -281,13 +281,15 @@
             var submit = document.getElementById('submit_button');
             var inputs = form.getElementsByTagName('input');
             var type;
+            var types = ['text', 'password', 'color', 'email', 'number', 'range', 'search',  'tel', 'url'];
+            
             for (var i = 0; i < inputs.length; i++) {
                 type = inputs[i].type;
-                if (((type == 'text') || (type == 'password') || (type == 'color') || (type == 'email') || (type == 'number') || (type == 'range') || (type == 'search') || (type == 'tel') || (type == 'url'))
-                    && (submit.onclick !== undefined) && (submit.onclick)
-                    && ((inputs[i].onkeypress === undefined) || (!inputs[i].onkeypress)))
+                if (types.includes(type) && submit.onclick && !inputs[i].onkeypress)
                     inputs[i].onkeypress = function (event) {
-                        if ($cms.dom.keyPressed(event, 'Enter')) submit.onclick(event);
+                        if ($cms.dom.keyPressed(event, 'Enter')) {
+                            submit.onclick(event);
+                        }
                     };
             }
         }
@@ -329,22 +331,24 @@
                     post += '&username=' + input.form.elements['edit_username'].value;
                 }
             }
-            var strength = $cms.loadSnippet('password_strength', post);
-            strength *= 2;
-            if (strength > 10) {  // Normally too harsh!
-                strength = 10;
-            }
-            ind.style.width = (strength * 10) + 'px';
 
-            if (strength >= 6) {
-                ind.style.backgroundColor = 'green';
-            } else if (strength < 4) {
-                ind.style.backgroundColor = 'red';
-            } else {
-                ind.style.backgroundColor = 'orange';
-            }
+            $cms.loadSnippet('password_strength', post, true).then(function (strength) {
+                strength = Number(strength);
+                strength *= 2;
+                if (strength > 10) {  // Normally too harsh!
+                    strength = 10;
+                }
+                ind.style.width = (strength * 10) + 'px';
+                if (strength >= 6) {
+                    ind.style.backgroundColor = 'green';
+                } else if (strength < 4) {
+                    ind.style.backgroundColor = 'red';
+                } else {
+                    ind.style.backgroundColor = 'orange';
+                }
 
-            ind.parentNode.style.display = (input.value.length === 0) ? 'none' : 'block';
+                ind.parentNode.style.display = (input.value.length === 0) ? 'none' : 'block';
+            });
         });
     };
 
@@ -576,10 +580,9 @@
         }
     };
 
-    $cms.templates.formScreenFieldSpacer = function (params) {
+    $cms.templates.formScreenFieldSpacer = function (params, container) {
         params || (params = {});
-        var container = this,
-            title = $cms.filter.id(params.title);
+        var title = $cms.filter.id(params.title);
 
         if (title && params.sectionHidden) {
             $cms.dom.$id('fes' + title).click();
@@ -598,12 +601,10 @@
         });
     };
 
-    $cms.templates.formScreenInputTick = function (params) {
-        var el = this;
-
+    $cms.templates.formScreenInputTick = function (params, el) {
         if (params.name === 'validated') {
             $cms.dom.on(el, 'click', function () {
-                el.previousSibling.className = 'validated_checkbox' + (el.checked ? ' checked' : '');
+                el.previousElementSibling.className = 'validated_checkbox' + (el.checked ? ' checked' : '');
             });
         }
 
@@ -657,8 +658,10 @@
         }
 
         function formatSelectSimple(o) {
-            if (!o.id) return o.text; // optgroup
-            return '<span title="' + escape_html(o.element[0].title) + '">' + escape_html(o.text) + '</span>';
+            if (!o.id) { // optgroup
+                return o.text;
+            }
+            return '<span title="' + $cms.filter.html(o.element[0].title) + '">' + $cms.filter.html(o.text) + '</span>';
         }
 
         selectEl = $cms.dom.$id(params.name);
@@ -673,7 +676,7 @@
             imageSources = JSON.parse(params.imageSources || '{}');
         }
 
-        if (window.jQuery && (window.jQuery(selectEl).select2 != undefined) && (selectEl.options.length > 20)/*only for long lists*/ && (!$cms.dom.html(selectEl.options[1]).match(/^\d+$/)/*not for lists of numbers*/)) {
+        if (window.jQuery && (window.jQuery.fn.select2 != null) && (selectEl.options.length > 20)/*only for long lists*/ && (!$cms.dom.html(selectEl.options[1]).match(/^\d+$/)/*not for lists of numbers*/)) {
             window.jQuery(selectEl).select2(select2Options);
         }
 
@@ -708,7 +711,7 @@
 
         el.onkeypress = function (event) {
             if ($cms.dom.keyPressed(event, 'Enter')) {
-                return el.onclick.call([event]);
+                return clickFunc(event);
             }
 
             return null;
@@ -882,7 +885,7 @@
                 if (inputs[i].pluploadObject !== undefined) {
                     if ((inputs[i].value != '-1') && (inputs[i].value != '')) {
                         if (!done_one) {
-                            if (oldComcode.indexOf('attachment_safe') == -1) {
+                            if (oldComcode.indexOf('attachment_safe') === -1) {
                                 $cms.ui.alert('{!javascript:ATTACHMENT_SAVED;^}');
                             } else {
                                 if (!mainWindow.$cms.form.isWysiwygField(post)) // Only for non-WYSIWYG, as WYSIWYG has preview automated at same point of adding
@@ -896,7 +899,9 @@
                         inputs[i].pluploadObject.setButtonDisabled(false);
                     } else {
                         uploadButton = mainWindow.document.getElementById('uploadButton_' + inputs[i].name);
-                        if (uploadButton) uploadButton.disabled = true;
+                        if (uploadButton) {
+                            uploadButton.disabled = true;
+                        }
                     }
                     inputs[i].value = '-1';
                 } else {
@@ -913,98 +918,31 @@
     };
 
     $cms.templates.blockHelperDone = function (params) {
-        var element;
-        var targetWindow = window.opener ? window.opener : window.parent;
-        element = targetWindow.document.getElementById(params.fieldName);
+        var targetWindow = window.opener ? window.opener : window.parent,
+            element = targetWindow.document.getElementById(params.fieldName);
+        
         if (!element) {
             targetWindow = targetWindow.frames['iframe_page'];
             element = targetWindow.document.getElementById(params.fieldName);
         }
-        var isWysiwyg = targetWindow.$cms.form.isWysiwygField(element);
-
-        var comcode, comcodeSemihtml;
-        comcode = params.comcode;
+        
+        var isWysiwyg = targetWindow.$cms.form.isWysiwygField(element),
+            comcode = strVal(params.comcode),
+            comcodeSemihtml = strVal(params.comcodeSemihtml),
+            loadingSpace = document.getElementById('loading_space'),
+            attachedEventAction = false;
+        
         window.returnValue = comcode;
-        comcodeSemihtml = params.comcodeSemihtml;
-
-        var loadingSpace = document.getElementById('loading_space');
-
-        function shutdownOverlay() {
-            setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
-                if (window.fauxClose !== undefined) {
-                    window.fauxClose();
-                } else {
-                    window.close();
-                }
-            }, 200);
-        }
-
-        function dispatchBlockHelper() {
-            if ((typeof params.saveToId === 'string') && (params.saveToId !== '')) {
-                var ob = targetWindow.wysiwygEditors[element.id].document.$.getElementById(params.saveToId);
-
-                if (params.delete) {
-                    ob.parentNode.removeChild(ob);
-                } else {
-                    var inputContainer = document.createElement('div');
-                    $cms.dom.html(inputContainer, comcodeSemihtml.replace(/^\s*/, ''));
-                    ob.parentNode.replaceChild(inputContainer.firstElementChild, ob);
-                }
-
-                targetWindow.wysiwygEditors[element.id].updateElement();
-
-                shutdownOverlay();
-            } else {
-                var message = '';
-                if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
-                    if (isWysiwyg) {
-                        message = '';
-                    } else {
-                        message = '{!comcode:ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
-                    }
-                }
-
-                targetWindow.insertComcodeTag = function insertComcodeTag(repFrom, repTo, ret) { // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
-                    var _comcodeSemihtml = comcodeSemihtml;
-                    var _comcode = comcode;
-                    if (repFrom !== undefined) {
-                        for (var i = 0; i < rep_from.length; i++) {
-                            _comcodeSemihtml = _comcodeSemihtml.replace(repFrom[i], repTo[i]);
-                            _comcode = _comcode.replace(repFrom[i], repTo[i]);
-                        }
-                    }
-
-                    if (ret !== undefined && ret) {
-                        return [_comcodeSemihtml, _comcode];
-                    }
-
-                    if ((element.value.indexOf(comcodeSemihtml) == -1) || (comcode.indexOf('[attachment') == -1)) { // Don't allow attachments to add twice
-                        targetWindow.insertTextbox(element, _comcode, targetWindow.document.selection ? targetWindow.document.selection : null, true, _comcodeSemihtml);
-                    }
-                };
-
-                if (params.prefix !== undefined) {
-                    targetWindow.insertTextbox(element, params.prefix, targetWindow.document.selection ? targetWindow.document.selection : null, true);
-                }
-                targetWindow.insertComcodeTag();
-
-                if (message != '') {
-                    $cms.ui.alert(message, function () {
-                        shutdownOverlay();
-                    });
-                } else {
-                    shutdownOverlay();
-                }
-            }
-        }
-
-        var attachedEventAction = false;
 
         if (params.syncWysiwygAttachments) {
             // WYSIWYG-editable attachments must be synched
             var field = 'file' + params.tagContents.substr(4);
             var uploadElement = targetWindow.document.getElementById(field);
-            if (!uploadElement) uploadElement = targetWindow.document.getElementById('hidFileID_' + field);
+            
+            if (!uploadElement) {
+                uploadElement = targetWindow.document.getElementById('hidFileID_' + field);
+            }
+            
             if ((uploadElement.pluploadObject !== undefined) && (isWysiwyg)) {
                 var ob = uploadElement.pluploadObject;
                 if (ob.state == targetWindow.plupload.STARTED) {
@@ -1026,11 +964,87 @@
                     attachedEventAction = true;
                 }
             }
-
         }
 
         if (!attachedEventAction) {
             setTimeout(dispatchBlockHelper, 1000); // Delay it, so if we have in a faux popup it can set up fauxClose
+        }
+
+        function shutdownOverlay() {
+            setTimeout(function () { // Close master window in timeout, so that this will close first (issue on Firefox) / give chance for messages
+                if (window.fauxClose !== undefined) {
+                    window.fauxClose();
+                } else {
+                    window.close();
+                }
+            }, 200);
+        }
+
+        function dispatchBlockHelper() {
+            var saveToId = strVal(params.saveToId);
+            
+            if (saveToId !== '') {
+                var ob = targetWindow.wysiwygEditors[element.id].document.$.getElementById(saveToId);
+
+                if (params.delete) {
+                    ob.parentNode.removeChild(ob);
+                } else {
+                    var inputContainer = document.createElement('div');
+                    $cms.dom.html(inputContainer, comcodeSemihtml.replace(/^\s*/, ''));
+                    ob.parentNode.replaceChild(inputContainer.firstElementChild, ob);
+                }
+
+                targetWindow.wysiwygEditors[element.id].updateElement();
+
+                shutdownOverlay();
+                return;
+            }
+            
+            var message = '';
+            if (comcode.includes('[attachment') && comcode.includes('[attachment_safe')) {
+                if (isWysiwyg) {
+                    message = '';
+                } else {
+                    message = '{!comcode:ADDED_COMCODE_ONLY_SAFE_ATTACHMENT;^}';
+                }
+            }
+
+            // We define as a temporary global method so we can clone out the tag if needed (e.g. for multiple attachment selections)
+            targetWindow.insertComcodeTag = function insertComcodeTag(repFrom, repTo, ret) { 
+                var _comcodeSemihtml = comcodeSemihtml,
+                    _comcode = comcode;
+                
+                if (repFrom !== undefined) {
+                    for (var i = 0; i < repFrom.length; i++) {
+                        _comcodeSemihtml = _comcodeSemihtml.replace(repFrom[i], repTo[i]);
+                        _comcode = _comcode.replace(repFrom[i], repTo[i]);
+                    }
+                }
+
+                if (ret) {
+                    return [_comcodeSemihtml, _comcode];
+                }
+
+                if (element.value.includes(comcodeSemihtml) || comcode.includes('[attachment')) { // Don't allow attachments to add twice
+                    return targetWindow.insertTextbox(element, _comcode, true, _comcodeSemihtml, true);
+                }
+            };
+
+            var promise = Promise.resolve();
+            if (params.prefix !== undefined) {
+                promise = targetWindow.insertTextbox(element, params.prefix, true, '', true);
+            }
+            promise.then(function () {
+                return targetWindow.insertComcodeTag();
+            }).then(function () {
+                if (message !== '') {
+                    $cms.ui.alert(message).then(function () {
+                        shutdownOverlay();
+                    });
+                } else {
+                    shutdownOverlay();
+                }
+            });
         }
     };
 
@@ -1057,10 +1071,7 @@
 
         $cms.dom.on(container, 'click', '.js-click-clear-name-stub-input', function (e) {
             var input = $cms.dom.$('#' + nameStub + '_' + index);
-            input.value = '';
-            if (input.fakeonchange) {
-                input.fakeonchange(e);
-            }
+            $cms.dom.changeVal(input, '');
         });
 
 
@@ -1384,7 +1395,7 @@
             var iframe = document.getElementById('iframe_under');
             found.onchange = function () {
                 if (iframe) {
-                    if ((iframe.contentDocument) && (iframe.contentDocument.getElementsByTagName('form').length != 0)) {
+                    if (iframe.contentDocument && (iframe.contentDocument.getElementsByTagName('form').length !== 0)) {
                         $cms.ui.confirm(
                             '{!Q_SURE_LOSE;^}',
                             function (result) {
@@ -1402,7 +1413,9 @@
 
                 return null;
             };
-            if ((found.getAttribute('size') > 1) || (found.multiple)) found.onclick = found.onchange;
+            if ((found.getAttribute('size') > 1) || (found.multiple)) {
+                found.onclick = found.onchange;
+            }
             if (iframe) {
                 foundButton.style.display = 'none';
             }
@@ -1438,9 +1451,11 @@
                 geocodeUrl += '?latitude=' + encodeURIComponent(position.coords.latitude) + '&longitude=' + encodeURIComponent(position.coords.longitude);
                 geocodeUrl += $cms.keepStub();
 
-                $cms.doAjaxRequest(geocodeUrl, function (ajaxResult) {
-                    var parsed = JSON.parse(ajaxResult.responseText);
-                    if (parsed === null) return;
+                $cms.doAjaxRequest(geocodeUrl, function (_, xhr) {
+                    var parsed = JSON.parse(xhr.responseText);
+                    if (parsed === null) {
+                        return;
+                    }
                     var labels = document.getElementsByTagName('label'), label, fieldName, field;
                     for (var i = 0; i < labels.length; i++) {
                         label = $cms.dom.html(labels[i]);
@@ -1452,7 +1467,7 @@
                                 field = document.getElementById(fieldName);
                                 if (field.localName === 'select') {
                                     field.value = parsed[j + 1];
-                                    if (jQuery(field).select2 !== undefined) {
+                                    if (jQuery.fn.select2 !== undefined) {
                                         jQuery(field).trigger('change');
                                     }
                                 } else {
@@ -1468,7 +1483,7 @@
 
     // Hide a 'tray' of trs in a form
     function toggleSubordinateFields(pic, helpId) {
-        var fieldInput = pic.parentElement.parentElement.parentElement,
+        var fieldInput = $cms.dom.parent(pic, '.form_table_field_spacer'),
             next = fieldInput.nextElementSibling,
             newDisplayState, newDisplayState2;
 
@@ -1487,7 +1502,7 @@
         if ((!next && (pic.src.includes('expand'))) || (next && (next.style.display === 'none'))) {/* Expanding now */
             pic.src = pic.src.includes('themewizard.php') ? pic.src.replace('expand', 'contract') : $cms.img('{$IMG;,1x/trays/contract}');
             if (pic.srcset !== undefined) {
-                pic.srcset = pic.srcset.includes('themewizard.php') ? pic.srcset.replace('expand', 'contract') : ($cms.img('{$IMG;,2x/trays/contract}') + ' 2x');
+                pic.srcset.includes('themewizard.php') ? pic.srcset.replace('expand', 'contract') : ($cms.img('{$IMG;,2x/trays/contract}') + ' 2x');
             }
             pic.alt = '{!CONTRACT;^}';
             pic.title = '{!CONTRACT;^}';
@@ -1518,14 +1533,15 @@
             fieldInput.style.display = newDisplayState;
 
             if ((newDisplayState2 !== 'none') && (count < 50/*Performance*/)) {
-                $cms.dom.clearTransitionAndSetOpacity(fieldInput, 0.0);
-                $cms.dom.fadeTransition(fieldInput, 100, 30, 20);
+                $cms.dom.fadeIn(fieldInput);
                 count++;
             }
         }
+        
         if (helpId === undefined) {
             helpId = pic.parentNode.id + '_help';
         }
+        
         var help = document.getElementById(helpId);
 
         while (help !== null) {
@@ -1569,10 +1585,8 @@
             return;
         }
         j.checked = true;
-        //if (j.onclick) j.onclick(); causes loop
-        if (j.fakeonchange) {
-            j.fakeonchange(event);
-        }
+        $cms.dom.trigger(j, 'change');
+        
         imgOb.parentNode.classList.add('selected');
         imgOb.style.outline = '1px dotted';
     }
@@ -1700,15 +1714,18 @@
                 for (i = 0; i < document.forms.length; i++) {
                     for (j = 0; j < document.forms[i].elements.length; j++) {
                         e = document.forms[i].elements[j];
-                        if (!e.name) continue;
+                        if (!e.name) {
+                            continue;
+                        }
 
                         if ((e.name.replace(/\[\]$/, '') == fieldName) || (e.name.replace(/\_\d+$/, '_') == fieldName)) {
                             radioButtons.push(e);
-                            if (e.checked) // This is the checked radio equivalent to our text field, copy the value through to the text field
-                            {
+                            if (e.checked) {// This is the checked radio equivalent to our text field, copy the value through to the text field
                                 radioButtons['value'] = e.value;
                             }
-                            if (e.alternating) radioButtons.alternating = true;
+                            if (e.alternating) {
+                                radioButtons.alternating = true;
+                            }
                         }
                     }
                 }
@@ -1721,16 +1738,22 @@
             }
 
             function _standardAlternateFieldIsFilledIn(field, secondRun, force) {
-                if (!field) return false; // N/A input is considered unset
+                if (!field) { // N/A input is considered unset
+                    return false; 
+                } 
 
                 var isSet = force || ((field.value != '') && (field.value != '-1')) || ((field.virtualValue !== undefined) && (field.virtualValue != '') && (field.virtualValue != '-1'));
 
                 var radioButton = document.getElementById('choose_' + (field ? field.name : '').replace(/\[\]$/, '')); // Radio button handles field alternation
                 if (!radioButton) radioButton = document.getElementById('choose_' + field.name.replace(/\_\d+$/, '_'));
                 if (secondRun) {
-                    if (radioButton) return radioButton.checked;
+                    if (radioButton) {
+                        return radioButton.checked;
+                    }
                 } else {
-                    if (radioButton) radioButton.checked = isSet;
+                    if (radioButton) {
+                        radioButton.checked = isSet;
+                    }
                 }
                 return isSet;
             }
@@ -1760,7 +1783,6 @@
                         if (field) {
                             field.addEventListener('keyup', refreshFunction);
                             field.addEventListener('change', refreshFunction);
-                            field.fakeonchange = refreshFunction;
                         }
                     }
                     if (field) {
