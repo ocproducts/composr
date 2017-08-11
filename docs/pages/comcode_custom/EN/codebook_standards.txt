@@ -252,7 +252,7 @@ Spaces around operators
 | Revision control
 | Product development only
 | Code Quality Checker
-| If you have split an array across multi-lines, use a trailing comma. This means every array element has a comma after it. The advantages are it looks more symmetrical and it is less likely to conflict in revision control should the array be extended with further elements.
+| If you have split an array or JavaScript object initialiser across multi-lines, use a trailing comma. This means every array element has a comma after it. The advantages are it looks more symmetrical and it is less likely to conflict in revision control should the array be extended with further elements.
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Align functions precisely in code
