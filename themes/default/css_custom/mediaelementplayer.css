@@ -1,5 +1,5 @@
 .mejs-offscreen{
-/* Accessibility: hide screen reader texts (and prefer "top" for RTL languages). */
+/* Accessibility: hide screen-reader texts (and prefer "top" for RTL languages). */
 	position: absolute !important;
 	top: -10000px;
 	left: -10000px;

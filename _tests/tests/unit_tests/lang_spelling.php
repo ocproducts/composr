@@ -129,6 +129,9 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'meta tree') !== false) {
             $this->assertTrue(false, 'The phrase \'meta tree\' was used in ' . $file . '. This should be changed to \'meta-tree\'.');
         }
+        if ((stripos($string, 'screen reader') !== false) || (stripos($string, 'screenreader') !== false)) {
+            $this->assertTrue(false, 'The phrase \'screen reader\' was used in ' . $file . '. This should be changed to \'screen-reader\'.');
+        }
         if (preg_match('#([^\[\]<>\|"\'/_])popup#', $string, $matches) != 0) {
             $this->assertTrue(false, 'The phrase \'popup\' was used in ' . $file . '. This should be changed to \'pop-up\'.');
         }

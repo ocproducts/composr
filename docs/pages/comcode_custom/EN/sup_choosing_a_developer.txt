@@ -156,7 +156,7 @@ Here are a few things I would not necessarily expect a web developer to suggest,
 [*] Ongoing study of analytics to find weaknesses, and propose improvements[/*]
 [*] Ongoing Internet Marketing support, such as social media campaigning and sending of nicely designed newsletters[/*]
 [*] Ongoing SEO for link building and tuning position on some applicable search terms[/*]
-[*] Accessibility testing with a screen reader, and automatic testing tools, to ensure blind users can use the website effectively[/*]
+[*] Accessibility testing with a screen-reader, and automatic testing tools, to ensure blind users can use the website effectively[/*]
 [*] A full code review by a senior engineer[/*]
 [*] A proper training course for any site administrators to go through[/*]
 [/list]

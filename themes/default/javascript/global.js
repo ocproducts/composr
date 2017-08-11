@@ -5706,7 +5706,7 @@
             return;
         }
 
-        if (!starting) { // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
+        if (!starting) { // Real JS mousemove event, so we assume not a screen-reader and have to remove natural tooltip
             if (el.getAttribute('title')) {
                 el.setAttribute('title', '');
             }
@@ -7507,7 +7507,7 @@
                         window.loadHtmlEdit(form);
                     }
 
-                    // Remove tooltips from forms as they are for screenreader accessibility only
+                    // Remove tooltips from forms as they are for screen-reader accessibility only
                     form.title = '';
 
                     // Convert form element title attributes into composr tooltips

@@ -73,7 +73,7 @@ The default Comcode pages are...
 		<tr>
 			<td>Welcome</td>
 			<td><kbd>keymap</kbd></td>
-			<td>Keymap of shortcuts, promoted to users on screenreaders (i.e. partially-sighted/blind users).</td>
+			<td>Keymap of shortcuts, promoted to users on screen-readers (i.e. partially-sighted/blind users).</td>
 			<td>5%</td>
 		</tr>
 		<tr>

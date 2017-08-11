@@ -1765,7 +1765,15 @@ No deprecated tags or attributes
 | Accessibility
 | Composr development +
 | Automated test ([tt]template_previews.php[/tt])
-| Don't use deprecated HTML attributes or tags (e.g. the [tt]align[/tt] attribute, the [tt]b[/tt] tag). Use a combination of CSS and semantic tags instead (e.g. [tt]text-align[/tt] and the [tt]strong[/tt] tag). This is part of WCAG, but needed re-iterating.
+| Meet WCAG (Web Content Accessibility Guidelines) 1 level 3, and WCAG 2 (read them!). Write semantic markup. Always use the [tt]<p>[/tt] element to mark true paragraphs if they are not alone in a table cell, and if they are always going to be just one single paragraph. Images should not be wrapped in paragraphs. Short lines may be wrapped in paragraphs as/if you wish.
+|-
+| [size="0.8"]{$INC,cs_count,1})[/size]
+Make links accessible
+| Accessibility
+| Composr development +
+| Manually
+| Any important link (i.e. a link that isn't just duplicating another) must be distinguishable by the contents of that link. Title attributes are not enough because Composr may turn those into JavaScript driven tooltips, which won't automatically come up in the normal link-cycling process a screen-reader will go through. In particular if you have a link around an image, make sure that image has alt-text that describes the link (not the image).
+Links should also be distinguished from one another, and you may use the title attribute to do this if you want (as the screen-reader's initial list of links should be able to include that properly, even if we later remove that attribute).
 |-
 | [size="0.8"]{$INC,cs_count,1})[/size]
 Write to XHTML5

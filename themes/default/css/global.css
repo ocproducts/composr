@@ -1234,7 +1234,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.non_accessibility_redundancy { /* Contents should be skipped by screen readers */
+	.non_accessibility_redundancy { /* Contents should be skipped by screen-readers */
 		display: none;
 	}
 /*{+END}*/

@@ -2380,7 +2380,7 @@ if (typeof jQuery != 'undefined') {
 				t.$media.removeAttr('controls');
 				var videoPlayerTitle = t.isVideo ?
 					mejs.i18n.t('Video Player') : mejs.i18n.t('Audio Player');
-				// insert description for screen readers
+				// insert description for screen-readers
 				$('<span class="mejs-offscreen">' + videoPlayerTitle + '</span>').insertBefore(t.$media);
 				// build container
 				t.container =
@@ -4803,7 +4803,7 @@ if (typeof jQuery != 'undefined') {
 		tracksText: mejs.i18n.t('Captions/Subtitles'),
 
 		// By default, no WAI-ARIA live region - don't make a
-		// screen reader speak captions over an audio track.
+		// screen-reader speak captions over an audio track.
 		tracksAriaLive: false,
 
 		// option to remove the [cc] button when no <track kind="subtitles"> are present

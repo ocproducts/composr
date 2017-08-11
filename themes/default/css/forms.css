@@ -98,7 +98,7 @@ div.comcode_supported {
 	}
 }
 
-/* This is used to fix a problem on screen readers (we don't want a paragraph used) */
+/* This is used to fix a problem on screen-readers (we don't want a paragraph used) */
 span.form_field_name {
 	/*display: inline-block;	Actually, this breaks vertical centring, so let it be inline*/
 }
