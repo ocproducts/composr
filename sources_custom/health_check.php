@@ -367,7 +367,13 @@ abstract class Hook_Health_Check
     {
         global $HEALTH_CHECK_PAGE_URLS_CACHE;
         if (!array_key_exists($page_link, $HEALTH_CHECK_PAGE_URLS_CACHE)) {
-            $HEALTH_CHECK_PAGE_URLS_CACHE[$page_link] = page_link_to_url($page_link);
+            $url = page_link_to_url($page_link);
+            if (strpos($url, '?') === false) {
+                $url .= '?keep_su=Guest';
+            } else {
+                $url .= '&keep_su=Guest';
+            }
+            $HEALTH_CHECK_PAGE_URLS_CACHE[$page_link] = $url;
         }
         return $HEALTH_CHECK_PAGE_URLS_CACHE[$page_link];
     }
@@ -403,9 +409,10 @@ abstract class Hook_Health_Check
     /**
      * Get the website domain names.
      *
+     * @param boolean Whether to strip www from domain names 
      * @return array Domain names
      */
-    protected function get_domains()
+    protected function get_domains($remap_www = true)
     {
         $domains = array();
 
@@ -416,6 +423,12 @@ abstract class Hook_Health_Check
         foreach ($SITE_INFO as $key => $_val) {
             if ($key !== '' && $key[0] === 'Z' && substr($key, 0, $zl) === 'ZONE_MAPPING_') {
                 $domains[] = $_val[0];
+            }
+        }
+
+        if ($remap_www) {
+            foreach ($domains as &$domain) {
+                $domain = preg_replace('#^www\.#', '', $domain);
             }
         }
 

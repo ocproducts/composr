@@ -989,8 +989,11 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
         } else {
             $protocol_end_pos = strpos($config_ip_forwarding, '://');
             if ($protocol_end_pos !== false) {
+                // Full with protocol
                 $url = preg_replace('#^(https?://)#', substr($config_ip_forwarding, 0, $protocol_end_pos + 3), $url);
                 $config_ip_forwarding = substr($config_ip_forwarding, $protocol_end_pos + 3);
+            } else {
+                // IP address
             }
             $connect_to = $config_ip_forwarding;
         }
@@ -1257,10 +1260,12 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                             } else {
                                                 if ((!is_array($curl_version)) || (!isset($curl_version['ssl_version'])) || (strpos($curl_version['ssl_version'], 'NSS') === false) || (version_compare($curl_version['version'], '7.36.0') >= 0)) {
                                                     curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
+                                                    // Best to never mess with CURLOPT_SSL_CIPHER_LIST, because different servers have different ciphers, and things constantly evolve, hard-coding isn't going to work - this is a last-ditch option for old versions of PHP, we can be specifying TLSv1 as a cipher [=category] (which is undocumented)
                                                 } else {
                                                     curl_setopt($ch, CURLOPT_SSLVERSION, 1); // the above fails on old NSS, so we use numeric equivalent to the CURL_SSLVERSION_TLSv1 constant here
                                                 }
                                             }
+                                            // ^ If you get errors about ciphers not matching up, it's possibly cURL being buggy and misreporting a firewall problem. The above config settings should be rock-solid on almost every single server.
                                             if ($do_ip_forwarding) {
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                                                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -1368,6 +1373,9 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 $HTTP_DOWNLOAD_MIME_TYPE = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
                                                 $HTTP_DOWNLOAD_SIZE = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
                                                 $HTTP_DOWNLOAD_URL = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+                                                if ($HTTP_DOWNLOAD_URL == $_url) {
+                                                    $HTTP_DOWNLOAD_URL = $url;
+                                                }
                                                 $HTTP_MESSAGE = strval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
                                                 if ($HTTP_MESSAGE == '206') {
                                                     $HTTP_MESSAGE = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
@@ -1428,6 +1436,36 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                 // Receive body
                                                 if ($HTTP_MESSAGE != '200') {
                                                     $CURL_BODY = '';
+
+                                                    switch ($HTTP_MESSAGE ) {
+                                                        case '401':
+                                                        case '403':
+                                                            if ($trigger_error) {
+                                                                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)));
+                                                            } else {
+                                                                $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
+                                                            }
+                                                            $HTTP_DOWNLOAD_MIME_TYPE = 'security';
+                                                        case '404':
+                                                            if ($trigger_error) {
+                                                                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)));
+                                                            } else {
+                                                                $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
+                                                            }
+                                                        case '400':
+                                                        case '500':
+                                                            if ($trigger_error) {
+                                                                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)));
+                                                            } else {
+                                                                $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
+                                                            }
+                                                        default:
+                                                            if ($trigger_error) {
+                                                                warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($HTTP_MESSAGE)));
+                                                            } else {
+                                                                $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($HTTP_MESSAGE));
+                                                            }
+                                                    }
                                                 }
                                                 return _detect_character_encoding($CURL_BODY);
                                             }
@@ -1890,6 +1928,7 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                 ),
                 'ssl' => array(
                     'verify_peer' => !$do_ip_forwarding,
+                    'verify_peer_name' => !$do_ip_forwarding,
                     'cafile' => $crt_path,
                     'SNI_enabled' => true,
                     'ciphers' => 'TLSv1',

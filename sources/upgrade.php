@@ -1122,6 +1122,8 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
 
     require_code('files');
 
+    disable_php_memory_limit();
+
     // We'll need to know about stuff in our addon registry, and file manifest
     if (function_exists('find_all_hooks')) {
         $hooks = find_all_hooks('systems', 'addon_registry');

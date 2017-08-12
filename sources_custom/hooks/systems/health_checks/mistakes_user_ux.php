@@ -74,7 +74,7 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
             return;
         }
 
-        $domains = $this->get_domains();
+        $domains = $this->get_domains(false);
 
         foreach ($domains as $domain) {
             $parts = explode('.', $domain);
@@ -131,6 +131,10 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
 
         if (empty($SITE_INFO['base_url'])) {
             return;
+        }
+
+        if (strpos(get_option('ip_forwarding'), '://') !== false) {
+            return; // Will mess up protocol
         }
 
         $protocol = parse_url($SITE_INFO['base_url'], PHP_URL_SCHEME);

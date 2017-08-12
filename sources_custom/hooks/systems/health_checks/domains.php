@@ -90,7 +90,12 @@ class Hook_health_check_domains extends Hook_Health_Check
 
             foreach ($domains as $domain) {
                 if (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') {
-                    $data = shell_exec('whois \'domain ' . escapeshellarg($domain) . '\'');
+                    $cmd = 'whois ' . escapeshellarg('domain ' . $domain);
+                    $data = shell_exec($cmd);
+                    if (strpos($data, 'Unknown AS number') !== false) {
+                        $cmd = 'whois ' . escapeshellarg($domain);
+                        $data = shell_exec($cmd);
+                    }
                 } else {
                     $this->state_check_skipped('No implementation for doing whois lookups on this platform');
                     return;
@@ -105,7 +110,7 @@ class Hook_health_check_domains extends Hook_Health_Check
                         $this->state_check_skipped('Error reading expiry date for ' . $domain);
                     }
                 } else {
-                    $this->state_check_skipped('Could not find expiry date for ' . $domain);
+                    $this->state_check_skipped('Could not find expiry date for [tt]' . $domain . '[/tt] (this happens for some domains, or may mean the [tt]whois[/tt] command is not installed on the server)');
                 }
             }
         } else {

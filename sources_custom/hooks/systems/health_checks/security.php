@@ -108,7 +108,15 @@ class Hook_health_check_security extends Hook_Health_Check
                 'threatEntries' => $urls,
             ),
         );
-        $_result = http_download_file($url, null, false, false, 'Composr', array(json_encode($data)), null, null, null, null, null, null, null, 200.0, true, null, null, null, 'application/json');
+
+        for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
+            $_result = http_download_file($url, null, false, false, 'Composr', array(json_encode($data)), null, null, null, null, null, null, null, 200.0, true, null, null, null, 'application/json');
+
+            if ($_result !== null) {
+                break;
+            }
+            sleep(5);
+        }
 
         $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('401', '403')), 'Error with our Google Safe Browsing API key (' . $GLOBALS['HTTP_MESSAGE'] . ')');
         $this->assert_true(!in_array($GLOBALS['HTTP_MESSAGE'], array('400', '501', '503', '504')), 'Internal error with our Google Safe Browsing check (' . $GLOBALS['HTTP_MESSAGE'] . '); only works on pages that have been indexed by Google');
@@ -118,10 +126,10 @@ class Hook_health_check_security extends Hook_Health_Check
             $result = json_decode($_result, true);
 
             if (empty($result['matches'])) {
-                $this->assert_true(true, 'Malware advisory provided by Google (https://developers.google.com/safe-browsing/v3/advisory)');
+                $this->assert_true(true, 'Malware advisory provided by [url="Google"]https://developers.google.com/safe-browsing/v3/advisory[/url]');
             } else {
                 foreach ($result['matches'] as $match) {
-                    $this->assert_true(false, 'Malware advisory provided by Google ' . json_encode($match) . ' (https://developers.google.com/safe-browsing/v3/advisory)');
+                    $this->assert_true(false, 'Malware advisory provided by [url="Google"]https://developers.google.com/safe-browsing/v3/advisory[/url], ' . json_encode($match));
                 }
             }
         } else {
@@ -189,7 +197,7 @@ class Hook_health_check_security extends Hook_Health_Check
                 $domains = $this->get_domains();
 
                 foreach ($domains as $domain) {
-                    $regexp = '#\nNon-authoritative answer:\nName:\s+' . $domain . '\nAddress:\s+(.*)\n#';
+                    $regexp = '#\nName:\s+' . $domain . '\nAddress:\s+(.*)\n#';
 
                     $matches_local = array();
                     $dns_lookup_local = shell_exec('nslookup ' . $domain);
@@ -200,7 +208,7 @@ class Hook_health_check_security extends Hook_Health_Check
                     if (($matched_local != 0) && ($matched_remote != 0)) {
                         $this->assert_true($matches_local[1] == $matches_remote[1], 'DNS lookup for our domain seems to be looking up differently ([tt]' . $matches_local[1] . '[/tt] vs [tt]' . $matches_remote[1] . '[/tt])');
                     } else {
-                        $this->state_check_skipped('Failed to get a recognisable DNS resolution via the command line');
+                        $this->state_check_skipped('Failed to get a recognisable DNS resolution via the command line for [tt]' . $domain . '[/tt]');
                     }
                 }
             } else {

@@ -60,7 +60,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
 
         // TODO: Document in maintenance spreadsheet for v11 that we have these links here
 
-        $this->state_check_manual('Check for SSL security issues https://www.ssllabs.com/ssltest/ (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Check for [url="SSL security issues"]https://www.ssllabs.com/ssltest/[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
     }
 
     /**
@@ -97,7 +97,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
 
             foreach ($urls as $url) {
                 // Check
-                $this->assert_true(preg_match('#^http://#', $url) == 0, 'Embedding HTTP resources on HTTPS page: ' . $url . ' (on "' . $page_link . '")');
+                $this->assert_true(preg_match('#^http://#', $url) == 0, 'Embedding HTTP resources on HTTPS page: [url="' . $url . '"]' . $url . '[/url] (on "' . $page_link . '")');
             }
         }
     }
@@ -152,7 +152,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
                     $regexp .= preg_quote($domain, '#');
                 }
                 $regexp .= ')[:/]#';
-                $this->assert_true(preg_match($regexp, $url) == 0, 'Linking to a local HTTP page on all-HTTPS site: ' . $url . ' (on "' . $page_link . '")');
+                $this->assert_true(preg_match($regexp, $url) == 0, 'Linking to a local HTTP page on all-HTTPS site: [url="' . $url . '"]' . $url . '[/url] (on "' . $page_link . '")');
             }
         }
     }
@@ -173,8 +173,15 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
 
         if ((addon_installed('ssl')) || (substr(get_base_url(), 0, 7) == 'https://')) {
             // If it's a problem with SSL verification in general
-            $data = http_download_file('https://www.google.com/', null, false);
-            $ok = (($data !== null) && (strpos($data, '<html') !== false));
+            for ($i = 0; $i < 3; $i++) { // Try a few times in case of some temporary network issue or Google issue
+                $data = http_download_file('https://www.google.com/', null, false);
+
+                $ok = (($data !== null) && (strpos($data, '<html') !== false));
+                if ($ok) {
+                    break;
+                }
+                sleep(5);
+            }
             $this->assert_true($ok, 'Problem downloading HTTP requests by SSL');
 
             if ($ok) {
@@ -188,7 +195,7 @@ class Hook_health_check_security_ssl extends Hook_Health_Check
                         $data = http_download_file($test_url, null, false);
                         $ok1 = (($data !== null) && (strpos($data, '<html') !== false));
 
-                        $msg = 'Problem detected with the ' . $domain . ' SSL certificate';
+                        $msg = 'Problem detected with the [tt]' . $domain . '[/tt] SSL certificate';
                         if (!$ok1) {
                             set_value('disable_ssl_for__' . $domain, '1');
                             $data = http_download_file($test_url, null, false);

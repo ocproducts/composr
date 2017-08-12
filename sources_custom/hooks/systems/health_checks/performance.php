@@ -63,7 +63,7 @@ class Hook_health_check_performance extends Hook_Health_Check
 
         // TODO: Document in maintenance spreadsheet for v11 that we have these links here
 
-        $this->state_check_manual('Check for speed issues https://developers.google.com/speed/pagespeed/insights (take warnings with a pinch of salt, not every suggestion is appropriate)');
+        $this->state_check_manual('Check for [url="speed issues"]https://developers.google.com/speed/pagespeed/insights[/url] (take warnings with a pinch of salt, not every suggestion is appropriate)');
     }
 
     /**
@@ -90,6 +90,59 @@ class Hook_health_check_performance extends Hook_Health_Check
     }
 
     /**
+     * Make a URL firewall-safe.
+     *
+     * @param  URLPATH $url URL
+     * @return URLPATH URL that is firewall-safe
+     */
+    protected function firewallify_url($url)
+    {
+        $config_ip_forwarding = get_option('ip_forwarding');
+
+        switch ($config_ip_forwarding) {
+            case '':
+                return $url;
+
+            case '1':
+                $connect_to = cms_srv('LOCAL_ADDR');
+                if ($connect_to == '') {
+                    $connect_to = cms_srv('SERVER_ADDR');
+                }
+                if ($connect_to == '') {
+                    $connect_to = '127.0.0.1'; // "localhost" can fail due to IP6
+                }
+
+                $url = preg_replace('#^(.*://)(.*)(/|:|$)#U', '$1' . $connect_to . '$3', $url);
+
+                break;
+
+            default:
+                $protocol_end_pos = strpos($config_ip_forwarding, '://');
+                if ($protocol_end_pos !== false) {
+                    // Full with protocol
+                    $url = preg_replace('#^(.*://)(.*)(/|$)#U', $config_ip_forwarding . '$3', $url);
+                } else {
+                    // IP address
+                    $url = preg_replace('#^(.*://)(.*)(/|:|$)#U', '$1' . $connect_to . '$3', $url);
+                }
+
+                break;
+        }
+
+        $opts = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'SNI_enabled' => true,
+                'ciphers' => 'TLSv1',
+            ),
+        );
+        stream_context_set_default($opts);
+
+        return $url;
+    }
+
+    /**
      * Run a section of health checks.
      *
      * @param  integer $check_context The current state of the website (a CHECK_CONTEXT__* constant)
@@ -103,13 +156,13 @@ class Hook_health_check_performance extends Hook_Health_Check
             return;
         }
 
-        $url = $this->get_page_url();
+        $url = $this->firewallify_url($this->get_page_url());
 
         require_code('files');
 
         $headers = @get_headers($url, 1);
         if ($headers === false) {
-            $this->state_check_skipped('Could not find headers for URL ' . $url);
+            $this->state_check_skipped('Could not find headers for URL [url="' . $url . '"]' . $url . '[/url]');
             return;
         }
 
@@ -172,10 +225,12 @@ class Hook_health_check_performance extends Hook_Health_Check
         );
 
         foreach ($urls as $type => $url) {
+            $url = $this->firewallify_url($url);
+
             stream_context_set_default(array('http' => array('header' => 'Accept-Encoding: gzip')));
             $headers = @get_headers($url, 1);
             if ($headers === false) {
-                $this->state_check_skipped('Could not find headers for URL ' . $url);
+                $this->state_check_skipped('Could not find headers for URL [url="' . $url . '"]' . $url . '[/url]');
                 continue;
             }
 
