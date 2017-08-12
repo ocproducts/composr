@@ -6,6 +6,10 @@
 // ATTACHMENTS
 // ===========
 
+/**
+ * @param startNum
+ * @param postingFieldName
+ */
 function addAttachment(startNum, postingFieldName) {
     if (window.numAttachments === undefined) return;
     if (window.maxAttachments === undefined) return;
@@ -39,6 +43,14 @@ function attachmentPresent(postValue, number) {
     return !(postValue.indexOf('[attachment]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="1"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="1"]new_' + number + '[/attachment_safe]') === -1) && (postValue.indexOf('[attachment thumb="0"]new_' + number + '[/attachment]') === -1) && (postValue.indexOf('[attachment_safe thumb="0"]new_' + number + '[/attachment_safe]') === -1);
 }
 
+/**
+ * @param fieldName
+ * @param number
+ * @param filename
+ * @param multi
+ * @param uploaderSettings
+ * @return { Promise }
+ */
 function setAttachment(fieldName, number, filename, multi, uploaderSettings) {
     multi = boolVal(multi);
     

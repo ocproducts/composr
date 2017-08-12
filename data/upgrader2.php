@@ -156,7 +156,7 @@ if ($next_offset_url == '') {
 }
 echo '<script>
     window.setTimeout(function() {
-        window.scrollTo(0,document.getElementById("file_' . strval(min(count($todo) - 1, $file_offset + $per_cycle)) . '").offsetTop-50);
+        window.scrollTo(0, document.getElementById("file_' . strval(min(count($todo) - 1, $file_offset + $per_cycle)) . '").offsetTop - 50);
     },200);
 </script>';
 if ($next_offset_url != '') {

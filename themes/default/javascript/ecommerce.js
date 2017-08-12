@@ -47,7 +47,7 @@
             };
         },
         doFormSubmit: function (e) {
-            if (!$cms.form.doFormSubmit(this.formEl, e)) {
+            if ($cms.form.doFormSubmit(this.formEl, e) === false) {
                 e.preventDefault();
             }
         }
@@ -71,8 +71,9 @@
                 if ((lengthUnits == 'y') && ((length < 1) || (length > 5)))
                     _length.value = (length < 1) ? 1 : 5;
             } else {
-                if (length < 1)
+                if (length < 1) {
                     _length.value = 1;
+                }
             }
         }
     };

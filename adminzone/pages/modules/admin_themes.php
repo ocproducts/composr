@@ -1401,7 +1401,7 @@ class Module_admin_themes
             attach_to_screen_header(make_string_tempcode(/**@lang HTML*/'
                 <script ' . csp_nonce_html() . ' src="' . get_base_url() . '/data/ace/ace.js"></script>
                 <script ' . csp_nonce_html() . ' src="' . get_base_url() . '/data/ace/ace_composr.js"></script>
-                <script>
+                <script ' . csp_nonce_html() . '>
                     aceComposrLoader(\'tempcode\',\'text\');
                 </script>
             ')); // XHTMLXHTML

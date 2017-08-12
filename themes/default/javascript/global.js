@@ -1683,7 +1683,7 @@
      * Used to execute a series promises one after another, in a sequence.
      * @see https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
      * @param {function[]} promiseFactories
-     * @returns {*}
+     * @returns { Promise }
      */
     function promiseSequence(promiseFactories) {
         promiseFactories = arrVal(promiseFactories);
@@ -1726,23 +1726,24 @@
     function setPostDataFlag(flag) {
         flag = strVal(flag);
 
-        var forms = $cms.dom.$$('form'), form, post_data;
+        var forms = $cms.dom.$$('form'), 
+            form, postData;
 
         for (var i = 0; i < forms.length; i++) {
             form = forms[i];
 
-            if (form.elements['post_data'] == null) {
-                post_data = document.createElement('input');
-                post_data.type = 'hidden';
-                post_data.name = 'post_data';
-                post_data.value = '';
+            if (form.elements['postData'] == null) {
+                postData = document.createElement('input');
+                postData.type = 'hidden';
+                postData.name = 'post_data';
+                postData.value = '';
             } else {
-                post_data = form.elements['post_data'];
-                post_data.value += ',';
+                postData = form.elements['postData'];
+                postData.value += ',';
             }
 
-            post_data.value += flag;
-            form.appendChild(post_data);
+            postData.value += flag;
+            form.appendChild(postData);
         }
     }
 
@@ -3086,14 +3087,14 @@
             if (!value && (value !== 0)) {
                 el.style.removeProperty(dasherize(property));
             } else {
-                css = dasherize(property) + ':' + maybeAddPx(property, value);
+                css = dasherize(property) + ':' + maybeAddPx(dasherize(property), value);
             }
         } else {
             for (key in property) {
                 if (!property[key] && (property[key] !== 0)) {
                     el.style.removeProperty(dasherize(key));
                 } else {
-                    css += dasherize(key) + ':' + maybeAddPx(key, property[key]) + ';';
+                    css += dasherize(key) + ':' + maybeAddPx(dasherize(key), property[key]) + ';';
                 }
             }
         }
@@ -4271,12 +4272,10 @@
     /**
      * Tabs
      * @memberof $cms.dom
-     * @param hash
+     * @param [hash]
      */
     $cms.dom.findUrlTab = function findUrlTab(hash) {
-        if (hash === undefined) {
-            hash = window.location.hash;
-        }
+        hash = strVal(hash, window.location.hash);
 
         if (hash.replace(/^#\!?/, '') !== '') {
             var tab = hash.replace(/^#/, '').replace(/^tab\_\_/, '');
@@ -4359,7 +4358,7 @@
             return;
         }
 
-        if ((frameElement) && (frameWindow) && (frameWindow.document) && (frameWindow.document.body)) {
+        if (frameElement && frameWindow && frameWindow.document && frameWindow.document.body) {
             var h = $cms.dom.getWindowScrollHeight(frameWindow);
 
             if ((h === 0) && (frameElement.parentElement.style.display === 'none')) {
@@ -4590,10 +4589,10 @@
 
         // Show loading animation
         var loadingWrapper = targetDiv;
-        if ((loadingWrapper.id.indexOf('carousel_') === -1) && ($cms.dom.html(loadingWrapper).indexOf('ajax_loading_block') === -1) && (showLoadingAnimation)) {
+        if ((loadingWrapper.id.indexOf('carousel_') === -1) && ($cms.dom.html(loadingWrapper).indexOf('ajax_loading_block') === -1) && showLoadingAnimation) {
             var rawAjaxGrowSpot = targetDiv.querySelectorAll('.raw_ajax_grow_spot');
 
-            if (rawAjaxGrowSpot[0] !== undefined && append) {
+            if ((rawAjaxGrowSpot[0] !== undefined) && append) {
                 // If we actually are embedding new results a bit deeper
                 loadingWrapper = rawAjaxGrowSpot[0];
             }
@@ -4628,20 +4627,20 @@
             window.document.body.style.cursor = 'wait';
         }
 
-        return new Promise(function (resolve) {
+        return new Promise(function (resolvePromise) {
             // Make AJAX call
             $cms.doAjaxRequest(
                 ajaxUrl + $cms.keepStub(),
                 function (_, xhr) { // Show results when available
-                    _callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
-                        resolve();
+                    callBlockRender(xhr, ajaxUrl, targetDiv, append, function () {
+                        resolvePromise();
                     }, scrollToTopOfWrapper, inner);
                 },
                 postParams
             );
         });
 
-        function _callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, callback, scrollToTopOfWrapper, inner) {
+        function callBlockRender(rawAjaxResult, ajaxUrl, targetDiv, append, callback, scrollToTopOfWrapper, inner) {
             var newHtml = rawAjaxResult.responseText;
             _blockDataCache[ajaxUrl] = newHtml;
 
@@ -4658,19 +4657,21 @@
             // Scroll up if required
             if (scrollToTopOfWrapper) {
                 try {
-                    scrollTo(0, $cms.dom.findPosY(targetDiv));
+                    window.scrollTo(0, $cms.dom.findPosY(targetDiv));
                 } catch (e) {}
             }
 
             // Defined callback
-            if (callback) {
+            if (callback != null) {
                 callback();
             }
         }
 
         function showBlockHtml(newHtml, targetDiv, append, inner) {
-            var rawAjaxGrowSpot = targetDiv.querySelectorAll('.raw_ajax_grow_spot');
-            if (rawAjaxGrowSpot[0] !== undefined && append) targetDiv = rawAjaxGrowSpot[0]; // If we actually are embedding new results a bit deeper
+            var rawAjaxGrowSpot = targetDiv.querySelector('.raw_ajax_grow_spot');
+            if ((rawAjaxGrowSpot != null) && append) {  // If we actually are embedding new results a bit deeper
+                targetDiv = rawAjaxGrowSpot;
+            }
             if (append) {
                 $cms.dom.append(targetDiv, newHtml);
             } else {
@@ -4692,11 +4693,7 @@
      */
     function loadSnippet(snippetHook, post) {
         snippetHook = strVal(snippetHook);
-
-        if (!window.location) { // In middle of page navigation away
-            return null;
-        }
-
+        
         var title = $cms.dom.html(document.querySelector('title')).replace(/ \u2013 .*/, ''),
             canonical = document.querySelector('link[rel="canonical"]'),
             url = canonical ? canonical.getAttribute('href') : window.location.href,
@@ -10064,9 +10061,7 @@
         document.getElementById('search_content').value = strVal(params.rawSearchString);
     };
     
-    $cms.templates.doNextScreen = function doNextScreen(params) {
-        
-    };
+    $cms.templates.doNextScreen = function doNextScreen(params) {};
 
     function detectChange(changeDetectionUrl, refreshIfChanged, callback) {
         $cms.doAjaxRequest(changeDetectionUrl, function (_, xhr) {
@@ -10103,13 +10098,13 @@
             els = [els];
         }
         for (var i = 0; i < els.length; i++) {
-            els[i].addEventListener('click', function (_e) {
+            els[i].addEventListener('click', function (el) {
                 return function () {
                     var selected = false;
-                    if (_e.type !== 'undefined' && _e.type === 'checkbox') {
-                        selected = (_e.checked && _e.value == value) || (!_e.checked && '' == value);
+                    if (el.type !== 'undefined' && el.type === 'checkbox') {
+                        selected = (el.checked && el.value == value) || (!el.checked && '' == value);
                     } else {
-                        selected = (_e.value == value);
+                        selected = (el.value == value);
                     }
                     if (selected) {
                         $cms.ui.alert(notice, null, noticeTitle, true);
@@ -10232,7 +10227,7 @@
             multi ? '{!_ARE_YOU_SURE_DELETE;^}' : '{!ARE_YOU_SURE_DELETE;^}',
             function (result) {
                 if (result) {
-                    if (callback !== undefined) {
+                    if (callback != null) {
                         callback();
                     } else {
                         form.submit();
@@ -10355,10 +10350,12 @@
                 var loadMoreLinkA = document.createElement('a');
                 $cms.dom.html(loadMoreLinkA, '{!LOAD_MORE;^}');
                 loadMoreLinkA.href = '#!';
-                loadMoreLinkA.onclick = function () {
-                    internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
-                    return false;
-                }; // Click link -- load
+                loadMoreLinkA.onclick = (function (moreLinks) {
+                    return function () {
+                        internaliseInfiniteScrollingGo(urlStem, wrapper, moreLinks);
+                        return false;
+                    };
+                }(moreLinks)); // Click link -- load
                 loadMoreLink.appendChild(loadMoreLinkA);
                 _pagination[_pagination.length - 1].parentNode.insertBefore(loadMoreLink, _pagination[_pagination.length - 1].nextSibling);
 

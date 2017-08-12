@@ -262,7 +262,7 @@
         },
 
         doFormSubmit: function (e) {
-            if (!$cms.form.doFormSubmit(this.form, e, this.analyticEventCategory)) {
+            if ($cms.form.doFormSubmit(this.form, e, this.analyticEventCategory) === false) {
                 e.preventDefault();
             }
         },
@@ -787,7 +787,6 @@
                 inner.scrollTop -= event.wheelDelta ? event.wheelDelta : event.detail;
                 event.stopPropagation();
                 event.preventDefault();
-                return false;
             });
         }
 

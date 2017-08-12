@@ -23,8 +23,9 @@
      */
     $cms.form.setFieldError = function setFieldError(theElement, errorMsg) {
         if (theElement.name !== undefined) {
-            var id = theElement.name;
-            var errormsgElement = getErrormsgElement(id);
+            var id = theElement.name,
+                errormsgElement = getErrormsgElement(id);
+            
             if ((errorMsg == '') && (id.indexOf('_hour') != -1) || (id.indexOf('_minute') != -1)) { // Do not blank out as day/month/year (which comes first) would have already done it
                 return;
             }
@@ -35,8 +36,7 @@
                 // Changed error message
                 if ($cms.dom.html(errormsgElement) != $cms.filter.html(errorMsg)) {
                     $cms.dom.html(errormsgElement, '');
-                    if (errorMsg != '') // If there actually an error
-                    {
+                    if (errorMsg != '') {// If there actually an error
                         theElement.setAttribute('aria-invalid', 'true');
 
                         // Need to switch tab?
@@ -64,6 +64,7 @@
                 }
             }
         }
+        
         if (($cms.form.isWysiwygField !== undefined) && ($cms.form.isWysiwygField(theElement))) {
             theElement = theElement.parentNode;
         }
@@ -187,7 +188,7 @@
 
         if (form.onsubmit) {
             var test = form.onsubmit.call(form, event, true);
-            if (!test) {
+            if (test === false) {
                 return false;
             }
         }
@@ -248,7 +249,9 @@
                     if (element.multiple) {
                         for (var i = 0; i < element.options.length; i++) {
                             if (element.options[i].selected) {
-                                if (value != '') value += ',';
+                                if (value != '') {
+                                    value += ',';
+                                }
                                 value += element.options[i].value;
                             }
                         }
@@ -335,24 +338,24 @@
                                 $cms.form.setFieldError(theElement, '');
                             }
 
-                            if ((!noRecurse) && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
-                                var e = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_day'));
-                                if (e != theElement) {
-                                    e.onblur(event, true);
+                            if (!noRecurse && (theElement.classList.contains('date')) && (theElement.name.match(/_(day|month|year)$/))) {
+                                var el = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_day'));
+                                if (el !== theElement) {
+                                    el.onblur(event, true);
                                 }
-                                var e = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_month'));
-                                if (e != theElement) {
-                                    e.onblur(event, true);
+                                el = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_month'));
+                                if (el !== theElement) {
+                                    el.onblur(event, true);
                                 }
-                                var e = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_year'));
-                                if (e != theElement) {
-                                    e.onblur(event, true);
+                                el = $cms.dom.$id(theElement.id.replace(/\_(day|month|year)$/, '_year'));
+                                if (el !== theElement) {
+                                    el.onblur(event, true);
                                 }
                             }
                         };
                     };
 
-                    if (theElement.getAttribute('type') == 'radio') {
+                    if (theElement.getAttribute('type') === 'radio') {
                         for (var i = 0; i < theForm.elements.length; i++) {
                             theForm.elements[i].onchange = autoResetError(theForm.elements[i]);
                         }
@@ -573,7 +576,7 @@
         if (isLocked) {
             var labels = document.getElementsByTagName('label'), label = null;
             for (var i = 0; i < labels.length; i++) {
-                if (chosenOb && (labels[i].getAttribute('for') == chosenOb.id)) {
+                if (chosenOb && (labels[i].getAttribute('for') === chosenOb.id)) {
                     label = labels[i];
                     break;
                 }
@@ -581,7 +584,7 @@
             if (!radioButton) {
                 if (label) {
                     var labelNice = $cms.dom.html(label).replace('&raquo;', '').replace(/^\s*/, '').replace(/\s*$/, '');
-                    if (field.type == 'file') {
+                    if (field.type === 'file') {
                         $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG_UPLOAD;^}'.replace(/\{1\}/, labelNice));
                     } else {
                         $cms.form.setFieldError(field, '{!DISABLED_FORM_FIELD_ENCHANCEDMSG;^}'.replace(/\{1\}/, labelNice));
@@ -736,6 +739,7 @@
     /**
      * Very simple form control flow
      * @param field
+     * @param alreadyShownMessage
      * @returns {boolean}
      */
     $cms.form.checkFieldForBlankness = function checkFieldForBlankness(field, alreadyShownMessage) {
@@ -753,7 +757,7 @@
                 $cms.dom.html(errorEl, '{!REQUIRED_NOT_FILLED_IN;^}');
             }
 
-            if (!already_shown_message) {
+            if (!alreadyShownMessage) {
                 $cms.ui.alert('{!IMPROPERLY_FILLED_IN;^}');
             }
 
