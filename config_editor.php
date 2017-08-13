@@ -92,7 +92,7 @@ function ce_do_header()
         '{PASSWORD_PROMPT;/}' => '',
     );
     $password_check_js = str_replace(array_keys($ls_rep), array_values($ls_rep), $password_check_js);
-    @print($password_check_js);
+    @print('<script>' . $password_check_js . '</script>');
 
     echo '
 </head>

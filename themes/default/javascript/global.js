@@ -13,7 +13,7 @@
         hasOwn = Function.bind.call(Function.call, emptyObj.hasOwnProperty),
 
         toArray = Function.bind.call(Function.call, emptyArr.slice),
-        slice = toArray,
+
         forEach = Function.bind.call(Function.call, emptyArr.forEach),
         includes = Function.bind.call(Function.call, emptyArr.includes),
         // Clever helper for merging arrays in-place using `[].push`
@@ -4570,7 +4570,7 @@
         inner = !!inner;
         showLoadingAnimation = (showLoadingAnimation !== undefined) ? !!showLoadingAnimation : true;
         
-        if ((_blockDataCache[url] === undefined) && (newBlockParams != '')) {
+        if ((_blockDataCache[url] === undefined) && (newBlockParams !== '')) {
             // Cache start position. For this to be useful we must be smart enough to pass blank new_block_params if returning to fresh state
             _blockDataCache[url] = $cms.dom.html(targetDiv);
         }
@@ -4581,7 +4581,7 @@
         }
 
         ajaxUrl += '&utheme=' + $cms.$THEME();
-        if ((_blockDataCache[ajaxUrl] !== undefined) && postParams == null) {
+        if ((_blockDataCache[ajaxUrl] !== undefined) && (postParams == null)) {
             // Show results from cache
             showBlockHtml(_blockDataCache[ajaxUrl], targetDiv, append, inner);
             return Promise.resolve();
@@ -7951,11 +7951,11 @@
                 'click [data-click-do-input]': 'clickDoInput',
 
                 /* Footer links */
-                'click .js-click-load-software-chat': 'loadSoftwareChat',
+                'click .js-global-click-load-software-chat': 'loadSoftwareChat',
 
-                'submit .js-submit-staff-actions-select': 'staffActionsSelect',
+                'submit .js-global-submit-staff-actions-select': 'staffActionsSelect',
 
-                'keypress .js-input-su-keypress-enter-submit-form': 'inputSuKeypress',
+                'keypress .js-global-input-su-keypress-enter-submit-form': 'inputSuKeypress',
 
                 'click .js-global-click-load-realtime-rain': 'loadRealtimeRain',
 
@@ -8416,7 +8416,7 @@
                     <ul class="spaced_list">' + SOFTWARE_CHAT_EXTRA + '</ul> \
                     <p class="associated_link associated_links_block_group"> \
                         <a title="{!SOFTWARE_CHAT_STANDALONE} {!LINK_NEW_WINDOW;^}" target="_blank" href="' + $cms.filter.html(url) + '">{!SOFTWARE_CHAT_STANDALONE}</a> \
-                        <a href="#!" class="js-click-load-software-chat">{!HIDE}</a> \
+                        <a href="#!" class="js-global-click-load-software-chat">{!HIDE}</a> \
                     </p> \
                 </div> \
                 <iframe class="software_chat_iframe" style="border: 0" src="' + $cms.filter.html(url) + '"></iframe>';
@@ -9417,6 +9417,113 @@
                 window.print();
             } catch (ignore) {}
         }
+    };
+    
+    $cms.templates.installerHtmlWrap = function installerHtmlWrap(params, container) {
+        var defaultForm = strVal(params.defaultForm);
+        
+        var none = document.getElementById(defaultForm);
+        if (none) {
+            none.checked = true;
+        }
+
+        if ((defaultForm !== 'none') && (defaultForm !== 'cns')) {
+            var d = document.getElementById('forum_path');
+            if (d) {
+                d.style.display = 'block';
+            }
+        }
+
+        var form = document.querySelector('form');
+        if (form != null) {
+            form.title = '';
+        }
+
+        var cns = document.getElementById('cns');
+        if (cns) {
+            useMultiDbLocker();
+            
+            for (var i=0; i < form.elements['forum'].length; i++) {
+                form.elements['forum'][i].onclick = useMultiDbLocker;
+            }
+        }
+
+        function useMultiDbLocker() {
+            form.elements['use_multi_db'][0].disabled = cns.checked;
+            form.elements['use_multi_db'][1].disabled = cns.checked;
+            if (cns.checked) {
+                form.elements['use_multi_db'][1].checked = true;
+            }
+        }
+    };
+    
+    function toggleInstallerSection(id) {
+        // Try and grab our item
+        var itm = document.getElementById(id),
+            img = document.getElementById('img_' + id);
+
+        if (itm.style.display === 'none') {
+            itm.style.display = 'block';
+            if (img) {
+                img.src = $cms.$BASE_URL() + '/install.php?type=contract';
+                img.alt = img.alt.replace('{!EXPAND;}', '{!CONTRACT;}');
+                img.title = img.title.replace('{!EXPAND;}', '{!CONTRACT;}');
+            }
+        } else {
+            itm.style.display = 'none';
+            if (img) {
+                img.src = $cms.$BASE_URL() + '/install.php?type=expand';
+                img.alt = img.alt.replace('{!CONTRACT;}', '{!EXPAND;}');
+                img.title = img.title.replace('{!CONTRACT;}', '{!EXPAND;}');
+            }
+        }
+    }
+    
+    $cms.templates.installerStep3 = function installerStep3(params, container) {
+        $cms.dom.on(container, 'click', '.js-click-toggle-advanced-db-setup-section', function () {
+            var id = $cms.filter.id($cms.filter.nl('{!ADVANCED_DATABASE_SETUP;}'));
+            toggleInstallerSection(id);
+        });
+    };
+    
+    $cms.templates.installerForumChoice = function installerForumChoice(params, container) {
+        var versions = strVal(params.versions);
+        
+        $cms.dom.on(container, 'click', '.js-click-do-forum-choose', function (e, clicked) {
+            doForumChoose(clicked, $cms.filter.nl(versions));
+        });
+
+        function doForumChoose(el, versions) {
+            $cms.dom.html('#versions', versions);
+
+            var type = 'none';
+            if ((el.id !== 'none') && (el.id !== 'cns')) {
+                type = 'block';
+                var label = document.getElementById('sep_forum');
+                if (label) {
+                    $cms.dom.html(label, el.nextSibling.nodeValue);
+                }
+            }
+
+            document.getElementById('forum_database_info').style.display = type;
+            if (document.getElementById('forum_path')) {
+                document.getElementById('forum_path').style.display = type;
+            }
+        }
+    };
+    
+    $cms.templates.installerInputLine = function installerInputLine(params, input) {
+        $cms.dom.on(input, 'change', function () {
+            input.changed = true;
+        });
+    };
+    
+    $cms.templates.installerStep4SectionHide = function installerStep4SectionHide(params, container) {
+        var title = strVal(params.title);
+
+        $cms.dom.on(container, 'click', '.js-click-toggle-title-section', function () {
+            toggleInstallerSection($cms.filter.id($cms.filter.nl(title)));
+        });
     };
     
     $cms.templates.blockMainScreenActions = function blockMainScreenActions(params, container) {

@@ -7,7 +7,7 @@
      * @memberOf $cms
      * @type {boolean}
      */
-    $cms.isDOMContentLoaded = !!$cms.isDOMContentLoaded;
+    $cms.isDOMContentLoaded = Boolean($cms.isDOMContentLoaded);
 
     document.addEventListener('DOMContentLoaded', function() {
         $cms.isDOMContentLoaded = true;

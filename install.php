@@ -217,6 +217,9 @@ if ($DEFAULT_FORUM === null) {
 }
 require_code('tempcode_compiler');
 $css_nocache = _do_template('default', '/css/', 'no_cache', 'no_cache', 'EN', '.css');
+
+$global_js = do_template('global', null, null, false, null, '.js', 'javascript');
+
 $out_final = do_template('INSTALLER_HTML_WRAP', array(
     '_GUID' => '29aa056c05fa360b72dbb01c46608c4b',
     'CSS_NOCACHE' => $css_nocache,
@@ -228,6 +231,7 @@ $out_final = do_template('INSTALLER_HTML_WRAP', array(
     'STEP' => integer_format(intval($_GET['step'])),
     'CONTENT' => $content,
     'VERSION' => $VERSION_BEING_INSTALLED,
+    'GLOBAL_JS' => $global_js
 ));
 unset($css_nocache);
 unset($content);
@@ -481,10 +485,21 @@ function step_1()
 
     $url = prepare_installer_url('install.php?step=2');
 
+    $js = new Tempcode();
+    //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
+
     $hidden = build_keep_post_fields();
     $max = strval(get_param_integer('max', 1000));
     $hidden->attach(form_input_hidden('max', $max));
-    return do_template('INSTALLER_STEP_1', array('_GUID' => '83f0ca881b9f63ab9378264c6ff507a3', 'URL' => $url, 'WARNINGS' => $warnings, 'HIDDEN' => $hidden, 'LANGUAGES' => $tlanguages));
+
+    return do_template('INSTALLER_STEP_1', array(
+        '_GUID' => '83f0ca881b9f63ab9378264c6ff507a3',
+        'URL' => $url,
+        'JS' => $js,
+        'WARNINGS' => $warnings,
+        'HIDDEN' => $hidden,
+        'LANGUAGES' => $tlanguages
+    ));
 }
 
 /**
@@ -512,8 +527,17 @@ function step_2()
 
     $url = prepare_installer_url('install.php?step=3');
 
+    $js = new Tempcode();
+    //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
+
     $hidden = build_keep_post_fields();
-    return do_template('INSTALLER_STEP_2', array('_GUID' => 'b08b0268784c9a0f44863ae3aece6789', 'URL' => $url, 'HIDDEN' => $hidden, 'LICENCE' => $licence));
+    return do_template('INSTALLER_STEP_2', array(
+        '_GUID' => 'b08b0268784c9a0f44863ae3aece6789',
+        'URL' => $url,
+        'JS' => $js,
+        'HIDDEN' => $hidden,
+        'LICENCE' => $licence,
+    ));
 }
 
 /**
@@ -666,7 +690,7 @@ function step_3()
     }
 
     $js = new Tempcode();
-    $js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
+    //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
 
     $url = prepare_installer_url('install.php?step=4');
 
@@ -699,7 +723,7 @@ function step_4()
     }
 
     $js = new Tempcode();
-    $js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
+    //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
 
     require_code('database');
     require_code('database/' . post_param_string('db_type'));
@@ -1015,11 +1039,12 @@ function step_4()
             $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('HIDDEN' => '', 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
 
             $js->attach(/**@lang JavaScript*/
-                'var gaeApplication = document.getElementById(\'gae_application\');
-gaeApplication.addEventListener(\'change\', gaeOnChange);
+                '
+document.getElementById(\'gae_application\').addEventListener(\'change\', gaeOnChange);
 gaeOnChange();
 
 function gaeOnChange() {
+    var gaeApplication = document.getElementById(\'gae_application\');
     var gaeLiveDbSite = document.getElementById(\'gae_live_db_site\');
     gaeLiveDbSite.value = gaeLiveDbSite.value.replace(/(<application>|composr)/g, gaeApplication.value);
     var gaeLiveDbSiteHost = document.getElementById(\'gae_live_db_site_host\');
@@ -1230,7 +1255,7 @@ function step_5()
             $hidden->attach(form_input_hidden('confirm', '1'));
 
             $js = new Tempcode();
-            $js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
+            //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
 
             return do_template('INSTALLER_STEP_4', array(
                 '_GUID' => 'aaf0386966dd4b75c8027a6b1f7454c6',

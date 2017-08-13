@@ -2,7 +2,7 @@
 	<script {$CSP_NONCE_HTML}>{JS/}</script>
 {+END}
 
-<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off">
+<form title="{!PRIMARY_PAGE_FORM}" method="post" action="{URL*}" autocomplete="off" data-tpl="installerStep3">
 	{HIDDEN}
 
 	<div class="installer_main_min">
@@ -70,8 +70,10 @@
 
 			<div class="float_surrounder">
 				<p class="lonely_label">
-					<a class="toggleable_tray_button" href="#!" onclick="toggle_section('{!ADVANCED_DATABASE_SETUP;~|*}');">{!ADVANCED_DATABASE_SETUP}</a>
-					<a class="toggleable_tray_button" href="#!" onclick="toggle_section('{!ADVANCED_DATABASE_SETUP;~|*}');"><img id="img_{!ADVANCED_DATABASE_SETUP|*}" alt="{!EXPAND}: {$STRIP_TAGS,{!ADVANCED_DATABASE_SETUP}}" title="{!EXPAND}" src="{$BASE_URL*}/install.php?type=expand" /></a>
+					<a class="toggleable_tray_button js-click-toggle-advanced-db-setup-section" href="#!">{!ADVANCED_DATABASE_SETUP}</a>
+					<a class="toggleable_tray_button js-click-toggle-advanced-db-setup-section" href="#!">
+						<img id="img_{!ADVANCED_DATABASE_SETUP|*}" alt="{!EXPAND}: {$STRIP_TAGS,{!ADVANCED_DATABASE_SETUP}}" title="{!EXPAND}" src="{$BASE_URL*}/install.php?type=expand" />
+					</a>
 				</p>
 
 				<div id="{!ADVANCED_DATABASE_SETUP|*}" style="display: none">

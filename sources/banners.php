@@ -43,6 +43,7 @@ function init__banners()
  */
 function banner_select_sql($b_type = null, $do_type_join = false, $banner_to_avoid = null, $region = null)
 {
+    require_code('database');
     $sql = 'SELECT * FROM ' . get_table_prefix() . 'banners b';
     if ($do_type_join) {
         $sql .= ' LEFT JOIN ' . get_table_prefix() . 'banner_types t ON b.b_type=t.id';

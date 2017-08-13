@@ -21,45 +21,46 @@
 	</div>
 </form>
 
-<script {$CSP_NONCE_HTML}>// <![CDATA[
+<script {$CSP_NONCE_HTML}>
+(function () {
+    'use strict';
 	/* Code to auto-submit the form after 5 seconds, but only if there were no errors */
-	var ps = document.getElementsByTagName('p');
-	var doh = false;
-	for (var i = 0; i < ps.length; i++) {
-		if (ps[i].className == 'installer_warning') doh = true;
+	var doh = !!document.querySelector('.installer_warning');
+	if (doh) {
+	    return;
 	}
-	if (!doh) {
-		var button = document.getElementById('proceed_button');
-		button.countdown = 6;
-		var timer;
-		var continueFunc = function () {
-			button.value = "{!PROCEED} ({!AUTO_IN} " + button.countdown + ")";
-			if (button.countdown == 0) {
-				if (timer) {
-					window.clearInterval(timer);
-				}
-				timer = null;
-				button.form.submit();
-			} else {
-				button.countdown--;
+
+	var button = document.getElementById('proceed_button');
+	button.countdown = 6;
+	var timer;
+	var continueFunc = function continueFunc() {
+		button.value = "{!PROCEED} ({!AUTO_IN} " + button.countdown + ")";
+		if (button.countdown === 0) {
+			if (timer) {
+				window.clearInterval(timer);
 			}
-		};
-		continueFunc();
+			timer = null;
+			button.form.submit();
+		} else {
+			button.countdown--;
+		}
+	};
+	continueFunc();
+	timer = window.setInterval(continueFunc, 1000);
+	button.addEventListener('mouseover', function () {
+		if (timer) {
+			window.clearInterval(timer);
+		}
+		timer = null;
+	});
+	window.addEventListener('unload', function () {
+		if (timer) {
+			window.clearInterval(timer);
+		}
+		timer = null;
+	});
+	button.addEventListener('mouseout', function () {
 		timer = window.setInterval(continueFunc, 1000);
-		button.addEventListener('mouseover', function () {
-			if (timer) {
-				window.clearInterval(timer);
-			}
-			timer = null;
-		});
-		window.addEventListener('unload', function () {
-			if (timer) {
-				window.clearInterval(timer);
-			}
-			timer = null;
-		});
-		button.addEventListener('mouseout', function () {
-			timer = window.setInterval(continueFunc, 1000);
-		});
-	}
-//]]></script>
+	});
+}());
+</script>

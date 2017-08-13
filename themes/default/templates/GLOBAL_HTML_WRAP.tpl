@@ -152,7 +152,7 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 							{+END}{+END}{+END}{+END}
 							<li><a href="{$PAGE_LINK*,adminzone:,,,,keep_theme}"><img width="24" height="24" title="{!ADMIN_ZONE}" alt="{!ADMIN_ZONE}" src="{$IMG*,icons/24x24/menu/adminzone/adminzone}" srcset="{$IMG*,icons/48x48/menu/adminzone/adminzone} 2x" /></a></li>
 							{+START,IF,{$DESKTOP}}{+START,IF,{$EQ,{$BRAND_NAME},Composr}}
-								<li><a id="software_chat_button" accesskey="-" href="#!" class="js-click-load-software-chat"><img width="24" height="24" id="software_chat_img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" /></a></li>
+								<li><a id="software_chat_button" accesskey="-" href="#!" class="js-global-click-load-software-chat"><img width="24" height="24" id="software_chat_img" title="{!SOFTWARE_CHAT}" alt="{!SOFTWARE_CHAT}" src="{$IMG*,icons/24x24/tool_buttons/software_chat}" srcset="{$IMG*,icons/48x48/tool_buttons/software_chat} 2x" /></a></li>
 							{+END}{+END}
 						{+END}
 					{+END}
@@ -168,14 +168,14 @@ Powered by {$BRAND_NAME*} version {$VERSION_NUMBER*}, (c) ocProducts Ltd
 
 							<div class="inline">
 								<div class="accessibility_hidden"><label for="su">{!SU}</label></div>
-								<input title="{!SU_2}" class="js-input-su-keypress-enter-submit-form" accesskey="w" size="10" type="text"{+START,IF_NON_EMPTY,{$_GET,keep_su}} placeholder="{$USERNAME*}"{+END} value="{+START,IF_NON_EMPTY,{$_GET,keep_su}}{$USERNAME*}{+END}" id="su" name="keep_su" />
+								<input title="{!SU_2}" class="js-global-input-su-keypress-enter-submit-form" accesskey="w" size="10" type="text"{+START,IF_NON_EMPTY,{$_GET,keep_su}} placeholder="{$USERNAME*}"{+END} value="{+START,IF_NON_EMPTY,{$_GET,keep_su}}{$USERNAME*}{+END}" id="su" name="keep_su" />
 								<input data-disable-on-click="1" class="button_micro menu__site_meta__user_actions__login" type="submit" value="{!SU}" />
 							</div>
 						</form>
 					{+END}
 
 					{+START,IF,{$DESKTOP}}{+START,IF_NON_EMPTY,{$STAFF_ACTIONS}}{+START,IF,{$CONFIG_OPTION,show_staff_page_actions}}
-						<form title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special_page_type_form js-submit-staff-actions-select" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank" autocomplete="off">
+						<form title="{!SCREEN_DEV_TOOLS} {!LINK_NEW_WINDOW}" class="inline special_page_type_form js-global-submit-staff-actions-select" action="{$URL_FOR_GET_FORM*,{$SELF_URL,0,1}}" method="get" target="_blank" autocomplete="off">
 							{$HIDDENS_FOR_GET_FORM,{$SELF_URL,0,1,0,cache_blocks=0,cache_comcode_pages=0,keep_minify=0,special_page_type=<null>,keep_template_magic_markers=<null>}}
 
 							<div class="inline">

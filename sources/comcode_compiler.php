@@ -1465,7 +1465,7 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
 
                                 // Advertising
                                 $b_all = true; // leave true - for test purposes only
-                                if ((!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
+                                if (empty($GLOBALS['IN_MINIKERNEL_VERSION']) && (!$semiparse_mode) && (!$in_code_tag) && ($has_banners) && (($b_all) || (!has_privilege($source_member, 'banner_free')))) {
                                     // Pick up correctly, including permission filtering
                                     if ($ADVERTISING_BANNERS_CACHE === null) {
                                         $ADVERTISING_BANNERS_CACHE = array();
