@@ -85,6 +85,10 @@ class Hook_sitemap_comcode_page extends Hook_sitemap_page
      */
     public function get_node($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $row = null, $return_anyway = false)
     {
+        if (!$this->check_for_looping($page_link)) {
+            return null;
+        }
+
         $matches = array();
         preg_match('#^([^:]*):([^:]*)#', $page_link, $matches);
         $page = $matches[2];

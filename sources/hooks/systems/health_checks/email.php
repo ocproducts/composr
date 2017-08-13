@@ -434,7 +434,7 @@ class Hook_health_check_email extends Hook_Health_Check
                 $result = @getmxrr($domain, $mail_hosts);
                 $ok = ($result !== false);
                 if (!$ok) {
-                    $this->stateCheckSkipped('Could not look up MX of ' . $domain);
+                    $this->stateCheckSkipped('Could not look up MX of [tt]' . $domain . '[/tt]');
                     continue;
                 }
 

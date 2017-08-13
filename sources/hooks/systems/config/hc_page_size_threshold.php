@@ -53,6 +53,6 @@ class Hook_config_hc_page_size_threshold
      */
     public function get_default()
     {
-        return '500';
+        return '1000';
     }
 }

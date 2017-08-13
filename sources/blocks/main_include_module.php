@@ -138,6 +138,8 @@ class Block_main_include_module
                 'SEO_KEYWORDS',
                 'SEO_DESCRIPTION',
                 'DISPLAYED_TITLE',
+                'SHORT_TITLE',
+                'FORCE_SET_TITLE',
                 'FEED_URL',
                 'FEED_URL_2',
             );

@@ -107,8 +107,10 @@
                             if ($cms.form.isWysiwygField($cms.dom.$id('edit_' + id + '_textarea'))) {
                                 // LEGACY Fix for Firefox
                                 if (window.wysiwygEditors['edit_' + id + '_textarea'].document !== undefined) {
-                                    window.wysiwygEditors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'false';
-                                    window.wysiwygEditors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'true';
+                                    if (window.wysiwygEditors['edit_' + id + '_textarea'].document.getBody().$) {
+                                        window.wysiwygEditors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'false';
+                                        window.wysiwygEditors['edit_' + id + '_textarea'].document.getBody().$.contentEditable = 'true';
+                                    }
                                 }
                             }
                         }

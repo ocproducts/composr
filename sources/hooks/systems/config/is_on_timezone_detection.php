@@ -40,7 +40,6 @@ class Hook_config_is_on_timezone_detection
             'list_options' => '',
             'order_in_category_group' => 6,
             'required' => true,
-            'public' => false,
             'public' => true,
 
             'addon' => 'core_cns',

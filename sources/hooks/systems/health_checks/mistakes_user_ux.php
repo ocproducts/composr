@@ -77,9 +77,9 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
             return;
         }
 
-        $domains = $this->get_domains();
+        $domains = $this->get_domains(false);
 
-        foreach ($domains as $domain) {
+        foreach ($domains as $zone => $domain) {
             $parts = explode('.', $domain);
 
             if ($parts[0] == 'www') {
@@ -96,7 +96,12 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
                 return;
             }
 
-            $url = $this->get_page_url(':privacy');
+            //$url = preg_replace('#(://.*)/.*$#U', '$1/uploads/index.html', $this->get_page_url(':'));
+            if ($zone == '') {
+                $url = $this->get_page_url($zone . ':privacy');
+            } else {
+                $url = $this->get_page_url($zone . ':');
+            }
             $wrong_url = str_replace('://' . $domain, '://' . $wrong_domain, $url);
 
             $http_result = cms_http_request($wrong_url, array('trigger_error' => false));
@@ -107,7 +112,7 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
                 $ok = ($http_result->download_url == $url);
                 $this->assertTrue($ok, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to deep URLs of [tt]' . $domain . '[/tt]');
 
-                http_get_contents($wrong_url, array('trigger_error' => false, 'no_redirect' => true));
+                $http_result = cms_http_request($wrong_url, array('trigger_error' => false));
                 $ok = ($http_result->message == '301');
                 $this->assertTrue($ok, 'Domain [tt]' . $wrong_domain . '[/tt] is not redirecting to [tt]' . $domain . '[/tt] with a [tt]301[/tt] code ([tt]' . $http_result->message . '[/tt] code used)');
             }
@@ -132,6 +137,10 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
 
         if (empty($SITE_INFO['base_url'])) {
             return;
+        }
+
+        if (strpos(get_option('ip_forwarding'), '://') !== false) {
+            return; // Will mess up protocol
         }
 
         $protocol = parse_url($SITE_INFO['base_url'], PHP_URL_SCHEME);

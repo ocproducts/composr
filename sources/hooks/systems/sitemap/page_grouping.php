@@ -62,6 +62,10 @@ class Hook_sitemap_page_grouping extends Hook_sitemap_base
      */
     public function get_node($page_link, $callback = null, $valid_node_types = null, $child_cutoff = null, $max_recurse_depth = null, $recurse_level = 0, $options = 0, $zone = '_SEARCH', $meta_gather = 0, $orphaned_pages = null, $return_anyway = false)
     {
+        if (!$this->check_for_looping($page_link)) {
+            return null;
+        }
+
         require_lang('menus');
 
         $matches = array();

@@ -531,7 +531,7 @@ We expect Facebook will improve HHVM performance will increase over time. They a
 
 We have tried in the past to support:
  - Roadsend (commercial software)
- - Phalanger (Microsoft-sponsored)
+ - Phalanger/PeachPie (Microsoft-sponsored)
  - Quercus (Caucho-sponsored)
  - Project Zero (IBM-sponsored)
 But after quite a lot of work we have concluded these projects are too buggy to be realistic, not well maintained, or don't actually offer any performance improvement. Never-the-less, making Composr work on these platforms in the past has led to improvements in the Composr code quality, as these PHP replacements have a tendency to float different kinds of subtle coding errors to the surface.

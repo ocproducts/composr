@@ -68,7 +68,7 @@ class Hook_health_check_integrity extends Hook_Health_Check
         require_code('upgrade');
         require_lang('upgrade');
         $data = run_integrity_check(false, false, false);
-        $this->assertTrue($data == do_lang('NO_ISSUES_FOUND'), 'Integrity checker in upgrader reporting potential issues');
+        $this->assertTrue($data == do_lang('NO_ISSUES_FOUND'), 'Integrity checker reporting potential issues, see upgrader for details');
     }
 
     /**
@@ -178,6 +178,6 @@ class Hook_health_check_integrity extends Hook_Health_Check
         require_code('upgrade');
         require_lang('upgrade');
 
-        $this->assertTrue(check_perms() == do_lang('FU_ALL_CHMODDED_GOOD'), 'File permissions (chmodding) are not complete');
+        $this->assertTrue(check_perms() == do_lang('FU_ALL_CHMODDED_GOOD'), 'File permissions (chmodding) are not complete, see upgrader for details');
     }
 }

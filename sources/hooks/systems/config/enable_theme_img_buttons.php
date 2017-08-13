@@ -40,7 +40,6 @@ class Hook_config_enable_theme_img_buttons
             'list_options' => '',
             'theme_override' => true,
             'required' => true,
-            'public' => false,
             'public' => true,
 
             'addon' => 'core_themeing',

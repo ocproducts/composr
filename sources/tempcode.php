@@ -2571,7 +2571,7 @@ function simplify_static_tempcode($text)
  */
 function reinstate_static_tempcode($text)
 {
-    $text = str_replace(escape_html(get_base_url() . '/'), '{$BASE_URL*}/', $text);
+    $text = preg_replace('#(<[^<>]*)' . preg_quote(escape_html(get_base_url() . '/'), '#') . '([^<>]*>)#', '$1{$BASE_URL*}/$2', $text);
     $text = str_replace(get_base_url() . '/', '{$BASE_URL}/', $text);
 
     return $text;

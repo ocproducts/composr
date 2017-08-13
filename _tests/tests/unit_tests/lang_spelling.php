@@ -197,6 +197,9 @@ class lang_spelling_test_set extends cms_test_case
         if (preg_match('#meta[ -]data([^A-Za-z"]+)#i', $string) != 0) {
             $this->assertTrue(false, 'The phrase \'meta data\' or \'meta-data\' was used in ' . $file . '. This should be changed to \'metadata\'.');
         }
+        if (stripos($string, 'PHP info') !== false) {
+            $this->assertTrue(false, 'The word \'PHP info\' was used in ' . $file . '. This should be changed to \'PHP-Info\'.');
+        }
 
         // Wrong way of writing proper noun (we want our canonical way)
         if ((stripos($string, 'unvalidated') !== false) && ($file !== 'tut_addon_index.txt') && ($file !== 'sup_set_up_a_workflow_in_composr.txt')) {

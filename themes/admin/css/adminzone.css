@@ -99,10 +99,6 @@ body#main_website #main_website_inner, html>body div.global_middle_faux {
 	background-image: none !important;
 }
 
-footer .global_footer_left #special_page_type {
-	width: auto;
-}
-
 footer .global_minilinks {
 	padding-top: 0.6em;
 }

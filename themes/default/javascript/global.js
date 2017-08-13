@@ -1708,10 +1708,10 @@
         if (_haltedPromise === undefined) {
             _haltedPromise = new Promise();
             properties(_haltedPromise, {
-                then: function then() {
+                'then': function then() {
                     return _haltedPromise;
                 },
-                catch: function _catch() {
+                'catch': function _catch() {
                     return _haltedPromise;
                 }
             });
@@ -9526,6 +9526,7 @@
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
             $IMG_contract = '{$IMG;,1x/trays/contract}',
             $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
+        // TODO: We have expcon and expcon2 theme images, for use during animation. Are we removing this? If so those theme images should be deleted fully.
 
         if ($cms.isPlainObj(elOrOptions)) {
             options = elOrOptions;

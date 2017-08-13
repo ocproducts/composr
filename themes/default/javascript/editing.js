@@ -118,7 +118,7 @@ function toggleWysiwyg(name) {
     }
 
     function enableWysiwyg(forms, so, so2) {
-        forms = arrVal(forms);
+        forms = window.arrVal(forms);
         
         window.wysiwygOn = function () {
             return true;
@@ -297,7 +297,7 @@ function loadHtmlEdit(postingForm, ajaxCopy) {
     }
 
     var promiseCalls = [];
-    arrVal(postingForm.elements).forEach(function (el) {
+    window.arrVal(postingForm.elements).forEach(function (el) {
         if ((el.type === 'textarea') && el.classList.contains('wysiwyg')) {
             promiseCalls.push(function () {
                 return loadHtmlForTextarea(postingForm, el, ajaxCopy);

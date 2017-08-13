@@ -691,8 +691,10 @@ function set_helper_panel_tutorial($tutorial)
  */
 function set_short_title($title)
 {
-    global $SHORT_TITLE;
-    $SHORT_TITLE = ($title == '') ? null : $title;
+    global $SHORT_TITLE, $FORCE_SET_TITLE;
+    if (!$FORCE_SET_TITLE) {
+        $SHORT_TITLE = ($title == '') ? null : $title;
+    }
 }
 
 /**

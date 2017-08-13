@@ -49,7 +49,7 @@ class Block_side_news
     public function caching_environment()
     {
         $info = array();
-        $info['cache_on'] = 'array(array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'blogs\',$map)?$map[\'blogs\']:\'-1\',array_key_exists(\'historic\',$map)?$map[\'historic\']:\'\',array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'news\'),array_key_exists(\'select\',$map)?$map[\'select\']:get_param_string(\'news_select\',\'\'),array_key_exists(\'param\',$map)?intval($map[\'param\']):5,array_key_exists(\'select_and\',$map)?$map[\'select_and\']:\'\')';
+        $info['cache_on'] = 'array(array_key_exists(\'title\',$map)?$map[\'title\']:\'\',array_key_exists(\'blogs\',$map)?$map[\'blogs\']:\'-1\',array_key_exists(\'historic\',$map)?$map[\'historic\']:\'\',array_key_exists(\'as_guest\',$map)?($map[\'as_guest\']==\'1\'):false,array_key_exists(\'zone\',$map)?$map[\'zone\']:get_module_zone(\'news\'),array_key_exists(\'select\',$map)?$map[\'select\']:\'\',array_key_exists(\'param\',$map)?intval($map[\'param\']):5,array_key_exists(\'select_and\',$map)?$map[\'select_and\']:\'\')';
         $info['special_cache_flags'] = CACHE_AGAINST_DEFAULT | CACHE_AGAINST_PERMISSIVE_GROUPS;
         if (addon_installed('content_privacy')) {
             $info['special_cache_flags'] |= CACHE_AGAINST_MEMBER;
@@ -87,7 +87,7 @@ class Block_side_news
         $content = new Tempcode();
 
         // News Query
-        $select = array_key_exists('select', $map) ? $map['select'] : get_param_string('news_select', '*', INPUT_FILTER_GET_COMPLEX);
+        $select = isset($map['select']) ? $map['select'] : '*';
         if ($select == '*') {
             $q_filter = '1=1';
         } else {

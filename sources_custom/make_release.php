@@ -722,6 +722,7 @@ function make_database_manifest() // Builds db_meta.dat, which is used for datab
 
     require_code('files2');
     $files = get_directory_contents(get_file_base(), '', 0);
+    $files[] = 'install.php';
     foreach ($files as $file) {
         if (substr($file, -4) != '.php' && substr($file, -strlen('_custom')) != '_custom') {
             continue;

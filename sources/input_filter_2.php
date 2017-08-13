@@ -65,6 +65,11 @@ function modsecurity_workaround_enable()
  */
 function rescue_shortened_post_request()
 {
+    global $MODSECURITY_WORKAROUND_ENABLED;
+    if ($MODSECURITY_WORKAROUND_ENABLED) {
+        return;
+    }
+
     $setting_value = mixed();
     $setting_name = mixed();
     foreach (array('max_input_vars', 'suhosin.post.max_vars', 'suhosin.request.max_vars') as $setting) {

@@ -352,8 +352,17 @@ function __comcode_to_tempcode($comcode, $source_member, $as_admin, $pass_id, $d
         $preparse_ob->preparse($comcode);
     }
 
-    if ($semiparse_mode) {
-        $comcode = simplify_static_tempcode($comcode);
+    if (($semiparse_mode) && (!$in_code_tag)) {
+        $found = false;
+        foreach (array_keys($CODE_TAGS) as $code_tag) {
+            if (strpos($comcode, '[' . $code_tag) !== false) {
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $comcode = simplify_static_tempcode($comcode);
+        }
     }
 
     // Fix smart quote problems (may be added unintentionally by other software)

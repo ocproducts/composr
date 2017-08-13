@@ -51,7 +51,11 @@ function make_upgrade_get_path($from_version_dotted, $to_version_dotted, $addons
 
     if ($from_version_dotted !== null) {
         if ($from_version_dotted == $to_version_dotted) {
-            $err = 'Put in the version number you are upgrading <strong>from</strong>, not to. Then a specialised upgrade file will be generated for you.';
+            if ($addons_in_upgrader === null) {
+                $err = 'Put in the version number you are upgrading <strong>from</strong>, not to. Then a specialised upgrade file will be generated for you.';
+            } else {
+                $err = 'You appear to already be running the latest version.';
+            }
             return array(null, $err);
         }
     }

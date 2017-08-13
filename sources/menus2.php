@@ -435,6 +435,12 @@ function copy_from_sitemap_to_new_menu($target_menu, $source)
 {
     require_code('comcode_from_html');
     require_code('menus');
+
+    $test = $GLOBALS['SITE_DB']->query_select_value('menu_items', 'COUNT(*)', array('i_menu' => $source));
+    if ($test == 0) {
+        return; // Nothing to copy
+    }
+
     $root = _build_sitemap_menu($source);
     $order = 0;
     _copy_from_sitemap_to_new_menu($target_menu, $root, $order);
