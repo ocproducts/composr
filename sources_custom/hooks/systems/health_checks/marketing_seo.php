@@ -248,7 +248,7 @@ class Hook_health_check_marketing_seo extends Hook_Health_Check
             closedir($dh);
             $last_updated = $GLOBALS['SITE_DB']->query_select_value_if_there('sitemap_cache', 'MAX(last_updated)', array(), ' AND last_updated<' . strval(time() - 60 * 60 * 25));
             if ($last_updated !== null) {
-                $this->assert_true($last_updated_file > $last_updated, 'XML Sitemap does not seem to be updating');
+                $this->assert_true($last_updated_file > $last_updated - 60 * 60 * 24, 'XML Sitemap does not seem to be updating');
             } else {
                 $this->state_check_skipped('Nothing queued to go into the XML Sitemap old enough to know it should be there');
             }

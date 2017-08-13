@@ -1446,12 +1446,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                                 $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
                                                             }
                                                             $HTTP_DOWNLOAD_MIME_TYPE = 'security';
+                                                            break;
                                                         case '404':
                                                             if ($trigger_error) {
                                                                 warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)));
                                                             } else {
                                                                 $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
                                                             }
+                                                            break;
                                                         case '400':
                                                         case '500':
                                                             if ($trigger_error) {
@@ -1459,12 +1461,14 @@ function _http_download_file($url, $byte_limit = null, $trigger_error = true, $n
                                                             } else {
                                                                 $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
                                                             }
+                                                            break;
                                                         default:
                                                             if ($trigger_error) {
                                                                 warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($HTTP_MESSAGE)));
                                                             } else {
                                                                 $HTTP_MESSAGE_B = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($HTTP_MESSAGE));
                                                             }
+                                                            break;
                                                     }
                                                 }
                                                 return _detect_character_encoding($CURL_BODY);
