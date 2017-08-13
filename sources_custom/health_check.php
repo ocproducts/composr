@@ -416,13 +416,13 @@ abstract class Hook_Health_Check
     {
         $domains = array();
 
-        $domains[] = parse_url(get_base_url(), PHP_URL_HOST);
+        $domains[''] = parse_url(get_base_url(), PHP_URL_HOST);
 
         global $SITE_INFO;
         $zl = strlen('ZONE_MAPPING_');
         foreach ($SITE_INFO as $key => $_val) {
             if ($key !== '' && $key[0] === 'Z' && substr($key, 0, $zl) === 'ZONE_MAPPING_') {
-                $domains[] = $_val[0];
+                $domains[substr($key, strlen('ZONE_MAPPING_'))] = $_val[0];
             }
         }
 

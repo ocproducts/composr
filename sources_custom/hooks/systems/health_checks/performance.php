@@ -123,7 +123,7 @@ class Hook_health_check_performance extends Hook_Health_Check
                     $url = preg_replace('#^(.*://)(.*)(/|$)#U', $config_ip_forwarding . '$3', $url);
                 } else {
                     // IP address
-                    $url = preg_replace('#^(.*://)(.*)(/|:|$)#U', '$1' . $connect_to . '$3', $url);
+                    $url = preg_replace('#^(.*://)(.*)(/|:|$)#U', '$1' . $config_ip_forwarding . '$3', $url);
                 }
 
                 break;

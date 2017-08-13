@@ -76,7 +76,7 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
 
         $domains = $this->get_domains(false);
 
-        foreach ($domains as $domain) {
+        foreach ($domains as $zone => $domain) {
             $parts = explode('.', $domain);
 
             if ($parts[0] == 'www') {
@@ -93,7 +93,12 @@ class Hook_health_check_mistakes_user_ux extends Hook_Health_Check
                 return;
             }
 
-            $url = $this->get_page_url(':privacy');
+            //$url = preg_replace('#(://.*)/.*$#U', '$1/uploads/index.html', $this->get_page_url(':'));
+            if ($zone == '') {
+                $url = $this->get_page_url($zone . ':privacy');
+            } else {
+                $url = $this->get_page_url($zone . ':');
+            }
             $wrong_url = str_replace('://' . $domain, '://' . $wrong_domain, $url);
 
             global $HTTP_DOWNLOAD_URL, $HTTP_MESSAGE;
