@@ -187,33 +187,35 @@ class Hook_profiles_tabs_edit_settings
 
             if (!fractional_edit()) {
                 // Secondary groups
-                //if (array_key_exists('secondary_groups', $_POST)) { Can't use this line, because deselecting all will result in it not being passed
-                if (!array_key_exists('secondary_groups', $_POST)) {
-                    $_POST['secondary_groups'] = array();
-                }
-
-                require_code('cns_groups_action2');
-                $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id_of);
-                $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
-                $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : null));
-
-                foreach ($_POST['secondary_groups'] as $group_id) { // Add to new secondary groups
-                    $group = $groups[intval($group_id)];
-
-                    if (($group['g_hidden'] == 1) && (!in_array($group['id'], $members_groups)) && (!has_privilege($member_id_viewing, 'see_hidden_groups'))) {
-                        continue;
+                if (has_actual_page_access(get_member(), 'groups', get_module_zone('groups'))) {
+                    //if (array_key_exists('secondary_groups', $_POST)) { Can't use this line, because deselecting all will result in it not being passed
+                    if (!array_key_exists('secondary_groups', $_POST)) {
+                        $_POST['secondary_groups'] = array();
                     }
 
-                    if ((!in_array($group['id'], $members_groups)) && ((has_privilege($member_id_viewing, 'assume_any_member')) || ($group['g_open_membership'] == 1))) {
-                        cns_add_member_to_group($member_id_of, $group['id']);
+                    require_code('cns_groups_action2');
+                    $members_groups = $GLOBALS['CNS_DRIVER']->get_members_groups($member_id_of);
+                    $group_count = $GLOBALS['FORUM_DB']->query_select_value('f_groups', 'COUNT(*)');
+                    $groups = list_to_map('id', $GLOBALS['FORUM_DB']->query_select('f_groups', array('*'), ($group_count > 200) ? array('g_is_private_club' => 0) : null));
+
+                    foreach ($_POST['secondary_groups'] as $group_id) { // Add to new secondary groups
+                        $group = $groups[intval($group_id)];
+
+                        if (($group['g_hidden'] == 1) && (!in_array($group['id'], $members_groups)) && (!has_privilege($member_id_viewing, 'see_hidden_groups'))) {
+                            continue;
+                        }
+
+                        if ((!in_array($group['id'], $members_groups)) && ((has_privilege($member_id_viewing, 'assume_any_member')) || ($group['g_open_membership'] == 1))) {
+                            cns_add_member_to_group($member_id_of, $group['id']);
+                        }
                     }
-                }
-                foreach ($members_groups as $group_id) { // Remove from old secondary groups that member is no longer in
-                    if (!in_array(strval($group_id), $_POST['secondary_groups'])) {
-                        cns_member_leave_group($group_id, $member_id_of);
+                    foreach ($members_groups as $group_id) { // Remove from old secondary groups that member is no longer in
+                        if (!in_array(strval($group_id), $_POST['secondary_groups'])) {
+                            cns_member_leave_group($group_id, $member_id_of);
+                        }
                     }
+                    //}
                 }
-                //}
 
                 $GLOBALS['FORUM_DB']->query('DELETE FROM ' . $GLOBALS['FORUM_DB']->get_table_prefix() . 'f_member_known_login_ips WHERE i_member_id=' . strval($member_id_of) . ' AND ' . db_string_not_equal_to('i_val_code', '')); // So any re-confirms can happen
 
