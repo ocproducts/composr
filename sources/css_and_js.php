@@ -157,7 +157,7 @@ function js_compile($j, $js_cache_path, $minify = true)
     $SHOW_EDIT_LINKS = $temp_show_edit_links;
     global $ATTACHED_MESSAGES_RAW;
     $num_msgs_before = count($ATTACHED_MESSAGES_RAW);
-    $out = $js->evaluate();
+    $out = $js->evaluate();@
     $num_msgs_after = count($ATTACHED_MESSAGES_RAW);
     $success_status = ($num_msgs_before == $num_msgs_after);
     if ($minify) {
