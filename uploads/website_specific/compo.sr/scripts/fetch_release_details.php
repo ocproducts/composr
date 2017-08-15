@@ -62,7 +62,7 @@ if ((array_key_exists(0, $news_rows)) && (has_category_access($GLOBALS['FORUM_DR
     $news_html = preg_replace('#To upgrade follow.*during step 3.#s', '', $news_html);
     $news_html = preg_replace('#(<div[^>]*>[\s\n]*)+<h4[^>]*>Your upgrade to version.*</form>([\s\n]*</div>)+#s', '', $news_html);
     $news_html = preg_replace('#(<div[^>]*>[\s\n]*)+<h4[^>]*>Your upgrade to version.*download upgrade directly</a>\s+\([^\)]*\)\.([\s\n]*</div>)+#s', '', $news_html);
-    $news_html = preg_replace('#<a class="hide_button" href="\#" onclick="event\.returnValue=false; hideTag\(this\.parentNode\.parentNode\); return false;"><img alt="Expand" title="Expand" src="' . escape_html(find_theme_image('1x/trays/expand')) . '" srcset="' . escape_html(find_theme_image('2x/trays/expand')) . ' 2x" /></a>#', '', $news_html);
+    $news_html = preg_replace('#<a class="hide_button" href="\#!" onclick="hideTag\(this\.parentNode\.parentNode\); return false;"><img alt="Expand" title="Expand" src="' . escape_html(find_theme_image('1x/trays/expand')) . '" srcset="' . escape_html(find_theme_image('2x/trays/expand')) . ' 2x" /></a>#', '', $news_html);
     $news_html = preg_replace('#(\s*<br />)+#', '<br />', $news_html);
     $news_html = str_replace('display: none', 'display: block', $news_html);
     $notes = $news_html;

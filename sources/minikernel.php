@@ -433,6 +433,7 @@ function fatal_exit($text)
             'ERROR' => true,
         ));
     } else {
+        $global_js = do_template('global', null, null, false, null, '.js', 'javascript');
         $out_final = do_template('INSTALLER_HTML_WRAP', array(
             '_GUID' => '990e78523cee0b6782e1e09d73a700a7',
             'CSS_NOCACHE' => $css_nocache,
@@ -444,6 +445,7 @@ function fatal_exit($text)
             'STEP' => integer_format(intval($_GET['step'])),
             'CONTENT' => $echo,
             'VERSION' => $version,
+            'GLOBAL_JS' => $global_js,
         ));
     }
     $out_final->evaluate_echo();
@@ -660,6 +662,7 @@ function warn_exit($text)
             'ERROR' => true,
         ));
     } else {
+        $global_js = do_template('global', null, null, false, null, '.js', 'javascript');
         $out_final = do_template('INSTALLER_HTML_WRAP', array(
             '_GUID' => '710e7ea5c186b4c42bb3a5453dd915ed',
             'CSS_NOCACHE' => $css_nocache,
@@ -671,6 +674,7 @@ function warn_exit($text)
             'STEP' => integer_format(intval($_GET['step'])),
             'CONTENT' => $echo,
             'VERSION' => $version,
+            'GLOBAL_JS' => $global_js,
         ));
     }
     $out_final->evaluate_echo();

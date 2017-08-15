@@ -454,7 +454,6 @@ class Hook_addon_registry_installer
 
         $content = do_lorem_template('INSTALLER_STEP_4', array(
             'URL' => placeholder_url(),
-            'JS' => '',
             'MESSAGE' => lorem_phrase(),
             'LANG' => fallback_lang(),
             'DB_TYPE' => lorem_phrase(),

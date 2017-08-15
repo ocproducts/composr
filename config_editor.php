@@ -89,6 +89,7 @@ function ce_do_header()
         '{!PASSWORDS_DO_NOT_REUSE;^/}' => 'It is important that you do not re-use the database password for the {1} password, as the database password has to be stored as plain-text.',
         '{!PASSWORD_INSECURE;^/}' => 'Are you sure you want such an insecure {1} password? This will leave your installation and web hosting wide open to attack. You should use at least 8 characters and a combination of lower case, upper case, digits, and punctuation symbols.',
         '{!CONFIRM_REALLY;^/}' => 'REALLY?',
+
         '{PASSWORD_PROMPT;/}' => '',
     );
     $password_check_js = str_replace(array_keys($ls_rep), array_values($ls_rep), $password_check_js);
@@ -319,7 +320,7 @@ function do_access($given_password)
 
     echo '
         <p class="proceed_button" style="text-align: center">
-            <input class="button_screen buttons__save" type="submit" value="Save" onclick="return check_passwords(this.form);" />
+            <input class="button_screen buttons__save" type="submit" value="Save" onclick="return checkPasswords(this.form);" />
         </p>
 
         <input type="hidden" name="given_password" value="' . htmlentities($given_password) . '" />

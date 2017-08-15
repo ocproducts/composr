@@ -5661,15 +5661,13 @@ function ecv_PUBLIC_CONFIG_OPTIONS_JSON($lang, $escaped, $param)
     foreach ($hooks as $hook => $ob) {
         $details = $ob->get_details();
 
-        if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // Installer, likely executing global.js. We need a saner default for JavaScript
-            $_value[$hook] = '0';
-        } else {
-            if (isset($details['public']) && $details['public']) {
-                if (isset($details['theme_override']) && $details['theme_override']) {
-                    $_value[$hook] = get_theme_option($hook);
-                } else {
-                    $_value[$hook] = get_option($hook);
-                }
+        if (isset($details['public']) && $details['public']) {
+            if ($GLOBALS['IN_MINIKERNEL_VERSION']) { // Installer, likely executing global.js. We need a saner default for JavaScript
+                $_value[$hook] = '0';
+            } else if (isset($details['theme_override']) && $details['theme_override']) {
+                $_value[$hook] = get_theme_option($hook);
+            } else {
+                $_value[$hook] = get_option($hook);
             }
         }
     }

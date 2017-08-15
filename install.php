@@ -485,9 +485,6 @@ function step_1()
 
     $url = prepare_installer_url('install.php?step=2');
 
-    $js = new Tempcode();
-    //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
-
     $hidden = build_keep_post_fields();
     $max = strval(get_param_integer('max', 1000));
     $hidden->attach(form_input_hidden('max', $max));
@@ -495,7 +492,6 @@ function step_1()
     return do_template('INSTALLER_STEP_1', array(
         '_GUID' => '83f0ca881b9f63ab9378264c6ff507a3',
         'URL' => $url,
-        'JS' => $js,
         'WARNINGS' => $warnings,
         'HIDDEN' => $hidden,
         'LANGUAGES' => $tlanguages
@@ -527,14 +523,10 @@ function step_2()
 
     $url = prepare_installer_url('install.php?step=3');
 
-    $js = new Tempcode();
-    //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
-
     $hidden = build_keep_post_fields();
     return do_template('INSTALLER_STEP_2', array(
         '_GUID' => 'b08b0268784c9a0f44863ae3aece6789',
         'URL' => $url,
-        'JS' => $js,
         'HIDDEN' => $hidden,
         'LICENCE' => $licence,
     ));
@@ -689,16 +681,12 @@ function step_3()
         warn_exit(do_lang_tempcode('NO_PHP_DB'));
     }
 
-    $js = new Tempcode();
-    //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
-
     $url = prepare_installer_url('install.php?step=4');
 
     $hidden = build_keep_post_fields();
     return do_template('INSTALLER_STEP_3', array(
         '_GUID' => 'af52ecea73e9a8e2a92c12adbabbf4ab',
         'URL' => $url,
-        'JS' => $js,
         'HIDDEN' => $hidden,
         'SIMPLE_FORUMS' => $simple_forums,
         'FORUM_PATH_DEFAULT' => get_file_base() . DIRECTORY_SEPARATOR . 'forums',
@@ -721,9 +709,6 @@ function step_4()
     if (count($_POST) == 0) {
         exit(do_lang('INST_POST_ERROR'));
     }
-
-    $js = new Tempcode();
-    //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
 
     require_code('database');
     require_code('database/' . post_param_string('db_type'));
@@ -1037,22 +1022,6 @@ function step_4()
             $options->attach(make_option(do_lang_tempcode('DATABASE_USERNAME'), new Tempcode(), 'gae_live_db_site_user', 'root', false, true));
             $options->attach(make_option(do_lang_tempcode('DATABASE_PASSWORD'), new Tempcode(), 'gae_live_db_site_password', '', true));
             $sections->attach(do_template('INSTALLER_STEP_4_SECTION', array('HIDDEN' => '', 'TITLE' => $title, 'TEXT' => $text, 'OPTIONS' => $options)));
-
-            $js->attach(/**@lang JavaScript*/
-                '
-document.getElementById(\'gae_application\').addEventListener(\'change\', gaeOnChange);
-gaeOnChange();
-
-function gaeOnChange() {
-    var gaeApplication = document.getElementById(\'gae_application\');
-    var gaeLiveDbSite = document.getElementById(\'gae_live_db_site\');
-    gaeLiveDbSite.value = gaeLiveDbSite.value.replace(/(<application>|composr)/g, gaeApplication.value);
-    var gaeLiveDbSiteHost = document.getElementById(\'gae_live_db_site_host\');
-    gaeLiveDbSiteHost.value = gaeLiveDbSiteHost.value.replace(/(<application>|composr)/g, gaeApplication.value);
-    var gaeBucketName = document.getElementById(\'gae_bucket_name\');
-    gaeBucketName.value = gaeBucketName.value.replace(/(<application>|composr)/g, gaeApplication.value);
-}
-            ');
         } else {
             $title = do_lang_tempcode((($forum_type == 'cns' || $forum_type == 'none') && $use_msn == 0) ? 'DATABASE_SETTINGS' : 'COMPOSR_SETTINGS');
             if (!$forum_options->is_empty()) {
@@ -1101,10 +1070,11 @@ function gaeOnChange() {
     $url = prepare_installer_url('install.php?step=5');
 
     $hidden = build_keep_post_fields();
+
+    global $password_prompt;
     return do_template('INSTALLER_STEP_4', array(
         '_GUID' => '73c3ac0a7108709b74b2e89cae30be12',
         'URL' => $url,
-        'JS' => $js,
         'HIDDEN' => $hidden,
         'MESSAGE' => $message,
         'LANG' => $INSTALL_LANG,
@@ -1113,6 +1083,7 @@ function gaeOnChange() {
         'BOARD_PATH' => $board_path,
         'SECTIONS' => $sections,
         'MAX' => strval(post_param_integer('max', 1000)),
+        'PASSWORD_PROMPT' => $password_prompt,
     ));
 }
 
@@ -1254,12 +1225,9 @@ function step_5()
             $hidden = build_keep_post_fields();
             $hidden->attach(form_input_hidden('confirm', '1'));
 
-            $js = new Tempcode();
-            //$js->attach(do_template('global', null, null, false, null, '.js', 'javascript'));
-
+            global $password_prompt;
             return do_template('INSTALLER_STEP_4', array(
                 '_GUID' => 'aaf0386966dd4b75c8027a6b1f7454c6',
-                'JS' => $js,
                 'URL' => $url,
                 'HIDDEN' => $hidden,
                 'MESSAGE' => do_lang_tempcode('WARNING_DB_OVERWRITE', escape_html(get_tutorial_url('tut_upgrade'))),
@@ -1268,6 +1236,7 @@ function step_5()
                 'FORUM_TYPE' => post_param_string('forum_type'),
                 'BOARD_PATH' => post_param_string('board_path'),
                 'SECTIONS' => $sections,
+                'PASSWORD_PROMPT' => $password_prompt,
             ));
         }
     }

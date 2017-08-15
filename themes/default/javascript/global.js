@@ -1,6 +1,10 @@
-(function ($cms, symbols) {
+(function ($cms) {
     'use strict';
-
+    
+    var IN_MINIKERNEL_VERSION = document.documentElement.classList.contains('in-minikernel-version');
+    
+    var symbols =  (!IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {});
+    
     // Cached references
     var smile = ':)',
         emptyObj = {},
@@ -67,7 +71,7 @@
          * @method
          * @returns {boolean}
          */
-        $DEV_MODE: constant(window.IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE)),
+        $DEV_MODE: constant(IN_MINIKERNEL_VERSION || boolVal(symbols.DEV_MODE)),
         /**
          * @method
          * @returns {boolean}
@@ -215,7 +219,7 @@
          * @returns {boolean|string|number}
          */
         $CONFIG_OPTION: (function () {
-            if (window.IN_MINIKERNEL_VERSION) {
+            if (IN_MINIKERNEL_VERSION) {
                 // Installer, likely executing global.js
                 return constant('');
             }
@@ -7383,10 +7387,6 @@
             }, post);
         });
     };
-}(window.$cms || (window.$cms = {}), (!window.IN_MINIKERNEL_VERSION ? JSON.parse(document.getElementById('composr-symbol-data').content) : {})));
-
-(function ($cms) {
-    'use strict';
 
     window.$cmsReady.push(function () {
         $cms.attachBehaviors(document);
@@ -7654,7 +7654,7 @@
         // Implementation for [data-cms-select2]
         select2Plugin: {
             attach: function (context) {
-                if (window.IN_MINIKERNEL_VERSION) {
+                if (IN_MINIKERNEL_VERSION) {
                     return;
                 }
 
@@ -9419,6 +9419,50 @@
         }
     };
     
+    $cms.templates.installerStepLog = function installerStepLog() {
+        /* Code to auto-submit the form after 5 seconds, but only if there were no errors */
+        var doh = !!document.querySelector('.installer_warning');
+        if (doh) {
+            return;
+        }
+
+        var button = document.getElementById('proceed_button'),
+            timer;
+        
+        button.countdown = 6;
+        
+        continueFunc();
+        timer = window.setInterval(continueFunc, 1000);
+        button.addEventListener('mouseover', function () {
+            if (timer) {
+                window.clearInterval(timer);
+                timer = null;
+            }
+        });
+        window.addEventListener('unload', function () {
+            if (timer) {
+                window.clearInterval(timer);
+                timer = null;
+            }
+        });
+        button.addEventListener('mouseout', function () {
+            timer = window.setInterval(continueFunc, 1000);
+        });
+
+        function continueFunc() {
+            button.value = "{!PROCEED} ({!AUTO_IN} " + button.countdown + ")";
+            if (button.countdown === 0) {
+                if (timer) {
+                    window.clearInterval(timer);
+                    timer = null;
+                }
+                button.form.submit();
+            } else {
+                button.countdown--;
+            }
+        }
+    };
+    
     $cms.templates.installerHtmlWrap = function installerHtmlWrap(params, container) {
         var defaultForm = strVal(params.defaultForm);
         
@@ -9516,6 +9560,170 @@
         $cms.dom.on(input, 'change', function () {
             input.changed = true;
         });
+    };
+    
+    $cms.templates.installerStep4 = function installerStep4(params, container) {
+        var passwordPrompt = strVal(params.passwordPrompt),
+            domain = document.getElementById('domain');
+        
+        if (domain) {
+            domain.addEventListener('change', function () {
+                var cs = document.getElementById('Cookie_space_settings');
+                if (cs && (cs.style.display === 'none')) {
+                    toggleInstallerSection('Cookie_space_settings');
+                }
+                var cd = document.getElementById('cookie_domain');
+                if (cd && (cd.value !== '')) {
+                    cd.value = '.' + domain.value;
+                }
+            });
+        }
+
+        var gaeApp = document.getElementById('gae_application');
+        
+        if (gaeApp) {
+            gaeOnChange();
+            gaeApp.addEventListener('change', gaeOnChange);
+        }
+
+        function gaeOnChange() {
+            var gaeLiveDbSite = document.getElementById('gae_live_db_site'),
+                gaeLiveDbSiteHost = document.getElementById('gae_live_db_site_host'),
+                gaeBucketName = document.getElementById('gae_bucket_name');
+
+            gaeLiveDbSite.value = gaeLiveDbSite.value.replace(/(<application>|composr)/g, gaeApp.value);
+            gaeLiveDbSiteHost.value = gaeLiveDbSiteHost.value.replace(/(<application>|composr)/g, gaeApp.value);
+            gaeBucketName.value = gaeBucketName.value.replace(/(<application>|composr)/g, gaeApp.value);
+        }
+
+        var step4Form = document.getElementById('form-installer-step-4');
+
+        if (step4Form) {
+            step4Form.addEventListener('submit', validateSettings);
+        }
+
+        function validateSettings(e) {
+            e.preventDefault();
+
+            if ((step4Form.elements['forum_base_url']) && (step4Form.elements['forum_base_url'].type !== 'hidden') && (step4Form.elements['forum_base_url'].value === step4Form.elements['base_url'].value)) {
+                window.alert('{!FORUM_BASE_URL_INVALID;/}');
+                return false;
+            }
+
+            if ((step4Form.elements['forum_base_url']) && (step4Form.elements['forum_base_url'].type !== 'hidden') && (step4Form.elements['forum_base_url'].value.substr(-7) === '/forums') && (!step4Form.elements['forum_base_url'].changed)) {
+                if (!window.confirm('{!FORUM_BASE_URL_UNCHANGED;/}')) {
+                    return false;
+                }
+            }
+
+            for (var i = 0; i < step4Form.elements.length; i++) {
+                if ((step4Form.elements[i].classList.contains('required1')) && (step4Form.elements[i].value === '')) {
+                    window.alert('{!IMPROPERLY_FILLED_IN;/}');
+                    return false;
+                }
+            }
+
+            if (!checkPasswords(step4Form)) {
+                return false;
+            }
+
+            var checkPromises = [], post;
+
+            if ((step4Form.elements['db_site_password'])) {
+                var sitePwdCheckUrl = 'install.php?type=ajax_db_details';
+                post = 'db_type=' + encodeURIComponent(step4Form.elements['db_type'].value) + '&db_site_host=' + encodeURIComponent(step4Form.elements['db_site_host'].value) + '&db_site=' + encodeURIComponent(step4Form.elements['db_site'].value) + '&db_site_user=' + encodeURIComponent(step4Form.elements['db_site_user'].value) + '&db_site_password=' + encodeURIComponent(step4Form.elements['db_site_password'].value);
+                checkPromises.push($cms.form.doAjaxFieldTest(sitePwdCheckUrl, post));
+            }
+
+            if (step4Form.elements['db_forums_password']) {
+                var forumsPwdCheckUrl = 'install.php?type=ajax_db_details';
+                post = 'db_type=' + encodeURIComponent(step4Form.elements['db_type'].value) + '&db_forums_host=' + encodeURIComponent(step4Form.elements['db_forums_host'].value) + '&db_forums=' + encodeURIComponent(step4Form.elements['db_forums'].value) + '&db_forums_user=' + encodeURIComponent(step4Form.elements['db_forums_user'].value) + '&db_forums_password=' + encodeURIComponent(step4Form.elements['db_forums_password'].value);
+                checkPromises.push($cms.form.doAjaxFieldTest(forumsPwdCheckUrl, post));
+            }
+
+            if (step4Form.elements['ftp_domain']) {
+                var ftpDomainCheckUrl = 'install.php?type=ajax_ftp_details';
+                post = 'ftp_domain=' + encodeURIComponent(step4Form.elements['ftp_domain'].value) + '&ftp_folder=' + encodeURIComponent(step4Form.elements['ftp_folder'].value) + '&ftp_username=' + encodeURIComponent(step4Form.elements['ftp_username'].value) + '&ftp_password=' + encodeURIComponent(step4Form.elements['ftp_password'].value);
+                checkPromises.push($cms.form.doAjaxFieldTest(ftpDomainCheckUrl, post));
+            }
+
+            Promise.all(checkPromises).then(function (validities) {
+                if (!validities.includes(false)) {
+                    // All valid!
+                    step4Form.removeEventListener('submit', validateSettings);
+                    step4Form.submit();
+                }
+            });
+        }
+
+        /**
+         * NOTE: This function also has a copy in PASSWORD_CHECK_JS.tpl so update that as well when modifying here.
+         * @param form
+         * @return {boolean}
+         */
+        function checkPasswords(form) {
+            if (form.confirm) {
+                return true;
+            }
+
+            if (form.elements['cns_admin_password_confirm'] != null) {
+                if (!checkPassword(form, 'cns_admin_password', '{!ADMIN_USERS_PASSWORD;^/}')) {
+                    return false;
+                }
+            }
+
+            if (form.elements['master_password_confirm'] != null) {
+                if (!checkPassword(form, 'master_password', '{!MASTER_PASSWORD;^/}')) {
+                    return false;
+                }
+            }
+
+            if (passwordPrompt !== '') {
+                window.alert(passwordPrompt);
+            }
+
+            return true;
+
+            function checkPassword(form, fieldName, fieldLabel) {
+                // Check matches with confirm field
+                if (form.elements[fieldName + '_confirm'].value !== form.elements[fieldName].value) {
+                    window.alert('{!PASSWORDS_DO_NOT_MATCH;^/}'.replace('\{1\}', fieldLabel));
+                    return false;
+                }
+
+                // Check does not match database password
+                if (form.elements['db_site_password'] != null) {
+                    if ((form.elements[fieldName].value !== '') && (form.elements[fieldName].value === form.elements['db_site_password'].value)) {
+                        window.alert('{!PASSWORDS_DO_NOT_REUSE;^/}'.replace('\{1\}', fieldLabel));
+                        return false;
+                    }
+                }
+
+                // Check password is secure
+                var isSecurePassword = true;
+                if (form.elements[fieldName].value.length < 8) {
+                    isSecurePassword = false;
+                }
+                if (!form.elements[fieldName].value.match(/[a-z]/)) {
+                    isSecurePassword = false;
+                }
+                if (!form.elements[fieldName].value.match(/[A-Z]/)) {
+                    isSecurePassword = false;
+                }
+                if (!form.elements[fieldName].value.match(/\d/)) {
+                    isSecurePassword = false;
+                }
+                if (!form.elements[fieldName].value.match(/[^a-zA-Z\d]/)) {
+                    isSecurePassword = false;
+                }
+
+                if (!isSecurePassword) {
+                    return window.confirm('{!PASSWORD_INSECURE;^/}'.replace('\{1\}', fieldLabel)) && window.confirm('{!CONFIRM_REALLY;^/} {!PASSWORD_INSECURE;^/}'.replace('\{1\}', fieldLabel));
+                }
+
+                return true;
+            }
+        }
     };
     
     $cms.templates.installerStep4SectionHide = function installerStep4SectionHide(params, container) {
@@ -10362,7 +10570,7 @@
         hidden.value = checked ? '1' : '0';
         massDeleteForm.style.display = 'block';
     }
-}(window.$cms));
+}(window.$cms || (window.$cms = {})));
 
 (function () {
     /*

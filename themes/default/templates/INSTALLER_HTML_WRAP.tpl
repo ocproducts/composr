@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global">
+<html lang="{$LCASE*,{$LANG}}" dir="{!dir}" data-view="Global" class="in-minikernel-version">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={$CHARSET*}" />
 		<meta name="GENERATOR" content="Composr" />
@@ -13,29 +13,8 @@
 		<title>{!INSTALLER,Composr}</title>
 
 		<meta name="robots" content="noindex, nofollow" />
-		
-		<!-- Required for $cms.requireJavascript() to work properly as DOM does not currently provide any way to check if a particular script has been already loaded -->
-		<script {$CSP_NONCE_HTML} src="{$BASE_URL*}/data/polyfills/log-loaded-scripts.js"></script>
 
-		{$,Load classList and ES6 Promise polyfill for Internet Explorer LEGACY}
-		{+START,IF,{$BROWSER_MATCHES,ie}}
-		<script {$CSP_NONCE_HTML} src="{$BASE_URL*}/data/polyfills/class-list.js"></script>
-		<script {$CSP_NONCE_HTML} src="{$BASE_URL*}/data/polyfills/promise.js"></script>
-		<script {$CSP_NONCE_HTML} src="{$BASE_URL*}/data/polyfills/custom-event-constructor.js"></script>
-		{+END}
-
-		{$,Polyfills for everyone LEGACY}
-		<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/general.js"></script>
-		<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/url-search-params.max.js"></script>
-		<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/keyboardevent-key-polyfill.js"></script>
-		<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/fetch.js"></script>
-		<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/web-animations.min.js"></script>
-		<script {$CSP_NONCE_HTML} defer="defer" src="{$BASE_URL*}/data/polyfills/json5.js"></script>
-		
-		<script {$CSP_NONCE_HTML}>
-			window.IN_MINIKERNEL_VERSION = true;
-			/*{+START,INCLUDE,PASSWORD_CHECK_JS}INSTALLER=1{+END}*/
-		</script>
+		{+START,INCLUDE,HTML_HEAD_POLYFILLS}{+END}
 	</head>
 
 	<body id="installer_body" class="website_body" data-tpl="installerHtmlWrap" data-tpl-params="{+START,PARAMS_JSON,DEFAULT_FORUM}{_*}{+END}">
@@ -44,15 +23,17 @@
 		</div>
 
 		<div class="installer_main_inner">
-			<div class="box box___installer_html_wrap"><div class="box_inner">
-				<h1>{!INSTALLER,Composr}: {!INSTALLER_STEP,{STEP},10}</h1>
-
-				<div id="extra_errors"></div>
-
-				<div>
-					{CONTENT}
+			<div class="box box___installer_html_wrap">
+				<div class="box_inner">
+					<h1>{!INSTALLER,Composr}: {!INSTALLER_STEP,{STEP},10}</h1>
+	
+					<div id="extra_errors"></div>
+	
+					<div>
+						{CONTENT}
+					</div>
 				</div>
-			</div></div>
+			</div>
 		</div>
 
 		<div class="installer_version">
@@ -67,7 +48,7 @@
 		</div>
 	
 		<script>
-			{GLOBAL_JS/}
+			{+START,IF_PASSED,GLOBAL_JS}{GLOBAL_JS/}{+END}
 		</script>
 	</body>
 </html>
