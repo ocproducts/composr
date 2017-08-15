@@ -32,7 +32,7 @@ class Block_main_sortable_table
         $info['hack_version'] = null;
         $info['version'] = 1;
         $info['locked'] = false;
-        $info['parameters'] = array('param', 'default_sort_column', 'max', 'labels', 'labels_tooltip', 'columns_display', 'columns_tooltip', 'guid', 'transform');
+        $info['parameters'] = array('param', 'default_sort_column', 'max', 'labels', 'labels_tooltip', 'columns_display', 'columns_tooltip', 'guid', 'transform', 'stylings');
         return $info;
     }
 
@@ -114,12 +114,22 @@ class Block_main_sortable_table
             $map['columns_tooltip'] = str_replace($letters, $numbers, $map['columns_tooltip']);
         }
 
-        $labels = empty($map['labels']) ? array() : explode(',', $map['labels']);
-        $labels_tooltip = empty($map['labels_tooltip']) ? array() : explode(',', $map['labels_tooltip']);
-        $columns_display = empty($map['columns_display']) ? array() : array_map('intval', explode(',', $map['columns_display']));
-        $columns_tooltip = empty($map['columns_tooltip']) ? array() : array_map('intval', explode(',', $map['columns_tooltip']));
+        $labels = empty($map['labels']) ? array() : array_map('trim', explode(',', $map['labels']));
+        $labels_tooltip = empty($map['labels_tooltip']) ? array() : array_map('trim', explode(',', $map['labels_tooltip']));
+        $columns_display = empty($map['columns_display']) ? array() : array_map('intval', array_map('trim', explode(',', $map['columns_display'])));
+        $columns_tooltip = empty($map['columns_tooltip']) ? array() : array_map('intval', array_map('trim', explode(',', $map['columns_tooltip'])));
 
-        $transform = empty($map['transform']) ? '' : $map['transform'];
+        $stylings = empty($map['stylings']) ? array() : array_map('trim', explode(',', $map['stylings']));
+
+        if (empty($map['transform'])) {
+            $transform = '';
+        } else {
+            if (strpos($map['transform'], ',') === false) {
+                $transform = trim($map['transform']);
+            } else {
+                $transform = array_map('trim', explode(',', $map['transform']));
+            }
+        }
 
         $guid = empty($map['guid']) ? '' : $map['guid'];
 
@@ -140,11 +150,15 @@ class Block_main_sortable_table
             }
             $path = get_custom_file_base() . '/uploads/website_specific/' . filter_naughty($file);
             if (!is_file($path)) {
+                $path = get_custom_file_base() . '/uploads/website_specific/' . filter_naughty($file);
+            }
+            if (!is_file($path)) {
                 return paragraph('File not found (' . escape_html($file) . ').', 'red_alert');
             }
 
             // Load data
             $i = 0;
+            safe_ini_set('auto_detect_line_endings', '1');
             $myfile = fopen($path, 'rt');
             $full_header_row = mixed();
             while (($row = fgetcsv($myfile, 8192)) !== false) {
@@ -153,10 +167,6 @@ class Block_main_sortable_table
                     foreach ($row as $j => $val) {
                         $val = fix_bad_unicode($val);
                     }
-                }
-
-                if ($transform == 'ucwords') {
-                    $row = array_map('cms_mb_ucwords', $row);
                 }
 
                 if ($i != 0) {
@@ -209,7 +219,25 @@ class Block_main_sortable_table
                 if (implode('', $row) == '') {
                     continue;
                 }
+
+                foreach ($row as $j => $val) {
+                    foreach (is_array($transform) ? $transform : array($transform) as $_transform) {
+                        switch ($_transform) {
+                            case 'ucwords':
+                                $val = cms_mb_ucwords($val);
+                                break;
+
+                            case 'non-numeric-italics':
+                                if (!is_numeric($val)) {
+                                    $row[$j] = protect_from_escaping('<em>' . escape_html($val) . '</em>');
+                                }
+                                break;
+                        }
+                    }
+                }
+
                 $_rows[] = $row;
+
                 $i++;
             }
             fclose($myfile);
@@ -366,6 +394,7 @@ class Block_main_sortable_table
                 '_GUID' => $guid,
                 'HEADERS' => $headers,
                 'VALUES' => $row,
+                'STYLINGS' => $stylings,
                 'TOOLTIP_VALUES' => $tooltip_values,
                 'RAW_DATA' => json_encode($_rows_raw[$i]),
             )));
@@ -373,7 +402,7 @@ class Block_main_sortable_table
 
         // Final render...
 
-        $id = uniqid('', false);
+        $id = (preg_match('#^[\w_]+$#', $guid) != 0) ? $guid : uniqid('', false);
 
         $_default_sort_column = max(0, empty($map['default_sort_column']) ? 0 : (intval(str_replace($letters, $numbers, $map['default_sort_column'])) - 1));
         $default_sort_column = ($columns_display == array()) ? $_default_sort_column : array_search($_default_sort_column + 1, $columns_display);

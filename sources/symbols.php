@@ -320,11 +320,9 @@ function ecv($lang, $escaped, $type, $name, $param)
                     if (is_integer($x2)) {
                         if ($x2 < 0) {
                             $x2 = count($array) - 1;
-                        } elseif ($x2 >= count($array)) {
-                            $x2 -= count($array);
                         }
                     }
-                    $value = array_key_exists($x2, $array) ? $array[$x2] : '';
+                    $value = isset($array[$x2]) ? $array[$x2] : '';
                     if (is_object($value)) {
                         $value = $value->evaluate();
                     }

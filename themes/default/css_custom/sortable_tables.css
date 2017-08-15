@@ -23,6 +23,7 @@
 	background-image: url('{$IMG;,sortable_tables/sortable}');
 	background-position: center left;
 	background-repeat: no-repeat;
+	min-height: 16px;
 	padding-left: 16px;
 }
 .sortable_table th.table-sorted-asc span {
