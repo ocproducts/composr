@@ -195,12 +195,20 @@ class Hook_health_check_marketing_seo_robotstxt extends Hook_Health_Check
         $expected_sitemap_url = get_base_url() . '/data_custom/sitemaps/index.xml';
 
         $ok = false;
+        $sitemap_rule = null;
         foreach ($found as $i => $rule) {
             $this->assertTrue(strpos($rule, '://') !== false, 'Sitemap URL is relative, should be absolute');
+            $ok_here = ($rule == $expected_sitemap_url);
 
-            $ok = $ok || ($rule == $expected_sitemap_url);
+            if ($ok_here) {
+                $sitemap_rule = $rule;
+            }
+
+            $ok = $ok || $ok_here;
         }
-        $this->assertTrue($ok, 'Sitemap URL is ' . $rule . ' but we expected ' . $expected_sitemap_url);
+        if ($sitemap_rule !== null) {
+            $this->assertTrue($ok, 'Sitemap URL is ' . $sitemap_rule . ' but we expected ' . $expected_sitemap_url);
+        }
 
         if ($check_context == CHECK_CONTEXT__TEST_SITE) {
             $this->assertTrue($found === array(), 'Sitemap directive found in robots.txt but this is a test site and we should not have one');

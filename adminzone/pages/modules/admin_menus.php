@@ -145,7 +145,7 @@ class Module_admin_menus
             $label = do_lang_tempcode('MENU_ITEM_COUNT', escape_html($row['i_menu']), escape_html(integer_format($item_count)));
             $list->attach(form_input_list_entry($row['i_menu'], false, $label));
         }
-        if (!isset($rows['main_menu'])) {
+        if ((!isset($rows['main_menu'])) && (get_option('header_menu_call_string') == 'main_menu')) {
             $list->attach(form_input_list_entry('', false, do_lang_tempcode('DEFAULT')));
         }
 

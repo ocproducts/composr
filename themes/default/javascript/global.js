@@ -1712,10 +1712,10 @@
         if (_haltedPromise === undefined) {
             _haltedPromise = new Promise();
             properties(_haltedPromise, {
-                then: function then() {
+                'then': function then() {
                     return _haltedPromise;
                 },
-                catch: function _catch() {
+                'catch': function _catch() {
                     return _haltedPromise;
                 }
             });
@@ -5707,7 +5707,7 @@
             return;
         }
 
-        if (!starting) { // Real JS mousemove event, so we assume not a screen reader and have to remove natural tooltip
+        if (!starting) { // Real JS mousemove event, so we assume not a screen-reader and have to remove natural tooltip
             if (el.getAttribute('title')) {
                 el.setAttribute('title', '');
             }
@@ -7504,7 +7504,7 @@
                         window.loadHtmlEdit(form);
                     }
 
-                    // Remove tooltips from forms as they are for screenreader accessibility only
+                    // Remove tooltips from forms as they are for screen-reader accessibility only
                     form.title = '';
 
                     // Convert form element title attributes into composr tooltips
@@ -9838,6 +9838,7 @@
             $IMG_expand2 = '{$IMG;,1x/trays/expand2}',
             $IMG_contract = '{$IMG;,1x/trays/contract}',
             $IMG_contract2 = '{$IMG;,1x/trays/contract2}';
+        // TODO: We have expcon and expcon2 theme images, for use during animation. Are we removing this? If so those theme images should be deleted fully.
 
         if ($cms.isPlainObj(elOrOptions)) {
             options = elOrOptions;

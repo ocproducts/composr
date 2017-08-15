@@ -262,6 +262,7 @@ function upgrade_script()
 
                     // Download file
                     require_code('tar');
+                    $local_temp_path = false;
                     if ((post_param_string('url', '', INPUT_FILTER_URL_GENERAL) == '') && ((get_local_hostname() == 'compo.sr') || ($GLOBALS['DEV_MODE']))) {
                         $temp_path = $_FILES['upload']['tmp_name'];
                     } else {
@@ -269,12 +270,15 @@ function upgrade_script()
                             warn_exit(do_lang_tempcode('IMPROPERLY_FILLED_IN'));
                         }
 
-                        $temp_path = cms_tempnam();
                         $url = post_param_string('url', false, INPUT_FILTER_URL_GENERAL);
                         if (substr($url, 0, strlen(get_base_url() . '/')) == get_base_url() . '/') {
-                            unlink($temp_path);
-                            copy(get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/'))), $temp_path);
+                            $local_temp_path = true;
+                            $temp_path = get_custom_file_base() . '/' . rawurldecode(substr($url, strlen(get_base_url() . '/')));
+                            if (!is_file($temp_path)) {
+                                warn_exit(do_lang_tempcode('MISSING_RESOURCE'));
+                            }
                         } else {
+                            $temp_path = cms_tempnam();
                             $myfile = fopen($temp_path, 'wb');
                             http_get_contents($url, array('write_to_file' => $myfile));
                             fclose($myfile);
@@ -293,7 +297,9 @@ function upgrade_script()
                     // Open up TAR
                     $upgrade_resource = tar_open($temp_path, 'rb');
                     //tar_extract_to_folder($upgrade_resource, '', true);
-                    $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB
+                    $directory = tar_get_directory($upgrade_resource); // Uses up to around 5MB of RAM
+
+                    // Hopefully $popup_simple_extract will be true (i.e. suEXEC mode), as it is safer
                     $popup_simple_extract = (_ftp_info() === false);
                     if ($popup_simple_extract) {
                         $data = array('todo' => array());
@@ -313,7 +319,12 @@ function upgrade_script()
                     $files_for_tar_updating = array();
 
                     // Process files
+                    $i = 0;
+                    $cnt = count($directory);
                     foreach ($directory as $offset => $upgrade_file) {
+                        $i++;
+                        echo '<!-- Looking at ' . escape_html($upgrade_file['path']) . ' (' . strval($i) . ' / ' . strval($cnt) . ') -->';
+
                         // Skip over these, from manual installer package (which may be used for an upgrade)
                         if ($upgrade_file['path'] == '_config.php') {
                             continue;
@@ -336,8 +347,8 @@ function upgrade_script()
                             }
                         }
 
-                        //  What kind of file did we find?
-                        if ((strpos($upgrade_file['path'], '/addon_registry/') !== false) && (file_exists(get_file_base() . '/' . $upgrade_file['path']))) {
+                        // What kind of file did we find?
+                        if ((strpos($upgrade_file['path'], '/addon_registry/') !== false) && ((file_exists(get_file_base() . '/' . $upgrade_file['path'])) || (strpos($upgrade_file['path'], '/core_') !== false))) {
                             // Addon registry file, for installed addon...
 
                             if (substr($upgrade_file['path'], -1) != '/') {
@@ -366,10 +377,9 @@ function upgrade_script()
                                 }
                             }
 
-                            // Install if either of the following is true:
-                            //  - it's some file not in any addon (shouldn't actually happen)
-                            //  - it's a file in an addon we have installed
-                            if (($found === null) || (file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php'))) {
+                            // Install if it's a file in an addon we have installed or for a core addon
+                            //  (if we couldn't find the addon for it we have to assume a corrupt upgrade TAR and must skip the file)
+                            if (($found !== null) && ((file_exists(get_file_base() . '/sources/hooks/systems/addon_registry/' . $found . '.php')) || (substr($found, 0, 5) == 'core_'))) {
                                 if (substr($upgrade_file['path'], -1) == '/') {
                                     if (!$dry_run) {
                                         afm_make_directory($upgrade_file['path'], false, true);
@@ -414,10 +424,6 @@ function upgrade_script()
                                     continue;
                                 }
 
-                                if ($d['path'] == 'addon.inf') {
-                                    continue; // Should not even be in the TAR, but maybe installer is being used to install addons (weird, but would work)
-                                }
-
                                 $file_data = tar_get_file($old_addon_file, $d['path']);
 
                                 $file_data['data'] = preg_replace('#^version=.*#m', 'version=(version-synched)', $file_data['data']);
@@ -432,6 +438,8 @@ function upgrade_script()
                                 $file_data = tar_get_file($upgrade_resource, $file_to_update);
 
                                 tar_add_file($new_addon_file, $file_to_update, $file_data['data'], $upgrade_file['mode'], $upgrade_file['mtime']);
+
+                                echo do_lang('U_PACKING_MESSAGE', escape_html($file_to_update)) . '<br />';
                             }
 
                             tar_close($new_addon_file);
@@ -443,8 +451,6 @@ function upgrade_script()
                                 unlink(get_file_base() . '/imports/addons/' . $found . '.new.tar');
                             }
                             sync_file(get_file_base() . '/imports/addons/' . $found . '.tar');
-
-                            echo do_lang('U_PACKING_MESSAGE', escape_html($file_to_update)) . '<br />';
                         }
                     }
 
@@ -454,12 +460,14 @@ function upgrade_script()
                     if ($popup_simple_extract) {
                         @unlink(get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
                         @unlink(get_custom_file_base() . '/data_custom/upgrader.tmp');
-                        $test = @copy($temp_path, get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
-                        if ($test === false) {
-                            fatal_exit(do_lang_tempcode('FU_FTP_NEEDED'));
+                        if (!$local_temp_path) {
+                            $test = @copy($temp_path, get_custom_file_base() . '/data_custom/upgrader.cms.tmp');
+                            if ($test === false) {
+                                fatal_exit(do_lang_tempcode('FU_FTP_NEEDED'));
+                            }
+                            @unlink($temp_path);
+                            $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
                         }
-                        @unlink($temp_path);
-                        $temp_path = get_custom_file_base() . '/data_custom/upgrader.cms.tmp';
                         require_code('files');
                         $tmp_data_path = get_custom_file_base() . '/data_custom/upgrader.tmp';
                         cms_file_put_contents_safe($tmp_data_path, serialize($data));
@@ -482,7 +490,9 @@ function upgrade_script()
                         }
                     } else {
                         echo '<p>' . do_lang('SUCCESS') . '</p>';
-                        @unlink($temp_path);
+                        if (!$local_temp_path) {
+                            @unlink($temp_path);
+                        }
                     }
 
                     unset($_POST['news_id']);
@@ -1101,6 +1111,8 @@ function run_integrity_check($basic = false, $allow_merging = true, $unix_help =
     $found_something = false;
 
     require_code('files');
+
+    disable_php_memory_limit();
 
     // We'll need to know about stuff in our addon registry, and file manifest
     if (function_exists('find_all_hooks')) {

@@ -273,6 +273,7 @@ abstract class HttpDownloader
     protected $http_verb = null; // ?string. HTTP verb (null: auto-decide based on other parameters)
     protected $raw_content_type = 'application/xml'; // string. The content type to use if a raw HTTP post
     protected $ignore_http_status = false; // boolean. Return a result regardless of HTTP status
+    protected $verifypeer_enabled = true; // boolean. Whether to check SSL certificates
 
     // Class processing configuration
     protected $add_content_type_header_manually = false;
@@ -390,8 +391,11 @@ abstract class HttpDownloader
             } else {
                 $protocol_end_pos = strpos($config_ip_forwarding, '://');
                 if ($protocol_end_pos !== false) {
+                    // Full with protocol
                     $url = preg_replace('#^(https?://)#', substr($config_ip_forwarding, 0, $protocol_end_pos + 3), $url);
                     $config_ip_forwarding = substr($config_ip_forwarding, $protocol_end_pos + 3);
+                } else {
+                    // IP address
                 }
                 $this->connect_to = $config_ip_forwarding;
             }
@@ -632,6 +636,10 @@ abstract class HttpDownloader
 
         if (array_key_exists('ignore_http_status', $options)) {
             $this->ignore_http_status = $options['ignore_http_status'];
+        }
+
+        if (array_key_exists('verifypeer_enabled', $options)) {
+            $this->verifypeer_enabled = $options['verifypeer_enabled'];
         }
     }
 
@@ -897,23 +905,23 @@ class HttpDownloaderCurl extends HttpDownloader
         }
 
         // SSL prep
-        $verifypeer_disabled = ((function_exists('get_value')) && (get_value('disable_ssl_for__' . $this->url_parts['host']) === '1'));
-        if ($verifypeer_disabled) {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        } else {
+        $verifypeer_enabled =
+            $this->verifypeer_enabled &&
+            !$this->do_ip_forwarding &&
+            ((!function_exists('get_value')) || (get_value('disable_ssl_for__' . $this->url_parts['host']) === '0'));
+        if ($verifypeer_enabled) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
+        } else {
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         }
         if (ini_get('curl.cainfo') == '') {
             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
             curl_setopt($ch, CURLOPT_CAINFO, $crt_path);
         }
         curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1); // https://jve.linuxwall.info/blog/index.php?post/TLS_Survey
-        if ($this->do_ip_forwarding) {
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        }
+        // ^ If you get errors about ciphers not matching up, it's possibly cURL being buggy and misreporting a firewall problem. The above config settings should be rock-solid on almost every single server.
 
         // Misc settings
         //if (!$this->no_redirect) @curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // we can do better ourselves anyway and protect against file:// exploits.
@@ -1007,6 +1015,13 @@ class HttpDownloaderCurl extends HttpDownloader
             // Error
             $error = curl_error($ch);
             curl_close($ch);
+
+            if ($this->trigger_error) {
+                warn_exit(protect_from_escaping($error), false, true);
+            } else {
+                $this->message_b = protect_from_escaping($error);
+            }
+
             return null;
         }
 
@@ -1014,6 +1029,9 @@ class HttpDownloaderCurl extends HttpDownloader
         $this->download_mime_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
         $this->download_size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         $this->download_url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        if ($this->download_url == $this->connecting_url) {
+            $this->download_url = $url;
+        }
         $this->message = strval(curl_getinfo($ch, CURLINFO_HTTP_CODE));
         if ($this->message == '206') {
             $this->message = '200'; // We don't care about partial-content return code, as Composr implementation gets ranges differently and we check '200' as a return result
@@ -1021,6 +1039,58 @@ class HttpDownloaderCurl extends HttpDownloader
         if (strpos($this->download_mime_type, ';') !== false) {
             $this->charset = substr($this->download_mime_type, 8 + strpos($this->download_mime_type, 'charset='));
             $this->download_mime_type = substr($this->download_mime_type, 0, strpos($this->download_mime_type, ';'));
+        }
+
+        // Process HTTP status
+        switch ($this->message) {
+            case '200':
+            case '201':
+            case '301':
+            case '302':
+            case '307':
+                break;
+
+            case '401':
+            case '403':
+                if (!$this->ignore_http_status) {
+                    if ($this->trigger_error) {
+                        warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url)), false, true);
+                    } else {
+                        $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNAUTHORIZED', escape_html($url));
+                    }
+                }
+                break;
+
+            case '404':
+                if (!$this->ignore_http_status) {
+                    if ($this->trigger_error) {
+                        warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url)), false, true);
+                    } else {
+                        $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_NOT_FOUND', escape_html($url));
+                    }
+                }
+                break;
+
+            case '400':
+            case '500':
+                if (!$this->ignore_http_status) {
+                    if ($this->trigger_error) {
+                        warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url)), false, true);
+                    } else {
+                        $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_SERVER_ERROR', escape_html($url));
+                    }
+                }
+                break;
+
+            default:
+                if (!$this->ignore_http_status) {
+                    if ($this->trigger_error) {
+                        warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($this->message)), false, true);
+                    } else {
+                        $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($this->message));
+                    }
+                }
+                break;
         }
 
         curl_close($ch);
@@ -1402,7 +1472,7 @@ class HttpDownloaderSockets extends HttpDownloader
 
                             $this->message = $matches[2];
 
-                            switch ($matches[2]) {
+                            switch ($this->message) {
                                 case '200':
                                 case '201':
                                     // Good
@@ -1475,9 +1545,9 @@ class HttpDownloaderSockets extends HttpDownloader
                                 default:
                                     if (!$this->ignore_http_status) {
                                         if ($this->trigger_error) {
-                                            warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2])), false, true);
+                                            warn_exit(do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($this->message)), false, true);
                                         } else {
-                                            $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($matches[2]));
+                                            $this->message_b = do_lang_tempcode('HTTP_DOWNLOAD_STATUS_UNKNOWN', escape_html($url), escape_html($this->message));
                                         }
                                     }
 
@@ -1601,14 +1671,22 @@ class HttpDownloaderFileWrapper extends HttpDownloader
         $errno = 0;
         $errstr = '';
         if (($errno != 110) && (($errno != 10060) || (ini_get('default_socket_timeout') == '1')) && ((ini_get('allow_url_fopen') == '1') || (php_function_allowed('ini_set')))) {
-            // Perhaps fsockopen is restricted... try fread/file_get_contents
             safe_ini_set('allow_url_fopen', '1');
+
             $this->timeout_before = ini_get('default_socket_timeout');
             safe_ini_set('default_socket_timeout', strval($this->timeout));
+
             if ($this->put !== null) {
                 $this->raw_payload .= file_get_contents($this->put_path);
             }
+
             $crt_path = get_file_base() . '/data/curl-ca-bundle.crt';
+
+            $verifypeer_enabled =
+                $this->verifypeer_enabled &&
+                !$this->do_ip_forwarding &&
+                ((!function_exists('get_value')) || (get_value('disable_ssl_for__' . $this->url_parts['host']) === '0'));
+
             $opts = array(
                 'http' => array(
                     'method' => $this->http_verb,
@@ -1618,13 +1696,15 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                     'follow_location' => $this->no_redirect ? 0 : 1,
                     'ignore_errors' => $this->ignore_http_status,
                     'ssl' => array(
-                        'verify_peer' => !$this->do_ip_forwarding,
+                        'verify_peer' => $verifypeer_enabled,
+                        'verify_peer_name' => $verifypeer_enabled,
                         'cafile' => $crt_path,
                         'SNI_enabled' => true,
                         'ciphers' => 'TLSv1',
                     ),
                 ),
             );
+
             $proxy = function_exists('get_option') ? get_option('proxy') : '';
             if ($proxy != '') {
                 $port = get_option('proxy_port');
@@ -1636,6 +1716,7 @@ class HttpDownloaderFileWrapper extends HttpDownloader
                     $opts['http']['proxy'] = 'tcp://' . $proxy . ':' . $port;
                 }
             }
+
             $context = stream_context_create($opts);
 
             $php_errormsg = mixed();

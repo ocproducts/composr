@@ -409,7 +409,7 @@ function doInputComcode(fieldName, tag) {
 }
 
 function doInputList(fieldName, add) {
-    add = arrVal(add);
+    add = window.arrVal(add);
 
     var post = document.getElementById(fieldName);
 

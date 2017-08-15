@@ -22,9 +22,11 @@ class broken_includes_test_set extends cms_test_case
     {
         parent::setUp();
 
+        disable_php_memory_limit();
+
         require_code('files');
         require_code('files2');
-        $this->contents = get_directory_contents(get_file_base());
+        $this->contents = get_directory_contents(get_file_base(), '', IGNORE_CUSTOM_DIR_GROWN_CONTENTS);
     }
 
     public function testRequireCode()

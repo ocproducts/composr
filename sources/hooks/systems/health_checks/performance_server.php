@@ -111,6 +111,18 @@ class Hook_health_check_performance_server extends Hook_Health_Check
                         $cpu = floatval($matches[1]) + floatval($matches[2]) + floatval($matches[3]);
                     }
                 }
+
+                if ($cpu === null) {
+                    $result = explode("\n", shell_exec('top -b -n 1'));
+                    array_shift($result);
+                    array_shift($result);
+                    if (isset($result[0])) {
+                        $matches = array();
+                        if (preg_match('#^%Cpu\(s\):\s*(\d+\.\d+) us,\s*(\d+\.\d+) sy,\s*(\d+\.\d+) ni#', $result[0], $matches) != 0) {
+                            $cpu = floatval($matches[1]) + floatval($matches[2]) + floatval($matches[3]);
+                        }
+                    }
+                }
             } else {
                 $this->stateCheckSkipped('No implementation for finding CPU load on this platform');
                 return;
@@ -132,7 +144,11 @@ class Hook_health_check_performance_server extends Hook_Health_Check
 
                 $this->assertTrue($cpu < $threshold, 'CPU utilisation is very high @ ' . float_format($cpu) . '%');
             } else {
-                $this->stateCheckSkipped('Failed to detect CPU load');
+                if (strpos(PHP_OS, 'Linux') !== false) {
+                    $this->stateCheckSkipped('Failed to detect CPU load (might need to install [tt]sysstat[/tt])');
+                } else {
+                    $this->stateCheckSkipped('Failed to detect CPU load');
+                }
             }
         } else {
             $this->stateCheckSkipped('PHP shell_exec function not available');
@@ -212,6 +228,18 @@ class Hook_health_check_performance_server extends Hook_Health_Check
                         $load = floatval($matches[4]);
                     }
                 }
+
+                if ($load === null) {
+                    $result = explode("\n", shell_exec('top -b -n 1'));
+                    array_shift($result);
+                    array_shift($result);
+                    if (isset($result[0])) {
+                        $matches = array();
+                        if (preg_match('#(\d+\.\d+) wa#', $result[0], $matches) != 0) {
+                            $load = floatval($matches[1]);
+                        }
+                    }
+                }
             } else {
                 $this->stateCheckSkipped('No implementation for finding I/O load on this platform');
                 return;
@@ -222,7 +250,11 @@ class Hook_health_check_performance_server extends Hook_Health_Check
 
                 $this->assertTrue($load < $threshold, 'I/O load is causing high wait time @ ' . float_format($load) . '%');
             } else {
-                $this->stateCheckSkipped('Failed to detect I/O load');
+                if (strpos(PHP_OS, 'Linux') !== false) {
+                    $this->stateCheckSkipped('Failed to detect I/O load (might need to install [tt]sysstat[/tt])');
+                } else {
+                    $this->stateCheckSkipped('Failed to detect I/O load');
+                }
             }
         } else {
             $this->stateCheckSkipped('PHP shell_exec function not available');

@@ -190,7 +190,7 @@ If you want to know how it looks, just look at the code as displayed throughout 
 You can put a '~' symbol (tilde, commonly known as "that wiggly/twiddly symbol") before a URL if you want it to open in a new window.
 [/box]
 [/surround]
-Composr has had a dedicated menu editor, however you may also write menus in Comcode if you prefer. This method is likely to be preferred by users using a screen reader, as the whole menu is represented in a single readable text field.
+Composr has had a dedicated menu editor, however you may also write menus in Comcode if you prefer. This method is likely to be preferred by users using a screen-reader, as the whole menu is represented in a single readable text field.
 
 The menu tag takes a single parameter -- the codename assigned to the menu. Each menu should be assigned a different codename, and you may just make one up as you write the Comcode.
 

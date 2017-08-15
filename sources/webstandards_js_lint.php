@@ -76,6 +76,7 @@ function init__webstandards_js_lint()
         'Null' => array('Object', array()),
         'Infinity' => array('Object', array()),
         'Undefined' => array('Object', array()),
+        'Promise' => array('Object', array(array('function', 'all', 'Promise'), array('function', 'race', 'Promise'), array('function', 'reject', 'Promise'), array('function', 'resolve', 'Promise'), array('function', 'then', 'Promise'), array('function', 'catch', 'Promise'))),
 
         /* Browser-Library / DOM */
         'Node' => array('Object', array(array('String', 'nodeName'), array('Number', 'nodeType'), array('String', 'nodeValue'), array('NodeArray', 'childNodes'), array('!Node', 'firstChild'), array('!Node', 'lastChild'), array('!Node', 'nextSibling'), array('!Node', 'parentNode'), array('!Node', 'previousSibling'), array('!XMLDocument', 'ownerDocument'), array('function', 'appendChild', '!Node'), array('function', 'cloneNode', '!Node'), array('function', 'insertBefore', '!Node'), array('function', 'removeChild', '!Node'), array('function', 'replaceChild', '!Node'), array('function', 'hasChildNodes', 'Boolean'),)), // nodeType: 1=Element,2=Attribute,3=Text,9=Document

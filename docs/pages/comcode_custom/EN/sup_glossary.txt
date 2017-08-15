@@ -16,7 +16,7 @@ Here are the top 100 buzzwords that will help you understand what web designers 
 	<tbody>
 		<tr>
 			<td>Accessibility</td>
-			<td>The study of how accessible a website is, i.e. how people with various kinds of impairment and disability may use the website. For example, a good accessible website can be read out to a blind user using a 'screen reader' (e.g. JAWS) or represented on a braille-reader. We also use the term 'semantics' to refer to the defined meaningfulness of the structure of a page (regardless of its visual appearance).</td>
+			<td>The study of how accessible a website is, i.e. how people with various kinds of impairment and disability may use the website. For example, a good accessible website can be read out to a blind user using a 'screen-reader' (e.g. JAWS) or represented on a braille-reader. We also use the term 'semantics' to refer to the defined meaningfulness of the structure of a page (regardless of its visual appearance).</td>
 		</tr>
 		<tr>
 			<td>AdSense</td>

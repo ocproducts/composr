@@ -39,7 +39,6 @@ class Hook_config_google_analytics
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => false,
-            'public' => false,
             'public' => true,
 
             'addon' => 'core_configuration',

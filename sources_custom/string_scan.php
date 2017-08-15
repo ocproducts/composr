@@ -652,6 +652,7 @@ function string_scan($lang, $do_guessing = false, $only_exists = true)
         AWARD_PERMISSION_HELP
         AWARD_UPDATE_TIME_HOURS
         BACKGROUND_THEME_IMAGE
+        SELECT_PAGE_TEMPLATE
         BACKUP
         BACKUPS
         BACKUP_FILE_COMPRESSED

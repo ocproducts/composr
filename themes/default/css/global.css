@@ -1234,7 +1234,7 @@ body .accessibility_hidden { /* Contents should be made visible (or interpreted)
 }
 
 /*{+START,CSS_MODE,mobile}*/
-	.non_accessibility_redundancy { /* Contents should be skipped by screen readers */
+	.non_accessibility_redundancy { /* Contents should be skipped by screen-readers */
 		display: none;
 	}
 /*{+END}*/
@@ -1688,9 +1688,6 @@ td>.comcode_quote:first-child, .fake_table_cell>.comcode_quote:first-child, .fak
 .box_inner>h1, .box_inner>h2, .box_inner>h3, .box_inner>h4, .box_inner>h5, .box_inner>h6, .toggleable_tray_title, #standalone_html_wrap .box .box .box_inner>h2, #standalone_html_wrap .box .box .box_inner>h3 {
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
-	background-color: {$GET,box_title_background};
-	background-image: url('{$IMG_INLINE;,gradient}');
-	background-repeat: repeat-x;
 	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 	color: {$GET,box_title_text};
 	text-align: center;
@@ -3769,12 +3766,10 @@ input.magic_image_edit_link {
 	margin: 0.25em;
 	box-shadow: 0 0 5px {$GET,standard_border};
 	text-shadow: 2px 1px 2px {$GET,dark_shadow};
-	background-color: {$GET,lgrad};
 	background-repeat: no-repeat;
 	background-position: 96% 3px; /*fallback*/
 	background-position: right 7px top 3px;
-	background-image: url('{$IMG_INLINE;,gradient}');
-	/*background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad}); If you want a CSS gradient instead of the above image, do something like this*/
+	background-image: linear-gradient(to bottom, {$GET,lgrad}, {$GET,dgrad});
 	color: {$GET,box_title_text} !important;
 	text-decoration: none !important;
 	{$BETA_CSS_PROPERTY,appearance: none;}

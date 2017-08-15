@@ -180,7 +180,8 @@ function render_news_category_box($row, $zone = '_SEARCH', $give_context = true,
     $title = $give_context ? do_lang('CONTENT_IS_OF_TYPE', do_lang('NEWS_CATEGORY'), $_title) : $_title;
 
     // Metadata
-    $num_entries = $GLOBALS['SITE_DB']->query_select_value('news', 'COUNT(*)', array('validated' => 1));
+    $num_entries = $GLOBALS['SITE_DB']->query_select_value('news', 'COUNT(*)', array('validated' => 1, 'news_category' => $row['id']));
+    $num_entries += $GLOBALS['SITE_DB']->query_select_value('news n JOIN ' . get_table_prefix() . 'news_category_entries c ON c.news_entry=n.id', 'COUNT(*)', array('validated' => 1, 'news_entry_category' => $row['id']));
     $entry_details = do_lang_tempcode('CATEGORY_SUBORDINATE_2', escape_html(integer_format($num_entries)));
 
     // Image

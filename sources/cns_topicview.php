@@ -172,6 +172,9 @@ function cns_get_details_to_show_post($_postdetails, $topic_info, $only_post = f
     if ($title == '') {
         $title = get_translated_text(cns_get_group_property($primary_group, 'title'), $GLOBALS['FORUM_DB']);
     }
+    if ($GLOBALS['CNS_DRIVER']->get_member_row_field($_postdetails['p_poster'], 'm_is_perm_banned') == 1) {
+        $title = do_lang('BANNED');
+    }
     $post['poster_title'] = $title;
 
     // If this isn't guest posted, we can put some member details in

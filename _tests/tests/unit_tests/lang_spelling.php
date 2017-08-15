@@ -129,6 +129,9 @@ class lang_spelling_test_set extends cms_test_case
         if (stripos($string, 'meta tree') !== false) {
             $this->assertTrue(false, 'The phrase \'meta tree\' was used in ' . $file . '. This should be changed to \'meta-tree\'.');
         }
+        if ((stripos($string, 'screen reader') !== false) || (stripos($string, 'screenreader') !== false)) {
+            $this->assertTrue(false, 'The phrase \'screen reader\' was used in ' . $file . '. This should be changed to \'screen-reader\'.');
+        }
         if (preg_match('#([^\[\]<>\|"\'/_])popup#', $string, $matches) != 0) {
             $this->assertTrue(false, 'The phrase \'popup\' was used in ' . $file . '. This should be changed to \'pop-up\'.');
         }
@@ -193,6 +196,9 @@ class lang_spelling_test_set extends cms_test_case
         }
         if (preg_match('#meta[ -]data([^A-Za-z"]+)#i', $string) != 0) {
             $this->assertTrue(false, 'The phrase \'meta data\' or \'meta-data\' was used in ' . $file . '. This should be changed to \'metadata\'.');
+        }
+        if (stripos($string, 'PHP info') !== false) {
+            $this->assertTrue(false, 'The word \'PHP info\' was used in ' . $file . '. This should be changed to \'PHP-Info\'.');
         }
 
         // Wrong way of writing proper noun (we want our canonical way)

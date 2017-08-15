@@ -2261,7 +2261,9 @@ function ecv2_SESSION_HASHED($lang, $escaped, $param)
 function ecv2_SET_TITLE($lang, $escaped, $param)
 {
     if (isset($param[0])) {
-        get_screen_title($param[0], false);
+        global $SHORT_TITLE, $FORCE_SET_TITLE;
+        $SHORT_TITLE = $param[0];
+        $FORCE_SET_TITLE = true;
     }
 
     $value = '';

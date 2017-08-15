@@ -157,7 +157,7 @@ The HTML that comes from directly from the WYSIWYG editor is often very messy fo
 Messiness presents numerous problems:
  - Slow-down on the server
  - Extra bandwidth usage
- - Bad "semantics" (difficulties for users of screen readers)
+ - Bad "semantics" (difficulties for users of screen-readers)
  - Challenges for anyone hand-editing the code
 
 In addition, Composr works via XHTML5, not HTML5; for the cases where HTML and XHTML are non-equivalent, it is best that Composr clean things up.

@@ -33,13 +33,13 @@
 				<ul class="horizontal_links horiz_field_sep associated_links_block_group">
 					{+START,IF,{$SHOW_DOCS}}{+START,IF_PASSED,COMCODE_URL}
 						{+START,IF,{$NOT,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}}
-							<li><a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="" /></a></li>
+							<li><a data-open-as-overlay="1" class="link_exempt" title="{!COMCODE_MESSAGE,Comcode} {!LINK_NEW_WINDOW}" target="_blank" href="{COMCODE_URL*}"><img src="{$IMG*,icons/16x16/editor/comcode}" srcset="{$IMG*,icons/32x32/editor/comcode} 2x" class="vertical_alignment" alt="{!COMCODE_MESSAGE,Comcode}" /></a></li>
 						{+END}
 						{+START,IF,{$MATCH_KEY_MATCH,_WILD:cms_comcode_pages}}
 							<li><a class="link_exempt" title="{!FULL_COMCODE_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_comcode}">{!FULL_COMCODE_TUTORIAL}</a></li>
 							<li><a class="link_exempt" title="{!FULL_BLOCK_TUTORIAL} {!LINK_NEW_WINDOW}" target="_blank" href="{$TUTORIAL_URL*,tut_adv_comcode_pages}">{!FULL_BLOCK_TUTORIAL}</a></li>
 						{+END}
-						<li><a rel="nofollow" class="link_exempt js-link-click-open-field-emoticon-chooser-window" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1"><img src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" alt="" class="vertical_alignment" /></a></li>
+						<li><a rel="nofollow" class="link_exempt js-link-click-open-field-emoticon-chooser-window" title="{!EMOTICONS_POPUP} {!LINK_NEW_WINDOW}" target="_blank" href="{$FIND_SCRIPT*,emoticons}?field_name={NAME*}{$KEEP*,0,1}" data-click-pd="1"><img src="{$IMG*,icons/16x16/editor/insert_emoticons}" srcset="{$IMG*,icons/32x32/editor/insert_emoticons} 2x" alt="{!EMOTICONS_POPUP}" class="vertical_alignment" /></a></li>
 					{+END}{+END}
 					{+START,IF,{$IN_STR,{CLASS},wysiwyg}}
 						<li><a id="toggle_wysiwyg_{NAME*}" href="#!" class="js-click-toggle-wysiwyg"><abbr title="{!TOGGLE_WYSIWYG_2}"><img src="{$IMG*,icons/16x16/editor/wysiwyg_on}" srcset="{$IMG*,icons/32x32/editor/wysiwyg_on} 2x" alt="{!comcode:ENABLE_WYSIWYG}" title="{!comcode:ENABLE_WYSIWYG}" /></abbr></a></li>

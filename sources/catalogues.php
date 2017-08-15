@@ -1170,8 +1170,8 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
         case 'short_trans':
             $temp = _get_catalogue_entry_field($field['id'], $entry_id, 'short_trans', $only_field_ids);
             if ($temp['cv_value'] === null) {
-                $target['effective_value'] = do_lang_tempcode('INTERNAL_ERROR');
-                $target['effective_value_pure'] = do_lang('INTERNAL_ERROR');
+                $target['effective_value'] = '';
+                $target['effective_value_pure'] = '';
             } else {
                 $just_row = db_map_restrict($temp, array('cv_value')) + array('ce_id' => is_array($entry_id) ? $entry_id['id'] : $entry_id, 'cf_id' => $field['id']);
                 if (multi_lang_content()) {
@@ -1187,8 +1187,8 @@ function _resolve_catalogue_entry_field($field, $entry_id, $only_field_ids, &$ta
         case 'short_unescaped':
             $temp = _get_catalogue_entry_field($field['id'], $entry_id, $type, $only_field_ids);
             if ($temp['cv_value'] === null) {
-                $target['effective_value'] = do_lang_tempcode('INTERNAL_ERROR');
-                $target['effective_value_pure'] = do_lang('INTERNAL_ERROR');
+                $target['effective_value'] = '';
+                $target['effective_value_pure'] = '';
                 break;
             } else {
                 $target['effective_value'] = $temp['cv_value'];
@@ -1412,7 +1412,7 @@ function create_selection_list_catalogues($it = null, $prefer_ones_with_entries 
  */
 function create_selection_list_catalogue_category_tree($catalogue_name, $it = null, $addable_filter = false, $use_compound_list = false)
 {
-    if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > 1000) {
+    if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > intval(get_option('general_safety_listing_limit'))) {
         return new Tempcode(); // Too many!
     }
 
@@ -1579,7 +1579,7 @@ function create_selection_list_catalogue_entries_tree($catalogue_name, $it = nul
 function get_catalogue_entries_tree($catalogue_name, $submitter = null, $category_id = null, $breadcrumbs = null, $title = null, $levels = null, $editable_filter = false)
 {
     if (($category_id === null) && ($levels === null)) {
-        if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > 1000) {
+        if ($GLOBALS['SITE_DB']->query_select_value('catalogue_categories', 'COUNT(*)', array('c_name' => $catalogue_name)) > intval(get_option('general_safety_listing_limit'))) {
             return array(); // Too many!
         }
     }

@@ -39,7 +39,6 @@ class Hook_config_background_template_compilation
             'shared_hosting_restricted' => '0',
             'list_options' => '',
             'required' => true,
-            'public' => false,
             'public' => true,
 
             'addon' => 'core_configuration',

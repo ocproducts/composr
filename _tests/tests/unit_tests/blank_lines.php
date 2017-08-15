@@ -47,6 +47,10 @@ class blank_lines_test_set extends cms_test_case
                 continue;
             }
 
+            if ($path == '_config.php') {
+                continue;
+            }
+
             if (should_ignore_file($path, IGNORE_CUSTOM_DIR_GROWN_CONTENTS)) {
                 continue;
             }

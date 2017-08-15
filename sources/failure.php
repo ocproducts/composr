@@ -138,7 +138,7 @@ function _param_invalid($name, $ret, $posted)
     //  Spiders trying to ascend directory trees, and forcing index.php into the integer position of URL Schemes
     //  Spiders that don't understand entity decoding
     //  People copying and pasting text shown after URLs as part of the URL itself
-    //  New line characters getting pasted in (weird, but it's happened-- think might be some kind of screen reader browser)
+    //  New line characters getting pasted in (weird, but it's happened-- think might be some kind of screen-reader browser)
     //  People typing the wrong URLs for many reasons
     // Therefore we can't really treat it as a hack-attack, even though that would be preferable.
 
