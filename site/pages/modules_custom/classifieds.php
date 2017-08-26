@@ -185,7 +185,7 @@ class Module_classifieds
                 if (!is_null($found)) {
                     $item_title = $found[4];
                 } else {
-                    $item_title = $t['t_item'];
+                    $item_title = do_lang('UNKNOWN');
                 }
 
                 $_transaction_details[] = array(

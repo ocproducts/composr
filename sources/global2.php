@@ -1853,7 +1853,7 @@ function convert_data_encodings($known_utf8 = false)
 function cms_ob_end_clean()
 {
     while (ob_get_level() > 0) {
-        if (!ob_end_clean()) {
+        if (!@ob_end_clean()) {
             safe_ini_set('zlib.output_compression', '0');
             break;
         }
