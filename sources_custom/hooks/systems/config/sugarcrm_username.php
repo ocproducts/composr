@@ -29,7 +29,7 @@ class Hook_config_sugarcrm_username
             'human_name' => 'SUGARCRM_USERNAME',
             'type' => 'line',
             'category' => 'COMPOSR_APIS',
-            'group' => 'SUGARCRM',
+            'group' => 'SUGARCRM_CONNECTION',
             'explanation' => 'CONFIG_OPTION_sugarcrm_username',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

@@ -48,7 +48,7 @@ class Hook_contact_forms_sugarcrm
         list($first_name, $last_name) = deconstruct_long_name($from_name);
 
         // Create Case/Lead
-        $sync_type = get_option('sugarcrm_sync_type');
+        $sync_type = get_option('sugarcrm_messaging_sync_type');
         $data = array(
             'status' => array('name' => 'status', 'value' => 'New'),
         );
@@ -88,8 +88,8 @@ class Hook_contact_forms_sugarcrm
                 );
                 break;
         }
-        $case_mappings = explode("\n", get_option('sugarcrm_case_mappings'));
-        foreach ($case_mappings as $_mapping) {
+        $messaging_mappings = explode("\n", get_option('sugarcrm_messaging_mappings'));
+        foreach ($messaging_mappings as $_mapping) {
             if (strpos($_mapping, '=') !== false) {
                 list($mapping_from, $mapping_to) = array_map('trim', explode('=', $_mapping, 2));
                 if ((isset($data[$mapping_to])) && ($data[$mapping_to]['value'] != '')) {
