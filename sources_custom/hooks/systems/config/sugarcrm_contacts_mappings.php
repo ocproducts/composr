@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_config_sugarcrm_sync_type
+class Hook_config_sugarcrm_contacts_mappings
 {
     /**
      * Gets the details relating to the config option.
@@ -26,15 +26,15 @@ class Hook_config_sugarcrm_sync_type
     public function get_details()
     {
         return array(
-            'human_name' => 'SUGARCRM_SYNC_TYPE',
-            'type' => 'list',
+            'human_name' => 'SUGARCRM_CONTACTS_MAPPINGS',
+            'type' => 'text',
             'category' => 'COMPOSR_APIS',
-            'group' => 'SUGARCRM',
-            'explanation' => 'CONFIG_OPTION_sugarcrm_sync_type',
+            'group' => 'SUGARCRM_ACCOUNTS_SYNC',
+            'explanation' => 'CONFIG_OPTION_sugarcrm_contacts_mappings',
             'shared_hosting_restricted' => '0',
-            'list_options' => 'Cases|Leads',
-            'order_in_category_group' => 8,
-            'required' => true,
+            'list_options' => '',
+            'order_in_category_group' => 1,
+            'required' => false,
             'public' => false,
 
             'addon' => 'sugarcrm',
@@ -48,6 +48,6 @@ class Hook_config_sugarcrm_sync_type
      */
     public function get_default()
     {
-        return 'Cases';
+        return "Job Title=title\nHow you found us=lead_source";
     }
 }

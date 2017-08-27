@@ -29,11 +29,11 @@ class Hook_config_sugarcrm_default_company
             'human_name' => 'SUGARCRM_DEFAULT_COMPANY',
             'type' => 'line',
             'category' => 'COMPOSR_APIS',
-            'group' => 'SUGARCRM',
+            'group' => 'SUGARCRM_MESSAGING_SYNC',
             'explanation' => 'CONFIG_OPTION_sugarcrm_default_company',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 7,
+            'order_in_category_group' => 3,
             'required' => true,
             'public' => false,
 

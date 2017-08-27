@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_config_sugarcrm_case_mappings
+class Hook_config_sugarcrm_composr_company_field
 {
     /**
      * Gets the details relating to the config option.
@@ -26,15 +26,15 @@ class Hook_config_sugarcrm_case_mappings
     public function get_details()
     {
         return array(
-            'human_name' => 'SUGARCRM_CASE_MAPPINGS',
-            'type' => 'text',
+            'human_name' => 'SUGARCRM_COMPOSR_COMPANY_FIELD',
+            'type' => 'line',
             'category' => 'COMPOSR_APIS',
-            'group' => 'SUGARCRM',
-            'explanation' => 'CONFIG_OPTION_sugarcrm_case_mappings',
+            'group' => 'SUGARCRM_SYNC',
+            'explanation' => 'CONFIG_OPTION_sugarcrm_composr_company_field',
             'shared_hosting_restricted' => '0',
             'list_options' => '',
-            'order_in_category_group' => 9,
-            'required' => false,
+            'order_in_category_group' => 1,
+            'required' => true,
             'public' => false,
 
             'addon' => 'sugarcrm',
@@ -48,6 +48,6 @@ class Hook_config_sugarcrm_case_mappings
      */
     public function get_default()
     {
-        return "post=description";
+        return 'Company';
     }
 }

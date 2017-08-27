@@ -29,7 +29,7 @@ class Hook_config_sugarcrm_password
             'human_name' => 'SUGARCRM_PASSWORD',
             'type' => 'line',
             'category' => 'COMPOSR_APIS',
-            'group' => 'SUGARCRM',
+            'group' => 'SUGARCRM_CONNECTION',
             'explanation' => 'CONFIG_OPTION_sugarcrm_password',
             'shared_hosting_restricted' => '0',
             'list_options' => '',

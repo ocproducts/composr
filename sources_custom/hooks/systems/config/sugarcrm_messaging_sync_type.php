@@ -16,7 +16,7 @@
 /**
  * Hook class.
  */
-class Hook_config_sugarcrm_company_field
+class Hook_config_sugarcrm_messaging_sync_type
 {
     /**
      * Gets the details relating to the config option.
@@ -26,14 +26,14 @@ class Hook_config_sugarcrm_company_field
     public function get_details()
     {
         return array(
-            'human_name' => 'SUGARCRM_COMPANY_FIELD',
-            'type' => 'line',
+            'human_name' => 'SUGARCRM_MESSAGING_SYNC_TYPE',
+            'type' => 'list',
             'category' => 'COMPOSR_APIS',
-            'group' => 'SUGARCRM',
-            'explanation' => 'CONFIG_OPTION_sugarcrm_company_field',
+            'group' => 'SUGARCRM_MESSAGING_SYNC',
+            'explanation' => 'CONFIG_OPTION_sugarcrm_messaging_sync_type',
             'shared_hosting_restricted' => '0',
-            'list_options' => '',
-            'order_in_category_group' => 5,
+            'list_options' => 'Cases|Leads',
+            'order_in_category_group' => 1,
             'required' => true,
             'public' => false,
 
@@ -48,6 +48,6 @@ class Hook_config_sugarcrm_company_field
      */
     public function get_default()
     {
-        return 'Company';
+        return 'Cases';
     }
 }
