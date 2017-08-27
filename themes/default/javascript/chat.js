@@ -711,10 +711,8 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
     if (!ajaxResult) { // Some kind of error happened
         return;
     }
-
-    if (skipIncomingSound === undefined) {
-        skipIncomingSound = false;
-    }
+    
+    skipIncomingSound = Boolean(skipIncomingSound);
 
     var messages = ajaxResult.childNodes,
         messageContainer = document.getElementById('messages_window'),
@@ -809,9 +807,7 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                 
                 if (!firstSet) {// Only if no other message sound already for this event update
                     if (!skipIncomingSound) {
-                        if (window.playChatSound !== undefined) {
-                            playChatSound(document.hidden ?  'message_background' : 'message_received', messages[i].getAttribute('sender_id'));
-                        }
+                        playChatSound(document.hidden ?  'message_background' : 'message_received', messages[i].getAttribute('sender_id'));
                     }
                     flashableAlert = true;
                 }
@@ -888,7 +884,9 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
                     var friendBeingTracked = false;
                     tmpElement = document.getElementById('online_' + memberId);
                     if (tmpElement) {
-                        if ($cms.dom.html(tmpElement).toLowerCase() == '{!chat:INACTIVE;^}'.toLowerCase()) break;
+                        if ($cms.dom.html(tmpElement).toLowerCase() == '{!chat:INACTIVE;^}'.toLowerCase()) {
+                            break;
+                        }
                         $cms.dom.html(tmpElement, '{!chat:INACTIVE;^}');
                         document.getElementById('friend_img_' + memberId).className = 'friend_inactive';
                         friendBeingTracked = true;
@@ -1146,17 +1144,17 @@ function processChatXmlMessages(ajaxResult, skipIncomingSound) {
             // Open popup
             var imPopupWindowOptions = 'width=370,height=460,menubar=no,toolbar=no,location=no,resizable=no,scrollbars=yes,top=' + ((screen.height - 520) / 2) + ',left=' + ((screen.width - 440) / 2);
             var newWindow = window.open($cms.baseUrl('data/empty.html?instant_messaging'), 'room_' + roomId, imPopupWindowOptions); // The "?instant_messaging" is just to make the location bar less surprising to the user ;-) [modern browsers always show the location bar for security, even if we try and disable it]
-            if ((!newWindow) || (newWindow.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
+            if (!newWindow || (newWindow.window === undefined /*BetterPopupBlocker for Chrome returns a fake new window but won't have this defined in it*/)) {
                 $cms.ui.alert('{!chat:_FAILED_TO_OPEN_POPUP;,{$PAGE_LINK*,_SEARCH:popup_blockers:failure=1,0,1}}', null, '{!chat:FAILED_TO_OPEN_POPUP;^}', true);
             }
             setTimeout(function () { // Needed for Safari to set the right domain, and also to give window an opportunity to attach itself on its own accord
-                if ((window.openedPopups['room_' + roomId] !== undefined) && (window.openedPopups['room_' + roomId] != null) && (!window.openedPopups['room_' + roomId].isShutdown)) { // It's been reattached already
+                if ((window.openedPopups['room_' + roomId] != null) && (!window.openedPopups['room_' + roomId].isShutdown)) { // It's been reattached already
                     return;
                 }
 
                 window.openedPopups['room_' + roomId] = newWindow;
 
-                if ((newWindow) && (newWindow.document !== undefined)) {
+                if (newWindow && (newWindow.document !== undefined)) {
                     newWindow.document.open();
                     newWindow.document.write(newOne); // This causes a blocking on Firefox while files download/parse. It's annoying, you'll see the popup freezes. But it works after a few seconds.
                     newWindow.document.close();
@@ -1362,10 +1360,10 @@ function startIm(people, justRefocus) {
         $cms.dom.html(div, '{!LOADING;^}');
         document.body.appendChild(div);
         $cms.doAjaxRequest($cms.maintainThemeInLink('{$FIND_SCRIPT;,messages}?action=start_im&message_id=' + encodeURIComponent((window.topWindow.lastMessageId === null) ? -1 : window.topWindow.lastMessageId) + '&mayRecycle=' + (mayRecycle ? '1' : '0') + '&event_id=' + encodeURIComponent(window.topWindow.lastEventId) + $cms.keepStub(false)), function (responseXml) {
-            var responses = responseXml.getElementsByTagName('result');
-            if (responses[0]) {
+            var result = responseXml.querySelector('result');
+            if (result) {
                 window.instantGo = true;
-                processChatXmlMessages(responses[0], true);
+                processChatXmlMessages(result, true);
                 window.instantGo = false;
             }
             document.body.removeChild(div);
@@ -1379,8 +1377,7 @@ function inviteIm(people) {
     if (!roomId) {
         $cms.ui.alert('{!chat:NO_IM_ACTIVE;^}');
     } else {
-        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), function () {
-        }, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
+        $cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=invite_im' + $cms.keepStub(false), true, 'room_id=' + encodeURIComponent(roomId) + '&people=' + people);
     }
 }
 
@@ -1430,9 +1427,9 @@ function closeChatConversation(roomId) {
                     deinvolveIm(roomId, true, isPopup);
                     return;
                 }
-                /*{+END}*/
+    /*{+END}*/
                 deinvolveIm(roomId, false, isPopup);
-                /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
+    /*{+START,IF,{$OR,{$NOT,{$ADDON_INSTALLED,cns_forum}},{$NOT,{$CNS}}}}*/
             }
         }
     );
@@ -1470,15 +1467,14 @@ function deinvolveIm(roomId, logs, isPopup) { // is_popup means that we show a p
     }
 
     setTimeout(function ()  { // Give time for any logs to download (download does not need to have finished - but must have loaded into a request response on the server side)
-        window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.topWindow.$cms.keepStub(false), function () {
-        }, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
+        window.topWindow.$cms.doAjaxRequest('{$FIND_SCRIPT;,messages}?action=deinvolve_im' + window.topWindow.$cms.keepStub(false), true, 'room_id=' + encodeURIComponent(roomId)); // Has to be on topWindow or it will be lost if the window was explicitly closed (it is unloading mode and doesn't want to make a new request)
 
         if (participants) {
             window.topWindow.allConversations[participants] = null;
         }
 
         if (tabs) {
-            if ((element) && (element.parentNode)) {
+            if (element && (element.parentNode)) {
                 element.parentNode.removeChild(element);
             }
             if (!tabEl.parentNode) {
