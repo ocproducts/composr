@@ -714,7 +714,11 @@ function process_url_monikers($page, $redirect_if_non_canonical = true)
             }
 
             // ... and query it
-            $sql = 'SELECT m_resource_page,m_resource_type,m_resource_id FROM ' . get_table_prefix() . 'url_id_monikers WHERE ' . db_string_equal_to('m_moniker', '/' . $url_moniker) . ' OR ' . db_string_equal_to('m_moniker', $url_moniker) . ' AND ' . db_string_equal_to('m_resource_type', '') . ' AND ' . db_string_equal_to('m_resource_id', $zone);
+            $sql = 'SELECT m_resource_page,m_resource_type,m_resource_id FROM ' . get_table_prefix() . 'url_id_monikers WHERE ';
+            $sql .= db_string_equal_to('m_moniker', '/' . $url_moniker) . ' OR ';
+            $sql .= db_string_equal_to('m_moniker', $url_moniker) . ' AND ' . db_string_equal_to('m_resource_type', '') . ' AND ' . db_string_equal_to('m_resource_id', $zone) . ' OR ';
+            $sql .= db_string_equal_to('m_moniker', '/' . str_replace('-', '_', $url_moniker)) . ' OR ';
+            $sql .= db_string_equal_to('m_moniker', str_replace('-', '_', $url_moniker)) . ' AND ' . db_string_equal_to('m_resource_type', '') . ' AND ' . db_string_equal_to('m_resource_id', $zone);
             $test = $GLOBALS['SITE_DB']->query($sql, 1);
             if (array_key_exists(0, $test)) {
                 if (_request_page($test[0]['m_resource_page'], $zone) !== false) { // ... if operable within the zone we're in
