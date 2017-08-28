@@ -329,6 +329,7 @@ class Block_main_news
                     'BLOG' => $blogs === 1,
                     'SUBMITTER' => strval($myrow['submitter']),
                     'CATEGORY' => $category,
+                    '_CATEGORY' => strval($myrow['news_category']),
                     'IMG' => $img,
                     '_IMG' => $img_raw,
                     'DATE' => $date,

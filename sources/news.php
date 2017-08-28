@@ -124,6 +124,7 @@ function render_news_box($row, $zone = '_SEARCH', $give_context = true, $brief =
         'BLOG' => false,
         'AUTHOR_URL' => $author_url,
         'CATEGORY' => $category,
+        '_CATEGORY' => strval($row['news_category']),
         'IMG' => $img,
         '_IMG' => $img_raw,
         'NEWS' => $news,

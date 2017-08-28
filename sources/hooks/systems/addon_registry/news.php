@@ -333,6 +333,7 @@ class Hook_addon_registry_news
                 'BLOG' => lorem_phrase(),
                 'AUTHOR_URL' => placeholder_url(),
                 'CATEGORY' => lorem_phrase(),
+                '_CATEGORY' => placeholder_id(),
                 'IMG' => placeholder_image_url(),
                 '_IMG' => placeholder_image_url(),
                 'AUTHOR' => lorem_phrase(),
