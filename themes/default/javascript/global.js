@@ -463,6 +463,8 @@
         doAjaxRequest: doAjaxRequest,
         /**@method*/
         protectURLParameter: protectURLParameter,
+        /**@method*/
+        pageMeta: pageMeta,
         /**
          * Addons will add template related methods under this object
          * @namespace $cms.templates
@@ -1919,7 +1921,7 @@
 
     /**
      * @param windowOrNodeOrSelector
-     * @returns {*}
+     * @returns { Window|Node }
      */
     function domArg(windowOrNodeOrSelector) {
         var el;
@@ -1945,7 +1947,7 @@
 
     /**
      * @param nodeOrSelector
-     * @returns {*}
+     * @returns { Node }
      */
     function nodeArg(nodeOrSelector) {
         var el;
@@ -1971,7 +1973,7 @@
 
     /**
      * @param elementOrSelector
-     * @returns {*}
+     * @returns { Element }
      */
     function elArg(elementOrSelector) {
         var el;
@@ -2103,7 +2105,7 @@
          * @memberof $cms.dom
          * @param context
          * @param selector
-         * @returns {*}
+         * @returns { Array }
          */
         $$$: function $$$(context, selector) {
             if (selector === undefined) {
@@ -2469,7 +2471,7 @@
         }
 
         el = elArg(el);
-        notRelative = !!notRelative;
+        notRelative = Boolean(notRelative);
 
         var left = el.getBoundingClientRect().left + window.pageXOffset;
 
@@ -2500,7 +2502,7 @@
         }
 
         el = elArg(el);
-        notRelative = !!notRelative;
+        notRelative = Boolean(notRelative);
 
         var top = el.getBoundingClientRect().top + window.pageYOffset;
 
@@ -3627,7 +3629,7 @@
             return;
         }
 
-        head = '<style>';
+        head = '<style nonce="' + $cms.$CSP_NONCE() + '">';
 
         for (i = 0; i < document.styleSheets.length; i++) {
             try {
@@ -7382,6 +7384,31 @@
         }
 
         return parameter;
+    }
+    
+    var pageMetaCache;
+    function pageMeta(name) {
+        if (pageMetaCache === undefined) {
+            pageMetaCache = {};
+        }
+        
+        name = strVal(name);
+
+        var metaEl = document.querySelector('meta[name="' + name + '"]'), 
+            data = pageMetaCache[name], trimmed;
+        
+        // If nothing was found internally, try to fetch any
+        if ((data === undefined) && (typeof (data = metaEl.content) === 'string')) {
+            trimmed = data.trim();
+
+            if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+                data = parseJson(data);
+            }
+            
+            pageMetaCache[name] = data;
+        }
+        
+        return data;
     }
 
     /**
