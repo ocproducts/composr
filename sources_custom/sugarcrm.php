@@ -24,11 +24,15 @@ function init__sugarcrm()
     require_code('sugar_crm_lib');
     require_code('curl');
 
-    $SUGARCRM = new SugarWrapper;
-
     $base_url = get_option('sugarcrm_base_url');
     $username = get_option('sugarcrm_username');
     $password = get_option('sugarcrm_password');
+
+    if ((empty($base_url)) || (empty($username))) {
+        return;
+    }
+
+    $SUGARCRM = new SugarWrapper;
 
     $SUGARCRM->setUrl($base_url . '/service/v2/rest.php');
     $SUGARCRM->setUsername($username);
