@@ -23,6 +23,8 @@
         // Clever helper for merging arrays in-place using `[].push`
         pushArray = Function.bind.call(Function.apply, emptyArr.push);
 
+    function noop() {}
+
     // Too useful to not have globally!
     window.intVal  = intVal;
     window.numVal  = numVal;
@@ -341,7 +343,7 @@
          */
         waitForResources: function waitForResources(resourceEls) {
             if (resourceEls == null) {
-                return;
+                return Promise.resolve();
             }
 
             if (isEl(resourceEls)) {
@@ -350,7 +352,7 @@
 
             if (!Array.isArray(resourceEls)) {
                 $cms.fatal('$cms.waitForResources(): Argument 1 must be of type {array|HTMLElement}, "' + typeName(resourceEls) + '" provided.');
-                return;
+                return Promise.reject();
             }
 
             if (resourceEls.length < 1) {
@@ -627,8 +629,6 @@
     if (sessionId && !$cms.uspKeepSession.has('keep_session')) {
         $cms.uspKeepSession.set('keep_session', sessionId);
     }
-
-    function noop() {}
 
     // Generate a unique integer id (unique within the entire client session).
     var _uniqueId = 0;
@@ -1035,8 +1035,10 @@
      * @returns {*}
      */
     function extend(target, /*...*/sources) {
-        for (var i = 1, len = arguments.length; i < len; i++) {
-            _extend(target, arguments[i]);
+        sources = toArray(arguments, 1);
+        
+        for (var i = 0, len = sources.length; i < len; i++) {
+            _extend(target, sources[i]);
         }
         return target
     }
@@ -1048,8 +1050,10 @@
      * @returns {*}
      */
     function extendOwn(target, /*...*/sources) {
-        for (var i = 1, len = arguments.length; i < len; i++) {
-            _extend(target, arguments[i], EXTEND_SRC_OWN_ONLY);
+        sources = toArray(arguments, 1);
+        
+        for (var i = 0, len = sources.length; i < len; i++) {
+            _extend(target, sources[i], EXTEND_SRC_OWN_ONLY);
         }
         return target
     }
@@ -1061,8 +1065,10 @@
      * @returns {object}
      */
     function extendDeep(target, /*...*/sources) {
-        for (var i = 1, len = arguments.length; i < len; i++) {
-            _extend(target, arguments[i], EXTEND_DEEP);
+        sources = toArray(arguments, 1);
+        
+        for (var i = 0, len = sources.length; i < len; i++) {
+            _extend(target, sources[i], EXTEND_DEEP);
         }
         return target
     }
@@ -1086,8 +1092,10 @@
      * @returns {*}
      */
     function defaults(defaults, /*...*/options) {
-        for (var i = 1, len = arguments.length; i < len; i++) {
-            _extend(defaults, arguments[i], EXTEND_TGT_OWN_ONLY);
+        options = toArray(arguments, 1);
+        
+        for (var i = 0, len = options.length; i < len; i++) {
+            _extend(defaults, options[i], EXTEND_TGT_OWN_ONLY);
         }
         return defaults
     }
@@ -1215,8 +1223,14 @@
         if (val == null) {
             return defaultValue;
         }
+
+        // if (((typeof val === 'object') && (val.valueOf === emptyObj.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
+        //     throw new TypeError('intVal(): Cannot coerce `val` of type "' + typeName(val) + '" to an integer.');
+        // }
+
+        val = Math.floor(val);
         
-        return ((val = Math.floor(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     /**
@@ -1232,12 +1246,18 @@
         if (val == null) {
             return defaultValue;
         }
+
+        // if (((typeof val === 'object') && (val.valueOf === emptyObj.valueOf)) || ((typeof val === 'function') && (val.valueOf === noop.valueOf))) {
+        //     throw new TypeError('numVal(): Cannot coerce `val` of type "' + typeName(val) + '" to a number.');
+        // }
+
+        val = Number(val);
         
-        return ((val = Number(val)) && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
+        return (val && (val !== Infinity) && (val !== -Infinity)) ? val : 0;
     }
 
     function numberFormat(num) {
-        num = +num || 0;
+        num = Number(num) || 0;
         return num.toLocaleString();
     }
 
@@ -1502,6 +1522,11 @@
     function isAbsoluteOrSchemeRelative(url) {
         url = strVal(url);
         return rgxHttpRel.test(url);
+    }
+    
+    function isUrl(url) {
+        url = strVal(url);
+        
     }
 
     /**
@@ -1803,7 +1828,7 @@
         var expires = new Date(),
             output;
 
-        numDays = +numDays || 1;
+        numDays = Number(numDays) || 1;
 
         expires.setDate(expires.getDate() + numDays); // Add days to date
 
@@ -4456,7 +4481,7 @@
 
         for (name in $cms.behaviors) {
             behavior = $cms.behaviors[name];
-            priority = +behavior.priority || 0;
+            priority = Number(behavior.priority) || 0;
 
             byPriority[priority] || (byPriority[priority] = []);
             byPriority[priority].push(name);

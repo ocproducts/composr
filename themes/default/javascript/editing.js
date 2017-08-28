@@ -247,7 +247,7 @@ function wysiwygSetReadonly(name, readonly) {
     }
 
     // In case it sticks as read only we need a timer to put it back. But only if not already back.
-    if (window.wysiwygReadonlyTimer[name] !== undefined && window.wysiwygReadonlyTimer[name]) {
+    if (window.wysiwygReadonlyTimer[name]) {
         clearTimeout(window.wysiwygReadonlyTimer[name]);
         window.wysiwygReadonlyTimer[name] = null;
     }
