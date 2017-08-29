@@ -336,7 +336,6 @@ class Hook_addon_registry_installer
 
         $step3 = do_lorem_template('INSTALLER_STEP_3', array(
             'URL' => placeholder_url(),
-            'JS' => '',
             'HIDDEN' => '',
             'SIMPLE_FORUMS' => $simple_forums,
             'FORUM_PATH_DEFAULT' => get_file_base() . '/forums',

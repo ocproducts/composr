@@ -6174,7 +6174,7 @@
      * @param [permanent]
      */
     $cms.ui.disableButton = function disableButton(btn, permanent) {
-        permanent = !!permanent;
+        permanent = Boolean(permanent);
         
         if (btn.form && (btn.form.target === '_blank')) {
             return;
@@ -9497,7 +9497,7 @@
                 timer = null;
             }
         });
-        button.addEventListener('mouseout', function () {
+        button.addEventListener('mouseout', function (e) {
             timer = window.setInterval(continueFunc, 1000);
         });
 
@@ -9576,8 +9576,8 @@
     }
     
     $cms.templates.installerStep3 = function installerStep3(params, container) {
-        $cms.dom.on(container, 'click', '.js-click-toggle-advanced-db-setup-section', function () {
-            var id = $cms.filter.id($cms.filter.nl('{!ADVANCED_DATABASE_SETUP;}'));
+        $cms.dom.on(container, 'click', '.js-click-toggle-advanced-db-setup-section', function (e, clicked) {
+            var id = strVal(clicked.dataset.tpSection);
             toggleInstallerSection(id);
         });
     };
@@ -9719,13 +9719,13 @@
             }
 
             if (form.elements['cns_admin_password_confirm'] != null) {
-                if (!checkPassword(form, 'cns_admin_password', '{!ADMIN_USERS_PASSWORD;^/}')) {
+                if (!checkPassword(form, 'cns_admin_password', '{!ADMIN_USERS_PASSWORD;^}')) {
                     return false;
                 }
             }
 
             if (form.elements['master_password_confirm'] != null) {
-                if (!checkPassword(form, 'master_password', '{!MASTER_PASSWORD;^/}')) {
+                if (!checkPassword(form, 'master_password', '{!MASTER_PASSWORD;^}')) {
                     return false;
                 }
             }
