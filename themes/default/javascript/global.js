@@ -152,7 +152,20 @@
          * @method
          * @returns {string}
          */
-        $PREVIEW_URL: constant(strVal(symbols.PREVIEW_URL)),
+        $PREVIEW_URL: function $PREVIEW_URL() {
+            var value = '{$FIND_SCRIPT_NOHTTP;,preview}';
+            value += '?page=' + urlencode(getPageName());
+            value += '&type=' + urlencode($cms.usp.get('type'));
+            return value;
+            
+            function getPageName() {
+                var pageName = $cms.usp.has('page') ? $cms.usp.get('page') : '';
+                if (pageName === '') {
+                    pageName = $cms.zoneDefaultPage();
+                }
+                return pageName;
+            }
+        },
         /**
          * @method
          * @returns {string}
@@ -246,7 +259,11 @@
          * @returns {boolean}
          */
         canTryUrlSchemes: constant(boolVal(symbols['can_try_url_schemes'])),
-        
+        /**
+         * @method
+         * @returns {string}
+         */
+        zoneDefaultPage: constant(strVal(symbols['zone_default_page'])),
         /**
          * @method
          * @returns {object}
@@ -3586,8 +3603,8 @@
             return;
         }
 
-        leaveGapTop = +leaveGapTop || 0;
-        leaveHeight = !!leaveHeight;
+        leaveGapTop = Number(leaveGapTop) || 0;
+        leaveHeight = Boolean(leaveHeight);
 
         if (!leaveHeight) {
             // Enough to stop jumping around
@@ -3596,8 +3613,9 @@
 
         $cms.dom.illustrateFrameLoad(frame);
 
-        var ifuob = window.top.$cms.dom.$('#iframe_under');
-        var extra = ifuob ? ((window != window.top) ? $cms.dom.findPosY(ifuob) : 0) : 0;
+        var ifuob = window.top.$cms.dom.$('#iframe_under'),
+            extra = ifuob ? ((window !== window.top) ? $cms.dom.findPosY(ifuob) : 0) : 0;
+        
         if (ifuob) {
             ifuob.scrolling = 'no';
         }
@@ -3612,7 +3630,9 @@
      * @param iframeId
      */
     $cms.dom.illustrateFrameLoad = function illustrateFrameLoad(iframeId) {
-        var head, cssText = '', i, iframe = $cms.dom.$id(iframeId), doc, de;
+        var head, cssText = '', 
+            i, iframe = $cms.dom.$id(iframeId),
+            doc, de;
 
         if (!$cms.$CONFIG_OPTION('enable_animations') || !iframe || !iframe.contentDocument || !iframe.contentDocument.documentElement) {
             return;
@@ -4422,8 +4442,6 @@
                         try {
                             frameWindow.scrollTo(0, 0);
                         } catch (ignore) {}
-
-                        return !!(event && event.target && event.stopPropagation && (event.stopPropagation() === undefined));
                     };
                 }
             }
@@ -5323,7 +5341,7 @@
     $cms.filter.url = function url(urlPart, canTryUrlSchemes) {
         urlPart = strVal(urlPart);
         var urlPartEncoded = urlencode(urlPart);
-        canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? !!canTryUrlSchemes : $cms.canTryUrlSchemes();
+        canTryUrlSchemes = (canTryUrlSchemes !== undefined) ? Boolean(canTryUrlSchemes) : $cms.canTryUrlSchemes();
 
         if ((urlPartEncoded !== urlPart) && canTryUrlSchemes) {
             // These interfere with URL Scheme processing because they get pre-decoded and make things ambiguous

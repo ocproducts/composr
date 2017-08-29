@@ -31,6 +31,8 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
      */
     public function run($param)
     {
+        global $ZONE;
+
         require_code('global2');
         require_code('symbols');
 
@@ -56,7 +58,6 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
             'HTTP_STATUS_CODE'  => ecv_HTTP_STATUS_CODE($lang, [], []),
             'KEEP'              => ecv_KEEP($lang, [], []),
             'FORCE_PREVIEWS'    => ecv_FORCE_PREVIEWS($lang, [], []),
-            'PREVIEW_URL'       => ecv_PREVIEW_URL($lang, [], []),
             'SITE_NAME'         => ecv_SITE_NAME($lang, [], []),
             'BRAND_NAME'        => ecv_BRAND_NAME($lang, [], []),
             'IS_STAFF'          => ecv_IS_STAFF($lang, [], []),
@@ -69,6 +70,8 @@ class Hook_symbol_SYMBOL_DATA_AS_JSON
         );
 
         require_code('urls');
+
+        $value['zone_default_page'] = ($ZONE !== null) ? $ZONE['zone_default_page'] : '';
         $value['sees_javascript_error_alerts'] = has_privilege(get_member(), 'sees_javascript_error_alerts');
         $value['can_try_url_schemes'] = can_try_url_schemes();
         $value['staff_tooltips_url_patterns'] = $this->staff_tooltips_url_patterns($value['IS_STAFF'] === '1');
