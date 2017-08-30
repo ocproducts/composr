@@ -327,12 +327,16 @@ function create_bar_chart($data, $x_label = 'X axis', $y_label = 'Y axis', $x_un
         $labels .= '<text style="fill: ' . (($height == 0.0) ? 'black' : 'white') . '; font-weight: normal" id="' . $x_raw . $y_raw . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT - 3) . ',' . float_to_raw_string(PLOT_HEIGHT + PLOT_HEIGHT_BIAS - TEXT_HEIGHT) . ') rotate(270)" class="bar_chart_text">' . escape_html($key) . '</text>
         <script>
         <![CDATA[
-            document.getElementById("' . $x_raw . $y_raw . '").addEventListener("mouseover",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
-            document.getElementById("' . $x_raw . $y_raw . '").de_clarify = function () { document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
-            document.getElementById("' . $x_raw . $y_raw . '").addEventListener("focus",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
-            document.getElementById("' . $x_raw . $y_raw . '_bar").addEventListener("mouseover",function() { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
-            document.getElementById("' . $x_raw . $y_raw . '_bar").de_clarify = function () { document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
-            document.getElementById("' . $x_raw . $y_raw . '_bar").addEventListener("focus",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById("' . $x_raw . $y_raw . '").setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
+            (function() {
+                var id = "' . $x_raw . $y_raw . '";
+                document.getElementById(id).addEventListener("mouseover",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById(id).setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
+                document.getElementById(id).de_clarify = function () { document.getElementById(id).setAttribute("style","fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
+                document.getElementById(id).addEventListener("focus",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById(id).setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
+                
+                document.getElementById(id + "_bar").addEventListener("mouseover",function() { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById(id).setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
+                document.getElementById(id + "_bar").de_clarify = function () { document.getElementById(id).setAttribute("style", "fill: ' . (($height == 0.0) ? 'black' : 'white') . '"); };
+                document.getElementById(id + "_bar").addEventListener("focus",function () { if (window.current_bar) window.current_bar.de_clarify(); window.current_bar=this; document.getElementById(id).setAttribute("style","fill: red; background-color: black; z-index: 999999;"); });
+            }());
         ]]>
         </script>' . "\n";
 
@@ -447,11 +451,14 @@ function create_scatter_graph($data, $x_label = 'X Axis', $y_label = 'Y Axis', $
                 $labels .= '<text id="' . $x_raw . $y_raw . '" transform="translate(' . float_to_raw_string($x + TEXT_HEIGHT / 2) . ',' . float_to_raw_string(PLOT_HEIGHT + X_AXIS_HEIGHT + PLOT_HEIGHT_BIAS) . ') rotate(270)" class="scatter_graph_text">' . escape_html($value['key']) . '</text>
                     <script>
                     <![CDATA[
-                         document.getElementById("' . $x_raw . $y_raw . '").addEventListener("mouseover",function(event) { this.setAttribute("style","fill: red; stroke: red; background-color: black; z-index: 999999;"); });
-                         document.getElementById("' . $x_raw . $y_raw . '").addEventListener("mouseout",function(event) { this.setAttribute("style",""); });
-                         document.getElementById("' . $x_raw . $y_raw . '").addEventListener("focus",function(event) { this.setAttribute("style","fill: red; stroke: red; background-color: black; z-index: 999999;") });
-                         document.getElementById("' . $x_raw . $y_raw . '").addEventListener("blur",function(event) { this.setAttribute("style",""); });
-                    ]]>
+                        (function () {
+                            var id = "' . $x_raw . $y_raw . '";
+                            document.getElementById(id).addEventListener("mouseover",function () { this.setAttribute("style","fill: red; stroke: red; background-color: black; z-index: 999999;"); });
+                            document.getElementById(id).addEventListener("mouseout",function () { this.setAttribute("style",""); });
+                            document.getElementById(id).addEventListener("focus",function () { this.setAttribute("style","fill: red; stroke: red; background-color: black; z-index: 999999;") });
+                            document.getElementById(id).addEventListener("blur",function () { this.setAttribute("style",""); });
+                        }());
+                      ]]>
                     </script>' . "\n";
             }
         }

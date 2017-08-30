@@ -931,7 +931,7 @@
      */
     function isArrayLike(obj, minLength) {
         var len;
-        minLength = intVal(minLength);
+        minLength = Number(minLength) || 0;
 
         return (obj != null)
             && (typeof obj === 'object')
@@ -1545,7 +1545,7 @@
     
     function isUrl(url) {
         url = strVal(url);
-        
+        return url.includes('/');
     }
 
     /**
@@ -5450,51 +5450,58 @@
      */
     $cms.ui.confirmSession = function confirmSession(callback) {
         var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
+        
+        return new Promise(function (resolvePromise) {
+            $cms.doAjaxRequest(scriptUrl, function (_, xhr) {
+                var username = xhr.responseText;
 
-        $cms.doAjaxRequest(scriptUrl, function (_, xhr) {
-            var username = xhr.responseText;
-            
-            if (username === '') { // Blank means success, no error - so we can call callback
-                callback(true);
-                return;
-            }
+                if (username === '') { // Blank means success, no error - so we can call callback
+                    if (callback != null) {
+                        callback(true);
+                    }
+                    resolvePromise(true);
+                    return;
+                }
 
-            // But non blank tells us the username, and there is an implication that no session is confirmed for this login
-            if (username === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
-                $cms.ui.prompt(
-                    '{!USERNAME;^}',
-                    '',
-                    function (prompt) {
-                        _confirmSession(callback, prompt);
-                    },
-                    '{!_LOGIN;^}'
-                );
-                return;
-            }
+                // But non blank tells us the username, and there is an implication that no session is confirmed for this login
+                if (username === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
+                    $cms.ui.prompt('{!USERNAME;^}', '', null, '{!_LOGIN;^}').then(function (prompt) {
+                        _confirmSession(function (bool) {
+                            if (callback != null) {
+                                callback(bool);
+                            }
+                            resolvePromise(bool);
+                        }, prompt);
+                    });
+                    return;
+                }
 
-            _confirmSession(callback, username);
+                _confirmSession(function (bool) {
+                    if (callback != null) {
+                        callback(bool);
+                    }
+                    resolvePromise(bool);
+                }, username);
+            });
         });
+
 
         function _confirmSession(callback, username) {
             $cms.ui.prompt(
-                $cms.$CONFIG_OPTION('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}',
-                '',
-                function (prompt) {
-                    if (prompt !== null) {
-                        $cms.doAjaxRequest(scriptUrl, function (_, xhr) {
-                            if (xhr.responseText === '') { // Blank means success, no error - so we can call callback
-                                callback(true);
-                            } else {
-                                _confirmSession(callback, username); // Recurse
-                            }
-                        }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(prompt));
-                    } else {
-                        callback(false);
-                    }
-                },
-                '{!_LOGIN;^}',
-                'password'
-            );
+                $cms.$CONFIG_OPTION('js_overlays') ? '{!ENTER_PASSWORD_JS_2;^}' : '{!ENTER_PASSWORD_JS;^}', '', null, '{!_LOGIN;^}', 'password'
+            ).then(function (prompt) {
+                if (prompt != null) {
+                    $cms.doAjaxRequest(scriptUrl, function (_, xhr) {
+                        if (xhr.responseText === '') { // Blank means success, no error - so we can call callback
+                            callback(true);
+                        } else {
+                            _confirmSession(callback, username); // Recurse
+                        }
+                    }, 'login_username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(prompt));
+                } else {
+                    callback(false);
+                }
+            });
         }
     };
 

@@ -16,7 +16,7 @@ function loadCommandr() {
     }
 
     $cms.requireJavascript('commandr').then(function () {
-        $cms.ui.confirmSession(function (sessionConfirmed) {
+        $cms.ui.confirmSession().then(function (sessionConfirmed) {
             // Remove "loading" indicator from button
             var tmpElement = document.getElementById('commandr_img_loader');
             if (tmpElement) {
@@ -43,8 +43,8 @@ function loadCommandr() {
                     }
                 });
                 document.body.appendChild(commandrBox);
-                $cms.loadSnippet('commandr', null, true).then(function (xhr) {
-                    $cms.dom.html(commandrBox, xhr.responseText);
+                $cms.loadSnippet('commandr').then(function (result) {
+                    $cms.dom.html(commandrBox, result);
                     doCommandrBox();
                 });
             } else {
@@ -52,9 +52,10 @@ function loadCommandr() {
             }
         });
     });
-
+    
     function doCommandrBox() {
-        var img = document.getElementById('commandr_img'),
+        var commandrBox = document.getElementById('commandr_box'),
+            img = document.getElementById('commandr_img'),
             bi, cmdLine;
 
         if ($cms.dom.notDisplayed(commandrBox)) { // Showing Commandr again

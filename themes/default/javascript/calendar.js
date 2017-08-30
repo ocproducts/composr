@@ -2,8 +2,6 @@
     'use strict';
 
     $cms.functions.cmsCalendarRunStart = function cmsCalendarRunStart() {
-        console.log('$cms.functions.cmsCalendarRunStart()');
-        
         var form = document.getElementById('recurrence_pattern').form,
             start = document.getElementById('start'),
             startDay = document.getElementById('start_day'),
@@ -78,7 +76,7 @@
                 hasDateSet = (start.value !== '');
             }
 
-            if ((event !== undefined) && hasDateSet) { // Something changed
+            if ((event != null) && hasDateSet) { // Something changed
                 var url = 'calendar_recurrence_suggest';
                 url += '&monthly_spec_type=' + encodeURIComponent($cms.form.radioValue(form.elements['monthly_spec_type']));
                 if (startDay) {
@@ -97,7 +95,7 @@
                 url += '&do_timezone_conv=' + (doTimezoneConv.checked ? '1' : '0');
                 url += '&all_day_event=' + (allDayEvent.checked ? '1' : '0');
                 
-                $cms.loadSnippet(url, null, true).then(function (newData) {
+                $cms.loadSnippet(url).then(function (newData) {
                     var tr = $cms.dom.closest(form.elements['monthly_spec_type'][0], 'tr');
                     $cms.dom.html(tr, newData.replace(/<tr [^>]*>/, '').replace(/<\/tr>/, ''));
                     updateMonthlyRecurrence();
