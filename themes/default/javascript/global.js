@@ -5448,7 +5448,7 @@
      * @memberof $cms.ui
      * @param callback - Called with boolean indicating whether session confirmed or not
      */
-    $cms.ui.confirmSession = function confirmSession(callback) {
+    $cms.ui.confirmSession = function confirmSession() {
         var scriptUrl = '{$FIND_SCRIPT_NOHTTP;,confirm_session}' + $cms.keepStub(true);
         
         return new Promise(function (resolvePromise) {
@@ -5456,9 +5456,6 @@
                 var username = xhr.responseText;
 
                 if (username === '') { // Blank means success, no error - so we can call callback
-                    if (callback != null) {
-                        callback(true);
-                    }
                     resolvePromise(true);
                     return;
                 }
@@ -5467,9 +5464,6 @@
                 if (username === '{!GUEST;^}') { // Hmm, actually whole login was lost, so we need to ask for username too
                     $cms.ui.prompt('{!USERNAME;^}', '', null, '{!_LOGIN;^}').then(function (prompt) {
                         _confirmSession(function (bool) {
-                            if (callback != null) {
-                                callback(bool);
-                            }
                             resolvePromise(bool);
                         }, prompt);
                     });
@@ -5477,9 +5471,6 @@
                 }
 
                 _confirmSession(function (bool) {
-                    if (callback != null) {
-                        callback(bool);
-                    }
                     resolvePromise(bool);
                 }, username);
             });
@@ -6125,7 +6116,7 @@
                             }
                         }
                         
-                        if (((bits[0] === 'resizable') || (bits[0] === 'scrollbars')) && scrollbars !== true) {
+                        if (((bits[0] === 'resizable') || (bits[0] === 'scrollbars')) && (scrollbars !== true)) {
                             scrollbars = ((bits[1] === 'yes') || (bits[1] === '1'))/*if either resizable or scrollbars set we go for scrollbars*/;
                         }
                         
@@ -7156,6 +7147,7 @@
             buttonSet = newButtonSet;
 
             if ((window.showModalDialog !== undefined) || $cms.$CONFIG_OPTION('js_overlays')) {
+                // @TODO: window.showModalDialog() was removed completely in Chrome 43, and Firefox 55. See WebKit bug 151885 for possible future removal from Safari.
                 if (buttonSet.length > 4) {
                     dialogHeight += 5 * (buttonSet.length - 4);
                 }
@@ -7422,6 +7414,10 @@
         var metaEl = document.querySelector('meta[name="' + name + '"]'), 
             data = pageMetaCache[name], trimmed;
         
+        if (metaEl == null) {
+            return '';
+        }
+        
         // If nothing was found internally, try to fetch any
         if ((data === undefined) && (typeof (data = metaEl.content) === 'string')) {
             trimmed = data.trim();
@@ -7666,7 +7662,7 @@
         
         columnHeightBalancing: {
             attach: function attach(context) {
-                var cols = $cms.dom.$$$('.col_balance_height'),
+                var cols = $cms.dom.$$$(context, '.col_balance_height'),
                     i, max, j, height;
 
                 for (i = 0; i < cols.length; i++) {

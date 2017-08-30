@@ -40,7 +40,7 @@
 
     function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleClick, controlButton, type) {
         wasDoubleClick = !!wasDoubleClick;
-        type = strVal(type) || 'line';
+        type = strVal(type, 'line');
 
         if (rawText.length > 255) {
             // Cannot process this
@@ -125,7 +125,7 @@
             }
         }
         input.name = editParamName;
-        form.onsubmit = function (event) {
+        form.onsubmit = function () {
             return false;
         };
         if (controlButton) {
@@ -173,15 +173,13 @@
 
                     $cms.doAjaxRequest(sessionTestUrl + $cms.keepStub(true), function (_, sessionXhr) {
                         if (sessionXhr.responseText) { // If it failed, see if it is due to a non-confirmed session
-                            $cms.ui.confirmSession(
-                                function (result) {
-                                    if (result) {
-                                        saveFunction();
-                                    } else {
-                                        cleanupFunction();
-                                    }
+                            $cms.ui.confirmSession().then(function (sessionConfirmed) {
+                                if (sessionConfirmed) {
+                                    saveFunction();
+                                } else {
+                                    cleanupFunction();
                                 }
-                            );
+                            });
                         } else {
                             cleanupFunction(); // Has to happen before, as that would cause defocus then refocus, causing a second save attempt
                             $cms.ui.alert((xhr.status === 500) ? xhr.responseText : '{!ERROR_FRACTIONAL_EDIT;^}', null, '{!FRACTIONAL_EDIT;^}');
