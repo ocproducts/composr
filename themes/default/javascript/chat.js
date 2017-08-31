@@ -441,10 +441,8 @@ function playChatSound(sId, forMember) {
             sId = sId + '_' + forMember;
         }
     }
-
-    if (window.topWindow.console !== undefined) {
-        window.topWindow.console.log('Playing ' + sId + ' sound'); // Useful when debugging sounds when testing using SU, otherwise you don't know which window they came from
-    }
+    
+    window.topWindow.console.log('Playing ' + sId + ' sound'); // Useful when debugging sounds when testing using SU, otherwise you don't know which window they came from
 
     window.topWindow.soundManager.play(sId);
 }

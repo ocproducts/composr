@@ -15,7 +15,7 @@
             });
 
             $cms.dom.on(el, 'mouseover mouseout', function (e, target) {
-                if (target.contains(e.relatedTarget)) {
+                if (e.relatedTarget && target.contains(e.relatedTarget)) {
                     return;
                 }
 
@@ -39,7 +39,7 @@
 
 
     function fractionalEdit(event, object, url, rawText, editParamName, wasDoubleClick, controlButton, type) {
-        wasDoubleClick = !!wasDoubleClick;
+        wasDoubleClick = Boolean(wasDoubleClick);
         type = strVal(type, 'line');
 
         if (rawText.length > 255) {
@@ -199,9 +199,7 @@
         // If we activate it again, we actually treat this as a cancellation
         object.onclick = object.ondblclick = function (event) {
             event.stopPropagation();
-            if (event.cancelable) {
-                event.preventDefault();
-            }
+            event.preventDefault();
 
             if ($cms.magicKeypress(event)) {
                 cleanupFunction();
@@ -213,7 +211,6 @@
         // Cancel or save actions
         if (type === 'line') {
             input.onkeyup = function (event) { // Not using onkeypress because that only works for actual represented characters in the input box
-
                 if ($cms.dom.keyPressed(event, 'Escape')) { // Cancel (escape key)
                     var tmp = input.onblur;
                     input.onblur = null;
